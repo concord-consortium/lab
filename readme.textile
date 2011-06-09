@@ -1,11 +1,17 @@
-## Energy2D-JS
+h1. Energy2D-JS
 
-Energy2D-JS is a JavaScript port of the Java application: [Energy2D](http://energy.concord.org/energy2d/index.html) 
+Energy2D-JS is a JavaScript port of the Java application: "Energy2D":http://energy.concord.org/energy2d/index.html
 
 This JavaScript port supports simulation of thermal conductivity and convection in a 100x100 cell simulation space. 
 
-If the browser supports [JavaScript Typed Arrays](https://developer.mozilla.org/en/JavaScript_typed_arrays) 
+If the browser supports "JavaScript Typed Arrays":https://developer.mozilla.org/en/JavaScript_typed_arrays 
 Energy2D-JS will use use them for increased computational performance.
 
-### Getting a browser that supports JavaScript Typed Arrays
-[JavaScript Typed Arrays](https://developer.mozilla.org/en/JavaScript_typed_arrays)  are available in browsers that are WebGL-enabled. On some browsers using JavaScript Typed Arrays will speed up the modeling part of the simulation by a factor of two. Get more information about whether your browser supports WebGL here: http://get.webgl.org/.
+h2. Getting a browser that supports JavaScript Typed Arrays
+
+"JavaScript Typed Arrays":https://developer.mozilla.org/en/JavaScript_typed_arrays are available in browsers that are WebGL-enabled. On some browsers using JavaScript Typed Arrays will speed up the modeling part of the simulation by a factor of two. Get more information about whether your browser supports WebGL here: http://get.webgl.org/.
+
+h2. Benchmarks
+
+|_.                      |_. Model Steps/s, Typed Arrays |_. Model Steps/s, Typed Arrays (all rendering off) |_. Model Steps/s |_. Model Steps/s (all rendering off) |
+|Chrome 14.0.788.0 canary| |27.1                         |                                                   |                 |                                 11.0|
