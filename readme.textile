@@ -13,5 +13,14 @@ h2. Getting a browser that supports JavaScript Typed Arrays
 
 h2. Benchmarks
 
-|_.                      |_. Model Steps/s, Typed Arrays |_. Model Steps/s, Typed Arrays (all rendering off) |_. Model Steps/s |_. Model Steps/s (all rendering off) |
-|Chrome 14.0.788.0 canary| |27.1                         |                                                   |                 |                                 11.0|
+Model steps/s measured over 100 model steps iterations. Tested on a MacBook Pro, 10.6.7, 2.66 GHz Intel Core i7.
+
+With all rendering off:
+
+|_.                        |_. Typed Arrays   |_. Regular Arrays |
+| Chrome 14.0.788.0 canary |             27.1 |             11.1 |
+
+With all rendering on:
+
+|_.                        |_. Typed Arrays   |_. Regular Arrays |
+| Chrome 14.0.788.0 canary |              8.8 |              7.1 |
