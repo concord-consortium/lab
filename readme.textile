@@ -11,13 +11,13 @@ Energy2D-JS will use use them for increased computational performance.
 
 h2. Getting a browser that supports JavaScript Typed Arrays
 
-"JavaScript Typed Arrays":https://developer.mozilla.org/en/JavaScript_typed_arrays are available in browsers that are WebGL-enabled. On some browsers using JavaScript Typed Arrays will speed up the modeling part of the simulation by a factor of two. Get more information about whether your browser supports WebGL here: http://get.webgl.org/.
+"JavaScript Typed Arrays":https://developer.mozilla.org/en/JavaScript_typed_arrays are available in browsers that are WebGL-enabled. On some browsers using JavaScript Typed Arrays will speed up the modeling part of the simulation by a factor of two. Get more information about whether your browser supports WebGL here: "http://get.webgl.org/":http://get.webgl.org/.
 
 h2. Benchmarks
 
 Model steps/s measured over 100 model step iterations. [1]
 
-h3. With all rendering *off*:
+h3. With model rendering *off* (the frame and model step rate counters are still being rendered):
 
 |_.                                  |_. Typed Arrays   |_. Regular Arrays |
 | Chrome 14.0.788.0 canary           |             27.1 |             11.1 |
