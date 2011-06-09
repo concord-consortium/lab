@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Energy2D-JS</title>
+    <link href="stylesheets/style.css" rel="stylesheet" type="text/css"/>
+</head>
+<div id="container">
+  <div id="header-inner">
+    <h1 id="title">Energy2D-JS</h1>
+  </div>
+  <div id="content">
+    <p>
+      Energy2D-JS is a JavaScript port of the Java application: <a href="http://energy.concord.org/energy2d/index.html">Energy2D</a>
+      This JavaScript port supports simulation of thermal conductivity and convection in a 100x100 cell simulation space. 
+      If the browser supports <a href="https://developer.mozilla.org/en/JavaScript_typed_arrays">JavaScript Typed Arrays</a> 
+      Energy2D-JS will use use them for increased computational performance. 
+    </p>
+    <h3><a href="model2d-demo.html">Energy2D-JS Demo</a></h3>
+    <p>
+      The model on this page starts with a fixed 50 degree hot-spot in the middle of a 100x100 grid, 
+      (10,000 cells) model simulation space, the outside edge is fixed at 0 degrees C. This page also 
+      compares the speed of two different rendering strategies: 1) an HTML5 Canvas; 2) modifying CSS 
+      styles on an array of 10,000 separate divs.
+    </p>
+    <div id="info">
+      <h2>Getting a browser that supports JavaScript Typed Arrays</h2>
+      <div id="getting-webgl">
+        <p>
+          <a href=" https://developer.mozilla.org/en/JavaScript_typed_arrays">JavaScript Typed Arrays</a> are 
+          available in browsers that are <a href='http://learningwebgl.com/blog/?p=11'>WebGL-enabled</a>. 
+          On some browsers using JavaScript Typed Arrays will speed up the modeling part of the simulation by a
+          factor of two. Get more information about whether your browser supports WebGL here: 
+          <a href="http://get.webgl.org/">http://get.webgl.org/</a>.
+        </p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

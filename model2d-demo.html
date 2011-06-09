@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Energy2D-JS Demo</title>
+    <link href="stylesheets/style.css" rel="stylesheet" type="text/css"/>
+    <script src="lib/sprintf.js" type="text/javascript" ></script>
+    <style type="text/css">
+    
+    #canvasDestination { 
+      width:500px;
+      height:400px;
+      padding:0px;
+      background-color:lightgray;
+      color:gray;
+      border:1px; 
+    }
+    
+    #colorDivDestination { 
+      width:500px;
+      height:400px;
+      padding:0px;
+      background-color:lightgray;
+      color:gray;
+      border:1px; 
+    }
+
+    </style>
+</head>
+<div id="container">
+  <div id="header-inner">
+    <h1 id="title">Energy2D-JS Demo</h1>
+    <p>
+      A JavaScript port of the Java application: <a href="http://energy.concord.org/energy2d/index.html">Energy2D</a>.
+      Energy2D-JS supports using <a href=" https://developer.mozilla.org/en/JavaScript_typed_arrays">JavaScript Typed Arrays</a>
+      if they are available in this browser. 
+    </p>
+    <p>
+      The model on this page starts with a fixed 50 degree hot-spot in the middle of a 100x100 grid, 
+      (10,000 cells) model simulation space, the outside edge is fixed at 0 degrees C. This page also 
+      compares the speed of two different rendering strategies: 1) an HTML5 Canvas; 2) modifying CSS 
+      styles on an array of 10,000 separate divs.
+    </p>
+  </div>
+  <div id="content">
+    <div id="webglCanvasContainer">
+      <ul class="hlist">
+        <li>
+          <p>Energy2D-JS Model: Rendered using an HTML5 canvas</p>
+          <canvas id="canvasDestination">
+          </canvas>
+          <ul class="hlist">
+            <li>
+              <form id="step-model">
+                <fieldset>
+                  <legend>Step: </legend>
+                  <label><input type="radio" name="step" value="stop" checked> Stop</input></label>
+                  <label><input type="radio" name="step" value="step"> Step</input></label>
+                  <label><input type="radio" name="step" value="go"> Go</input></label>
+                  <!-- <label><input type="radio" name="step" value="reset"> Reset</input></label> -->
+                </fieldset>
+              </form>
+            </li>
+          </ul>
+          <ul class="hlist">
+            <li>
+              <fieldset>
+                <legend>Select Type of JavaScript Arrays: </legend>
+                <form id="choose-array-type">
+                  <label><input type="radio" name="array" value="regular" checked> Regular</input></label>
+                  <label><input type="radio" name="array" value="typed" disabled> Typed</input></label>
+                </form>
+              </fieldset>
+            </li>
+            <li>
+              <form id="show-me">
+                <fieldset>
+                  <legend>Select Rendering</legend>
+                  <label><input id="show-visualization" type="checkbox" checked/> Visualization</label>
+                  <label><input id="show-data-table" type="checkbox" checked/> Temperature Data Array</label>
+                </fieldset>
+              </form>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <p>Energy2D-JS Model: Rendered using 10,000 colored divs</p>
+          <div id="colorDivDestination"></div>
+          <ul class="hlist">
+            <li>
+              <form id="step-model-color-divs">
+                <fieldset>
+                  <legend>Step: </legend>
+                  <label><input type="radio" name="step" value="stop" checked> Stop</input></label>
+                  <label><input type="radio" name="step" value="step"> Step</input></label>
+                  <label><input type="radio" name="step" value="go"> Go</input></label>
+                  <!-- <label><input type="radio" name="step" value="reset"> Reset</input></label> -->
+                </fieldset>
+              </form>
+            </li>
+          </ul>
+          <ul class="hlist">
+            <li><h2 id="step-count">frame 0</h2></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div id="info">
+      <h2>Getting a browser that supports JavaScript Typed Arrays</h2>
+      <div id="getting-webgl">
+        <p>
+          <a href=" https://developer.mozilla.org/en/JavaScript_typed_arrays">JavaScript Typed Arrays</a> are 
+          available in browsers that are <a href='http://learningwebgl.com/blog/?p=11'>WebGL-enabled</a>. 
+          On some browsers using JavaScript Typed Arrays will speed up the modeling part of the simulation by a
+          factor of two. Get more information about whether your browser supports WebGL here: 
+          <a href="http://get.webgl.org/">http://get.webgl.org/</a>.
+        </p>
+    </div>
+    <h2>Temperature Data Array:</h2>
+    <pre id="tdata" style="font-size:80%"></pre>
+  </div>
+</div>
+<script type="text/javascript">
+
+  function myRequire(src, callback){
+    if (src.constructor == Array) {
+      var libraries = src;
+    } else {
+      var libraries = [src];
+    }
+    var script = document.createElement("script") 
+    script.type = "text/javascript";
+    // IE
+    script.onreadystatechange = function () {
+      if (script.readyState === 'loaded' || script.readyState == 'complete') {
+        script.onreadystatechange = null;
+        libraries.shift();
+        if (libraries.length > 0) {
+          myRequire(libraries)
+        }
+        if (callback) {
+          callback();            
+        }
+      }
+    }
+    // Not IE
+    script.onload = function () {
+      libraries.shift();
+      if (libraries.length > 0) {
+        myRequire(libraries)
+      }
+      if (callback) {
+        callback();            
+      }
+    }
+    script.src = libraries[0];
+    document.getElementsByTagName("head")[0].appendChild(script);
+  };
+  
+  window.onload=function() {
+    // var webGLEnabled = Modernizr.webgl;
+    webGLEnabled = true;
+    if (webGLEnabled){
+      myRequire([ "src/model2d.js" ],
+      function() {
+
+        var webgl = !!window.WebGLRenderingContext;
+        var choose_array_type = document.getElementById("choose-array-type");
+
+        if (webgl) {
+          choose_array_type.elements[1].disabled = false;
+        }
+
+        // model2d.setupColorDivs();
+        model2d.setupRGBAColorTables();
+        
+        var model, array_selection;
+        
+        function arrayTypeChange() {
+          if (choose_array_type.elements[0].checked) {
+            array_selection = "regular";
+          } else {
+            array_selection = "typed";
+          }
+          model = new model2d.Model2D({}, array_selection);
+          model2d.addHotSpot(model, 50.0);
+          model.nextStep();
+        };
+        
+        choose_array_type.onchange = arrayTypeChange;
+        choose_array_type.onchange();
+
+        // var model = new model2d.Model2D({}, array_selection);
+        // model2d.addHotSpot(model, 50.0);
+        // model.nextStep();
+
+        var tdata =      document.getElementById("tdata");
+        model2d.displayTemperatureTable(tdata, model);
+
+        var step_model = document.getElementById("step-model");
+        var step_model_color_divs = document.getElementById("step-model-color-divs");
+        
+        var show_visualization = document.getElementById("show-visualization");
+        var show_data_table = document.getElementById("show-data-table");
+        
+        var step_count = document.getElementById("step-count");
+
+        var canvas =     document.getElementById("canvasDestination");
+        var divs =     document.getElementById("colorDivDestination");
+        var run_mode;
+
+        
+        var one_before_that_sample_time = new Date();
+        var last_sample_time = new Date();
+        var sample_time = new Date();
+        var average_sample_time_ms = sample_time - last_sample_time;
+        
+        window.renderModelStep = function() {
+            sample_time = new Date();
+            model2d.addHotSpot(model, 50.0);
+            model.nextStep();
+            average_sample_time_ms = (average_sample_time_ms * 1.75 + (last_sample_time - one_before_that_sample_time) * 0.25) / 2;
+            one_before_that_sample_time = last_sample_time;
+            last_sample_time = sample_time;
+            step_count.innerHTML = 'frame: ' + model.indexOfStep + ': model step rate: ' + sprintf("%3.1f", 1/average_sample_time_ms * 1000) + ' fps';
+            if (show_visualization.checked) {
+              switch(display_method) {
+                case 'canvas': 
+                  model2d.displayTemperatureCanvas(canvas, model);
+                  break;
+                case 'colored-divs': 
+                  model2d.displayTemperatureColorDivs(divs, model); 
+                  break;
+              }
+            }
+            if (show_data_table.checked) model2d.displayTemperatureTable(tdata, model);
+        }
+        
+        window.paintInterval;
+
+        var display_method;
+        
+        function runModelStep() {
+          for(var i = 0; i < this.elements.length; i++)
+              if (this.elements[i].checked) run_mode = this.elements[i].value;
+
+          if (this == step_model) {
+            display_method = 'canvas';
+          } else {
+            display_method = 'colored-divs';
+          };
+          
+          switch(run_mode) {
+            case "go":
+              paintInterval = setInterval("renderModelStep()", 0);
+              break;
+            case "step":
+              window.clearInterval(window.paintInterval);
+              renderModelStep();
+              this.elements[0].checked = true;
+              break;
+            case "stop":
+              if (window.paintInterval) {
+                window.clearInterval(paintInterval);
+              }
+              break;
+            case "reset":
+              if (window.paintInterval) {
+                window.clearInterval(paintInterval);
+              }
+              model = new model2d.Model2D({}, array_selection);
+              model2d.addHotSpot(model, 50.0);
+              model.nextStep();
+              renderModelStep;
+              break;
+          }
+        }
+        
+        step_model.onchange = runModelStep;
+        model2d.displayTemperatureCanvas(canvas, model);
+        step_count.innerHTML = 'frame: ' + model.indexOfStep;
+
+        step_model_color_divs.onchange = runModelStep;
+        model2d.displayTemperatureColorDivs(divs, model);
+        
+      });
+    } else {
+      var content = document.getElementById('content');
+      var canvasContainer = document.getElementById('webglCanvasContainer');
+    };
+  }
+</script>
+</body>
+</html>
