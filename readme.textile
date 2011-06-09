@@ -19,7 +19,7 @@ Model steps/s measured over 100 model step iterations. [1]
 
 h3. With model rendering *off*: [2]
 
-|_.                                  |_. Typed Arrays   |_. Regular Arrays |
+|_. Browser                          |_. Typed Arrays   |_. Regular Arrays |
 | Chrome 14.0.788.0 canary           |             27.1 |             11.1 |
 | Chrome 10.0.648.127                |             19.5 |             12.7 |
 | Webkit Nightly v88532              |             14.3 |              7.2 |
@@ -30,7 +30,7 @@ h3. With model rendering *off*: [2]
 
 h3. With all rendering *on*:
 
-|_.                                  |_. Typed Arrays   |_. Regular Arrays |
+|_. Browser                          |_. Typed Arrays   |_. Regular Arrays |
 | Chrome 14.0.788.0 canary           |              8.8 |              7.1 |
 | Chrome 10.0.648.127                |              7.6 |              8.1 |
 | Webkit Nightly v88532              |              6.7 |              4.8 |
@@ -39,6 +39,22 @@ h3. With all rendering *on*:
 | FireFox 3.6.17                     |               na |              0.9 |
 | Safari 5.0.5                       |               na |              2.6 |
 
+h3. Using an earlier version of Energy2D-JS setup specifically as a benchmark [3]
+
+Results from running this "benchmark":https://bug636096.bugzilla.mozilla.org/attachment.cgi?id=514432 
+
+This benchmark was adapted by Mozilla developer Vladimir Vukicevic from an earlier version of Energy2D-JS and runs 100 model iterations with no browser rendering at all. These results should not be directly compared with the results above because the model operation has changed since the FireFox developers adapted Energy2D-JS into a performance benchmark.
+
+|_. Browser                          |_. Typed Arrays |
+| Chrome 14.0.788.0 canary           |            175 |
+| Chrome 10.0.648.127                |             43 |
+| FireFox beta v5                    |             40 |
+| FireFox nightly 7.0a1 (2011-06-09) |             38 |
+| Webkit Nightly v88532              |             17 |
+
+
 fn1. _Tested on a MacBook Pro, 10.6.7, 2.66 GHz Intel Core i7 on 2011 06 09._
 
 fn2. _The frame and model step rate counters are still being rendered._
+
+fn3. See the Mozilla performance bug report: "really slow on earthmodel testcase/benchmark":https://bug636096.bugzilla.mozilla.org -- the benchmark can be run directly "here":https://bug636096.bugzilla.mozilla.org/attachment.cgi?id=514432
