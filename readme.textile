@@ -6,8 +6,7 @@ This JavaScript port supports simulation of thermal conductivity and convection 
 
 A "demo":http://concord-consortium.github.com/energy2d-js/model2d-demo.html (currently the convective solver is not working).
 
-If the browser supports "JavaScript Typed Arrays":https://developer.mozilla.org/en/JavaScript_typed_arrays 
-Energy2D-JS will use use them for increased computational performance.
+If the browser supports "JavaScript Typed Arrays":https://developer.mozilla.org/en/JavaScript_typed_arrays Energy2D-JS will use use them for increased computational performance.
 
 h2. Getting a browser that supports JavaScript Typed Arrays
 
@@ -39,11 +38,11 @@ h3. With all rendering *on*:
 | FireFox 3.6.17                     |               na |              0.9 |
 | Safari 5.0.5                       |               na |              2.6 |
 
-h3. Using an earlier version of Energy2D-JS setup specifically as a benchmark [3]
+h3. Using an earlier version of Energy2D-JS as a computational benchmark [3]
 
 Results from running this "benchmark":https://bug636096.bugzilla.mozilla.org/attachment.cgi?id=514432 
 
-This benchmark was adapted by Mozilla developer Vladimir Vukicevic from an earlier version of Energy2D-JS and runs 100 model iterations with no browser rendering at all. These results should not be directly compared with the results above because the model operation has changed since the FireFox developers adapted Energy2D-JS into a performance benchmark.
+This benchmark was adapted by Mozilla developer Vladimir Vukicevic from an earlier version of Energy2D-JS to measure computational performance and runs 100 model iterations with no interaction with the browser's dom. These results should not be directly compared with the results above because the model operation has changed since the this adaptation.
 
 |_. Browser                          |_. Typed Arrays |
 | Chrome 14.0.788.0 canary           |            175 |
@@ -56,6 +55,6 @@ This benchmark was adapted by Mozilla developer Vladimir Vukicevic from an earli
 
 fn1. _Tested on a MacBook Pro, 10.6.7, 2.66 GHz Intel Core i7 on 2011 06 09._
 
-fn2. _The frame and model step rate counters are still being rendered._
+fn2. _The frame and model step rate counters are still being rendered to the browser's dom._
 
-fn3. See the Mozilla performance bug report: "really slow on earthmodel testcase/benchmark":https://bug636096.bugzilla.mozilla.org -- the benchmark can be run directly "here":https://bug636096.bugzilla.mozilla.org/attachment.cgi?id=514432
+fn3. See the FireFox performance issue on the Mozilla bug-tracker: "really slow on earthmodel testcase/benchmark":https://bug636096.bugzilla.mozilla.org -- the benchmark can be run directly "here":https://bug636096.bugzilla.mozilla.org/attachment.cgi?id=514432
