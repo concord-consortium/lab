@@ -24,6 +24,8 @@ h3. With model rendering *off*: [2]
 | Webkit Nightly v88532              |             14.3 |              7.2 |
 | FireFox nightly 7.0a1 (2011-06-09) |              6.3 |              5.3 |
 | FireFox beta v5                    |              6.5 |              5.4 |
+| Opera Next 11.50 beta              |               na |             12.1 |
+| Opera 11.1                         |               na |              9.8 |
 | FireFox 3.6.17                     |               na |              8.2 |
 | Safari 5.0.5                       |               na |              7.0 |
 
@@ -35,6 +37,8 @@ h3. With all rendering *on*:
 | Webkit Nightly v88532              |              6.7 |              4.8 |
 | FireFox nightly 7.0a1 (2011-06-09) |              4.3 |              3.8 |
 | FireFox beta v5                    |              4.2 |              3.7 |
+| Opera Next 11.50 beta              |               na |              4.7 |
+| Opera 11.1                         |               na |              4.7 |
 | FireFox 3.6.17                     |               na |              0.9 |
 | Safari 5.0.5                       |               na |              2.6 |
 
