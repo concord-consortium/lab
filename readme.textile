@@ -44,12 +44,36 @@ Results from running this "benchmark":https://bug636096.bugzilla.mozilla.org/att
 
 This benchmark was adapted by Mozilla developer Vladimir Vukicevic from an earlier version of Energy2D-JS to measure computational performance and runs 100 model iterations with no interaction with the browser's dom. These results should not be directly compared with the results above because the model operation has changed since the this adaptation.
 
-|_. Browser                          |_. Typed Arrays |
-| Chrome 14.0.788.0 canary           |            175 |
-| Chrome 10.0.648.127                |             43 |
-| FireFox beta v5                    |             40 |
-| FireFox nightly 7.0a1 (2011-06-09) |             38 |
-| Webkit Nightly v88532              |             17 |
+*Tested on a MacBook Pro, 10.6.7, 2.66 GHz Intel Core i7 on 2011 06 09:*
+
+|_. Browser                          |_.   Typed Arrays |
+| Chrome 14.0.788.0 canary           |              175 |
+| Chrome 10.0.648.127                |               43 |
+| FireFox beta v5                    |               40 |
+| FireFox nightly 7.0a1 (2011-06-09) |               38 |
+| Webkit Nightly v88532              |               17 |
+
+|_. Browser                          |_. Regular Arrays |
+| FireFox 3.6.17                     |               36 |
+| Safari 5.0.5                       |                8 |
+
+*Testing on Android devices:*
+
+|_. Device                           |_. Browser                          |_. Regular Arrays |
+| Motorala Xoom, Android 3.01        | Opera Mobile: v11.00               |              2.4 |
+|                                    | Dolphin Browser HD v4.6.           |              2.1 |
+|                                    | Android Browser                     |             2.1 |
+|                                    | SkyFire: v4.0                      |              2.1 |
+|                                    | FireFox: v4.00 for Android         |              1.7 |
+| Motorola Droid 2, Android 2.2      | FireFox: v4.00 for Android         |             1.43 |
+|                                    | Android Browser                    |             1.25 |
+| Original Motorola Droid            | FireFox: v4.00 for Android         |              0.6 |
+
+I'm only reporting results for one of the WebKit-based browsers: Android Browser. The results for the other WebKit-based browsers (Dolphin and SkyFire) were similar.
+
+*Testing on iOS devices:*
+
+On an original iPad the model ran at about 1 step/s. On the iPad2 results are never reported.
 
 *References*
 
