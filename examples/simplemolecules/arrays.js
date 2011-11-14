@@ -1,0 +1,157 @@
+//
+// Utilities
+//
+
+// Extend the Array object with a shuffle method
+
+(function(){ 
+  
+  var root = this;
+  arrays = {};
+  arrays = { version: "0.0.1" };
+  arrays.webgl = !!window.WebGLRenderingContext;
+
+  // regular
+  // Uint8Array
+  // Uint16Array
+  // Uint32Array
+  // Int8Array
+  // Int16Array
+  // Int32Array
+  // Float32Array
+  
+  arrays.create - function(size, fill, array_type) {
+      fill = fill || 0;
+      var a, i;
+      if (array_type === "regular") {
+          a = new Array(size);
+      } else {
+        switch(array_type) {
+        case "Float64Array":
+          a = new Float64Array(size);
+          break;
+        case "Float32Array":
+          a = new Float32Array(size);
+          break;
+        case "Int32Array":
+          a = new Int32Array(size);
+          break;
+        case "Int16Array":
+          a = new Int16Array(size);
+          break;
+        case "Int8Array":
+          a = new Int8Array(size);
+          break;
+        case "Uint32Array":
+          a = new Uint32Array(size);
+          break;
+        case "Uint16Array":
+          a = new Uint16Array(size);
+          break;
+        case "Uint8Array":
+          a = new Uint8Array(size);
+          break;
+        default:
+          a = new Array(size);
+          break;
+        }
+      }
+      i=-1; while(++i < size) { a[i] = fill };
+      return a;
+  }
+
+  arrays.copy = function(destination, source) {
+      var i, source_length = source.length;
+      for (i = 0; i < source_length; i++) { destination[i] = source[i]; }
+  }
+
+  /** @return true if x is between a and b. */
+  // float a, float b, float x
+   arrays.between = function(a, b, x) {
+      return x < Math.max(a, b) && x > Math.min(a, b);
+  }
+
+  // float[] array
+  arrays.max = function(array) {
+      return Math.max.apply( Math, array );
+  }
+
+  // float[] array
+  arrays.min = function(array) {
+      return Math.min.apply( Math, array );
+  }
+
+  // FloatxxArray[] array
+  arrays.maxTypedArray = function(array) {
+      var test, i,
+          max = Number.MIN_VALUE,
+          length = array.length;
+      for(i = 0; i < length; i++) {
+          test = array[i];
+          max = test > max ? test : max;
+      }
+      return max;
+  }
+
+  // FloatxxArray[] array
+  arrays.minTypedArray = function(array) {
+      var test, i,
+          min = Number.MAX_VALUE,
+          length = array.length;
+      for(i = 0; i < length; i++) {
+          test = array[i];
+          min = test < min ? test : min;
+      }
+      return min;
+  }
+
+  // float[] array
+  arrays.maxAnyArray = function(array) {
+      try {
+          return Math.max.apply( Math, array );
+      }
+      catch (e) {
+          if (e instanceof TypeError) {
+              var test, i,
+                  max = Number.MIN_VALUE,
+                  length = array.length;
+              for(i = 0; i < length; i++) {
+                  test = array[i];
+                  max = test > max ? test : max;
+              }
+              return max;
+          }
+      }
+  }
+
+  // float[] array
+  arrays.minAnyArray = function(array) {
+      try {
+          return Math.min.apply( Math, array );
+      }
+      catch (e) {
+          if (e instanceof TypeError) {
+              var test, i,
+                 min = Number.MAX_VALUE,
+                 length = array.length;
+              for(i = 0; i < length; i++) {
+                  test = array[i];
+                  min = test < min ? test : min;
+              }
+              return min;
+          }
+      }
+  }
+
+  arrays.average = function(array) {
+      var i, acc = 0,
+          length = array.length;
+      for (i = 0; i < length; i++) {
+          acc += array[i];
+      }
+      return acc / length;
+  }
+
+  // export namespace
+  if (root !== 'undefined') { root.arrays = arrays; }
+})()

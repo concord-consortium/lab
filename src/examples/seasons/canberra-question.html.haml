@@ -1,0 +1,16 @@
+!!! 5
+%html
+  %head
+    %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
+    %title Seasons Question
+    %script{:src => "../../grapher.js", :type => "text/javascript"}
+    %script{:src => "../../lib/d3/d3.js", :type => "text/javascript"}
+    %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
+  %body
+    %h1 Canberra Seasons Question
+    %p
+      The graph below shows average monthly temperatures in Canberra, Australia over a whole year. 
+    %p
+      Using your mouse, highlight the part of the graph that shows when Canberra experiences winter.
+    #chart
+    %script{:src => "canberra-question.js", :type => "text/javascript"}

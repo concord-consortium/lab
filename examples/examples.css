@@ -1,0 +1,209 @@
+body {
+  font: 16px sans-serif;
+  margin: 12px 24px 12px 24px;
+  background-color: white; }
+
+#description {
+  width: 920px; }
+
+#fullscreen img {
+  margin-top: 8px;
+  cursor: pointer; }
+
+#chart {
+  background-color: #f7f2c5;
+  width: 960px;
+  height: 500px;
+  border: solid 1px #cccccc;
+  position: relative; }
+
+a {
+  color: black; }
+  a:hover {
+    font-weight: bolder; }
+
+rect {
+  fill: white; }
+
+rect.bar {
+  fill: #5cacee; }
+
+circle, .line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px; }
+
+circle {
+  fill: white;
+  fill-opacity: 0.2;
+  cursor: move; }
+  circle.selected {
+    fill: #ff7f0e;
+    stroke: #ff7f0e; }
+  circle:hover {
+    stroke: #ff7f0e; }
+
+text.title {
+  font-size: 1em; }
+
+text.xlabel {
+  font-size: 0.85em; }
+
+text.ylabel {
+  font-size: 0.85em; }
+
+g.y {
+  font-size: 0.75em; }
+
+g.x {
+  font-size: 0.75em; }
+
+h1 {
+  font: 20px sans-serif; }
+
+h2 {
+  font: 18px sans-serif; }
+
+h3 {
+  font: 16px sans-serif; }
+
+ul {
+  margin: 1em 0em 1em 0em;
+  padding: 0em 0em 0em 0em; }
+  ul li {
+    margin: 0.3em 0.2em 0.3em 0.2em;
+    padding: 0em 0em 0em 0em; }
+
+#example-list ul {
+  margin: 2em 2em 2em 2em;
+  padding: 0em 0em 0em 2em; }
+  #example-list ul li {
+    margin: 0.3em 0.2em 0.3em 0.2em;
+    padding: 0em 0em 0em 0em; }
+
+h1 {
+  font-size: 1.5em;
+  font-weight: bold; }
+
+h2 {
+  font-size: 1.2em;
+  font-weight: bold; }
+
+#header ul {
+  display: inline-block;
+  list-style-type: none;
+  overflow: hidden;
+  margin: 0em;
+  padding: 0em; }
+  #header ul li {
+    display: inline-table;
+    vertical-align: middle;
+    height: 24px;
+    margin: 0em;
+    padding: 0.2em 1em 0.2em 0em; }
+  #header ul li.title {
+    font-size: 1.6em;
+    font-weight: bold; }
+  #header ul li.note {
+    padding: 0em 3em 0em 4em;
+    font-size: 1.1em;
+    font-weight: normal;
+    font-style: italic; }
+#header ul.right {
+  height: 40px;
+  float: right; }
+
+#viz {
+  margin: 0px 5px 0px 0px;
+  padding: 0px; }
+  #viz ul {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0.5em 0em 0.5em 0em; }
+    #viz ul li {
+      line-height: 1em;
+      display: inline-table;
+      vertical-align: middle;
+      margin: 0;
+      padding: 0; }
+      #viz ul li fieldset {
+        height: 2.2em; }
+      #viz ul li ul {
+        margin: 0px; }
+        #viz ul li ul li {
+          margin: 0px; }
+  #viz ul.right {
+    float: right; }
+
+#controls ul {
+  display: inline-block;
+  list-style-type: none;
+  margin: 0.5em 0em 0.5em 0em; }
+  #controls ul li {
+    line-height: 1em;
+    display: inline-table;
+    vertical-align: middle;
+    padding: 0.2em 1em 0.2em 0em; }
+    #controls ul li fieldset {
+      height: 2.2em;
+      vertical-align: middle; }
+#controls ul.right {
+  float: right; }
+
+#benchmarks {
+  margin: 0em; }
+  #benchmarks button {
+    margin-top: 1.5em; }
+  #benchmarks table {
+    font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
+    border-collapse: collapse; }
+  #benchmarks th {
+    padding: 0 1em;
+    text-align: left; }
+  #benchmarks td {
+    border-top: 1px solid #cccccc;
+    padding: 0 1em; }
+  #benchmarks ul {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0.5em 0em 0.5em 0em;
+    width: 90%; }
+    #benchmarks ul li {
+      line-height: 1em;
+      display: inline-table;
+      vertical-align: top;
+      padding: 0.2em 1em 0.2em 0em; }
+      #benchmarks ul li fieldset {
+        height: 2.2em;
+        vertical-align: middle;
+        width: 100%;
+        border-bottom: 0px;
+        border-left: 0px;
+        border-right: 0px; }
+
+#benchmark-results {
+  margin-left: 2em; }
+
+#description ul {
+  margin: 0.5em 0em 0.5em 1em; }
+  #description ul li {
+    line-height: 1em;
+    padding: 0.2em 0.2em 0.2em 0em; }
+#description .key-command {
+  font-weight: bold; }
+
+#stats-container {
+  width: 100%; }
+  #stats-container ul {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px; }
+    #stats-container ul li {
+      display: inline-table;
+      vertical-align: middle; }
+
+#stats {
+  margin: 2px 5px 5px 5px;
+  font-family: "New Courier", Courier, monospace;
+  font-size: 80%; }

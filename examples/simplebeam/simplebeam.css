@@ -1,0 +1,15 @@
+#beamchart {
+  background-color: #f7f2c5;
+  width: 720px;
+  height: 500px;
+  border: solid 1px #cccccc;
+  position: relative; }
+
+path {
+  fill: #dddddd;
+  fill-opacity: 0.1;
+  stroke: white;
+  stroke-width: 1px; }
+
+line {
+  stroke: #999999; }
