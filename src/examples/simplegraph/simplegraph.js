@@ -1,0 +1,2 @@
+
+graph = new  grapher.sampleGraph();
