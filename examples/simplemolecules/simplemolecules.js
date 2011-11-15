@@ -1508,7 +1508,9 @@ function selectTemperatureChange() {
 select_temperature.onchange = selectTemperatureChange;
 
 select_temperature.value = d3.format("4.1f")(temperature);
-select_temperature_display.innerText = d3.format("4.1f")(temperature);
+if (select_temperature.type === "range") {
+  select_temperature_display.innerText = d3.format("4.1f")(temperature);
+}
 
 // ------------------------------------------------------------
 //
