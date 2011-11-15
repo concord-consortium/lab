@@ -12,6 +12,8 @@ var mol_number = 100,
     sample_time = 0.01,
     temperature = 4,
     maximum_model_steps = 5000,
+    molecules = [],
+    model,
     lj_sigma_min = 1,
     lj_sigma_max = 10,
     lj_epsilon_max = -0.0001,
@@ -1132,42 +1134,18 @@ function speed_update() {
 //
 // ------------------------------------------------------------
 
-var links = [],
-    molecules,
-    model;
-
-function generate_molecules(num) {
-  var radius = lj_graph.coefficients.rmin * mol_rmin_radius_factor,
-      px, py, x, y, vx, vy, speed;
-  speed_data = [];
-  molecules = d3.range(num).map(function(i) { 
-    px = Math.random() * mc_graph.xdomain * 0.8 + mc_graph.xdomain * 0.1, 
-    py = Math.random() * mc_graph.ydomain * 0.8 + mc_graph.ydomain * 0.1,
-    x  = px + Math.random() * temperature/100 - temperature/200, 
-    y  = py + Math.random() * temperature/100 - temperature/200,
-    vx = x - px,
-    vy = y - py;
-    speed = Math.sqrt(vx * vx + vy * vy);
-    speed_data.push(speed);
-    return { 
-      index: i,
-      radius: radius,
-      px: px,
-      py: py,
-      x:  x,
-      y:  y,
-      vx: vx,
-      vy: vy,
-      speed: speed,
-      ax: 0,
-      ay: 0
-    } 
-  });
+function generate_molecules() {
+  model = modeler.layout.model()
+      .size([mc_graph.xdomain, mc_graph.ydomain])
+      .nodes(molecules, mol_number, mc_graph.xdomain, mc_graph.ydomain, temperature,
+             lj_graph.coefficients.rmin,  mol_rmin_radius_factor)
+      .initialize();
 }
 
 function update_molecule_radius() {
   var r = lj_graph.coefficients.rmin * mol_rmin_radius_factor;
-  molecules.forEach(function(m) { m.radius = r });
+  // ***
+  // molecules.forEach(function(m) { m.radius = r });
   mc_container.selectAll("circle")
       .data(molecules)
     .attr("r",  function(d) { return mc_x(d.radius) });
@@ -1177,11 +1155,6 @@ function update_molecule_radius() {
 
 function modelSetup() {
   generate_molecules(mol_number);
-  model = modeler.layout.model()
-    .size([mc_graph.xdomain, mc_graph.ydomain])
-    .ljforce(lennard_jones.force)
-    .nodes(molecules)
-    .initialize();
   ke_data = [model.ke()];
 }
 
@@ -1215,9 +1188,9 @@ function setup_particles() {
       .attr("y", "0.31em")
       .text(function(d) { return d.index; });
 
-  particle = mc_container.selectAll("circle")
-      .data(molecules)
-    .enter().append("svg:circle")
+  particle = mc_container.selectAll("circle").data(molecules);
+
+  particle.enter().append("svg:circle")
       .attr("r",  function(d) { return mc_x(d.radius); })
       .attr("cx", function(d) { return mc_x(d.x); })
       .attr("cy", function(d) { return mc_y(d.y); })
@@ -1329,7 +1302,7 @@ function modelReset() {
   model.temperature(temperature);
   step_counter = model.stepCounter();
   displayStats();
-  // ke_data = [model.ke()];
+  ke_data = [model.ke()];
   ke_graph.new_data(ke_data);
   ke_graph.hide_canvas();
   model_controls_inputs[0].checked = true;
@@ -1375,14 +1348,20 @@ var model_listener = function(e) {
   
   speed_update();
   
+  label = mc_container.selectAll("g.label").data(molecules);
 
   label.attr("transform", function(d) {
       return "translate(" + mc_x(d.x) + "," + mc_y(d.y) + ")";
     });
 
-  particle.attr("cx", function(d) { return mc_x(d.x); })
-          .attr("cy", function(d) { return mc_y(d.y); })
-          .attr("r",  function(d) { return mc_x(d.radius) });
+  particle = mc_container.selectAll("circle").data(molecules);
+
+  particle.attr("cx", function(d) { 
+            return mc_x(d.x); })
+          .attr("cy", function(d) { 
+            return mc_y(d.y); })
+          .attr("r",  function(d) { 
+            return mc_x(d.radius) });
 
   if (model.isNewStep()) {
     ke_data.push(ke);
@@ -1508,7 +1487,9 @@ function selectTemperatureChange() {
 select_temperature.onchange = selectTemperatureChange;
 
 select_temperature.value = d3.format("4.1f")(temperature);
-select_temperature_display.innerText = d3.format("4.1f")(temperature);
+if (select_temperature.type === "range") {
+  select_temperature_display.innerText = d3.format("4.1f")(temperature);
+}
 
 // ------------------------------------------------------------
 //
@@ -1573,4 +1554,4 @@ start_benchmarks.onclick = function() {
 //
 // ------------------------------------------------------------
 
-modelGo();
+// modelGo();

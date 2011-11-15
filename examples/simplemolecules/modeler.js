@@ -12,6 +12,8 @@ modeler.layout.model = function() {
       event = d3.dispatch("tick"),
       size = [1, 1],
       ke,
+      ave_speed, speed_goal, speed_factor,
+      speed_max_pos, speed_max_neg,
       drag,
       stopped = true,
       friction = .9,
@@ -19,31 +21,66 @@ modeler.layout.model = function() {
       gravity = .1,
       theta = .8,
       interval,
-      nodes = [],
       tick_history_list = [],
       tick_history_list_index = 0,
-      tick_counter = -1,
+      tick_counter = 0,
       new_step = false,
-      links = [],
-      distances,
-      strengths,
       forces,
-      ljforce,
       maxforce = 5.0,
       maxf = 0,
       integration_loop = 10,
       integration_factor = 30,
       overlap,
-      speed,
-      speed_goal,
-      speed_factor,
-      speed_max_pos, speed_max_neg,
       pressure,
       pressures = [0];
 
   //
+  // Individual property arrays for the nodes
+  //
+  var radius, px, py, x, y, vx, vy, speed, ax, ay;
+  
+  //
+  // Indexes into the nodes array for the individual node property arrays
+  //
+  // Created as variables for faster access within this module and
+  // as object properties for use outside this module.
+  // 
+  
+  var _radius =  0;
+  var _px     =  1;
+  var _py     =  2;
+  var _x      =  3;
+  var _y      =  4;
+  var _vx     =  5;
+  var _vy     =  6;
+  var _speed  =  7;
+  var _ax     =  8;
+  var _ay     =  9;
+
+  model.RADIUS = 0;
+  model.PX     = 1;
+  model.PY     = 2;
+  model.X      = 3;
+  model.Y      = 4;
+  model.VX     = 5;
+  model.VY     = 6;
+  model.SPEED  = 7;
+  model.AX     = 8;
+  model.AY     = 9;
+
+  //
+  // Number of individual properties for a node
+  //
+  var node_properties_length = 10;
+
+  //
+  // A two dimensional array consisting of arrays of node property values
+  //
+  var nodes = arrays.create(node_properties_length, null, "regular");
+
+  //
   // The temperature_to_speed(t) function is used to map temperatures in abstract units
-  // within a arnge of 0..10 to a goal for the average speed per atom for the system of atoms. 
+  // within a range of 0..10 to a goal for the average speed per atom for the system of atoms. 
   //
   // Currently all atoms are unit mass.
   //
@@ -54,142 +91,193 @@ modeler.layout.model = function() {
   function temperature_to_speed(t) {
     return 0.0200 * Math.pow(1.5, t);
   }
-
+  
   //
   // Main Model Integration Loop
   //
   function tick() {
-    var n = nodes.length,
-        m = links.length,
+    var n = nodes[0].length,
         q,
         i, // current index
-        o, // current object
         s, // current source
         t, // current target
         l, // current distance
         k, // current force
-        x, // x-distance
-        y, // y-distance
+        dx, dy, mag2, lx, ly,
+        original_x, original_y,
         iloop,
-        leftwall   = nodes[0].radius,
-        bottomwall = nodes[0].radius,
-        rightwall  = size[0] - nodes[0].radius,
-        topwall    = size[1] - nodes[0].radius,
-        xstep,
-        ystep;
-
+        leftwall   = radius[0],
+        bottomwall = radius[0],
+        rightwall  = size[0] - radius[0],
+        topwall    = size[1] - radius[0];
+  
     //
     // Loop through this inner processing loop 'integration_loop' times:
     //
     pressure = 0;
     iloop = -1; 
     while(++iloop < integration_loop) {
-
+  
       //
       // Compute and use a quadtree center of mass and apply lennard-jones forces
       //
-      q = d3.geom.quadtree(nodes);
+      // q = d3.geom.quadtree(nodes);
+      // i = -1; while (++i < n) {
+      //   o = nodes[i];
+      //   q.visit(ljforces(o));
+      // }
+      
+      
+      //
+      // Use brute-force technique to apply the lennard-jones forces
+      // 
       i = -1; while (++i < n) {
-        o = nodes[i];
-        q.visit(ljforces(o));
+        j = i; while (++j < n) {
+          dx = x[j] - x[i]
+          dy = y[j] - y[i]
+          lx = Math.abs(dx);
+          ly = Math.abs(dy);
+          mag2 = lx * lx + ly * ly;
+          l = Math.max(lx, ly);
+          l = 0.5 * (l + (mag2/l));
+          l = 0.5 * (l + (mag2/l));
+          ljf  = Math.max(-maxforce, lennard_jones.force(l));
+          xf = dx / l * ljf;
+          yf = dy / l * ljf;
+          ax[i] += xf;
+          ay[i] += yf;
+          ax[j] -= xf;
+          ay[j] -= yf;
+        }
       }
-
       //
       // Dynamically adjust 'temperature' of system.
       //
-      speed = average_speed();
+      ave_speed = average_speed();
       speed_max = speed_goal * 2;
       speed_min = speed_goal * 0.3;
       speed_factor = speed_goal/speed;
       i = -1; while (++i < n) {
-        o = nodes[i];
-        if (speed > (speed_goal * 1.1)) {
+        if (ave_speed > (speed_goal * 1.1)) {
       
           // If the average speed for an atom is greater than 110% of the speed_goal
           // reduce the acceleration by one half
-          o.ax *= 0.5;
-          o.ay *= 0.5;
+          ax[i] *= 0.5;
+          ay[i] *= 0.5;
       
           // And if the speed for this atom is greater than the 10 times the current speed_goal
           // reduce the velocity of the atom by creating a new, closer previous position.
-          if (o.speed > speed_max) {
-            o.vx *= speed_max/o.speed;
-            o.vy *= speed_max/o.speed;
-            o.speed = speed_max;
-            o.px = o.x - o.vx;
-            o.py = o.y - o.vy;
+          if (speed[i] > speed_max) {
+            vx[i] *= speed_max/speed[i];
+            vy[i] *= speed_max/speed[i];
+            speed[i] = speed_max;
+            px[i] = x[i] - vx[i];
+            py[i] = y[i] - vy[i];
           }
         } 
       
         // Else if the average speed for an atom is less than 90% of the speed_goal
         // double the acceleration.
-        else if (speed < (speed_goal * 0.90)) {
-          o.ax *= 2;
-          o.ay *= 2;
+        else if (ave_speed < (speed_goal * 0.90)) {
+          ax[i] *= 2;
+          ay[i] *= 2;
       
           // And if the speed for this atom is less than the 10% of the current speed_goal
           // increase the velocity of the atom by creating a new previous position
           // further away.
-          if (o.speed < speed_min) {
-            o.vx *= speed_max/o.speed;
-            o.vy *= speed_max/o.speed;
-            o.speed = speed_min;
-            o.px = o.x - o.vx;
-            o.py = o.y - o.vy;
+          if (speed[i] < speed_min) {
+            vx[i] *= speed_max/speed[i];
+            vy[i] *= speed_max/speed[i];
+            speed[i] = speed_min;
+            px[i] = x[i] - vx[i];
+            py[i] = y[i] - vy[i];
           }
         }
       }
-
+  
       // Use a Verlet integration to continue particle movement integrating acceleration with 
       // existing position and previous position while managing collision with boundaries.
       i = -1; while (++i < n) {
-        o = nodes[i];
-        x = o.x;
-        y = o.y;
-        o.x = 2 * x - o.px + o.ax / integration_factor;
-        o.y = 2 * y - o.py + o.ay / integration_factor;
-        xstep = o.x - x;
-        xstep = Math.min(xstep, 4)
-        ystep = o.y - y;
-        ystep =  Math.min(ystep, 4)
-        o.ax = 0;
-        o.ay = 0;
-        if (o.x < leftwall) {
-          o.x = leftwall + (leftwall - o.x);
-          o.px = o.x + xstep;
-          o.py = y;
-          pressure += o.speed;
-        } else if (o.x > rightwall) {
-          o.x = rightwall + (rightwall - o.x);
-          o.px = o.x + xstep;
-          o.py = y;
-          pressure += o.speed;
-        } else if (o.y < bottomwall) {
-          o.y = bottomwall + (bottomwall - o.y);
-          o.py = o.y + ystep;
-          o.px = x;
-          pressure += o.speed;
-        } else if (o.y > topwall) {
-          o.y = topwall + (topwall - o.y);
-          o.py = o.y + ystep;
-          o.px = x;
-          pressure += o.speed;
+        original_x = x[i];
+        original_y = y[i];
+        x[i] = 2 * original_x - px[i] + ax[i] / integration_factor;
+        y[i] = 2 * original_y - py[i] + ay[i] / integration_factor;
+        dx = x[i] - original_x;
+        // dx = Math.min(dx, 4)
+        dy = y[i] - original_y;
+        // dy =  Math.min(dy, 4)
+        // l = Math.sqrt(dx * dx + dy * dy);
+        vx[i] = dx;
+        vy[i] = dy;
+        lx = Math.abs(dx);
+        ly = Math.abs(dy);
+        mag2 = lx * lx + ly * ly;
+        l = Math.max(lx, ly);
+        l = 0.5 * (l + (mag2/l));
+        l = 0.5 * (l + (mag2/l));
+        speed[i] = l;
+        ax[i] = 0;
+        ay[i] = 0;
+        if (x[i] < leftwall) {
+          x[i] = leftwall + (leftwall - x[i]);
+          px[i] = x[i] + dx;
+          py[i] = original_y;
+          pressure += speed[i];
+        } else if (x[i] > rightwall) {
+          x[i] = rightwall + (rightwall - x[i]);
+          px[i] = x[i] + dx;
+          py[i] = original_y;
+          pressure += speed[i];
+        } else if (y[i] < bottomwall) {
+          y[i] = bottomwall + (bottomwall - y[i]);
+          py[i] = y[i] + dy;
+          px[i] = original_x;
+          pressure += speed[i];
+        } else if (y[i] > topwall) {
+          y[i] = topwall + (topwall - y[i]);
+          py[i] = y[i] + dy;
+          px[i] = original_x;
+          pressure += speed[i];
         } else {
-          o.px = x;
-          o.py = y;
+          px[i] = original_x;
+          py[i] = original_y;
         }
-        o.vx = o.x - o.px;
-        o.vy = o.y - o.py;
-        o.speed = Math.sqrt(xstep * xstep + ystep * ystep);
       }
     }
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-    speed = average_speed();
+    // avg_speed = average_speed();
     ke = kinetic_energy();
+    update_molecules();
     tick_history_list_push();
     if (!stopped) { event.tick({type: "tick"}); };
     return stopped
+  }
+  
+  //
+  // Extract one node from the nodes arrays and return as an object
+  //
+  function molecule(i) {
+    var o = {};
+    o.index  = i,
+    o.radius = nodes[_radius][i];
+    o.px     = nodes[_px    ][i];
+    o.py     = nodes[_py    ][i];
+    o.x      = nodes[_x     ][i];
+    o.y      = nodes[_y     ][i];
+    o.vx     = nodes[_vx    ][i];
+    o.vy     = nodes[_vy    ][i];
+    o.speed  = nodes[_speed ][i];
+    o.ax     = nodes[_ax    ][i];
+    o.ay     = nodes[_ay    ][i];
+    return o
+  }
+
+  function update_molecules() {
+    var i, n = nodes[0].length, results = [];
+    i = -1; while (++i < n) {
+      molecules[i] = molecule(i)
+    }
   }
 
   function reset_tick_history_list() {
@@ -197,25 +285,17 @@ modeler.layout.model = function() {
     tick_history_list_index = 0;
     tick_counter = -1;
   }
-
+  
   function tick_history_list_reset_to_ptr() {
     tick_history_list.length = tick_history_list_index + 1
   }
-
+  
   function tick_history_list_push() {
-    var i = -1, j, o, 
-    newnode, 
-    newnodes = [], 
-    n=nodes.length;
-    while(++i < n) {
-      o = nodes[i];
-      newnode = {};
-      for (var j in o) {
-        if (o.hasOwnProperty(j)) {
-          newnode[j] = o[j];
-        }
-      }
-      newnodes.push(newnode)
+    var i, j, 
+        newnode, newnodes = [], 
+        n=nodes.length;
+    i = -1; while(++i < n) {
+      newnodes[i] = arrays.clone(nodes[i])
     }
     tick_history_list.length = tick_history_list_index;
     tick_history_list_index++;
@@ -229,123 +309,85 @@ modeler.layout.model = function() {
   }
   
   function tick_history_list_extract(index) {
-    var i = -1, j, o, newnode, n=nodes.length;
+    var i, n=nodes.length;
     if (index < 0) {
       throw new Error("modeler: request for tick_history_list[" + index + "]")
     };
     if (index >= (tick_history_list.length)) {
       throw new Error("modeler: request for tick_history_list[" + index + "], tick_history_list.length=" + tick_history_list.length)
     };
-    var tick_history = tick_history_list[index];
-    var savednodes = tick_history.nodes
-    while(++i < n) {
-      o = nodes[i];
-      for (var j in o) {
-        if (savednodes[i].hasOwnProperty(j)) {
-          o[j] = savednodes[i][j];
-        }
-      }
-    };
-    ke = tick_history.ke;
-  }
-
-  function tick_history_list_ke_data() {
-    var i = -1, j, o, oldnodes,
-    newnode, 
-    savednodes = tick_history_list[index], 
-    n=nodes.length;
-    while(++i < n) {
-      oldnodes = mode_history
-      o = nodes[i];
-      for (var j in o) {
-        if (savednodes[i].hasOwnProperty(j)) {
-          o[j] = savednodes[i][j];
-        }
-      }
+    i = -1; while(++i < n) {
+      arrays.copy(tick_history_list[index].nodes[i], nodes[i])
     }
+    ke = tick_history_list[index].ke;
+    update_molecules();
   }
-
-  function ljforces(node) {
-    var r = node.radius * 5,
-        nx1 = node.x - r,
-        nx2 = node.x + r,
-        ny1 = node.y - r,
-        ny2 = node.y + r;
-    return function(quad, x1, y1, x2, y2) {
-      if (quad.point && (quad.point !== node)) {
-        var x = node.x - quad.point.x,
-            y = node.y - quad.point.y,
-            l = Math.sqrt(x * x + y * y),
-            f, xf, yf;
-        f = ljforce(l) / 2;
-        // maxf = Math.min(maxforce, f);
-        f = Math.max(-maxforce, f);
-        xf = x / l * f;
-        yf = y / l * f;
-        node.ax       -= xf;
-        node.ay       -= yf;
-        quad.point.ax += xf;
-        quad.point.ay += yf;
-      }
-      return x1 > nx2
-          || x2 < nx1
-          || y1 > ny2
-          || y2 < ny1;
-    };
-  }
-
+  
+  // function tick_history_list_ke_data() {
+  //   var i = -1, j, o, oldnodes,
+  //   newnode, 
+  //   savednodes = tick_history_list[index], 
+  //   n=nodes.length;
+  //   while(++i < n) {
+  //     oldnodes = mode_history
+  //     o = nodes[i];
+  //     for (var j in o) {
+  //       if (savednodes[i].hasOwnProperty(j)) {
+  //         o[j] = savednodes[i][j];
+  //       }
+  //     }
+  //   }
+  // }
+  
   function set_speed(newspeed) {
-    var i, change, n = nodes.length;
+    var i, change, n = nodes[0].length;
     i = -1; while (++i < n) {
-      o = nodes[i];
-      change = newspeed/o.speed;
-      o.vx = (o.x - o.px) * change;
-      o.vy = (o.y - o.py) * change;
-      o.px += o.vx;
-      o.py += o.vy;
-      o.speed = newspeed;
+      change = newspeed/speed[i];
+      vx[i] = (x[i] - px[i]) * change;
+      vy[i] = (y[i] - py[i]) * change;
+      px[i] += vx[i];
+      py[i] += vy[i];
+      speed[i] = newspeed;
     }
   }
-
+  
   function change_speed(factor) {
-    var i, n = nodes.length;
+    var i, n = nodes[0].length;
     i = -1; while (++i < n) {
-      o = nodes[i];
-      o.vx = (o.x - o.px) * factor;
-      o.vy = (o.y - o.py) * factor;
-      o.px += o.vx;
-      o.py += o.vy;
-      o.speed *- factor;
+      vx[i] = (x[i] - px[i]) * factor;
+      vy[i] = (y[i] - py[i]) * factor;
+      px[i] += vx[i];
+      py[i] += vy[i];
+      speed[i] *- factor;
     }
   }
-
+  
   function cap_speed(capspeed) {
-    var i, change, n = nodes.length;
+    var i, change, n = nodes[0].length;
     i = -1; while (++i < n) {
-      o = nodes[i];
-      if (o.speed > capspeed) {
-        change = capspeed/o.speed;
-        o.vx = (o.x - o.px) * change;
-        o.vy = (o.y - o.py) * change;
-        o.px += o.vx;
-        o.py += o.vy;
-        o.speed = capspeed;
+      if (speed[i] > capspeed) {
+        change = capspeed/speed[i];
+        vx[i] = (x[i] - px[i]) * change;
+        vy[i] = (y[i] - py[i]) * change;
+        px[i] += vx[i];
+        py[i] += vy[i];
+        speed[i] = capspeed;
       }
     }
   }
-
+  
   function set_acc(acc) {
-    var i, n = nodes.length;
+    var i, n = nodes[0].length;
     i = -1; while (++i < n) {
-      nodes[i].ax = acc;
-      nodes[i].ay = acc;
+      ax[i] = acc;
+      ay[i] = acc;
     }
   }
   
   function container_pressure() {
     return pressures.reduce(function(j,k) { return j+k })/pressures.length
   }
-
+  
   function speed_history(speeds) {
     if (arguments.length) {
       speed_history.push(speeds);
@@ -358,202 +400,229 @@ modeler.layout.model = function() {
   
   // currently the nodes are all unit mass
   function kinetic_energy() {
-    var i, ke, speed = 0, n = nodes.length;
+    var i, s = 0, n = nodes[0].length;
     i = -1; while (++i < n) { 
-      speed += nodes[i].speed 
+      s += speed[i] 
     }
-    ke = speed * speed
-    return ke;
+    return ke = s * s;
+  }
+  
+  function test1() {
+    var a = 1;
+    var b = 2;
+    return a + b;
   }
 
   function average_speed() {
-    var i, speed = 0, n = nodes.length;
-    i = -1; while (++i < n) { speed += nodes[i].speed }
-    return speed/n;
+    var i, s = 0, n = nodes[0].length;
+    i = -1; while (++i < n) { s += speed[i] }
+    return s/n;
+  }
+
+  function average_speed2() {
+    var i, s = 0, n = nodes[0].length;
+    i = -1; while (++i < n) { s += speed[i] }
+    return s/n;
   }
 
   function apply_verlet() {
-    var n = nodes.length,
+    var n = nodes[0].length,
         i, // current index
-        o, // current object
-        x, // x-distance
-        y, // y-distance
-        leftwall   = nodes[0].radius,
-        bottomwall = nodes[0].radius,
-        rightwall  = size[0] - nodes[0].radius,
-        topwall    = size[1] - nodes[0].radius,
-        xstep,
-        ystep;
-
+        dx, dy, mag2, l, lx, ly,
+        original_x, original_y,
+        leftwall   = radius[0],
+        bottomwall = radius[0],
+        rightwall  = size[0] - radius[0],
+        topwall    = size[1] - radius[0];
+  
     i = -1; while (++i < n) {
-      o = nodes[i];
-      x = o.x;
-      y = o.y;
-      o.x = 2 * x - o.px + o.ax / integration_factor;
-      o.y = 2 * y - o.py + o.ay / integration_factor;
-      xstep = o.x - x;
-      xstep = Math.min(xstep, 4)
-      ystep = o.y - y;
-      ystep =  Math.min(ystep, 4)
-      o.ax = 0;
-      o.ay = 0;
-      if (o.x < leftwall) {
-        o.x = leftwall + (leftwall - o.x);
-        o.px = o.x + xstep;
-        o.py = y;
-        pressure += o.speed;
-      } else if (o.x > rightwall) {
-        o.x = rightwall + (rightwall - o.x);
-        o.px = o.x + xstep;
-        o.py = y;
-        pressure += o.speed;
-      } else if (o.y < bottomwall) {
-        o.y = bottomwall + (bottomwall - o.y);
-        o.py = o.y + ystep;
-        o.px = x;
-        pressure += o.speed;
-      } else if (o.y > topwall) {
-        o.y = topwall + (topwall - o.y);
-        o.py = o.y + ystep;
-        o.px = x;
-        pressure += o.speed;
+      original_x = x[i];
+      original_y = y[i];
+      x[i] = 2 * original_x - px[i] + ax[i] / integration_factor;
+      y[i] = 2 * original_y - py[i] + ay[i] / integration_factor;
+      dx = x[i] - original_x;
+      // dx = Math.min(dx, 4)
+      dy = y[i] - original_y;
+      // dy =  Math.min(dy, 4)
+      // l = Math.sqrt(dx * dx + dy * dy);
+      vx[i] = dx;
+      vy[i] = dy;
+      lx = Math.abs(dx);
+      ly = Math.abs(dy);
+      mag2 = lx * lx + ly * ly;
+      l = Math.max(lx, ly);
+      l = 0.5 * (l + (mag2/l));
+      l = 0.5 * (l + (mag2/l));
+      speed[i] = l;
+      ax[i] = 0;
+      ay[i] = 0;
+      if (x[i] < leftwall) {
+        x[i] = leftwall + (leftwall - x[i]);
+        px[i] = x[i] + dx;
+        py[i] = y;
+        pressure += speed[i];
+      } else if (x[i] > rightwall) {
+        x[i] = rightwall + (rightwall - x[i]);
+        px[i] = x[i] + dx;
+        py[i] = y;
+        pressure += speed[i];
+      } else if (y[i] < bottomwall) {
+        y[i] = bottomwall + (bottomwall - y[i]);
+        py[i] = y[i] + dy;
+        px[i] = x;
+        pressure += speed[i];
+      } else if (y[i] > topwall) {
+        y[i] = topwall + (topwall - y[i]);
+        py[i] = y[i] + dy;
+        px[i] = x;
+        pressure += speed[i];
       } else {
-        o.px = x;
-        o.py = y;
+        px[i] = original_x;
+        py[i] = original_y;
       }
-      o.vx = o.x - o.px;
-      o.vy = o.y - o.py;
-      o.speed = Math.sqrt(xstep * xstep + ystep * ystep);
     }
   }
-
+  
   //
   // Dynamically adjust 'temperature' of system.
   //
   function adjust_temperature() {
-    var n = nodes.length,
+    var n = nodes[0].length,
         i, // current index
         o, // current object
-        x, // x-distance
-        y, // y-distance
-        speed,
         speed_max,
         speed_min,
         speed_factor;
     
-    speed = average_speed();
+    avg_speed = average_speed();
     speed_max = speed_goal * 10;
     speed_min = speed_goal * 0.1;
     speed_factor = speed_goal/speed;
     i = -1; while (++i < n) {
-      o = nodes[i];
-      if (speed > (speed_goal * 1.1)) {
+      if (speed[i] > (speed_goal * 1.1)) {
         // If the average speed for an atom is greater than 110% of the speed_goal
         // reduce the acceleration by one half
-        o.ax *= 0.5;
-        o.ay *= 0.5;
+        ax[i] *= 0.5;
+        ay[i] *= 0.5;
         // And if the speed for this atom is greater than the 10 times the current speed_goal
         // reduce the velocity of the atom by creating a new, closer previous position.
-        if (o.speed > speed_max) {
-          o.vx *= speed_max/o.speed;
-          o.vy *= speed_max/o.speed;
-          o.speed = speed_max;
-          o.px = o.x - o.vx;
-          o.py = o.y - o.vy;
+        if (speed[i] > speed_max) {
+          vx[i] *= speed_max/speed[i];
+          vy[i] *= speed_max/speed[i];
+          speed[i] = speed_max;
+          px[i] = x[i] - vx[i];
+          py[i] = y[i] - vy[i];
         }
       } 
       // Else if the average speed for an atom is less than 90% of the speed_goal
       // double the acceleration.
       else if (speed < (speed_goal * 0.90)) {
-        o.ax *= 2;
-        o.ay *= 2;
+        ax[i] *= 2;
+        ay[i] *= 2;
         // And if the speed for this atom is less than the 10% of the current speed_goal
         // increase the velocity of the atom by creating a new previous position
         // further away.
-        if (o.speed < speed_min) {
-          o.vx *= speed_max/o.speed;
-          o.vy *= speed_max/o.speed;
-          o.speed = speed_min;
-          o.px = o.x - o.vx;
-          o.py = o.y - o.vy;
+        if (speed[i] < speed_min) {
+          vx[i] *= speed_max/speed[i];
+          vy[i] *= speed_max/speed[i];
+          speed[i] = speed_min;
+          px[i] = x[i] - vx[i];
+          py[i] = y[i] - vy[i];
         }
-      }
-    }
-  }
-
-  function repulse(node) {
-    return function(quad, x1, y1, x2, y2) {
-      if (quad.point !== node) {
-        var dx = quad.cx - node.x,
-            dy = quad.cy - node.y,
-            dn = 1 / Math.sqrt(dx * dx + dy * dy);
-
-        /* Barnes-Hut criterion. */
-        if ((x2 - x1) * dn < theta) {
-          var k = quad.charge * dn * dn;
-          node.px -= dx * k;
-          node.py -= dy * k;
-          return true;
-        }
-
-        if (quad.point && isFinite(dn)) {
-          var k = quad.pointCharge * dn * dn;
-          node.px -= dx * k;
-          node.py -= dy * k;
-        }
-      }
-      return !quad.charge;
-    };
-  }
-
-  function repulse2(node) {
-    return function(quad, x1, y1, x2, y2) {
-      if (quad.point !== node) {
-        var dx = quad.cx - node.x,
-            dy = quad.cy - node.y,
-            dn = 1 / Math.sqrt(dx * dx + dy * dy);
-
-        /* Barnes-Hut criterion. */
-        if ((x2 - x1) * dn < 0.8) {
-          var k = quad.charge * dn * dn;
-          node.px -= dx * k;
-          node.py -= dy * k;
-          return true;
-        }
-
-        if (quad.point && isFinite(dn)) {
-          var k = quad.pointCharge * dn * dn;
-          node.px -= dx * k;
-          node.py -= dy * k;
-        }
-      }
-      return !quad.charge;
-    };
-  }
-
-  function relax_system(nodes) {
-    var n = nodes.length, q, i, o;
-    modeler_original_forceAccumulate(q = d3.geom.quadtree(nodes), nodes)
-    i = -1; while (++i < n) {
-      if (!(o = nodes[i]).fixed) {
-        q.visit(repulse2(o));
       }
     }
   }
   
-  function resolve_collisions(nodes) {
-    var n = nodes.length, q, i, j;
-    j = -1; while(j++ < integration_loop * 4) {
-      q = d3.geom.quadtree(nodes);
+  // function repulse(node) {
+  //   return function(quad, x1, y1, x2, y2) {
+  //     if (quad.point !== node) {
+  //       var dx = quad.cx - node.x,
+  //           dy = quad.cy - node.y,
+  //           dn = 1 / Math.sqrt(dx * dx + dy * dy);
+  // 
+  //       /* Barnes-Hut criterion. */
+  //       if ((x2 - x1) * dn < theta) {
+  //         var k = quad.charge * dn * dn;
+  //         node.px -= dx * k;
+  //         node.py -= dy * k;
+  //         return true;
+  //       }
+  // 
+  //       if (quad.point && isFinite(dn)) {
+  //         var k = quad.pointCharge * dn * dn;
+  //         node.px -= dx * k;
+  //         node.py -= dy * k;
+  //       }
+  //     }
+  //     return !quad.charge;
+  //   };
+  // }
+  // 
+  // function repulse2(node) {
+  //   return function(quad, x1, y1, x2, y2) {
+  //     if (quad.point !== node) {
+  //       var dx = quad.cx - node.x,
+  //           dy = quad.cy - node.y,
+  //           dn = 1 / Math.sqrt(dx * dx + dy * dy);
+  // 
+  //       /* Barnes-Hut criterion. */
+  //       if ((x2 - x1) * dn < 0.8) {
+  //         var k = quad.charge * dn * dn;
+  //         node.px -= dx * k;
+  //         node.py -= dy * k;
+  //         return true;
+  //       }
+  // 
+  //       if (quad.point && isFinite(dn)) {
+  //         var k = quad.pointCharge * dn * dn;
+  //         node.px -= dx * k;
+  //         node.py -= dy * k;
+  //       }
+  //     }
+  //     return !quad.charge;
+  //   };
+  // }
+  // 
+  // function relax_system(nodes) {
+  //   var n = nodes[0].length, q, i, o;
+  //   modeler_original_forceAccumulate(q = d3.geom.quadtree(nodes), nodes)
+  //   i = -1; while (++i < n) {
+  //     if (!(o = nodes[i]).fixed) {
+  //       q.visit(repulse2(o));
+  //     }
+  //   }
+  // }
+  
+  function resolve_collisions() {
+    var n = nodes[0].length, i, j, k, 
+        dx, dy, l, lx, ly, mag2, ljf, xf, yf;
+  
+    k = -1; while(++k < integration_loop * 4) {
+      // apply ljforces
       i = -1; while (++i < n) {
-        if (!(o = nodes[i]).fixed) {
-          q.visit(ljforces(o));
+        j = i; while (++j < n) {
+          dx = x[j] - x[i]
+          dy = y[j] - y[i]
+          lx = Math.abs(dx);
+          ly = Math.abs(dy);
+          mag2 = lx * lx + ly * ly;
+          l = Math.max(lx, ly);
+          l = 0.5 * (l + (mag2/l));
+          l = 0.5 * (l + (mag2/l));
+          ljf  = Math.max(-maxforce, lennard_jones.force(l));
+          xf = dx / l * ljf;
+          yf = dy / l * ljf;
+          ax[i] += xf;
+          ay[i] += yf;
+          ax[j] -= xf;
+          ay[j] -= yf;
         }
       }
       cap_speed(temperature_to_speed(temperature)*2);
       adjust_temperature();
       apply_verlet();
     }
+    update_molecules();
   }
 
   function set_temperature(t) {
@@ -561,22 +630,22 @@ modeler.layout.model = function() {
     speed_goal = temperature_to_speed(temperature);
   }
 
-  model.nodes = function(x) {
-    if (!arguments.length) return nodes;
-    nodes = x;
-    reset_tick_history_list();
-    return model;
-  };
-
+  // ------------------------------------------------------------
+  //
+  // Public functions
+  //
+  // ------------------------------------------------------------
+  
   model.getStats = function() {
-    return {
-      speed: average_speed(),
-      ke: ke,
-      temperature: temperature,
-      pressure: container_pressure(),
-      current_step: tick_counter,
-      steps: tick_history_list.length-1
-    }
+    var stats;
+    stats = { speed: average_speed(),
+              ke: ke,
+              temperature: temperature,
+              pressure: container_pressure(),
+              current_step: tick_counter,
+              steps: tick_history_list.length-1
+            };
+    return stats;
   }
 
   model.stepCounter = function() {
@@ -602,7 +671,7 @@ modeler.layout.model = function() {
     }
     return tick_counter
   }
-
+  
   model.stepForward = function() {
     stopped = true;
     // if (tick_history_list_index == tick_history_list.length) { tick_history_list_index-- };
@@ -634,45 +703,104 @@ modeler.layout.model = function() {
   };
 
   model.initialize = function() {
-    var i,
-        j,
-        n = nodes.length,
-        m = links.length,
-        w = size[0],
-        h = size[1],
-        neighbors,
-        o;
+    var i, j, k, o,
+        radius, px, py, x, y, vx, vy, speed, ax, ay,
+        _radius, _px, _py, _x, _y, _vx, _vy, _speed, _ax, _ay,
+        n = nodes[0].length,
+        w = size[0], h = size[1],
+        temperature = 4;
+        speed_goal = temperature_to_speed(temperature),
+        
+        // mention the functions so they get into the containing closure:
+        molecule, update_molecules,
+        temperature_to_speed,
+        tick,
+        reset_tick_history_list,
+        tick_history_list_reset_to_ptr,
+        tick_history_list_push,
+        tick_history_list_extract,
+        set_speed,
+        change_speed,
+        cap_speed,
+        set_acc,
+        container_pressure,
+        speed_history,
+        kinetic_energy,
+        average_speed,
+        apply_verlet,
+        adjust_temperature,
+        resolve_collisions,
+        set_temperature;
 
-    for (i = 0; i < n; ++i) {
-      (o = nodes[i]).index = i;
-      o.weight = 0;
-    }
-    
-    charges = [];
-    if (typeof charge === "function") {
-      for (i = 0; i < n; ++i) {
-        charges[i] = +charge.call(this, nodes[i], i);
-      }
-    } else {
-      for (i = 0; i < n; ++i) {
-        charges[i] = charge;
-      }
-    }
-
-    distances = [];
-    strengths = [];
-    forces = [];
-    for (i = 0; i < n; ++i) {
-      forces[i] = charge;
-    }
-    resolve_collisions(nodes);
-    pressures.push(pressure);
-    pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-    speed = average_speed();
+    resolve_collisions();
+    // pressures.push(pressure);
+    // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
+    avg_speed = average_speed();
     ke = kinetic_energy();
     tick_history_list_push();
     return model
   };
+
+  model.nodes = function(molecules, num, xdomain, ydomain, temperature, rmin, mol_rmin_radius_factor) {
+    if (!arguments.length) return molecules;
+    var molecules = molecules;
+    nodes = arrays.create(node_properties_length, null, "regular");
+    
+    // model.RADIUS = 0
+    nodes[model.RADIUS] = arrays.create(num, rmin * mol_rmin_radius_factor, "Float32Array");
+    radius = nodes[model.RADIUS];
+
+    // model.PX     = 1;
+    nodes[model.PX] = arrays.create(num, 0, "Float32Array");
+    px = nodes[model.PX];
+
+    // model.PY     = 2;
+    nodes[model.PY] = arrays.create(num, 0, "Float32Array");
+    py = nodes[model.PY];
+
+    // model.X      = 3;
+    nodes[model.X] = arrays.create(num, 0, "Float32Array");
+    x = nodes[model.X];
+
+    // model.Y      = 4;
+    nodes[model.Y] = arrays.create(num, 0, "Float32Array");
+    y = nodes[model.Y];
+
+    // model.VX     = 5;
+    nodes[model.VX] = arrays.create(num, 0, "Float32Array");
+    vx = nodes[model.VX];
+
+    // model.VY     = 6;
+    nodes[model.VY] = arrays.create(num, 0, "Float32Array");
+    vy = nodes[model.VY];
+
+    // model.SPEED  = 7;
+    nodes[model.SPEED] = arrays.create(num, 0, "Float32Array");
+    speed = nodes[model.SPEED];
+
+    // model.AX     = 8;
+    nodes[model.AX] = arrays.create(num, 0, "Float32Array");
+    ax = nodes[model.AX];
+
+    // model.AY     = 9;
+    nodes[model.AY] = arrays.create(num, 0, "Float32Array");
+    ay = nodes[model.AY];
+
+    i = -1; while (++i < num) {
+        px[i] = Math.random() * xdomain * 0.8 + xdomain * 0.1;
+        py[i] = Math.random() * ydomain * 0.8 + ydomain * 0.1;
+         x[i] = px[i] + Math.random() * temperature/100 - temperature/200;
+         y[i] = py[i] + Math.random() * temperature/100 - temperature/200;
+        vx[i] = x[i] - px[i];
+        vy[i] = y[i] - py[i];
+     speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
+        ax[i] = 0;
+        ay[i] = 0;
+        // speed_data.push(speed[i]);
+    };
+    update_molecules();
+    return model
+  }
 
   model.start = function() {
     model.initialize();
@@ -691,12 +819,12 @@ modeler.layout.model = function() {
   };
 
   model.ke = function() {
-    return ke;
+    ke = ke || kinetic_energy();
+    return ke
   };
 
   model.speed = function() {
-    var speed = average_speed();
-    return speed * speed;
+    return average_speed();
   };
 
   model.pressure = function() {
@@ -706,12 +834,6 @@ modeler.layout.model = function() {
   model.temperature = function(x) {
     if (!arguments.length) return temperature;
     set_temperature(x)
-    return model;
-  };
-
-  model.ljforce = function(x) {
-    if (!arguments.length) return ljforce;
-    ljforce = x;
     return model;
   };
 
@@ -764,123 +886,123 @@ modeler.layout.model = function() {
   };
 
   // use `node.call(model.drag)` to make nodes draggable
-  model.drag = function() {
-    if (!drag) drag = d3.behavior.drag()
-        .on("dragstart", dragstart)
-        .on("drag", modeler_forceDrag)
-        .on("dragend", modeler_forceDragEnd);
-
-    this.on("mouseover.model", modeler_forceDragOver)
-        .on("mouseout.model", modeler_forceDragOut)
-        .call(drag);
-  };
-
-  function dragstart(d) {
-    modeler_forceDragOver(modeler_forceDragNode = d);
-    modeler_forceDragForce = model;
-  }
+  // model.drag = function() {
+  //   if (!drag) drag = d3.behavior.drag()
+  //       .on("dragstart", dragstart)
+  //       .on("drag", modeler_forceDrag)
+  //       .on("dragend", modeler_forceDragEnd);
+  // 
+  //   this.on("mouseover.model", modeler_forceDragOver)
+  //       .on("mouseout.model", modeler_forceDragOut)
+  //       .call(drag);
+  // };
+  // 
+  // function dragstart(d) {
+  //   modeler_forceDragOver(modeler_forceDragNode = d);
+  //   modeler_forceDragForce = model;
+  // }
 
   return model;
 };
 
-var modeler_forceDragForce,
-    modeler_forceDragNode;
+// var modeler_forceDragForce,
+//     modeler_forceDragNode;
+// 
+// function modeler_forceDragOver(d) {
+//   d.fixed |= 2;
+// }
+// 
+// function modeler_forceDragOut(d) {
+//   if (d !== modeler_forceDragNode) d.fixed &= 1;
+// }
+// 
+// function modeler_forceDragEnd() {
+//   modeler_forceDrag();
+//   modeler_forceDragNode.fixed &= 1;
+//   modeler_forceDragForce = modeler_forceDragNode = null;
+// }
+// 
+// function modeler_forceDrag() {
+//   modeler_forceDragNode.px += d3.event.dx;
+//   modeler_forceDragNode.py += d3.event.dy;
+//   modeler_forceDragForce.resume(); // restart annealing
+// }
 
-function modeler_forceDragOver(d) {
-  d.fixed |= 2;
-}
 
-function modeler_forceDragOut(d) {
-  if (d !== modeler_forceDragNode) d.fixed &= 1;
-}
-
-function modeler_forceDragEnd() {
-  modeler_forceDrag();
-  modeler_forceDragNode.fixed &= 1;
-  modeler_forceDragForce = modeler_forceDragNode = null;
-}
-
-function modeler_forceDrag() {
-  modeler_forceDragNode.px += d3.event.dx;
-  modeler_forceDragNode.py += d3.event.dy;
-  modeler_forceDragForce.resume(); // restart annealing
-}
-
-
-function modeler_original_forceAccumulate(quad, charges) {
-  var cx = 0,
-      cy = 0;
-  quad.charge = 0;
-  if (!quad.leaf) {
-    var nodes = quad.nodes,
-        n = nodes.length,
-        i = -1,
-        c;
-    while (++i < n) {
-      c = nodes[i];
-      if (c == null) continue;
-      modeler_original_forceAccumulate(c, charges);
-      quad.charge += c.charge;
-      cx += c.charge * c.cx;
-      cy += c.charge * c.cy;
-    }
-  }
-  if (quad.point) {
-    // jitter internal nodes that are coincident
-    if (!quad.leaf) {
-      quad.point.x += Math.random() - .5;
-      quad.point.y += Math.random() - .5;
-    }
-    var k = 0.1 * charges[quad.point.index];
-    quad.charge += quad.pointCharge = k;
-    cx += k * quad.point.x;
-    cy += k * quad.point.y;
-  }
-  quad.cx = cx / quad.charge;
-  quad.cy = cy / quad.charge;
-}
-
-function modeler_forceAccumulate(quad, forces, boundary) {
-  var cx = 0,
-      cy = 0;
-  
-  quad.charge = 0;
-  if (!quad.leaf) {
-    var nodes = quad.nodes,
-        n = nodes.length,
-        i = -1,
-        c;
-    while (++i < n) {
-      c = nodes[i];
-      if (c == null) continue;
-      modeler_forceAccumulate(c, forces);
-      quad.charge += c.charge;
-      cx += c.charge * c.cx;
-      cy += c.charge * c.cy;
-    }
-  }
-  if (quad.point) {
-    // jitter internal nodes that are coincident
-    if (!quad.leaf) {
-      quad.point.x += Math.random() - .5;
-      quad.point.y += Math.random() - .5;
-    }
-    var k = forces[quad.point.index];
-    quad.charge += quad.pointCharge = k;
-    cx += k * quad.point.x;
-    cy += k * quad.point.y;
-  }
-  quad.cx = cx / quad.charge;
-  quad.cy = cy / quad.charge;
-}
-
-function modeler_forceLinkDistance(link) {
-  return 20;
-}
-
-function modeler_forceLinkStrength(link) {
-  return 1;
-}
+// function modeler_original_forceAccumulate(quad, charges) {
+//   var cx = 0,
+//       cy = 0;
+//   quad.charge = 0;
+//   if (!quad.leaf) {
+//     var nodes = quad.nodes,
+//         n = nodes[0].length,
+//         i = -1,
+//         c;
+//     while (++i < n) {
+//       c = nodes[i];
+//       if (c == null) continue;
+//       modeler_original_forceAccumulate(c, charges);
+//       quad.charge += c.charge;
+//       cx += c.charge * c.cx;
+//       cy += c.charge * c.cy;
+//     }
+//   }
+//   if (quad.point) {
+//     // jitter internal nodes that are coincident
+//     if (!quad.leaf) {
+//       quad.point.x += Math.random() - .5;
+//       quad.point.y += Math.random() - .5;
+//     }
+//     var k = 0.1 * charges[quad.point.index];
+//     quad.charge += quad.pointCharge = k;
+//     cx += k * quad.point.x;
+//     cy += k * quad.point.y;
+//   }
+//   quad.cx = cx / quad.charge;
+//   quad.cy = cy / quad.charge;
+// }
+// 
+// function modeler_forceAccumulate(quad, forces, boundary) {
+//   var cx = 0,
+//       cy = 0;
+//   
+//   quad.charge = 0;
+//   if (!quad.leaf) {
+//     var nodes = quad.nodes,
+//         n = nodes[0].length,
+//         i = -1,
+//         c;
+//     while (++i < n) {
+//       c = nodes[i];
+//       if (c == null) continue;
+//       modeler_forceAccumulate(c, forces);
+//       quad.charge += c.charge;
+//       cx += c.charge * c.cx;
+//       cy += c.charge * c.cy;
+//     }
+//   }
+//   if (quad.point) {
+//     // jitter internal nodes that are coincident
+//     if (!quad.leaf) {
+//       quad.point.x += Math.random() - .5;
+//       quad.point.y += Math.random() - .5;
+//     }
+//     var k = forces[quad.point.index];
+//     quad.charge += quad.pointCharge = k;
+//     cx += k * quad.point.x;
+//     cy += k * quad.point.y;
+//   }
+//   quad.cx = cx / quad.charge;
+//   quad.cy = cy / quad.charge;
+// }
+// 
+// function modeler_forceLinkDistance(link) {
+//   return 20;
+// }
+// 
+// function modeler_forceLinkStrength(link) {
+//   return 1;
+// }
 
 // export namespace
 if (root !== 'undefined') { root.modeler = modeler; }
