@@ -899,6 +899,22 @@ function generate_speed_data() {
   speed_graph.xmin = d3.min(speed_data);
   speed_graph.quantile = d3.quantile(speed_data, 0.1);
   speed_y_max = speed_graph.ymax;
+  // x-scale
+  speed_x = d3.scale.linear()
+    .domain([speed_graph.xmin, speed_graph.xmax])
+    .range([0, speed_mw]);
+  // y-scale
+  speed_y = d3.scale.linear()
+      .domain([speed_graph.ymax, speed_graph.ymin])
+      .nice()
+      .range([0, speed_mh]);
+}
+
+function update_speed_bins() {
+  speed_bins = d3.layout.histogram().frequency(false).bins(speed_x.ticks(60))(speed_data);
+  speed_bar_width = (speed_size.width - speed_bins.length)/speed_bins.length;
+  speed_line_step = (speed_graph.xmax - speed_graph.xmin)/speed_bins.length;
+  speed_max  = d3.max(speed_bins, function(d) { return d.y });
 }
 
 function finishSetupSpeedDistributionChart() {
@@ -922,21 +938,7 @@ function finishSetupSpeedDistributionChart() {
 
   generate_speed_data();
 
-  // x-scale
-  speed_x = d3.scale.linear()
-    .domain([speed_graph.xmin, speed_graph.xmax])
-    .range([0, speed_mw]);
-
-  speed_bins = d3.layout.histogram().frequency(false).bins(speed_x.ticks(60))(speed_data);
-  speed_bar_width = (speed_size.width - speed_bins.length)/speed_bins.length;
-  speed_line_step = (speed_graph.xmax - speed_graph.xmin)/speed_bins.length;
-  speed_max  = d3.max(speed_bins, function(d) { return d.y });
-
-  // y-scale
-  speed_y = d3.scale.linear()
-      .domain([speed_graph.ymax, speed_graph.ymin])
-      .nice()
-      .range([0, speed_mh]);
+  update_speed_bins();
 
   if (undefined !== speed_vis) {
     
@@ -1023,7 +1025,7 @@ function speed_redraw() {
   
   var speed_fx = speed_x.tickFormat(5),
       speed_fy = speed_y.tickFormat(5);
-  
+
   // Regenerate x-ticks…
   // var speed_gx = speed_vis.selectAll("g.x")
   //     .data(speed_x.ticks(5), String)
@@ -1146,7 +1148,7 @@ function generate_molecules() {
 
 function update_molecule_radius() {
   var r = lj_graph.coefficients.rmin * mol_rmin_radius_factor;
-  model.update_radius(r);
+  model.set_radius(r);
   mc_container.selectAll("circle")
       .data(molecules)
     .attr("r",  function(d) { return mc_x(d.radius) });
@@ -1459,10 +1461,24 @@ function selectMoleculeNumberChange() {
     500: 3.0
   }
 
+  var speed_yaxis_map = {
+    2: 2,
+    5: 2,
+    10: 5,
+    20: 5,
+    50: 10,
+    100: 20,
+    200: 50,
+    500: 50
+  }
+
+  modelReset();
   ke_graph.change_yaxis(ke_yxais_map[mol_number]);
   update_sigma(lj_sigma_map[mol_number]);
   lj_redraw();
-  modelReset();
+  speed_graph.ymax = speed_yaxis_map[mol_number];
+  speed_update()
+  speed_redraw();
 }
 
 select_molecule_number.onchange = selectMoleculeNumberChange;
