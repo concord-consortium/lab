@@ -2,8 +2,6 @@
 // Utilities
 //
 
-// Extend the Array object with a shuffle method
-
 (function(){ 
   
   var root = this;
