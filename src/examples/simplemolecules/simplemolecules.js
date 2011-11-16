@@ -85,7 +85,7 @@ speed_graph.xlabel   = null;
 speed_graph.ylabel   = "Count";
 speed_graph.xmax     = 2;
 speed_graph.xmin     = 0;
-speed_graph.ymax     = 20;
+speed_graph.ymax     = 15;
 speed_graph.ymin     = 0;
 speed_graph.quantile = 0.01;
 
@@ -1467,9 +1467,9 @@ function selectMoleculeNumberChange() {
     10: 5,
     20: 5,
     50: 10,
-    100: 20,
-    200: 50,
-    500: 50
+    100: 15,
+    200: 20,
+    500: 40
   }
 
   modelReset();
