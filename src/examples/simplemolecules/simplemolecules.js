@@ -1467,7 +1467,7 @@ if (Modernizr['inputtypes']['range']) {
   temp_range.min = "0";
   temp_range.max = "10";
   temp_range.step = "0.5";
-  temp_range.value = "5";
+  temp_range.value = +select_temperature.value;
   select_temperature.parentNode.replaceChild(temp_range, select_temperature);
   temp_range.id = "select-temperature";
   select_temperature = temp_range;
@@ -1475,6 +1475,7 @@ if (Modernizr['inputtypes']['range']) {
   select_temperature_display.id = "select-temperature-display"
   select_temperature_display.innerText = temperature;
   select_temperature.parentNode.appendChild(select_temperature_display);
+  select_temperature = document.getElementById("select-temperature");
 }
 
 function selectTemperatureChange() {
@@ -1487,7 +1488,6 @@ function selectTemperatureChange() {
 
 select_temperature.onchange = selectTemperatureChange;
 
-select_temperature.value = d3.format("4.1f")(temperature);
 if (select_temperature.type === "range") {
   select_temperature_display.innerText = d3.format("4.1f")(temperature);
 }
