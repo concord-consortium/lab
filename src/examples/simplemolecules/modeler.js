@@ -732,6 +732,11 @@ modeler.layout.model = function() {
     i = -1; while(++i < n) { radius[i] = r };
   }
 
+  model.get_speed = function(speed_data) {
+    if (!arguments.length) { var speed_data = [] };
+    return arrays.copy(speed, speed_data);
+  }
+
   model.initialize = function() {
     var i, j, k, o,
         radius, px, py, x, y, vx, vy, speed, ax, ay,

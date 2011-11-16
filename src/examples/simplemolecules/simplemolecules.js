@@ -894,7 +894,7 @@ var speed_cx, speed_cy, speed_padding, speed_size,
 
 function generate_speed_data() {
   speed_data = [];
-  molecules.map(function(m) { speed_data.push(m.speed) });
+  model.get_speed(speed_data);
   speed_graph.xmax = d3.max(speed_data);
   speed_graph.xmin = d3.min(speed_data);
   speed_graph.quantile = d3.quantile(speed_data, 0.1);
