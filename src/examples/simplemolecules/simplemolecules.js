@@ -12,8 +12,7 @@ var mol_number = 100,
     sample_time = 0.01,
     temperature = 4,
     maximum_model_steps = 5000,
-    molecules = [],
-    model,
+    molecules = [], model,
     lj_sigma_min = 1,
     lj_sigma_max = 10,
     lj_epsilon_max = -0.00001,
@@ -145,7 +144,11 @@ function update_coefficients(coefficients) {
   lj_graph.xmin    = 0;
   lj_graph.ymax    =  Math.ceil(epsilon*-1) + 0.5;
   lj_graph.ymin    = -Math.ceil(epsilon*-1) - 0.5;
-  
+
+  // update the positions of the adjustable circles on the graph
+  lj_graph.variables[1].x = sigma;
+
+  // change the x value for epsilon to match the new rmin value
   lj_graph.variables[0].x = rmin;
 
   lennard_jones_potential = []
@@ -790,7 +793,6 @@ function lj_mousemove() {
     if (newx < lj_sigma_min) { newx = lj_sigma_min };
     if (newx > lj_sigma_max) { newx = lj_sigma_max };
     update_sigma(newx);
-    lj_graph.variables[0].x = lj_graph.coefficients.rmin;
   }
   update_molecule_radius();
   // model.resolve_collisions(molecules);
@@ -1444,8 +1446,21 @@ function selectMoleculeNumberChange() {
     200: 2000,
     500: 10000
   }
-  
-  ke_graph.change_yaxis(ke_yxais_map[mol_number])
+
+  var lj_sigma_map = {
+    2: 7.0,
+    5: 6.0,
+    10: 5.5,
+    20: 5.0,
+    50: 4.5,
+    100: 4.0,
+    200: 3.5,
+    500: 3.0
+  }
+
+  ke_graph.change_yaxis(ke_yxais_map[mol_number]);
+  update_sigma(lj_sigma_map[mol_number]);
+  lj_redraw();
   modelReset();
 }
 
