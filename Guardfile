@@ -5,6 +5,19 @@ ignore_paths 'bin', 'examples', 'lib', 'node_modules'
 # https://github.com/nex3/firesass
 FIRESASS = false
 
+puts "\nre-creating examples/ dir ..."
+system("rm -rf examples; mkdir examples; rsync -avmq lib/ examples/lib")
+system("rsync -avmq --include='*.js' --filter 'hide,! */' src/examples/ examples/")
+
+haml_files = Dir["src/**/*.haml"].collect { |s| { :src => s, :dest => s[/src\/(.+?)\.haml/, 1]} }
+puts "processing #{haml_files.length} haml files ..."
+haml_files.each { |p| system("haml #{p[:src]} #{p[:dest]}") }
+
+sass_files = Dir["src/**/*.sass"].collect { |s| { :src => s, :dest => s[/src\/(.+?)\.sass/, 1] + '.css'} }
+puts "processing #{sass_files.length} sass files ...\n"
+sass_files.each { |p| system("sass #{p[:src]} #{p[:dest]}") }
+
+
 guard 'shell' do
   watch(%r{^src/grapher/.+$}) do
     `make`
