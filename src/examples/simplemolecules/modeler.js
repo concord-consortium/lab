@@ -765,44 +765,49 @@ modeler.layout.model = function() {
     var molecules = molecules;
     nodes = arrays.create(node_properties_length, null, "regular");
     
+    var webgl = !!window.WebGLRenderingContext;
+    var not_safari = benchmark.what_browser.browser != "Safari";
+    
+    var array_type = (webgl && not_safari) ? "Float32Array" : "regular";
+
     // model.RADIUS = 0
-    nodes[model.RADIUS] = arrays.create(num, rmin * mol_rmin_radius_factor, "Float32Array");
+    nodes[model.RADIUS] = arrays.create(num, rmin * mol_rmin_radius_factor, array_type);
     radius = nodes[model.RADIUS];
 
     // model.PX     = 1;
-    nodes[model.PX] = arrays.create(num, 0, "Float32Array");
+    nodes[model.PX] = arrays.create(num, 0, array_type);
     px = nodes[model.PX];
 
     // model.PY     = 2;
-    nodes[model.PY] = arrays.create(num, 0, "Float32Array");
+    nodes[model.PY] = arrays.create(num, 0, array_type);
     py = nodes[model.PY];
 
     // model.X      = 3;
-    nodes[model.X] = arrays.create(num, 0, "Float32Array");
+    nodes[model.X] = arrays.create(num, 0, array_type);
     x = nodes[model.X];
 
     // model.Y      = 4;
-    nodes[model.Y] = arrays.create(num, 0, "Float32Array");
+    nodes[model.Y] = arrays.create(num, 0, array_type);
     y = nodes[model.Y];
 
     // model.VX     = 5;
-    nodes[model.VX] = arrays.create(num, 0, "Float32Array");
+    nodes[model.VX] = arrays.create(num, 0, array_type);
     vx = nodes[model.VX];
 
     // model.VY     = 6;
-    nodes[model.VY] = arrays.create(num, 0, "Float32Array");
+    nodes[model.VY] = arrays.create(num, 0, array_type);
     vy = nodes[model.VY];
 
     // model.SPEED  = 7;
-    nodes[model.SPEED] = arrays.create(num, 0, "Float32Array");
+    nodes[model.SPEED] = arrays.create(num, 0, array_type);
     speed = nodes[model.SPEED];
 
     // model.AX     = 8;
-    nodes[model.AX] = arrays.create(num, 0, "Float32Array");
+    nodes[model.AX] = arrays.create(num, 0, array_type);
     ax = nodes[model.AX];
 
     // model.AY     = 9;
-    nodes[model.AY] = arrays.create(num, 0, "Float32Array");
+    nodes[model.AY] = arrays.create(num, 0, array_type);
     ay = nodes[model.AY];
 
     i = -1; while (++i < num) {
