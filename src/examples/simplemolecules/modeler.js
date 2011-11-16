@@ -727,6 +727,11 @@ modeler.layout.model = function() {
     return model;
   };
 
+  model.update_radius = function(r) {
+    var i, n = nodes[0].length;
+    i = -1; while(++i < n) { radius[i] = r };
+  }
+
   model.initialize = function() {
     var i, j, k, o,
         radius, px, py, x, y, vx, vy, speed, ax, ay,
