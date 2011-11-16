@@ -720,7 +720,6 @@ modeler.layout.model = function() {
   };
 
   model.update_lj_coefficients = function(e, s) {
-    if (!arguments.length) return temperature;
     // am not using the coefficenmts yet ...
     epsilon = e;
     sigma = s;
