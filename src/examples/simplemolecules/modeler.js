@@ -26,8 +26,10 @@ modeler.layout.model = function() {
       tick_counter = 0,
       new_step = false,
       forces,
-      maxforce = 5.0,
-      maxf = 0,
+      max_ljf_repulsion = -5.0,
+      min_ljf_attraction = 0.0001,
+      min_ljf_distance,
+      max_ljf_distance,
       integration_loop = 10,
       integration_factor = 30,
       overlap,
@@ -93,6 +95,35 @@ modeler.layout.model = function() {
   }
   
   //
+  // Calculate the minimum and maximum distances for applying lennard-jones forces
+  //
+  function setup_ljf_limits() {
+    var i, f;
+    for (i = 0; i <= 100; i+=0.001) {
+      f = lennard_jones.force(i);
+      if (f > max_ljf_repulsion) {
+        min_ljf_distance = i;
+        break;
+      }
+    }
+
+    for (;i <= 100; i+=0.001) {
+      f = lennard_jones.force(i);
+      if (f > min_ljf_attraction) {
+        break;
+      }
+    }
+
+    for (;i <= 100; i+=0.001) {
+      f = lennard_jones.force(i);
+      if (f < min_ljf_attraction) {
+        max_ljf_distance = i;
+        break;
+      }
+    }
+  }
+
+  //
   // Main Model Integration Loop
   //
   function tick() {
@@ -135,19 +166,16 @@ modeler.layout.model = function() {
         j = i; while (++j < n) {
           dx = x[j] - x[i]
           dy = y[j] - y[i]
-          lx = Math.abs(dx);
-          ly = Math.abs(dy);
-          mag2 = lx * lx + ly * ly;
-          l = Math.max(lx, ly);
-          l = 0.5 * (l + (mag2/l));
-          l = 0.5 * (l + (mag2/l));
-          ljf  = Math.max(-maxforce, lennard_jones.force(l));
-          xf = dx / l * ljf;
-          yf = dy / l * ljf;
-          ax[i] += xf;
-          ay[i] += yf;
-          ax[j] -= xf;
-          ay[j] -= yf;
+          l = Math.sqrt(dx * dx + dy * dy);
+          if (l < max_ljf_distance) { 
+            ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l));
+            xf = dx / l * ljf;
+            yf = dy / l * ljf;
+            ax[i] += xf;
+            ay[i] += yf;
+            ax[j] -= xf;
+            ay[j] -= yf;
+          }
         }
       }
       //
@@ -609,7 +637,7 @@ modeler.layout.model = function() {
           l = Math.max(lx, ly);
           l = 0.5 * (l + (mag2/l));
           l = 0.5 * (l + (mag2/l));
-          ljf  = Math.max(-maxforce, lennard_jones.force(l));
+          ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l));
           xf = dx / l * ljf;
           yf = dy / l * ljf;
           ax[i] += xf;
@@ -710,7 +738,9 @@ modeler.layout.model = function() {
         w = size[0], h = size[1],
         temperature = 4;
         speed_goal = temperature_to_speed(temperature),
-        
+        max_ljf_repulsion, min_ljf_attraction,
+        max_ljf_distance, min_ljf_distance,
+
         // mention the functions so they get into the containing closure:
         molecule, update_molecules,
         temperature_to_speed,
@@ -733,6 +763,7 @@ modeler.layout.model = function() {
         set_temperature;
 
     resolve_collisions();
+    setup_ljf_limits();
     // pressures.push(pressure);
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
     avg_speed = average_speed();
