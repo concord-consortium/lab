@@ -773,6 +773,8 @@ modeler.layout.model = function() {
   model.nodes = function(molecules, num, xdomain, ydomain, temperature, rmin, mol_rmin_radius_factor) {
     if (!arguments.length) return molecules;
     var molecules = molecules;
+    molecules.length = num;
+
     nodes = arrays.create(node_properties_length, null, "regular");
     
     var webgl = !!window.WebGLRenderingContext;
