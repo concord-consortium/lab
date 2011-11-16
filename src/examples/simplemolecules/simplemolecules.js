@@ -1172,6 +1172,7 @@ function setup_particles() {
   mc_container.selectAll("g").remove();
 
   var font_size = mc_x(lj_graph.coefficients.rmin * mol_rmin_radius_factor * 1.3);
+  if (mol_number > 100) { font_size *= 0.9 };
 
   label = mc_container.selectAll("g.label")
         .data(molecules);
