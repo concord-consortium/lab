@@ -97,7 +97,7 @@
     constructor = arrays.constructor_function(source);
     if (constructor == Array) {
       clone = new constructor(len);
-      for (i = 0; i < source_length; i++) { destination[i] = source[i]; }
+      for (i = 0; i < len; i++) { clone[i] = source[i]; }
       return clone
     }
     if (source.buffer.slice) {
