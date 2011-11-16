@@ -134,7 +134,7 @@ function update_coefficients(coefficients) {
       rmin    = coefficients.rmin,
       y;
 
-  model.update_lj_coefficients(epsilon, sigma);
+  model.set_lj_coefficients(epsilon, sigma);
 
   lj_graph.coefficients.sigma   = sigma;
   lj_graph.coefficients.epsilon = epsilon;

@@ -719,7 +719,7 @@ modeler.layout.model = function() {
     return model;
   };
 
-  model.update_lj_coefficients = function(e, s) {
+  model.set_lj_coefficients = function(e, s) {
     // am not using the coefficenmts yet ...
     epsilon = e;
     sigma = s;
@@ -727,7 +727,7 @@ modeler.layout.model = function() {
     return model;
   };
 
-  model.update_radius = function(r) {
+  model.set_radius = function(r) {
     var i, n = nodes[0].length;
     i = -1; while(++i < n) { radius[i] = r };
   }
