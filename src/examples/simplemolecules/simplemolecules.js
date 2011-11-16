@@ -1144,8 +1144,7 @@ function generate_molecules() {
 
 function update_molecule_radius() {
   var r = lj_graph.coefficients.rmin * mol_rmin_radius_factor;
-  // ***
-  // molecules.forEach(function(m) { m.radius = r });
+  model.update_radius(r);
   mc_container.selectAll("circle")
       .data(molecules)
     .attr("r",  function(d) { return mc_x(d.radius) });
