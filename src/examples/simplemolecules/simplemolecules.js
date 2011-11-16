@@ -1555,4 +1555,4 @@ start_benchmarks.onclick = function() {
 //
 // ------------------------------------------------------------
 
-// modelGo();
+modelGo();
