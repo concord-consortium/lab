@@ -1442,7 +1442,8 @@ function selectMoleculeNumberChange() {
     20: 20,
     50: 100,
     100: 500,
-    200: 2000
+    200: 2000,
+    500: 10000
   }
   
   ke_graph.change_yaxis(ke_yxais_map[mol_number])
