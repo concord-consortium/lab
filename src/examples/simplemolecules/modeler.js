@@ -26,6 +26,7 @@ modeler.layout.model = function() {
       tick_counter = 0,
       new_step = false,
       forces,
+      epsilon, sigma,
       max_ljf_repulsion = -5.0,
       min_ljf_attraction = 0.0001,
       min_ljf_distance,
@@ -715,6 +716,15 @@ modeler.layout.model = function() {
 
   model.tick = function() {
     tick();
+    return model;
+  };
+
+  model.update_lj_coefficients = function(e, s) {
+    if (!arguments.length) return temperature;
+    // am not using the coefficenmts yet ...
+    epsilon = e;
+    sigma = s;
+    setup_ljf_limits();
     return model;
   };
 

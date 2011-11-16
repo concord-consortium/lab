@@ -135,6 +135,8 @@ function update_coefficients(coefficients) {
       rmin    = coefficients.rmin,
       y;
 
+  model.update_lj_coefficients(epsilon, sigma);
+
   lj_graph.coefficients.sigma   = sigma;
   lj_graph.coefficients.epsilon = epsilon;
   lj_graph.coefficients.rmin    = rmin;
@@ -155,8 +157,6 @@ function update_coefficients(coefficients) {
     }
   }
 }
-
-update_coefficients(lennard_jones.coefficients());
 
 // ------------------------------------------------------------
 //
@@ -1330,6 +1330,7 @@ function displayStats() {
 // ------------------------------------------------------------
 
 modelSetup()
+update_coefficients(lennard_jones.coefficients());
 setupScreen();
 modelReset();
 
