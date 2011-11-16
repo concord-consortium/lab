@@ -7,7 +7,7 @@ FIRESASS = false
 
 puts "\nre-creating examples/ dir ..."
 system("rm -rf examples; mkdir examples; rsync -avmq lib/ examples/lib")
-system("rsync -avmq --include='*.js' --filter 'hide,! */' src/examples/ examples/")
+system("rsync -avmq --include='*.js' --include='*.json' --filter 'hide,! */' src/examples/ examples/")
 
 haml_files = Dir["src/**/*.haml"].collect { |s| { :src => s, :dest => s[/src\/(.+?)\.haml/, 1]} }
 puts "processing #{haml_files.length} haml files ..."
