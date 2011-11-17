@@ -1324,7 +1324,8 @@ function displayStats() {
   stats.textContent =
     "Time: "     + d3.format("5.2f")(model.stepCounter() * sample_time) + " (ns), " +
     "KE: "       + d3.format("7.1f")(model.ke()) + ", " +
-    "Pressure: " + d3.format("6.3f")(model.pressure());
+    "Pressure: " + d3.format("6.3f")(model.pressure()) + ", " +
+    "Rate: " + d3.format("5.1f")(model.get_rate()) + " (steps/s)";
 }
 
 // ------------------------------------------------------------
