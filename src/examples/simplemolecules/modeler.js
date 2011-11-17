@@ -27,7 +27,7 @@ modeler.layout.model = function() {
       new_step = false,
       forces,
       epsilon, sigma,
-      max_ljf_repulsion = -5.0,
+      max_ljf_repulsion = -20.0,
       min_ljf_attraction = 0.0001,
       min_ljf_distance,
       max_ljf_distance,
@@ -89,9 +89,11 @@ modeler.layout.model = function() {
   // Increasing the number of atoms while keeping the average spped for an atom 
   // the same will increase the total KE for the system.
   //
-  
+  // The constant Math.E/2 used below is just an empirically derived
+  // number and has no specific analytic provenance.
+  //
   function temperature_to_speed(t) {
-    return 0.0200 * Math.pow(1.5, t);
+    return 0.0150 * Math.pow(Math.E/2, t);
   }
   
   //
