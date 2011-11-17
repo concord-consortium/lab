@@ -33,8 +33,8 @@ modeler.layout.model = function() {
       max_ljf_distance,
       integration_loop = 10,
       overlap,
-      pressure,
-      pressures = [0];
+      pressure, pressures = [0],
+      sample_time, sample_times = [];
 
   //
   // Individual property arrays for the nodes
@@ -457,10 +457,11 @@ modeler.layout.model = function() {
     return s/n;
   }
 
-  function average_speed2() {
-    var i, s = 0, n = nodes[0].length;
-    i = -1; while (++i < n) { s += speed[i] }
-    return s/n;
+  function average_rate() {
+    var i, ave, s = 0, n = sample_times.length;
+    i = -1; while (++i < n) { s += sample_times[i] }
+    ave = s/n;
+    return (ave ? 1/ave*1000: 0)
   }
 
   function apply_verlet() {
@@ -526,7 +527,7 @@ modeler.layout.model = function() {
         speed_min,
         speed_factor;
     
-    avg_speed = average_speed();
+    ave_speed = average_speed();
     speed_max = speed_goal * 10;
     speed_min = speed_goal * 0.1;
     speed_factor = speed_goal/speed;
@@ -751,6 +752,10 @@ modeler.layout.model = function() {
     if (!arguments.length) { var speed_data = [] };
     return arrays.copy(speed, speed_data);
   }
+  
+  model.get_rate = function() {
+    return average_rate();
+  }
 
   model.initialize = function() {
     var i, j, k, o,
@@ -788,7 +793,7 @@ modeler.layout.model = function() {
     resolve_collisions();
     // pressures.push(pressure);
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-    avg_speed = average_speed();
+    ave_speed = average_speed();
     ke = kinetic_energy();
     tick_history_list_push();
     return model
