@@ -784,8 +784,8 @@ modeler.layout.model = function() {
         resolve_collisions,
         set_temperature;
 
-    resolve_collisions();
     setup_ljf_limits();
+    resolve_collisions();
     // pressures.push(pressure);
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
     avg_speed = average_speed();
