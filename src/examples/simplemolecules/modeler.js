@@ -444,12 +444,6 @@ modeler.layout.model = function() {
     }
     return ke = s * s;
   }
-  
-  function test1() {
-    var a = 1;
-    var b = 2;
-    return a + b;
-  }
 
   function average_speed() {
     var i, s = 0, n = nodes[0].length;
