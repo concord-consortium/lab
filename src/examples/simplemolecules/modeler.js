@@ -32,7 +32,6 @@ modeler.layout.model = function() {
       min_ljf_distance,
       max_ljf_distance,
       integration_loop = 10,
-      integration_factor = 30,
       overlap,
       pressure,
       pressures = [0];
@@ -135,8 +134,9 @@ modeler.layout.model = function() {
         t, // current target
         l, // current distance
         k, // current force
+        t, // current system time
         dx, dy, mag2, lx, ly,
-        original_x, original_y,
+        initial_x, initial_y,
         iloop,
         leftwall   = radius[0],
         bottomwall = radius[0],
@@ -169,7 +169,7 @@ modeler.layout.model = function() {
           dy = y[j] - y[i]
           l = Math.sqrt(dx * dx + dy * dy);
           if (l < max_ljf_distance) { 
-            ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l));
+            ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l)/integration_loop);
             xf = dx / l * ljf;
             yf = dy / l * ljf;
             ax[i] += xf;
@@ -185,20 +185,20 @@ modeler.layout.model = function() {
       ave_speed = average_speed();
       speed_max = speed_goal * 2;
       speed_min = speed_goal * 0.3;
-      speed_factor = speed_goal/speed;
       i = -1; while (++i < n) {
+        speed_factor = speed_max/speed[i];
         if (ave_speed > (speed_goal * 1.1)) {
-      
+
           // If the average speed for an atom is greater than 110% of the speed_goal
           // reduce the acceleration by one half
           ax[i] *= 0.5;
           ay[i] *= 0.5;
       
-          // And if the speed for this atom is greater than the 10 times the current speed_goal
+          // And if the speed for this atom is greater than speed_max 
           // reduce the velocity of the atom by creating a new, closer previous position.
           if (speed[i] > speed_max) {
-            vx[i] *= speed_max/speed[i];
-            vy[i] *= speed_max/speed[i];
+            vx[i] *= speed_factor;
+            vy[i] *= speed_factor;
             speed[i] = speed_max;
             px[i] = x[i] - vx[i];
             py[i] = y[i] - vy[i];
@@ -211,12 +211,12 @@ modeler.layout.model = function() {
           ax[i] *= 2;
           ay[i] *= 2;
       
-          // And if the speed for this atom is less than the 10% of the current speed_goal
+          // And if the speed for this atom is less than speed_min
           // increase the velocity of the atom by creating a new previous position
           // further away.
           if (speed[i] < speed_min) {
-            vx[i] *= speed_max/speed[i];
-            vy[i] *= speed_max/speed[i];
+            vx[i] *= speed_factor;
+            vy[i] *= speed_factor;
             speed[i] = speed_min;
             px[i] = x[i] - vx[i];
             py[i] = y[i] - vy[i];
@@ -227,13 +227,13 @@ modeler.layout.model = function() {
       // Use a Verlet integration to continue particle movement integrating acceleration with 
       // existing position and previous position while managing collision with boundaries.
       i = -1; while (++i < n) {
-        original_x = x[i];
-        original_y = y[i];
-        x[i] = 2 * original_x - px[i] + ax[i] / integration_factor;
-        y[i] = 2 * original_y - py[i] + ay[i] / integration_factor;
-        dx = x[i] - original_x;
+        initial_x = x[i];
+        initial_y = y[i];
+        x[i] = 2 * initial_x - px[i] + ax[i] / integration_loop;
+        y[i] = 2 * initial_y - py[i] + ay[i] / integration_loop;
+        dx = x[i] - initial_x;
         // dx = Math.min(dx, 4)
-        dy = y[i] - original_y;
+        dy = y[i] - initial_y;
         // dy =  Math.min(dy, 4)
         vx[i] = dx;
         vy[i] = dy;
@@ -244,36 +244,49 @@ modeler.layout.model = function() {
         if (x[i] < leftwall) {
           x[i] = leftwall + (leftwall - x[i]);
           px[i] = x[i] + dx;
-          py[i] = original_y;
+          py[i] = initial_y;
           pressure += speed[i];
         } else if (x[i] > rightwall) {
           x[i] = rightwall + (rightwall - x[i]);
           px[i] = x[i] + dx;
-          py[i] = original_y;
+          py[i] = initial_y;
           pressure += speed[i];
         } else if (y[i] < bottomwall) {
           y[i] = bottomwall + (bottomwall - y[i]);
           py[i] = y[i] + dy;
-          px[i] = original_x;
+          px[i] = initial_x;
           pressure += speed[i];
         } else if (y[i] > topwall) {
           y[i] = topwall + (topwall - y[i]);
           py[i] = y[i] + dy;
-          px[i] = original_x;
+          px[i] = initial_x;
           pressure += speed[i];
         } else {
-          px[i] = original_x;
-          py[i] = original_y;
+          px[i] = initial_x;
+          py[i] = initial_y;
         }
       }
     }
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-    // avg_speed = average_speed();
+    // ave_speed = average_speed();
     ke = kinetic_energy();
     update_molecules();
     tick_history_list_push();
-    if (!stopped) { event.tick({type: "tick"}); };
+    if (!stopped) { 
+      t = Date.now();
+      if (sample_time) {
+        sample_time  = t - sample_time
+        if (sample_time) { sample_times.push(sample_time) };
+        sample_time = t;
+        sample_times.splice(0, sample_times.length - 128);
+      } else {
+        sample_time = t;
+      }
+      event.tick({type: "tick"}); 
+    } else {
+      
+    }
     return stopped
   }
   
@@ -452,20 +465,20 @@ modeler.layout.model = function() {
     var n = nodes[0].length,
         i, // current index
         dx, dy, mag2, l, lx, ly,
-        original_x, original_y,
+        initial_x, initial_y,
         leftwall   = radius[0],
         bottomwall = radius[0],
         rightwall  = size[0] - radius[0],
         topwall    = size[1] - radius[0];
   
     i = -1; while (++i < n) {
-      original_x = x[i];
-      original_y = y[i];
-      x[i] = 2 * original_x - px[i] + ax[i] / integration_factor;
-      y[i] = 2 * original_y - py[i] + ay[i] / integration_factor;
-      dx = x[i] - original_x;
+      initial_x = x[i];
+      initial_y = y[i];
+      x[i] = 2 * initial_x - px[i] + ax[i] / integration_loop;
+      y[i] = 2 * initial_y - py[i] + ay[i] / integration_loop;
+      dx = x[i] - initial_x;
       // dx = Math.min(dx, 4)
-      dy = y[i] - original_y;
+      dy = y[i] - initial_y;
       // dy =  Math.min(dy, 4)
       vx[i] = dx;
       vy[i] = dy;
@@ -476,26 +489,26 @@ modeler.layout.model = function() {
       if (x[i] < leftwall) {
         x[i] = leftwall + (leftwall - x[i]);
         px[i] = x[i] + dx;
-        py[i] = y;
+        py[i] = initial_y;
         pressure += speed[i];
       } else if (x[i] > rightwall) {
         x[i] = rightwall + (rightwall - x[i]);
         px[i] = x[i] + dx;
-        py[i] = y;
+        py[i] = initial_y;
         pressure += speed[i];
       } else if (y[i] < bottomwall) {
         y[i] = bottomwall + (bottomwall - y[i]);
         py[i] = y[i] + dy;
-        px[i] = x;
+        px[i] = initial_x;
         pressure += speed[i];
       } else if (y[i] > topwall) {
         y[i] = topwall + (topwall - y[i]);
         py[i] = y[i] + dy;
-        px[i] = x;
+        px[i] = initial_x;
         pressure += speed[i];
       } else {
-        px[i] = original_x;
-        py[i] = original_y;
+        px[i] = initial_x;
+        py[i] = initial_y;
       }
     }
   }
