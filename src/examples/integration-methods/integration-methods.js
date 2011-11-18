@@ -20,8 +20,8 @@ function simple_euler(x, v, a, n) {
   var i, dt = 1/n, results = [];
   i = -1; while(++i < n) {
     results.push([formatter(x), formatter(v)])
-    x += v*dt;
     v += a*dt;
+    x += v*dt;
   }
   return results
 }
