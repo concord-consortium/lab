@@ -11,9 +11,23 @@
     %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
   %body
     %h1 Integration Methods
+    #description
+      %p
+        Investigations of different integration methods ...
+      %p
+        References:
+      %ul
+        %li
+          %a(href="http://www.gamedev.net/topic/374930-thoughts-on-velocity-verlet/") Thoughts on the Velocity-Verlet (gamedev.net)
+        %li
+          %a(href="http://www.biomath.nyu.edu/index/papdir/fulllengths/pap_2_83.pdf") Stability of position-Verlet integration
+        %li
+          %a(href="http://sbel.wisc.edu/People/schafer/mdexperiments/node12.html") Velocity Verlet
+        %li
+          %a(href="http://matdl.org/matdlwiki/index.php/softmatter:Velocity_Verlet_Algorithm") softmatter:Velocity Verlet Algorithm
     %button#run-benchmarks Run
     #benchmarks
       %table#benchmark-results
-    #description
+      
     %script{:src => "benchmark.js", :type => "text/javascript"}
     %script{:src => "integration-methods.js", :type => "text/javascript"}
