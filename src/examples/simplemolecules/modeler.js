@@ -13,6 +13,7 @@ modeler.layout.model = function() {
       size = [1, 1],
       ke,
       ave_speed, speed_goal, speed_factor,
+      ave_speed_max, ave_speed_min,
       speed_max_pos, speed_max_neg,
       drag,
       stopped = true,
@@ -31,7 +32,8 @@ modeler.layout.model = function() {
       min_ljf_attraction = 0.0001,
       min_ljf_distance,
       max_ljf_distance,
-      integration_loop = 10,
+      integration_steps = 10,
+      dt = 1/integration_steps,
       overlap,
       pressure, pressures = [0],
       sample_time, sample_times = [];
@@ -146,11 +148,11 @@ modeler.layout.model = function() {
         topwall    = size[1] - radius[0];
   
     //
-    // Loop through this inner processing loop 'integration_loop' times:
+    // Loop through this inner processing loop 'integration_steps' times:
     //
     pressure = 0;
     iloop = -1; 
-    while(++iloop < integration_loop) {
+    while(++iloop < integration_steps) {
   
       //
       // Compute and use a quadtree center of mass and apply lennard-jones forces
@@ -171,7 +173,7 @@ modeler.layout.model = function() {
           dy = y[j] - y[i]
           l = Math.sqrt(dx * dx + dy * dy);
           if (l < max_ljf_distance) { 
-            ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l)/integration_loop);
+            ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l)/integration_steps);
             xf = dx / l * ljf;
             yf = dy / l * ljf;
             ax[i] += xf;
@@ -185,20 +187,21 @@ modeler.layout.model = function() {
       // Dynamically adjust 'temperature' of system.
       //
       ave_speed = average_speed();
+      ave_speed_max = speed_goal * 1.1;
+      ave_speed_min = speed_goal * 0.9;
       speed_max = speed_goal * 2;
-      speed_min = speed_goal * 0.3;
+      speed_min = speed_goal * 0.5;
       i = -1; while (++i < n) {
-        speed_factor = speed_max/speed[i];
-        if (ave_speed > (speed_goal * 1.1)) {
-
+        if (ave_speed > ave_speed_max) {
           // If the average speed for an atom is greater than 110% of the speed_goal
-          // reduce the acceleration by one half
+          // proportionately reduce the acceleration
           ax[i] *= 0.5;
           ay[i] *= 0.5;
       
-          // And if the speed for this atom is greater than speed_max 
-          // reduce the velocity of the atom by creating a new, closer previous position.
+          // And if the speed for this atom is greater than speed_max reduce the
+          // velocity of the atom by creating a new, closer previous position.
           if (speed[i] > speed_max) {
+            speed_factor = speed_max/speed[i];
             vx[i] *= speed_factor;
             vy[i] *= speed_factor;
             speed[i] = speed_max;
@@ -207,16 +210,16 @@ modeler.layout.model = function() {
           }
         } 
       
-        // Else if the average speed for an atom is less than 90% of the speed_goal
-        // double the acceleration.
-        else if (ave_speed < (speed_goal * 0.90)) {
-          ax[i] *= 2;
-          ay[i] *= 2;
+        else if (ave_speed < ave_speed_min) {
+          // If the average speed for an atom is less than 90% of the speed_goal
+          // proportionately increase the acceleration.
+          ax[i] *= 2.0;
+          ay[i] *= 2.0;
       
-          // And if the speed for this atom is less than speed_min
-          // increase the velocity of the atom by creating a new previous position
-          // further away.
+          // And if the speed for this atom is less than speed_min increase the 
+          // velocity of the atom by creating a new previous position further away.
           if (speed[i] < speed_min) {
+            speed_factor = speed_min/speed[i];
             vx[i] *= speed_factor;
             vy[i] *= speed_factor;
             speed[i] = speed_min;
@@ -231,8 +234,11 @@ modeler.layout.model = function() {
       i = -1; while (++i < n) {
         initial_x = x[i];
         initial_y = y[i];
-        x[i] = 2 * initial_x - px[i] + ax[i] / integration_loop;
-        y[i] = 2 * initial_y - py[i] + ay[i] / integration_loop;
+        // dy =  Math.min(dy, 4)
+        // x[i] = 2 * initial_x - px[i] + ax[i] / integration_steps;
+        // y[i] = 2 * initial_y - py[i] + ay[i] / integration_steps;
+        x[i] = 2 * initial_x - px[i] + ax[i] / integration_steps;
+        y[i] = 2 * initial_y - py[i] + ay[i] / integration_steps;
         dx = x[i] - initial_x;
         // dx = Math.min(dx, 4)
         dy = y[i] - initial_y;
@@ -471,8 +477,8 @@ modeler.layout.model = function() {
     i = -1; while (++i < n) {
       initial_x = x[i];
       initial_y = y[i];
-      x[i] = 2 * initial_x - px[i] + ax[i] / integration_loop;
-      y[i] = 2 * initial_y - py[i] + ay[i] / integration_loop;
+      x[i] = 2 * initial_x - px[i] + ax[i] / integration_steps;
+      y[i] = 2 * initial_y - py[i] + ay[i] / integration_steps;
       dx = x[i] - initial_x;
       // dx = Math.min(dx, 4)
       dy = y[i] - initial_y;
@@ -624,7 +630,7 @@ modeler.layout.model = function() {
     var n = nodes[0].length, i, j, k, 
         dx, dy, l, lx, ly, mag2, ljf, xf, yf;
   
-    k = -1; while(++k < integration_loop * 4) {
+    k = -1; while(++k < integration_steps * 4) {
       // apply ljforces
       i = -1; while (++i < n) {
         j = i; while (++j < n) {
