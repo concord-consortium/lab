@@ -11,6 +11,7 @@ modeler.layout.model = function() {
   var model = {},
       event = d3.dispatch("tick"),
       size = [1, 1],
+      temperature_control = true,
       ke,
       ave_speed, speed_goal, speed_factor,
       ave_speed_max, ave_speed_min,
@@ -186,45 +187,47 @@ modeler.layout.model = function() {
       //
       // Dynamically adjust 'temperature' of system.
       //
-      ave_speed = average_speed();
-      ave_speed_max = speed_goal * 1.1;
-      ave_speed_min = speed_goal * 0.9;
-      speed_max = speed_goal * 2;
-      speed_min = speed_goal * 0.5;
-      i = -1; while (++i < n) {
-        if (ave_speed > ave_speed_max) {
-          // If the average speed for an atom is greater than 110% of the speed_goal
-          // proportionately reduce the acceleration
-          ax[i] *= 0.5;
-          ay[i] *= 0.5;
+      if (temperature_control) {
+        ave_speed = average_speed();
+        ave_speed_max = speed_goal * 1.1;
+        ave_speed_min = speed_goal * 0.9;
+        speed_max = speed_goal * 2;
+        speed_min = speed_goal * 0.5;
+        i = -1; while (++i < n) {
+          if (ave_speed > ave_speed_max) {
+            // If the average speed for an atom is greater than 110% of the speed_goal
+            // proportionately reduce the acceleration
+            ax[i] *= 0.5;
+            ay[i] *= 0.5;
       
-          // And if the speed for this atom is greater than speed_max reduce the
-          // velocity of the atom by creating a new, closer previous position.
-          if (speed[i] > speed_max) {
-            speed_factor = speed_max/speed[i];
-            vx[i] *= speed_factor;
-            vy[i] *= speed_factor;
-            speed[i] = speed_max;
-            px[i] = x[i] - vx[i];
-            py[i] = y[i] - vy[i];
-          }
-        } 
+            // And if the speed for this atom is greater than speed_max reduce the
+            // velocity of the atom by creating a new, closer previous position.
+            if (speed[i] > speed_max) {
+              speed_factor = speed_max/speed[i];
+              vx[i] *= speed_factor;
+              vy[i] *= speed_factor;
+              speed[i] = speed_max;
+              px[i] = x[i] - vx[i];
+              py[i] = y[i] - vy[i];
+            }
+          } 
       
-        else if (ave_speed < ave_speed_min) {
-          // If the average speed for an atom is less than 90% of the speed_goal
-          // proportionately increase the acceleration.
-          ax[i] *= 2.0;
-          ay[i] *= 2.0;
+          else if (ave_speed < ave_speed_min) {
+            // If the average speed for an atom is less than 90% of the speed_goal
+            // proportionately increase the acceleration.
+            ax[i] *= 2.0;
+            ay[i] *= 2.0;
       
-          // And if the speed for this atom is less than speed_min increase the 
-          // velocity of the atom by creating a new previous position further away.
-          if (speed[i] < speed_min) {
-            speed_factor = speed_min/speed[i];
-            vx[i] *= speed_factor;
-            vy[i] *= speed_factor;
-            speed[i] = speed_min;
-            px[i] = x[i] - vx[i];
-            py[i] = y[i] - vy[i];
+            // And if the speed for this atom is less than speed_min increase the 
+            // velocity of the atom by creating a new previous position further away.
+            if (speed[i] < speed_min) {
+              speed_factor = speed_min/speed[i];
+              vx[i] *= speed_factor;
+              vy[i] *= speed_factor;
+              speed[i] = speed_min;
+              px[i] = x[i] - vx[i];
+              py[i] = y[i] - vy[i];
+            }
           }
         }
       }
@@ -756,6 +759,10 @@ modeler.layout.model = function() {
   model.get_rate = function() {
     return average_rate();
   }
+
+ model.set_temperature_control = function(tc) {
+   temperature_control = tc;
+ }
 
   model.initialize = function() {
     var i, j, k, o,
