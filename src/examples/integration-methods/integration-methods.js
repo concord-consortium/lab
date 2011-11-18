@@ -20,8 +20,8 @@ function simple_euler(x, v, a, n) {
   var i, dt = 1/n, results = [];
   i = -1; while(++i < n) {
     results.push([formatter(x), formatter(v)])
-    x += v*dt;
     v += a*dt;
+    x += v*dt;
   }
   return results
 }
@@ -49,10 +49,10 @@ function newton_stormer_verlet(x, v, a, n) {
 function velocity_less_verlet(x, v, a, n) {
   var i, dt = 1/n, xc = 0, xo = 0, results = [];
   i = -1; while(++i < n) {
+    results.push([formatter(xc), formatter(v/dt)])
     v = xc - xo + a*dt*dt;
     xo = xc;
     xc += v;
-    results.push([formatter(xc), formatter(v/dt)])
   }
   return results
 }
