@@ -1227,6 +1227,24 @@ function molecule_mouseout() {
 
 // ------------------------------------------------------------
 //
+// Temperature Control
+//
+// ------------------------------------------------------------
+
+var temperature_control_checkbox = document.getElementById("temperature-control-checkbox");
+
+function temperatureControlHandler() {
+    if (temperature_control_checkbox.checked) {
+      model.set_temperature_control(true);
+    } else {
+      model.set_temperature_control(false);
+    };
+};
+
+temperature_control_checkbox.onchange = temperatureControlHandler;
+
+// ------------------------------------------------------------
+//
 // Molecule Number Selector
 //
 // ------------------------------------------------------------
