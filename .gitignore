@@ -3,4 +3,4 @@ Gemfile.lock
 bin
 .bundle
 .sass-cache
-examples*/
+/examples*
