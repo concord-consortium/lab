@@ -102,11 +102,6 @@ lj_graph.ylabel  = "Potential Energy";
 
 lj_graph.coefficients = lennard_jones.coefficients();
 
-lj_graph.xmax    = lj_graph.coefficients.sigma * 4;
-lj_graph.xmin    = 0;
-lj_graph.ymax    =  Math.ceil(lj_graph.coefficients.epsilon*-1) + 0.5;
-lj_graph.ymin    = -Math.ceil(lj_graph.coefficients.epsilon*-1) - 0.5;
-
 lj_graph.variables = [
   { 
     coefficient:"epsilon", 
@@ -140,10 +135,10 @@ function update_coefficients(coefficients) {
   lj_graph.coefficients.epsilon = epsilon;
   lj_graph.coefficients.rmin    = rmin;
 
-  lj_graph.xmax    = sigma * 4;
-  lj_graph.xmin    = 0;
-  lj_graph.ymax    =  Math.ceil(epsilon*-1) + 0.5;
-  lj_graph.ymin    = -Math.ceil(epsilon*-1) - 0.5;
+  lj_graph.xmax    = sigma * 3;
+  lj_graph.xmin    = Math.floor(sigma/2);
+  lj_graph.ymax    = Math.ceil(epsilon*-1) + 0.0;
+  lj_graph.ymin    = Math.ceil(epsilon*1) - 2.0;
 
   // update the positions of the adjustable circles on the graph
   lj_graph.variables[1].x = sigma;
@@ -1230,6 +1225,113 @@ function molecule_mouseout() {
   molecule_div.style("opacity", 1e-6);
 }
 
+// ------------------------------------------------------------
+//
+// Molecule Number Selector
+//
+// ------------------------------------------------------------
+
+var select_molecule_number = document.getElementById("select-molecule-number");
+
+function selectMoleculeNumberChange() {
+  mol_number = +select_molecule_number.value;
+
+
+  modelReset();
+  updateMolNumberViewDependencies()
+}
+
+var mol_number_to_ke_yxais_map = {
+  2: 0.1,
+  5: 0.2,
+  10: 0.5,
+  20: 2.0,
+  50: 20,
+  100: 50,
+  200: 200,
+  500: 2000
+}
+
+var mol_number_to_lj_sigma_map = {
+  2: 7.0,
+  5: 6.0,
+  10: 5.5,
+  20: 5.0,
+  50: 4.5,
+  100: 4.0,
+  200: 3.5,
+  500: 3.0
+}
+
+var mol_number_to_speed_yaxis_map = {
+  2: 2,
+  5: 2,
+  10: 5,
+  20: 5,
+  50: 10,
+  100: 15,
+  200: 20,
+  500: 40
+}
+
+function updateMolNumberViewDependencies() {
+  ke_graph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
+  update_sigma(mol_number_to_lj_sigma_map[mol_number]);
+  lj_redraw();
+  speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
+  speed_update()
+  speed_redraw();
+}
+
+select_molecule_number.onchange = selectMoleculeNumberChange;
+
+select_molecule_number.value = mol_number;
+
+// ------------------------------------------------------------
+//
+// Temperature Selector
+//
+// ------------------------------------------------------------
+
+var select_temperature = document.getElementById("select-temperature");
+
+if (Modernizr['inputtypes']['range']) {
+  var temp_range = document.createElement("input");
+  temp_range.type = "range";
+  temp_range.min = "0";
+  temp_range.max = "10";
+  temp_range.step = "0.5";
+  temp_range.value = +select_temperature.value;
+  select_temperature.parentNode.replaceChild(temp_range, select_temperature);
+  temp_range.id = "select-temperature";
+  select_temperature = temp_range;
+  var select_temperature_display = document.createElement("span");
+  select_temperature_display.id = "select-temperature-display"
+  select_temperature_display.innerText = temperature;
+  select_temperature.parentNode.appendChild(select_temperature_display);
+  select_temperature = document.getElementById("select-temperature");
+}
+
+function selectTemperatureChange() {
+  temperature = +select_temperature.value;
+  if (select_temperature.type === "range") {
+    select_temperature_display.innerText = d3.format("4.1f")(temperature);
+  }
+  model.temperature(temperature);
+}
+
+select_temperature.onchange = selectTemperatureChange;
+
+if (select_temperature.type === "range") {
+  select_temperature_display.innerText = d3.format("4.1f")(temperature);
+}
+
+// ------------------------------------------------------------
+//
+// Model Controller
+//
+// ------------------------------------------------------------
+
 function modelController() {
   for(i = 0; i < this.elements.length; i++) {
       if (this.elements[i].checked) { run_mode = this.elements[i].value; }
@@ -1302,8 +1404,9 @@ function modelStepForward() {
 function modelReset() {
   modelStop();
   modelSetup();
-  setup_particles();
   model.temperature(temperature);
+  updateMolNumberViewDependencies();
+  setup_particles();
   step_counter = model.stepCounter();
   displayStats();
   ke_data = [model.ke()];
@@ -1427,103 +1530,6 @@ function handleKeyboardForModel(evt) {
 }
 
 document.onkeydown = handleKeyboardForModel;
-
-// ------------------------------------------------------------
-//
-// Molecule Number Selector
-//
-// ------------------------------------------------------------
-
-var select_molecule_number = document.getElementById("select-molecule-number");
-
-
-function selectMoleculeNumberChange() {
-  mol_number = +select_molecule_number.value;
-
-  var ke_yxais_map = {
-    2: 1,
-    5: 5,
-    10: 10,
-    20: 20,
-    50: 100,
-    100: 500,
-    200: 2000,
-    500: 10000
-  }
-
-  var lj_sigma_map = {
-    2: 7.0,
-    5: 6.0,
-    10: 5.5,
-    20: 5.0,
-    50: 4.5,
-    100: 4.0,
-    200: 3.5,
-    500: 3.0
-  }
-
-  var speed_yaxis_map = {
-    2: 2,
-    5: 2,
-    10: 5,
-    20: 5,
-    50: 10,
-    100: 15,
-    200: 20,
-    500: 40
-  }
-
-  modelReset();
-  ke_graph.change_yaxis(ke_yxais_map[mol_number]);
-  update_sigma(lj_sigma_map[mol_number]);
-  lj_redraw();
-  speed_graph.ymax = speed_yaxis_map[mol_number];
-  speed_update()
-  speed_redraw();
-}
-
-select_molecule_number.onchange = selectMoleculeNumberChange;
-
-select_molecule_number.value = mol_number;
-
-// ------------------------------------------------------------
-//
-// Temperature Selector
-//
-// ------------------------------------------------------------
-
-var select_temperature = document.getElementById("select-temperature");
-
-if (Modernizr['inputtypes']['range']) {
-  var temp_range = document.createElement("input");
-  temp_range.type = "range";
-  temp_range.min = "0";
-  temp_range.max = "10";
-  temp_range.step = "0.5";
-  temp_range.value = +select_temperature.value;
-  select_temperature.parentNode.replaceChild(temp_range, select_temperature);
-  temp_range.id = "select-temperature";
-  select_temperature = temp_range;
-  var select_temperature_display = document.createElement("span");
-  select_temperature_display.id = "select-temperature-display"
-  select_temperature_display.innerText = temperature;
-  select_temperature.parentNode.appendChild(select_temperature_display);
-  select_temperature = document.getElementById("select-temperature");
-}
-
-function selectTemperatureChange() {
-  temperature = +select_temperature.value;
-  if (select_temperature.type === "range") {
-    select_temperature_display.innerText = d3.format("4.1f")(temperature);
-  }
-  model.temperature(temperature);
-}
-
-select_temperature.onchange = selectTemperatureChange;
-
-if (select_temperature.type === "range") {
-  select_temperature_display.innerText = d3.format("4.1f")(temperature);
-}
 
 // ------------------------------------------------------------
 //
