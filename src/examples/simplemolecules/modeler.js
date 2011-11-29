@@ -141,7 +141,8 @@ modeler.layout.model = function() {
         l, // current distance
         k, // current force
         t, // current system time
-        dx, dy, mag2, lx, ly,
+        ljf, xf, yf,
+        dx, dy, mag2,
         initial_x, initial_y,
         iloop,
         leftwall   = radius[0],
