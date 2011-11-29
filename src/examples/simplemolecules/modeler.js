@@ -35,6 +35,7 @@ modeler.layout.model = function() {
       max_ljf_distance,
       integration_steps = 10,
       dt = 1/integration_steps,
+      dt2 = dt * dt,
       overlap,
       pressure, pressures = [0],
       sample_time, sample_times = [];
