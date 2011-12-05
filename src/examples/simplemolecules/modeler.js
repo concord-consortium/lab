@@ -43,7 +43,7 @@ modeler.layout.model = function() {
   //
   // Individual property arrays for the nodes
   //
-  var radius, px, py, x, y, vx, vy, speed, ax, ay;
+  var radius, px, py, x, y, vx, vy, speed, ax, ay, mass;
   
   //
   // Indexes into the nodes array for the individual node property arrays
@@ -62,6 +62,7 @@ modeler.layout.model = function() {
   var _speed  =  7;
   var _ax     =  8;
   var _ay     =  9;
+  var _mass   = 10;
 
   model.RADIUS = 0;
   model.PX     = 1;
@@ -73,6 +74,7 @@ modeler.layout.model = function() {
   model.SPEED  = 7;
   model.AX     = 8;
   model.AY     = 9;
+  model.MASS  = 10;
 
   //
   // Number of individual properties for a node
@@ -860,6 +862,10 @@ modeler.layout.model = function() {
     // model.AY     = 9;
     nodes[model.AY] = arrays.create(num, 0, array_type);
     ay = nodes[model.AY];
+
+    // model.MASS     = 10;
+    nodes[model.MASS] = arrays.create(num, 1, array_type);
+    mass = nodes[model.MASS];
 
     i = -1; while (++i < num) {
         px[i] = Math.random() * xdomain * 0.8 + xdomain * 0.1;
