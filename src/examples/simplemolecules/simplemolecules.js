@@ -1260,14 +1260,14 @@ function selectMoleculeNumberChange() {
 }
 
 var mol_number_to_ke_yxais_map = {
-  2: 0.1,
-  5: 0.2,
-  10: 0.5,
-  20: 2.0,
-  50: 20,
-  100: 50,
-  200: 200,
-  500: 2000
+  2: 0.02,
+  5: 0.05,
+  10: 0.2,
+  20: 1.0,
+  50: 5,
+  100: 10,
+  200: 50,
+  500: 200
 }
 
 var mol_number_to_lj_sigma_map = {
@@ -1447,7 +1447,7 @@ var stats = document.getElementById("stats");
 function displayStats() {
   stats.textContent =
     "Time: "     + d3.format("5.2f")(model.stepCounter() * sample_time) + " (ns), " +
-    "KE: "       + d3.format("7.1f")(model.ke()) + ", " +
+    "KE: "       + d3.format("7.3f")(model.ke()) + ", " +
     "Pressure: " + d3.format("6.3f")(model.pressure()) + ", " +
     "Rate: " + d3.format("5.1f")(model.get_rate()) + " (steps/s)";
 }
