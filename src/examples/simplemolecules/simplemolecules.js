@@ -1424,6 +1424,7 @@ function modelReset() {
   modelStop();
   modelSetup();
   model.temperature(temperature);
+  temperature_control_checkbox.onchange();
   updateMolNumberViewDependencies();
   setup_particles();
   step_counter = model.stepCounter();
