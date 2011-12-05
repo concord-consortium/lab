@@ -131,13 +131,11 @@ modeler.layout.model = function() {
     }
   }
 
-  //
-  // Main Model Integration Loop
-  //
-  function tick() {
+  function run_tick() {
     var n = nodes[0].length,
         q,
         i, // current index
+        j, // alternate member of force-pair index
         s, // current source
         t, // current target
         l, // current distance
@@ -158,27 +156,66 @@ modeler.layout.model = function() {
     pressure = 0;
     iloop = -1; 
     while(++iloop < integration_steps) {
-  
+
       //
-      // Compute and use a quadtree center of mass and apply lennard-jones forces
+      // Use a Verlet integration to continue particle movement integrating acceleration with 
+      // existing position and previous position while managing collision with boundaries.
       //
-      // q = d3.geom.quadtree(nodes);
-      // i = -1; while (++i < n) {
-      //   o = nodes[i];
-      //   q.visit(ljforces(o));
-      // }
-      
-      
-      //
-      // Use brute-force technique to apply the lennard-jones forces
+      // Update positions for first half of verlet integration
       // 
+      i = -1; while (++i < n) {
+        initial_x = x[i];
+        initial_y = y[i];
+
+        x[i]  += vx[i] * dt + 0.5 * dt2 * ax[i];
+        y[i]  += vy[i] * dt + 0.5 * dt2 * ay[i];
+        vx[i] += 0.5 * dt * ax[i];
+        vy[i] += 0.5 * dt * ay[i]
+
+        dx = x[i] - initial_x;
+        dy = y[i] - initial_y;
+        l = Math.sqrt(dx * dx + dy * dy);
+        speed[i] = l;
+        if (x[i] < leftwall) {
+          x[i] = leftwall + (leftwall - x[i]);
+          px[i] = x[i] + dx;
+          py[i] = initial_y;
+          vx[i] *= -1;
+          pressure += speed[i];
+        } else if (x[i] > rightwall) {
+          x[i] = rightwall + (rightwall - x[i]);
+          px[i] = x[i] + dx;
+          py[i] = initial_y;
+          vx[i] *= -1;
+          pressure += speed[i];
+        } else if (y[i] < bottomwall) {
+          y[i] = bottomwall + (bottomwall - y[i]);
+          py[i] = y[i] + dy;
+          px[i] = initial_x;
+          vy[i] *= -1;
+          pressure += speed[i];
+        } else if (y[i] > topwall) {
+          y[i] = topwall + (topwall - y[i]);
+          py[i] = y[i] + dy;
+          px[i] = initial_x;
+          vy[i] *= -1;
+          pressure += speed[i];
+        } else {
+          px[i] = initial_x;
+          py[i] = initial_y;
+        }
+      }
+      
+      //
+      // Use brute-force technique to calculate lennard-jones forces
+      //
       i = -1; while (++i < n) {
         j = i; while (++j < n) {
           dx = x[j] - x[i]
           dy = y[j] - y[i]
           l = Math.sqrt(dx * dx + dy * dy);
           if (l < max_ljf_distance) { 
-            ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l)/integration_steps);
+            ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l));
             xf = dx / l * ljf;
             yf = dy / l * ljf;
             ax[i] += xf;
@@ -188,6 +225,7 @@ modeler.layout.model = function() {
           }
         }
       }
+
       //
       // Dynamically adjust 'temperature' of system.
       //
@@ -235,53 +273,24 @@ modeler.layout.model = function() {
           }
         }
       }
-  
-      // Use a Verlet integration to continue particle movement integrating acceleration with 
-      // existing position and previous position while managing collision with boundaries.
+
+      //
+      // Complete second-half of the velocity-verlet integration with updated force values
+      // and zero-out the accelleration
       i = -1; while (++i < n) {
-        initial_x = x[i];
-        initial_y = y[i];
-        // dy =  Math.min(dy, 4)
-        // x[i] = 2 * initial_x - px[i] + ax[i] / integration_steps;
-        // y[i] = 2 * initial_y - py[i] + ay[i] / integration_steps;
-        x[i] = 2 * initial_x - px[i] + ax[i] / integration_steps;
-        y[i] = 2 * initial_y - py[i] + ay[i] / integration_steps;
-        dx = x[i] - initial_x;
-        // dx = Math.min(dx, 4)
-        dy = y[i] - initial_y;
-        // dy =  Math.min(dy, 4)
-        vx[i] = dx;
-        vy[i] = dy;
+        vx[i] += 0.5 * dt * ax[i];
+        vy[i] += 0.5 * dt * ay[i];
         ax[i] = 0;
         ay[i] = 0;
-        l = Math.sqrt(dx * dx + dy * dy);
-        speed[i] = l;
-        if (x[i] < leftwall) {
-          x[i] = leftwall + (leftwall - x[i]);
-          px[i] = x[i] + dx;
-          py[i] = initial_y;
-          pressure += speed[i];
-        } else if (x[i] > rightwall) {
-          x[i] = rightwall + (rightwall - x[i]);
-          px[i] = x[i] + dx;
-          py[i] = initial_y;
-          pressure += speed[i];
-        } else if (y[i] < bottomwall) {
-          y[i] = bottomwall + (bottomwall - y[i]);
-          py[i] = y[i] + dy;
-          px[i] = initial_x;
-          pressure += speed[i];
-        } else if (y[i] > topwall) {
-          y[i] = topwall + (topwall - y[i]);
-          py[i] = y[i] + dy;
-          px[i] = initial_x;
-          pressure += speed[i];
-        } else {
-          px[i] = initial_x;
-          py[i] = initial_y;
-        }
       }
     }
+  }
+
+  //
+  // Main Model Integration Loop
+  //
+  function tick() {
+    run_tick();
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
     // ave_speed = average_speed();
@@ -634,35 +643,42 @@ modeler.layout.model = function() {
   // }
   
   function resolve_collisions() {
-    var n = nodes[0].length, i, j, k, 
-        dx, dy, l, lx, ly, mag2, ljf, xf, yf;
-  
-    k = -1; while(++k < integration_steps * 4) {
-      // apply ljforces
-      i = -1; while (++i < n) {
-        j = i; while (++j < n) {
-          dx = x[j] - x[i]
-          dy = y[j] - y[i]
-          lx = Math.abs(dx);
-          ly = Math.abs(dy);
-          mag2 = lx * lx + ly * ly;
-          l = Math.max(lx, ly);
-          l = 0.5 * (l + (mag2/l));
-          l = 0.5 * (l + (mag2/l));
-          ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l));
-          xf = dx / l * ljf;
-          yf = dy / l * ljf;
-          ax[i] += xf;
-          ay[i] += yf;
-          ax[j] -= xf;
-          ay[j] -= yf;
-        }
-      }
+    var i = -1;
+    while (++i < 10) {
+      run_tick();
       cap_speed(temperature_to_speed(temperature)*2);
-      adjust_temperature();
-      apply_verlet();
+      set_acc(0);
     }
-    update_molecules();
+
+    // var n = nodes[0].length, i, j, k, 
+    //     dx, dy, l, lx, ly, mag2, ljf, xf, yf;
+    //   
+    // k = -1; while(++k < integration_steps * 4) {
+    //   // apply ljforces
+    //   i = -1; while (++i < n) {
+    //     j = i; while (++j < n) {
+    //       dx = x[j] - x[i]
+    //       dy = y[j] - y[i]
+    //       lx = Math.abs(dx);
+    //       ly = Math.abs(dy);
+    //       mag2 = lx * lx + ly * ly;
+    //       l = Math.max(lx, ly);
+    //       l = 0.5 * (l + (mag2/l));
+    //       l = 0.5 * (l + (mag2/l));
+    //       ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l));
+    //       xf = dx / l * ljf;
+    //       yf = dy / l * ljf;
+    //       ax[i] += xf;
+    //       ay[i] += yf;
+    //       ax[j] -= xf;
+    //       ay[j] -= yf;
+    //     }
+    //   }
+    //   cap_speed(temperature_to_speed(temperature)*2);
+    //   adjust_temperature();
+    //   apply_verlet();
+    // }
+    // update_molecules();
   }
 
   function set_temperature(t) {
