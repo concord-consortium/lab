@@ -10,7 +10,7 @@
   lennard_jones = {};
   lennard_jones = { version: "0.0.1" };
 
-  var epsilon = -0.4,                   // depth of the potential well
+  var epsilon = -1.0,                   // depth of the potential well
       sigma   =  4.0,                   // finite distance at which the inter-particle potential is zero
       rmin = Math.pow(2, 1/6) * sigma,  // distance at which the potential well reaches its minimum
 
