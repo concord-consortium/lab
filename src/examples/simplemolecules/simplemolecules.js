@@ -10,7 +10,7 @@
 
 var mol_number = 100,
     sample_time = 0.01,
-    temperature = 4,
+    temperature = 3,
     maximum_model_steps = 5000,
     molecules = [], model,
     lj_sigma_min = 1,
@@ -1426,6 +1426,7 @@ function modelReset() {
   model.temperature(temperature);
   temperature_control_checkbox.onchange();
   updateMolNumberViewDependencies();
+  update_molecule_radius();
   setup_particles();
   step_counter = model.stepCounter();
   displayStats();
