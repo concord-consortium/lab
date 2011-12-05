@@ -751,6 +751,7 @@ modeler.layout.model = function() {
   model.set_radius = function(r) {
     var i, n = nodes[0].length;
     i = -1; while(++i < n) { radius[i] = r };
+    update_molecules();
   }
 
   model.get_speed = function(speed_data) {
