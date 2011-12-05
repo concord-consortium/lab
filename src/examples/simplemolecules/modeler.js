@@ -33,7 +33,7 @@ modeler.layout.model = function() {
       min_ljf_attraction = 0.0001,
       min_ljf_distance,
       max_ljf_distance,
-      integration_steps = 10,
+      integration_steps = 50,
       dt = 1/integration_steps,
       dt2 = dt * dt,
       overlap,
@@ -99,7 +99,7 @@ modeler.layout.model = function() {
   // number and has no specific analytic provenance.
   //
   function temperature_to_speed(t) {
-    return 0.0150 * Math.pow(Math.E/2, t);
+    return 0.0050 * Math.pow(Math.E/2, t);
   }
   
   //
@@ -382,23 +382,7 @@ modeler.layout.model = function() {
     ke = tick_history_list[index].ke;
     update_molecules();
   }
-  
-  // function tick_history_list_ke_data() {
-  //   var i = -1, j, o, oldnodes,
-  //   newnode, 
-  //   savednodes = tick_history_list[index], 
-  //   n=nodes.length;
-  //   while(++i < n) {
-  //     oldnodes = mode_history
-  //     o = nodes[i];
-  //     for (var j in o) {
-  //       if (savednodes[i].hasOwnProperty(j)) {
-  //         o[j] = savednodes[i][j];
-  //       }
-  //     }
-  //   }
-  // }
-  
+
   function set_speed(newspeed) {
     var i, change, n = nodes[0].length;
     i = -1; while (++i < n) {
@@ -480,205 +464,14 @@ modeler.layout.model = function() {
     return (ave ? 1/ave*1000: 0)
   }
 
-  function apply_verlet() {
-    var n = nodes[0].length,
-        i, // current index
-        dx, dy, mag2, l, lx, ly,
-        initial_x, initial_y,
-        leftwall   = radius[0],
-        bottomwall = radius[0],
-        rightwall  = size[0] - radius[0],
-        topwall    = size[1] - radius[0];
-  
-    i = -1; while (++i < n) {
-      initial_x = x[i];
-      initial_y = y[i];
-      x[i] = 2 * initial_x - px[i] + ax[i] / integration_steps;
-      y[i] = 2 * initial_y - py[i] + ay[i] / integration_steps;
-      dx = x[i] - initial_x;
-      // dx = Math.min(dx, 4)
-      dy = y[i] - initial_y;
-      // dy =  Math.min(dy, 4)
-      vx[i] = dx;
-      vy[i] = dy;
-      ax[i] = 0;
-      ay[i] = 0;
-      l = Math.sqrt(dx * dx + dy * dy);
-      speed[i] = l;
-      if (x[i] < leftwall) {
-        x[i] = leftwall + (leftwall - x[i]);
-        px[i] = x[i] + dx;
-        py[i] = initial_y;
-        pressure += speed[i];
-      } else if (x[i] > rightwall) {
-        x[i] = rightwall + (rightwall - x[i]);
-        px[i] = x[i] + dx;
-        py[i] = initial_y;
-        pressure += speed[i];
-      } else if (y[i] < bottomwall) {
-        y[i] = bottomwall + (bottomwall - y[i]);
-        py[i] = y[i] + dy;
-        px[i] = initial_x;
-        pressure += speed[i];
-      } else if (y[i] > topwall) {
-        y[i] = topwall + (topwall - y[i]);
-        py[i] = y[i] + dy;
-        px[i] = initial_x;
-        pressure += speed[i];
-      } else {
-        px[i] = initial_x;
-        py[i] = initial_y;
-      }
-    }
-  }
-  
-  //
-  // Dynamically adjust 'temperature' of system.
-  //
-  function adjust_temperature() {
-    var n = nodes[0].length,
-        i, // current index
-        o, // current object
-        speed_max,
-        speed_min,
-        speed_factor;
-    
-    ave_speed = average_speed();
-    speed_max = speed_goal * 10;
-    speed_min = speed_goal * 0.1;
-    speed_factor = speed_goal/speed;
-    i = -1; while (++i < n) {
-      if (speed[i] > (speed_goal * 1.1)) {
-        // If the average speed for an atom is greater than 110% of the speed_goal
-        // reduce the acceleration by one half
-        ax[i] *= 0.5;
-        ay[i] *= 0.5;
-        // And if the speed for this atom is greater than the 10 times the current speed_goal
-        // reduce the velocity of the atom by creating a new, closer previous position.
-        if (speed[i] > speed_max) {
-          vx[i] *= speed_max/speed[i];
-          vy[i] *= speed_max/speed[i];
-          speed[i] = speed_max;
-          px[i] = x[i] - vx[i];
-          py[i] = y[i] - vy[i];
-        }
-      } 
-      // Else if the average speed for an atom is less than 90% of the speed_goal
-      // double the acceleration.
-      else if (speed < (speed_goal * 0.90)) {
-        ax[i] *= 2;
-        ay[i] *= 2;
-        // And if the speed for this atom is less than the 10% of the current speed_goal
-        // increase the velocity of the atom by creating a new previous position
-        // further away.
-        if (speed[i] < speed_min) {
-          vx[i] *= speed_max/speed[i];
-          vy[i] *= speed_max/speed[i];
-          speed[i] = speed_min;
-          px[i] = x[i] - vx[i];
-          py[i] = y[i] - vy[i];
-        }
-      }
-    }
-  }
-  
-  // function repulse(node) {
-  //   return function(quad, x1, y1, x2, y2) {
-  //     if (quad.point !== node) {
-  //       var dx = quad.cx - node.x,
-  //           dy = quad.cy - node.y,
-  //           dn = 1 / Math.sqrt(dx * dx + dy * dy);
-  // 
-  //       /* Barnes-Hut criterion. */
-  //       if ((x2 - x1) * dn < theta) {
-  //         var k = quad.charge * dn * dn;
-  //         node.px -= dx * k;
-  //         node.py -= dy * k;
-  //         return true;
-  //       }
-  // 
-  //       if (quad.point && isFinite(dn)) {
-  //         var k = quad.pointCharge * dn * dn;
-  //         node.px -= dx * k;
-  //         node.py -= dy * k;
-  //       }
-  //     }
-  //     return !quad.charge;
-  //   };
-  // }
-  // 
-  // function repulse2(node) {
-  //   return function(quad, x1, y1, x2, y2) {
-  //     if (quad.point !== node) {
-  //       var dx = quad.cx - node.x,
-  //           dy = quad.cy - node.y,
-  //           dn = 1 / Math.sqrt(dx * dx + dy * dy);
-  // 
-  //       /* Barnes-Hut criterion. */
-  //       if ((x2 - x1) * dn < 0.8) {
-  //         var k = quad.charge * dn * dn;
-  //         node.px -= dx * k;
-  //         node.py -= dy * k;
-  //         return true;
-  //       }
-  // 
-  //       if (quad.point && isFinite(dn)) {
-  //         var k = quad.pointCharge * dn * dn;
-  //         node.px -= dx * k;
-  //         node.py -= dy * k;
-  //       }
-  //     }
-  //     return !quad.charge;
-  //   };
-  // }
-  // 
-  // function relax_system(nodes) {
-  //   var n = nodes[0].length, q, i, o;
-  //   modeler_original_forceAccumulate(q = d3.geom.quadtree(nodes), nodes)
-  //   i = -1; while (++i < n) {
-  //     if (!(o = nodes[i]).fixed) {
-  //       q.visit(repulse2(o));
-  //     }
-  //   }
-  // }
-  
   function resolve_collisions() {
-    var i = -1;
-    while (++i < 10) {
+    var i; save_temperature_control = temperature_control;
+    temperature_control = true;
+    i = -1; while (++i < 20) {
       run_tick();
-      cap_speed(temperature_to_speed(temperature)*2);
-      set_acc(0);
     }
-
-    // var n = nodes[0].length, i, j, k, 
-    //     dx, dy, l, lx, ly, mag2, ljf, xf, yf;
-    //   
-    // k = -1; while(++k < integration_steps * 4) {
-    //   // apply ljforces
-    //   i = -1; while (++i < n) {
-    //     j = i; while (++j < n) {
-    //       dx = x[j] - x[i]
-    //       dy = y[j] - y[i]
-    //       lx = Math.abs(dx);
-    //       ly = Math.abs(dy);
-    //       mag2 = lx * lx + ly * ly;
-    //       l = Math.max(lx, ly);
-    //       l = 0.5 * (l + (mag2/l));
-    //       l = 0.5 * (l + (mag2/l));
-    //       ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l));
-    //       xf = dx / l * ljf;
-    //       yf = dy / l * ljf;
-    //       ax[i] += xf;
-    //       ay[i] += yf;
-    //       ax[j] -= xf;
-    //       ay[j] -= yf;
-    //     }
-    //   }
-    //   cap_speed(temperature_to_speed(temperature)*2);
-    //   adjust_temperature();
-    //   apply_verlet();
-    // }
-    // update_molecules();
+    temperature_control = save_temperature_control;
+    update_molecules();
   }
 
   function set_temperature(t) {
@@ -730,7 +523,6 @@ modeler.layout.model = function() {
   
   model.stepForward = function() {
     stopped = true;
-    // if (tick_history_list_index == tick_history_list.length) { tick_history_list_index-- };
     if (tick_history_list_index < (tick_history_list.length)) {
       tick_history_list_extract(tick_history_list_index)
       tick_history_list_index++;
@@ -759,7 +551,7 @@ modeler.layout.model = function() {
   };
 
   model.set_lj_coefficients = function(e, s) {
-    // am not using the coefficenmts yet ...
+    // am not using the coefficients beyond setting the ljf limits yet ...
     epsilon = e;
     sigma = s;
     setup_ljf_limits();
@@ -812,8 +604,6 @@ modeler.layout.model = function() {
         speed_history,
         kinetic_energy,
         average_speed,
-        apply_verlet,
-        adjust_temperature,
         resolve_collisions,
         set_temperature;
 
@@ -982,124 +772,8 @@ modeler.layout.model = function() {
     return model;
   };
 
-  // use `node.call(model.drag)` to make nodes draggable
-  // model.drag = function() {
-  //   if (!drag) drag = d3.behavior.drag()
-  //       .on("dragstart", dragstart)
-  //       .on("drag", modeler_forceDrag)
-  //       .on("dragend", modeler_forceDragEnd);
-  // 
-  //   this.on("mouseover.model", modeler_forceDragOver)
-  //       .on("mouseout.model", modeler_forceDragOut)
-  //       .call(drag);
-  // };
-  // 
-  // function dragstart(d) {
-  //   modeler_forceDragOver(modeler_forceDragNode = d);
-  //   modeler_forceDragForce = model;
-  // }
-
   return model;
 };
-
-// var modeler_forceDragForce,
-//     modeler_forceDragNode;
-// 
-// function modeler_forceDragOver(d) {
-//   d.fixed |= 2;
-// }
-// 
-// function modeler_forceDragOut(d) {
-//   if (d !== modeler_forceDragNode) d.fixed &= 1;
-// }
-// 
-// function modeler_forceDragEnd() {
-//   modeler_forceDrag();
-//   modeler_forceDragNode.fixed &= 1;
-//   modeler_forceDragForce = modeler_forceDragNode = null;
-// }
-// 
-// function modeler_forceDrag() {
-//   modeler_forceDragNode.px += d3.event.dx;
-//   modeler_forceDragNode.py += d3.event.dy;
-//   modeler_forceDragForce.resume(); // restart annealing
-// }
-
-
-// function modeler_original_forceAccumulate(quad, charges) {
-//   var cx = 0,
-//       cy = 0;
-//   quad.charge = 0;
-//   if (!quad.leaf) {
-//     var nodes = quad.nodes,
-//         n = nodes[0].length,
-//         i = -1,
-//         c;
-//     while (++i < n) {
-//       c = nodes[i];
-//       if (c == null) continue;
-//       modeler_original_forceAccumulate(c, charges);
-//       quad.charge += c.charge;
-//       cx += c.charge * c.cx;
-//       cy += c.charge * c.cy;
-//     }
-//   }
-//   if (quad.point) {
-//     // jitter internal nodes that are coincident
-//     if (!quad.leaf) {
-//       quad.point.x += Math.random() - .5;
-//       quad.point.y += Math.random() - .5;
-//     }
-//     var k = 0.1 * charges[quad.point.index];
-//     quad.charge += quad.pointCharge = k;
-//     cx += k * quad.point.x;
-//     cy += k * quad.point.y;
-//   }
-//   quad.cx = cx / quad.charge;
-//   quad.cy = cy / quad.charge;
-// }
-// 
-// function modeler_forceAccumulate(quad, forces, boundary) {
-//   var cx = 0,
-//       cy = 0;
-//   
-//   quad.charge = 0;
-//   if (!quad.leaf) {
-//     var nodes = quad.nodes,
-//         n = nodes[0].length,
-//         i = -1,
-//         c;
-//     while (++i < n) {
-//       c = nodes[i];
-//       if (c == null) continue;
-//       modeler_forceAccumulate(c, forces);
-//       quad.charge += c.charge;
-//       cx += c.charge * c.cx;
-//       cy += c.charge * c.cy;
-//     }
-//   }
-//   if (quad.point) {
-//     // jitter internal nodes that are coincident
-//     if (!quad.leaf) {
-//       quad.point.x += Math.random() - .5;
-//       quad.point.y += Math.random() - .5;
-//     }
-//     var k = forces[quad.point.index];
-//     quad.charge += quad.pointCharge = k;
-//     cx += k * quad.point.x;
-//     cy += k * quad.point.y;
-//   }
-//   quad.cx = cx / quad.charge;
-//   quad.cy = cy / quad.charge;
-// }
-// 
-// function modeler_forceLinkDistance(link) {
-//   return 20;
-// }
-// 
-// function modeler_forceLinkStrength(link) {
-//   return 1;
-// }
 
 // export namespace
 if (root !== 'undefined') { root.modeler = modeler; }
