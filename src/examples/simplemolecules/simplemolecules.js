@@ -1153,6 +1153,8 @@ function update_molecule_radius() {
 
 function modelSetup() {
   generate_molecules(mol_number);
+  model.set_coulomb_forces(coulomb_forces_checkbox.checked);
+  model.set_lennard_jones_forces(lennard_jones_forces_checkbox.checked);
   ke_data = [model.ke()];
 }
 
@@ -1262,8 +1264,6 @@ var select_molecule_number = document.getElementById("select-molecule-number");
 
 function selectMoleculeNumberChange() {
   mol_number = +select_molecule_number.value;
-
-
   modelReset();
   updateMolNumberViewDependencies()
 }
@@ -1502,6 +1502,9 @@ modelSetup()
 update_coefficients(lennard_jones.coefficients());
 setupScreen();
 modelReset();
+mol_number = +select_molecule_number.value;
+modelReset();
+updateMolNumberViewDependencies();
 
 // ------------------------------------------------------------
 //
