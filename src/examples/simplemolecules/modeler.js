@@ -116,10 +116,11 @@ modeler.layout.model = function() {
   }
 
   function update_molecules() {
-    var i, n = nodes[0].length, results = [];
+    var i, n = mol_number, results = [];
     i = -1; while (++i < n) {
       molecules[i] = molecule(i)
     }
+    molecules.length = n;
   }
 
 
@@ -672,11 +673,8 @@ modeler.layout.model = function() {
     return model
   };
 
-  model.nodes = function(molecules, num, xdomain, ydomain, temperature, rmin, mol_rmin_radius_factor) {
-    if (!arguments.length) return molecules;
-    var molecules = molecules;
-    molecules.length = num;
-
+  model.nodes = function(num, xdomain, ydomain, temperature, rmin, mol_rmin_radius_factor) {
+    
     nodes = arrays.create(node_properties_length, null, "regular");
     
     var webgl = !!window.WebGLRenderingContext;
