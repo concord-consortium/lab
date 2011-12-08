@@ -638,14 +638,13 @@ modeler.layout.model = function() {
         _radius, _px, _py, _x, _y, _vx, _vy, _speed, _ax, _ay,
         n = nodes[0].length,
         w = size[0], h = size[1],
-        temperature = 4;
-        speed_goal = temperature_to_speed(temperature),
+        temperature = 4,
+        speed_goal,
         max_ljf_repulsion, min_ljf_attraction,
-        max_ljf_distance, min_ljf_distance,
+        max_ljf_distance, min_ljf_distance;
 
         // mention the functions so they get into the containing closure:
         molecule, update_molecules,
-        temperature_to_speed,
         tick,
         reset_tick_history_list,
         tick_history_list_reset_to_ptr,
@@ -662,6 +661,7 @@ modeler.layout.model = function() {
         resolve_collisions,
         set_temperature;
 
+    speed_goal = temperature_to_speed(temperature);
     setup_ljf_limits();
     setup_coulomb_limits();
     resolve_collisions();
