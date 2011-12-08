@@ -12,6 +12,8 @@ modeler.layout.model = function() {
       event = d3.dispatch("tick"),
       size = [1, 1],
       temperature_control = true,
+      lennard_jones_forces = true,
+      coulomb_forces = true,
       ke,
       ave_speed, speed_goal, speed_factor,
       ave_speed_max, ave_speed_min,
@@ -31,8 +33,12 @@ modeler.layout.model = function() {
       epsilon, sigma,
       max_ljf_repulsion = -200.0,
       min_ljf_attraction = 0.001,
-      min_ljf_distance,
       max_ljf_distance,
+      min_ljf_distance,
+      max_coulomb_force = 20.0,
+      min_coulomb_force = 0.01,
+      max_coulomb_distance,
+      min_coulomb_distance,
       integration_steps = 50,
       dt = 1/integration_steps,
       dt2 = dt * dt,
@@ -43,7 +49,7 @@ modeler.layout.model = function() {
   //
   // Individual property arrays for the nodes
   //
-  var radius, px, py, x, y, vx, vy, speed, ax, ay, mass;
+  var radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge;
   
   //
   // Indexes into the nodes array for the individual node property arrays
@@ -63,28 +69,59 @@ modeler.layout.model = function() {
   var _ax     =  8;
   var _ay     =  9;
   var _mass   = 10;
+  var _charge = 11;
 
-  model.RADIUS = 0;
-  model.PX     = 1;
-  model.PY     = 2;
-  model.X      = 3;
-  model.Y      = 4;
-  model.VX     = 5;
-  model.VY     = 6;
-  model.SPEED  = 7;
-  model.AX     = 8;
-  model.AY     = 9;
-  model.MASS  = 10;
+  model.RADIUS  = 0;
+  model.PX      = 1;
+  model.PY      = 2;
+  model.X       = 3;
+  model.Y       = 4;
+  model.VX      = 5;
+  model.VY      = 6;
+  model.SPEED   = 7;
+  model.AX      = 8;
+  model.AY      = 9;
+  model.MASS    = 10;
+  model.CHARGE  = 11;
 
   //
   // Number of individual properties for a node
   //
-  var node_properties_length = 10;
+  var node_properties_length = 11;
 
   //
   // A two dimensional array consisting of arrays of node property values
   //
   var nodes = arrays.create(node_properties_length, null, "regular");
+
+  //
+  // Extract one node from the nodes arrays and return as an object
+  //
+  function molecule(i) {
+    var o = {};
+    o.index  = i,
+    o.radius = nodes[_radius][i];
+    o.px     = nodes[_px    ][i];
+    o.py     = nodes[_py    ][i];
+    o.x      = nodes[_x     ][i];
+    o.y      = nodes[_y     ][i];
+    o.vx     = nodes[_vx    ][i];
+    o.vy     = nodes[_vy    ][i];
+    o.speed  = nodes[_speed ][i];
+    o.ax     = nodes[_ax    ][i];
+    o.ay     = nodes[_ay    ][i];
+    o.mass   = nodes[_mass  ][i];
+    o.charge = nodes[_charge][i];
+    return o
+  }
+
+  function update_molecules() {
+    var i, n = nodes[0].length, results = [];
+    i = -1; while (++i < n) {
+      molecules[i] = molecule(i)
+    }
+  }
+
 
   //
   // The temperature_to_speed(t) function is used to map temperatures in abstract units
@@ -131,6 +168,28 @@ modeler.layout.model = function() {
     }
   }
 
+  //
+  // Calculate the minimum and maximum distances for applying coulomb forces
+  //
+  function setup_coulomb_limits() {
+    var i, f;
+    for (i = 0.001; i <= 100; i+=0.001) {
+      f = coulomb.force(i, -1, 1);
+      if (f < max_coulomb_force) {
+        min_coulomb_distance = i;
+        break;
+      }
+    }
+
+    for (;i <= 100; i+=0.001) {
+      f = coulomb.force(i, -1, 1);
+      if (f < min_coulomb_force) {
+        break;
+      }
+    }
+    max_coulomb_distance = i;
+  }
+
   function run_tick() {
     var n = nodes[0].length,
         q,
@@ -141,7 +200,7 @@ modeler.layout.model = function() {
         l, // current distance
         k, // current force
         t, // current system time
-        ljf, xf, yf,
+        ljf, coul, xf, yf,
         dx, dy, mag2,
         initial_x, initial_y,
         iloop,
@@ -207,21 +266,32 @@ modeler.layout.model = function() {
       }
       
       //
-      // Use brute-force technique to calculate lennard-jones forces
+      // Use brute-force technique to calculate lennard-jones and coulomb forces
       //
-      i = -1; while (++i < n) {
-        j = i; while (++j < n) {
-          dx = x[j] - x[i]
-          dy = y[j] - y[i]
-          l = Math.sqrt(dx * dx + dy * dy);
-          if (l < max_ljf_distance) { 
-            ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l));
-            xf = dx / l * ljf;
-            yf = dy / l * ljf;
-            ax[i] += xf;
-            ay[i] += yf;
-            ax[j] -= xf;
-            ay[j] -= yf;
+      if (lennard_jones_forces || coulomb_forces) {
+        i = -1; while (++i < n) {
+          j = i; while (++j < n) {
+            dx = x[j] - x[i]
+            dy = y[j] - y[i]
+            l = Math.sqrt(dx * dx + dy * dy);
+            if (lennard_jones_forces && l < max_ljf_distance) { 
+              ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l));
+              xf = dx / l * ljf;
+              yf = dy / l * ljf;
+              ax[i] += xf;
+              ay[i] += yf;
+              ax[j] -= xf;
+              ay[j] -= yf;
+            }
+            if (coulomb_forces && l < max_coulomb_distance) { 
+              coul  = Math.min(max_coulomb_force, coulomb.force(l, charge[i], charge[j]));
+              xf = dx / l * coul;
+              yf = dy / l * coul;
+              ax[i] += xf;
+              ay[i] += yf;
+              ax[j] -= xf;
+              ay[j] -= yf;
+            }
           }
         }
       }
@@ -234,7 +304,9 @@ modeler.layout.model = function() {
         ave_speed_max = speed_goal * 1.1;
         ave_speed_min = speed_goal * 0.9;
         speed_max = speed_goal * 2;
+        speed_max_one_percent = speed_max * 0.01;
         speed_min = speed_goal * 0.5;
+        speed_min_one_percent = speed_min * 0.01;
         i = -1; while (++i < n) {
           if (ave_speed > ave_speed_max) {
             // If the average speed for an atom is greater than 110% of the speed_goal
@@ -248,7 +320,7 @@ modeler.layout.model = function() {
               speed_factor = speed_max/speed[i];
               vx[i] *= speed_factor;
               vy[i] *= speed_factor;
-              speed[i] = speed_max;
+              speed[i] = speed_max - (Math.random() * speed_max_one_percent)
               px[i] = x[i] - vx[i];
               py[i] = y[i] - vy[i];
             }
@@ -266,7 +338,7 @@ modeler.layout.model = function() {
               speed_factor = speed_min/speed[i];
               vx[i] *= speed_factor;
               vy[i] *= speed_factor;
-              speed[i] = speed_min;
+              speed[i] = speed_min +  (Math.random() * speed_min_one_percent);
               px[i] = x[i] - vx[i];
               py[i] = y[i] - vy[i];
             }
@@ -314,32 +386,6 @@ modeler.layout.model = function() {
     return stopped
   }
   
-  //
-  // Extract one node from the nodes arrays and return as an object
-  //
-  function molecule(i) {
-    var o = {};
-    o.index  = i,
-    o.radius = nodes[_radius][i];
-    o.px     = nodes[_px    ][i];
-    o.py     = nodes[_py    ][i];
-    o.x      = nodes[_x     ][i];
-    o.y      = nodes[_y     ][i];
-    o.vx     = nodes[_vx    ][i];
-    o.vy     = nodes[_vy    ][i];
-    o.speed  = nodes[_speed ][i];
-    o.ax     = nodes[_ax    ][i];
-    o.ay     = nodes[_ay    ][i];
-    return o
-  }
-
-  function update_molecules() {
-    var i, n = nodes[0].length, results = [];
-    i = -1; while (++i < n) {
-      molecules[i] = molecule(i)
-    }
-  }
-
   function reset_tick_history_list() {
     tick_history_list = [];
     tick_history_list_index = 0;
@@ -467,7 +513,7 @@ modeler.layout.model = function() {
   function resolve_collisions() {
     var i; save_temperature_control = temperature_control;
     temperature_control = true;
-    i = -1; while (++i < 20) {
+    i = -1; while (++i < 10) {
       run_tick();
     }
     temperature_control = save_temperature_control;
@@ -577,6 +623,14 @@ modeler.layout.model = function() {
    temperature_control = tc;
  }
 
+ model.set_lennard_jones_forces = function(lj) {
+   lennard_jones_forces = lj;
+ }
+
+ model.set_coulomb_forces = function(cf) {
+   coulomb_forces = cf;
+ }
+
   model.initialize = function() {
     var i, j, k, o,
         radius, px, py, x, y, vx, vy, speed, ax, ay,
@@ -608,6 +662,7 @@ modeler.layout.model = function() {
         set_temperature;
 
     setup_ljf_limits();
+    setup_coulomb_limits();
     resolve_collisions();
     // pressures.push(pressure);
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
@@ -673,6 +728,10 @@ modeler.layout.model = function() {
     nodes[model.MASS] = arrays.create(num, 1, array_type);
     mass = nodes[model.MASS];
 
+    // model.CHARGE   = 11;
+    nodes[model.CHARGE] = arrays.create(num, 0, array_type);
+    charge = nodes[model.CHARGE];
+
     i = -1; while (++i < num) {
         px[i] = Math.random() * xdomain * 0.8 + xdomain * 0.1;
         py[i] = Math.random() * ydomain * 0.8 + ydomain * 0.1;
@@ -683,6 +742,7 @@ modeler.layout.model = function() {
      speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
         ax[i] = 0;
         ay[i] = 0;
+    charge[i] = (Math.random() > 0.5) ? 1 : -1;
         // speed_data.push(speed[i]);
     };
     update_molecules();

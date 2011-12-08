@@ -76,6 +76,15 @@
               %option(value="2") 2
               %option(value="1") 1
               %option(value="0") 0
+        %li
+          %fieldset
+            %legend Particle Force Interactions
+            %label 
+              Lennard-Jones
+              %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
+            %label
+              Coulomb
+              %input(id="coulomb-forces-checkbox" type="checkbox" checked)
         %br
         %ul
           %li
@@ -91,11 +100,12 @@
           %table#benchmarks-table
 
     #description
-      %h2 About the Simple Molecules model
+      %h2 About the Simple Molecules with Bonds model
       %p
         A computational simulation of a collection of neutral atoms with the forces between
-        the atoms modeled with the Lennard-Jones Potential which models Pauli repulsion at 
-        short ranges and the attractive van der Waals forces that act over longer-ranges. 
+        the atoms modeled with both the Lennard-Jones Potential which models Pauli repulsion at 
+        short ranges and the attractive van der Waals forces that act over longer-ranges as well
+        as Coulomb forces which describe the forces between atoms of diferent charges.
       %p
         You can select how many molecules to use and what the temperature should be.
         The model will automatically stop after 50 nano-seconds of model simulation time
@@ -154,5 +164,6 @@
     %script{:src => "fullscreen.js", :type => "text/javascript"}
     %script{:src => "grapher.js", :type => "text/javascript"}
     %script{:src => "lennard-jones.js", :type => "text/javascript"}
+    %script{:src => "coulomb.js", :type => "text/javascript"}
     %script{:src => "modeler.js", :type => "text/javascript"}
     %script{:src => "simplemolecules.js", :type => "text/javascript"}

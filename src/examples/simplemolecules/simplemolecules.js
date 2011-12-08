@@ -10,7 +10,7 @@
 
 var mol_number = 100,
     sample_time = 0.01,
-    temperature = 5,
+    temperature = 3,
     maximum_model_steps = 5000,
     molecules = [], model,
     lj_sigma_min = 1,
@@ -1193,7 +1193,13 @@ function setup_particles() {
       .attr("r",  function(d) { return mc_x(d.radius); })
       .attr("cx", function(d) { return mc_x(d.x); })
       .attr("cy", function(d) { return mc_y(d.y); })
-      .style("fill", function(d, i) { return "#2ca02c"; })
+      .style("fill", function(d, i) {
+        if (coulomb_forces_checkbox.checked) {
+          return (mc_x(d.charge) > 0) ? "#2ca02c" : "#a02c2c"
+        } else {
+          return "#2ca02c"
+        }
+      })
       .on("mousedown", molecule_mousedown)
       .on("mouseout", molecule_mouseout);
 }
@@ -1344,6 +1350,37 @@ if (select_temperature.type === "range") {
   select_temperature.value = temperature;
   select_temperature_display.innerText = d3.format("4.1f")(temperature);
 }
+
+// ------------------------------------------------------------
+//
+// Force Interaction Selectors
+//
+// ------------------------------------------------------------
+
+var lennard_jones_forces_checkbox = document.getElementById("lennard-jones-forces-checkbox");
+
+function lennardJonesInteractionHandler() {
+    if (lennard_jones_forces_checkbox.checked) {
+      model.set_lennard_jones_forces(true);
+    } else {
+      model.set_lennard_jones_forces(false);
+    };
+};
+
+lennard_jones_forces_checkbox.onchange = lennardJonesInteractionHandler;
+
+var coulomb_forces_checkbox = document.getElementById("coulomb-forces-checkbox");
+
+function coulombForcesInteractionHandler() {
+    if (coulomb_forces_checkbox.checked) {
+      model.set_coulomb_forces(true);
+    } else {
+      model.set_coulomb_forces(false);
+    };
+    setup_particles()
+};
+
+coulomb_forces_checkbox.onchange = coulombForcesInteractionHandler;
 
 // ------------------------------------------------------------
 //
