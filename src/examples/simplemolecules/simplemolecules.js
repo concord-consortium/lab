@@ -1136,7 +1136,7 @@ function speed_update() {
 function generate_molecules() {
   model = modeler.layout.model()
       .size([mc_graph.xdomain, mc_graph.ydomain])
-      .nodes(molecules, mol_number, mc_graph.xdomain, mc_graph.ydomain, temperature,
+      .nodes(mol_number, mc_graph.xdomain, mc_graph.ydomain, temperature,
              lj_graph.coefficients.rmin,  mol_rmin_radius_factor)
       .initialize();
 }
