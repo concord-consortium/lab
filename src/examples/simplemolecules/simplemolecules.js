@@ -1165,6 +1165,9 @@ var molecule_div = d3.select("#viz").append("div")
 var molecule_div_pre = molecule_div.append("pre")
 
 function setup_particles() {
+  var r = lj_graph.coefficients.rmin * mol_rmin_radius_factor;
+  model.set_radius(r);
+  
   mc_container.selectAll("circle").remove();
   mc_container.selectAll("g").remove();
 
