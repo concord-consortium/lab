@@ -18,7 +18,7 @@ grapher.indexedData = function(array, initial_index) {
   };
   return points;
 };
-// commentssss
+// comments
 grapher.colors = function(color) {
   var colors = {
     bright_red:       '#ff0000',
