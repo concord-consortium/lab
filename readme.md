@@ -1,36 +1,90 @@
-# Grapher
+# Lab
 
-### Browser Support
+HTML5-based scientific models, visualizations, graphing, and probeware.
 
-Grapher uses [D3](http://mbostock.github.com/d3/}) and should work on any
-browser, with minimal requirements such as JavaScript and the [W3C
-DOM](http://www.w3.org/DOM/) API. By default D3 requires the [Selectors
-API](http://www.w3.org/TR/selectors-api/) Level 1, but you can preload
-[Sizzle](http://sizzlejs.com/) for compatibility with older browsers. Some of
-the included D3 examples use additional browser features, such as
-[SVG](http://www.w3.org/TR/SVG/) and [CSS3
+## Simple Molecules
 
-Transitions](http://www.w3.org/TR/css3-transitions/). These features are not
-required to use D3, but are useful for visualization! D3 is not a compatibility
-layer. The examples should work on Firefox, Chrome (Chromium), Safari (WebKit),
-Opera and IE9.
+Example: http://lab.dev.concord.org/simplemolecules/simplemolecules.html
 
-Note: Chrome has strict permissions for reading files out of the local file
-system. Some examples use AJAX which works differently via HTTP instead of local
-files. For the best experience, load the D3 examples from your own machine via
-HTTP. Any static file web server will work; for example you can run Python's
-built-in server:
+## Grapher
 
-    python -m SimpleHTTPServer 8888
+Example: http://lab.dev.concord.org/surface-temperature/surface-temperature.html
 
-Once this is running, go to: <http://localhost:8888/examples/>
+## Development Setup
 
-### Development Setup
+Use git to create a local clone of the lab repository:
 
-Prerequisites
+    git clone git://github.com/concord-consortium/lab.git
 
-- Ruby 1.9
-- RubyGem: bundler
+If you have commit access to the repository use this form:
+
+    git clone git@github.com:concord-consortium/lab.git
+
+I recommend also cloning the d3.js repository -- there are many useful examples:
+
+    git clone git://github.com/mbostock/d3.git
+
+Install the additional Ruby Gems used during development: haml, sass, guard ...
+
+    bundle install
+    bundle install --binstubs
+
+Start watching the various src directories and automatically compile and generate
+the examples directory including JavaScript, HTML, CSS, and image resources:
+
+    bin/guard start
+
+This will take about 15s to generate the examples directory when first started.
+
+Create a localhost and local Apache vhost for lab and optionally d3:
+
+file: /etc/hosts
+
+    127.0.0.1       lab.local
+    127.0.0.1       d3.local
+
+file: /etc/apache2/extra/httpd-vhosts.conf
+
+    <VirtualHost lab.local:80>
+       ServerName lab
+       DocumentRoot /path/to/lab-repo
+       PassengerEnabled off
+       <Directory /path/to/lab-repo >
+         Options +Indexes +FollowSymLinks +MultiViews +Includes
+         AllowOverride All
+         Order allow,deny
+         Allow from all
+         DirectoryIndex index.html
+      </Directory>
+    </VirtualHost>
+
+    <VirtualHost d3.local:80>
+       ServerName d3
+       DocumentRoot /path/to/d3-repo
+       PassengerEnabled off
+       <Directory /path/to/d3-repo >
+         Options +Indexes +FollowSymLinks +MultiViews +Includes
+         AllowOverride All
+         Order allow,deny
+         Allow from all
+         DirectoryIndex index.html
+      </Directory>
+    </VirtualHost>
+
+Now open: http://lab.local/examples/
+
+Or go directly to the Simple Molecules model here: http://lab.local/examples/simplemolecules/simplemolecules.html
+
+If you cloned d3 and setup a localhost you can view the d3 examples here: http://d3.local/examples/
+
+Whenever guard is running and you save changes to any files in the src/ directory the corressponding files in the examples/directory will be updated. 
+
+To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small "LR" button on the toolbar.
+
+### Testing
+
+There are additional prerequisites for testing.
+
 - node
 - npm
 
@@ -54,21 +108,24 @@ Next, from the root directory of this repository, install D3's dependencies:
 You can see the list of dependencies in package.json. The packages will be
 installed in the node_modules directory.
 
-Install the additional Ruby Gems used during development: haml, sass, guard ...
- 
-    bundle install
-    bundle install --binstubs
-
-Start watching the various src directories and automatically compile and
-generate JavaScript, HTML and CSS resources:
-
-    bin/guard start
-
-To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small "LR" button on the toolbar.
-
-### Running the tests
+Running the tests
 
     make test
+
+### Updating http://lab.dev.concord.org/
+
+Currently http://lab.dev.concord.org/ is updated by using rsynch to copy the content of the 
+examples/ directory to the server. 
+
+Modify the example script below with your username, server host, 
+and path to the directory apache is serving:
+
+file: bin/update.sh
+
+    #!/bin/sh
+    rsync -rvz --delete examples/ username@server:/path/to/examples
+
+Running bin/update.sh will copy/update the directory at http://lab.dev.concord.org/
 
 ### References
 
