@@ -1,15 +1,15 @@
 {
   "name": "grapher",
   "version": "0.0.1",
-  "description": "A small, free JavaScript library for graphing data.",
-  "keywords": ["graph", "data", "visualization", "svg", "d3"],
-  "homepage": "http://concord.org",
+  "description": "HTML5-based scientific models, visualizations, graphing, and probeware",
+  "keywords": ["molecule", "probes", "graph", "data", "visualization", "svg", "d3"],
+  "homepage": "http://lab.dev.concord.org/",
   "author": {"name": "Stephen Bannasch", "url": "https://github.com/stepheneb"},
-  "repository": {"type": "git", "url": "https://github.com/concord-consortium/grapher.git"},
+  "repository": {"type": "git", "url": "https://github.com/concord-consortium/lab.git"},
   "dependencies": {
-    "d3": "2.1.3",
-    "uglify-js": "1.0.6",
-    "jsdom": "0.2.3",
-    "vows": "0.5.10"
+    "d3": "2.7.0",
+    "uglify-js": "1.2.3",
+    "jsdom": "0.2.10",
+    "vows": "0.6.1"
   }
 }
