@@ -12,7 +12,7 @@ suite.addBatch({
       return grapher.colors;
     },
     "returns six char hex color string from name": function(colors) {
-      assert.equal(color('bright_red'), '#ff0000');
+      assert.equal(colors('bright_red'), '#ff0000');
     }
   }
 });
