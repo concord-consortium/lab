@@ -15,7 +15,7 @@ suite.addBatch({
       assert.deepEqual(data([1, 0, 3, 4]), [{x:1, y:0}, {x:3, y:4}]);
     },
     "creates empty dataset from empty array": function(data) {
-      assert.equal(data([]), []);
+      assert.deepEqual(data([]), []);
     }
   }
 });
