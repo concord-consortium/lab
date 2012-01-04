@@ -27,14 +27,20 @@ Example: http://lab.dev.concord.org/surface-temperature/surface-temperature.html
 - npm
 
 Lab's test framework uses [Vows](http://vowsjs.org), which depends on
-[Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/). In addition 
-JavaScript minification is done using the NPM moodule: uglifyjs.
+[Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/) (Node Package Manager). 
+In addition JavaScript minification is done using [UglifyJS](https://github.com/mishoo/UglifyJS).
 
-If you are developing on Mac OS X, an easy way to install Node and NPM is using
-[Homebrew](http://mxcl.github.com/homebrew/):
+Currently development is being done with these versions of Node and NPM:
 
-    brew install node
-    brew install npm
+    $ node -v
+    v0.6.6
+
+    $ npm -v
+    1.1.0-beta-4
+
+As of v0.6.3 of node NPM is bundled with node. 
+
+Install node with installers available here http://nodejs.org/#download
 
 Use git to create a local clone of the lab repository:
 
@@ -118,9 +124,14 @@ To have the browser page for an example automatically reload when changes are ma
 Lab's test framework uses [Vows](http://vowsjs.org), which depends on
 [Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/). 
 
-Running the tests
+Running the tests:
 
     make test
+
+If you have everything setup correctly you should see something like this:
+
+    · ·· 
+    ✓ OK » 3 honored (0.001s)
 
 ### Updating http://lab.dev.concord.org/
 
