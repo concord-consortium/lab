@@ -2,6 +2,13 @@
 
 HTML5-based scientific models, visualizations, graphing, and probeware.
 
+## TODO
+
+- The current repository requires heavy refactoring to move much of the 
+code in src/examples into re-usable modules.
+
+- The tests need to be expanded a great deal.
+
 ## Simple Molecules
 
 Example: http://lab.dev.concord.org/simplemolecules/simplemolecules.html
@@ -108,25 +115,8 @@ To have the browser page for an example automatically reload when changes are ma
 
 ### Testing
 
-This repository should work out of the box if you just want to create new
-visualizations using Grapher and D3. On the other hand, if you want to 
-extend Lab with new features, fix bugs, or run tests, you'll need to 
-install a few more things.
-
 Lab's test framework uses [Vows](http://vowsjs.org), which depends on
-[Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/). If you are
-developing on Mac OS X, an easy way to install Node and NPM is using
-[Homebrew](http://mxcl.github.com/homebrew/):
-
-    brew install node
-    brew install npm
-
-Next, from the root directory of this repository, install D3's dependencies:
-
-    npm install
-
-You can see the list of dependencies in package.json. The packages will be
-installed in the node_modules directory.
+[Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/). 
 
 Running the tests
 
