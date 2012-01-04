@@ -12,6 +12,23 @@ Example: http://lab.dev.concord.org/surface-temperature/surface-temperature.html
 
 ## Development Setup
 
+### Prerequisites
+
+- Ruby 1.9
+- RubyGem: bundler
+- node
+- npm
+
+Lab's test framework uses [Vows](http://vowsjs.org), which depends on
+[Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/). In addition 
+JavaScript minification is done using the NPM moodule: uglifyjs.
+
+If you are developing on Mac OS X, an easy way to install Node and NPM is using
+[Homebrew](http://mxcl.github.com/homebrew/):
+
+    brew install node
+    brew install npm
+
 Use git to create a local clone of the lab repository:
 
     git clone git://github.com/concord-consortium/lab.git
@@ -24,10 +41,18 @@ I recommend also cloning the d3.js repository -- there are many useful examples:
 
     git clone git://github.com/mbostock/d3.git
 
-Install the additional Ruby Gems used during development: haml, sass, guard ...
+Change to the lab directory and install the additional Ruby Gems used during development: haml, sass, guard ...
 
+    cd lab
     bundle install
     bundle install --binstubs
+
+next install Lab's NPM dependencies:
+
+    npm install
+
+You can see the list of dependencies in package.json. The packages will be
+installed in the node_modules directory.
 
 Start watching the various src directories and automatically compile and generate
 the examples directory including JavaScript, HTML, CSS, and image resources:
@@ -83,17 +108,12 @@ To have the browser page for an example automatically reload when changes are ma
 
 ### Testing
 
-There are additional prerequisites for testing.
-
-- node
-- npm
-
 This repository should work out of the box if you just want to create new
 visualizations using Grapher and D3. On the other hand, if you want to 
-extend Grapher with new features, fix bugs, or run tests, you'll need to 
+extend Lab with new features, fix bugs, or run tests, you'll need to 
 install a few more things.
 
-Grapher's test framework uses [Vows](http://vowsjs.org), which depends on
+Lab's test framework uses [Vows](http://vowsjs.org), which depends on
 [Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/). If you are
 developing on Mac OS X, an easy way to install Node and NPM is using
 [Homebrew](http://mxcl.github.com/homebrew/):
@@ -141,7 +161,6 @@ Running bin/update.sh will copy/update the directory at http://lab.dev.concord.o
 **LiveReload extension for Chrome and Safari**
 
 - [livereload](https://github.com/mockko/livereload)
-
 
 **Full Screen API**
 
