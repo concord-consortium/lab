@@ -13,6 +13,10 @@ code in src/examples into re-usable modules.
 
 Example: http://lab.dev.concord.org/simplemolecules/simplemolecules.html
 
+Cameron Abrams, teaching in the Department of Chemical Engineering at Drexel has 
+published these excellent resources [Molecular Simulation](http://www.pages.drexel.edu/~cfa22/msim/msim.html)
+for his course.
+
 ## Grapher
 
 Example: http://lab.dev.concord.org/surface-temperature/surface-temperature.html
@@ -165,12 +169,12 @@ Running bin/update.sh will copy/update the directory at http://lab.dev.concord.o
 
 **Full Screen API**
 
-http://peter.sh/2011/01/javascript-full-screen-api-navigation-timing-and-repeating-css-gradients/
-http://peter.sh/2011/08/fullscreen-api-enhanced-element-highlighting-and-progress-on-flexbox/
-http://johndyer.name/native-fullscreen-javascript-api-plus-jquery-plugin/
-https://wiki.mozilla.org/Gecko:FullScreenAPI
-http://blog.pearce.org.nz/2011/09/mozilla-full-screen-api-progress-update.html
-http://ajaxian.com/archives/fullscreen-api-coming-to-browsers-near-you
-http://html5-demos.appspot.com/static/fullscreen.html
-http://stackoverflow.com/questions/7836204/chrome-fullscreen-api
-http://stackoverflow.com/questions/7836204/chrome-fullscreen-api/7934009
+- http://peter.sh/2011/01/javascript-full-screen-api-navigation-timing-and-repeating-css-gradients/
+- http://peter.sh/2011/08/fullscreen-api-enhanced-element-highlighting-and-progress-on-flexbox/
+- http://johndyer.name/native-fullscreen-javascript-api-plus-jquery-plugin/
+- https://wiki.mozilla.org/Gecko:FullScreenAPI
+- http://blog.pearce.org.nz/2011/09/mozilla-full-screen-api-progress-update.html
+- http://ajaxian.com/archives/fullscreen-api-coming-to-browsers-near-you
+- http://html5-demos.appspot.com/static/fullscreen.html
+- http://stackoverflow.com/questions/7836204/chrome-fullscreen-api
+- http://stackoverflow.com/questions/7836204/chrome-fullscreen-api/7934009
