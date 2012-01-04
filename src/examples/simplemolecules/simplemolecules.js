@@ -1266,7 +1266,6 @@ function selectMoleculeNumberChange() {
   mol_number = +select_molecule_number.value;
   modelReset();
   updateMolNumberViewDependencies();
-  render_datatable(true);
 }
 
 var mol_number_to_ke_yxais_map = {
@@ -1471,6 +1470,7 @@ function modelReset() {
   setup_particles();
   step_counter = model.stepCounter();
   displayStats();
+  render_datatable(true);
   ke_data = [model.ke()];
   ke_graph.new_data(ke_data);
   ke_graph.hide_canvas();
@@ -1667,18 +1667,19 @@ start_benchmarks.onclick = function() {
 // ------------------------------------------------------------
 
 var toggle_datatable = document.getElementById("toggle-datatable");
-var datatable_table = document.getElementById("datatable-table");
 var datatable_visible = false;
+var datatable_table = document.getElementById("datatable-table");
 
 datatable_table.style.display = "none";
 
 function render_datatable(reset) {
+  datatable_table = document.getElementById("datatable-table");
   var i,
       titlerows = datatable_table.getElementsByClassName("title"),
       datarows = datatable_table.getElementsByClassName("data"),
       column_titles = ['index', 'px', 'py', 'x', 'y', 'vx', 'vy', 'ax', 'ay', 'speed', 'radius', 'mass', 'charge'],
       i_formatter = d3.format(" 2d"),
-      f_formatter = d3.format(" 2.4f"),
+      f_formatter = d3.format(" 3.4f"),
       formatters = [i_formatter, f_formatter, f_formatter, f_formatter, 
                     f_formatter, f_formatter, f_formatter, f_formatter, 
                     f_formatter, f_formatter, f_formatter, f_formatter, 
