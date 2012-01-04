@@ -14,7 +14,7 @@ modeler.layout.model = function() {
       temperature_control = true,
       lennard_jones_forces = true,
       coulomb_forces = true,
-      ke,
+      ke, pe,
       ave_speed, speed_goal, speed_factor,
       ave_speed_max, ave_speed_min,
       speed_max_pos, speed_max_neg,
@@ -49,7 +49,7 @@ modeler.layout.model = function() {
   //
   // Individual property arrays for the nodes
   //
-  var radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge;
+  var radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge;
   
   //
   // Indexes into the nodes array for the individual node property arrays
@@ -58,31 +58,31 @@ modeler.layout.model = function() {
   // as object properties for use outside this module.
   // 
   
-  var _radius =  0;
-  var _px     =  1;
-  var _py     =  2;
-  var _x      =  3;
-  var _y      =  4;
-  var _vx     =  5;
-  var _vy     =  6;
-  var _speed  =  7;
-  var _ax     =  8;
-  var _ay     =  9;
-  var _mass   = 10;
-  var _charge = 11;
+  var _radius   =  0;
+  var _px       =  1;
+  var _py       =  2;
+  var _x        =  3;
+  var _y        =  4;
+  var _vx       =  5;
+  var _vy       =  6;
+  var _speed    =  7;
+  var _ax       =  8;
+  var _ay       =  9;
+  var _halfmass = 10;
+  var _charge   = 11;
 
-  model.RADIUS  = 0;
-  model.PX      = 1;
-  model.PY      = 2;
-  model.X       = 3;
-  model.Y       = 4;
-  model.VX      = 5;
-  model.VY      = 6;
-  model.SPEED   = 7;
-  model.AX      = 8;
-  model.AY      = 9;
-  model.MASS    = 10;
-  model.CHARGE  = 11;
+  model.RADIUS   = 0;
+  model.PX       = 1;
+  model.PY       = 2;
+  model.X        = 3;
+  model.Y        = 4;
+  model.VX       = 5;
+  model.VY       = 6;
+  model.SPEED    = 7;
+  model.AX       = 8;
+  model.AY       = 9;
+  model.HALFMASS = 10;
+  model.CHARGE   = 11;
 
   //
   // Number of individual properties for a node
@@ -100,17 +100,17 @@ modeler.layout.model = function() {
   function molecule(i) {
     var o = {};
     o.index  = i,
-    o.radius = nodes[_radius][i];
-    o.px     = nodes[_px    ][i];
-    o.py     = nodes[_py    ][i];
-    o.x      = nodes[_x     ][i];
-    o.y      = nodes[_y     ][i];
-    o.vx     = nodes[_vx    ][i];
-    o.vy     = nodes[_vy    ][i];
-    o.speed  = nodes[_speed ][i];
-    o.ax     = nodes[_ax    ][i];
-    o.ay     = nodes[_ay    ][i];
-    o.mass   = nodes[_mass  ][i];
+    o.radius = nodes[_radius  ][i];
+    o.px     = nodes[_px      ][i];
+    o.py     = nodes[_py      ][i];
+    o.x      = nodes[_x       ][i];
+    o.y      = nodes[_y       ][i];
+    o.vx     = nodes[_vx      ][i];
+    o.vy     = nodes[_vy      ][i];
+    o.speed  = nodes[_speed   ][i];
+    o.ax     = nodes[_ax      ][i];
+    o.ay     = nodes[_ay      ][i];
+    o.mass   = nodes[_halfmass][i]*2;
     o.charge = nodes[_charge][i];
     return o
   }
@@ -128,7 +128,7 @@ modeler.layout.model = function() {
   // The temperature_to_speed(t) function is used to map temperatures in abstract units
   // within a range of 0..10 to a goal for the average speed per atom for the system of atoms. 
   //
-  // Currently all atoms are unit mass.
+  // Currently all atoms are unit mass. The mass property is saved as 'halfmass' -- mass/2.
   //
   // Increasing the number of atoms while keeping the average spped for an atom 
   // the same will increase the total KE for the system.
@@ -201,6 +201,7 @@ modeler.layout.model = function() {
         l, // current distance
         k, // current force
         t, // current system time
+        r2, r6i,
         ljf, coul, xf, yf,
         dx, dy, mag2,
         initial_x, initial_y,
@@ -266,6 +267,12 @@ modeler.layout.model = function() {
         }
       }
       
+      // zero-out the acceleration
+      i = -1; while (++i < n) {
+        ax[i] = 0;
+        ay[i] = 0;
+      }
+      
       //
       // Use brute-force technique to calculate lennard-jones and coulomb forces
       //
@@ -274,9 +281,17 @@ modeler.layout.model = function() {
           j = i; while (++j < n) {
             dx = x[j] - x[i]
             dy = y[j] - y[i]
-            l = Math.sqrt(dx * dx + dy * dy);
+            r2 = dx * dx + dy * dy;
+            l = Math.sqrt(r2);
             if (lennard_jones_forces && l < max_ljf_distance) { 
               ljf  = Math.max(max_ljf_repulsion, lennard_jones.force(l));
+              // alternate way to calculate ljf ...
+              // http://www.pages.drexel.edu/~cfa22/msim/node28.html
+              // http://www.pages.drexel.edu/~cfa22/msim/codes/mdlj.c
+              // r6i   = 1.0/(r2*r2);
+              // ljf     = 48*(r6i*r6i-0.5*r6i);
+              // e    += 4*(r6i*r6i - r6i) - (shift?ecut:0.0);
+              // vir += 48*(r6i*r6i-0.5*r6i);
               xf = dx / l * ljf;
               yf = dy / l * ljf;
               ax[i] += xf;
@@ -286,6 +301,7 @@ modeler.layout.model = function() {
             }
             if (coulomb_forces && l < max_coulomb_distance) { 
               coul  = Math.min(max_coulomb_force, coulomb.force(l, charge[i], charge[j]));
+              pe +=  coulomb.energy(l, charge[i], charge[j]);
               xf = dx / l * coul;
               yf = dy / l * coul;
               ax[i] += xf;
@@ -349,12 +365,9 @@ modeler.layout.model = function() {
 
       //
       // Complete second-half of the velocity-verlet integration with updated force values
-      // and zero-out the accelleration
       i = -1; while (++i < n) {
         vx[i] += 0.5 * dt * ax[i];
         vy[i] += 0.5 * dt * ay[i];
-        ax[i] = 0;
-        ay[i] = 0;
       }
     }
   }
@@ -367,7 +380,7 @@ modeler.layout.model = function() {
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
     // ave_speed = average_speed();
-    ke = kinetic_energy();
+    calculate_kinetic_and_potential_energy();
     update_molecules();
     tick_history_list_push();
     if (!stopped) { 
@@ -488,14 +501,45 @@ modeler.layout.model = function() {
       return speed_history.reduce(function(j,k) { return j+k })/pressures.length
     }
   }
+
+  function calculate_kinetic_and_potential_energy() {
+    var i, s, k, fx, fy, p, n = nodes[0].length;
+    ke = 0;
+    pe = 0;
+    i = -1; while (++i < n) { 
+      s = speed[i];
+      k =  s * s * halfmass[i];
+      ke += k;
+      fx = ax[i];
+      fy = ay[i];
+      p = fx + fx;
+      pe += p;
+    }
+  }
+  
+  // 
+  function potential_energy() {
+    var i, fx, fy, p, n = nodes[0].length;
+    pe = 0;
+    i = -1; while (++i < n) { 
+      fx = ax[i];
+      fy = ay[i];
+      p = Math.sqrt(fx * fx + fy * fy);
+      pe += p;
+    }
+    return pe;
+  }
   
   // currently the nodes are all unit mass
   function kinetic_energy() {
-    var i, s = 0, n = nodes[0].length;
+    var i, s, k, n = nodes[0].length;
+    ke = 0;
     i = -1; while (++i < n) { 
-      s += speed[i] 
+      s = speed[i];
+      k =  s * s * halfmass[i];
+      ke += k;
     }
-    return ke = s * s;
+    return ke;
   }
 
   function average_speed() {
@@ -656,6 +700,7 @@ modeler.layout.model = function() {
         set_acc,
         container_pressure,
         speed_history,
+        potential_energy,
         kinetic_energy,
         average_speed,
         resolve_collisions,
@@ -669,6 +714,7 @@ modeler.layout.model = function() {
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
     ave_speed = average_speed();
     ke = kinetic_energy();
+    pe = potential_energy();
     tick_history_list_push();
     return model
   };
@@ -723,8 +769,8 @@ modeler.layout.model = function() {
     ay = nodes[model.AY];
 
     // model.MASS     = 10;
-    nodes[model.MASS] = arrays.create(num, 1, array_type);
-    mass = nodes[model.MASS];
+    nodes[model.HALFMASS] = arrays.create(num, 0.5, array_type);
+    halfmass = nodes[model.HALFMASS];
 
     // model.CHARGE   = 11;
     nodes[model.CHARGE] = arrays.create(num, 0, array_type);
@@ -766,6 +812,11 @@ modeler.layout.model = function() {
   model.ke = function() {
     ke = ke || kinetic_energy();
     return ke
+  };
+
+  model.pe = function() {
+    pe = pe || potential_energy();
+    return pe
   };
 
   model.speed = function() {
