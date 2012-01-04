@@ -1,4 +1,4 @@
-// commentssss
+// comments
 grapher.colors = function(color) {
   var colors = {
     bright_red:       '#ff0000',
