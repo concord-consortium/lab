@@ -158,9 +158,15 @@ Running bin/update.sh will copy/update the directory at http://lab.dev.concord.o
 
 ### References
 
+**[node](http://nodejs.org/)**
+- [documentation](http://nodejs.org/docs/latest/api/index.html)
+- [issues](https://github.com/joyent/node/issues)
+- [google group](http://groups.google.com/group/nodejs)
+
 **[npm](http://npmjs.org/)**
 - [faq](http://npmjs.org/doc/faq.html)
-- [npm issues](https://github.com/isaacs/npm/issues)
+- [google group](https://groups.google.com/group/npm-)
+- [issues](https://github.com/isaacs/npm/issues)
 - [node_modules in git](http://www.mikealrogers.com/posts/nodemodules-in-git.html)
 
 **RubyGems**
