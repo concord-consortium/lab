@@ -158,14 +158,23 @@ Running bin/update.sh will copy/update the directory at http://lab.dev.concord.o
 
 ### References
 
+**[d3.js](http://mbostock.github.com/d3/)**
+
+- [repo](https://github.com/mbostock/d3)
+- [documentation](http://mbostock.github.com/d3/api/)
+- [issues](https://github.com/mbostock/d3/issues)
+- [google group](http://groups.google.com/group/d3-js)
+
 **[node](http://nodejs.org/)**
 
+- [repo](https://github.com/joyent/node)
 - [documentation](http://nodejs.org/docs/latest/api/index.html)
 - [issues](https://github.com/joyent/node/issues)
 - [google group](http://groups.google.com/group/nodejs)
 
 **[npm](http://npmjs.org/)**
 
+- [repo](https://github.com/isaacs/npm)
 - [faq](http://npmjs.org/doc/faq.html)
 - [google group](https://groups.google.com/group/npm-)
 - [issues](https://github.com/isaacs/npm/issues)
