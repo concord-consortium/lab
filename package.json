@@ -1,15 +1,34 @@
 {
-  "name": "grapher",
+  "name": "lab",
   "version": "0.0.1",
   "description": "HTML5-based scientific models, visualizations, graphing, and probeware",
-  "keywords": ["molecule", "probes", "graph", "data", "visualization", "svg", "d3"],
+  "keywords": [
+    "molecule", 
+    "probes", 
+    "graph", 
+    "data", 
+    "visualization", 
+    "svg", 
+    "d3"
+  ],
   "homepage": "http://lab.dev.concord.org/",
-  "author": {"name": "Stephen Bannasch", "url": "https://github.com/stepheneb"},
-  "repository": {"type": "git", "url": "https://github.com/concord-consortium/lab.git"},
+  "author": {
+    "name": "Stephen Bannasch", 
+    "url": "https://github.com/stepheneb"
+  },
+  "repository": { 
+    "type": "git", 
+    "url": "https://github.com/concord-consortium/lab.git"
+  },
   "dependencies": {
-    "d3": "2.7.0",
+    "d3": "2.7.0"
+  },
+  "devDependencies": {
     "uglify-js": "1.2.3",
     "jsdom": "0.2.10",
     "vows": "0.6.1"
+  },
+  "scripts": {
+    "test": "./node_modules/vows/bin/vows"
   }
 }
