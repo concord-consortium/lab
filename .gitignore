@@ -1,6 +1,7 @@
-node_modules
 Gemfile.lock
 bin
 .bundle
 .sass-cache
 /examples*
+node_modules
+npm-debug.log
