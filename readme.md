@@ -144,13 +144,15 @@ If you have everything setup correctly you should see something like this:
 ### Repository structure
 
 - `src/examples`: haml, sass files are processed into html and css files saved in the `examples/` directory, javascript files are copied.
-- `src/grapher`: javascript code compiled into the grapher.js module]
+- `src/grapher`: javascript code compiled into the grapher.js module
 - `test/`: tests that run in [nodejs](http://nodejs.org/) using [Vows](http://vowsjs.org)
 - `lib/`: unmanaged dependencies
 
 After running `bundle install --binstubs` the `bin/` directory will be created.
 
 After running: `bin/guard` the `examples/` directory will be created.
+
+**Note:** remember to make changes you want saved in the `src/` directory **not** in the `examples/' directory.`
 
 ### Updating http://lab.dev.concord.org/
 
