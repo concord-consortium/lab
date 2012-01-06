@@ -25,13 +25,13 @@ Example: http://lab.dev.concord.org/surface-temperature/surface-temperature.html
 
 ### Prerequisites
 
-- Ruby 1.9
-- RubyGem: bundler
-- node
-- npm
+- [Ruby 1.9](http://www.ruby-lang.org/en/)
+- The RubyGem: [bundler](http://gembundler.com/)
+- [nodejs](http://nodejs.org/)
+- [npm](http://npmjs.org/)
 
 Lab's test framework uses [Vows](http://vowsjs.org), which depends on
-[Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/) (Node Package Manager). 
+[nodejs](http://nodejs.org/) and [npm](http://npmjs.org/) (Node Package Manager). 
 In addition JavaScript minification is done using [UglifyJS](https://github.com/mishoo/UglifyJS).
 
 Currently development is being done with these versions of Node and NPM:
@@ -46,27 +46,31 @@ As of v0.6.3 of node NPM is bundled with node.
 
 Install node with installers available here http://nodejs.org/#download
 
-Use git to create a local clone of the lab repository:
-
-    git clone git://github.com/concord-consortium/lab.git
+**Use git to create a local clone of the lab repository.**
 
 If you have commit access to the repository use this form:
 
     git clone git@github.com:concord-consortium/lab.git
 
-I recommend also cloning the d3.js repository -- there are many useful examples:
+Alternatively use this form:
+
+    git clone git://github.com/concord-consortium/lab.git
+
+I recommend also cloning the d3.js repository into a separate directory -- there are many useful examples 
+of both visualizations and examples of tests that run extremely quickly using vows, jsdom, and node.
 
     git clone git://github.com/mbostock/d3.git
+
+**Setup the lab repository for development**
 
 Change to the lab directory and install the additional Ruby Gems used during development: haml, sass, guard ...
 
     cd lab
-    bundle install
     bundle install --binstubs
 
-next install Lab's NPM dependencies:
+Next install Lab's dependencies managed by npm -- including the development dependencies:
 
-    npm install
+    npm install --dev
 
 You can see the list of dependencies in package.json. The packages will be
 installed in the node_modules directory.
@@ -153,6 +157,11 @@ file: bin/update.sh
 Running bin/update.sh will copy/update the directory at http://lab.dev.concord.org/
 
 ### References
+
+**[npm](http://npmjs.org/)**
+- [faq](http://npmjs.org/doc/faq.html)
+- [npm issues](https://github.com/isaacs/npm/issues)
+- [node_modules in git](http://www.mikealrogers.com/posts/nodemodules-in-git.html)
 
 **RubyGems**
 
