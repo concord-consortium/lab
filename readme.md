@@ -141,6 +141,17 @@ If you have everything setup correctly you should see something like this:
     · ·· 
     ✓ OK » 3 honored (0.001s)
 
+### Repository structure
+
+- `src/examples`: haml, sass files are processed into html and css files saved in the `examples/` directory, javascript files are copied.
+- `src/grapher`: javascript code compiled into the grapher.js module]
+- `test/`: tests that run in [nodejs](http://nodejs.org/) using [Vows](http://vowsjs.org)
+- `lib/`: unmanaged dependencies
+
+After running `bundle install --binstubs` the `bin/` directory will be created.
+
+After running: `bin/guard` the `examples/` directory will be created.
+
 ### Updating http://lab.dev.concord.org/
 
 Currently http://lab.dev.concord.org/ is updated by using rsynch to copy the content of the 
@@ -179,7 +190,13 @@ Running bin/update.sh will copy/update the directory at http://lab.dev.concord.o
 - [faq](http://npmjs.org/doc/faq.html)
 - [google group](https://groups.google.com/group/npm-)
 - [issues](https://github.com/isaacs/npm/issues)
+
+More about using npm for development:
+
+- [Introduction to npm](http://howtonode.org/introduction-to-npm)
 - [node_modules in git](http://www.mikealrogers.com/posts/nodemodules-in-git.html)
+- [Managing module dependencies](http://howtonode.org/managing-module-dependencies)
+- [What do people do for versionizing node modules within git?](https://groups.google.com/group/nodejs/browse_thread/thread/9aa563f1fe3b3ff5)
 
 **RubyGems**
 
