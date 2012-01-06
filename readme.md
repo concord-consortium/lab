@@ -70,7 +70,7 @@ Change to the lab directory and install the additional Ruby Gems used during dev
 
 Next install Lab's dependencies managed by npm -- including the development dependencies:
 
-    npm install --dev
+    npm install
 
 You can see the list of dependencies in package.json. The packages will be
 installed in the node_modules directory.
@@ -171,6 +171,7 @@ Running bin/update.sh will copy/update the directory at http://lab.dev.concord.o
 - [documentation](http://nodejs.org/docs/latest/api/index.html)
 - [issues](https://github.com/joyent/node/issues)
 - [google group](http://groups.google.com/group/nodejs)
+- [How To Node](http://howtonode.org/)
 
 **[npm](http://npmjs.org/)**
 
