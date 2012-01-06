@@ -1,7 +1,7 @@
 /*global 
   window, document, navigator, 
   requestAnimFrame, cancelRequestAnimFrame, myRequire,
-  avalanche2d, grapher, sprintf, d3,
+  avalanche2d, grapher, d3,
   graph
 */
 
