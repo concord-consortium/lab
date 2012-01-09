@@ -11,7 +11,7 @@ modeler.layout.model = function() {
   var model = {},
       event = d3.dispatch("tick"),
       size = [1, 1],
-      temperature_control = true,
+      temperature_control,
       lennard_jones_forces = true,
       coulomb_forces = true,
       ke, pe,
@@ -555,10 +555,10 @@ modeler.layout.model = function() {
     return (ave ? 1/ave*1000: 0)
   }
 
-  function resolve_collisions() {
+  function resolve_collisions(annealing_steps) {
     var i; save_temperature_control = temperature_control;
     temperature_control = true;
-    i = -1; while (++i < 10) {
+    i = -1; while (++i < annealing_steps) {
       run_tick();
     }
     temperature_control = save_temperature_control;
@@ -676,13 +676,16 @@ modeler.layout.model = function() {
    coulomb_forces = cf;
  }
 
-  model.initialize = function() {
+  model.initialize = function(lj, cf) {
     var i, j, k, o,
         radius, px, py, x, y, vx, vy, speed, ax, ay,
         _radius, _px, _py, _x, _y, _vx, _vy, _speed, _ax, _ay,
         n = nodes[0].length,
         w = size[0], h = size[1],
         temperature = 4,
+        lennard_jones_forces = lj,
+        coulomb_forces = cf,
+        annealing_steps = 25,
         speed_goal,
         max_ljf_repulsion, min_ljf_attraction,
         max_ljf_distance, min_ljf_distance;
@@ -706,10 +709,11 @@ modeler.layout.model = function() {
         resolve_collisions,
         set_temperature;
 
+    reset_tick_history_list();
     speed_goal = temperature_to_speed(temperature);
     setup_ljf_limits();
     setup_coulomb_limits();
-    resolve_collisions();
+    resolve_collisions(annealing_steps);
     // pressures.push(pressure);
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
     ave_speed = average_speed();
