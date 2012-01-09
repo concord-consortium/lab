@@ -721,8 +721,8 @@ modeler.layout.model = function() {
 
   model.nodes = function(num, xdomain, ydomain, temperature, rmin, mol_rmin_radius_factor) {
     
-    var dAngle, v0;
-    
+    var dAngle;
+
     nodes = arrays.create(node_properties_length, null, "regular");
     
     var webgl = !!window.WebGLRenderingContext;
@@ -779,14 +779,14 @@ modeler.layout.model = function() {
     charge = nodes[model.CHARGE];
     
     // initialize particles with 0 net momentum by spacing initial velocities equally around a circle
+    set_temperature(temperature);     // sets model instance variable speed_goal (v0)
     dTheta = 2*Math.PI / num;
-    v0 = temperature_to_speed(temperature);
     
     i = -1; while (++i < num) {
         px[i] = Math.random() * xdomain * 0.8 + xdomain * 0.1;  // previous x
         py[i] = Math.random() * ydomain * 0.8 + ydomain * 0.1;  // previous y
-        vx[i] = v0*Math.cos(dTheta*i);
-        vy[i] = v0*Math.sin(dTheta*i);
+        vx[i] = speed_goal*Math.cos(dTheta*i);
+        vy[i] = speed_goal*Math.sin(dTheta*i);
          x[i] = vx[i] + px[i];
          y[i] = vy[i] + py[i];
      speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);  // == v0
