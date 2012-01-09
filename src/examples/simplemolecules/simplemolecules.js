@@ -21,7 +21,8 @@ var mol_number = 100,
     lj_alpha, lj_beta,
     mol_rmin_radius_factor = 0.38,
     frame_number = 0,
-    model_stopped;
+    model_stopped = true,
+    model = modeler.layout.model();
 
 // ------------------------------------------------------------
 //
@@ -1134,11 +1135,10 @@ function speed_update() {
 // ------------------------------------------------------------
 
 function generate_molecules() {
-  model = modeler.layout.model()
-      .size([mc_graph.xdomain, mc_graph.ydomain])
+  model.size([mc_graph.xdomain, mc_graph.ydomain])
       .nodes(mol_number, mc_graph.xdomain, mc_graph.ydomain, temperature,
              lj_graph.coefficients.rmin,  mol_rmin_radius_factor)
-      .initialize();
+      .initialize(lennard_jones_forces_checkbox.checked, coulomb_forces_checkbox.checked);
 }
 
 function update_molecule_radius() {
@@ -1461,11 +1461,14 @@ function modelStepForward() {
 }
 
 function modelReset() {
-  modelStop();
+  mol_number = +select_molecule_number.value;
   modelSetup();
+  update_coefficients(lennard_jones.coefficients());
   model.temperature(temperature);
   temperature_control_checkbox.onchange();
+  setupScreen();
   updateMolNumberViewDependencies();
+  modelStop();
   update_molecule_radius();
   setup_particles();
   step_counter = model.stepCounter();
@@ -1505,13 +1508,7 @@ function displayStats() {
 //
 // ------------------------------------------------------------
 
-modelSetup()
-update_coefficients(lennard_jones.coefficients());
-setupScreen();
 modelReset();
-mol_number = +select_molecule_number.value;
-modelReset();
-updateMolNumberViewDependencies();
 
 // ------------------------------------------------------------
 //
