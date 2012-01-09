@@ -721,6 +721,8 @@ modeler.layout.model = function() {
 
   model.nodes = function(num, xdomain, ydomain, temperature, rmin, mol_rmin_radius_factor) {
     
+    var dAngle, v0;
+    
     nodes = arrays.create(node_properties_length, null, "regular");
     
     var webgl = !!window.WebGLRenderingContext;
@@ -775,18 +777,22 @@ modeler.layout.model = function() {
     // model.CHARGE   = 11;
     nodes[model.CHARGE] = arrays.create(num, 0, array_type);
     charge = nodes[model.CHARGE];
-
+    
+    // initialize particles with 0 net momentum by spacing initial velocities equally around a circle
+    dTheta = 2*Math.PI / num;
+    v0 = temperature_to_speed(temperature);
+    
     i = -1; while (++i < num) {
-        px[i] = Math.random() * xdomain * 0.8 + xdomain * 0.1;
-        py[i] = Math.random() * ydomain * 0.8 + ydomain * 0.1;
-         x[i] = px[i] + Math.random() * temperature/100 - temperature/200;
-         y[i] = py[i] + Math.random() * temperature/100 - temperature/200;
-        vx[i] = x[i] - px[i];
-        vy[i] = y[i] - py[i];
-     speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
+        px[i] = Math.random() * xdomain * 0.8 + xdomain * 0.1;  // previous x
+        py[i] = Math.random() * ydomain * 0.8 + ydomain * 0.1;  // previous y
+        vx[i] = v0*Math.cos(dTheta*i);
+        vy[i] = v0*Math.sin(dTheta*i);
+         x[i] = vx[i] + px[i];
+         y[i] = vy[i] + py[i];
+     speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);  // == v0
         ax[i] = 0;
         ay[i] = 0;
-    charge[i] = (Math.random() > 0.5) ? 1 : -1;
+    charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
         // speed_data.push(speed[i]);
     };
     update_molecules();
