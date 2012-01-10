@@ -12,10 +12,34 @@ suite.addBatch({
       return arrays.create;
     },
     "creates array of zeros": function(create) {
-      assert.deepEqual(create(4, 0), [0, 0, 0, 0]);
+      assert.deepEqual(create(4, 0, "regular"), [0, 0, 0, 0]);
     },
     "creates array of ones": function(create) {
-      assert.deepEqual(create(4, 1), [1, 1, 1, 1]);
+      assert.deepEqual(create(4, 1, "regular"), [1, 1, 1, 1]);
+    },
+    "creates Float32Array of zeros": function(create) {
+      var float_32_array = create(2, 0,"Float32Array");
+      assert.equal(float_32_array.length, 2);
+      assert.equal(float_32_array[0], 0);
+      assert.equal(float_32_array[1], 0);
+    },
+    "creates Float32Array of ones": function(create) {
+      var float_32_array = create(2, 1,"Float32Array");
+      assert.equal(float_32_array.length, 2);
+      assert.equal(float_32_array[0], 1);
+      assert.equal(float_32_array[1], 1);
+    },
+    "creates Uint8Array of zeros": function(create) {
+      var uint_8_array = create(2, 0,"Uint8Array");
+      assert.equal(uint_8_array.length, 2);
+      assert.equal(uint_8_array[0], 0);
+      assert.equal(uint_8_array[1], 0);
+    },
+    "creates Uint8Array of ones": function(create) {
+      var uint_8_array = create(2, 1,"Uint8Array");
+      assert.equal(uint_8_array.length, 2);
+      assert.equal(uint_8_array[0], 1);
+      assert.equal(uint_8_array[1], 1);
     }
   }
 });

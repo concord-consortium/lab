@@ -8,6 +8,13 @@
   arrays = {};
   arrays = { version: "0.0.1" };
   arrays.webgl = !!window.WebGLRenderingContext;
+  arrays.typed = false;
+  try {
+    var a = new Float64Array(0);
+    arrays.typed = true
+  } catch(e) {
+    
+  }
 
   // regular
   // Uint8Array
@@ -20,7 +27,7 @@
   
   arrays.create = function(size, fill, array_type) {
     if (!array_type) {
-      if (arrays.webgl) {
+      if (arrays.webgl || arrays.typed) {
         array_type = "Float32Array"
       } else {
         array_type = "regular"
