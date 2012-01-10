@@ -3,8 +3,7 @@
 //
 
 (function(){ 
-  
-  var root = this;
+
   arrays = {};
   arrays = { version: "0.0.1" };
   arrays.webgl = !!window.WebGLRenderingContext;
@@ -194,6 +193,4 @@
     return acc / length;
   }
 
-  // export namespace
-  if (root !== 'undefined') { root.arrays = arrays; }
 })()

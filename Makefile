@@ -59,7 +59,7 @@ lab.benchmark.js: \
 
 lab.arrays.js: \
 	src/start.js \
-	src/molecules/arrays.js \
+	src/arrays/arrays.js \
 	src/end.js
 
 lab.layout.js: \

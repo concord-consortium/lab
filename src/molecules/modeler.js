@@ -92,7 +92,7 @@ modeler.layout.model = function() {
   //
   // A two dimensional array consisting of arrays of node property values
   //
-  var nodes = molecules_arrays.create(node_properties_length, null, "regular");
+  var nodes = arrays.create(node_properties_length, null, "regular");
 
   //
   // Extract one node from the nodes arrays and return as an object
@@ -415,7 +415,7 @@ modeler.layout.model = function() {
         newnode, newnodes = [], 
         n=nodes.length;
     i = -1; while(++i < n) {
-      newnodes[i] = molecules_arrays.clone(nodes[i])
+      newnodes[i] = arrays.clone(nodes[i])
     }
     tick_history_list.length = tick_history_list_index;
     tick_history_list_index++;
@@ -437,7 +437,7 @@ modeler.layout.model = function() {
       throw new Error("modeler: request for tick_history_list[" + index + "], tick_history_list.length=" + tick_history_list.length)
     };
     i = -1; while(++i < n) {
-      molecules_arrays.copy(tick_history_list[index].nodes[i], nodes[i])
+      arrays.copy(tick_history_list[index].nodes[i], nodes[i])
     }
     ke = tick_history_list[index].ke;
     update_molecules();
@@ -657,7 +657,7 @@ modeler.layout.model = function() {
 
   model.get_speed = function(speed_data) {
     if (!arguments.length) { var speed_data = [] };
-    return molecules_arrays.copy(speed, speed_data);
+    return arrays.copy(speed, speed_data);
   }
   
   model.get_rate = function() {
@@ -727,7 +727,7 @@ modeler.layout.model = function() {
     
     var dAngle;
 
-    nodes = molecules_arrays.create(node_properties_length, null, "regular");
+    nodes = arrays.create(node_properties_length, null, "regular");
     
     var webgl = !!window.WebGLRenderingContext;
     var not_safari = benchmark.what_browser.browser != "Safari";
@@ -735,51 +735,51 @@ modeler.layout.model = function() {
     var array_type = (webgl && not_safari) ? "Float32Array" : "regular";
 
     // model.RADIUS = 0
-    nodes[model.RADIUS] = molecules_arrays.create(num, rmin * mol_rmin_radius_factor, array_type);
+    nodes[model.RADIUS] = arrays.create(num, rmin * mol_rmin_radius_factor, array_type);
     radius = nodes[model.RADIUS];
 
     // model.PX     = 1;
-    nodes[model.PX] = molecules_arrays.create(num, 0, array_type);
+    nodes[model.PX] = arrays.create(num, 0, array_type);
     px = nodes[model.PX];
 
     // model.PY     = 2;
-    nodes[model.PY] = molecules_arrays.create(num, 0, array_type);
+    nodes[model.PY] = arrays.create(num, 0, array_type);
     py = nodes[model.PY];
 
     // model.X      = 3;
-    nodes[model.X] = molecules_arrays.create(num, 0, array_type);
+    nodes[model.X] = arrays.create(num, 0, array_type);
     x = nodes[model.X];
 
     // model.Y      = 4;
-    nodes[model.Y] = molecules_arrays.create(num, 0, array_type);
+    nodes[model.Y] = arrays.create(num, 0, array_type);
     y = nodes[model.Y];
 
     // model.VX     = 5;
-    nodes[model.VX] = molecules_arrays.create(num, 0, array_type);
+    nodes[model.VX] = arrays.create(num, 0, array_type);
     vx = nodes[model.VX];
 
     // model.VY     = 6;
-    nodes[model.VY] = molecules_arrays.create(num, 0, array_type);
+    nodes[model.VY] = arrays.create(num, 0, array_type);
     vy = nodes[model.VY];
 
     // model.SPEED  = 7;
-    nodes[model.SPEED] = molecules_arrays.create(num, 0, array_type);
+    nodes[model.SPEED] = arrays.create(num, 0, array_type);
     speed = nodes[model.SPEED];
 
     // model.AX     = 8;
-    nodes[model.AX] = molecules_arrays.create(num, 0, array_type);
+    nodes[model.AX] = arrays.create(num, 0, array_type);
     ax = nodes[model.AX];
 
     // model.AY     = 9;
-    nodes[model.AY] = molecules_arrays.create(num, 0, array_type);
+    nodes[model.AY] = arrays.create(num, 0, array_type);
     ay = nodes[model.AY];
 
     // model.MASS     = 10;
-    nodes[model.HALFMASS] = molecules_arrays.create(num, 0.5, array_type);
+    nodes[model.HALFMASS] = arrays.create(num, 0.5, array_type);
     halfmass = nodes[model.HALFMASS];
 
     // model.CHARGE   = 11;
-    nodes[model.CHARGE] = molecules_arrays.create(num, 0, array_type);
+    nodes[model.CHARGE] = arrays.create(num, 0, array_type);
     charge = nodes[model.CHARGE];
 
     i = -1; while (++i < num) {
