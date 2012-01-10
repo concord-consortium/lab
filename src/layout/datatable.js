@@ -9,10 +9,9 @@ layout.datatable_visible = false;
 var toggle_datatable = document.getElementById("toggle-datatable");
 var datatable_table = document.getElementById("datatable-table");
 
-datatable_table.style.display = "none";
-
 layout.render_datatable = function(reset) {
   datatable_table = document.getElementById("datatable-table");
+  datatable_table.style.display = "none";
   var i,
       titlerows = datatable_table.getElementsByClassName("title"),
       datarows = datatable_table.getElementsByClassName("data"),
