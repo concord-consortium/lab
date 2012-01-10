@@ -1,51 +1,51 @@
 (function(){
+layout = { version: "0.0.1" };
 // ------------------------------------------------------------
 //
 // Fullscreen API
 //
 // ------------------------------------------------------------
 
-(function () {
-  /** do we have the querySelectorAll method? **/
-  if (document.querySelectorAll) {
-    var fullScreenImage = document.querySelector ('#fullscreen');
-    if (fullScreenImage) {
-      fullScreenImage.style.cursor = "pointer";
-      fullScreenImage.addEventListener ('click', function () {
-        var el = document.documentElement;
-        var request = el.requestFullScreen ||
-                      el.webkitRequestFullScreen ||
-                      el.mozRequestFullScreen;
+/** do we have the querySelectorAll method? **/
+if (document.querySelectorAll) {
+  var fullScreenImage = document.querySelector ('#fullscreen');
+  if (fullScreenImage) {
+    fullScreenImage.style.cursor = "pointer";
+    fullScreenImage.addEventListener ('click', function () {
+      var el = document.documentElement;
+      var request = el.requestFullScreen ||
+                    el.webkitRequestFullScreen ||
+                    el.mozRequestFullScreen;
 
-        var fullscreen = document.fullScreen ||
-                         document.webkitIsFullScreen ||
-                         document.mozFullScreen;
+      var fullscreen = document.fullScreen ||
+                       document.webkitIsFullScreen ||
+                       document.mozFullScreen;
 
-        var cancel = document.cancelFullScreen ||
-                     document.webkitCancelFullScreen ||
-                     document.mozCancelFullScreen;
+      var cancel = document.cancelFullScreen ||
+                   document.webkitCancelFullScreen ||
+                   document.mozCancelFullScreen;
 
-        if (request) {
-          if (fullscreen) {
-            cancel.call(document);
-          } else {
-            request.call(el);
-          }
+      if (request) {
+        if (fullscreen) {
+          cancel.call(document);
         } else {
-          alert("You'll need to use a newer browser to use the\n" +
-                "full-screen API.\n\n" +
-                "Chrome v15 (beta)\n" +
-                "http://www.google.com/landing/chrome/beta/\n\n" +
-                "Chrome v17 Canary:\n" +
-                "http://tools.google.com/dlpage/chromesxs\n\n" +
-                "Safari v5.1.1:\n\n" +
-                "FireFox v9 Aurora:\n" +
-                "https://www.mozilla.org/en-US/firefox/channel/\n\n" +
-                "FireFox v10 Nightly\n" +
-                "http://nightly.mozilla.org/\n" +
-                "Open 'about:config' and set: full-screen-api-enabled");
+          request.call(el);
         }
-      }, false);
-    }
+      } else {
+        alert("You'll need to use a newer browser to use the\n" +
+              "full-screen API.\n\n" +
+              "Chrome v15 (beta)\n" +
+              "http://www.google.com/landing/chrome/beta/\n\n" +
+              "Chrome v17 Canary:\n" +
+              "http://tools.google.com/dlpage/chromesxs\n\n" +
+              "Safari v5.1.1:\n\n" +
+              "FireFox v9 Aurora:\n" +
+              "https://www.mozilla.org/en-US/firefox/channel/\n\n" +
+              "FireFox v10 Nightly\n" +
+              "http://nightly.mozilla.org/\n" +
+              "Open 'about:config' and set: full-screen-api-enabled");
+      }
+    }, false);
   }
-})();})();
+}
+})();
