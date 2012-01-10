@@ -65,6 +65,14 @@ lab.arrays.js: \
 lab.layout.js: \
 	src/start.js \
 	src/layout/layout.js \
+	src/layout/molecule-container.js \
+	src/layout/potential-chart.js \
+	src/layout/speed-distribution-histogram.js \
+	src/layout/benchmarks.js \
+	src/layout/datatable.js \
+	src/layout/temperature-control.js \
+	src/layout/force-interaction-controls.js \
+	src/layout/display-stats.js \
 	src/layout/fullscreen.js \
 	src/end.js
 
