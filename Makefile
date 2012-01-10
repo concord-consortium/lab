@@ -64,6 +64,7 @@ lab.arrays.js: \
 
 lab.layout.js: \
 	src/start.js \
+	src/layout/layout.js \
 	src/layout/fullscreen.js \
 	src/end.js
 
