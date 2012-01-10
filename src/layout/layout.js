@@ -16,6 +16,7 @@ layout.setupScreen = function() {
     layout.setupRegularScreen()
   }
   layout.setupTemperature();
+  benchmarks_table.style.display = "none";
 }
 
 layout.setupFullScreen = function() {
