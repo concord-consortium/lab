@@ -88,19 +88,19 @@ suite.addBatch({
       return arrays.between;
     },
     "3 is betwen 2 and 4": function(between) {
-      assert.equal(between(2, 4, 3), true);
+      assert.isTrue(between(2, 4, 3));
     },
     "1 is not between 2 and 4": function(between) {
-      assert.equal(between(2, 4, 1), false);
+      assert.isFalse(between(2, 4, 1));
     },
     "2 is not between 2 and 4": function(between) {
-      assert.equal(between(2, 4, 2), false);
+      assert.isFalse(between(2, 4, 2));
     },
     "4 is not between 2 and 4": function(between) {
-      assert.equal(between(2, 4, 4), false);
+      assert.isFalse(between(2, 4, 4));
     },
     "5 is not between 2 and 4": function(between) {
-      assert.equal(between(2, 4, 5), false);
+      assert.isFalse(between(2, 4, 5));
     }
   }
 });
