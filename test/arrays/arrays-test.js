@@ -4,12 +4,12 @@ require("../../lab.arrays");
 var vows = require("vows"),
     assert = require("assert");
 
-var suite = vows.describe("molecules_arrays.create");
+var suite = vows.describe("arrays.create");
 
 suite.addBatch({
   "create": {
     topic: function() {
-      return molecules_arrays.create;
+      return arrays.create;
     },
     "creates array of zeros": function(create) {
       assert.deepEqual(create(4, 0), [0, 0, 0, 0]);
@@ -23,7 +23,7 @@ suite.addBatch({
 suite.addBatch({
   "copy": {
     topic: function() {
-      return molecules_arrays.copy;
+      return arrays.copy;
     },
     "copies array of zeros": function(copy) {
       var src  = [0, 0, 0, 0];
@@ -43,7 +43,7 @@ suite.addBatch({
 suite.addBatch({
   "clone": {
     topic: function() {
-      return molecules_arrays.clone;
+      return arrays.clone;
     },
     "clones array of zeros": function(clone) {
       var src  = [0, 0, 0, 0];
@@ -61,7 +61,7 @@ suite.addBatch({
 suite.addBatch({
   "between": {
     topic: function() {
-      return molecules_arrays.between;
+      return arrays.between;
     },
     "3 is betwen 2 and 4": function(between) {
       assert.equal(between(2, 4, 3), true);
@@ -84,7 +84,7 @@ suite.addBatch({
 suite.addBatch({
   "max": {
     topic: function() {
-      return molecules_arrays.max;
+      return arrays.max;
     },
     "find max in simple array": function(max) {
       assert.equal(max([0, 1, 2, 3]), 3);
@@ -104,7 +104,7 @@ suite.addBatch({
 suite.addBatch({
   "min": {
     topic: function() {
-      return molecules_arrays.min;
+      return arrays.min;
     },
     "find min in simple array": function(min) {
       assert.equal(min([0, 1, 2, 3]), 0);
@@ -124,7 +124,7 @@ suite.addBatch({
 suite.addBatch({
   "mmaxAnyArrayax": {
     topic: function() {
-      return molecules_arrays.maxAnyArray;
+      return arrays.maxAnyArray;
     },
     "find max in any array type in simple array": function(maxAnyArray) {
       assert.equal(maxAnyArray([0, 1, 2, 3]), 3);
@@ -144,7 +144,7 @@ suite.addBatch({
 suite.addBatch({
   "minAnyArray": {
     topic: function() {
-      return molecules_arrays.minAnyArray;
+      return arrays.minAnyArray;
     },
     "find min in any array type in simple array": function(minAnyArray) {
       assert.equal(minAnyArray([0, 1, 2, 3]), 0);
@@ -164,7 +164,7 @@ suite.addBatch({
 suite.addBatch({
   "average": {
     topic: function() {
-      return molecules_arrays.average;
+      return arrays.average;
     },
     "find average in in simple array": function(average) {
       assert.equal(average([0, 1, 2, 3]), 1.5);
