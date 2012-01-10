@@ -13,7 +13,7 @@ system("rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --incl
 haml_files = Dir["src/**/*.haml"].collect { |s| { :src => s, :dest => s[/src\/(.+?)\.haml/, 1]} }
 puts "processing #{haml_files.length} haml files ..."
 haml_files.each do |p| 
-  puts "source: #{p[:src]} ... destination: #{p[:dest]}"
+  puts "source: #{p[:src]} => destination: #{p[:dest]}"
   system("haml #{p[:src]} #{p[:dest]}")
 end
 # 
