@@ -2,7 +2,7 @@
 
 JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
 JS_TESTER   = ./node_modules/vows/bin/vows
-EXAMPLES_LAB_DIR = ./examples/lib/lab
+EXAMPLES_LIB_DIR = ./examples/lib
 
 JS_FILES = \
 	lab.grapher.js \
@@ -10,27 +10,42 @@ JS_FILES = \
 	lab.benchmark.js \
 	lab.layout.js \
 	lab.arrays.js \
-	lab.molecules.js
+	lab.molecules.js \
+	lab.js
 
 all: \
-	lib/d3 \
+	lib \
+	vendor/d3 \
 	examples \
 	$(JS_FILES) \
 	$(JS_FILES:.js=.min.js) \
-
 
 clean:
 	rm -f lab.*.js
 	rm -rf examples
 
-lib/d3:
-	mkdir -p lib/d3
-	cp node_modules/d3/*.js lib/d3
+lib:
+	mkdir lib
+
+vendor/d3:
+	mkdir -p vendor/d3
+	cp node_modules/d3/*.js vendor/d3
 
 examples:
-	mkdir -p examples/lib/lab
+	mkdir -p examples/lib
+	mkdir -p examples/vendor
 	cp -r lib examples
-	cp -r resources examples/lib/lab
+	cp -r vendor examples
+	cp -r resources examples
+
+lab.js: \
+	src/lab-module.js \
+	lib/lab.grapher.js \
+	lib/lab.molecules.js \
+	lib/lab.benchmark.js \
+	lib/lab.arrays.js \
+	lib/lab.layout.js \
+	lib/lab.graphx.js
 
 lab.grapher.js: \
 	src/start.js \
@@ -85,16 +100,16 @@ test: all
 	@$(JS_TESTER)
 
 %.min.js: %.js Makefile
-	@rm -f $@
-	$(JS_COMPILER) < $< > $@
-	@chmod ug+w $@
-	@cp $@ $(EXAMPLES_LAB_DIR)
+	@rm -f lib/$@
+	$(JS_COMPILER) < lib/$< > lib/$@
+	@chmod ug+w lib/$@
+	@cp lib/$@ $(EXAMPLES_LIB_DIR)
 
 lab.%: Makefile
-	@rm -f $@
-	cat $(filter %.js,$^) > $@
-	@chmod ug+w $@
-	cp $@ $(EXAMPLES_LAB_DIR)
+	@rm -f lib/$@
+	cat $(filter %.js,$^) > lib/$@
+	@chmod ug+w lib/$@
+	cp lib/$@ $(EXAMPLES_LIB_DIR)
 
 # HAML_INPUT_FILES = find src *.haml
 # HAML_OUTPUT_FILES = $(HAML_INPUT_FILES,src/=) 
