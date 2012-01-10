@@ -1,4 +1,5 @@
-(function(){grapher = {version: "0.0.1"}; // semver
+(function(){
+grapher = {version: "0.0.1"}; // semver
 grapher.data = function(array) {
   var i = 0,
       n = array.length,
