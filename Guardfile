@@ -22,6 +22,10 @@ guard 'shell' do
   watch(%r{src\/(?!examples).+\.js$}) do
     puts "re-generating javascript libraries ..."
     system("make")
+    system("make test")
+  end
+  watch(%r{test\/.+\.js$}) do
+    system("make test")
   end
   watch(%r{^(src/examples/.+)$}) do |match|
     unless match[0][/(\.haml)|(\.sass)|(^\..+)$/]
