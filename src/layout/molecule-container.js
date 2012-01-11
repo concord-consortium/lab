@@ -93,7 +93,7 @@ layout.finishSetupMoleculeContainer = function() {
     mc_vis.selectAll("g.x").remove();
     mc_vis.selectAll("g.y").remove();
     
-    update_molecule_radius();
+    layout.update_molecule_radius();
 
     particle.attr("cx", function(d) { return mc_x(d.x); })
             .attr("cy", function(d) { return mc_y(d.y); })
