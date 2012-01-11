@@ -11,8 +11,8 @@ HTML5-based scientific models, visualizations, graphing, and probeware.
 Example: http://lab.dev.concord.org/simplemolecules/simplemolecules.html
 
 Cameron Abrams, teaching in the Department of Chemical Engineering at Drexel has 
-published these excellent resources [Molecular Simulation](http://www.pages.drexel.edu/~cfa22/msim/msim.html)
-for his course.
+published these excellent [Molecular Simulation](http://www.pages.drexel.edu/~cfa22/msim/msim.html) 
+resources for a course he teaches.
 
 ## Grapher
 
@@ -281,8 +281,8 @@ And one additional file which combines them all:
 
 In addition there are minimized versions of all of these files.
 
-When working on the source code please keep commits of these generated JavaScript files separate from commits to the `src/` 
-directory to make it easier to see and understand the changes that make up the source code narrative.
+When working on the source code please keep commits of the generated JavaScript files in `lib/` separate from 
+other commits to make it easier to see and understand the changes that make up the source code narrative.
 
 ### Generated examples: examples/
 
