@@ -1,7 +1,7 @@
 # See the README for installation instructions.
 
 JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
-JS_TESTER   = ./node_modules/vows/bin/vows
+JS_TESTER   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LIB_DIR = ./examples/lib
 
 HAML_EXAMPLE_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/\1/' )

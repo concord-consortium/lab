@@ -1,6 +1,7 @@
 Gemfile.lock
 bin
 .bundle
+.rvmrc
 .sass-cache
 /examples*
 node_modules
