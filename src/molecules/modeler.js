@@ -688,7 +688,8 @@ modeler.layout.model = function() {
         annealing_steps = 25,
         speed_goal,
         max_ljf_repulsion, min_ljf_attraction,
-        max_ljf_distance, min_ljf_distance;
+        max_ljf_distance, min_ljf_distance,
+        mol_number;
 
         // mention the functions so they get into the containing closure:
         molecule, update_molecules,
@@ -725,6 +726,7 @@ modeler.layout.model = function() {
 
   model.nodes = function(num, xdomain, ydomain, temperature, rmin, mol_rmin_radius_factor) {
     
+    mol_number = num;
     var dAngle;
 
     nodes = arrays.create(node_properties_length, null, "regular");
