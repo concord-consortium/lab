@@ -54,7 +54,7 @@ Alternatively use this form:
     git clone git://github.com/concord-consortium/lab.git
 
 I recommend also cloning the d3.js repository into a separate directory -- there are many useful examples 
-of both visualizations and examples of tests that run extremely quickly using vows, jsdom, and node.
+of both visualizations and examples of tests that run extremely quickly using vows, [jsdom](https://github.com/tmpvar/jsdom), and node.
 
     git clone git://github.com/mbostock/d3.git
 
@@ -78,6 +78,8 @@ the examples directory including JavaScript, HTML, CSS, and image resources:
     bin/guard start
 
 This will take about 15s to generate the examples directory when first started.
+
+You can also create the examples directory by using `make` from the command line.
 
 Create a localhost and local Apache vhost for lab and optionally d3:
 
@@ -126,24 +128,77 @@ To have the browser page for an example automatically reload when changes are ma
 
 ### Testing
 
-Lab's test framework uses [Vows](http://vowsjs.org), which depends on
+Lab's test framework uses [Vows](http://vowsjs.org) and [jsdom](https://github.com/tmpvar/jsdom) which depend on
 [Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/). 
 
 Running the tests:
 
-    make test
-
-If you have everything setup correctly you should see something like this:
-
-    · ·· 
-    ✓ OK » 3 honored (0.001s)
+    $ make test
+    ································· · · ·· · · ·
+    ✓ OK » 40 honored (0.001s)
 
 ### Repository structure
 
-- `src/examples`: haml, sass files are processed into html and css files saved in the `examples/` directory, javascript files are copied.
-- `src/grapher`: javascript code compiled into the grapher.js module
-- `test/`: tests that run in [nodejs](http://nodejs.org/) using [Vows](http://vowsjs.org)
-- `lib/`: unmanaged dependencies
+#### vendor/: External JavaScript Frameworks
+
+External JavaScript prerequisites for running lab are located in the vendor/ directory. 
+These are copied into the examples/ directory when either running `make` or `bin/guard start`.
+
+- d3
+- modernizr.js
+- science
+- colorbrewer
+- jquery
+- jquery-ui
+- sizzle
+
+#### lib/: Generated Lab Modules
+
+The `lib/` directory contains the lab modules generated from JavaScript source code in the `src/` directory.
+
+Here are the standard lab modules:
+
+- lab.arrays.js
+- lab.benchmark.js
+- lab.grapher.js
+- lab.graphx.js
+- lab.layout.js
+- lab.molecules.js
+
+And one additional file which combines them all:
+
+- lab.js
+
+In addition there are minimized versions of all of these files.
+
+When working on the source code please keep commits of these generated JavaScript files separate from commits to the `src/` 
+directory to make is easier to see and understand the changes that make up the source code narrative.
+
+#### src/: Source Code
+
+The `src/` directory includes both JavaScript source code for the Lab modules as well as the `src/examples/` 
+directory containing the additional resources for generating the html, css, and image resources for `examples/`.
+
+- `src/examples`
+  haml, sass files are processed into html and css files saved in the `examples/` directory, javascript files located here are just copied.
+
+The following directories contain the source code for the main Lab modules:
+
+- `src/arrays/`
+- `src/benchmark/`
+- `src/graphx/`
+- `src/layout/`
+- `src/molecules/`
+
+In addition the following module is in process of being combined with the newer graphing code in `graphx/`.
+
+- `src/grapher/`
+
+Lastly there are the following JavaScript framgments that are used in the build process:
+
+- `src/start.js`
+- `src/lab-module.js`
+- `src/end.js`
 
 After running `bundle install --binstubs` the `bin/` directory will be created.
 
@@ -151,20 +206,51 @@ After running: `bin/guard` the `examples/` directory will be created.
 
 **Note:** remember to make changes you want saved in the `src/` directory **not** in the `examples/' directory.`
 
+#### test/: Tests
+
+Most of the test suites are minimal (just loading the module and testing the version number):
+
+  benchmark
+  graphx
+  layout
+  molecules
+
+.. but the grapher has a couple more tests and the arrays module has almost a complete set of tests.
+
+These tests all run in nodejs and use the vows testing framework.
+
+The tests run VERY fast using node and vows. 
+
+Currently there are 40 tests and they take much less than 1s to run on the console:
+
+    $ make test
+    ................................. . . .. . . .
+    x OK > 40 honored (0.012s)
+
+Turns out recent versions of nodejs/v8 support TypedArrays -- this is great since the arrays module is 
+designed to support using typed or regular arrays for computation. 
+
+This testing strategy is similar to that used by d3.js.
+
+`test/env.js` uses the node module [jsdom](https://github.com/tmpvar/jsdom) to setup resources for simple emulation of a browser.
+
+`test/env-assert.js` has a number of very useful additional assertions copied from, d3.js:
+
+There are also many interesting test examples and patterns in the [d3.js test directory](https://github.com/mbostock/d3/tree/master/test):
+
 ### Updating http://lab.dev.concord.org/
 
 Currently http://lab.dev.concord.org/ is updated by using rsynch to copy the content of the 
 examples/ directory to the server. 
 
-Modify the example script below with your username, server host, 
-and path to the directory apache is serving:
+Modify the example script below with your username, server host, and path to the directory apache is serving:
 
-file: bin/update.sh
+file: `bin/update.sh``
 
     #!/bin/sh
     rsync -rvz --delete examples/ username@server:/path/to/examples
 
-Running bin/update.sh will copy/update the directory at http://lab.dev.concord.org/
+Running `bin/update.sh` will now copy/update the directory at http://lab.dev.concord.org/
 
 ### References
 
