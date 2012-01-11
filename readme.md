@@ -18,9 +18,7 @@ for his course.
 
 Example: http://lab.dev.concord.org/surface-temperature/surface-temperature.html
 
-## Development Setup
-
-### Prerequisites
+## Setup Development
 
 - [Ruby 1.9](http://www.ruby-lang.org/en/)
 - The RubyGem: [bundler](http://gembundler.com/)
@@ -126,55 +124,9 @@ Whenever guard is running and you save changes to any files in the src/ director
 
 To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small "LR" button on the toolbar.
 
-### Testing
+## Repository structure
 
-Lab's test framework uses [Vows](http://vowsjs.org) and [jsdom](https://github.com/tmpvar/jsdom) which depend on
-[Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/). 
-
-Running the tests:
-
-    $ make test
-    ································· · · ·· · · ·
-    ✓ OK » 40 honored (0.001s)
-
-### Repository structure
-
-#### vendor/: External JavaScript Frameworks
-
-External JavaScript prerequisites for running lab are located in the vendor/ directory. 
-These are copied into the examples/ directory when either running `make` or `bin/guard start`.
-
-- d3
-- modernizr.js
-- science
-- colorbrewer
-- jquery
-- jquery-ui
-- sizzle
-
-#### lib/: Generated Lab Modules
-
-The `lib/` directory contains the lab modules generated from JavaScript source code in the `src/` directory.
-
-Here are the standard lab modules:
-
-- lab.arrays.js
-- lab.benchmark.js
-- lab.grapher.js
-- lab.graphx.js
-- lab.layout.js
-- lab.molecules.js
-
-And one additional file which combines them all:
-
-- lab.js
-
-In addition there are minimized versions of all of these files.
-
-When working on the source code please keep commits of these generated JavaScript files separate from commits to the `src/` 
-directory to make is easier to see and understand the changes that make up the source code narrative.
-
-#### src/: Source Code
+### Source Code: src/
 
 The `src/` directory includes both JavaScript source code for the Lab modules as well as the `src/examples/` 
 directory containing the additional resources for generating the html, css, and image resources for `examples/`.
@@ -202,13 +154,62 @@ Lastly there are the following JavaScript framgments that are used in the build 
 
 After running `bundle install --binstubs` the `bin/` directory will be created.
 
-After running: `bin/guard` the `examples/` directory will be created.
+After running: `bin/guard` the `examples/` directory will be created and any subsequent changes to files 
+in the `src/` directory  cause automatic rebuilding of the associated files in the `examples/` directory.
 
 **Note:** remember to make changes you want saved in the `src/` directory **not** in the `examples/' directory.`
 
-#### test/: Tests
+### Adding new source files or modules
 
-Most of the test suites are minimal (just loading the module and testing the version number):
+If you add a new JavaScript file to an existing Lab module also add it to the associated section of the MakeFile.
+
+For example if you created a pie chart graph layout and added the JavaScript source file:
+
+    src/examples/layout/pie-chart.js
+
+You would also need to add the path to the new source code file to this section of the MakeFile:
+
+    lib/lab.layout.js: \
+    	src/start.js \
+    	src/layout/layout.js \
+    	src/layout/molecule-container.js \
+    	src/layout/potential-chart.js \
+    	src/layout/speed-distribution-histogram.js \
+    	src/layout/benchmarks.js \
+    	src/layout/datatable.js \
+    	src/layout/temperature-control.js \
+    	src/layout/force-interaction-controls.js \
+    	src/layout/display-stats.js \
+    	src/layout/fullscreen.js \
+    	src/end.js
+
+Similarly if you add a new module to Lab you will need to create a new target to represent the module
+using a similar form to that shown above and also add the target to the `JS_FILES` make variable containing 
+the list of Lab JavaScript files to be generated:
+
+    JS_FILES = \
+    	lib/lab.grapher.js \
+    	lib/lab.graphx.js \
+    	lib/lab.benchmark.js \
+    	lib/lab.layout.js \
+    	lib/lab.arrays.js \
+    	lib/lab.molecules.js \
+    	lib/lab.js
+
+If you are just modifying an existing example or adding a new one just create the new files in 
+the `src/examples` directory and running `make` or `bin/guard` will generate the associated resources 
+in the `examples/` directory.
+
+The html file are generated from [Haml](http://haml-lang.com/) markup. Add the suffix `.html.haml` to these files.
+
+The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `/sass` to these files.
+
+### Tests: test/
+
+Lab's test framework uses [Vows](http://vowsjs.org) and [jsdom](https://github.com/tmpvar/jsdom) which depend on
+[Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/). 
+
+Mamny of the test suites are minimal (just loading the module and testing the version number):
 
   benchmark
   graphx
@@ -217,15 +218,13 @@ Most of the test suites are minimal (just loading the module and testing the ver
 
 .. but the grapher has a couple more tests and the arrays module has almost a complete set of tests.
 
-These tests all run in nodejs and use the vows testing framework.
-
-The tests run VERY fast using node and vows. 
-
-Currently there are 40 tests and they take much less than 1s to run on the console:
+Running the tests:
 
     $ make test
     ................................. . . .. . . .
     x OK > 40 honored (0.012s)
+
+Currently there are 40 tests and they take less than 1s to run on the console:
 
 Turns out recent versions of nodejs/v8 support TypedArrays -- this is great since the arrays module is 
 designed to support using typed or regular arrays for computation. 
@@ -238,7 +237,49 @@ This testing strategy is similar to that used by d3.js.
 
 There are also many interesting test examples and patterns in the [d3.js test directory](https://github.com/mbostock/d3/tree/master/test):
 
-### Updating http://lab.dev.concord.org/
+### Generated Lab Modules: lib/
+
+The `lib/` directory contains the lab modules generated from JavaScript source code in the `src/` directory.
+
+Here are the standard lab modules:
+
+- lab.arrays.js
+- lab.benchmark.js
+- lab.grapher.js
+- lab.graphx.js
+- lab.layout.js
+- lab.molecules.js
+
+And one additional file which combines them all:
+
+- lab.js
+
+In addition there are minimized versions of all of these files.
+
+When working on the source code please keep commits of these generated JavaScript files separate from commits to the `src/` 
+directory to make is easier to see and understand the changes that make up the source code narrative.
+
+### Generated examples: examples/
+
+The `examples/` directory is not part of the repository but instead is automatically generated by running `make`.
+
+When running `bin/guard` any changes to files in the `src/` directory 
+cause automatic rebuilding of the associated files in the `examples/` directory.
+
+### External JavaScript Frameworks: vendor/
+
+External JavaScript prerequisites for running lab are located in the vendor/ directory. 
+These are copied into the examples/ directory when either running `make` or `bin/guard start`.
+
+- d3
+- modernizr.js
+- science
+- colorbrewer
+- jquery
+- jquery-ui
+- sizzle
+
+## Updating http://lab.dev.concord.org/
 
 Currently http://lab.dev.concord.org/ is updated by using rsynch to copy the content of the 
 examples/ directory to the server. 
@@ -252,7 +293,7 @@ file: `bin/update.sh``
 
 Running `bin/update.sh` will now copy/update the directory at http://lab.dev.concord.org/
 
-### References
+## References
 
 **[d3.js](http://mbostock.github.com/d3/)**
 
