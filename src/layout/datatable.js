@@ -110,15 +110,17 @@ layout.render_datatable = function(reset) {
   }
 }
 
-toggle_datatable.onclick = function() {
-  if (layout.datatable_visible) {
-    layout.datatable_visible = false;
-    toggle_datatable.textContent = "Show Data Table";
-    datatable_table.style.display = "none";
-  } else {
-    layout.datatable_visible = true;
-    toggle_datatable.textContent = "Hide Data Table";
-    layout.render_datatable();
-    datatable_table.style.display = "";
+if (toggle_datatable) {
+  toggle_datatable.onclick = function() {
+    if (layout.datatable_visible) {
+      layout.datatable_visible = false;
+      toggle_datatable.textContent = "Show Data Table";
+      datatable_table.style.display = "none";
+    } else {
+      layout.datatable_visible = true;
+      toggle_datatable.textContent = "Hide Data Table";
+      layout.render_datatable();
+      datatable_table.style.display = "";
+    }
   }
 };

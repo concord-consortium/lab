@@ -24,7 +24,9 @@ layout.setupScreen = function(layout_selection) {
     }
   }
   layout.setupTemperature();
-  benchmarks_table.style.display = "none";
+  if (benchmarks_table) {
+    benchmarks_table.style.display = "none";
+  }
 }
 
 layout.setupFullScreen = function() {
@@ -99,6 +101,6 @@ layout.setupFullScreenKEChart = function() {
 //
 layout.setupJustScreenMoleculeContainer = function() {
   moleculecontainer.style.width = document.body.clientWidth * 0.8 +"px";
-  moleculecontainer.style.height = document.body.clientWidth * 0.5 + 2 +"px";
+  moleculecontainer.style.height = document.body.clientWidth * 0.4 + 2 +"px";
   layout.finishSetupMoleculeContainer();
 }
