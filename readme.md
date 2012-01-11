@@ -242,6 +242,8 @@ Lab's JavaScript tests use [Vows](http://vowsjs.org), an asynchronous behavior d
 on [Node.js](http://nodejs.org/). In addition Lab uses [jsdom](https://github.com/tmpvar/jsdom), a
 lightweight CommonJS implementation of the W3C DOM specifications.
 
+This way of setting up tests is similar to that used by [d3.js](http://mbostock.github.com/d3/).
+
 These development dependencies are installed using [NPM](http://npmjs.org/).
 
 Running the tests:
@@ -253,23 +255,17 @@ Running the tests:
 If you are running `bin/guard` the tests run automatically anytime a change is made in the JavaScript 
 files in the src/ or test/ directory.
 
-The results of the tests aredisplayed in the console that bin/guard is running in.
+The results of the tests are displayed in the console that bin/guard is running in.
 
 If the bottom of the console window is viewable you will see new test results whenever you save a changes.
 
 Recent versions of nodejs/v8 support TypedArrays -- this make it possible to more extensively
 test lab.arrays which is designed to support using either typed or regular arrays for computation. 
 
-This testing strategy is similar to that used by d3.js.
-
 `test/env.js` uses the node module [jsdom](https://github.com/tmpvar/jsdom) to setup resources for simple emulation of a browser.
 
-`test/env-assert.js` has a number of very useful additional assertions copied from, d3.js:
-
 [Vows](http://vowsjs.org) integrates the [standard nodejs assertions](http://nodejs.org/docs/latest/api/assert.html)
-with an additional collection of useful [assertions](http://vowsjs.org/#assertions) summarized below with:
-
-_Note: Using a more specific assertion usually results in more useful error reports._
+with an additional collection of useful [assertions](http://vowsjs.org/#assertions) summarized below:
 
 - equality
 
@@ -328,6 +324,10 @@ _Note: Using a more specific assertion usually results in more useful error repo
 
         assert.throws(function () { x + x }, ReferenceError);
         assert.doesNotThrow(function () { 1 + 1 }, Error);
+
+Additionally `test/env-assert.js` has a number of useful additional assertions copied from [d3.js](http://mbostock.github.com/d3/).
+
+_Note: Using a more specific assertion usually results in more useful error reports._
 
 There are also many interesting test examples and patterns in the [d3.js test directory](https://github.com/mbostock/d3/tree/master/test) 
 that can be adapted for use in Lab.
