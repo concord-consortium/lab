@@ -58,7 +58,7 @@ If you plan to contribute to Lab:
 2. Make a fork of http://github.com/concord-consortium/lab to your account on github.
 3. Make a new git-remote referencing your fork. I recommend making the remote name your github user name.
    For example my username is `stepheneb` so I would add a remote to my fork like this: 
-       git remote add stepheneb git@github.com:stepheneb/lab.git
+   `git remote add stepheneb git@github.com:stepheneb/lab.git`.
 4. Create your changes on a topic branch. Please include tests if you can. When you a ready
 push your topic branch to your fork and send a pull request.
 
