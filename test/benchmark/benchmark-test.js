@@ -1,5 +1,5 @@
 require("../env");
-require("../../lab.benchmark");
+require("../../lib/lab.benchmark");
 
 var vows = require("vows"),
     assert = require("assert");

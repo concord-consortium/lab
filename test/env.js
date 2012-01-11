@@ -1,9 +1,13 @@
-document = require("jsdom").jsdom("<html><head></head><body></body></html>");
+var fs  = require('fs');
+var html = fs.readFileSync("./test/layout.html").toString();
+
+document = require('jsdom').jsdom(html);
 window = document.createWindow();
 navigator = window.navigator;
+
 CSSStyleDeclaration = window.CSSStyleDeclaration;
 
-require("../lib/sizzle/sizzle");
+require("../vendor/sizzle/sizzle");
 Sizzle = window.Sizzle;
 
 process.env.TZ = "America/Los_Angeles";

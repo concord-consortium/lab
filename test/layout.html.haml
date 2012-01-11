@@ -1,0 +1,88 @@
+!!! 5
+%html
+  %head
+  %body
+    #header
+    #viz
+      %ul
+        %li
+          #molecule-container
+      %ul.right
+        %li
+          %ul
+            %li
+              #lj-potential-chart
+            %li
+              #speed-distribution-chart
+          #ke-chart
+    #controls
+      %ul
+        %li
+          %form(id="model-controls")
+            %fieldset
+              %legend Model
+              %label
+                %input(type="radio" name="step" value="stop" checked) Stop
+              %label
+                %input(type="radio" name="step" value="step"        ) Step
+              %label
+                %input(type="radio" name="step" value="go"          ) Go
+              %label
+                %input(type="radio" name="step" value="reset"       ) Reset
+        %li
+          %fieldset
+            %legend Molecules
+            %select(id="select-molecule-number")
+              %option(value="2") 2
+              %option(value="5") 5
+              %option(value="10") 10
+              %option(value="20" selected) 20
+              %option(value="50") 50
+              %option(value="100") 100
+              %option(value="200") 200
+              %option(value="500") 500
+        %li
+          %fieldset
+            %legend Temperature Control
+            %input(id="temperature-control-checkbox" type="checkbox" checked)
+            %select(id="select-temperature")
+              %option(value="10") 10
+              %option(value="9") 9
+              %option(value="8") 8
+              %option(value="7") 7
+              %option(value="6") 6
+              %option(value="5") 5
+              %option(value="4" selected) 4
+              %option(value="3") 3
+              %option(value="2") 2
+              %option(value="1") 1
+              %option(value="0") 0
+        %li
+          %fieldset
+            %legend Particle Force Interactions
+            %label 
+              Lennard-Jones
+              %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
+            %label
+              Coulomb
+              %input(id="coulomb-forces-checkbox" type="checkbox" checked)
+        %br
+        %ul
+          %li
+            %fieldset#stats-container
+              %legend Stats
+              %pre#stats
+      
+    #datatable
+      %ul
+        %li
+          %button#toggle-datatable Show Data Table
+        %li
+          %table#datatable-table
+
+    #benchmarks
+      %ul
+        %li
+          %button#start-benchmarks Run Benchmarks
+        %li
+          %table#benchmarks-table

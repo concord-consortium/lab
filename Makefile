@@ -4,28 +4,32 @@ JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
 JS_TESTER   = ./node_modules/vows/bin/vows
 EXAMPLES_LIB_DIR = ./examples/lib
 
+HAML_EXAMPLE_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/\1/' )
+vpath %.haml src
+
+SASS_EXAMPLE_FILES := $(shell find src -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/\1.css/' )
+vpath %.sass src
+
 JS_FILES = \
-	lab.grapher.js \
-	lab.graphx.js \
-	lab.benchmark.js \
-	lab.layout.js \
-	lab.arrays.js \
-	lab.molecules.js \
-	lab.js
+	lib/lab.grapher.js \
+	lib/lab.graphx.js \
+	lib/lab.benchmark.js \
+	lib/lab.layout.js \
+	lib/lab.arrays.js \
+	lib/lab.molecules.js \
+	lib/lab.js
 
 all: \
-	lib \
 	vendor/d3 \
 	examples \
 	$(JS_FILES) \
 	$(JS_FILES:.js=.min.js) \
+	$(HAML_EXAMPLE_FILES) \
+	$(SASS_EXAMPLE_FILES)
 
 clean:
-	rm -f lab.*.js
 	rm -rf examples
-
-lib:
-	mkdir lib
+	rm -f lib/*.js
 
 vendor/d3:
 	mkdir -p vendor/d3
@@ -37,8 +41,10 @@ examples:
 	cp -r lib examples
 	cp -r vendor examples
 	cp -r resources examples
+	rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ examples/
 
-lab.js: \
+
+lib/lab.js: \
 	src/lab-module.js \
 	lib/lab.grapher.js \
 	lib/lab.molecules.js \
@@ -47,7 +53,7 @@ lab.js: \
 	lib/lab.layout.js \
 	lib/lab.graphx.js
 
-lab.grapher.js: \
+lib/lab.grapher.js: \
 	src/start.js \
 	src/grapher/core/core.js \
 	src/grapher/core/data.js \
@@ -60,24 +66,24 @@ lab.grapher.js: \
 	src/grapher/samples/lennard-jones-sample.js \
 	src/end.js
 
-lab.molecules.js: \
+lib/lab.molecules.js: \
 	src/start.js \
 	src/molecules/coulomb.js \
 	src/molecules/lennard-jones.js \
 	src/molecules/modeler.js \
 	src/end.js
 
-lab.benchmark.js: \
+lib/lab.benchmark.js: \
 	src/start.js \
 	src/benchmark/benchmark.js \
 	src/end.js
 
-lab.arrays.js: \
+lib/lab.arrays.js: \
 	src/start.js \
 	src/arrays/arrays.js \
 	src/end.js
 
-lab.layout.js: \
+lib/lab.layout.js: \
 	src/start.js \
 	src/layout/layout.js \
 	src/layout/molecule-container.js \
@@ -91,37 +97,43 @@ lab.layout.js: \
 	src/layout/fullscreen.js \
 	src/end.js
 
-lab.graphx.js: \
+lib/lab.graphx.js: \
 	src/start.js \
 	src/graphx/graphx.js \
 	src/end.js
 
-test: all
+test: test/layout.html \
+	vendor/d3 \
+	examples\
+	$(JS_FILES) \
+	$(JS_FILES:.js=.min.js)
 	@$(JS_TESTER)
 
 %.min.js: %.js Makefile
-	@rm -f lib/$@
-	$(JS_COMPILER) < lib/$< > lib/$@
-	@chmod ug+w lib/$@
-	@cp lib/$@ $(EXAMPLES_LIB_DIR)
+	@rm -f $@
+	$(JS_COMPILER) < $< > $@
+	@chmod ug+w $@
+	@cp $@ $(EXAMPLES_LIB_DIR)
 
 lab.%: Makefile
-	@rm -f lib/$@
-	cat $(filter %.js,$^) > lib/$@
-	@chmod ug+w lib/$@
-	cp lib/$@ $(EXAMPLES_LIB_DIR)
+	@rm -f $@
+	cat $(filter %.js,$^) > $@
+	@chmod ug+w $@
+	cp $@ $(EXAMPLES_LIB_DIR)
 
-# HAML_INPUT_FILES = find src *.haml
-# HAML_OUTPUT_FILES = $(HAML_INPUT_FILES,src/=) 
+test/%.html:
 
-# haml:
-# 	haml src/examples/index.html.haml examples/index.html.haml
-# 	for f in $( ls $wdir/*.erb ); do
-# 	  out="${f%.erb}.haml"
-# 	  if [ -e $out ]; then
-# 	    echo "skipping $out; already exists"
-# 	  else
-# 	    echo "hamlifying $f"
-# 	    html2haml $f > $out
-# 	  fi
-# 	done
+examples/%.html:
+
+h:
+	@echo $(HAML_EXAMPLE_FILES)
+
+%.html: %.html.haml Makefile
+	haml $< $@
+
+s:
+	@echo $(SASS_EXAMPLE_FILES)
+
+%.css: %.sass Makefile
+	sass $< $@
+
