@@ -173,9 +173,16 @@ var model_controls_inputs = model_controls.getElementsByTagName("input");
 // ------------------------------------------------------------
 
 function generate_molecules() {
+  var options = {
+    num: mol_number,
+    xdomain: mc_graph.xdomain, 
+    ydomain: mc_graph.ydomain, 
+    temperature: temperature, 
+    rmin: lj_graph.coefficients.rmin, 
+    mol_rmin_radius_factor: mol_rmin_radius_factor,
+  };
   model.size([mc_graph.xdomain, mc_graph.ydomain])
-      .nodes(mol_number, mc_graph.xdomain, mc_graph.ydomain, temperature,
-             lj_graph.coefficients.rmin,  mol_rmin_radius_factor)
+      .nodes(options)
       .initialize(layout.lennard_jones_forces_checkbox.checked, 
           layout.coulomb_forces_checkbox.checked);
 }
@@ -336,7 +343,7 @@ function modelReset() {
   layout.setup_particles();
   step_counter = model.stepCounter();
   layout.displayStats();
-  layout.render_datatable(true);
+  if (layout.datatable_visible) { layout.render_datatable(true) }
   ke_data = [model.ke()];
   // ke_graph.new_data(ke_data);
   // ke_graph.hide_canvas();
