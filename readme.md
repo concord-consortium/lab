@@ -47,9 +47,20 @@ If you have commit access to the repository use this form:
 
     git clone git@github.com:concord-consortium/lab.git
 
-Alternatively use this form:
+Alternatively if you don't have commit access use this form:
 
     git clone git://github.com/concord-consortium/lab.git
+
+If you plan to contribute to Lab:
+
+1. Create a local clone from the repository located here: http://github.com/concord-consortium/lab.
+   This will by default have the git-remote name: **origin**. 
+2. Make a fork of http://github.com/concord-consortium/lab to your account on github.
+3. Make a new git-remote referencing your fork. I recommend making the remote name your github user name.
+   For example my username is `stepheneb` so I would add a remote to my fork like this: 
+       git remote add stepheneb git@github.com:stepheneb/lab.git
+4. Create your changes on a topic branch. Please include tests if you can. When you a ready
+push your topic branch to your fork and send a pull request.
 
 I recommend also cloning the d3.js repository into a separate directory -- there are many useful examples 
 of both visualizations and examples of tests that run extremely quickly using vows, [jsdom](https://github.com/tmpvar/jsdom), and node.
@@ -62,6 +73,9 @@ Change to the lab directory and install the additional Ruby Gems used during dev
 
     cd lab
     bundle install --binstubs
+
+This will create the `bin/` directory and populate it with command-line execuatbles for running
+the specific versions of the RubyGems installed for development.
 
 Next install Lab's dependencies managed by npm -- including the development dependencies:
 
