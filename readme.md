@@ -128,6 +128,15 @@ file: /etc/apache2/extra/httpd-vhosts.conf
       </Directory>
     </VirtualHost>
 
+After making the Apache configuration changes test the syntax of the configuration: 
+
+    $ apachectl configtest
+    Syntax OK
+
+If the Apache configuration syntax is OK restart Apache:
+                                                                                                                                                              
+    sudo apachectl restart                                                                                                                                
+
 Now open: http://lab.local/examples/
 
 Or go directly to the Simple Molecules model here: http://lab.local/examples/simplemolecules/simplemolecules.html
