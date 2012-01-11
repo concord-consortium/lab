@@ -14,6 +14,14 @@ Cameron Abrams, teaching in the Department of Chemical Engineering at Drexel has
 published these excellent [Molecular Simulation](http://www.pages.drexel.edu/~cfa22/msim/msim.html) 
 resources for a course he teaches.
 
+This site has a basic introduction to the physics of molecular dynamics simulations, and practical exercises with the CHARMM package: [A theoretical introduction to molecular dynamics simulations and practical examples using the CHARMM program](http://www.ch.embnet.org/MD_tutorial/) 
+
+### More detailed references, to constrain our 2D "physics"
+
+[Thermostat Algorithms for Molecular Dynamics Simulations](http://phjoan23.technion.ac.il/~phr76ja/thermostats.pdf)
+
+One kind of unphysical effect that can arise is [the "flying ice cube"](http://en.wikipedia.org/wiki/Flying_ice_cube) - See linked paper.
+
 ## Grapher
 
 Example: http://lab.dev.concord.org/surface-temperature/surface-temperature.html
