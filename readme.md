@@ -236,7 +236,7 @@ The html file are generated from [Haml](http://haml-lang.com/) markup. Add the s
 
 The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `.sass` to these files.
 
-### Tests: test/
+### Tests: `test/`
 
 Lab's JavaScript tests use [Vows](http://vowsjs.org), an asynchronous behavior driven framework based 
 on [Node.js](http://nodejs.org/). In addition Lab uses [jsdom](https://github.com/tmpvar/jsdom), a
