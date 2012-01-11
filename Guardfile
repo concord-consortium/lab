@@ -5,27 +5,18 @@ ignore_paths 'bin', 'examples', 'lib', 'node_modules'
 # https://github.com/nex3/firesass
 FIRESASS = false
 
-# puts "\nre-creating examples/ dir ..."
-system("make clean")
 system("make")
-system("rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ examples/")
+puts <<HEREDOC
 
-haml_files = Dir["src/**/*.haml"].collect { |s| { :src => s, :dest => s[/src\/(.+?)\.haml/, 1]} }
-puts "processing #{haml_files.length} haml files ..."
-haml_files.each do |p| 
-  puts "source: #{p[:src]} => destination: #{p[:dest]}"
-  system("haml #{p[:src]} #{p[:dest]}")
-end
-# 
-# sass_files = Dir["src/**/*.sass"].collect { |s| { :src => s, :dest => s[/src\/(.+?)\.sass/, 1] + '.css'} }
-# puts "processing #{sass_files.length} sass files ...\n"
-# sass_files.each { |p| system("sass #{p[:src]} #{p[:dest]}") }
+ready ...
 
-guard 'haml', :output => 'examples', :input => 'src/examples', :all_on_start => true do
+HEREDOC
+
+guard 'haml', :output => 'examples', :input => 'src/examples', :all_on_start => false do
   watch %r{^.+(\.html\.haml)}
 end
 
-guard 'sass', :input => 'src/examples', :output => 'examples', :all_on_start => true
+guard 'sass', :input => 'src/examples', :output => 'examples', :all_on_start => false
 
 guard 'shell' do
   watch(%r{src\/(?!examples).+\.js$}) do
@@ -33,7 +24,7 @@ guard 'shell' do
     system("make")
   end
   watch(%r{^(src/examples/.+)$}) do |match|
-    unless match[0][/(\.haml)|(\.sass)$/]
+    unless match[0][/(\.haml)|(\.sass)|(^\..+)$/]
       source_path = match[0]
       destination_path = source_path[/src\/(.+?)$/, 1]
       puts "cp -f #{source_path} #{destination_path}"

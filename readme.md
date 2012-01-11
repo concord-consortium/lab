@@ -4,9 +4,6 @@ HTML5-based scientific models, visualizations, graphing, and probeware.
 
 ## TODO
 
-- The current repository requires heavy refactoring to move much of the 
-code in src/examples into re-usable modules.
-
 - The tests need to be expanded a great deal.
 
 ## Simple Molecules

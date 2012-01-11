@@ -1,5 +1,6 @@
 require("../env");
-require("../../lab.layout");
+require("../../vendor/d3/d3.js");
+require("../../lib/lab.layout");
 
 var vows = require("vows"),
     assert = require("assert");
