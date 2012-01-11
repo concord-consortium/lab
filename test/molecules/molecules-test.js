@@ -17,4 +17,44 @@ suite.addBatch({
   }
 });
 
+suite.addBatch({
+  "model initialization": {
+    topic: function() {
+      return model = modeler.layout.model();
+    },
+    "creates 50 molecules with a total charge of 0": function(model) {
+      molecules = [];
+      model.size([100, 100])
+          .nodes(50, 100, 100, 3, 4.4,  0.38)
+          .initialize(true, true);
+      assert.equal(molecules.length, 50);
+      var total_charge = d3.sum(molecules, function(d) { return d.charge });
+      assert.equal(total_charge, 0);
+    },
+    "creates 100 molecules with a total charge of 0": function(model) {
+      molecules = [];
+      model.size([100, 100])
+          .nodes(100, 100, 100, 3, 4.4,  0.38)
+          .initialize(true, true);
+      assert.equal(molecules.length, 100);
+      var total_charge = d3.sum(molecules, function(d) { return d.charge });
+      assert.equal(total_charge, 0);
+    },
+    "creates first 50 and then 100 molecules with a total charge of 0": function(model) {
+      molecules = [];
+      model.size([100, 100])
+          .nodes(50, 100, 100, 3, 4.4,  0.38)
+          .initialize(true, true);
+      assert.equal(molecules.length, 50);
+      var total_charge = d3.sum(molecules, function(d) { return d.charge });
+      assert.equal(total_charge, 0);
+      model.nodes(100, 100, 100, 3, 4.4,  0.38)
+          .initialize(true, true);
+      assert.equal(molecules.length, 100);
+      var total_charge = d3.sum(molecules, function(d) { return d.charge });
+      assert.equal(total_charge, 0);
+    }
+  }
+});
+
 suite.export(module);
