@@ -85,9 +85,9 @@ You can see the list of dependencies in package.json. The packages will be
 installed in the node_modules directory.
 
 Start watching the various src directories and automatically compile and generate
-the examples directory including JavaScript, HTML, CSS, and image resources:
+the `examples/` directory including JavaScript, HTML, CSS, and image resources:
 
-    bin/guard start
+    bin/guard
 
 This will take about 15s to generate the examples directory when first started.
 
@@ -95,12 +95,12 @@ You can also create the examples directory by using `make` from the command line
 
 Create a localhost and local Apache vhost for lab and optionally d3:
 
-file: /etc/hosts
+file: `/etc/hosts`
 
     127.0.0.1       lab.local
     127.0.0.1       d3.local
 
-file: /etc/apache2/extra/httpd-vhosts.conf
+file: `/etc/apache2/extra/httpd-vhosts.conf`
 
     <VirtualHost lab.local:80>
        ServerName lab
@@ -128,12 +128,12 @@ file: /etc/apache2/extra/httpd-vhosts.conf
       </Directory>
     </VirtualHost>
 
-After making the Apache configuration changes test the syntax: 
+Test the syntax after making Apache configuration changes: 
 
     $ apachectl configtest
     Syntax OK
 
-If the configuration syntax is OK restart Apache:
+Restart Apache when the configuration syntax is OK :
                                                                                                                                                               
     $ sudo apachectl restart
 
@@ -233,7 +233,7 @@ The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add
 Lab's test framework uses [Vows](http://vowsjs.org) and [jsdom](https://github.com/tmpvar/jsdom) which depend on
 [Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/). 
 
-Mamny of the test suites are minimal (just loading the module and testing the version number):
+Many of the modules have minimal test suite coverage -- some just load the module and testing the version number):
 
   benchmark
   graphx
@@ -294,7 +294,7 @@ cause automatic rebuilding of the associated files in the `examples/` directory.
 ### External JavaScript Frameworks: vendor/
 
 External JavaScript prerequisites for running lab are located in the vendor/ directory. 
-These are copied into the examples/ directory when either running `make` or `bin/guard start`.
+These are copied into the examples/ directory when either running `make` or `bin/guard`.
 
 - d3
 - modernizr.js
