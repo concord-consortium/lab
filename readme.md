@@ -135,7 +135,7 @@ After making the Apache configuration changes test the syntax of the configurati
 
 If the Apache configuration syntax is OK restart Apache:
                                                                                                                                                               
-    sudo apachectl restart                                                                                                                                
+    sudo apachectl restart
 
 Now open: http://lab.local/examples/
 
