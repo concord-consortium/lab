@@ -272,13 +272,16 @@ with an additional collection of useful [assertions](http://vowsjs.org/#assertio
 _Note: Using a more specific assertion usually results in more useful error reports._
 
 - equality
+
         assert.equal          (4, 4);
         assert.strictEqual    (4 > 2, true);
         assert.notEqual       (4, 2);
         assert.strictNotEqual (1, true);
         assert.deepEqual      ([4, 2], [4, 2]);
         assert.notDeepEqual   ([4, 2], [2, 4]);
+
 - type
+
         assert.isFunction (function () {});
         assert.isObject   ({goo:true});
         assert.isString   ('goo');
@@ -287,28 +290,42 @@ _Note: Using a more specific assertion usually results in more useful error repo
         assert.isBoolean  (true);
         assert.typeOf     (42, 'number');
         assert.instanceOf ([], Array);
+
 - truth
+
         assert.isTrue  (true);
         assert.isFalse (false);
+
 - null, undefined, NaN
+
         assert.isNull      (null);
         assert.isNotNull   (undefined);
         assert.isUndefined ('goo'[9]);
         assert.isNaN       (0/0);
+
 - inclusion
+
         assert.include ([4, 2, 0], 2);
         assert.include ({goo:true}, 'goo');
         assert.include ('goo', 'o');
+
 - regexp matching
+
         assert.match ('hello', /^[a-z]+/);
+
 - length
+
         assert.length ([4, 2, 0], 3);
         assert.length ('goo', 3);
+
 - emptiness
+
         assert.isEmpty ([]);
         assert.isEmpty ({});
         assert.isEmpty ("");
+
 - exceptions
+
         assert.throws(function () { x + x }, ReferenceError);
         assert.doesNotThrow(function () { 1 + 1 }, Error);
 
