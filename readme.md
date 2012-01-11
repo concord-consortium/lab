@@ -282,7 +282,7 @@ And one additional file which combines them all:
 In addition there are minimized versions of all of these files.
 
 When working on the source code please keep commits of these generated JavaScript files separate from commits to the `src/` 
-directory to make is easier to see and understand the changes that make up the source code narrative.
+directory to make it easier to see and understand the changes that make up the source code narrative.
 
 ### Generated examples: examples/
 
@@ -294,7 +294,7 @@ cause automatic rebuilding of the associated files in the `examples/` directory.
 ### External JavaScript Frameworks: vendor/
 
 External JavaScript prerequisites for running lab are located in the vendor/ directory. 
-These are copied into the examples/ directory when either running `make` or `bin/guard`.
+These are copied into the `examples/` directory when either running `make` or `bin/guard`.
 
 - d3
 - modernizr.js
