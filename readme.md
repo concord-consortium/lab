@@ -14,6 +14,10 @@ Cameron Abrams, teaching in the Department of Chemical Engineering at Drexel has
 published these excellent resources [Molecular Simulation](http://www.pages.drexel.edu/~cfa22/msim/msim.html)
 for his course.
 
+This site has a basic introduction to the physics of molecular dynamics simulations, and practical exercises with the CHARMM package: [A theoretical introduction to molecular dynamics simulations and practical examples using the CHARMM program](http://www.ch.embnet.org/MD_tutorial/) 
+
+[Thermostat Algorithms for Molecular Dynamics Simulations](http://phjoan23.technion.ac.il/~phr76ja/thermostats.pdf)
+
 ## Grapher
 
 Example: http://lab.dev.concord.org/surface-temperature/surface-temperature.html
