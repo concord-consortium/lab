@@ -157,17 +157,18 @@ After running `bundle install --binstubs` the `bin/` directory will be created.
 After running: `bin/guard` the `examples/` directory will be created and any subsequent changes to files 
 in the `src/` directory  cause automatic rebuilding of the associated files in the `examples/` directory.
 
-**Note:** remember to make changes you want saved in the `src/` directory **not** in the `examples/' directory.`
+**Note:** remember to make changes you want saved in the `src/` directory **not** in the `examples/` directory.
 
 ### Adding new source files or modules
 
 If you add a new JavaScript file to an existing Lab module also add it to the associated section of the MakeFile.
 
-For example if you created a pie chart graph layout and added the JavaScript source file:
+For example if you created a pie chart grapher and intended it to be part of `lab.layout.js` add the JavaScript 
+source file to this directory:
 
     src/examples/layout/pie-chart.js
 
-You would also need to add the path to the new source code file to this section of the MakeFile:
+Then also add the path to `ie-chart.js` to the `lib/lab.layout.js` target section of the MakeFile:
 
     lib/lab.layout.js: \
     	src/start.js \
@@ -184,8 +185,8 @@ You would also need to add the path to the new source code file to this section 
     	src/end.js
 
 Similarly if you add a new module to Lab you will need to create a new target to represent the module
-using a similar form to that shown above and also add the target to the `JS_FILES` make variable containing 
-the list of Lab JavaScript files to be generated:
+using a similar form to the `lib/lab.layout.js` target as well as adding the target to the `JS_FILES` 
+make variable containing the list of Lab JavaScript files to be generated:
 
     JS_FILES = \
     	lib/lab.grapher.js \
@@ -202,7 +203,7 @@ in the `examples/` directory.
 
 The html file are generated from [Haml](http://haml-lang.com/) markup. Add the suffix `.html.haml` to these files.
 
-The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `/sass` to these files.
+The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `.sass` to these files.
 
 ### Tests: test/
 
@@ -235,7 +236,8 @@ This testing strategy is similar to that used by d3.js.
 
 `test/env-assert.js` has a number of very useful additional assertions copied from, d3.js:
 
-There are also many interesting test examples and patterns in the [d3.js test directory](https://github.com/mbostock/d3/tree/master/test):
+There are also many interesting test examples and patterns in the [d3.js test directory](https://github.com/mbostock/d3/tree/master/test) 
+that can be adapted for use in Lab.
 
 ### Generated Lab Modules: lib/
 
@@ -243,16 +245,16 @@ The `lib/` directory contains the lab modules generated from JavaScript source c
 
 Here are the standard lab modules:
 
-- lab.arrays.js
-- lab.benchmark.js
-- lab.grapher.js
-- lab.graphx.js
-- lab.layout.js
-- lab.molecules.js
+- `lab.arrays.js`
+- `lab.benchmark.js`
+- `lab.grapher.js`
+- `lab.graphx.js`
+- `lab.layout.js`
+- `lab.molecules.js`
 
 And one additional file which combines them all:
 
-- lab.js
+- `lab.js`
 
 In addition there are minimized versions of all of these files.
 
@@ -295,14 +297,14 @@ Running `bin/update.sh` will now copy/update the directory at http://lab.dev.con
 
 ## References
 
-**[d3.js](http://mbostock.github.com/d3/)**
+### [d3.js](http://mbostock.github.com/d3/)
 
 - [repo](https://github.com/mbostock/d3)
 - [documentation](http://mbostock.github.com/d3/api/)
 - [issues](https://github.com/mbostock/d3/issues)
 - [google group](http://groups.google.com/group/d3-js)
 
-**[node](http://nodejs.org/)**
+### [node](http://nodejs.org/)
 
 - [repo](https://github.com/joyent/node)
 - [documentation](http://nodejs.org/docs/latest/api/index.html)
@@ -310,7 +312,7 @@ Running `bin/update.sh` will now copy/update the directory at http://lab.dev.con
 - [google group](http://groups.google.com/group/nodejs)
 - [How To Node](http://howtonode.org/)
 
-**[npm](http://npmjs.org/)**
+### [npm](http://npmjs.org/)
 
 - [repo](https://github.com/isaacs/npm)
 - [faq](http://npmjs.org/doc/faq.html)
@@ -324,20 +326,22 @@ More about using npm for development:
 - [Managing module dependencies](http://howtonode.org/managing-module-dependencies)
 - [What do people do for versionizing node modules within git?](https://groups.google.com/group/nodejs/browse_thread/thread/9aa563f1fe3b3ff5)
 
-**RubyGems**
+### [RubyGems](https://rubygems.org/)
 
 - [sass](http://sass-lang.com/), [reference](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)
 - [haml](http://haml-lang.com/), [reference](http://haml-lang.com/docs/yardoc/file.HAML_REFERENCE.html)
 - [guard](https://github.com/guard/guard)
 - [guard-shell](https://github.com/hawx/guard-shell)
+- [guard-haml](https://github.com/manufaktor/guard-haml)
+- [guard-sass](https://github.com/hawx/guard-sass)
 - [guard-livereload](https://github.com/guard/guard-livereload)
 - [rb-fsevent](https://github.com/thibaudgg/rb-fsevent)
 
-**LiveReload extension for Chrome and Safari**
+### LiveReload extension for Chrome and Safari
 
 - [livereload](https://github.com/mockko/livereload)
 
-**Full Screen API**
+### Full Screen API
 
 - http://peter.sh/2011/01/javascript-full-screen-api-navigation-timing-and-repeating-css-gradients/
 - http://peter.sh/2011/08/fullscreen-api-enhanced-element-highlighting-and-progress-on-flexbox/
