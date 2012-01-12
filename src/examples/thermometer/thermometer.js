@@ -243,8 +243,8 @@ function updateMolNumberViewDependencies() {
   update_sigma(mol_number_to_lj_sigma_map[mol_number]);
   layout.lj_redraw();
   speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
-  layout.speed_update()
-  layout.speed_redraw();
+  // layout.speed_update()
+  // layout.speed_redraw();
 }
 
 select_molecule_number.onchange = selectMoleculeNumberChange;
@@ -367,7 +367,7 @@ var model_listener = function(e) {
       step_counter = model.stepCounter(),
       total_steps = model.steps();
   
-  layout.speed_update();
+  // layout.speed_update();
   
   layout.update_molecule_positions();
   
