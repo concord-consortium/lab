@@ -26,7 +26,8 @@
   "devDependencies": {
     "uglify-js": "1.2.3",
     "jsdom": "0.2.10",
-    "vows": "0.6.1"
+    "vows": "0.6.1",
+    "coffee-script": "1.2.0"
   },
   "scripts": {
     "test": "./node_modules/vows/bin/vows"
