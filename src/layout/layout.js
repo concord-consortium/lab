@@ -6,17 +6,27 @@
 
 layout = { version: "0.0.1" };
 
-layout.setupScreen = function() {
+layout.setupScreen = function(layout_selection) {
   var fullscreen = document.fullScreen ||
                    document.webkitIsFullScreen ||
                    document.mozFullScreen;
   if(fullscreen) {
     layout.setupFullScreen();
   } else {
-    layout.setupRegularScreen()
+    switch (layout_selection) {
+      case "just_molecules":
+      layout.setupJustScreenMoleculeContainer();
+      break;
+
+      default:
+      layout.setupRegularScreen();
+      break;
+    }
   }
   layout.setupTemperature();
-  benchmarks_table.style.display = "none";
+  if (benchmarks_table) {
+    benchmarks_table.style.display = "none";
+  }
 }
 
 layout.setupFullScreen = function() {
@@ -86,3 +96,11 @@ layout.setupFullScreenKEChart = function() {
   finishSetupKEChart();
 }
 
+//
+// Just Molecule Container Screen Layout
+//
+layout.setupJustScreenMoleculeContainer = function() {
+  moleculecontainer.style.width = document.body.clientWidth * 0.8 +"px";
+  moleculecontainer.style.height = document.body.clientWidth * 0.4 + 2 +"px";
+  layout.finishSetupMoleculeContainer();
+}
