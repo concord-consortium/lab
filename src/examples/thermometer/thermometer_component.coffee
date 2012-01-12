@@ -43,11 +43,12 @@ class Thermometer
     (this.get_avg() / @max) * @height
 
   redraw: ->
+    median = this.get_avg().toFixed(4)
     value = this.scaled_display_value()
     @thermometer.attr("y", @height - value)
     @thermometer.attr("height",value)
     @last_draw_time = new Date().getTime()
-    d3.select('#therm_text').text(this.get_avg().toFixed(4))
+    d3.select('#therm_text').text("#{median} Median KPE")
 
 # make this class available globally as Thermometer
 # use like:
