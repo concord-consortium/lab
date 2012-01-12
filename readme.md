@@ -157,7 +157,7 @@ To have the browser page for an example automatically reload when changes are ma
 
 ## Repository structure
 
-### Source Code: src/
+### Source Code: `src/`
 
 The `src/` directory includes both JavaScript source code for the Lab modules as well as the `src/examples/` 
 directory containing the additional resources for generating the html, css, and image resources for `examples/`.
@@ -236,19 +236,15 @@ The html file are generated from [Haml](http://haml-lang.com/) markup. Add the s
 
 The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `.sass` to these files.
 
-### Tests: test/
+### Testing: `test/`
 
-Lab's test framework uses [Vows](http://vowsjs.org) and [jsdom](https://github.com/tmpvar/jsdom) which depend on
-[Node.js](http://nodejs.org/) and [NPM](http://npmjs.org/). 
+Lab's JavaScript tests use [Vows](http://vowsjs.org), an asynchronous behavior driven framework based 
+on [Node.js](http://nodejs.org/). In addition Lab uses [jsdom](https://github.com/tmpvar/jsdom), a
+lightweight CommonJS implementation of the W3C DOM specifications.
 
-Many of the modules have minimal test suite coverage -- some just load the module and testing the version number):
+This way of setting up tests is similar to that used by [d3.js](http://mbostock.github.com/d3/).
 
-  benchmark
-  graphx
-  layout
-  molecules
-
-.. but the grapher has a couple more tests and the arrays module has almost a complete set of tests.
+These development dependencies are installed using [NPM](http://npmjs.org/).
 
 Running the tests:
 
@@ -256,21 +252,87 @@ Running the tests:
     ................................. . . .. . . .
     x OK > 40 honored (0.012s)
 
-Currently there are 40 tests and they take less than 1s to run on the console:
+If you are running `bin/guard` the tests run automatically anytime a change is made in the JavaScript 
+files in the src/ or test/ directory.
 
-Turns out recent versions of nodejs/v8 support TypedArrays -- this is great since the arrays module is 
-designed to support using typed or regular arrays for computation. 
+The results of the tests are displayed in the console that bin/guard is running in.
 
-This testing strategy is similar to that used by d3.js.
+If the bottom of the console window is viewable you will see new test results whenever you save a changes.
+
+Recent versions of nodejs/v8 support TypedArrays -- this make it possible to more extensively
+test lab.arrays which is designed to support using either typed or regular arrays for computation. 
 
 `test/env.js` uses the node module [jsdom](https://github.com/tmpvar/jsdom) to setup resources for simple emulation of a browser.
 
-`test/env-assert.js` has a number of very useful additional assertions copied from, d3.js:
+[Vows](http://vowsjs.org) integrates the [standard nodejs assertions](http://nodejs.org/docs/latest/api/assert.html)
+with an additional collection of useful [assertions](http://vowsjs.org/#assertions) summarized below:
+
+- equality
+
+        assert.equal          (4, 4);
+        assert.strictEqual    (4 > 2, true);
+        assert.notEqual       (4, 2);
+        assert.strictNotEqual (1, true);
+        assert.deepEqual      ([4, 2], [4, 2]);
+        assert.notDeepEqual   ([4, 2], [2, 4]);
+
+- type
+
+        assert.isFunction (function () {});
+        assert.isObject   ({goo:true});
+        assert.isString   ('goo');
+        assert.isArray    ([4, 2]);
+        assert.isNumber   (42);
+        assert.isBoolean  (true);
+        assert.typeOf     (42, 'number');
+        assert.instanceOf ([], Array);
+
+- truth
+
+        assert.isTrue  (true);
+        assert.isFalse (false);
+
+- null, undefined, NaN
+
+        assert.isNull      (null);
+        assert.isNotNull   (undefined);
+        assert.isUndefined ('goo'[9]);
+        assert.isNaN       (0/0);
+
+- inclusion
+
+        assert.include ([4, 2, 0], 2);
+        assert.include ({goo:true}, 'goo');
+        assert.include ('goo', 'o');
+
+- regexp matching
+
+        assert.match ('hello', /^[a-z]+/);
+
+- length
+
+        assert.length ([4, 2, 0], 3);
+        assert.length ('goo', 3);
+
+- emptiness
+
+        assert.isEmpty ([]);
+        assert.isEmpty ({});
+        assert.isEmpty ("");
+
+- exceptions
+
+        assert.throws(function () { x + x }, ReferenceError);
+        assert.doesNotThrow(function () { 1 + 1 }, Error);
+
+Additionally `test/env-assert.js` has a number of useful additional assertions copied from [d3.js](http://mbostock.github.com/d3/).
+
+_Note: Using a more specific assertion usually results in more useful error reports._
 
 There are also many interesting test examples and patterns in the [d3.js test directory](https://github.com/mbostock/d3/tree/master/test) 
 that can be adapted for use in Lab.
 
-### Generated Lab Modules: lib/
+### Generated Lab Modules: `lib/`
 
 The `lib/` directory contains the lab modules generated from JavaScript source code in the `src/` directory.
 
@@ -292,14 +354,14 @@ In addition there are minimized versions of all of these files.
 When working on the source code please keep commits of the generated JavaScript files in `lib/` separate from 
 other commits to make it easier to see and understand the changes that make up the source code narrative.
 
-### Generated examples: examples/
+### Generated Examples: `examples/`
 
 The `examples/` directory is not part of the repository but instead is automatically generated by running `make`.
 
 When running `bin/guard` any changes to files in the `src/` directory 
 cause automatic rebuilding of the associated files in the `examples/` directory.
 
-### External JavaScript Frameworks: vendor/
+### External JavaScript Frameworks: `vendor/`
 
 External JavaScript prerequisites for running lab are located in the vendor/ directory. 
 These are copied into the `examples/` directory when either running `make` or `bin/guard`.
@@ -334,6 +396,10 @@ Running `bin/update.sh` will now copy/update the directory at http://lab.dev.con
 - [documentation](http://mbostock.github.com/d3/api/)
 - [issues](https://github.com/mbostock/d3/issues)
 - [google group](http://groups.google.com/group/d3-js)
+
+### [Vows](http://vowsjs.org)
+
+- [repo](https://github.com/cloudhead/vows)
 
 ### [node](http://nodejs.org/)
 

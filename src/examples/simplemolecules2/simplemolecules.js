@@ -243,12 +243,12 @@ var mol_number_to_speed_yaxis_map = {
 }
 
 function updateMolNumberViewDependencies() {
-  ke_graph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
-  update_sigma(mol_number_to_lj_sigma_map[mol_number]);
-  layout.lj_redraw();
-  speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
-  layout.speed_update()
-  layout.speed_redraw();
+  // ke_graph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
+  // update_sigma(mol_number_to_lj_sigma_map[mol_number]);
+  // layout.lj_redraw();
+  // speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
+  // layout.speed_update()
+  // layout.speed_redraw();
 }
 
 select_molecule_number.onchange = selectMoleculeNumberChange;
@@ -286,7 +286,7 @@ model_controls.onchange = modelController;
 function modelStop() {
   model_stopped = true;
   model.stop();
-  ke_graph.hide_canvas();
+  // ke_graph.hide_canvas();
   // ke_graph.new_data(ke_data);
   model_controls_inputs[0].checked = true;
 }
@@ -296,7 +296,7 @@ function modelStep() {
   model.stop();
   if (model.stepCounter() < maximum_model_steps) {
     model.stepForward();
-    ke_graph.hide_canvas();
+    // ke_graph.hide_canvas();
     model_controls_inputs[0].checked = true;
   } else {
     model_controls_inputs[0].checked = true
@@ -307,7 +307,7 @@ function modelGo() {
   model_stopped = false;
   model.on("tick", model_listener);
   if (model.stepCounter() < maximum_model_steps) {
-    ke_graph.show_canvas();
+    // ke_graph.show_canvas();
     model.resume();
     model_controls_inputs[2].checked = true;
   } else {
@@ -318,7 +318,7 @@ function modelGo() {
 function modelStepBack() {
   modelStop();
   model.stepBack();
-  ke_graph.new_data(ke_data);
+  // ke_graph.new_data(ke_data);
 }
 
 function modelStepForward() {
@@ -333,20 +333,20 @@ function modelStepForward() {
 function modelReset() {
   mol_number = +select_molecule_number.value;
   modelSetup();
-  update_coefficients(molecules_lennard_jones.coefficients());
+  // update_coefficients(molecules_lennard_jones.coefficients());
   model.temperature(temperature);
   layout.temperature_control_checkbox.onchange();
-  layout.setupScreen();
-  updateMolNumberViewDependencies();
+  layout.setupScreen("just_molecules");
+  // updateMolNumberViewDependencies();
   modelStop();
   layout.update_molecule_radius();
   layout.setup_particles();
   step_counter = model.stepCounter();
   layout.displayStats();
-  layout.render_datatable(true);
+  if (layout.datatable_visible) { layout.render_datatable(true) }
   ke_data = [model.ke()];
-  ke_graph.new_data(ke_data);
-  ke_graph.hide_canvas();
+  // ke_graph.new_data(ke_data);
+  // ke_graph.hide_canvas();
   model_controls_inputs[0].checked = true;
 }
 
@@ -371,24 +371,24 @@ var model_listener = function(e) {
       step_counter = model.stepCounter(),
       total_steps = model.steps();
   
-  layout.speed_update();
+  // layout.speed_update();
   
   layout.update_molecule_positions();
   
   if (model.isNewStep()) {
     ke_data.push(ke);
     if (model_stopped) {
-      ke_graph.add_point(ke);
-      ke_graph.update_canvas();
+      // ke_graph.add_point(ke);
+      // ke_graph.update_canvas();
     } else {
-      ke_graph.add_canvas_point(ke)
+      // ke_graph.add_canvas_point(ke)
     }
   } else {
-    ke_graph.update();
+    // ke_graph.update();
   }
-  if (step_counter > 0.95 * ke_graph.xmax && ke_graph.xmax < maximum_model_steps) {
-    ke_graph.change_xaxis(ke_graph.xmax * 2);
-  }
+  // if (step_counter > 0.95 * ke_graph.xmax && ke_graph.xmax < maximum_model_steps) {
+    // ke_graph.change_xaxis(ke_graph.xmax * 2);
+  // }
   if (step_counter >= maximum_model_steps) { modelStop(); }
   layout.displayStats();
   if (layout.datatable_visible) { layout.render_datatable() }
