@@ -12,11 +12,12 @@ ready ...
 
 HEREDOC
 
-guard 'haml', :output => 'examples', :input => 'src/examples', :all_on_start => false do
+guard 'sass',         :input => 'src/examples', :output => 'examples', :all_on_start => false
+guard 'coffeescript', :input => 'src/examples', :output => 'examples', :all_on_start => false
+guard 'haml',         :input => 'src/examples', :output => 'examples', :all_on_start => false do
   watch %r{^.+(\.html\.haml)}
 end
 
-guard 'sass', :input => 'src/examples', :output => 'examples', :all_on_start => false
 
 guard 'shell' do
   watch(%r{src\/(?!examples).+\.js$}) do
