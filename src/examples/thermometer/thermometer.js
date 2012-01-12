@@ -390,7 +390,7 @@ var model_listener = function(e) {
   if (layout.datatable_visible) { layout.render_datatable() }
   if ('undefined' !== therm) {
     model.get_speed(speed_data);
-    therm.set_value(d3.median(speed_data));
+    therm.add_value(d3.median(speed_data));
   }
 }
 
