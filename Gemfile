@@ -11,6 +11,7 @@ gem "guard-haml",       "~> 0.3.1"
 gem "guard-sass",       "~> 0.5.4"
 gem "guard-shell",      "~> 0.2.0"
 gem "guard-livereload", "~> 0.3.1"                
+gem 'guard-coffeescript', "~> 0.5.4"
 
 # gem "RedCloth",         "~> 4.2.8"
 # gem "maruku",           "~> 0.6"
