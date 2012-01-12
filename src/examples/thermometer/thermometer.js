@@ -8,6 +8,8 @@
 //
 // ------------------------------------------------------------
 
+var therm;
+
 var mol_number = 100,
     sample_time = 0.01,
     temperature = 3,
@@ -185,6 +187,7 @@ function modelSetup() {
   model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
   model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
   ke_data = [model.ke()];
+  therm = new Thermometer(model);
 }
 
 
@@ -385,6 +388,9 @@ var model_listener = function(e) {
   if (step_counter >= maximum_model_steps) { modelStop(); }
   layout.displayStats();
   if (layout.datatable_visible) { layout.render_datatable() }
+  if ('undefined' !== therm) {
+    therm.update();
+  }
 }
 
 // ------------------------------------------------------------
