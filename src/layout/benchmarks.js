@@ -49,7 +49,9 @@ var benchmarks_to_run = [
   }
 ];
 
-start_benchmarks.onclick = function() {
-  benchmark.run(benchmarks_table, benchmarks_to_run)
-};
+if (start_benchmarks) {
+  start_benchmarks.onclick = function() {
+    benchmark.run(benchmarks_table, benchmarks_to_run)
+  };
+}
 
