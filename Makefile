@@ -140,7 +140,7 @@ s:
 	@echo $(SASS_EXAMPLE_FILES)
 
 %.css: %.sass Makefile
-	sass $< $@
+	sass --update src/examples:examples
 
 c:
 	@echo $(COFFEESCRIPT_EXAMPLE_FILES)
