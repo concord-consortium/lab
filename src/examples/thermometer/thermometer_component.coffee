@@ -4,11 +4,11 @@ class Thermometer
     @dom_element = d3.select(@dom_id)
     @width   = 10
     @height  = 200
-    @max     = 0.1
+    @max     = 0.7
     @samples = []
 
     @last_draw_time = new Date().getTime()
-    @sample_interval_ms = 200
+    @sample_interval_ms = 1000
     this.init_svg()
 
   init_svg: ->
@@ -43,12 +43,12 @@ class Thermometer
     (this.get_avg() / @max) * @height
 
   redraw: ->
-    median = this.get_avg().toFixed(4)
+    avg = this.get_avg().toFixed(4)
     value = this.scaled_display_value()
     @thermometer.attr("y", @height - value)
     @thermometer.attr("height",value)
     @last_draw_time = new Date().getTime()
-    d3.select('#therm_text').text("#{median} Median KPE")
+    d3.select('#therm_text').text("#{avg} avg KE")
 
 # make this class available globally as Thermometer
 # use like:
