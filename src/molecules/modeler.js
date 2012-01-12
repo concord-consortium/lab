@@ -664,17 +664,17 @@ modeler.layout.model = function() {
     return average_rate();
   }
 
- model.set_temperature_control = function(tc) {
+  model.set_temperature_control = function(tc) {
    temperature_control = tc;
- }
+  }
 
- model.set_lennard_jones_forces = function(lj) {
+  model.set_lennard_jones_forces = function(lj) {
    lennard_jones_forces = lj;
- }
+  }
 
- model.set_coulomb_forces = function(cf) {
+  model.set_coulomb_forces = function(cf) {
    coulomb_forces = cf;
- }
+  }
 
   model.initialize = function(lj, cf) {
     var i, j, k, o,
@@ -724,10 +724,17 @@ modeler.layout.model = function() {
     return model
   };
 
-  model.nodes = function(num, xdomain, ydomain, temperature, rmin, mol_rmin_radius_factor) {
-    
+  model.nodes = function(options) {
+    var options = options || {},
+        num = options.num || 50, 
+        xdomain = options.xdomain || 100, 
+        ydomain = options.ydomain || 100, 
+        temperature = options.temperature || 3, 
+        rmin = options.rmin || 4.4, 
+        mol_rmin_radius_factor = options.mol_rmin_radius_factor || 0.38,
+        dAngle;
+
     mol_number = num;
-    var dAngle;
 
     nodes = arrays.create(node_properties_length, null, "regular");
     
