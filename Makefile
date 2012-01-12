@@ -1,6 +1,7 @@
 # See the README for installation instructions.
 
 JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
+COFFEESCRIPT_COMPILER = ./node_modules/coffee-script/bin/coffee
 JS_TESTER   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LIB_DIR = ./examples/lib
 
@@ -10,7 +11,10 @@ vpath %.haml src
 SASS_EXAMPLE_FILES := $(shell find src -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/\1.css/' )
 vpath %.sass src
 
-JS_FILES = \
+COFFEESCRIPT_EXAMPLE_FILES := $(shell find src -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/\1.js/' )
+vpath %.coffee src
+
+LAB_JS_FILES = \
 	lib/lab.grapher.js \
 	lib/lab.graphx.js \
 	lib/lab.benchmark.js \
@@ -22,10 +26,11 @@ JS_FILES = \
 all: \
 	vendor/d3 \
 	examples \
-	$(JS_FILES) \
-	$(JS_FILES:.js=.min.js) \
+	$(LAB_JS_FILES) \
+	$(LAB_JS_FILES:.js=.min.js) \
 	$(HAML_EXAMPLE_FILES) \
-	$(SASS_EXAMPLE_FILES)
+	$(SASS_EXAMPLE_FILES) \
+	$(COFFEESCRIPT_EXAMPLE_FILES)
 
 clean:
 	rm -rf examples
@@ -137,3 +142,9 @@ s:
 %.css: %.sass Makefile
 	sass $< $@
 
+c:
+	@echo $(COFFEESCRIPT_EXAMPLE_FILES)
+
+%.js: %.coffee Makefile
+	@rm -f $@
+	$(COFFEESCRIPT_COMPILER) --compile --print $< > $@
