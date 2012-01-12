@@ -8,7 +8,7 @@
 //
 // ------------------------------------------------------------
 
-var therm;
+var therm = new Thermometer('#thermometer');
 
 var mol_number = 100,
     sample_time = 0.01,
@@ -187,7 +187,6 @@ function modelSetup() {
   model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
   model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
   ke_data = [model.ke()];
-  therm = new Thermometer(model);
 }
 
 
@@ -363,9 +362,10 @@ modelReset();
 // ------------------------------------------------------------
 
 var model_listener = function(e) {
-  var ke = model.ke(),
+  var ke           = model.ke(),
       step_counter = model.stepCounter(),
-      total_steps = model.steps();
+      total_steps  = model.steps();
+      speed_data   = [];
   
   // layout.speed_update();
   
@@ -389,7 +389,8 @@ var model_listener = function(e) {
   layout.displayStats();
   if (layout.datatable_visible) { layout.render_datatable() }
   if ('undefined' !== therm) {
-    therm.update();
+    model.get_speed(speed_data);
+    therm.set_value(d3.median(speed_data));
   }
 }
 
