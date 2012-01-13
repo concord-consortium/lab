@@ -36,6 +36,12 @@ guard 'shell' do
       `cp -f #{source_path} #{destination_path}`
     end
   end
+  watch(%r{^(resources/.+)$}) do |match|
+    source_path = match[0]
+    destination_path = "examples/#{source_path}"
+    puts "cp -f #{source_path} #{destination_path}"
+    `cp -f #{source_path} #{destination_path}`
+  end
   # callback(:start_begin) do
   #   copy_generated_javascript
   # end
@@ -44,4 +50,10 @@ end
 # , :api_version => '1.6', :port => '35728'
 guard 'livereload' do
   watch(%r{(examples/).+\.(css|js|html)})
+end
+
+guard 'markdown', :convert_on_start => true do
+  watch(%r{(readme.md|src/layouts/layout.html.erb)}) do |m|
+    "readme.md|examples/readme.html|src/layouts/layout.html.erb"
+  end
 end
