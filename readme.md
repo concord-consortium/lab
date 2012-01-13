@@ -402,6 +402,9 @@ Running `bin/update.sh` will now copy/update the directory at http://lab.dev.con
 - [documentation](http://mbostock.github.com/d3/api/)
 - [issues](https://github.com/mbostock/d3/issues)
 - [google group](http://groups.google.com/group/d3-js)
+- [API reference](https://github.com/mbostock/d3/wiki/API-Reference)
+  - [Arrays](https://github.com/mbostock/d3/wiki/Arrays)
+
 
 ### [Vows](http://vowsjs.org)
 
