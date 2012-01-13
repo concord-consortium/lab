@@ -151,17 +151,17 @@ suite.addBatch({
     },
     "10 molecules at a temperature of 5 have an average speed of 0.2": function(model) {
       node_options.num = 10;
-      model.nodes(node_options).initialize(true, true);
+      model.nodes(node_options).initialize(initialization_options);
       assert.inDelta(model.speed(), 0.1, 0.025);
     },
     "100 molecules at a temperature of 5 have an average speed of 0.2": function(model) {
       node_options.num = 100;
-      model.nodes(node_options).initialize(true, true);
+      model.nodes(node_options).initialize(initialization_options);
       assert.inDelta(model.speed(), 0.2, 0.05);
     },
     "10 molecules at a temperature of 3 have an average speed of 0.1": function(model) {
       node_options.num = 10;
-      model.nodes(node_options).initialize(true, true);
+      model.nodes(node_options).initialize(initialization_options);
       assert.inDelta(model.speed(), 0.01, 0.0025);
     },
   }
