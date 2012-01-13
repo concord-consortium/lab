@@ -267,6 +267,12 @@ test lab.arrays which is designed to support using either typed or regular array
 [Vows](http://vowsjs.org) integrates the [standard nodejs assertions](http://nodejs.org/docs/latest/api/assert.html)
 with an additional collection of useful [assertions](http://vowsjs.org/#assertions) summarized below:
 
+- numerical
+
+        assert.greater (3, 2);
+        assert.lesser (2, 3);
+        assert.inDelta (Math.random(), 0, 1);
+
 - equality
 
         assert.equal          (4, 4);
@@ -312,7 +318,7 @@ with an additional collection of useful [assertions](http://vowsjs.org/#assertio
 - length
 
         assert.length ([4, 2, 0], 3);
-        assert.length ('goo', 3);
+        assert.length ('goo', 3);  *** not working ***
 
 - emptiness
 
