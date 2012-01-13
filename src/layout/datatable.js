@@ -102,11 +102,11 @@ layout.render_datatable = function(reset) {
   if (titlerows.length == 0) {
     var title_row = add_row("title");
     add_column_headings(title_row, column_titles)
-    datarows = add_data_rows(molecules.length);
+    datarows = add_data_rows(atoms.length);
   }
-  if (reset) { datarows = add_data_rows(molecules.length); }
-  i = -1; while (++i < molecules.length) {
-    add_molecule_data(datarows[i], molecules[i]);
+  if (reset) { datarows = add_data_rows(atoms.length); }
+  i = -1; while (++i < atoms.length) {
+    add_molecule_data(datarows[i], atoms[i]);
   }
 }
 

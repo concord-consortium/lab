@@ -222,7 +222,7 @@ layout.update_molecule_radius = function() {
   var r = lj_graph.coefficients.rmin * mol_rmin_radius_factor;
   model.set_radius(r);
   layout.mc_container.selectAll("circle")
-      .data(molecules)
+      .data(atoms)
     .attr("r",  function(d) { return mc_x(d.radius) });
   layout.mc_container.selectAll("text")
     .attr("font-size", mc_x(r * 1.3) );
@@ -247,7 +247,7 @@ layout.setup_particles = function() {
   if (mol_number > 100) { font_size *= 0.9 };
 
   label = layout.mc_container.selectAll("g.label")
-        .data(molecules);
+        .data(atoms);
 
   labelEnter = label.enter().append("svg:g")
       .attr("class", "label")
@@ -262,7 +262,7 @@ layout.setup_particles = function() {
       .attr("y", "0.31em")
       .text(function(d) { return d.index; });
 
-  particle = layout.mc_container.selectAll("circle").data(molecules);
+  particle = layout.mc_container.selectAll("circle").data(atoms);
 
   particle.enter().append("svg:circle")
       .attr("r",  function(d) { return mc_x(d.radius); })
@@ -307,13 +307,13 @@ function molecule_mouseout() {
 }
 
 layout.update_molecule_positions = function() {
-  label = layout.mc_container.selectAll("g.label").data(molecules);
+  label = layout.mc_container.selectAll("g.label").data(atoms);
 
   label.attr("transform", function(d) {
       return "translate(" + mc_x(d.x) + "," + mc_y(d.y) + ")";
     });
 
-  particle = layout.mc_container.selectAll("circle").data(molecules);
+  particle = layout.mc_container.selectAll("circle").data(atoms);
 
   particle.attr("cx", function(d) { 
             return mc_x(d.x); })

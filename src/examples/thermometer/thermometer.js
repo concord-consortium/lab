@@ -14,7 +14,7 @@ var mol_number = 100,
     sample_time = 0.01,
     temperature = 3,
     maximum_model_steps = 5000,
-    molecules = [], model,
+    atoms, model,
     lj_sigma_min = 1,
     lj_sigma_max = 10,
     lj_epsilon_max = -0.00001,
@@ -25,6 +25,46 @@ var mol_number = 100,
     frame_number = 0,
     model_stopped = true,
     model = modeler.layout.model();
+
+// ------------------------------------------------------------
+//
+// Main callback from model process
+//
+// Pass this function to be called by the model on every model step
+//
+// ------------------------------------------------------------
+
+var model_listener = function(e) {
+  var ke           = model.ke(),
+      step_counter = model.stepCounter(),
+      total_steps  = model.steps();
+      speed_data   = [];
+  
+  // layout.speed_update();
+  
+  layout.update_molecule_positions();
+  
+  if (model.isNewStep()) {
+    ke_data.push(ke);
+    if (model_stopped) {
+      // ke_graph.add_point(ke);
+      // ke_graph.update_canvas();
+    } else {
+      // ke_graph.add_canvas_point(ke)
+    }
+  } else {
+    // ke_graph.update();
+  }
+  // if (step_counter > 0.95 * ke_graph.xmax && ke_graph.xmax < maximum_model_steps) {
+    // ke_graph.change_xaxis(ke_graph.xmax * 2);
+  // }
+  if (step_counter >= maximum_model_steps) { modelStop(); }
+  layout.displayStats();
+  if (layout.datatable_visible) { layout.render_datatable() }
+  if ('undefined' !== therm) {
+    therm.add_value(model.ke());
+  }
+}
 
 // ------------------------------------------------------------
 //
@@ -174,16 +214,22 @@ var model_controls_inputs = model_controls.getElementsByTagName("input");
 //
 // ------------------------------------------------------------
 
-function generate_molecules() {
+function generate_atoms() {
   model.size([mc_graph.xdomain, mc_graph.ydomain])
-      .nodes(mol_number, mc_graph.xdomain, mc_graph.ydomain, temperature,
-             lj_graph.coefficients.rmin,  mol_rmin_radius_factor)
-      .initialize(layout.lennard_jones_forces_checkbox.checked, 
-          layout.coulomb_forces_checkbox.checked);
+      .nodes({ xdomain: 100, ydomain: 100, 
+          temperature: 3, rmin: 4.4, 
+          mol_rmin_radius_factor: 0.38
+        })
+      .initialize({
+          lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked, 
+          coulomb_forces: layout.coulomb_forces_checkbox.checked, 
+          model_listener: model_listener
+        });
+  atoms = model.get_atoms();
 }
 
 function modelSetup() {
-  generate_molecules(mol_number);
+  generate_atoms();
   model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
   model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
   ke_data = [model.ke()];
@@ -355,46 +401,6 @@ modelReset();
 
 // ------------------------------------------------------------
 //
-// Main callback from model process
-//
-// Pass this function to be called by the model on every model step
-//
-// ------------------------------------------------------------
-
-var model_listener = function(e) {
-  var ke           = model.ke(),
-      step_counter = model.stepCounter(),
-      total_steps  = model.steps();
-      speed_data   = [];
-  
-  // layout.speed_update();
-  
-  layout.update_molecule_positions();
-  
-  if (model.isNewStep()) {
-    ke_data.push(ke);
-    if (model_stopped) {
-      ke_graph.add_point(ke);
-      ke_graph.update_canvas();
-    } else {
-      ke_graph.add_canvas_point(ke)
-    }
-  } else {
-    ke_graph.update();
-  }
-  if (step_counter > 0.95 * ke_graph.xmax && ke_graph.xmax < maximum_model_steps) {
-    ke_graph.change_xaxis(ke_graph.xmax * 2);
-  }
-  if (step_counter >= maximum_model_steps) { modelStop(); }
-  layout.displayStats();
-  if (layout.datatable_visible) { layout.render_datatable() }
-  if ('undefined' !== therm) {
-    therm.add_value(model.ke());
-  }
-}
-
-// ------------------------------------------------------------
-//
 //  Wire up screen-resize handlers
 //
 // ------------------------------------------------------------
@@ -433,7 +439,6 @@ function handleKeyboardForModel(evt) {
 }
 
 document.onkeydown = handleKeyboardForModel;
-
 
 // ------------------------------------------------------------
 //

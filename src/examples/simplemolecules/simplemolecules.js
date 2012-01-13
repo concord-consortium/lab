@@ -26,6 +26,42 @@ var mol_number = 100,
 
 // ------------------------------------------------------------
 //
+// Main callback from model process
+//
+// Pass this function to be called by the model on every model step
+//
+// ------------------------------------------------------------
+
+var model_listener = function(e) {
+  var ke = model.ke(),
+      step_counter = model.stepCounter(),
+      total_steps = model.steps();
+  
+  layout.speed_update();
+  
+  layout.update_molecule_positions();
+  
+  if (model.isNewStep()) {
+    ke_data.push(ke);
+    if (model_stopped) {
+      ke_graph.add_point(ke);
+      ke_graph.update_canvas();
+    } else {
+      ke_graph.add_canvas_point(ke)
+    }
+  } else {
+    ke_graph.update();
+  }
+  if (step_counter > 0.95 * ke_graph.xmax && ke_graph.xmax < maximum_model_steps) {
+    ke_graph.change_xaxis(ke_graph.xmax * 2);
+  }
+  if (step_counter >= maximum_model_steps) { modelStop(); }
+  layout.displayStats();
+  if (layout.datatable_visible) { layout.render_datatable() }
+}
+
+// ------------------------------------------------------------
+//
 //   Molecule Container
 //
 // ------------------------------------------------------------
@@ -172,28 +208,26 @@ var model_controls_inputs = model_controls.getElementsByTagName("input");
 //
 // ------------------------------------------------------------
 
-function generate_molecules() {
-  var options = {
-    num: mol_number,
-    xdomain: mc_graph.xdomain, 
-    ydomain: mc_graph.ydomain, 
-    temperature: temperature, 
-    rmin: lj_graph.coefficients.rmin, 
-    mol_rmin_radius_factor: mol_rmin_radius_factor,
-  };
+function generate_atoms() {
   model.size([mc_graph.xdomain, mc_graph.ydomain])
-      .nodes(options)
-      .initialize(layout.lennard_jones_forces_checkbox.checked, 
-          layout.coulomb_forces_checkbox.checked);
+      .nodes({ xdomain: mc_graph.xdomain, 
+               ydomain: mc_graph.ydomain, 
+               temperature: temperature, 
+               rmin: lj_graph.coefficients.rmin, 
+               mol_rmin_radius_factor: 0.68
+            })
+      .initialize({ lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked, 
+                    coulomb_forces: layout.coulomb_forces_checkbox.checked, 
+                    model_listener: model_listener
+            });
+
+  atoms = model.get_atoms();
 }
 
 function modelSetup() {
-  generate_molecules(mol_number);
-  model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
-  model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
+  generate_atoms();
   ke_data = [model.ke()];
 }
-
 
 // ------------------------------------------------------------
 //
@@ -357,42 +391,6 @@ function modelReset() {
 // ------------------------------------------------------------
 
 modelReset();
-
-// ------------------------------------------------------------
-//
-// Main callback from model process
-//
-// Pass this function to be called by the model on every model step
-//
-// ------------------------------------------------------------
-
-var model_listener = function(e) {
-  var ke = model.ke(),
-      step_counter = model.stepCounter(),
-      total_steps = model.steps();
-  
-  layout.speed_update();
-  
-  layout.update_molecule_positions();
-  
-  if (model.isNewStep()) {
-    ke_data.push(ke);
-    if (model_stopped) {
-      ke_graph.add_point(ke);
-      ke_graph.update_canvas();
-    } else {
-      ke_graph.add_canvas_point(ke)
-    }
-  } else {
-    ke_graph.update();
-  }
-  if (step_counter > 0.95 * ke_graph.xmax && ke_graph.xmax < maximum_model_steps) {
-    ke_graph.change_xaxis(ke_graph.xmax * 2);
-  }
-  if (step_counter >= maximum_model_steps) { modelStop(); }
-  layout.displayStats();
-  if (layout.datatable_visible) { layout.render_datatable() }
-}
 
 // ------------------------------------------------------------
 //
