@@ -279,7 +279,7 @@ var mol_number_to_speed_yaxis_map = {
 
 function updateMolNumberViewDependencies() {
   // ke_graph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
-  // update_sigma(mol_number_to_lj_sigma_map[mol_number]);
+  update_sigma(mol_number_to_lj_sigma_map[mol_number]);
   // layout.lj_redraw();
   // speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
   // layout.speed_update()
@@ -371,8 +371,9 @@ function modelReset() {
   // update_coefficients(molecules_lennard_jones.coefficients());
   model.temperature(temperature);
   layout.temperature_control_checkbox.onchange();
-  layout.setupScreen("just_molecules");
-  // updateMolNumberViewDependencies();
+  layout.selection = "simple-screen";
+  layout.setupScreen();
+  updateMolNumberViewDependencies();
   modelStop();
   layout.update_molecule_radius();
   layout.setup_particles();

@@ -6,16 +6,26 @@
 
 layout = { version: "0.0.1" };
 
+layout.selection = "";
+
 layout.setupScreen = function(layout_selection) {
   var fullscreen = document.fullScreen ||
                    document.webkitIsFullScreen ||
                    document.mozFullScreen;
   if(fullscreen) {
-    layout.setupFullScreen();
+    switch (layout.selection) {
+      case "simple-screen":
+      layout.setupSimpleFullScreen();
+      break;
+
+      default:
+      layout.setupFullScreen();
+      break;
+    }
   } else {
-    switch (layout_selection) {
-      case "just_molecules":
-      layout.setupJustScreenMoleculeContainer();
+    switch (layout.selection) {
+      case "simple-screen":
+      layout.setupSimpleScreen();
       break;
 
       default:
@@ -41,6 +51,16 @@ layout.setupRegularScreen = function() {
   layout.setupRegularScreenPotentialChart();
   layout.setupRegularSpeedDistributionChart();
   layout.setupRegularScreenKEChart();
+}
+
+layout.setupSimpleScreen = function() {
+  layout.setupSimpleMoleculeContainer();
+  layout.setupDescriptionRight();
+}
+
+layout.setupSimpleFullScreen = function() {
+  layout.setupSimpleFullScreenMoleculeContainer();
+  layout.setupFullScreenDescriptionRight();
 }
 
 //
@@ -96,11 +116,45 @@ layout.setupFullScreenKEChart = function() {
   finishSetupKEChart();
 }
 
-//
-// Just Molecule Container Screen Layout
-//
-layout.setupJustScreenMoleculeContainer = function() {
-  moleculecontainer.style.width = document.body.clientWidth * 0.8 +"px";
-  moleculecontainer.style.height = document.body.clientWidth * 0.4 + 2 +"px";
+// Simple Screen Layout
+
+layout.setupSimpleMoleculeContainer = function() {
+  moleculecontainer.style.width = document.body.clientWidth * 0.45 +"px";
+  moleculecontainer.style.height = document.body.clientWidth * 0.45 + 2 +"px";
   layout.finishSetupMoleculeContainer();
 }
+
+layout.setupDescriptionRight = function() {
+  var description_right = document.getElementById("description-right");
+  var size = parseInt(layout.getStyleForSelector("#description-right").style.fontSize);
+  description_right.style.fontSize = size + "px";
+  description_right.style.fontSize = "16px";
+  description_right.style.width = document.body.clientWidth * 0.35 +"px";
+  description_right.style.height = document.body.clientWidth * 0.35 + 2 +"px";
+}
+
+// Simple Full Screen Layout
+
+layout.setupSimpleFullScreenMoleculeContainer = function() {
+  moleculecontainer.style.width = document.body.clientWidth * 0.55 +"px";
+  moleculecontainer.style.height = document.body.clientWidth * 0.55 + 2 +"px";
+  layout.finishSetupMoleculeContainer();
+}
+
+layout.setupFullScreenDescriptionRight = function() {
+  var description_right = document.getElementById("description-right");
+  var size = parseInt(layout.getStyleForSelector("#description-right").style.fontSize);
+  description_right.style.fontSize = size * 1.5 + "px";
+  description_right.style.width = document.body.clientWidth * 0.30 +"px";
+  description_right.style.height = document.body.clientWidth * 0.30 + 2 +"px";
+}
+
+layout.getStyleForSelector = function(selector) {
+    var rules = document.styleSheets[0].rules || document.styleSheets[0].cssRules
+    for(var i = 0; i < rules.length; i++) {
+        if (rules[i].selectorText == selector) {
+          return rules[i]
+        }
+    }
+    return false
+};
