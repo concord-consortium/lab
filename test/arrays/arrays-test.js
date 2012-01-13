@@ -4,7 +4,7 @@ require("../../lib/lab.arrays");
 var vows = require("vows"),
     assert = require("assert");
 
-var suite = vows.describe("arrays.create");
+var suite = vows.describe("lab.arrays");
 
 suite.addBatch({
   "create": {
@@ -87,7 +87,7 @@ suite.addBatch({
     topic: function() {
       return arrays.between;
     },
-    "3 is betwen 2 and 4": function(between) {
+    "3 is between 2 and 4": function(between) {
       assert.isTrue(between(2, 4, 3));
     },
     "1 is not between 2 and 4": function(between) {
