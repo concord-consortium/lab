@@ -9,11 +9,12 @@ modeler.VERSION = '0.1.0';
 
 modeler.layout.model = function() {
   var model = {},
+      atoms = [],
+      mol_number,
       event = d3.dispatch("tick"),
       size = [1, 1],
       temperature_control,
-      lennard_jones_forces = true,
-      coulomb_forces = true,
+      lennard_jones_forces, coulomb_forces,
       ke, pe,
       ave_speed, speed_goal, speed_factor,
       ave_speed_max, ave_speed_min,
@@ -87,7 +88,7 @@ modeler.layout.model = function() {
   //
   // Number of individual properties for a node
   //
-  var node_properties_length = 11;
+  var node_properties_length = 12;
 
   //
   // A two dimensional array consisting of arrays of node property values
@@ -97,7 +98,7 @@ modeler.layout.model = function() {
   //
   // Extract one node from the nodes arrays and return as an object
   //
-  function molecule(i) {
+  function generate_atom(i) {
     var o = {};
     o.index  = i,
     o.radius = nodes[_radius  ][i];
@@ -115,14 +116,13 @@ modeler.layout.model = function() {
     return o
   }
 
-  function update_molecules() {
+  function update_atoms() {
     var i, n = mol_number, results = [];
     i = -1; while (++i < n) {
-      molecules[i] = molecule(i)
+      atoms[i] = generate_atom(i)
     }
-    molecules.length = n;
+    atoms.length = n;
   }
-
 
   //
   // The temperature_to_speed(t) function is used to map temperatures in abstract units
@@ -381,7 +381,7 @@ modeler.layout.model = function() {
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
     // ave_speed = average_speed();
     calculate_kinetic_and_potential_energy();
-    update_molecules();
+    update_atoms();
     tick_history_list_push();
     if (!stopped) { 
       t = Date.now();
@@ -440,7 +440,7 @@ modeler.layout.model = function() {
       arrays.copy(tick_history_list[index].nodes[i], nodes[i])
     }
     ke = tick_history_list[index].ke;
-    update_molecules();
+    update_atoms();
   }
 
   function set_speed(newspeed) {
@@ -562,7 +562,7 @@ modeler.layout.model = function() {
       run_tick();
     }
     temperature_control = save_temperature_control;
-    update_molecules();
+    update_atoms();
   }
 
   function set_temperature(t) {
@@ -600,31 +600,39 @@ modeler.layout.model = function() {
     return new_step
   }
 
-  model.stepBack = function() {
+  model.stepBack = function(num) {
+    if (!arguments.length) { var num = 1 };
+    var i = -1;
     stopped = true;
     new_step = false;
-    if (tick_history_list_index > 1) {
-      tick_history_list_index--;
-      tick_counter--;
-      tick_history_list_extract(tick_history_list_index-1);
-      model_listener();
-    }
+    while(++i < num) {    
+      if (tick_history_list_index > 1) {
+        tick_history_list_index--;
+        tick_counter--;
+        tick_history_list_extract(tick_history_list_index-1);
+        if (model_listener) { model_listener() };
+      }
+    };
     return tick_counter
   }
   
-  model.stepForward = function() {
+  model.stepForward = function(num) {
+    if (!arguments.length) { var num = 1 };
+    var i = -1;
     stopped = true;
-    if (tick_history_list_index < (tick_history_list.length)) {
-      tick_history_list_extract(tick_history_list_index)
-      tick_history_list_index++;
-      tick_counter++
-      model_listener();
-    } else {
-      tick();
-      model_listener();
+    while(++i < num) {    
+      if (tick_history_list_index < (tick_history_list.length)) {
+        tick_history_list_extract(tick_history_list_index)
+        tick_history_list_index++;
+        tick_counter++
+        if (model_listener) { model_listener() };
+      } else {
+        tick();
+        if (model_listener) { model_listener() };
+      }
     }
     return tick_counter
-  }
+  };
 
   model.on = function(type, listener) {
     event.on(type, listener);
@@ -636,8 +644,12 @@ modeler.layout.model = function() {
     return model;
   };
 
-  model.tick = function() {
-    tick();
+  model.tick = function(num) {
+    if (!arguments.length) { var num = 1 };
+    var i = -1;
+    while(++i < num) {
+      tick();
+    }
     return model;
   };
 
@@ -652,7 +664,7 @@ modeler.layout.model = function() {
   model.set_radius = function(r) {
     var i, n = nodes[0].length;
     i = -1; while(++i < n) { radius[i] = r };
-    update_molecules();
+    update_atoms();
   }
 
   model.get_speed = function(speed_data) {
@@ -676,23 +688,25 @@ modeler.layout.model = function() {
    coulomb_forces = cf;
   }
 
-  model.initialize = function(lj, cf) {
-    var i, j, k, o,
+  model.get_atoms = function() {
+    return atoms;
+  }
+
+  model.initialize = function(options) {
+    var options = options || {},
+        i, j, k, o,
         radius, px, py, x, y, vx, vy, speed, ax, ay,
         _radius, _px, _py, _x, _y, _vx, _vy, _speed, _ax, _ay,
         n = nodes[0].length,
         w = size[0], h = size[1],
         temperature = 4,
-        lennard_jones_forces = lj,
-        coulomb_forces = cf,
         annealing_steps = 25,
         speed_goal,
         max_ljf_repulsion, min_ljf_attraction,
-        max_ljf_distance, min_ljf_distance,
-        mol_number;
+        max_ljf_distance, min_ljf_distance;
 
         // mention the functions so they get into the containing closure:
-        molecule, update_molecules,
+        generate_atom, update_atoms,
         tick,
         reset_tick_history_list,
         tick_history_list_reset_to_ptr,
@@ -709,6 +723,11 @@ modeler.layout.model = function() {
         average_speed,
         resolve_collisions,
         set_temperature;
+
+    lennard_jones_forces = options.lennard_jones_forces || true;
+    coulomb_forces = options.coulomb_forces || true;
+    model_listener = options.model_listener || false;
+    temperature_control = options.temperature_control || false;
 
     reset_tick_history_list();
     speed_goal = temperature_to_speed(temperature);
@@ -808,7 +827,7 @@ modeler.layout.model = function() {
     charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
         // speed_data.push(speed[i]);
     };
-    update_molecules();
+    update_atoms();
     return model
   }
 
