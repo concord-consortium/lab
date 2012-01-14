@@ -10,7 +10,7 @@ HTML5-based open source scientific models, visualizations, graphing, and probewa
 
 ## Simple Molecules
 
-Example: http://lab.dev.concord.org/simplemolecules/simplemolecules.html
+Example: [Simple Molecules](http://lab.dev.concord.org/simplemolecules/simplemolecules.html)
 
 Cameron Abrams, teaching in the Department of Chemical Engineering at Drexel has 
 published these excellent [Molecular Simulation](http://www.pages.drexel.edu/~cfa22/msim/msim.html) 
