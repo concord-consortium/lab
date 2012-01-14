@@ -1,11 +1,12 @@
-# Lab
+# [Lab](https://github.com/concord-consortium/lab)
 
-HTML5-based scientific models, visualizations, graphing, and probeware.
+HTML5-based open source scientific models, visualizations, graphing, and probeware from the [Concord Consortium](http://www.concord.org).
 
 ## TODO
 
-
 - The tests need to be expanded a great deal.
+- Probeware needs to be added.
+- Molecular model in progress.
 
 ## Simple Molecules
 
@@ -17,7 +18,7 @@ resources for a course he teaches.
 
 This site has a basic introduction to the physics of molecular dynamics simulations, and practical exercises with the CHARMM package: [A theoretical introduction to molecular dynamics simulations and practical examples using the CHARMM program](http://www.ch.embnet.org/MD_tutorial/) 
 
-### More detailed references, to constrain our 2D "physics"
+**More detailed references, to constrain our 2D "physics"**
 
 [Thermostat Algorithms for Molecular Dynamics Simulations](http://phjoan23.technion.ac.il/~phr76ja/thermostats.pdf)
 
@@ -25,7 +26,7 @@ One kind of unphysical effect that can arise is [the "flying ice cube"](http://e
 
 ## Grapher
 
-Example: http://lab.dev.concord.org/surface-temperature/surface-temperature.html
+Example: [Earth's Surface Temperature: years 500-2009](http://lab.dev.concord.org/surface-temperature/surface-temperature.html)
 
 ## Setup Development
 
@@ -71,8 +72,9 @@ If you plan to contribute to Lab:
 4. Create your changes on a topic branch. Please include tests if you can. When you a ready
 push your topic branch to your fork and send a pull request.
 
-I recommend also cloning the d3.js repository into a separate directory -- there are many useful examples 
-of both visualizations and examples of tests that run extremely quickly using vows, [jsdom](https://github.com/tmpvar/jsdom), and node.
+I recommend also cloning the [d3.js](http://mbostock.github.com/d3/) repository into a separate 
+directory -- there are many useful examples of both visualizations and examples of tests that 
+run extremely quickly using vows, [jsdom](https://github.com/tmpvar/jsdom), and node.
 
     git clone git://github.com/mbostock/d3.git
 
@@ -86,12 +88,14 @@ Change to the lab directory and install the additional Ruby Gems used during dev
 This will create the `bin/` directory and populate it with command-line execuatbles for running
 the specific versions of the RubyGems installed for development.
 
-Next install Lab's dependencies managed by npm -- including the development dependencies:
+Next install Lab's dependencies managed by [npm](http://npmjs.org/) -- including the development dependencies:
 
     npm install
 
 You can see the list of dependencies in package.json. The packages will be
 installed in the node_modules directory.
+
+Generate the `dist` directory by running `make`.
 
 Start watching the various src directories and automatically compile and generate
 the `examples/` directory including JavaScript, HTML, CSS, and image resources:
@@ -113,9 +117,9 @@ file: `/etc/apache2/extra/httpd-vhosts.conf`
 
     <VirtualHost lab.local:80>
        ServerName lab
-       DocumentRoot /path/to/lab-repo
+       DocumentRoot /path/to/lab-repo/dist
        PassengerEnabled off
-       <Directory /path/to/lab-repo >
+       <Directory /path/to/lab-repo/dist >
          Options +Indexes +FollowSymLinks +MultiViews +Includes
          AllowOverride All
          Order allow,deny
@@ -146,13 +150,14 @@ Restart Apache when the configuration syntax is OK :
                                                                                                                                                               
     $ sudo apachectl restart
 
-Now open: http://lab.local/examples/
+Now open: http://lab.local/
 
 Or go directly to the Simple Molecules model here: http://lab.local/examples/simplemolecules/simplemolecules.html
 
 If you cloned d3 and setup a localhost you can view the d3 examples here: http://d3.local/examples/
 
-Whenever guard is running and you save changes to any files in the src/ directory the corressponding files in the examples/directory will be updated. 
+Whenever guard is running and you save changes to any files in the src/ directory the corresponding files in 
+the `dist/` directory will be updated. 
 
 To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small "LR" button on the toolbar.
 
@@ -166,30 +171,29 @@ directory containing the additional resources for generating the html, css, and 
 - `src/examples`
   haml, sass files are processed into html and css files saved in the `examples/` directory, javascript files located here are just copied.
 
+The source code for the Lab modules is all contained in `src/lib/`
+
 The following directories contain the source code for the main Lab modules:
 
-- `src/arrays/`
-- `src/benchmark/`
-- `src/graphx/`
-- `src/layout/`
-- `src/molecules/`
+- `src/lib//arrays/`
+- `src/lib//benchmark/`
+- `src/lib//graphx/`
+- `src/lib//layout/`
+- `src/lib//molecules/`
 
 In addition the following module is in process of being combined with the newer graphing code in `graphx/`.
 
-- `src/grapher/`
+- `src/lib/grapher/`
 
 Lastly there are the following JavaScript framgments that are used in the build process:
 
-- `src/start.js`
-- `src/lab-module.js`
-- `src/end.js`
+- `src/lib/start.js`
+- `src/lib/lab-module.js`
+- `src/lib/end.js`
 
 After running `bundle install --binstubs` the `bin/` directory will be created.
 
-After running: `bin/guard` the `examples/` directory will be created and any subsequent changes to files 
-in the `src/` directory  cause automatic rebuilding of the associated files in the `examples/` directory.
-
-**Note:** remember to make changes you want saved in the `src/` directory **not** in the `examples/` directory.
+**Note:** remember to make changes you want saved in the `src/examples/` directory **not** in the `dist/examples/` directory.
 
 ### Adding new source files or modules
 
@@ -198,29 +202,29 @@ If you add a new JavaScript file to an existing Lab module also add it to the as
 For example if you created a pie chart grapher and intended it to be part of `lab.layout.js` add the JavaScript 
 source file to this directory:
 
-    src/examples/layout/pie-chart.js
+    src/lib/layout/pie-chart.js
 
-Then also add the path to `ie-chart.js` to the `lib/lab.layout.js` target section of the MakeFile:
+Then also add the path to `pie-chart.js` to the `lib/lab.layout.js` target section of the MakeFile:
 
     lib/lab.layout.js: \
-    	src/start.js \
-    	src/layout/layout.js \
-    	src/layout/molecule-container.js \
-    	src/layout/potential-chart.js \
-    	src/layout/speed-distribution-histogram.js \
-    	src/layout/benchmarks.js \
-    	src/layout/datatable.js \
-    	src/layout/temperature-control.js \
-    	src/layout/force-interaction-controls.js \
-    	src/layout/display-stats.js \
-    	src/layout/fullscreen.js \
-    	src/end.js
-
+    	src/lib/start.js \
+    	src/lib/layout/layout.js \
+    	src/lib/layout/molecule-container.js \
+    	src/lib/layout/potential-chart.js \
+    	src/lib/layout/speed-distribution-histogram.js \
+    	src/lib/layout/benchmarks.js \
+    	src/lib/layout/datatable.js \
+    	src/lib/layout/temperature-control.js \
+    	src/lib/layout/force-interaction-controls.js \
+    	src/lib/layout/display-stats.js \
+    	src/lib/layout/fullscreen.js \
+    	src/lib/end.js
+    
 Similarly if you add a new module to Lab you will need to create a new target to represent the module
-using a similar form to the `lib/lab.layout.js` target as well as adding the target to the `JS_FILES` 
+using a similar form to the `lib/lab.layout.js` target as well as adding the target to the `LAB_JS_FILES` 
 make variable containing the list of Lab JavaScript files to be generated:
 
-    JS_FILES = \
+    LAB_JS_FILES = \
     	lib/lab.grapher.js \
     	lib/lab.graphx.js \
     	lib/lab.benchmark.js \
@@ -230,12 +234,13 @@ make variable containing the list of Lab JavaScript files to be generated:
     	lib/lab.js
 
 If you are just modifying an existing example or adding a new one just create the new files in 
-the `src/examples` directory and running `make` or `bin/guard` will generate the associated resources 
-in the `examples/` directory.
+the `src/examples` directory and run `make` or `bin/guard` to generate the associated resources 
+in the `dist/examples/` directory.
 
 The html file are generated from [Haml](http://haml-lang.com/) markup. Add the suffix `.html.haml` to these files.
 
-The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `.sass` to these files.
+The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `.sass` to these 
+files. The stylesheets may also be writted using thenewer `*.scss` variant of Sass.
 
 ### Testing: `test/`
 
@@ -341,7 +346,7 @@ that can be adapted for use in Lab.
 
 ### Generated Lab Modules: `lib/`
 
-The `lib/` directory contains the lab modules generated from JavaScript source code in the `src/` directory.
+The `lib/` directory contains the lab modules generated from JavaScript source code in the `src/lib/` directory.
 
 Here are the standard lab modules:
 
@@ -356,17 +361,17 @@ And one additional file which combines them all:
 
 - `lab.js`
 
-In addition there are minimized versions of all of these files.
+In addition there are minimized versions of all of these files that are about 50% smaller.
 
 When working on the source code please keep commits of the generated JavaScript files in `lib/` separate from 
 other commits to make it easier to see and understand the changes that make up the source code narrative.
 
-### Generated Examples: `examples/`
+### Generated Examples: `dist/examples/`
 
-The `examples/` directory is not part of the repository but instead is automatically generated by running `make`.
+The `dist/examples/` directory is not part of the repository but instead is automatically generated by running `make`.
 
-When running `bin/guard` any changes to files in the `src/` directory 
-cause automatic rebuilding of the associated files in the `examples/` directory.
+When running `bin/guard` any changes to files in the `src/examples/` directory 
+cause automatic rebuilding of the associated files in the `dist/examples/` directory.
 
 ### External JavaScript Frameworks: `vendor/`
 
@@ -405,7 +410,6 @@ Running `bin/update.sh` will now copy/update the directory at http://lab.dev.con
 - [google group](http://groups.google.com/group/d3-js)
 - [API reference](https://github.com/mbostock/d3/wiki/API-Reference)
   - [Arrays](https://github.com/mbostock/d3/wiki/Arrays)
-
 
 ### [Vows](http://vowsjs.org)
 
@@ -450,12 +454,11 @@ More about using npm for development:
 
 ### Full Screen API
 
-- http://peter.sh/2011/01/javascript-full-screen-api-navigation-timing-and-repeating-css-gradients/
-- http://peter.sh/2011/08/fullscreen-api-enhanced-element-highlighting-and-progress-on-flexbox/
-- http://johndyer.name/native-fullscreen-javascript-api-plus-jquery-plugin/
-- https://wiki.mozilla.org/Gecko:FullScreenAPI
-- http://blog.pearce.org.nz/2011/09/mozilla-full-screen-api-progress-update.html
-- http://ajaxian.com/archives/fullscreen-api-coming-to-browsers-near-you
-- http://html5-demos.appspot.com/static/fullscreen.html
-- http://stackoverflow.com/questions/7836204/chrome-fullscreen-api
-- http://stackoverflow.com/questions/7836204/chrome-fullscreen-api/7934009
+- [JavaScript Full Screen API, Navigation Timing and repeating CSS Gradients](http://peter.sh/2011/01/javascript-full-screen-api-navigation-timing-and-repeating-css-gradients/)
+- [Fullscreen API, enhanced Element Highlighting and progress on Flexbox](http://peter.sh/2011/08/fullscreen-api-enhanced-element-highlighting-and-progress-on-flexbox/)
+- [Native Fullscreen JavaScript API (plus jQuery plugin)](http://johndyer.name/native-fullscreen-javascript-api-plus-jquery-plugin/)
+- [Gecko:FullScreenAPI](https://wiki.mozilla.org/Gecko:FullScreenAPI)
+- [Mozilla full-screen API progress update](http://blog.pearce.org.nz/2011/09/mozilla-full-screen-api-progress-update.html)
+- [fullscreen API coming to browsers near you?](http://ajaxian.com/archives/fullscreen-api-coming-to-browsers-near-you)
+- [Full Screen Demos](http://html5-demos.appspot.com/static/fullscreen.html)
+- [stackoverflow: Chrome Fullscreen API](http://stackoverflow.com/questions/7836204/chrome-fullscreen-api)
