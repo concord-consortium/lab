@@ -80,7 +80,8 @@ text.shadow
   height: 200px
   margin: 5px
   padding: 2px
-  border: 1px solid black
+  border: 1px solid #aaa
+  border-radius: 5px
 
 #therm_text
   display: inline-block
@@ -92,3 +93,30 @@ text.shadow
   font-family: monospace
   overflow: hidden
 
+#slider_component
+  display: inline-block
+  width: 200px
+  height: 14px
+  margin:  5px
+  padding: 0px
+  border: 1px solid #aaa
+  svg
+    cursor: pointer
+  rect
+    fill:  #988
+  circle
+    cursor: pointer
+    opacitiy: 1
+    fill-opacity: 1
+    stroke-opacity: 1
+    fill:   #666
+    stroke: none
+  circle:hover
+    fill:  #fff
+    stroke-width: 1px 
+    stroke: #000
+  border-radius: 5px
+  background: #ddd
+
+#slider_component:hover
+  background: #eee
