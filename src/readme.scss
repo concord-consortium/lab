@@ -90,6 +90,12 @@ pre {
     background-color: #f8f8ff;
     border: none; } }
 
+code .keyword              { font-weight: bold }
+code .string, code .regexp { color: darkgreen }
+code .class, code .special { color: darkblue }
+code .number               { color: darkred }
+code .comment              { color: grey }
+
 code {
   font-size: 90%;
   background-color: #f8f8ff;
