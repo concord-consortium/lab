@@ -1,5 +1,5 @@
 require("../../../env");
-require("../../../../lib/lab.grapher");
+require("../../../../lab/lab.grapher");
 
 var vows = require("vows"),
     assert = require("assert");

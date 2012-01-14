@@ -4,7 +4,7 @@ JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
 COFFEESCRIPT_COMPILER = ./node_modules/coffee-script/bin/coffee
 MARKDOWN_COMPILER = bin/kramdown
 JS_TESTER   = ./node_modules/vows/bin/vows --no-color
-EXAMPLES_LIB_DIR = ./examples/lib
+EXAMPLES_LAB_DIR = ./examples/lab
 
 HAML_EXAMPLE_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/dist\/\1/' )
 vpath %.haml src
@@ -23,13 +23,13 @@ MARKDOWN_EXAMPLE_FILES := $(shell find src -name '*.md' -exec echo {} \; | sed s
 vpath %.md src
 
 LAB_JS_FILES = \
-	lib/lab.grapher.js \
-	lib/lab.graphx.js \
-	lib/lab.benchmark.js \
-	lib/lab.layout.js \
-	lib/lab.arrays.js \
-	lib/lab.molecules.js \
-	lib/lab.js
+	lab/lab.grapher.js \
+	lab/lab.graphx.js \
+	lab/lab.benchmark.js \
+	lab/lab.layout.js \
+	lab/lab.arrays.js \
+	lab/lab.molecules.js \
+	lab/lab.js
 
 all: \
 	vendor/d3 \
@@ -44,7 +44,7 @@ all: \
 
 clean:
 	rm -rf dist
-	rm -f lib/*.js
+	rm -f lab/*.js
 
 vendor/d3:
 	mkdir -p vendor/d3
@@ -52,69 +52,69 @@ vendor/d3:
 
 dist:
 	mkdir -p dist/examples
-	cp -r lib dist
+	cp -r lab dist
 	cp -r vendor dist
 	cp -r src/resources dist
 	rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ dist/examples/
 
 
-lib/lab.js: \
-	src/lib/lab-module.js \
-	lib/lab.grapher.js \
-	lib/lab.molecules.js \
-	lib/lab.benchmark.js \
-	lib/lab.arrays.js \
-	lib/lab.layout.js \
-	lib/lab.graphx.js
+lab/lab.js: \
+	src/lab/lab-module.js \
+	lab/lab.grapher.js \
+	lab/lab.molecules.js \
+	lab/lab.benchmark.js \
+	lab/lab.arrays.js \
+	lab/lab.layout.js \
+	lab/lab.graphx.js
 
-lib/lab.grapher.js: \
-	src/lib/start.js \
-	src/lib/grapher/core/core.js \
-	src/lib/grapher/core/data.js \
-	src/lib/grapher/core/indexed-data.js \
-	src/lib/grapher/core/colors.js \
-	src/lib/grapher/samples/sample-graph.js \
-	src/lib/grapher/samples/simple-graph2.js \
-	src/lib/grapher/samples/cities-sample.js \
-	src/lib/grapher/samples/surface-temperature-sample.js \
-	src/lib/grapher/samples/lennard-jones-sample.js \
-	src/lib/end.js
+lab/lab.grapher.js: \
+	src/lab/start.js \
+	src/lab/grapher/core/core.js \
+	src/lab/grapher/core/data.js \
+	src/lab/grapher/core/indexed-data.js \
+	src/lab/grapher/core/colors.js \
+	src/lab/grapher/samples/sample-graph.js \
+	src/lab/grapher/samples/simple-graph2.js \
+	src/lab/grapher/samples/cities-sample.js \
+	src/lab/grapher/samples/surface-temperature-sample.js \
+	src/lab/grapher/samples/lennard-jones-sample.js \
+	src/lab/end.js
 
-lib/lab.molecules.js: \
-	src/lib/start.js \
-	src/lib/molecules/coulomb.js \
-	src/lib/molecules/lennard-jones.js \
-	src/lib/molecules/modeler.js \
-	src/lib/end.js
+lab/lab.molecules.js: \
+	src/lab/start.js \
+	src/lab/molecules/coulomb.js \
+	src/lab/molecules/lennard-jones.js \
+	src/lab/molecules/modeler.js \
+	src/lab/end.js
 
-lib/lab.benchmark.js: \
-	src/lib/start.js \
-	src/lib/benchmark/benchmark.js \
-	src/lib/end.js
+lab/lab.benchmark.js: \
+	src/lab/start.js \
+	src/lab/benchmark/benchmark.js \
+	src/lab/end.js
 
-lib/lab.arrays.js: \
-	src/lib/start.js \
-	src/lib/arrays/arrays.js \
-	src/lib/end.js
+lab/lab.arrays.js: \
+	src/lab/start.js \
+	src/lab/arrays/arrays.js \
+	src/lab/end.js
 
-lib/lab.layout.js: \
-	src/lib/start.js \
-	src/lib/layout/layout.js \
-	src/lib/layout/molecule-container.js \
-	src/lib/layout/potential-chart.js \
-	src/lib/layout/speed-distribution-histogram.js \
-	src/lib/layout/benchmarks.js \
-	src/lib/layout/datatable.js \
-	src/lib/layout/temperature-control.js \
-	src/lib/layout/force-interaction-controls.js \
-	src/lib/layout/display-stats.js \
-	src/lib/layout/fullscreen.js \
-	src/lib/end.js
+lab/lab.layout.js: \
+	src/lab/start.js \
+	src/lab/layout/layout.js \
+	src/lab/layout/molecule-container.js \
+	src/lab/layout/potential-chart.js \
+	src/lab/layout/speed-distribution-histogram.js \
+	src/lab/layout/benchmarks.js \
+	src/lab/layout/datatable.js \
+	src/lab/layout/temperature-control.js \
+	src/lab/layout/force-interaction-controls.js \
+	src/lab/layout/display-stats.js \
+	src/lab/layout/fullscreen.js \
+	src/lab/end.js
 
-lib/lab.graphx.js: \
-	src/lib/start.js \
-	src/lib/graphx/graphx.js \
-	src/lib/end.js
+lab/lab.graphx.js: \
+	src/lab/start.js \
+	src/lab/graphx/graphx.js \
+	src/lab/end.js
 
 test: test/layout.html \
 	vendor/d3 \
@@ -127,13 +127,13 @@ test: test/layout.html \
 	@rm -f $@
 	$(JS_COMPILER) < $< > $@
 	@chmod ug+w $@
-	@cp $@ dist/lib
+	@cp $@ dist/lab
 
 lab.%: Makefile
 	@rm -f $@
 	cat $(filter %.js,$^) > $@
 	@chmod ug+w $@
-	cp $@ dist/lib
+	cp $@ dist/lab
 
 test/%.html:
 

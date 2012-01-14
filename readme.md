@@ -169,25 +169,25 @@ directory containing the additional resources for generating the html, css, and 
 - `src/examples`
   haml, sass files are processed into html and css files saved in the `examples/` directory, javascript files located here are just copied.
 
-The source code for the Lab modules is all contained in `src/lib/`
+The source code for the Lab modules is all contained in `src/lab/`
 
 The following directories contain the source code for the main Lab modules:
 
-- `src/lib//arrays/`
-- `src/lib//benchmark/`
-- `src/lib//graphx/`
-- `src/lib//layout/`
-- `src/lib//molecules/`
+- `src/lab//arrays/`
+- `src/lab//benchmark/`
+- `src/lab//graphx/`
+- `src/lab//layout/`
+- `src/lab//molecules/`
 
 In addition the following module is in process of being combined with the newer graphing code in `graphx/`.
 
-- `src/lib/grapher/`
+- `src/lab/grapher/`
 
 Lastly there are the following JavaScript framgments that are used in the build process:
 
-- `src/lib/start.js`
-- `src/lib/lab-module.js`
-- `src/lib/end.js`
+- `src/lab/start.js`
+- `src/lab/lab-module.js`
+- `src/lab/end.js`
 
 After running `bundle install --binstubs` the `bin/` directory will be created.
 
@@ -200,36 +200,36 @@ If you add a new JavaScript file to an existing Lab module also add it to the as
 For example if you created a pie chart grapher and intended it to be part of `lab.layout.js` save the JavaScript 
 source file here:
 
-    src/lib/layout/pie-chart.js
+    src/lab/layout/pie-chart.js
 
-Add the path to `pie-chart.js` to the `lib/lab.layout.js` target section of the MakeFile:
+Add the path to `pie-chart.js` to the `lab/lab.layout.js` target section of the MakeFile:
 
-    lib/lab.layout.js: \
-    	src/lib/start.js \
-    	src/lib/layout/layout.js \
-    	src/lib/layout/molecule-container.js \
-    	src/lib/layout/potential-chart.js \
-    	src/lib/layout/speed-distribution-histogram.js \
-    	src/lib/layout/benchmarks.js \
-    	src/lib/layout/datatable.js \
-    	src/lib/layout/temperature-control.js \
-    	src/lib/layout/force-interaction-controls.js \
-    	src/lib/layout/display-stats.js \
-    	src/lib/layout/fullscreen.js \
-    	src/lib/end.js
+    lab/lab.layout.js: \
+    	src/lab/start.js \
+    	src/lab/layout/layout.js \
+    	src/lab/layout/molecule-container.js \
+    	src/lab/layout/potential-chart.js \
+    	src/lab/layout/speed-distribution-histogram.js \
+    	src/lab/layout/benchmarks.js \
+    	src/lab/layout/datatable.js \
+    	src/lab/layout/temperature-control.js \
+    	src/lab/layout/force-interaction-controls.js \
+    	src/lab/layout/display-stats.js \
+    	src/lab/layout/fullscreen.js \
+    	src/lab/end.js
     
 Similarly if you add a new module to Lab you will need to create a new target to represent the module
-using a similar form to the `lib/lab.layout.js` target as well as adding the target to the `LAB_JS_FILES` 
+using a similar form to the `lab/lab.layout.js` target as well as adding the target to the `LAB_JS_FILES` 
 make variable containing the list of Lab JavaScript files to be generated:
 
     LAB_JS_FILES = \
-    	lib/lab.grapher.js \
-    	lib/lab.graphx.js \
-    	lib/lab.benchmark.js \
-    	lib/lab.layout.js \
-    	lib/lab.arrays.js \
-    	lib/lab.molecules.js \
-    	lib/lab.js
+    	lab/lab.grapher.js \
+    	lab/lab.graphx.js \
+    	lab/lab.benchmark.js \
+    	lab/lab.layout.js \
+    	lab/lab.arrays.js \
+    	lab/lab.molecules.js \
+    	lab/lab.js
 
 If you are just modifying an existing example or adding a new one just create or edit the files in 
 the `src/examples` directory and run `make` or `bin/guard` to generate the associated resources 
@@ -340,9 +340,9 @@ _**Note**: Using a more specific assertion usually results in more useful error 
 There are also many interesting test examples and patterns in the [d3.js test directory](https://github.com/mbostock/d3/tree/master/test) 
 that can be adapted for use in Lab.
 
-### Generated Lab Modules: `lib/`
+### Generated Lab Modules: `lab/`
 
-The `lib/` directory contains the lab modules generated from JavaScript source code in the `src/lib/` directory.
+The `lab/` directory contains the lab modules generated from JavaScript source code in the `src/lab/` directory.
 
 Here are the standard lab modules:
 
@@ -359,7 +359,7 @@ And one additional file which combines them all:
 
 In addition there are minimized versions of all of these files that are about 50% smaller.
 
-When working on the source code please keep commits of the generated JavaScript files in `lib/` separate from 
+When working on the source code please keep commits of the generated JavaScript files in `lab/` separate from 
 other commits to make it easier to see and understand the changes that make up the source code narrative.
 
 ### Generated Examples: `dist/examples/`
