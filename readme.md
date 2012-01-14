@@ -109,9 +109,9 @@ the examples, or run the tests.
     bin/guard
 
 Now any change you make in `src/examples/` will generate the corresponding content in `dist/examples/`.
-In addition changes in `src/lab/` result generation of the associated Lab modules in `lab/` and the
-copying of these modules to `dist/lab/`. In addition any change in either the `src/lab/` or `test/`
-directories will automatically run the tests and display the results in the console window where `bin/guard`
+In addition changes in `src/lab/` generate the associated Lab modules in `lab/` and copy these modules 
+to `dist/lab/`. In addition any change in either the `src/lab/` or `test/`directories will run the
+tests and display the results in the console window where `bin/guard`
 is running.
 
 You can also create a localhost and local Apache vhost for lab and optionally d3:
