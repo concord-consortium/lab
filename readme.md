@@ -49,7 +49,7 @@ Currently development is being done with these versions of Node and NPM:
 
 As of v0.6.3 of node NPM is bundled with node. 
 
-Install node with installers available here http://nodejs.org/#download
+Install node with installers available here: [http://nodejs.org/#download](http://nodejs.org/#download)
 
 **Use git to create a local clone of the lab repository.**
 
@@ -148,11 +148,11 @@ Restart Apache when the configuration syntax is OK :
                                                                                                                                                               
     $ sudo apachectl restart
 
-Now open: http://lab.local/
+Now open: [http://lab.local/](http://lab.local/)
 
-Or go directly to the Simple Molecules model here: http://lab.local/examples/simplemolecules/simplemolecules.html
+Or go directly to the Simple Molecules model here: [http://lab.local/examples/simplemolecules/simplemolecules.html](http://lab.local/examples/simplemolecules/simplemolecules.html)
 
-If you cloned d3 and setup a localhost you can view the d3 examples here: http://d3.local/examples/
+If you cloned d3 and setup a localhost you can view the d3 examples here: [http://d3.local/examples/](http://d3.local/examples/)
 
 Whenever guard is running and you save changes to any files in the src/ directory the corresponding files in 
 the `dist/` directory will be updated. 
@@ -195,14 +195,14 @@ After running `bundle install --binstubs` the `bin/` directory will be created.
 
 ### Adding new source files or modules
 
-If you add a new JavaScript file to an existing Lab module also add it to the associated section of the MakeFile.
+If you add a new JavaScript file to an existing Lab module also add it to the associated section of the `MakeFile`.
 
-For example if you created a pie chart grapher and intended it to be part of `lab.layout.js` add the JavaScript 
-source file to this directory:
+For example if you created a pie chart grapher and intended it to be part of `lab.layout.js` save the JavaScript 
+source file here:
 
     src/lib/layout/pie-chart.js
 
-Then also add the path to `pie-chart.js` to the `lib/lab.layout.js` target section of the MakeFile:
+Add the path to `pie-chart.js` to the `lib/lab.layout.js` target section of the MakeFile:
 
     lib/lab.layout.js: \
     	src/lib/start.js \
@@ -231,24 +231,22 @@ make variable containing the list of Lab JavaScript files to be generated:
     	lib/lab.molecules.js \
     	lib/lab.js
 
-If you are just modifying an existing example or adding a new one just create the new files in 
+If you are just modifying an existing example or adding a new one just create or edit the files in 
 the `src/examples` directory and run `make` or `bin/guard` to generate the associated resources 
 in the `dist/examples/` directory.
 
 The html file are generated from [Haml](http://haml-lang.com/) markup. Add the suffix `.html.haml` to these files.
 
 The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `.sass` to these 
-files. The stylesheets may also be writted using thenewer `*.scss` variant of Sass.
+files. The stylesheets may also be written using the newer `*.scss` variant of Sass.
 
 ### Testing: `test/`
 
 Lab's JavaScript tests use [Vows](http://vowsjs.org), an asynchronous behavior driven framework based 
 on [Node.js](http://nodejs.org/). In addition Lab uses [jsdom](https://github.com/tmpvar/jsdom), a
-lightweight CommonJS implementation of the W3C DOM specifications.
-
-This way of setting up tests is similar to that used by [d3.js](http://mbostock.github.com/d3/).
-
-These development dependencies are installed using [NPM](http://npmjs.org/).
+lightweight CommonJS implementation of the W3C DOM specifications. Lab's test setup was inspired
+by that used by [d3.js](http://mbostock.github.com/d3/). The development dependencies for running the
+tests are installed using [NPM](http://npmjs.org/).
 
 Running the tests:
 
@@ -257,9 +255,9 @@ Running the tests:
     x OK > 40 honored (0.012s)
 
 If you are running `bin/guard` the tests run automatically anytime a change is made in the JavaScript 
-files in the src/ or test/ directory.
+files in the `src/` or `test/` directory.
 
-The results of the tests are displayed in the console that bin/guard is running in.
+The results of the tests are displayed in the console that `bin/guard` is running in.
 
 If the bottom of the console window is viewable you will see new test results whenever you save a changes.
 
@@ -337,7 +335,7 @@ with an additional collection of useful [assertions](http://vowsjs.org/#assertio
 
 Additionally `test/env-assert.js` has a number of useful additional assertions copied from [d3.js](http://mbostock.github.com/d3/).
 
-_Note: Using a more specific assertion usually results in more useful error reports._
+_**Note**: Using a more specific assertion usually results in more useful error reports._
 
 There are also many interesting test examples and patterns in the [d3.js test directory](https://github.com/mbostock/d3/tree/master/test) 
 that can be adapted for use in Lab.
@@ -374,7 +372,7 @@ cause automatic rebuilding of the associated files in the `dist/examples/` direc
 ### External JavaScript Frameworks: `vendor/`
 
 External JavaScript prerequisites for running lab are located in the vendor/ directory. 
-These are copied into the `examples/` directory when either running `make` or `bin/guard`.
+These are copied into the `dist/vendor/` directory when either running `make` or `bin/guard`.
 
 - d3
 - modernizr.js
@@ -384,19 +382,19 @@ These are copied into the `examples/` directory when either running `make` or `b
 - jquery-ui
 - sizzle
 
-## Updating http://lab.dev.concord.org/
+## Updating [http://lab.dev.concord.org/](http://lab.dev.concord.org/)
 
-Currently http://lab.dev.concord.org/ is updated by using rsynch to copy the content of the 
-examples/ directory to the server. 
+Currently [http://lab.dev.concord.org/](http://lab.dev.concord.org/) is updated by using rsynch to copy 
+the content of the `dist/` directory to the server. 
 
 Modify the example script below with your username, server host, and path to the directory apache is serving:
 
-file: `bin/update.sh``
+file: `bin/update.sh`
 
     #!/bin/sh
-    rsync -rvz --delete dist/ username@server:/path/to/examples
+    rsync -rvz --delete dist/ username@server:/path/to/dist
 
-Running `bin/update.sh` will now copy/update the directory at http://lab.dev.concord.org/
+Running `bin/update.sh` will now copy and update the directory at [http://lab.dev.concord.org/](http://lab.dev.concord.org/)
 
 ## References
 
