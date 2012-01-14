@@ -95,12 +95,12 @@ suite.addBatch({
       assert.equal(model.steps(), 0);
       assert.isTrue(model.isNewStep());
     },
-    "after running running one tick the model is at step 1": function(model) {
+    "after running one tick the model is at step 1": function(model) {
       model.tick();
       assert.equal(model.stepCounter(), 1);
       assert.isTrue(model.isNewStep());
     },
-    "after running running 9 more ticks the model is at step 10": function(model) {
+    "after running 9 more ticks the model is at step 10": function(model) {
       model.tick(9);
       assert.equal(model.stepCounter(), 10);
       assert.isTrue(model.isNewStep());

@@ -372,7 +372,7 @@ But in thinking about testing changes to KE, PE and Temperature of the molecular
 
 So I wrote this test that failed -- because the model.tick() function didn't yet take an optional argument to run multiple steps forward:
 
-    "after running running 9 more ticks the model is at step 10": function(model) {
+    "after running 9 more ticks the model is at step 10": function(model) {
       model.tick(9);
       assert.equal(model.stepCounter(), 10);
       assert.isTrue(model.isNewStep());
