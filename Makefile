@@ -6,19 +6,20 @@ MARKDOWN_COMPILER = bin/kramdown
 JS_TESTER   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LIB_DIR = ./examples/lib
 
-HAML_EXAMPLE_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/\1/' )
+HAML_EXAMPLE_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/dist\/\1/' )
 vpath %.haml src
+# vpath $(subst dist/,src,%.haml)
 
-SASS_EXAMPLE_FILES := $(shell find src -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/\1.css/' )
+SASS_EXAMPLE_FILES := $(shell find src -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/dist\/\1.css/' )
 vpath %.sass src
 
-SCSS_EXAMPLE_FILES := $(shell find src -name '*.scss' -exec echo {} \; | sed s'/src\/\(.*\)\.scss/\1.css/' )
+SCSS_EXAMPLE_FILES := $(shell find src -name '*.scss' -exec echo {} \; | sed s'/src\/\(.*\)\.scss/dist\/\1.css/' )
 vpath %.scss src
 
-COFFEESCRIPT_EXAMPLE_FILES := $(shell find src -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/\1.js/' )
+COFFEESCRIPT_EXAMPLE_FILES := $(shell find src -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/dist\/\1.js/' )
 vpath %.coffee src
 
-MARKDOWN_EXAMPLE_FILES := $(shell find src -name '*.md' -exec echo {} \; | sed s'/src\/\(.*\)\.md/\1.html/' )
+MARKDOWN_EXAMPLE_FILES := $(shell find src -name '*.md' -exec echo {} \; | sed s'/src\/\(.*\)\.md/dist\/\1.html/' )
 vpath %.md src
 
 LAB_JS_FILES = \
@@ -32,7 +33,7 @@ LAB_JS_FILES = \
 
 all: \
 	vendor/d3 \
-	examples \
+	dist \
 	$(LAB_JS_FILES) \
 	$(LAB_JS_FILES:.js=.min.js) \
 	$(HAML_EXAMPLE_FILES) \
@@ -42,20 +43,19 @@ all: \
 	$(MARKDOWN_EXAMPLE_FILES)
 
 clean:
-	rm -rf examples
+	rm -rf dist
 	rm -f lib/*.js
 
 vendor/d3:
 	mkdir -p vendor/d3
 	cp node_modules/d3/*.js vendor/d3
 
-examples:
-	mkdir -p examples/lib
-	mkdir -p examples/vendor
-	cp -r lib examples
-	cp -r vendor examples
-	cp -r resources examples
-	rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ examples/
+dist:
+	mkdir -p dist/examples
+	cp -r lib dist
+	cp -r vendor dist
+	cp -r src/resources dist
+	rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ dist/examples/
 
 
 lib/lab.js: \
@@ -118,8 +118,8 @@ lib/lab.graphx.js: \
 
 test: test/layout.html \
 	vendor/d3 \
-	examples\
-	$(JS_FILES) \
+	dist \
+	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js)
 	@$(JS_TESTER)
 
@@ -127,42 +127,41 @@ test: test/layout.html \
 	@rm -f $@
 	$(JS_COMPILER) < $< > $@
 	@chmod ug+w $@
-	@cp $@ $(EXAMPLES_LIB_DIR)
+	@cp $@ dist/lib
 
 lab.%: Makefile
 	@rm -f $@
 	cat $(filter %.js,$^) > $@
 	@chmod ug+w $@
-	cp $@ $(EXAMPLES_LIB_DIR)
+	cp $@ dist/lib
 
 test/%.html:
-
-examples/%.html:
 
 h:
 	@echo $(HAML_EXAMPLE_FILES)
 
-%.html: %.html.haml Makefile
+dist/%.html: %.html.haml Makefile
 	haml $< $@
 
 s:
 	@echo $(SASS_EXAMPLE_FILES)
 
-%.css: %.sass Makefile
+dist/%.css: %.sass Makefile
 	sass $< $@
 
-%.css: %.scss Makefile
+dist/%.css: %.scss Makefile
 	sass $< $@
 
 c:
 	@echo $(COFFEESCRIPT_EXAMPLE_FILES)
 
-%.js: %.coffee Makefile
+dist/%.js: %.coffee Makefile
 	@rm -f $@
 	$(COFFEESCRIPT_COMPILER) --compile --print $< > $@
+
 m:
 	@echo $(MARKDOWN_EXAMPLE_FILES)
 
-%.html: %.md Makefile
+dist/%.html: %.md Makefile
 	@rm -f $@
 	$(MARKDOWN_COMPILER) $< --template src/layouts/layout.html.erb > $@

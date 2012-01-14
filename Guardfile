@@ -12,15 +12,15 @@ ready ...
 
 HEREDOC
 
-guard 'sass',         :input => 'src/examples', :output => 'examples', :all_on_start => false
-guard 'coffeescript', :input => 'src/examples', :output => 'examples', :all_on_start => false
-guard 'haml',         :input => 'src/examples', :output => 'examples', :all_on_start => false do
+guard 'sass',         :input => 'src', :output => 'dist', :all_on_start => false
+guard 'coffeescript', :input => 'src', :output => 'dist', :all_on_start => false
+guard 'haml',         :input => 'src', :output => 'dist', :all_on_start => false do
   watch %r{^.+(\.html\.haml)}
 end
 
 
 guard 'shell' do
-  watch(%r{src\/(?!examples).+\.js$}) do
+  watch(%r{src\/lib\/.+\.js$}) do
     puts "re-generating javascript libraries ..."
     system("make")
     system("make test")
@@ -36,9 +36,9 @@ guard 'shell' do
       `cp -f #{source_path} #{destination_path}`
     end
   end
-  watch(%r{^(resources/.+)$}) do |match|
+  watch(%r{^(src/resources/.+)$}) do |match|
     source_path = match[0]
-    destination_path = "examples/#{source_path}"
+    destination_path = "dist/#{source_path}"
     puts "cp -f #{source_path} #{destination_path}"
     `cp -f #{source_path} #{destination_path}`
   end
@@ -52,8 +52,8 @@ guard 'livereload' do
   watch(%r{(examples/).+\.(css|js|html)})
 end
 
-guard 'markdown', :convert_on_start => true do
-  watch(%r{(readme.md|src/layouts/layout.html.erb)}) do |m|
-    "readme.md|examples/readme.html|src/layouts/layout.html.erb"
+guard 'markdown' do
+  watch(%r{(src/readme.md)}) do |m|
+    "readme.md|dist/readme.html|src/layouts/layout.html.erb"
   end
 end

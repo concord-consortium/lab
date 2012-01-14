@@ -3,7 +3,7 @@ bin
 .bundle
 .rvmrc
 .sass-cache
-/examples*
+dist
 node_modules
 npm-debug.log
 test/*.html
