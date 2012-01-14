@@ -358,9 +358,11 @@ Here's a simple example that is part of the tests for `lab.arrays.js` to test th
       assert.equal(max([3, -1, 0, 1, 2, 3]), 3);
     },
 
-The 'model stepping' tests are a very good example where the tests help helped drive new features. The basic features I wastesting in this section relate to the existing functionality exposed by the Stop, Start, Go, and Reset buttons as wells as the extended keyboard controls that allow stepping forward and backwards a step at a time.
+The 'model stepping' tests are a good example where the tests help helped drive new features. The basic 
+features I was testing in this section relate to the existing functionality exposed by the Stop, Start, Go, and 
+Reset buttons as wells as the extended keyboard controls that allow stepping forward and backwards a step at a time.
 
-So for example I created this test that passed:
+First I created this test that passed:
 
     "after running running one tick the model is at step 1": function(model) {
       model.tick();
@@ -368,9 +370,11 @@ So for example I created this test that passed:
       assert.isTrue(model.isNewStep());
     },
 
-But in thinking about testing changes to KE, PE and Temperature of the molecular model itself I realized I wanted to either run a specific number of steps and then check or easily step forward and back multiple steps.
+In thinking about driving out changes to KE, PE and Temperature of the molecular model itself I realized 
+I'd like the capability to run a specific number of steps forward and then check the results.
 
-So I wrote this test that failed -- because the model.tick() function didn't yet take an optional argument to run multiple steps forward:
+I then wrote this test that failed -- because the model.tick() function didn't yet take an optional argument to 
+run multiple steps forward:
 
     "after running 9 more ticks the model is at step 10": function(model) {
       model.tick(9);
@@ -378,21 +382,27 @@ So I wrote this test that failed -- because the model.tick() function didn't yet
       assert.isTrue(model.isNewStep());
     },
 
-Once the failing test was saved I saw the failing test report in my console. After adding this feature in the actual `lab.molecules/js` module and saving it a second later the tests were complete and showed it passing.
+After saving the change I saw the new test failure reported in my console. I then implemented the new
+feature in the actual `src/lab/molecules.js`. Less than a second after saving the file the tests 
+completed and the report showed it passing.
 
-This is a very simple example -- but part of the value of this kind of test driven development is in first thinking of how something should behave rather than in how to get it to actually do the work.
+This is a very simple example -- but part of the value of this kind of test driven development is in first 
+thinking of how something should behave rather than in how to get it to actually do the work.
 
-In this case it was so simple because since I already have this function for running one model step:
+Since I already had this function for running one model step:
 
     model.tick()
 
-It's pretty easy to see that adding an optional numeric argument for running more steps is a fine way to express the new intent:
+Adding an optional numeric argument for running more steps is a fine way to express the intent of the new feature:
 
     model.tick(9)
 
-In more complicated coding thinking about how to express the intent clearly and then what the result should be if that intent is successful **FIRST** ... and then 'driving out' the actual implementation to achieve that result can result in a better architecture -- and of course you also end up with tests.
+In more complicated coding thinking about how to express the intent clearly and then what the result 
+should be if that intent is successful **FIRST** ... and then 'driving out' the actual implementation to 
+achieve that result can result in a better architecture -- and of course you also end up with tests.
 
-Because the tests run SO quickly I can interactively change the code in the module or the test and immediately see results.
+Because the tests run SO quickly I can interactively change the code in the module or the test and 
+immediately see results.
 
 ### Generated Lab Modules: `lab/`
 
