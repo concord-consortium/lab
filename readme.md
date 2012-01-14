@@ -350,6 +350,50 @@ _**Note**: Using a more specific assertion usually results in more useful error 
 There are also many interesting test examples and patterns in the [d3.js test directory](https://github.com/mbostock/d3/tree/master/test) 
 that can be adapted for use in Lab.
 
+### A Simple Example of Test Driven Development
+
+Here's a simple example that is part of the tests for `lab.arrays.js` to test the `arrays.max()` function:
+
+    "find max in array with negative and positive numbers": function(max) {
+      assert.equal(max([3, -1, 0, 1, 2, 3]), 3);
+    },
+
+The 'model stepping' tests are a very good example where the tests help helped drive new features. The basic features I wastesting in this section relate to the existing functionality exposed by the Stop, Start, Go, and Reset buttons as wells as the extended keyboard controls that allow stepping forward and backwards a step at a time.
+
+So for example I created this test that passed:
+
+    "after running running one tick the model is at step 1": function(model) {
+      model.tick();
+      assert.equal(model.stepCounter(), 1);
+      assert.isTrue(model.isNewStep());
+    },
+
+But in thinking about testing changes to KE, PE and Temperature of the molecular model itself I realized I wanted to either run a specific number of steps and then check or easily step forward and back multiple steps.
+
+So I wrote this test that failed -- because the model.tick() function didn't yet take an optional argument to run multiple steps forward:
+
+    "after running running 9 more ticks the model is at step 10": function(model) {
+      model.tick(9);
+      assert.equal(model.stepCounter(), 10);
+      assert.isTrue(model.isNewStep());
+    },
+
+Once the failing test was saved I saw the failing test report in my console. After adding this feature in the actual `lab.molecules/js` module and saving it a second later the tests were complete and showed it passing.
+
+This is a very simple example -- but part of the value of this kind of test driven development is in first thinking of how something should behave rather than in how to get it to actually do the work.
+
+In this case it was so simple because since I already have this function for running one model step:
+
+    model.tick()
+
+It's pretty easy to see that adding an optional numeric argument for running more steps is a fine way to express the new intent:
+
+    model.tick(9)
+
+In more complicated coding thinking about how to express the intent clearly and then what the result should be if that intent is successful **FIRST** ... and then 'driving out' the actual implementation to achieve that result can result in a better architecture -- and of course you also end up with tests.
+
+Because the tests run SO quickly I can interactively change the code in the module or the test and immediately see results.
+
 ### Generated Lab Modules: `lab/`
 
 The `lab/` directory contains the lab modules generated from JavaScript source code in the `src/lab/` directory.
