@@ -9,6 +9,7 @@
 // ------------------------------------------------------------
 
 var therm = new Thermometer('#thermometer');
+var slider = new SliderComponent('#slider_component');
 
 var mol_number = 100,
     sample_time = 0.01,
