@@ -97,16 +97,14 @@ installed in the node_modules directory.
 
 Generate the `dist` directory by running `make`.
 
+You can now open the file: `dist/index.html` in a browser.
+
 Start watching the various src directories and automatically compile and generate
-the `examples/` directory including JavaScript, HTML, CSS, and image resources:
+the `dist/examples/` directory including JavaScript, HTML, CSS, and image resources:
 
     bin/guard
 
-This will take about 15s to generate the examples directory when first started.
-
-You can also create the examples directory by using `make` from the command line.
-
-Create a localhost and local Apache vhost for lab and optionally d3:
+You can also create a localhost and local Apache vhost for lab and optionally d3:
 
 file: `/etc/hosts`
 
@@ -396,7 +394,7 @@ Modify the example script below with your username, server host, and path to the
 file: `bin/update.sh``
 
     #!/bin/sh
-    rsync -rvz --delete examples/ username@server:/path/to/examples
+    rsync -rvz --delete dist/ username@server:/path/to/examples
 
 Running `bin/update.sh` will now copy/update the directory at http://lab.dev.concord.org/
 
