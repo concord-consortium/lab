@@ -53,7 +53,7 @@ guard 'livereload' do
 end
 
 guard 'markdown' do
-  watch(%r{(src/readme.md)}) do |m|
+  watch(%r{(readme.md)}) do |m|
     "readme.md|dist/readme.html|src/layouts/layout.html.erb"
   end
 end
