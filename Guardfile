@@ -1,4 +1,4 @@
-ignore_paths 'bin', 'examples', 'lib', 'node_modules'
+ignore_paths 'bin', 'examples', 'lab', 'node_modules'
 
 # FireSass allows Firebug to display the original Sass filename 
 # and line number of Sass-generated CSS styles
@@ -20,7 +20,7 @@ end
 
 
 guard 'shell' do
-  watch(%r{src\/lib\/.+\.js$}) do
+  watch(%r{src\/lab\/.+\.js$}) do
     puts "re-generating javascript libraries ..."
     system("make")
     system("make test")
