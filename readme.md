@@ -61,7 +61,7 @@ Alternatively if you don't have commit access use this form:
 
     git clone git://github.com/concord-consortium/lab.git
 
-If you plan to contribute to Lab:
+If you plan to contribute to Lab as an external developer:
 
 1. Create a local clone from the repository located here: http://github.com/concord-consortium/lab.
    This will by default have the git-remote name: **origin**. 
@@ -69,40 +69,50 @@ If you plan to contribute to Lab:
 3. Make a new git-remote referencing your fork. I recommend making the remote name your github user name.
    For example my username is `stepheneb` so I would add a remote to my fork like this: 
    `git remote add stepheneb git@github.com:stepheneb/lab.git`.
-4. Create your changes on a topic branch. Please include tests if you can. When you a ready
+4. Create your changes on a topic branch. Please include tests if you can. When your commits are ready
 push your topic branch to your fork and send a pull request.
 
 I recommend also cloning the [d3.js](http://mbostock.github.com/d3/) repository into a separate 
-directory -- there are many useful examples of both visualizations and examples of tests that 
-run extremely quickly using vows, [jsdom](https://github.com/tmpvar/jsdom), and node.
+directory -- there are many useful examples of both visualizations and tests that run extremely 
+quickly using [Vows](http://vowsjs.org), [jsdom](https://github.com/tmpvar/jsdom), and [nodejs](http://nodejs.org/).
 
     git clone git://github.com/mbostock/d3.git
 
 **Setup the lab repository for development**
 
-Change to the lab directory and install the additional Ruby Gems used during development: haml, sass, guard ...
+Change to the lab directory and install the additional Ruby Gems used for development: haml, sass, guard ...
 
     cd lab
     bundle install --binstubs
 
-This will create the `bin/` directory and populate it with command-line execuatbles for running
+This will create the `bin/` directory and populate it with command-line executables for running
 the specific versions of the RubyGems installed for development.
 
-Next install Lab's dependencies managed by [npm](http://npmjs.org/) -- including the development dependencies:
+Next install the development dependencies that use [nodejs](http://nodejs.org/) and
+are managed by [npm](http://npmjs.org/):
 
     npm install
 
-You can see the list of dependencies in package.json. The packages will be
-installed in the node_modules directory.
+You can see the list of dependencies to be installed in the file `package.json`. 
 
-Generate the `dist` directory by running `make`.
+Running `npm install` installs or updates packages in the `node_modules/` directory.
 
-You can now open the file: `dist/index.html` in a browser.
+Generate the `dist/` directory:
 
-Start watching the various src directories and automatically compile and generate
-the `dist/examples/` directory including JavaScript, HTML, CSS, and image resources:
+    make
+
+You should now be able to open the file: `dist/index.html` in a browser and run the examples.
+
+Start watching the `src/` and `test/` directories and automatically either generate the Lab modules,
+the examples, or run the tests.
 
     bin/guard
+
+Now any change you make in `src/examples/` will generate the corresponding content in `dist/examples/`.
+In addition changes in `src/lab/` result generation of the associated Lab modules in `lab/` and the
+copying of these modules to `dist/lab/`. In addition any change in either the `src/lab/` or `test/`
+directories will automatically run the tests and display the results in the console window where `bin/guard`
+is running.
 
 You can also create a localhost and local Apache vhost for lab and optionally d3:
 
@@ -164,10 +174,10 @@ To have the browser page for an example automatically reload when changes are ma
 ### Source Code: `src/`
 
 The `src/` directory includes both JavaScript source code for the Lab modules as well as the `src/examples/` 
-directory containing the additional resources for generating the html, css, and image resources for `examples/`.
+directory containing the additional resources for generating the html, css, and image resources for `dist/examples/`.
 
 - `src/examples`
-  haml, sass files are processed into html and css files saved in the `examples/` directory, javascript files located here are just copied.
+  haml, sass files are processed into html and css files saved in the `dist/examples/` directory, javascript files located here are just copied.
 
 The source code for the Lab modules is all contained in `src/lab/`
 
@@ -183,7 +193,7 @@ In addition the following module is in process of being combined with the newer 
 
 - `src/lab/grapher/`
 
-Lastly there are the following JavaScript framgments that are used in the build process:
+Lastly there are the following JavaScript fragments that are used in the build process:
 
 - `src/lab/start.js`
 - `src/lab/lab-module.js`
