@@ -44,7 +44,6 @@ all: \
 
 clean:
 	rm -rf dist
-	rm -f lab/*.js
 
 vendor/d3:
 	mkdir -p vendor/d3
