@@ -30,16 +30,18 @@ Example: [Earth's Surface Temperature: years 500-2009](http://lab.dev.concord.or
 
 ## Setup Development
 
+Prerequisites:
+
 - [Ruby 1.9](http://www.ruby-lang.org/en/)
 - The RubyGem: [bundler](http://gembundler.com/)
 - [nodejs](http://nodejs.org/)
 - [npm](http://npmjs.org/)
 
-Lab's test framework uses [Vows](http://vowsjs.org), which depends on
-[nodejs](http://nodejs.org/) and [npm](http://npmjs.org/) (Node Package Manager). 
-In addition JavaScript minification is done using [UglifyJS](https://github.com/mishoo/UglifyJS).
+Lab's test framework uses [Vows](http://vowsjs.org), which depends on [nodejs](http://nodejs.org/) 
+and [npm](http://npmjs.org/) (Node Package Manager). In addition JavaScript minification is done using 
+[UglifyJS](https://github.com/mishoo/UglifyJS).
 
-Currently development is being done with these versions of Node and NPM:
+Currently development is being done with these versions of Node and npm:
 
     $ node -v
     v0.6.6
@@ -47,7 +49,7 @@ Currently development is being done with these versions of Node and NPM:
     $ npm -v
     1.1.0-beta-4
 
-As of v0.6.3 of node NPM is bundled with node. 
+As of v0.6.3 of node npm is bundled with node. 
 
 Install node with installers available here: [http://nodejs.org/#download](http://nodejs.org/#download)
 
@@ -61,45 +63,36 @@ Alternatively if you don't have commit access use this form:
 
     git clone git://github.com/concord-consortium/lab.git
 
-If you plan to contribute to Lab as an external developer:
-
-1. Create a local clone from the repository located here: http://github.com/concord-consortium/lab.
-   This will by default have the git-remote name: **origin**. 
-2. Make a fork of http://github.com/concord-consortium/lab to your account on github.
-3. Make a new git-remote referencing your fork. I recommend making the remote name your github user name.
-   For example my username is `stepheneb` so I would add a remote to my fork like this: 
-   `git remote add stepheneb git@github.com:stepheneb/lab.git`.
-4. Create your changes on a topic branch. Please include tests if you can. When your commits are ready
-push your topic branch to your fork and send a pull request.
-
-I recommend also cloning the [d3.js](http://mbostock.github.com/d3/) repository into a separate 
-directory -- there are many useful examples of both visualizations and tests that run extremely 
-quickly using [Vows](http://vowsjs.org), [jsdom](https://github.com/tmpvar/jsdom), and [nodejs](http://nodejs.org/).
-
-    git clone git://github.com/mbostock/d3.git
-
 **Setup the lab repository for development**
 
-Change to the lab directory and install the additional Ruby Gems used for development: haml, sass, guard ...
+Change to the lab directory and run `make` to install the runtime and development dependencies and generate 
+the `dist` directory:
 
     cd lab
-    bundle install --binstubs
-
-This will create the `bin/` directory and populate it with command-line executables for running
-the specific versions of the RubyGems installed for development.
-
-Next install the development dependencies that use [nodejs](http://nodejs.org/) and
-are managed by [npm](http://npmjs.org/):
-
-    npm install
-
-You can see the list of dependencies to be installed in the file `package.json`. 
-
-Running `npm install` installs or updates packages in the `node_modules/` directory.
-
-Generate the `dist/` directory:
-
     make
+
+When `make` is run on a freshly cloned repository it performs:
+
+1. Install the runtime dependencies as git submodules into the `vendor/` directory:
+
+        git submodule update --init --recursive
+
+2. Install the development dependencies that use [nodejs](http://nodejs.org/) and
+   are managed by [npm](http://npmjs.org/):
+
+        npm install
+
+   You can see the list of dependencies to be installed in the file `package.json`. In addition
+   `vendor/d3` and `vendor/science.js` are manually installed into `node_modules/`.
+
+3. Install the additional Ruby Gems used for development: haml, sass, guard ...
+
+        bundle install --binstubs
+
+   This creates the `bin/` directory and populates it with command-line executables for running
+   the specific versions of the RubyGems installed for development.
+
+4.  Generates the `dist/` directory:
 
 You should now be able to open the file: `dist/index.html` in a browser and run the examples.
 
@@ -113,6 +106,8 @@ In addition changes in `src/lab/` generate the associated Lab modules in `lab/` 
 to `dist/lab/`. In addition any change in either the `src/lab/` or `test/`directories will run the
 tests and display the results in the console window where `bin/guard`
 is running.
+
+### Serving `dist/` locally with Apache
 
 You can also create a localhost and local Apache vhost for lab and optionally d3:
 
@@ -169,6 +164,23 @@ the `dist/` directory will be updated.
 
 To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small "LR" button on the toolbar.
 
+### Contributing to Lab
+
+If you think you'd like to contribute to Lab as an external developer:
+
+1. Create a local clone from the repository located here: http://github.com/concord-consortium/lab.
+   This will by default have the git-remote name: **origin**. 
+
+2. Make a fork of http://github.com/concord-consortium/lab to your account on github.
+
+3. Make a new git-remote referencing your fork. I recommend making the remote name your github user name.
+   For example my username is `stepheneb` so I would add a remote to my fork like this: 
+
+        git remote add stepheneb git@github.com:stepheneb/lab.git`.
+
+4. Create your changes on a topic branch. Please include tests if you can. When your commits are ready
+   push your topic branch to your fork and send a pull request.
+
 ## Repository structure
 
 ### Source Code: `src/`
@@ -177,7 +189,9 @@ The `src/` directory includes both JavaScript source code for the Lab modules as
 directory containing the additional resources for generating the html, css, and image resources for `dist/examples/`.
 
 - `src/examples`
-  haml, sass files are processed into html and css files saved in the `dist/examples/` directory, javascript files located here are just copied.
+
+Files and folders in `src/examples` are either copied directly to `dist/examples` or in the case of coffeescript
+files are compiled to javascript before being copied.
 
 The source code for the Lab modules is all contained in `src/lab/`
 
@@ -256,7 +270,7 @@ Lab's JavaScript tests use [Vows](http://vowsjs.org), an asynchronous behavior d
 on [Node.js](http://nodejs.org/). In addition Lab uses [jsdom](https://github.com/tmpvar/jsdom), a
 lightweight CommonJS implementation of the W3C DOM specifications. Lab's test setup was inspired
 by that used by [d3.js](http://mbostock.github.com/d3/). The development dependencies for running the
-tests are installed using [NPM](http://npmjs.org/).
+tests are installed using [npm](http://npmjs.org/).
 
 Running the tests:
 
