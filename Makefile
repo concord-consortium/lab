@@ -32,7 +32,7 @@ LAB_JS_FILES = \
 	lab/lab.js
 
 all: \
-	vendor \
+	vendor/d3/.git \
 	node_modules \
 	bin \
 	dist \
@@ -47,7 +47,7 @@ all: \
 clean:
 	rm -rf dist
 
-vendor:
+vendor/d3/.git:
 	git submodule update --init --recursive
 
 node_modules:
