@@ -449,16 +449,22 @@ of the associated files in the `dist/examples/` directory.
 
 ### External JavaScript Frameworks: `vendor/`
 
-External JavaScript prerequisites for running lab are located in the vendor/ directory. These are copied 
-into the `dist/vendor/` directory when either running `make` or `bin/guard`.
+External JavaScript runtime dependencies for running lab are located in the vendor/ directory and are 
+installed as git submodules the first time `make` is run in a new checkout of the source code repository.
 
-- d3
-- modernizr.js
-- science
-- colorbrewer
-- jquery
-- jquery-ui
-- sizzle
+The javascript frameworks along with their licensing and readme files are copied into the `dist/vendor/` 
+directory when either `make` or `bin/guard` are run.
+
+- `vendor/d3/`
+- `vendor/hijs/`
+- `vendor/modernizr/`
+- `vendor/science.js/`
+- `vendor/sizzle/`
+
+[d3.js](http://mbostock.github.com/d3/), [hijs](https://github.com/cloudhead/hijs), and 
+[science.js](https://github.com/jasondavies/science.js) are all licensed under a BSD license 
+while [sizzle](https://github.com/jquery/sizzle) and [modernizr](https://github.com/Modernizr/Modernizr) 
+are dual-licensed under both BSD and MIT licenses.
 
 ## Updating [http://lab.dev.concord.org/](http://lab.dev.concord.org/)
 
