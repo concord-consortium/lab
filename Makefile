@@ -78,7 +78,10 @@ dist:
 	cp vendor/sizzle/sizzle.js dist/vendor/sizzle
 	cp vendor/sizzle/LICENSE dist/vendor/sizzle
 	cp vendor/sizzle/README dist/vendor/sizzle
-	cp -r vendor/hijs dist/vendor
+	mkdir dist/vendor/hijs
+	cp vendor/hijs/hijs.js dist/vendor/hijs
+	cp vendor/hijs/LICENSE dist/vendor/hijs
+	cp vendor/hijs/README.md dist/vendor/hijs
 	# copy resources/
 	cp -r src/resources dist
 	# copy directories, javascript, json, and image resources from src/examples/
