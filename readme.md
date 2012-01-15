@@ -1,6 +1,7 @@
 # [Lab](https://github.com/concord-consortium/lab)
 
-HTML5-based open source scientific models, visualizations, graphing, and probeware from the [Concord Consortium](http://www.concord.org).
+HTML5-based open source scientific models, visualizations, graphing, and probeware from the 
+[Concord Consortium](http://www.concord.org).
 
 ## TODO
 
@@ -16,13 +17,16 @@ Cameron Abrams, teaching in the Department of Chemical Engineering at Drexel has
 published these excellent [Molecular Simulation](http://www.pages.drexel.edu/~cfa22/msim/msim.html) 
 resources for a course he teaches.
 
-This site has a basic introduction to the physics of molecular dynamics simulations, and practical exercises with the CHARMM package: [A theoretical introduction to molecular dynamics simulations and practical examples using the CHARMM program](http://www.ch.embnet.org/MD_tutorial/) 
+This site has a basic introduction to the physics of molecular dynamics simulations, and practical 
+exercises with the CHARMM package: [A theoretical introduction to molecular dynamics simulations and 
+practical examples using the CHARMM program](http://www.ch.embnet.org/MD_tutorial/) 
 
 **More detailed references, to constrain our 2D "physics"**
 
 [Thermostat Algorithms for Molecular Dynamics Simulations](http://phjoan23.technion.ac.il/~phr76ja/thermostats.pdf)
 
-One kind of unphysical effect that can arise is [the "flying ice cube"](http://en.wikipedia.org/wiki/Flying_ice_cube) - See linked paper.
+One kind of unphysical effect that can arise is [the "flying ice cube"](http://en.wikipedia.org/wiki/Flying_ice_cube) - 
+See linked paper.
 
 ## Grapher
 
@@ -65,13 +69,13 @@ Alternatively if you don't have commit access use this form:
 
 **Setup the lab repository for development**
 
-Change to the lab directory and run `make` to install the runtime and development dependencies and generate 
-the `dist` directory:
+Change to the 'lab/' directory and run `make` to install the runtime and development dependencies and generate 
+the `dist/` directory:
 
     cd lab
     make
 
-When `make` is run on a freshly cloned repository it performs:
+When `make` is run on a freshly cloned repository it performs the following tasks:
 
 1. Install the runtime dependencies as git submodules into the `vendor/` directory:
 
@@ -155,7 +159,7 @@ Restart Apache when the configuration syntax is OK :
 
 Now open: [http://lab.local/](http://lab.local/)
 
-Or go directly to the Simple Molecules model here: [http://lab.local/examples/simplemolecules/simplemolecules.html](http://lab.local/examples/simplemolecules/simplemolecules.html)
+Or go directly to your local instance of [Simple Molecules](http://lab.local/examples/simplemolecules/simplemolecules.html).
 
 If you cloned d3 and setup a localhost you can view the d3 examples here: [http://d3.local/examples/](http://d3.local/examples/)
 
@@ -176,7 +180,7 @@ If you think you'd like to contribute to Lab as an external developer:
 3. Make a new git-remote referencing your fork. I recommend making the remote name your github user name.
    For example my username is `stepheneb` so I would add a remote to my fork like this: 
 
-        git remote add stepheneb git@github.com:stepheneb/lab.git`.
+        git remote add stepheneb git@github.com:stepheneb/lab.git
 
 4. Create your changes on a topic branch. Please include tests if you can. When your commits are ready
    push your topic branch to your fork and send a pull request.
@@ -186,7 +190,8 @@ If you think you'd like to contribute to Lab as an external developer:
 ### Source Code: `src/`
 
 The `src/` directory includes both JavaScript source code for the Lab modules as well as the `src/examples/` 
-directory containing the additional resources for generating the html, css, and image resources for `dist/examples/`.
+directory containing the additional resources for generating the html, css, and image resources for 
+`dist/examples/`.
 
 - `src/examples`
 
@@ -215,7 +220,8 @@ Lastly there are the following JavaScript fragments that are used in the build p
 
 After running `bundle install --binstubs` the `bin/` directory will be created.
 
-**Note:** remember to make changes you want saved in the `src/examples/` directory **not** in the `dist/examples/` directory.
+**Note:** remember to make changes you want saved in the `src/examples/` directory **not** in the 
+`dist/examples/` directory.
 
 ### Adding new source files or modules
 
@@ -259,7 +265,8 @@ If you are just modifying an existing example or adding a new one just create or
 the `src/examples` directory and run `make` or `bin/guard` to generate the associated resources 
 in the `dist/examples/` directory.
 
-The html file are generated from [Haml](http://haml-lang.com/) markup. Add the suffix `.html.haml` to these files.
+The html file are generated from [Haml](http://haml-lang.com/) markup. Add the suffix `.html.haml` 
+to these files.
 
 The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `.sass` to these 
 files. The stylesheets may also be written using the newer `*.scss` variant of Sass.
@@ -288,7 +295,8 @@ If the bottom of the console window is viewable you will see new test results wh
 Recent versions of nodejs/v8 support TypedArrays -- this make it possible to more extensively
 test lab.arrays which is designed to support using either typed or regular arrays for computation. 
 
-`test/env.js` uses the node module [jsdom](https://github.com/tmpvar/jsdom) to setup resources for simple emulation of a browser.
+`test/env.js` uses the node module [jsdom](https://github.com/tmpvar/jsdom) to setup resources for 
+simple emulation of a browser.
 
 [Vows](http://vowsjs.org) integrates the [standard nodejs assertions](http://nodejs.org/docs/latest/api/assert.html)
 with an additional collection of useful [assertions](http://vowsjs.org/#assertions) summarized below:
@@ -357,12 +365,13 @@ with an additional collection of useful [assertions](http://vowsjs.org/#assertio
         assert.throws(function () { x + x }, ReferenceError);
         assert.doesNotThrow(function () { 1 + 1 }, Error);
 
-Additionally `test/env-assert.js` has a number of useful additional assertions copied from [d3.js](http://mbostock.github.com/d3/).
+Additionally `test/env-assert.js` has a number of useful additional assertions copied from 
+[d3.js](http://mbostock.github.com/d3/).
 
 _**Note**: Using a more specific assertion usually results in more useful error reports._
 
-There are also many interesting test examples and patterns in the [d3.js test directory](https://github.com/mbostock/d3/tree/master/test) 
-that can be adapted for use in Lab.
+There are also many interesting test examples and patterns in the 
+[d3.js test directory](https://github.com/mbostock/d3/tree/master/test) that can be adapted for use in Lab.
 
 ### A Simple Example of Test Driven Development
 
@@ -515,7 +524,7 @@ More about using npm for development:
 - [Introduction to npm](http://howtonode.org/introduction-to-npm)
 - [node_modules in git](http://www.mikealrogers.com/posts/nodemodules-in-git.html)
 - [Managing module dependencies](http://howtonode.org/managing-module-dependencies)
-- [What do people do for versionizing node modules within git?](https://groups.google.com/group/nodejs/browse_thread/thread/9aa563f1fe3b3ff5)
+- [What do people do for versioning node modules within git?](https://groups.google.com/group/nodejs/browse_thread/thread/9aa563f1fe3b3ff5)
 
 ### [RubyGems](https://rubygems.org/)
 
