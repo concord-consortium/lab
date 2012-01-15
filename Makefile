@@ -32,28 +32,56 @@ LAB_JS_FILES = \
 	lab/lab.js
 
 all: \
-	vendor/d3 \
+	vendor \
+	node_modules \
+	bin \
 	dist \
+	$(MARKDOWN_EXAMPLE_FILES) \
 	$(LAB_JS_FILES) \
 	$(LAB_JS_FILES:.js=.min.js) \
 	$(HAML_EXAMPLE_FILES) \
 	$(SASS_EXAMPLE_FILES) \
 	$(SCSS_EXAMPLE_FILES) \
-	$(COFFEESCRIPT_EXAMPLE_FILES) \
-	$(MARKDOWN_EXAMPLE_FILES)
+	$(COFFEESCRIPT_EXAMPLE_FILES)
 
 clean:
 	rm -rf dist
 
-vendor/d3:
-	mkdir -p vendor/d3
-	cp node_modules/d3/*.js vendor/d3
+vendor:
+	git submodule update --init --recursive
+
+node_modules:
+	npm install
+	npm install vendor/d3
+	npm install vendor/science.js
+
+bin:
+	bundle install --binstubs
 
 dist:
 	mkdir -p dist/examples
+	# copy modules from lab/
 	cp -r lab dist
-	cp -r vendor dist
+	# copy libraries from vendor/
+	mkdir -p dist/vendor/d3
+	cp vendor/d3/d3*.js dist/vendor/d3
+	cp vendor/d3/LICENSE dist/vendor/d3/LICENSE
+	cp vendor/d3/README.md dist/vendor/d3/README.md
+	mkdir dist/vendor/science.js
+	cp vendor/science.js/science*.js dist/vendor/science.js
+	cp vendor/science.js/LICENSE dist/vendor/science.js
+	cp vendor/science.js/README.md dist/vendor/science.js
+	mkdir dist/vendor/modernizr
+	cp vendor/modernizr/modernizr.js dist/vendor/modernizr
+	cp vendor/modernizr/readme.md dist/vendor/modernizr
+	mkdir dist/vendor/sizzle
+	cp vendor/sizzle/sizzle.js dist/vendor/sizzle
+	cp vendor/sizzle/LICENSE dist/vendor/sizzle
+	cp vendor/sizzle/README dist/vendor/sizzle
+	cp -r vendor/hijs dist/vendor
+	# copy resources/
 	cp -r src/resources dist
+	# copy directories, javascript, json, and image resources from src/examples/
 	rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ dist/examples/
 
 
