@@ -429,7 +429,7 @@ And one additional file which combines them all:
 
 - `lab.js`
 
-The minimized versions of these files with names ending in `.min.js` are about 50% smaller.
+Minimized versions of these files are also generated but not checked into the repository.
 
 When working on the source code please keep commits of the generated JavaScript files in the `lab/` directory
 separate from other commits to make it easier to see and understand the narrative of source code changes.

@@ -219,7 +219,8 @@ layout.mc_redraw = function() {
 }
 
 layout.update_molecule_radius = function() {
-  var r = lj_graph.coefficients.rmin * mol_rmin_radius_factor;
+  var ljf = molecules_lennard_jones.coefficients();
+  var r = ljf.rmin * mol_rmin_radius_factor;
   model.set_radius(r);
   layout.mc_container.selectAll("circle")
       .data(atoms)
@@ -237,13 +238,14 @@ var molecule_div = d3.select("#viz").append("div")
 var molecule_div_pre = molecule_div.append("pre")
 
 layout.setup_particles = function() {
-  var r = lj_graph.coefficients.rmin * mol_rmin_radius_factor;
+  var ljf = molecules_lennard_jones.coefficients();
+  var r = ljf.rmin * mol_rmin_radius_factor;
   model.set_radius(r);
   
   layout.mc_container.selectAll("circle").remove();
   layout.mc_container.selectAll("g").remove();
 
-  var font_size = mc_x(lj_graph.coefficients.rmin * mol_rmin_radius_factor * 1.3);
+  var font_size = mc_x(ljf.rmin * mol_rmin_radius_factor * 1.3);
   if (mol_number > 100) { font_size *= 0.9 };
 
   label = layout.mc_container.selectAll("g.label")
