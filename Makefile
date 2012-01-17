@@ -47,6 +47,7 @@ all: \
 
 clean:
 	rm -rf dist
+	rm -rf lab
 
 vendor/d3/.git:
 	git submodule update --init --recursive
