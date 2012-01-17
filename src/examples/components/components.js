@@ -35,7 +35,6 @@ epsilon_slider.max = lj_epsilon_max;
 epsilon_slider.min = lj_epsilon_min;
 epsilon_slider.value_changed_function = function (v) {
   model.set_lj_coefficients(v,model.getSigma());
-  console.log("epsilon " + model.getEpsilon());
 }
 
 var sigma_slider = new  SliderComponent('#sigma_slider');
@@ -43,7 +42,8 @@ sigma_slider.max = lj_sigma_max;
 sigma_slider.min = lj_sigma_min;
 sigma_slider.value_changed_function = function (v) {
   model.set_lj_coefficients(model.getEpsilon(),v);
-  console.log("sigma " + model.getSigma());
+  // TODO: have the model notify the container when it gets updated
+  layout.update_molecule_radius();
 }
 
 
