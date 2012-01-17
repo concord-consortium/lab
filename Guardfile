@@ -31,7 +31,7 @@ guard 'shell' do
   watch(%r{^(src/examples/.+)$}) do |match|
     unless match[0][/(\.haml)|(\.sass)|(^\..+)$/]
       source_path = match[0]
-      destination_path = source_path[/src\/(.+?)$/, 1]
+      destination_path = 'dist/' + source_path[/src\/(.+?)$/, 1]
       puts "cp -f #{source_path} #{destination_path}"
       `cp -f #{source_path} #{destination_path}`
     end
