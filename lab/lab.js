@@ -2373,6 +2373,8 @@ modeler.layout.model = function() {
     // am not using the coefficients beyond setting the ljf limits yet ...
     epsilon = e;
     sigma = s;
+    molecules_lennard_jones.epsilon(e);
+    molecules_lennard_jones.sigma(s);
     setup_ljf_limits();
     return model;
   };
