@@ -2377,6 +2377,14 @@ modeler.layout.model = function() {
     return model;
   };
 
+  model.getEpsilon = function() {
+    return epsilon;
+  },
+
+  model.getSigma = function() {
+    return sigma;
+  },
+
   model.set_radius = function(r) {
     var i, n = nodes[0].length;
     i = -1; while(++i < n) { radius[i] = r };
