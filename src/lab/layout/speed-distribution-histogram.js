@@ -223,30 +223,31 @@ layout.speed_redraw = function() {
 // ------------------------------------------------------------
 layout.speed_update = function() {
   generate_speed_data();
+  if (speed_data.length > 2) {
+    speed_kde = science.stats.kde().sample(speed_data);
+    speed_x.domain([speed_graph.xmin, speed_graph.xmax]);
+    speed_bins = d3.layout.histogram().frequency(true).bins(speed_x.ticks(60))(speed_data);
 
-  speed_kde = science.stats.kde().sample(speed_data);
-  speed_x.domain([speed_graph.xmin, speed_graph.xmax]);
-  speed_bins = d3.layout.histogram().frequency(true).bins(speed_x.ticks(60))(speed_data);
+    speed_bar_width = (speed_size.width - speed_bins.length)/speed_bins.length;
+    speed_line_step = (speed_graph.xmax - speed_graph.xmin)/speed_bins.length;
+    speed_max  = d3.max(speed_bins, function(d) { return d.y });
 
-  speed_bar_width = (speed_size.width - speed_bins.length)/speed_bins.length;
-  speed_line_step = (speed_graph.xmax - speed_graph.xmin)/speed_bins.length;
-  speed_max  = d3.max(speed_bins, function(d) { return d.y });
+    speed_vis.selectAll("g.bar").remove();
 
-  speed_vis.selectAll("g.bar").remove();
+    speed_bars = speed_vis.selectAll("g.bar")
+        .data(speed_bins);
 
-  speed_bars = speed_vis.selectAll("g.bar")
-      .data(speed_bins);
-
-  speed_bars.enter().append("svg:g")
-      .attr("class", "bar")
-      .attr("transform", function(d, i) {
-        return "translate(" + speed_x(d.x) + "," + (speed_mh - speed_y(speed_y_max - d.y)) + ")";
-      })
-      .append("svg:rect")
+    speed_bars.enter().append("svg:g")
         .attr("class", "bar")
-        .attr("fill", "steelblue")
-        .attr("width", speed_bar_width)
-        .attr("height", function(d) { 
-            return speed_y(speed_y_max - d.y); 
-          });
+        .attr("transform", function(d, i) {
+          return "translate(" + speed_x(d.x) + "," + (speed_mh - speed_y(speed_y_max - d.y)) + ")";
+        })
+        .append("svg:rect")
+          .attr("class", "bar")
+          .attr("fill", "steelblue")
+          .attr("width", speed_bar_width)
+          .attr("height", function(d) { 
+              return speed_y(speed_y_max - d.y); 
+            }); 
+  }
 }
