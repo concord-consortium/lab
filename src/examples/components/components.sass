@@ -93,7 +93,13 @@ text.shadow
   font-family: monospace
   overflow: hidden
 
-#slider_component
+.slider_component
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  -o-user-select: none
+  user-select: none
   display: inline-block
   width: 200px
   height: 14px
@@ -115,8 +121,12 @@ text.shadow
     fill:  #fff
     stroke-width: 1px 
     stroke: #000
+  text
+    font-size: 10px
+    color: black
+    width: 100%
   border-radius: 5px
   background: #ddd
 
-#slider_component:hover
+.slider_component:hover
   background: #eee

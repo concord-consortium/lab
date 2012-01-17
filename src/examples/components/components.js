@@ -8,8 +8,6 @@
 //
 // ------------------------------------------------------------
 
-var therm = new Thermometer('#thermometer');
-var slider = new SliderComponent('#slider_component');
 
 var mol_number = 100,
     sample_time = 0.01,
@@ -26,6 +24,28 @@ var mol_number = 100,
     frame_number = 0,
     model_stopped = true,
     model = modeler.layout.model();
+
+// ------------------------------------------------------------
+// Setup therm, epsilon_slider & sigma_slider components.
+// ------------------------------------------------------------
+var therm      = new Thermometer('#thermometer');
+
+var epsilon_slider  = new  SliderComponent('#epsilon_slider');
+epsilon_slider.max = lj_epsilon_max;
+epsilon_slider.min = lj_epsilon_min;
+epsilon_slider.value_changed_function = function (v) {
+  model.set_lj_coefficients(v,model.getSigma());
+  console.log("epsilon " + model.getEpsilon());
+}
+
+var sigma_slider = new  SliderComponent('#sigma_slider');
+sigma_slider.max = lj_sigma_max;
+sigma_slider.min = lj_sigma_min;
+sigma_slider.value_changed_function = function (v) {
+  model.set_lj_coefficients(model.getEpsilon(),v);
+  console.log("sigma " + model.getSigma());
+}
+
 
 // ------------------------------------------------------------
 //
