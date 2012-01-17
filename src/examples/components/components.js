@@ -8,8 +8,6 @@
 //
 // ------------------------------------------------------------
 
-var therm = new Thermometer('#thermometer');
-var slider = new SliderComponent('#slider_component');
 
 var mol_number = 100,
     sample_time = 0.01,
@@ -27,6 +25,16 @@ var mol_number = 100,
     model_stopped = true,
     model = modeler.layout.model();
 
+var therm = new Thermometer('#thermometer');
+var slider = new SliderComponent('#slider_component');
+
+slider.max = lj_epsilon_max;
+slider.min = lj_epsilon_min;
+
+slider.value_changed_function = function (v) {
+  model.set_lj_coefficients(v,model.getSigma());
+  console.log(model.getEpsilon());
+}
 // ------------------------------------------------------------
 //
 // Main callback from model process
