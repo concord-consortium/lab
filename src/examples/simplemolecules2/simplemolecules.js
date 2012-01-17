@@ -379,7 +379,11 @@ function modelReset() {
   layout.setup_particles();
   step_counter = model.stepCounter();
   layout.displayStats();
-  if (layout.datatable_visible) { layout.render_datatable(true) }
+  if (layout.datatable_visible) { 
+    layout.render_datatable(true);
+  } else {
+    layout.hide_datatable()
+  }  
   ke_data = [model.ke()];
   // ke_graph.new_data(ke_data);
   // ke_graph.hide_canvas();
