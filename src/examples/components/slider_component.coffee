@@ -1,6 +1,6 @@
 class SliderComponent
 
-  constructor: (@dom_id="#slider", @value_changed_function) ->
+  constructor: (@dom_id="#slider", @value_changed_function, @max=1, @min=0) ->
     @dom_element = d3.select(@dom_id)
 
     # TODO: better to use jquery?
@@ -10,6 +10,7 @@ class SliderComponent
     @mouse_down = false
     this.init_view()
     this.init_mouse_handlers()
+    @value = 0.5
 
   horizontal_orientation: ->
     true if @width > @height
@@ -33,12 +34,7 @@ class SliderComponent
 
     @handle_y = (@y1 + @y2) / 2
     @handle_x = (@x1 + @x2) / 2
-    
-    # @line = @svg.append('svg:line')
-    # @line.attr("x1",@x1).attr("x2",@x2).attr("y1",@y1).attr("y2",@y2)
-    # @line.attr("stroke","#aaa")
-    # @line.attr("stroke-width",0.2)
-    
+
     @filled_rect = @svg.append('svg:rect')
     if this.horizontal_orientation()
       @filled_rect
@@ -65,27 +61,37 @@ class SliderComponent
     my = mouse[1]
     { x: mx, y: my}
 
-  move_handle: ->
+  scaled_value: ->
+    results = @value
+    results = results * (@max - @min)
+    results = results + @min
+    results
+
+  handle_drag: ->
     if this.horizontal_orientation()
       @handle_x = this.clip_mouse().x
       @handle.attr('cx',@handle_x)
       @filled_rect.attr('width',@handle_x)
+      @value = @handle_x / @width
     else
       @handle_y = this.clip_mouse().y
       @handle.attr('cy',@handle_y)
       @filled_rect
         .attr("y",@handle_y)
         .attr("height",@height - @handle_y)
+      @value = @handle_y / @height
+    if (typeof @value_changed_function == 'function')
+      @value_changed_function(this.scaled_value())
 
   init_mouse_handlers: ->
     self = this
     @svg.on "mousedown", =>
-      self.move_handle()
+      self.handle_drag()
       self.mousedown = true
-  
+
     @svg.on "mousemove", =>
       if self.mousedown
-        self.move_handle()
+        self.handle_drag()
 
     @svg.on "mouseup", =>
       self.mousedown = false
