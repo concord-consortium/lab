@@ -3,8 +3,8 @@ class SliderComponent
   constructor: (@dom_id="#slider", @value_changed_function) ->
     @dom_element = d3.select(@dom_id)
 
-    @width   = parseInt(@dom_element.style("width"))
-    @height  = parseInt(@dom_element.style("height"))
+    @width       = parseInt(@dom_element.style("width"))
+    @height      = parseInt(@dom_element.style("height"))
     @handle_size = 5
     
     # use html5 data-attributes to configure components
@@ -14,7 +14,7 @@ class SliderComponent
     @value       = @dom_element.attr('data-value')     || 0.5
     @label       = @dom_element.attr('data-label')     || "slider"
 
-    @mouse_down = false
+    @mouse_down  = false
     this.init_view()
     this.init_mouse_handlers()
 
@@ -48,6 +48,7 @@ class SliderComponent
         .attr("y",0)
         .attr("width", @handle_x)
         .attr("height",@height)
+      text_y = @height - 2 
     else
       @filled_rect
         .attr("x",0)
@@ -60,6 +61,8 @@ class SliderComponent
       .attr("cx",@handle_x)
       .attr("cy",@handle_y)
       .attr("r", @handle_size)
+    @text = @svg.append('svg:text').attr("x",2).attr("y",text_y)
+    this.update_label()
 
   clip_mouse: ->
     mouse = d3.svg.mouse(@svg.node())
@@ -72,6 +75,10 @@ class SliderComponent
     results = results * (@max - @min)
     results = results + @min
     results
+
+  update_label: ->
+    fomatted_value = this.scaled_value().toFixed(@precision)
+    @text.text("#{@label}: #{fomatted_value}")
 
   handle_drag: ->
     if this.horizontal_orientation()
@@ -88,6 +95,7 @@ class SliderComponent
       @value = @handle_y / @height
     if (typeof @value_changed_function == 'function')
       @value_changed_function(this.scaled_value())
+    this.update_label()
 
   init_mouse_handlers: ->
     self = this
