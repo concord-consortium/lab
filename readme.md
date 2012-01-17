@@ -414,7 +414,8 @@ immediately see results.
 
 ### Generated Lab Modules: `lab/`
 
-The `lab/` directory contains the lab modules generated from JavaScript source code in the `src/lab/` directory.
+The `lab/` directory contains the lab modules generated from JavaScript source code in the `src/lab/` 
+directory. The `lab/` directory is not checked into the repository
 
 Here are the standard lab modules:
 
@@ -429,7 +430,7 @@ And one additional file which combines them all:
 
 - `lab.js`
 
-Minimized versions of these files are also generated but not checked into the repository.
+Minimized versions of these files are also generated.
 
 When working on the source code please keep commits of the generated JavaScript files in the `lab/` directory
 separate from other commits to make it easier to see and understand the narrative of source code changes.

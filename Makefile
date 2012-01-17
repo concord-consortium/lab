@@ -35,6 +35,7 @@ all: \
 	vendor/d3/.git \
 	node_modules \
 	bin \
+	lab \
 	dist \
 	$(MARKDOWN_EXAMPLE_FILES) \
 	$(LAB_JS_FILES) \
@@ -57,6 +58,9 @@ node_modules:
 
 bin:
 	bundle install --binstubs
+
+lab:
+	mkdir -p lab
 
 dist:
 	mkdir -p dist/examples
