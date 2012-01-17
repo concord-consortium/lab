@@ -217,7 +217,8 @@ var model_controls_inputs = model_controls.getElementsByTagName("input");
 
 function generate_atoms() {
   model.size([mc_graph.xdomain, mc_graph.ydomain])
-      .nodes({ xdomain: 100, ydomain: 100, 
+      .nodes({ num: mol_number, 
+          xdomain: 100, ydomain: 100, 
           temperature: 3, rmin: 4.4, 
           mol_rmin_radius_factor: 0.38
         })
