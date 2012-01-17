@@ -491,7 +491,7 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 
 ## References
 
-### [d3.js](http://mbostock.github.com/d3/)
+**[d3.js](http://mbostock.github.com/d3/)**
 
 - [repo](https://github.com/mbostock/d3)
 - [documentation](http://mbostock.github.com/d3/api/)
@@ -500,11 +500,13 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 - [API reference](https://github.com/mbostock/d3/wiki/API-Reference)
   - [Arrays](https://github.com/mbostock/d3/wiki/Arrays)
 
-### [Vows](http://vowsjs.org)
+**[science.js](https://github.com/jasondavies/science.js)**
 
-- [repo](https://github.com/cloudhead/vows)
+**[modernizr](https://github.com/Modernizr/Modernizr)**
 
-### [node](http://nodejs.org/)
+### Development Dependencies
+
+**[node](http://nodejs.org/)**
 
 - [repo](https://github.com/joyent/node)
 - [documentation](http://nodejs.org/docs/latest/api/index.html)
@@ -512,7 +514,7 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 - [google group](http://groups.google.com/group/nodejs)
 - [How To Node](http://howtonode.org/)
 
-### [npm](http://npmjs.org/)
+**[npm](http://npmjs.org/)**
 
 - [repo](https://github.com/isaacs/npm)
 - [faq](http://npmjs.org/doc/faq.html)
@@ -526,20 +528,46 @@ More about using npm for development:
 - [Managing module dependencies](http://howtonode.org/managing-module-dependencies)
 - [What do people do for versioning node modules within git?](https://groups.google.com/group/nodejs/browse_thread/thread/9aa563f1fe3b3ff5)
 
-### [RubyGems](https://rubygems.org/)
+**[CoffeeScript](http://coffeescript.org/)**
 
-- [sass](http://sass-lang.com/), [reference](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)
-- [haml](http://haml-lang.com/), [reference](http://haml-lang.com/docs/yardoc/file.HAML_REFERENCE.html)
-- [guard](https://github.com/guard/guard)
+- [repo](https://github.com/jashkenas/coffee-script)
+- [issues](https://github.com/jashkenas/coffee-script/issues)
+
+### RubyGems
+
+**[Haml](http://haml-lang.com/)**
+
+- [documentation](http://haml-lang.com/docs.html)
+- [reference](http://haml-lang.com/docs/yardoc/file.HAML_REFERENCE.html)
+
+**[Sass](http://sass-lang.com/)**
+
+- [documentation](http://sass-lang.com/docs.html)
+- [reference](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)
+
+**[guard](https://github.com/guard/guard)**
+
 - [guard-shell](https://github.com/hawx/guard-shell)
 - [guard-haml](https://github.com/manufaktor/guard-haml)
 - [guard-sass](https://github.com/hawx/guard-sass)
+- [guard-coffeescript](https://github.com/guard/guard-coffeescript)
+- [guard-markdown](https://github.com/darwalenator/guard-markdown)
 - [guard-livereload](https://github.com/guard/guard-livereload)
-- [rb-fsevent](https://github.com/thibaudgg/rb-fsevent)
 
-### LiveReload extension for Chrome and Safari
+### Additional Testing Dependencies
 
-- [livereload](https://github.com/mockko/livereload)
+**[Vows](http://vowsjs.org)**
+
+- [repo](https://github.com/cloudhead/vows)
+
+**[jsdom](http://jsdom.org)**
+
+- [repo](https://github.com/tmpvar/jsdom)
+- [issues](https://github.com/tmpvar/jsdom/issues)
+
+### Miscellaneous
+
+**[LiveReload](https://github.com/mockko/livereload) extension for Chrome and Safari**
 
 ### Full Screen API
 
