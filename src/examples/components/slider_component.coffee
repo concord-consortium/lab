@@ -1,16 +1,22 @@
 class SliderComponent
 
-  constructor: (@dom_id="#slider", @value_changed_function, @max=1, @min=0) ->
+  constructor: (@dom_id="#slider", @value_changed_function) ->
     @dom_element = d3.select(@dom_id)
 
-    # TODO: better to use jquery?
     @width   = parseInt(@dom_element.style("width"))
     @height  = parseInt(@dom_element.style("height"))
     @handle_size = 5
+    
+    # use html5 data-attributes to configure components
+    @precision   = @dom_element.attr('data-precision') || 3
+    @min         = @dom_element.attr('data-min')       || 0
+    @max         = @dom_element.attr('data-max')       || 1
+    @value       = @dom_element.attr('data-value')     || 0.5
+    @label       = @dom_element.attr('data-label')     || "slider"
+
     @mouse_down = false
     this.init_view()
     this.init_mouse_handlers()
-    @value = 0.5
 
   horizontal_orientation: ->
     true if @width > @height
