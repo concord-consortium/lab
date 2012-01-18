@@ -35,6 +35,7 @@ all: \
 	vendor/d3/.git \
 	node_modules \
 	bin \
+	lab \
 	dist \
 	$(MARKDOWN_EXAMPLE_FILES) \
 	$(LAB_JS_FILES) \
@@ -46,6 +47,7 @@ all: \
 
 clean:
 	rm -rf dist
+	rm -rf lab
 
 vendor/d3/.git:
 	git submodule update --init --recursive
@@ -57,6 +59,9 @@ node_modules:
 
 bin:
 	bundle install --binstubs
+
+lab:
+	mkdir -p lab
 
 dist:
 	mkdir -p dist/examples
