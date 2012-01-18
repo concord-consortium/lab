@@ -229,7 +229,10 @@ function update_coefficients(coefficients) {
 // ------------------------------------------------------------
 
 var model_controls = document.getElementById("model-controls");
-var model_controls_inputs = model_controls.getElementsByTagName("input");
+var model_controls_inputs;
+if (model_controls) {
+  model_controls_inputs = model_controls.getElementsByTagName("input");
+};
 
 // ------------------------------------------------------------
 //
@@ -346,14 +349,18 @@ function modelController() {
   }
 }
 
-model_controls.onchange = modelController;
+if (model_controls) {
+  model_controls.onchange = modelController;
+}
 
 function modelStop() {
   model_stopped = true;
   model.stop();
   // ke_graph.hide_canvas();
   // ke_graph.new_data(ke_data);
-  model_controls_inputs[0].checked = true;
+  if (model_controls) {
+    model_controls_inputs[0].checked = true;
+  }
 }
 
 function modelStep() {
@@ -362,9 +369,13 @@ function modelStep() {
   if (model.stepCounter() < maximum_model_steps) {
     model.stepForward();
     // ke_graph.hide_canvas();
-    model_controls_inputs[0].checked = true;
+    if (model_controls) {
+      model_controls_inputs[0].checked = true;
+    }
   } else {
-    model_controls_inputs[0].checked = true
+    if (model_controls) { 
+      model_controls_inputs[0].checked = true
+    }
   }
 }
 
@@ -374,9 +385,13 @@ function modelGo() {
   if (model.stepCounter() < maximum_model_steps) {
     // ke_graph.show_canvas();
     model.resume();
-    model_controls_inputs[2].checked = true;
+    if (model_controls) { 
+      model_controls_inputs[2].checked = true;
+    }
   } else {
-    model_controls_inputs[0].checked = true
+    if (model_controls) {
+      model_controls_inputs[0].checked = true
+    }
   }
 }
 
@@ -391,7 +406,9 @@ function modelStepForward() {
   if (model.stepCounter() < maximum_model_steps) {
     model.stepForward();
   } else {
-    model_controls_inputs[0].checked = true
+    if (model_controls) {
+      model_controls_inputs[0].checked = true
+    }
   }
 }
 
@@ -417,7 +434,9 @@ function modelReset() {
   ke_data = [model.ke()];
   // ke_graph.new_data(ke_data);
   // ke_graph.hide_canvas();
-  model_controls_inputs[0].checked = true;
+  if (model_controls) {
+    model_controls_inputs[0].checked = true;
+  }
 }
 
 // ------------------------------------------------------------
