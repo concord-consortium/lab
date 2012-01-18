@@ -8,7 +8,7 @@
 //
 // ------------------------------------------------------------
 
-var mol_number = 100,
+var mol_number = 50,
     sample_time = 0.01,
     temperature = 3,
     maximum_model_steps = 5000,
@@ -247,12 +247,12 @@ function selectMoleculeNumberChange() {
 var mol_number_to_ke_yxais_map = {
   2: 0.02,
   5: 0.05,
-  10: 0.2,
-  20: 1.0,
-  50: 5,
-  100: 10,
-  200: 50,
-  500: 200
+  10: 0.01,
+  20: 0.01,
+  50: 0.02,
+  100: 0.05,
+  200: 0.1,
+  500: 0.2
 }
 
 var mol_number_to_lj_sigma_map = {
