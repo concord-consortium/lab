@@ -28,7 +28,9 @@ var mol_number = 100,
 // ------------------------------------------------------------
 // Setup therm, epsilon_slider & sigma_slider components.
 // ------------------------------------------------------------
-var therm      = new Thermometer('#thermometer');
+var model_player = new ModelPlayer(model);
+var play         = new PlaybackComponent('#playback',model_player);
+var therm        = new Thermometer('#thermometer');
 
 var epsilon_slider  = new  SliderComponent('#epsilon_slider');
 epsilon_slider.max = lj_epsilon_max;
