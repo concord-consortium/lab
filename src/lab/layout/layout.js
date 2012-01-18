@@ -95,25 +95,25 @@ layout.setupRegularScreenKEChart = function() {
 layout.setupFullScreenMoleculeContainer = function() {
   moleculecontainer.style.width = screen.width * 0.48 +"px";
   moleculecontainer.style.height = screen.height * 0.80 + 3 + "px";
-  finishSetupMoleculeContainer();
+  layout.finishSetupMoleculeContainer();
 }
 
 layout.setupFullScreenPotentialChart = function() {
   lj_potential_chart.style.width = screen.width * 0.22 +"px";
   lj_potential_chart.style.height = screen.height * 0.35 +"px";
-  finishSetupPotentialChart();
+  layout.finishSetupPotentialChart();
 }
 
 layout.setupFullScreenSpeedDistributionChart = function() {
   speed_distribution_chart.style.width = screen.width * 0.22 +"px";
   speed_distribution_chart.style.height = screen.height * 0.35 +"px";
-  finishSetupSpeedDistributionChart();
+  layout.finishSetupSpeedDistributionChart();
 }
 
 layout.setupFullScreenKEChart = function() {
   kechart.style.width = screen.width * 0.44 + 5 + "px";
   kechart.style.height = screen.height * 0.45 - 2 +"px";
-  finishSetupKEChart();
+  layout.finishSetupKEChart();
 }
 
 // Simple Screen Layout

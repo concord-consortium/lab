@@ -13,7 +13,7 @@ var mc_cx, mc_cy, mc_padding, mc_size,
     mc_dragged,  
     mc_vis, mc_plot, mc_time_label,
     model_time_formatter = d3.format("5.3f"),
-    ns_string_prefix = "model time: ";
+    ns_string_prefix = "time: ";
     ns_string_suffix = " (ns)";
 
 function modelTimeLabel() {
@@ -98,11 +98,9 @@ layout.finishSetupMoleculeContainer = function() {
     }
 
     if (mc_graph.model_time_label) {
-      mc_vis.select("text.model_time_label")
-        .text(modelTimeLabel())
-        .attr("x", 2)
-        .attr("y", mc_size.height)
-        .attr("dy","2.4em");
+      mc_time_label.text(modelTimeLabel())
+          .attr("x", mc_size.width - 100)
+          .attr("y", mc_size.height)
     }
 
     mc_vis.selectAll("g.x").remove();
@@ -169,16 +167,17 @@ layout.finishSetupMoleculeContainer = function() {
               .style("text-anchor","middle")
               .attr("transform","translate(" + -40 + " " + mc_size.height/2+") rotate(-90)");
     }
-  }
 
-  // add model time display
-  if (mc_graph.model_time_label) {
-    mc_time_label = mc_vis.append("svg:text")
-        .attr("class", "model_time_label")
-        .text(modelTimeLabel())
-        .attr("x", 2)
-        .attr("y", mc_size.height)
-        .attr("dy","2.4em");
+    // add model time display
+    if (mc_graph.model_time_label) {
+      mc_time_label = mc_vis.append("svg:text")
+          .attr("class", "model_time_label")
+          .text(modelTimeLabel())
+          .attr("x", mc_size.width - 100)
+          .attr("y", mc_size.height)
+          .attr("dy","2.4em")
+          .style("text-anchor","left");
+    }
   }
 
   layout.mc_redraw()
