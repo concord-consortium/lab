@@ -29,7 +29,7 @@ guard 'shell' do
     system("make test")
   end
   watch(%r{^(src/examples/[^.].+)$}) do |match|
-    unless match[0][/(\.haml)|(\.sass)|(^\..+)$/]
+    unless match[0][/(\.haml)|(\.sass)|(\.coffee)|(^\..+)$/]
       source_path = match[0]
       destination_path = 'dist/' + source_path[/src\/(.+?)$/, 1]
       puts "cp -f #{source_path} #{destination_path}"
