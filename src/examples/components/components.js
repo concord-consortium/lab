@@ -313,6 +313,7 @@ var mol_number_to_speed_yaxis_map = {
 function updateMolNumberViewDependencies() {
   // ke_graph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
   update_sigma(mol_number_to_lj_sigma_map[mol_number]);
+  therm.max = 0.1;
   // layout.lj_redraw();
   // speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
   // layout.speed_update()
