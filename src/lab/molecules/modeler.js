@@ -600,6 +600,15 @@ modeler.layout.model = function() {
     return new_step
   }
 
+  model.seek = function(location) {
+    stopped = true;
+    new_step = false;
+    tick_history_list_index = location;
+    tick_counter = location;
+    tick_history_list_extract(tick_history_list_index-1);
+    return tick_counter;
+  }
+
   model.stepBack = function(num) {
     if (!arguments.length) { var num = 1 };
     var i = -1;
