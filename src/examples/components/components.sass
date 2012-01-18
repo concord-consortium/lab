@@ -93,6 +93,7 @@ text.shadow
   font-family: monospace
   overflow: hidden
 
+
 .slider_component
   -webkit-user-select: none
   -khtml-user-select: none
@@ -102,12 +103,11 @@ text.shadow
   user-select: none
   display: inline-block
   width: 200px
-  height: 14px
+  height: 16px
   margin:  5px
   padding: 0px
   border: 1px solid #aaa
-  svg
-    cursor: pointer
+  cursor: pointer
   rect
     fill:  #988
   circle
@@ -127,14 +127,41 @@ text.shadow
     width: 100%
   border-radius: 5px
   background: #ddd
+  vertical-align: top
 
 .slider_component:hover
   background: #eee
 
 .playback_component
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  -o-user-select: none
+  user-select: none
   display: inline-block
   width: 200px
-  height: 30px
+  height: 34px
   border: 1px solid #aaa
   margin: 5px
   padding: 0px
+  cursor: pointer
+  border-radius: 5px
+
+  .button-art
+    stroke-width: 4px
+    fill: #fff
+    stroke: #aaa
+    stroke-linecap: round
+    stroke-linejoin: round
+
+  .button-art:hover
+    stroke: #000
+  .play.button-art
+    fill: #aaa
+  .play.button-art:hover
+    fill: #000
+  .stop.button-art
+    fill: #aaa
+  .stop.button-art:hover
+    fill: #000

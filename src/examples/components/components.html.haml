@@ -45,9 +45,10 @@
           force interaction checkbox is enabled atoms with the opposite charges experience an 
           attractive force. Atoms with similar charges experience a repulsive force. Atoms 
           with a positive charge appear green, atoms with a negative charge appear red.
-    #sigma_slider.slider_component{  'data-label' =>"sigma"   }
-    #epsilon_slider.slider_component{'data-label' => "epsilon"}
-    #playback.playback_component
+    .component_group
+      #sigma_slider.slider_component{  'data-label' =>"sigma"   }
+      #epsilon_slider.slider_component{'data-label' => "epsilon"}
+      #playback.playback_component
 
     #controls
       %ul
