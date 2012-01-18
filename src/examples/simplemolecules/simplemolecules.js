@@ -8,7 +8,7 @@
 //
 // ------------------------------------------------------------
 
-var mol_number = 100,
+var mol_number = 50,
     sample_time = 0.01,
     temperature = 3,
     maximum_model_steps = 5000,
