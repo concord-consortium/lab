@@ -13,7 +13,7 @@ layout.displayStats = function() {
 
   if (stats) {
     stats.textContent =
-      "Time: "     + d3.format("5.2f")(model.stepCounter() * sample_time) + " (ns), " +
+      "Time: "     + d3.format("5.3f")(model.stepCounter() * sample_time) + " (ns), " +
       "KE: "       + d3.format("1.4f")(ke) + ", " +
       // "PE: "       + d3.format("1.6f")(pe) + ", " +
       "TE: "       + d3.format("1.4f")(te) + ", " +
