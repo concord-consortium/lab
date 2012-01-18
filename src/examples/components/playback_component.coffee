@@ -21,10 +21,10 @@ class ModelPlayer
     this.stop()
     @model.stepBack()
 
-  #TODO: get seeking enabled in the model
   seek: (float_index) ->
-    console.log("seeking  / reset not enabled yet")
-
+    this.stop()
+    @model.seek(float_index)
+    this.play()
 
 ############################################
 # The player UI
@@ -57,13 +57,13 @@ class PlaybackComponent
       .attr('y',@vertical_padding)
       .attr('width',@unit_width)
       .attr('height',@unit_width)
-    button_rect = button_group
-      .append('svg:rect')
-      .attr('x', this.offset(button_name))
-      .attr('y', @vertical_padding)
-      .attr('width',@unit_width)
-      .attr('height',@unit_width)
-      .attr('class', 'button-rect')
+    # button_rect = button_group
+    #   .append('svg:rect')
+    #   .attr('x', this.offset(button_name))
+    #   .attr('y', @vertical_padding)
+    #   .attr('width',@unit_width)
+    #   .attr('height',@unit_width)
+    #   .attr('class', 'button-rect')
     for points in point_set
       art = button_group.append(type)
       art.attr('class', "#{button_name} button-art")
@@ -80,10 +80,11 @@ class PlaybackComponent
     console.log("running #{action} ")
     if @playable
       switch action
-        when 'play'     then @playable.play()
+        when 'play'    then @playable.play()
         when 'stop'    then @playable.stop()
         when 'forward' then @playable.forward()
         when 'back'    then @playable.back()
+        when 'reset'   then @playable.seek(1)
         else console.log("cant find action for #{action}")
     else console.log("no @playable defined")
     this.update_ui()
