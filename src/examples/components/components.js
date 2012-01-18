@@ -105,6 +105,7 @@ mc_graph.ymin    = 0,
 mc_graph.ymax    = 100,
 mc_graph.xdomain = mc_graph.xmax - mc_graph.xmin,
 mc_graph.ydomain = mc_graph.ymax - mc_graph.ymin;
+mc_graph.model_time_label = true;
 
 // ------------------------------------------------------------
 //

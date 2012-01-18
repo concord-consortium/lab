@@ -11,7 +11,14 @@ var mc_cx, mc_cy, mc_padding, mc_size,
     mc_x, mc_downscalex, mc_downx, 
     mc_y, mc_downscaley, mc_downy, 
     mc_dragged,  
-    mc_vis, mc_plot;
+    mc_vis, mc_plot, mc_time_label,
+    model_time_formatter = d3.format("5.3f"),
+    ns_string_prefix = "model time: ";
+    ns_string_suffix = " (ns)";
+
+function modelTimeLabel() {
+  return ns_string_prefix + model_time_formatter(model.stepCounter() * sample_time) + ns_string_suffix
+};
 
 layout.finishSetupMoleculeContainer = function() {
   mc_cx = moleculecontainer.clientWidth,
@@ -90,6 +97,14 @@ layout.finishSetupMoleculeContainer = function() {
           .attr("transform","translate(" + -40 + " " + mc_size.height/2+") rotate(-90)");
     }
 
+    if (mc_graph.model_time_label) {
+      mc_vis.select("text.model_time_label")
+        .text(modelTimeLabel())
+        .attr("x", 2)
+        .attr("y", mc_size.height)
+        .attr("dy","2.4em");
+    }
+
     mc_vis.selectAll("g.x").remove();
     mc_vis.selectAll("g.y").remove();
     
@@ -155,6 +170,17 @@ layout.finishSetupMoleculeContainer = function() {
               .attr("transform","translate(" + -40 + " " + mc_size.height/2+") rotate(-90)");
     }
   }
+
+  // add model time display
+  if (mc_graph.model_time_label) {
+    mc_time_label = mc_vis.append("svg:text")
+        .attr("class", "model_time_label")
+        .text(modelTimeLabel())
+        .attr("x", 2)
+        .attr("y", mc_size.height)
+        .attr("dy","2.4em");
+  }
+
   layout.mc_redraw()
 };
 
@@ -215,6 +241,11 @@ layout.mc_redraw = function() {
       .attr("text-anchor", "end")
       .text(mc_fy);
 
+  // update model time display
+  if (mc_graph.model_time_label) {
+    mc_time_label.text(modelTimeLabel());
+  }
+  
   mc_gy.exit().remove();
 }
 
@@ -309,6 +340,11 @@ function molecule_mouseout() {
 }
 
 layout.update_molecule_positions = function() {
+  // update model time display
+  if (mc_graph.model_time_label) {
+    mc_time_label.text(modelTimeLabel());
+  }
+  
   label = layout.mc_container.selectAll("g.label").data(atoms);
 
   label.attr("transform", function(d) {
