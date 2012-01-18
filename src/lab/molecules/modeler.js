@@ -40,9 +40,10 @@ modeler.layout.model = function() {
       min_coulomb_force = 0.01,
       max_coulomb_distance,
       min_coulomb_distance,
-      integration_steps = 50,
-      dt = 1/integration_steps,
-      dt2 = dt * dt,
+      step_dt = 1,                    // time in reduced units for each model step/tick
+      integration_steps = 50,         // number of internal integration steps for each step
+      dt = step_dt/integration_steps, // intra-step time
+      dt2 = dt * dt,                  // intra-step time squared
       overlap,
       pressure, pressures = [0],
       sample_time, sample_times = [];
@@ -201,7 +202,7 @@ modeler.layout.model = function() {
         l, // current distance
         k, // current force
         t, // current system time
-        r2, r6i,
+        r2, r2i, r6i, ljf2, pe2, te2, f2, fx, fy,
         ljf, coul, xf, yf,
         dx, dy, mag2,
         initial_x, initial_y,
@@ -273,6 +274,8 @@ modeler.layout.model = function() {
         ay[i] = 0;
       }
       
+      te2 = 0;
+
       //
       // Use brute-force technique to calculate lennard-jones and coulomb forces
       //
@@ -285,13 +288,25 @@ modeler.layout.model = function() {
             l = Math.sqrt(r2);
             if (lennard_jones_forces && l < max_ljf_distance) { 
               ljf  = Math.max(max_ljf_repulsion, molecules_lennard_jones.force(l));
+
               // alternate way to calculate ljf ...
               // http://www.pages.drexel.edu/~cfa22/msim/node28.html
               // http://www.pages.drexel.edu/~cfa22/msim/codes/mdlj.c
-              // r6i   = 1.0/(r2*r2);
-              // ljf     = 48*(r6i*r6i-0.5*r6i);
-              // e    += 4*(r6i*r6i - r6i) - (shift?ecut:0.0);
-              // vir += 48*(r6i*r6i-0.5*r6i);
+              // r6i   = 1.0 / ( r2 * r2);
+              // r12i  = r6i * r6i;
+              // te2  += 4 * (r12i - r6i);
+              // f2    = 48 * (r12i - 0.5 * r6i);
+
+              // another alternate ...
+              // r2   = dx * dx + dy * dy;
+              // r2i  = 1.0 / r2;
+              // r6i  = r2i * r2i * r2i;
+              // r12i = r6i * r6i;
+              // pe  += 4 * (r12i - r6i);
+              // f2    = 48 * (Math.pow(r2i, 7) - 0.5 * Math.pow(r2i, 4));
+              // fx = dx * f2;
+              // fy = dy * f2;
+
               xf = dx / l * ljf;
               yf = dy / l * ljf;
               ax[i] += xf;
