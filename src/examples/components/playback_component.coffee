@@ -57,13 +57,6 @@ class PlaybackComponent
       .attr('y',@vertical_padding)
       .attr('width',@unit_width)
       .attr('height',@unit_width)
-    # button_rect = button_group
-    #   .append('svg:rect')
-    #   .attr('x', this.offset(button_name))
-    #   .attr('y', @vertical_padding)
-    #   .attr('width',@unit_width)
-    #   .attr('height',@unit_width)
-    #   .attr('class', 'button-rect')
     for points in point_set
       art = button_group.append(type)
       art.attr('class', "#{button_name} button-art")
@@ -93,9 +86,12 @@ class PlaybackComponent
   # <-
   init_reset_button: ->
     points = [[
-      {x: 1,   y: 0.5  },
-      {x: 0,   y: 0.5},
-      {x: 0.5, y: 1  }
+      {x: 0,    y: 0},
+      {x: 0,    y: 1},
+      {x: 1,    y: 1},
+      {x: 1,    y: 0},
+      {x: 0.25, y: 0},
+      {x: 0.5,  y: 0.25}
     ]]
     @reset = this.make_button('reset', 'svg:polyline', points)
 
