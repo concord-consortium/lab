@@ -412,6 +412,57 @@ achieve that result can result in a better architecture -- and of course you als
 Because the tests run SO quickly I can interactively change the code in the module or the test and 
 immediately see results.
 
+### Debugging Tests using the node debugger
+
+Sometimes it can be helpful to break into a debugger when there is a problem in either the code 
+or the test setup itself. Node comes with a [debugger](http://nodejs.org/docs/latest/api/debugger.html) 
+which can be used in combination with vows and the tests.
+
+First set a breakpoint by inserting the statement: `debugger;`
+
+    suite.addBatch({
+      "Thermometer": {
+        topic: function() {
+          debugger;
+          return new components.Thermometer("#thermometer");
+        },
+        "creates thermometer": function(t) {
+          assert.equal(t.max, 0.7)
+        }
+      }
+    });
+
+Start the node debugger and pass in the full command line to run the tests:
+
+    node debug ./node_modules/vows/bin/vows --no-color
+
+The debugger will break at the beginning of vows:
+
+    < debugger listening on port 5858
+    connecting... ok
+    break in node_modules/vows/bin/vows:3
+      1 
+      2 
+      3 var path   = require('path'),
+      4     fs     = require('fs'),
+      5     util   = require('util'),
+
+Enter `cont` to continue execution until your breakpoint.
+
+    debug> cont
+    < ·
+    < ········
+    < ·
+    <  
+    break in test/lab/components/components-test.js:13
+     11   "Thermometer": {
+     12     topic: function() {
+     13       debugger;
+     14       return new components.Thermometer("#thermometer");
+     15     },
+
+Enter **ctrl-D** to exit the debugger.
+
 ### Generated Lab Modules: `lab/`
 
 The `lab/` directory contains the lab modules generated from JavaScript source code in the `src/lab/` 
@@ -530,6 +581,7 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 
 - [repo](https://github.com/joyent/node)
 - [documentation](http://nodejs.org/docs/latest/api/index.html)
+- [debugger](http://nodejs.org/docs/latest/api/debugger.html)
 - [issues](https://github.com/joyent/node/issues)
 - [google group](http://groups.google.com/group/nodejs)
 - [How To Node](http://howtonode.org/)
@@ -550,8 +602,13 @@ More about using npm for development:
 
 **[CoffeeScript](http://coffeescript.org/)**
 
-- [repo](https://github.com/jashkenas/coffee-script)
+- [repo](https://github.com/rstacruz/js2coffee)
 - [issues](https://github.com/jashkenas/coffee-script/issues)
+
+**[js2cofee](http://js2coffee.org/)**
+
+- [repo](https://github.com/jashkenas/coffee-script)
+- [issues](https://github.com/rstacruz/js2coffee/issues)
 
 ### RubyGems
 
