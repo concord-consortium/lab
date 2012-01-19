@@ -52,6 +52,13 @@ clean:
 vendor/d3/.git:
 	git submodule update --init --recursive
 
+vendor/jquery/.git:
+	git submodule update --init --recursive
+
+vendor/jquery/dist/jquery.min.js: \
+	vendor/jquery/.git
+	cd vendor/jquery; make
+
 node_modules:
 	npm install
 	npm install vendor/d3
@@ -63,7 +70,8 @@ bin:
 lab:
 	mkdir -p lab
 
-dist:
+dist: \
+	dist/vendor/jquery
 	mkdir -p dist/examples
 	# copy modules from lab/
 	cp -r lab dist
@@ -87,11 +95,18 @@ dist:
 	cp vendor/hijs/hijs.js dist/vendor/hijs
 	cp vendor/hijs/LICENSE dist/vendor/hijs
 	cp vendor/hijs/README.md dist/vendor/hijs
+	# jquery
 	# copy resources/
 	cp -r src/resources dist
 	# copy directories, javascript, json, and image resources from src/examples/
 	rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ dist/examples/
 
+dist/vendor/jquery: \
+	vendor/jquery/dist/jquery.min.js
+	mkdir -p dist/vendor/jquery
+	cp vendor/jquery/dist/jquery.min.js dist/vendor/jquery/jquery.min.js
+	cp vendor/jquery/MIT-LICENSE.txt dist/vendor/jquery
+	cp vendor/jquery/README.md dist/vendor/jquery
 
 lab/lab.js: \
 	src/lab/lab-module.js \
