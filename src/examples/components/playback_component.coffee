@@ -43,8 +43,7 @@ class PlaybackComponent
 
     @vertical_padding = (@height - @unit_width) / 2
     @stroke_width     = @unit_width / 10
-    window.addEvent 'domready', =>
-      this.init_view()
+    this.init_view()
 
   # return pixel offset of button (key)
   offset: (key) ->
