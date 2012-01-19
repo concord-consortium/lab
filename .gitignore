@@ -8,4 +8,4 @@ node_modules
 npm-debug.log
 test/*.html
 .DS_Store
-lab
+/lab
