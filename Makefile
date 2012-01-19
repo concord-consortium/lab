@@ -176,12 +176,13 @@ lab.%: Makefile
 	@chmod ug+w $@
 	cp $@ dist/lab
 
-test/%.html:
+test/%.html: test/%.html.haml
+	haml $< $@
 
 h:
 	@echo $(HAML_EXAMPLE_FILES)
 
-dist/%.html: %.html.haml Makefile
+dist/%.html: src/%.html.haml Makefile
 	haml $< $@
 
 s:

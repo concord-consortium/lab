@@ -20,7 +20,11 @@ end
 guard 'sass',         :input => 'src', :output => 'dist', :all_on_start => false
 guard 'coffeescript', :input => 'src', :output => 'dist', :all_on_start => false
 guard 'haml',         :input => 'src', :output => 'dist', :all_on_start => false do
-  watch %r{^.+(\.html\.haml)}
+  watch %r{^src.+(\.html\.haml)}
+end
+
+guard 'haml',         :input => 'test', :output => 'test', :all_on_start => false do
+  watch %r{^test.+(\.html\.haml)}
 end
 
 guard 'shell' do
