@@ -1,6 +1,6 @@
 require("../../env");
 require("d3");
-require("../../../lab/lab.components");
+components = require("../../../lab/lab.components");
 
 var vows = require("vows"),
     assert = require("assert");
@@ -10,7 +10,7 @@ var suite = vows.describe("lab.components");
 suite.addBatch({
   "Thermometer": {
     topic: function() {
-      return new root.Thermometer("#thermometer");
+      return new components.Thermometer("#thermometer");
     },
     "creates thermometer": function(t) {
       assert.equal(t.max, 0.7)
