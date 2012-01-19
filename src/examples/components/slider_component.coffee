@@ -22,11 +22,8 @@ class SliderComponent
     true if @width > @height
 
   init_view: ->
-    @svg = @dom_element.append("svg:svg")
-      .attr("width", @width)
-      .attr("height",@height)
-      .style("margin","0px")
-      .style("padding","0px")
+    @dom_element.attr('class','component slider')
+    @slider_well = @dom_element.append('div').attr('class','slider_well')
     if this.horizontal_orientation()
       midpoint = @height/2
       @y1 = @y2 = midpoint
@@ -41,31 +38,24 @@ class SliderComponent
     @handle_y = (@y1 + @y2) / 2
     @handle_x = (@x1 + @x2) / 2
 
-    @filled_rect = @svg.append('svg:rect')
+    @slider_filled = @slider_well.append('div').attr('class','slider_filled')
     if this.horizontal_orientation()
-      @filled_rect
-        .attr("x",0)
-        .attr("y",0)
-        .attr("width", @handle_x)
-        .attr("height",@height)
-      text_y = @height - 2 
+      @slider_filled
+        .attr("class","slider_filled horizontal")
+        .style("height","#{@height}px")
     else
-      @filled_rect
-        .attr("x",0)
-        .attr("y",@handle_y)
-        .attr("width", @width)
-        .attr("height",@height - @handle_y)
+      @slider_filled
+        .attr("class","slider_filled vertical")
+        .style("width", "#{@width}px")
 
-    @handle = @svg.append('svg:circle')
-    @handle
-      .attr("cx",@handle_x)
-      .attr("cy",@handle_y)
-      .attr("r", @handle_size)
-    @text = @svg.append('svg:text').attr("x",2).attr("y",text_y)
+    @handle = @slider_well.append('div').attr('class','handle')
+    @handle.style("margin-left","#{@handle_x}px")
+      .style("margin-top", "#{@handle_y}px")
+    @text_label = @dom_element.append('div').attr('class','label')
     this.update_label()
 
   clip_mouse: ->
-    mouse = d3.svg.mouse(@svg.node())
+    mouse = d3.svg.mouse(@slider_well.node())
     mx = mouse[0]
     my = mouse[1]
     { x: mx, y: my}
@@ -78,18 +68,18 @@ class SliderComponent
 
   update_label: ->
     fomatted_value = this.scaled_value().toFixed(@precision)
-    @text.text("#{@label}: #{fomatted_value}")
+    @text_label.text("#{@label}: #{fomatted_value}")
 
   handle_drag: ->
     if this.horizontal_orientation()
       @handle_x = this.clip_mouse().x
       @handle.attr('cx',@handle_x)
-      @filled_rect.attr('width',@handle_x)
+      @slider_filled.attr('width',@handle_x)
       @value = @handle_x / @width
     else
       @handle_y = this.clip_mouse().y
       @handle.attr('cy',@handle_y)
-      @filled_rect
+      @slider_filled
         .attr("y",@handle_y)
         .attr("height",@height - @handle_y)
       @value = @handle_y / @height
@@ -99,15 +89,15 @@ class SliderComponent
 
   init_mouse_handlers: ->
     self = this
-    @svg.on "mousedown", =>
+    @slider_well.on "mousedown", =>
       self.handle_drag()
       self.mousedown = true
 
-    @svg.on "mousemove", =>
+    @slider_well.on "mousemove", =>
       if self.mousedown
         self.handle_drag()
 
-    @svg.on "mouseup", =>
+    @slider_well.on "mouseup", =>
       self.mousedown = false
 
 # make this class available globally as SliderComponent
