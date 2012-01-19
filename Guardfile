@@ -12,12 +12,16 @@ ready ...
 
 HEREDOC
 
+def command(cmd)
+  pust cmd
+  system(cmd)
+end
+
 guard 'sass',         :input => 'src', :output => 'dist', :all_on_start => false
 guard 'coffeescript', :input => 'src', :output => 'dist', :all_on_start => false
 guard 'haml',         :input => 'src', :output => 'dist', :all_on_start => false do
   watch %r{^.+(\.html\.haml)}
 end
-
 
 guard 'shell' do
   watch(%r{src\/lab\/.+\.js$}) do
@@ -32,19 +36,14 @@ guard 'shell' do
     unless match[0][/(\.haml)|(\.sass)|(\.coffee)|(^\..+)$/]
       source_path = match[0]
       destination_path = 'dist/' + source_path[/src\/(.+?)$/, 1]
-      puts "cp -f #{source_path} #{destination_path}"
-      `cp -f #{source_path} #{destination_path}`
+      command("cp -f #{source_path} #{destination_path}")
     end
   end
   watch(%r{^(src/resources/.+)$}) do |match|
     source_path = match[0]
     destination_path = "dist/#{source_path}"
-    puts "cp -f #{source_path} #{destination_path}"
-    `cp -f #{source_path} #{destination_path}`
+    command("cp -f #{source_path} #{destination_path}")
   end
-  # callback(:start_begin) do
-  #   copy_generated_javascript
-  # end
 end
 
 # , :api_version => '1.6', :port => '35728'
@@ -53,7 +52,7 @@ guard 'livereload' do
 end
 
 guard 'markdown' do
-  watch(%r{(readme.md)}) do |m|
+  watch("readme.md") do |m|
     "readme.md|dist/readme.html|src/layouts/layout.html.erb"
   end
 end
