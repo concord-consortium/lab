@@ -8,7 +8,6 @@ EXAMPLES_LAB_DIR = ./examples/lab
 
 HAML_EXAMPLE_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/dist\/\1/' )
 vpath %.haml src
-# vpath $(subst dist/,src,%.haml)
 
 SASS_EXAMPLE_FILES := $(shell find src -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/dist\/\1.css/' )
 vpath %.sass src
@@ -16,7 +15,7 @@ vpath %.sass src
 SCSS_EXAMPLE_FILES := $(shell find src -name '*.scss' -exec echo {} \; | sed s'/src\/\(.*\)\.scss/dist\/\1.css/' )
 vpath %.scss src
 
-COFFEESCRIPT_EXAMPLE_FILES := $(shell find src -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/dist\/\1.js/' )
+COFFEESCRIPT_EXAMPLE_FILES := $(shell find src/examples -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/dist\/\1.js/' )
 vpath %.coffee src
 
 MARKDOWN_EXAMPLE_FILES := $(shell find src -name '*.md' -exec echo {} \; | sed s'/src\/\(.*\)\.md/dist\/\1.html/' )
@@ -29,6 +28,7 @@ LAB_JS_FILES = \
 	lab/lab.layout.js \
 	lab/lab.arrays.js \
 	lab/lab.molecules.js \
+	lab/lab.components.js \
 	lab/lab.js
 
 all: \
@@ -100,7 +100,8 @@ lab/lab.js: \
 	lab/lab.benchmark.js \
 	lab/lab.arrays.js \
 	lab/lab.layout.js \
-	lab/lab.graphx.js
+	lab/lab.graphx.js \
+	lab/lab.components.js
 
 lab/lab.grapher.js: \
 	src/lab/start.js \
@@ -150,6 +151,11 @@ lab/lab.graphx.js: \
 	src/lab/start.js \
 	src/lab/graphx/graphx.js \
 	src/lab/end.js
+
+lab/lab.components.js: src/lab/components/*.coffee
+	cat $^ | $(COFFEESCRIPT_COMPILER) --stdio --print > $@
+	@chmod ug+w $@
+	@cp $@ dist/lab
 
 test: test/layout.html \
 	vendor/d3 \
