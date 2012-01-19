@@ -5,6 +5,8 @@ class SliderComponent
 
     @width       = parseInt(@dom_element.style("width"))
     @height      = parseInt(@dom_element.style("height"))
+    console.log "Width: #{@width}"
+    console.log "Height: #{@height}"
     @handle_size = 5
     
     # use html5 data-attributes to configure components
@@ -24,19 +26,26 @@ class SliderComponent
   init_view: ->
     @dom_element.attr('class','component slider')
     @slider_well = @dom_element.append('div').attr('class','slider_well')
+    midpoint = @width/2
+    @y1 = @height
+    @y2 = 0
+    @x1 = @x2 = midpoint
     if this.horizontal_orientation()
       midpoint = @height/2
       @y1 = @y2 = midpoint
       @x1 = 0
       @x2 = @width
+      console.log("HORIZONTAL")
     else
-      midpoint = @width/2
-      @y1 = @height
-      @y2 = 0
-      @x1 = @x2 = midpoint
+      console.log("VERTICAL")
 
     @handle_y = (@y1 + @y2) / 2
     @handle_x = (@x1 + @x2) / 2
+    console.log "Width: #{@width}"
+    console.log "Height: #{@height}"
+    console.log "midpoint: #{midpoint}"
+    console.log "handle_x: #{@handle_x}"
+    console.log "handle_y: #{@handle_y}"
 
     @slider_filled = @slider_well.append('div').attr('class','slider_filled')
     if this.horizontal_orientation()
@@ -49,8 +58,8 @@ class SliderComponent
         .style("width", "#{@width}px")
 
     @handle = @slider_well.append('div').attr('class','handle')
-    @handle.style("margin-left","#{@handle_x}px")
-      .style("margin-top", "#{@handle_y}px")
+    @handle.style("left","50px")
+      .style("top", "3px")
     @text_label = @dom_element.append('div').attr('class','label')
     this.update_label()
 
