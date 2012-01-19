@@ -1,11 +1,11 @@
 Gemfile.lock
-bin
+/bin
 .bundle
 .rvmrc
 .sass-cache
-dist
-node_modules
+/dist
+/node_modules
 npm-debug.log
-test/*.html
+/test/*.html
 .DS_Store
 /lab
