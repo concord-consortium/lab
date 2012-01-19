@@ -18,7 +18,7 @@ def command(cmd)
 end
 
 guard 'sass',         :input => 'src', :output => 'dist', :all_on_start => false
-guard 'coffeescript', :input => 'src', :output => 'dist', :all_on_start => false
+guard 'coffeescript', :input => 'src/examples', :output => 'dist', :all_on_start => false
 guard 'haml',         :input => 'src', :output => 'dist', :all_on_start => false do
   watch %r{^src.+(\.html\.haml)}
 end
@@ -28,7 +28,7 @@ guard 'haml',         :input => 'test', :output => 'test', :all_on_start => fals
 end
 
 guard 'shell' do
-  watch(%r{src\/lab\/.+\.js$}) do
+  watch(%r{src\/lab\/.+(\.js$)|(\.coffee$)}) do
     puts "re-generating javascript libraries ..."
     system("make")
     system("make test")
