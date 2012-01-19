@@ -52,9 +52,30 @@ clean:
 vendor/d3/.git:
 	git submodule update --init --recursive
 
-node_modules:
+node_modules: node_modules/coffee-script \
+	node_modules/jsdom \
+	node_modules/uglify-js	\
+	node_modules/vows \
+	node_modules/d3 \
+	node_modules/science.js
 	npm install
+
+node_modules/coffee-script:
+	npm install
+
+node_modules/jsdom:
+	npm install
+
+node_modules/uglify-js:
+	npm install
+
+node_modules/vows:
+	npm install
+
+node_modules/d3:
 	npm install vendor/d3
+
+node_modules/science.js:
 	npm install vendor/science.js
 
 bin:
