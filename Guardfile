@@ -13,7 +13,7 @@ ready ...
 HEREDOC
 
 def command(cmd)
-  pust cmd
+  puts cmd
   system(cmd)
 end
 
