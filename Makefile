@@ -47,7 +47,8 @@ all: \
 	$(SASS_EXAMPLE_FILES) \
 	$(SCSS_EXAMPLE_FILES) \
 	$(SASS_LIBRARY_FILES) \
-	$(COFFEESCRIPT_EXAMPLE_FILES)
+	$(COFFEESCRIPT_EXAMPLE_FILES) \
+	dist/index.css
 
 clean:
 	rm -rf dist
@@ -236,11 +237,18 @@ s:
 sl:
 	@echo $(SASS_LIBRARY_FILES)
 
+dist/index.css:
+	sass src/index.sass dist/index.css
+
 dist/examples/%.css: %.sass Makefile
 	sass $< $@
 
 dist/lab/%.css: %.sass Makefile
 	sass $< $@
+
+lab/%.css: %.sass Makefile
+	sass $< $@
+
 
 dist/%.css: %.scss Makefile
 	sass $< $@
