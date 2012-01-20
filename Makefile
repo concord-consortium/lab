@@ -64,6 +64,7 @@ node_modules: node_modules/coffee-script \
 	node_modules/jsdom \
 	node_modules/uglify-js	\
 	node_modules/vows \
+	node_modules/node-inspector \
 	node_modules/d3 \
 	node_modules/science.js
 	npm install
@@ -78,6 +79,9 @@ node_modules/uglify-js:
 	npm install
 
 node_modules/vows:
+	npm install
+
+node_modules/node-inspector:
 	npm install
 
 node_modules/d3:

@@ -463,6 +463,9 @@ Enter `cont` to continue execution until your breakpoint.
 
 Enter **ctrl-D** to exit the debugger.
 
+[node-inspector](https://github.com/dannycoates/node-inspector)
+[npm package for node-inspector](http://search.npmjs.org/#/node-inspector)
+
 ### Generated Lab Modules: `lab/`
 
 The `lab/` directory contains the lab modules generated from JavaScript source code in the `src/lab/` 
@@ -585,6 +588,9 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 - [issues](https://github.com/joyent/node/issues)
 - [google group](http://groups.google.com/group/nodejs)
 - [How To Node](http://howtonode.org/)
+
+**[node-inspector](https://github.com/dannycoates/node-inspector)**
+- [npm package for node-inspector](http://search.npmjs.org/#/node-inspector)
 
 **[npm](http://npmjs.org/)**
 
