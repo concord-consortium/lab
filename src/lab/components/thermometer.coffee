@@ -1,7 +1,7 @@
 class Thermometer
 
   constructor: (@dom_id="#thermometer") ->
-    @dom_element = d3.select(@dom_id)
+    @dom_element = d3.select(@dom_id).attr('class','thermometer')
     @width   = 10
     @height  = 200
     @max     = 0.7
@@ -22,7 +22,7 @@ class Thermometer
     @thermometer.attr("width",@width)
     @thermometer.attr("height", @height)
     @thermometer.style("fill","#aaa")
-
+    d3.select('#therm_text').attr('class','therm_text')
   time_to_redraw: ->
     timestamp = new Date().getTime()
     timestamp > @last_draw_time + @sample_interval_ms

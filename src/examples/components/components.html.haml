@@ -9,10 +9,12 @@
     %script{:src => "../../vendor/d3/d3.geom.js", :type => "text/javascript"}
     %script{:src => "../../vendor/d3/d3.layout.js", :type => "text/javascript"}    
     %script{:src => "../../vendor/d3/d3.time.js", :type => "text/javascript"}    
+    %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}    
     %script{:src => "../../vendor/science.js/science.js", :type => "text/javascript"}    
     %script{:src => "../../vendor/science.js/science.stats.js", :type => "text/javascript"}    
     %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "components.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "../../lab/components/components.css", :rel => "stylesheet", :type => "text/css"}/
   %body
     #header
       %ul
@@ -46,9 +48,9 @@
           attractive force. Atoms with similar charges experience a repulsive force. Atoms 
           with a positive charge appear green, atoms with a negative charge appear red.
     .component_group
-      #sigma_slider.slider_component{  'data-label' =>"sigma"   }
-      #epsilon_slider.slider_component{'data-label' => "epsilon"}
-      #playback.playback_component
+      #sigma_slider{  'data-label' =>"sigma"   }
+      #epsilon_slider{  'data-label' => "epsilon"}
+      #playback
 
     #controls
       %ul

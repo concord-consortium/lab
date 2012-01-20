@@ -1,11 +1,9 @@
 class SliderComponent
 
   constructor: (@dom_id="#slider", @value_changed_function) ->
-    @dom_element = d3.select(@dom_id)
+    @dom_element = $(@dom_id)
+    @dom_element.addClass('component').addClass('slider')
 
-    @width       = parseInt(@dom_element.style("width"))
-    @height      = parseInt(@dom_element.style("height"))
-    @handle_size = 5
     
     # use html5 data-attributes to configure components
     @precision   = @dom_element.attr('data-precision') || 3
@@ -15,6 +13,10 @@ class SliderComponent
     @label       = @dom_element.attr('data-label')     || "slider"
 
     @mouse_down  = false
+
+    @width       = @dom_element.width()
+    @height      = @dom_element.height()
+
     this.init_view()
     this.init_mouse_handlers()
 
@@ -22,53 +24,58 @@ class SliderComponent
     true if @width > @height
 
   init_view: ->
-    @svg = @dom_element.append("svg:svg")
-      .attr("width", @width)
-      .attr("height",@height)
-      .style("margin","0px")
-      .style("padding","0px")
+    @slider_well = $('<div>').addClass('slider_well')
+    @dom_element.append(@slider_well)
+    midpoint = @width/2
+    @y1 = @height
+    @y2 = 0
+    @x1 = @x2 = midpoint
     if this.horizontal_orientation()
-      midpoint = @height/2
+      midpoint = @height/4 
       @y1 = @y2 = midpoint
       @x1 = 0
       @x2 = @width
-    else
-      midpoint = @width/2
-      @y1 = @height
-      @y2 = 0
-      @x1 = @x2 = midpoint
 
     @handle_y = (@y1 + @y2) / 2
     @handle_x = (@x1 + @x2) / 2
+    this.init_slider_fill()
+    this.init_handle()
+    this.init_label()
 
-    @filled_rect = @svg.append('svg:rect')
+  init_slider_fill: ->
+    @slider_fill = $('<div>').addClass('slider_fill')
+    @slider_well.append(@slider_fill)
     if this.horizontal_orientation()
-      @filled_rect
-        .attr("x",0)
-        .attr("y",0)
-        .attr("width", @handle_x)
-        .attr("height",@height)
-      text_y = @height - 2 
+      @slider_fill.addClass('horizontal')
     else
-      @filled_rect
-        .attr("x",0)
-        .attr("y",@handle_y)
-        .attr("width", @width)
-        .attr("height",@height - @handle_y)
+      @slider_fill.addClass('vertical')
+    this.update_slider_filled()
 
-    @handle = @svg.append('svg:circle')
+  update_slider_filled: ->
+    if this.horizontal_orientation()
+      @slider_fill.width("#{@handle_x}px")
+    else
+      @slider_fill.height("#{@handle_y}px")
+
+  init_handle: ->
+    @handle = $('<div>')
+      .addClass('handle')
+    @slider_well.append(@handle)
+    console.log(@handle.height())
+    @handle_width  = parseInt(@handle.width())
+    @handle_height = parseInt(@handle.height())
+    this.update_handle()
+
+  update_handle: ->
     @handle
-      .attr("cx",@handle_x)
-      .attr("cy",@handle_y)
-      .attr("r", @handle_size)
-    @text = @svg.append('svg:text').attr("x",2).attr("y",text_y)
-    this.update_label()
+      .css('left',"#{@handle_x - (@handle_width /2) }px")
+      .css('top', "#{@handle_y - (@handle_height/2) }px")
 
-  clip_mouse: ->
-    mouse = d3.svg.mouse(@svg.node())
-    mx = mouse[0]
-    my = mouse[1]
-    { x: mx, y: my}
+  init_label: ->
+    @text_label = $('<div/>')
+      .addClass('label')
+    @dom_element.append(@text_label)
+    this.update_label()
 
   scaled_value: ->
     results = @value
@@ -78,36 +85,45 @@ class SliderComponent
 
   update_label: ->
     fomatted_value = this.scaled_value().toFixed(@precision)
-    @text.text("#{@label}: #{fomatted_value}")
+    @text_label.text("#{@label}: #{fomatted_value}")
 
-  handle_drag: ->
+  handle_drag: (e)->
+    x = e.pageX - @slider_well.position().left
+    y = e.pageY - @slider_well.position().top
+
     if this.horizontal_orientation()
-      @handle_x = this.clip_mouse().x
-      @handle.attr('cx',@handle_x)
-      @filled_rect.attr('width',@handle_x)
+      console.log(e)
+      @handle_x = x
       @value = @handle_x / @width
     else
-      @handle_y = this.clip_mouse().y
+      @handle_y = e.y
       @handle.attr('cy',@handle_y)
-      @filled_rect
+      @slider_fill
         .attr("y",@handle_y)
         .attr("height",@height - @handle_y)
       @value = @handle_y / @height
     if (typeof @value_changed_function == 'function')
       @value_changed_function(this.scaled_value())
+    
+    this.update_handle()
+    this.update_slider_filled()
     this.update_label()
+
 
   init_mouse_handlers: ->
     self = this
-    @svg.on "mousedown", =>
-      self.handle_drag()
+    @slider_well.mousedown  (e) =>
+      self.handle_drag(e)
       self.mousedown = true
-
-    @svg.on "mousemove", =>
+    
+    @slider_well.mousemove (e) =>
       if self.mousedown
-        self.handle_drag()
+        self.handle_drag(e)
 
-    @svg.on "mouseup", =>
+    @slider_well.mouseup =>
+      self.mousedown = false
+    
+    @slider_well.mouseleave =>
       self.mousedown = false
 
 # make this class available globally as SliderComponent
