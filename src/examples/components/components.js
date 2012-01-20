@@ -9,7 +9,7 @@
 // ------------------------------------------------------------
 
 
-var mol_number = 100,
+var mol_number = 50,
     sample_time = 0.01,
     temperature = 3,
     maximum_model_steps = 5000,
@@ -416,7 +416,9 @@ function modelStepForward() {
 }
 
 function modelReset() {
-  mol_number = +select_molecule_number.value;
+  if (select_molecule_number) {
+    mol_number = +select_molecule_number.value;
+  }
   modelSetup();
   // update_coefficients(molecules_lennard_jones.coefficients());
   model.temperature(temperature);
