@@ -126,11 +126,13 @@ layout.setupSimpleMoleculeContainer = function() {
 
 layout.setupDescriptionRight = function() {
   var description_right = document.getElementById("description-right");
-  var size = parseInt(layout.getStyleForSelector("#description-right").style.fontSize);
-  description_right.style.fontSize = size + "px";
-  description_right.style.fontSize = "16px";
-  description_right.style.width = document.body.clientWidth * 0.35 +"px";
-  description_right.style.height = document.body.clientWidth * 0.35 + 2 +"px";
+  if (description_right !== null) {
+    var size = parseInt(layout.getStyleForSelector("#description-right").style.fontSize);
+    description_right.style.fontSize = size + "px";
+    description_right.style.fontSize = "16px";
+    description_right.style.width = document.body.clientWidth * 0.35 +"px";
+    description_right.style.height = document.body.clientWidth * 0.35 + 2 +"px";
+  }
 }
 
 // Simple Full Screen Layout
