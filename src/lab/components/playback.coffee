@@ -32,7 +32,7 @@ class ModelPlayer
 class PlaybackComponent
   # playable must accept play(), stop(), forward(), back(), and seek(0..1)
   constructor: (@dom_id="#playback",@playable = null) ->
-    @dom_element  = d3.select(@dom_id)
+    @dom_element  = d3.select(@dom_id).attr('class','component playback')
     @offsets      = {'reset': 0, 'back': 1, 'play': 2, 'stop': 2, 'forward': 3}
     @width        = parseInt(@dom_element.style("width"))
     @height       = parseInt(@dom_element.style("height"))
