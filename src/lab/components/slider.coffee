@@ -61,7 +61,6 @@ class SliderComponent
     @handle = $('<div>')
       .addClass('handle')
     @slider_well.append(@handle)
-    console.log(@handle.height())
     @handle_width  = parseInt(@handle.width())
     @handle_height = parseInt(@handle.height())
     this.update_handle()
@@ -92,8 +91,11 @@ class SliderComponent
     y = e.pageY - @slider_well.position().top
 
     if this.horizontal_orientation()
-      console.log(e)
+      max_x = @width - (@handle_width /4)
+      min_x = @handle_width / 4
       @handle_x = x
+      @handle_x = min_x if @handle_x < min_x
+      @handle_x = max_x if @handle_x > max_x
       @value = @handle_x / @width
     else
       @handle_y = e.y
