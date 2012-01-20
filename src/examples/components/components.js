@@ -40,15 +40,14 @@ epsilon_slider.value_changed_function = function (v) {
 }
 epsilon_slider.update_label();
 
-// var sigma_slider = new  SliderComponent('#sigma_slider');
-// sigma_slider.max = lj_sigma_max;
-// sigma_slider.min = lj_sigma_min;
-// sigma_slider.value_changed_function = function (v) {
-//   model.set_lj_coefficients(model.getEpsilon(),v);
-//   // TODO: have the model notify the container when it gets updated
-//   layout.update_molecule_radius();
-// }
-// sigma_slider.update_label();
+var temperature_slider = new  SliderComponent('#temperature_slider');
+temperature_slider.max = 7;
+temperature_slider.min = 0;
+temperature_slider.value = 0.5;
+temperature_slider.value_changed_function = function (v) {
+  model.temperature(v);
+}
+temperature_slider.update_label();
 
 // ------------------------------------------------------------
 //
@@ -262,6 +261,7 @@ function modelSetup() {
   model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
   model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
   ke_data = [model.ke()];
+  model.set_temperature_control(true);
 }
 
 
@@ -420,7 +420,7 @@ function modelReset() {
   modelSetup();
   // update_coefficients(molecules_lennard_jones.coefficients());
   model.temperature(temperature);
-  layout.temperature_control_checkbox.onchange();
+  // layout.temperature_control_checkbox.onchange();
   layout.selection = "simple-screen";
   layout.setupScreen();
   updateMolNumberViewDependencies();
