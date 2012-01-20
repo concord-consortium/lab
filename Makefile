@@ -9,8 +9,11 @@ EXAMPLES_LAB_DIR = ./examples/lab
 HAML_EXAMPLE_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/dist\/\1/' )
 vpath %.haml src
 
-SASS_EXAMPLE_FILES := $(shell find src -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/dist\/\1.css/' )
-vpath %.sass src
+SASS_EXAMPLE_FILES := $(shell find src/examples -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/dist\/\1.css/' )
+vpath %.sass src/examples
+
+SASS_LIBRARY_FILES := $(shell find src/lab -name '*.sass' -exec echo {} \; | sed s'/src\/.*\/\(.*\)\.sass/dist\/lab\/css\/\1.css/' )
+vpath %.sass src/lab
 
 SCSS_EXAMPLE_FILES := $(shell find src -name '*.scss' -exec echo {} \; | sed s'/src\/\(.*\)\.scss/dist\/\1.css/' )
 vpath %.scss src
@@ -43,6 +46,7 @@ all: \
 	$(HAML_EXAMPLE_FILES) \
 	$(SASS_EXAMPLE_FILES) \
 	$(SCSS_EXAMPLE_FILES) \
+	$(SASS_LIBRARY_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES)
 
 clean:
@@ -64,6 +68,7 @@ node_modules: node_modules/coffee-script \
 	node_modules/jsdom \
 	node_modules/uglify-js	\
 	node_modules/vows \
+	node_modules/node-inspector \
 	node_modules/d3 \
 	node_modules/science.js
 	npm install
@@ -80,6 +85,9 @@ node_modules/uglify-js:
 node_modules/vows:
 	npm install
 
+node_modules/node-inspector:
+	npm install
+
 node_modules/d3:
 	npm install vendor/d3
 
@@ -90,7 +98,7 @@ bin:
 	bundle install --binstubs
 
 lab:
-	mkdir -p lab
+	mkdir -p lab/css
 
 dist: \
 	dist/vendor/jquery
@@ -225,7 +233,13 @@ dist/%.html: src/%.html.haml Makefile
 s:
 	@echo $(SASS_EXAMPLE_FILES)
 
-dist/%.css: %.sass Makefile
+sl:
+	@echo $(SASS_LIBRARY_FILES)
+
+dist/examples/%.css: %.sass Makefile
+	sass $< $@
+
+dist/lab/%.css: %.sass Makefile
 	sass $< $@
 
 dist/%.css: %.scss Makefile
