@@ -48,8 +48,16 @@
           attractive force. Atoms with similar charges experience a repulsive force. Atoms 
           with a positive charge appear green, atoms with a negative charge appear red.
     .component_group
-      #sigma_slider{  'data-label' =>"sigma"   }
-      #epsilon_slider{  'data-label' => "epsilon"}
+      -# #sigma_slider{  'data-label' =>"sigma"   }
+      #attraction_container
+        .left_half
+          stronger
+        .right_half
+          weaker
+        .content
+          #attraction_slider{  'data-label' => "attractive force"}
+        .below
+          Attractive Force
       #playback
 
     #controls

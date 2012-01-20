@@ -32,7 +32,7 @@ var model_player = new ModelPlayer(model);
 var play         = new PlaybackComponent('#playback',model_player);
 var therm        = new Thermometer('#thermometer');
 
-var epsilon_slider  = new  SliderComponent('#epsilon_slider');
+var epsilon_slider  = new  SliderComponent('#attraction_slider');
 epsilon_slider.max = lj_epsilon_max;
 epsilon_slider.min = lj_epsilon_min;
 epsilon_slider.value_changed_function = function (v) {
@@ -40,15 +40,15 @@ epsilon_slider.value_changed_function = function (v) {
 }
 epsilon_slider.update_label();
 
-var sigma_slider = new  SliderComponent('#sigma_slider');
-sigma_slider.max = lj_sigma_max;
-sigma_slider.min = lj_sigma_min;
-sigma_slider.value_changed_function = function (v) {
-  model.set_lj_coefficients(model.getEpsilon(),v);
-  // TODO: have the model notify the container when it gets updated
-  layout.update_molecule_radius();
-}
-sigma_slider.update_label();
+// var sigma_slider = new  SliderComponent('#sigma_slider');
+// sigma_slider.max = lj_sigma_max;
+// sigma_slider.min = lj_sigma_min;
+// sigma_slider.value_changed_function = function (v) {
+//   model.set_lj_coefficients(model.getEpsilon(),v);
+//   // TODO: have the model notify the container when it gets updated
+//   layout.update_molecule_radius();
+// }
+// sigma_slider.update_label();
 
 // ------------------------------------------------------------
 //
