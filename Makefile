@@ -8,7 +8,6 @@ EXAMPLES_LAB_DIR = ./examples/lab
 
 HAML_EXAMPLE_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/dist\/\1/' )
 vpath %.haml src
-# vpath $(subst dist/,src,%.haml)
 
 SASS_EXAMPLE_FILES := $(shell find src -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/dist\/\1.css/' )
 vpath %.sass src
@@ -16,7 +15,7 @@ vpath %.sass src
 SCSS_EXAMPLE_FILES := $(shell find src -name '*.scss' -exec echo {} \; | sed s'/src\/\(.*\)\.scss/dist\/\1.css/' )
 vpath %.scss src
 
-COFFEESCRIPT_EXAMPLE_FILES := $(shell find src -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/dist\/\1.js/' )
+COFFEESCRIPT_EXAMPLE_FILES := $(shell find src/examples -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/dist\/\1.js/' )
 vpath %.coffee src
 
 MARKDOWN_EXAMPLE_FILES := $(shell find src -name '*.md' -exec echo {} \; | sed s'/src\/\(.*\)\.md/dist\/\1.html/' )
@@ -29,6 +28,7 @@ LAB_JS_FILES = \
 	lab/lab.layout.js \
 	lab/lab.arrays.js \
 	lab/lab.molecules.js \
+	lab/lab.components.js \
 	lab/lab.js
 
 all: \
@@ -52,9 +52,38 @@ clean:
 vendor/d3/.git:
 	git submodule update --init --recursive
 
+vendor/jquery/.git:
+	git submodule update --init --recursive
+
+vendor/jquery/dist/jquery.min.js: \
+	vendor/jquery/.git
+	cd vendor/jquery; make
+
 node_modules:
+node_modules: node_modules/coffee-script \
+	node_modules/jsdom \
+	node_modules/uglify-js	\
+	node_modules/vows \
+	node_modules/d3 \
+	node_modules/science.js
 	npm install
+
+node_modules/coffee-script:
+	npm install
+
+node_modules/jsdom:
+	npm install
+
+node_modules/uglify-js:
+	npm install
+
+node_modules/vows:
+	npm install
+
+node_modules/d3:
 	npm install vendor/d3
+
+node_modules/science.js:
 	npm install vendor/science.js
 
 bin:
@@ -63,7 +92,8 @@ bin:
 lab:
 	mkdir -p lab
 
-dist:
+dist: \
+	dist/vendor/jquery
 	mkdir -p dist/examples
 	# copy modules from lab/
 	cp -r lab dist
@@ -87,11 +117,18 @@ dist:
 	cp vendor/hijs/hijs.js dist/vendor/hijs
 	cp vendor/hijs/LICENSE dist/vendor/hijs
 	cp vendor/hijs/README.md dist/vendor/hijs
+	# jquery
 	# copy resources/
 	cp -r src/resources dist
 	# copy directories, javascript, json, and image resources from src/examples/
 	rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ dist/examples/
 
+dist/vendor/jquery: \
+	vendor/jquery/dist/jquery.min.js
+	mkdir -p dist/vendor/jquery
+	cp vendor/jquery/dist/jquery.min.js dist/vendor/jquery/jquery.min.js
+	cp vendor/jquery/MIT-LICENSE.txt dist/vendor/jquery
+	cp vendor/jquery/README.md dist/vendor/jquery
 
 lab/lab.js: \
 	src/lab/lab-module.js \
@@ -100,7 +137,8 @@ lab/lab.js: \
 	lab/lab.benchmark.js \
 	lab/lab.arrays.js \
 	lab/lab.layout.js \
-	lab/lab.graphx.js
+	lab/lab.graphx.js \
+	lab/lab.components.js
 
 lab/lab.grapher.js: \
 	src/lab/start.js \
@@ -151,6 +189,11 @@ lab/lab.graphx.js: \
 	src/lab/graphx/graphx.js \
 	src/lab/end.js
 
+lab/lab.components.js: src/lab/components/*.coffee
+	cat $^ | $(COFFEESCRIPT_COMPILER) --stdio --print > $@
+	@chmod ug+w $@
+	@cp $@ dist/lab
+
 test: test/layout.html \
 	vendor/d3 \
 	dist \
@@ -170,12 +213,13 @@ lab.%: Makefile
 	@chmod ug+w $@
 	cp $@ dist/lab
 
-test/%.html:
+test/%.html: test/%.html.haml
+	haml $< $@
 
 h:
 	@echo $(HAML_EXAMPLE_FILES)
 
-dist/%.html: %.html.haml Makefile
+dist/%.html: src/%.html.haml Makefile
 	haml $< $@
 
 s:
