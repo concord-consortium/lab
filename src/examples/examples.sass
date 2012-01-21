@@ -7,9 +7,8 @@ body
   width: 920px
 
 #description-right
-  float: right
-  padding: 0em 1em 0em 1em
-  width: 40%
+  padding: 0em 0.5em
+  width: 90%
   font: 16px sans-serif
 
 #fullscreen img
@@ -138,17 +137,19 @@ h2
   margin: 0px 5px 0px 0px
   padding: 0px
   ul
-    display: inline-block
     list-style-type: none
     margin: 0.5em 0em 0.5em 0em
+    width: 100%
+    white-space:nowrap
     li
+      display: table-cell
       line-height: 1.0em
-      display: inline-table
       vertical-align: middle
-      margin: 0
-      padding: 0
+      padding: 0em 1em
       fieldset
         height: 2.2em
+    li.top
+      vertical-align: top
       ul
         margin: 0px
         li
@@ -157,6 +158,8 @@ h2
     float: right
 
 #controls
+  text-align: center
+  width: 100%
   ul
     display: inline-block
     list-style-type: none
