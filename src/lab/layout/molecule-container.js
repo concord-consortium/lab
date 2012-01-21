@@ -21,6 +21,9 @@ function modelTimeLabel() {
 };
 
 layout.finishSetupMoleculeContainer = function() {
+  mc_graph.grid_lines = (mc_graph.grid_lines == undefined) | mc_graph.grid_lines;
+  mc_graph.xunits = (mc_graph.xunits == undefined) | mc_graph.xunits;
+  mc_graph.yunits = (mc_graph.yunits == undefined) | mc_graph.yunits;
   mc_cx = moleculecontainer.clientWidth,
   mc_cy = moleculecontainer.clientHeight,
   mc_padding = {
@@ -191,61 +194,69 @@ layout.mc_redraw = function() {
   var mc_fx = mc_x.tickFormat(10),
       mc_fy = mc_y.tickFormat(10);
 
-  // Regenerate x-ticks…
-  var mc_gx = mc_vis.selectAll("g.x")
-      .data(mc_x.ticks(10), String)
-      .attr("transform", mc_tx);
+  if (mc_graph.xunits) {
+    // Regenerate x-ticks…
+    var mc_gx = mc_vis.selectAll("g.x")
+        .data(mc_x.ticks(10), String)
+        .attr("transform", mc_tx);
 
-  mc_gx.select("text")
-      .text(mc_fx);
+    mc_gx.select("text")
+        .text(mc_fx);
 
-  var mc_gxe = mc_gx.enter().insert("svg:g", "a")
-      .attr("class", "x")
-      .attr("transform", mc_tx);
+    var mc_gxe = mc_gx.enter().insert("svg:g", "a")
+        .attr("class", "x")
+        .attr("transform", mc_tx);
 
-  mc_gxe.append("svg:line")
-      .attr("stroke", mc_stroke)
-      .attr("y1", 0)
-      .attr("y2", mc_size.height);
+    if (mc_graph.grid_lines) {
+      mc_gxe.append("svg:line")
+          .attr("stroke", mc_stroke)
+          .attr("y1", 0)
+          .attr("y2", mc_size.height);    
+    }
 
-  mc_gxe.append("svg:text")
-      .attr("y", mc_size.height)
-      .attr("dy", "1em")
-      .attr("text-anchor", "middle")
-      .text(mc_fx);
+    mc_gxe.append("svg:text")
+        .attr("y", mc_size.height)
+        .attr("dy", "1em")
+        .attr("text-anchor", "middle")
+        .text(mc_fx);
 
-  mc_gx.exit().remove();
-
-  // Regenerate y-ticks…
-  var mc_gy = mc_vis.selectAll("g.y")
-      .data(mc_y.ticks(10), String)
-      .attr("transform", mc_ty);
-
-  mc_gy.select("text")
-      .text(mc_fy);
-
-  var mc_gye = mc_gy.enter().insert("svg:g", "a")
-      .attr("class", "y")
-      .attr("transform", mc_ty)
-      .attr("background-fill", "#FFEEB6");
-
-  mc_gye.append("svg:line")
-      .attr("stroke", mc_stroke)
-      .attr("x1", 0)
-      .attr("x2", mc_size.width);
-
-  mc_gye.append("svg:text")
-      .attr("x", -3)
-      .attr("dy", ".35em")
-      .attr("text-anchor", "end")
-      .text(mc_fy);
-
-  // update model time display
-  if (mc_graph.model_time_label) {
-    mc_time_label.text(modelTimeLabel());
+    mc_gx.exit().remove();
   }
+
+  if (mc_graph.xunits) {
+    // Regenerate y-ticks…
+    var mc_gy = mc_vis.selectAll("g.y")
+        .data(mc_y.ticks(10), String)
+        .attr("transform", mc_ty);
+
+    mc_gy.select("text")
+        .text(mc_fy);
+
+    var mc_gye = mc_gy.enter().insert("svg:g", "a")
+        .attr("class", "y")
+        .attr("transform", mc_ty)
+        .attr("background-fill", "#FFEEB6");
+
+    if (mc_graph.grid_lines) {
+      mc_gye.append("svg:line")
+          .attr("stroke", mc_stroke)
+          .attr("x1", 0)
+          .attr("x2", mc_size.width);
+    }
+
+    mc_gye.append("svg:text")
+        .attr("x", -3)
+        .attr("dy", ".35em")
+        .attr("text-anchor", "end")
+        .text(mc_fy);
+
+    // update model time display
+    if (mc_graph.model_time_label) {
+      mc_time_label.text(modelTimeLabel());
+    }
   
-  mc_gy.exit().remove();
+    mc_gy.exit().remove();
+  }
 }
 
 layout.update_molecule_radius = function() {

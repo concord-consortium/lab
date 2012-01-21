@@ -96,9 +96,12 @@ var model_listener = function(e) {
 // ------------------------------------------------------------
 
 var mc_graph = {};
-mc_graph.title   = "Simple Molecules";
-mc_graph.xlabel  = "X position (nm)";
-mc_graph.ylabel  = "Y position (nm)";
+// mc_graph.title   = "Simple Molecules";
+// mc_graph.xlabel  = "X position (nm)";
+// mc_graph.ylabel  = "Y position (nm)";
+mc_graph.grid_lines = false;
+mc_graph.xunits = false;
+mc_graph.yunits = false;
 mc_graph.xmin    = 0,
 mc_graph.xmax    = 100,
 mc_graph.ymin    = 0,
