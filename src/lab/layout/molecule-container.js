@@ -24,6 +24,9 @@ layout.finishSetupMoleculeContainer = function() {
   mc_graph.grid_lines = (mc_graph.grid_lines == undefined) | mc_graph.grid_lines;
   mc_graph.xunits = (mc_graph.xunits == undefined) | mc_graph.xunits;
   mc_graph.yunits = (mc_graph.yunits == undefined) | mc_graph.yunits;
+  
+  mc_graph.atom_mubers = (mc_graph.atom_mubers == undefined) | mc_graph.atom_mubers;
+  
   mc_cx = moleculecontainer.clientWidth,
   mc_cy = moleculecontainer.clientHeight,
   mc_padding = {
@@ -298,12 +301,27 @@ layout.setup_particles = function() {
         return "translate(" + mc_x(d.x) + "," + mc_y(d.y) + ")";
       });
   
-  labelEnter.append("svg:text")
-      .attr("class", "index")
-      .attr("font-size", font_size)
-      .attr("x", 0)
-      .attr("y", "0.31em")
-      .text(function(d) { return d.index; });
+  if (mc_graph.atom_mubers) {
+    labelEnter.append("svg:text")
+        .attr("class", "index")
+        .attr("font-size", font_size)
+        .attr("x", 0)
+        .attr("y", "0.31em")
+        .text(function(d) { return d.index; })
+  } else {
+    labelEnter.append("svg:text")
+        .attr("class", "index")
+        .attr("font-size", font_size * 1.5)
+        .attr("x", 0)
+        .attr("y", "0.31em")
+        .text(function(d) {
+          if (layout.coulomb_forces_checkbox.checked) {
+            return (mc_x(d.charge) > 0) ? "+" : "-"
+          } else {
+            return ""
+          }
+        })
+  }
 
   particle = layout.mc_container.selectAll("circle").data(atoms);
 
@@ -313,7 +331,7 @@ layout.setup_particles = function() {
       .attr("cy", function(d) { return mc_y(d.y); })
       .style("fill", function(d, i) {
         if (layout.coulomb_forces_checkbox.checked) {
-          return (mc_x(d.charge) > 0) ? "#2ca02c" : "#a02c2c"
+          return (mc_x(d.charge) > 0) ? "#5A63DB" : "#a02c2c"
         } else {
           return "#2ca02c"
         }

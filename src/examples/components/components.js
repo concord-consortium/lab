@@ -102,6 +102,7 @@ var mc_graph = {};
 mc_graph.grid_lines = false;
 mc_graph.xunits = false;
 mc_graph.yunits = false;
+mc_graph.atom_mubers = false;
 mc_graph.xmin    = 0,
 mc_graph.xmax    = 100,
 mc_graph.ymin    = 0,
