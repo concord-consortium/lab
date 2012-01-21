@@ -48,7 +48,7 @@ class Thermometer
     @thermometer.attr("y", @height - value)
     @thermometer.attr("height",value)
     @last_draw_time = new Date().getTime()
-    d3.select('#therm_text').text("#{avg} avg KE")
+    d3.select('#therm_text').text("avg KE")
 
 # make this class available globally as Thermometer
 # use like:
