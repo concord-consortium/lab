@@ -10,7 +10,8 @@ var mc_cx, mc_cy, mc_padding, mc_size,
     mc_mw, mc_mh, mc_tx, mc_ty, mc_stroke, 
     mc_x, mc_downscalex, mc_downx, 
     mc_y, mc_downscaley, mc_downy, 
-    mc_dragged,  
+    mc_dragged,
+    mc_vis1, playback_object,
     mc_vis, mc_plot, mc_time_label,
     model_time_formatter = d3.format("5.3f"),
     ns_string_prefix = "time: ";
@@ -24,8 +25,11 @@ layout.finishSetupMoleculeContainer = function() {
   mc_graph.grid_lines = (mc_graph.grid_lines == undefined) | mc_graph.grid_lines;
   mc_graph.xunits = (mc_graph.xunits == undefined) | mc_graph.xunits;
   mc_graph.yunits = (mc_graph.yunits == undefined) | mc_graph.yunits;
+  mc_graph.model_time_label = (mc_graph.model_time_label == undefined) | mc_graph.model_time_label;
   
   mc_graph.atom_mubers = (mc_graph.atom_mubers == undefined) | mc_graph.atom_mubers;
+  
+  mc_graph.playback_controller = (mc_graph.playback_controller == undefined) | mc_graph.playback_controller;
   
   mc_cx = moleculecontainer.clientWidth,
   mc_cy = moleculecontainer.clientHeight,
@@ -34,8 +38,9 @@ layout.finishSetupMoleculeContainer = function() {
      "right":                    30, 
      "bottom": mc_graph.xlabel ? 46 : 20,
      "left":   mc_graph.ylabel ? 60 : 45
-  },
-  mc_size = { 
+  };
+  if (mc_graph.playback_controller) { mc_padding.bottom += 35 }
+  var mc_size = { 
     "width":  mc_cx - mc_padding.left - mc_padding.right, 
     "height": mc_cy - mc_padding.top  - mc_padding.bottom 
   },
@@ -123,10 +128,11 @@ layout.finishSetupMoleculeContainer = function() {
     });
 
   } else {
-    mc_vis = d3.select(moleculecontainer).append("svg:svg")
+    mc_vis1 = d3.select(moleculecontainer).append("svg:svg")
       .attr("width", mc_cx)
-      .attr("height", mc_cy)
-      .append("svg:g")
+      .attr("height", mc_cy);
+
+    mc_vis = mc_vis1.append("svg:g")
         .attr("transform", "translate(" + mc_padding.left + "," + mc_padding.top + ")");
 
     mc_plot = mc_vis.append("svg:rect")
@@ -183,6 +189,9 @@ layout.finishSetupMoleculeContainer = function() {
           .attr("y", mc_size.height)
           .attr("dy","2.4em")
           .style("text-anchor","left");
+    }
+    if (mc_graph.playback_controller) {
+      var play = new PlaybackComponentSVG(mc_vis1, model_player, mc_size.width / 2 - 50, mc_size.height + 30);          
     }
   }
 
