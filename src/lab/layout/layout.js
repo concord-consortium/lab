@@ -73,20 +73,20 @@ layout.setupRegularScreenMoleculeContainer = function() {
 }
 
 layout.setupRegularScreenPotentialChart = function() {
-  lj_potential_chart.style.width = document.body.clientWidth * 0.25 +"px";
+  lj_potential_chart.style.width = document.body.clientWidth * 0.23 +"px";
   lj_potential_chart.style.height = document.body.clientWidth * 0.20 +"px";
   finishSetupPotentialChart();
 }
 
 layout.setupRegularSpeedDistributionChart = function() {
-  speed_distribution_chart.style.width = document.body.clientWidth * 0.25 +"px";
+  speed_distribution_chart.style.width = document.body.clientWidth * 0.23 +"px";
   speed_distribution_chart.style.height = document.body.clientWidth * 0.20 +"px";
   finishSetupSpeedDistributionChart();
 }
 
 layout.setupRegularScreenKEChart = function() {
-  kechart.style.width = document.body.clientWidth * 0.50  + 5 +"px";
-  kechart.style.height = document.body.clientWidth * 0.25 - 3 +"px";
+  kechart.style.width = document.body.clientWidth * 0.48  + 4 +"px";
+  kechart.style.height = document.body.clientWidth * 0.24 + 6 +"px";
   finishSetupKEChart();
 }
 
@@ -100,19 +100,19 @@ layout.setupFullScreenMoleculeContainer = function() {
 
 layout.setupFullScreenPotentialChart = function() {
   lj_potential_chart.style.width = screen.width * 0.22 +"px";
-  lj_potential_chart.style.height = screen.height * 0.35 +"px";
+  lj_potential_chart.style.height = screen.height * 0.40 +"px";
   layout.finishSetupPotentialChart();
 }
 
 layout.setupFullScreenSpeedDistributionChart = function() {
   speed_distribution_chart.style.width = screen.width * 0.22 +"px";
-  speed_distribution_chart.style.height = screen.height * 0.35 +"px";
+  speed_distribution_chart.style.height = screen.height * 0.40 +"px";
   layout.finishSetupSpeedDistributionChart();
 }
 
 layout.setupFullScreenKEChart = function() {
   kechart.style.width = screen.width * 0.44 + 5 + "px";
-  kechart.style.height = screen.height * 0.45 - 2 +"px";
+  kechart.style.height = screen.height * 0.80 - 0 +"px";
   layout.finishSetupKEChart();
 }
 
