@@ -140,20 +140,28 @@ h2
     list-style-type: none
     margin: 0.5em 0em 0.5em 0em
     width: 100%
-    white-space:nowrap
     li
       display: table-cell
-      line-height: 1.0em
       vertical-align: middle
+      margin: 0em
       padding: 0em 1em
       fieldset
         height: 2.2em
     li.top
       vertical-align: top
-      ul
-        margin: 0px
-        li
-          margin: 0px
+    li.baseline
+      vertical-align: baseline
+  ul.twox
+    margin: 0em 0em 0em 0em
+    li
+      margin: 0em
+      padding-bottom: 0.5em
+    li.top
+      vertical-align: top
+      padding-bottom: 0.5em
+    li.bottom
+      vertical-align: bottom
+      padding-bottom: 0em
   ul.right
     float: right
 
@@ -176,6 +184,9 @@ h2
         vertical-align: middle
   ul.right
     float: right
+
+#controls.left
+  text-align: left
 
 #benchmarks
   margin: 0em
