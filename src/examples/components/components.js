@@ -29,7 +29,6 @@ var mol_number = 50,
 // Setup therm, epsilon_slider & sigma_slider components.
 // ------------------------------------------------------------
 var model_player = new ModelPlayer(model);
-var play         = new PlaybackComponent('#playback',model_player);
 var therm        = new Thermometer('#thermometer');
 
 var epsilon_slider  = new  SliderComponent('#attraction_slider');
@@ -99,6 +98,8 @@ var mc_graph = {};
 // mc_graph.title   = "Simple Molecules";
 // mc_graph.xlabel  = "X position (nm)";
 // mc_graph.ylabel  = "Y position (nm)";
+mc_graph.playback_controller = true;
+mc_graph.model_time_label = false;
 mc_graph.grid_lines = false;
 mc_graph.xunits = false;
 mc_graph.yunits = false;
@@ -109,7 +110,6 @@ mc_graph.ymin    = 0,
 mc_graph.ymax    = 100,
 mc_graph.xdomain = mc_graph.xmax - mc_graph.xmin,
 mc_graph.ydomain = mc_graph.ymax - mc_graph.ymin;
-mc_graph.model_time_label = true;
 
 // ------------------------------------------------------------
 //
@@ -326,9 +326,10 @@ function updateMolNumberViewDependencies() {
   // layout.speed_redraw();
 }
 
-select_molecule_number.onchange = selectMoleculeNumberChange;
-
-select_molecule_number.value = mol_number;
+if (select_molecule_number) {
+  select_molecule_number.onchange = selectMoleculeNumberChange;
+  select_molecule_number.value = mol_number;
+}
 
 // ------------------------------------------------------------
 //
