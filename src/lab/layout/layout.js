@@ -119,8 +119,8 @@ layout.setupFullScreenKEChart = function() {
 // Simple Screen Layout
 
 layout.setupSimpleMoleculeContainer = function() {
-  moleculecontainer.style.width = document.body.clientWidth * 0.45 +"px";
-  moleculecontainer.style.height = document.body.clientWidth * 0.45 + 2 +"px";
+  moleculecontainer.style.width = document.body.clientWidth * 0.65 +"px";
+  moleculecontainer.style.height = document.body.clientWidth * 0.65 + 2 +"px";
   layout.finishSetupMoleculeContainer();
 }
 
@@ -138,8 +138,8 @@ layout.setupDescriptionRight = function() {
 // Simple Full Screen Layout
 
 layout.setupSimpleFullScreenMoleculeContainer = function() {
-  moleculecontainer.style.width = document.body.clientWidth * 0.55 +"px";
-  moleculecontainer.style.height = document.body.clientWidth * 0.55 + 2 +"px";
+  moleculecontainer.style.width = document.body.clientWidth * 0.65 +"px";
+  moleculecontainer.style.height = document.body.clientWidth * 0.65 + 2 +"px";
   layout.finishSetupMoleculeContainer();
 }
 
