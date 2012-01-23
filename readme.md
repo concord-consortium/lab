@@ -9,13 +9,16 @@ HTML5-based open source scientific models, visualizations, graphing, and probewa
 - Probeware needs to be added.
 - Molecular model in progress.
 
-## Simple Molecules
+## Molecular Modeling Examples:
 
-Example: [Simple Molecules](http://lab.dev.concord.org/simplemolecules/simplemolecules.html)
+- [Simple Atoms Model](http://lab.dev.concord.org/examples/simple-atoms-model/simple-atoms-model.html)
+- [More Complex Atoms Model](http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html)
 
-## Grapher
+## Graphing examples:
 
-Example: [Earth's Surface Temperature: years 500-2009](http://lab.dev.concord.org/surface-temperature/surface-temperature.html)
+- [Earth's Surface Temperature: years 500-2009](http://lab.dev.concord.org/examples/surface-temperature/surface-temperature.html)
+- [Question about seasonal temperatures and geography](http://lab.dev.concord.org/examples/seasons/canberra-question.html)
+- [Lennard-Jones-Potential](http://lab.dev.concord.org/examples/lennard-jones-potential/lennard-jones-potential.html)
 
 ## Setup Development
 
