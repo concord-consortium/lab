@@ -119,8 +119,9 @@ layout.setupFullScreenKEChart = function() {
 // Simple Screen Layout
 
 layout.setupSimpleMoleculeContainer = function() {
-  moleculecontainer.style.width = document.body.clientWidth * 0.65 +"px";
-  moleculecontainer.style.height = document.body.clientWidth * 0.65 + 2 +"px";
+  var size = Math.min(getPageHeight() * 0.8, window.innerWidth * 0.6);
+  moleculecontainer.style.width = size +"px";
+  moleculecontainer.style.height = size +"px";
   layout.finishSetupMoleculeContainer();
 }
 
@@ -138,8 +139,9 @@ layout.setupDescriptionRight = function() {
 // Simple Full Screen Layout
 
 layout.setupSimpleFullScreenMoleculeContainer = function() {
-  moleculecontainer.style.width = document.body.clientWidth * 0.65 +"px";
-  moleculecontainer.style.height = document.body.clientWidth * 0.65 + 2 +"px";
+  var size = Math.min(getPageHeight() * 0.9, window.innerWidth * 0.7);
+  moleculecontainer.style.width = size +"px";
+  moleculecontainer.style.height = size +"px";
   layout.finishSetupMoleculeContainer();
 }
 
@@ -160,3 +162,16 @@ layout.getStyleForSelector = function(selector) {
     }
     return false
 };
+
+// Adapted from getPageSize() by quirksmode.com
+function getPageHeight() {
+    var windowHeight
+    if (self.innerHeight) { // all except Explorer
+      windowHeight = self.innerHeight;
+    } else if (document.documentElement && document.documentElement.clientHeight) {
+      windowHeight = document.documentElement.clientHeight;
+    } else if (document.body) { // other Explorers
+      windowHeight = document.body.clientHeight;
+    }
+    return windowHeight
+}
