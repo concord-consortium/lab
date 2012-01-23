@@ -126,7 +126,7 @@ class PlaybackComponentSVG
     this.init_back_button()
     this.hide(@play)
 
-  postion: (xpos, ypos)->
+  position: (xpos, ypos) ->
     @xpos = xpos
     @ypos = ypos
     @svg.attr("width", @width)
@@ -151,7 +151,8 @@ class PlaybackComponentSVG
 # these next lines make the classes available on the window.
 # use like this:
 #  player  = new ModelPlayer(model);
-#  playback = new PlaybackComponent('#domid',player);
+#  playback = new PlaybackComponentSVG(@svg_element,player xpos, ypos);
+#  appends SVG plaback controller into @svg_element and positions it
 root = exports ? this
 root.PlaybackComponentSVG = PlaybackComponentSVG
 root.ModelPlayer = ModelPlayer
