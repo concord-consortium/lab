@@ -23,9 +23,13 @@ var autostart = true,
     model = modeler.layout.model();
 
 // ------------------------------------------------------------
-// Setup therm, epsilon_slider & sigma_slider components.
+// Setup model_player
 // ------------------------------------------------------------
 var model_player = new ModelPlayer(model);
+
+// ------------------------------------------------------------
+// Setup therm, epsilon_slider & sigma_slider components.
+// ------------------------------------------------------------
 var therm        = new Thermometer('#thermometer');
 
 var epsilon_slider  = new  SliderComponent('#attraction_slider');
@@ -90,22 +94,23 @@ mc_graph.ydomain = mc_graph.ymax - mc_graph.ymin;
 //
 // ------------------------------------------------------------
 
-var lj_data = {};
+var lj_coefficients = molecules_lennard_jones.coefficients();
 
-lj_data.coefficients = molecules_lennard_jones.coefficients();
-
-lj_data.variables = [
-  { 
-    coefficient:"epsilon", 
-    x: lj_data.coefficients.rmin, 
-    y: lj_data.coefficients.epsilon 
-  }, 
-  { 
-    coefficient:"sigma", 
-    x: lj_data.coefficients.sigma, 
-    y: 0 
-  }
-];
+var lj_data = {
+  coefficients: lj_coefficients,
+  variables: [
+    { 
+      coefficient:"epsilon", 
+      x: lj_coefficients.rmin, 
+      y: lj_coefficients.epsilon 
+    }, 
+    { 
+      coefficient:"sigma", 
+      x: lj_coefficients.sigma, 
+      y: 0 
+    }
+  ]
+};
 
 function update_epsilon(e) {
   update_coefficients(molecules_lennard_jones.epsilon(e));
@@ -173,7 +178,6 @@ function modelSetup() {
   generate_atoms();
   model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
   model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
-  ke_data = [model.ke()];
   model.set_temperature_control(true);
 }
 

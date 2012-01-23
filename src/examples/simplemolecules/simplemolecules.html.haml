@@ -9,10 +9,12 @@
     %script{:src => "../../vendor/d3/d3.geom.js", :type => "text/javascript"}
     %script{:src => "../../vendor/d3/d3.layout.js", :type => "text/javascript"}    
     %script{:src => "../../vendor/d3/d3.time.js", :type => "text/javascript"}    
+    %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}    
     %script{:src => "../../vendor/science.js/science.js", :type => "text/javascript"}    
     %script{:src => "../../vendor/science.js/science.stats.js", :type => "text/javascript"}    
     %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "simplemolecules.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "../../lab/css/components.css", :rel => "stylesheet", :type => "text/css"}/
   %body
     #header
       %ul
@@ -34,18 +36,6 @@
           #ke-chart
     #controls.left
       %ul
-        %li
-          %form(id="model-controls")
-            %fieldset
-              %legend Model
-              %label
-                %input(type="radio" name="step" value="stop" checked) Stop
-              %label
-                %input(type="radio" name="step" value="step"        ) Step
-              %label
-                %input(type="radio" name="step" value="go"          ) Go
-              %label
-                %input(type="radio" name="step" value="reset"       ) Reset
         %li
           %fieldset
             %legend Molecules
@@ -172,4 +162,5 @@
     %script{:src => "../../lab/lab.arrays.js", :type => "text/javascript"}
     %script{:src => "../../lab/lab.graphx.js", :type => "text/javascript"}
     %script{:src => "../../lab/lab.molecules.js", :type => "text/javascript"}
+    %script{:src => "../../lab/lab.components.js", :type => "text/javascript"}
     %script{:src => "simplemolecules.js", :type => "text/javascript"}
