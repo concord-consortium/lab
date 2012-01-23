@@ -1,0 +1,107 @@
+#molecule-container
+  position: relative
+  background-color: #F7F2C5
+  width: 200px
+  height: 200px
+  border: solid 1px #ccc
+  margin: 2px 0px 2px 0px
+  circle
+    stroke: darkred
+    stroke-width: 1.0px
+    fill: #fff
+    fill-opacity: .2
+    cursor: move
+    &.selected
+      fill: #ff7f0e
+      stroke: #ff7f0e
+  rect
+    border: solid 1px #ccc
+
+
+div.tooltip
+  position: absolute
+  text-align: center
+  width: 80px
+  height: 48px
+  padding: 4px 8px
+  font: 10px sans-serif
+  background: #ddd
+  border: solid 1px #aaa
+  border-radius: 8px
+  pointer-events: none
+
+#lj-potential-chart
+  position: relative
+  background-color: #F7F2C5
+  width: 180px
+  height: 140px
+  border: solid 1px #ccc
+  margin: 2px 0px 2px 0px
+
+#speed-distribution-chart
+  position: relative
+  background-color: #F7F2C5
+  width: 180px
+  height: 140px
+  border: solid 1px #ccc
+  margin: 2px 0px 2px 0px
+
+#ke-chart
+  position: relative
+  background-color: #F7F2C5
+  width: 280px
+  height: 160px
+  border: solid 1px #ccc
+  margin: 0em 1em
+  padding: 0em 0em
+
+text.index
+  font: sans-serif
+  text-anchor: middle
+
+text.shadow
+  font: sans-serif
+  text-anchor: middle
+  stroke: #fff
+  stroke-width: 3px
+  stroke-opacity: .8
+
+#number-frame
+  text-align: right
+  legend
+    text-align: left
+
+#select-temperature-display
+  margin: 0px 2px 0px 2px
+  vertical-align: top
+
+.slider_container
+  font-size: 12px
+  display: inline-block
+  vertical-align: top
+  margin: 5px
+  padding: 4px
+  border: 1px solid  #aaa
+  border-radius: 5px
+  .left_half
+    width: 49%
+    float: left
+    text-align: left
+  .right_half
+    text-align: right
+    width: 49%
+    float: right
+  .container
+    display: inline-block
+    margin: auto
+    text-align: center
+  .below
+    display: none
+    margin: auto
+    text-align: center
+
+#components-description
+  display: inline-block
+  vertical-align: top
+  float: none
+  width: 40%
