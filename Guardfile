@@ -61,6 +61,9 @@ end
 
 guard 'markdown' do
   watch("readme.md") do |m|
-    "readme.md|dist/readme.html|src/layouts/layout.html.erb"
+    "readme.md|dist/readme.html|src/layouts/readme.html.erb"
+  end
+  watch("license.md") do |m|
+    "license.md|dist/license.html|src/layouts/license.html.erb"
   end
 end
