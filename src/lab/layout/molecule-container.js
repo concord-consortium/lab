@@ -11,8 +11,9 @@ var mc_cx, mc_cy, mc_padding, mc_size,
     mc_x, mc_downscalex, mc_downx, 
     mc_y, mc_downscaley, mc_downy, 
     mc_dragged,
-    mc_vis1, play,
+    mc_vis1, playback_component,
     mc_vis, mc_plot, mc_time_label,
+    pc_xpos, pc_ypos,
     model_time_formatter = d3.format("5.3f"),
     ns_string_prefix = "time: ";
     ns_string_suffix = " (ns)";
@@ -44,6 +45,8 @@ layout.finishSetupMoleculeContainer = function() {
     "width":  mc_cx - mc_padding.left - mc_padding.right, 
     "height": mc_cy - mc_padding.top  - mc_padding.bottom 
   },
+  pc_xpos = mc_size.width / 2 - 50,
+  pc_ypos = mc_size.height + (mc_graph.ylabel ? 75 : 30),
   mc_mw = mc_size.width,
   mc_mh = mc_size.height,
   mc_tx = function(d) { return "translate(" + mc_x(d) + ",0)"; },
@@ -128,7 +131,7 @@ layout.finishSetupMoleculeContainer = function() {
     });
     
     if (mc_graph.playback_controller) {
-      play.position(mc_size.width / 2 - 50, mc_size.height + mc_graph.ylabel ? 50 : 30);          
+      playback_component.position(pc_xpos, pc_ypos);          
     }
     
 
@@ -196,7 +199,7 @@ layout.finishSetupMoleculeContainer = function() {
           .style("text-anchor","left");
     }
     if (mc_graph.playback_controller) {
-      play = new PlaybackComponentSVG(mc_vis1, model_player, mc_size.width / 2 - 50, mc_size.height + (mc_graph.ylabel ? 75 : 30));          
+      playback_component = new PlaybackComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos);          
     }
   }
 
