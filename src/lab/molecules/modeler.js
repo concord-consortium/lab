@@ -12,10 +12,10 @@ modeler.layout.model = function() {
       atoms = [],
       mol_number,
       event = d3.dispatch("tick"),
-      size = [1, 1],
+      size = [100, 100],
       temperature_control,
       lennard_jones_forces, coulomb_forces,
-      ke, pe,
+      ke, pe, ave_ke,
       ave_speed, speed_goal, speed_factor,
       ave_speed_max, ave_speed_min,
       speed_max_pos, speed_max_neg,
@@ -530,6 +530,7 @@ modeler.layout.model = function() {
       p = fx + fx;
       pe += p;
     }
+    ave_ke = ke / n;
   }
   
   // 
@@ -554,6 +555,7 @@ modeler.layout.model = function() {
       k =  s * s * halfmass[i];
       ke += k;
     }
+    ave_ke = ke / n;
     return ke;
   }
 
@@ -577,6 +579,7 @@ modeler.layout.model = function() {
       run_tick();
     }
     temperature_control = save_temperature_control;
+    calculate_kinetic_and_potential_energy();
     update_atoms();
   }
 
@@ -734,8 +737,7 @@ modeler.layout.model = function() {
         n = nodes[0].length,
         w = size[0], h = size[1],
         temperature = 4,
-        annealing_steps = 25,
-        speed_goal,
+        annealing_steps = 10,
         max_ljf_repulsion, min_ljf_attraction,
         max_ljf_distance, min_ljf_distance;
 
@@ -762,17 +764,16 @@ modeler.layout.model = function() {
     coulomb_forces = options.coulomb_forces || true;
     model_listener = options.model_listener || false;
     temperature_control = options.temperature_control || false;
+    temperature = options.temperature || 3;
 
     reset_tick_history_list();
-    speed_goal = temperature_to_speed(temperature);
+    set_temperature(temperature);
     setup_ljf_limits();
     setup_coulomb_limits();
-    resolve_collisions(annealing_steps);
     // pressures.push(pressure);
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
+    resolve_collisions(annealing_steps);
     ave_speed = average_speed();
-    ke = kinetic_energy();
-    pe = potential_energy();
     tick_history_list_push();
     return model
   };
@@ -884,6 +885,15 @@ modeler.layout.model = function() {
   model.ke = function() {
     ke = ke || kinetic_energy();
     return ke
+  };
+
+  model.ave_ke = function() {
+    if (ave_ke) {
+      return ave_ke
+    } else {
+      kinetic_energy();
+      return ave_ke
+    }
   };
 
   model.pe = function() {
