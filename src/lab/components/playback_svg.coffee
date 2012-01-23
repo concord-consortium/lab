@@ -126,6 +126,14 @@ class PlaybackComponentSVG
     this.init_back_button()
     this.hide(@play)
 
+  postion: (xpos, ypos)->
+    @xpos = xpos
+    @ypos = ypos
+    @svg.attr("width", @width)
+      .attr("height",@height)
+      .attr("x", @xpos)
+      .attr("y", @ypos)
+    
   update_ui: ->
     if @playable
       if @playable.playing

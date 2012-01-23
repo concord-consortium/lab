@@ -11,7 +11,7 @@ var mc_cx, mc_cy, mc_padding, mc_size,
     mc_x, mc_downscalex, mc_downx, 
     mc_y, mc_downscaley, mc_downy, 
     mc_dragged,
-    mc_vis1, playback_object,
+    mc_vis1, play,
     mc_vis, mc_plot, mc_time_label,
     model_time_formatter = d3.format("5.3f"),
     ns_string_prefix = "time: ";
@@ -40,7 +40,7 @@ layout.finishSetupMoleculeContainer = function() {
      "left":   mc_graph.ylabel ? 60 : 45
   };
   if (mc_graph.playback_controller) { mc_padding.bottom += 35 }
-  var mc_size = { 
+  mc_size = { 
     "width":  mc_cx - mc_padding.left - mc_padding.right, 
     "height": mc_cy - mc_padding.top  - mc_padding.bottom 
   },
@@ -126,6 +126,11 @@ layout.finishSetupMoleculeContainer = function() {
     label.attr("transform", function(d) {
       return "translate(" + mc_x(d.x) + "," + mc_y(d.y) + ")";
     });
+    
+    if (mc_graph.playback_controller) {
+      play.position(mc_size.width / 2 - 50, mc_size.height + mc_graph.ylabel ? 50 : 30);          
+    }
+    
 
   } else {
     mc_vis1 = d3.select(moleculecontainer).append("svg:svg")
@@ -191,7 +196,7 @@ layout.finishSetupMoleculeContainer = function() {
           .style("text-anchor","left");
     }
     if (mc_graph.playback_controller) {
-      var play = new PlaybackComponentSVG(mc_vis1, model_player, mc_size.width / 2 - 50, mc_size.height + 30);          
+      play = new PlaybackComponentSVG(mc_vis1, model_player, mc_size.width / 2 - 50, mc_size.height + (mc_graph.ylabel ? 75 : 30));          
     }
   }
 
