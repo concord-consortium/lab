@@ -9,6 +9,7 @@ class Thermometer
 
     @last_draw_time = new Date().getTime()
     @sample_interval_ms = 1000
+    @last_draw_time -= @sample_interval_ms
     this.init_svg()
 
   init_svg: ->
@@ -23,6 +24,7 @@ class Thermometer
     @thermometer.attr("height", @height)
     @thermometer.style("fill","#aaa")
     d3.select('#therm_text').attr('class','therm_text')
+
   time_to_redraw: ->
     timestamp = new Date().getTime()
     timestamp > @last_draw_time + @sample_interval_ms
