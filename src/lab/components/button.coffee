@@ -1,3 +1,4 @@
+root = exports ? this
 class Component
   constructor: (@dom_id) ->
     if @dom_id
@@ -36,6 +37,8 @@ class ButtonComponent extends Component
   do_action: ->
     for action in @actions
       action()
+
+root.ButtonComponent = ButtonComponent
 
 
 class ToggleButtonComponent extends ButtonComponent
@@ -97,11 +100,6 @@ class ToggleButtonComponent extends ButtonComponent
       this.current_button().do_action()
       this.enable_next_button()
 
-# make this class available globally as ButtonComponent
-# use like this:
-#  button = new ButtonComponent();
-root = exports ? this
-root.ButtonComponent = ButtonComponent
 root.ToggleButtonComponent = ToggleButtonComponent
 
 
@@ -135,9 +133,35 @@ class ButtonBarComponent extends Component
     if height < elem_height
       @dom_element.height("#{elem_height}px")
 
-
-# make this class available globally as ButtonComponent
-# use like this:
-#  button = new ButtonComponent();
 root.ButtonBarComponent = ButtonBarComponent
+
+
+class PlaybackBarComponent extends ButtonBarComponent
+  constructor: (@dom_id, @playable, simplified=true) ->
+    super(@dom_id)
+    play = new ButtonComponent(null,'play')
+    play.add_action =>
+      @playable.play()
+    pause = new ButtonComponent(null,'pause')
+    pause.add_action =>
+      @playable.stop()
+    toggle = new ToggleButtonComponent(null, [play,pause])
+    reset  = new ButtonComponent(null,'reset')
+    reset.add_action =>
+      @playable.seek(0)
+    this.add_button(reset)
+    unless simplified
+      forward = new ButtonComponent(null,'forward')
+      forward.add_action =>
+        @playable.forward()
+
+      this.add_button(forward)
+    this.add_button(toggle)
+    unless simplified
+      back = new ButtonComponent(null,'back')
+      back.add_action =>
+        @playable.back()
+      this.add_button(back)
+
+root.PlaybackBarComponent = PlaybackBarComponent
 
