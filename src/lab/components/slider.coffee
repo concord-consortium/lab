@@ -10,7 +10,7 @@ class SliderComponent
     @min         = @dom_element.attr('data-min')       || 0
     @max         = @dom_element.attr('data-max')       || 1
     @value       = @dom_element.attr('data-value')     || 0.5
-    @label       = @dom_element.attr('data-label')     || "slider"
+    @label       = @dom_element.attr('data-label')
 
     @mouse_down  = false
 
@@ -83,9 +83,11 @@ class SliderComponent
     results
 
   update_label: ->
-    fomatted_value = this.scaled_value().toFixed(@precision)
-    @text_label.text("#{@label}: #{fomatted_value}")
-
+    if @label
+      fomatted_value = this.scaled_value().toFixed(@precision)
+      @text_label.text("#{@label}: #{fomatted_value}")
+    else
+      @text_label.hide()
   handle_drag: (e)->
     x = e.pageX - @slider_well.position().left
     y = e.pageY - @slider_well.position().top
