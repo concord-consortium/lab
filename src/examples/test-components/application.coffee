@@ -30,3 +30,17 @@ $(document).ready =>
 
   window.toggle = toggle_button
   window.bar = button_bar
+
+  playable = 
+    play: ->
+      console.log "PLAY"
+    stop: ->
+      console.log "STOP"
+    seek: (num) ->
+      console.log "SEEK #{num}"
+    back: ->
+      console.log "BACK"
+    forward: ->
+      console.log "FORWARD"
+  simple_player = new PlaybackBarComponent("#simple_player",playable,true)
+  player = new PlaybackBarComponent("#player",playable,false)
