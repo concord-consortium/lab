@@ -98,3 +98,83 @@
     fill: #aaa
   .stop.button-art:hover
     fill: #000
+
+.playbacksvg
+  border: 1px solid #aaa
+  border-radius: 5px
+  cursor: pointer
+  fill: #f00
+
+  .button-art
+    stroke-width: 4px
+    fill: #fff
+    stroke: #aaa
+    stroke-linecap: round
+    stroke-linejoin: round
+
+  .button-art:hover
+    stroke: #000
+  .play.button-art
+    fill: #aaa
+  .play.button-art:hover
+    fill: #000
+  .stop.button-art
+    fill: #aaa
+  .stop.button-art:hover
+    fill: #000
+
+$button_color: hsla(10,80%,90%,0.1)
+$button_hover: darken($button_color, 20%)
+$button_down: darken($button_hover, 20%)
+.component
+  &.button
+    border-radius: 5px
+    border: 1px solid #aaa
+    width: 30px
+    height: 30px
+    position: static
+    float: left
+    clear: none
+    background-color: $button_color
+    background-size: 100%
+    opacity: 0.7
+    &:hover
+      background-color: $button_hover
+      opacity: 0.8
+    &.up
+      ackground-color: $button_color
+      opacity: 0.7
+      &:hover
+        opacity: 0.8
+        background-color: $button_hover
+    &.down
+      opacity: 1
+      background-color: $button_down
+    &.hidden
+      display: none
+  &.play
+    background-image: url(../../resources/play.png)
+  &.pause
+    background-image: url(../../resources/pause.png)
+  &.reset
+    background-image: url(../../resources/reset.png)
+  &.forward
+    background-image: url(../../resources/forward.png)
+  &.back
+    background-image: url(../../resources/back.png)
+  &.toggle
+    display: inline-block
+    overflow: hidden
+    background-color: none
+    opacity: 1
+    .button
+      padding: 0px
+      margin: 0px
+      border: none
+  &.button_bar
+    padding: 0px
+    .button
+      margin: 4px
+    display: block
+    border-radius: 5px
+    border: 1px solid #aaa
