@@ -47,7 +47,8 @@ all: \
 	$(SASS_EXAMPLE_FILES) \
 	$(SCSS_EXAMPLE_FILES) \
 	$(SASS_LIBRARY_FILES) \
-	$(COFFEESCRIPT_EXAMPLE_FILES)
+	$(COFFEESCRIPT_EXAMPLE_FILES) \
+	dist/index.css
 
 clean:
 	rm -rf dist
@@ -127,9 +128,10 @@ dist: \
 	cp vendor/hijs/README.md dist/vendor/hijs
 	# jquery
 	# copy resources/
-	cp -r src/resources dist
+	cp -R ./src/resources ./dist/
 	# copy directories, javascript, json, and image resources from src/examples/
-	rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ dist/examples/
+	# rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ dist/examples/
+	rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' src/examples/ dist/examples/
 
 dist/vendor/jquery: \
 	vendor/jquery/dist/jquery.min.js
@@ -236,11 +238,18 @@ s:
 sl:
 	@echo $(SASS_LIBRARY_FILES)
 
+dist/index.css:
+	sass src/index.sass dist/index.css
+
 dist/examples/%.css: %.sass Makefile
 	sass $< $@
 
 dist/lab/%.css: %.sass Makefile
 	sass $< $@
+
+lab/%.css: %.sass Makefile
+	sass $< $@
+
 
 dist/%.css: %.scss Makefile
 	sass $< $@
@@ -257,4 +266,4 @@ m:
 
 dist/%.html: %.md Makefile
 	@rm -f $@
-	$(MARKDOWN_COMPILER) $< --template src/layouts/layout.html.erb > $@
+	$(MARKDOWN_COMPILER) $< --template src/layouts/$*.html.erb > $@

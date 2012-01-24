@@ -10,8 +10,10 @@ var mc_cx, mc_cy, mc_padding, mc_size,
     mc_mw, mc_mh, mc_tx, mc_ty, mc_stroke, 
     mc_x, mc_downscalex, mc_downx, 
     mc_y, mc_downscaley, mc_downy, 
-    mc_dragged,  
+    mc_dragged,
+    mc_vis1, playback_component,
     mc_vis, mc_plot, mc_time_label,
+    pc_xpos, pc_ypos,
     model_time_formatter = d3.format("5.3f"),
     ns_string_prefix = "time: ";
     ns_string_suffix = " (ns)";
@@ -21,6 +23,15 @@ function modelTimeLabel() {
 };
 
 layout.finishSetupMoleculeContainer = function() {
+  mc_graph.grid_lines = (mc_graph.grid_lines == undefined) | mc_graph.grid_lines;
+  mc_graph.xunits = (mc_graph.xunits == undefined) | mc_graph.xunits;
+  mc_graph.yunits = (mc_graph.yunits == undefined) | mc_graph.yunits;
+  mc_graph.model_time_label = (mc_graph.model_time_label == undefined) | mc_graph.model_time_label;
+  
+  mc_graph.atom_mubers = (mc_graph.atom_mubers == undefined) | mc_graph.atom_mubers;
+  
+  mc_graph.playback_controller = (mc_graph.playback_controller == undefined) | mc_graph.playback_controller;
+  
   mc_cx = moleculecontainer.clientWidth,
   mc_cy = moleculecontainer.clientHeight,
   mc_padding = {
@@ -28,11 +39,14 @@ layout.finishSetupMoleculeContainer = function() {
      "right":                    30, 
      "bottom": mc_graph.xlabel ? 46 : 20,
      "left":   mc_graph.ylabel ? 60 : 45
-  },
+  };
+  if (mc_graph.playback_controller) { mc_padding.bottom += 35 }
   mc_size = { 
     "width":  mc_cx - mc_padding.left - mc_padding.right, 
     "height": mc_cy - mc_padding.top  - mc_padding.bottom 
   },
+  pc_xpos = mc_size.width / 2 - 50,
+  pc_ypos = mc_size.height + (mc_graph.ylabel ? 75 : 30),
   mc_mw = mc_size.width,
   mc_mh = mc_size.height,
   mc_tx = function(d) { return "translate(" + mc_x(d) + ",0)"; },
@@ -115,12 +129,18 @@ layout.finishSetupMoleculeContainer = function() {
     label.attr("transform", function(d) {
       return "translate(" + mc_x(d.x) + "," + mc_y(d.y) + ")";
     });
+    
+    if (mc_graph.playback_controller) {
+      playback_component.position(pc_xpos, pc_ypos);          
+    }
+    
 
   } else {
-    mc_vis = d3.select(moleculecontainer).append("svg:svg")
+    mc_vis1 = d3.select(moleculecontainer).append("svg:svg")
       .attr("width", mc_cx)
-      .attr("height", mc_cy)
-      .append("svg:g")
+      .attr("height", mc_cy);
+
+    mc_vis = mc_vis1.append("svg:g")
         .attr("transform", "translate(" + mc_padding.left + "," + mc_padding.top + ")");
 
     mc_plot = mc_vis.append("svg:rect")
@@ -178,6 +198,9 @@ layout.finishSetupMoleculeContainer = function() {
           .attr("dy","2.4em")
           .style("text-anchor","left");
     }
+    if (mc_graph.playback_controller) {
+      playback_component = new PlaybackComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos);          
+    }
   }
 
   layout.mc_redraw()
@@ -191,61 +214,69 @@ layout.mc_redraw = function() {
   var mc_fx = mc_x.tickFormat(10),
       mc_fy = mc_y.tickFormat(10);
 
-  // Regenerate x-ticks…
-  var mc_gx = mc_vis.selectAll("g.x")
-      .data(mc_x.ticks(10), String)
-      .attr("transform", mc_tx);
+  if (mc_graph.xunits) {
+    // Regenerate x-ticks…
+    var mc_gx = mc_vis.selectAll("g.x")
+        .data(mc_x.ticks(10), String)
+        .attr("transform", mc_tx);
 
-  mc_gx.select("text")
-      .text(mc_fx);
+    mc_gx.select("text")
+        .text(mc_fx);
 
-  var mc_gxe = mc_gx.enter().insert("svg:g", "a")
-      .attr("class", "x")
-      .attr("transform", mc_tx);
+    var mc_gxe = mc_gx.enter().insert("svg:g", "a")
+        .attr("class", "x")
+        .attr("transform", mc_tx);
 
-  mc_gxe.append("svg:line")
-      .attr("stroke", mc_stroke)
-      .attr("y1", 0)
-      .attr("y2", mc_size.height);
+    if (mc_graph.grid_lines) {
+      mc_gxe.append("svg:line")
+          .attr("stroke", mc_stroke)
+          .attr("y1", 0)
+          .attr("y2", mc_size.height);    
+    }
 
-  mc_gxe.append("svg:text")
-      .attr("y", mc_size.height)
-      .attr("dy", "1em")
-      .attr("text-anchor", "middle")
-      .text(mc_fx);
+    mc_gxe.append("svg:text")
+        .attr("y", mc_size.height)
+        .attr("dy", "1em")
+        .attr("text-anchor", "middle")
+        .text(mc_fx);
 
-  mc_gx.exit().remove();
-
-  // Regenerate y-ticks…
-  var mc_gy = mc_vis.selectAll("g.y")
-      .data(mc_y.ticks(10), String)
-      .attr("transform", mc_ty);
-
-  mc_gy.select("text")
-      .text(mc_fy);
-
-  var mc_gye = mc_gy.enter().insert("svg:g", "a")
-      .attr("class", "y")
-      .attr("transform", mc_ty)
-      .attr("background-fill", "#FFEEB6");
-
-  mc_gye.append("svg:line")
-      .attr("stroke", mc_stroke)
-      .attr("x1", 0)
-      .attr("x2", mc_size.width);
-
-  mc_gye.append("svg:text")
-      .attr("x", -3)
-      .attr("dy", ".35em")
-      .attr("text-anchor", "end")
-      .text(mc_fy);
-
-  // update model time display
-  if (mc_graph.model_time_label) {
-    mc_time_label.text(modelTimeLabel());
+    mc_gx.exit().remove();
   }
+
+  if (mc_graph.xunits) {
+    // Regenerate y-ticks…
+    var mc_gy = mc_vis.selectAll("g.y")
+        .data(mc_y.ticks(10), String)
+        .attr("transform", mc_ty);
+
+    mc_gy.select("text")
+        .text(mc_fy);
+
+    var mc_gye = mc_gy.enter().insert("svg:g", "a")
+        .attr("class", "y")
+        .attr("transform", mc_ty)
+        .attr("background-fill", "#FFEEB6");
+
+    if (mc_graph.grid_lines) {
+      mc_gye.append("svg:line")
+          .attr("stroke", mc_stroke)
+          .attr("x1", 0)
+          .attr("x2", mc_size.width);
+    }
+
+    mc_gye.append("svg:text")
+        .attr("x", -3)
+        .attr("dy", ".35em")
+        .attr("text-anchor", "end")
+        .text(mc_fy);
+
+    // update model time display
+    if (mc_graph.model_time_label) {
+      mc_time_label.text(modelTimeLabel());
+    }
   
-  mc_gy.exit().remove();
+    mc_gy.exit().remove();
+  }
 }
 
 layout.update_molecule_radius = function() {
@@ -287,12 +318,27 @@ layout.setup_particles = function() {
         return "translate(" + mc_x(d.x) + "," + mc_y(d.y) + ")";
       });
   
-  labelEnter.append("svg:text")
-      .attr("class", "index")
-      .attr("font-size", font_size)
-      .attr("x", 0)
-      .attr("y", "0.31em")
-      .text(function(d) { return d.index; });
+  if (mc_graph.atom_mubers) {
+    labelEnter.append("svg:text")
+        .attr("class", "index")
+        .attr("font-size", font_size)
+        .attr("x", 0)
+        .attr("y", "0.31em")
+        .text(function(d) { return d.index; })
+  } else {
+    labelEnter.append("svg:text")
+        .attr("class", "index")
+        .attr("font-size", font_size * 1.5)
+        .attr("x", 0)
+        .attr("y", "0.31em")
+        .text(function(d) {
+          if (layout.coulomb_forces_checkbox.checked) {
+            return (mc_x(d.charge) > 0) ? "+" : "-"
+          } else {
+            return ""
+          }
+        })
+  }
 
   particle = layout.mc_container.selectAll("circle").data(atoms);
 
@@ -302,7 +348,7 @@ layout.setup_particles = function() {
       .attr("cy", function(d) { return mc_y(d.y); })
       .style("fill", function(d, i) {
         if (layout.coulomb_forces_checkbox.checked) {
-          return (mc_x(d.charge) > 0) ? "#2ca02c" : "#a02c2c"
+          return (mc_x(d.charge) > 0) ? "#5A63DB" : "#a02c2c"
         } else {
           return "#2ca02c"
         }

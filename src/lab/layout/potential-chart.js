@@ -34,7 +34,7 @@ function finishSetupPotentialChart() {
 
   // x-scale
   lj_x = d3.scale.linear()
-    .domain([lj_graph.xmin, lj_graph.xmax])
+    .domain([lj_data.xmin, lj_data.xmax])
     .range([0, lj_mw]),
 
   // drag x-axis logic
@@ -42,7 +42,7 @@ function finishSetupPotentialChart() {
 
   // y-scale (inverted domain)
   lj_y = d3.scale.linear()
-      .domain([lj_graph.ymax, lj_graph.ymin])
+      .domain([lj_data.ymax, lj_data.ymin])
       .nice()
       .range([0, lj_mh])
       .nice(),
@@ -54,11 +54,11 @@ function finishSetupPotentialChart() {
   // drag x-axis logic
   lj_downy = Math.NaN,
   lj_dragged = null,
-  lj_selected = lj_graph.variables[0],
+  lj_selected = lj_data.variables[0],
 
   // drag coefficients logic
   coefficient_dragged, 
-  coefficient_selected = lj_graph.variables[0];
+  coefficient_selected = lj_data.variables[0];
   
   if (undefined !== lj_vis) {
     d3.select(lj_potential_chart).select("svg")
@@ -266,7 +266,7 @@ layout.lj_redraw = function() {
 
 function lj_update() {
   var epsilon_circle = lj_vis.selectAll("circle")
-      .data(lj_graph.variables, function(d) { return d });
+      .data(lj_data.variables, function(d) { return d });
 
   var lj_lines = lj_vis.select("path").attr("d", lj_line(lennard_jones_potential)),
       lj_x_extent = lj_x.domain()[1] - lj_x.domain()[0];
@@ -278,7 +278,7 @@ function lj_update() {
       .attr("r", 8.0)
       .on("mousedown", function(d) {
         if (d.coefficient == "epsilon") {
-          d.x = lj_graph.coefficients.rmin;
+          d.x = lj_data.coefficients.rmin;
         } else {
           d.y = 0
         }
@@ -305,7 +305,7 @@ function lj_mousemove() {
   var m = d3.svg.mouse(lj_vis.node()),
     newx, newy;
   if (coefficient_dragged.coefficient == "epsilon") {
-    newx = lj_graph.coefficients.rmin;
+    newx = lj_data.coefficients.rmin;
     newy = lj_y.invert(Math.max(0, Math.min(lj_size.height, m[1])));
     if (newy > lj_epsilon_max) { newy = lj_epsilon_max };
     if (newy < lj_epsilon_min) { newy = lj_epsilon_min };
