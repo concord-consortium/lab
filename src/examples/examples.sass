@@ -7,9 +7,8 @@ body
   width: 920px
 
 #description-right
-  float: right
-  padding: 0em 1em 0em 1em
-  width: 400px
+  padding: 0em 0.5em
+  width: 90%
   font: 16px sans-serif
 
 #fullscreen img
@@ -138,25 +137,37 @@ h2
   margin: 0px 5px 0px 0px
   padding: 0px
   ul
-    display: inline-block
     list-style-type: none
     margin: 0.5em 0em 0.5em 0em
+    width: 100%
     li
-      line-height: 1.0em
-      display: inline-table
+      display: table-cell
       vertical-align: middle
-      margin: 0
-      padding: 0
+      margin: 0em
+      padding: 0em 1em
       fieldset
         height: 2.2em
-      ul
-        margin: 0px
-        li
-          margin: 0px
+    li.top
+      vertical-align: top
+    li.baseline
+      vertical-align: baseline
+  ul.twox
+    margin: 0em 0em 0em 0em
+    li
+      margin: 0em
+      padding-bottom: 0.5em
+    li.top
+      vertical-align: top
+      padding-bottom: 0.5em
+    li.bottom
+      vertical-align: bottom
+      padding-bottom: 0em
   ul.right
     float: right
 
 #controls
+  text-align: center
+  width: 100%
   ul
     display: inline-block
     list-style-type: none
@@ -173,6 +184,9 @@ h2
         vertical-align: middle
   ul.right
     float: right
+
+#controls.left
+  text-align: left
 
 #benchmarks
   margin: 0em
