@@ -119,7 +119,7 @@ layout.setupFullScreenKEChart = function() {
 // Simple Screen Layout
 
 layout.setupSimpleMoleculeContainer = function() {
-  var size = Math.min(getPageHeight() * 0.8, window.innerWidth * 0.6);
+  var size = Math.min(getPageHeight() * 0.75, window.innerWidth * 0.6);
   moleculecontainer.style.width = size +"px";
   moleculecontainer.style.height = size +"px";
   layout.finishSetupMoleculeContainer();
