@@ -1,0 +1,100 @@
+!!! 5
+%html
+  %head
+    %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
+    %title Simple Atoms Model
+    %script{:src => "../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/d3/d3.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/d3/d3.geo.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/d3/d3.geom.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/d3/d3.layout.js", :type => "text/javascript"}    
+    %script{:src => "../../vendor/d3/d3.time.js", :type => "text/javascript"}    
+    %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}    
+    %script{:src => "../../vendor/science.js/science.js", :type => "text/javascript"}    
+    %script{:src => "../../vendor/science.js/science.stats.js", :type => "text/javascript"}    
+    %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "../../lab/css/components.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "application.css", :rel => "stylesheet", :type => "text/css"}/
+  %body
+    #header
+      %ul
+        %li.title
+          %a(href="http://lab.dev.concord.org/examples/simple-atoms-model-controls-in-text/simple-atoms-model-controls-in-text.html") Simple Atoms Model with model controls in text
+      %ul.right
+        %li
+        %img#fullscreen(class="alignleft size-full wp-image-1880" src="../../resources/layout/fullscreen.gif" width="32" height="32")
+    #viz
+      %ul
+        %li.top
+          #molecule-container
+          
+        %li
+          #thermometer
+          #therm_text
+        %li.top
+          #description-right
+            %p
+              A computational simulation of a collection of simple atoms with the forces between
+              the atoms modeled with both the Lennard-Jones Potential which models Pauli repulsion at 
+              short ranges and the attractive van der Waals forces that act over longer-ranges.
+            %p
+              Adijust this slider to vary the strength of the 
+              %b van der Waals attraction:
+            .component_group
+              .slider_container
+                .left_half
+                  stronger
+                .right_half
+                  weaker
+                .content
+                  #attraction_slider{  'data-label' => "attractive force"}
+                .below
+                  Attractive Force
+            %p
+              You can also change the 
+              %b temperature 
+              of the simulation by adjusting this slider:
+            .component_group
+              .slider_container
+                .left_half
+                  colder
+                .right_half
+                  hotter
+                .content
+                  #temperature_slider{  'data-label' => "temperature"}
+                .below
+                  Temperature
+            %p
+              Charges of +1 or -1 are evenly distributed among the atoms. When the Coulomb particle 
+              force interaction checkbox is enabled atoms with the opposite charges experience an 
+              attractive force. Atoms with a positive charge appear blue, atoms with a negative 
+              charge appear red.
+            .component_group
+              .slider_container
+                .left_half
+                  Force Interactions
+                .right_half
+                .content
+                  %div{:style=> "width: 200px; height: 20px; display: inline-block; margin: 5px"}
+                    Coulomb
+                    %input(id="coulomb-forces-checkbox" type="checkbox" checked)
+                .below
+                  %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
+
+        -# %li
+        -#   %fieldset
+        -#     %legend Particle Force Interactions
+        -#     %label 
+        -#       Lennard-Jones
+        -#       <D-x>%input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
+        -#     %label
+        -#       Coulomb
+        -#       %input(id="coulomb-forces-checkbox" type="checkbox" checked)
+    
+    %script{:src => "../../lab/lab.layout.js", :type => "text/javascript"}
+    %script{:src => "../../lab/lab.benchmark.js", :type => "text/javascript"}
+    %script{:src => "../../lab/lab.arrays.js", :type => "text/javascript"}
+    %script{:src => "../../lab/lab.graphx.js", :type => "text/javascript"}
+    %script{:src => "../../lab/lab.molecules.js", :type => "text/javascript"}
+    %script{:src => "../../lab/lab.components.js", :type => "text/javascript"}
+    %script{:src => "application.js", :type => "text/javascript"}
