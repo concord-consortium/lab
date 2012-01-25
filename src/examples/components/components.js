@@ -26,7 +26,7 @@ var autostart = true,
 // Setup model_player
 // ------------------------------------------------------------
 var model_player = new ModelPlayer(model);
-
+var player  = new PlaybackBarComponent("#player",model_player)
 // ------------------------------------------------------------
 // Setup therm, epsilon_slider & sigma_slider components.
 // ------------------------------------------------------------
@@ -73,7 +73,7 @@ var mc_graph = {
   // title:               "Simple Molecules",
   // xlabel:              "X position (nm)",
   // ylabel:              "Y position (nm)",
-  playback_controller:  true,
+  playback_controller:  false,
   model_time_label:     false,
   grid_lines:           false,
   xunits:               false,

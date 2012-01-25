@@ -1,22 +1,41 @@
-#molecule-container
-  position: relative
+#app-container
   background-color: #F7F2C5
-  width: 200px
-  height: 200px
   border: solid 1px #ccc
   margin: 2px 0px 2px 0px
-  circle
-    stroke: darkred
-    stroke-width: 1.0px
-    fill: #fff
-    fill-opacity: .2
-    cursor: move
-    &.selected
-      fill: #ff7f0e
-      stroke: #ff7f0e
-  rect
-    border: solid 1px #ccc
-
+  #molecule-container
+    position: relative
+    background-color: inherit
+    border: none
+    width: 200px
+    height: 200px
+    margin: 2px 0px 2px 0px
+    circle
+      stroke: darkred
+      stroke-width: 1.0px
+      fill: #fff
+      fill-opacity: .2
+      cursor: move
+      &.selected
+        fill: #ff7f0e
+        stroke: #ff7f0e
+    rect
+      border: solid 1px #ccc
+  .components
+    display: block
+    width: 90%
+    margin: auto
+    text-align: center
+    .component_group
+      display: inline-block
+      vertical-align: bottom
+      .slider
+        width: 100px
+    #player
+      display: inline-block
+      background-color: white
+      margin: auto
+      margin-bottom: 4px
+      vertical-align: bottom
 
 div.tooltip
   position: absolute
