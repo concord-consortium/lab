@@ -102,7 +102,8 @@ lab:
 	mkdir -p lab/css
 
 dist: \
-	dist/vendor/jquery
+	dist/vendor/jquery\
+	dist/vendor/jquery-ui
 	mkdir -p dist/examples
 	# copy modules from lab/
 	cp -r lab dist
@@ -140,6 +141,13 @@ dist/vendor/jquery: \
 	cp vendor/jquery/MIT-LICENSE.txt dist/vendor/jquery
 	cp vendor/jquery/README.md dist/vendor/jquery
 
+dist/vendor/jquery-ui:
+	mkdir -p dist/vendor/jquery-ui/js
+	cp vendor/jquery-ui/development-bundle/GPL-LICENSE.txt dist/vendor/jquery-ui
+	cp vendor/jquery-ui/development-bundle/MIT-LICENSE.txt dist/vendor/jquery-ui
+	cp vendor/jquery-ui/js/jquery-ui-1.8.17.custom.min.js dist/vendor/jquery-ui/js/jquery-ui.custom.min.js
+	cp -R vendor/jquery-ui/css dist/vendor/jquery-ui
+	
 lab/lab.js: \
 	src/lab/lab-module.js \
 	lab/lab.grapher.js \

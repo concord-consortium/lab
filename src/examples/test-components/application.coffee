@@ -3,6 +3,7 @@ $(document).ready =>
   
   simple_slider = new SliderComponent("#simple_slider")
   slider = new SliderComponent("#slider")
+  jslider = new JSliderComponent("#jslider")
 
   ff_button = new ButtonComponent("#button1",'pause')
   ff_button.add_action =>

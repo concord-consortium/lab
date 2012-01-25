@@ -7,6 +7,11 @@
     %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}    
     %link{:href => "../../lab/css/components.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "application.css", :rel => "stylesheet", :type => "text/css"}/
+
+    -# Testing JQuery UI
+    %script{:src => "../../vendor/jquery-ui/js/jquery-ui.custom.min.js", :type => "text/javascript"}    
+    %link{:href => "../../vendor/jquery-ui/css/custom-theme/jquery-ui-1.8.17.custom.css", :rel => "stylesheet", :type => "text/css"}/
+
   %body
     #header
       %a(href="http://lab.dev.concord.org/test_components/application.html") 
@@ -22,6 +27,13 @@
         Slider (with value label):
         %br
         #slider{'data-label' => 'value'}
+        %br
+
+      .example
+        JQuery-UI Slider (with value label):
+        %br
+        #jslider{'data-label' => 'value', 'data-label-id' => "#jslider_label"}
+        #jslider_label{:style => "font-size: 0.4em;"}
         %br
 
       .example
