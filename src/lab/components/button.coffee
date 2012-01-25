@@ -84,11 +84,14 @@ class ToggleButtonComponent extends ButtonComponent
     if button
       button.dom_element.removeClass('hidden')
 
-  enable_next_button: ->
+  set_active: (index) ->
     this.disable_button(@button_index)
-    @button_index = @button_index + 1
+    @button_index = index
     @button_index = @button_index % @buttons.length
     this.enable_button(@button_index)
+
+  enable_next_button: ->
+    this.set_active(@button_index + 1)
 
   current_button: ->
     if @button_index < @buttons.length
@@ -146,6 +149,8 @@ class PlaybackBarComponent extends ButtonBarComponent
     pause.add_action =>
       @playable.stop()
     @toggle = new ToggleButtonComponent(null, [play,pause])
+    @play_index = 0
+    @stop_index = 1
     reset  = new ButtonComponent(null,'reset')
     reset.add_action =>
       @playable.seek(1)
@@ -167,12 +172,10 @@ class PlaybackBarComponent extends ButtonBarComponent
     this.play()
 
   stop: ->
-    @toggle.disable_button(1)
-    @toggle.enable_button(0)
+    @toggle.set_active(@play_index)
 
   play: ->
-    @toggle.disable_button(0)
-    @toggle.enable_button(1)
+    @toggle.set_active(@stop_index)
 
 root.PlaybackBarComponent = PlaybackBarComponent
 
