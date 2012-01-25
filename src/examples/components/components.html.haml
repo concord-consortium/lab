@@ -15,6 +15,11 @@
     %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "../../lab/css/components.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "components.css", :rel => "stylesheet", :type => "text/css"}/
+
+    -# Testing JQuery UI
+    %script{:src => "../../vendor/jquery-ui/js/jquery-ui.custom.min.js", :type => "text/javascript"}    
+    %link{:href => "../../vendor/jquery-ui/css/custom-theme/jquery-ui-1.8.17.custom.css", :rel => "stylesheet", :type => "text/css"}/
+
   %body
     #header
       %ul
@@ -30,15 +35,16 @@
             #molecule-container
             .components
               .component_group
-                .slider_container
+                
+                .slider_container{:style => "width: 100px;"}
                   .left_half
-                    stronger
+                    more
                   .right_half
-                    weaker
-                  .content
-                    #attraction_slider
-                  .below
-                    Attractive Force
+                    less
+                  .content{:style => "float: none; margin: 6px; clear: both; vertical-align: bottom; height: 10px;"}
+                    #attraction_slider{:style => "margin: 4px;"}
+                  .bottom
+                    attraction
               #player
           
         %li
