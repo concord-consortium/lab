@@ -26,7 +26,20 @@
     #viz
       %ul
         %li.top
-          #molecule-container
+          #app-container
+            #molecule-container
+            .components
+              .component_group
+                .slider_container
+                  .left_half
+                    stronger
+                  .right_half
+                    weaker
+                  .content
+                    #attraction_slider
+                  .below
+                    Attractive Force
+              #player
           
         %li
           #thermometer
@@ -40,16 +53,6 @@
             %p
               Adijust this slider to vary the strength of the 
               %b van der Waals attraction:
-            .component_group
-              .slider_container
-                .left_half
-                  stronger
-                .right_half
-                  weaker
-                .content
-                  #attraction_slider{  'data-label' => "attractive force"}
-                .below
-                  Attractive Force
             %p
               You can also change the 
               %b temperature 

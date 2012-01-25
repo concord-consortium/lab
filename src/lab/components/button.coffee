@@ -145,23 +145,34 @@ class PlaybackBarComponent extends ButtonBarComponent
     pause = new ButtonComponent(null,'pause')
     pause.add_action =>
       @playable.stop()
-    toggle = new ToggleButtonComponent(null, [play,pause])
+    @toggle = new ToggleButtonComponent(null, [play,pause])
     reset  = new ButtonComponent(null,'reset')
     reset.add_action =>
-      @playable.seek(0)
+      @playable.seek(1)
+      this.play()
     this.add_button(reset)
     unless simplified
       forward = new ButtonComponent(null,'forward')
       forward.add_action =>
         @playable.forward()
-
+        this.stop()
       this.add_button(forward)
-    this.add_button(toggle)
+    this.add_button(@toggle)
     unless simplified
       back = new ButtonComponent(null,'back')
       back.add_action =>
         @playable.back()
+        this.stop()
       this.add_button(back)
+    this.play()
+
+  stop: ->
+    @toggle.disable_button(1)
+    @toggle.enable_button(0)
+
+  play: ->
+    @toggle.disable_button(0)
+    @toggle.enable_button(1)
 
 root.PlaybackBarComponent = PlaybackBarComponent
 
