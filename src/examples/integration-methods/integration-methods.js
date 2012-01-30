@@ -67,7 +67,7 @@ function newton_stormer_verlet_variant(x, v, a, n) {
   return results
 }
 
-function velocity_verlet_variant(x, v, a, n) {
+function velocity_verlet_leapfrog(x, v, a, n) {
   var i, dt = 1/n, old_a = a, results = [];
   i = -1; while(++i < n) {
     results.push([formatter(x), formatter(v)])
@@ -106,6 +106,11 @@ var samples_to_run = [
     run: newtons_second_law
   },
   {
+    name: "Leapfrog Velocity Verlet",
+    columns: ["position", "velocity"],
+    run: velocity_verlet_leapfrog
+  },
+  {
     name: "simple Euler",
     columns: ["position", "velocity"],
     run: simple_euler
@@ -129,12 +134,7 @@ var samples_to_run = [
     name: "Newton-Stormer Verlet Variant",
     columns: ["position", "velocity"],
     run: newton_stormer_verlet_variant
-  },
-  {
-    name: "Velocity Verlet Variant",
-    columns: ["position", "velocity"],
-    run: velocity_verlet_variant
-  },
+  }
 ];
 
 window.onload = function() {
