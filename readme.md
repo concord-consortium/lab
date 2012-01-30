@@ -8,6 +8,10 @@ HTML5-based open source scientific models, visualizations, graphing, and probewa
 - The tests need to be expanded a great deal.
 - Probeware needs to be added.
 - Molecular model in progress.
+- Include JQuery UI as a git submodule. (note: its a bit complicated,
+  because we do a custom build of JQuery UI with only a few components,
+  and only one simpletheme)
+
 
 ## Molecular Modeling Examples:
 
@@ -155,6 +159,20 @@ Whenever guard is running and you save changes to any files in the src/ director
 the `dist/` directory will be updated. 
 
 To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small "LR" button on the toolbar.
+
+### Serving `dist/` using POW
+
+You can also serve the dist directory using [POW](http://pow.cx/).
+
+1. install pow: `curl get.pow.cx | sh`
+2. create a lab folder in `~/.pow/`  by doing `mkdir -p ~/.pow/lab`
+3. symlink the dist folder for the lab project `cd ~/.pow/lab; ln -s
+   <lab/dist> ./public`
+4. Thats it! your app should be available at `http://lab.dev` assuming
+   that you had already built the lab project, and the `dist` directory
+   exists.
+
+
 
 ### Contributing to Lab
 
@@ -512,6 +530,8 @@ directory when either `make` or `bin/guard` are run.
 - `vendor/modernizr/`
 - `vendor/science.js/`
 - `vendor/sizzle/`
+- `vendor/jquery/`
+- `vendor/jquery-ui`
 
 [d3.js](http://mbostock.github.com/d3/), [hijs](https://github.com/cloudhead/hijs), and 
 [science.js](https://github.com/jasondavies/science.js) are all licensed under a BSD license 
@@ -581,6 +601,10 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 
 **[modernizr](https://github.com/Modernizr/Modernizr)**
 
+**[JQuery](http://jquery.com/)**
+
+**[JQuery-UI](http://jqueryui.com/)**
+
 ### Development Dependencies
 
 **[node](http://nodejs.org/)**
@@ -594,6 +618,8 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 
 **[node-inspector](https://github.com/dannycoates/node-inspector)**
 - [npm package for node-inspector](http://search.npmjs.org/#/node-inspector)
+
+
 
 **[npm](http://npmjs.org/)**
 
