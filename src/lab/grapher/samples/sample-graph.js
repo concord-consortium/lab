@@ -1,47 +1,69 @@
 grapher.sampleGraph = function(array) {
-  
-  var size = [890, 450],
-      padding = [20, 30, 20, 40], // top right bottom left
-      mw = size[0] - padding[1] - padding[3],
-      mh = size[1] - padding[0] - padding[2],
+
+  var graph = {};
+
+  graph.xmax    = 60;
+  graph.xmin    = 0;
+
+  graph.ymax    = 40;
+  graph.ymin    = 0;
+
+  graph.title   = "Simple Graph";
+  graph.xlabel  = "X Axis";
+  graph.ylabel  = "Y Axis";
+
+  var chart = document.getElementById("chart"),
+      cx = chart.clientWidth,
+      cy = chart.clientHeight,
+      padding = {
+         "top":    graph.title  ? 30 : 20,
+         "right":                 30,
+         "bottom": graph.xlabel ? 40 : 10,
+         "left":   graph.ylabel ? 70 : 45
+      },
+      size = {
+        "width":  cx - padding.left - padding.right,
+        "height": cy - padding.top  - padding.bottom
+      },
       tx = function(d) { return "translate(" + x(d) + ",0)"; },
       ty = function(d) { return "translate(0," + y(d) + ")"; },
       stroke = function(d) { return d ? "#ccc" : "#666"; },
       points = grapher.indexedData(d3.range(1, 60).map(function(i) { return i , 15 + Math.random() * 10 ; }))
-      // x = d3.time.scale()
-      //     .domain([0,60])
-      //     .range([0,mw]),
+
       // x-scale
       x = d3.scale.linear()
-          .domain([15,45])
-          .range([0, mw]),
+          .domain([graph.xmin, graph.xmax])
+          .range([0, size.width]),
+
       // drag x-axis logic
       downscalex = x.copy(),
       downx = Math.NaN,
+
       // y-scale (inverted domain)
       y = d3.scale.linear()
-          .domain([40, 10])
-          .range([0, mh]),
+          .domain([graph.ymax, graph.ymin])
+          .nice()
+          .range([0, size.height])
+          .nice(),
       line = d3.svg.line()
           .x(function(d, i) { return x(points[i].x); })
           .y(function(d, i) { return y(points[i].y); }),
-      // drag x-axis logic
+
+      // drag y-axis logic
       downscaley = y.copy(),
       downy = Math.NaN,
-      dragged = null,
-      selected = points[0];
 
-  var vis = d3.select("#chart").append("svg:svg")
-      .attr("width", size[0] + padding[3] + padding[1])
-      .attr("height", size[1] + padding[0] + padding[2])
-      // .style("background-fill", "#FFEEB6")
+      dragged = selected = null;
+
+  var vis = d3.select(chart).append("svg:svg")
+      .attr("width", cx)
+      .attr("height", cy)
       .append("svg:g")
-        .attr("transform", "translate(" + padding[3] + "," + padding[0] + ")");
+        .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
-  var graph = vis.append("svg:rect")
-      .attr("width", size[0])
-      .attr("height", size[1])
-      // .attr("stroke", "none")
+  var plot = vis.append("svg:rect")
+      .attr("width", size.width)
+      .attr("height", size.height)
       .style("fill", "#EEEEEE")
       .attr("pointer-events", "all")
       .call(d3.behavior.zoom().on("zoom", redraw))
@@ -54,42 +76,53 @@ grapher.sampleGraph = function(array) {
         }
       });
 
-  vis.append("svg:path")
-      .attr("class", "line")
-      .attr("d", line(points));
+  vis.append("svg:svg")
+      .attr("top", 0)
+      .attr("left", 0)
+      .attr("width", size.width)
+      .attr("height", size.height)
+      .attr("viewBox", "0 0 "+size.width+" "+size.height)
+      .append("svg:path")
+          .attr("class", "line")
+          .attr("d", line(points))
+
+  // add Chart Title
+  if (graph.title) {
+    vis.append("svg:text")
+        .text(graph.title)
+        .attr("x", size.width/2)
+        .attr("dy","-1em")
+        .style("text-anchor","middle");
+  }
+
+  // Add the x-axis label
+  if (graph.xlabel) {
+    vis.append("svg:text")
+        .text(graph.xlabel)
+        .attr("x", size.width/2)
+        .attr("y", size.height)
+        .attr("dy","2.4em")
+        .style("text-anchor","middle");
+  }
+
+  // add y-axis label
+  if (graph.ylabel) {
+    vis.append("svg:g")
+        .append("svg:text")
+            .text( graph.ylabel)
+            .style("text-anchor","middle")
+            .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
+  }
 
   d3.select(window)
       .on("mousemove", mousemove)
       .on("mouseup", mouseup)
       .on("keydown", keydown);
 
-  // Add interpolator dropdown
-  d3.select("#interpolate")
-      .on("change", function() {
-        line.interpolate(this.value);
-        update();
-      })
-    .selectAll("option")
-      .data([
-        "linear",
-        "step-before",
-        "step-after",
-        "basis",
-        "basis-open",
-        "basis-closed",
-        "cardinal",
-        "cardinal-open",
-        "cardinal-closed",
-        "monotone"
-      ])
-    .enter().append("option")
-      .attr("value", String)
-      .text(String);
-
   function update() {
     var lines = vis.select("path").attr("d", line(points));
-        
-    var circle = vis.selectAll("circle")
+
+    var circle = vis.select("svg").selectAll("circle")
         .data(points, function(d) { return d; });
 
     circle.enter().append("svg:circle")
@@ -101,10 +134,6 @@ grapher.sampleGraph = function(array) {
           selected = dragged = d;
           update();
         });
-      // .transition()
-      //   .duration(100)
-      //   .ease("elastic")
-      //   .attr("r", 6.0);
 
     circle
         .attr("class", function(d) { return d === selected ? "selected" : null; })
@@ -122,8 +151,8 @@ grapher.sampleGraph = function(array) {
   function mousemove() {
     if (!dragged) return;
     var m = d3.svg.mouse(vis.node());
-    dragged.x = x.invert(Math.max(0, Math.min(size[0], m[0])));
-    dragged.y = y.invert(Math.max(0, Math.min(size[1], m[1])));
+    dragged.x = x.invert(Math.max(0, Math.min(size.width, m[0])));
+    dragged.y = y.invert(Math.max(0, Math.min(size.height, m[1])));
     update();
   }
 
@@ -172,23 +201,22 @@ grapher.sampleGraph = function(array) {
     gxe.append("svg:line")
         .attr("stroke", stroke)
         .attr("y1", 0)
-        .attr("y2", size[1]);
+        .attr("y2", size.height);
 
-     gxe.append("svg:text")
-         .attr("y", size[1])
-         .attr("dy", "1em")
-         .attr("text-anchor", "middle")
-         .text(fx)
-         .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-         .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-         .on("mousedown", function(d) {
-              var p = d3.svg.mouse(vis[0][0]);
-              downx = x.invert(p[0]);
-              downscalex = null;
-              downscalex = x.copy();
-              // d3.behavior.zoom().off("zoom", redraw);
-         });
-      
+    gxe.append("svg:text")
+        .attr("y", size.height)
+        .attr("dy", "1em")
+        .attr("text-anchor", "middle")
+        .text(fx)
+        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+        .on("mousedown", function(d) {
+             var p = d3.svg.mouse(vis[0][0]);
+             downx = x.invert(p[0]);
+             downscalex = null;
+             downscalex = x.copy();
+             // d3.behavior.zoom().off("zoom", redraw);
+        });
 
     gx.exit().remove();
 
@@ -208,7 +236,7 @@ grapher.sampleGraph = function(array) {
     gye.append("svg:line")
         .attr("stroke", stroke)
         .attr("x1", 0)
-        .attr("x2", size[0]);
+        .attr("x2", size.width);
 
     gye.append("svg:text")
         .attr("x", -3)
@@ -223,7 +251,6 @@ grapher.sampleGraph = function(array) {
              downscaley = y.copy();
              // d3.behavior.zoom().off("zoom", redraw);
         });
-      
 
     gy.exit().remove();
     update();
