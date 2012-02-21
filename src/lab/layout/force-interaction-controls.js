@@ -14,7 +14,9 @@ function lennardJonesInteractionHandler() {
     };
 };
 
-layout.lennard_jones_forces_checkbox.onchange = lennardJonesInteractionHandler;
+if (layout.lennard_jones_forces_checkbox) {
+  layout.lennard_jones_forces_checkbox.onchange = lennardJonesInteractionHandler;
+}
 
 layout.coulomb_forces_checkbox = document.getElementById("coulomb-forces-checkbox");
 
@@ -27,4 +29,6 @@ function coulombForcesInteractionHandler() {
     layout.setup_particles()
 };
 
-layout.coulomb_forces_checkbox.onchange = coulombForcesInteractionHandler;
+if (layout.coulomb_forces_checkbox) {
+  layout.coulomb_forces_checkbox.onchange = coulombForcesInteractionHandler;
+}
