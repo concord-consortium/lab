@@ -53,6 +53,7 @@ all: \
 clean:
 	rm -rf dist
 	rm -rf lab
+	rm -rf node_modules
 
 vendor/d3/.git:
 	git submodule update --init --recursive
@@ -147,7 +148,7 @@ dist/vendor/jquery-ui:
 	cp vendor/jquery-ui/development-bundle/MIT-LICENSE.txt dist/vendor/jquery-ui
 	cp vendor/jquery-ui/js/jquery-ui-1.8.17.custom.min.js dist/vendor/jquery-ui/js/jquery-ui.custom.min.js
 	cp -R vendor/jquery-ui/css dist/vendor/jquery-ui
-	
+
 lab/lab.js: \
 	src/lab/lab-module.js \
 	lab/lab.grapher.js \
