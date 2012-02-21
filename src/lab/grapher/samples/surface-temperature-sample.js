@@ -1,5 +1,5 @@
 grapher.surfaceTemperatureSampleGraph = function(global_temperatures) {
-  
+
   var graph = {};
 
   graph.xmax    = 2000;
@@ -11,35 +11,33 @@ grapher.surfaceTemperatureSampleGraph = function(global_temperatures) {
   graph.title   = "Earth's Surface Temperature: years 500-2009";
   graph.xlabel  = "Year";
   graph.ylabel  = "Degrees C";
-  
+
   var chart = document.getElementById("chart"),
       cx = chart.clientWidth,
       cy = chart.clientHeight,
       padding = {
-         "top":    graph.title  ? 30 : 20, 
-         "right":                 30, 
+         "top":    graph.title  ? 30 : 20,
+         "right":                 30,
          "bottom": graph.xlabel ? 40 : 10,
          "left":   graph.ylabel ? 70 : 45
       },
-      size = { 
-        "width":  cx - padding.left - padding.right, 
-        "height": cy - padding.top  - padding.bottom 
+      size = {
+        "width":  cx - padding.left - padding.right,
+        "height": cy - padding.top  - padding.bottom
       },
-      mw = size.width,
-      mh = size.height,
       tx = function(d) { return "translate(" + x(d) + ",0)"; },
       ty = function(d) { return "translate(0," + y(d) + ")"; },
       stroke = function(d) { return d ? "#ccc" : "#666"; },
 
       surface_temperature = global_temperatures
-        .temperature_anomolies.map(function(e) { 
-          return [e[0], e[1] + global_temperatures.global_surface_temperature_1961_1990]; 
+        .temperature_anomolies.map(function(e) {
+          return [e[0], e[1] + global_temperatures.global_surface_temperature_1961_1990];
         }),
 
       // x-scale
       x = d3.scale.linear()
           .domain([graph.xmin, graph.xmax])
-          .range([0, mw]),
+          .range([0, size.width]),
 
       // drag x-axis logic
       downscalex = x.copy(),
@@ -49,17 +47,17 @@ grapher.surfaceTemperatureSampleGraph = function(global_temperatures) {
       y = d3.scale.linear()
           .domain([graph.ymax, graph.ymin])
           .nice()
-          .range([0, mh])
+          .range([0, size.height])
           .nice(),
       line = d3.svg.line()
           .x(function(d, i) { return x(surface_temperature[i][0]); })
           .y(function(d, i) { return y(surface_temperature[i][1]); }),
 
-      // drag x-axis logic
+      // drag y-axis logic
       downscaley = y.copy(),
       downy = Math.NaN,
-      dragged = null,
-      selected = surface_temperature[0];
+
+      dragged = selected = null;
 
   var vis = d3.select("#chart").append("svg:svg")
       .attr("width", cx)
@@ -90,7 +88,7 @@ grapher.surfaceTemperatureSampleGraph = function(global_temperatures) {
       .attr("viewBox", "0 0 "+size.width+" "+size.height)
       .append("svg:path")
           .attr("class", "line")
-          .attr("d", line(surface_temperature))
+          .attr("d", line(surface_temperature));
 
   // add Chart Title
   if (graph.title) {
@@ -129,15 +127,15 @@ grapher.surfaceTemperatureSampleGraph = function(global_temperatures) {
   // draw the data
   //
   function update() {
-    var lines = vis.select("path").attr("d", line(surface_temperature)),
-        x_extent = x.domain()[1] - x.domain()[0];
-        
+    var lines = vis.select("path").attr("d", line(surface_temperature));
+
     var circle = vis.select("svg").selectAll("circle")
         .data(surface_temperature, function(d) { return d; });
 
     circle.enter().append("svg:circle")
         .attr("class", function(d) { return d === selected ? "selected" : null; })
-        .attr("cx",    function(d) { return x(d[0]); })
+        .attr("cx",    function(d) { return
+          x(d[0]); })
         .attr("cy",    function(d) { return y(d[1]); })
         .attr("r", 4.0)
         // .attr("r", function(d) { return 800 / (x.domain()[1] - x.domain()[0]); })
@@ -220,21 +218,20 @@ grapher.surfaceTemperatureSampleGraph = function(global_temperatures) {
         .attr("y1", 0)
         .attr("y2", size.height);
 
-     gxe.append("svg:text")
-         .attr("y", size.height)
-         .attr("dy", "1em")
-         .attr("text-anchor", "middle")
-         .text(fx)
-         .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-         .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-         .on("mousedown", function(d) {
-              var p = d3.svg.mouse(vis[0][0]);
-              downx = x.invert(p[0]);
-              downscalex = null;
-              downscalex = x.copy();
-              // d3.behavior.zoom().off("zoom", redraw);
-         });
-      
+    gxe.append("svg:text")
+        .attr("y", size.height)
+        .attr("dy", "1em")
+        .attr("text-anchor", "middle")
+        .text(fx)
+        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+        .on("mousedown", function(d) {
+             var p = d3.svg.mouse(vis[0][0]);
+             downx = x.invert(p[0]);
+             downscalex = null;
+             downscalex = x.copy();
+             // d3.behavior.zoom().off("zoom", redraw);
+        });
 
     gx.exit().remove();
 
@@ -269,7 +266,7 @@ grapher.surfaceTemperatureSampleGraph = function(global_temperatures) {
              downscaley = y.copy();
              // d3.behavior.zoom().off("zoom", redraw);
         });
-      
+
 
     gy.exit().remove();
     update();
