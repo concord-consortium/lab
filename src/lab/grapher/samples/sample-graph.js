@@ -66,7 +66,7 @@ grapher.sampleGraph = function(array) {
       .attr("height", size.height)
       .style("fill", "#EEEEEE")
       .attr("pointer-events", "all")
-      .call(d3.behavior.zoom().on("zoom", redraw))
+      .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", redraw))
       .on("mousedown", function() {
         if (d3.event.altKey) {
             points.push(selected = dragged = d3.svg.mouse(vis.node()));
