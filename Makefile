@@ -35,7 +35,7 @@ LAB_JS_FILES = \
 	lab/lab.js
 
 all: \
-	vendor/d3/.git \
+	vendor/d3 \
 	node_modules \
 	bin \
 	lab \
@@ -54,18 +54,12 @@ clean:
 	rm -rf dist
 	rm -rf lab
 	rm -rf node_modules
+	git submodule update --init --recursive
+	rm -f vendor/jquery/dist/jquery.min.js
 
-vendor/d3/.git:
+vendor/d3:
 	git submodule update --init --recursive
 
-vendor/jquery/.git:
-	git submodule update --init --recursive
-
-vendor/jquery/dist/jquery.min.js: \
-	vendor/jquery/.git
-	cd vendor/jquery; make
-
-node_modules:
 node_modules: node_modules/coffee-script \
 	node_modules/jsdom \
 	node_modules/uglify-js	\
@@ -103,7 +97,7 @@ lab:
 	mkdir -p lab/css
 
 dist: \
-	dist/vendor/jquery\
+	dist/vendor/jquery \
 	dist/vendor/jquery-ui
 	mkdir -p dist/examples
 	# copy modules from lab/
@@ -128,19 +122,23 @@ dist: \
 	cp vendor/hijs/hijs.js dist/vendor/hijs
 	cp vendor/hijs/LICENSE dist/vendor/hijs
 	cp vendor/hijs/README.md dist/vendor/hijs
-	# jquery
 	# copy resources/
 	cp -R ./src/resources ./dist/
 	# copy directories, javascript, json, and image resources from src/examples/
 	# rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ dist/examples/
 	rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' src/examples/ dist/examples/
 
-dist/vendor/jquery: \
-	vendor/jquery/dist/jquery.min.js
+dist/vendor/jquery: vendor/jquery/dist/jquery.min.js
 	mkdir -p dist/vendor/jquery
 	cp vendor/jquery/dist/jquery.min.js dist/vendor/jquery/jquery.min.js
 	cp vendor/jquery/MIT-LICENSE.txt dist/vendor/jquery
 	cp vendor/jquery/README.md dist/vendor/jquery
+
+vendor/jquery/dist/jquery.min.js: vendor/jquery
+	cd vendor/jquery; make
+
+vendor/jquery:
+	git submodule update --init --recursive
 
 dist/vendor/jquery-ui:
 	mkdir -p dist/vendor/jquery-ui/js
