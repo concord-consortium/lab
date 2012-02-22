@@ -179,9 +179,6 @@ grapher.sampleGraph = function(array) {
   redraw();
 
   function redraw() {
-    if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-        d3.event.transform(x, y);
-    };
 
     var fx = x.tickFormat(10),
         fy = y.tickFormat(10);
@@ -215,7 +212,6 @@ grapher.sampleGraph = function(array) {
              downx = x.invert(p[0]);
              downscalex = null;
              downscalex = x.copy();
-             // d3.behavior.zoom().off("zoom", redraw);
         });
 
     gx.exit().remove();
@@ -249,7 +245,6 @@ grapher.sampleGraph = function(array) {
              var p = d3.svg.mouse(vis[0][0]);
              downy = y.invert(p[1]);
              downscaley = y.copy();
-             // d3.behavior.zoom().off("zoom", redraw);
         });
 
     gy.exit().remove();
