@@ -93,45 +93,67 @@ node_modules/science.js:
 bin:
 	bundle install --binstubs
 
-lab:
-	mkdir -p lab/css
-
 dist: \
-	dist/vendor/jquery \
-	dist/vendor/jquery-ui
+	dist/vendor \
+	dist/resources \
+	dist/examples \
+	dist/tests
+	mkdir -p dist/lab/css
+
+dist/examples:
 	mkdir -p dist/examples
 	# copy directories, javascript, json, and image resources from src/examples/
 	rsync -avq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/examples/ dist/examples/; tree dist/examples
+
+dist/tests:
+	cp -r src/tests dist
+
+dist/resources:
+	cp -R ./src/resources ./dist/
+
+dist/vendor: \
+	dist/vendor/d3 \
+	dist/vendor/jquery \
+	dist/vendor/jquery-ui \
+	dist/vendor/science.js \
+	dist/vendor/modernizr \
+	dist/vendor/sizzle \
+	dist/vendor/hijs
+
+dist/vendor/d3:
 	mkdir -p dist/vendor/d3
 	cp vendor/d3/d3*.js dist/vendor/d3
 	cp vendor/d3/LICENSE dist/vendor/d3/LICENSE
 	cp vendor/d3/README.md dist/vendor/d3/README.md
-	mkdir dist/vendor/science.js
-	cp vendor/science.js/science*.js dist/vendor/science.js
-	cp vendor/science.js/LICENSE dist/vendor/science.js
-	cp vendor/science.js/README.md dist/vendor/science.js
-	mkdir dist/vendor/modernizr
-	cp vendor/modernizr/modernizr.js dist/vendor/modernizr
-	cp vendor/modernizr/readme.md dist/vendor/modernizr
-	mkdir dist/vendor/sizzle
-	cp vendor/sizzle/sizzle.js dist/vendor/sizzle
-	cp vendor/sizzle/LICENSE dist/vendor/sizzle
-	cp vendor/sizzle/README dist/vendor/sizzle
-	mkdir dist/vendor/hijs
-	cp vendor/hijs/hijs.js dist/vendor/hijs
-	cp vendor/hijs/LICENSE dist/vendor/hijs
-	cp vendor/hijs/README.md dist/vendor/hijs
-	# copy resources/
-	cp -R ./src/resources ./dist/
-	# copy directories, javascript, json, and image resources from src/examples/
-	# rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ dist/examples/
-	rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' src/examples/ dist/examples/
 
 dist/vendor/jquery: vendor/jquery/dist/jquery.min.js
 	mkdir -p dist/vendor/jquery
 	cp vendor/jquery/dist/jquery.min.js dist/vendor/jquery/jquery.min.js
 	cp vendor/jquery/MIT-LICENSE.txt dist/vendor/jquery
 	cp vendor/jquery/README.md dist/vendor/jquery
+
+dist/vendor/science.js:
+	mkdir -p dist/vendor/science.js
+	cp vendor/science.js/science*.js dist/vendor/science.js
+	cp vendor/science.js/LICENSE dist/vendor/science.js
+	cp vendor/science.js/README.md dist/vendor/science.js
+
+dist/vendor/modernizr:
+	mkdir -p dist/vendor/modernizr
+	cp vendor/modernizr/modernizr.js dist/vendor/modernizr
+	cp vendor/modernizr/readme.md dist/vendor/modernizr
+
+dist/vendor/sizzle:
+	mkdir -p dist/vendor/sizzle
+	cp vendor/sizzle/sizzle.js dist/vendor/sizzle
+	cp vendor/sizzle/LICENSE dist/vendor/sizzle
+	cp vendor/sizzle/README dist/vendor/sizzle
+
+dist/vendor/hijs:
+	mkdir -p dist/vendor/hijs
+	cp vendor/hijs/hijs.js dist/vendor/hijs
+	cp vendor/hijs/LICENSE dist/vendor/hijs
+	cp vendor/hijs/README.md dist/vendor/hijs
 
 vendor/jquery/dist/jquery.min.js: vendor/jquery
 	cd vendor/jquery; make
@@ -146,8 +168,10 @@ dist/vendor/jquery-ui:
 	cp vendor/jquery-ui/js/jquery-ui-1.8.17.custom.min.js dist/vendor/jquery-ui/js/jquery-ui.custom.min.js
 	cp -R vendor/jquery-ui/css dist/vendor/jquery-ui
 
+lab:
+	mkdir -p lab
+
 lab/lab.js: \
-	src/lab/lab-module.js \
 	lab/lab.grapher.js \
 	lab/lab.molecules.js \
 	lab/lab.benchmark.js \
