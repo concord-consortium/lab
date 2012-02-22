@@ -125,8 +125,7 @@ dist: \
 	# copy resources/
 	cp -R ./src/resources ./dist/
 	# copy directories, javascript, json, and image resources from src/examples/
-	# rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' --filter 'hide,! */' src/examples/ dist/examples/
-	rsync -avmq --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg' src/examples/ dist/examples/
+	rsync -avq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/examples/ dist/examples/; tree dist/examples
 
 dist/vendor/jquery: vendor/jquery/dist/jquery.min.js
 	mkdir -p dist/vendor/jquery
