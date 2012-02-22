@@ -100,9 +100,8 @@ dist: \
 	dist/vendor/jquery \
 	dist/vendor/jquery-ui
 	mkdir -p dist/examples
-	# copy modules from lab/
-	cp -r lab dist
-	# copy libraries from vendor/
+	# copy directories, javascript, json, and image resources from src/examples/
+	rsync -avq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/examples/ dist/examples/; tree dist/examples
 	mkdir -p dist/vendor/d3
 	cp vendor/d3/d3*.js dist/vendor/d3
 	cp vendor/d3/LICENSE dist/vendor/d3/LICENSE
