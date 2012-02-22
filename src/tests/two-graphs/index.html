@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>Two Graphs</title>
+    <script type="text/javascript" src="../vendor/d3/d3.v2.js"></script>
+    <style type="text/css">
+body {
+  font: 13px sans-serif;
+}
+
+rect {
+  fill: #fff;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0.5em 0em 0.5em 0em;
+  width: 100%; }
+  ul li {
+    display: table-cell;
+    vertical-align: middle;
+    margin: 0em;
+    padding: 0em 1em; }
+
+#chart1 {
+    background-color: #F7F2C5;
+    width: 450px;
+    height: 450px;
+}
+
+#chart2 {
+    background-color: #F7F2C5;
+    width: 450px;
+    height: 450px;
+}
+
+circle, .line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+circle, .line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px; }
+
+circle {
+  fill: white;
+  fill-opacity: 0.2;
+  cursor: move; }
+  circle.selected {
+    fill: #ff7f0e;
+    stroke: #ff7f0e; }
+  circle:hover {
+    stroke: #ff7f0e; }
+
+    </style>
+  </head>
+  <body>
+    <ul>
+      <li><div id="chart1"></div></li>
+      <li><div id="chart2"></div></li>
+    </ul>
+    <script type="text/javascript">
+
+var graph = {
+  "xmax": 60,
+  "xmin": 0,
+  "ymax": 40,
+  "ymin": 0, 
+  "title": "Simple Graph1",
+  "xlabel": "X Axis",
+  "ylabel": "Y Axis"  
+};
+
+var chart1 = document.getElementById("chart1"),
+    cx = chart1.clientWidth,
+    cy = chart1.clientHeight,
+    padding = {
+       "top":    graph.title  ? 30 : 20,
+       "right":                 30,
+       "bottom": graph.xlabel ? 40 : 10,
+       "left":   graph.ylabel ? 70 : 45
+    },
+    size = {
+      "width":  cx - padding.left - padding.right,
+      "height": cy - padding.top  - padding.bottom
+    },
+    tx = function(d) { return "translate(" + x(d) + ",0)"; },
+    ty = function(d) { return "translate(0," + y(d) + ")"; },
+    stroke = function(d) { return d ? "#ccc" : "#666"; },
+    yrange2 = (graph.ymax - graph.ymin) / 2,
+    yrange4 = yrange2 / 2;
+    points = d3.range(graph.xmin, graph.xmax/2).map(function(i) { 
+      return { x: i*2, y: graph.ymin + yrange4 + Math.random() * yrange2 }; 
+    });
+    
+    // x-scale
+    x = d3.scale.linear()
+        .domain([graph.xmin, graph.xmax])
+        .range([0, size.width]),
+
+    // drag x-axis logic
+    downscalex = x.copy(),
+    downx = Math.NaN,
+
+    // y-scale (inverted domain)
+    y = d3.scale.linear()
+        .domain([graph.ymax, graph.ymin])
+        .nice()
+        .range([0, size.height])
+        .nice(),
+    line = d3.svg.line()
+        .x(function(d, i) { return x(points[i].x); })
+        .y(function(d, i) { return y(points[i].y); }),
+
+    // drag y-axis logic
+    downscaley = y.copy(),
+    downy = Math.NaN,
+
+    line = d3.svg.line()
+        .x(function(d, i) { return x(points[i].x); })
+        .y(function(d, i) { return y(points[i].y); }),
+
+    dragged = selected = null;
+
+var vis = d3.select(chart1).append("svg")
+    .attr("width", cx)
+    .attr("height", cy)
+    .append("g")
+      .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
+var plot = vis.append("rect")
+    .attr("width", size.width)
+    .attr("height", size.height)
+    .style("fill", "#EEEEEE")
+    .attr("pointer-events", "all")
+    .on("mousedown", function() {
+      if (d3.event.altKey) {
+          var m = d3.svg.mouse(vis.node());
+          var newpoint = {};
+          newpoint.x = x.invert(Math.max(0, Math.min(size.width, m[0])));
+          newpoint.y = y.invert(Math.max(0, Math.min(size.height, m[1])));
+          points.push(newpoint);
+          points.sort(function(a, b) {
+            if (a.x < b.x) { return -1 };
+            if (a.x > b.x) { return  1 };
+            return 0
+          });
+          selected = newpoint;
+          update();
+          d3.event.preventDefault();
+          d3.event.stopPropagation();
+      }
+    });
+
+// special-case change in d3.behavior.zoom coming in v2.8.0
+if (d3.behavior.zoom().x) {
+  plot.call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", redraw));
+} else {
+  plot.call(d3.behavior.zoom().on("zoom", redraw));
+}
+
+vis.append("svg")
+    .attr("top", 0)
+    .attr("left", 0)
+    .attr("width", size.width)
+    .attr("height", size.height)
+    .attr("viewBox", "0 0 "+size.width+" "+size.height)
+    .attr("class", "line")
+    .append("path")
+        .attr("class", "line")
+        .attr("d", line(points))
+
+// add Chart Title
+if (graph.title) {
+  vis.append("text")
+      .text(graph.title)
+      .attr("x", size.width/2)
+      .attr("dy","-1em")
+      .style("text-anchor","middle");
+}
+
+// Add the x-axis label
+if (graph.xlabel) {
+  vis.append("text")
+      .text(graph.xlabel)
+      .attr("x", size.width/2)
+      .attr("y", size.height)
+      .attr("dy","2.4em")
+      .style("text-anchor","middle");
+}
+
+// add y-axis label
+if (graph.ylabel) {
+  vis.append("g")
+      .append("text")
+          .text( graph.ylabel)
+          .style("text-anchor","middle")
+          .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
+}
+
+function update() {
+  var lines = vis.select("path").attr("d", line(points));
+        
+  var circle = vis.select("svg").selectAll("circle")
+      .data(points, function(d) { return d; });
+
+  circle.enter().append("circle")
+      .attr("class", function(d) { return d === selected ? "selected" : null; })
+      .attr("cx",    function(d) { return x(d.x); })
+      .attr("cy",    function(d) { return y(d.y); })
+      .attr("r", 6.0)
+      .on("mousedown", function(d) {
+        selected = dragged = d;
+        update();
+      })
+      .on("mousemove", function(d) {
+        if (!dragged) return;
+        var m = d3.svg.mouse(vis.node());
+        dragged.y = y.invert(Math.max(0, Math.min(size.height, m[1])));
+        update();
+      })
+      .on("mouseup", function(d) {
+        dragged = null;
+      })
+
+  circle
+      .attr("class", function(d) { return d === selected ? "selected" : null; })
+      .attr("cx",    function(d) { return x(d.x); })
+      .attr("cy",    function(d) { return y(d.y); });
+
+  circle.exit().remove();
+
+  if (d3.event && d3.event.keyCode) {
+    d3.event.preventDefault();
+    d3.event.stopPropagation();
+  }
+}
+
+redraw();
+
+function redraw() {
+  var fx = x.tickFormat(10),
+      fy = y.tickFormat(10);
+
+  // Regenerate x-ticks…
+  var gx = vis.selectAll("g.x")
+      .data(x.ticks(10), String)
+      .attr("transform", tx);
+
+  gx.select("text")
+      .text(fx);
+
+  var gxe = gx.enter().insert("g", "a")
+      .attr("class", "x")
+      .attr("transform", tx);
+
+  gxe.append("line")
+      .attr("stroke", stroke)
+      .attr("y1", 0)
+      .attr("y2", size.height);
+
+  gxe.append("text")
+      .attr("y", size.height)
+      .attr("dy", "1em")
+      .attr("text-anchor", "middle")
+      .text(fx)
+      .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+      .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+      .on("mousedown", function(d) {
+           var p = d3.svg.mouse(vis[0][0]);
+           downx = x.invert(p[0]);
+           downscalex = null;
+           downscalex = x.copy();
+      });
+      
+
+  gx.exit().remove();
+
+  // Regenerate y-ticks…
+  var gy = vis.selectAll("g.y")
+      .data(y.ticks(10), String)
+      .attr("transform", ty);
+
+  gy.select("text")
+      .text(fy);
+
+  var gye = gy.enter().insert("g", "a")
+      .attr("class", "y")
+      .attr("transform", ty)
+      .attr("background-fill", "#FFEEB6");
+
+  gye.append("line")
+      .attr("stroke", stroke)
+      .attr("x1", 0)
+      .attr("x2", size.width);
+
+  gye.append("text")
+      .attr("x", -3)
+      .attr("dy", ".35em")
+      .attr("text-anchor", "end")
+      .text(fy)
+      .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+      .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+      .on("mousedown", function(d) {
+           var p = d3.svg.mouse(vis[0][0]);
+           downy = y.invert(p[1]);
+           downscaley = y.copy();
+      });
+
+  gy.exit().remove();
+  update();
+}
+
+// attach the mousemove and mouseup to the chart
+// in case one wonders off the axis line
+
+d3.select(chart1)
+  .on("mousemove", function(d) {
+    var p = d3.svg.mouse(vis[0][0]);
+    if (!isNaN(downx)) {
+      var rupx = downscalex.invert(p[0]),
+        xaxis1 = downscalex.domain()[0],
+        xaxis2 = downscalex.domain()[1],
+        xextent = xaxis2 - xaxis1;
+      if (rupx != 0) {
+          var changex, new_domain;
+          changex = downx / rupx;
+          new_domain = [xaxis1, xaxis1 + (xextent * changex)];
+          x.domain(new_domain);
+          redraw();
+      }
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    };
+    if (!isNaN(downy)) {
+        rupy = downscaley.invert(p[1]),
+        yaxis1 = downscaley.domain()[1],
+        yaxis2 = downscaley.domain()[0],
+        yextent = yaxis2 - yaxis1;
+      if (rupy != 0) {
+          var changey, new_domain;
+          changey = downy / rupy;
+          new_domain = [yaxis1 + (yextent * changey), yaxis1];
+          y.domain(new_domain);
+          redraw();
+      }
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    }
+  })
+  .on("mouseup", function(d) {
+      if (!isNaN(downx)) {
+          redraw();
+          downx = Math.NaN;
+          d3.event.preventDefault();
+          d3.event.stopPropagation();
+      };
+      if (!isNaN(downy)) {
+          redraw();
+          downy = Math.NaN;
+          d3.event.preventDefault();
+          d3.event.stopPropagation();
+      };
+  });
+
+//
+// A copy of the first graph ...
+//
+
+var graph2 = {
+  "xmax": 60,
+  "xmin": 0,
+  "ymax": 40,
+  "ymin": 0, 
+  "title": "Simple Graph2",
+  "xlabel": "X Axis",
+  "ylabel": "Y Axis"  
+};
+
+var chart2 = document.getElementById("chart2"),
+    cx2 = chart2.clientWidth,
+    cy2 = chart2.clientHeight,
+    padding2 = {
+       "top":    graph2.title  ? 30 : 20,
+       "right":                 30,
+       "bottom": graph2.xlabel ? 40 : 10,
+       "left":   graph2.ylabel ? 70 : 45
+    },
+    size2 = {
+      "width":  cx2 - padding2.left - padding2.right,
+      "height": cy2 - padding2.top  - padding2.bottom
+    },
+
+    tx2 = function(d) { return "translate(" + x2(d) + ",0)"; },
+    ty2 = function(d) { return "translate(0," + y2(d) + ")"; },
+    stroke2 = function(d) { return d ? "#ccc" : "#666"; },
+    yrange2_2 = (graph2.ymax - graph2.ymin) / 2,
+    yrange4_2 = yrange2_2 / 2;
+    points2 = d3.range(graph2.xmin, graph2.xmax/2).map(function(i) { 
+      return { x: i*2, y: graph2.ymin + yrange4_2 + Math.random() * yrange2_2 }; 
+    });
+    
+    // x-scale
+    x2 = d3.scale.linear()
+        .domain([graph2.xmin, graph2.xmax])
+        .range([0, size2.width]),
+
+    // drag x-axis logic
+    downscalex2 = x2.copy(),
+    downx2 = Math.NaN,
+
+    // y-scale (inverted domain)
+    y2 = d3.scale.linear()
+        .domain([graph2.ymax, graph2.ymin])
+        .nice()
+        .range([0, size2.height])
+        .nice(),
+    line2 = d3.svg.line()
+        .x(function(d, i) { return x2(points2[i].x); })
+        .y(function(d, i) { return y2(points2[i].y); }),
+
+    // drag y-axis logic
+    downscaley2 = y2.copy(),
+    downy2 = Math.NaN,
+
+    dragged2 = selected2 = null;
+
+var vis2 = d3.select(chart2).append("svg")
+    .attr("width", cx2)
+    .attr("height", cy2)
+    .append("g")
+      .attr("transform", "translate(" + padding2.left + "," + padding2.top + ")");
+
+var plot2 = vis2.append("rect")
+    .attr("width", size2.width)
+    .attr("height", size2.height)
+    .style("fill", "#EEEEEE")
+    .attr("pointer-events", "all")
+    .on("mousedown", function() {
+      if (d3.event.altKey) {
+          var m = d3.svg.mouse(vis2.node());
+          var newpoint = {};
+          newpoint.x = x.invert(Math.max(0, Math.min(size2.width, m[0])));
+          newpoint.y = y.invert(Math.max(0, Math.min(size2.height, m[1])));
+          points2.push(newpoint);
+          points2.sort(function(a, b) {
+            if (a.x < b.x) { return -1 };
+            if (a.x > b.x) { return  1 };
+            return 0
+          });
+          selected2 = newpoint;
+          update2();
+          d3.event.preventDefault();
+          d3.event.stopPropagation();
+      }
+    });
+
+// special-case change in d3.behavior.zoom coming in v2.8.0
+if (d3.behavior.zoom().x) {
+  plot2.call(d3.behavior.zoom().x(x2).y(y2).scaleExtent([1, 8]).on("zoom", redraw2));
+} else {
+  plot2.call(d3.behavior.zoom().on("zoom", redraw2));
+}
+
+vis2.append("svg")
+    .attr("top", 0)
+    .attr("left", 0)
+    .attr("width", size2.width)
+    .attr("height", size2.height)
+    .attr("viewBox", "0 0 "+size2.width+" "+size2.height)
+    .attr("class", "line")
+    .append("path")
+        .attr("class", "line")
+        .attr("d", line2(points2))
+
+// add Chart Title
+if (graph2.title) {
+  vis2.append("text")
+      .text(graph2.title)
+      .attr("x", size2.width/2)
+      .attr("dy","-1em")
+      .style("text-anchor","middle");
+}
+
+// Add the x-axis label
+if (graph2.xlabel) {
+  vis2.append("text")
+      .text(graph2.xlabel)
+      .attr("x", size2.width/2)
+      .attr("y", size2.height)
+      .attr("dy","2.4em")
+      .style("text-anchor","middle");
+}
+
+// add y-axis label
+if (graph2.ylabel) {
+  vis2.append("g")
+      .append("text")
+          .text(graph2.ylabel)
+          .style("text-anchor","middle")
+          .attr("transform","translate(" + -50 + " " + size2.height/2+") rotate(-90)");
+}
+
+function update2() {
+  var lines2 = vis2.select("path").attr("d", line2(points2));
+        
+  var circle2 = vis2.select("svg").selectAll("circle")
+      .data(points2, function(d) { return d; });
+
+  circle2.enter().append("circle")
+      .attr("class", function(d) { return d === selected2 ? "selected" : null; })
+      .attr("cx",    function(d) { return x2(d.x); })
+      .attr("cy",    function(d) { return y2(d.y); })
+      .attr("r", 6.0)
+      .on("mousedown", function(d) {
+        selected2 = dragged2 = d;
+        update2();
+      })
+      .on("mousemove", function(d) {
+        if (!dragged2) return;
+        var m = d3.svg.mouse(vis2.node());
+        dragged2.y = y2.invert(Math.max(0, Math.min(size2.height, m[1])));
+        update2();
+      })
+      .on("mouseup", function(d) {
+        dragged2 = null;
+      });
+      
+
+  circle2
+      .attr("class", function(d) { return d === selected2 ? "selected" : null; })
+      .attr("cx",    function(d) { return x2(d.x); })
+      .attr("cy",    function(d) { return y2(d.y); });
+
+  circle2.exit().remove();
+
+  if (d3.event && d3.event.keyCode) {
+    d3.event.preventDefault();
+    d3.event.stopPropagation();
+  }
+}
+
+redraw2();
+
+function redraw2() {
+  var fx = x2.tickFormat(10),
+      fy = y2.tickFormat(10);
+
+  // Regenerate x-ticks…
+  var gx = vis2.selectAll("g.x")
+      .data(x2.ticks(10), String)
+      .attr("transform", tx2);
+
+  gx.select("text")
+      .text(fx);
+
+  var gxe = gx.enter().insert("g", "a")
+      .attr("class", "x")
+      .attr("transform", tx2);
+
+  gxe.append("line")
+      .attr("stroke", stroke2)
+      .attr("y1", 0)
+      .attr("y2", size2.height);
+
+  gxe.append("text")
+      .attr("y", size2.height)
+      .attr("dy", "1em")
+      .attr("text-anchor", "middle")
+      .text(fx)
+      .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+      .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+      .on("mousedown", function(d) {
+           var p = d3.svg.mouse(vis2[0][0]);
+           downx2 = x2.invert(p[0]);
+           downscalex2 = null;
+           downscalex2 = x2.copy();
+      });
+      
+
+  gx.exit().remove();
+
+  // Regenerate y-ticks…
+  var gy = vis2.selectAll("g.y")
+      .data(y2.ticks(10), String)
+      .attr("transform", ty2);
+
+  gy.select("text")
+      .text(fy);
+
+  var gye = gy.enter().insert("g", "a")
+      .attr("class", "y")
+      .attr("transform", ty2)
+      .attr("background-fill", "#FFEEB6");
+
+  gye.append("line")
+      .attr("stroke", stroke2)
+      .attr("x1", 0)
+      .attr("x2", size2.width);
+
+  gye.append("text")
+      .attr("x", -3)
+      .attr("dy", ".35em")
+      .attr("text-anchor", "end")
+      .text(fy)
+      .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+      .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+      .on("mousedown", function(d) {
+           var p = d3.svg.mouse(vis2[0][0]);
+           downy2 = y2.invert(p[1]);
+           downscaley2 = y2.copy();
+      });
+
+  gy.exit().remove();
+  update2();
+}
+
+// attach the mousemove and mouseup to the chart
+// in case one wonders off the axis line
+
+d3.select(chart2)
+  .on("mousemove", function(d) {
+    var p = d3.svg.mouse(vis2[0][0]);
+    if (!isNaN(downx2)) {
+      var rupx = downscalex2.invert(p[0]),
+        xaxis1 = downscalex2.domain()[0],
+        xaxis2 = downscalex2.domain()[1],
+        xextent = xaxis2 - xaxis1;
+      if (rupx != 0) {
+          var changex, new_domain;
+          changex = downx2 / rupx;
+          new_domain = [xaxis1, xaxis1 + (xextent * changex)];
+          x2.domain(new_domain);
+          redraw2();
+      }
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    };
+    if (!isNaN(downy2)) {
+        rupy = downscaley2.invert(p[1]),
+        yaxis1 = downscaley2.domain()[1],
+        yaxis2 = downscaley2.domain()[0],
+        yextent = yaxis2 - yaxis1;
+      if (rupy != 0) {
+          var changey, new_domain;
+          changey = downy2 / rupy;
+          new_domain = [yaxis1 + (yextent * changey), yaxis1];
+          y2.domain(new_domain);
+          redraw2();
+      }
+      d3.event.preventDefault();
+      d3.event.stopPropagation();
+    }
+  })
+  .on("mouseup", function(d) {
+      if (!isNaN(downx2)) {
+          redraw2();
+          downx2 = Math.NaN;
+          d3.event.preventDefault();
+          d3.event.stopPropagation();
+      };
+      if (!isNaN(downy2)) {
+          redraw2();
+          downy2 = Math.NaN;
+          d3.event.preventDefault();
+          d3.event.stopPropagation();
+      };
+  });
+
+d3.select(window).on("keydown", keydown);
+
+function keydown() {
+  if (!selected && !selected2) return;
+  switch (d3.event.keyCode) {
+    case 8: // backspace
+    case 46: { // delete
+      if (selected) {
+        var i = points.indexOf(selected);
+        points.splice(i, 1);
+        selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
+        update();        
+      }
+      if (selected2) {
+        var i = points2.indexOf(selected2);
+        points2.splice(i, 1);
+        selected2 = points2.length ? points2[i > 0 ? i - 1 : 0] : null;
+        update2();        
+      }
+      break;
+    }
+  }
+}
+
+
+    </script>
+
+  </body>
+</html>
