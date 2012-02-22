@@ -216,7 +216,7 @@ graphx.graph = function(options) {
           .attr("height", size.height)
           .style("fill", "#EEEEEE")
           .attr("pointer-events", "all")
-          .call(d3.behavior.zoom().on("zoom", redraw))
+          // .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", redraw))
           .on("mousedown", function() {
             if (d3.event.altKey) {
                 points.push(selected = dragged = d3.svg.mouse(vis.node()));
@@ -651,17 +651,13 @@ graphx.graph = function(options) {
             downx = Math.NaN;
             d3.event.preventDefault();
             d3.event.stopPropagation();
-            // graph.call(d3.behavior.zoom().on("zoom", redraw));
         }
         if (!isNaN(downy)) {
             redraw();
             downy = Math.NaN;
             d3.event.preventDefault();
             d3.event.stopPropagation();
-            // graph.call(d3.behavior.zoom().on("zoom", redraw));
         }
-        // d3.event.preventDefault();
-        // d3.event.stopPropagation();
     });
 
   return graph;
