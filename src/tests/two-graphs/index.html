@@ -225,7 +225,7 @@ function update() {
       })
       .on("mouseup", function(d) {
         dragged = null;
-      })
+      });
 
   circle
       .attr("class", function(d) { return d === selected ? "selected" : null; })
@@ -243,6 +243,11 @@ function update() {
 redraw();
 
 function redraw() {
+  // needed for pre v2.8.0
+  if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
+      d3.event.transform(x, y);
+  };
+
   var fx = x.tickFormat(10),
       fy = y.tickFormat(10);
 
@@ -267,6 +272,7 @@ function redraw() {
       .attr("y", size.height)
       .attr("dy", "1em")
       .attr("text-anchor", "middle")
+      .style("cursor", "ew-resize")
       .text(fx)
       .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
       .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
@@ -302,6 +308,7 @@ function redraw() {
       .attr("x", -3)
       .attr("dy", ".35em")
       .attr("text-anchor", "end")
+      .style("cursor", "ns-resize")
       .text(fy)
       .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
       .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
@@ -547,6 +554,11 @@ function update2() {
 redraw2();
 
 function redraw2() {
+  // needed for pre v2.8.0
+  if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
+      d3.event.transform(x2, y2);
+  };
+
   var fx = x2.tickFormat(10),
       fy = y2.tickFormat(10);
 
@@ -571,6 +583,7 @@ function redraw2() {
       .attr("y", size2.height)
       .attr("dy", "1em")
       .attr("text-anchor", "middle")
+      .style("cursor", "ew-resize")
       .text(fx)
       .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
       .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
@@ -606,6 +619,7 @@ function redraw2() {
       .attr("x", -3)
       .attr("dy", ".35em")
       .attr("text-anchor", "end")
+      .style("cursor", "ns-resize")
       .text(fy)
       .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
       .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
