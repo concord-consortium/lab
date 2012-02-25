@@ -23,9 +23,9 @@
   "dependencies": {
   },
   "devDependencies": {
-    "uglify-js": "1.2.3",
-    "jsdom": "0.2.10",
-    "vows": "0.6.1",
+    "uglify-js": "1.2.5",
+    "jsdom": "0.2.12",
+    "vows": "0.6.2",
     "coffee-script": "1.2.0",
     "node-inspector": "0.1.10"
   },
