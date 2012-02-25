@@ -122,7 +122,7 @@ function finishSetupPotentialChart() {
       .attr("height", lj_size.height)
       .style("fill", "#EEEEEE")
       .attr("pointer-events", "all")
-      .call(d3.behavior.zoom().on("zoom", layout.lj_redraw))
+      .call(d3.behavior.zoom().x(lj_x).y(lj_y).scaleExtent([1, 8]).on("zoom", layout.lj_redraw))
       .on("mousedown", function() {
         if (d3.event.altKey) {
             lj_points.push(lj_selected = lj_dragged = d3.svg.mouse(lj_vis.node()));
@@ -182,9 +182,6 @@ function finishSetupPotentialChart() {
 }
 
 layout.lj_redraw = function() {
-  if (d3.event && d3.event.transform && isNaN(lj_downx) && isNaN(lj_downy)) {
-      d3.event.transform(lj_x, lj_y);
-  };
 
   var lj_fx = lj_x.tickFormat(10),
       lj_fy = lj_y.tickFormat(10);
@@ -210,6 +207,7 @@ layout.lj_redraw = function() {
        .attr("y", lj_size.height)
        .attr("dy", "1em")
        .attr("text-anchor", "middle")
+       .style("cursor", "ew-resize")
        .text(lj_fx)
        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
@@ -244,6 +242,7 @@ layout.lj_redraw = function() {
       .attr("x", -3)
       .attr("dy", ".35em")
       .attr("text-anchor", "end")
+      .style("cursor", "ns-resize")
       .text(lj_fy)
       .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
       .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})

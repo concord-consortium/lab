@@ -108,7 +108,7 @@ var plot = vis.append("svg:rect")
     .attr("height", size.height)
     .style("fill", "#EEEEEE")
     .attr("pointer-events", "all")
-    .call(d3.behavior.zoom().on("zoom", redraw))
+    .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", redraw))
     .on("mousedown", function() {
       if (d3.event.altKey) {
           points.push(selected = dragged = d3.svg.mouse(vis.node()));
@@ -263,6 +263,7 @@ function redraw() {
        .attr("y", size.height)
        .attr("dy", "1em")
        .attr("text-anchor", "middle")
+       .style("cursor", "ew-resize")
        .text(fx)
        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
@@ -299,6 +300,7 @@ function redraw() {
       .attr("x", -3)
       .attr("dy", ".35em")
       .attr("text-anchor", "end")
+      .style("cursor", "ns-resize")
       .text(fy)
       .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
       .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})

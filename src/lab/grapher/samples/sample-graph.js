@@ -66,7 +66,7 @@ grapher.sampleGraph = function(array) {
       .attr("height", size.height)
       .style("fill", "#EEEEEE")
       .attr("pointer-events", "all")
-      .call(d3.behavior.zoom().on("zoom", redraw))
+      .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", redraw))
       .on("mousedown", function() {
         if (d3.event.altKey) {
             points.push(selected = dragged = d3.svg.mouse(vis.node()));
@@ -179,9 +179,6 @@ grapher.sampleGraph = function(array) {
   redraw();
 
   function redraw() {
-    if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-        d3.event.transform(x, y);
-    };
 
     var fx = x.tickFormat(10),
         fy = y.tickFormat(10);
@@ -207,6 +204,7 @@ grapher.sampleGraph = function(array) {
         .attr("y", size.height)
         .attr("dy", "1em")
         .attr("text-anchor", "middle")
+        .style("cursor", "ew-resize")
         .text(fx)
         .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
         .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
@@ -215,7 +213,6 @@ grapher.sampleGraph = function(array) {
              downx = x.invert(p[0]);
              downscalex = null;
              downscalex = x.copy();
-             // d3.behavior.zoom().off("zoom", redraw);
         });
 
     gx.exit().remove();
@@ -242,6 +239,7 @@ grapher.sampleGraph = function(array) {
         .attr("x", -3)
         .attr("dy", ".35em")
         .attr("text-anchor", "end")
+        .style("cursor", "ns-resize")
         .text(fy)
         .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
         .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
@@ -249,7 +247,6 @@ grapher.sampleGraph = function(array) {
              var p = d3.svg.mouse(vis[0][0]);
              downy = y.invert(p[1]);
              downscaley = y.copy();
-             // d3.behavior.zoom().off("zoom", redraw);
         });
 
     gy.exit().remove();
