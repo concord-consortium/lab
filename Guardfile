@@ -52,6 +52,11 @@ guard 'shell' do
     destination_path = "dist/#{source_path}"
     command("cp -f #{source_path} #{destination_path}")
   end
+  watch(%r{^src/(tests/.+)$}) do |match|
+    source_path = match[0]
+    destination_path = "dist/#{match[1]}"
+    command("cp -f #{source_path} #{destination_path}")
+  end
 end
 
 # , :api_version => '1.6', :port => '35728'

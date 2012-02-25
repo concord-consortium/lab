@@ -1,5 +1,5 @@
 require("../../env");
-require("../../../vendor/d3/d3.js");
+require("../../../vendor/d3/d3.v2.js");
 require("../../../lab/lab.layout");
 
 var vows = require("vows"),
