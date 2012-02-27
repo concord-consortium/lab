@@ -165,6 +165,7 @@ dist/vendor/mathjax:
 	cp -R vendor/mathjax/extensions dist/vendor/mathjax
 	cp -R vendor/mathjax/images dist/vendor/mathjax
 	cp -R vendor/mathjax/fonts dist/vendor/mathjax
+	cp -R vendor/mathjax/config dist/vendor/mathjax
 
 vendor/jquery/dist/jquery.min.js: vendor/jquery
 	cd vendor/jquery; make
