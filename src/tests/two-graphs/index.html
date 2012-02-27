@@ -67,6 +67,12 @@ function keyboardHandler() {
 }
 keyboardHandler.callback = null;
 
+keyboardHandler.register = function(callback) {
+  keyboardHandler.callback = callback;
+  d3.select(window).on("keydown", keyboardHandler.callback);
+  
+};
+
 SimpleGraph = function(elemid, options) {
   var self = this;
   this.chart = document.getElementById(elemid);
@@ -185,9 +191,6 @@ SimpleGraph = function(elemid, options) {
       .on("mouseup.drag",   self.mouseup())
       .on("touchend.drag",  self.mouseup());
 
-  d3.select(window)
-      .on("keydown",        self.keydown());
-
   this.redraw()();
 };
   
@@ -198,7 +201,7 @@ SimpleGraph = function(elemid, options) {
 SimpleGraph.prototype.plot_drag = function() {
   var self = this;
   return function() {
-    keyboardHandler.callback = self.keydown();
+    keyboardHandler.register(self.keydown());
     d3.select('body').style("cursor", "move");
     if (d3.event.altKey) {
       var p = d3.svg.mouse(self.vis.node());
@@ -252,7 +255,7 @@ SimpleGraph.prototype.update = function() {
 SimpleGraph.prototype.datapoint_drag = function() {
   var self = this;
   return function(d) {
-    keyboardHandler.callback = self.keydown();
+    keyboardHandler.register(self.keydown());
     document.onselectstart = function() { return false; };
     self.selected = self.dragged = d;
     self.update();
