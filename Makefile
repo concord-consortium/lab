@@ -106,7 +106,7 @@ dist/examples:
 	rsync -avq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/examples/ dist/examples/; tree dist/examples
 
 dist/tests:
-	cp -r src/tests dist
+	cp -R src/tests dist
 
 dist/resources:
 	cp -R ./src/resources ./dist/
@@ -118,7 +118,8 @@ dist/vendor: \
 	dist/vendor/science.js \
 	dist/vendor/modernizr \
 	dist/vendor/sizzle \
-	dist/vendor/hijs
+	dist/vendor/hijs \
+	dist/vendor/mathjax
 
 dist/vendor/d3:
 	mkdir -p dist/vendor/d3
@@ -154,6 +155,16 @@ dist/vendor/hijs:
 	cp vendor/hijs/hijs.js dist/vendor/hijs
 	cp vendor/hijs/LICENSE dist/vendor/hijs
 	cp vendor/hijs/README.md dist/vendor/hijs
+
+dist/vendor/mathjax:
+	mkdir -p dist/vendor/mathjax
+	cp vendor/mathjax/MathJax.js dist/vendor/mathjax
+	cp vendor/mathjax/LICENSE dist/vendor/mathjax
+	cp vendor/mathjax/README.md dist/vendor/mathjax
+	cp -R vendor/mathjax/jax dist/vendor/mathjax
+	cp -R vendor/mathjax/extensions dist/vendor/mathjax
+	cp -R vendor/mathjax/images dist/vendor/mathjax
+	cp -R vendor/mathjax/fonts dist/vendor/mathjax
 
 vendor/jquery/dist/jquery.min.js: vendor/jquery
 	cd vendor/jquery; make
