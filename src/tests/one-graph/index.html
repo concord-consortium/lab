@@ -58,16 +58,9 @@ circle {
     <div id="chart1" class="chart"></div>
     <script type="text/javascript">
 
-function keyboardHandler() {
-  var callback = keyboardHandler.callback;
-  if (callback) { callback(); }
-}
-keyboardHandler.callback = null;
-
-keyboardHandler.register = function(callback) {
-  keyboardHandler.callback = callback;
-  d3.select(window).on("keydown", keyboardHandler.callback);
-  
+registerKeyboardHandler = function(callback) {
+  var callback = callback;
+  d3.select(window).on("keydown", callback);  
 };
 
 SimpleGraph = function(elemid, options) {
@@ -198,7 +191,7 @@ SimpleGraph = function(elemid, options) {
 SimpleGraph.prototype.plot_drag = function() {
   var self = this;
   return function() {
-    keyboardHandler.register(self.keydown());
+    registerKeyboardHandler(self.keydown());
     d3.select('body').style("cursor", "move");
     if (d3.event.altKey) {
       var p = d3.svg.mouse(self.vis.node());
@@ -252,7 +245,7 @@ SimpleGraph.prototype.update = function() {
 SimpleGraph.prototype.datapoint_drag = function() {
   var self = this;
   return function(d) {
-    keyboardHandler.register(self.keydown());
+    registerKeyboardHandler(self.keydown());
     document.onselectstart = function() { return false; };
     self.selected = self.dragged = d;
     self.update();
@@ -446,6 +439,7 @@ SimpleGraph.prototype.yaxis_drag = function(d) {
     self.downy = self.y.invert(p[1]);
   }
 };
+
 
 graph = new SimpleGraph("chart1", {
     "xmax": 60, "xmin": 0,
