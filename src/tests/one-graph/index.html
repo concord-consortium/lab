@@ -5,13 +5,10 @@
     <title>One Graph</title>
     <script type="text/javascript" src="../../vendor/d3/d3.v2.js"></script>
     <style type="text/css">
-body {
-  font: 13px sans-serif;
-}
 
-rect {
-  fill: #fff;
-}
+body { font: 13px sans-serif; }
+
+rect { fill: #fff; }
 
 ul {
   list-style-type: none;
@@ -23,15 +20,12 @@ ul {
     margin: 0em;
     padding: 0em 1em; }
 
-.axis {
-  font-size: 1.5em; 
-}
+.axis { font-size: 1.5em; }
 
 .chart {
-    background-color: #F7F2C5;
-    width: 960px;
-    height: 500px;
-}
+  background-color: #F7F2C5;
+  width: 960px;
+  height: 500px; }
 
 circle, .line {
   fill: none;
@@ -378,8 +372,7 @@ SimpleGraph.prototype.redraw = function() {
         .attr("text-anchor", "middle")
         .text(fx)
         .style("cursor", "ew-resize")
-        .on("mouseover", function(d) { 
-          d3.select(this).style("font-weight", "bold");})
+        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
         .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
         .on("mousedown.drag",  self.xaxis_drag())
         .on("touchstart.drag", self.xaxis_drag());
@@ -439,7 +432,6 @@ SimpleGraph.prototype.yaxis_drag = function(d) {
     self.downy = self.y.invert(p[1]);
   }
 };
-
 
 graph = new SimpleGraph("chart1", {
     "xmax": 60, "xmin": 0,

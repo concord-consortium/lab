@@ -5,38 +5,32 @@
     <title>Two Graphs</title>
     <script type="text/javascript" src="../../vendor/d3/d3.v2.js"></script>
     <style type="text/css">
-body {
-  font: 13px sans-serif;
-}
 
-rect {
-  fill: #fff;
-}
+body { font: 13px sans-serif; }
+
+rect { fill: #fff; }
 
 ul {
   list-style-type: none;
-  margin: 0.5em 0em 0.5em 0em; 
-  padding: 0px; }
+  margin: 0.5em 0em 0.5em 0em;
+  width: 100%; }
   ul li {
     display: table-cell;
     vertical-align: middle;
     margin: 0em;
-    padding-right: 1em; }
+    padding: 0em 1em; }
 
-.axis {
-  font-size: 1.3em; }
+.axis { font-size: 1.5em; }
 
 .chart {
-    background-color: #F7F2C5;
-    width: 475px;
-    height: 500px;
-}
+  background-color: #F7F2C5;
+  width: 960px;
+  height: 500px; }
 
 circle, .line {
   fill: none;
   stroke: steelblue;
-  stroke-width: 1.5px;
-}
+  stroke-width: 2px; }
 
 circle {
   fill: white;
@@ -55,10 +49,7 @@ circle {
     </style>
   </head>
   <body>
-    <ul>
-      <li><div id="chart1" class="chart"></div></li>
-      <li><div id="chart2" class="chart"></div></li>
-    </ul>
+    <div id="chart1" class="chart"></div>
     <script type="text/javascript">
 
 registerKeyboardHandler = function(callback) {
@@ -381,8 +372,7 @@ SimpleGraph.prototype.redraw = function() {
         .attr("text-anchor", "middle")
         .text(fx)
         .style("cursor", "ew-resize")
-        .on("mouseover", function(d) { 
-          d3.select(this).style("font-weight", "bold");})
+        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
         .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
         .on("mousedown.drag",  self.xaxis_drag())
         .on("touchstart.drag", self.xaxis_drag());
@@ -441,7 +431,8 @@ SimpleGraph.prototype.yaxis_drag = function(d) {
     var p = d3.svg.mouse(self.vis[0][0]);
     self.downy = self.y.invert(p[1]);
   }
-}
+};
+
 
 graph1 = new SimpleGraph("chart1", {
     "xmax": 60, "xmin": 0,
