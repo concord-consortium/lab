@@ -9,7 +9,7 @@ If you have have received a **distribution archive** of the
 [Concord Consortium Lab project](https://github.com/concord-consortium/lab)
 our copyright applies to all resources **except** the files in the 
 `vendor/` directory. The files in the `vendor/` directory are from 
-third-parties and are distributed under either BSD or MIT licenses.
+third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 
 All three licenses for the [Concord Consortium Lab project](https://github.com/concord-consortium/lab)
 are listed below:
