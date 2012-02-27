@@ -10,7 +10,7 @@ graph.ymax    =  0.6;
 graph.ymin    = -0.6;
 
 graph.title   = "Lennard-Jones potential";
-graph.xlabel  = "Distance (radii)";
+graph.xlabel  = "Distance r (radii)";
 graph.ylabel  = "Potential Energy";
 
 graph.lennard_jones_potential = [];
