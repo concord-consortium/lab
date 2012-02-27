@@ -75,7 +75,7 @@ var chart = document.getElementById("chart"),
 // x-scale
 x = d3.scale.linear()
     .domain([graph.xmin, graph.xmax])
-    .range([0, mw]),
+    .range([0, size.width]),
 
 // drag x-axis logic
 downscalex = x.copy(),
@@ -85,61 +85,54 @@ downx = Math.NaN,
 y = d3.scale.linear()
     .domain([graph.ymax, graph.ymin])
     .nice()
-    .range([0, mh])
+    .range([0, size.height])
     .nice(),
 line = d3.svg.line()
     .x(function(d, i) { return x(graph.lennard_jones_potential[i][0]); })
     .y(function(d, i) { return y(graph.lennard_jones_potential[i][1]); }),
 
-// drag x-axis logic
+// drag y-axis logic
 downscaley = y.copy(),
 downy = Math.NaN,
+
 dragged = null,
 selected = graph.coefficients[0];
 
-var vis = d3.select("#chart").append("svg:svg")
+var vis = d3.select(chart).append("svg")
     .attr("width", cx)
     .attr("height", cy)
-    .append("svg:g")
+    .append("g")
       .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
-var plot = vis.append("svg:rect")
+var plot = vis.append("rect")
     .attr("width", size.width)
     .attr("height", size.height)
     .style("fill", "#EEEEEE")
     .attr("pointer-events", "all")
-    .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", redraw))
-    .on("mousedown", function() {
-      if (d3.event.altKey) {
-          points.push(selected = dragged = d3.svg.mouse(vis.node()));
-          update();
-          d3.event.preventDefault();
-          d3.event.stopPropagation();
-      }
-    });
+    .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", redraw));
 
-vis.append("svg:svg")
+vis.append("svg")
     .attr("top", 0)
     .attr("left", 0)
     .attr("width", size.width)
     .attr("height", size.height)
     .attr("viewBox", "0 0 "+size.width+" "+size.height)
-    .append("svg:path")
+    .append("path")
         .attr("class", "line")
         .attr("d", line(graph.lennard_jones_potential))
 
 // add Chart Title
 if (graph.title) {
-  vis.append("svg:text")
+  vis.append("text")
       .text(graph.title)
       .attr("x", size.width/2)
-      .attr("dy","-1em")
+      .attr("dy","-0.8em")
       .style("text-anchor","middle");
 }
 
 // Add the x-axis label
 if (graph.xlabel) {
-  vis.append("svg:text")
+  vis.append("text")
       .text(graph.xlabel)
       .attr("x", size.width/2)
       .attr("y", size.height)
@@ -149,16 +142,18 @@ if (graph.xlabel) {
 
 // add y-axis label
 if (graph.ylabel) {
-  vis.append("svg:g")
-      .append("svg:text")
+  vis.append("g")
+      .append("text")
           .text( graph.ylabel)
           .style("text-anchor","middle")
-          .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
+          .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
 }
 
 d3.select(window)
-    .on("mousemove", mousemove)
-    .on("mouseup", mouseup);
+    .on("mousemove.drag", mousemove)
+    .on("touchmove.drag", mousemove)
+    .on("mouseup.drag",   mouseup)
+    .on("touchend.drag",  mouseup);
 
 //
 // draw the data
@@ -171,13 +166,11 @@ function update() {
   var lines = vis.select("path").attr("d", line(graph.lennard_jones_potential)),
       x_extent = x.domain()[1] - x.domain()[0];
       
-  epsilon_circle.enter().append("svg:circle")
+  epsilon_circle.enter().append("circle")
       .attr("class", function(d) { return d === selected ? "selected" : null; })
-      .attr("cx",    function(d) { 
-        return x(d.x); })
-      .attr("cy",    function(d) { 
-        return y(d.y); })
-      .attr("r", 8.0)
+      .attr("cx",    function(d) { return x(d.x); })
+      .attr("cy",    function(d) { return y(d.y); })
+      .attr("r", 12.0)
       .on("mousedown", function(d) {
         if (d.coefficient == "epsilon") {
           d.x = graph.r_min;
@@ -250,16 +243,16 @@ function redraw() {
   gx.select("text")
       .text(fx);
 
-  var gxe = gx.enter().insert("svg:g", "a")
+  var gxe = gx.enter().insert("g", "a")
       .attr("class", "x")
       .attr("transform", tx);
 
-  gxe.append("svg:line")
+  gxe.append("line")
       .attr("stroke", stroke)
       .attr("y1", 0)
       .attr("y2", size.height);
 
-   gxe.append("svg:text")
+   gxe.append("text")
        .attr("y", size.height)
        .attr("dy", "1em")
        .attr("text-anchor", "middle")
@@ -286,17 +279,17 @@ function redraw() {
   gy.select("text")
       .text(fy);
 
-  var gye = gy.enter().insert("svg:g", "a")
+  var gye = gy.enter().insert("g", "a")
       .attr("class", "y")
       .attr("transform", ty)
       .attr("background-fill", "#FFEEB6");
 
-  gye.append("svg:line")
+  gye.append("line")
       .attr("stroke", stroke)
       .attr("x1", 0)
       .attr("x2", size.width);
 
-  gye.append("svg:text")
+  gye.append("text")
       .attr("x", -3)
       .attr("dy", ".35em")
       .attr("text-anchor", "end")

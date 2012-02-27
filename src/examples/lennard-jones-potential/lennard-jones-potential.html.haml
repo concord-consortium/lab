@@ -4,6 +4,7 @@
     %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
     %title Lennard-Jones potential
     %script{:src => "../../vendor/d3/d3.v2.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full", :type => "text/javascript"}
     %script{:src => "../../lab/lab.grapher.js", :type => "text/javascript"}
     %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
   %body
@@ -12,12 +13,28 @@
     #description
       %h2 About the Lennard-Jones potential graph
       %p
-        The Lennard-Jones potential is a simple model describing the forces between
-        a pair of neutral atoms or molecules.
+        The Lennard-Jones potential is a relatively-simple mathematical model describing the potential
+        energy \(V_{LJ}\) between a pair of neutral atoms or molecules as a function of both the depth 
+        of the potential well: \(\varepsilon\) (epsilon) and the distance in unitis of radius where the 
+        potential is zero \(\sigma\) (sigma).
       %p
-        In the graph above you can change the force as a function of distance by either
-        changing the depth of the potential well by dragging epsilon up and down or changing
-        the zero point for the potential by dragging sigma left and right.
+        $$V_{LJ}=4\varepsilon \left[ \left( \dfrac {\sigma } {r}\right) ^{12}-\left( \dfrac {\sigma } {r}\right) ^{6}\right]$$
+      %p
+        The force between two neutral atoms is the derivative of the Lennard-Jones potential. 
+      %p
+        The slope of the potential function at the point where the potential is zero \(\sigma\) (sigma)
+        is negative so when two neutral atoms have a separation of \(\sigma\) radii there is a repulsive force.
+      %p
+        The slope of the potential function at \(\varepsilon\) (epsilon), the maximum depth of the potential
+        well is zero. At this distance two neutral atoms have experience zero forces.
+      %p
+        As the distance between two atoms becomes larger than the \(\varepsilon\) point the slope of the 
+        potential function becomes positve and two neutral atoms experience a diminishing attractive
+        force.
+      %p
+        In the graph above you can change effective the force as a function of distance by either
+        changing the depth of the potential well by dragging \(\varepsilon\) (epsilon) up and down 
+        or changing the zero point for the potential by dragging \(\sigma\) (sigma) left and right.
       %h2 References:
       %p
         %a{:href => "http://en.wikipedia.org/wiki/Lennard-Jones_potential"} Wikipedia: Lennard-Jones Potential
