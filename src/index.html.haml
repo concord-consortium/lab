@@ -5,9 +5,9 @@
     %title HTML5-based scientific models, visualizations, graphing, and probeware
     %link{:href => "index.css", :rel => "stylesheet", :type => "text/css"}/
   %body
-    %h1 HTML5-based scientific models, visualizations, graphing, and probeware 
+    %h1 HTML5-based scientific models, visualizations, graphing, and probeware
     %h2 Molecular Modeling Examples
-    #examples.item-list
+    %div.item-list
       %ul
         %li
           %a{:href => 'examples/simple-atoms-model/simple-atoms-model.html'} Simple Atoms Model
@@ -17,19 +17,19 @@
           %a{:href => 'examples/complex-atoms-model/complex-atoms-model.html'} More Complex Atoms Model
 
     %h2 Graphing Examples
-    #inprogress.item-list
+    %div.item-list
       %ul
         %li
           %a{:href => 'examples/surface-temperature/surface-temperature.html'} Earth's Surface Temperature
         %li
-          %a{:href => 'examples/seasons/canberra-question.html'} Question about seasonal temperatures and geography 
+          %a{:href => 'examples/seasons/canberra-question.html'} Question about seasonal temperatures and geography
         %li
           %a{:href => 'examples/lennard-jones-potential/lennard-jones-potential.html'} Lennard-Jones-Potential
         %li
           %a{:href => 'examples/simplegraph/simplegraph.html'} Simple Graph
 
     %h2 Experiments
-    #experiments.item-list
+    %div.item-list
       %ul
         %li
           %a{:href => 'examples/test-components/application.html'} Unwired Components Test
@@ -44,18 +44,23 @@
         %li
           %a{:href => 'examples/simplecollision/simplecollision.html'} simplecollision
         %li
-          %a{:href => 'examples/simplebeam/simplebeam.html'} simplebeam   
+          %a{:href => 'examples/simplebeam/simplebeam.html'} simplebeam
 
     %h2 Tests
-    #tests.item-list
+    %div.item-list
       %ul
         %li
-          %a{:href => 'tests/simple-graphs/one-graph.html'} One Graph Test
+          %a{:href => 'tests/simple-graphs/one-graph.html'} One Graph Test (prototypical class-style)
         %li
-          %a{:href => 'tests/simple-graphs/two-graphs.html'} Two Graphs Test
+          %a{:href => 'tests/simple-graphs/two-graphs.html'} Two Graphs Test (prototypical class-style)
+        %li
+          %a{:href => 'tests/times-series-chart/one-chart.html'} One Chart Test (closure-style)
+        %li
+          %a{:href => 'tests/times-series-chart/more-charts.html'} More Charts Test (closure-style)
+
 
     %h2 Documentation
-    #documentation.item-list
+    %div.item-list
       %ul
         %li
           %a{:href => 'readme.html'} Read Me
@@ -63,4 +68,4 @@
           %a{:href => 'license.html'} License
         %li
           %a{:href => 'https://github.com/concord-consortium/lab'} Source Code Repository
-      
+
