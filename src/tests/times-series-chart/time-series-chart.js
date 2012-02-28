@@ -1,5 +1,5 @@
 function timeSeriesChart() {
-  var margin = {top: 20, right: 20, bottom: 20, left: 20},
+  var margin = {top: 20, right: 30, bottom: 30, left: 30},
       width = 760,
       height = 120,
       xValue = function(d) { return d[0]; },
@@ -12,6 +12,11 @@ function timeSeriesChart() {
 
   function chart(selection) {
     selection.each(function(data) {
+
+      if (this.clientWidth && this.clientHeight) {
+        width = this.clientWidth;
+        height = this.clientHeight;
+      };
 
       // Convert data to standard representation greedily;
       // this is needed for nondeterministic accessors.
