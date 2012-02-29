@@ -1,4 +1,4 @@
-/*globals modeler d3 arrays molecules_coulomb molecules_lennard_jones model_listener benchmark */
+/*globals modeler d3 arrays molecules_coulomb molecules_lennard_jones benchmark */
 
 // modeler.js
 //
@@ -52,7 +52,8 @@ modeler.layout.model = function() {
       temperature,
       links,
       linkDistance,
-      linkStrength;
+      linkStrength,
+      model_listener;
 
   //
   // Individual property arrays for the nodes
