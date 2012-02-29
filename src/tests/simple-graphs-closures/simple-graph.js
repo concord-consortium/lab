@@ -2,16 +2,16 @@ registerKeyboardHandler = function(callback) {
   d3.select(window).on("keydown", callback);
 };
 
-function simpleGraph(elemid, options) {
-  var cx = 600, cy = 300, elem;
+function simpleGraph(elem, options) {
+  var cx = 600, cy = 300;
 
   if (arguments.length) {
-    elem = document.getElementById(elemid);
-    cx = graph.clientWidth;
-    cy = graph.clientHeight;
+    elem = d3.select(elem);
+    cx = elem.property("clientWidth");
+    cy = elem.property("clientHeight");
   }
 
-  var vis, plot, title, xlabel, ylabel, points,
+  var vis, plot, title, xlabel, ylabel, points, xtic, ytic,
       options = options || {
         "xmax": 60, "xmin": 0,
         "ymax": 40, "ymin": 0, 
@@ -51,11 +51,13 @@ function simpleGraph(elemid, options) {
 
       line = d3.svg.line()
           .x(function(d, i) { return xScale(points[i].x); })
-          .y(function(d, i) { return yScale(points[i].y); }),
+          .y(function(d, i) { return yScale(points[i].y); });
 
-      xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(6, 0);
+      options.xrange = options.xmax - options.xmin;
+      options.yrange = options.ymax - options.ymin;
 
   function graph(selection) {
+    if (!selection) { selection = elem; };
     selection.each(function() {
 
       if (this.clientWidth && this.clientHeight) {
@@ -98,7 +100,7 @@ function simpleGraph(elemid, options) {
       // add Chart Title
       if (options.title) {
         title = vis.append("text")
-            .attr("class", "axis")
+            .attr("class", "title")
             .text(options.title)
             .attr("x", size.width/2)
             .attr("dy","-0.8em")
@@ -135,13 +137,15 @@ function simpleGraph(elemid, options) {
     });
 
     function fakeDataPoints() {
-      var xrange =  (options.xmax - options.xmin),
-          yrange2 = (options.ymax - options.ymin) / 2,
+      var yrange2 = options.yrange / 2,
           yrange4 = yrange2 / 2,
           datacount = size.width/30;
 
+      options.xtic = options.xrange / datacount;
+      options.ytic = options.yrange / datacount;
+
       points = d3.range(datacount).map(function(i) {
-        return { x: i * xrange / datacount, y: options.ymin + yrange4 + Math.random() * yrange2 };
+        return { x: i * options.xtic + options.xmin, y: options.ymin + yrange4 + Math.random() * yrange2 };
       })
     }
 
@@ -196,8 +200,8 @@ function simpleGraph(elemid, options) {
       stroke = function(d) {
         return d ? "#ccc" : "#666";
       },
-      fx = xScale.tickFormat(10),
-      fy = xScale.tickFormat(10);
+      fx = xScale.tickFormat(options.xtic),
+      fy = xScale.tickFormat(options.ytic);
 
       // Regenerate x-ticks…
       var gx = vis.selectAll("g.x")
@@ -397,7 +401,8 @@ function simpleGraph(elemid, options) {
       }
     }
 
-    // make these private function available
+    // make these private variables and functions available
+    graph.elem = elem;
     graph.redraw = redraw;
     graph.updateXScale = updateXScale;
     graph.updateYScale = updateYScale;
@@ -456,6 +461,7 @@ function simpleGraph(elemid, options) {
   graph.xmin = function(_) {
     if (!arguments.length) return options.xmin;
     options.xmin = _;
+    options.xrange = options.xmax - options.xmin;
     if (graph.updateXScale) {
       graph.updateXScale();
       graph.redraw();
@@ -466,6 +472,7 @@ function simpleGraph(elemid, options) {
   graph.xmax = function(_) {
     if (!arguments.length) return options.xmax;
     options.xmax = _;
+    options.xrange = options.xmax - options.xmin;
     if (graph.updateXScale) {
       graph.updateXScale();
       graph.redraw();
@@ -476,6 +483,7 @@ function simpleGraph(elemid, options) {
   graph.ymin = function(_) {
     if (!arguments.length) return options.ymin;
     options.ymin = _;
+    options.yrange = options.ymax - options.ymin;
     if (graph.updateYScale) {
       graph.updateYScale();
       graph.redraw();
@@ -486,6 +494,7 @@ function simpleGraph(elemid, options) {
   graph.ymax = function(_) {
     if (!arguments.length) return options.ymax;
     options.ymax = _;
+    options.yrange = options.ymax - options.ymin;
     if (graph.updateYScale) {
       graph.updateYScale();
       graph.redraw();
@@ -537,6 +546,15 @@ function simpleGraph(elemid, options) {
     yValue = _;
     return graph;
   };
+
+  graph.elem = function(_) {
+    if (!arguments.length) return elem;
+    elem = d3.select(_);
+    elem.call(graph);
+    return graph;
+  };
+
+  if (elem) { elem.call(graph); }
 
   return graph;
 }
