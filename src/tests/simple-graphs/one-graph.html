@@ -2,11 +2,13 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <title>One Graph</title>
+    <title>One Graph (prototypical class-pattern)</title>
     <script type="text/javascript" src="../../vendor/d3/d3.v2.js"></script>
     <script type="text/javascript" src="simple-graph.js"></script>
     <style type="text/css">
       body { font: 13px sans-serif; }
+      p { font-size: 1.5em;
+        margin-left: 1.0em }
       rect { fill: #fff; }
       ul {
         list-style-type: none;
@@ -42,6 +44,7 @@
     </style>
   </head>
   <body>
+    <p>One Graph (prototypical class-pattern)</p>
     <div id="chart1" class="chart"></div>
     <script type="text/javascript">
       graph = new SimpleGraph("chart1", {

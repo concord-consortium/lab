@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <title>Two Graphs (prototypical class-pattern)</title>
+    <title>Two Graphs (closure-pattern)</title>
     <script type="text/javascript" src="../../vendor/d3/d3.v2.js"></script>
     <script type="text/javascript" src="simple-graph.js"></script>
     <style type="text/css">
@@ -12,19 +12,18 @@
       rect { fill: #fff; }
       ul {
         list-style-type: none;
-        margin: 0.5em 0em 0.5em 0em; 
-        padding: 0px; }
+        margin: 0.5em 0em 0.5em 0em;
+        width: 100%; }
         ul li {
           display: table-cell;
           vertical-align: middle;
           margin: 0em;
-          padding-right: 1em; }
-      .axis {
-        font-size: 1.3em; }
+          padding: 0em 1em; }
+      .axis { font-size: 1.3em; }
       .chart {
         background-color: #F7F2C5;
-        width: 475px;
-        height: 500px; }
+        width: 500px;
+        height: 400px; }
       circle, .line {
         fill: none;
         stroke: steelblue;
@@ -45,27 +44,22 @@
     </style>
   </head>
   <body>
-    <p>Two Graphs (prototypical class-pattern)</p>
+    <p>Two Graphs (closure-pattern)</p>
     <ul>
       <li><div id="chart1" class="chart"></div></li>
       <li><div id="chart2" class="chart"></div></li>
     </ul>
     <script type="text/javascript">
-      graph1 = new SimpleGraph("chart1", {
-          "xmax": 60, "xmin": 0,
-          "ymax": 40, "ymin": 0, 
-          "title": "Simple Graph1",
-          "xlabel": "X Axis",
-          "ylabel": "Y Axis"  
-        });
 
-      graph2 = new SimpleGraph("chart2", {
-          "xmax": 60, "xmin": 0,
-          "ymax": 40, "ymin": 0, 
-          "title": "Simple Graph2",
-          "xlabel": "X Axis",
-          "ylabel": "Y Axis"  
-        });
+      var graph1 = simpleGraph();
+      d3.select("#chart1").call(graph1)
+
+      var graph2 = simpleGraph()
+            .title("Simple Graph2")
+            .xmax(20).ymax(10);
+
+      d3.select("#chart2").call(graph2)
+
     </script>
   </body>
 </html>
