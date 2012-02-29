@@ -1,4 +1,5 @@
-//
+/*globals modeler d3 arrays molecules_coulomb molecules_lennard_jones model_listener benchmark */
+
 // modeler.js
 //
 //
@@ -17,14 +18,15 @@ modeler.layout.model = function() {
       lennard_jones_forces, coulomb_forces,
       ke, pe, ave_ke,
       ave_speed, speed_goal, speed_factor,
+      speed_max, speed_min,
       ave_speed_max, ave_speed_min,
       speed_max_pos, speed_max_neg,
       drag,
       stopped = true,
-      friction = .9,
-      charge = -0.1,
-      gravity = .1,
-      theta = .8,
+      friction = 0.9,
+      charge = 0.1,
+      gravity = 0.1,
+      theta = 0.8,
       interval,
       tick_history_list = [],
       tick_history_list_index = 0,
@@ -46,12 +48,16 @@ modeler.layout.model = function() {
       dt2 = dt * dt,                  // intra-step time squared
       overlap,
       pressure, pressures = [0],
-      sample_time, sample_times = [];
+      sample_time, sample_times = [],
+      temperature,
+      links,
+      linkDistance,
+      linkStrength;
 
   //
   // Individual property arrays for the nodes
   //
-  var radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge;
+  var radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass;
   
   //
   // Indexes into the nodes array for the individual node property arrays
@@ -101,7 +107,7 @@ modeler.layout.model = function() {
   //
   function generate_atom(i) {
     var o = {};
-    o.index  = i,
+    o.index  = i;
     o.radius = nodes[_radius  ][i];
     o.px     = nodes[_px      ][i];
     o.py     = nodes[_py      ][i];
@@ -114,13 +120,13 @@ modeler.layout.model = function() {
     o.ay     = nodes[_ay      ][i];
     o.mass   = nodes[_halfmass][i]*2;
     o.charge = nodes[_charge][i];
-    return o
+    return o;
   }
 
   function update_atoms() {
     var i, n = mol_number, results = [];
     i = -1; while (++i < n) {
-      atoms[i] = generate_atom(i)
+      atoms[i] = generate_atom(i);
     }
     atoms.length = n;
   }
@@ -139,6 +145,12 @@ modeler.layout.model = function() {
   //
   function temperature_to_speed(t) {
     return 0.0050 * Math.pow(Math.E/2, t);
+  }
+  
+  function average_speed() {
+    var i, s = 0, n = nodes[0].length;
+    i = -1; while (++i < n) { s += speed[i]; }
+    return s/n;
   }
   
   //
@@ -201,7 +213,8 @@ modeler.layout.model = function() {
         t, // current target
         l, // current distance
         k, // current force
-        t, // current system time
+        // OOPS? above, it says t is "current target"
+        // t, // current system time
         r2, r2i, r6i, ljf2, pe2, te2, f2, fx, fy,
         ljf, coul, xf, yf,
         dx, dy, mag2,
@@ -210,7 +223,9 @@ modeler.layout.model = function() {
         leftwall   = radius[0],
         bottomwall = radius[0],
         rightwall  = size[0] - radius[0],
-        topwall    = size[1] - radius[0];
+        topwall    = size[1] - radius[0],
+        speed_max_one_percent,
+        speed_min_one_percent;
   
     //
     // Loop through this inner processing loop 'integration_steps' times:
@@ -232,7 +247,7 @@ modeler.layout.model = function() {
         x[i]  += vx[i] * dt + 0.5 * dt2 * ax[i];
         y[i]  += vy[i] * dt + 0.5 * dt2 * ay[i];
         vx[i] += 0.5 * dt * ax[i];
-        vy[i] += 0.5 * dt * ay[i]
+        vy[i] += 0.5 * dt * ay[i];
 
         dx = x[i] - initial_x;
         dy = y[i] - initial_y;
@@ -282,8 +297,8 @@ modeler.layout.model = function() {
       if (lennard_jones_forces || coulomb_forces) {
         i = -1; while (++i < n) {
           j = i; while (++j < n) {
-            dx = x[j] - x[i]
-            dy = y[j] - y[i]
+            dx = x[j] - x[i];
+            dy = y[j] - y[i];
             r2 = dx * dx + dy * dy;
             l = Math.sqrt(r2);
             if (lennard_jones_forces && l < max_ljf_distance) { 
@@ -352,7 +367,7 @@ modeler.layout.model = function() {
               speed_factor = speed_max/speed[i];
               vx[i] *= speed_factor;
               vy[i] *= speed_factor;
-              speed[i] = speed_max - (Math.random() * speed_max_one_percent)
+              speed[i] = speed_max - (Math.random() * speed_max_one_percent);
               px[i] = x[i] - vx[i];
               py[i] = y[i] - vy[i];
             }
@@ -390,7 +405,43 @@ modeler.layout.model = function() {
   //
   // Main Model Integration Loop
   //
+  
+  function tick_history_list_push() {
+    var i, j, 
+        newnode, newnodes = [], 
+        n=nodes.length;
+    i = -1; while(++i < n) {
+      newnodes[i] = arrays.clone(nodes[i]);
+    }
+    tick_history_list.length = tick_history_list_index;
+    tick_history_list_index++;
+    tick_counter++;
+    new_step = true;
+    tick_history_list.push({ nodes: newnodes, ke:ke });
+    if (tick_history_list_index > 1000) {
+      tick_history_list.splice(0,1);
+      tick_history_list_index = 1000;
+    } 
+  }
+  
+  function calculate_kinetic_and_potential_energy() {
+    var i, s, k, fx, fy, p, n = nodes[0].length;
+    ke = 0;
+    pe = 0;
+    i = -1; while (++i < n) { 
+      s = speed[i];
+      k =  s * s * halfmass[i];
+      ke += k;
+      fx = ax[i];
+      fy = ay[i];
+      p = fx + fx;
+      pe += p;
+    }
+    ave_ke = ke / n;
+  }
+    
   function tick() {
+    var t;
     run_tick();
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
@@ -401,8 +452,8 @@ modeler.layout.model = function() {
     if (!stopped) { 
       t = Date.now();
       if (sample_time) {
-        sample_time  = t - sample_time
-        if (sample_time) { sample_times.push(sample_time) };
+        sample_time  = t - sample_time;
+        if (sample_time) { sample_times.push(sample_time); }
         sample_time = t;
         sample_times.splice(0, sample_times.length - 128);
       } else {
@@ -412,7 +463,7 @@ modeler.layout.model = function() {
     } else {
       
     }
-    return stopped
+    return stopped;
   }
   
   function reset_tick_history_list() {
@@ -422,37 +473,19 @@ modeler.layout.model = function() {
   }
   
   function tick_history_list_reset_to_ptr() {
-    tick_history_list.length = tick_history_list_index + 1
-  }
-  
-  function tick_history_list_push() {
-    var i, j, 
-        newnode, newnodes = [], 
-        n=nodes.length;
-    i = -1; while(++i < n) {
-      newnodes[i] = arrays.clone(nodes[i])
-    }
-    tick_history_list.length = tick_history_list_index;
-    tick_history_list_index++;
-    tick_counter++;
-    new_step = true;
-    tick_history_list.push({ nodes: newnodes, ke:ke });
-    if (tick_history_list_index > 1000) {
-      tick_history_list.splice(0,1)
-      tick_history_list_index = 1000
-    } 
+    tick_history_list.length = tick_history_list_index + 1;
   }
   
   function tick_history_list_extract(index) {
     var i, n=nodes.length;
     if (index < 0) {
-      throw new Error("modeler: request for tick_history_list[" + index + "]")
-    };
-    if (index >= (tick_history_list.length)) {
-      throw new Error("modeler: request for tick_history_list[" + index + "], tick_history_list.length=" + tick_history_list.length)
-    };
+      throw new Error("modeler: request for tick_history_list[" + index + "]");
+    }
+    if (index >= tick_history_list.length) {
+      throw new Error("modeler: request for tick_history_list[" + index + "], tick_history_list.length=" + tick_history_list.length);
+    }
     i = -1; while(++i < n) {
-      arrays.copy(tick_history_list[index].nodes[i], nodes[i])
+      arrays.copy(tick_history_list[index].nodes[i], nodes[i]);
     }
     ke = tick_history_list[index].ke;
     update_atoms();
@@ -477,7 +510,8 @@ modeler.layout.model = function() {
       vy[i] = (y[i] - py[i]) * factor;
       px[i] += vx[i];
       py[i] += vy[i];
-      speed[i] *- factor;
+      // FIXME: was 'speed[i] *- factor;' Is the below what was intended? RPK 2-29-12
+      speed[i] *= factor;
     }
   }
   
@@ -504,33 +538,17 @@ modeler.layout.model = function() {
   }
   
   function container_pressure() {
-    return pressures.reduce(function(j,k) { return j+k })/pressures.length
+    return pressures.reduce(function(j,k) { return j+k; })/pressures.length;
   }
   
   function speed_history(speeds) {
     if (arguments.length) {
       speed_history.push(speeds);
       // limit the pressures array to the most recent 16 entries
-      speed_history.splice(0, speed_history.length - 100)
+      speed_history.splice(0, speed_history.length - 100);
     } else {
-      return speed_history.reduce(function(j,k) { return j+k })/pressures.length
+      return speed_history.reduce(function(j,k) { return j+k; })/pressures.length;
     }
-  }
-
-  function calculate_kinetic_and_potential_energy() {
-    var i, s, k, fx, fy, p, n = nodes[0].length;
-    ke = 0;
-    pe = 0;
-    i = -1; while (++i < n) { 
-      s = speed[i];
-      k =  s * s * halfmass[i];
-      ke += k;
-      fx = ax[i];
-      fy = ay[i];
-      p = fx + fx;
-      pe += p;
-    }
-    ave_ke = ke / n;
   }
   
   // 
@@ -559,21 +577,15 @@ modeler.layout.model = function() {
     return ke;
   }
 
-  function average_speed() {
-    var i, s = 0, n = nodes[0].length;
-    i = -1; while (++i < n) { s += speed[i] }
-    return s/n;
-  }
-
   function average_rate() {
     var i, ave, s = 0, n = sample_times.length;
-    i = -1; while (++i < n) { s += sample_times[i] }
+    i = -1; while (++i < n) { s += sample_times[i]; }
     ave = s/n;
-    return (ave ? 1/ave*1000: 0)
+    return (ave ? 1/ave*1000: 0);
   }
 
   function resolve_collisions(annealing_steps) {
-    var i; save_temperature_control = temperature_control;
+    var i, save_temperature_control = temperature_control;
     temperature_control = true;
     i = -1; while (++i < annealing_steps) {
       run_tick();
@@ -604,19 +616,19 @@ modeler.layout.model = function() {
               steps: tick_history_list.length-1
             };
     return stats;
-  }
+  };
 
   model.stepCounter = function() {
-    return tick_counter
-  }
+    return tick_counter;
+  };
 
   model.steps = function() {
-    return tick_history_list.length-1
-  }
+    return tick_history_list.length-1;
+  };
 
   model.isNewStep = function() {
-    return new_step
-  }
+    return new_step;
+  };
 
   model.seek = function(location) {
     stopped = true;
@@ -625,10 +637,10 @@ modeler.layout.model = function() {
     tick_counter = location;
     tick_history_list_extract(tick_history_list_index-1);
     return tick_counter;
-  }
+  };
 
   model.stepBack = function(num) {
-    if (!arguments.length) { var num = 1 };
+    if (!arguments.length) { num = 1; }
     var i = -1;
     stopped = true;
     new_step = false;
@@ -637,28 +649,28 @@ modeler.layout.model = function() {
         tick_history_list_index--;
         tick_counter--;
         tick_history_list_extract(tick_history_list_index-1);
-        if (model_listener) { model_listener() };
+        if (model_listener) { model_listener(); }
       }
-    };
-    return tick_counter
-  }
+    }
+    return tick_counter;
+  };
   
   model.stepForward = function(num) {
-    if (!arguments.length) { var num = 1 };
+    if (!arguments.length) { num = 1; }
     var i = -1;
     stopped = true;
     while(++i < num) {    
-      if (tick_history_list_index < (tick_history_list.length)) {
-        tick_history_list_extract(tick_history_list_index)
+      if (tick_history_list_index < tick_history_list.length) {
+        tick_history_list_extract(tick_history_list_index);
         tick_history_list_index++;
-        tick_counter++
-        if (model_listener) { model_listener() };
+        tick_counter++;
+        if (model_listener) { model_listener(); }
       } else {
         tick();
-        if (model_listener) { model_listener() };
+        if (model_listener) { model_listener(); }
       }
     }
-    return tick_counter
+    return tick_counter;
   };
 
   model.on = function(type, listener) {
@@ -672,7 +684,7 @@ modeler.layout.model = function() {
   };
 
   model.tick = function(num) {
-    if (!arguments.length) { var num = 1 };
+    if (!arguments.length) { num = 1; }
     var i = -1;
     while(++i < num) {
       tick();
@@ -692,46 +704,46 @@ modeler.layout.model = function() {
 
   model.getEpsilon = function() {
     return epsilon;
-  },
+  };
 
   model.getSigma = function() {
     return sigma;
-  },
+  };
 
   model.set_radius = function(r) {
     var i, n = nodes[0].length;
-    i = -1; while(++i < n) { radius[i] = r };
+    i = -1; while(++i < n) { radius[i] = r; }
     update_atoms();
-  }
+  };
 
   model.get_speed = function(speed_data) {
-    if (!arguments.length) { var speed_data = [] };
+    if (!arguments.length) { speed_data = []; }
     return arrays.copy(speed, speed_data);
-  }
+  };
   
   model.get_rate = function() {
     return average_rate();
-  }
+  };
 
   model.set_temperature_control = function(tc) {
    temperature_control = tc;
-  }
+  };
 
   model.set_lennard_jones_forces = function(lj) {
    lennard_jones_forces = lj;
-  }
+  };
 
   model.set_coulomb_forces = function(cf) {
    coulomb_forces = cf;
-  }
+  };
 
   model.get_atoms = function() {
     return atoms;
-  }
+  };
 
   model.initialize = function(options) {
-    var options = options || {},
-        i, j, k, o,
+    options = options || {};
+    var i, j, k, o,
         radius, px, py, x, y, vx, vy, speed, ax, ay,
         _radius, _px, _py, _x, _y, _vx, _vy, _speed, _ax, _ay,
         n = nodes[0].length,
@@ -740,25 +752,6 @@ modeler.layout.model = function() {
         annealing_steps = 10,
         max_ljf_repulsion, min_ljf_attraction,
         max_ljf_distance, min_ljf_distance;
-
-        // mention the functions so they get into the containing closure:
-        generate_atom, update_atoms,
-        tick,
-        reset_tick_history_list,
-        tick_history_list_reset_to_ptr,
-        tick_history_list_push,
-        tick_history_list_extract,
-        set_speed,
-        change_speed,
-        cap_speed,
-        set_acc,
-        container_pressure,
-        speed_history,
-        potential_energy,
-        kinetic_energy,
-        average_speed,
-        resolve_collisions,
-        set_temperature;
 
     lennard_jones_forces = options.lennard_jones_forces || true;
     coulomb_forces = options.coulomb_forces || true;
@@ -775,18 +768,22 @@ modeler.layout.model = function() {
     resolve_collisions(annealing_steps);
     ave_speed = average_speed();
     tick_history_list_push();
-    return model
+    return model;
   };
 
   model.nodes = function(options) {
-    var options = options || {},
-        num = options.num || 50, 
+    options = options || {};
+    
+    var num = options.num || 50, 
         xdomain = options.xdomain || 100, 
         ydomain = options.ydomain || 100, 
         temperature = options.temperature || 3, 
         rmin = options.rmin || 4.4, 
         mol_rmin_radius_factor = options.mol_rmin_radius_factor || 0.38,
-        dAngle;
+        dAngle,
+        dTheta,
+        v0,
+        i;
 
     mol_number = num;
 
@@ -861,10 +858,10 @@ modeler.layout.model = function() {
         ay[i] = 0;
     charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
         // speed_data.push(speed[i]);
-    };
+    }
     update_atoms();
-    return model
-  }
+    return model;
+  };
 
   model.start = function() {
     model.initialize();
@@ -884,21 +881,21 @@ modeler.layout.model = function() {
 
   model.ke = function() {
     ke = ke || kinetic_energy();
-    return ke
+    return ke;
   };
 
   model.ave_ke = function() {
     if (ave_ke) {
-      return ave_ke
+      return ave_ke;
     } else {
       kinetic_energy();
-      return ave_ke
+      return ave_ke;
     }
   };
 
   model.pe = function() {
     pe = pe || potential_energy();
-    return pe
+    return pe;
   };
 
   model.speed = function() {
@@ -911,7 +908,7 @@ modeler.layout.model = function() {
 
   model.temperature = function(x) {
     if (!arguments.length) return temperature;
-    set_temperature(x)
+    set_temperature(x);
     return model;
   };
 
