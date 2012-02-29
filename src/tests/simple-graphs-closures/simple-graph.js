@@ -138,13 +138,13 @@ function simpleGraph(elem, options) {
 
     function fakeDataPoints() {
       var yrange2 = options.yrange / 2,
-          yrange4 = yrange2 / 2,
-          datacount = size.width/30;
+          yrange4 = yrange2 / 2;
 
-      options.xtic = options.xrange / datacount;
-      options.ytic = options.yrange / datacount;
+      options.datacount = size.width/30;
+      options.xtic = options.xrange / options.datacount;
+      options.ytic = options.yrange / options.datacount;
 
-      points = d3.range(datacount).map(function(i) {
+      points = d3.range(options.datacount).map(function(i) {
         return { x: i * options.xtic + options.xmin, y: options.ymin + yrange4 + Math.random() * yrange2 };
       })
     }
@@ -200,8 +200,9 @@ function simpleGraph(elem, options) {
       stroke = function(d) {
         return d ? "#ccc" : "#666";
       },
-      fx = xScale.tickFormat(options.xtic),
-      fy = xScale.tickFormat(options.ytic);
+
+      fx = xScale.tickFormat(options.datacount),
+      fy = xScale.tickFormat(options.datacount);
 
       // Regenerate x-ticks…
       var gx = vis.selectAll("g.x")
