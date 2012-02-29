@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <title>Two Graphs (closure-pattern)</title>
+    <title>Multiple Graphs (closure-pattern)</title>
     <script type="text/javascript" src="../../vendor/d3/d3.v2.js"></script>
     <script type="text/javascript" src="simple-graph.js"></script>
     <style type="text/css">
@@ -12,14 +12,15 @@
       rect { fill: #fff; }
       ul {
         list-style-type: none;
-        margin: 0.5em 0em 0.5em 0em;
+        margin: 1.0em 0em;
         width: 100%; }
         ul li {
           display: table-cell;
           vertical-align: middle;
           margin: 0em;
           padding: 0em 1em; }
-      .axis { font-size: 1.3em; }
+      .title { font-size: 1.3em; }
+      .axis  { font-size: 1.1em; }
       .chart {
         background-color: #F7F2C5;
         width: 500px;
@@ -44,21 +45,28 @@
     </style>
   </head>
   <body>
-    <p>Two Graphs (closure-pattern)</p>
+    <p>Multiple Graphs (closure-pattern)</p>
     <ul>
       <li><div id="chart1" class="chart"></div></li>
       <li><div id="chart2" class="chart"></div></li>
     </ul>
+    <ul>
+      <li><div id="chart3" class="chart"></div></li>
+      <li><div id="chart4" class="chart"></div></li>
+    </ul>
     <script type="text/javascript">
 
-      var graph1 = simpleGraph();
-      d3.select("#chart1").call(graph1)
+      var graph1 = simpleGraph("#chart1");
 
-      var graph2 = simpleGraph()
-            .title("Simple Graph2")
-            .xmax(20).ymax(10);
+      var graph2 = simpleGraph().title("Simple Graph2").xmax(20).ymax(10);
+      d3.select("#chart2").call(graph2);
 
-      d3.select("#chart2").call(graph2)
+      var graph3 = simpleGraph().title("Simple Graph3").xmin(1000).xmax(2000).ymax(100);
+      d3.select("#chart3").call(graph3);
+
+      // var graph4 = simpleGraph().title("Simple Graph4").xmin(0.1).xmax(0.2).ymin(0.05).ymax(0.10);
+      var graph4 = simpleGraph().title("Simple Graph4").xmax(0.2).ymax(0.10);
+      graph4.elem("#chart4");
 
     </script>
   </body>

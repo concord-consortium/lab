@@ -19,7 +19,8 @@
           vertical-align: middle;
           margin: 0em;
           padding: 0em 1em; }
-      .axis { font-size: 1.5em; }
+      .title { font-size: 1.6em; }
+      .axis  { font-size: 1.4em; }
       .chart {
         background-color: #F7F2C5;
         width: 960px;
@@ -48,9 +49,8 @@
     <div id="chart1" class="chart"></div>
     <script type="text/javascript">
 
-      var graph = simpleGraph();
-
-      d3.selectAll("#chart1").call(graph)
+      var graph = simpleGraph().xmin(1000).xmax(2000).ymin(50).ymax(100);
+      graph.elem("#chart1");
 
     </script>
   </body>
