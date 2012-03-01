@@ -3,21 +3,21 @@
   "version": "0.0.1",
   "description": "HTML5-based scientific models, visualizations, graphing, and probeware",
   "keywords": [
-    "molecule", 
-    "probes", 
-    "graph", 
-    "data", 
-    "visualization", 
-    "svg", 
+    "molecule",
+    "probes",
+    "graph",
+    "data",
+    "visualization",
+    "svg",
     "d3"
   ],
   "homepage": "http://lab.dev.concord.org/",
   "author": {
-    "name": "Stephen Bannasch", 
+    "name": "Stephen Bannasch",
     "url": "https://github.com/stepheneb"
   },
-  "repository": { 
-    "type": "git", 
+  "repository": {
+    "type": "git",
     "url": "https://github.com/concord-consortium/lab.git"
   },
   "dependencies": {
