@@ -12,8 +12,7 @@ var speed_cx, speed_cy, speed_padding, speed_size,
     speed_vis, speed_plot, speed_bars, speed_line, speed_data, speed_fit;
 
 function generate_speed_data() {
-  speed_data = [];
-  model.get_speed(speed_data);
+  speed_data = model.get_speed();
   speed_graph.xmax = d3.max(speed_data);
   speed_graph.xmin = d3.min(speed_data);
   speed_graph.quantile = d3.quantile(speed_data, 0.1);
