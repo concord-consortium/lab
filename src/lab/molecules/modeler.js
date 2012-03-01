@@ -4,10 +4,10 @@
 //
 
 modeler = {};
-modeler.layout = {};
+modeler = {};
 modeler.VERSION = '0.1.0';
 
-modeler.layout.model = function() {
+modeler.model = function() {
   var model = {},
       atoms = [],
       mol_number,
