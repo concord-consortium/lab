@@ -872,11 +872,13 @@ modeler.model = function() {
   };
 
   model.ke = function() {
-    return ke = ke || kinetic_energy();
+    ke = ke || kinetic_energy();
+    return ke;
   };
 
   model.ave_ke = function() {
-    return ave_ke = ave_ke || kinetic_energy();
+    ave_ke = ave_ke || kinetic_energy();
+    return ave_ke;
   };
 
   model.pe = function() {
