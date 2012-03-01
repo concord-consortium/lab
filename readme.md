@@ -474,7 +474,7 @@ Enter `cont` to continue execution until your breakpoint.
     < ·
     < ········
     < ·
-    <  
+    <
     break in test/lab/components/components-test.js:13
      11   "Thermometer": {
      12     topic: function() {
@@ -482,6 +482,19 @@ Enter `cont` to continue execution until your breakpoint.
      14       return new components.Thermometer("#thermometer");
      15     },
 
+To evaluate expressions type `repl`  -- use ctrl-C to exit the repl:
+
+    repl
+    Press Ctrl + C to leave debug repl
+    > initialization_options
+    { model_listener: false,
+      lennard_jones_forces: true,
+      coulomb_forces: true }
+    > atoms[0].charge
+    -1
+
+Enter **ctrl-C** to exit the repl and return to the debugger.
+    
 Enter **ctrl-D** to exit the debugger.
 
 [node-inspector](https://github.com/dannycoates/node-inspector)
@@ -489,7 +502,7 @@ Enter **ctrl-D** to exit the debugger.
 
 ### Generated Lab Modules: `lab/`
 
-The `lab/` directory contains the lab modules generated from JavaScript source code in the `src/lab/` 
+The `lab/` directory contains the lab modules generated from JavaScript source code in the `src/lab/`
 directory. The `lab/` directory is not checked into the repository
 
 Here are the standard lab modules:
