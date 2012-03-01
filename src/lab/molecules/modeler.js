@@ -660,24 +660,9 @@ modeler.model = function() {
     return tick_counter;
   };
 
-  model.on = function(type, listener) {
-    event.on(type, listener);
-    return model;
-  };
-
-  model.tickInPlace = function() {
-    event.tick({type: "tick"});
-    return model;
-  };
-
-  model.tick = function(num) {
-    if (!arguments.length) { num = 1; }
-    var i = -1;
-    while(++i < num) {
-      tick();
-    }
-    return model;
-  };
+  // The next four functions assume we're are doing this for
+  // all the atoms will need to be changed when different atoms
+  // can have different LJ sigma values
 
   model.set_lj_coefficients = function(e, s) {
     // am not using the coefficients beyond setting the ljf limits yet ...
@@ -686,7 +671,6 @@ modeler.model = function() {
     molecules_lennard_jones.epsilon(e);
     molecules_lennard_jones.sigma(s);
     setup_ljf_limits();
-    return model;
   };
 
   model.getEpsilon = function() {
@@ -735,26 +719,52 @@ modeler.model = function() {
 
     lennard_jones_forces = options.lennard_jones_forces || true;
     coulomb_forces = options.coulomb_forces || true;
-    model_listener = options.model_listener || false;
     temperature_control = options.temperature_control || false;
     temperature = options.temperature || 3;
 
+    // who is listening to model tick completions
+    model_listener = options.model_listener || false;
+
     reset_tick_history_list();
-    set_temperature(temperature);
+
+    // setup localvariable that help optimize the calculation loops
     setup_ljf_limits();
     setup_coulomb_limits();
+
     // pressures.push(pressure);
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
+
+    set_temperature(temperature);
     resolve_collisions(annealing_steps);
+
     ave_speed = average_speed();
     tick_history_list_push();
+    return model;
+  };
+
+  model.on = function(type, listener) {
+    event.on(type, listener);
+    return model;
+  };
+
+  model.tickInPlace = function() {
+    event.tick({type: "tick"});
+    return model;
+  };
+
+  model.tick = function(num) {
+    if (!arguments.length) { num = 1; }
+    var i = -1;
+    while(++i < num) {
+      tick();
+    }
     return model;
   };
 
   model.nodes = function(options) {
     options = options || {};
 
-    var num = options.num || 50,
+    var num =  options.num || 50,
         xdomain = options.xdomain || 100,
         ydomain = options.ydomain || 100,
         temperature = options.temperature || 3,
@@ -771,10 +781,12 @@ modeler.model = function() {
     var webgl = !!window.WebGLRenderingContext;
     var not_safari = benchmark.what_browser.browser !== 'Safari';
 
+    //  special-case: Typed arrays are faster almost everywhere 
+    // ... except for Safari
     var array_type = (webgl && not_safari) ? "Float32Array" : "regular";
 
     // model.RADIUS = 0
-    nodes[model.RADIUS] = arrays.create(num, rmin * mol_rmin_radius_factor, array_type);
+    nodes[model.RADIUS] = arrays.create(num, rmin * mol_rmin_radius_factor, array_type );
     radius = nodes[model.RADIUS];
 
     // model.PX     = 1;
@@ -859,17 +871,11 @@ modeler.model = function() {
   };
 
   model.ke = function() {
-    ke = ke || kinetic_energy();
-    return ke;
+    return ke = ke || kinetic_energy();
   };
 
   model.ave_ke = function() {
-    if (ave_ke) {
-      return ave_ke;
-    } else {
-      kinetic_energy();
-      return ave_ke;
-    }
+    return ave_ke = ave_ke || kinetic_energy();
   };
 
   model.pe = function() {
@@ -891,51 +897,9 @@ modeler.model = function() {
     return model;
   };
 
-  model.links = function(x) {
-    if (!arguments.length) return links;
-    links = x;
-    return model;
-  };
-
   model.size = function(x) {
     if (!arguments.length) return size;
     size = x;
-    return model;
-  };
-
-  model.linkDistance = function(x) {
-    if (!arguments.length) return linkDistance;
-    linkDistance = d3.functor(x);
-    return model;
-  };
-
-  model.linkStrength = function(x) {
-    if (!arguments.length) return linkStrength;
-    linkStrength = d3.functor(x);
-    return model;
-  };
-
-  model.friction = function(x) {
-    if (!arguments.length) return friction;
-    friction = x;
-    return model;
-  };
-
-  model.charge = function(x) {
-    if (!arguments.length) return charge;
-    charge = typeof x === "function" ? x : +x;
-    return model;
-  };
-
-  model.gravity = function(x) {
-    if (!arguments.length) return gravity;
-    gravity = x;
-    return model;
-  };
-
-  model.theta = function(x) {
-    if (!arguments.length) return theta;
-    theta = x;
     return model;
   };
 
