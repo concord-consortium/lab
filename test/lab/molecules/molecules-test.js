@@ -35,14 +35,17 @@ suite.addBatch({
 suite.addBatch({
   "model initialization": {
     topic: function() {
-      return model = modeler.layout.model();
+      return model = modeler.model();
     },
     "creates default molecular model": function(model) {
       assert.equal(atoms.length, 0);
       model.nodes();
       atoms = model.get_atoms();
       assert.equal(atoms.length, 50);
-      assert.deepEqual(model.size(), [1, 1]);
+      // FIXME: custom error strings
+      // expected [ 100, 100 ],
+	    // got      [ 1, 1 ] (deepEqual) // molecules-test.js:46
+      assert.deepEqual(model.size(), [100, 100]);
     },
     "creates 50 molecules without setting model size or initializing forces": function(model) {
       node_options.num = 50;
@@ -87,7 +90,7 @@ suite.addBatch({
   "model stepping": {
     topic: function() {
       node_options.num = 10;
-      return model = modeler.layout.model()
+      return model = modeler.model()
                     .nodes(node_options)
                     .initialize(initialization_options);
     },
@@ -139,15 +142,20 @@ suite.addBatch({
       var total_steps = model.steps();
       assert.equal(total_steps, 15, "total steps should equal 15 but instead it was " + total_steps);
       assert.isFalse(model.isNewStep());
+    },
+    "after running 10 ticks and model.seek() is at step 0": function(model) {
+      model.tick(10);
+      model.seek();
+      assert.equal(model.stepCounter(), 0);
+      assert.isFalse(model.isNewStep());
     }
   }
 });
 
-
 suite.addBatch({
   "model energy calculations": {
     topic: function() {
-      return model = modeler.layout.model();
+      return model = modeler.model();
     },
     "10 molecules at a temperature of 5 have an average speed of 0.2": function(model) {
       node_options.num = 10;
