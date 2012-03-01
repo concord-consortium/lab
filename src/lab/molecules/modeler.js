@@ -782,7 +782,7 @@ modeler.model = function() {
     var webgl = !!window.WebGLRenderingContext;
     var not_safari = benchmark.what_browser.browser !== 'Safari';
 
-    //  special-case: Typed arrays are faster almost everywhere 
+    // special-case: Typed arrays are faster almost everywhere
     // ... except for Safari
     var array_type = (webgl && not_safari) ? "Float32Array" : "regular";
 
