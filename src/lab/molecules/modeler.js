@@ -1,7 +1,4 @@
 /*globals modeler:true, d3, arrays, molecules_coulomb, molecules_lennard_jones, benchmark */
-/*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, undef:true, browser:true, indent:2,
-         white: false, maxerr:50 */
-
 // modeler.js
 //
 //
