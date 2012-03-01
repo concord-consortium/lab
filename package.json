@@ -27,7 +27,8 @@
     "jsdom": "0.2.12",
     "vows": "0.6.2",
     "coffee-script": "1.2.0",
-    "node-inspector": "0.1.10"
+    "node-inspector": "0.1.10",
+    "jshint": "0.x"
   },
   "scripts": {
     "test": "./node_modules/vows/bin/vows"
