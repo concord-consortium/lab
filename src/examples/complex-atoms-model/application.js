@@ -23,7 +23,8 @@ var autostart = true,
     mol_rmin_radius_factor = 0.38,
     frame_number = 0,
     model_stopped = true,
-    model = modeler.model();
+    model = modeler.model(),
+    nodes;
 
 // ------------------------------------------------------------
 // Setup model_player
@@ -43,11 +44,11 @@ var model_listener = function(e) {
   var ke = model.ke(),
       step_counter = model.stepCounter(),
       total_steps = model.steps();
-  
+
   layout.speed_update();
-  
+
   layout.update_molecule_positions();
-  
+
   if (model.isNewStep()) {
     ke_data.push(ke);
     if (model_stopped) {
@@ -83,9 +84,9 @@ var mc_graph = {
   xunits:               true,
   yunits:               true,
   atom_mubers:          false,
-  xmin:                 0, 
-  xmax:                 100, 
-  ymin:                 0, 
+  xmin:                 0,
+  xmax:                 100,
+  ymin:                 0,
   ymax:                 100
 };
 
@@ -105,7 +106,7 @@ var kechart = document.getElementById("ke-chart");
 var ke_graph_options = {
   title:     "Kinetic Energy of the System",
   xlabel:    "Model Time (ns)",
-  xmin:      0, 
+  xmin:      0,
   xmax:      2500,
   sample:    sample_time,
   ylabel:    null,
@@ -165,15 +166,15 @@ var lj_coefficients = molecules_lennard_jones.coefficients();
 var lj_data = {
   coefficients: lj_coefficients,
   variables: [
-    { 
-      coefficient:"epsilon", 
-      x: lj_coefficients.rmin, 
-      y: lj_coefficients.epsilon 
-    }, 
-    { 
-      coefficient:"sigma", 
-      x: lj_coefficients.sigma, 
-      y: 0 
+    {
+      coefficient:"epsilon",
+      x: lj_coefficients.rmin,
+      y: lj_coefficients.epsilon
+    },
+    {
+      coefficient:"sigma",
+      x: lj_coefficients.sigma,
+      y: 0
     }
   ]
 };
@@ -210,7 +211,7 @@ function update_coefficients(coefficients) {
   lj_data.variables[0].x = rmin;
 
   lennard_jones_potential = []
-  
+
   for(var r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
     y = molecules_lennard_jones.potential(r)
     if (y < 100) {
@@ -238,20 +239,21 @@ if (model_controls) {
 // ------------------------------------------------------------
 
 function generate_atoms() {
-  model.nodes({ num: mol_number, 
-          xdomain: mc_graph.xdomain, 
-          ydomain: mc_graph.ydomain, 
-          temperature: temperature, 
-          rmin: 4.4, 
+  model.nodes({ num: mol_number,
+          xdomain: mc_graph.xdomain,
+          ydomain: mc_graph.ydomain,
+          temperature: temperature,
+          rmin: 4.4,
           mol_rmin_radius_factor: 0.38
         })
       .initialize({
           temperature: temperature,
-          lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked, 
-          coulomb_forces: layout.coulomb_forces_checkbox.checked, 
+          lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked,
+          coulomb_forces: layout.coulomb_forces_checkbox.checked,
           model_listener: model_listener
         });
   atoms = model.get_atoms();
+  nodes = model.get_nodes();
 }
 
 function modelSetup() {
@@ -404,11 +406,11 @@ function modelReset() {
   layout.setup_particles();
   step_counter = model.stepCounter();
   layout.displayStats();
-  if (layout.datatable_visible) { 
+  if (layout.datatable_visible) {
     layout.render_datatable(true);
   } else {
     layout.hide_datatable()
-  }  
+  }
   ke_data = [model.ke()];
   ke_graph.new_data(ke_data);
   ke_graph.hide_canvas();
@@ -433,11 +435,11 @@ window.onresize = layout.setupScreen;
 // ------------------------------------------------------------
 
 function handleKeyboardForModel(evt) {
-  evt = (evt) ? evt : ((window.event) ? event : null); 
+  evt = (evt) ? evt : ((window.event) ? event : null);
   if (evt) {
     switch (evt.keyCode) {
       case 32:                // spacebar
-      model_stopped ? modelGo() : modelStop(); 
+      model_stopped ? modelGo() : modelStop();
       evt.preventDefault();
       break;
       case 13:                // return
