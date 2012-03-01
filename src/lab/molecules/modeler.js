@@ -1,4 +1,6 @@
-/*globals modeler d3 arrays molecules_coulomb molecules_lennard_jones benchmark */
+/*globals modeler:true, d3, arrays, molecules_coulomb, molecules_lennard_jones, benchmark */
+/*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, undef:true, browser:true, indent:2,
+         white: false, maxerr:50 */
 
 // modeler.js
 //
@@ -460,8 +462,6 @@ modeler.layout.model = function() {
         sample_time = t;
       }
       event.tick({type: "tick"});
-    } else {
-
     }
     return stopped;
   }
@@ -748,7 +748,7 @@ modeler.layout.model = function() {
         _radius, _px, _py, _x, _y, _vx, _vy, _speed, _ax, _ay,
         n = nodes[0].length,
         w = size[0], h = size[1],
-        temperature = 4,
+        temperature,
         annealing_steps = 10,
         max_ljf_repulsion, min_ljf_attraction,
         max_ljf_distance, min_ljf_distance;
@@ -774,11 +774,11 @@ modeler.layout.model = function() {
   model.nodes = function(options) {
     options = options || {};
 
-    var num = options.num || 50, 
-        xdomain = options.xdomain || 100, 
-        ydomain = options.ydomain || 100, 
-        temperature = options.temperature || 3, 
-        rmin = options.rmin || 4.4, 
+    var num = options.num || 50,
+        xdomain = options.xdomain || 100,
+        ydomain = options.ydomain || 100,
+        temperature = options.temperature || 3,
+        rmin = options.rmin || 4.4,
         mol_rmin_radius_factor = options.mol_rmin_radius_factor || 0.38,
         dAngle,
         dTheta,
@@ -790,7 +790,7 @@ modeler.layout.model = function() {
     nodes = arrays.create(node_properties_length, null, "regular");
 
     var webgl = !!window.WebGLRenderingContext;
-    var not_safari = benchmark.what_browser.browser != "Safari";
+    var not_safari = benchmark.what_browser.browser !== 'Safari';
 
     var array_type = (webgl && not_safari) ? "Float32Array" : "regular";
 
