@@ -618,11 +618,12 @@ modeler.model = function() {
   };
 
   model.seek = function(location) {
+    if (!arguments.length) { location = 0; }
     stopped = true;
     new_step = false;
     tick_history_list_index = location;
     tick_counter = location;
-    tick_history_list_extract(tick_history_list_index-1);
+    tick_history_list_extract(tick_history_list_index);
     return tick_counter;
   };
 
