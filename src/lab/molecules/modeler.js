@@ -409,8 +409,8 @@ modeler.layout.model = function() {
   //
 
   function tick_history_list_push() {
-    var i, j, 
-        newnode, newnodes = [], 
+    var i, j,
+        newnode, newnodes = [],
         n=nodes.length;
     i = -1; while(++i < n) {
       newnodes[i] = arrays.clone(nodes[i]);
