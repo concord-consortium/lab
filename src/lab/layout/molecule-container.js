@@ -27,11 +27,11 @@ layout.finishSetupMoleculeContainer = function() {
   mc_graph.xunits = (mc_graph.xunits == undefined) | mc_graph.xunits;
   mc_graph.yunits = (mc_graph.yunits == undefined) | mc_graph.yunits;
   mc_graph.model_time_label = (mc_graph.model_time_label == undefined) | mc_graph.model_time_label;
-  
+
   mc_graph.atom_mubers = (mc_graph.atom_mubers == undefined) | mc_graph.atom_mubers;
-  
+
   mc_graph.playback_controller = (mc_graph.playback_controller == undefined) | mc_graph.playback_controller;
-  
+
   mc_cx = moleculecontainer.clientWidth,
   mc_cy = moleculecontainer.clientHeight,
   mc_padding = {
@@ -41,9 +41,9 @@ layout.finishSetupMoleculeContainer = function() {
      "left":   mc_graph.ylabel ? 60 : 45
   };
   if (mc_graph.playback_controller) { mc_padding.bottom += 35 }
-  mc_size = { 
+  mc_size = {
     "width":  mc_cx - mc_padding.left - mc_padding.right, 
-    "height": mc_cy - mc_padding.top  - mc_padding.bottom 
+    "height": mc_cy - mc_padding.top  - mc_padding.bottom
   },
   pc_xpos = mc_size.width / 2 - 50,
   pc_ypos = mc_size.height + (mc_graph.ylabel ? 75 : 30),
@@ -56,18 +56,18 @@ layout.finishSetupMoleculeContainer = function() {
   mc_x = d3.scale.linear()
       .domain([mc_graph.xmin, mc_graph.xmax])
       .range([0, mc_mw]),
-  
+
   // drag x-axis logic
   mc_downscalex = mc_x.copy(),
   mc_downx = Math.NaN,
-  
+
   // mc_y-scale (inverted domain)
   mc_y = d3.scale.linear()
       .domain([mc_graph.ymax, mc_graph.ymin])
       .nice()
       .range([0, mc_mh])
       .nice(),
-  
+
   // drag mc_x-axis logic
   mc_downscaley = mc_y.copy(),
   mc_downy = Math.NaN,
@@ -93,19 +93,19 @@ layout.finishSetupMoleculeContainer = function() {
       .attr("width", mc_size.width)
       .attr("height", mc_size.height)
       .attr("viewBox", "0 0 "+mc_size.width+" "+mc_size.height);
-    
+
     if (mc_graph.title) {
       mc_vis.select("text.title")
           .attr("x", mc_size.width/2)
           .attr("dy","-1em");
     }
-    
+
     if (mc_graph.xlabel) {
       mc_vis.select("text.xlabel")
           .attr("x", mc_size.width/2)
           .attr("y", mc_size.height);
     }
-    
+
     if (mc_graph.ylabel) {
       mc_vis.select("text.ylabel")
           .attr("transform","translate(" + -40 + " " + mc_size.height/2+") rotate(-90)");
@@ -119,7 +119,7 @@ layout.finishSetupMoleculeContainer = function() {
 
     mc_vis.selectAll("g.x").remove();
     mc_vis.selectAll("g.y").remove();
-    
+
     layout.update_molecule_radius();
 
     particle.attr("cx", function(d) { return mc_x(d.x); })
@@ -129,11 +129,10 @@ layout.finishSetupMoleculeContainer = function() {
     label.attr("transform", function(d) {
       return "translate(" + mc_x(d.x) + "," + mc_y(d.y) + ")";
     });
-    
+
     if (mc_graph.playback_controller) {
-      playback_component.position(pc_xpos, pc_ypos);          
+      playback_component.position(pc_xpos, pc_ypos);
     }
-    
 
   } else {
     mc_vis1 = d3.select(moleculecontainer).append("svg:svg")
@@ -148,7 +147,7 @@ layout.finishSetupMoleculeContainer = function() {
       .attr("width", mc_size.width)
       .attr("height", mc_size.height)
       .style("fill", "#EEEEEE");
-      
+
     layout.mc_container = mc_vis.append("svg:svg")
       .attr("class", "mc_container")
       .attr("top", 0)
@@ -199,7 +198,7 @@ layout.finishSetupMoleculeContainer = function() {
           .style("text-anchor","left");
     }
     if (mc_graph.playback_controller) {
-      playback_component = new PlaybackComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos);          
+      playback_component = new PlaybackComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos);
     }
   }
 
@@ -231,7 +230,7 @@ layout.mc_redraw = function() {
       mc_gxe.append("svg:line")
           .attr("stroke", mc_stroke)
           .attr("y1", 0)
-          .attr("y2", mc_size.height);    
+          .attr("y2", mc_size.height);
     }
 
     mc_gxe.append("svg:text")
@@ -274,7 +273,7 @@ layout.mc_redraw = function() {
     if (mc_graph.model_time_label) {
       mc_time_label.text(modelTimeLabel());
     }
-  
+
     mc_gy.exit().remove();
   }
 }
@@ -302,7 +301,7 @@ layout.setup_particles = function() {
   var ljf = molecules_lennard_jones.coefficients();
   var r = ljf.rmin * mol_rmin_radius_factor;
   model.set_radius(r);
-  
+
   layout.mc_container.selectAll("circle").remove();
   layout.mc_container.selectAll("g").remove();
 
@@ -317,7 +316,7 @@ layout.setup_particles = function() {
       .attr("transform", function(d) {
         return "translate(" + mc_x(d.x) + "," + mc_y(d.y) + ")";
       });
-  
+
   if (mc_graph.atom_mubers) {
     labelEnter.append("svg:text")
         .attr("class", "index")
@@ -389,7 +388,7 @@ layout.update_molecule_positions = function() {
   if (mc_graph.model_time_label) {
     mc_time_label.text(modelTimeLabel());
   }
-  
+
   label = layout.mc_container.selectAll("g.label").data(atoms);
 
   label.attr("transform", function(d) {
@@ -398,10 +397,10 @@ layout.update_molecule_positions = function() {
 
   particle = layout.mc_container.selectAll("circle").data(atoms);
 
-  particle.attr("cx", function(d) { 
+  particle.attr("cx", function(d) {
             return mc_x(d.x); })
-          .attr("cy", function(d) { 
+          .attr("cy", function(d) {
             return mc_y(d.y); })
-          .attr("r",  function(d) { 
+          .attr("r",  function(d) {
             return mc_x(d.radius) });
 }
