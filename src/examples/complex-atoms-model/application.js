@@ -23,7 +23,7 @@ var autostart = true,
     mol_rmin_radius_factor = 0.38,
     frame_number = 0,
     model_stopped = true,
-    model = modeler.layout.model();
+    model = modeler.model();
 
 // ------------------------------------------------------------
 // Setup model_player
