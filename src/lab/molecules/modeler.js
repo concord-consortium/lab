@@ -24,7 +24,6 @@ modeler.layout.model = function() {
       drag,
       stopped = true,
       friction = 0.9,
-      charge = 0.1,
       gravity = 0.1,
       theta = 0.8,
       interval,
@@ -58,15 +57,15 @@ modeler.layout.model = function() {
   //
   // Individual property arrays for the nodes
   //
-  var radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass;
-  
+  var radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge;
+
   //
   // Indexes into the nodes array for the individual node property arrays
   //
   // Created as variables for faster access within this module and
   // as object properties for use outside this module.
-  // 
-  
+  //
+
   var _radius   =  0;
   var _px       =  1;
   var _py       =  2;
@@ -134,11 +133,11 @@ modeler.layout.model = function() {
 
   //
   // The temperature_to_speed(t) function is used to map temperatures in abstract units
-  // within a range of 0..10 to a goal for the average speed per atom for the system of atoms. 
+  // within a range of 0..10 to a goal for the average speed per atom for the system of atoms.
   //
   // Currently all atoms are unit mass. The mass property is saved as 'halfmass' -- mass/2.
   //
-  // Increasing the number of atoms while keeping the average speed for an atom 
+  // Increasing the number of atoms while keeping the average speed for an atom
   // the same will increase the total KE for the system.
   //
   // The constant Math.E/2 used below is just an empirically derived
@@ -147,13 +146,13 @@ modeler.layout.model = function() {
   function temperature_to_speed(t) {
     return 0.0050 * Math.pow(Math.E/2, t);
   }
-  
+
   function average_speed() {
     var i, s = 0, n = nodes[0].length;
     i = -1; while (++i < n) { s += speed[i]; }
     return s/n;
   }
-  
+
   //
   // Calculate the minimum and maximum distances for applying lennard-jones forces
   //
@@ -227,20 +226,20 @@ modeler.layout.model = function() {
         topwall    = size[1] - radius[0],
         speed_max_one_percent,
         speed_min_one_percent;
-  
+
     //
     // Loop through this inner processing loop 'integration_steps' times:
     //
     pressure = 0;
-    iloop = -1; 
+    iloop = -1;
     while(++iloop < integration_steps) {
 
       //
-      // Use a Verlet integration to continue particle movement integrating acceleration with 
+      // Use a Verlet integration to continue particle movement integrating acceleration with
       // existing position and previous position while managing collision with boundaries.
       //
       // Update positions for first half of verlet integration
-      // 
+      //
       i = -1; while (++i < n) {
         initial_x = x[i];
         initial_y = y[i];
@@ -283,13 +282,13 @@ modeler.layout.model = function() {
           py[i] = initial_y;
         }
       }
-      
+
       // zero-out the acceleration
       i = -1; while (++i < n) {
         ax[i] = 0;
         ay[i] = 0;
       }
-      
+
       te2 = 0;
 
       //
@@ -302,7 +301,7 @@ modeler.layout.model = function() {
             dy = y[j] - y[i];
             r2 = dx * dx + dy * dy;
             l = Math.sqrt(r2);
-            if (lennard_jones_forces && l < max_ljf_distance) { 
+            if (lennard_jones_forces && l < max_ljf_distance) {
               ljf  = Math.max(max_ljf_repulsion, molecules_lennard_jones.force(l));
 
               // alternate way to calculate ljf ...
@@ -330,7 +329,7 @@ modeler.layout.model = function() {
               ax[j] -= xf;
               ay[j] -= yf;
             }
-            if (coulomb_forces && l < max_coulomb_distance) { 
+            if (coulomb_forces && l < max_coulomb_distance) {
               coul  = Math.min(max_coulomb_force, molecules_coulomb.force(l, charge[i], charge[j]));
               pe +=  molecules_coulomb.energy(l, charge[i], charge[j]);
               xf = dx / l * coul;
@@ -361,7 +360,7 @@ modeler.layout.model = function() {
             // proportionately reduce the acceleration
             ax[i] *= 0.5;
             ay[i] *= 0.5;
-      
+
             // And if the speed for this atom is greater than speed_max reduce the
             // velocity of the atom by creating a new, closer previous position.
             if (speed[i] > speed_max) {
@@ -372,15 +371,15 @@ modeler.layout.model = function() {
               px[i] = x[i] - vx[i];
               py[i] = y[i] - vy[i];
             }
-          } 
-      
+          }
+
           else if (ave_speed < ave_speed_min) {
             // If the average speed for an atom is less than 90% of the speed_goal
             // proportionately increase the acceleration.
             ax[i] *= 2.0;
             ay[i] *= 2.0;
-      
-            // And if the speed for this atom is less than speed_min increase the 
+
+            // And if the speed for this atom is less than speed_min increase the
             // velocity of the atom by creating a new previous position further away.
             if (speed[i] < speed_min) {
               speed_factor = speed_min/speed[i];
@@ -406,7 +405,7 @@ modeler.layout.model = function() {
   //
   // Main Model Integration Loop
   //
-  
+
   function tick_history_list_push() {
     var i, j, 
         newnode, newnodes = [], 
@@ -422,14 +421,14 @@ modeler.layout.model = function() {
     if (tick_history_list_index > 1000) {
       tick_history_list.splice(0,1);
       tick_history_list_index = 1000;
-    } 
+    }
   }
-  
+
   function calculate_kinetic_and_potential_energy() {
     var i, s, k, fx, fy, p, n = nodes[0].length;
     ke = 0;
     pe = 0;
-    i = -1; while (++i < n) { 
+    i = -1; while (++i < n) {
       s = speed[i];
       k =  s * s * halfmass[i];
       ke += k;
@@ -440,7 +439,7 @@ modeler.layout.model = function() {
     }
     ave_ke = ke / n;
   }
-    
+
   function tick() {
     var t;
     run_tick();
@@ -450,7 +449,7 @@ modeler.layout.model = function() {
     calculate_kinetic_and_potential_energy();
     update_atoms();
     tick_history_list_push();
-    if (!stopped) { 
+    if (!stopped) {
       t = Date.now();
       if (sample_time) {
         sample_time  = t - sample_time;
@@ -460,23 +459,23 @@ modeler.layout.model = function() {
       } else {
         sample_time = t;
       }
-      event.tick({type: "tick"}); 
+      event.tick({type: "tick"});
     } else {
-      
+
     }
     return stopped;
   }
-  
+
   function reset_tick_history_list() {
     tick_history_list = [];
     tick_history_list_index = 0;
     tick_counter = -1;
   }
-  
+
   function tick_history_list_reset_to_ptr() {
     tick_history_list.length = tick_history_list_index + 1;
   }
-  
+
   function tick_history_list_extract(index) {
     var i, n=nodes.length;
     if (index < 0) {
@@ -503,7 +502,7 @@ modeler.layout.model = function() {
       speed[i] = newspeed;
     }
   }
-  
+
   function change_speed(factor) {
     var i, n = nodes[0].length;
     i = -1; while (++i < n) {
@@ -515,7 +514,7 @@ modeler.layout.model = function() {
       speed[i] *= factor;
     }
   }
-  
+
   function cap_speed(capspeed) {
     var i, change, n = nodes[0].length;
     i = -1; while (++i < n) {
@@ -529,7 +528,7 @@ modeler.layout.model = function() {
       }
     }
   }
-  
+
   function set_acc(acc) {
     var i, n = nodes[0].length;
     i = -1; while (++i < n) {
@@ -537,11 +536,11 @@ modeler.layout.model = function() {
       ay[i] = acc;
     }
   }
-  
+
   function container_pressure() {
     return pressures.reduce(function(j,k) { return j+k; })/pressures.length;
   }
-  
+
   function speed_history(speeds) {
     if (arguments.length) {
       speed_history.push(speeds);
@@ -551,12 +550,12 @@ modeler.layout.model = function() {
       return speed_history.reduce(function(j,k) { return j+k; })/pressures.length;
     }
   }
-  
-  // 
+
+  //
   function potential_energy() {
     var i, fx, fy, p, n = nodes[0].length;
     pe = 0;
-    i = -1; while (++i < n) { 
+    i = -1; while (++i < n) {
       fx = ax[i];
       fy = ay[i];
       p = Math.sqrt(fx * fx + fy * fy);
@@ -564,12 +563,12 @@ modeler.layout.model = function() {
     }
     return pe;
   }
-  
+
   // currently the nodes are all unit mass
   function kinetic_energy() {
     var i, s, k, n = nodes[0].length;
     ke = 0;
-    i = -1; while (++i < n) { 
+    i = -1; while (++i < n) {
       s = speed[i];
       k =  s * s * halfmass[i];
       ke += k;
@@ -606,7 +605,7 @@ modeler.layout.model = function() {
   // Public functions
   //
   // ------------------------------------------------------------
-  
+
   model.getStats = function() {
     var stats;
     stats = { speed: average_speed(),
@@ -645,7 +644,7 @@ modeler.layout.model = function() {
     var i = -1;
     stopped = true;
     new_step = false;
-    while(++i < num) {    
+    while(++i < num) {
       if (tick_history_list_index > 1) {
         tick_history_list_index--;
         tick_counter--;
@@ -655,12 +654,12 @@ modeler.layout.model = function() {
     }
     return tick_counter;
   };
-  
+
   model.stepForward = function(num) {
     if (!arguments.length) { num = 1; }
     var i = -1;
     stopped = true;
-    while(++i < num) {    
+    while(++i < num) {
       if (tick_history_list_index < tick_history_list.length) {
         tick_history_list_extract(tick_history_list_index);
         tick_history_list_index++;
@@ -678,7 +677,7 @@ modeler.layout.model = function() {
     event.on(type, listener);
     return model;
   };
-  
+
   model.tickInPlace = function() {
     event.tick({type: "tick"});
     return model;
@@ -721,7 +720,7 @@ modeler.layout.model = function() {
     if (!arguments.length) { speed_data = []; }
     return arrays.copy(speed, speed_data);
   };
-  
+
   model.get_rate = function() {
     return average_rate();
   };
@@ -774,7 +773,7 @@ modeler.layout.model = function() {
 
   model.nodes = function(options) {
     options = options || {};
-    
+
     var num = options.num || 50, 
         xdomain = options.xdomain || 100, 
         ydomain = options.ydomain || 100, 
@@ -789,10 +788,10 @@ modeler.layout.model = function() {
     mol_number = num;
 
     nodes = arrays.create(node_properties_length, null, "regular");
-    
+
     var webgl = !!window.WebGLRenderingContext;
     var not_safari = benchmark.what_browser.browser != "Safari";
-    
+
     var array_type = (webgl && not_safari) ? "Float32Array" : "regular";
 
     // model.RADIUS = 0
@@ -846,7 +845,7 @@ modeler.layout.model = function() {
     // initialize particles with 0 net momentum by spacing initial velocities equally around a circle
     dTheta = 2*Math.PI / num;
     v0 = temperature_to_speed(temperature);
-    
+
     i = -1; while (++i < num) {
         px[i] = Math.random() * xdomain * 0.8 + xdomain * 0.1;  // previous x
         py[i] = Math.random() * ydomain * 0.8 + ydomain * 0.1;  // previous y
