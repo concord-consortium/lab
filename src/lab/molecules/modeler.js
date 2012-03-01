@@ -687,9 +687,9 @@ modeler.model = function() {
     update_atoms();
   };
 
-  model.get_speed = function(speed_data) {
-    if (!arguments.length) { speed_data = []; }
-    return arrays.copy(speed, speed_data);
+  // return a copy of the array of speeds
+  model.get_speed = function() {
+    return arrays.copy(speed, []);
   };
 
   model.get_rate = function() {
