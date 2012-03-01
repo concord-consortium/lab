@@ -338,13 +338,14 @@ modeler.layout.model = function() {
       // Dynamically adjust 'temperature' of system.
       //
       if (temperature_control) {
-        ave_speed = average_speed();
-        ave_speed_max = speed_goal * 1.1;
-        ave_speed_min = speed_goal * 0.9;
-        speed_max = speed_goal * 2;
-        speed_max_one_percent = speed_max * 0.01;
-        speed_min = speed_goal * 0.5;
-        speed_min_one_percent = speed_min * 0.01;
+        ave_speed             = average_speed();
+        ave_speed_max         = speed_goal * 1.1;
+        ave_speed_min         = speed_goal * 0.9;
+        speed_max             = speed_goal * 2;
+        speed_max_one_percent = speed_max  * 0.01;
+        speed_min             = speed_goal * 0.5;
+        speed_min_one_percent = speed_min  * 0.01;
+
         i = -1; while (++i < n) {
           if (ave_speed > ave_speed_max) {
             // If the average speed for an atom is greater than 110% of the speed_goal
@@ -597,15 +598,14 @@ modeler.layout.model = function() {
   // ------------------------------------------------------------
 
   model.getStats = function() {
-    var stats;
-    stats = { speed: average_speed(),
-              ke: ke,
-              temperature: temperature,
-              pressure: container_pressure(),
-              current_step: tick_counter,
-              steps: tick_history_list.length-1
-            };
-    return stats;
+    return {
+      speed       : average_speed(),
+      ke          : ke,
+      temperature : temperature,
+      pressure    : container_pressure(),
+      current_step: tick_counter,
+      steps       : tick_history_list.length-1
+    };
   };
 
   model.stepCounter = function() {
