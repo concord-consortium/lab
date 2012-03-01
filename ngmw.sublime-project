@@ -1,0 +1,14 @@
+{
+	"folders":
+	[
+		{
+			"path": "/Users/rklancer/dev/lab/"
+		}
+	],
+	"settings":
+	{
+    	"trim_trailing_white_space_on_save": true,
+    	"tab_size": 2,
+    	"translate_tabs_to_spaces": true
+	}
+}
