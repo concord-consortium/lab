@@ -22,18 +22,14 @@ modeler.layout.model = function() {
       ave_speed, speed_goal, speed_factor,
       speed_max, speed_min,
       ave_speed_max, ave_speed_min,
-      speed_max_pos, speed_max_neg,
-      drag,
       stopped = true,
       friction = 0.9,
       gravity = 0.1,
       theta = 0.8,
-      interval,
       tick_history_list = [],
       tick_history_list_index = 0,
       tick_counter = 0,
       new_step = false,
-      forces,
       epsilon, sigma,
       max_ljf_repulsion = -200.0,
       min_ljf_attraction = 0.001,
@@ -47,7 +43,6 @@ modeler.layout.model = function() {
       integration_steps = 50,         // number of internal integration steps for each step
       dt = step_dt/integration_steps, // intra-step time
       dt2 = dt * dt,                  // intra-step time squared
-      overlap,
       pressure, pressures = [0],
       sample_time, sample_times = [],
       temperature,
@@ -126,7 +121,7 @@ modeler.layout.model = function() {
   }
 
   function update_atoms() {
-    var i, n = mol_number, results = [];
+    var i, n = mol_number;
     i = -1; while (++i < n) {
       atoms[i] = generate_atom(i);
     }
@@ -208,18 +203,12 @@ modeler.layout.model = function() {
 
   function run_tick() {
     var n = nodes[0].length,
-        q,
         i, // current index
         j, // alternate member of force-pair index
-        s, // current source
-        t, // current target
         l, // current distance
-        k, // current force
-        // OOPS? above, it says t is "current target"
-        // t, // current system time
-        r2, r2i, r6i, ljf2, pe2, te2, f2, fx, fy,
+        r2, te2,
         ljf, coul, xf, yf,
-        dx, dy, mag2,
+        dx, dy,
         initial_x, initial_y,
         iloop,
         leftwall   = radius[0],
@@ -409,10 +398,11 @@ modeler.layout.model = function() {
   //
 
   function tick_history_list_push() {
-    var i, j,
-        newnode, newnodes = [],
-        n=nodes.length;
-    i = -1; while(++i < n) {
+    var i,
+        newnodes = [],
+        n = nodes.length;
+
+    i = -1; while (++i < n) {
       newnodes[i] = arrays.clone(nodes[i]);
     }
     tick_history_list.length = tick_history_list_index;
@@ -743,15 +733,8 @@ modeler.layout.model = function() {
 
   model.initialize = function(options) {
     options = options || {};
-    var i, j, k, o,
-        radius, px, py, x, y, vx, vy, speed, ax, ay,
-        _radius, _px, _py, _x, _y, _vx, _vy, _speed, _ax, _ay,
-        n = nodes[0].length,
-        w = size[0], h = size[1],
-        temperature,
-        annealing_steps = 10,
-        max_ljf_repulsion, min_ljf_attraction,
-        max_ljf_distance, min_ljf_distance;
+    var temperature,
+        annealing_steps = 10;
 
     lennard_jones_forces = options.lennard_jones_forces || true;
     coulomb_forces = options.coulomb_forces || true;
@@ -780,7 +763,6 @@ modeler.layout.model = function() {
         temperature = options.temperature || 3,
         rmin = options.rmin || 4.4,
         mol_rmin_radius_factor = options.mol_rmin_radius_factor || 0.38,
-        dAngle,
         dTheta,
         v0,
         i;
