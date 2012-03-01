@@ -709,6 +709,10 @@ modeler.model = function() {
    coulomb_forces = cf;
   };
 
+  model.get_nodes = function() {
+    return nodes;
+  };
+
   model.get_atoms = function() {
     return atoms;
   };
