@@ -90,33 +90,10 @@ modeler.model = function() {
   //
   var nodes = arrays.create(node_properties_length, null, "regular");
 
-  //
-  // Extract one node from the nodes arrays and return as an object
-  //
-  function generate_atom(i) {
-    var o = {};
-    o.index  = i;
-    o.radius = nodes[_radius  ][i];
-    o.px     = nodes[_px      ][i];
-    o.py     = nodes[_py      ][i];
-    o.x      = nodes[_x       ][i];
-    o.y      = nodes[_y       ][i];
-    o.vx     = nodes[_vx      ][i];
-    o.vy     = nodes[_vy      ][i];
-    o.speed  = nodes[_speed   ][i];
-    o.ax     = nodes[_ax      ][i];
-    o.ay     = nodes[_ay      ][i];
-    o.mass   = nodes[_halfmass][i]*2;
-    o.charge = nodes[_charge][i];
-    return o;
-  }
-
+  // Previously used with generate_atom function, which generated <mol_number> atom objects
+  // for consumption by the view at each tick.
   function update_atoms() {
-    var i, n = mol_number;
-    i = -1; while (++i < n) {
-      atoms[i] = generate_atom(i);
-    }
-    atoms.length = n;
+    atoms.length = mol_number;
   }
 
   //

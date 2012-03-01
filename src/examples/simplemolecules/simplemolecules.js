@@ -23,7 +23,8 @@ var autostart = true,
     mol_rmin_radius_factor = 0.38,
     frame_number = 0,
     model_stopped = true,
-    model = modeler.model();
+    model = modeler.model(),
+    nodes;
 
 // ------------------------------------------------------------
 // Setup model_player
@@ -252,6 +253,7 @@ function generate_atoms() {
           model_listener: model_listener
         });
   atoms = model.get_atoms();
+  nodes = model.get_nodes();
 }
 
 function modelSetup() {
