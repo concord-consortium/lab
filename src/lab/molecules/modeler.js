@@ -20,9 +20,6 @@ modeler.model = function() {
       speed_max, speed_min,
       ave_speed_max, ave_speed_min,
       stopped = true,
-      friction = 0.9,
-      gravity = 0.1,
-      theta = 0.8,
       tick_history_list = [],
       tick_history_list_index = 0,
       tick_counter = 0,
@@ -43,9 +40,6 @@ modeler.model = function() {
       pressure, pressures = [0],
       sample_time, sample_times = [],
       temperature,
-      links,
-      linkDistance,
-      linkStrength,
       model_listener;
 
   //
@@ -786,7 +780,7 @@ modeler.model = function() {
     var webgl = !!window.WebGLRenderingContext;
     var not_safari = benchmark.what_browser.browser !== 'Safari';
 
-    //  special-case: Typed arrays are faster almost everywhere 
+    // special-case: Typed arrays are faster almost everywhere
     // ... except for Safari
     var array_type = (webgl && not_safari) ? "Float32Array" : "regular";
 
@@ -876,11 +870,13 @@ modeler.model = function() {
   };
 
   model.ke = function() {
-    return ke = ke || kinetic_energy();
+    ke = ke || kinetic_energy();
+    return ke;
   };
 
   model.ave_ke = function() {
-    return ave_ke = ave_ke || kinetic_energy();
+    ave_ke = ave_ke || kinetic_energy();
+    return ave_ke;
   };
 
   model.pe = function() {
