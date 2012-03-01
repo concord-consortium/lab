@@ -20,9 +20,6 @@ modeler.model = function() {
       speed_max, speed_min,
       ave_speed_max, ave_speed_min,
       stopped = true,
-      friction = 0.9,
-      gravity = 0.1,
-      theta = 0.8,
       tick_history_list = [],
       tick_history_list_index = 0,
       tick_counter = 0,
@@ -43,9 +40,6 @@ modeler.model = function() {
       pressure, pressures = [0],
       sample_time, sample_times = [],
       temperature,
-      links,
-      linkDistance,
-      linkStrength,
       model_listener;
 
   //
