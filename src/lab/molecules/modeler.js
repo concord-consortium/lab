@@ -1,5 +1,6 @@
 /*globals modeler:true, d3, arrays, molecules_coulomb, molecules_lennard_jones, benchmark */
 
+/*jslint onevar: true */
 // modeler.js
 //
 
@@ -294,20 +295,30 @@ modeler.model = function() {
 
       integrator,
       integratorOutputState = {},
-      model_listener;
+      model_listener,
 
-  //
-  // Individual property arrays for the nodes
-  //
-  var radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge;
+      //
+      // Individual property arrays for the nodes
+      //
+      radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge,
 
-  //
-  // Indexes into the nodes array for the individual node property arrays
-  //
-  // Access to these within this module will be faster if they are vars in this closure rather than property lookups.
-  // However, publish the indices to model.INDICES for use outside this module.
+      //
+      // Number of individual properties for a node
+      //
+      node_properties_length = 12,
 
-  var RADIUS_INDEX   =  0,
+      //
+      // A two dimensional array consisting of arrays of node property values
+      //
+      nodes = arrays.create(node_properties_length, null, "regular"),
+
+      //
+      // Indexes into the nodes array for the individual node property arrays
+      //
+      // Access to these within this module will be faster if they are vars in this closure rather than property lookups.
+      // However, publish the indices to model.INDICES for use outside this module.
+      //
+      RADIUS_INDEX   =  0,
       PX_INDEX       =  1,
       PY_INDEX       =  2,
       X_INDEX        =  3,
@@ -319,6 +330,7 @@ modeler.model = function() {
       AY_INDEX       =  9,
       HALFMASS_INDEX = 10,
       CHARGE_INDEX   = 11;
+
 
   model.INDICES = {
     RADIUS   : RADIUS_INDEX,
@@ -335,15 +347,7 @@ modeler.model = function() {
     CHARGE   : CHARGE_INDEX
   };
 
-  //
-  // Number of individual properties for a node
-  //
-  var node_properties_length = 12;
 
-  //
-  // A two dimensional array consisting of arrays of node property values
-  //
-  var nodes = arrays.create(node_properties_length, null, "regular");
 
   // Previously used with generate_atom function, which generated <mol_number> atom objects
   // for consumption by the view at each tick.
@@ -861,18 +865,18 @@ modeler.model = function() {
         mol_rmin_radius_factor = options.mol_rmin_radius_factor || 0.38,
         dTheta,
         v0,
-        i;
+        i,
+
+        webgl = !!window.WebGLRenderingContext,
+        not_safari = benchmark.what_browser.browser !== 'Safari',
+
+        // special-case: Typed arrays are faster almost everywhere
+        // ... except for Safari
+        array_type = (webgl && not_safari) ? "Float32Array" : "regular";
 
     mol_number = num;
 
     nodes = arrays.create(node_properties_length, null, "regular");
-
-    var webgl = !!window.WebGLRenderingContext;
-    var not_safari = benchmark.what_browser.browser !== 'Safari';
-
-    // special-case: Typed arrays are faster almost everywhere
-    // ... except for Safari
-    var array_type = (webgl && not_safari) ? "Float32Array" : "regular";
 
     // model.INDICES.RADIUS = 0
     nodes[model.INDICES.RADIUS] = arrays.create(num, rmin * mol_rmin_radius_factor, array_type );
