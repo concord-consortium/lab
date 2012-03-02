@@ -47,6 +47,8 @@ modeler.makeIntegrator = function(state) {
   return {
     set_ave_speed: function(v) { ave_speed = v; },
 
+    set_coulomb_forces: function(v) { coulomb_forces = v; },
+
     integrator: function () {
       var step_dt           = 1,                         // time in reduced units for each model step/tick
           integration_steps = 50,                        // number of internal integration steps for each step
@@ -728,6 +730,7 @@ modeler.model = function() {
 
   model.set_coulomb_forces = function(cf) {
    coulomb_forces = cf;
+   if (integrator) integrator.set_coulomb_forces(cf);
   };
 
   model.get_nodes = function() {
