@@ -6,7 +6,7 @@
 modeler = {};
 modeler.VERSION = '0.1.0';
 
-modeler.makeIntegrator = function(state) {
+modeler.makeIntegrator = function(state, outputState) {
 
   var
       // arrays
@@ -16,7 +16,6 @@ modeler.makeIntegrator = function(state) {
       charge               = state.charge,
       nodes                = state.nodes,
       pe                   = state.pe,
-      pressure             = state.pressure,
       px                   = state.px,
       py                   = state.py,
       radius               = state.radius,
@@ -79,7 +78,8 @@ modeler.makeIntegrator = function(state) {
           ave_speed_min,
           speed_max,
           speed_min,
-          speed_factor;
+          speed_factor,
+          pressure;
 
       //
       // Loop through this inner processing loop 'integration_steps' times:
@@ -255,6 +255,9 @@ modeler.makeIntegrator = function(state) {
           vy[i] += 0.5 * dt * ay[i];
         }
       }
+
+      // state to be read by the rest of the system
+      outputState.pressure = pressure;
     }
   };
 };
@@ -288,6 +291,7 @@ modeler.model = function() {
       sample_time, sample_times = [],
       temperature,
       integrator,
+      integratorOutputState = {},
       run_tick,
       model_listener;
 
@@ -461,6 +465,8 @@ modeler.model = function() {
   function tick() {
     var t;
     run_tick();
+
+    pressure = integratorOutputState.pressure;
 
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
@@ -781,7 +787,6 @@ modeler.model = function() {
       nodes               : nodes,
       radius              : radius,
       size                : size,
-      pressure            : pressure,
       x                   : x,
       y                   : y,
       vx                  : vx,
@@ -802,7 +807,7 @@ modeler.model = function() {
       temperature_control : temperature_control,
       average_speed       : average_speed,
       speed_goal          : speed_goal
-    });
+    }, integratorOutputState);
 
     run_tick = integrator.integrator;
 
