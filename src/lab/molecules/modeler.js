@@ -52,7 +52,7 @@ modeler.makeIntegrator = function(args) {
 
     set_temperature_control: function (v) { temperature_control = v; },
 
-    integrator: function () {
+    integrate               : function() {
       var step_dt           = 1,                         // time in reduced units for each model step/tick
           integration_steps = 50,                        // number of internal integration steps for each step
           dt                = step_dt/integration_steps, // intra-step time
@@ -288,9 +288,9 @@ modeler.model = function() {
       pressure, pressures = [0],
       sample_time, sample_times = [],
       temperature,
+
       integrator,
       integratorOutputState = {},
-      run_tick,
       model_listener;
 
   //
@@ -462,8 +462,8 @@ modeler.model = function() {
 
   function tick() {
     var t;
-    run_tick();
 
+    integrator.integrate();
     pressure = integratorOutputState.pressure;
 
     pressures.push(pressure);
@@ -611,7 +611,7 @@ modeler.model = function() {
 
     model.set_temperature_control(true);
     i = -1; while (++i < annealing_steps) {
-      run_tick();
+      integrator.integrate();
     }
     model.set_temperature_control( save_temperature_control );
     calculate_kinetic_and_potential_energy();
@@ -819,8 +819,6 @@ modeler.model = function() {
 
       outputState: integratorOutputState
     });
-
-    run_tick = integrator.integrator;
 
     resolve_collisions(annealing_steps);
 
