@@ -6,42 +6,40 @@
 modeler = {};
 modeler.VERSION = '0.1.0';
 
-modeler.makeIntegrator = function(state, outputState) {
+modeler.makeIntegrator = function(args) {
 
-  var
-      // arrays
+  var setOnlyState   = args.setOnlyState,
+      readWriteState = args.readWriteState,
+      settableState  = args.settableState || {},
 
-      ax                   = state.ax,
-      ay                   = state.ay,
-      charge               = state.charge,
-      nodes                = state.nodes,
-      pe                   = state.pe,
-      px                   = state.px,
-      py                   = state.py,
-      radius               = state.radius,
-      size                 = state.size,
-      speed                = state.speed,
-      vx                   = state.vx,
-      vy                   = state.vy,
-      x                    = state.x,
-      y                    = state.y,
+      outputState    = args.outputState,
 
-      // scalars
+      max_coulomb_distance = setOnlyState.max_coulomb_distance,
+      max_coulomb_force    = setOnlyState.max_coulomb_force,
+      max_ljf_distance     = setOnlyState.max_ljf_distance,
+      max_ljf_repulsion    = setOnlyState.max_ljf_repulsion,
+      size                 = setOnlyState.size,
+      average_speed        = setOnlyState.average_speed,
 
-      coulomb_forces       = state.coulomb_forces,
-      lennard_jones_forces = state.lennard_jones_forces,
-      max_coulomb_distance = state.max_coulomb_distance,
-      max_coulomb_force    = state.max_coulomb_force,
-      max_ljf_distance     = state.max_ljf_distance,
-      max_ljf_repulsion    = state.max_ljf_repulsion,
-      speed_goal           = state.speed_goal,
-      temperature_control  = state.temperature_control,
+      ax                   = readWriteState.ax,
+      ay                   = readWriteState.ay,
+      charge               = readWriteState.charge,
+      nodes                = readWriteState.nodes,
+      pe                   = readWriteState.pe,
+      px                   = readWriteState.px,
+      py                   = readWriteState.py,
+      radius               = readWriteState.radius,
+      speed                = readWriteState.speed,
+      vx                   = readWriteState.vx,
+      vy                   = readWriteState.vy,
+      x                    = readWriteState.x,
+      y                    = readWriteState.y,
 
-      // functions
-
-      average_speed        = state.average_speed,
-
-      ave_speed;
+      coulomb_forces       = settableState.coulomb_forces,
+      lennard_jones_forces = settableState.lennard_jones_forces,
+      speed_goal           = settableState.speed_goal,
+      temperature_control  = settableState.temperature_control,
+      ave_speed            = settableState.ave_speed;
 
   return {
     set_ave_speed: function(v) { ave_speed = v; },
@@ -784,30 +782,43 @@ modeler.model = function() {
     set_temperature(temperature);
 
     integrator = modeler.makeIntegrator({
-      nodes               : nodes,
-      radius              : radius,
-      size                : size,
-      x                   : x,
-      y                   : y,
-      vx                  : vx,
-      ax                  : ax,
-      vy                  : vy,
-      ay                  : ay,
-      speed               : speed,
-      px                  : px,
-      py                  : py,
-      lennard_jones_forces: lennard_jones_forces,
-      coulomb_forces      : coulomb_forces,
-      max_ljf_distance    : max_ljf_distance,
-      max_ljf_repulsion   : max_ljf_repulsion,
-      max_coulomb_distance: max_coulomb_distance,
-      max_coulomb_force   : max_coulomb_force,
-      charge              : charge,
-      pe                  : pe,
-      temperature_control : temperature_control,
-      average_speed       : average_speed,
-      speed_goal          : speed_goal
-    }, integratorOutputState);
+
+      setOnlyState: {
+        max_coulomb_distance : max_coulomb_distance,
+        max_coulomb_force    : max_coulomb_force,
+        max_ljf_distance     : max_ljf_distance,
+        max_ljf_repulsion    : max_ljf_repulsion,
+        size                 : size,
+        average_speed        : average_speed
+      },
+
+      settableState: {
+        max_coulomb_distance : max_coulomb_distance,
+        max_coulomb_force    : max_coulomb_force,
+        max_ljf_distance     : max_ljf_distance,
+        max_ljf_repulsion    : max_ljf_repulsion,
+        size                 : size,
+        average_speed        : average_speed
+      },
+
+      readWriteState: {
+        ax     : ax,
+        ay     : ay,
+        charge : charge,
+        nodes  : nodes,
+        pe     : pe,
+        px     : px,
+        py     : py,
+        radius : radius,
+        speed  : speed,
+        vx     : vx,
+        vy     : vy,
+        x      : x,
+        y      : y
+      },
+
+      outputState: integratorOutputState
+    });
 
     run_tick = integrator.integrator;
 
