@@ -44,10 +44,10 @@ and [npm](http://npmjs.org/) (Node Package Manager). In addition JavaScript mini
 Currently development is being done with these versions of Node and npm:
 
     $ node -v
-    v0.6.6
+    v0.6.11
 
     $ npm -v
-    1.1.0-beta-4
+    1.1.1
 
 As of v0.6.3 of node npm is bundled with node. 
 
@@ -65,11 +65,15 @@ Alternatively if you don't have commit access use this form:
 
 **Setup the lab repository for development**
 
-Change to the 'lab/' directory and run `make` to install the runtime and development dependencies and generate 
+Make sure you have already installed the prerequistes: [Ruby 1.9](http://www.ruby-lang.org/en/),
+the RubyGem [bundler](http://gembundler.com/), and [nodejs](http://nodejs.org/) (which now includes
+[npm](http://npmjs.org/) the Node Package Manager.
+
+Change to the 'lab/' directory and run `make clean; make` to install the runtime and development dependencies and generate 
 the `dist/` directory:
 
     cd lab
-    make
+    make clean; make
 
 When `make` is run on a freshly cloned repository it performs the following tasks:
 
