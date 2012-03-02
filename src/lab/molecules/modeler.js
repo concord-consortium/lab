@@ -8,31 +8,43 @@ modeler.VERSION = '0.1.0';
 
 modeler.makeIntegrator = function(state) {
 
-  var nodes                = state.nodes,
-      radius               = state.radius,
-      size                 = state.size,
-      pressure             = state.pressure,
-      x                    = state.x,
-      y                    = state.y,
-      vx                   = state.vx,
+  var
+      // arrays
+
       ax                   = state.ax,
-      vy                   = state.vy,
       ay                   = state.ay,
-      speed                = state.speed,
+      charge               = state.charge,
+      nodes                = state.nodes,
+      pe                   = state.pe,
+      pressure             = state.pressure,
       px                   = state.px,
       py                   = state.py,
-      lennard_jones_forces = state.lennard_jones_forces,
+      radius               = state.radius,
+      size                 = state.size,
+      speed                = state.speed,
+      vx                   = state.vx,
+      vy                   = state.vy,
+      x                    = state.x,
+      y                    = state.y,
+
+      // scalars
+
       coulomb_forces       = state.coulomb_forces,
-      max_ljf_distance     = state.max_ljf_distance,
-      max_ljf_repulsion    = state.max_ljf_repulsion,
+      lennard_jones_forces = state.lennard_jones_forces,
       max_coulomb_distance = state.max_coulomb_distance,
       max_coulomb_force    = state.max_coulomb_force,
-      charge               = state.charge,
-      pe                   = state.pe,
+      max_ljf_distance     = state.max_ljf_distance,
+      max_ljf_repulsion    = state.max_ljf_repulsion,
+      speed_goal           = state.speed_goal,
       temperature_control  = state.temperature_control,
-      ave_speed            = state.ave_speed,
-      average_speed        = state.average_speed,
-      speed_goal           = state.speed_goal;
+
+      // undefined
+
+      ave_speed            = state.ave_speed,  // apparently meant to be a function
+
+      // functions
+
+      average_speed        = state.average_speed;
 
   return function () {
     var step_dt           = 1,                         // time in reduced units for each model step/tick
