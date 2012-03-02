@@ -53,6 +53,8 @@ modeler.makeIntegrator = function(state) {
 
     set_speed_goal: function (v) { speed_goal = v; },
 
+    set_temperature_control: function (v) { temperature_control = v; },
+
     integrator: function () {
       var step_dt           = 1,                         // time in reduced units for each model step/tick
           integration_steps = 50,                        // number of internal integration steps for each step
@@ -600,12 +602,14 @@ modeler.model = function() {
   }
 
   function resolve_collisions(annealing_steps) {
-    var i, save_temperature_control = temperature_control;
-    temperature_control = true;
+    var save_temperature_control = temperature_control,
+        i;
+
+    model.set_temperature_control(true);
     i = -1; while (++i < annealing_steps) {
       run_tick();
     }
-    temperature_control = save_temperature_control;
+    model.set_temperature_control( save_temperature_control );
     calculate_kinetic_and_potential_energy();
     update_atoms();
   }
@@ -727,6 +731,7 @@ modeler.model = function() {
 
   model.set_temperature_control = function(tc) {
    temperature_control = tc;
+   if (integrator) integrator.set_temperature_control(tc);
   };
 
   model.set_lennard_jones_forces = function(lj) {
