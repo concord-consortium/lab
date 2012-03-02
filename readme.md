@@ -3,15 +3,11 @@
 HTML5-based open source scientific models, visualizations, graphing, and probeware from the 
 [Concord Consortium](http://www.concord.org).
 
-## TODO
+**Table of Contents**
 
-- The tests need to be expanded a great deal.
-- Probeware needs to be added.
-- Molecular model in progress.
-- Include JQuery UI as a git submodule. (note: its a bit complicated,
-  because we do a custom build of JQuery UI with only a few components,
-  and only one simpletheme)
 
+* 
+{:toc}
 
 ## Molecular Modeling Examples:
 
@@ -23,6 +19,15 @@ HTML5-based open source scientific models, visualizations, graphing, and probewa
 - [Earth's Surface Temperature: years 500-2009](http://lab.dev.concord.org/examples/surface-temperature/surface-temperature.html)
 - [Question about seasonal temperatures and geography](http://lab.dev.concord.org/examples/seasons/canberra-question.html)
 - [Lennard-Jones-Potential](http://lab.dev.concord.org/examples/lennard-jones-potential/lennard-jones-potential.html)
+
+## TODO
+
+- The tests need to be expanded a great deal.
+- Probeware needs to be added.
+- Molecular model in progress.
+- Include JQuery UI as a git submodule. (note: its a bit complicated,
+  because we do a custom build of JQuery UI with only a few components,
+  and only one simpletheme)
 
 ## Setup Development
 
@@ -146,7 +151,7 @@ Test the syntax after making Apache configuration changes:
     Syntax OK
 
 Restart Apache when the configuration syntax is OK :
-                                                                                                                                                              
+
     $ sudo apachectl restart
 
 Now open: [http://lab.local/](http://lab.local/)
@@ -155,8 +160,8 @@ Or go directly to your local instance of [Simple Molecules](http://lab.local/exa
 
 If you cloned d3 and setup a localhost you can view the d3 examples here: [http://d3.local/examples/](http://d3.local/examples/)
 
-Whenever guard is running and you save changes to any files in the src/ directory the corresponding files in 
-the `dist/` directory will be updated. 
+Whenever guard is running and you save changes to any files in the src/ directory the corresponding files in
+the `dist/` directory will be updated.
 
 To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small "LR" button on the toolbar.
 

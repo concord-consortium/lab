@@ -64,7 +64,7 @@ guard 'livereload' do
   watch(%r{(examples/).+\.(css|js|html)})
 end
 
-guard 'markdown' do
+guard 'markdown', :kram_ops => { :toc_levels => [2,3,4,5] } do
   watch("readme.md") do |m|
     "readme.md|dist/readme.html|src/layouts/readme.html.erb"
   end
