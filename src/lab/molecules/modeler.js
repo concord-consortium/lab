@@ -51,6 +51,8 @@ modeler.makeIntegrator = function(state) {
 
     set_lennard_jones_forces: function(v) { lennard_jones_forces = v; },
 
+    set_speed_goal: function (v) { speed_goal = v; },
+
     integrator: function () {
       var step_dt           = 1,                         // time in reduced units for each model step/tick
           integration_steps = 50,                        // number of internal integration steps for each step
@@ -611,6 +613,7 @@ modeler.model = function() {
   function set_temperature(t) {
     temperature = t;
     speed_goal = temperature_to_speed(temperature);
+    if (integrator) integrator.set_speed_goal(speed_goal);
   }
 
   // ------------------------------------------------------------
