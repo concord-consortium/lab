@@ -39,7 +39,39 @@ modeler.makeIntegrator = function(args) {
       lennard_jones_forces = settableState.lennard_jones_forces,
       speed_goal           = settableState.speed_goal,
       temperature_control  = settableState.temperature_control,
-      ave_speed            = settableState.ave_speed;
+      ave_speed            = settableState.ave_speed,
+
+
+      // vars used in integrate() method; define here to avoid recreating per invocation of integrator
+
+      step_dt           = 1,                         // time in reduced units for each model step/tick
+      integration_steps = 50,                        // number of internal integration steps for each step
+      dt                = step_dt/integration_steps, // intra-step time
+      dt2               = dt * dt,                   // intra-step time squared
+      n                 = nodes[0].length,
+
+      i,  // current index
+      j,  // alternate member of force-pair index
+      l,  // current distance
+
+      r2, te2,
+      ljf, coul, xf, yf,
+      dx, dy,
+      initial_x, initial_y,
+      iloop,
+      leftwall   = radius[0],
+      bottomwall = radius[0],
+      rightwall  = size[0] - radius[0],
+      topwall    = size[1] - radius[0],
+
+      speed_max_one_percent,
+      speed_min_one_percent,
+      ave_speed_max,
+      ave_speed_min,
+      speed_max,
+      speed_min,
+      speed_factor,
+      pressure;
 
   return {
 
@@ -50,32 +82,6 @@ modeler.makeIntegrator = function(args) {
     set_temperature_control : function(v) { temperature_control = v; },
 
     integrate               : function() {
-      var step_dt           = 1,                         // time in reduced units for each model step/tick
-          integration_steps = 50,                        // number of internal integration steps for each step
-          dt                = step_dt/integration_steps, // intra-step time
-          dt2               = dt * dt,                   // intra-step time squared
-          n = nodes[0].length,
-          i, // current index
-          j, // alternate member of force-pair index
-          l, // current distance
-          r2, te2,
-          ljf, coul, xf, yf,
-          dx, dy,
-          initial_x, initial_y,
-          iloop,
-          leftwall   = radius[0],
-          bottomwall = radius[0],
-          rightwall  = size[0] - radius[0],
-          topwall    = size[1] - radius[0],
-          speed_max_one_percent,
-          speed_min_one_percent,
-          ave_speed_max,
-          ave_speed_min,
-          speed_max,
-          speed_min,
-          speed_factor,
-          pressure;
-
       //
       // Loop through this inner processing loop 'integration_steps' times:
       //
