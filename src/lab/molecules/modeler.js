@@ -38,212 +38,214 @@ modeler.makeIntegrator = function(state) {
       speed_goal           = state.speed_goal,
       temperature_control  = state.temperature_control,
 
-      // undefined
-
-      ave_speed            = state.ave_speed,  // apparently meant to be a function
-
       // functions
 
-      average_speed        = state.average_speed;
+      average_speed        = state.average_speed,
 
-  return function () {
-    var step_dt           = 1,                         // time in reduced units for each model step/tick
-        integration_steps = 50,                        // number of internal integration steps for each step
-        dt                = step_dt/integration_steps, // intra-step time
-        dt2               = dt * dt,                   // intra-step time squared
-        n = nodes[0].length,
-        i, // current index
-        j, // alternate member of force-pair index
-        l, // current distance
-        r2, te2,
-        ljf, coul, xf, yf,
-        dx, dy,
-        initial_x, initial_y,
-        iloop,
-        leftwall   = radius[0],
-        bottomwall = radius[0],
-        rightwall  = size[0] - radius[0],
-        topwall    = size[1] - radius[0],
-        speed_max_one_percent,
-        speed_min_one_percent,
-        ave_speed_max,
-        ave_speed_min,
-        speed_max,
-        speed_min,
-        speed_factor;
+      ave_speed;
 
-    //
-    // Loop through this inner processing loop 'integration_steps' times:
-    //
-    pressure = 0;
-    iloop = -1;
-    while(++iloop < integration_steps) {
+  return {
+    set_ave_speed: function(v) { ave_speed = v; },
+
+    integrator: function () {
+      var step_dt           = 1,                         // time in reduced units for each model step/tick
+          integration_steps = 50,                        // number of internal integration steps for each step
+          dt                = step_dt/integration_steps, // intra-step time
+          dt2               = dt * dt,                   // intra-step time squared
+          n = nodes[0].length,
+          i, // current index
+          j, // alternate member of force-pair index
+          l, // current distance
+          r2, te2,
+          ljf, coul, xf, yf,
+          dx, dy,
+          initial_x, initial_y,
+          iloop,
+          leftwall   = radius[0],
+          bottomwall = radius[0],
+          rightwall  = size[0] - radius[0],
+          topwall    = size[1] - radius[0],
+          speed_max_one_percent,
+          speed_min_one_percent,
+          ave_speed_max,
+          ave_speed_min,
+          speed_max,
+          speed_min,
+          speed_factor;
 
       //
-      // Use a Verlet integration to continue particle movement integrating acceleration with
-      // existing position and previous position while managing collision with boundaries.
+      // Loop through this inner processing loop 'integration_steps' times:
       //
-      // Update positions for first half of verlet integration
-      //
-      i = -1; while (++i < n) {
-        initial_x = x[i];
-        initial_y = y[i];
+      pressure = 0;
+      iloop = -1;
+      while(++iloop < integration_steps) {
 
-        x[i]  += vx[i] * dt + 0.5 * dt2 * ax[i];
-        y[i]  += vy[i] * dt + 0.5 * dt2 * ay[i];
-        vx[i] += 0.5 * dt * ax[i];
-        vy[i] += 0.5 * dt * ay[i];
-
-        dx = x[i] - initial_x;
-        dy = y[i] - initial_y;
-        l = Math.sqrt(dx * dx + dy * dy);
-        speed[i] = l;
-        if (x[i] < leftwall) {
-          x[i] = leftwall + (leftwall - x[i]);
-          px[i] = x[i] + dx;
-          py[i] = initial_y;
-          vx[i] *= -1;
-          pressure += speed[i];
-        } else if (x[i] > rightwall) {
-          x[i] = rightwall + (rightwall - x[i]);
-          px[i] = x[i] + dx;
-          py[i] = initial_y;
-          vx[i] *= -1;
-          pressure += speed[i];
-        } else if (y[i] < bottomwall) {
-          y[i] = bottomwall + (bottomwall - y[i]);
-          py[i] = y[i] + dy;
-          px[i] = initial_x;
-          vy[i] *= -1;
-          pressure += speed[i];
-        } else if (y[i] > topwall) {
-          y[i] = topwall + (topwall - y[i]);
-          py[i] = y[i] + dy;
-          px[i] = initial_x;
-          vy[i] *= -1;
-          pressure += speed[i];
-        } else {
-          px[i] = initial_x;
-          py[i] = initial_y;
-        }
-      }
-
-      // zero-out the acceleration
-      i = -1; while (++i < n) {
-        ax[i] = 0;
-        ay[i] = 0;
-      }
-
-      te2 = 0;
-
-      //
-      // Use brute-force technique to calculate lennard-jones and coulomb forces
-      //
-      if (lennard_jones_forces || coulomb_forces) {
+        //
+        // Use a Verlet integration to continue particle movement integrating acceleration with
+        // existing position and previous position while managing collision with boundaries.
+        //
+        // Update positions for first half of verlet integration
+        //
         i = -1; while (++i < n) {
-          j = i; while (++j < n) {
-            dx = x[j] - x[i];
-            dy = y[j] - y[i];
-            r2 = dx * dx + dy * dy;
-            l = Math.sqrt(r2);
-            if (lennard_jones_forces && l < max_ljf_distance) {
-              ljf  = Math.max(max_ljf_repulsion, molecules_lennard_jones.force(l));
+          initial_x = x[i];
+          initial_y = y[i];
 
-              // alternate way to calculate ljf ...
-              // http://www.pages.drexel.edu/~cfa22/msim/node28.html
-              // http://www.pages.drexel.edu/~cfa22/msim/codes/mdlj.c
-              // r6i   = 1.0 / ( r2 * r2);
-              // r12i  = r6i * r6i;
-              // te2  += 4 * (r12i - r6i);
-              // f2    = 48 * (r12i - 0.5 * r6i);
+          x[i]  += vx[i] * dt + 0.5 * dt2 * ax[i];
+          y[i]  += vy[i] * dt + 0.5 * dt2 * ay[i];
+          vx[i] += 0.5 * dt * ax[i];
+          vy[i] += 0.5 * dt * ay[i];
 
-              // another alternate ...
-              // r2   = dx * dx + dy * dy;
-              // r2i  = 1.0 / r2;
-              // r6i  = r2i * r2i * r2i;
-              // r12i = r6i * r6i;
-              // pe  += 4 * (r12i - r6i);
-              // f2    = 48 * (Math.pow(r2i, 7) - 0.5 * Math.pow(r2i, 4));
-              // fx = dx * f2;
-              // fy = dy * f2;
-
-              xf = dx / l * ljf;
-              yf = dy / l * ljf;
-              ax[i] += xf;
-              ay[i] += yf;
-              ax[j] -= xf;
-              ay[j] -= yf;
-            }
-            if (coulomb_forces && l < max_coulomb_distance) {
-              coul  = Math.min(max_coulomb_force, molecules_coulomb.force(l, charge[i], charge[j]));
-              pe +=  molecules_coulomb.energy(l, charge[i], charge[j]);
-              xf = dx / l * coul;
-              yf = dy / l * coul;
-              ax[i] += xf;
-              ay[i] += yf;
-              ax[j] -= xf;
-              ay[j] -= yf;
-            }
+          dx = x[i] - initial_x;
+          dy = y[i] - initial_y;
+          l = Math.sqrt(dx * dx + dy * dy);
+          speed[i] = l;
+          if (x[i] < leftwall) {
+            x[i] = leftwall + (leftwall - x[i]);
+            px[i] = x[i] + dx;
+            py[i] = initial_y;
+            vx[i] *= -1;
+            pressure += speed[i];
+          } else if (x[i] > rightwall) {
+            x[i] = rightwall + (rightwall - x[i]);
+            px[i] = x[i] + dx;
+            py[i] = initial_y;
+            vx[i] *= -1;
+            pressure += speed[i];
+          } else if (y[i] < bottomwall) {
+            y[i] = bottomwall + (bottomwall - y[i]);
+            py[i] = y[i] + dy;
+            px[i] = initial_x;
+            vy[i] *= -1;
+            pressure += speed[i];
+          } else if (y[i] > topwall) {
+            y[i] = topwall + (topwall - y[i]);
+            py[i] = y[i] + dy;
+            px[i] = initial_x;
+            vy[i] *= -1;
+            pressure += speed[i];
+          } else {
+            px[i] = initial_x;
+            py[i] = initial_y;
           }
         }
-      }
 
-      //
-      // Dynamically adjust 'temperature' of system.
-      //
-      if (temperature_control) {
-        ave_speed             = average_speed();
-        ave_speed_max         = speed_goal * 1.1;
-        ave_speed_min         = speed_goal * 0.9;
-        speed_max             = speed_goal * 2;
-        speed_max_one_percent = speed_max  * 0.01;
-        speed_min             = speed_goal * 0.5;
-        speed_min_one_percent = speed_min  * 0.01;
-
+        // zero-out the acceleration
         i = -1; while (++i < n) {
-          if (ave_speed > ave_speed_max) {
-            // If the average speed for an atom is greater than 110% of the speed_goal
-            // proportionately reduce the acceleration
-            ax[i] *= 0.5;
-            ay[i] *= 0.5;
+          ax[i] = 0;
+          ay[i] = 0;
+        }
 
-            // And if the speed for this atom is greater than speed_max reduce the
-            // velocity of the atom by creating a new, closer previous position.
-            if (speed[i] > speed_max) {
-              speed_factor = speed_max/speed[i];
-              vx[i] *= speed_factor;
-              vy[i] *= speed_factor;
-              speed[i] = speed_max - (Math.random() * speed_max_one_percent);
-              px[i] = x[i] - vx[i];
-              py[i] = y[i] - vy[i];
-            }
-          }
+        te2 = 0;
 
-          else if (ave_speed < ave_speed_min) {
-            // If the average speed for an atom is less than 90% of the speed_goal
-            // proportionately increase the acceleration.
-            ax[i] *= 2.0;
-            ay[i] *= 2.0;
+        //
+        // Use brute-force technique to calculate lennard-jones and coulomb forces
+        //
+        if (lennard_jones_forces || coulomb_forces) {
+          i = -1; while (++i < n) {
+            j = i; while (++j < n) {
+              dx = x[j] - x[i];
+              dy = y[j] - y[i];
+              r2 = dx * dx + dy * dy;
+              l = Math.sqrt(r2);
+              if (lennard_jones_forces && l < max_ljf_distance) {
+                ljf  = Math.max(max_ljf_repulsion, molecules_lennard_jones.force(l));
 
-            // And if the speed for this atom is less than speed_min increase the
-            // velocity of the atom by creating a new previous position further away.
-            if (speed[i] < speed_min) {
-              speed_factor = speed_min/speed[i];
-              vx[i] *= speed_factor;
-              vy[i] *= speed_factor;
-              speed[i] = speed_min +  (Math.random() * speed_min_one_percent);
-              px[i] = x[i] - vx[i];
-              py[i] = y[i] - vy[i];
+                // alternate way to calculate ljf ...
+                // http://www.pages.drexel.edu/~cfa22/msim/node28.html
+                // http://www.pages.drexel.edu/~cfa22/msim/codes/mdlj.c
+                // r6i   = 1.0 / ( r2 * r2);
+                // r12i  = r6i * r6i;
+                // te2  += 4 * (r12i - r6i);
+                // f2    = 48 * (r12i - 0.5 * r6i);
+
+                // another alternate ...
+                // r2   = dx * dx + dy * dy;
+                // r2i  = 1.0 / r2;
+                // r6i  = r2i * r2i * r2i;
+                // r12i = r6i * r6i;
+                // pe  += 4 * (r12i - r6i);
+                // f2    = 48 * (Math.pow(r2i, 7) - 0.5 * Math.pow(r2i, 4));
+                // fx = dx * f2;
+                // fy = dy * f2;
+
+                xf = dx / l * ljf;
+                yf = dy / l * ljf;
+                ax[i] += xf;
+                ay[i] += yf;
+                ax[j] -= xf;
+                ay[j] -= yf;
+              }
+              if (coulomb_forces && l < max_coulomb_distance) {
+                coul  = Math.min(max_coulomb_force, molecules_coulomb.force(l, charge[i], charge[j]));
+                pe +=  molecules_coulomb.energy(l, charge[i], charge[j]);
+                xf = dx / l * coul;
+                yf = dy / l * coul;
+                ax[i] += xf;
+                ay[i] += yf;
+                ax[j] -= xf;
+                ay[j] -= yf;
+              }
             }
           }
         }
-      }
 
-      //
-      // Complete second-half of the velocity-verlet integration with updated force values
-      i = -1; while (++i < n) {
-        vx[i] += 0.5 * dt * ax[i];
-        vy[i] += 0.5 * dt * ay[i];
+        //
+        // Dynamically adjust 'temperature' of system.
+        //
+        if (temperature_control) {
+          ave_speed             = average_speed();
+          ave_speed_max         = speed_goal * 1.1;
+          ave_speed_min         = speed_goal * 0.9;
+          speed_max             = speed_goal * 2;
+          speed_max_one_percent = speed_max  * 0.01;
+          speed_min             = speed_goal * 0.5;
+          speed_min_one_percent = speed_min  * 0.01;
+
+          i = -1; while (++i < n) {
+            if (ave_speed > ave_speed_max) {
+              // If the average speed for an atom is greater than 110% of the speed_goal
+              // proportionately reduce the acceleration
+              ax[i] *= 0.5;
+              ay[i] *= 0.5;
+
+              // And if the speed for this atom is greater than speed_max reduce the
+              // velocity of the atom by creating a new, closer previous position.
+              if (speed[i] > speed_max) {
+                speed_factor = speed_max/speed[i];
+                vx[i] *= speed_factor;
+                vy[i] *= speed_factor;
+                speed[i] = speed_max - (Math.random() * speed_max_one_percent);
+                px[i] = x[i] - vx[i];
+                py[i] = y[i] - vy[i];
+              }
+            }
+
+            else if (ave_speed < ave_speed_min) {
+              // If the average speed for an atom is less than 90% of the speed_goal
+              // proportionately increase the acceleration.
+              ax[i] *= 2.0;
+              ay[i] *= 2.0;
+
+              // And if the speed for this atom is less than speed_min increase the
+              // velocity of the atom by creating a new previous position further away.
+              if (speed[i] < speed_min) {
+                speed_factor = speed_min/speed[i];
+                vx[i] *= speed_factor;
+                vy[i] *= speed_factor;
+                speed[i] = speed_min +  (Math.random() * speed_min_one_percent);
+                px[i] = x[i] - vx[i];
+                py[i] = y[i] - vy[i];
+              }
+            }
+          }
+        }
+
+        //
+        // Complete second-half of the velocity-verlet integration with updated force values
+        i = -1; while (++i < n) {
+          vx[i] += 0.5 * dt * ax[i];
+          vy[i] += 0.5 * dt * ay[i];
+        }
       }
     }
   };
@@ -259,7 +261,7 @@ modeler.model = function() {
       temperature_control,
       lennard_jones_forces, coulomb_forces,
       ke, pe, ave_ke,
-      ave_speed, speed_goal,
+      speed_goal,
       stopped = true,
       tick_history_list = [],
       tick_history_list_index = 0,
@@ -277,6 +279,7 @@ modeler.model = function() {
       pressure, pressures = [0],
       sample_time, sample_times = [],
       temperature,
+      integrator,
       run_tick,
       model_listener;
 
@@ -750,7 +753,8 @@ modeler.model = function() {
 
     reset_tick_history_list();
 
-    // setup localvariable that help optimize the calculation loops
+    // setup local variables that help optimize the calculation loops
+    // TODO pull this state out and pass it to the integrator
     setup_ljf_limits();
     setup_coulomb_limits();
 
@@ -759,7 +763,7 @@ modeler.model = function() {
 
     set_temperature(temperature);
 
-    run_tick = modeler.makeIntegrator({
+    integrator = modeler.makeIntegrator({
       nodes               : nodes,
       radius              : radius,
       size                : size,
@@ -782,14 +786,16 @@ modeler.model = function() {
       charge              : charge,
       pe                  : pe,
       temperature_control : temperature_control,
-      ave_speed           : ave_speed,
       average_speed       : average_speed,
       speed_goal          : speed_goal
     });
 
+    run_tick = integrator.integrator;
+
     resolve_collisions(annealing_steps);
 
-    ave_speed = average_speed();
+    integrator.set_ave_speed( average_speed() );
+
     tick_history_list_push();
     return model;
   };
