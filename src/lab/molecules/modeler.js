@@ -6,46 +6,40 @@
 modeler = {};
 modeler.VERSION = '0.1.0';
 
-modeler.makeIntegrator = function() {
+modeler.makeIntegrator = function(state) {
 
-  var step_dt = 1,                    // time in reduced units for each model step/tick
-      integration_steps = 50,         // number of internal integration steps for each step
-      dt = step_dt/integration_steps, // intra-step time
-      dt2 = dt * dt,                  // intra-step time squared
-
-      nodes,
-      radius,
-      size,
-      pressure,
-      x,
-      y,
-      vx,
-      ax,
-      vy,
-      ay,
-      speed,
-      px,
-      py,
-      lennard_jones_forces,
-      coulomb_forces,
-      max_ljf_distance,
-      max_ljf_repulsion,
-      max_coulomb_distance,
-      max_coulomb_force,
-      charge,
-      pe,
-      temperature_control,
-      ave_speed,
-      average_speed,
-      ave_speed_max,
-      speed_goal,
-      ave_speed_min,
-      speed_max,
-      speed_min,
-      speed_factor;
+  var nodes                = state.nodes,
+      radius               = state.radius,
+      size                 = state.size,
+      pressure             = state.pressure,
+      x                    = state.x,
+      y                    = state.y,
+      vx                   = state.vx,
+      ax                   = state.ax,
+      vy                   = state.vy,
+      ay                   = state.ay,
+      speed                = state.speed,
+      px                   = state.px,
+      py                   = state.py,
+      lennard_jones_forces = state.lennard_jones_forces,
+      coulomb_forces       = state.coulomb_forces,
+      max_ljf_distance     = state.max_ljf_distance,
+      max_ljf_repulsion    = state.max_ljf_repulsion,
+      max_coulomb_distance = state.max_coulomb_distance,
+      max_coulomb_force    = state.max_coulomb_force,
+      charge               = state.charge,
+      pe                   = state.pe,
+      temperature_control  = state.temperature_control,
+      ave_speed            = state.ave_speed,
+      average_speed        = state.average_speed,
+      speed_goal           = state.speed_goal;
 
   return function () {
-    var n = nodes[0].length,
+    var step_dt           = 1,                         // time in reduced units for each model step/tick
+        integration_steps = 50,                        // number of internal integration steps for each step
+        dt                = step_dt/integration_steps, // intra-step time
+        dt2               = dt * dt,                   // intra-step time squared
+        n = nodes[0].length,
         i, // current index
         j, // alternate member of force-pair index
         l, // current distance
@@ -59,7 +53,12 @@ modeler.makeIntegrator = function() {
         rightwall  = size[0] - radius[0],
         topwall    = size[1] - radius[0],
         speed_max_one_percent,
-        speed_min_one_percent;
+        speed_min_one_percent,
+        ave_speed_max,
+        ave_speed_min,
+        speed_max,
+        speed_min,
+        speed_factor;
 
     //
     // Loop through this inner processing loop 'integration_steps' times:
@@ -266,6 +265,7 @@ modeler.model = function() {
       pressure, pressures = [0],
       sample_time, sample_times = [],
       temperature,
+      run_tick,
       model_listener;
 
   //
@@ -396,9 +396,6 @@ modeler.model = function() {
     max_coulomb_distance = i;
   }
 
-  // OK; what do we need to give it access to?
-  var run_tick = modeler.makeIntegrator();
-
   //
   // Main Model Integration Loop
   //
@@ -441,6 +438,7 @@ modeler.model = function() {
   function tick() {
     var t;
     run_tick();
+
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
     // ave_speed = average_speed();
@@ -748,6 +746,35 @@ modeler.model = function() {
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
 
     set_temperature(temperature);
+
+    run_tick = modeler.makeIntegrator({
+      nodes               : nodes,
+      radius              : radius,
+      size                : size,
+      pressure            : pressure,
+      x                   : x,
+      y                   : y,
+      vx                  : vx,
+      ax                  : ax,
+      vy                  : vy,
+      ay                  : ay,
+      speed               : speed,
+      px                  : px,
+      py                  : py,
+      lennard_jones_forces: lennard_jones_forces,
+      coulomb_forces      : coulomb_forces,
+      max_ljf_distance    : max_ljf_distance,
+      max_ljf_repulsion   : max_ljf_repulsion,
+      max_coulomb_distance: max_coulomb_distance,
+      max_coulomb_force   : max_coulomb_force,
+      charge              : charge,
+      pe                  : pe,
+      temperature_control : temperature_control,
+      ave_speed           : ave_speed,
+      average_speed       : average_speed,
+      speed_goal          : speed_goal
+    });
+
     resolve_collisions(annealing_steps);
 
     ave_speed = average_speed();
