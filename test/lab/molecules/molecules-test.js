@@ -9,7 +9,7 @@ var suite = vows.describe("lab.molecules");
 var atoms = [];
 
 var get_charge = function (i) {
-  return model.get_nodes()[model.CHARGE][i];
+  return model.get_nodes()[model.INDICES.CHARGE][i];
 };
 
 var initialization_options = {

@@ -50,35 +50,36 @@ modeler.model = function() {
   //
   // Indexes into the nodes array for the individual node property arrays
   //
-  // Created as variables for faster access within this module and
-  // as object properties for use outside this module.
-  //
+  // Access to these within this module will be faster if they are vars in this closure rather than property lookups.
+  // However, publish the indices to model.INDICES for use outside this module.
 
-  var _radius   =  0;
-  var _px       =  1;
-  var _py       =  2;
-  var _x        =  3;
-  var _y        =  4;
-  var _vx       =  5;
-  var _vy       =  6;
-  var _speed    =  7;
-  var _ax       =  8;
-  var _ay       =  9;
-  var _halfmass = 10;
-  var _charge   = 11;
+  var RADIUS_INDEX   =  0,
+      PX_INDEX       =  1,
+      PY_INDEX       =  2,
+      X_INDEX        =  3,
+      Y_INDEX        =  4,
+      VX_INDEX       =  5,
+      VY_INDEX       =  6,
+      SPEED_INDEX    =  7,
+      AX_INDEX       =  8,
+      AY_INDEX       =  9,
+      HALFMASS_INDEX = 10,
+      CHARGE_INDEX   = 11;
 
-  model.RADIUS   = 0;
-  model.PX       = 1;
-  model.PY       = 2;
-  model.X        = 3;
-  model.Y        = 4;
-  model.VX       = 5;
-  model.VY       = 6;
-  model.SPEED    = 7;
-  model.AX       = 8;
-  model.AY       = 9;
-  model.HALFMASS = 10;
-  model.CHARGE   = 11;
+  model.INDICES = {
+    RADIUS   : RADIUS_INDEX,
+    PX       : PX_INDEX,
+    PY       : PY_INDEX,
+    X        : X_INDEX,
+    Y        : Y_INDEX,
+    VX       : VX_INDEX,
+    VY       : VY_INDEX,
+    SPEED    : SPEED_INDEX,
+    AX       : AX_INDEX,
+    AY       : AY_INDEX,
+    HALFMASS : HALFMASS_INDEX,
+    CHARGE   : CHARGE_INDEX
+  };
 
   //
   // Number of individual properties for a node
@@ -761,53 +762,53 @@ modeler.model = function() {
     // ... except for Safari
     var array_type = (webgl && not_safari) ? "Float32Array" : "regular";
 
-    // model.RADIUS = 0
-    nodes[model.RADIUS] = arrays.create(num, rmin * mol_rmin_radius_factor, array_type );
-    radius = nodes[model.RADIUS];
+    // model.INDICES.RADIUS = 0
+    nodes[model.INDICES.RADIUS] = arrays.create(num, rmin * mol_rmin_radius_factor, array_type );
+    radius = nodes[model.INDICES.RADIUS];
 
-    // model.PX     = 1;
-    nodes[model.PX] = arrays.create(num, 0, array_type);
-    px = nodes[model.PX];
+    // model.INDICES.PX     = 1;
+    nodes[model.INDICES.PX] = arrays.create(num, 0, array_type);
+    px = nodes[model.INDICES.PX];
 
-    // model.PY     = 2;
-    nodes[model.PY] = arrays.create(num, 0, array_type);
-    py = nodes[model.PY];
+    // model.INDICES.PY     = 2;
+    nodes[model.INDICES.PY] = arrays.create(num, 0, array_type);
+    py = nodes[model.INDICES.PY];
 
-    // model.X      = 3;
-    nodes[model.X] = arrays.create(num, 0, array_type);
-    x = nodes[model.X];
+    // model.INDICES.X      = 3;
+    nodes[model.INDICES.X] = arrays.create(num, 0, array_type);
+    x = nodes[model.INDICES.X];
 
-    // model.Y      = 4;
-    nodes[model.Y] = arrays.create(num, 0, array_type);
-    y = nodes[model.Y];
+    // model.INDICES.Y      = 4;
+    nodes[model.INDICES.Y] = arrays.create(num, 0, array_type);
+    y = nodes[model.INDICES.Y];
 
-    // model.VX     = 5;
-    nodes[model.VX] = arrays.create(num, 0, array_type);
-    vx = nodes[model.VX];
+    // model.INDICES.VX     = 5;
+    nodes[model.INDICES.VX] = arrays.create(num, 0, array_type);
+    vx = nodes[model.INDICES.VX];
 
-    // model.VY     = 6;
-    nodes[model.VY] = arrays.create(num, 0, array_type);
-    vy = nodes[model.VY];
+    // model.INDICES.VY     = 6;
+    nodes[model.INDICES.VY] = arrays.create(num, 0, array_type);
+    vy = nodes[model.INDICES.VY];
 
-    // model.SPEED  = 7;
-    nodes[model.SPEED] = arrays.create(num, 0, array_type);
-    speed = nodes[model.SPEED];
+    // model.INDICES.SPEED  = 7;
+    nodes[model.INDICES.SPEED] = arrays.create(num, 0, array_type);
+    speed = nodes[model.INDICES.SPEED];
 
-    // model.AX     = 8;
-    nodes[model.AX] = arrays.create(num, 0, array_type);
-    ax = nodes[model.AX];
+    // model.INDICES.AX     = 8;
+    nodes[model.INDICES.AX] = arrays.create(num, 0, array_type);
+    ax = nodes[model.INDICES.AX];
 
-    // model.AY     = 9;
-    nodes[model.AY] = arrays.create(num, 0, array_type);
-    ay = nodes[model.AY];
+    // model.INDICES.AY     = 9;
+    nodes[model.INDICES.AY] = arrays.create(num, 0, array_type);
+    ay = nodes[model.INDICES.AY];
 
-    // model.MASS     = 10;
-    nodes[model.HALFMASS] = arrays.create(num, 0.5, array_type);
-    halfmass = nodes[model.HALFMASS];
+    // model.INDICES.HALFMASS = 10;
+    nodes[model.INDICES.HALFMASS] = arrays.create(num, 0.5, array_type);
+    halfmass = nodes[model.INDICES.HALFMASS];
 
-    // model.CHARGE   = 11;
-    nodes[model.CHARGE] = arrays.create(num, 0, array_type);
-    charge = nodes[model.CHARGE];
+    // model.INDICES.CHARGE   = 11;
+    nodes[model.INDICES.CHARGE] = arrays.create(num, 0, array_type);
+    charge = nodes[model.INDICES.CHARGE];
 
     // initialize particles with 0 net momentum by spacing initial velocities equally around a circle
     dTheta = 2*Math.PI / num;
