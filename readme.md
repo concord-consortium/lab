@@ -52,7 +52,8 @@ Once you have a working version of Ruby 1.9.2 (or newer) install the RubyGem [bu
 
     $  ruby -v
     ruby 1.9.2p290 (2011-07-09 revision 32553) [x86_64-darwin10.8.0]
-    [dev ruby-1.9.2-p290]$ gem install bundler
+    
+    $ gem install bundler
     Fetching: bundler-1.0.22.gem (100%)
     Successfully installed bundler-1.0.22
     1 gem installed
