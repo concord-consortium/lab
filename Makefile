@@ -308,4 +308,4 @@ m:
 
 dist/%.html: %.md Makefile
 	@rm -f $@
-	$(MARKDOWN_COMPILER) $< --template src/layouts/$*.html.erb > $@
+	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/$*.html.erb > $@
