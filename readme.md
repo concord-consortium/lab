@@ -30,7 +30,7 @@ HTML5-based open source scientific models, visualizations, graphing, and probewa
 
 ## Setup Development
 
-Prerequisites:
+### Prerequisites:
 
 - [Ruby 1.9](http://www.ruby-lang.org/en/)
 - The RubyGem: [bundler](http://gembundler.com/)
@@ -53,7 +53,7 @@ As of v0.6.3 of node npm is bundled with node.
 
 Install node with installers available here: [http://nodejs.org/#download](http://nodejs.org/#download)
 
-**Use git to create a local clone of the lab repository.**
+### Use git to create a local clone of the Lab repository.
 
 If you have commit access to the repository use this form:
 
@@ -63,13 +63,13 @@ Alternatively if you don't have commit access use this form:
 
     git clone git://github.com/concord-consortium/lab.git
 
-**Setup the lab repository for development**
+### Setup the local Lab repository for development
 
 Make sure you have already installed the prerequistes: [Ruby 1.9](http://www.ruby-lang.org/en/),
 the RubyGem [bundler](http://gembundler.com/), and [nodejs](http://nodejs.org/) (which now includes
 [npm](http://npmjs.org/) the Node Package Manager.
 
-Change to the 'lab/' directory and run `make clean; make` to install the runtime and development dependencies and generate 
+Change to the `lab/` directory and run `make clean; make` to install the runtime and development dependencies and generate 
 the `dist/` directory:
 
     cd lab
@@ -100,8 +100,8 @@ When `make` is run on a freshly cloned repository it performs the following task
 
 You should now be able to open the file: `dist/index.html` in a browser and run the examples.
 
-Start watching the `src/` and `test/` directories and automatically either generate the Lab modules,
-the examples, or run the tests.
+Start watching the `src/` and `test/` directories and when files are changed automatically
+generate the JavaScript Lab modules, the examples, and run the tests.
 
     bin/guard
 
@@ -113,7 +113,7 @@ is running.
 
 ### Serving `dist/` locally with Apache
 
-You can also create a localhost and local Apache vhost for lab and optionally d3:
+You can also create a localhost and local Apache vhost for Lab:
 
 file: `/etc/hosts`
 
@@ -135,20 +135,7 @@ file: `/etc/apache2/extra/httpd-vhosts.conf`
       </Directory>
     </VirtualHost>
 
-    <VirtualHost d3.local:80>
-       ServerName d3
-       DocumentRoot /path/to/d3-repo
-       PassengerEnabled off
-       <Directory /path/to/d3-repo >
-         Options +Indexes +FollowSymLinks +MultiViews +Includes
-         AllowOverride All
-         Order allow,deny
-         Allow from all
-         DirectoryIndex index.html
-      </Directory>
-    </VirtualHost>
-
-Test the syntax after making Apache configuration changes: 
+Test the syntax after making Apache configuration changes:
 
     $ apachectl configtest
     Syntax OK
@@ -161,8 +148,6 @@ Now open: [http://lab.local/](http://lab.local/)
 
 Or go directly to your local instance of [Simple Molecules](http://lab.local/examples/simplemolecules/simplemolecules.html).
 
-If you cloned d3 and setup a localhost you can view the d3 examples here: [http://d3.local/examples/](http://d3.local/examples/)
-
 Whenever guard is running and you save changes to any files in the src/ directory the corresponding files in
 the `dist/` directory will be updated.
 
@@ -174,10 +159,10 @@ You can also serve the dist directory using [POW](http://pow.cx/).
 
 1. install pow: `curl get.pow.cx | sh`
 2. create a lab folder in `~/.pow/`  by doing `mkdir -p ~/.pow/lab`
-3. symlink the dist folder for the lab project `cd ~/.pow/lab; ln -s
+3. symlink the dist folder for the Lab project `cd ~/.pow/lab; ln -s
    <lab/dist> ./public`
 4. Thats it! your app should be available at `http://lab.dev` assuming
-   that you had already built the lab project, and the `dist` directory
+   that you had already built the Lab project, and the `dist` directory
    exists.
 
 
@@ -470,8 +455,8 @@ The debugger will break at the beginning of vows:
     < debugger listening on port 5858
     connecting... ok
     break in node_modules/vows/bin/vows:3
-      1 
-      2 
+      1
+      2
       3 var path   = require('path'),
       4     fs     = require('fs'),
       5     util   = require('util'),
@@ -510,10 +495,10 @@ Enter **ctrl-D** to exit the debugger.
 
 ### Generated Lab Modules: `lab/`
 
-The `lab/` directory contains the lab modules generated from JavaScript source code in the `src/lab/`
+The `lab/` directory contains the Lab modules generated from JavaScript source code in the `src/lab/`
 directory. The `lab/` directory is not checked into the repository
 
-Here are the standard lab modules:
+Here are the standard Lab modules:
 
 - `lab.arrays.js`
 - `lab.benchmark.js`
@@ -540,7 +525,7 @@ of the associated files in the `dist/examples/` directory.
 
 ### External JavaScript Frameworks: `vendor/`
 
-External JavaScript runtime dependencies for running lab are located in the vendor/ directory and are 
+External JavaScript runtime dependencies for running Lab are located in the vendor/ directory and are 
 installed as git submodules the first time `make` is run in a new checkout of the source code repository.
 
 The javascript frameworks along with their licensing and readme files are copied into the `dist/vendor/` 
@@ -593,7 +578,7 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 
 - [SklogWiki: Lennard-Jones](http://www.sklogwiki.org/SklogWiki/index.php/Lennard-Jones_model)
 
-**Courses**
+#### Courses
 
 - [CHE 800-002: Molecular Simulation](http://www.pages.drexel.edu/~cfa22/msim/msim.html)
     Cameron Abrams Department of Chemical Engineering at Drexel  
@@ -602,7 +587,7 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 - [Benchmark results for Lennard-Jones fluid](http://www.cstl.nist.gov/srs/LJ_PURE/index.htm)
 - [Statistical Physics and Simulation](http://homepage.univie.ac.at/franz.vesely/simsp/dx/dx.html)
 
-**Reduced Units**
+#### Reduced Units
 
 - [softmatter:Simulation Variables/Units](http://matdl.org/matdlwiki/index.php/softmatter:Reduced_units)
 - [An MD Code for the Lennard-Jones Fluid](http://www.pages.drexel.edu/~cfa22/msim/node27.html)
@@ -612,7 +597,7 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 
 ### Runtime Dependencies
 
-**[d3.js](http://mbostock.github.com/d3/)**
+#### [d3.js](http://mbostock.github.com/d3/)
 
 - [repo](https://github.com/mbostock/d3)
 - [documentation](http://mbostock.github.com/d3/api/)
@@ -621,17 +606,19 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 - [API reference](https://github.com/mbostock/d3/wiki/API-Reference)
   - [Arrays](https://github.com/mbostock/d3/wiki/Arrays)
 
-**[science.js](https://github.com/jasondavies/science.js)**
+#### [science.js](https://github.com/jasondavies/science.js)
 
-**[modernizr](https://github.com/Modernizr/Modernizr)**
+#### [modernizr](https://github.com/Modernizr/Modernizr)
 
-**[JQuery](http://jquery.com/)**
+#### [JQuery](http://jquery.com/)
 
-**[JQuery-UI](http://jqueryui.com/)**
+#### [JQuery-UI](http://jqueryui.com/)
+
+#### [MathJax](http://mathjax.com/)
 
 ### Development Dependencies
 
-**[node](http://nodejs.org/)**
+#### [node](http://nodejs.org/)
 
 - [repo](https://github.com/joyent/node)
 - [documentation](http://nodejs.org/docs/latest/api/index.html)
@@ -643,9 +630,7 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 **[node-inspector](https://github.com/dannycoates/node-inspector)**
 - [npm package for node-inspector](http://search.npmjs.org/#/node-inspector)
 
-
-
-**[npm](http://npmjs.org/)**
+#### [npm](http://npmjs.org/)
 
 - [repo](https://github.com/isaacs/npm)
 - [faq](http://npmjs.org/doc/faq.html)
@@ -671,17 +656,17 @@ More about using npm for development:
 
 ### RubyGems
 
-**[Haml](http://haml-lang.com/)**
+#### [Haml](http://haml-lang.com/)
 
 - [documentation](http://haml-lang.com/docs.html)
 - [reference](http://haml-lang.com/docs/yardoc/file.HAML_REFERENCE.html)
 
-**[Sass](http://sass-lang.com/)**
+#### [Sass](http://sass-lang.com/)
 
 - [documentation](http://sass-lang.com/docs.html)
 - [reference](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)
 
-**[guard](https://github.com/guard/guard)**
+#### [guard](https://github.com/guard/guard)
 
 - [guard-shell](https://github.com/hawx/guard-shell)
 - [guard-haml](https://github.com/manufaktor/guard-haml)
@@ -692,18 +677,18 @@ More about using npm for development:
 
 ### Additional Testing Dependencies
 
-**[Vows](http://vowsjs.org)**
+#### [Vows](http://vowsjs.org)
 
 - [repo](https://github.com/cloudhead/vows)
 
-**[jsdom](http://jsdom.org)**
+#### [jsdom](http://jsdom.org)
 
 - [repo](https://github.com/tmpvar/jsdom)
 - [issues](https://github.com/tmpvar/jsdom/issues)
 
 ### Miscellaneous
 
-**[LiveReload](https://github.com/mockko/livereload) extension for Chrome and Safari**
+#### [LiveReload](https://github.com/mockko/livereload) extension for Chrome and Safari
 
 ### Full Screen API
 
