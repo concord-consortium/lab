@@ -1,176 +1,50 @@
 /*globals modeler:true, d3, arrays, molecules_coulomb, molecules_lennard_jones, benchmark */
+
 // modeler.js
 //
-//
 
-modeler = {};
 modeler = {};
 modeler.VERSION = '0.1.0';
 
-modeler.model = function() {
-  var model = {},
-      atoms = [],
-      mol_number,
-      event = d3.dispatch("tick"),
-      size = [100, 100],
-      temperature_control,
-      lennard_jones_forces, coulomb_forces,
-      ke, pe, ave_ke,
-      ave_speed, speed_goal, speed_factor,
-      speed_max, speed_min,
-      ave_speed_max, ave_speed_min,
-      stopped = true,
-      tick_history_list = [],
-      tick_history_list_index = 0,
-      tick_counter = 0,
-      new_step = false,
-      epsilon, sigma,
-      max_ljf_repulsion = -200.0,
-      min_ljf_attraction = 0.001,
-      max_ljf_distance,
-      min_ljf_distance,
-      max_coulomb_force = 20.0,
-      min_coulomb_force = 0.01,
-      max_coulomb_distance,
-      min_coulomb_distance,
-      step_dt = 1,                    // time in reduced units for each model step/tick
+modeler.makeIntegrator = function() {
+
+  var step_dt = 1,                    // time in reduced units for each model step/tick
       integration_steps = 50,         // number of internal integration steps for each step
       dt = step_dt/integration_steps, // intra-step time
       dt2 = dt * dt,                  // intra-step time squared
-      pressure, pressures = [0],
-      sample_time, sample_times = [],
-      temperature,
-      model_listener;
 
-  //
-  // Individual property arrays for the nodes
-  //
-  var radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge;
+      nodes,
+      radius,
+      size,
+      pressure,
+      x,
+      y,
+      vx,
+      ax,
+      vy,
+      ay,
+      speed,
+      px,
+      py,
+      lennard_jones_forces,
+      coulomb_forces,
+      max_ljf_distance,
+      max_ljf_repulsion,
+      max_coulomb_distance,
+      max_coulomb_force,
+      charge,
+      pe,
+      temperature_control,
+      ave_speed,
+      average_speed,
+      ave_speed_max,
+      speed_goal,
+      ave_speed_min,
+      speed_max,
+      speed_min,
+      speed_factor;
 
-  //
-  // Indexes into the nodes array for the individual node property arrays
-  //
-  // Access to these within this module will be faster if they are vars in this closure rather than property lookups.
-  // However, publish the indices to model.INDICES for use outside this module.
-
-  var RADIUS_INDEX   =  0,
-      PX_INDEX       =  1,
-      PY_INDEX       =  2,
-      X_INDEX        =  3,
-      Y_INDEX        =  4,
-      VX_INDEX       =  5,
-      VY_INDEX       =  6,
-      SPEED_INDEX    =  7,
-      AX_INDEX       =  8,
-      AY_INDEX       =  9,
-      HALFMASS_INDEX = 10,
-      CHARGE_INDEX   = 11;
-
-  model.INDICES = {
-    RADIUS   : RADIUS_INDEX,
-    PX       : PX_INDEX,
-    PY       : PY_INDEX,
-    X        : X_INDEX,
-    Y        : Y_INDEX,
-    VX       : VX_INDEX,
-    VY       : VY_INDEX,
-    SPEED    : SPEED_INDEX,
-    AX       : AX_INDEX,
-    AY       : AY_INDEX,
-    HALFMASS : HALFMASS_INDEX,
-    CHARGE   : CHARGE_INDEX
-  };
-
-  //
-  // Number of individual properties for a node
-  //
-  var node_properties_length = 12;
-
-  //
-  // A two dimensional array consisting of arrays of node property values
-  //
-  var nodes = arrays.create(node_properties_length, null, "regular");
-
-  // Previously used with generate_atom function, which generated <mol_number> atom objects
-  // for consumption by the view at each tick.
-  function update_atoms() {
-    atoms.length = mol_number;
-  }
-
-  //
-  // The temperature_to_speed(t) function is used to map temperatures in abstract units
-  // within a range of 0..10 to a goal for the average speed per atom for the system of atoms.
-  //
-  // Currently all atoms are unit mass. The mass property is saved as 'halfmass' -- mass/2.
-  //
-  // Increasing the number of atoms while keeping the average speed for an atom
-  // the same will increase the total KE for the system.
-  //
-  // The constant Math.E/2 used below is just an empirically derived
-  // number and has no specific analytic provenance.
-  //
-  function temperature_to_speed(t) {
-    return 0.0050 * Math.pow(Math.E/2, t);
-  }
-
-  function average_speed() {
-    var i, s = 0, n = nodes[0].length;
-    i = -1; while (++i < n) { s += speed[i]; }
-    return s/n;
-  }
-
-  //
-  // Calculate the minimum and maximum distances for applying lennard-jones forces
-  //
-  function setup_ljf_limits() {
-    var i, f;
-    for (i = 0; i <= 100; i+=0.001) {
-      f = molecules_lennard_jones.force(i);
-      if (f > max_ljf_repulsion) {
-        min_ljf_distance = i;
-        break;
-      }
-    }
-
-    for (;i <= 100; i+=0.001) {
-      f = molecules_lennard_jones.force(i);
-      if (f > min_ljf_attraction) {
-        break;
-      }
-    }
-
-    for (;i <= 100; i+=0.001) {
-      f = molecules_lennard_jones.force(i);
-      if (f < min_ljf_attraction) {
-        max_ljf_distance = i;
-        break;
-      }
-    }
-  }
-
-  //
-  // Calculate the minimum and maximum distances for applying coulomb forces
-  //
-  function setup_coulomb_limits() {
-    var i, f;
-    for (i = 0.001; i <= 100; i+=0.001) {
-      f = molecules_coulomb.force(i, -1, 1);
-      if (f < max_coulomb_force) {
-        min_coulomb_distance = i;
-        break;
-      }
-    }
-
-    for (;i <= 100; i+=0.001) {
-      f = molecules_coulomb.force(i, -1, 1);
-      if (f < min_coulomb_force) {
-        break;
-      }
-    }
-    max_coulomb_distance = i;
-  }
-
-  function run_tick() {
+  return function () {
     var n = nodes[0].length,
         i, // current index
         j, // alternate member of force-pair index
@@ -361,7 +235,169 @@ modeler.model = function() {
         vy[i] += 0.5 * dt * ay[i];
       }
     }
+  };
+};
+
+
+modeler.model = function() {
+  var model = {},
+      atoms = [],
+      mol_number,
+      event = d3.dispatch("tick"),
+      size = [100, 100],
+      temperature_control,
+      lennard_jones_forces, coulomb_forces,
+      ke, pe, ave_ke,
+      ave_speed, speed_goal,
+      stopped = true,
+      tick_history_list = [],
+      tick_history_list_index = 0,
+      tick_counter = 0,
+      new_step = false,
+      epsilon, sigma,
+      max_ljf_repulsion = -200.0,
+      min_ljf_attraction = 0.001,
+      max_ljf_distance,
+      min_ljf_distance,
+      max_coulomb_force = 20.0,
+      min_coulomb_force = 0.01,
+      max_coulomb_distance,
+      min_coulomb_distance,
+      pressure, pressures = [0],
+      sample_time, sample_times = [],
+      temperature,
+      model_listener;
+
+  //
+  // Individual property arrays for the nodes
+  //
+  var radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge;
+
+  //
+  // Indexes into the nodes array for the individual node property arrays
+  //
+  // Access to these within this module will be faster if they are vars in this closure rather than property lookups.
+  // However, publish the indices to model.INDICES for use outside this module.
+
+  var RADIUS_INDEX   =  0,
+      PX_INDEX       =  1,
+      PY_INDEX       =  2,
+      X_INDEX        =  3,
+      Y_INDEX        =  4,
+      VX_INDEX       =  5,
+      VY_INDEX       =  6,
+      SPEED_INDEX    =  7,
+      AX_INDEX       =  8,
+      AY_INDEX       =  9,
+      HALFMASS_INDEX = 10,
+      CHARGE_INDEX   = 11;
+
+  model.INDICES = {
+    RADIUS   : RADIUS_INDEX,
+    PX       : PX_INDEX,
+    PY       : PY_INDEX,
+    X        : X_INDEX,
+    Y        : Y_INDEX,
+    VX       : VX_INDEX,
+    VY       : VY_INDEX,
+    SPEED    : SPEED_INDEX,
+    AX       : AX_INDEX,
+    AY       : AY_INDEX,
+    HALFMASS : HALFMASS_INDEX,
+    CHARGE   : CHARGE_INDEX
+  };
+
+  //
+  // Number of individual properties for a node
+  //
+  var node_properties_length = 12;
+
+  //
+  // A two dimensional array consisting of arrays of node property values
+  //
+  var nodes = arrays.create(node_properties_length, null, "regular");
+
+  // Previously used with generate_atom function, which generated <mol_number> atom objects
+  // for consumption by the view at each tick.
+  function update_atoms() {
+    atoms.length = mol_number;
   }
+
+  //
+  // The temperature_to_speed(t) function is used to map temperatures in abstract units
+  // within a range of 0..10 to a goal for the average speed per atom for the system of atoms.
+  //
+  // Currently all atoms are unit mass. The mass property is saved as 'halfmass' -- mass/2.
+  //
+  // Increasing the number of atoms while keeping the average speed for an atom
+  // the same will increase the total KE for the system.
+  //
+  // The constant Math.E/2 used below is just an empirically derived
+  // number and has no specific analytic provenance.
+  //
+  function temperature_to_speed(t) {
+    return 0.0050 * Math.pow(Math.E/2, t);
+  }
+
+  function average_speed() {
+    var i, s = 0, n = nodes[0].length;
+    i = -1; while (++i < n) { s += speed[i]; }
+    return s/n;
+  }
+
+  //
+  // Calculate the minimum and maximum distances for applying lennard-jones forces
+  //
+  function setup_ljf_limits() {
+    var i, f;
+    for (i = 0; i <= 100; i+=0.001) {
+      f = molecules_lennard_jones.force(i);
+      if (f > max_ljf_repulsion) {
+        min_ljf_distance = i;
+        break;
+      }
+    }
+
+    for (;i <= 100; i+=0.001) {
+      f = molecules_lennard_jones.force(i);
+      if (f > min_ljf_attraction) {
+        break;
+      }
+    }
+
+    for (;i <= 100; i+=0.001) {
+      f = molecules_lennard_jones.force(i);
+      if (f < min_ljf_attraction) {
+        max_ljf_distance = i;
+        break;
+      }
+    }
+  }
+
+  //
+  // Calculate the minimum and maximum distances for applying coulomb forces
+  //
+  function setup_coulomb_limits() {
+    var i, f;
+    for (i = 0.001; i <= 100; i+=0.001) {
+      f = molecules_coulomb.force(i, -1, 1);
+      if (f < max_coulomb_force) {
+        min_coulomb_distance = i;
+        break;
+      }
+    }
+
+    for (;i <= 100; i+=0.001) {
+      f = molecules_coulomb.force(i, -1, 1);
+      if (f < min_coulomb_force) {
+        break;
+      }
+    }
+    max_coulomb_distance = i;
+  }
+
+  // OK; what do we need to give it access to?
+  var run_tick = modeler.makeIntegrator();
 
   //
   // Main Model Integration Loop
