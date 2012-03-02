@@ -49,6 +49,8 @@ modeler.makeIntegrator = function(state) {
 
     set_coulomb_forces: function(v) { coulomb_forces = v; },
 
+    set_lennard_jones_forces: function(v) { lennard_jones_forces = v; },
+
     integrator: function () {
       var step_dt           = 1,                         // time in reduced units for each model step/tick
           integration_steps = 50,                        // number of internal integration steps for each step
@@ -726,6 +728,7 @@ modeler.model = function() {
 
   model.set_lennard_jones_forces = function(lj) {
    lennard_jones_forces = lj;
+   if (integrator) integrator.set_lennard_jones_forces(lj);
   };
 
   model.set_coulomb_forces = function(cf) {
