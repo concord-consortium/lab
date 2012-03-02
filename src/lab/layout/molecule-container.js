@@ -23,31 +23,31 @@ function modelTimeLabel() {
 }
 
 function get_x(i) {
-  return nodes[model.X][i];
+  return nodes[model.INDICES.X][i];
 }
 
 function get_y(i) {
-  return nodes[model.Y][i];
+  return nodes[model.INDICES.Y][i];
 }
 
 function get_radius(i) {
-  return nodes[model.RADIUS][i];
+  return nodes[model.INDICES.RADIUS][i];
 }
 
 function get_speed(i) {
-  return nodes[model.SPEED][i];
+  return nodes[model.INDICES.SPEED][i];
 }
 
 function get_vx(i) {
-  return nodes[model.VX][i];
+  return nodes[model.INDICES.VX][i];
 }
 
 function get_vy(i) {
-  return nodes[model.VY][i];
+  return nodes[model.INDICES.VY][i];
 }
 
 function get_charge(i) {
-  return nodes[model.CHARGE][i];
+  return nodes[model.INDICES.CHARGE][i];
 }
 
 layout.finishSetupMoleculeContainer = function() {
@@ -427,9 +427,9 @@ layout.update_molecule_positions = function() {
   particle = layout.mc_container.selectAll("circle").data(atoms);
 
   particle.attr("cx", function(d, i) {
-            return mc_x(nodes[model.X][i]); })
+            return mc_x(nodes[model.INDICES.X][i]); })
           .attr("cy", function(d, i) {
-            return mc_y(nodes[model.Y][i]); })
+            return mc_y(nodes[model.INDICES.Y][i]); })
           .attr("r",  function(d, i) {
-            return mc_x(nodes[model.RADIUS][i]) });
+            return mc_x(nodes[model.INDICES.RADIUS][i]) });
 }
