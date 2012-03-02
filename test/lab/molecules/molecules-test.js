@@ -8,16 +8,20 @@ var suite = vows.describe("lab.molecules");
 
 var atoms = [];
 
+var get_charge = function (i) {
+  return model.get_nodes()[model.CHARGE][i];
+};
+
 var initialization_options = {
-      lennard_jones_forces: true, 
-      coulomb_forces: true, 
+      lennard_jones_forces: true,
+      coulomb_forces: true,
       model_listener: false
     },
     node_options = {
-      xdomain: 100, 
-      ydomain: 100, 
-      temperature: 3, 
-      rmin: 4.4, 
+      xdomain: 100,
+      ydomain: 100,
+      temperature: 3,
+      rmin: 4.4,
       mol_rmin_radius_factor: 0.38
     };
 
@@ -53,20 +57,23 @@ suite.addBatch({
       assert.equal(atoms.length, 50);
     },
     "creates 50 molecules with a total charge of 0": function(model) {
+      var nodes, total_charge;
+
       node_options.num = 50;
       model.nodes(node_options)
           .initialize(initialization_options);
+      nodes = model.get_nodes();
+
       assert.equal(atoms.length, 50);
-      var total_charge = d3.sum(atoms, function(d) { return d.charge });
+      total_charge = d3.sum(atoms, function(d, i) { return get_charge(i);  });
       assert.equal(total_charge, 0);
-      assert.equal(total_charge, d3.sum(model.charge()));
     },
     "creates 100 molecules with a total charge of 0": function(model) {
       node_options.num = 100;
       model.nodes(node_options)
           .initialize(initialization_options);
       assert.equal(atoms.length, 100);
-      var total_charge = d3.sum(atoms, function(d) { return d.charge });
+      var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
     },
     "creates first 50 and then 100 molecules with a total charge of 0": function(model) {
@@ -74,13 +81,13 @@ suite.addBatch({
       model.nodes(node_options)
           .initialize(initialization_options);
       assert.equal(atoms.length, 50);
-      var total_charge = d3.sum(atoms, function(d) { return d.charge });
+      var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
       node_options.num = 100;
       model.nodes(node_options)
           .initialize(initialization_options);
       assert.equal(atoms.length, 100);
-      var total_charge = d3.sum(atoms, function(d) { return d.charge });
+      var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
     }
   }
