@@ -30,28 +30,50 @@ HTML5-based open source scientific models, visualizations, graphing, and probewa
 
 ## Setup Development
 
+Lab uses a number of RubyGems and node modules to manage development. Lab's test framework
+uses [Vows](http://vowsjs.org), which depends on [nodejs](http://nodejs.org/) and
+[npm](http://npmjs.org/) (Node Package Manager). In addition JavaScript minification is
+done using [UglifyJS](https://github.com/mishoo/UglifyJS).
+
 ### Prerequisites:
 
-- [Ruby 1.9](http://www.ruby-lang.org/en/)
-- The RubyGem: [bundler](http://gembundler.com/)
-- [nodejs](http://nodejs.org/)
-- [npm](http://npmjs.org/)
+#### Ruby 1.9 and the RubyGem bundler
 
-Lab's test framework uses [Vows](http://vowsjs.org), which depends on [nodejs](http://nodejs.org/) 
-and [npm](http://npmjs.org/) (Node Package Manager). In addition JavaScript minification is done using 
-[UglifyJS](https://github.com/mishoo/UglifyJS).
+[Ruby 1.9](http://www.ruby-lang.org/en/) is a development dependency for the Lab codebase however
+often the older Ruby version 1.8.7 is what comes pre-installed on Mac OS X and Linux.
 
-Currently development is being done with these versions of Node and npm:
+    $ ruby -v
+    ruby 1.8.7 (2010-01-10 patchlevel 249) [universal-darwin10.0]
+
+[RVM](http://beginrescueend.com/) is a good way to install and manage multiple updated versions
+of Ruby without affecting the Ruby that comes pre-installed in the OS.
+
+Once you have a working version of Ruby 1.9.2 (or newer) install the RubyGem [bundler](http://gembundler.com/).
+
+    $  ruby -v
+    ruby 1.9.2p290 (2011-07-09 revision 32553) [x86_64-darwin10.8.0]
+    [dev ruby-1.9.2-p290]$ gem install bundler
+    Fetching: bundler-1.0.22.gem (100%)
+    Successfully installed bundler-1.0.22
+    1 gem installed
+
+#### nodejs and npm, the Node Package Manager
+
+[nodejs](http://nodejs.org/) and [npm](http://npmjs.org/), the Node Package Manager are additional
+development dependencies.
+
+[npm](http://npmjs.org/), the Node Package Manager is included as part of [nodejs](http://nodejs.org/)
+as of version 0.6.3.
+
+Install node with installers available here: [http://nodejs.org/#download](http://nodejs.org/#download)
+
+Currently development is being done with these versions of node and npm:
 
     $ node -v
     v0.6.11
 
     $ npm -v
     1.1.1
-
-As of v0.6.3 of node npm is bundled with node. 
-
-Install node with installers available here: [http://nodejs.org/#download](http://nodejs.org/#download)
 
 ### Use git to create a local clone of the Lab repository.
 
@@ -89,7 +111,7 @@ When `make` is run on a freshly cloned repository it performs the following task
    You can see the list of dependencies to be installed in the file `package.json`. In addition
    `vendor/d3` and `vendor/science.js` are manually installed into `node_modules/`.
 
-3. Install the additional Ruby Gems used for development: haml, sass, guard ...
+3. Install the additional RubyGems used for development: haml, sass, guard ...
 
         bundle install --binstubs
 
@@ -161,11 +183,9 @@ You can also serve the dist directory using [POW](http://pow.cx/).
 2. create a lab folder in `~/.pow/`  by doing `mkdir -p ~/.pow/lab`
 3. symlink the dist folder for the Lab project `cd ~/.pow/lab; ln -s
    <lab/dist> ./public`
-4. Thats it! your app should be available at `http://lab.dev` assuming
-   that you had already built the Lab project, and the `dist` directory
+4. Thats it! your app should be available at [http://lab.dev](http://lab.dev) 
+   assuming that you had already built the Lab project, and the `dist` directory
    exists.
-
-
 
 ### Contributing to Lab
 
