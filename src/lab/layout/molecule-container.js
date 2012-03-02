@@ -34,6 +34,18 @@ function get_radius(i) {
   return nodes[model.RADIUS][i];
 }
 
+function get_speed(i) {
+  return nodes[model.SPEED][i];
+}
+
+function get_vx(i) {
+  return nodes[model.VX][i];
+}
+
+function get_vy(i) {
+  return nodes[model.VY][i];
+}
+
 function get_charge(i) {
   return nodes[model.CHARGE][i];
 }
@@ -378,7 +390,7 @@ function molecule_mouseover(d) {
   //       .style("opacity", 1);
 }
 
-function molecule_mousedown(d) {
+function molecule_mousedown(d, i) {
   molecule_div
         .style("opacity", 1)
         .style("left", (d3.event.pageX + 6) + "px")
@@ -386,9 +398,9 @@ function molecule_mousedown(d) {
         .transition().duration(250);
 
   molecule_div_pre.text(
-      "speed: " + d3.format("6.3f")(d.speed) + "\n" +
-      "vx:    " + d3.format("6.3f")(d.vx)    + "\n" +
-      "vy:    " + d3.format("6.3f")(d.vy)    + "\n"
+      "speed: " + d3.format("6.3f")(get_speed(i)) + "\n" +
+      "vx:    " + d3.format("6.3f")(get_vx(i))    + "\n" +
+      "vy:    " + d3.format("6.3f")(get_vy(i))    + "\n"
     )
 }
 
