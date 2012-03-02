@@ -42,15 +42,12 @@ modeler.makeIntegrator = function(args) {
       ave_speed            = settableState.ave_speed;
 
   return {
-    set_ave_speed: function(v) { ave_speed = v; },
 
-    set_coulomb_forces: function(v) { coulomb_forces = v; },
-
+    set_ave_speed           : function(v) { ave_speed = v; },
+    set_coulomb_forces      : function(v) { coulomb_forces = v; },
     set_lennard_jones_forces: function(v) { lennard_jones_forces = v; },
-
-    set_speed_goal: function (v) { speed_goal = v; },
-
-    set_temperature_control: function (v) { temperature_control = v; },
+    set_speed_goal          : function(v) { speed_goal = v; },
+    set_temperature_control : function(v) { temperature_control = v; },
 
     integrate               : function() {
       var step_dt           = 1,                         // time in reduced units for each model step/tick
