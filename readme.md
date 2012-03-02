@@ -5,8 +5,7 @@ HTML5-based open source scientific models, visualizations, graphing, and probewa
 
 **Table of Contents**
 
-
-* 
+* toc
 {:toc}
 
 ## Molecular Modeling Examples:
@@ -549,12 +548,15 @@ directory when either `make` or `bin/guard` are run.
 - `vendor/science.js/`
 - `vendor/sizzle/`
 - `vendor/jquery/`
-- `vendor/jquery-ui`
+- `vendor/jquery-ui/`
+- `vendor/mathjax/`
 
-[d3.js](http://mbostock.github.com/d3/), [hijs](https://github.com/cloudhead/hijs), and 
-[science.js](https://github.com/jasondavies/science.js) are all licensed under a BSD license 
-while [sizzle](https://github.com/jquery/sizzle) and [modernizr](https://github.com/Modernizr/Modernizr) 
-are dual-licensed under both BSD and MIT licenses.
+[d3.js](http://mbostock.github.com/d3/), [hijs](https://github.com/cloudhead/hijs), and
+[science.js](https://github.com/jasondavies/science.js) are all distributed under a BSD license;
+[sizzle](https://github.com/jquery/sizzle) and [modernizr](https://github.com/Modernizr/Modernizr)
+are distributed under both BSD and MIT licenses; [jQuery](http://jquery.com/) is licensed under 
+the MIT license; [jQuery-UI](jQuery-UI) is distributed under both the MIT license and GPL licenses;
+[MathJax](http://www.mathjax.org/) is distributed under the Apache 2.0 license.
 
 ## Updating [http://lab.dev.concord.org/](http://lab.dev.concord.org/)
 
