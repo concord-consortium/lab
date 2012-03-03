@@ -11,7 +11,7 @@
 var autostart = true,
     mol_number = 50,
     sample_time = 0.01,
-    temperature = 3,
+    temperature = 5,
     maximum_model_steps = 5000,
     molecules = [], model,
     lj_sigma_min = 1,
