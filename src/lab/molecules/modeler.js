@@ -7,6 +7,48 @@
 modeler = {};
 modeler.VERSION = '0.1.0';
 
+// Quick debugging function
+modeler.testLJPotential = function(r_min, r_max) {
+
+  var n = 1000,
+      dr = (r_max - r_min) / n,
+      i, r, p, p_prev, f, gradP,
+      ratio,
+      minRatio = Infinity,
+      maxRatio = -Infinity,
+      r_minRatio,
+      r_maxRatio;
+
+  for (i = 0; i <= n; i++) {
+    r = r_min + i*dr;
+    p_prev = p;
+    p = molecules_lennard_jones.potential(r);
+
+    if (i) {
+      f = molecules_lennard_jones.force(r);
+      // radially symmetric potential
+      gradP = (p - p_prev) / dr;
+      ratio = f/gradP;
+
+      if (ratio > maxRatio) {
+        maxRatio = ratio;
+        r_maxRatio = r;
+      }
+      if (ratio < minRatio) {
+        minRatio = ratio;
+        r_minRatio = r;
+      }
+
+      //console.log("r = %d\tdiff(f/gradP) = %.2f %%", r, 100*(ratio - 1));
+    }
+  }
+  // can't get console.log to
+  console.log("min diff(f/gradP) = %d%%, found at r = %f", Math.round(100*(minRatio-1)), r_minRatio);
+  console.log("max diff(f/gradP) = %d%%, found at r = %f", Math.round(100*(maxRatio-1)), r_maxRatio);
+
+};
+
+
 modeler.makeIntegrator = function(args) {
 
   var setOnceState   = args.setOnceState,
@@ -817,6 +859,8 @@ modeler.model = function() {
 
       outputState: integratorOutputState
     });
+
+    modeler.testLJPotential( min_ljf_distance, max_ljf_distance );
 
     resolve_collisions(annealing_steps);
 
