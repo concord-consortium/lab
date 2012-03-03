@@ -1,4 +1,5 @@
-//
+/*globals modeler, ModelPlayer, layout, graphx, molecules_lennard_jones, modelController */
+
 // simplemolecules.js
 //
 
@@ -24,6 +25,8 @@ var autostart = true,
     frame_number = 0,
     model_stopped = true,
     model = modeler.model(),
+    step_counter,
+    atoms,
     nodes;
 
 // ------------------------------------------------------------
@@ -42,8 +45,7 @@ var model_player = new ModelPlayer(model);
 
 var model_listener = function(e) {
   var ke = model.ke(),
-      step_counter = model.stepCounter(),
-      total_steps = model.steps();
+      step_counter = model.stepCounter();
 
   layout.speed_update();
 
@@ -55,7 +57,7 @@ var model_listener = function(e) {
       ke_graph.add_point(ke);
       ke_graph.update_canvas();
     } else {
-      ke_graph.add_canvas_point(ke)
+      ke_graph.add_canvas_point(ke);
     }
   } else {
     ke_graph.update();
@@ -65,8 +67,8 @@ var model_listener = function(e) {
   }
   if (step_counter >= maximum_model_steps) { modelStop(); }
   layout.displayStats();
-  if (layout.datatable_visible) { layout.render_datatable() }
-}
+  if (layout.datatable_visible) { layout.render_datatable(); }
+};
 
 // ------------------------------------------------------------
 //
@@ -75,23 +77,23 @@ var model_listener = function(e) {
 // ------------------------------------------------------------
 
 var mc_graph = {
-  title:               "Simple Molecules",
-  xlabel:              "X position (nm)",
-  ylabel:              "Y position (nm)",
-  playback_controller:  true,
-  model_time_label:     true,
-  grid_lines:           true,
-  xunits:               true,
-  yunits:               true,
-  atom_mubers:          false,
-  xmin:                 0,
-  xmax:                 100,
-  ymin:                 0,
-  ymax:                 100
-};
+      title:               "Simple Molecules",
+      xlabel:              "X position (nm)",
+      ylabel:              "Y position (nm)",
+      playback_controller:  true,
+      model_time_label:     true,
+      grid_lines:           true,
+      xunits:               true,
+      yunits:               true,
+      atom_mubers:          false,
+      xmin:                 0,
+      xmax:                 100,
+      ymin:                 0,
+      ymax:                 100
+    };
 
-mc_graph.xdomain = mc_graph.xmax - mc_graph.xmin,
-mc_graph.ydomain = mc_graph.ymax - mc_graph.ymin;
+    mc_graph.xdomain = mc_graph.xmax - mc_graph.xmin;
+    mc_graph.ydomain = mc_graph.ymax - mc_graph.ymin;
 
 // ------------------------------------------------------------
 //
@@ -210,10 +212,10 @@ function update_coefficients(coefficients) {
   // change the x value for epsilon to match the new rmin value
   lj_data.variables[0].x = rmin;
 
-  lennard_jones_potential = []
+  lennard_jones_potential = [];
 
   for(var r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
-    y = molecules_lennard_jones.potential(r)
+    y = molecules_lennard_jones.potential(r);
     if (y < 100) {
       lennard_jones_potential.push([r, y]);
     }
@@ -287,7 +289,7 @@ var mol_number_to_ke_yxais_map = {
   100: 0.05,
   200: 0.1,
   500: 0.2
-}
+};
 
 var mol_number_to_lj_sigma_map = {
   2: 7.0,
@@ -298,7 +300,7 @@ var mol_number_to_lj_sigma_map = {
   100: 4.0,
   200: 3.5,
   500: 3.0
-}
+};
 
 var mol_number_to_speed_yaxis_map = {
   2: 2,
@@ -309,14 +311,14 @@ var mol_number_to_speed_yaxis_map = {
   100: 15,
   200: 20,
   500: 40
-}
+};
 
 function updateMolNumberViewDependencies() {
   ke_graph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
   update_sigma(mol_number_to_lj_sigma_map[mol_number]);
   layout.lj_redraw();
   speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
-  layout.speed_update()
+  layout.speed_update();
   layout.speed_redraw();
 }
 
@@ -409,7 +411,7 @@ function modelReset() {
   if (layout.datatable_visible) {
     layout.render_datatable(true);
   } else {
-    layout.hide_datatable()
+    layout.hide_datatable();
   }
   ke_data = [model.ke()];
   ke_graph.new_data(ke_data);
@@ -439,21 +441,25 @@ function handleKeyboardForModel(evt) {
   if (evt) {
     switch (evt.keyCode) {
       case 32:                // spacebar
-      model_stopped ? modelGo() : modelStop();
-      evt.preventDefault();
-      break;
+        if (model_stopped) {
+          modelGo();
+        } else {
+          modelStop();
+        }
+        evt.preventDefault();
+        break;
       case 13:                // return
-      modelGo();
-      evt.preventDefault();
-      break;
+        modelGo();
+        evt.preventDefault();
+        break;
       case 37:                // left-arrow
-      modelStepBack();
-      evt.preventDefault();
-      break;
+        modelStepBack();
+        evt.preventDefault();
+        break;
       case 39:                // right-arrow
-      modelStepForward();
-      evt.preventDefault();
-      break;
+        modelStepForward();
+        evt.preventDefault();
+        break;
     }
   }
 }
