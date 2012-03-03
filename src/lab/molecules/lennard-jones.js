@@ -30,12 +30,12 @@ molecules_lennard_jones.coefficients = function(e, s) {
     alpha = 4 * epsilon * Math.pow(sigma, 12);
     beta  = 4 * epsilon * Math.pow(sigma, 6);
   }
-  var coefficients = { 
+  var coefficients = {
     epsilon: epsilon,
-    sigma: sigma, 
+    sigma: sigma,
     rmin: rmin,
     alpha: alpha,
-    beta: beta 
+    beta: beta
   };
   return coefficients;
 };
