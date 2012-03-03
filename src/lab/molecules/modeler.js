@@ -1,6 +1,6 @@
 /*globals modeler:true, d3, arrays, molecules_coulomb, molecules_lennard_jones, benchmark */
-
 /*jslint onevar: true */
+
 // modeler.js
 //
 
@@ -9,18 +9,18 @@ modeler.VERSION = '0.1.0';
 
 modeler.makeIntegrator = function(args) {
 
-  var setOnlyState   = args.setOnlyState,
+  var setOnceState   = args.setOnceState,
       readWriteState = args.readWriteState,
       settableState  = args.settableState || {},
 
       outputState    = args.outputState,
 
-      max_coulomb_distance = setOnlyState.max_coulomb_distance,
-      max_coulomb_force    = setOnlyState.max_coulomb_force,
-      max_ljf_distance     = setOnlyState.max_ljf_distance,
-      max_ljf_repulsion    = setOnlyState.max_ljf_repulsion,
-      size                 = setOnlyState.size,
-      average_speed        = setOnlyState.average_speed,
+      max_coulomb_distance = setOnceState.max_coulomb_distance,
+      max_coulomb_force    = setOnceState.max_coulomb_force,
+      max_ljf_distance     = setOnceState.max_ljf_distance,
+      max_ljf_repulsion    = setOnceState.max_ljf_repulsion,
+      size                 = setOnceState.size,
+      average_speed        = setOnceState.average_speed,
 
       ax                   = readWriteState.ax,
       ay                   = readWriteState.ay,
@@ -784,7 +784,7 @@ modeler.model = function() {
 
     integrator = modeler.makeIntegrator({
 
-      setOnlyState: {
+      setOnceState: {
         max_coulomb_distance : max_coulomb_distance,
         max_coulomb_force    : max_coulomb_force,
         max_ljf_distance     : max_ljf_distance,
