@@ -17,6 +17,7 @@ modeler.makeIntegrator = function(args) {
 
       max_coulomb_distance = setOnceState.max_coulomb_distance,
       max_coulomb_force    = setOnceState.max_coulomb_force,
+      min_ljf_distance     = setOnceState.min_ljf_distance,
       max_ljf_distance     = setOnceState.max_ljf_distance,
       max_ljf_repulsion    = setOnceState.max_ljf_repulsion,
       size                 = setOnceState.size,
@@ -150,7 +151,17 @@ modeler.makeIntegrator = function(args) {
               r2 = dx * dx + dy * dy;
               l = Math.sqrt(r2);
               if (lennard_jones_forces && l < max_ljf_distance) {
-                ljf  = Math.max(max_ljf_repulsion, molecules_lennard_jones.force(l));
+
+                // deal with some apparent instability
+                if (l < min_ljf_distance) {
+                  ljf = max_ljf_repulsion;
+                  // TODO: save this value
+                  pe += molecules_lennard_jones.potential(min_ljf_distance);
+                } else {
+                  ljf = molecules_lennard_jones.force(l);
+                  pe += molecules_lennard_jones.potential(l);
+                }
+
 
                 // alternate way to calculate ljf ...
                 // http://www.pages.drexel.edu/~cfa22/msim/node28.html
@@ -169,7 +180,6 @@ modeler.makeIntegrator = function(args) {
                 // f2    = 48 * (Math.pow(r2i, 7) - 0.5 * Math.pow(r2i, 4));
                 // fx = dx * f2;
                 // fy = dy * f2;
-                pe += molecules_lennard_jones.potential(l);
                 xf = dx / l * ljf;
                 yf = dy / l * ljf;
                 ax[i] += xf;
@@ -775,6 +785,7 @@ modeler.model = function() {
         max_coulomb_distance : max_coulomb_distance,
         max_coulomb_force    : max_coulomb_force,
         max_ljf_distance     : max_ljf_distance,
+        min_ljf_distance     : min_ljf_distance,
         max_ljf_repulsion    : max_ljf_repulsion,
         size                 : size,
         average_speed        : average_speed
