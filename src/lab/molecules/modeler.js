@@ -26,7 +26,6 @@ modeler.makeIntegrator = function(args) {
       ay                   = readWriteState.ay,
       charge               = readWriteState.charge,
       nodes                = readWriteState.nodes,
-      pe                   = readWriteState.pe,
       px                   = readWriteState.px,
       py                   = readWriteState.py,
       radius               = readWriteState.radius,
@@ -75,14 +74,15 @@ modeler.makeIntegrator = function(args) {
           speed_max,
           speed_min,
           speed_factor,
-          pressure;
+
+          // measurements to be accumulated during the integration loop
+          pressure = 0,
+          pe = 0;
 
       //
       // Loop through this inner processing loop 'integration_steps' times:
       //
-      pressure = 0;
-      iloop = -1;
-      while(++iloop < integration_steps) {
+      iloop = -1; while(++iloop < integration_steps) {
 
         //
         // Use a Verlet integration to continue particle movement integrating acceleration with
@@ -171,7 +171,7 @@ modeler.makeIntegrator = function(args) {
                 // f2    = 48 * (Math.pow(r2i, 7) - 0.5 * Math.pow(r2i, 4));
                 // fx = dx * f2;
                 // fy = dy * f2;
-
+                pe += molecules_lennard_jones.potential(l);
                 xf = dx / l * ljf;
                 yf = dy / l * ljf;
                 ax[i] += xf;
@@ -181,7 +181,7 @@ modeler.makeIntegrator = function(args) {
               }
               if (coulomb_forces && l < max_coulomb_distance) {
                 coul  = Math.min(max_coulomb_force, molecules_coulomb.force(l, charge[i], charge[j]));
-                pe +=  molecules_coulomb.energy(l, charge[i], charge[j]);
+                pe +=  molecules_coulomb.potential(l, charge[i], charge[j]);
                 xf = dx / l * coul;
                 yf = dy / l * coul;
                 ax[i] += xf;
@@ -254,6 +254,7 @@ modeler.makeIntegrator = function(args) {
 
       // state to be read by the rest of the system
       outputState.pressure = pressure;
+      outputState.pe = pe;
     }
   };
 };
@@ -445,32 +446,17 @@ modeler.model = function() {
     }
   }
 
-  function calculate_kinetic_and_potential_energy() {
-    var i, s, k, fx, fy, p, n = nodes[0].length;
-    ke = 0;
-    pe = 0;
-    i = -1; while (++i < n) {
-      s = speed[i];
-      k =  s * s * halfmass[i];
-      ke += k;
-      fx = ax[i];
-      fy = ay[i];
-      p = fx + fx;
-      pe += p;
-    }
-    ave_ke = ke / n;
-  }
-
   function tick() {
     var t;
 
     integrator.integrate();
     pressure = integratorOutputState.pressure;
+    pe = integratorOutputState.pe;
 
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
     // ave_speed = average_speed();
-    calculate_kinetic_and_potential_energy();
+    ke = kinetic_energy();
     update_atoms();
     tick_history_list_push();
     if (!stopped) {
@@ -575,15 +561,17 @@ modeler.model = function() {
 
   //
   function potential_energy() {
-    var i, fx, fy, p, n = nodes[0].length;
-    pe = 0;
-    i = -1; while (++i < n) {
-      fx = ax[i];
-      fy = ay[i];
-      p = Math.sqrt(fx * fx + fy * fy);
-      pe += p;
-    }
-    return pe;
+    // ???
+    throw new Error("Huh?");
+    // var i, fx, fy, p, n = nodes[0].length;
+    // pe = 0;
+    // i = -1; while (++i < n) {
+    //   fx = ax[i];
+    //   fy = ay[i];
+    //   p = Math.sqrt(fx * fx + fy * fy);
+    //   pe += p;
+    // }
+    // return pe;
   }
 
   // currently the nodes are all unit mass
@@ -615,7 +603,8 @@ modeler.model = function() {
       integrator.integrate();
     }
     model.set_temperature_control( save_temperature_control );
-    calculate_kinetic_and_potential_energy();
+    pe = integratorOutputState.pe;
+    ke = kinetic_energy();
     update_atoms();
   }
 
@@ -807,7 +796,6 @@ modeler.model = function() {
         ay     : ay,
         charge : charge,
         nodes  : nodes,
-        pe     : pe,
         px     : px,
         py     : py,
         radius : radius,
@@ -963,13 +951,16 @@ modeler.model = function() {
   };
 
   model.ave_ke = function() {
-    ave_ke = ave_ke || kinetic_energy();
+    ave_ke = ave_ke || kinetic_energy() / nodes[0].length;
     return ave_ke;
   };
 
   model.pe = function() {
-    pe = pe || potential_energy();
     return pe;
+  };
+
+  model.ave_pe = function() {
+    return pe / nodes[0].length;
   };
 
   model.speed = function() {
