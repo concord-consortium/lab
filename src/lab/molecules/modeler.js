@@ -58,7 +58,7 @@ modeler.makeIntegrator = function(args) {
           i, // current index
           j, // alternate member of force-pair index
           l, // current distance
-          r2, te2,
+          r2,
           ljf, coul, xf, yf,
           dx, dy,
           initial_x, initial_y,
@@ -138,8 +138,6 @@ modeler.makeIntegrator = function(args) {
           ax[i] = 0;
           ay[i] = 0;
         }
-
-        te2 = 0;
 
         //
         // Use brute-force technique to calculate lennard-jones and coulomb forces
