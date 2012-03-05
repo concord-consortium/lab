@@ -103,6 +103,10 @@ modeler.makeIntegrator = function(args) {
       size                 = setOnceState.size,
       average_speed        = setOnceState.average_speed,
 
+      // only used during annealing
+      max_ljf_repulsion    = setOnceState.max_ljf_repulsion,
+      max_coulomb_force    = setOnceState.max_coulomb_force,
+
       ax                   = readWriteState.ax,
       ay                   = readWriteState.ay,
       charge               = readWriteState.charge,
@@ -236,9 +240,17 @@ modeler.makeIntegrator = function(args) {
 
               if (lennard_jones_forces && l < max_ljf_distance) {
                 f_lj = molecules_lennard_jones.force(l);
+                if (f_lj < max_ljf_repulsion) {
+                  console.log("Capping LJ repulsion %f to %f", f_lj, max_ljf_repulsion);
+                  f_lj = max_ljf_repulsion;
+                }
               }
               if (coulomb_forces && l < max_coulomb_distance) {
                 f_coul = molecules_coulomb.force(l, charge[i], charge[j]);
+                if (f_coul < max_coulomb_force) {
+                  console.log("Capping LJ repulsion %f to %f", f_coul, max_coulomb_force);
+                  f_coul = max_coulomb_force;
+                }
               }
 
               f   = f_lj + f_coul;
@@ -856,7 +868,9 @@ modeler.model = function() {
         max_coulomb_distance : max_coulomb_distance,
         max_ljf_distance     : max_ljf_distance,
         size                 : size,
-        average_speed        : average_speed
+        average_speed        : average_speed,
+        max_ljf_repulsion    : max_ljf_repulsion,
+        max_coulomb_force    : max_coulomb_force
       },
 
       settableState: {
