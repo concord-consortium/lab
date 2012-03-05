@@ -271,6 +271,25 @@ modeler.makeIntegrator = function(args) {
         }
       }
 
+      // calculate potentials
+      pe = 0;
+
+      i = -1; while (++i < n) {
+        j = i; while (++j < n) {
+          dx = x[j] - x[i];
+          dy = y[j] - y[i];
+          r2 = dx * dx + dy * dy;
+          l = Math.sqrt(r2);
+
+          if (lennard_jones_forces && l < max_ljf_distance) {
+            pe += molecules_lennard_jones.potential(l);
+          }
+          if (coulomb_forces && l < max_coulomb_distance) {
+            pe += molecules_coulomb.potential(l, charge[i], charge[j]);
+          }
+        }
+      }
+
       // state to be read by the rest of the system
       outputState.pressure = pressure;
       outputState.pe = pe;
