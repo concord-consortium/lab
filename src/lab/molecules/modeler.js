@@ -187,7 +187,7 @@ modeler.makeIntegrator = function(args) {
           dx = x[i] - initial_x;
           dy = y[i] - initial_y;
           l = Math.sqrt(dx * dx + dy * dy);
-          speed[i] = l;
+          speed[i] = l/dt;
           if (x[i] < leftwall) {
             x[i] = leftwall + (leftwall - x[i]);
             px[i] = x[i] + dx;
@@ -248,7 +248,7 @@ modeler.makeIntegrator = function(args) {
               if (coulomb_forces && l < max_coulomb_distance) {
                 f_coul = molecules_coulomb.force(l, charge[i], charge[j]);
                 if (f_coul < max_coulomb_force) {
-                  console.log("Capping LJ repulsion %f to %f", f_coul, max_coulomb_force);
+                  console.log("Capping Coulomb force %f to %f", f_coul, max_coulomb_force);
                   f_coul = max_coulomb_force;
                 }
               }
@@ -454,7 +454,7 @@ modeler.model = function() {
   // number and has no specific analytic provenance.
   //
   function temperature_to_speed(t) {
-    return 0.0050 * Math.pow(Math.E/2, t);
+    return 0.250 * Math.pow(Math.E/2, t);
   }
 
   function average_speed() {
@@ -670,9 +670,7 @@ modeler.model = function() {
     var i, s, k, n = nodes[0].length;
     ke = 0;
     i = -1; while (++i < n) {
-      s = speed[i];
-      k =  s * s * halfmass[i];
-      ke += k;
+      ke += halfmass[i]*speed[i]*speed[i];
     }
     ave_ke = ke / n;
     return ke;
