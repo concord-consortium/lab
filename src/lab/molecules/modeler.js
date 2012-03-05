@@ -58,10 +58,7 @@ modeler.makeIntegrator = function(args) {
       outputState    = args.outputState,
 
       max_coulomb_distance = setOnceState.max_coulomb_distance,
-      max_coulomb_force    = setOnceState.max_coulomb_force,
-      min_ljf_distance     = setOnceState.min_ljf_distance,
       max_ljf_distance     = setOnceState.max_ljf_distance,
-      max_ljf_repulsion    = setOnceState.max_ljf_repulsion,
       size                 = setOnceState.size,
       average_speed        = setOnceState.average_speed,
 
@@ -102,7 +99,7 @@ modeler.makeIntegrator = function(args) {
           j, // alternate member of force-pair index
           l, // current distance
           r2,
-          ljf, coul, xf, yf,
+          f, f_lj, f_coul, f_x, f_y,
           dx, dy,
           initial_x, initial_y,
           iloop,
@@ -192,53 +189,25 @@ modeler.makeIntegrator = function(args) {
               dy = y[j] - y[i];
               r2 = dx * dx + dy * dy;
               l = Math.sqrt(r2);
+
+              f_lj = 0;
+              f_coul = 0;
+
               if (lennard_jones_forces && l < max_ljf_distance) {
-
-                // deal with some apparent instability
-                if (l < min_ljf_distance) {
-                  ljf = max_ljf_repulsion;
-                  // TODO: save this value
-                  pe += molecules_lennard_jones.potential(min_ljf_distance);
-                } else {
-                  ljf = molecules_lennard_jones.force(l);
-                  pe += molecules_lennard_jones.potential(l);
-                }
-
-
-                // alternate way to calculate ljf ...
-                // http://www.pages.drexel.edu/~cfa22/msim/node28.html
-                // http://www.pages.drexel.edu/~cfa22/msim/codes/mdlj.c
-                // r6i   = 1.0 / ( r2 * r2);
-                // r12i  = r6i * r6i;
-                // te2  += 4 * (r12i - r6i);
-                // f2    = 48 * (r12i - 0.5 * r6i);
-
-                // another alternate ...
-                // r2   = dx * dx + dy * dy;
-                // r2i  = 1.0 / r2;
-                // r6i  = r2i * r2i * r2i;
-                // r12i = r6i * r6i;
-                // pe  += 4 * (r12i - r6i);
-                // f2    = 48 * (Math.pow(r2i, 7) - 0.5 * Math.pow(r2i, 4));
-                // fx = dx * f2;
-                // fy = dy * f2;
-                xf = dx / l * ljf;
-                yf = dy / l * ljf;
-                ax[i] += xf;
-                ay[i] += yf;
-                ax[j] -= xf;
-                ay[j] -= yf;
+                f_lj = molecules_lennard_jones.force(l);
               }
               if (coulomb_forces && l < max_coulomb_distance) {
-                coul  = Math.min(max_coulomb_force, molecules_coulomb.force(l, charge[i], charge[j]));
-                pe +=  molecules_coulomb.potential(l, charge[i], charge[j]);
-                xf = dx / l * coul;
-                yf = dy / l * coul;
-                ax[i] += xf;
-                ay[i] += yf;
-                ax[j] -= xf;
-                ay[j] -= yf;
+                f_coul = molecules_coulomb.force(l, charge[i], charge[j]);
               }
+
+              f   = f_lj + f_coul;
+              f_x = f * (dx / l);
+              f_y = f * (dy / l);
+
+              ax[i] += f_x;
+              ay[i] += f_y;
+              ax[j] -= f_x;
+              ay[j] -= f_y;
             }
           }
         }
@@ -825,10 +794,7 @@ modeler.model = function() {
 
       setOnceState: {
         max_coulomb_distance : max_coulomb_distance,
-        max_coulomb_force    : max_coulomb_force,
         max_ljf_distance     : max_ljf_distance,
-        min_ljf_distance     : min_ljf_distance,
-        max_ljf_repulsion    : max_ljf_repulsion,
         size                 : size,
         average_speed        : average_speed
       },
