@@ -1,11 +1,52 @@
 /*globals modeler:true, d3, arrays, molecules_coulomb, molecules_lennard_jones, benchmark */
-/*jslint onevar: true */
+/*jslint onevar: true devel:true */
 
 // modeler.js
 //
 
 modeler = {};
 modeler.VERSION = '0.1.0';
+
+
+modeler.testIntegrationQuick = function(r) {
+  r = (r != null) ? r : 5;
+
+  var dt = 0.02,
+      i = 1,
+      n = 1000,
+      x0 = r,
+      v0 = 0,
+      a0, x1, v1, a1,
+      pe_initial, pe_final,
+      ke_initial, ke_final;
+
+  a0 = molecules_lennard_jones.force(x0);
+
+  pe_initial = molecules_lennard_jones.potential(x0);
+  ke_initial = 0.5*v0*v0;
+
+  while (true) {
+    x1 = x0 + v0*dt + 0.5*a0*dt*dt;
+    a1 = molecules_lennard_jones.force(x1);
+    v1 = v0 + 0.5*(a0 + a1)*dt;
+
+    if (i++ > n) break;
+    if (x1 < 0) {
+      console.log("breaking because test atom moved through potential well");
+      break;
+    }
+
+    // next step
+    x0 = x1;
+    v0 = v1;
+    a0 = a1;
+  }
+
+  pe_final = molecules_lennard_jones.potential(x0);
+  ke_final = 0.5*v1*v1;
+
+  console.log("after %d steps:\n\tx = %f\n\tdelta(pe) = %f\n\tdelta(ke) = %f", i-1, x1, pe_final - pe_initial, ke_final - ke_initial);
+};
 
 // Quick debugging function
 modeler.testLJPotential = function(r_min, r_max) {
