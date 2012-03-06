@@ -247,7 +247,7 @@ modeler.makeIntegrator = function(args) {
               }
               if (coulomb_forces && l < max_coulomb_distance) {
                 f_coul = molecules_coulomb.force(l, charge[i], charge[j]);
-                if (f_coul < max_coulomb_force) {
+                if (f_coul > max_coulomb_force) {
                   console.log("Capping Coulomb force %f to %f", f_coul, max_coulomb_force);
                   f_coul = max_coulomb_force;
                 }
