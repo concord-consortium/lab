@@ -103,34 +103,36 @@ modeler.makeIntegrator = function(args) {
 
           dx = x[i] - initial_x;
           dy = y[i] - initial_y;
-          l = Math.sqrt(dx * dx + dy * dy);
+          l  = Math.sqrt(dx*dx + dy*dy);
           speed[i] = l/dt;
+
+          // possibly bounce off vertical walls
           if (x[i] < leftwall) {
-            x[i] = leftwall + (leftwall - x[i]);
+            x[i]  = leftwall + (leftwall - x[i]);
             px[i] = x[i] + dx;
-            py[i] = initial_y;
             vx[i] *= -1;
-            pressure += speed[i];
+            pressure += -dx/dt;
           } else if (x[i] > rightwall) {
-            x[i] = rightwall + (rightwall - x[i]);
+            x[i]  = rightwall + (rightwall - x[i]);
             px[i] = x[i] + dx;
-            py[i] = initial_y;
             vx[i] *= -1;
-            pressure += speed[i];
-          } else if (y[i] < bottomwall) {
-            y[i] = bottomwall + (bottomwall - y[i]);
-            py[i] = y[i] + dy;
-            px[i] = initial_x;
-            vy[i] *= -1;
-            pressure += speed[i];
-          } else if (y[i] > topwall) {
-            y[i] = topwall + (topwall - y[i]);
-            py[i] = y[i] + dy;
-            px[i] = initial_x;
-            vy[i] *= -1;
-            pressure += speed[i];
+            pressure += dx/dt;
           } else {
             px[i] = initial_x;
+          }
+
+          // possibly bounce off horizontal walls
+          if (y[i] < bottomwall) {
+            y[i]  = bottomwall + (bottomwall - y[i]);
+            py[i] = y[i] + dy;
+            vy[i] *= -1;
+            pressure += -dy/dt;
+          } else if (y[i] > topwall) {
+            y[i]  = topwall + (topwall - y[i]);
+            py[i] = y[i] + dy;
+            vy[i] *= -1;
+            pressure += dy/dt;
+          } else {
             py[i] = initial_y;
           }
         }
