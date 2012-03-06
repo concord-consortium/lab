@@ -45,6 +45,7 @@ var model_player = new ModelPlayer(model);
 
 var model_listener = function(e) {
   var ke = model.ke(),
+      pe = model.pe(),
       step_counter = model.stepCounter();
 
   layout.speed_update();
@@ -52,12 +53,12 @@ var model_listener = function(e) {
   layout.update_molecule_positions();
 
   if (model.isNewStep()) {
-    ke_data.push(ke);
+    te_data.push( ke+pe );
     if (model_stopped) {
-      ke_graph.add_point(ke);
+      ke_graph.add_point( ke+pe );
       ke_graph.update_canvas();
     } else {
-      ke_graph.add_canvas_point(ke);
+      ke_graph.add_canvas_point( ke+pe );
     }
   } else {
     ke_graph.update();
@@ -101,12 +102,12 @@ var mc_graph = {
 //
 // ------------------------------------------------------------
 
-var ke_data = [];
+var te_data = [];
 
 var kechart = document.getElementById("ke-chart");
 
 var ke_graph_options = {
-  title:     "Kinetic Energy of the System",
+  title:     "Total Energy of the System",
   xlabel:    "Model Time (ns)",
   xmin:      0,
   xmax:      2500,
@@ -114,7 +115,7 @@ var ke_graph_options = {
   ylabel:    null,
   ymin:      0.0,
   ymax:      200,
-  dataset:   ke_data,
+  dataset:   te_data,
   container: kechart
 };
 
@@ -262,7 +263,7 @@ function modelSetup() {
   generate_atoms();
   model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
   model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
-  ke_data = [model.ke()];
+  te_data = [model.ke() + model.pe()];
   model.set_temperature_control(true);
 }
 
@@ -381,7 +382,7 @@ function modelGo() {
 function modelStepBack() {
   modelStop();
   model.stepBack();
-  ke_graph.new_data(ke_data);
+  ke_graph.new_data(te_data);
 }
 
 function modelStepForward() {
@@ -413,8 +414,8 @@ function modelReset() {
   } else {
     layout.hide_datatable();
   }
-  ke_data = [model.ke()];
-  ke_graph.new_data(ke_data);
+  te_data = [model.ke()];
+  ke_graph.new_data(te_data);
   ke_graph.hide_canvas();
   if (model_controls) {
     model_controls_inputs[0].checked = true;
