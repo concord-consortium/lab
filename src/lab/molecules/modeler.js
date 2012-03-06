@@ -898,8 +898,6 @@ modeler.model = function() {
       outputState: integratorOutputState
     });
 
-    modeler.testLJPotential( min_ljf_distance, max_ljf_distance );
-
     resolve_collisions(annealing_steps);
 
     integrator.set_ave_speed( average_speed() );
