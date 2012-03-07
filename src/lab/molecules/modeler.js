@@ -123,8 +123,6 @@ modeler.makeIntegrator = function(args) {
 
           x[i]  += vx[i] * dt + 0.5 * dt_sq * ax[i];
           y[i]  += vy[i] * dt + 0.5 * dt_sq * ay[i];
-          vx[i] += 0.5 * dt * ax[i];
-          vy[i] += 0.5 * dt * ay[i];
 
           dx = x[i] - initial_x;
           dy = y[i] - initial_y;
@@ -134,6 +132,10 @@ modeler.makeIntegrator = function(args) {
           speed[i] = Math.sqrt(v_sq);
 
           twoKE += v_sq;
+
+          // FIRST HALF of update of v for next time step, using a for current time step.
+          vx[i] += 0.5 * dt * ax[i];
+          vy[i] += 0.5 * dt * ay[i];
 
           // possibly bounce off vertical walls
           if (x[i] < leftwall) {
@@ -166,7 +168,7 @@ modeler.makeIntegrator = function(args) {
           }
         }
 
-        // zero-out the acceleration
+        // zero-out the acceleration, in order to accumulate effect of pairwise forces
         i = -1; while (++i < n) {
           ax[i] = 0;
           ay[i] = 0;
@@ -264,8 +266,7 @@ modeler.makeIntegrator = function(args) {
           }
         }
 
-        //
-        // Complete second-half of the velocity-verlet integration with updated force values
+        // SECOND HALF of update of v for next time step, using updated a for next time step.
         i = -1; while (++i < n) {
           vx[i] += 0.5 * dt * ax[i];
           vy[i] += 0.5 * dt * ay[i];
