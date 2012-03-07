@@ -42,9 +42,14 @@ modeler.makeIntegrator = function(args) {
       temperature_control  = settableState.temperature_control,
       ave_speed            = settableState.ave_speed,
 
+      twoKE,
+
       // Desired temperature. Called T_heatBath because will simulate coupling to an infintely large heat bath at
       // tempature T_heatBath.
-      T_heatBath = 1.0;
+      T_heatBath = 1.0,
+
+      // coupling factor for Berendsen thermostat
+      dt_over_tau = 0.01;
 
 
   function average_speed() {
@@ -97,8 +102,8 @@ modeler.makeIntegrator = function(args) {
           speed_factor,
 
           PE,
-          twoKE = 0,
           T,
+          vRescaleFactor,
 
           // measurements to be accumulated during the integration loop
           pressure = 0;
@@ -110,7 +115,7 @@ modeler.makeIntegrator = function(args) {
 
         T = twoKE / 2 / n;
         twoKE = 0;
-
+        vRescaleFactor = 1 + dt_over_tau * ((T_heatBath / T) - 1);
         //
         // Use a Verlet integration to continue particle movement integrating acceleration with
         // existing position and previous position while managing collision with boundaries.
@@ -120,6 +125,11 @@ modeler.makeIntegrator = function(args) {
         i = -1; while (++i < n) {
           initial_x = x[i];
           initial_y = y[i];
+
+          if (!temperature_control) {
+            vx[i] *= vRescaleFactor;
+            vy[i] *= vRescaleFactor;
+          }
 
           x[i]  += vx[i] * dt + 0.5 * dt_sq * ax[i];
           y[i]  += vy[i] * dt + 0.5 * dt_sq * ay[i];
