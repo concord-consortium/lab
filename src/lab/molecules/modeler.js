@@ -18,7 +18,6 @@ modeler.makeIntegrator = function(args) {
       max_coulomb_distance = setOnceState.max_coulomb_distance,
       max_ljf_distance     = setOnceState.max_ljf_distance,
       size                 = setOnceState.size,
-      average_speed        = setOnceState.average_speed,
 
       // only used during annealing
       max_ljf_repulsion    = setOnceState.max_ljf_repulsion,
@@ -43,13 +42,26 @@ modeler.makeIntegrator = function(args) {
       temperature_control  = settableState.temperature_control,
       ave_speed            = settableState.ave_speed;
 
+  function average_speed() {
+    var i, s = 0, n = nodes[0].length;
+    i = -1; while (++i < n) { s += speed[i]; }
+    return s/n;
+  }
+
   return {
 
-    set_ave_speed           : function(v) { ave_speed = v; },
     set_coulomb_forces      : function(v) { coulomb_forces = v; },
     set_lennard_jones_forces: function(v) { lennard_jones_forces = v; },
-    set_speed_goal          : function(v) { speed_goal = v; },
-    set_temperature_control : function(v) { temperature_control = v; },
+
+    set_speed_goal          : function(v) {
+      speed_goal = v;
+      console.log("new speed_goal %f", speed_goal);
+    },
+
+    set_temperature_control : function(v) {
+      temperature_control = v;
+      console.log("temperature_control %s", temperature_control ? "ON" : "OFF");
+    },
 
     integrate               : function() {
       var step_dt           = 1,                         // time in reduced units for each model step/tick
@@ -69,6 +81,7 @@ modeler.makeIntegrator = function(args) {
           bottomwall = radius[0],
           rightwall  = size[0] - radius[0],
           topwall    = size[1] - radius[0],
+          ave_speed,
           speed_max_one_percent,
           speed_min_one_percent,
           ave_speed_max,
@@ -160,14 +173,14 @@ modeler.makeIntegrator = function(args) {
               if (lennard_jones_forces && l < max_ljf_distance) {
                 f_lj = molecules_lennard_jones.force(l);
                 if (f_lj < max_ljf_repulsion) {
-                  console.log("Capping LJ repulsion %f to %f", f_lj, max_ljf_repulsion);
+                  // console.log("Capping LJ repulsion %f to %f", f_lj, max_ljf_repulsion);
                   f_lj = max_ljf_repulsion;
                 }
               }
               if (coulomb_forces && l < max_coulomb_distance) {
                 f_coul = molecules_coulomb.force(l, charge[i], charge[j]);
                 if (f_coul > max_coulomb_force) {
-                  console.log("Capping Coulomb force %f to %f", f_coul, max_coulomb_force);
+                  // console.log("Capping Coulomb force %f to %f", f_coul, max_coulomb_force);
                   f_coul = max_coulomb_force;
                 }
               }
@@ -586,7 +599,7 @@ modeler.model = function() {
 
   // currently the nodes are all unit mass
   function kinetic_energy() {
-    var i, s, k, n = nodes[0].length;
+    var i, n = nodes[0].length;
     ke = 0;
     i = -1; while (++i < n) {
       ke += halfmass[i]*speed[i]*speed[i];
@@ -757,12 +770,13 @@ modeler.model = function() {
   model.initialize = function(options) {
     options = options || {};
     var temperature,
-        annealing_steps = 10;
+        annealing_steps = 10,
+        i, j, mean_speed, err, te, te_prev, d_te_over_te;
 
     lennard_jones_forces = options.lennard_jones_forces || true;
-    coulomb_forces = options.coulomb_forces || true;
-    temperature_control = options.temperature_control || false;
-    temperature = options.temperature || 3;
+    coulomb_forces       = options.coulomb_forces       || true;
+    temperature_control  = options.temperature_control  || false;
+    temperature          = options.temperature          || 3;
 
     // who is listening to model tick completions
     model_listener = options.model_listener || false;
@@ -777,15 +791,12 @@ modeler.model = function() {
     // pressures.push(pressure);
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
 
-    set_temperature(temperature);
-
     integrator = modeler.makeIntegrator({
 
       setOnceState: {
         max_coulomb_distance : max_coulomb_distance,
         max_ljf_distance     : max_ljf_distance,
         size                 : size,
-        average_speed        : average_speed,
         max_ljf_repulsion    : max_ljf_repulsion,
         max_coulomb_force    : max_coulomb_force
       },
@@ -796,6 +807,7 @@ modeler.model = function() {
         max_ljf_distance     : max_ljf_distance,
         max_ljf_repulsion    : max_ljf_repulsion,
         size                 : size,
+        speed_goal           : speed_goal,
         average_speed        : average_speed
       },
 
@@ -817,9 +829,34 @@ modeler.model = function() {
       outputState: integratorOutputState
     });
 
+    set_temperature(temperature);
+
     resolve_collisions(annealing_steps);
 
-    integrator.set_ave_speed( average_speed() );
+    integrator.set_temperature_control( true );
+    integrator.set_lennard_jones_forces( true );
+
+    te_prev = -Infinity;
+    for (i = 0; i < 100; i++) {
+      for (j = 0; j < 100;  j++) {
+        integrator.integrate();
+      }
+
+      mean_speed = average_speed();
+      err = Math.abs(mean_speed - speed_goal) / speed_goal;
+
+      te = kinetic_energy() + integratorOutputState.pe;
+
+      d_te_over_te = Math.abs((te - te_prev) / te);
+
+      console.log("%d: te = %f, d_te/te = %f, mean_speed = %f, speed_goal = %f", i, te, d_te_over_te, mean_speed, speed_goal);
+      if (d_te_over_te < 0.01 && err < 0.001) {
+        break;
+      }
+      te_prev = te;
+    }
+
+    integrator.set_temperature_control( false );
 
     tick_history_list_push();
     return model;
