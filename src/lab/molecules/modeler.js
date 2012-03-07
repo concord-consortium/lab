@@ -96,8 +96,8 @@ modeler.makeIntegrator = function(args) {
           speed_min,
           speed_factor,
 
-          pe,
-          KE = 0,
+          PE,
+          twoKE = 0,
           T,
 
           // measurements to be accumulated during the integration loop
@@ -108,8 +108,8 @@ modeler.makeIntegrator = function(args) {
       //
       iloop = -1; while(++iloop < integration_steps) {
 
-        T = KE / n;
-        KE = 0;
+        T = twoKE / 2 / n;
+        twoKE = 0;
 
         //
         // Use a Verlet integration to continue particle movement integrating acceleration with
@@ -132,6 +132,8 @@ modeler.makeIntegrator = function(args) {
           dr_sq = dx*dx + dy*dy;
           v_sq  = dr_sq / dt_sq;
           speed[i] = Math.sqrt(v_sq);
+
+          twoKE += v_sq;
 
           // possibly bounce off vertical walls
           if (x[i] < leftwall) {
@@ -271,7 +273,7 @@ modeler.makeIntegrator = function(args) {
       }
 
       // calculate potentials
-      pe = 0;
+      PE = 0;
 
       i = -1; while (++i < n) {
         j = i; while (++j < n) {
@@ -281,17 +283,18 @@ modeler.makeIntegrator = function(args) {
           r = Math.sqrt(r_sq);
 
           if (lennard_jones_forces && r < max_ljf_distance) {
-            pe += molecules_lennard_jones.potential(r);
+            PE += molecules_lennard_jones.potential(r);
           }
           if (coulomb_forces && r < max_coulomb_distance) {
-            pe += molecules_coulomb.potential(r, charge[i], charge[j]);
+            PE += molecules_coulomb.potential(r, charge[i], charge[j]);
           }
         }
       }
 
       // state to be read by the rest of the system
       outputState.pressure = pressure;
-      outputState.pe = pe;
+      outputState.PE = PE;
+      outputState.KE = twoKE / 2;
     }
   };
 };
@@ -305,7 +308,8 @@ modeler.model = function() {
       size = [100, 100],
       temperature_control,
       lennard_jones_forces, coulomb_forces,
-      ke, pe, ave_ke,
+      PE,
+      ke, ave_ke,
       speed_goal,
       stopped = true,
       tick_history_list = [],
@@ -488,7 +492,7 @@ modeler.model = function() {
 
     integrator.integrate();
     pressure = integratorOutputState.pressure;
-    pe = integratorOutputState.pe;
+    PE = integratorOutputState.PE;
 
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
@@ -638,7 +642,7 @@ modeler.model = function() {
       integrator.integrate();
     }
     model.set_temperature_control( save_temperature_control );
-    pe = integratorOutputState.pe;
+    PE = integratorOutputState.PE;
     ke = kinetic_energy();
     update_atoms();
   }
@@ -1005,8 +1009,7 @@ modeler.model = function() {
   };
 
   model.ke = function() {
-    ke = ke || kinetic_energy();
-    return ke;
+    return integratorOutputState ? integratorOutputState.KE : undefined;
   };
 
   model.ave_ke = function() {
@@ -1015,11 +1018,11 @@ modeler.model = function() {
   };
 
   model.pe = function() {
-    return pe;
+    return integratorOutputState ? integratorOutputState.PE : undefined;
   };
 
   model.ave_pe = function() {
-    return pe / nodes[0].length;
+    return PE / nodes[0].length;
   };
 
   model.speed = function() {
