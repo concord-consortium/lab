@@ -38,19 +38,22 @@ modeler.makeIntegrator = function(args) {
 
       coulomb_forces       = settableState.coulomb_forces,
       lennard_jones_forces = settableState.lennard_jones_forces,
-      speed_goal           = settableState.speed_goal,
       temperature_control  = settableState.temperature_control,
-      ave_speed            = settableState.ave_speed,
+
+      annealing_temperature_control = false,
 
       twoKE,
 
       // Desired temperature. Called T_heatBath because will simulate coupling to an infintely large heat bath at
-      // tempature T_heatBath.
+      // temperature T_heatBath.
       T_heatBath = 1.0,
 
       // coupling factor for Berendsen thermostat
       dt_over_tau = 0.01;
 
+  function temperature_to_speed(t) {
+    return 0.250 * Math.pow(Math.E/2, t);
+  }
 
   function average_speed() {
     var i, s = 0, n = nodes[0].length;
@@ -62,15 +65,14 @@ modeler.makeIntegrator = function(args) {
 
     set_coulomb_forces      : function(v) { coulomb_forces = v; },
     set_lennard_jones_forces: function(v) { lennard_jones_forces = v; },
-
-    set_speed_goal          : function(v) {
-      speed_goal = v;
-      console.log("new speed_goal %f", speed_goal);
+    set_temperature_control : function(v) { temperature_control = v; },
+    set_temperature         : function(v) {
+      var speed = temperature_to_speed(v);
+      T_heatBath = speed*speed;
     },
 
-    set_temperature_control : function(v) {
-      temperature_control = v;
-      console.log("temperature_control %s", temperature_control ? "ON" : "OFF");
+    set_annealing_temperature_control: function (v) {
+      annealing_temperature_control = v;
     },
 
     integrate               : function() {
@@ -82,7 +84,7 @@ modeler.makeIntegrator = function(args) {
           i, // current index
           j, // alternate member of force-pair index
           r, // current distance
-          dr, dr_sq, v_sq,
+          dr_sq, v_sq,
           r_sq,
           f, f_lj, f_coul, f_x, f_y,
           dx, dy,
@@ -92,6 +94,7 @@ modeler.makeIntegrator = function(args) {
           bottomwall = radius[0],
           rightwall  = size[0] - radius[0],
           topwall    = size[1] - radius[0],
+          speed_goal,
           ave_speed,
           speed_max_one_percent,
           speed_min_one_percent,
@@ -126,7 +129,7 @@ modeler.makeIntegrator = function(args) {
           initial_x = x[i];
           initial_y = y[i];
 
-          if (!temperature_control) {
+          if (temperature_control) {
             vx[i] *= vRescaleFactor;
             vy[i] *= vRescaleFactor;
           }
@@ -184,9 +187,7 @@ modeler.makeIntegrator = function(args) {
           ay[i] = 0;
         }
 
-        //
-        // Use brute-force technique to calculate lennard-jones and coulomb forces
-        //
+        // Calculate pairwise forces and accumulate effects into acceleration vector (ax, ay)
         if (lennard_jones_forces || coulomb_forces) {
           i = -1; while (++i < n) {
             j = i; while (++j < n) {
@@ -228,7 +229,8 @@ modeler.makeIntegrator = function(args) {
         //
         // Dynamically adjust 'temperature' of system.
         //
-        if (temperature_control) {
+        if (annealing_temperature_control) {
+          speed_goal            = temperature_to_speed(T_heatBath);
           ave_speed             = average_speed();
           ave_speed_max         = speed_goal * 1.1;
           ave_speed_min         = speed_goal * 0.9;
@@ -321,7 +323,6 @@ modeler.model = function() {
       lennard_jones_forces, coulomb_forces,
       PE,
       ke, ave_ke,
-      speed_goal,
       stopped = true,
       tick_history_list = [],
       tick_history_list_index = 0,
@@ -645,14 +646,13 @@ modeler.model = function() {
   }
 
   function resolve_collisions(annealing_steps) {
-    var save_temperature_control = temperature_control,
-        i;
+    var i;
 
-    model.set_temperature_control(true);
+    integrator.set_annealing_temperature_control(true);
     i = -1; while (++i < annealing_steps) {
       integrator.integrate();
     }
-    model.set_temperature_control( save_temperature_control );
+    integrator.set_annealing_temperature_control( false );
     PE = integratorOutputState.PE;
     ke = kinetic_energy();
     update_atoms();
@@ -660,8 +660,7 @@ modeler.model = function() {
 
   function set_temperature(t) {
     temperature = t;
-    speed_goal = temperature_to_speed(temperature);
-    if (integrator) integrator.set_speed_goal(speed_goal);
+    if (integrator) integrator.set_temperature(temperature);
   }
 
   // ------------------------------------------------------------
@@ -799,8 +798,7 @@ modeler.model = function() {
   model.initialize = function(options) {
     options = options || {};
     var temperature,
-        annealing_steps = 10,
-        i, j, mean_speed, err, te, te_prev, d_te_over_te;
+        annealing_steps = 10;
 
     lennard_jones_forces = options.lennard_jones_forces || true;
     coulomb_forces       = options.coulomb_forces       || true;
@@ -835,9 +833,7 @@ modeler.model = function() {
         max_coulomb_force    : max_coulomb_force,
         max_ljf_distance     : max_ljf_distance,
         max_ljf_repulsion    : max_ljf_repulsion,
-        size                 : size,
-        speed_goal           : speed_goal,
-        average_speed        : average_speed
+        size                 : size
       },
 
       readWriteState: {
@@ -861,31 +857,6 @@ modeler.model = function() {
     set_temperature(temperature);
 
     resolve_collisions(annealing_steps);
-
-    integrator.set_temperature_control( true );
-    integrator.set_lennard_jones_forces( true );
-
-    // te_prev = -Infinity;
-    // for (i = 0; i < 100; i++) {
-    //   for (j = 0; j < 100;  j++) {
-    //     integrator.integrate();
-    //   }
-
-    //   mean_speed = average_speed();
-    //   err = Math.abs(mean_speed - speed_goal) / speed_goal;
-
-    //   te = kinetic_energy() + integratorOutputState.pe;
-
-    //   d_te_over_te = Math.abs((te - te_prev) / te);
-
-    //   console.log("%d: te = %f, d_te/te = %f, mean_speed = %f, speed_goal = %f", i, te, d_te_over_te, mean_speed, speed_goal);
-    //   if (d_te_over_te < 0.01 && err < 0.001) {
-    //     break;
-    //   }
-    //   te_prev = te;
-    // }
-
-    integrator.set_temperature_control( false );
 
     tick_history_list_push();
     return model;
