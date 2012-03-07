@@ -836,25 +836,25 @@ modeler.model = function() {
     integrator.set_temperature_control( true );
     integrator.set_lennard_jones_forces( true );
 
-    te_prev = -Infinity;
-    for (i = 0; i < 100; i++) {
-      for (j = 0; j < 100;  j++) {
-        integrator.integrate();
-      }
+    // te_prev = -Infinity;
+    // for (i = 0; i < 100; i++) {
+    //   for (j = 0; j < 100;  j++) {
+    //     integrator.integrate();
+    //   }
 
-      mean_speed = average_speed();
-      err = Math.abs(mean_speed - speed_goal) / speed_goal;
+    //   mean_speed = average_speed();
+    //   err = Math.abs(mean_speed - speed_goal) / speed_goal;
 
-      te = kinetic_energy() + integratorOutputState.pe;
+    //   te = kinetic_energy() + integratorOutputState.pe;
 
-      d_te_over_te = Math.abs((te - te_prev) / te);
+    //   d_te_over_te = Math.abs((te - te_prev) / te);
 
-      console.log("%d: te = %f, d_te/te = %f, mean_speed = %f, speed_goal = %f", i, te, d_te_over_te, mean_speed, speed_goal);
-      if (d_te_over_te < 0.01 && err < 0.001) {
-        break;
-      }
-      te_prev = te;
-    }
+    //   console.log("%d: te = %f, d_te/te = %f, mean_speed = %f, speed_goal = %f", i, te, d_te_over_te, mean_speed, speed_goal);
+    //   if (d_te_over_te < 0.01 && err < 0.001) {
+    //     break;
+    //   }
+    //   te_prev = te;
+    // }
 
     integrator.set_temperature_control( false );
 
