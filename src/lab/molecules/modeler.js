@@ -115,7 +115,7 @@ modeler.makeIntegrator = function(args) {
 
           PE,                             // potential energy
           T,                              // temperature
-          vRescaleFactor,                 // factor
+          vRescalingFactor,               // rescaling factor for Berendsen thermostat
 
           // measurements to be accumulated during the integration loop:
           pressure = 0;
@@ -123,34 +123,40 @@ modeler.makeIntegrator = function(args) {
       //
       // Loop through this inner processing loop 'integration_steps' times:
       //
-      iloop = -1; while(++iloop < integration_steps) {
+      for (iloop = 0; iloop < integration_steps; iloop++) {
 
+        // Measure the temperature and set the velocity-rescaling factor based on the temperature:
         T = twoKE / 2 / n;
-        twoKE = 0;
-        if (T > 0) {
-          vRescaleFactor = 1 + dt_over_tau * ((T_target / T) - 1);
+
+        if (useThermostat && T > 0) {
+          vRescalingFactor = 1 + dt_over_tau * ((T_target / T) - 1);
         }
         else {
-          vRescaleFactor = 1;
+          vRescalingFactor = 1;
         }
 
+        // Initialize sums such as 'twoKE' which need be accumulated once per integration loop:
+        twoKE = 0;
+
         //
-        // Use a Verlet integration to continue particle movement integrating acceleration with
+        // Use velocity Verlet integration to continue particle movement integrating acceleration with
         // existing position and previous position while managing collision with boundaries.
         //
         // Update positions for first half of verlet integration
         //
-        i = -1; while (++i < n) {
+        for (i = 0; i < n; i++) {
           x_initial = x[i];
           y_initial = y[i];
 
+          // Rescale v(t) using T(t)
           if (useThermostat) {
-            vx[i] *= vRescaleFactor;
-            vy[i] *= vRescaleFactor;
+            vx[i] *= vRescalingFactor;
+            vy[i] *= vRescalingFactor;
           }
 
-          x[i]  += vx[i] * dt + 0.5 * dt_sq * ax[i];
-          y[i]  += vy[i] * dt + 0.5 * dt_sq * ay[i];
+          // calculate x(t+dt) from v(t) and a(t)
+          x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
+          y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
 
           dx = x[i] - x_initial;
           dy = y[i] - y_initial;
@@ -161,11 +167,11 @@ modeler.makeIntegrator = function(args) {
 
           twoKE += v_sq;
 
-          // FIRST HALF of update of v for next time step, using a for current time step.
-          vx[i] += 0.5 * dt * ax[i];
-          vy[i] += 0.5 * dt * ay[i];
+          // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
+          vx[i] += 0.5*ax[i]*dt;
+          vy[i] += 0.5*ay[i]*dt;
 
-          // possibly bounce off vertical walls
+          // Bounce off vertical walls
           if (x[i] < leftwall) {
             x[i]  = leftwall + (leftwall - x[i]);
             px[i] = x[i] + dx;
@@ -180,7 +186,7 @@ modeler.makeIntegrator = function(args) {
             px[i] = x_initial;
           }
 
-          // possibly bounce off horizontal walls
+          // Bounce off horizontal walls
           if (y[i] < bottomwall) {
             y[i]  = bottomwall + (bottomwall - y[i]);
             py[i] = y[i] + dy;
@@ -196,19 +202,20 @@ modeler.makeIntegrator = function(args) {
           }
         }
 
-        // zero-out the acceleration, in order to accumulate effect of pairwise forces
-        i = -1; while (++i < n) {
+        // Calculate a(t+dt), step 1: Zero out the acceleration, in order to accumulate pairwise interactions.
+        for (i = 0; i < n; i++) {
           ax[i] = 0;
           ay[i] = 0;
         }
 
-        // Calculate pairwise forces and accumulate effects into acceleration vector (ax, ay)
+        // Calculate a(t+dt), step 2: Sum over all pairwise interactions.
         if (useLennardJonesInteraction || useCoulombInteraction) {
-          i = -1; while (++i < n) {
-            j = i; while (++j < n) {
+          for (i = 0; i < n; i++) {
+            for (j = i+1; j < n; j++) {
               dx = x[j] - x[i];
               dy = y[j] - y[i];
-              r_sq = dx * dx + dy * dy;
+
+              r_sq = dx*dx + dy*dy;
               r = Math.sqrt(r_sq);
 
               f_lj = 0;
@@ -233,21 +240,23 @@ modeler.makeIntegrator = function(args) {
           }
         }
 
-        // SECOND HALF of update of v for next time step, using updated a for next time step.
-        i = -1; while (++i < n) {
-          vx[i] += 0.5 * dt * ax[i];
-          vy[i] += 0.5 * dt * ay[i];
+        // SECOND HALF of calculation of v(t+dt): v(t+dt) <- v1(t+dt) + 0.5*a(t+dt)*dt
+        for (i = 0; i < n; i++) {
+          vx[i] += 0.5*ax[i]*dt;
+          vy[i] += 0.5*ay[i]*dt;
         }
       }
 
-      // calculate potentials
+      // Calculate potentials. Note that we only want to do this once per call to integrate(), not once per
+      // integration loop!
       PE = 0;
 
-      i = -1; while (++i < n) {
-        j = i; while (++j < n) {
+      for (i = 0; i < n; i++) {
+        for (j = i+1; j < n; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
-          r_sq = dx * dx + dy * dy;
+
+          r_sq = dx*dx + dy*dy;
           r = Math.sqrt(r_sq);
 
           if (useLennardJonesInteraction && r < max_ljf_distance) {
@@ -259,10 +268,11 @@ modeler.makeIntegrator = function(args) {
         }
       }
 
-      // state to be read by the rest of the system
+      // State to be read by the rest of the system:
       outputState.pressure = pressure / integration_steps;
       outputState.PE = PE;
       outputState.KE = twoKE / 2;
+      outputState.T = T;
     }
   };
 };
