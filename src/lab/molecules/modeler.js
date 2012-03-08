@@ -66,9 +66,9 @@ modeler.makeIntegrator = function(args) {
       x                    = readWriteState.x,
       y                    = readWriteState.y,
 
-      useCoulombForce      = settableState.coulomb_forces,
-      useLennardJonesForce = settableState.lennard_jones_forces,
-      useThermostat        = settableState.temperature_control,
+      useCoulombInteraction      = settableState.coulomb_forces,
+      useLennardJonesInteraction = settableState.lennard_jones_forces,
+      useThermostat              = settableState.temperature_control,
 
       twoKE = (function() {
         var twoKE = 0, i, n = nodes.length;
@@ -78,21 +78,21 @@ modeler.makeIntegrator = function(args) {
         return twoKE;
       }()),
 
-      // Desired temperature. Called T_target because will simulate coupling to an infintely large heat bath at
+      // Desired temperature. We will simulate coupling to an infinitely large heat bath at desired
       // temperature T_target.
       T_target = 1.0,
 
-      // coupling factor for Berendsen thermostat
+      // Coupling factor for Berendsen thermostat.
       dt_over_tau = 0.01;
 
   return {
 
-    set_coulomb_forces      : function(v) { useCoulombForce = v; },
-    set_lennard_jones_forces: function(v) { useLennardJonesForce = v; },
+    set_coulomb_forces      : function(v) { useCoulombInteraction = v; },
+    set_lennard_jones_forces: function(v) { useLennardJonesInteraction = v; },
     set_temperature_control : function(v) { useThermostat = v; },
-    set_temperature         : function(v) { T_target = v/5; },
+    setTargetTemperature    : function(v) { T_target = v; },
 
-    integrate : function(t, dt) {
+    integrate: function(t, dt) {
 
       if (t == null)  t = 1;         // how much "time" to integrate over
       if (dt == null) dt = 1/50;     // time step
@@ -198,7 +198,7 @@ modeler.makeIntegrator = function(args) {
         }
 
         // Calculate pairwise forces and accumulate effects into acceleration vector (ax, ay)
-        if (useLennardJonesForce || useCoulombForce) {
+        if (useLennardJonesInteraction || useCoulombInteraction) {
           i = -1; while (++i < n) {
             j = i; while (++j < n) {
               dx = x[j] - x[i];
@@ -209,10 +209,10 @@ modeler.makeIntegrator = function(args) {
               f_lj = 0;
               f_coul = 0;
 
-              if (useLennardJonesForce && r < max_ljf_distance) {
+              if (useLennardJonesInteraction && r < max_ljf_distance) {
                 f_lj = molecules_lennard_jones.force(r);
               }
-              if (useCoulombForce && r < max_coulomb_distance) {
+              if (useCoulombInteraction && r < max_coulomb_distance) {
                 f_coul = molecules_coulomb.force(r, charge[i], charge[j]);
               }
 
@@ -245,10 +245,10 @@ modeler.makeIntegrator = function(args) {
           r_sq = dx * dx + dy * dy;
           r = Math.sqrt(r_sq);
 
-          if (useLennardJonesForce && r < max_ljf_distance) {
+          if (useLennardJonesInteraction && r < max_ljf_distance) {
             PE += molecules_lennard_jones.potential(r);
           }
-          if (useCoulombForce && r < max_coulomb_distance) {
+          if (useCoulombInteraction && r < max_coulomb_distance) {
             PE += molecules_coulomb.potential(r, charge[i], charge[j]);
           }
         }
