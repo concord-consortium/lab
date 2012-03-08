@@ -9,24 +9,29 @@ modeler.VERSION = '0.1.0';
 
 modeler.Math = modeler.Math || {};
 
+
 // Simple (Box-Muller) univariate-normal random number generator.
-// Compiled from a Coffeescript version I wrote recently. --RPK
+
 modeler.Math.normal = (function() {
-  var next;
-  next = null;
+  var next = null;
+
   return function(mean, sd) {
-    var r, ret, theta, u1, u2;
     if (mean == null) mean = 0;
-    if (sd == null) sd = 1;
+    if (sd == null)   sd = 1;
+
+    var r, ret, theta, u1, u2;
+
     if (next) {
-      ret = next;
+      ret  = next;
       next = null;
       return ret;
     }
-    u1 = Math.random();
-    u2 = Math.random();
+
+    u1    = Math.random();
+    u2    = Math.random();
     theta = 2 * Math.PI * u1;
-    r = Math.sqrt(-2 * Math.log(u2));
+    r     = Math.sqrt(-2 * Math.log(u2));
+
     next = mean + sd * (r * Math.sin(theta));
     return mean + sd * (r * Math.cos(theta));
   };
