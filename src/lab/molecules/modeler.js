@@ -163,7 +163,7 @@ modeler.makeIntegrator = function(args) {
       if (T != null) T_target = T;
 
       // override window size
-      adjustTemperature({ windowSize: 100 });
+      adjustTemperature({ windowSize: 10 });
 
       breakOnTargetTemperature = true;
       while (temperatureChangeInProgress) {
@@ -799,8 +799,8 @@ modeler.model = function() {
 
     set_temperature(temperature);
 
-    // thermalize
-    integrator.integrate();
+    // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
+    integrator.integrate(100, 1/20);
 
     integrator.relaxToTemperature();
 
