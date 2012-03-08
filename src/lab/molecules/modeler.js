@@ -66,9 +66,9 @@ modeler.makeIntegrator = function(args) {
       x                    = readWriteState.x,
       y                    = readWriteState.y,
 
-      useCoulombInteraction      = settableState.coulomb_forces,
-      useLennardJonesInteraction = settableState.lennard_jones_forces,
-      useThermostat              = settableState.temperature_control,
+      useCoulombInteraction      = settableState.useCoulombInteraction,
+      useLennardJonesInteraction = settableState.useLennardJonesInteraction,
+      useThermostat              = settableState.useThermostat,
 
       twoKE = (function() {
         var twoKE = 0, i, n = nodes.length;
@@ -87,10 +87,10 @@ modeler.makeIntegrator = function(args) {
 
   return {
 
-    set_coulomb_forces      : function(v) { useCoulombInteraction = v; },
-    set_lennard_jones_forces: function(v) { useLennardJonesInteraction = v; },
-    set_temperature_control : function(v) { useThermostat = v; },
-    setTargetTemperature    : function(v) { T_target = v; },
+    useCoulombInteraction      : function(v) { useCoulombInteraction = v; },
+    useLennardJonesInteraction : function(v) { useLennardJonesInteraction = v; },
+    useThermostat              : function(v) { useThermostat = v; },
+    setTargetTemperature       : function(v) { T_target = v; },
 
     integrate: function(t, dt) {
 
@@ -721,17 +721,17 @@ modeler.model = function() {
 
   model.set_temperature_control = function(tc) {
    temperature_control = tc;
-   if (integrator) integrator.set_temperature_control(tc);
+   if (integrator) integrator.useThermostat(tc);
   };
 
   model.set_lennard_jones_forces = function(lj) {
    lennard_jones_forces = lj;
-   if (integrator) integrator.set_lennard_jones_forces(lj);
+   if (integrator) integrator.useLennardJonesInteraction(lj);
   };
 
   model.set_coulomb_forces = function(cf) {
    coulomb_forces = cf;
-   if (integrator) integrator.set_coulomb_forces(cf);
+   if (integrator) integrator.useCoulombInteraction(cf);
   };
 
   model.get_nodes = function() {
@@ -777,9 +777,9 @@ modeler.model = function() {
       },
 
       settableState: {
-        lennard_jones_forces : lennard_jones_forces,
-        coulomb_forces       : coulomb_forces,
-        temperature_control  : temperature_control
+        useLennardJonesInteraction : lennard_jones_forces,
+        useCoulombInteraction      : coulomb_forces,
+        useThermostat              : temperature_control
       },
 
       readWriteState: {
@@ -803,9 +803,9 @@ modeler.model = function() {
     set_temperature(temperature);
 
     // thermalize
-    integrator.set_temperature_control(true);
+    integrator.useThermostat(true);
     integrator.integrate(50, 1/20);
-    integrator.set_temperature_control(false);
+    integrator.useThermostat(temperature_control);
 
     tick_history_list_push();
     return model;
