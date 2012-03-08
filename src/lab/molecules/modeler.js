@@ -89,7 +89,7 @@ modeler.makeIntegrator = function(args) {
       dt_over_tau = 0.01,
 
       // Tolerance for (T_actual - T_target) relative to T_target
-      tempTolerance = 0.01,
+      tempTolerance = 0.001,
 
       // Take a value T, return an average of the last n values
       T_windowed,
