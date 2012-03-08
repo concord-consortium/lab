@@ -46,5 +46,9 @@ molecules_lennard_jones.potential = function(distance) {
 };
 
 molecules_lennard_jones.force = function(distance) {
-  return (12*alpha/Math.pow(distance, 13) - 6*beta/Math.pow(distance, 7));
+  var r_6th  = Math.pow(distance, 6),
+      r_7th  = r_6th * distance,
+      r_13th = r_6th * r_7th;
+
+  return (12*alpha/r_13th - 6*beta/r_7th);
 };
