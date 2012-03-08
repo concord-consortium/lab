@@ -805,7 +805,6 @@ modeler.model = function() {
       outputState: integratorOutputState
     });
 
-    console.log('setting temperature to %f in integrator', temperature);
     set_temperature(temperature);
 
     // thermalize
