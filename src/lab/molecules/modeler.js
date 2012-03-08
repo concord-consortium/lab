@@ -797,14 +797,16 @@ modeler.model = function() {
 
     set_temperature(temperature);
 
-    // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
-    integrator.integrate(100, 1/20);
-
-    integrator.relaxToTemperature();
-
     tick_history_list_push();
     return model;
   };
+
+  model.relax = function() {
+    // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
+    integrator.integrate(100, 1/20);
+    integrator.relaxToTemperature();
+    return model;
+  }
 
   model.on = function(type, listener) {
     event.on(type, listener);

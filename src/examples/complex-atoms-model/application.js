@@ -254,7 +254,8 @@ function generate_atoms() {
           lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked,
           coulomb_forces: layout.coulomb_forces_checkbox.checked,
           model_listener: model_listener
-        });
+        })
+      .relax();
   atoms = model.get_atoms();
   nodes = model.get_nodes();
 }
