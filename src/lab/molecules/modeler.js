@@ -276,8 +276,8 @@ modeler.model = function() {
       size = [100, 100],
       temperature_control,
       lennard_jones_forces, coulomb_forces,
-      PE,
-      ke, ave_ke,
+      pe,
+      ke,
       stopped = true,
       tick_history_list = [],
       tick_history_list_index = 0,
@@ -451,12 +451,11 @@ modeler.model = function() {
 
     integrator.integrate();
     pressure = integratorOutputState.pressure;
-    PE = integratorOutputState.PE;
+    pe = integratorOutputState.PE;
 
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-    // ave_speed = average_speed();
-    ke = kinetic_energy();
+    ke = integratorOutputState.KE;
     update_atoms();
     tick_history_list_push();
     if (!stopped) {
@@ -499,52 +498,6 @@ modeler.model = function() {
     update_atoms();
   }
 
-  function set_speed(newspeed) {
-    var i, change, n = nodes[0].length;
-    i = -1; while (++i < n) {
-      change = newspeed/speed[i];
-      vx[i] = (x[i] - px[i]) * change;
-      vy[i] = (y[i] - py[i]) * change;
-      px[i] += vx[i];
-      py[i] += vy[i];
-      speed[i] = newspeed;
-    }
-  }
-
-  function change_speed(factor) {
-    var i, n = nodes[0].length;
-    i = -1; while (++i < n) {
-      vx[i] = (x[i] - px[i]) * factor;
-      vy[i] = (y[i] - py[i]) * factor;
-      px[i] += vx[i];
-      py[i] += vy[i];
-      // FIXME: was 'speed[i] *- factor;' Is the below what was intended? RPK 2-29-12
-      speed[i] *= factor;
-    }
-  }
-
-  function cap_speed(capspeed) {
-    var i, change, n = nodes[0].length;
-    i = -1; while (++i < n) {
-      if (speed[i] > capspeed) {
-        change = capspeed/speed[i];
-        vx[i] = (x[i] - px[i]) * change;
-        vy[i] = (y[i] - py[i]) * change;
-        px[i] += vx[i];
-        py[i] += vy[i];
-        speed[i] = capspeed;
-      }
-    }
-  }
-
-  function set_acc(acc) {
-    var i, n = nodes[0].length;
-    i = -1; while (++i < n) {
-      ax[i] = acc;
-      ay[i] = acc;
-    }
-  }
-
   function container_pressure() {
     return pressures.reduce(function(j,k) { return j+k; })/pressures.length;
   }
@@ -559,50 +512,11 @@ modeler.model = function() {
     }
   }
 
-  //
-  function potential_energy() {
-    // ???
-    throw new Error("Huh?");
-    // var i, fx, fy, p, n = nodes[0].length;
-    // pe = 0;
-    // i = -1; while (++i < n) {
-    //   fx = ax[i];
-    //   fy = ay[i];
-    //   p = Math.sqrt(fx * fx + fy * fy);
-    //   pe += p;
-    // }
-    // return pe;
-  }
-
-  // currently the nodes are all unit mass
-  function kinetic_energy() {
-    var i, n = nodes[0].length;
-    ke = 0;
-    i = -1; while (++i < n) {
-      ke += halfmass[i]*speed[i]*speed[i];
-    }
-    ave_ke = ke / n;
-    return ke;
-  }
-
   function average_rate() {
     var i, ave, s = 0, n = sample_times.length;
     i = -1; while (++i < n) { s += sample_times[i]; }
     ave = s/n;
     return (ave ? 1/ave*1000: 0);
-  }
-
-  function resolve_collisions(annealing_steps) {
-    var i;
-
-    integrator.set_annealing_temperature_control(true);
-    i = -1; while (++i < annealing_steps) {
-      integrator.integrate();
-    }
-    integrator.set_annealing_temperature_control( false );
-    PE = integratorOutputState.PE;
-    ke = kinetic_energy();
-    update_atoms();
   }
 
   function set_temperature(t) {
@@ -744,9 +658,7 @@ modeler.model = function() {
 
   model.initialize = function(options) {
     options = options || {};
-    var temperature,
-        annealing_steps = 10,
-        i = 10;
+    var temperature;
 
     lennard_jones_forces = options.lennard_jones_forces || true;
     coulomb_forces       = options.coulomb_forces       || false;
@@ -834,13 +746,10 @@ modeler.model = function() {
     options = options || {};
 
     var num =  options.num || 50,
-        xdomain = options.xdomain || 100,
-        ydomain = options.ydomain || 100,
         temperature = options.temperature || 3,
         rmin = options.rmin || 4.4,
         mol_rmin_radius_factor = options.mol_rmin_radius_factor || 0.38,
         v0,
-        sqrt2 = Math.sqrt(2),
         i, r, c, nrows, ncols, rowSpacing, colSpacing, v, direction,
 
         webgl = !!window.WebGLRenderingContext,
@@ -961,8 +870,7 @@ modeler.model = function() {
   };
 
   model.ave_ke = function() {
-    ave_ke = ave_ke || kinetic_energy() / nodes[0].length;
-    return ave_ke;
+    return integratorOutputState? integratorOutputState.KE / nodes[0].length : undefined;
   };
 
   model.pe = function() {
@@ -970,7 +878,7 @@ modeler.model = function() {
   };
 
   model.ave_pe = function() {
-    return PE / nodes[0].length;
+    return integratorOutputState? integratorOutputState.PE / nodes[0].length : undefined;
   };
 
   model.speed = function() {
