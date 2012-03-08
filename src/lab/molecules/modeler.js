@@ -198,9 +198,7 @@ modeler.makeIntegrator = function(args) {
           vRescalingFactor,               // rescaling factor for Berendsen thermostat
 
           // measurements to be accumulated during the integration loop:
-          pressure = 0,
-
-          T_finish;
+          pressure = 0;
 
       //
       // Loop through this inner processing loop 'integration_steps' times:
@@ -210,7 +208,7 @@ modeler.makeIntegrator = function(args) {
         // Measure the temperature and set the velocity-rescaling factor based on the temperature:
         T = twoKE / 2 / n;
 
-        if (temperatureChangeInProgress && Math.abs((T_finish = T_windowed(T)) - T_target) <= T_target * tempTolerance) {
+        if (temperatureChangeInProgress && Math.abs(T_windowed(T) - T_target) <= T_target * tempTolerance) {
           temperatureChangeInProgress = false;
           if (breakOnTargetTemperature) break;
         }
