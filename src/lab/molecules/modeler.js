@@ -57,9 +57,9 @@ modeler.makeIntegrator = function(args) {
       x                    = readWriteState.x,
       y                    = readWriteState.y,
 
-      coulomb_forces       = settableState.coulomb_forces,
-      lennard_jones_forces = settableState.lennard_jones_forces,
-      temperature_control  = settableState.temperature_control,
+      useCoulombForce      = settableState.coulomb_forces,
+      useLennardJonesForce = settableState.lennard_jones_forces,
+      useThermostat        = settableState.temperature_control,
 
       twoKE = (function() {
         var twoKE = 0, i, n = nodes.length;
@@ -69,9 +69,9 @@ modeler.makeIntegrator = function(args) {
         return twoKE;
       }()),
 
-      // Desired temperature. Called T_heatBath because will simulate coupling to an infintely large heat bath at
-      // temperature T_heatBath.
-      T_heatBath = 1.0,
+      // Desired temperature. Called T_target because will simulate coupling to an infintely large heat bath at
+      // temperature T_target.
+      T_target = 1.0,
 
       // coupling factor for Berendsen thermostat
       dt_over_tau = 0.01;
@@ -82,42 +82,40 @@ modeler.makeIntegrator = function(args) {
 
   return {
 
-    set_coulomb_forces      : function(v) { coulomb_forces = v; },
-    set_lennard_jones_forces: function(v) { lennard_jones_forces = v; },
-    set_temperature_control : function(v) { temperature_control = v; },
+    set_coulomb_forces      : function(v) { useCoulombForce = v; },
+    set_lennard_jones_forces: function(v) { useLennardJonesForce = v; },
+    set_temperature_control : function(v) { useThermostat = v; },
     set_temperature         : function(v) {
       var speed = temperature_to_speed(v);
-      T_heatBath = speed*speed;
+      T_target = speed*speed;
     },
 
-    integrate               : function(t, dt) {
-      // how much "time" to integrate over
-      if (t == null) t = 1;
-      // intra-step time
-      if (dt == null) dt = 1/50;
+    integrate : function(t, dt) {
 
-      var integration_steps = t/dt,                      // number of steps
-          dt_sq             = dt * dt,                   // intra-step time squared
-          n = nodes[0].length,
-          i, // current index
-          j, // alternate member of force-pair index
-          r, // current distance
-          dr_sq, v_sq,
-          r_sq,
-          f, f_lj, f_coul, f_x, f_y,
+      if (t == null)  t = 1;         // how much "time" to integrate over
+      if (dt == null) dt = 1/50;     // time step
+
+      var integration_steps = t/dt,       // number of steps
+          dt_sq             = dt*dt,      // time step, squared
+          n = nodes[0].length,            // number of particles
+          i,
+          j,
+          r,
+          dr_sq, v_sq, r_sq,
+          f, f_lj, f_coul, fx, fy,        // pairwise forces and their x, y components
           dx, dy,
-          initial_x, initial_y,
+          x_initial, y_initial,
           iloop,
           leftwall   = radius[0],
           bottomwall = radius[0],
           rightwall  = size[0] - radius[0],
           topwall    = size[1] - radius[0],
 
-          PE,
-          T,
-          vRescaleFactor,
+          PE,                             // potential energy
+          T,                              // temperature
+          vRescaleFactor,                 // factor
 
-          // measurements to be accumulated during the integration loop
+          // measurements to be accumulated during the integration loop:
           pressure = 0;
 
       //
@@ -127,7 +125,7 @@ modeler.makeIntegrator = function(args) {
 
         T = twoKE / 2 / n;
         twoKE = 0;
-        vRescaleFactor = 1 + dt_over_tau * ((T_heatBath / T) - 1);
+        vRescaleFactor = 1 + dt_over_tau * ((T_target / T) - 1);
 
         //
         // Use a Verlet integration to continue particle movement integrating acceleration with
@@ -136,10 +134,10 @@ modeler.makeIntegrator = function(args) {
         // Update positions for first half of verlet integration
         //
         i = -1; while (++i < n) {
-          initial_x = x[i];
-          initial_y = y[i];
+          x_initial = x[i];
+          y_initial = y[i];
 
-          if (temperature_control) {
+          if (useThermostat) {
             vx[i] *= vRescaleFactor;
             vy[i] *= vRescaleFactor;
           }
@@ -147,8 +145,8 @@ modeler.makeIntegrator = function(args) {
           x[i]  += vx[i] * dt + 0.5 * dt_sq * ax[i];
           y[i]  += vy[i] * dt + 0.5 * dt_sq * ay[i];
 
-          dx = x[i] - initial_x;
-          dy = y[i] - initial_y;
+          dx = x[i] - x_initial;
+          dy = y[i] - y_initial;
 
           dr_sq = dx*dx + dy*dy;
           v_sq  = dr_sq / dt_sq;
@@ -172,7 +170,7 @@ modeler.makeIntegrator = function(args) {
             vx[i] *= -1;
             pressure += dx/dt;
           } else {
-            px[i] = initial_x;
+            px[i] = x_initial;
           }
 
           // possibly bounce off horizontal walls
@@ -187,7 +185,7 @@ modeler.makeIntegrator = function(args) {
             vy[i] *= -1;
             pressure += dy/dt;
           } else {
-            py[i] = initial_y;
+            py[i] = y_initial;
           }
         }
 
@@ -198,7 +196,7 @@ modeler.makeIntegrator = function(args) {
         }
 
         // Calculate pairwise forces and accumulate effects into acceleration vector (ax, ay)
-        if (lennard_jones_forces || coulomb_forces) {
+        if (useLennardJonesForce || useCoulombForce) {
           i = -1; while (++i < n) {
             j = i; while (++j < n) {
               dx = x[j] - x[i];
@@ -209,21 +207,21 @@ modeler.makeIntegrator = function(args) {
               f_lj = 0;
               f_coul = 0;
 
-              if (lennard_jones_forces && r < max_ljf_distance) {
+              if (useLennardJonesForce && r < max_ljf_distance) {
                 f_lj = molecules_lennard_jones.force(r);
               }
-              if (coulomb_forces && r < max_coulomb_distance) {
+              if (useCoulombForce && r < max_coulomb_distance) {
                 f_coul = molecules_coulomb.force(r, charge[i], charge[j]);
               }
 
-              f   = f_lj + f_coul;
-              f_x = f * (dx / r);
-              f_y = f * (dy / r);
+              f  = f_lj + f_coul;
+              fx = f * (dx / r);
+              fy = f * (dy / r);
 
-              ax[i] += f_x;
-              ay[i] += f_y;
-              ax[j] -= f_x;
-              ay[j] -= f_y;
+              ax[i] += fx;
+              ay[i] += fy;
+              ax[j] -= fx;
+              ay[j] -= fy;
             }
           }
         }
@@ -245,10 +243,10 @@ modeler.makeIntegrator = function(args) {
           r_sq = dx * dx + dy * dy;
           r = Math.sqrt(r_sq);
 
-          if (lennard_jones_forces && r < max_ljf_distance) {
+          if (useLennardJonesForce && r < max_ljf_distance) {
             PE += molecules_lennard_jones.potential(r);
           }
-          if (coulomb_forces && r < max_coulomb_distance) {
+          if (useCoulombForce && r < max_coulomb_distance) {
             PE += molecules_coulomb.potential(r, charge[i], charge[j]);
           }
         }
