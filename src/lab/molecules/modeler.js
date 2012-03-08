@@ -100,11 +100,12 @@ modeler.makeIntegrator = function(args) {
     set_annealing_temperature_control: function (v) {
       annealing_temperature_control = v;
     },
+    integrate               : function(t) {
+      // how much "time" to integrate over
+      if (t == null) t = 1;
 
-    integrate               : function() {
-      var step_dt           = 1,                         // time in reduced units for each model step/tick
-          integration_steps = 50,                        // number of internal integration steps for each step
-          dt                = step_dt/integration_steps, // intra-step time
+      var dt                = 1/50,                      // intra-step time
+          integration_steps = t/dt,                      // number of steps
           dt_sq             = dt * dt,                   // intra-step time squared
           n = nodes[0].length,
           i, // current index
