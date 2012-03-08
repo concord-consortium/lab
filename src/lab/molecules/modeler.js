@@ -1,5 +1,5 @@
 /*globals modeler:true, d3, arrays, molecules_coulomb, molecules_lennard_jones, benchmark */
-/*jslint onevar: true devel:true */
+/*jslint onevar: true devel:true eqnull: true */
 
 // modeler.js
 //
