@@ -90,12 +90,13 @@ modeler.makeIntegrator = function(args) {
       T_heatBath = speed*speed;
     },
 
-    integrate               : function(t) {
+    integrate               : function(t, dt) {
       // how much "time" to integrate over
       if (t == null) t = 1;
+      // intra-step time
+      if (dt == null) dt = 1/50;
 
-      var dt                = 1/50,                      // intra-step time
-          integration_steps = t/dt,                      // number of steps
+      var integration_steps = t/dt,                      // number of steps
           dt_sq             = dt * dt,                   // intra-step time squared
           n = nodes[0].length,
           i, // current index
@@ -254,7 +255,7 @@ modeler.makeIntegrator = function(args) {
       }
 
       // state to be read by the rest of the system
-      outputState.pressure = pressure;
+      outputState.pressure = pressure / integration_steps;
       outputState.PE = PE;
       outputState.KE = twoKE / 2;
     }
@@ -807,7 +808,7 @@ modeler.model = function() {
 
     // thermalize
     integrator.set_temperature_control(true);
-    integrator.integrate(20);
+    integrator.integrate(50, 1/20);
     integrator.set_temperature_control(false);
 
     tick_history_list_push();
