@@ -94,7 +94,7 @@ modeler.makeIntegrator = function(args) {
     set_temperature_control : function(v) { temperature_control = v; },
     set_temperature         : function(v) {
       var speed = temperature_to_speed(v);
-      T_heatBath = speed*speed / 2;
+      T_heatBath = speed*speed;
     },
 
     set_annealing_temperature_control: function (v) {
@@ -880,8 +880,6 @@ modeler.model = function() {
 
     set_temperature(temperature);
 
-    resolve_collisions(annealing_steps);
-
     tick_history_list_push();
     return model;
   };
@@ -914,9 +912,9 @@ modeler.model = function() {
         temperature = options.temperature || 3,
         rmin = options.rmin || 4.4,
         mol_rmin_radius_factor = options.mol_rmin_radius_factor || 0.38,
-        dTheta,
         v0,
-        i,
+        sqrt2 = Math.sqrt(2),
+        i, r, c, nrows, ncols, rowSpacing, colSpacing,
 
         webgl = !!window.WebGLRenderingContext,
         not_safari = benchmark.what_browser.browser !== 'Safari',
@@ -977,22 +975,40 @@ modeler.model = function() {
     nodes[model.INDICES.CHARGE] = arrays.create(num, 0, array_type);
     charge = nodes[model.INDICES.CHARGE];
 
-    // initialize particles with 0 net momentum by spacing initial velocities equally around a circle
-    dTheta = 2*Math.PI / num;
     v0 = temperature_to_speed(temperature);
 
-    i = -1; while (++i < num) {
-        px[i] = Math.random() * xdomain * 0.8 + xdomain * 0.1;  // previous x
-        py[i] = Math.random() * ydomain * 0.8 + ydomain * 0.1;  // previous y
-        vx[i] = v0*Math.cos(dTheta*i);
-        vy[i] = v0*Math.sin(dTheta*i);
-         x[i] = vx[i] + px[i];
-         y[i] = vy[i] + py[i];
-     speed[i] = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);  // == v0
+    console.log('initializing to temperature %f', temperature);
+
+    nrows = Math.ceil(Math.sqrt(num));
+    ncols = Math.ceil(num / nrows);
+
+    colSpacing = size[0] / (1+ncols);
+    rowSpacing = size[1] / (1+nrows);
+
+    // arrange molecules in a lattice. Not guaranteed to have CM in center.
+    i = -1;
+    for (r = 1; r <= nrows; r++) {
+      for (c = 1; c <= ncols; c++) {
+        i++;
+        x[i] = c*colSpacing;
+        y[i] = r*rowSpacing;
+
+        vx[i] = modeler.Math.normal(v0/sqrt2);
+        vy[i] = modeler.Math.normal(v0/sqrt2);
+
         ax[i] = 0;
         ay[i] = 0;
-    charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
+
+        if ((num - i) > i) {
+          vx[num-i] = -vx[i];
+          vy[num-i] = -vy[i];
+        }
+
+        speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
+        charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
+      }
     }
+
     update_atoms();
     return model;
   };
