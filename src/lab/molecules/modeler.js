@@ -11,7 +11,6 @@ modeler.Math = modeler.Math || {};
 
 // Simple (Box-Muller) univariate-normal random number generator.
 // Compiled from a Coffeescript version I wrote recently. --RPK
-// I see no harm in extending the Math object right now.
 modeler.Math.normal = (function() {
   var next;
   next = null;
@@ -45,10 +44,6 @@ modeler.makeIntegrator = function(args) {
       max_ljf_distance     = setOnceState.max_ljf_distance,
       size                 = setOnceState.size,
 
-      // only used during annealing
-      max_ljf_repulsion    = setOnceState.max_ljf_repulsion,
-      max_coulomb_force    = setOnceState.max_coulomb_force,
-
       ax                   = readWriteState.ax,
       ay                   = readWriteState.ay,
       charge               = readWriteState.charge,
@@ -66,8 +61,6 @@ modeler.makeIntegrator = function(args) {
       lennard_jones_forces = settableState.lennard_jones_forces,
       temperature_control  = settableState.temperature_control,
 
-      annealing_temperature_control = false,
-
       twoKE,
 
       // Desired temperature. Called T_heatBath because will simulate coupling to an infintely large heat bath at
@@ -81,12 +74,6 @@ modeler.makeIntegrator = function(args) {
     return 0.250 * Math.pow(Math.E/2, t);
   }
 
-  function average_speed() {
-    var i, s = 0, n = nodes[0].length;
-    i = -1; while (++i < n) { s += speed[i]; }
-    return s/n;
-  }
-
   return {
 
     set_coulomb_forces      : function(v) { coulomb_forces = v; },
@@ -97,9 +84,6 @@ modeler.makeIntegrator = function(args) {
       T_heatBath = speed*speed;
     },
 
-    set_annealing_temperature_control: function (v) {
-      annealing_temperature_control = v;
-    },
     integrate               : function(t) {
       // how much "time" to integrate over
       if (t == null) t = 1;
@@ -146,6 +130,7 @@ modeler.makeIntegrator = function(args) {
         T = twoKE / 2 / n;
         twoKE = 0;
         vRescaleFactor = 1 + dt_over_tau * ((T_heatBath / T) - 1);
+
         //
         // Use a Verlet integration to continue particle movement integrating acceleration with
         // existing position and previous position while managing collision with boundaries.
@@ -228,17 +213,9 @@ modeler.makeIntegrator = function(args) {
 
               if (lennard_jones_forces && r < max_ljf_distance) {
                 f_lj = molecules_lennard_jones.force(r);
-                if (f_lj < max_ljf_repulsion) {
-                  // console.log("Capping LJ repulsion %f to %f", f_lj, max_ljf_repulsion);
-                  f_lj = max_ljf_repulsion;
-                }
               }
               if (coulomb_forces && r < max_coulomb_distance) {
                 f_coul = molecules_coulomb.force(r, charge[i], charge[j]);
-                if (f_coul > max_coulomb_force) {
-                  // console.log("Capping Coulomb force %f to %f", f_coul, max_coulomb_force);
-                  f_coul = max_coulomb_force;
-                }
               }
 
               f   = f_lj + f_coul;
@@ -249,58 +226,6 @@ modeler.makeIntegrator = function(args) {
               ay[i] += f_y;
               ax[j] -= f_x;
               ay[j] -= f_y;
-            }
-          }
-        }
-
-        //
-        // Dynamically adjust 'temperature' of system.
-        //
-        if (annealing_temperature_control) {
-          speed_goal            = temperature_to_speed(T_heatBath);
-          ave_speed             = average_speed();
-          ave_speed_max         = speed_goal * 1.1;
-          ave_speed_min         = speed_goal * 0.9;
-          speed_max             = speed_goal * 2;
-          speed_max_one_percent = speed_max  * 0.01;
-          speed_min             = speed_goal * 0.5;
-          speed_min_one_percent = speed_min  * 0.01;
-
-          i = -1; while (++i < n) {
-            if (ave_speed > ave_speed_max) {
-              // If the average speed for an atom is greater than 110% of the speed_goal
-              // proportionately reduce the acceleration
-              ax[i] *= 0.5;
-              ay[i] *= 0.5;
-
-              // And if the speed for this atom is greater than speed_max reduce the
-              // velocity of the atom by creating a new, closer previous position.
-              if (speed[i] > speed_max) {
-                speed_factor = speed_max/speed[i];
-                vx[i] *= speed_factor;
-                vy[i] *= speed_factor;
-                speed[i] = speed_max - (Math.random() * speed_max_one_percent);
-                px[i] = x[i] - vx[i];
-                py[i] = y[i] - vy[i];
-              }
-            }
-
-            else if (ave_speed < ave_speed_min) {
-              // If the average speed for an atom is less than 90% of the speed_goal
-              // proportionately increase the acceleration.
-              ax[i] *= 2.0;
-              ay[i] *= 2.0;
-
-              // And if the speed for this atom is less than speed_min increase the
-              // velocity of the atom by creating a new previous position further away.
-              if (speed[i] < speed_min) {
-                speed_factor = speed_min/speed[i];
-                vx[i] *= speed_factor;
-                vy[i] *= speed_factor;
-                speed[i] = speed_min +  (Math.random() * speed_min_one_percent);
-                px[i] = x[i] - vx[i];
-                py[i] = y[i] - vy[i];
-              }
             }
           }
         }
