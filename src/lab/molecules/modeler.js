@@ -68,7 +68,7 @@ modeler.makeIntegrator = function(args) {
     set_temperature_control : function(v) { temperature_control = v; },
     set_temperature         : function(v) {
       var speed = temperature_to_speed(v);
-      T_heatBath = speed*speed;
+      T_heatBath = speed*speed / 2;
     },
 
     set_annealing_temperature_control: function (v) {
@@ -397,7 +397,7 @@ modeler.model = function() {
 
 
 
-  // Previously used with generate_atom function, which generated <mol_number> atom objects
+  // Previously used with gne_atom function, which generated <mol_number> atom objects
   // for consumption by the view at each tick.
   function update_atoms() {
     atoms.length = mol_number;
@@ -829,11 +829,9 @@ modeler.model = function() {
       },
 
       settableState: {
-        max_coulomb_distance : max_coulomb_distance,
-        max_coulomb_force    : max_coulomb_force,
-        max_ljf_distance     : max_ljf_distance,
-        max_ljf_repulsion    : max_ljf_repulsion,
-        size                 : size
+        lennard_jones_forces : lennard_jones_forces,
+        coulomb_forces       : coulomb_forces,
+        temperature_control  : temperature_control
       },
 
       readWriteState: {
@@ -968,7 +966,6 @@ modeler.model = function() {
         ax[i] = 0;
         ay[i] = 0;
     charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
-        // speed_data.push(speed[i]);
     }
     update_atoms();
     return model;
