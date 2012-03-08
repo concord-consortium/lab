@@ -7,12 +7,11 @@
 modeler = {};
 modeler.VERSION = '0.1.0';
 
-modeler.Math = modeler.Math || {};
-
+modeler.math = modeler.math || {};
 
 // Simple (Box-Muller) univariate-normal random number generator.
 
-modeler.Math.normal = (function() {
+modeler.math.normal = (function() {
   var next = null;
 
   return function(mean, sd) {
@@ -925,7 +924,7 @@ modeler.model = function() {
         x[i] = c*colSpacing;
         y[i] = r*rowSpacing;
 
-        v = modeler.Math.normal(v0, v0/2);
+        v = modeler.math.normal(v0, v0/2);
         direction = 2 * Math.random() * Math.PI;
 
         if (i < Math.floor(num/2)) {
