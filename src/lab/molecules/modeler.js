@@ -73,6 +73,10 @@ modeler.makeIntegrator = function(args) {
       // Set to true when a temperature change is requested, reset to false when system approaches temperature
       temperatureChangeInProgress = false,
 
+      // Whether to immediately break out of the integration loop when the target temperature is reached.
+      // Used only by relaxToTemperature()
+      breakOnTargetTemperature = false,
+
       twoKE = (function() {
         var twoKE = 0, i, n = nodes.length;
         for (i = 0; i < n; i++) {
@@ -115,12 +119,19 @@ modeler.makeIntegrator = function(args) {
         };
       },
 
-      adjustTemperature = function()  {
-        temperatureChangeInProgress = true;
+      getWindowSize = function() {
         // Average over a larger window if Coulomb force (which should result in larger temperature excursions)
         // is in effect. 50 vs. 10 below were chosen by fiddling around, not for any theoretical reasons.
-        T_windowed = makeWindowFunction( useCoulombInteraction ? 50 : 10 );
-        console.log("temperature change STARTING");
+        return useCoulombInteraction ? 50 : 10;
+      },
+
+      adjustTemperature = function(options)  {
+        if (options == null) options = {};
+
+        var windowSize = options.windowSize || getWindowSize();
+
+        temperatureChangeInProgress = true;
+        T_windowed = makeWindowFunction( windowSize );
       };
 
   return {
@@ -146,6 +157,19 @@ modeler.makeIntegrator = function(args) {
         adjustTemperature();
       }
       T_target = v;
+    },
+
+    relaxToTemperature: function(T) {
+      if (T != null) T_target = T;
+
+      // override window size
+      adjustTemperature({ windowSize: 100 });
+
+      breakOnTargetTemperature = true;
+      while (temperatureChangeInProgress) {
+        this.integrate();
+      }
+      breakOnTargetTemperature = false;
     },
 
     integrate: function(t, dt) {
@@ -174,7 +198,9 @@ modeler.makeIntegrator = function(args) {
           vRescalingFactor,               // rescaling factor for Berendsen thermostat
 
           // measurements to be accumulated during the integration loop:
-          pressure = 0;
+          pressure = 0,
+
+          T_finish;
 
       //
       // Loop through this inner processing loop 'integration_steps' times:
@@ -184,9 +210,9 @@ modeler.makeIntegrator = function(args) {
         // Measure the temperature and set the velocity-rescaling factor based on the temperature:
         T = twoKE / 2 / n;
 
-        if (temperatureChangeInProgress && Math.abs(T_windowed(T) - T_target) <= T_target * tempTolerance) {
-          console.log("temperature change FINISHED");
+        if (temperatureChangeInProgress && Math.abs((T_finish = T_windowed(T)) - T_target) <= T_target * tempTolerance) {
           temperatureChangeInProgress = false;
+          if (breakOnTargetTemperature) break;
         }
 
         vRescalingFactor = 1;
@@ -774,9 +800,9 @@ modeler.model = function() {
     set_temperature(temperature);
 
     // thermalize
-    integrator.useThermostat(true);
-    integrator.integrate(50, 1/20);
-    integrator.useThermostat(temperature_control);
+    integrator.integrate();
+
+    integrator.relaxToTemperature();
 
     tick_history_list_push();
     return model;
