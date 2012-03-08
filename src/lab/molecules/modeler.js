@@ -61,7 +61,13 @@ modeler.makeIntegrator = function(args) {
       lennard_jones_forces = settableState.lennard_jones_forces,
       temperature_control  = settableState.temperature_control,
 
-      twoKE,
+      twoKE = (function() {
+        var twoKE = 0, i, n = nodes.length;
+        for (i = 0; i < n; i++) {
+          twoKE += speed[i]*speed[i];
+        }
+        return twoKE;
+      }()),
 
       // Desired temperature. Called T_heatBath because will simulate coupling to an infintely large heat bath at
       // temperature T_heatBath.
@@ -750,10 +756,11 @@ modeler.model = function() {
   model.initialize = function(options) {
     options = options || {};
     var temperature,
-        annealing_steps = 10;
+        annealing_steps = 10,
+        i = 10;
 
     lennard_jones_forces = options.lennard_jones_forces || true;
-    coulomb_forces       = options.coulomb_forces       || true;
+    coulomb_forces       = options.coulomb_forces       || false;
     temperature_control  = options.temperature_control  || false;
     temperature          = options.temperature          || 3;
 
@@ -804,7 +811,13 @@ modeler.model = function() {
       outputState: integratorOutputState
     });
 
+    console.log('setting temperature to %f in integrator', temperature);
     set_temperature(temperature);
+
+    // thermalize
+    integrator.set_temperature_control(true);
+    integrator.integrate(20);
+    integrator.set_temperature_control(false);
 
     tick_history_list_push();
     return model;
@@ -903,8 +916,6 @@ modeler.model = function() {
 
     v0 = temperature_to_speed(temperature);
 
-    console.log('initializing to temperature %f', temperature);
-
     nrows = Math.ceil(Math.sqrt(num));
     ncols = Math.ceil(num / nrows);
 
@@ -919,8 +930,8 @@ modeler.model = function() {
         x[i] = c*colSpacing;
         y[i] = r*rowSpacing;
 
-        vx[i] = modeler.Math.normal(v0/sqrt2);
-        vy[i] = modeler.Math.normal(v0/sqrt2);
+        vx[i] = modeler.Math.normal(v0/sqrt2, v0/sqrt2);
+        vy[i] = modeler.Math.normal(v0/sqrt2, v0/sqrt2);
 
         ax[i] = 0;
         ay[i] = 0;
