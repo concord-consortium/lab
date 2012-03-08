@@ -10,7 +10,12 @@ modeler.VERSION = '0.1.0';
 modeler.math = modeler.math || {};
 
 // Simple (Box-Muller) univariate-normal random number generator.
-
+//
+// The 'science.js' library includes a Box-Muller implementation which is likely to be slower, especially in a
+// modern Javascript engine, because it uses a rejection method to pick the random point in the unit circle.
+// See discussion on pp. 1-3 of:
+// http://www.math.nyu.edu/faculty/goodman/teaching/MonteCarlo2005/notes/GaussianSampling.pdf
+//
 modeler.math.normal = (function() {
   var next = null;
 
