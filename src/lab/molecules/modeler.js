@@ -127,7 +127,12 @@ modeler.makeIntegrator = function(args) {
 
         T = twoKE / 2 / n;
         twoKE = 0;
-        vRescaleFactor = 1 + dt_over_tau * ((T_target / T) - 1);
+        if (T > 0) {
+          vRescaleFactor = 1 + dt_over_tau * ((T_target / T) - 1);
+        }
+        else {
+          vRescaleFactor = 1;
+        }
 
         //
         // Use a Verlet integration to continue particle movement integrating acceleration with
@@ -354,11 +359,11 @@ modeler.model = function() {
   }
 
   //
-  // The temperature_to_speed(t) function is used to map temperatures in abstract units
-  // within a range of 0..10 to a goal for the average speed per atom for the system of atoms.
+  // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
+  // within a range of 0..10 to the 'real' temperature <mv^2>/2k (remember there's only 2 DOF)
   //
-  function temperature_to_speed(t) {
-    return 0.250 * Math.pow(Math.E/2, t);
+  function abstract_to_real_temperature(t) {
+    return 0.19*t + 0.1;  // Translate 0..10 to 0.1..2
   }
 
   function average_speed() {
@@ -602,7 +607,7 @@ modeler.model = function() {
 
   function set_temperature(t) {
     temperature = t;
-    if (integrator) integrator.set_temperature(temperature);
+    if (integrator) integrator.setTargetTemperature(abstract_to_real_temperature(t));
   }
 
   // ------------------------------------------------------------
@@ -897,7 +902,7 @@ modeler.model = function() {
     nodes[model.INDICES.CHARGE] = arrays.create(num, 0, array_type);
     charge = nodes[model.INDICES.CHARGE];
 
-    v0 = temperature_to_speed(temperature);
+    v0 = Math.sqrt(2*abstract_to_real_temperature(temperature));
 
     nrows = Math.ceil(Math.sqrt(num));
     ncols = Math.ceil(num / nrows);
