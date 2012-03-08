@@ -735,24 +735,26 @@ modeler.model = function() {
   model.nodes = function(options) {
     options = options || {};
 
-    var num =  options.num || 50,
-        temperature = options.temperature || 3,
-        rmin = options.rmin || 4.4,
+    var num                    = options.num                    || 50,
+        temperature            = options.temperature            || 3,
+        rmin                   = options.rmin                   || 4.4,
         mol_rmin_radius_factor = options.mol_rmin_radius_factor || 0.38,
-        v0,
-        i, r, c, nrows, ncols, rowSpacing, colSpacing, v, direction,
 
         webgl = !!window.WebGLRenderingContext,
         not_safari = benchmark.what_browser.browser !== 'Safari',
 
         // special-case: Typed arrays are faster almost everywhere
         // ... except for Safari
-        array_type = (webgl && not_safari) ? "Float32Array" : "regular";
+        array_type = (webgl && not_safari) ? 'Float32Array' : 'regular',
+
+        v0,
+        i, r, c, nrows, ncols, rowSpacing, colSpacing,
+        vMagnitude, vDirection;
 
     mol_number = num;
     atoms.length = num;
 
-    nodes = arrays.create(node_properties_length, null, "regular");
+    nodes = arrays.create(node_properties_length, null, 'regular');
 
     // model.INDICES.RADIUS = 0
     nodes[model.INDICES.RADIUS] = arrays.create(num, rmin * mol_rmin_radius_factor, array_type );
@@ -802,6 +804,8 @@ modeler.model = function() {
     nodes[model.INDICES.CHARGE] = arrays.create(num, 0, array_type);
     charge = nodes[model.INDICES.CHARGE];
 
+
+    // Actually arrange the atoms.
     v0 = Math.sqrt(2*abstract_to_real_temperature(temperature));
 
     nrows = Math.ceil(Math.sqrt(num));
@@ -810,7 +814,8 @@ modeler.model = function() {
     colSpacing = size[0] / (1+ncols);
     rowSpacing = size[1] / (1+nrows);
 
-    // arrange molecules in a lattice. Not guaranteed to have CM in center.
+    // Arrange molecules in a lattice. Not guaranteed to have CM exactly on center, and is an artificially low-energy
+    // configuration. But it works OK for now.
     i = -1;
     for (r = 1; r <= nrows; r++) {
       for (c = 1; c <= ncols; c++) {
@@ -818,12 +823,19 @@ modeler.model = function() {
         x[i] = c*colSpacing;
         y[i] = r*rowSpacing;
 
-        v = modeler.math.normal(v0, v0/2);
-        direction = 2 * Math.random() * Math.PI;
+        // Randomize velocities, exactly balancing the motion of the center of mass by making the second half of the
+        // set of atoms have the opposite velocities of the first half. (If the atom number is odd, the "odd atom out"
+        // should have 0 velocity).
+        //
+        // Note that although the instantaneous temperature will be 'temperature' exactly, the temperature will quickly
+        // settle to a lower value because we are initializing the atoms spaced far apart, in an artificially low-energy
+        // configuration.
 
-        if (i < Math.floor(num/2)) {
-          vx[i] = v * Math.cos(direction);
-          vy[i] = v * Math.sin(direction);
+        if (i < Math.floor(num/2)) {      // 'middle' atom will have 0 velocity
+          vMagnitude = modeler.math.normal(v0, v0/4);
+          vDirection = 2 * Math.random() * Math.PI;
+          vx[i] = vMagnitude * Math.cos(vDirection);
+          vy[i] = vMagnitude * Math.sin(vDirection);
           vx[num-i] = -vx[i];
           vy[num-i] = -vy[i];
         }
