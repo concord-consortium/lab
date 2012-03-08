@@ -351,13 +351,6 @@ modeler.model = function() {
   };
 
 
-
-  // Previously used with gne_atom function, which generated <mol_number> atom objects
-  // for consumption by the view at each tick.
-  function update_atoms() {
-    atoms.length = mol_number;
-  }
-
   //
   // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
   // within a range of 0..10 to the 'real' temperature <mv^2>/2k (remember there's only 2 DOF)
@@ -456,7 +449,6 @@ modeler.model = function() {
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
     ke = integratorOutputState.KE;
-    update_atoms();
     tick_history_list_push();
     if (!stopped) {
       t = Date.now();
@@ -495,7 +487,6 @@ modeler.model = function() {
       arrays.copy(tick_history_list[index].nodes[i], nodes[i]);
     }
     ke = tick_history_list[index].ke;
-    update_atoms();
   }
 
   function container_pressure() {
@@ -621,7 +612,6 @@ modeler.model = function() {
   model.set_radius = function(r) {
     var i, n = nodes[0].length;
     i = -1; while(++i < n) { radius[i] = r; }
-    update_atoms();
   };
 
   // return a copy of the array of speeds
@@ -760,6 +750,7 @@ modeler.model = function() {
         array_type = (webgl && not_safari) ? "Float32Array" : "regular";
 
     mol_number = num;
+    atoms.length = num;
 
     nodes = arrays.create(node_properties_length, null, "regular");
 
@@ -845,7 +836,6 @@ modeler.model = function() {
       }
     }
 
-    update_atoms();
     return model;
   };
 
