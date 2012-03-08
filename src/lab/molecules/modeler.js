@@ -85,19 +85,12 @@ modeler.makeIntegrator = function(args) {
       // coupling factor for Berendsen thermostat
       dt_over_tau = 0.01;
 
-  function temperature_to_speed(t) {
-    return 0.250 * Math.pow(Math.E/2, t);
-  }
-
   return {
 
     set_coulomb_forces      : function(v) { useCoulombForce = v; },
     set_lennard_jones_forces: function(v) { useLennardJonesForce = v; },
     set_temperature_control : function(v) { useThermostat = v; },
-    set_temperature         : function(v) {
-      var speed = temperature_to_speed(v);
-      T_target = speed*speed;
-    },
+    set_temperature         : function(v) { T_target = v/5; },
 
     integrate : function(t, dt) {
 
@@ -363,14 +356,6 @@ modeler.model = function() {
   //
   // The temperature_to_speed(t) function is used to map temperatures in abstract units
   // within a range of 0..10 to a goal for the average speed per atom for the system of atoms.
-  //
-  // Currently all atoms are unit mass. The mass property is saved as 'halfmass' -- mass/2.
-  //
-  // Increasing the number of atoms while keeping the average speed for an atom
-  // the same will increase the total KE for the system.
-  //
-  // The constant Math.E/2 used below is just an empirically derived
-  // number and has no specific analytic provenance.
   //
   function temperature_to_speed(t) {
     return 0.250 * Math.pow(Math.E/2, t);
