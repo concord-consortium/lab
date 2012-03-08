@@ -70,6 +70,9 @@ modeler.makeIntegrator = function(args) {
       useLennardJonesInteraction = settableState.useLennardJonesInteraction,
       useThermostat              = settableState.useThermostat,
 
+      // Set to true when a temperature change is requested, reset to false when system approaches temperature
+      temperatureChangeInProgress = false,
+
       twoKE = (function() {
         var twoKE = 0, i, n = nodes.length;
         for (i = 0; i < n; i++) {
@@ -83,14 +86,20 @@ modeler.makeIntegrator = function(args) {
       T_target = 1.0,
 
       // Coupling factor for Berendsen thermostat.
-      dt_over_tau = 0.01;
+      dt_over_tau = 0.01,
+
+      // Tolerance for (T_actual - T_target) relative to T_target
+      tempTolerance = 0.01;
 
   return {
 
     useCoulombInteraction      : function(v) { useCoulombInteraction = v; },
     useLennardJonesInteraction : function(v) { useLennardJonesInteraction = v; },
     useThermostat              : function(v) { useThermostat = v; },
-    setTargetTemperature       : function(v) { T_target = v; },
+    setTargetTemperature       : function(v) {
+      if (v !== T_target) temperatureChangeInProgress = true;
+      T_target = v;
+    },
 
     integrate: function(t, dt) {
 
@@ -128,11 +137,13 @@ modeler.makeIntegrator = function(args) {
         // Measure the temperature and set the velocity-rescaling factor based on the temperature:
         T = twoKE / 2 / n;
 
-        if (useThermostat && T > 0) {
-          vRescalingFactor = 1 + dt_over_tau * ((T_target / T) - 1);
+        if (temperatureChangeInProgress && Math.abs(T - T_target) <= T_target * tempTolerance) {
+          temperatureChangeInProgress = false;
         }
-        else {
-          vRescalingFactor = 1;
+
+        vRescalingFactor = 1;
+        if (temperatureChangeInProgress || useThermostat && T > 0) {
+          vRescalingFactor = 1 + dt_over_tau * ((T_target / T) - 1);
         }
 
         // Initialize sums such as 'twoKE' which need be accumulated once per integration loop:
@@ -149,7 +160,7 @@ modeler.makeIntegrator = function(args) {
           y_initial = y[i];
 
           // Rescale v(t) using T(t)
-          if (useThermostat) {
+          if (vRescalingFactor !== 1) {
             vx[i] *= vRescalingFactor;
             vy[i] *= vRescalingFactor;
           }
