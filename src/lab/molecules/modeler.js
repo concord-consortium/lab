@@ -99,26 +99,25 @@ modeler.makeIntegrator = function(args) {
         if (n == null) n = 50;      // default window size
 
         var i = 0,
-            Ts = [];
+            Ts = [],
+            T_total = 0;
+
         Ts.length = n;
 
         return function(T) {
-          var totalT = 0,
-              j;
+          T_total -= (Ts[i] || 0);
+          T_total += T;
+          Ts[i] = T;
 
-          for (j = 0; j < n; j++) {
-            totalT += Ts[j];
-          }
-          Ts[i++] = T;
-          if (i >= n) i = 0;
+          if (++i === n) i = 0;
 
-          return totalT / n;
+          return T_total / n;
         };
       },
 
       adjustTemperature = function()  {
         temperatureChangeInProgress = true;
-        // Average over a smaller window if Coulomb force (which should result in larger temperature excursions)
+        // Average over a larger window if Coulomb force (which should result in larger temperature excursions)
         // is in effect. 50 vs. 10 below were chosen by fiddling around, not for any theoretical reasons.
         T_windowed = makeWindowFunction( useCoulombInteraction ? 50 : 10 );
         console.log("temperature change STARTING");
