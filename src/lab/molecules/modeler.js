@@ -844,7 +844,7 @@ modeler.model = function() {
         mol_rmin_radius_factor = options.mol_rmin_radius_factor || 0.38,
         v0,
         sqrt2 = Math.sqrt(2),
-        i, r, c, nrows, ncols, rowSpacing, colSpacing,
+        i, r, c, nrows, ncols, rowSpacing, colSpacing, v, direction,
 
         webgl = !!window.WebGLRenderingContext,
         not_safari = benchmark.what_browser.browser !== 'Safari',
@@ -921,16 +921,18 @@ modeler.model = function() {
         x[i] = c*colSpacing;
         y[i] = r*rowSpacing;
 
-        vx[i] = modeler.Math.normal(v0/sqrt2, v0/sqrt2);
-        vy[i] = modeler.Math.normal(v0/sqrt2, v0/sqrt2);
+        v = modeler.Math.normal(v0, v0/2);
+        direction = 2 * Math.random() * Math.PI;
 
-        ax[i] = 0;
-        ay[i] = 0;
-
-        if ((num - i) > i) {
+        if (i < Math.floor(num/2)) {
+          vx[i] = v * Math.cos(direction);
+          vy[i] = v * Math.sin(direction);
           vx[num-i] = -vx[i];
           vy[num-i] = -vy[i];
         }
+
+        ax[i] = 0;
+        ay[i] = 0;
 
         speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
         charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
