@@ -43,7 +43,8 @@ modeler.math.normal = (function() {
 
 modeler.makeIntegrator = function(args) {
 
-  var setOnceState   = args.setOnceState,
+  var time           = 0,
+      setOnceState   = args.setOnceState,
       readWriteState = args.readWriteState,
       settableState  = args.settableState || {},
 
@@ -138,6 +139,8 @@ modeler.makeIntegrator = function(args) {
         return KE / nodes[0].length;
       };
 
+  outputState.time = time;
+
   return {
 
     useCoulombInteraction      : function(v) {
@@ -176,14 +179,15 @@ modeler.makeIntegrator = function(args) {
       breakOnTargetTemperature = false;
     },
 
-    integrate: function(t, dt) {
+    integrate: function(duration, dt) {
 
-      if (t == null)  t = 1;         // how much "time" to integrate over
-      if (dt == null) dt = 1/50;     // time step
+      if (duration == null)  duration = 1;  // how much "time" to integrate over
+      if (dt == null)        dt = 1/50;     // time step
 
-      var integration_steps = t/dt,       // number of steps
-          dt_sq             = dt*dt,      // time step, squared
-          n = nodes[0].length,            // number of particles
+      var t_start = time,
+          n_steps = Math.floor(duration/dt),  // number of steps
+          dt_sq = dt*dt,                      // time step, squared
+          n = nodes[0].length,                // number of particles
           i,
           j,
           r,
@@ -204,10 +208,9 @@ modeler.makeIntegrator = function(args) {
           // measurements to be accumulated during the integration loop:
           pressure = 0;
 
-      //
-      // Loop through this inner processing loop 'integration_steps' times:
-      //
-      for (iloop = 0; iloop < integration_steps; iloop++) {
+      // update time
+      for (iloop = 0; iloop < n_steps; iloop++) {
+        time = t_start + iloop*dt;
 
         if (temperatureChangeInProgress && Math.abs(T_windowed(T) - T_target) <= T_target * tempTolerance) {
           temperatureChangeInProgress = false;
@@ -357,7 +360,8 @@ modeler.makeIntegrator = function(args) {
       }
 
       // State to be read by the rest of the system:
-      outputState.pressure = pressure / integration_steps;
+      outputState.time = time;
+      outputState.pressure = pressure / (time - t_start);
       outputState.PE = PE;
       outputState.KE = twoKE / 2;
       outputState.T = T;
