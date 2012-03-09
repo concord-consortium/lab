@@ -53,12 +53,12 @@ var model_listener = function(e) {
   layout.update_molecule_positions();
 
   if (model.isNewStep()) {
-    te_data.push( ke+pe );
+    te_data.push( ke );
     if (model_stopped) {
-      ke_graph.add_point( ke+pe );
+      ke_graph.add_point( ke );
       ke_graph.update_canvas();
     } else {
-      ke_graph.add_canvas_point( ke+pe );
+      ke_graph.add_canvas_point( ke );
     }
   } else {
     ke_graph.update();
@@ -107,7 +107,7 @@ var te_data = [];
 var kechart = document.getElementById("ke-chart");
 
 var ke_graph_options = {
-  title:     "Total Energy of the System",
+  title:     "Kinetic Energy of the System",
   xlabel:    "Model Time (ns)",
   xmin:      0,
   xmax:      2500,
@@ -263,7 +263,7 @@ function modelSetup() {
   generate_atoms();
   model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
   model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
-  te_data = [model.ke() + model.pe()];
+  te_data = [model.ke()];
 }
 
 // ------------------------------------------------------------
@@ -285,7 +285,7 @@ var mol_number_to_ke_yxais_map = {
   5: 0.05 * 50 * 5,
   10: 0.01 * 50 * 10,
   20: 0.01 * 50 * 20,
-  50: 80,
+  50: 120,
   100: 0.05 * 50 * 100,
   200: 0.1 * 50 * 200,
   500: 0.2 * 50 * 500
@@ -401,7 +401,7 @@ function modelReset() {
   } else {
     layout.hide_datatable();
   }
-  te_data = [model.ke() + model.pe()];
+  te_data = [model.ke()];
   ke_graph.new_data(te_data);
   ke_graph.hide_canvas();
   if (model_controls) {
