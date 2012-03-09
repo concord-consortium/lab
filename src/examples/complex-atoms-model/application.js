@@ -414,7 +414,7 @@ function modelReset() {
   } else {
     layout.hide_datatable();
   }
-  te_data = [model.ke()];
+  te_data = [model.ke() + model.pe()];
   ke_graph.new_data(te_data);
   ke_graph.hide_canvas();
   if (model_controls) {
