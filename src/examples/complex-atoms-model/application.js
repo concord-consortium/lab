@@ -251,7 +251,6 @@ function generate_atoms() {
         })
       .initialize({
           temperature: temperature,
-          lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked,
           coulomb_forces: layout.coulomb_forces_checkbox.checked,
           model_listener: model_listener
         })
@@ -292,17 +291,6 @@ var mol_number_to_ke_yxais_map = {
   500: 0.2 * 50 * 500
 };
 
-var mol_number_to_lj_sigma_map = {
-  2: 7.0,
-  5: 6.0,
-  10: 5.5,
-  20: 5.0,
-  50: 4.5,
-  100: 4.0,
-  200: 3.5,
-  500: 3.0
-};
-
 var mol_number_to_speed_yaxis_map = {
   2: 2,
   5: 2,
@@ -316,7 +304,6 @@ var mol_number_to_speed_yaxis_map = {
 
 function updateMolNumberViewDependencies() {
   ke_graph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
-  update_sigma(mol_number_to_lj_sigma_map[mol_number]);
   layout.lj_redraw();
   speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
   layout.speed_update();
@@ -398,8 +385,8 @@ function modelStepForward() {
 
 function modelReset() {
   mol_number = +select_molecule_number.value;
-  modelSetup();
   update_coefficients(molecules_lennard_jones.coefficients());
+  modelSetup();
   model.temperature(temperature);
   layout.temperature_control_checkbox.onchange();
   layout.setupScreen();
