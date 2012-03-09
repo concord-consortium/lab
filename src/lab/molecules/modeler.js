@@ -70,6 +70,10 @@ modeler.makeIntegrator = function(args) {
       useLennardJonesInteraction = settableState.useLennardJonesInteraction,
       useThermostat              = settableState.useThermostat,
 
+      // Desired temperature. We will simulate coupling to an infinitely large heat bath at desired
+      // temperature T_target.
+      T_target                   = settableState.targetTemperature,
+
       // Set to true when a temperature change is requested, reset to false when system approaches temperature
       temperatureChangeInProgress = false,
 
@@ -78,16 +82,12 @@ modeler.makeIntegrator = function(args) {
       breakOnTargetTemperature = false,
 
       twoKE = (function() {
-        var twoKE = 0, i, n = nodes.length;
+        var twoKE = 0, i, n = nodes[0].length;
         for (i = 0; i < n; i++) {
           twoKE += speed[i]*speed[i];
         }
         return twoKE;
       }()),
-
-      // Desired temperature. We will simulate coupling to an infinitely large heat bath at desired
-      // temperature T_target.
-      T_target = 1.0,
 
       // Coupling factor for Berendsen thermostat.
       dt_over_tau = 0.01,
@@ -132,6 +132,10 @@ modeler.makeIntegrator = function(args) {
 
         temperatureChangeInProgress = true;
         T_windowed = makeWindowFunction( windowSize );
+      },
+
+      KE_to_T = function(KE) {
+        return KE / nodes[0].length;
       };
 
   return {
@@ -194,7 +198,7 @@ modeler.makeIntegrator = function(args) {
           topwall    = size[1] - radius[0],
 
           PE,                             // potential energy
-          T,                              // temperature
+          T = KE_to_T(twoKE/2),           // temperature
           vRescalingFactor,               // rescaling factor for Berendsen thermostat
 
           // measurements to be accumulated during the integration loop:
@@ -205,14 +209,12 @@ modeler.makeIntegrator = function(args) {
       //
       for (iloop = 0; iloop < integration_steps; iloop++) {
 
-        // Measure the temperature and set the velocity-rescaling factor based on the temperature:
-        T = twoKE / 2 / n;
-
         if (temperatureChangeInProgress && Math.abs(T_windowed(T) - T_target) <= T_target * tempTolerance) {
           temperatureChangeInProgress = false;
           if (breakOnTargetTemperature) break;
         }
 
+        // rescale velocities based on ratio of target temp to measured temp (Berendsen thermostat)
         vRescalingFactor = 1;
         if (temperatureChangeInProgress || useThermostat && T > 0) {
           vRescalingFactor = 1 + dt_over_tau * ((T_target / T) - 1);
@@ -284,6 +286,9 @@ modeler.makeIntegrator = function(args) {
             py[i] = y_initial;
           }
         }
+
+        // Calculate T(t+dt) from x(t+dt), x(t)
+        T = KE_to_T(twoKE/2);
 
         // Calculate a(t+dt), step 1: Zero out the acceleration, in order to accumulate pairwise interactions.
         for (i = 0; i < n; i++) {
@@ -774,7 +779,8 @@ modeler.model = function() {
       settableState: {
         useLennardJonesInteraction : lennard_jones_forces,
         useCoulombInteraction      : coulomb_forces,
-        useThermostat              : temperature_control
+        useThermostat              : temperature_control,
+        targetTemperature          : abstract_to_real_temperature(temperature)
       },
 
       readWriteState: {
@@ -795,8 +801,6 @@ modeler.model = function() {
       outputState: integratorOutputState
     });
 
-    set_temperature(temperature);
-
     tick_history_list_push();
     return model;
   };
@@ -806,7 +810,7 @@ modeler.model = function() {
     integrator.integrate(100, 1/20);
     integrator.relaxToTemperature();
     return model;
-  }
+  };
 
   model.on = function(type, listener) {
     event.on(type, listener);
