@@ -20,7 +20,7 @@ layout.render_datatable = function(reset) {
   var i,
       titlerows = datatable_table.getElementsByClassName("title"),
       datarows = datatable_table.getElementsByClassName("data"),
-      column_titles = ['index', 'px', 'py', 'x', 'y', 'vx', 'vy', 'ax', 'ay', 'speed', 'radius', 'mass', 'charge'],
+      column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'RADIUS', 'HALFMASS', 'CHARGE'],
       i_formatter = d3.format(" 2d"),
       f_formatter = d3.format(" 3.4f"),
       formatters = [i_formatter, f_formatter, f_formatter, f_formatter, 
@@ -57,15 +57,21 @@ layout.render_datatable = function(reset) {
     }
   }
 
-  function add_molecule_data(row, m, el) {
+  function add_molecule_data(row, index, el) {
     el = el || "td";
-    var cells = row.getElementsByTagName(el);
-    var i = -1; while (++i < cells.length) {
-      cells[i].textContent = formatters[i](m[column_titles[i]])
+    var cells = row.getElementsByTagName(el),
+        i = 0;
+    if (cells.length > 0) {
+      cells[0].textContent = index;
+      while (++i < cells.length) {
+        cells[i].textContent = formatters[i](nodes[model.INDICES[column_titles[i]]][index])
+        // cells[i].textContent = formatters[i](m[column_titles[i]])
+      }
     }
-    i--; 
+    i--;
     while (++i < column_titles.length) {
-      add_data(row, formatters[i](m[column_titles[i]]));
+      add_data(row, formatters[i](nodes[model.INDICES[column_titles[i]]][index]));
+      // add_data(row, formatters[i](m[column_titles[i]]));
     }
   }
 
@@ -84,8 +90,8 @@ layout.render_datatable = function(reset) {
 
   function add_data_rows(n) {
     var i = -1, j = datarows.length;
-    while (++i < n) { 
-      if (i >= datarows.length) { add_row() } 
+    while (++i < n) {
+      if (i >= datarows.length) { add_row() }
     }
     while (--j >= i) {
       datatable_table.removeChild(datarows[i])
@@ -111,7 +117,7 @@ layout.render_datatable = function(reset) {
   }
   if (reset) { datarows = add_data_rows(atoms.length); }
   i = -1; while (++i < atoms.length) {
-    add_molecule_data(datarows[i], atoms[i]);
+    add_molecule_data(datarows[i], i);
   }
 }
 
