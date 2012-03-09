@@ -104,19 +104,26 @@ modeler.makeIntegrator = function(args) {
         if (windowSize == null) windowSize = 50;      // default window size
 
         var i = 0,
-            Ts = [],
-            T_total = 0;
+            vals = [],
+            sum_vals = 0;
 
-        Ts.length = windowSize;
-
-        return function(T) {
-          T_total -= (Ts[i] || 0);
-          T_total += T;
-          Ts[i] = T;
+        // Windowed averaging function which accepts a value and returns:
+        //  * NaN if the window hasn't filled up yet
+        //  * the windowed average once the window fills up
+        return function(val) {
+          sum_vals -= (vals[i] || 0);
+          sum_vals += val;
+          vals[i] = val;
 
           if (++i === windowSize) i = 0;
 
-          return T_total / windowSize;
+          if (vals.length === windowSize) {
+            return sum_vals / windowSize;
+          }
+          else {
+            // don't allow any numerical comparisons with result to be true
+            return NaN;
+          }
         };
       },
 
