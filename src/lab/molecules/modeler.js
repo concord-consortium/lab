@@ -177,7 +177,7 @@ modeler.makeIntegrator = function(args) {
       if (T != null) T_target = T;
 
       // override window size
-      adjustTemperature({ windowSize: 10 });
+      adjustTemperature();
 
       breakOnTargetTemperature = true;
       while (temperatureChangeInProgress) {
@@ -298,7 +298,7 @@ modeler.makeIntegrator = function(args) {
         }
 
         // Calculate T(t+dt) from x(t+dt), x(t)
-        T = KE_to_T(twoKE/2);
+        T = KE_to_T( twoKE/2 );
 
         // Calculate a(t+dt), step 1: Zero out the acceleration, in order to accumulate pairwise interactions.
         for (i = 0; i < n; i++) {
@@ -524,10 +524,6 @@ modeler.model = function() {
     }
     max_coulomb_distance = i;
   }
-
-  //
-  // Main Model Integration Loop
-  //
 
   function tick_history_list_push() {
     var i,
