@@ -65,13 +65,11 @@ layout.render_datatable = function(reset) {
       cells[0].textContent = index;
       while (++i < cells.length) {
         cells[i].textContent = formatters[i](nodes[model.INDICES[column_titles[i]]][index])
-        // cells[i].textContent = formatters[i](m[column_titles[i]])
       }
     }
     i--;
     while (++i < column_titles.length) {
       add_data(row, formatters[i](nodes[model.INDICES[column_titles[i]]][index]));
-      // add_data(row, formatters[i](m[column_titles[i]]));
     }
   }
 
