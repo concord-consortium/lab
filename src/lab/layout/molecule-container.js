@@ -16,7 +16,10 @@ var mc_cx, mc_cy, mc_padding, mc_size,
     pc_xpos, pc_ypos,
     model_time_formatter = d3.format("5.3f"),
     ns_string_prefix = "time: ",
-    ns_string_suffix = " (ns)";
+    ns_string_suffix = " (ns)",
+    mc_orange_gradient,
+    mc_blue_gradient,
+    mc_green_gradient;
 
 function modelTimeLabel() {
   return ns_string_prefix + model_time_formatter(model.stepCounter() * sample_time) + ns_string_suffix;
@@ -184,6 +187,61 @@ layout.finishSetupMoleculeContainer = function() {
       .attr("height", mc_size.height)
       .attr("viewBox", "0 0 "+mc_size.width+" "+mc_size.height);
 
+    // add gradient defs
+    mc_orange_gradient = layout.mc_container.append("svg:defs")
+        .append("svg:radialGradient")
+        .attr("id", "neg-grad")
+        .attr("cx", "50%")
+        .attr("cy", "50%")
+        .attr("r", "50%")
+        .attr("fx", "35%")
+        .attr("fy", "35%");
+    mc_orange_gradient.append("svg:stop")
+        .attr("stop-color", "#f9eec1")
+        .attr("offset", "0%");
+    mc_orange_gradient.append("svg:stop")
+        .attr("stop-color", "#f4b626")
+        .attr("offset", "50%");
+    mc_orange_gradient.append("svg:stop")
+        .attr("stop-color", "#eb8723")
+        .attr("offset", "100%");
+
+    mc_blue_gradient = layout.mc_container.append("svg:defs")
+        .append("svg:radialGradient")
+        .attr("id", "pos-grad")
+        .attr("cx", "50%")
+        .attr("cy", "50%")
+        .attr("r", "50%")
+        .attr("fx", "35%")
+        .attr("fy", "35%");
+    mc_blue_gradient.append("svg:stop")
+        .attr("stop-color", "#bddfdf")
+        .attr("offset", "0%");
+    mc_blue_gradient.append("svg:stop")
+        .attr("stop-color", "#8cbbb8")
+        .attr("offset", "50%");
+    mc_blue_gradient.append("svg:stop")
+        .attr("stop-color", "#3a878b")
+        .attr("offset", "100%");
+
+    mc_green_gradient = layout.mc_container.append("svg:defs")
+        .append("svg:radialGradient")
+        .attr("id", "neu-grad")
+        .attr("cx", "50%")
+        .attr("cy", "50%")
+        .attr("r", "50%")
+        .attr("fx", "35%")
+        .attr("fy", "35%");
+    mc_green_gradient.append("svg:stop")
+        .attr("stop-color", "#a6caaa")
+        .attr("offset", "0%");
+    mc_green_gradient.append("svg:stop")
+        .attr("stop-color", "#75a643")
+        .attr("offset", "50%");
+    mc_green_gradient.append("svg:stop")
+        .attr("stop-color", "#2a7216")
+        .attr("offset", "100%");
+
     // add Chart Title
     if (mc_graph.title) {
       mc_vis.append("svg:text")
@@ -333,6 +391,22 @@ layout.setup_particles = function() {
   layout.mc_container.selectAll("circle").remove();
   layout.mc_container.selectAll("g").remove();
 
+  particle = layout.mc_container.selectAll("circle").data(atoms);
+
+  particle.enter().append("svg:circle")
+      .attr("r",  function(d, i) { return mc_x(get_radius(i)); })
+      .attr("cx", function(d, i) { return mc_x(get_x(i)); })
+      .attr("cy", function(d, i) { return mc_y(get_y(i)); })
+      .style("fill", function(d, i) {
+        if (layout.coulomb_forces_checkbox.checked) {
+          return (mc_x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')"
+        } else {
+          return "url('#neu-grad')"
+        }
+      })
+      .on("mousedown", molecule_mousedown)
+      .on("mouseout", molecule_mouseout);
+
   var font_size = mc_x(ljf.rmin * mol_rmin_radius_factor * 1.3);
   if (mol_number > 100) { font_size *= 0.9 };
 
@@ -349,13 +423,15 @@ layout.setup_particles = function() {
     labelEnter.append("svg:text")
         .attr("class", "index")
         .attr("font-size", font_size)
+        .attr("style", "opacity: .4")
         .attr("x", 0)
         .attr("y", "0.31em")
         .text(function(d) { return d.index; })
   } else {
     labelEnter.append("svg:text")
         .attr("class", "index")
-        .attr("font-size", font_size * 1.5)
+        .attr("font-size", font_size)
+        .attr("style", "opacity: .4")
         .attr("x", 0)
         .attr("y", "0.31em")
         .text(function(d, i) {
@@ -366,22 +442,6 @@ layout.setup_particles = function() {
           }
         })
   }
-
-  particle = layout.mc_container.selectAll("circle").data(atoms);
-
-  particle.enter().append("svg:circle")
-      .attr("r",  function(d, i) { return mc_x(get_radius(i)); })
-      .attr("cx", function(d, i) { return mc_x(get_x(i)); })
-      .attr("cy", function(d, i) { return mc_y(get_y(i)); })
-      .style("fill", function(d, i) {
-        if (layout.coulomb_forces_checkbox.checked) {
-          return (mc_x(get_charge(i)) > 0) ? "#5A63DB" : "#a02c2c"
-        } else {
-          return "#2ca02c"
-        }
-      })
-      .on("mousedown", molecule_mousedown)
-      .on("mouseout", molecule_mouseout);
 }
 
 function molecule_mouseover(d) {
