@@ -17,6 +17,8 @@ def command(cmd)
   system(cmd)
 end
 
+require './src/bourbon/lib/bourbon.rb'
+
 guard 'sass',         :input => 'src/examples', :output => 'dist/examples', :all_on_start => false
 guard 'coffeescript', :input => 'src/examples', :output => 'dist/examples', :all_on_start => false
 guard 'haml',         :input => 'src', :output => 'dist', :all_on_start => false do
@@ -35,7 +37,7 @@ guard 'shell' do
     command("make test")
   end
   watch("src/index.sass") do
-    command("sass src/index.sass dist/index.css")
+    command("bin/sass -r ./src/bourbon/lib/bourbon.rb src/index.sass dist/index.css")
   end
   watch(%r{test\/.+\.js$}) do
     system("make test")
