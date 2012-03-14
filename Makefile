@@ -58,6 +58,7 @@ all: \
 clean:
 	rm -rf dist
 	rm -rf lab
+	rm -rf md-engine
 	rm -rf node_modules
 	git submodule update --init --recursive
 	rm -f vendor/jquery/dist/jquery.min.js
