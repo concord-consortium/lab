@@ -61,7 +61,7 @@ end
 
 # , :api_version => '1.6', :port => '35728'
 guard 'livereload' do
-  watch(%r{(examples/).+\.(css|js|html)})
+  watch(%r{(dist/).+\.(css|js|html)})
 end
 
 guard 'markdown', :kram_ops => { :toc_levels => [2,3,4,5] } do
