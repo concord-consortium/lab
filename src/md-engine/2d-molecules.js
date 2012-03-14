@@ -401,7 +401,12 @@ makeIntegrator = function(args) {
     },
 
     useLennardJonesInteraction : function(v) {
-      useLennardJonesInteraction = v;
+      if (v !== useLennardJonesInteraction) {
+        useLennardJonesInteraction = v;
+        if (useLennardJonesInteraction) {
+          adjustTemperature();
+        }
+      }
     },
 
     useThermostat              : function(v) {
