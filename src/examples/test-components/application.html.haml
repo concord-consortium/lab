@@ -5,6 +5,9 @@
     %title Plain Components
     %script{:src => "../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
     %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}    
+    %script{:src => "http://use.typekit.com/hdw8ayt.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      try{Typekit.load();}catch(e){}   
     %link{:href => "../../lab/css/components.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "application.css", :rel => "stylesheet", :type => "text/css"}/
 
@@ -14,8 +17,9 @@
 
   %body
     #header
-      %a(href="http://lab.dev.concord.org/test_components/application.html") 
-        Testing Components
+      %h1
+        %a(href="http://lab.dev.concord.org/test_components/application.html") 
+          Testing Components
     #content
       .example
         Simple Slider:
