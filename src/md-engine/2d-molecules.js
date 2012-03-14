@@ -695,8 +695,7 @@ model.getIntegrator = function(options, integratorOutputState) {
     outputState: integratorOutputState
   });
 
-  // set up initial state
-  integrator.integrate(0);
+  integrator.integrate(0.01, 0.01);
 
   return integrator;
 };
