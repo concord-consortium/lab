@@ -3,17 +3,17 @@
 body
   font-size: 16px
   font-family: $verdana
-  margin: 12px 24px 12px 24px
+  margin: 0
+  padding: 0
   background-color: #FFFFFF
   color: #3f3f3f
 
 #header
-  color: #FFF
-  padding: 8px 60px
+  background: #eb8723
+  color: #fff
+  padding: 1em
   font-size: 16px
   font-weight: bold
-  @include linear-gradient(#888, #444)
-  @include box-shadow(0 0 6px 3px #000)
 
 #fullscreen img
   margin-top: 8px
@@ -25,13 +25,15 @@ a
     color: #da5936
 
 h1
-  font: 16px
+  color: #fff
+  font: 700 1.5em museo-sans, georgia, times, 'times new roman', serif
 
 h2
-  font: 14px
+  color: #5f5f5f
+  font: 500 1.2em museo-slab, georgia, times, 'times new roman', serif
 
 h3
-  font: 12px
+  font: 700 1.165em museo-slab, georgia, times, 'times new roman', serif
 
 ul
   margin: 1em 0em 1em 0em
@@ -41,17 +43,18 @@ ul
     padding: 0em 0em 0em 0em
 
 .item-list
+  padding: 1em
   ul
     list-style-type: none
-    margin: 1em 1em 1em 1em
-    padding: 0em 0em 0em 1em
+    margin: .5em 0 0
+    padding: 0
     li
-      margin: 0.5em 0.2em 0.5em 0.2em
-      padding: 0em 0em 0em 0em
+      margin: .5em 0.2em 0 0
+      padding: 0
   ol
-    margin: 1em 1em 1em 1em
-    padding: 0em 0em 0em 1em
+    margin: .5em 0 0
+    padding: 0
     li
-      margin: 0.5em 0.2em 0.5em 0.2em
-      padding: 0em 0em 0em 0em
+      margin: .5em 0.2em 0 0
+      padding: 0
 
