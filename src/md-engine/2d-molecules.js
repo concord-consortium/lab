@@ -27,10 +27,12 @@ var model = exports.model = {},
     }()),
 
     // revisit these for export:
-    minLJAttraction = 0.001,
+    minLJAttraction =    0.001,
+    maxLJRepulsion  = -200.0,
     cutoffDistance_LJ,
 
-    minCoulombForce = 0.01,
+    minCoulombForce =   0.01,
+    maxCoulombForce = 20.0,
     cutoffDistance_Coulomb,
 
     size = [100, 100],
@@ -93,7 +95,6 @@ model.setSize = function(x) {
 //
 setup_ljf_limits = function() {
   var i, f,
-      maxLJRepulsion = -200.0,
       min_ljf_distance;
 
   for (i = 0; i <= 100; i+=0.001) {
@@ -125,7 +126,6 @@ setup_ljf_limits = function() {
 //
 setup_coulomb_limits = function() {
   var i, f,
-      maxCoulombForce = 20.0,
       min_coulomb_distance;
 
   for (i = 0.001; i <= 100; i+=0.001) {
@@ -578,7 +578,7 @@ makeIntegrator = function(args) {
               r = Math.sqrt(r_sq);
 
               if (useLennardJonesInteraction && r < cutoffDistance_LJ) {
-                f = lennardJones.force(r);
+                f = Math.max(lennardJones.force(r), maxLJRepulsion);
                 fx = f * (dx / r);
                 fy = f * (dy / r);
 
@@ -588,7 +588,7 @@ makeIntegrator = function(args) {
                 ay[j] -= fy;
               }
               if (useCoulombInteraction && r < cutoffDistance_Coulomb) {
-                f = coulomb.force(r, charge[i], charge[j]);
+                f = Math.min(coulomb.force(r, charge[i], charge[j]), maxCoulombForce);
                 fx = f * (dx / r);
                 fy = f * (dy / r);
 
