@@ -190,8 +190,7 @@ dist/vendor/jquery-ui:
 	cp vendor/jquery-ui/js/jquery-ui-1.8.17.custom.min.js dist/vendor/jquery-ui/js/jquery-ui.custom.min.js
 	cp -R vendor/jquery-ui/css dist/vendor/jquery-ui
 
-md-engine: \
-	md-engine/2d-molecules.js
+md-engine:
 	mkdir -p md-engine
 
 md-engine/2d-molecules.js: $(MD_ENGINE_JS_FILES)
