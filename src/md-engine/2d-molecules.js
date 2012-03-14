@@ -458,11 +458,11 @@ makeIntegrator = function(args) {
           rightwall  = size[0] - radius[0],
           topwall    = size[1] - radius[0],
 
-          PE,                             // potential energy
-          CM,                             // center of mass as [x, y]
-          dCM = [0, 0],                   // change in center of mass as [dx, dy]
-          T = KE_to_T(twoKE/2),           // temperature
-          vRescalingFactor,               // rescaling factor for Berendsen thermostat
+          PE,                               // potential energy
+          CM = arrays.copy(CM_initial, []), // center of mass as [x, y]
+          dCM = [0, 0],                     // change in center of mass as [dx, dy]
+          T = KE_to_T(twoKE/2),             // temperature
+          vRescalingFactor,                 // rescaling factor for Berendsen thermostat
 
           // measurements to be accumulated during the integration loop:
           pressure = 0;

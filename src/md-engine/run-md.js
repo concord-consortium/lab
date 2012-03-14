@@ -25,15 +25,15 @@ charge   = model.charge;
 integrator = model.getIntegrator();
 state      = integrator.getOutputState();
 
-exports.run = function() {
-  console.log("Relaxing...");
-  integrator.relaxToTemperature();
-  console.log("Relaxed. Temperature is ", state.T);
+printCM = function(cm) {
+  console.log(cm[0] + ', ' + cm[1]);
+};
 
-  for (var i = 0; i < 10; i++) {
-    console.log("Integrating...");
+exports.run = function() {
+  printCM(state.CM);
+
+  while (true) {
     integrator.integrate();
-    console.log("temperature: ", state.T);
-    console.log();
+    printCM(state.CM);
   }
 };
