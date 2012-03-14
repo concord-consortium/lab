@@ -393,60 +393,6 @@ _**Note**: Using a more specific assertion usually results in more useful error 
 There are also many interesting test examples and patterns in the 
 [d3.js test directory](https://github.com/mbostock/d3/tree/master/test) that can be adapted for use in Lab.
 
-### A Simple Example of Test Driven Development
-
-Here's a simple example that is part of the tests for `lab.arrays.js` to test the `arrays.max()` function:
-
-    "find max in array with negative and positive numbers": function(max) {
-      assert.equal(max([3, -1, 0, 1, 2, 3]), 3);
-    },
-
-The 'model stepping' tests are a good example where the tests help helped drive new features. The basic 
-features I was testing in this section relate to the existing functionality exposed by the Stop, Start, Go, and 
-Reset buttons as wells as the extended keyboard controls that allow stepping forward and backwards a step at a time.
-
-First I created this test that passed:
-
-    "after running running one tick the model is at step 1": function(model) {
-      model.tick();
-      assert.equal(model.stepCounter(), 1);
-      assert.isTrue(model.isNewStep());
-    },
-
-In thinking about driving out changes to KE, PE and Temperature of the molecular model itself I realized 
-I'd like the capability to run a specific number of steps forward and then check the results.
-
-I then wrote this test that failed -- because the model.tick() function didn't yet take an optional argument to 
-run multiple steps forward:
-
-    "after running 9 more ticks the model is at step 10": function(model) {
-      model.tick(9);
-      assert.equal(model.stepCounter(), 10);
-      assert.isTrue(model.isNewStep());
-    },
-
-After saving the change I saw the new test failure reported in my console. I then implemented the new
-feature in the actual `src/lab/molecules.js`. Less than a second after saving the file the tests 
-completed and the report showed it passing.
-
-This is a very simple example -- but part of the value of this kind of test driven development is in first 
-thinking of how something should behave rather than in how to get it to actually do the work.
-
-Since I already had this function for running one model step:
-
-    model.tick()
-
-Adding an optional numeric argument for running more steps is a fine way to express the intent of the new feature:
-
-    model.tick(9)
-
-In more complicated coding thinking about how to express the intent clearly and then what the result 
-should be if that intent is successful **FIRST** ... and then 'driving out' the actual implementation to 
-achieve that result can result in a better architecture -- and of course you also end up with tests.
-
-Because the tests run SO quickly I can interactively change the code in the module or the test and 
-immediately see results.
-
 ### Debugging Tests using the node debugger
 
 Sometimes it can be helpful to break into a debugger when there is a problem in either the code 
@@ -514,6 +460,60 @@ Enter **ctrl-D** to exit the debugger.
 [node-inspector](https://github.com/dannycoates/node-inspector)
 [npm package for node-inspector](http://search.npmjs.org/#/node-inspector)
 
+### A Simple Example of Test Driven Development
+
+Here's a simple example that is part of the tests for `lab.arrays.js` to test the `arrays.max()` function:
+
+    "find max in array with negative and positive numbers": function(max) {
+      assert.equal(max([3, -1, 0, 1, 2, 3]), 3);
+    },
+
+The 'model stepping' tests are a good example where the tests help helped drive new features. The basic 
+features I was testing in this section relate to the existing functionality exposed by the Stop, Start, Go, and 
+Reset buttons as wells as the extended keyboard controls that allow stepping forward and backwards a step at a time.
+
+First I created this test that passed:
+
+    "after running running one tick the model is at step 1": function(model) {
+      model.tick();
+      assert.equal(model.stepCounter(), 1);
+      assert.isTrue(model.isNewStep());
+    },
+
+In thinking about driving out changes to KE, PE and Temperature of the molecular model itself I realized 
+I'd like the capability to run a specific number of steps forward and then check the results.
+
+I then wrote this test that failed -- because the model.tick() function didn't yet take an optional argument to 
+run multiple steps forward:
+
+    "after running 9 more ticks the model is at step 10": function(model) {
+      model.tick(9);
+      assert.equal(model.stepCounter(), 10);
+      assert.isTrue(model.isNewStep());
+    },
+
+After saving the change I saw the new test failure reported in my console. I then implemented the new
+feature in the actual `src/lab/molecules.js`. Less than a second after saving the file the tests 
+completed and the report showed it passing.
+
+This is a very simple example -- but part of the value of this kind of test driven development is in first 
+thinking of how something should behave rather than in how to get it to actually do the work.
+
+Since I already had this function for running one model step:
+
+    model.tick()
+
+Adding an optional numeric argument for running more steps is a fine way to express the intent of the new feature:
+
+    model.tick(9)
+
+In more complicated coding thinking about how to express the intent clearly and then what the result 
+should be if that intent is successful **FIRST** ... and then 'driving out' the actual implementation to 
+achieve that result can result in a better architecture -- and of course you also end up with tests.
+
+Because the tests run SO quickly I can interactively change the code in the module or the test and 
+immediately see results.
+
 ### Generated Lab Modules: `lab/`
 
 The `lab/` directory contains the Lab modules generated from JavaScript source code in the `src/lab/`
@@ -567,6 +567,20 @@ directory when either `make` or `bin/guard` are run.
 are distributed under both BSD and MIT licenses; [jQuery](http://jquery.com/) is licensed under 
 the MIT license; [jQuery-UI](jQuery-UI) is distributed under both the MIT license and GPL licenses;
 [MathJax](http://www.mathjax.org/) is distributed under the Apache 2.0 license.
+
+## HTML and CSS
+
+[Haml](http://haml-lang.com/) is used to generate most of the HTML in the `dist/` directory.
+
+[kramdown](http://kramdown.rubyforge.org/) is used to generate `readme.html` in `dist/`. from Mardown markup.
+
+[Sass](http://sass-lang.com/) is used to generate the CSS assets. The Sass markup may be in the form of
+`*.sass` or `*.scss` files
+
+The [Bourbon](http://thoughtbot.com/bourbon/) library of Sass mixins is included.
+
+- [Bourbon documentation](http://thoughtbot.com/bourbon/)
+- [ASCIIcast 330: Better SASS With Bourbon](http://asciicasts.com/episodes/330-better-sass-with-bourbon)
 
 ## Updating [http://lab.dev.concord.org/](http://lab.dev.concord.org/)
 
@@ -686,6 +700,15 @@ More about using npm for development:
 
 - [documentation](http://sass-lang.com/docs.html)
 - [reference](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)
+
+#### [kramdown](http://kramdown.rubyforge.org/)
+
+[kramdown](http://kramdown.rubyforge.org/) is used to generate HTML from Mardown markup.
+
+#### [Bourbon](http://thoughtbot.com/bourbon/) 
+
+- [Bourbon documentation](http://thoughtbot.com/bourbon/)
+- [ASCIIcast 330: Better SASS With Bourbon](http://asciicasts.com/episodes/330-better-sass-with-bourbon)
 
 #### [guard](https://github.com/guard/guard)
 
