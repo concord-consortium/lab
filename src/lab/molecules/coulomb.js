@@ -13,6 +13,6 @@ molecules_coulomb.force = function(distance, q1, q2) {
   return ke_constant * ((q1 * q2) / (distance * distance));
 };
 
-molecules_coulomb.energy = function(distance, q1, q2) {
+molecules_coulomb.potential = function(distance, q1, q2) {
   return -ke_constant * ((q1 * q2) / distance);
 };

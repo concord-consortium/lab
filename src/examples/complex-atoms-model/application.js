@@ -1,4 +1,5 @@
-//
+/*globals modeler, ModelPlayer, layout, graphx, molecules_lennard_jones, modelController */
+
 // simplemolecules.js
 //
 
@@ -11,7 +12,7 @@
 var autostart = true,
     mol_number = 50,
     sample_time = 0.01,
-    temperature = 3,
+    temperature = 5,
     maximum_model_steps = 5000,
     molecules = [], model,
     lj_sigma_min = 1,
@@ -24,6 +25,8 @@ var autostart = true,
     frame_number = 0,
     model_stopped = true,
     model = modeler.model(),
+    step_counter,
+    atoms,
     nodes;
 
 // ------------------------------------------------------------
@@ -42,20 +45,20 @@ var model_player = new ModelPlayer(model);
 
 var model_listener = function(e) {
   var ke = model.ke(),
-      step_counter = model.stepCounter(),
-      total_steps = model.steps();
+      pe = model.pe(),
+      step_counter = model.stepCounter();
 
   layout.speed_update();
 
   layout.update_molecule_positions();
 
   if (model.isNewStep()) {
-    ke_data.push(ke);
+    te_data.push( ke );
     if (model_stopped) {
-      ke_graph.add_point(ke);
+      ke_graph.add_point( ke );
       ke_graph.update_canvas();
     } else {
-      ke_graph.add_canvas_point(ke)
+      ke_graph.add_canvas_point( ke );
     }
   } else {
     ke_graph.update();
@@ -65,8 +68,8 @@ var model_listener = function(e) {
   }
   if (step_counter >= maximum_model_steps) { modelStop(); }
   layout.displayStats();
-  if (layout.datatable_visible) { layout.render_datatable() }
-}
+  if (layout.datatable_visible) { layout.render_datatable(); }
+};
 
 // ------------------------------------------------------------
 //
@@ -75,23 +78,23 @@ var model_listener = function(e) {
 // ------------------------------------------------------------
 
 var mc_graph = {
-  title:               "Simple Molecules",
-  xlabel:              "X position (nm)",
-  ylabel:              "Y position (nm)",
-  playback_controller:  true,
-  model_time_label:     true,
-  grid_lines:           true,
-  xunits:               true,
-  yunits:               true,
-  atom_mubers:          false,
-  xmin:                 0,
-  xmax:                 100,
-  ymin:                 0,
-  ymax:                 100
-};
+      title:               "Simple Molecules",
+      xlabel:              "X position (nm)",
+      ylabel:              "Y position (nm)",
+      playback_controller:  true,
+      model_time_label:     true,
+      grid_lines:           true,
+      xunits:               true,
+      yunits:               true,
+      atom_mubers:          false,
+      xmin:                 0,
+      xmax:                 100,
+      ymin:                 0,
+      ymax:                 100
+    };
 
-mc_graph.xdomain = mc_graph.xmax - mc_graph.xmin,
-mc_graph.ydomain = mc_graph.ymax - mc_graph.ymin;
+    mc_graph.xdomain = mc_graph.xmax - mc_graph.xmin;
+    mc_graph.ydomain = mc_graph.ymax - mc_graph.ymin;
 
 // ------------------------------------------------------------
 //
@@ -99,7 +102,7 @@ mc_graph.ydomain = mc_graph.ymax - mc_graph.ymin;
 //
 // ------------------------------------------------------------
 
-var ke_data = [];
+var te_data = [];
 
 var kechart = document.getElementById("ke-chart");
 
@@ -112,7 +115,7 @@ var ke_graph_options = {
   ylabel:    null,
   ymin:      0.0,
   ymax:      200,
-  dataset:   ke_data,
+  dataset:   te_data,
   container: kechart
 };
 
@@ -210,10 +213,10 @@ function update_coefficients(coefficients) {
   // change the x value for epsilon to match the new rmin value
   lj_data.variables[0].x = rmin;
 
-  lennard_jones_potential = []
+  lennard_jones_potential = [];
 
   for(var r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
-    y = molecules_lennard_jones.potential(r)
+    y = molecules_lennard_jones.potential(r);
     if (y < 100) {
       lennard_jones_potential.push([r, y]);
     }
@@ -248,10 +251,10 @@ function generate_atoms() {
         })
       .initialize({
           temperature: temperature,
-          lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked,
           coulomb_forces: layout.coulomb_forces_checkbox.checked,
           model_listener: model_listener
-        });
+        })
+      .relax();
   atoms = model.get_atoms();
   nodes = model.get_nodes();
 }
@@ -260,8 +263,7 @@ function modelSetup() {
   generate_atoms();
   model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
   model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
-  ke_data = [model.ke()];
-  model.set_temperature_control(true);
+  te_data = [model.ke()];
 }
 
 // ------------------------------------------------------------
@@ -279,26 +281,15 @@ function selectMoleculeNumberChange() {
 }
 
 var mol_number_to_ke_yxais_map = {
-  2: 0.02,
-  5: 0.05,
-  10: 0.01,
-  20: 0.01,
-  50: 0.02,
-  100: 0.05,
-  200: 0.1,
-  500: 0.2
-}
-
-var mol_number_to_lj_sigma_map = {
-  2: 7.0,
-  5: 6.0,
-  10: 5.5,
-  20: 5.0,
-  50: 4.5,
-  100: 4.0,
-  200: 3.5,
-  500: 3.0
-}
+  2: 0.02 * 50 * 2,
+  5: 0.05 * 50 * 5,
+  10: 0.01 * 50 * 10,
+  20: 0.01 * 50 * 20,
+  50: 120,
+  100: 0.05 * 50 * 100,
+  200: 0.1 * 50 * 200,
+  500: 0.2 * 50 * 500
+};
 
 var mol_number_to_speed_yaxis_map = {
   2: 2,
@@ -309,14 +300,13 @@ var mol_number_to_speed_yaxis_map = {
   100: 15,
   200: 20,
   500: 40
-}
+};
 
 function updateMolNumberViewDependencies() {
   ke_graph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
-  update_sigma(mol_number_to_lj_sigma_map[mol_number]);
   layout.lj_redraw();
   speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
-  layout.speed_update()
+  layout.speed_update();
   layout.speed_redraw();
 }
 
@@ -379,7 +369,7 @@ function modelGo() {
 function modelStepBack() {
   modelStop();
   model.stepBack();
-  ke_graph.new_data(ke_data);
+  ke_graph.new_data(te_data);
 }
 
 function modelStepForward() {
@@ -395,8 +385,8 @@ function modelStepForward() {
 
 function modelReset() {
   mol_number = +select_molecule_number.value;
-  modelSetup();
   update_coefficients(molecules_lennard_jones.coefficients());
+  modelSetup();
   model.temperature(temperature);
   layout.temperature_control_checkbox.onchange();
   layout.setupScreen();
@@ -409,10 +399,10 @@ function modelReset() {
   if (layout.datatable_visible) {
     layout.render_datatable(true);
   } else {
-    layout.hide_datatable()
+    layout.hide_datatable();
   }
-  ke_data = [model.ke()];
-  ke_graph.new_data(ke_data);
+  te_data = [model.ke()];
+  ke_graph.new_data(te_data);
   ke_graph.hide_canvas();
   if (model_controls) {
     model_controls_inputs[0].checked = true;
@@ -439,21 +429,25 @@ function handleKeyboardForModel(evt) {
   if (evt) {
     switch (evt.keyCode) {
       case 32:                // spacebar
-      model_stopped ? modelGo() : modelStop();
-      evt.preventDefault();
-      break;
+        if (model_stopped) {
+          modelGo();
+        } else {
+          modelStop();
+        }
+        evt.preventDefault();
+        break;
       case 13:                // return
-      modelGo();
-      evt.preventDefault();
-      break;
+        modelGo();
+        evt.preventDefault();
+        break;
       case 37:                // left-arrow
-      modelStepBack();
-      evt.preventDefault();
-      break;
+        modelStepBack();
+        evt.preventDefault();
+        break;
       case 39:                // right-arrow
-      modelStepForward();
-      evt.preventDefault();
-      break;
+        modelStepForward();
+        evt.preventDefault();
+        break;
     }
   }
 }
