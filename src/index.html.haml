@@ -3,11 +3,15 @@
   %head
     %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
     %title HTML5-based scientific models, visualizations, graphing, and probeware
+    %script{:src => "http://use.typekit.com/hdw8ayt.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      try{Typekit.load();}catch(e){}   
     %link{:href => "index.css", :rel => "stylesheet", :type => "text/css"}/
   %body
-    %h1 HTML5-based scientific models, visualizations, graphing, and probeware
-    %h2 Molecular Modeling Examples
+    #header
+      %h1 HTML5-based scientific models, visualizations, graphing, and probeware
     %div.item-list
+      %h2 Molecular Modeling Examples
       %ul
         %li
           %a{:href => 'examples/simple-atoms-model/simple-atoms-model.html'} Simple Atoms Model
@@ -16,8 +20,8 @@
         %li
           %a{:href => 'examples/complex-atoms-model/complex-atoms-model.html'} More Complex Atoms Model
 
-    %h2 Graphing Examples
     %div.item-list
+      %h2 Graphing Examples
       %ul
         %li
           %a{:href => 'examples/surface-temperature/surface-temperature.html'} Earth's Surface Temperature
@@ -28,8 +32,8 @@
         %li
           %a{:href => 'examples/simplegraph/simplegraph.html'} Simple Graph
 
-    %h2 Experiments
     %div.item-list
+      %h2 Experiments
       %ul
         %li
           %a{:href => 'examples/test-components/application.html'} Unwired Components Test
@@ -46,8 +50,8 @@
         %li
           %a{:href => 'examples/simplebeam/simplebeam.html'} simplebeam
 
-    %h2 Tests
     %div.item-list
+      %h2 Tests
       %ul
         %li
           %a{:href => 'tests/simple-graphs/one-graph.html'} One Graph Test (prototypical class-pattern)
@@ -58,9 +62,8 @@
         %li
           %a{:href => 'tests/simple-graphs-closures/two-graphs.html'} Two Graphs Test (closure-pattern)
 
-
-    %h2 Documentation
     %div.item-list
+      %h2 Documentation
       %ul
         %li
           %a{:href => 'readme.html'} Read Me
