@@ -393,6 +393,60 @@ _**Note**: Using a more specific assertion usually results in more useful error 
 There are also many interesting test examples and patterns in the 
 [d3.js test directory](https://github.com/mbostock/d3/tree/master/test) that can be adapted for use in Lab.
 
+### A Simple Example of Test Driven Development
+
+Here's a simple example that is part of the tests for `lab.arrays.js` to test the `arrays.max()` function:
+
+    "find max in array with negative and positive numbers": function(max) {
+      assert.equal(max([3, -1, 0, 1, 2, 3]), 3);
+    },
+
+The 'model stepping' tests are a good example where the tests help helped drive new features. The basic 
+features I was testing in this section relate to the existing functionality exposed by the Stop, Start, Go, and 
+Reset buttons as wells as the extended keyboard controls that allow stepping forward and backwards a step at a time.
+
+First I created this test that passed:
+
+    "after running running one tick the model is at step 1": function(model) {
+      model.tick();
+      assert.equal(model.stepCounter(), 1);
+      assert.isTrue(model.isNewStep());
+    },
+
+In thinking about driving out changes to KE, PE and Temperature of the molecular model itself I realized 
+I'd like the capability to run a specific number of steps forward and then check the results.
+
+I then wrote this test that failed -- because the model.tick() function didn't yet take an optional argument to 
+run multiple steps forward:
+
+    "after running 9 more ticks the model is at step 10": function(model) {
+      model.tick(9);
+      assert.equal(model.stepCounter(), 10);
+      assert.isTrue(model.isNewStep());
+    },
+
+After saving the change I saw the new test failure reported in my console. I then implemented the new
+feature in the actual `src/lab/molecules.js`. Less than a second after saving the file the tests 
+completed and the report showed it passing.
+
+This is a very simple example -- but part of the value of this kind of test driven development is in first 
+thinking of how something should behave rather than in how to get it to actually do the work.
+
+Since I already had this function for running one model step:
+
+    model.tick()
+
+Adding an optional numeric argument for running more steps is a fine way to express the intent of the new feature:
+
+    model.tick(9)
+
+In more complicated coding thinking about how to express the intent clearly and then what the result 
+should be if that intent is successful **FIRST** ... and then 'driving out' the actual implementation to 
+achieve that result can result in a better architecture -- and of course you also end up with tests.
+
+Because the tests run SO quickly I can interactively change the code in the module or the test and 
+immediately see results.
+
 ### Debugging Tests using the node debugger
 
 Sometimes it can be helpful to break into a debugger when there is a problem in either the code 
@@ -460,60 +514,6 @@ Enter **ctrl-D** to exit the debugger.
 [node-inspector](https://github.com/dannycoates/node-inspector)
 [npm package for node-inspector](http://search.npmjs.org/#/node-inspector)
 
-### A Simple Example of Test Driven Development
-
-Here's a simple example that is part of the tests for `lab.arrays.js` to test the `arrays.max()` function:
-
-    "find max in array with negative and positive numbers": function(max) {
-      assert.equal(max([3, -1, 0, 1, 2, 3]), 3);
-    },
-
-The 'model stepping' tests are a good example where the tests help helped drive new features. The basic 
-features I was testing in this section relate to the existing functionality exposed by the Stop, Start, Go, and 
-Reset buttons as wells as the extended keyboard controls that allow stepping forward and backwards a step at a time.
-
-First I created this test that passed:
-
-    "after running running one tick the model is at step 1": function(model) {
-      model.tick();
-      assert.equal(model.stepCounter(), 1);
-      assert.isTrue(model.isNewStep());
-    },
-
-In thinking about driving out changes to KE, PE and Temperature of the molecular model itself I realized 
-I'd like the capability to run a specific number of steps forward and then check the results.
-
-I then wrote this test that failed -- because the model.tick() function didn't yet take an optional argument to 
-run multiple steps forward:
-
-    "after running 9 more ticks the model is at step 10": function(model) {
-      model.tick(9);
-      assert.equal(model.stepCounter(), 10);
-      assert.isTrue(model.isNewStep());
-    },
-
-After saving the change I saw the new test failure reported in my console. I then implemented the new
-feature in the actual `src/lab/molecules.js`. Less than a second after saving the file the tests 
-completed and the report showed it passing.
-
-This is a very simple example -- but part of the value of this kind of test driven development is in first 
-thinking of how something should behave rather than in how to get it to actually do the work.
-
-Since I already had this function for running one model step:
-
-    model.tick()
-
-Adding an optional numeric argument for running more steps is a fine way to express the intent of the new feature:
-
-    model.tick(9)
-
-In more complicated coding thinking about how to express the intent clearly and then what the result 
-should be if that intent is successful **FIRST** ... and then 'driving out' the actual implementation to 
-achieve that result can result in a better architecture -- and of course you also end up with tests.
-
-Because the tests run SO quickly I can interactively change the code in the module or the test and 
-immediately see results.
-
 ### Generated Lab Modules: `lab/`
 
 The `lab/` directory contains the Lab modules generated from JavaScript source code in the `src/lab/`
@@ -568,11 +568,13 @@ are distributed under both BSD and MIT licenses; [jQuery](http://jquery.com/) is
 the MIT license; [jQuery-UI](jQuery-UI) is distributed under both the MIT license and GPL licenses;
 [MathJax](http://www.mathjax.org/) is distributed under the Apache 2.0 license.
 
+<<<<<<< Local Changes
+<<<<<<< Local Changes
 ## HTML and CSS
 
 [Haml](http://haml-lang.com/) is used to generate most of the HTML in the `dist/` directory.
 
-[kramdown](http://kramdown.rubyforge.org/) is used to generate `readme.html` in `dist/`. from Mardown markup.
+[kramdown](http://kramdown.rubyforge.org/) is used to generate `readme.html` in `dist/` from Mardown markup.
 
 [Sass](http://sass-lang.com/) is used to generate the CSS assets. The Sass markup may be in the form of
 `*.sass` or `*.scss` files
@@ -582,6 +584,10 @@ The [Bourbon](http://thoughtbot.com/bourbon/) library of Sass mixins is included
 - [Bourbon documentation](http://thoughtbot.com/bourbon/)
 - [ASCIIcast 330: Better SASS With Bourbon](http://asciicasts.com/episodes/330-better-sass-with-bourbon)
 
+=======
+>>>>>>> External Changes
+=======
+>>>>>>> External Changes
 ## Updating [http://lab.dev.concord.org/](http://lab.dev.concord.org/)
 
 Currently [http://lab.dev.concord.org/](http://lab.dev.concord.org/) is updated by using rsynch to copy 
@@ -632,8 +638,9 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 
 ### Runtime Dependencies
 
-#### [d3.js](http://mbostock.github.com/d3/)
+#### D3
 
+- [D3](http://mbostock.github.com/d3/)
 - [repo](https://github.com/mbostock/d3)
 - [documentation](http://mbostock.github.com/d3/api/)
 - [issues](https://github.com/mbostock/d3/issues)
@@ -641,20 +648,31 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 - [API reference](https://github.com/mbostock/d3/wiki/API-Reference)
   - [Arrays](https://github.com/mbostock/d3/wiki/Arrays)
 
-#### [science.js](https://github.com/jasondavies/science.js)
+#### science.js
 
-#### [modernizr](https://github.com/Modernizr/Modernizr)
+- [science.js](https://github.com/jasondavies/science.js)
 
-#### [JQuery](http://jquery.com/)
+#### Modernizr
 
-#### [JQuery-UI](http://jqueryui.com/)
+- [modernizr](https://github.com/Modernizr/Modernizr)
 
-#### [MathJax](http://mathjax.com/)
+#### JQuery
+
+- [JQuery](http://jquery.com/)
+
+#### JQuery-UI
+
+- [JQuery-UI](http://jqueryui.com/)
+
+#### MathJax
+
+- [MathJax](http://mathjax.com/)
 
 ### Development Dependencies
 
-#### [node](http://nodejs.org/)
+#### node
 
+- [node](http://nodejs.org/)
 - [repo](https://github.com/joyent/node)
 - [documentation](http://nodejs.org/docs/latest/api/index.html)
 - [debugger](http://nodejs.org/docs/latest/api/debugger.html)
@@ -665,8 +683,9 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 **[node-inspector](https://github.com/dannycoates/node-inspector)**
 - [npm package for node-inspector](http://search.npmjs.org/#/node-inspector)
 
-#### [npm](http://npmjs.org/)
+#### npm
 
+- [npm](http://npmjs.org/)
 - [repo](https://github.com/isaacs/npm)
 - [faq](http://npmjs.org/doc/faq.html)
 - [google group](https://groups.google.com/group/npm-)
@@ -691,27 +710,21 @@ More about using npm for development:
 
 ### RubyGems
 
-#### [Haml](http://haml-lang.com/)
+#### Haml
 
+- [Haml](http://haml-lang.com/)
 - [documentation](http://haml-lang.com/docs.html)
 - [reference](http://haml-lang.com/docs/yardoc/file.HAML_REFERENCE.html)
 
-#### [Sass](http://sass-lang.com/)
+#### Sass
 
+- [Sass](http://sass-lang.com/)
 - [documentation](http://sass-lang.com/docs.html)
 - [reference](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)
 
-#### [kramdown](http://kramdown.rubyforge.org/)
+#### Guard
 
-[kramdown](http://kramdown.rubyforge.org/) is used to generate HTML from Mardown markup.
-
-#### [Bourbon](http://thoughtbot.com/bourbon/) 
-
-- [Bourbon documentation](http://thoughtbot.com/bourbon/)
-- [ASCIIcast 330: Better SASS With Bourbon](http://asciicasts.com/episodes/330-better-sass-with-bourbon)
-
-#### [guard](https://github.com/guard/guard)
-
+- [guard](https://github.com/guard/guard)
 - [guard-shell](https://github.com/hawx/guard-shell)
 - [guard-haml](https://github.com/manufaktor/guard-haml)
 - [guard-sass](https://github.com/hawx/guard-sass)
@@ -721,18 +734,27 @@ More about using npm for development:
 
 ### Additional Testing Dependencies
 
-#### [Vows](http://vowsjs.org)
+#### Vows
 
+- [Vows](http://vowsjs.org)
 - [repo](https://github.com/cloudhead/vows)
 
-#### [jsdom](http://jsdom.org)
+#### jsdom
 
+- [jsdom](http://jsdom.org)
 - [repo](https://github.com/tmpvar/jsdom)
 - [issues](https://github.com/tmpvar/jsdom/issues)
 
 ### Miscellaneous
 
-#### [LiveReload](https://github.com/mockko/livereload) extension for Chrome and Safari
+#### livereload
+
+[livereload](https://github.com/mockko/livereload) is project that has created extensions
+for Chrome FireFox, and Safari to provide automatic browser reloading when the HTML,
+CSS and JavaScript files are changed on the server. The older version 1 extensions
+work with the guard-livereload gem.
+
+- [livereload v1 readme](https://github.com/mockko/livereload/blob/master/README-old.md)
 
 ### Full Screen API
 
