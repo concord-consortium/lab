@@ -459,7 +459,7 @@ makeIntegrator = function(args) {
           topwall    = size[1] - radius[0],
 
           PE,                               // potential energy
-          CM = arrays.copy(CM_initial, []), // center of mass as [x, y]
+          CM,                               // center of mass as [x, y]
           dCM = [0, 0],                     // change in center of mass as [dx, dy]
           T = KE_to_T(twoKE/2),             // temperature
           vRescalingFactor,                 // rescaling factor for Berendsen thermostat
@@ -640,7 +640,7 @@ makeIntegrator = function(args) {
       outputState.PE = PE;
       outputState.KE = twoKE / 2;
       outputState.T = T;
-      outputState.CM = CM;
+      outputState.CM = CM || CM_initial;
     }
   };
 };
@@ -695,8 +695,7 @@ model.getIntegrator = function(options, integratorOutputState) {
     outputState: integratorOutputState
   });
 
-  // set up initial state
-  integrator.integrate(0);
+  integrator.integrate(0.01, 0.01);
 
   return integrator;
 };
