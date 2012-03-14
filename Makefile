@@ -5,6 +5,7 @@ COFFEESCRIPT_COMPILER = ./node_modules/coffee-script/bin/coffee
 MARKDOWN_COMPILER = bin/kramdown
 JS_TESTER   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LAB_DIR = ./examples/lab
+SASS_COMPILER = bin/sass -I src -r ./src/bourbon/lib/bourbon.rb
 
 HAML_EXAMPLE_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/dist\/\1/' )
 vpath %.haml src
@@ -15,7 +16,7 @@ vpath %.sass src/examples
 SASS_LIBRARY_FILES := $(shell find src/lab -name '*.sass' -exec echo {} \; | sed s'/src\/.*\/\(.*\)\.sass/dist\/lab\/css\/\1.css/' )
 vpath %.sass src/lab
 
-SCSS_EXAMPLE_FILES := $(shell find src -name '*.scss' -exec echo {} \; | sed s'/src\/\(.*\)\.scss/dist\/\1.css/' )
+SCSS_EXAMPLE_FILES := $(shell find src -name '*.scss' -exec echo {} \; | grep -v bourbon | sed s'/src\/\(.*\)\.scss/dist\/\1.css/' )
 vpath %.scss src
 
 COFFEESCRIPT_EXAMPLE_FILES := $(shell find src/examples -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/dist\/\1.js/' )
@@ -281,20 +282,19 @@ sl:
 	@echo $(SASS_LIBRARY_FILES)
 
 dist/index.css:
-	sass src/index.sass dist/index.css
+	$(SASS_COMPILER) src/index.sass dist/index.css
 
 dist/examples/%.css: %.sass Makefile
-	sass $< $@
+	$(SASS_COMPILER) $< $@
 
 dist/lab/%.css: %.sass Makefile
-	sass $< $@
+	$(SASS_COMPILER) $< $@
 
 lab/%.css: %.sass Makefile
-	sass $< $@
-
+	$(SASS_COMPILER) $< $@
 
 dist/%.css: %.scss Makefile
-	sass $< $@
+	$(SASS_COMPILER) $< $@
 
 c:
 	@echo $(COFFEESCRIPT_EXAMPLE_FILES)

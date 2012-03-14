@@ -568,6 +568,26 @@ are distributed under both BSD and MIT licenses; [jQuery](http://jquery.com/) is
 the MIT license; [jQuery-UI](jQuery-UI) is distributed under both the MIT license and GPL licenses;
 [MathJax](http://www.mathjax.org/) is distributed under the Apache 2.0 license.
 
+<<<<<<< Local Changes
+<<<<<<< Local Changes
+## HTML and CSS
+
+[Haml](http://haml-lang.com/) is used to generate most of the HTML in the `dist/` directory.
+
+[kramdown](http://kramdown.rubyforge.org/) is used to generate `readme.html` in `dist/` from Mardown markup.
+
+[Sass](http://sass-lang.com/) is used to generate the CSS assets. The Sass markup may be in the form of
+`*.sass` or `*.scss` files
+
+The [Bourbon](http://thoughtbot.com/bourbon/) library of Sass mixins is included.
+
+- [Bourbon documentation](http://thoughtbot.com/bourbon/)
+- [ASCIIcast 330: Better SASS With Bourbon](http://asciicasts.com/episodes/330-better-sass-with-bourbon)
+
+=======
+>>>>>>> External Changes
+=======
+>>>>>>> External Changes
 ## Updating [http://lab.dev.concord.org/](http://lab.dev.concord.org/)
 
 Currently [http://lab.dev.concord.org/](http://lab.dev.concord.org/) is updated by using rsynch to copy 
@@ -618,8 +638,9 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 
 ### Runtime Dependencies
 
-#### [d3.js](http://mbostock.github.com/d3/)
+#### D3
 
+- [D3](http://mbostock.github.com/d3/)
 - [repo](https://github.com/mbostock/d3)
 - [documentation](http://mbostock.github.com/d3/api/)
 - [issues](https://github.com/mbostock/d3/issues)
@@ -627,20 +648,31 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 - [API reference](https://github.com/mbostock/d3/wiki/API-Reference)
   - [Arrays](https://github.com/mbostock/d3/wiki/Arrays)
 
-#### [science.js](https://github.com/jasondavies/science.js)
+#### science.js
 
-#### [modernizr](https://github.com/Modernizr/Modernizr)
+- [science.js](https://github.com/jasondavies/science.js)
 
-#### [JQuery](http://jquery.com/)
+#### Modernizr
 
-#### [JQuery-UI](http://jqueryui.com/)
+- [modernizr](https://github.com/Modernizr/Modernizr)
 
-#### [MathJax](http://mathjax.com/)
+#### JQuery
+
+- [JQuery](http://jquery.com/)
+
+#### JQuery-UI
+
+- [JQuery-UI](http://jqueryui.com/)
+
+#### MathJax
+
+- [MathJax](http://mathjax.com/)
 
 ### Development Dependencies
 
-#### [node](http://nodejs.org/)
+#### node
 
+- [node](http://nodejs.org/)
 - [repo](https://github.com/joyent/node)
 - [documentation](http://nodejs.org/docs/latest/api/index.html)
 - [debugger](http://nodejs.org/docs/latest/api/debugger.html)
@@ -651,8 +683,9 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 **[node-inspector](https://github.com/dannycoates/node-inspector)**
 - [npm package for node-inspector](http://search.npmjs.org/#/node-inspector)
 
-#### [npm](http://npmjs.org/)
+#### npm
 
+- [npm](http://npmjs.org/)
 - [repo](https://github.com/isaacs/npm)
 - [faq](http://npmjs.org/doc/faq.html)
 - [google group](https://groups.google.com/group/npm-)
@@ -677,18 +710,21 @@ More about using npm for development:
 
 ### RubyGems
 
-#### [Haml](http://haml-lang.com/)
+#### Haml
 
+- [Haml](http://haml-lang.com/)
 - [documentation](http://haml-lang.com/docs.html)
 - [reference](http://haml-lang.com/docs/yardoc/file.HAML_REFERENCE.html)
 
-#### [Sass](http://sass-lang.com/)
+#### Sass
 
+- [Sass](http://sass-lang.com/)
 - [documentation](http://sass-lang.com/docs.html)
 - [reference](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)
 
-#### [guard](https://github.com/guard/guard)
+#### Guard
 
+- [guard](https://github.com/guard/guard)
 - [guard-shell](https://github.com/hawx/guard-shell)
 - [guard-haml](https://github.com/manufaktor/guard-haml)
 - [guard-sass](https://github.com/hawx/guard-sass)
@@ -698,18 +734,27 @@ More about using npm for development:
 
 ### Additional Testing Dependencies
 
-#### [Vows](http://vowsjs.org)
+#### Vows
 
+- [Vows](http://vowsjs.org)
 - [repo](https://github.com/cloudhead/vows)
 
-#### [jsdom](http://jsdom.org)
+#### jsdom
 
+- [jsdom](http://jsdom.org)
 - [repo](https://github.com/tmpvar/jsdom)
 - [issues](https://github.com/tmpvar/jsdom/issues)
 
 ### Miscellaneous
 
-#### [LiveReload](https://github.com/mockko/livereload) extension for Chrome and Safari
+#### livereload
+
+[livereload](https://github.com/mockko/livereload) is project that has created extensions
+for Chrome FireFox, and Safari to provide automatic browser reloading when the HTML,
+CSS and JavaScript files are changed on the server. The older version 1 extensions
+work with the guard-livereload gem.
+
+- [livereload v1 readme](https://github.com/mockko/livereload/blob/master/README-old.md)
 
 ### Full Screen API
 
