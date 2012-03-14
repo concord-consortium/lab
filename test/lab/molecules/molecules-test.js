@@ -31,7 +31,7 @@ suite.addBatch({
       return modeler.VERSION;
     },
     "reports version": function(version) {
-      assert.equal(version, "0.1.0");
+      assert.equal(version, "0.2.0");
     }
   }
 });

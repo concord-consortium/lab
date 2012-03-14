@@ -9,4 +9,5 @@ npm-debug.log
 /test/*.html
 .DS_Store
 /lab
+/md-engine
 *.sublime-workspace

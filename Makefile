@@ -25,6 +25,9 @@ vpath %.coffee src
 MARKDOWN_EXAMPLE_FILES := $(shell find src -name '*.md' -exec echo {} \; | sed s'/src\/\(.*\)\.md/dist\/\1.html/' )
 vpath %.md src
 
+MD_ENGINE_JS_FILES := $(shell find src/md-engine -name '*.js' -print)
+BROWSERIFY = ./node_modules/.bin/browserify
+
 LAB_JS_FILES = \
 	lab/lab.grapher.js \
 	lab/lab.graphx.js \
@@ -39,6 +42,7 @@ all: \
 	vendor/d3 \
 	node_modules \
 	bin \
+	md-engine \
 	lab \
 	dist \
 	$(MARKDOWN_EXAMPLE_FILES) \
@@ -67,7 +71,8 @@ node_modules: node_modules/coffee-script \
 	node_modules/vows \
 	node_modules/node-inspector \
 	node_modules/d3 \
-	node_modules/science.js
+	node_modules/science.js \
+	node_modules/browserify
 	npm install
 
 node_modules/coffee-script:
@@ -90,6 +95,9 @@ node_modules/d3:
 
 node_modules/science.js:
 	npm install vendor/science.js
+
+node_modules/browserify:
+	npm install
 
 bin:
 	bundle install --binstubs
@@ -181,6 +189,13 @@ dist/vendor/jquery-ui:
 	cp vendor/jquery-ui/js/jquery-ui-1.8.17.custom.min.js dist/vendor/jquery-ui/js/jquery-ui.custom.min.js
 	cp -R vendor/jquery-ui/css dist/vendor/jquery-ui
 
+md-engine: \
+	md-engine/2d-molecules.js
+	mkdir -p md-engine
+
+md-engine/2d-molecules.js: $(MD_ENGINE_JS_FILES)
+	$(BROWSERIFY) src/md-engine/2d-molecules.js -o md-engine/2d-molecules.js
+
 lab:
 	mkdir -p lab
 
@@ -207,6 +222,7 @@ lab/lab.grapher.js: \
 	src/lab/end.js
 
 lab/lab.molecules.js: \
+	md-engine/2d-molecules.js \
 	src/lab/start.js \
 	src/lab/molecules/coulomb.js \
 	src/lab/molecules/lennard-jones.js \
