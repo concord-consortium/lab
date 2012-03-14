@@ -1,332 +1,292 @@
-/* RESET
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video
-	margin: 0
-	padding: 0
-	border: 0
-	font-size: 100%
-	font: inherit
-	vertical-align: baseline
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section
-	display: block
-ol, ul
-	list-style: none
-blockquote, q
-	quotes: none
-blockquote:before, blockquote:after, q:before, q:after
-	content: ''
-	content: none
-table
-	border-collapse: collapse
-	border-spacing: 0
+
+@import 'bourbon/bourbon'
 
 body
-	font: 16px sans-serif
-	line-height: 1
-	margin: 0
-	background-color: #fff
-	
+  font-size: 16px
+  font-family: $verdana
+  margin: 12px 24px 12px 24px
+  background-color: #FFFFFF
+
 #header
-	background: #eb8723
-	height: 2em
-	padding: 1em
-	position: relative
-	h1
-		font-weight: normal
-		a
-			color: #fff
-			text-decoration: none
-		a:hover
-			font-weight: normal
-img#fullscreen
-	cursor: pointer
-	position: absolute
-	right: 1em
-	top: 1em
+  color: #fff
+  padding: 10px 60px
+  font-size: 20px
+  font-weight: bold
+  @include linear-gradient(#eee, #ccc)
+  @include box-shadow(0 0 6px 3px #000)
+
+#header
+  ul
+    display: inline-block
+    list-style-type: none
+    overflow: hidden
+    margin: 0em
+    padding: 0em
+    li
+      display: inline-table
+      vertical-align: middle
+      height: 30px
+      margin: 0em
+      padding: 0.2em 1em 0.2em 0em
+    li.title
+      font-size: 1.6em
+      font-weight: bold
+    li.note
+      padding: 0em 3em 0em 4em
+      font-size: 1.1em
+      font-weight: normal
+      font-style: italic
+  ul.right
+    float: right
+
+#fullscreen img
+  margin-top: 8px
+  cursor: pointer
 
 #description
-	width: 920px
+  width: 920px
 
 #description-right
-	padding: 0em 0.5em
-	width: 90%
-	font: 16px sans-serif
-	p
-		margin-bottom: 1em
-
+  padding: 0em 0.5em
+  width: 90%
+  font: 16px sans-serif
+  p
+    margin-bottom: 1em
 
 #chart
-	background-color: #F7F2C5
-	width: 960px
-	height: 500px
-	border: solid 1px #ccc
-	position: relative
+  background-color: #F7F2C5
+  width: 960px
+  height: 500px
+  border: solid 1px #ccc
+  position: relative
 
 a
-	color: black
-	&:hover
-		font-weight: bolder
+  color: black
+  &:hover
+    font-weight: bolder
 
 label
-	margin-left: 0.2em
+  margin-left: 0.2em
 
 rect
-	fill: #fff
+  fill: #fff
 
 rect.bar
-	fill: #5CACEE
+  fill: #5CACEE
 
 circle, .line
-	fill: none
-	stroke: steelblue
-	stroke-width: 1.5px
+  fill: none
+  stroke: steelblue
+  stroke-width: 1.5px
 
 circle
-	fill: #fff
-	fill-opacity: 1.0
-	cursor: move
-	stroke: transparent
-	&.selected
-		fill: #ff7f0e
-		stroke: #ff7f0e
-	&:hover
-		stroke: #ff7f0e
-	
+  fill: #fff
+  fill-opacity: 1.0
+  cursor: move
+  stroke: transparent
+  &.selected
+    fill: #ff7f0e
+    stroke: #ff7f0e
+  &:hover
+    stroke: #ff7f0e
 
 text.title
-	font-size: 1.0em
+  font-size: 1.0em
 
 text.xlabel
-	font-size: 0.85em
+  font-size: 0.85em
 
 text.ylabel
-	font-size: 0.85em
+  font-size: 0.85em
 
 text.model_time_label
-	font-size: 0.85em
+  font-size: 0.85em
 
 g.y
-	font-size: 0.75em
+  font-size: 0.75em
 g.x
-	font-size: 0.75em
+  font-size: 0.75em
 
 h1
-	font: 20px sans-serif
+  font: 20px sans-serif
 
 h2
-	font: 18px sans-serif
+  font: 18px sans-serif
 
 h3
-	font: 16px sans-serif
+  font: 16px sans-serif
 
 ul
-	margin: 1em 0em 1em 0em
-	padding: 0em 0em 0em 0em
-	li
-		margin: 0.3em 0.2em 0.3em 0.2em
-		padding: 0em 0em 0em 0em
+  margin: 1em 0em 1em 0em
+  padding: 0em 0em 0em 0em
+  li
+    margin: 0.3em 0.2em 0.3em 0.2em
+    padding: 0em 0em 0em 0em
 
 #example-list
-	ul
-		margin: 1em 1em 1em 1em
-		padding: 0em 0em 0em 1em
-		li
-			margin: 0.5em 0.2em 0.5em 0.2em
-			padding: 0em 0em 0em 0em
-	ol
-		margin: 1em 1em 1em 1em
-		padding: 0em 0em 0em 1em
-		li
-			margin: 0.5em 0.2em 0.5em 0.2em
-			padding: 0em 0em 0em 0em
-	
+  ul
+    margin: 1em 1em 1em 1em
+    padding: 0em 0em 0em 1em
+    li
+      margin: 0.5em 0.2em 0.5em 0.2em
+      padding: 0em 0em 0em 0em
+  ol
+    margin: 1em 1em 1em 1em
+    padding: 0em 0em 0em 1em
+    li
+      margin: 0.5em 0.2em 0.5em 0.2em
+      padding: 0em 0em 0em 0em
 
 h1
-	font-size: 1.5em
-	font-weight: bold
+  font-size: 1.5em
+  font-weight: bold
 
 h2
-	font-size: 1.2em
-	font-weight: bold
-
-#header
-	ul
-		display: inline-block
-		list-style-type: none
-		overflow: hidden
-		margin: 0em
-		padding: 0em
-		li
-			display: inline-table
-			vertical-align: middle
-			height: 24px
-			margin: 0em
-			padding: 0.2em 1em 0.2em 0em
-		li.title
-			font-size: 1.6em
-			font-weight: bold
-		li.note
-			padding: 0em 3em 0em 4em
-			font-size: 1.1em
-			font-weight: normal
-			font-style: italic
-	ul.right
-		height: 40px
-		float: right
+  font-size: 1.2em
+  font-weight: bold
 
 #viz
-	margin: 0
-	padding: 1em
-	ul
-		list-style-type: none
-		margin: 0.5em 0em 0.5em 0em
-		width: 100%
-		li
-			display: table-cell
-			vertical-align: middle
-			margin: 0
-			padding: 0
-			fieldset
-				height: 2.2em
-		li.top
-			vertical-align: top
-		li.baseline
-			vertical-align: baseline
-	ul.twox
-		margin: 0em 0em 0em 0em
-		li
-			margin: 0em
-			padding-bottom: 0.5em
-		li.top
-			vertical-align: top
-			padding-bottom: 0.5em
-		li.bottom
-			vertical-align: bottom
-			padding-bottom: 0em
-	ul.right
-		float: right
+  margin: 0
+  padding: 1em
+  ul
+    list-style-type: none
+    margin: 0.5em 0em 0.5em 0em
+    width: 100%
+    li
+      display: table-cell
+      vertical-align: middle
+      margin: 0
+      padding: 0
+      fieldset
+        height: 2.2em
+    li.top
+      vertical-align: top
+    li.baseline
+      vertical-align: baseline
+  ul.twox
+    margin: 0em 0em 0em 0em
+    li
+      margin: 0em
+      padding-bottom: 0.5em
+    li.top
+      vertical-align: top
+      padding-bottom: 0.5em
+    li.bottom
+      vertical-align: bottom
+      padding-bottom: 0em
+  ul.right
+    float: right
 
 #controls
-	text-align: center
-	width: 100%
-	ul
-		display: inline-block
-		list-style-type: none
-		margin: 0.5em 0em 0.5em 0em
-		li
-			line-height: 1.0em
-			display: inline-table
-			vertical-align: middle
-			padding: 0.2em 1em 0.2em 0em
-			input
-				vertical-align: middle
-			fieldset
-				height: 2.2em
-				vertical-align: middle
-	ul.right
-		float: right
+  text-align: center
+  width: 100%
+  ul
+    display: inline-block
+    list-style-type: none
+    margin: 0.5em 0em 0.5em 0em
+    li
+      line-height: 1.0em
+      display: inline-table
+      vertical-align: middle
+      padding: 0.2em 1em 0.2em 0em
+      input
+        vertical-align: middle
+      fieldset
+        height: 2.2em
+        vertical-align: middle
+  ul.right
+    float: right
 
 #controls.left
-	text-align: left
+  text-align: left
 
 #benchmarks
-	margin: 0em
-	button
-		margin-top: 1.5em
-	table
-		font: 11px/24px Verdana, Arial, Helvetica, sans-serif
-		border-collapse: collapse
-	th
-		padding: 0 1.0em
-		text-align: left
-	td
-		border-top: 1px solid #CCC
-		padding: 0 1.0em
-	ul
-		display: inline-block
-		list-style-type: none
-		margin: 0.5em 0em 0.5em 0em
-		width: 90%
-		li
-			line-height: 1.0em
-			display: inline-table
-			vertical-align: top
-			padding: 0.2em 1em 0.2em 0em
-			fieldset
-				height: 2.2em
-				vertical-align: middle
-				width: 100%
-				border-bottom: 0px
-				border-left: 0px
-				border-right: 0px
+  margin: 0em
+  button
+    margin-top: 1.5em
+  table
+    font: 11px/24px Verdana, Arial, Helvetica, sans-serif
+    border-collapse: collapse
+  th
+    padding: 0 1.0em
+    text-align: left
+  td
+    border-top: 1px solid #CCC
+    padding: 0 1.0em
+  ul
+    display: inline-block
+    list-style-type: none
+    margin: 0.5em 0em 0.5em 0em
+    width: 90%
+    li
+      line-height: 1.0em
+      display: inline-table
+      vertical-align: top
+      padding: 0.2em 1em 0.2em 0em
+      fieldset
+        height: 2.2em
+        vertical-align: middle
+        width: 100%
+        border-bottom: 0px
+        border-left: 0px
+        border-right: 0px
 
 #datatable
-	margin: 0em
-	button
-		margin-top: 1.5em
-	table
-		font: 10px/24px Verdana, Arial, Helvetica, sans-serif
-		border-collapse: collapse
-	th
-		padding: 0em 1.0em
-		text-align: center
-	td
-		border-top: 1px solid #CCC
-		padding: 0em 1.5em 0em 0.5em
-		text-align: right
-		width: 5.0em
-	ul
-		display: inline-block
-		list-style-type: none
-		margin: 0.5em 0em 0.5em 0em
-		width: 90%
-		li
-			line-height: 1.0em
-			display: inline-table
-			vertical-align: top
-			padding: 0.2em 1em 0.2em 0em
-			fieldset
-				height: 2.2em
-				vertical-align: middle
-				width: 100%
-				border-bottom: 0px
-				border-left: 0px
-				border-right: 0px
+  margin: 0em
+  button
+    margin-top: 1.5em
+  table
+    font: 10px/24px Verdana, Arial, Helvetica, sans-serif
+    border-collapse: collapse
+  th
+    padding: 0em 1.0em
+    text-align: center
+  td
+    border-top: 1px solid #CCC
+    padding: 0em 1.5em 0em 0.5em
+    text-align: right
+    width: 5.0em
+  ul
+    display: inline-block
+    list-style-type: none
+    margin: 0.5em 0em 0.5em 0em
+    width: 90%
+    li
+      line-height: 1.0em
+      display: inline-table
+      vertical-align: top
+      padding: 0.2em 1em 0.2em 0em
+      fieldset
+        height: 2.2em
+        vertical-align: middle
+        width: 100%
+        border-bottom: 0px
+        border-left: 0px
+        border-right: 0px
 
 #benchmark-results
-	margin-left: 2em
+  margin-left: 2em
 #description
-	ul
-		margin: 0.5em 0.0em 0.5em 1em
-		li
-			line-height: 1.0em
-			padding: 0.2em 0.2em 0.2em 0em
-	.key-command
-		font-weight: bold
+  ul
+    margin: 0.5em 0.0em 0.5em 1em
+    li
+      line-height: 1.0em
+      padding: 0.2em 0.2em 0.2em 0em
+  .key-command
+    font-weight: bold
 
 #stats-container
-	width: 100%
-	ul
-		display: inline-block
-		list-style-type: none
-		margin: 0px
-		padding: 0px
-		li
-			display: inline-table
-			vertical-align: middle
+  width: 100%
+  ul
+    display: inline-block
+    list-style-type: none
+    margin: 0px
+    padding: 0px
+    li
+      display: inline-table
+      vertical-align: middle
 
 #stats
-	margin: 2px 5px 5px 5px
-	font-family: "New Courier", Courier, monospace
-	font-size: 80%
+  margin: 2px 5px 5px 5px
+  font-family: "New Courier", Courier, monospace
+  font-size: 80%

@@ -3,7 +3,8 @@ source "http://rubygems.org"
 gem "rake",               "~> 0.9.2"
 
 gem "haml",               "~> 3.1.4"
-gem "sass",               "~> 3.1.12"
+gem "sass",               "~> 3.1.15"
+gem 'bourbon',            "~> 1.4"
 
 gem 'rb-fsevent',         "~> 0.4.3", :require => false if RUBY_PLATFORM =~ /darwin/i
 gem "guard",              "~> 0.10.0"
