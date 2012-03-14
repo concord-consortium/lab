@@ -1,6 +1,7 @@
+/*globals molecules_lennard_jones: true */
 // ------------------------------------------------------------
 //
-// Lennard-Jones potentional and forces
+// Lennard-Jones potential and forces
 //
 // ------------------------------------------------------------
 
@@ -15,11 +16,11 @@ var epsilon = -1.0,                   // depth of the potential well
     beta  = 4 * epsilon * Math.pow(sigma, 6);
 
 molecules_lennard_jones.epsilon = function(e) {
-  return molecules_lennard_jones.coefficients(e, sigma)
+  return molecules_lennard_jones.coefficients(e, sigma);
 };
 
 molecules_lennard_jones.sigma = function(s) {
-  return molecules_lennard_jones.coefficients(epsilon, s)
+  return molecules_lennard_jones.coefficients(epsilon, s);
 };
 
 molecules_lennard_jones.coefficients = function(e, s) {
@@ -30,20 +31,24 @@ molecules_lennard_jones.coefficients = function(e, s) {
     alpha = 4 * epsilon * Math.pow(sigma, 12);
     beta  = 4 * epsilon * Math.pow(sigma, 6);
   }
-  var coefficients = { 
+  var coefficients = {
     epsilon: epsilon,
-    sigma: sigma, 
+    sigma: sigma,
     rmin: rmin,
     alpha: alpha,
-    beta: beta 
+    beta: beta
   };
   return coefficients;
 };
 
 molecules_lennard_jones.potential = function(distance) {
-  return (alpha/Math.pow(distance, 12) - beta/Math.pow(distance, 6)) * -1
+  return (alpha/Math.pow(distance, 12) - beta/Math.pow(distance, 6)) * -1;
 };
 
 molecules_lennard_jones.force = function(distance) {
-  return (12*alpha/Math.pow(distance, 13) - 6*beta/Math.pow(distance, 7))
+  var r_6th  = Math.pow(distance, 6),
+      r_7th  = r_6th * distance,
+      r_13th = r_6th * r_7th;
+
+  return (12*alpha/r_13th - 6*beta/r_7th);
 };
