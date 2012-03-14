@@ -331,9 +331,6 @@ makeIntegrator = function(args) {
       // CM at time (t-dt)
       CM_prev = arrays.copy(CM_initial, []),
 
-      // overall drift in the center of mass
-      drift_CM = [0, 0],
-
       // Coupling factor for Berendsen thermostat.
       dt_over_tau = 0.01,
 
@@ -424,6 +421,7 @@ makeIntegrator = function(args) {
     relaxToTemperature: function(T) {
       if (T != null) T_target = T;
 
+      console.log("T_target = ", T_target);
       // override window size
       adjustTemperature();
 
@@ -636,9 +634,6 @@ makeIntegrator = function(args) {
         }
       }
 
-      drift_CM[0] = CM[0] - CM_initial[0];
-      drift_CM[1] = CM[1] - CM_initial[1];
-
       // State to be read by the rest of the system:
       outputState.time = time;
       outputState.pressure = pressure / (time - t_start);
@@ -646,7 +641,6 @@ makeIntegrator = function(args) {
       outputState.KE = twoKE / 2;
       outputState.T = T;
       outputState.CM = CM;
-      outputState.drift_CM = drift_CM;
     }
   };
 };
@@ -657,7 +651,7 @@ model.getIntegrator = function(options, integratorOutputState) {
   var lennard_jones_forces = options.lennard_jones_forces || true,
       coulomb_forces       = options.coulomb_forces       || false,
       temperature_control  = options.temperature_control  || false,
-      temperature          = options.temperature          || 3,
+      temperature          = options.temperature          || 1,
       integrator;
 
   // setup local variables that help optimize the calculation loops
@@ -700,6 +694,9 @@ model.getIntegrator = function(options, integratorOutputState) {
 
     outputState: integratorOutputState
   });
+
+  // set up initial state
+  integrator.integrate(0);
 
   return integrator;
 };
