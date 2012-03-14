@@ -4,18 +4,21 @@
 body
   font-size: 16px
   font-family: $verdana
-  margin: 12px 24px 12px 24px
-  background-color: #FFFFFF
+  margin: 0
+  padding: 0
+  background-color: #fff
+  color: #3f3f3f
 
 #header
+  background: #eb8723
   color: #fff
-  padding: 10px 60px
-  font-size: 20px
+  padding: 1em
+  position: relative
+  font-size: 16px
   font-weight: bold
-  @include linear-gradient(#eee, #ccc)
-  @include box-shadow(0 0 6px 3px #000)
-
-#header
+  a
+    color: #fff
+    text-decoration: none
   ul
     display: inline-block
     list-style-type: none
@@ -39,11 +42,17 @@ body
   ul.right
     float: right
 
-#fullscreen img
-  margin-top: 8px
+img#fullscreen
   cursor: pointer
+  position: absolute
+  right: 1em
+  top: 2em
+
+#intro
+  padding: .5em 1em 0
 
 #description
+  padding: 1em
   width: 920px
 
 #description-right
@@ -51,19 +60,25 @@ body
   width: 90%
   font: 16px sans-serif
   p
-    margin-bottom: 1em
+    line-height: 135%
+    margin: 0 0 1em
 
 #chart
-  background-color: #F7F2C5
+  background-color: #f9eec1
   width: 960px
   height: 500px
-  border: solid 1px #ccc
+  border: solid 1px #f4b626
+  margin: 1em 0 0 1em
+  padding: 0
   position: relative
+  -moz-border-radius: 5px
+  -webkit-border-radius: 5px
+  border-radius: 5px
 
 a
-  color: black
+  color: #3a878b
   &:hover
-    font-weight: bolder
+    color: #da5936
 
 label
   margin-left: 0.2em
@@ -108,13 +123,15 @@ g.x
   font-size: 0.75em
 
 h1
-  font: 20px sans-serif
+  color: #fff
+  font: 700 1.5em museo-sans, georgia, times, 'times new roman', serif
 
 h2
-  font: 18px sans-serif
+  color: #5f5f5f
+  font: 500 1.2em museo-slab, georgia, times, 'times new roman', serif
 
 h3
-  font: 16px sans-serif
+  font: 700 1.165em museo-slab, georgia, times, 'times new roman', serif
 
 ul
   margin: 1em 0em 1em 0em
@@ -202,6 +219,7 @@ h2
 
 #benchmarks
   margin: 0em
+  padding: 1em
   button
     margin-top: 1.5em
   table
@@ -231,8 +249,12 @@ h2
         border-left: 0px
         border-right: 0px
 
+#run-benchmarks
+  margin: 1em
+
 #datatable
   margin: 0em
+  padding: 1em
   button
     margin-top: 1.5em
   table
