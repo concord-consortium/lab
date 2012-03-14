@@ -21,6 +21,59 @@ var svg = d3.select("#chart").append("svg:svg")
     .attr("width", w)
     .attr("height", h);
 
+	// add gradient defs
+	var mc_orange_gradient = svg.append("svg:defs")
+	    .append("svg:radialGradient")
+	    .attr("id", "orange-grad")
+	    .attr("cx", "50%")
+	    .attr("cy", "50%")
+	    .attr("r", "50%")
+	    .attr("fx", "35%")
+	    .attr("fy", "35%");
+	mc_orange_gradient.append("svg:stop")
+	    .attr("stop-color", "#f9eec1")
+	    .attr("offset", "0%");
+	mc_orange_gradient.append("svg:stop")
+	    .attr("stop-color", "#f4b626")
+	    .attr("offset", "50%");
+	mc_orange_gradient.append("svg:stop")
+	    .attr("stop-color", "#eb8723")
+	    .attr("offset", "100%");
+	mc_blue_gradient = svg.append("svg:defs")
+	    .append("svg:radialGradient")
+	    .attr("id", "blue-grad")
+	    .attr("cx", "50%")
+	    .attr("cy", "50%")
+	    .attr("r", "50%")
+	    .attr("fx", "35%")
+	    .attr("fy", "35%");
+	mc_blue_gradient.append("svg:stop")
+	    .attr("stop-color", "#bddfdf")
+	    .attr("offset", "0%");
+	mc_blue_gradient.append("svg:stop")
+	    .attr("stop-color", "#8cbbb8")
+	    .attr("offset", "50%");
+	mc_blue_gradient.append("svg:stop")
+	    .attr("stop-color", "#3a878b")
+	    .attr("offset", "100%");
+	mc_green_gradient = svg.append("svg:defs")
+	    .append("svg:radialGradient")
+	    .attr("id", "green-grad")
+	    .attr("cx", "50%")
+	    .attr("cy", "50%")
+	    .attr("r", "50%")
+	    .attr("fx", "35%")
+	    .attr("fy", "35%");
+	mc_green_gradient.append("svg:stop")
+	    .attr("stop-color", "#a6caaa")
+	    .attr("offset", "0%");
+	mc_green_gradient.append("svg:stop")
+	    .attr("stop-color", "#75a643")
+	    .attr("offset", "50%");
+	mc_green_gradient.append("svg:stop")
+	    .attr("stop-color", "#2a7216")
+	    .attr("offset", "100%");
+
 svg.append("svg:rect")
     .attr("width", w)
     .attr("height", h);
@@ -29,7 +82,7 @@ svg.selectAll("circle")
     .data(nodes.slice(1))
   .enter().append("svg:circle")
     .attr("r", function(d) { return d.radius - 2; })
-    .style("fill", function(d, i) { return color(i % 3); });
+    .style("fill", function() { var grads = ['url("#orange-grad")','url("#blue-grad")','url("#green-grad")']; var grad_num = Math.floor(Math.random()*3); return grads[grad_num]; });
 
 force.on("tick", function(e) {
   var q = d3.geom.quadtree(nodes),

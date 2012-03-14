@@ -54,6 +54,25 @@ var svg = d3.select(chart).append("svg:svg")
     .attr("width", w)
     .attr("height", h);
 
+// add gradient defs
+mc_green_gradient = svg.append("svg:defs")
+    .append("svg:radialGradient")
+    .attr("id", "green-grad")
+    .attr("cx", "50%")
+    .attr("cy", "50%")
+    .attr("r", "50%")
+    .attr("fx", "35%")
+    .attr("fy", "35%");
+mc_green_gradient.append("svg:stop")
+    .attr("stop-color", "#a6caaa")
+    .attr("offset", "0%");
+mc_green_gradient.append("svg:stop")
+    .attr("stop-color", "#75a643")
+    .attr("offset", "50%");
+mc_green_gradient.append("svg:stop")
+    .attr("stop-color", "#2a7216")
+    .attr("offset", "100%");
+
 svg.append("svg:rect")
     .attr("width", w)
     .attr("height", h);
@@ -64,7 +83,7 @@ var node = svg.selectAll("circle")
     .attr("r",  function(d) { return d.radius; })
     .attr("cx", function(d) { return d.x; })
     .attr("cy", function(d) { return d.y; })
-    .style("fill", function(d, i) { return "#2ca02c"; })
+    .style("fill", function(d, i) { return "url('#green-grad')"; })
     .call(force.drag);
 
 // var link = svg.selectAll("line")
