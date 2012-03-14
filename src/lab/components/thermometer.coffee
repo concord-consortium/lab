@@ -22,7 +22,7 @@ class Thermometer
     @thermometer = @svg.append('svg:rect')
     @thermometer.attr("width",@width)
     @thermometer.attr("height", @height)
-    @thermometer.style("fill","#aaa")
+    @thermometer.style("fill","#f4b626")
     d3.select('#therm_text').attr('class','therm_text')
 
   time_to_redraw: ->
