@@ -332,7 +332,7 @@ makeIntegrator = function(args) {
       CM_prev = arrays.copy(CM_initial, []),
 
       // Coupling factor for Berendsen thermostat.
-      dt_over_tau = 0.01,
+      dt_over_tau = 0.5,
 
       // Tolerance for (T_actual - T_target) relative to T_target
       tempTolerance = 0.001,
