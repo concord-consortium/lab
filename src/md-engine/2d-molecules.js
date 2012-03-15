@@ -449,7 +449,9 @@ makeIntegrator = function(args) {
           j,
           r,
           dr_sq, v_sq, r_sq,
-          f, fx, fy,        // pairwise forces and their x, y components
+          cutoffDistance_LJ_sq = cutoffDistance_LJ * cutoffDistance_LJ,
+          maxLJRepulsion_sq    = maxLJRepulsion * maxLJRepulsion,
+          f, f_over_r, fx, fy,        // pairwise forces and their x, y components
           dx, dy,
           x_initial, y_initial,
           iloop,
@@ -578,12 +580,18 @@ makeIntegrator = function(args) {
               dy = y[j] - y[i];
 
               r_sq = dx*dx + dy*dy;
-              r = Math.sqrt(r_sq);
 
-              if (useLennardJonesInteraction && r < cutoffDistance_LJ) {
-                f = Math.max(lennardJones.force(r), maxLJRepulsion);
-                fx = f * (dx / r);
-                fy = f * (dy / r);
+              if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
+                f_over_r = lennardJones.forceOverRFromRsq(r_sq);
+
+                // Cap force to maxLJRepulsion. This should be a relatively rare occurrence, so ignore
+                // the cost of the (expensive) square root calculation.
+                if (f_over_r * f_over_r > maxLJRepulsion_sq / r_sq) {
+                  f_over_r = maxLJRepulsion / Math.sqrt(r_sq);
+                }
+
+                fx = f_over_r * dx;
+                fy = f_over_r * dy;
 
                 ax[i] += fx;
                 ay[i] += fy;
@@ -591,6 +599,7 @@ makeIntegrator = function(args) {
                 ay[j] -= fy;
               }
               if (useCoulombInteraction && r < cutoffDistance_Coulomb) {
+                r = Math.sqrt(r_sq);
                 f = Math.min(coulomb.force(r, charge[i], charge[j]), maxCoulombForce);
                 fx = f * (dx / r);
                 fy = f * (dy / r);
