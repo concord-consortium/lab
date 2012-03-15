@@ -472,7 +472,7 @@ makeIntegrator = function(args) {
           pressure = 0;
 
       // update time
-      for (iloop = 0; iloop < n_steps; iloop++) {
+      for (iloop = 1; iloop <= n_steps; iloop++) {
         time = t_start + iloop*dt;
 
         if (temperatureChangeInProgress && Math.abs(T_windowed(T) - T_target) <= T_target * tempTolerance) {
