@@ -44,3 +44,11 @@ lennardJones.force = function(r) {
 
   return (12*alpha/r_13th - 6*beta/r_7th);
 };
+
+lennardJones.forceOverRFromRsq = function(r_sq) {
+  var r_6th  = r_sq * r_sq * r_sq,
+      r_8th  = r_6th * r_sq,
+      r_14th = r_8th * r_6th;
+
+  return 12*alpha/r_14th - 6*beta/r_8th;
+};
