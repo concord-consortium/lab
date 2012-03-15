@@ -1,3 +1,4 @@
+/*jslint eqnull: true */
 var math = exports.math = {};
 
 // Simple (Box-Muller) univariate-normal random number generator.
