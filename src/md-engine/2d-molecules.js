@@ -636,7 +636,7 @@ makeIntegrator = function(args) {
 
       // State to be read by the rest of the system:
       outputState.time = time;
-      outputState.pressure = pressure / (time - t_start);
+      outputState.pressure = (time - t_start > 0) ? pressure / (time - t_start) : 0;
       outputState.PE = PE;
       outputState.KE = twoKE / 2;
       outputState.T = T;
@@ -695,7 +695,8 @@ model.getIntegrator = function(options, integratorOutputState) {
     outputState: integratorOutputState
   });
 
-  integrator.integrate(0.01, 0.01);
+  // get initial state
+  integrator.integrate(0);
 
   return integrator;
 };
