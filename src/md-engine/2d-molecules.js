@@ -449,8 +449,11 @@ makeIntegrator = function(args) {
           j,
           r,
           dr_sq, v_sq, r_sq,
-          cutoffDistance_LJ_sq = cutoffDistance_LJ * cutoffDistance_LJ,
-          maxLJRepulsion_sq    = maxLJRepulsion * maxLJRepulsion,
+
+          cutoffDistance_LJ_sq      = cutoffDistance_LJ * cutoffDistance_LJ,
+          cutoffDistance_Coulomb_sq = cutoffDistance_Coulomb * cutoffDistance_Coulomb,
+          maxLJRepulsion_sq         = maxLJRepulsion * maxLJRepulsion,
+
           f, f_over_r, fx, fy,        // pairwise forces and their x, y components
           dx, dy,
           x_initial, y_initial,
@@ -582,11 +585,11 @@ makeIntegrator = function(args) {
               r_sq = dx*dx + dy*dy;
 
               if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
-                f_over_r = lennardJones.forceOverRFromRsq(r_sq);
+                f_over_r = lennardJones.forceOverDistanceFromSquaredDistance(r_sq);
 
                 // Cap force to maxLJRepulsion. This should be a relatively rare occurrence, so ignore
                 // the cost of the (expensive) square root calculation.
-                if (f_over_r * f_over_r > maxLJRepulsion_sq / r_sq) {
+                if (f_over_r * f_over_r * r_sq > maxLJRepulsion_sq) {
                   f_over_r = maxLJRepulsion / Math.sqrt(r_sq);
                 }
 
@@ -598,11 +601,12 @@ makeIntegrator = function(args) {
                 ax[j] -= fx;
                 ay[j] -= fy;
               }
-              if (useCoulombInteraction && r < cutoffDistance_Coulomb) {
-                r = Math.sqrt(r_sq);
-                f = Math.min(coulomb.force(r, charge[i], charge[j]), maxCoulombForce);
-                fx = f * (dx / r);
-                fy = f * (dy / r);
+              if (useCoulombInteraction && r_sq < cutoffDistance_Coulomb_sq) {
+                f = Math.min(coulomb.forceFromSquaredDistance(r_sq, charge[i], charge[j]), maxCoulombForce);
+
+                f_over_r = f / Math.sqrt(r_sq);
+                fx = f_over_r * dx;
+                fy = f_over_r * dy;
 
                 ax[i] += fx;
                 ay[i] += fy;
@@ -632,13 +636,12 @@ makeIntegrator = function(args) {
           dy = y[j] - y[i];
 
           r_sq = dx*dx + dy*dy;
-          r = Math.sqrt(r_sq);
 
-          if (useLennardJonesInteraction && r < cutoffDistance_LJ) {
-            PE += lennardJones.potential(r);
+          if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
+            PE += lennardJones.potentialFromSquaredDistance(r_sq);
           }
-          if (useCoulombInteraction && r < cutoffDistance_Coulomb) {
-            PE += coulomb.potential(r, charge[i], charge[j]);
+          if (useCoulombInteraction && r_sq < cutoffDistance_Coulomb_sq) {
+            PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
         }
       }
