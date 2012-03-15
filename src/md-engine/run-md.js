@@ -1,4 +1,5 @@
-var model = require('./2d-molecules').model,
+var model  = require('./2d-molecules').model,
+    sprint = require('sprint').sprint,
     nodes,
     radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge,
     integrator, state,
@@ -24,15 +25,22 @@ charge   = model.charge;
 integrator = model.getIntegrator();
 state      = integrator.getOutputState();
 
-printCM = function(cm) {
-  console.log(cm[0] + ', ' + cm[1]);
+printCM = function() {
+  console.log(sprint("%.3f, %.4f, %.4f", state.time, state.CM[0], state.CM[1]));
 };
 
 exports.run = function() {
-  printCM(state.CM);
+  var n = (process.argv.length > 2) ? parseInt(process.argv[2], 10) : Infinity;
 
-  while (true) {
+  if (isNaN(n)) {
+    console.log("couldn't understand \"%s\"", process.argv[2]);
+    return;
+  }
+
+  printCM();
+
+  while (n--) {
     integrator.integrate();
-    printCM(state.CM);
+    printCM();
   }
 };
