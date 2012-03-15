@@ -25,10 +25,6 @@ charge   = model.charge;
 integrator = model.getIntegrator();
 state      = integrator.getOutputState();
 
-printCM = function(cm) {
-  console.log(cm[0] + ', ' + cm[1]);
-};
-
 exports.run = function() {
   var n = 500,
       i, begin;

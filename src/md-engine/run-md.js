@@ -1,9 +1,8 @@
-/*jslint node:true */
-
 var model = require('./2d-molecules').model,
     nodes,
     radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge,
-    integrator, state;
+    integrator, state,
+    printCM;
 
 // obvious API fix: there should be no need to interrupt the 'var' statement to run createNodes()
 model.createNodes();
