@@ -34,18 +34,19 @@ lennardJones.coefficients = function(e, s) {
 };
 
 lennardJones.potential = function(r) {
-  return (alpha/Math.pow(r, 12) - beta/Math.pow(r, 6)) * -1;
+  return lennardJones.potentialFromSquaredDistance(r*r);
 };
+
+lennardJones.potentialFromSquaredDistance = function(r_sq) {
+  return beta*Math.pow(r_sq, -3) - alpha*Math.pow(r_sq, -6);
+};
+
 
 lennardJones.force = function(r) {
-  var r_6th  = Math.pow(r, 6),
-      r_7th  = r_6th * r,
-      r_13th = r_6th * r_7th;
-
-  return (12*alpha/r_13th - 6*beta/r_7th);
+  return r * lennardJones.forceOverDistanceFromSquaredDistance(r*r);
 };
 
-lennardJones.forceOverRFromRsq = function(r_sq) {
+lennardJones.forceOverDistanceFromSquaredDistance = function(r_sq) {
   var r_6th  = r_sq * r_sq * r_sq,
       r_8th  = r_6th * r_sq,
       r_14th = r_8th * r_6th;
