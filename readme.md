@@ -205,12 +205,67 @@ If you think you'd like to contribute to Lab as an external developer:
 4. Create your changes on a topic branch. Please include tests if you can. When your commits are ready
    push your topic branch to your fork and send a pull request.
 
+
+## Measuring Performance
+
+The [Complex Atoms Model](http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html)
+includes several features for estimating and measuring performance of the molecular modeler.
+
+1. End of **Stats** section displays average number of model steps/s.
+
+2. **Run Benchmarks** button stops model and measures time for running the model
+   100 steps and also time for running the model and rendering the graphics for 100
+   steps. When measuring the speed of the model and graphics together the test is run
+   continuously and control is *not* returned to the browser for repainting the screen.
+
+3. A separate Ruby program [performance.rb](https://gist.github.com/2026947) available which
+   uses Selenium Webdriver to automate running the **Run Benchmarks** test 10 times and
+   collects , averages, and reports the results.
+
+### Installing and using `performance.rb`
+
+[performance.rb](https://gist.github.com/2026947) requires the Ruby Gem `selenium-webdriver` be installed.
+
+    gem install selenium-webdriver
+
+Installation:
+
+    curl https://raw.github.com/gist/2026947/performance.rb -o performance.rb
+    chmod u+x performance.rb
+
+Edit paths in the file `performance.rb` to reference locations for FireFox and Chrome
+on your computer as well as the variable `URL_TO_COMPLEX_MODEL` for running the
+[Complex Atoms Model](http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html)
+locally.
+
+**Running `performance.rb`**:
+
+    $ ./performance.rb
+
+    browser: Chrome: 19.0.1070.0, Intel Mac OS X 10_6_8
+    Date: 2012-03-15 12:54
+    Molecule number: 50
+    Temperature: 5
+
+    git commit
+    commit 356b81226403703e16788217da80875b74a4dc27
+    Author: Richard Klancer <rpk@pobox.com>
+    Date:   Thu Mar 15 11:53:52 2012 -0400
+
+       Further prune sqrts inside N^2 loops
+    true
+
+    average steps                  592.45
+    average steps w/graphics       208.46
+
+Documentation for the [Ruby bindings for Selenium WebDriver](http://code.google.com/p/selenium/wiki/RubyBindings).
+
 ## Repository structure
 
 ### Source Code: `src/`
 
-The `src/` directory includes both JavaScript source code for the Lab modules as well as the `src/examples/` 
-directory containing the additional resources for generating the html, css, and image resources for 
+The `src/` directory includes both JavaScript source code for the Lab modules as well as the `src/examples/`
+directory containing the additional resources for generating the html, css, and image resources for
 `dist/examples/`.
 
 - `src/examples`
