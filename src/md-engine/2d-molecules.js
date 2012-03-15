@@ -447,7 +447,6 @@ makeIntegrator = function(args) {
           n = nodes[0].length,                // number of particles
           i,
           j,
-          r,
           dr_sq, v_sq, r_sq,
 
           cutoffDistance_LJ_sq      = cutoffDistance_LJ * cutoffDistance_LJ,
