@@ -164,7 +164,7 @@ layout.finishSetupMoleculeContainer = function() {
     if (mc_graph.playback_controller) {
       playback_component.position(pc_xpos, pc_ypos);
     }
-
+    layout.mc_redraw();
   } else {
     mc_vis1 = d3.select(moleculecontainer).append("svg:svg")
       .attr("width", mc_cx)
@@ -178,78 +178,6 @@ layout.finishSetupMoleculeContainer = function() {
       .attr("width", mc_size.width)
       .attr("height", mc_size.height)
       .style("fill", "#EEEEEE");
-
-    layout.mc_container = mc_vis.append("svg:svg")
-      .attr("class", "mc_container")
-      .attr("top", 0)
-      .attr("left", 0)
-      .attr("width", mc_size.width)
-      .attr("height", mc_size.height)
-      .attr("viewBox", "0 0 "+mc_size.width+" "+mc_size.height);
-
-    // add gradient defs
-    mc_red_gradient = layout.mc_container.append("svg:defs")
-        .append("svg:radialGradient")
-        .attr("id", "neg-grad")
-        .attr("cx", "47%")
-        .attr("cy", "47%")
-        .attr("r", "53%")
-        .attr("fx", "35%")
-        .attr("fy", "30%");
-    mc_red_gradient.append("svg:stop")
-        .attr("stop-color", "#ffffff")
-        .attr("offset", "0%");
-    mc_red_gradient.append("svg:stop")
-        .attr("stop-color", "#fdadad")
-        .attr("offset", "38%");
-    mc_red_gradient.append("svg:stop")
-        .attr("stop-color", "#e95e5e")
-        .attr("offset", "78%");
-    mc_red_gradient.append("svg:stop")
-        .attr("stop-color", "#fdadad")
-        .attr("offset", "100%");
-
-    mc_blue_gradient = layout.mc_container.append("svg:defs")
-        .append("svg:radialGradient")
-        .attr("id", "pos-grad")
-        .attr("cx", "47%")
-        .attr("cy", "47%")
-        .attr("r", "53%")
-        .attr("fx", "35%")
-        .attr("fy", "30%");
-    mc_blue_gradient.append("svg:stop")
-        .attr("stop-color", "#ffffff")
-        .attr("offset", "0%");
-    mc_blue_gradient.append("svg:stop")
-        .attr("stop-color", "#9abeff")
-        .attr("offset", "38%");
-    mc_blue_gradient.append("svg:stop")
-        .attr("stop-color", "#767fbf")
-        .attr("offset", "78%");
-    mc_blue_gradient.append("svg:stop")
-        .attr("stop-color", "#9abeff")
-        .attr("offset", "100%");
-
-    mc_green_gradient = layout.mc_container.append("svg:defs")
-        .append("svg:radialGradient")
-        .attr("id", "neu-grad")
-        .attr("cx", "47%")
-        .attr("cy", "47%")
-        .attr("r", "53%")
-        .attr("fx", "35%")
-        .attr("fy", "30%");
-    mc_green_gradient.append("svg:stop")
-        .attr("stop-color", "#ffffff")
-        .attr("offset", "0%");
-    mc_green_gradient.append("svg:stop")
-        .attr("stop-color", "#75a643")
-        .attr("offset", "38%");
-    mc_green_gradient.append("svg:stop")
-        .attr("stop-color", "#2a7216")
-        .attr("offset", "78%");
-    mc_green_gradient.append("svg:stop")
-        .attr("stop-color", "#75a643")
-        .attr("offset", "100%");
 
     // add Chart Title
     if (mc_graph.title) {
@@ -295,9 +223,9 @@ layout.finishSetupMoleculeContainer = function() {
     if (mc_graph.playback_controller) {
       playback_component = new PlaybackComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos);
     }
+    layout.mc_redraw();
+    mc_create_container();
   }
-
-  layout.mc_redraw()
 };
 
 layout.mc_redraw = function() {
@@ -371,6 +299,80 @@ layout.mc_redraw = function() {
 
     mc_gy.exit().remove();
   }
+}
+
+function mc_create_container() {
+  layout.mc_container = mc_vis.append("svg:svg")
+    .attr("class", "mc_container")
+    .attr("top", 0)
+    .attr("left", 0)
+    .attr("width", mc_size.width)
+    .attr("height", mc_size.height)
+    .attr("viewBox", "0 0 "+mc_size.width+" "+mc_size.height);
+
+  // add gradient defs
+  mc_red_gradient = layout.mc_container.append("svg:defs")
+      .append("svg:radialGradient")
+      .attr("id", "neg-grad")
+      .attr("cx", "47%")
+      .attr("cy", "47%")
+      .attr("r", "53%")
+      .attr("fx", "35%")
+      .attr("fy", "30%");
+  mc_red_gradient.append("svg:stop")
+      .attr("stop-color", "#ffffff")
+      .attr("offset", "0%");
+  mc_red_gradient.append("svg:stop")
+      .attr("stop-color", "#fdadad")
+      .attr("offset", "38%");
+  mc_red_gradient.append("svg:stop")
+      .attr("stop-color", "#e95e5e")
+      .attr("offset", "78%");
+  mc_red_gradient.append("svg:stop")
+      .attr("stop-color", "#fdadad")
+      .attr("offset", "100%");
+
+  mc_blue_gradient = layout.mc_container.append("svg:defs")
+      .append("svg:radialGradient")
+      .attr("id", "pos-grad")
+      .attr("cx", "47%")
+      .attr("cy", "47%")
+      .attr("r", "53%")
+      .attr("fx", "35%")
+      .attr("fy", "30%");
+  mc_blue_gradient.append("svg:stop")
+      .attr("stop-color", "#ffffff")
+      .attr("offset", "0%");
+  mc_blue_gradient.append("svg:stop")
+      .attr("stop-color", "#9abeff")
+      .attr("offset", "38%");
+  mc_blue_gradient.append("svg:stop")
+      .attr("stop-color", "#767fbf")
+      .attr("offset", "78%");
+  mc_blue_gradient.append("svg:stop")
+      .attr("stop-color", "#9abeff")
+      .attr("offset", "100%");
+
+  mc_green_gradient = layout.mc_container.append("svg:defs")
+      .append("svg:radialGradient")
+      .attr("id", "neu-grad")
+      .attr("cx", "47%")
+      .attr("cy", "47%")
+      .attr("r", "53%")
+      .attr("fx", "35%")
+      .attr("fy", "30%");
+  mc_green_gradient.append("svg:stop")
+      .attr("stop-color", "#ffffff")
+      .attr("offset", "0%");
+  mc_green_gradient.append("svg:stop")
+      .attr("stop-color", "#75a643")
+      .attr("offset", "38%");
+  mc_green_gradient.append("svg:stop")
+      .attr("stop-color", "#2a7216")
+      .attr("offset", "78%");
+  mc_green_gradient.append("svg:stop")
+      .attr("stop-color", "#75a643")
+      .attr("offset", "100%");
 }
 
 layout.update_molecule_radius = function() {
