@@ -21,6 +21,7 @@
     "url": "https://github.com/concord-consortium/lab.git"
   },
   "dependencies": {
+    "sprint": "~0.2"
   },
   "devDependencies": {
     "uglify-js": "1.2.5",
