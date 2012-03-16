@@ -45,11 +45,13 @@ exports.getLennardJonesCalculator = function(cb) {
       },
 
       forceOverDistanceFromSquaredDistance = function(r_sq) {
-        var r_6th  = r_sq * r_sq * r_sq,
-            r_8th  = r_6th * r_sq,
-            r_14th = r_8th * r_6th;
+        // optimizing divisions actually does appear to be *slightly* faster
+        var r_minus2nd  = 1 / r_sq,
+            r_minus6th  = r_minus2nd * r_minus2nd * r_minus2nd,
+            r_minus8th  = r_minus6th * r_minus2nd,
+            r_minus14th = r_minus8th * r_minus6th;
 
-        return 12*alpha/r_14th - 6*beta/r_8th;
+        return 12*alpha*r_minus14th - 6*beta*r_minus8th;
       };
 
   // initial calculation of values dependent on (epsilon, sigma)
