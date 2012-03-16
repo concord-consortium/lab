@@ -73,8 +73,7 @@ node_modules: node_modules/coffee-script \
 	node_modules/node-inspector \
 	node_modules/d3 \
 	node_modules/science.js \
-	node_modules/browserify \
-	node_modules/sprint
+	node_modules/browserify
 	npm install
 
 node_modules/coffee-script:
@@ -99,9 +98,6 @@ node_modules/science.js:
 	npm install vendor/science.js
 
 node_modules/browserify:
-	npm install
-
-node_modules/sprint:
 	npm install
 
 bin:
