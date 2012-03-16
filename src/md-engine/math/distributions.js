@@ -1,5 +1,4 @@
 /*jslint eqnull: true */
-var math = exports.math = {};
 
 // Simple (Box-Muller) univariate-normal random number generator.
 //
@@ -8,7 +7,7 @@ var math = exports.math = {};
 // See discussion on pp. 1-3 of:
 // http://www.math.nyu.edu/faculty/goodman/teaching/MonteCarlo2005/notes/GaussianSampling.pdf
 //
-math.normal = (function() {
+exports.normal = (function() {
   var next = null;
 
   return function(mean, sd) {
