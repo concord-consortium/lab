@@ -4,9 +4,9 @@
 var model = exports.model = {},
 
     arrays       = require('./arrays/arrays').arrays,
-    coulomb      = require('./potentials/coulomb').coulomb,
-    lennardJones = require('./potentials/lennard-jones').lennardJones,
     math         = require('./math'),
+    coulomb      = require('./potentials').coulomb,
+    lennardJones = require('./potentials').getLennardJonesCalculator(),
 
     makeIntegrator,
     setup_ljf_limits,
