@@ -14,11 +14,11 @@ exports.getLennardJonesCalculator = function(cb) {
   var epsilon = -1.0,   // depth of the potential well
       sigma   =  4.0,   // distance from particle at which the potential is 0
 
-      rmin,             // distance from particle at which the potential is minimized
+      rmin,             // distance from particle at which the potential is minimimal, and equal to -epsilon
       alpha,            // precalculated from epsilon and sigma for computational convenience
       beta,             // precalculated from epsilon and sigma for computational convenience
 
-      setCoefficients = function(e, s) {
+      coefficients = function(e, s) {
         if (arguments.length) {
           epsilon = e;
           sigma   = s;
@@ -41,7 +41,7 @@ exports.getLennardJonesCalculator = function(cb) {
       },
 
       potentialFromSquaredDistance = function(r_sq) {
-        return beta*Math.pow(r_sq, -3) - alpha*Math.pow(r_sq, -6);
+        return -(alpha*Math.pow(r_sq, -6) - beta*Math.pow(r_sq, -3));
       },
 
       forceOverDistanceFromSquaredDistance = function(r_sq) {
@@ -53,18 +53,18 @@ exports.getLennardJonesCalculator = function(cb) {
       };
 
   // initial calculation of values dependent on (epsilon, sigma)
-  setCoefficients(epsilon, sigma);
+  coefficients(epsilon, sigma);
 
   return {
 
-    setCoefficients: setCoefficients,
+    coefficients: coefficients,
 
     setEpsilon: function(e) {
-      return setCoefficients(e, sigma);
+      return coefficients(e, sigma);
     },
 
     setSigma: function(s) {
-      return setCoefficients(epsilon, s);
+      return coefficients(epsilon, s);
     },
 
     // "fast" forms which avoid the need for a square root
