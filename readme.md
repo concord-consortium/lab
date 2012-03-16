@@ -639,21 +639,17 @@ The [Bourbon](http://thoughtbot.com/bourbon/) library of Sass mixins is included
 - [Bourbon documentation](http://thoughtbot.com/bourbon/)
 - [ASCIIcast 330: Better SASS With Bourbon](http://asciicasts.com/episodes/330-better-sass-with-bourbon)
 
-=======
->>>>>>> External Changes
-=======
->>>>>>> External Changes
-## Updating [http://lab.dev.concord.org/](http://lab.dev.concord.org/)
+## Updating an external server with the contents of `dist/`
 
-Currently [http://lab.dev.concord.org/](http://lab.dev.concord.org/) is updated by using rsynch to copy 
-the content of the `dist/` directory to the server. 
+Currently [http://lab.dev.concord.org/](http://lab.dev.concord.org/) is updated by using rsynch to copy
+the content of the `dist/` directory to the server.
 
 Modify the example script below with your username, server host, and path to the directory apache is serving:
 
 file: `bin/update.sh`
 
     #!/bin/sh
-    rsync -rvz --delete dist/ username@server:/path/to/dist
+    rsync -rvz --delete --quiet --perms --chmod=ug=rwX,o=rX dist/ username@server:/path/to/dist
 
 Running `bin/update.sh` will now copy and update the directory at [http://lab.dev.concord.org/](http://lab.dev.concord.org/)
 
