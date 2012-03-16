@@ -1,5 +1,3 @@
-/*jslint node:true */
-
 var model = require('./md2d').model,
     nodes,
     radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge,
@@ -8,19 +6,7 @@ var model = require('./md2d').model,
 // obvious API fix: there should be no need to interrupt the 'var' statement to run createNodes()
 model.createNodes();
 
-nodes    = model.nodes;
-radius   = model.radius;
-px       = model.px;
-py       = model.py;
-x        = model.x;
-y        = model.y;
-vx       = model.vx;
-vy       = model.vy;
-speed    = model.speed;
-ax       = model.ax;
-ay       = model.ay;
-halfmass = model.halfmass;
-charge   = model.charge;
+nodes = model.nodes;
 
 integrator = model.getIntegrator();
 state      = integrator.getOutputState();
