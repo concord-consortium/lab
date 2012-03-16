@@ -314,20 +314,20 @@ function mc_create_container() {
   mc_red_gradient = layout.mc_container.append("svg:defs")
       .append("svg:radialGradient")
       .attr("id", "neg-grad")
-      .attr("cx", "47%")
+      .attr("cx", "50%")
       .attr("cy", "47%")
       .attr("r", "53%")
       .attr("fx", "35%")
       .attr("fy", "30%");
   mc_red_gradient.append("svg:stop")
-      .attr("stop-color", "#ffffff")
+      .attr("stop-color", "#ffefff")
       .attr("offset", "0%");
   mc_red_gradient.append("svg:stop")
       .attr("stop-color", "#fdadad")
-      .attr("offset", "38%");
+      .attr("offset", "40%");
   mc_red_gradient.append("svg:stop")
       .attr("stop-color", "#e95e5e")
-      .attr("offset", "78%");
+      .attr("offset", "80%");
   mc_red_gradient.append("svg:stop")
       .attr("stop-color", "#fdadad")
       .attr("offset", "100%");
@@ -335,20 +335,20 @@ function mc_create_container() {
   mc_blue_gradient = layout.mc_container.append("svg:defs")
       .append("svg:radialGradient")
       .attr("id", "pos-grad")
-      .attr("cx", "47%")
+      .attr("cx", "50%")
       .attr("cy", "47%")
       .attr("r", "53%")
       .attr("fx", "35%")
       .attr("fy", "30%");
   mc_blue_gradient.append("svg:stop")
-      .attr("stop-color", "#ffffff")
+      .attr("stop-color", "#dfffff")
       .attr("offset", "0%");
   mc_blue_gradient.append("svg:stop")
       .attr("stop-color", "#9abeff")
-      .attr("offset", "38%");
+      .attr("offset", "40%");
   mc_blue_gradient.append("svg:stop")
       .attr("stop-color", "#767fbf")
-      .attr("offset", "78%");
+      .attr("offset", "80%");
   mc_blue_gradient.append("svg:stop")
       .attr("stop-color", "#9abeff")
       .attr("offset", "100%");
@@ -356,20 +356,20 @@ function mc_create_container() {
   mc_green_gradient = layout.mc_container.append("svg:defs")
       .append("svg:radialGradient")
       .attr("id", "neu-grad")
-      .attr("cx", "47%")
+      .attr("cx", "50%")
       .attr("cy", "47%")
       .attr("r", "53%")
       .attr("fx", "35%")
       .attr("fy", "30%");
   mc_green_gradient.append("svg:stop")
-      .attr("stop-color", "#ffffff")
+      .attr("stop-color", "#dfffef")
       .attr("offset", "0%");
   mc_green_gradient.append("svg:stop")
       .attr("stop-color", "#75a643")
-      .attr("offset", "38%");
+      .attr("offset", "40%");
   mc_green_gradient.append("svg:stop")
       .attr("stop-color", "#2a7216")
-      .attr("offset", "78%");
+      .attr("offset", "80%");
   mc_green_gradient.append("svg:stop")
       .attr("stop-color", "#75a643")
       .attr("offset", "100%");
