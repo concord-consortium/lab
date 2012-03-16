@@ -193,8 +193,8 @@ dist/vendor/jquery-ui:
 md-engine:
 	mkdir -p md-engine
 
-md-engine/2d-molecules.js: $(MD_ENGINE_JS_FILES)
-	$(BROWSERIFY) src/md-engine/2d-molecules.js -o md-engine/2d-molecules.js
+md-engine/md2d.js: $(MD_ENGINE_JS_FILES)
+	$(BROWSERIFY) src/md-engine/md2d.js -o md-engine/md2d.js
 
 lab:
 	mkdir -p lab
@@ -222,7 +222,7 @@ lab/lab.grapher.js: \
 	src/lab/end.js
 
 lab/lab.molecules.js: \
-	md-engine/2d-molecules.js \
+	md-engine/md2d.js \
 	src/lab/start.js \
 	src/lab/molecules/coulomb.js \
 	src/lab/molecules/lennard-jones.js \

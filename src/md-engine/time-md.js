@@ -1,6 +1,6 @@
 /*jslint node:true */
 
-var model = require('./2d-molecules').model,
+var model = require('./md2d').model,
     nodes,
     radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge,
     integrator, state;

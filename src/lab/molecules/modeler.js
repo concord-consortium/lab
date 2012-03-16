@@ -4,7 +4,7 @@
 // modeler.js
 //
 
-var coreModel = require('./2d-molecules').model;
+var coreModel = require('./md2d').model;
 
 modeler = {};
 modeler.VERSION = '0.2.0';
