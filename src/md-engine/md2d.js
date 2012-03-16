@@ -9,6 +9,7 @@ var model = exports.model = {},
     lennardJones = require('./potentials').getLennardJonesCalculator(),
 
     makeIntegrator,
+    ljfLimitsNeedCalculating = true,
     setup_ljf_limits,
     setup_coulomb_limits,
 
@@ -90,6 +91,16 @@ model.setSize = function(x) {
   size = x;
 };
 
+model.setLJEpsilon = function(e) {
+  lennardJones.setEpsilon(e);
+  ljfLimitsNeedCalculating = true;
+};
+
+model.setLJSigma = function(s) {
+  lennardJones.setSigma(s);
+  ljfLimitsNeedCalculating = true;
+};
+
 //
 // Calculate the minimum and maximum distances for applying Lennard-Jones forces
 //
@@ -119,6 +130,7 @@ setup_ljf_limits = function() {
       break;
     }
   }
+  ljfLimitsNeedCalculating = false;
 };
 
 //
@@ -275,8 +287,6 @@ makeIntegrator = function(args) {
 
       outputState    = {},
 
-      cutoffDistance_Coulomb = setOnceState.cutoffDistance_Coulomb,
-      cutoffDistance_LJ      = setOnceState.cutoffDistance_LJ,
       size                   = setOnceState.size,
 
       ax                   = readWriteState.ax,
@@ -412,6 +422,8 @@ makeIntegrator = function(args) {
 
       if (duration == null)  duration = 1;  // how much "time" to integrate over
       if (dt == null)        dt = 1/50;     // time step
+
+      if (ljfLimitsNeedCalculating) setup_ljf_limits();
 
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
@@ -628,7 +640,6 @@ makeIntegrator = function(args) {
   };
 };
 
-
 model.getIntegrator = function(options, integratorOutputState) {
   options = options || {};
   var lennard_jones_forces = options.lennard_jones_forces || true,
@@ -637,19 +648,12 @@ model.getIntegrator = function(options, integratorOutputState) {
       temperature          = options.temperature          || 1,
       integrator;
 
-  // setup local variables that help optimize the calculation loops
-  // TODO pull this state out and pass it to the integrator
-  setup_ljf_limits();
+  // just needs to be done once, right now.
   setup_coulomb_limits();
-
-  // pressures.push(pressure);
-  // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
 
   integrator = makeIntegrator({
 
     setOnceState: {
-      cutoffDistance_Coulomb: cutoffDistance_Coulomb,
-      cutoffDistance_LJ   : cutoffDistance_LJ,
       size                : size
     },
 
