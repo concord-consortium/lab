@@ -1,5 +1,5 @@
 var model  = require('./2d-molecules').model,
-    sprint = require('sprint').sprint,
+    format = require('d3').format,
     nodes,
     radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge,
     integrator, state,
@@ -26,7 +26,7 @@ integrator = model.getIntegrator();
 state      = integrator.getOutputState();
 
 printCM = function() {
-  console.log(sprint("%.3f, %.4f, %.4f", state.time, state.CM[0], state.CM[1]));
+  console.log(format('.2f')(state.time) + ', ' + format('.3f')(state.CM[0]) + ', ' + format('.3f')(state.CM[1]));
 };
 
 exports.run = function() {
