@@ -1,4 +1,4 @@
-/*globals modeler:true, require, d3, arrays, molecules_coulomb, molecules_lennard_jones, benchmark */
+/*globals modeler:true, require, d3, arrays, benchmark */
 /*jslint onevar: true devel:true eqnull: true */
 
 // modeler.js
@@ -260,8 +260,8 @@ modeler.model = function() {
     sigma = s;
 
     // Does nothing useful now. TODO adapt for multiple models & multiple molecule types.
-    molecules_lennard_jones.epsilon(e);
-    molecules_lennard_jones.sigma(s);
+    coreModel.setLJEpsilon(e);
+    coreModel.setLJSigma(s);
   };
 
   model.getEpsilon = function() {
