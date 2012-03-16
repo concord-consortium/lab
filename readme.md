@@ -63,18 +63,18 @@ Once you have a working version of Ruby 1.9.2 (or newer) install the RubyGem [bu
 [nodejs](http://nodejs.org/) and [npm](http://npmjs.org/), the Node Package Manager are additional
 development dependencies.
 
-[npm](http://npmjs.org/), the Node Package Manager is included as part of [nodejs](http://nodejs.org/)
-as of version 0.6.3.
+[npm](http://npmjs.org/), the Node Package Manager has been included as part of [nodejs](http://nodejs.org/)
+since version 0.6.3.
 
-Install node with installers available here: [http://nodejs.org/#download](http://nodejs.org/#download)
+Install the latest stable version of node (currently v0.6.13) with installers available here: [http://nodejs.org/#download](http://nodejs.org/#download)
 
 Currently development is being done with these versions of node and npm:
 
     $ node -v
-    v0.6.11
+    v0.6.13
 
     $ npm -v
-    1.1.1
+    1.1.9
 
 ### Use git to create a local clone of the Lab repository.
 
