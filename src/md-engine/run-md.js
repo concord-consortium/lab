@@ -9,18 +9,6 @@ var model  = require('./md2d').model,
 model.createNodes();
 
 nodes    = model.nodes;
-radius   = model.radius;
-px       = model.px;
-py       = model.py;
-x        = model.x;
-y        = model.y;
-vx       = model.vx;
-vy       = model.vy;
-speed    = model.speed;
-ax       = model.ax;
-ay       = model.ay;
-halfmass = model.halfmass;
-charge   = model.charge;
 
 integrator = model.getIntegrator();
 state      = integrator.getOutputState();
