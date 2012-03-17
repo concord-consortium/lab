@@ -68,11 +68,11 @@ layout.finishSetupMoleculeContainer = function() {
   mc_cy = moleculecontainer.clientHeight,
   mc_padding = {
      "top":    mc_graph.title  ? 36 : 20,
-     "right":                    30,
+     "right":                    25,
      "bottom": mc_graph.xlabel ? 46 : 20,
-     "left":   mc_graph.ylabel ? 60 : 45
+     "left":   mc_graph.ylabel ? 60 : 25
   };
-  if (mc_graph.playback_controller || mc_graph.playback_only_controller) { mc_padding.bottom += 35 }
+  if (mc_graph.playback_controller || mc_graph.playback_only_controller) { mc_padding.bottom += 30 }
   mc_size = {
     "width":  mc_cx - mc_padding.left - mc_padding.right,
     "height": mc_cy - mc_padding.top  - mc_padding.bottom
