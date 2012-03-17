@@ -3,7 +3,7 @@ var model  = require('./md2d').model,
     nodes,
     integrator, state,
     dt = 0.05,
-    drift, initialCM, printDrift;
+    drift, initialCM, initialTE, printDrift;
 
 // obvious API fix: there should be no need to interrupt the 'var' statement to run createNodes()
 model.createNodes();
@@ -17,9 +17,10 @@ initialCM = [state.CM[0], state.CM[1]];
 
 printDrift = function() {
   var dx = state.CM[0] - initialCM[0],
-      dy = state.CM[1] - initialCM[1];
+      dy = state.CM[1] - initialCM[1],
+      dTE = state.KE + state.PE - initialTE;
 
-  console.log(format('.2f')(state.time) + ', ' + format('.3f')(dx) + ', ' + format('.3f')(dy));
+  console.log(format('.2f')(state.time) + ', ' + format('.3f')(dx) + ', ' + format('.3f')(dy) + ', ' + format('.3f')(dTE));
 };
 
 exports.run = function() {
@@ -38,6 +39,9 @@ exports.run = function() {
     console.log("couldn't understand \"%s\"", process.argv[3]);
     return;
   }
+
+  integrator.integrate(dt, dt);
+  initialTE = state.KE + state.PE;
 
   while (n--) {
     integrator.integrate(1, dt);
