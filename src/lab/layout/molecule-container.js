@@ -162,7 +162,7 @@ layout.finishSetupMoleculeContainer = function() {
       return "translate(" + mc_x(get_x(i)) + "," + mc_y(get_y(i)) + ")";
     });
 
-    if (mc_graph.playback_controller) {
+    if (mc_graph.playback_controller || mc_graph.play_only_controller) {
       playback_component.position(pc_xpos, pc_ypos);
     }
     layout.mc_redraw();
