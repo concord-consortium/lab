@@ -336,6 +336,8 @@ makeIntegrator = function(args) {
         return CM;
       }()),
 
+      driftCM = [0, 0],
+
       // Coupling factor for Berendsen thermostat.
       dt_over_tau = 0.5,
 
@@ -588,6 +590,9 @@ makeIntegrator = function(args) {
         vCM[0] /= n;
         vCM[1] /= n;
 
+        driftCM[0] += vCM[0]*dt;
+        driftCM[1] += vCM[1]*dt;
+
         // Calculate T(t+dt) from v(t+dt)
         T = KE_to_T( twoKE/2 );
       }
@@ -620,6 +625,7 @@ makeIntegrator = function(args) {
       outputState.T = T;
       outputState.CM = CM || CM_initial;
       outputState.vCM = vCM;
+      outputState.driftCM = driftCM;
     }
   };
 };
