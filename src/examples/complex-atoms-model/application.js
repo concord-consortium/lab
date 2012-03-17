@@ -121,7 +121,7 @@ var ke_graph_options = {
 
 var ke_graph;
 
-function finishSetupKEChart() {
+layout.finishSetupKEChart = function() {
   if (undefined !== ke_graph) {
     ke_graph.setup_graph();
   } else {

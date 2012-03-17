@@ -13,7 +13,7 @@ var lj_cx, lj_cy, lj_padding, lj_size,
     lj_dragged, coefficient_dragged,  
     lj_vis, lj_plot, lj_container;
 
-function finishSetupPotentialChart() {
+layout.finishSetupPotentialChart = function() {
   lj_cx = lj_potential_chart.clientWidth,
   lj_cy = lj_potential_chart.clientHeight,
   lj_padding = {
