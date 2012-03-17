@@ -293,8 +293,8 @@ function modelStepForward() {
 function modelReset() {
   modelSetup();
   model.temperature(temperature);
-  layout.selection = "simple-screen";
-  layout.setupScreen();
+  layout.selection = "simple-iframe";
+  layout.setupScreen("simple-iframe");
   updateMolNumberViewDependencies();
   modelStop();
   layout.update_molecule_radius();

@@ -18,6 +18,10 @@ layout.setupScreen = function(layout_selection) {
       layout.setupSimpleFullScreen();
       break;
 
+      case "simple-iframe":
+      layout.setupSimpleFullScreen();
+      break;
+
       default:
       layout.setupFullScreen();
       break;
@@ -26,6 +30,10 @@ layout.setupScreen = function(layout_selection) {
     switch (layout.selection) {
       case "simple-screen":
       layout.setupSimpleScreen();
+      break;
+
+      case "simple-iframe":
+      layout.setupSimpleIFrameScreen();
       break;
 
       default:
@@ -56,6 +64,10 @@ layout.setupRegularScreen = function() {
 layout.setupSimpleScreen = function() {
   layout.setupSimpleMoleculeContainer();
   layout.setupDescriptionRight();
+}
+
+layout.setupSimpleIFrameScreen = function() {
+  layout.setupSimpleIFrameMoleculeContainer();
 }
 
 layout.setupSimpleFullScreen = function() {
@@ -134,6 +146,15 @@ layout.setupDescriptionRight = function() {
   //   description_right.style.width = document.body.clientWidth * 0.40 +"px";
   //   description_right.style.height = document.body.clientWidth * 0.40 + 2 +"px";
   // }
+}
+
+// Simple iFrame Screen Layout
+
+layout.setupSimpleIFrameMoleculeContainer = function() {
+  var size = Math.min(getPageHeight() * 0.75, window.innerWidth * 0.8);
+  moleculecontainer.style.width = size +"px";
+  moleculecontainer.style.height = size +"px";
+  layout.finishSetupMoleculeContainer();
 }
 
 // Simple Full Screen Layout
