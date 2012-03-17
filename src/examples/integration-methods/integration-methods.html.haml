@@ -10,8 +10,9 @@
     %script{:src => "../../vendor/d3/d3.time.js", :type => "text/javascript"}
     %script{:src => "http://use.typekit.com/hdw8ayt.js", :type => "text/javascript"}
     %script{:type => "text/javascript"}
-      try{Typekit.load();}catch(e){}   
+      try{Typekit.load();}catch(e){}
     %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&subset=latin,greek,latin-ext", :rel => "stylesheet", :type => "text/css"}/
   %body
     #header
       %h1 Integration Methods
@@ -31,11 +32,11 @@
         %li
           %a(href="http://matdl.org/matdlwiki/index.php/softmatter:Velocity_Verlet_Algorithm") softmatter:Velocity Verlet Algorithm
         %li
-          %a(href="http://physics.ucsc.edu/~peter/242/leapfrog.pdf") The leapfrog method and other "symplectic" algorithms for integrating Newton’s laws of motion 
+          %a(href="http://physics.ucsc.edu/~peter/242/leapfrog.pdf") The leapfrog method and other "symplectic" algorithms for integrating Newton’s laws of motion
 
     %button#run-benchmarks Run
     #benchmarks
       %table#benchmark-results
-      
+
     %script{:src => "benchmark.js", :type => "text/javascript"}
     %script{:src => "integration-methods.js", :type => "text/javascript"}
