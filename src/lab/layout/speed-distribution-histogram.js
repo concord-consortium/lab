@@ -35,7 +35,7 @@ function update_speed_bins() {
   speed_max  = d3.max(speed_bins, function(d) { return d.y });
 }
 
-function finishSetupSpeedDistributionChart() {
+layout.finishSetupSpeedDistributionChart = function() {
   speed_cx = speed_distribution_chart.clientWidth,
   speed_cy = speed_distribution_chart.clientHeight,
   speed_padding = {
