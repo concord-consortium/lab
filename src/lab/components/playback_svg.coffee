@@ -118,7 +118,7 @@ class PlaybackComponentSVG
       .attr("height",@height)
       .attr("x", @xpos)
       .attr("y", @ypos);
-      
+
     this.init_reset_button()
     this.init_play_button()
     this.init_stop_button()
@@ -133,7 +133,7 @@ class PlaybackComponentSVG
       .attr("height",@height)
       .attr("x", @xpos)
       .attr("y", @ypos)
-    
+
   update_ui: ->
     if @playable
       if @playable.playing

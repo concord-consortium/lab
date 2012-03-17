@@ -1,5 +1,6 @@
 body {
-  font: 14px helvetica,arial,freesans,clean,sans-serif;
+  font-family: museo-sans, "Open Sans", Verdana, Geneva, sans-serif;
+  font-size: 14px;
   padding: 5px 20px 5px 20px;
   background: {
     image: url(resources/diagonal-lines.jpg);
@@ -20,7 +21,10 @@ body {
   width: 900px; }
 
 h1 {
-  font-size: 160%;
+  color: white;
+  font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
+  font-weight: 700;
+  font-size: 1.5em;
   border-top: 4px solid #aaaaaa;
   padding-top: 0.5em;
   margin-top: 1.5em;
@@ -30,14 +34,26 @@ h1 {
     border-top: none; } }
 
 h2 {
-  font-size: 140%;
+  color: #5f5f5f;
+  font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
+  font-weight: 500;
+  font-size: 1.2em;
+  margin-top: 0;
+  &:first-child {
+    margin-top: 0;
+    padding-top: 0.25em;
+    border-top: none; } }
+
+h3 {
+  font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
+  font-weight: 700;
+  font-size: 1.165em;
   margin-top: 1.5em;
   border-top: 4px solid #e0e0e0;
   padding-top: 0.5em; }
 
-h3 {
-  font-size: 120%;
-  margin-top: 1em; }
+a {
+  text-decoration: none; }
 
 p {
   margin: 1em 0;

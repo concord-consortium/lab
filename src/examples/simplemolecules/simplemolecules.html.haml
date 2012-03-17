@@ -5,9 +5,12 @@
     %title Simple Molecules
     %script{:src => "../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
     %script{:src => "../../vendor/d3/d3.v2.js", :type => "text/javascript"}
-    %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}    
-    %script{:src => "../../vendor/science.js/science.js", :type => "text/javascript"}    
-    %script{:src => "../../vendor/science.js/science.stats.js", :type => "text/javascript"}    
+    %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/science.js/science.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/science.js/science.stats.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      try{Typekit.load();}catch(e){}
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&subset=latin,greek,latin-ext", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "simplemolecules.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "../../lab/css/components.css", :rel => "stylesheet", :type => "text/css"}/
@@ -61,7 +64,7 @@
         %li
           %fieldset
             %legend Particle Force Interactions
-            %label 
+            %label
               Lennard-Jones
               %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
             %label
@@ -73,7 +76,7 @@
             %fieldset#stats-container
               %legend Stats
               %pre#stats
-      
+
     #datatable
       %ul
         %li
@@ -92,19 +95,19 @@
       %h2 About the Simple Molecules model
       %p
         A computational simulation of a collection of neutral atoms with the forces between
-        the atoms modeled with both the Lennard-Jones Potential which models Pauli repulsion at 
+        the atoms modeled with both the Lennard-Jones Potential which models Pauli repulsion at
         short ranges and the attractive van der Waals forces that act over longer-ranges as well
         as Coulomb forces which describe the forces between atoms of diferent charges.
       %p
         You can select how many molecules to use and what the temperature should be.
         The model will automatically stop after 50 nano-seconds of model simulation time
-        (5000 model-steps). When you lower the temperature molecules will group together 
+        (5000 model-steps). When you lower the temperature molecules will group together
         and freeze into a solid-like state. Increase the temperature to change the state to a
         gas. Somewhere in between the behavior of the molecules are more like a liquid.
       %p
-        Charges of +1 or -1 are evenly distributed among the atoms. When the Coulomb particle 
-        force interaction checkbox is enabled atoms with the opposite charges experience an 
-        attractive force. Atoms with similar charges experience a repulsive force. Atoms 
+        Charges of +1 or -1 are evenly distributed among the atoms. When the Coulomb particle
+        force interaction checkbox is enabled atoms with the opposite charges experience an
+        attractive force. Atoms with similar charges experience a repulsive force. Atoms
         with a positive charge appear green, atoms with a negative charge appear red.
       %h2 About the Lennard-Jones potential graph
       %p
@@ -114,13 +117,13 @@
         weak attraction that then drops as the atoms move further apart.
       %p
         In the graph above you can change two parameters of the Lennard-Jones equation modeling
-        these forces by either changing the depth of the potential well by dragging epsilon up 
+        these forces by either changing the depth of the potential well by dragging epsilon up
         and down or changing the zero point for the potential by dragging sigma left and right.
       %h2 User Interface
       %ul
         %span.key-command Keyboard Shortcuts:
-        %li 
-          %span.key-command Space: 
+        %li
+          %span.key-command Space:
           single step the model forward
         %li
           %span.key-command Return:
@@ -134,8 +137,8 @@
       %p Only the last 1000 model steps are saved.
       %ul
         %span.key-command Interacting with the Graphs:
-        %li 
-          %span.key-command Translate/Pan: 
+        %li
+          %span.key-command Translate/Pan:
           drag on the graph canvas
         %li
           %span.key-command Zoom in:
@@ -150,7 +153,7 @@
       %p
         %a{:href => "http://en.wikipedia.org/wiki/Lennard-Jones_potential"} Wikipedia: Lennard-Jones Potential
       %p
-        The  three different graphs and the molecular visualization use the html5 visualization framework: 
+        The  three different graphs and the molecular visualization use the html5 visualization framework:
         %a(href="http://mbostock.github.com/d3/") d3.js
 
     %script{:src => "../../lab/lab.layout.js", :type => "text/javascript"}
