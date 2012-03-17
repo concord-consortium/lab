@@ -488,7 +488,6 @@ makeIntegrator = function(args) {
 
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
           speed[i] = Math.sqrt(v_sq);
-          twoKE += v_sq;
 
           // Bounce off vertical walls
           if (x[i] < leftwall) {
@@ -516,9 +515,6 @@ makeIntegrator = function(args) {
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
         }
-
-        // Calculate T(t+dt) from x(t+dt), x(t)
-        T = KE_to_T( twoKE/2 );
 
         // Calculate center of mass and change in center of mass between t and t+dt
         CM[0] /= n;
@@ -576,7 +572,14 @@ makeIntegrator = function(args) {
         for (i = 0; i < n; i++) {
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
+
+          v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
+          twoKE += v_sq;
+          speed[i] = Math.sqrt(v_sq);
         }
+
+        // Calculate T(t+dt) from v(t+dt)
+        T = KE_to_T( twoKE/2 );
       }
 
       // Calculate potentials. Note that we only want to do this once per call to integrate(), not once per
