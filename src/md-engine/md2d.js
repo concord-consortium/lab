@@ -293,8 +293,6 @@ makeIntegrator = function(args) {
       ay                   = readWriteState.ay,
       charge               = readWriteState.charge,
       nodes                = readWriteState.nodes,
-      px                   = readWriteState.px,
-      py                   = readWriteState.py,
       radius               = readWriteState.radius,
       speed                = readWriteState.speed,
       vx                   = readWriteState.vx,
@@ -337,9 +335,6 @@ makeIntegrator = function(args) {
 
         return CM;
       }()),
-
-      // CM at time (t-dt)
-      CM_prev = arrays.copy(CM_initial, []),
 
       // Coupling factor for Berendsen thermostat.
       dt_over_tau = 0.5,
@@ -440,7 +435,6 @@ makeIntegrator = function(args) {
 
           f, f_over_r, fx, fy,        // pairwise forces and their x, y components
           dx, dy,
-          x_initial, y_initial,
           iloop,
           leftwall   = radius[0],
           bottomwall = radius[0],
@@ -449,12 +443,11 @@ makeIntegrator = function(args) {
 
           PE,                               // potential energy
           CM,                               // center of mass as [x, y]
-          dCM = [0, 0],                     // change in center of mass as [dx, dy]
           T = KE_to_T(twoKE/2),             // temperature
-          vRescalingFactor,                 // rescaling factor for Berendsen thermostat
+          vRescalingFactor;                 // rescaling factor for Berendsen thermostat
 
           // measurements to be accumulated during the integration loop:
-          pressure = 0;
+          // pressure = 0;
 
       // update time
       for (iloop = 1; iloop <= n_steps; iloop++) {
@@ -482,8 +475,6 @@ makeIntegrator = function(args) {
         // Update positions for first half of verlet integration
         //
         for (i = 0; i < n; i++) {
-          x_initial = x[i];
-          y_initial = y[i];
 
           // Rescale v(t) using T(t)
           if (vRescalingFactor !== 1) {
@@ -495,12 +486,8 @@ makeIntegrator = function(args) {
           x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
           y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
 
-          dx = x[i] - x_initial;
-          dy = y[i] - y_initial;
-
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
           speed[i] = Math.sqrt(v_sq);
-
           twoKE += v_sq;
 
           // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
@@ -510,34 +497,22 @@ makeIntegrator = function(args) {
           // Bounce off vertical walls
           if (x[i] < leftwall) {
             x[i]  = leftwall + (leftwall - x[i]);
-            px[i] = x[i] + dx;
             vx[i] *= -1;
-            pressure += -dx/dt;
           } else if (x[i] > rightwall) {
-            x[i]  = rightwall + (rightwall - x[i]);
-            px[i] = x[i] + dx;
+            x[i]  = rightwall - (x[i] - rightwall);
             vx[i] *= -1;
-            pressure += dx/dt;
-          } else {
-            px[i] = x_initial;
           }
 
           // Bounce off horizontal walls
           if (y[i] < bottomwall) {
             y[i]  = bottomwall + (bottomwall - y[i]);
-            py[i] = y[i] + dy;
             vy[i] *= -1;
-            pressure += -dy/dt;
           } else if (y[i] > topwall) {
-            y[i]  = topwall + (topwall - y[i]);
-            py[i] = y[i] + dy;
+            y[i]  = topwall - (y[i] - topwall);
             vy[i] *= -1;
-            pressure += dy/dt;
-          } else {
-            py[i] = y_initial;
           }
 
-          // Accumulate xs & ys for CM
+          // Accumulate xs & ys for CM (AFTER collision)
           CM[0] += x[i];
           CM[1] += y[i];
 
@@ -549,8 +524,6 @@ makeIntegrator = function(args) {
         // Calculate center of mass and change in center of mass between t and t+dt
         CM[0] /= n;
         CM[1] /= n;
-        dCM[0] = CM[0] - CM_prev[0];
-        dCM[1] = CM[1] - CM_prev[1];
 
         // Calculate a(t+dt), step 1: Zero out the acceleration, in order to accumulate pairwise interactions.
         for (i = 0; i < n; i++) {
@@ -605,8 +578,6 @@ makeIntegrator = function(args) {
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
         }
-
-        CM_prev = CM;
       }
 
       // Calculate potentials. Note that we only want to do this once per call to integrate(), not once per
@@ -631,7 +602,7 @@ makeIntegrator = function(args) {
 
       // State to be read by the rest of the system:
       outputState.time = time;
-      outputState.pressure = (time - t_start > 0) ? pressure / (time - t_start) : 0;
+      outputState.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
       outputState.PE = PE;
       outputState.KE = twoKE / 2;
       outputState.T = T;
