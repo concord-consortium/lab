@@ -28,6 +28,38 @@ var autostart = true,
 // ------------------------------------------------------------
 var model_player = new ModelPlayer(model);
 
+
+// ------------------------------------------------------------
+// Setup heat and cool buttons
+// ------------------------------------------------------------
+var heat_button = new ButtonComponent("#heat_button", 'circlesmall-plus');
+var cool_button = new ButtonComponent("#cool_button", 'circlesmall-minus');
+
+heat_button.add_action(function() {
+  var t = model.temperature();
+  if (t < 10) {
+    $('#heat_button').removeClass('inactive');
+    $('#cool_button').removeClass('inactive');
+    t = Math.floor((t * 2))/2 + 0.5;
+    model.temperature(t);
+  } else {
+    $('#heat_button').addClass('inactive');
+  }
+});
+
+cool_button.add_action(function() {
+  var t = model.temperature();
+  if (t > 0) {
+    $('#heat_button').removeClass('inactive');
+    $('#cool_button').removeClass('inactive');
+    t = Math.floor((t * 2))/2 - 0.5;
+    model.temperature(t);
+  } else {
+    $('#cool_button').addClass('inactive');
+  }
+});
+
+
 // ------------------------------------------------------------
 // Setup therm, epsilon_slider & sigma_slider components.
 // ------------------------------------------------------------
@@ -74,7 +106,8 @@ var mc_graph = {
   // title:               "Simple Molecules",
   // xlabel:              "X position (nm)",
   // ylabel:              "Y position (nm)",
-  playback_controller:  true,
+  playback_controller:  false,
+  play_only_controller: true,
   model_time_label:     false,
   grid_lines:           false,
   xunits:               false,
@@ -100,15 +133,15 @@ var lj_coefficients = molecules_lennard_jones.coefficients();
 var lj_data = {
   coefficients: lj_coefficients,
   variables: [
-    { 
+    {
       coefficient:"epsilon", 
       x: lj_coefficients.rmin, 
-      y: lj_coefficients.epsilon 
+      y: lj_coefficients.epsilon
     }, 
-    { 
+    {
       coefficient:"sigma", 
       x: lj_coefficients.sigma, 
-      y: 0 
+      y: 0
     }
   ]
 };
@@ -145,7 +178,7 @@ function update_coefficients(coefficients) {
   lj_data.variables[0].x = rmin;
 
   lennard_jones_potential = []
-  
+
   for(var r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
     y = molecules_lennard_jones.potential(r)
     if (y < 100) {
@@ -196,7 +229,7 @@ var mol_number_to_lj_sigma_map = {
 
 function updateMolNumberViewDependencies() {
   update_sigma(mol_number_to_lj_sigma_map[mol_number]);
-  therm.max = 0.001;
+  therm.max = 2.1;
 }
 
 // ------------------------------------------------------------
