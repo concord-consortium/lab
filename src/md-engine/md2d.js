@@ -443,6 +443,7 @@ makeIntegrator = function(args) {
 
           PE,                               // potential energy
           CM,                               // center of mass as [x, y]
+          vCM = [0,0],                      // velocity of center of mass, sort of.
           T = KE_to_T(twoKE/2),             // temperature
           vRescalingFactor;                 // rescaling factor for Berendsen thermostat
 
@@ -568,15 +569,24 @@ makeIntegrator = function(args) {
           }
         }
 
+        vCM[0] = 0;
+        vCM[1] = 0;
+
         // SECOND HALF of calculation of v(t+dt): v(t+dt) <- v1(t+dt) + 0.5*a(t+dt)*dt
         for (i = 0; i < n; i++) {
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
 
+          vCM[0] += vx[i];
+          vCM[1] += vy[i];
+
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
           twoKE += v_sq;
           speed[i] = Math.sqrt(v_sq);
         }
+
+        vCM[0] /= n;
+        vCM[1] /= n;
 
         // Calculate T(t+dt) from v(t+dt)
         T = KE_to_T( twoKE/2 );
@@ -609,6 +619,7 @@ makeIntegrator = function(args) {
       outputState.KE = twoKE / 2;
       outputState.T = T;
       outputState.CM = CM || CM_initial;
+      outputState.vCM = vCM;
     }
   };
 };
