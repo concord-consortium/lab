@@ -59,7 +59,6 @@ cool_button.add_action(function() {
   }
 });
 
-
 // ------------------------------------------------------------
 // Setup therm, epsilon_slider & sigma_slider components.
 // ------------------------------------------------------------
