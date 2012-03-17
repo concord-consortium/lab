@@ -432,7 +432,7 @@ makeIntegrator = function(args) {
           n = nodes[0].length,                // number of particles
           i,
           j,
-          dr_sq, v_sq, r_sq,
+          v_sq, r_sq,
 
           cutoffDistance_LJ_sq      = cutoffDistance_LJ * cutoffDistance_LJ,
           cutoffDistance_Coulomb_sq = cutoffDistance_Coulomb * cutoffDistance_Coulomb,
@@ -498,8 +498,7 @@ makeIntegrator = function(args) {
           dx = x[i] - x_initial;
           dy = y[i] - y_initial;
 
-          dr_sq = dx*dx + dy*dy;
-          v_sq  = dr_sq / dt_sq;
+          v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
           speed[i] = Math.sqrt(v_sq);
 
           twoKE += v_sq;
