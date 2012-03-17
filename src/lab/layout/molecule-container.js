@@ -62,6 +62,7 @@ layout.finishSetupMoleculeContainer = function() {
   mc_graph.atom_mubers = (mc_graph.atom_mubers == undefined) | mc_graph.atom_mubers;
 
   mc_graph.playback_controller = (mc_graph.playback_controller == undefined) | mc_graph.playback_controller;
+  mc_graph.playback_only_controller = (mc_graph.playback_only_controller == undefined) | mc_graph.playback_only_controller;
 
   mc_cx = moleculecontainer.clientWidth,
   mc_cy = moleculecontainer.clientHeight,
@@ -71,7 +72,7 @@ layout.finishSetupMoleculeContainer = function() {
      "bottom": mc_graph.xlabel ? 46 : 20,
      "left":   mc_graph.ylabel ? 60 : 45
   };
-  if (mc_graph.playback_controller) { mc_padding.bottom += 35 }
+  if (mc_graph.playback_controller || mc_graph.playback_only_controller) { mc_padding.bottom += 35 }
   mc_size = {
     "width":  mc_cx - mc_padding.left - mc_padding.right,
     "height": mc_cy - mc_padding.top  - mc_padding.bottom
@@ -222,6 +223,9 @@ layout.finishSetupMoleculeContainer = function() {
     }
     if (mc_graph.playback_controller) {
       playback_component = new PlaybackComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos);
+    }
+    if (mc_graph.play_only_controller) {
+      playback_component = new PlayOnlyComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos);
     }
     layout.mc_redraw();
     mc_create_container();
