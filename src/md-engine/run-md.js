@@ -2,7 +2,7 @@ var model  = require('./md2d').model,
     format = require('d3').format,
     nodes,
     integrator, state,
-    dt = 0.05,
+    dt = 1/50,
     drift, initialCM, initialTE, printDrift;
 
 // obvious API fix: there should be no need to interrupt the 'var' statement to run createNodes()
