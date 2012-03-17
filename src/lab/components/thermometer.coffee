@@ -8,7 +8,7 @@ class Thermometer
     @samples = []
 
     @last_draw_time = new Date().getTime()
-    @sample_interval_ms = 1000
+    @sample_interval_ms = 250
     @last_draw_time -= @sample_interval_ms
     this.init_svg()
 
@@ -34,7 +34,7 @@ class Thermometer
     if this.time_to_redraw()
       this.redraw()
       @samples = []
-  
+
   get_avg: ->
     total = 0
     for sample in @samples
@@ -50,7 +50,7 @@ class Thermometer
     @thermometer.attr("y", @height - value)
     @thermometer.attr("height",value)
     @last_draw_time = new Date().getTime()
-    d3.select('#therm_text').text("avg KE")
+    d3.select('#therm_text').text("Temperature")
 
 # make this class available globally as Thermometer
 # use like:
