@@ -4,21 +4,19 @@
     %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
     %title Plain Components
     %script{:src => "../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
-    %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}    
+    %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}
     %script{:src => "http://use.typekit.com/hdw8ayt.js", :type => "text/javascript"}
     %script{:type => "text/javascript"}
-      try{Typekit.load();}catch(e){}   
+      try{Typekit.load();}catch(e){}
     %link{:href => "../../lab/css/components.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "application.css", :rel => "stylesheet", :type => "text/css"}/
-
     -# Testing JQuery UI
-    %script{:src => "../../vendor/jquery-ui/js/jquery-ui.custom.min.js", :type => "text/javascript"}    
+    %script{:src => "../../vendor/jquery-ui/js/jquery-ui.custom.min.js", :type => "text/javascript"}
     %link{:href => "../../vendor/jquery-ui/css/custom-theme/jquery-ui-1.8.17.custom.css", :rel => "stylesheet", :type => "text/css"}/
-
   %body
     #header
       %h1
-        %a(href="http://lab.dev.concord.org/test_components/application.html") 
+        %a(href="http://lab.dev.concord.org/test_components/application.html")
           Testing Components
     #content
       .example
@@ -26,49 +24,41 @@
         %br
         #simple_slider
         %br
-
       .example
         Slider (with value label):
         %br
         #slider{'data-label' => 'value'}
         %br
-
       .example
         JQuery-UI Slider (with value label):
         %br
         #jslider{'data-label' => 'value', 'data-label-id' => "#jslider_label"}
         #jslider_label{:style => "font-size: 0.4em;"}
         %br
-
       .example
         Sample Button:
         %br
         #button1
         %br
-
       .example
         ToggleButton:
         %br
         #toggle_button
         %br
-
       .example
         Buttonbar:
         %br
         #button_bar
         %br
-
       .example
         Simple PlaybackBar:
         %br
         #simple_player
         %br
-
       .example
         PlaybackBar with stepping:
         %br
         #player
         %br
-
     %script{:src => "../../lab/lab.components.js", :type => "text/javascript"}
     %script{:src => "application.js", :type => "text/javascript"}
