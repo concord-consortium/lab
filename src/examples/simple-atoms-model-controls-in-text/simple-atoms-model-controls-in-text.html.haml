@@ -48,19 +48,16 @@
                 .below
                   Attractive Force
             %p
-              You can also change the
-              %b temperature
-              of the simulation by adjusting this slider:
+              You can also heat or cool the simulation with these buttons:
             .component_group
               .slider_container
                 .left_half
-                  colder
+                  Cool
                 .right_half
-                  hotter
+                  Heat
                 .content
-                  #temperature_slider{  'data-label' => "temperature"}
-                .below
-                  Temperature
+                  #cool_button
+                  #heat_button
             %p
               Charges of +1 or -1 are evenly distributed among the atoms. When the Coulomb particle
               force interaction checkbox is enabled atoms with the opposite charges experience an
