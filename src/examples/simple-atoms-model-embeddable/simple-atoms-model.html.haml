@@ -1,0 +1,69 @@
+!!! 5
+%html
+  %head
+    %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
+    %title Simple Atoms Model
+    %script{:src => "../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/d3/d3.v2.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/science.js/science.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/science.js/science.stats.js", :type => "text/javascript"}
+    %script{:src => "http://use.typekit.com/hdw8ayt.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      try{Typekit.load();}catch(e){}
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&subset=latin,greek,latin-ext", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "../../lab/css/components.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "application.css", :rel => "stylesheet", :type => "text/css"}/
+  %body
+    #viz
+      %ul
+        %li.top
+          #molecule-container
+        %li
+          #thermometer
+          #therm_text
+      %ul
+        %li
+          .component_group
+            .slider_container
+              .left_half
+                stronger
+              .right_half
+                weaker
+              .content
+                #attraction_slider{  'data-label' => "attractive force"}
+              .below
+                Attractive Force
+        %li
+          .component_group
+            .slider_container
+              Force Interactions
+              .left_half
+              .right_half
+              .content
+                %div{:style=> "width: 200px; height: 20px; display: inline-block; margin: 5px"}
+                  Coulomb
+                  %input(id="coulomb-forces-checkbox" type="checkbox" checked)
+              .below
+                %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
+        %li
+          .component_group
+            .slider_container
+              .left_half
+                Cool
+              .right_half
+                Heat
+              .content
+                #cool_button
+                #heat_button
+
+
+
+    %script{:src => "../../lab/lab.layout.js", :type => "text/javascript"}
+    %script{:src => "../../lab/lab.benchmark.js", :type => "text/javascript"}
+    %script{:src => "../../lab/lab.arrays.js", :type => "text/javascript"}
+    %script{:src => "../../lab/lab.graphx.js", :type => "text/javascript"}
+    %script{:src => "../../lab/lab.molecules.js", :type => "text/javascript"}
+    %script{:src => "../../lab/lab.components.js", :type => "text/javascript"}
+    %script{:src => "application.js", :type => "text/javascript"}
