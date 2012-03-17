@@ -20,8 +20,11 @@ printDrift = function() {
       dy = state.CM[1] - initialCM[1],
       dTE = state.KE + state.PE - initialTE;
 
-  console.log( format('.2f')(state.time) + ', ' + format('.3f')(dx) + ', ' + format('.3f')(dy) + ', ' +
-               format('.3f')(state.vCM[0]) + ', ' + format('.3f')(state.vCM[1]) + ', ' + format('.3f')(dTE) );
+  console.log( format('.2f')(state.time) + ', ' +
+               format('.3f')(dx) + ', ' + format('.3f')(dy) + ', ' +
+               format('.3f')(state.driftCM[0]) + ', ' + format('.3f')(state.driftCM[1]) + ', ' +
+               format('.3f')(state.vCM[0]) + ', ' + format('.3f')(state.vCM[1]) + ', ' +
+               format('.3f')(dTE) );
 };
 
 exports.run = function() {
