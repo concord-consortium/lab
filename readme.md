@@ -638,6 +638,7 @@ The [Bourbon](http://thoughtbot.com/bourbon/) library of Sass mixins is included
 
 - [Bourbon documentation](http://thoughtbot.com/bourbon/)
 - [ASCIIcast 330: Better SASS With Bourbon](http://asciicasts.com/episodes/330-better-sass-with-bourbon)
+- [Introducing Bourbon Sass Mixins](http://robots.thoughtbot.com/post/7846399901/introducing-bourbon-sass-mixins)
 
 ## Updating an external server with the contents of `dist/`
 
