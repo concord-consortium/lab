@@ -490,10 +490,6 @@ makeIntegrator = function(args) {
           speed[i] = Math.sqrt(v_sq);
           twoKE += v_sq;
 
-          // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
-          vx[i] += 0.5*ax[i]*dt;
-          vy[i] += 0.5*ay[i]*dt;
-
           // Bounce off vertical walls
           if (x[i] < leftwall) {
             x[i]  = leftwall + (leftwall - x[i]);
@@ -516,6 +512,9 @@ makeIntegrator = function(args) {
           CM[0] += x[i];
           CM[1] += y[i];
 
+          // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
+          vx[i] += 0.5*ax[i]*dt;
+          vy[i] += 0.5*ay[i]*dt;
         }
 
         // Calculate T(t+dt) from x(t+dt), x(t)
