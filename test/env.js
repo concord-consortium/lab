@@ -3,6 +3,7 @@ var html = fs.readFileSync("./test/layout.html").toString();
 
 document = require('jsdom').jsdom(html);
 window = document.createWindow();
+screen = window.screen;
 navigator = window.navigator;
 
 CSSStyleDeclaration = window.CSSStyleDeclaration;
