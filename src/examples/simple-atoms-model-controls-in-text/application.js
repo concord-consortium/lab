@@ -131,15 +131,15 @@ var lj_coefficients = molecules_lennard_jones.coefficients();
 var lj_data = {
   coefficients: lj_coefficients,
   variables: [
-    { 
+    {
       coefficient:"epsilon", 
       x: lj_coefficients.rmin, 
-      y: lj_coefficients.epsilon 
+      y: lj_coefficients.epsilon
     }, 
-    { 
+    {
       coefficient:"sigma", 
       x: lj_coefficients.sigma, 
-      y: 0 
+      y: 0
     }
   ]
 };
@@ -176,7 +176,7 @@ function update_coefficients(coefficients) {
   lj_data.variables[0].x = rmin;
 
   lennard_jones_potential = []
-  
+
   for(var r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
     y = molecules_lennard_jones.potential(r)
     if (y < 100) {
@@ -292,7 +292,7 @@ function modelStepForward() {
 function modelReset() {
   modelSetup();
   model.temperature(temperature);
-  layout.selection = "simple-screen";
+  layout.selection = "simple-static-screen";
   layout.setupScreen();
   updateMolNumberViewDependencies();
   modelStop();
@@ -317,11 +317,11 @@ window.onresize = layout.setupScreen;
 // ------------------------------------------------------------
 
 function handleKeyboardForModel(evt) {
-  evt = (evt) ? evt : ((window.event) ? event : null); 
+  evt = (evt) ? evt : ((window.event) ? event : null);
   if (evt) {
     switch (evt.keyCode) {
       case 32:                // spacebar
-      model_stopped ? modelGo() : modelStop(); 
+      model_stopped ? modelGo() : modelStop();
       evt.preventDefault();
       break;
       case 13:                // return

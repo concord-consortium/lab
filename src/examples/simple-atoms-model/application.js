@@ -293,7 +293,7 @@ function modelStepForward() {
 function modelReset() {
   modelSetup();
   model.temperature(temperature);
-  layout.selection = "simple-screen";
+  layout.selection = "simple-static-screen";
   layout.setupScreen();
   updateMolNumberViewDependencies();
   modelStop();

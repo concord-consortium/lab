@@ -8,191 +8,270 @@ layout = { version: "0.0.1" };
 
 layout.selection = "";
 
+layout.display = {};
+layout.regular_display = false;
+
+layout.not_rendered = true;
+layout.fontsize = false;
+layout.cancelFullScreen = false;
+layout.full_screen_factor = 1;
+
+layout.getDisplayProperties = function(obj) {
+  if (!arguments.length) {
+    var obj = {}
+  }
+  obj.screen = {
+      width:  screen.width,
+      height: screen.height
+  };
+  obj.client = {
+      width:  document.body.clientWidth,
+      height: document.body.clientHeight
+  };
+  obj.window = {
+      width:  document.width,
+      height: document.height
+  };
+  obj.page = {
+      width: layout.getPageWidth(),
+      height: layout.getPageHeight()
+  }
+  return obj
+}
+
+layout.checkForResize = function() {
+  if ((layout.display.screen.width  != screen.width) ||
+      (layout.display.screen.height != screen.height) ||
+      (layout.display.window.width  != document.width) ||
+      (layout.display.window.height != document.height)) {
+    layout.setupScreen()
+  }
+}
+
 layout.setupScreen = function(layout_selection) {
   var fullscreen = document.fullScreen ||
                    document.webkitIsFullScreen ||
                    document.mozFullScreen;
+
+  layout.display = layout.getDisplayProperties();
+
+  if (!layout.regular_display) {
+    layout.regular_display = layout.getDisplayProperties();
+  }
+
   if(fullscreen) {
+    layout.not_rendered = true;
+    layout.full_screen_factor = layout.display.screen.width / layout.regular_display.window.width;
+    layout.bodycss.style.fontSize = layout.full_screen_factor + 'em';
     switch (layout.selection) {
+
       case "simple-screen":
-      layout.setupSimpleFullScreen();
+      setupSimpleFullScreenMoleculeContainer();
+      setupFullScreenDescriptionRight();
+      break;
+
+      case "simple-static-screen":
+      if (layout.not_rendered) {
+        setupSimpleFullScreenMoleculeContainer();
+        setupFullScreenDescriptionRight();
+      }
       break;
 
       case "simple-iframe":
-      layout.setupSimpleFullScreen();
+      setupSimpleFullScreenMoleculeContainer();
+      setupFullScreenDescriptionRight();
       break;
 
       default:
-      layout.setupFullScreen();
+      setupFullScreenMoleculeContainer();
+      setupFullScreenPotentialChart();
+      setupFullScreenSpeedDistributionChart();
+      setupFullScreenKEChart();
       break;
     }
   } else {
+    if (layout.cancelFullScreen) {
+      layout.cancelFullScreen = false;
+      layout.regular_display = layout.previous_display
+    } else {
+      layout.regular_display = layout.getDisplayProperties();
+    }
+    layout.full_screen_factor = 1;
+    layout.bodycss.style.fontSize = "1em"
     switch (layout.selection) {
+
       case "simple-screen":
-      layout.setupSimpleScreen();
+      setupSimpleMoleculeContainer();
+      setupDescriptionRight();
+      break;
+
+      case "simple-static-screen":
+      if (layout.not_rendered) {
+        setupSimpleMoleculeContainer();
+        setupDescriptionRight();
+        layout.not_rendered = false;
+      }
       break;
 
       case "simple-iframe":
-      layout.setupSimpleIFrameScreen();
+      setupSimpleIFrameMoleculeContainer();
       break;
 
       default:
-      layout.setupRegularScreen();
+      setupRegularScreenMoleculeContainer();
+      setupRegularScreenPotentialChart();
+      setupRegularSpeedDistributionChart();
+      setupRegularScreenKEChart();
       break;
     }
+    layout.regular_display = layout.getDisplayProperties();
   }
   layout.setupTemperature();
   if (benchmarks_table) {
     benchmarks_table.style.display = "none";
   }
-}
 
-layout.setupFullScreen = function() {
-  layout.setupFullScreenMoleculeContainer();
-  layout.setupFullScreenPotentialChart();
-  layout.setupFullScreenSpeedDistributionChart();
-  layout.setupFullScreenKEChart();
-}
+  //
+  // Regular Screen Layout
+  //
+  function setupRegularScreenMoleculeContainer() {
+    moleculecontainer.style.width = layout.display.page.width * 0.42 +"px";
+    moleculecontainer.style.height = layout.display.page.width * 0.40 - 4 +"px";
+    layout.finishSetupMoleculeContainer();
+  }
 
-layout.setupRegularScreen = function() {
-  layout.setupRegularScreenMoleculeContainer();
-  layout.setupRegularScreenPotentialChart();
-  layout.setupRegularSpeedDistributionChart();
-  layout.setupRegularScreenKEChart();
-}
+  function setupRegularScreenPotentialChart() {
+    lj_potential_chart.style.width = layout.display.page.width * 0.24 +"px";
+    lj_potential_chart.style.height = layout.display.page.width * 0.18 +"px";
+    layout.finishSetupPotentialChart();
+  }
 
-layout.setupSimpleScreen = function() {
-  layout.setupSimpleMoleculeContainer();
-  layout.setupDescriptionRight();
-}
+  function setupRegularSpeedDistributionChart() {
+    speed_distribution_chart.style.width = layout.display.page.width * 0.23 +"px";
+    speed_distribution_chart.style.height = layout.display.page.width * 0.18 +"px";
+    layout.finishSetupSpeedDistributionChart();
+  }
 
-layout.setupSimpleIFrameScreen = function() {
-  layout.setupSimpleIFrameMoleculeContainer();
-}
+  function setupRegularScreenKEChart() {
+    kechart.style.width = layout.display.page.width * 0.48  + 4 +"px";
+    kechart.style.height = layout.display.page.width * 0.20 + 5 +"px";
+    layout.finishSetupKEChart();
+  }
 
-layout.setupSimpleFullScreen = function() {
-  layout.setupSimpleFullScreenMoleculeContainer();
-  layout.setupFullScreenDescriptionRight();
-}
+  //
+  // Full Screen Layout
+  //
+  function setupFullScreenMoleculeContainer() {
+    moleculecontainer.style.width = layout.display.page.height * 0.70 + "px";
+    moleculecontainer.style.height = layout.display.page.height * 0.70 + "px";
+    layout.finishSetupMoleculeContainer();
+  }
 
-//
-// Regular Screen Layout
-//
-layout.setupRegularScreenMoleculeContainer = function() {
-  moleculecontainer.style.width = document.body.clientWidth * 0.45 +"px";
-  moleculecontainer.style.height = document.body.clientWidth * 0.42 - 4 +"px";
-  layout.finishSetupMoleculeContainer();
-}
+  function setupFullScreenPotentialChart() {
+    lj_potential_chart.style.width = layout.display.page.width * 0.24 +"px";
+    lj_potential_chart.style.height = layout.display.page.height * 0.28 +"px";
+    layout.finishSetupPotentialChart();
+  }
 
-layout.setupRegularScreenPotentialChart = function() {
-  lj_potential_chart.style.width = document.body.clientWidth * 0.24 +"px";
-  lj_potential_chart.style.height = document.body.clientWidth * 0.20 +"px";
-  layout.finishSetupPotentialChart();
-}
+  function setupFullScreenSpeedDistributionChart() {
+    speed_distribution_chart.style.width = layout.display.page.width * 0.22 +"px";
+    speed_distribution_chart.style.height = layout.display.page.height * 0.28 +"px";
+    layout.finishSetupSpeedDistributionChart();
+  }
 
-layout.setupRegularSpeedDistributionChart = function() {
-  speed_distribution_chart.style.width = document.body.clientWidth * 0.23 +"px";
-  speed_distribution_chart.style.height = document.body.clientWidth * 0.20 +"px";
-  layout.finishSetupSpeedDistributionChart();
-}
+  function setupFullScreenKEChart() {
+    kechart.style.width = layout.display.page.width * 0.47 + 5 + "px";
+    kechart.style.height = layout.display.page.height * 0.40 + 0 +"px";
+    layout.finishSetupKEChart();
+  }
 
-layout.setupRegularScreenKEChart = function() {
-  kechart.style.width = document.body.clientWidth * 0.48  + 4 +"px";
-  kechart.style.height = document.body.clientWidth * 0.20 + 4 +"px";
-  layout.finishSetupKEChart();
-}
+  //
+  // Simple Screen Layout
+  //
+  function setupSimpleMoleculeContainer() {
+    var size = layout.display.page.height * 0.70;
+    moleculecontainer.style.width = size +"px";
+    moleculecontainer.style.height = size +"px";
+    layout.finishSetupMoleculeContainer();
+  }
 
-// Full Screen Layout
+  function setupDescriptionRight() {
+    var description_right = document.getElementById("description-right");
+    if (description_right !== null) {
+      description_right.style.width = Math.max(layout.display.page.width * 0.3,  layout.display.page.width - layout.display.page.height) +"px";
+    }
+  }
 
-layout.setupFullScreenMoleculeContainer = function() {
-  moleculecontainer.style.width = screen.width * 0.48 +"px";
-  moleculecontainer.style.height = screen.height * 0.75 + 3 + "px";
-  layout.finishSetupMoleculeContainer();
-}
+  //
+  // Simple iframe Screen Layout
+  //
+  function setupSimpleIFrameMoleculeContainer() {
+    var size = layout.display.page.height * 0.75;
+    moleculecontainer.style.width = size +"px";
+    moleculecontainer.style.height = size +"px";
+    layout.finishSetupMoleculeContainer();
+  }
 
-layout.setupFullScreenPotentialChart = function() {
-  lj_potential_chart.style.width = screen.width * 0.24 +"px";
-  lj_potential_chart.style.height = screen.height * 0.30 +"px";
-  layout.finishSetupPotentialChart();
-}
+  //
+  // Simple Full Screen Layout
+  //
+  function setupSimpleFullScreenMoleculeContainer() {
+    var size = layout.display.page.height * 0.75;
+    moleculecontainer.style.width = size +"px";
+    moleculecontainer.style.height = size +"px";
+    layout.finishSetupMoleculeContainer();
+  }
 
-layout.setupFullScreenSpeedDistributionChart = function() {
-  speed_distribution_chart.style.width = screen.width * 0.22 +"px";
-  speed_distribution_chart.style.height = screen.height * 0.30 +"px";
-  layout.finishSetupSpeedDistributionChart();
-}
-
-layout.setupFullScreenKEChart = function() {
-  kechart.style.width = screen.width * 0.47 + 5 + "px";
-  kechart.style.height = screen.height * 0.43 + 4 +"px";
-  layout.finishSetupKEChart();
-}
-
-// Simple Screen Layout
-
-layout.setupSimpleMoleculeContainer = function() {
-  var size = Math.min(getPageHeight() * 0.75, window.innerWidth * 0.6);
-  moleculecontainer.style.width = size +"px";
-  moleculecontainer.style.height = size +"px";
-  layout.finishSetupMoleculeContainer();
-}
-
-layout.setupDescriptionRight = function() {
-  // var description_right = document.getElementById("description-right");
-  // if (description_right !== null) {
-  //   var size = parseInt(layout.getStyleForSelector("#description-right").style.fontSize);
-  //   description_right.style.fontSize = size + "px";
-  //   description_right.style.fontSize = "16px";
-  //   description_right.style.width = document.body.clientWidth * 0.40 +"px";
-  //   description_right.style.height = document.body.clientWidth * 0.40 + 2 +"px";
-  // }
-}
-
-// Simple iFrame Screen Layout
-
-layout.setupSimpleIFrameMoleculeContainer = function() {
-  var size = Math.min(getPageHeight() * 0.75, window.innerWidth * 0.8);
-  moleculecontainer.style.width = size +"px";
-  moleculecontainer.style.height = size +"px";
-  layout.finishSetupMoleculeContainer();
-}
-
-// Simple Full Screen Layout
-
-layout.setupSimpleFullScreenMoleculeContainer = function() {
-  var size = Math.min(getPageHeight() * 0.82, window.innerWidth * 0.7);
-  moleculecontainer.style.width = size +"px";
-  moleculecontainer.style.height = size +"px";
-  layout.finishSetupMoleculeContainer();
-}
-
-layout.setupFullScreenDescriptionRight = function() {
-  // var description_right = document.getElementById("description-right");
-  // var size = parseInt(layout.getStyleForSelector("#description-right").style.fontSize);
-  // description_right.style.fontSize = size * 1.5 + "px";
-  // description_right.style.width = document.body.clientWidth * 0.30 +"px";
-  // description_right.style.height = document.body.clientWidth * 0.30 + 2 +"px";
+  function setupFullScreenDescriptionRight() {
+    var description_right = document.getElementById("description-right");
+    if (description_right !== null) {
+      description_right.style.width = layout.display.window.width * 0.30 +"px";
+    }
+  }
 }
 
 layout.getStyleForSelector = function(selector) {
-    var rules = document.styleSheets[0].rules || document.styleSheets[0].cssRules
-    for(var i = 0; i < rules.length; i++) {
-        if (rules[i].selectorText == selector) {
-          return rules[i]
-        }
+  var rule_lists = document.styleSheets
+  for(var i = 0; i < rule_lists.length; i++) {
+    var rules = rule_lists[i].rules || rule_lists[i].cssRules
+    for(var j = 0; j < rules.length; j++) {
+      if (rules[j].selectorText == selector) {
+        return rules[j]
+      }
     }
-    return false
+  }
+  return false
 };
 
 // Adapted from getPageSize() by quirksmode.com
-function getPageHeight() {
-    var windowHeight
-    if (self.innerHeight) { // all except Explorer
-      windowHeight = self.innerHeight;
-    } else if (document.documentElement && document.documentElement.clientHeight) {
-      windowHeight = document.documentElement.clientHeight;
-    } else if (document.body) { // other Explorers
-      windowHeight = document.body.clientHeight;
-    }
-    return windowHeight
+layout.getPageHeight = function() {
+  var windowHeight
+  if (self.innerHeight) { // all except Explorer
+    windowHeight = self.innerHeight;
+  } else if (document.documentElement && document.documentElement.clientHeight) {
+    windowHeight = document.documentElement.clientHeight;
+  } else if (document.body) { // other Explorers
+    windowHeight = layout.display.window.height;
+  }
+  return windowHeight
 }
+
+layout.getPageWidth = function() {
+  var windowWidth
+  if (self.innerWidth) { // all except Explorer
+    windowWidth = self.innerWidth;
+  } else if (document.documentElement && document.documentElement.clientWidth) {
+    windowWidth = document.documentElement.clientWidth;
+  } else if (document.body) { // other Explorers
+    windowWidth = window.width;
+  }
+  return windowWidth
+}
+
+var description_right = document.getElementById("description-right");
+if (description_right !== null) {
+  layout.fontsize = parseInt(layout.getStyleForSelector("#description-right").style.fontSize);
+}
+
+layout.bodycss = layout.getStyleForSelector("body");
+
