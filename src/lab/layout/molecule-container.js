@@ -220,7 +220,7 @@ layout.finishSetupMoleculeContainer = function() {
           .attr("x", mc_size.width - 100)
           .attr("y", mc_size.height)
           .attr("dy","2.4em")
-          .style("text-anchor","left");
+          .style("text-anchor","start");
     }
     if (mc_graph.playback_controller) {
       playback_component = new PlaybackComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos);
