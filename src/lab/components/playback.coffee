@@ -39,7 +39,7 @@ class PlaybackComponent
     @unit_width   = @width / 9
     if (@height < @unit_width)
       @height = @unit_width + 2
-      @dom_element.style("height", @height)
+      @dom_element.style("height", @height + "px")
 
     @vertical_padding = (@height - @unit_width) / 2
     @stroke_width     = @unit_width / 10
