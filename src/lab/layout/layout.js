@@ -231,14 +231,20 @@ layout.setupScreen = function(layout_selection) {
 }
 
 layout.getStyleForSelector = function(selector) {
-  var rule_lists = document.styleSheets
+  var rules, rule_lists = document.styleSheets;
   for(var i = 0; i < rule_lists.length; i++) {
-    var rules = rule_lists[i].rules || rule_lists[i].cssRules
-    if (rules) {
-      for(var j = 0; j < rules.length; j++) {
-        if (rules[j].selectorText == selector) {
-          return rules[j]
-        }
+    if (rule_lists[i]) {
+      try {
+         rules = rule_lists[i].rules || rule_lists[i].cssRules
+         if (rules) {
+           for(var j = 0; j < rules.length; j++) {
+             if (rules[j].selectorText == selector) {
+               return rules[j]
+             }
+           }
+         }
+      }
+      catch (e) {
       }
     }
   }
