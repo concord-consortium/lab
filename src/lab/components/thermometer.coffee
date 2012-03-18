@@ -13,7 +13,7 @@ class Thermometer
     this.init_svg()
 
   init_svg: ->
-    @dom_element.style("border", "1px solid black;")
+    @dom_element.style("border", "1px solid black")
     @svg = @dom_element.append("svg:svg")
       .attr("width", @width)
       .attr("height",@height)
