@@ -25,8 +25,10 @@ if (document.querySelectorAll) {
 
       if (request) {
         if (fullscreen) {
+          layout.cancelFullScreen = true;
           cancel.call(document);
         } else {
+          layout.cancelFullScreen = false;
           request.call(el);
         }
       } else {
