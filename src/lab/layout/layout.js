@@ -74,7 +74,7 @@ layout.setupScreen = function(layout_selection) {
 
   if(fullscreen) {
     layout.screen_factor = layout.display.screen.width / layout.canonical.width;
-    layout.checkbox_factor = layout.checkbox_scale * layout.screen_factor;
+    layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
     layout.bodycss.style.fontSize = layout.screen_factor + 'em';
     layout.not_rendered = true;
     switch (layout.selection) {
@@ -111,7 +111,7 @@ layout.setupScreen = function(layout_selection) {
       layout.regular_display = layout.getDisplayProperties();
     }
     layout.screen_factor = layout.regular_display.page.width / layout.canonical.width;
-    layout.checkbox_factor = layout.checkbox_scale * layout.screen_factor;
+    layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
     switch (layout.selection) {
 
       case "simple-screen":
