@@ -1,5 +1,5 @@
 var model  = require('./md2d').model,
-    format = require('d3').format,
+    sprint = require('./sprint').sprint,
     nodes,
     integrator, state,
     dt = 1/50,
@@ -16,16 +16,13 @@ state      = integrator.getOutputState();
 initialCM = [state.CM[0], state.CM[1]];
 
 printDrift = function() {
-  var dx = state.CM[0] - initialCM[0],
-      dy = state.CM[1] - initialCM[1],
+  var dx  = state.CM[0] - initialCM[0],
+      dy  = state.CM[1] - initialCM[1],
       dTE = state.KE + state.PE - initialTE;
 
-  console.log( format('.2f')(state.time) + ', ' +
-               format('.3f')(dx) + ', ' + format('.3f')(dy) + ', ' +
-               format('.3f')(state.driftCM[0]) + ', ' + format('.3f')(state.driftCM[1]) + ', ' +
-               format('.3f')(state.vCM[0]) + ', ' + format('.3f')(state.vCM[1]) + ', ' +
-               format('.3f')(dTE) );
-};
+  process.stdout.write(sprint("%.2f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f\n",
+    state.time, dx, dy, state.driftCM[0], state.driftCM[1], state.vCM[0], state.vCM[1], dTE));
+}
 
 exports.run = function() {
   var n = 200;
