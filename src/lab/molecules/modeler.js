@@ -29,7 +29,7 @@ modeler.model = function() {
       temperature,
 
       integrator,
-      integratorOutputState = {},
+      integratorOutputState,
       model_listener,
 
       //
@@ -82,6 +82,10 @@ modeler.model = function() {
     return s/n;
   }
 
+  function tick_history_list_is_empty() {
+    return tick_history_list_index === 0;
+  }
+
   function tick_history_list_push() {
     var i,
         newnodes = [],
@@ -103,6 +107,10 @@ modeler.model = function() {
 
   function tick() {
     var t;
+
+    if (tick_history_list_is_empty()) {
+      tick_history_list_push();
+    }
 
     integrator.integrate();
     pressure = integratorOutputState.pressure;
@@ -194,12 +202,27 @@ modeler.model = function() {
     };
   };
 
+  /**
+    Current seek position
+  */
   model.stepCounter = function() {
     return tick_counter;
   };
 
+  /** Total number of ticks that have been run & are stored, regardless of seek
+      position
+  */
   model.steps = function() {
-    return tick_history_list.length-1;
+
+    // If no ticks have run, tick_history_list will be uninitialized.
+    if (tick_history_list_is_empty()) {
+      return 0;
+    }
+
+    // The first tick will push 2 states to the tick_history_list: the initialized state ("step 0")
+    // and the post-tick model state ("step 1")
+    // Subsequent ticks will push 1 state per tick. So subtract 1 from the length to get the step #.
+    return tick_history_list.length - 1;
   };
 
   model.isNewStep = function() {
@@ -321,14 +344,13 @@ modeler.model = function() {
     model_listener = options.model_listener || false;
 
     reset_tick_history_list();
-
+    new_step = true;
     // pressures.push(pressure);
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
 
     integrator = coreModel.getIntegrator(options);
     integratorOutputState = integrator.getOutputState();
 
-    tick_history_list_push();
     return model;
   };
 

@@ -14,11 +14,11 @@ exports.getLennardJonesCalculator = function(cb) {
   var epsilon = -1.0,   // depth of the potential well
       sigma   =  4.0,   // distance from particle at which the potential is 0
 
-      rmin,             // distance from particle at which the potential is minimized
+      rmin,             // distance from particle at which the potential is minimimal, and equal to -epsilon
       alpha,            // precalculated from epsilon and sigma for computational convenience
       beta,             // precalculated from epsilon and sigma for computational convenience
 
-      setCoefficients = function(e, s) {
+      coefficients = function(e, s) {
         if (arguments.length) {
           epsilon = e;
           sigma   = s;
@@ -41,30 +41,32 @@ exports.getLennardJonesCalculator = function(cb) {
       },
 
       potentialFromSquaredDistance = function(r_sq) {
-        return beta*Math.pow(r_sq, -3) - alpha*Math.pow(r_sq, -6);
+        return -(alpha*Math.pow(r_sq, -6) - beta*Math.pow(r_sq, -3));
       },
 
       forceOverDistanceFromSquaredDistance = function(r_sq) {
-        var r_6th  = r_sq * r_sq * r_sq,
-            r_8th  = r_6th * r_sq,
-            r_14th = r_8th * r_6th;
+        // optimizing divisions actually does appear to be *slightly* faster
+        var r_minus2nd  = 1 / r_sq,
+            r_minus6th  = r_minus2nd * r_minus2nd * r_minus2nd,
+            r_minus8th  = r_minus6th * r_minus2nd,
+            r_minus14th = r_minus8th * r_minus6th;
 
-        return 12*alpha/r_14th - 6*beta/r_8th;
+        return 12*alpha*r_minus14th - 6*beta*r_minus8th;
       };
 
   // initial calculation of values dependent on (epsilon, sigma)
-  setCoefficients(epsilon, sigma);
+  coefficients(epsilon, sigma);
 
   return {
 
-    setCoefficients: setCoefficients,
+    coefficients: coefficients,
 
     setEpsilon: function(e) {
-      return setCoefficients(e, sigma);
+      return coefficients(e, sigma);
     },
 
     setSigma: function(s) {
-      return setCoefficients(epsilon, s);
+      return coefficients(epsilon, s);
     },
 
     // "fast" forms which avoid the need for a square root
