@@ -238,7 +238,7 @@ layout.setupScreen = function(layout_selection) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameMoleculeContainer() {
-    var size = layout.display.page.height * 0.82;
+    var size = layout.display.page.height * 0.78;
     moleculecontainer.style.width = size +"px";
     moleculecontainer.style.height = size +"px";
     layout.finishSetupMoleculeContainer();
