@@ -22,6 +22,8 @@ layout.not_rendered = true;
 layout.fontsize = false;
 layout.cancelFullScreen = false;
 layout.screen_factor = 1;
+layout.checkbox_factor = 1.1;
+layout.checkbox_scale = 1.1;
 
 layout.canonical.width  = 1280
 layout.canonical.height = 800
@@ -72,6 +74,7 @@ layout.setupScreen = function(layout_selection) {
 
   if(fullscreen) {
     layout.screen_factor = layout.display.screen.width / layout.canonical.width;
+    layout.checkbox_factor = layout.checkbox_scale * layout.screen_factor;
     layout.bodycss.style.fontSize = layout.screen_factor + 'em';
     layout.not_rendered = true;
     switch (layout.selection) {
@@ -108,6 +111,7 @@ layout.setupScreen = function(layout_selection) {
       layout.regular_display = layout.getDisplayProperties();
     }
     layout.screen_factor = layout.regular_display.page.width / layout.canonical.width;
+    layout.checkbox_factor = layout.checkbox_scale * layout.screen_factor;
     switch (layout.selection) {
 
       case "simple-screen":
@@ -150,6 +154,9 @@ layout.setupScreen = function(layout_selection) {
       break;
     }
     layout.regular_display = layout.getDisplayProperties();
+  }
+  if (layout.transform) {
+    $('input[type=checkbox]').css(layout.transform, 'scale(' + layout.checkbox_factor + ',' + layout.checkbox_factor + ')')
   }
   layout.setupTemperature();
   if (benchmarks_table) {
@@ -301,10 +308,31 @@ layout.getPageWidth = function() {
   return windowWidth
 }
 
+// http://www.zachstronaut.com/posts/2009/02/17/animate-css-transforms-firefox-webkit.html
+layout.getTransformProperty = function(element) {
+    // Note that in some versions of IE9 it is critical that
+    // msTransform appear in this list before MozTransform
+    var properties = [
+        'transform',
+        'WebkitTransform',
+        'msTransform',
+        'MozTransform',
+        'OTransform'
+    ];
+    var p;
+    while (p = properties.shift()) {
+        if (typeof element.style[p] != 'undefined') {
+            return p;
+        }
+    }
+    return false;
+}
+
 var description_right = document.getElementById("description-right");
 if (description_right !== null) {
   layout.fontsize = parseInt(layout.getStyleForSelector("#description-right").style.fontSize);
 }
 
 layout.bodycss = layout.getStyleForSelector("body");
+layout.transform = layout.getTransformProperty(document.body);
 
