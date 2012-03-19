@@ -403,7 +403,8 @@ makeIntegrator = function(args) {
     relaxToTemperature: function(T) {
       if (T != null) T_target = T;
 
-      console.log("T_target = ", T_target);
+      // doesn't work on IE9
+      // console.log("T_target = ", T_target);
       // override window size
       adjustTemperature();
 
