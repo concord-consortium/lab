@@ -164,7 +164,7 @@ layout.finishSetupMoleculeContainer = function() {
     });
 
     if (mc_graph.playback_controller || mc_graph.play_only_controller) {
-      playback_component.position(pc_xpos, pc_ypos);
+      playback_component.position(pc_xpos, pc_ypos, layout.screen_factor);
     }
     layout.mc_redraw();
   } else {
@@ -223,10 +223,10 @@ layout.finishSetupMoleculeContainer = function() {
           .style("text-anchor","start");
     }
     if (mc_graph.playback_controller) {
-      playback_component = new PlaybackComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos);
+      playback_component = new PlaybackComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos, layout.screen_factor);
     }
     if (mc_graph.play_only_controller) {
-      playback_component = new PlayOnlyComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos);
+      playback_component = new PlayOnlyComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos, layout.screen_factor);
     }
     layout.mc_redraw();
     mc_create_container();
