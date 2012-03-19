@@ -29,7 +29,7 @@ modeler.model = function() {
       temperature,
 
       integrator,
-      integratorOutputState = {},
+      integratorOutputState,
       model_listener,
 
       //
