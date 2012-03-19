@@ -389,6 +389,7 @@ function modelReset() {
   modelSetup();
   model.temperature(temperature);
   layout.temperature_control_checkbox.onchange();
+  layout.selection = "full-static-screen";
   layout.setupScreen();
   updateMolNumberViewDependencies();
   modelStop();
