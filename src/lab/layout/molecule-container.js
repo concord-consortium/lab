@@ -68,18 +68,18 @@ layout.finishSetupMoleculeContainer = function() {
   mc_cy = moleculecontainer.clientHeight;
 
   mc_padding = {
-     "top":    mc_graph.title  ? 40 * layout.full_screen_factor : 20,
+     "top":    mc_graph.title  ? 40 * layout.screen_factor : 20,
      "right":                    25,
-     "bottom": mc_graph.xlabel ? 46  * layout.full_screen_factor : 20,
-     "left":   mc_graph.ylabel ? 60  * layout.full_screen_factor : 25
+     "bottom": mc_graph.xlabel ? 46  * layout.screen_factor : 20,
+     "left":   mc_graph.ylabel ? 60  * layout.screen_factor : 25
   };
-  if (mc_graph.playback_controller || mc_graph.playback_only_controller) { mc_padding.bottom += (30  * layout.full_screen_factor) }
+  if (mc_graph.playback_controller || mc_graph.playback_only_controller) { mc_padding.bottom += (30  * layout.screen_factor) }
   mc_size = {
     "width":  mc_cx - mc_padding.left - mc_padding.right,
     "height": mc_cy - mc_padding.top  - mc_padding.bottom
   },
   pc_xpos = mc_size.width / 2 - 50,
-  pc_ypos = mc_size.height + (mc_graph.ylabel ? 75 * layout.full_screen_factor : 30),
+  pc_ypos = mc_size.height + (mc_graph.ylabel ? 75 * layout.screen_factor : 30),
   mc_mw = mc_size.width,
   mc_mh = mc_size.height,
   mc_tx = function(d, i) { return "translate(" + mc_x(d) + ",0)"; },
