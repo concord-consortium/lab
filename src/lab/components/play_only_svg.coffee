@@ -3,12 +3,13 @@
 ############################################
 class PlayOnlyComponentSVG
   # playable must accept play(), stop(), forward(), back(), and seek(0..1)
-  constructor: (@svg_element,@playable = null, xpos, ypos) ->
+  constructor: (@svg_element,@playable = null, xpos, ypos, scale) ->
     @offsets      = {'play': 1, 'stop': 1}
     @width        = 200
     @height       = 34
     @xpos         = xpos
     @ypos         = ypos
+    @scale        = scale || 1
     @unit_width   = @width / 9
 
     @vertical_padding = (@height - @unit_width) / 2
@@ -21,7 +22,7 @@ class PlayOnlyComponentSVG
 
   # TODO: make a button class
   make_button: (button_name, type, point_set) ->
-    button_group = @svg.append('svg:g')
+    button_group = @group.append('svg:g')
     x = this.offset(button_name)
     button_group.attr('x', x)
       .attr('y',@vertical_padding)
@@ -52,8 +53,6 @@ class PlayOnlyComponentSVG
     else console.log("no @playable defined")
     this.update_ui()
 
-
-
   # |>
   init_play_button: ->
     points = [[
@@ -77,22 +76,27 @@ class PlayOnlyComponentSVG
   init_view: ->
     @svg = @svg_element.append("svg:svg")
       .attr("class", "component playbacksvg")
-      .attr("width", @width)
-      .attr("height",@height)
       .attr("x", @xpos)
       .attr("y", @ypos);
+
+    @group = @svg.append("g")
+        .attr("transform", "scale(" + @scale + "," + @scale + ")")
+        .attr("width", @width)
+        .attr("height",@height);
 
     this.init_play_button()
     this.init_stop_button()
     this.hide(@play)
 
-  position: (xpos, ypos) ->
+  position: (xpos, ypos, scale) ->
     @xpos = xpos
     @ypos = ypos
-    @svg.attr("width", @width)
-      .attr("height",@height)
-      .attr("x", @xpos)
-      .attr("y", @ypos)
+    @scale = scale || 1
+    @svg.attr("x", @xpos).attr("y", @ypos)
+
+    @group.attr("transform", "scale(" + @scale + "," + @scale + ")")
+      .attr("width", @width)
+      .attr("height",@height);
 
   update_ui: ->
     if @playable

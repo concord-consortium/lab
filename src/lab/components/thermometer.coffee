@@ -2,8 +2,8 @@ class Thermometer
 
   constructor: (@dom_id="#thermometer") ->
     @dom_element = d3.select(@dom_id).attr('class','thermometer')
-    @width   = 10
-    @height  = 200
+    @width   = 1
+    @height  = 10
     @max     = 0.7
     @samples = []
 
@@ -15,13 +15,13 @@ class Thermometer
   init_svg: ->
     @dom_element.style("border", "1px solid black")
     @svg = @dom_element.append("svg:svg")
-      .attr("width", @width)
-      .attr("height",@height)
+      .attr("width", @width + "em")
+      .attr("height",@height + "em")
       .append("svg:g")
 
     @thermometer = @svg.append('svg:rect')
-    @thermometer.attr("width",@width)
-    @thermometer.attr("height", @height)
+    @thermometer.attr("width",@width + "em")
+    @thermometer.attr("height", @height + "em")
     @thermometer.style("fill","#f4b626")
     d3.select('#therm_text').attr('class','therm_text')
 
@@ -47,8 +47,8 @@ class Thermometer
   redraw: ->
     avg = this.get_avg().toFixed(4)
     value = this.scaled_display_value()
-    @thermometer.attr("y", @height - value)
-    @thermometer.attr("height",value)
+    @thermometer.attr("y", @height - value + "em")
+    @thermometer.attr("height", value + "em")
     @last_draw_time = new Date().getTime()
     d3.select('#therm_text').text("Temperature")
 

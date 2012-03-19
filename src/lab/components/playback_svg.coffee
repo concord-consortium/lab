@@ -3,12 +3,13 @@
 ############################################
 class PlaybackComponentSVG
   # playable must accept play(), stop(), forward(), back(), and seek(0..1)
-  constructor: (@svg_element,@playable = null, xpos, ypos) ->
+  constructor: (@svg_element,@playable = null, xpos, ypos, scale) ->
     @offsets      = {'reset': 0, 'back': 1, 'play': 2, 'stop': 2, 'forward': 3}
     @width        = 200
     @height       = 34
     @xpos         = xpos
     @ypos         = ypos
+    @scale        = scale || 1
     @unit_width   = @width / 9
 
     @vertical_padding = (@height - @unit_width) / 2
@@ -21,7 +22,7 @@ class PlaybackComponentSVG
 
   # TODO: make a button class
   make_button: (button_name, type, point_set) ->
-    button_group = @svg.append('svg:g')
+    button_group = @group.append('svg:g')
     x = this.offset(button_name)
     button_group.attr('x', x)
       .attr('y',@vertical_padding)
@@ -100,7 +101,7 @@ class PlaybackComponentSVG
 
   # >>
   init_forward_button: ->
-    points = [[ 
+    points = [[
       {x: 0.5, y: 0    },
       {x: 1,   y: 0.5  },
       {x: 0.5, y: 1    }
@@ -114,10 +115,13 @@ class PlaybackComponentSVG
   init_view: ->
     @svg = @svg_element.append("svg:svg")
       .attr("class", "component playbacksvg")
-      .attr("width", @width)
-      .attr("height",@height)
-      .attr("x", @xpos)
-      .attr("y", @ypos);
+        .attr("x", @xpos)
+        .attr("y", @ypos);
+
+    @group = @svg.append("g")
+        .attr("transform", "scale(" + @scale + "," + @scale + ")")
+        .attr("width", @width)
+        .attr("height",@height);
 
     this.init_reset_button()
     this.init_play_button()
@@ -126,13 +130,15 @@ class PlaybackComponentSVG
     this.init_back_button()
     this.hide(@play)
 
-  position: (xpos, ypos) ->
+  position: (xpos, ypos, scale) ->
     @xpos = xpos
     @ypos = ypos
-    @svg.attr("width", @width)
-      .attr("height",@height)
-      .attr("x", @xpos)
-      .attr("y", @ypos)
+    @scale = scale || 1
+    @svg.attr("x", @xpos).attr("y", @ypos)
+
+    @group.attr("transform", "scale(" + @scale + "," + @scale + ")")
+      .attr("width", @width)
+      .attr("height",@height);
 
   update_ui: ->
     if @playable
