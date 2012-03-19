@@ -318,11 +318,11 @@ window.onresize = layout.setupScreen;
 // ------------------------------------------------------------
 
 function handleKeyboardForModel(evt) {
-  evt = (evt) ? evt : ((window.event) ? event : null); 
+  evt = (evt) ? evt : ((window.event) ? event : null);
   if (evt) {
     switch (evt.keyCode) {
       case 32:                // spacebar
-      model_stopped ? modelGo() : modelStop(); 
+      model_stopped ? modelGo() : modelStop();
       evt.preventDefault();
       break;
       case 13:                // return
