@@ -221,7 +221,7 @@ layout.setupScreen = function(layout_selection) {
   // Simple Screen Layout
   //
   function setupSimpleMoleculeContainer() {
-    var size = layout.display.page.height * 0.70;
+    var size = layout.display.page.height * 0.75;
     moleculecontainer.style.width = size +"px";
     moleculecontainer.style.height = size +"px";
     layout.finishSetupMoleculeContainer();
@@ -238,7 +238,7 @@ layout.setupScreen = function(layout_selection) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameMoleculeContainer() {
-    var size = layout.display.page.height * 0.75;
+    var size = layout.display.page.height * 0.82;
     moleculecontainer.style.width = size +"px";
     moleculecontainer.style.height = size +"px";
     layout.finishSetupMoleculeContainer();
