@@ -96,6 +96,8 @@ class SliderComponent
 
   handle_drag: (e) ->
     if @dragging
+      document.onselectstart = ->
+        false
       x = e.pageX - @slider_well.position().left
       y = e.pageY - @slider_well.position().top
       if this.horizontal_orientation()
@@ -121,7 +123,8 @@ class SliderComponent
       false
 
   handle_mouseup: ->
-    document.onselectstart = function() { return true; }
+    document.onselectstart = ->
+      true
     if @dragging
       $(document).unbind "mousemove", @documentMouseMoveDelegate
       $(document).unbind "mouseup",   @documentMouseUpDelegate
