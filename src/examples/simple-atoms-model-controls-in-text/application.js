@@ -110,13 +110,13 @@ var lj_data = {
   coefficients: lj_coefficients,
   variables: [
     {
-      coefficient:"epsilon", 
-      x: lj_coefficients.rmin, 
+      coefficient:"epsilon",
+      x: lj_coefficients.rmin,
       y: lj_coefficients.epsilon
-    }, 
+    },
     {
-      coefficient:"sigma", 
-      x: lj_coefficients.sigma, 
+      coefficient:"sigma",
+      x: lj_coefficients.sigma,
       y: 0
     }
   ]
@@ -170,15 +170,15 @@ function update_coefficients(coefficients) {
 // ------------------------------------------------------------
 
 function generate_atoms() {
-  model.nodes({ num: mol_number, 
-          xdomain: 100, ydomain: 100, 
-          temperature: temperature, rmin: 4.4, 
+  model.nodes({ num: mol_number,
+          xdomain: 100, ydomain: 100,
+          temperature: temperature, rmin: 4.4,
           mol_rmin_radius_factor: 0.38
         })
       .initialize({
           temperature: temperature,
-          lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked, 
-          coulomb_forces: layout.coulomb_forces_checkbox.checked, 
+          lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked,
+          coulomb_forces: layout.coulomb_forces_checkbox.checked,
           model_listener: model_listener
         });
   atoms = model.get_atoms();
