@@ -92,6 +92,7 @@ class SliderComponent
     @dragging = true
     $(document).bind "mouseup.drag", @documentMouseUpDelegate = (e)=> @handle_mouseup e
     $(document).bind "mousemove.drag", @documentMouseMoveDelegate = (e)=> @handle_drag e
+    @handle_drag e
 
   handle_drag: (e) ->
     if @dragging
@@ -128,8 +129,7 @@ class SliderComponent
     true
 
   init_mouse_handlers: ->
-    @slider_well.mousedown  (e) =>
-      @handle_mousedown(e)
+    @slider_well.bind "mousedown", @documentMouseUpDelegate = (e)=> @handle_mousedown e
 
 # make this class available globally as SliderComponent
 # use like this:
