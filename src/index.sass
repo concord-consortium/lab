@@ -9,15 +9,45 @@ body
   color: #3f3f3f
 
 #header
-  background: #eb8723
+  @include linear-gradient(#3a878b, #8cbbb8, $fallback: #3a878b)
   color: #fff
   padding: 1em
+  position: relative
   font-size: 16px
   font-weight: bold
+  h1
+    margin-right: 220px
+    a
+      color: #fff
+      text-decoration: none
+  a#logo
+    display: block
+    float: right
+    height: 60px
+    margin: 0
+    width: 195px
+    img
+      border: none
+      height: 60px
+      width: 195px
 
-#fullscreen img
-  margin-top: 8px
+@media screen and (max-width: 480px)
+  #header
+    h1
+      margin-right: 0
+    a#logo
+      clear: both
+      display: block
+      float: none
+
+img#fullscreen
   cursor: pointer
+  height: 25px
+  margin: 0
+  position: absolute
+  right: 1em
+  top: 7.45em
+  width: 25px
 
 a
   color: #3a878b

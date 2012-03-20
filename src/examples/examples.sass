@@ -1,5 +1,9 @@
 @import 'bourbon/bourbon'
 
+html
+  margin: 0
+  padding: 0
+
 body
   font-size: 1em
   font-family: museo-sans, 'Open Sans', Verdana, Geneva, sans-serif
@@ -27,7 +31,7 @@ h3
   font-size: 1.165em
 
 #header
-  @include linear-gradient(#3a878b, #8cbbb8, $fallback: #f4b626)
+  @include linear-gradient(#3a878b, #8cbbb8, $fallback: #3a878b)
   color: #fff
   padding: 1em
   position: relative
@@ -38,17 +42,22 @@ h3
     a
       color: #fff
       text-decoration: none
-  img#logo
+  a#logo
+    display: block
     float: right
     height: 60px
     margin: 0
     width: 195px
+    img
+      border: none
+      height: 60px
+      width: 195px
 
 @media screen and (max-width: 480px)
   #header
     h1
       margin-right: 0
-    img#logo
+    a#logo
       clear: both
       display: block
       float: none
