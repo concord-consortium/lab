@@ -253,8 +253,7 @@ function generate_atoms() {
           temperature: temperature,
           coulomb_forces: layout.coulomb_forces_checkbox.checked,
           model_listener: model_listener
-        })
-      .relax();
+        });
   atoms = model.get_atoms();
   nodes = model.get_nodes();
 }
@@ -263,6 +262,7 @@ function modelSetup() {
   generate_atoms();
   model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
   model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
+  model.relax();
   te_data = [model.ke()];
 }
 
