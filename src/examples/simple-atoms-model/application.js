@@ -189,6 +189,7 @@ function modelSetup() {
   model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
   model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
   model.set_temperature_control(true);
+  model.relax();
 }
 
 var mol_number_to_lj_sigma_map = {
