@@ -3,7 +3,7 @@ class Thermometer
   constructor: (@dom_id="#thermometer") ->
     @dom_element = d3.select(@dom_id).attr('class','thermometer')
     @width   = 1
-    @height  = 10
+    @height  = 12
     @max     = 0.7
     @samples = []
 
