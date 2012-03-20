@@ -27,44 +27,40 @@ h3
   font-size: 1.165em
 
 #header
-  background: #eb8723
+  @include linear-gradient(#3a878b, #8cbbb8, $fallback: #f4b626)
   color: #fff
-  padding: 0.5em 1em
+  padding: 1em
   position: relative
+  font-size: 16px
   font-weight: bold
-  a
-    color: #fff
-    text-decoration: none
-  ul
-    display: inline-block
-    list-style-type: none
-    overflow: hidden
-    margin: 0em
-    padding: 0em
-    li
-      display: inline-table
-      vertical-align: middle
-      height: 4em
-      margin: 0em
-      padding: 0.2em 1em 0.2em 0em
-    li.title
-      font-size: 1.6em
-      font-weight: bold
-    li.note
-      padding: 0em 3em 0em 4em
-      font-size: 1.1em
-      font-weight: normal
-      font-style: italic
-  ul.right
+  h1
+    margin-right: 220px
+    a
+      color: #fff
+      text-decoration: none
+  img#logo
     float: right
+    height: 60px
+    margin: 0
+    width: 195px
+
+@media screen and (max-width: 480px)
+  #header
+    h1
+      margin-right: 0
+    img#logo
+      clear: both
+      display: block
+      float: none
 
 img#fullscreen
   cursor: pointer
+  height: 25px
+  margin: 0
   position: absolute
   right: 1em
-  top: 1em
-  width: 3em
-  height: 3em
+  top: 7.45em
+  width: 25px
 
 select
   font-size: 1em
