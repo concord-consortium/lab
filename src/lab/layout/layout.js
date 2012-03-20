@@ -221,7 +221,7 @@ layout.setupScreen = function(layout_selection) {
   // Simple Screen Layout
   //
   function setupSimpleMoleculeContainer() {
-    var size = layout.display.page.height * 0.75;
+    var size = layout.display.page.height * 0.74;
     moleculecontainer.style.width = size +"px";
     moleculecontainer.style.height = size +"px";
     layout.finishSetupMoleculeContainer();
@@ -230,7 +230,7 @@ layout.setupScreen = function(layout_selection) {
   function setupDescriptionRight() {
     var description_right = document.getElementById("description-right");
     if (description_right !== null) {
-      description_right.style.width = Math.max(layout.display.page.width * 0.3,  layout.display.page.width - layout.display.page.height) +"px";
+      description_right.style.width = Math.max(layout.display.page.width * 0.3,  layout.display.page.width - layout.display.page.height - 20) +"px";
     }
   }
 
