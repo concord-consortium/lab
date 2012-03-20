@@ -44,11 +44,11 @@ var model_listener = function(e) {
   var ke = model.ke(),
       step_counter = model.stepCounter(),
       total_steps = model.steps();
-  
+
   layout.speed_update();
-  
+
   layout.update_molecule_positions();
-  
+
   if (model.isNewStep()) {
     ke_data.push(ke);
     if (model_stopped) {
@@ -166,15 +166,15 @@ var lj_coefficients = molecules_lennard_jones.coefficients();
 var lj_data = {
   coefficients: lj_coefficients,
   variables: [
-    { 
+    {
       coefficient:"epsilon", 
       x: lj_coefficients.rmin, 
-      y: lj_coefficients.epsilon 
+      y: lj_coefficients.epsilon
     }, 
-    { 
+    {
       coefficient:"sigma", 
       x: lj_coefficients.sigma, 
-      y: 0 
+      y: 0
     }
   ]
 };
@@ -211,7 +211,7 @@ function update_coefficients(coefficients) {
   lj_data.variables[0].x = rmin;
 
   lennard_jones_potential = []
-  
+
   for(var r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
     y = molecules_lennard_jones.potential(r)
     if (y < 100) {
@@ -406,11 +406,11 @@ function modelReset() {
   layout.setup_particles();
   step_counter = model.stepCounter();
   layout.displayStats();
-  if (layout.datatable_visible) { 
+  if (layout.datatable_visible) {
     layout.render_datatable(true);
   } else {
     layout.hide_datatable()
-  }  
+  }
   ke_data = [model.ke()];
   ke_graph.new_data(ke_data);
   ke_graph.hide_canvas();
@@ -435,11 +435,11 @@ window.onresize = layout.setupScreen;
 // ------------------------------------------------------------
 
 function handleKeyboardForModel(evt) {
-  evt = (evt) ? evt : ((window.event) ? event : null); 
+  evt = (evt) ? evt : ((window.event) ? event : null);
   if (evt) {
     switch (evt.keyCode) {
       case 32:                // spacebar
-      model_stopped ? modelGo() : modelStop(); 
+      model_stopped ? modelGo() : modelStop();
       evt.preventDefault();
       break;
       case 13:                // return

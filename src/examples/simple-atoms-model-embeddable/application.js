@@ -60,28 +60,6 @@ cool_button.add_action(function() {
 });
 
 // ------------------------------------------------------------
-// Setup therm, epsilon_slider & sigma_slider components.
-// ------------------------------------------------------------
-var therm        = new Thermometer('#thermometer');
-
-var epsilon_slider  = new  SliderComponent('#attraction_slider');
-epsilon_slider.max = lj_epsilon_min;
-epsilon_slider.min = lj_epsilon_max;
-epsilon_slider.value_changed_function = function (v) {
-  model.set_lj_coefficients(v,model.getSigma());
-}
-epsilon_slider.update_label();
-
-var temperature_slider = new  SliderComponent('#temperature_slider');
-temperature_slider.max = 7;
-temperature_slider.min = 0;
-temperature_slider.value = 0.5;
-temperature_slider.value_changed_function = function (v) {
-  model.temperature(v);
-}
-temperature_slider.update_label();
-
-// ------------------------------------------------------------
 //
 // Main callback from model process
 //
@@ -228,7 +206,6 @@ var mol_number_to_lj_sigma_map = {
 
 function updateMolNumberViewDependencies() {
   update_sigma(mol_number_to_lj_sigma_map[mol_number]);
-  therm.max = 2.1;
 }
 
 // ------------------------------------------------------------
@@ -350,7 +327,34 @@ document.onkeydown = handleKeyboardForModel;
 // ------------------------------------------------------------
 
 modelReset();
+
+// ------------------------------------------------------------
+// Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
+// ------------------------------------------------------------
+
+var therm        = new Thermometer('#thermometer');
+therm.max = 2.1;
+
+var epsilon_slider  = new  SliderComponent('#attraction_slider');
+epsilon_slider.max = lj_epsilon_min;
+epsilon_slider.min = lj_epsilon_max;
+
+epsilon_slider.value_changed_function = function (v) {
+  model.set_lj_coefficients(v,model.getSigma());
+}
+epsilon_slider.update_label();
+
+var temperature_slider = new  SliderComponent('#temperature_slider');
+temperature_slider.max = 7;
+temperature_slider.min = 0;
+temperature_slider.value = 0.5;
+temperature_slider.value_changed_function = function (v) {
+  model.temperature(v);
+}
+temperature_slider.update_label();
+
 therm.add_value(model.ave_ke());
+
 if (autostart) {
   modelGo();
 }
