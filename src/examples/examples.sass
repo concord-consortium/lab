@@ -72,6 +72,24 @@ select
 input[type=checkbox]
   -webkit-transform: scale(1,1)
 
+#heat_button.inactive
+  $inactive: lighten(#f00, 20%)
+  background-color: $inactive
+
+#heat_button
+  background-color: #F00
+  height: 1.6em
+  width: 2.0em
+
+#cool_button.inactive
+  $inactive: lighten(#00f, 20%)
+  background-color: $inactive
+
+#cool_button
+  background-color: #00f
+  height: 1.6em
+  width: 2.0em
+
 #intro
   padding: .5em 1em 0
 
