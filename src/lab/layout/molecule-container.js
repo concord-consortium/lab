@@ -413,6 +413,7 @@ layout.setup_particles = function() {
       .attr("r",  function(d, i) { return mc_x(get_radius(i)); })
       .attr("cx", function(d, i) { return mc_x(get_x(i)); })
       .attr("cy", function(d, i) { return mc_y(get_y(i)); })
+      .style("cursor", "crosshair")
       .style("fill", function(d, i) {
         if (layout.coulomb_forces_checkbox.checked) {
           return (mc_x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')"
