@@ -31,38 +31,12 @@
         %li.top
           #description-right
             %p
-              A computational simulation of a collection of simple atoms with the forces between
-              the atoms modeled with both the Lennard-Jones Potential which models Pauli repulsion at
-              short ranges and the attractive van der Waals forces that act over longer-ranges.
+              Simulation of 50 atoms modeled with Coulomb forces from electric charge and the
+              Lennard-Jones Potential which models the forces between neutral atoms. Atoms with
+              opposite charges attract, atoms with the same charge repel each other.
             %p
-              Adijust this slider to vary the strength of the
-              %b van der Waals attraction:
-            .component_group
-              .slider_container
-                .left_half
-                  stronger
-                .right_half
-                  weaker
-                .content
-                  #attraction_slider
-                .below
-                  Attractive Force
-            %p
-              You can also heat or cool the simulation with these buttons:
-            .component_group
-              .slider_container
-                .left_half
-                  Cool
-                .right_half
-                  Heat
-                .content
-                  #cool_button
-                  #heat_button
-            %p
-              Charges of +1 or -1 are evenly distributed among the atoms. When the Coulomb particle
-              force interaction checkbox is enabled atoms with the opposite charges experience an
-              attractive force. Atoms with a positive charge appear blue, atoms with a negative
-              charge appear red.
+              Try turning off the Coulomb particle force interaction to see how collections of
+              neutral atoms behave.
             .component_group
               .slider_container
                 .left_half
@@ -74,7 +48,32 @@
                     %input(id="coulomb-forces-checkbox" type="checkbox" checked)
                 .below
                   %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
-
+            %p
+              Also try adjusting the strength of the Lennard-Jones
+              %b van der Waals attraction:
+            .component_group
+              .slider_container
+                .left_half
+                  weaker
+                .right_half
+                  stronger
+                .content
+                  #attraction_slider
+                .below
+                  Attractive Force
+            %p
+              Make the model cold enough and the atoms will condense and form clumps. Heat it up
+              and the atoms will overcome the attractive forces, the clumps will break up and the
+              atoms will form a gas.
+            .component_group
+              .slider_container
+                .left_half
+                  Cool
+                .right_half
+                  Heat
+                .content
+                  #cool_button
+                  #heat_button
         -# %li
         -#   %fieldset
         -#     %legend Particle Force Interactions
