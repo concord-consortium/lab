@@ -38,6 +38,8 @@ class SliderComponent
     @handle_y = (@y1 + @y2) / 2
     @handle_x = (@x1 + @x2) / 2
     this.init_slider_fill()
+    @slider_well_height = @slider_well.height()
+    @slider_well_width = @slider_well.width()
     this.init_handle()
     this.init_label()
 
@@ -62,12 +64,14 @@ class SliderComponent
     @slider_well.append(@handle)
     @handle_width  = parseInt(@handle.width())
     @handle_height = parseInt(@handle.height())
+    @handle_width_offset  = (@handle_width/2)  - (@handle_width  - @slider_well_width) / 2
+    @handle_height_offset = (@handle_height/2) - (@handle_height - @slider_well_height) / 2
     this.update_handle()
 
   update_handle: ->
     @handle
       .css('left',"#{@handle_x - (@handle_width /2) }px")
-      .css('top', "#{@handle_y - (@handle_height/2) }px")
+      .css('top', "#{@handle_y - @handle_height_offset }px")
 
   init_label: ->
     @text_label = $('<div/>')
