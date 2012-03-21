@@ -129,7 +129,8 @@ dist/vendor: \
 	dist/vendor/modernizr \
 	dist/vendor/sizzle \
 	dist/vendor/hijs \
-	dist/vendor/mathjax
+	dist/vendor/mathjax \
+	dist/vendor/fonts
 
 dist/vendor/d3:
 	mkdir -p dist/vendor/d3
@@ -176,6 +177,10 @@ dist/vendor/mathjax:
 	cp -R vendor/mathjax/images dist/vendor/mathjax
 	cp -R vendor/mathjax/fonts dist/vendor/mathjax
 	cp -R vendor/mathjax/config dist/vendor/mathjax
+
+dist/vendor/fonts:
+	mkdir -p dist/vendor/fonts
+	cp -R vendor/fonts dist/vendor/
 
 vendor/jquery/dist/jquery.min.js: vendor/jquery
 	cd vendor/jquery; make
