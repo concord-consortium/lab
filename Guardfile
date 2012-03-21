@@ -49,9 +49,9 @@ guard 'shell' do
       command("cp -f #{source_path} #{destination_path}")
     end
   end
-  watch(%r{^(src/resources/.+)$}) do |match|
+  watch(%r{^(src/resources/[^.].+)$}) do |match|
     source_path = match[0]
-    destination_path = "dist/#{source_path}"
+    destination_path = 'dist/' + source_path[/src\/(.+?)$/, 1]
     command("cp -f #{source_path} #{destination_path}")
   end
   watch(%r{^src/(tests/.+)$}) do |match|
