@@ -3,8 +3,6 @@
   %head
     %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
     %title Simple Atoms Model
-    %script{:type => "text/javascript"}
-      document.domain = "concord.org"
     %script{:src => "../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
     %script{:src => "../../vendor/d3/d3.v2.js", :type => "text/javascript"}
     %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}
@@ -43,7 +41,7 @@
               Force Interactions
               .left_half
               .content
-                %div{:style=> "width: 100px; height: 20px; display: inline-block; margin: 5px"}
+                %div{:style=> "width: 10em; height: 2em; display: inline-block; margin: 0.5em"}
                   Coulomb
                   %input(id="coulomb-forces-checkbox" type="checkbox")
               .below
@@ -68,3 +66,5 @@
     %script{:src => "../../lab/lab.molecules.js", :type => "text/javascript"}
     %script{:src => "../../lab/lab.components.js", :type => "text/javascript"}
     %script{:src => "application.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      document.domain = "concord.org"
