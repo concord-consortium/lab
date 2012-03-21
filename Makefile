@@ -267,7 +267,8 @@ test: test/layout.html \
 	vendor/d3 \
 	dist \
 	$(LAB_JS_FILES) \
-	$(JS_FILES:.js=.min.js)
+	$(JS_FILES:.js=.min.js) \
+	$(MD_ENGINE_JS_FILES)
 	@$(JS_TESTER)
 
 %.min.js: %.js Makefile
