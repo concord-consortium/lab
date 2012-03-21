@@ -5,7 +5,7 @@ COFFEESCRIPT_COMPILER = ./node_modules/coffee-script/bin/coffee
 MARKDOWN_COMPILER = bin/kramdown
 JS_TESTER   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LAB_DIR = ./examples/lab
-SASS_COMPILER = bin/sass -I src -r ./src/bourbon/lib/bourbon.rb
+SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 
 HAML_EXAMPLE_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/dist\/\1/' )
 vpath %.haml src
