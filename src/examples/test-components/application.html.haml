@@ -28,10 +28,14 @@
         #simple_slider
         %br
       .example
+        Simple Vertical Slider:
+        .component
+          #simple_vertical_slider{:style=> "width: 1em; height: 10em; padding: 1em; margin: 0.5em"}
+
+      .example
         Slider (with value label):
-        %br
-        #slider{'data-label' => 'value'}
-        %br
+        .component
+          #slider{'data-label' => 'value'}
       .example
         JQuery-UI Slider (with value label):
         %br
