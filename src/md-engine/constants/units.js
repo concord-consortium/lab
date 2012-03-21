@@ -8,14 +8,14 @@
 //
 // If KILOGRAMS_PER_AMU is 1.660540e-27 we know the math is:
 // "1 amu * 1.660540e-27 kg/amu = 1.660540e-27 kg"
-// (Whereas the "in" forumulation: given 1 amu and 6.022e26 kg in an amu,
-// might be more slighlty error prone: how do you get kg again?)
+// (Whereas the "in" forumulation might be slighty more error prone:
+// given 1 amu and 6.022e-26 kg in an amu, how do you get kg again?)
 
     // These you might have to look up...
 var KILOGRAMS_PER_DALTON  = 1.660540e-27,
     COULOMBS_PER_ELEMENTARY_CHARGE = 1.602177e-19,
 
-    // 1 eV = 1 e * 1 V * = (COULOMBS_PER_ELEMENTARY_CHARGE) C * 1 J/C
+    // 1 eV = 1 e * 1 V = (COULOMBS_PER_ELEMENTARY_CHARGE) C * 1 J/C
     JOULES_PER_EV = COULOMBS_PER_ELEMENTARY_CHARGE,
 
     // though these are equally important!
@@ -67,7 +67,7 @@ exports.unit = unit = {
   JOULES_PER_KELVIN: { name: "Joules per Kelvin",         value: 1 * JOULES_PER_EV, type: types.ENTROPY },
 
   ELEMENTARY_CHARGE: { name: "elementary charge", value: 1,                             type: types.CHARGE },
-  COULOMB:           { name: "Coulomb",          value: COULOMBS_PER_ELEMENTARY_CHARGE, type: types.CHARGE },
+  COULOMB:           { name: "Coulomb",           value: COULOMBS_PER_ELEMENTARY_CHARGE, type: types.CHARGE },
 
   INVERSE_MOLE: { name: "inverse moles", value: 1, type: types.INVERSE_QUANTITY }
 };
