@@ -1,7 +1,8 @@
 $(document).ready =>
   console.log "ready"
-  
+
   simple_slider = new SliderComponent("#simple_slider")
+  simple_vertical_slider= new SliderComponent("#simple_vertical_slider")
   slider = new SliderComponent("#slider")
   jslider = new JSliderComponent("#jslider")
 
@@ -35,7 +36,7 @@ $(document).ready =>
   window.toggle = toggle_button
   window.bar = button_bar
 
-  playable = 
+  playable =
     play: ->
       console.log "PLAY"
     stop: ->
