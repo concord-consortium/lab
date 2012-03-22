@@ -74,4 +74,23 @@ suite.addBatch({
   }
 });
 
+suite.addBatch({
+  "1 \"MW Force Unit\"": {
+    topic: unit.MW_FORCE_UNIT,
+
+    "Should be 1.660538e-6 N": function(topic) {
+      assert.close( constants.ratio( topic, { as: unit.NEWTON }), 1.660538e-6);
+    },
+
+    "Should be 1 Dalton * nm / fs^2": function(topic) {
+      var KILOGRAMS_PER_DALTON = constants.ratio( unit.KILOGRAM, { per: unit.DALTON }),
+          METERS_PER_NANOMETER = constants.ratio( unit.METER, { per: unit.NANOMETER }),
+          FEMTOSECONDS_PER_SECOND = constants.ratio( unit.FEMTOSECOND, { per: unit.SECOND });
+
+      assert.close( constants.ratio( topic, { as: unit.NEWTON }),
+        1 * KILOGRAMS_PER_DALTON * METERS_PER_NANOMETER * FEMTOSECONDS_PER_SECOND * FEMTOSECONDS_PER_SECOND);
+    }
+  }
+});
+
 suite.export(module);
