@@ -398,7 +398,7 @@ modeler.model = function() {
     speed    = coreModel.speed;
     ax       = coreModel.ax;
     ay       = coreModel.ay;
-    halfmass = coreModel.halfmass;
+    halfMass = coreModel.halfMass;
     charge   = coreModel.charge;
 
     // The d3 molecule viewer requires this length to be set correctly:
