@@ -90,7 +90,41 @@ suite.addBatch({
       assert.close( constants.ratio( topic, { as: unit.NEWTON }),
         1 * KILOGRAMS_PER_DALTON * METERS_PER_NANOMETER * FEMTOSECONDS_PER_SECOND * FEMTOSECONDS_PER_SECOND);
     }
+  },
+
+  "1 \"MW Velocity Unit\"": {
+    topic: unit.MW_VELOCITY_UNIT,
+
+    "Should be 1e6 m/s": function(topic) {
+      assert.close( constants.ratio( topic, { as: unit.METERS_PER_SECOND }), 1e6);
+    },
+
+    "Should be 1 nm / fs": function(topic) {
+      var METERS_PER_NANOMETER = constants.ratio( unit.METER, { per: unit.NANOMETER }),
+          FEMTOSECONDS_PER_SECOND = constants.ratio( unit.FEMTOSECOND, { per: unit.SECOND });
+
+      assert.close( constants.ratio( topic, { as: unit.METERS_PER_SECOND }),
+        1 * METERS_PER_NANOMETER  * FEMTOSECONDS_PER_SECOND)
+    }
+  },
+
+  "1 \"MW Energy Unit\"": {
+    topic: unit.MW_ENERGY_UNIT,
+
+    "Should be 1.660538e-15 J": function(topic) {
+      assert.close( constants.ratio( topic, { as: unit.JOULE }), 1.660538e-15);
+    },
+
+    "Should be 1 Dalton * nm^2 / fs^2": function(topic) {
+      var KILOGRAMS_PER_DALTON = constants.ratio( unit.KILOGRAM, { per: unit.DALTON }),
+          METERS_PER_NANOMETER = constants.ratio( unit.METER, { per: unit.NANOMETER }),
+          FEMTOSECONDS_PER_SECOND = constants.ratio( unit.FEMTOSECOND, { per: unit.SECOND });
+
+      assert.close( constants.ratio( topic, { as: unit.JOULE }),
+        1 * KILOGRAMS_PER_DALTON * METERS_PER_NANOMETER * METERS_PER_NANOMETER * FEMTOSECONDS_PER_SECOND * FEMTOSECONDS_PER_SECOND);
+    }
   }
+
 });
 
 suite.export(module);
