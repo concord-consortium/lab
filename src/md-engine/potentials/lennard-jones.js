@@ -1,5 +1,7 @@
-var constants = require('./constants'),
+var constants = require('../constants'),
     unit      = constants.unit,
+
+    NANOMETERS_PER_METER = constants.ratio( unit.NANOMETER, { per: unit.METER }),
     MW_FORCE_UNITS_PER_NEWTON = constants.ratio( unit.MW_FORCE_UNIT, { per: unit.NEWTON });
 
 /**
@@ -15,15 +17,14 @@ var constants = require('./constants'),
 */
 exports.getLennardJonesCalculator = function(cb) {
 
-  var epsilon = -1.0,   // depth of the potential well, in eV ?
-      sigma   =  4.0,   // distance from particle at which the potential is 0
+  var epsilon = -1.0,   // parameter; depth of the potential well, in eV
+      sigma   =  4.0,   // parameter: characteristic distance from particle, in nm
 
-      rmin,             // distance from particle at which the potential is minimimal, and equal to -epsilon
-      alpha_Potential,  // precalculated from epsilon and sigma for computational convenience
-      beta_Potential,   // precalculated from epsilon and sigma for computational convenience
-      alpha_Force,      // precalculated from epsilon and sigma for computational convenience
-      beta_Force,       // precalculated from epsilon and sigma for computational convenience
-
+      rmin,             // distance from particle at which the potential is at its minimum
+      alpha_Potential,  // precalculated; units are eV * nm^12
+      beta_Potential,   // precalculated; units are eV * nm^6
+      alpha_Force,      // units are "MW Force Units" * nm^13
+      beta_Force,       // units are "MW Force Units" * nm^7
 
       coefficients = function(e, s) {
         // Input units:
@@ -38,16 +39,16 @@ exports.getLennardJonesCalculator = function(cb) {
           alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
           beta_Potential  = 4 * epsilon * Math.pow(sigma, 6);
 
-          alpha_Force = unit.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
-          beta_Force =  unit.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+          // (1 J * nm^12) = (1 N * m * nm^12)
+          // (1 N * m * nm^12) * (b nm / m) * (c MWUnits / N) = (abc MWUnits nm^13)
+          alpha_Force = constants.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+          beta_Force =  constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
         }
 
         var coefficients = {
           epsilon: epsilon,
           sigma  : sigma,
-          rmin   : rmin,
-          alpha  : alpha,
-          beta   : beta
+          rmin   : rmin
         };
 
         if (typeof cb === 'function') cb(coefficients);

@@ -285,7 +285,7 @@ model.createNodes = function(options) {
 
         mass_in_kg = constants.convert(mass[i], { from: unit.DALTON, to: unit.KILOGRAM });
         v0_MKS = Math.sqrt(2 * k_inJoulesPerKelvin * temperature / mass_in_kg);
-        v0 = constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNITS });
+        v0 = constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNIT });
 
         vMagnitude = math.normal(v0, v0/4);
         vDirection = 2 * Math.random() * Math.PI;
@@ -403,7 +403,7 @@ makeIntegrator = function(args) {
       */
       KE_to_T = function(KE) {
         // again kT = m<v^2>/2 in 2D
-        return constants.convert(KE, { from: unit.MW_ENERGY_UNITS, to: unit.JOULE }) / BOLTZMANN_CONSTANT_IN_JOULES;
+        return constants.convert(KE, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE }) / BOLTZMANN_CONSTANT_IN_JOULES;
       };
 
   outputState.time = time;
@@ -458,6 +458,7 @@ makeIntegrator = function(args) {
     },
 
     integrate: function(duration, dt) {
+      console.log('integrating');
 
       if (duration == null)  duration = 1;  // how much "time" to integrate over
       if (dt == null)        dt = 1/50;     // time step
@@ -671,7 +672,7 @@ makeIntegrator = function(args) {
       outputState.time = time;
       outputState.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
       outputState.PE = PE;
-      outputState.KE = 0.5 * constants.convert(twoKE_in_MW_Units, { from: unit.MW_ENERGY_UNITS, to: unit.EV });
+      outputState.KE = 0.5 * constants.convert(twoKE_in_MW_Units, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
       outputState.T = T;
       outputState.CM = CM || CM_initial;
       outputState.vCM = [vCMx, vCMy];
