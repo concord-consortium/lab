@@ -33,8 +33,9 @@ var KILOGRAMS_PER_DALTON  = 1.660540e-27,
       CHARGE: "charge",
       INVERSE_QUANTITY: "inverse quantity",
 
-      // unused as of yet
       FORCE: "force",
+
+      // unused as of yet
       AREA: "area",
       PRESSURE: "pressure"
     },
@@ -69,7 +70,20 @@ exports.unit = unit = {
   ELEMENTARY_CHARGE: { name: "elementary charge", value: 1,                             type: types.CHARGE },
   COULOMB:           { name: "Coulomb",           value: COULOMBS_PER_ELEMENTARY_CHARGE, type: types.CHARGE },
 
-  INVERSE_MOLE: { name: "inverse moles", value: 1, type: types.INVERSE_QUANTITY }
+  INVERSE_MOLE: { name: "inverse moles", value: 1, type: types.INVERSE_QUANTITY },
+
+  MW_FORCE_UNIT: {
+    name: "MW force units (Dalton * nm / fs^2)",
+    value: 1,
+    type: types.FORCE
+  },
+
+  NEWTON: {
+    name: "Newton",
+    value: 1 * KILOGRAMS_PER_DALTON * METERS_PER_NANOMETER * (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND),
+    type: types.FORCE
+  }
+
 };
 
 
