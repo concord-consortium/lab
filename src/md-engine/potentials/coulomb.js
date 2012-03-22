@@ -1,5 +1,5 @@
 var
-constants = require('./constants'),
+constants = require('../constants'),
 unit      = constants.unit,
 
 COULOMB_CONSTANT_IN_METERS_PER_FARAD = constants.COULOMB_CONSTANT.as( constants.unit.METERS_PER_FARAD ),
