@@ -47,11 +47,24 @@ var units = require('./units'),
         // N_A is numerically equal to Dalton per gram
         value: ratio( unit.DALTON, { per: unit.GRAM }),
         unit: unit.INVERSE_MOLE
+      },
+
+      PERMITTIVITY_OF_FREE_SPACE: {
+        value: 8.854187e-12,
+        unit: unit.FARADS_PER_METER
       }
     },
 
     constantName, constant;
 
+
+// Derived units
+constants.COULOMB_CONSTANT = {
+  value: 1 / (4 * Math.PI * constants.PERMITTIVITY_OF_FREE_SPACE.value),
+  unit: unit.METERS_PER_FARAD
+};
+
+// Exports
 
 exports.unit = unit;
 exports.ratio = ratio;
