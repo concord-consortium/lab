@@ -8,6 +8,34 @@ HTML5-based open source scientific models, visualizations, graphing, and probewa
 * toc
 {:toc}
 
+## License
+
+Lab is Copyright 2012 (c) by the Concord Consortium and is distributed under
+any of the following licenses:
+
+- [Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause),
+- [MIT](http://www.opensource.org/licenses/MIT), or
+- [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0).
+
+The complete text of all three licenses can be read [here](license.html).
+
+If you have have received a **distribution archive** of the
+[Concord Consortium Lab project](https://github.com/concord-consortium/lab)
+our copyright applies to all resources **except** the files in the
+`vendor/` directory. The files in the `vendor/` directory are from
+third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
+
+## Distribution of Project Examples
+
+Downloads of the generated example distribution are available from the github project downloads page:
+[concord-consortium/lab/downloads](https://github.com/concord-consortium/lab/downloads).
+
+Click on the link titled: [lab-dist-v0.1.tar.gz](https://github.com/downloads/concord-consortium/lab/lab-dist-v0.1.tar.gz)
+
+Download this and expand the archive and a folder named `dist` will be created.
+Open the file index.html in the `dist` folder in your browser. You now have a working
+offline version of this project.
+
 ## Molecular Modeling Examples:
 
 - [Simple Atoms Model](http://lab.dev.concord.org/examples/simple-atoms-model/simple-atoms-model.html)
@@ -277,11 +305,13 @@ The source code for the Lab modules is all contained in `src/lab/`
 
 The following directories contain the source code for the main Lab modules:
 
-- `src/lab//arrays/`
-- `src/lab//benchmark/`
-- `src/lab//graphx/`
-- `src/lab//layout/`
-- `src/lab//molecules/`
+- `src/lab/arrays/`
+- `src/lab/benchmark/`
+- `src/lab/components/`
+- `src/lab/css/`
+- `src/lab/graphx/`
+- `src/lab/layout/`
+- `src/lab/molecules/`
 
 In addition the following module is in process of being combined with the newer graphing code in `graphx/`.
 
@@ -292,6 +322,19 @@ Lastly there are the following JavaScript fragments that are used in the build p
 - `src/lab/start.js`
 - `src/lab/lab-module.js`
 - `src/lab/end.js`
+
+There are Sass mixins from the Bourbon Ruby Gem and custom ones for the Lab project in the following directories:
+
+- `src/sass/bourbon/`
+- `src/sass/lab/`
+
+Images used in the Lab project are saved here:
+
+- `src/resources/`
+
+Small examples used to test libraries or demostrate bugs are located here:
+
+- `src/tests/`
 
 After running `bundle install --binstubs` the `bin/` directory will be created.
 
