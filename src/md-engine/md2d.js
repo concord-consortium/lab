@@ -52,10 +52,10 @@ var model = exports.model = {},
     //
     // Individual property arrays for the particles
     //
-    radius, px, py, x, y, vx, vy, speed, ax, ay, halfMass, charge,
+    radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
 
     //
-    // Total mass of all particles (lowercased in deference to 'halfMass')
+    // Total mass of all particles in the system
     //
     totalMass,
 
@@ -86,7 +86,7 @@ var model = exports.model = {},
     SPEED_INDEX    =  7,
     AX_INDEX       =  8,
     AY_INDEX       =  9,
-    HALFMASS_INDEX = 10,
+    MASS_INDEX = 10,
     CHARGE_INDEX   = 11;
 
 model.INDICES = {
@@ -100,7 +100,7 @@ model.INDICES = {
   SPEED    : SPEED_INDEX,
   AX       : AX_INDEX,
   AY       : AY_INDEX,
-  HALFMASS : HALFMASS_INDEX,
+  MASS : MASS_INDEX,
   CHARGE   : CHARGE_INDEX
 };
 
@@ -193,7 +193,7 @@ model.createNodes = function(options) {
 
       k_inJoulesPerKelvin = constants.BOLTZMANN_CONSTANT.as(unit.JOULES_PER_KELVIN),
 
-      halfMass_in_kg, v0_MKS, v0,
+      mass_in_kg, v0_MKS, v0,
       i, r, c, nrows, ncols, rowSpacing, colSpacing,
       vMagnitude, vDirection,
       pCMx = 0,
@@ -245,9 +245,9 @@ model.createNodes = function(options) {
   nodes[model.INDICES.AY] = arrays.create(num, 0, arrayType);
   model.ay = ay = nodes[model.INDICES.AY];
 
-  // model.INDICES.HALFMASS = 10;
-  nodes[model.INDICES.HALFMASS] = arrays.create(num, 0.5 * ARGON_MASS_IN_DALTON, arrayType);
-  model.halfMass = halfMass = nodes[model.INDICES.HALFMASS];
+  // model.INDICES.MASS = 10;
+  nodes[model.INDICES.MASS] = arrays.create(num, ARGON_MASS_IN_DALTON, arrayType);
+  model.mass = mass = nodes[model.INDICES.MASS];
 
   totalMass = model.totalMass = ARGON_MASS_IN_DALTON * num;
 
@@ -283,8 +283,8 @@ model.createNodes = function(options) {
         // Note kT = m<v^2>/2 because there are 2 degrees of freedom per atom, not 3
         // TODO: define constants to avoid unnecesssary conversions below.
 
-        halfMass_in_kg = constants.convert(halfMass[i], { from: unit.DALTON, to: unit.KILOGRAM });
-        v0_MKS = Math.sqrt(k_inJoulesPerKelvin * temperature / halfMass_in_kg);
+        mass_in_kg = constants.convert(mass[i], { from: unit.DALTON, to: unit.KILOGRAM });
+        v0_MKS = Math.sqrt(2 * k_inJoulesPerKelvin * temperature / mass_in_kg);
         v0 = constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNITS });
 
         vMagnitude = math.normal(v0, v0/4);
@@ -295,8 +295,8 @@ model.createNodes = function(options) {
         vy[num-i-1] = -vy[i];
       }
 
-      pCMx += 2 * vx[i] * halfMass[i];
-      pCMy += 2 * vy[i] * halfMass[i];
+      pCMx += vx[i] * mass[i];
+      pCMy += vy[i] * mass[i];
 
       ax[i] = 0;
       ay[i] = 0;
@@ -351,8 +351,7 @@ makeIntegrator = function(args) {
       twoKE_in_MW_Units = (function() {
         var twoKE = 0, i, n = nodes[0].length;
         for (i = 0; i < n; i++) {
-          // FIXME unnecessary multiplication by two ... leaving for now as we sort out
-          twoKE += 2 * halfMass[i] * speed[i] * speed[i];
+          twoKE += mass[i] * speed[i] * speed[i];
         }
         return twoKE;
       }()),
@@ -361,16 +360,17 @@ makeIntegrator = function(args) {
       CM_initial = (function() {
         var CM = [0, 0], i, n = nodes[0].length;
         for (i = 0; i < n; i++) {
-          CM[0] += x[i] * halfMass[i];
-          CM[1] += y[i] * halfMass[i];
+          CM[0] += x[i] * mass[i];
+          CM[1] += y[i] * mass[i];
         }
-        CM[0] = 2 * CM[0] / totalMass;
-        CM[1] = 2 * CM[1] / totalMass;
+        CM[0] = CM[0] / totalMass;
+        CM[1] = CM[1] / totalMass;
 
         return CM;
       }()),
 
-      driftCM = [0, 0],
+      driftCMx = 0,
+      driftCMy = 0,
 
       // Coupling factor for Berendsen thermostat.
       dt_over_tau = 0.5,
@@ -476,7 +476,7 @@ makeIntegrator = function(args) {
           cutoffDistance_Coulomb_sq = cutoffDistance_Coulomb * cutoffDistance_Coulomb,
           maxLJRepulsion_sq         = maxLJRepulsion * maxLJRepulsion,
 
-          f, f_over_r, fx, fy,        // pairwise forces and their x, y components
+          f, f_over_r, aPair_over_r, aPair_x, aPair_y, // pairwise forces /accelerations and their x, y components
           dx, dy,
           iloop,
           leftwall   = radius[0],
@@ -556,8 +556,8 @@ makeIntegrator = function(args) {
           }
 
           // Accumulate xs & ys for CM (AFTER collision)
-          CM[0] += x[i] * halfMass[i];
-          CM[1] += y[i] * halfMass[i];
+          CM[0] += x[i] * mass[i];
+          CM[1] += y[i] * mass[i];
 
           // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
           vx[i] += 0.5*ax[i]*dt;
@@ -565,8 +565,8 @@ makeIntegrator = function(args) {
         }
 
         // Calculate center of mass and change in center of mass between t and t+dt
-        CM[0] = 2*CM[0] / totalMass;
-        CM[1] = 2*CM[1] / totalMass;
+        CM[0] /= totalMass;
+        CM[1] /= totalMass;
 
         // Calculate a(t+dt), step 1: Zero out the acceleration, in order to accumulate pairwise interactions.
         for (i = 0; i < n; i++) {
@@ -593,26 +593,29 @@ makeIntegrator = function(args) {
                 }
 
                 // Units of fx, fy are "MW Force Units", Dalton * nm / fs^2
-                fx = f_over_r * dx;
-                fy = f_over_r * dy;
+                aPair_over_r = f_over_r / mass[i];
+                aPair_x = aPair_over_r * dx;
+                aPair_y = aPair_over_r * dy;
 
-                ax[i] += (fx / (2*halfMass[i]));
-                ay[i] += (fy / (2*halfMass[i]));
-                ax[j] -= (fx / (2*halfMass[i]));
-                ay[j] -= (fy / (2*halfMass[i]));
+                ax[i] += aPair_x;
+                ay[i] += aPair_y;
+                ax[j] -= aPair_x;
+                ay[j] -= aPair_y;
               }
 
               if (useCoulombInteraction && r_sq < cutoffDistance_Coulomb_sq) {
                 f = Math.min(coulomb.forceFromSquaredDistance(r_sq, charge[i], charge[j]), maxCoulombForce);
 
                 f_over_r = f / Math.sqrt(r_sq);
-                fx = f_over_r * dx;
-                fy = f_over_r * dy;
 
-                ax[i] += (fx / (2*halfMass[i]));
-                ay[i] += (fy / (2*halfMass[i]));
-                ax[j] -= (fx / (2*halfMass[i]));
-                ay[j] -= (fy / (2*halfMass[i]));
+                aPair_over_r = f_over_r / mass[i];
+                aPair_x = aPair_over_r * dx;
+                aPair_y = aPair_over_r * dy;
+
+                ax[i] += aPair_x;
+                ay[i] += aPair_y;
+                ax[j] -= aPair_x;
+                ay[j] -= aPair_y;
               }
             }
           }
@@ -626,11 +629,11 @@ makeIntegrator = function(args) {
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
 
-          pCMx += 2 * halfMass[i] * vx[i];
-          pCMy += 2 * halfMass[i] * vy[i];
+          pCMx += mass[i] * vx[i];
+          pCMy += mass[i] * vy[i];
 
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
-          twoKE_in_MW_Units += 2 * halfMass[i] * v_sq;
+          twoKE_in_MW_Units += mass[i] * v_sq;
           speed[i] = Math.sqrt(v_sq);
         }
 
@@ -668,11 +671,12 @@ makeIntegrator = function(args) {
       outputState.time = time;
       outputState.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
       outputState.PE = PE;
-      outputState.KE = constants.convert(twoKE / 2, { from: unit.MW_ENERGY_UNITS, to: unit.EV });
+      outputState.KE = 0.5 * constants.convert(twoKE_in_MW_Units, { from: unit.MW_ENERGY_UNITS, to: unit.EV });
       outputState.T = T;
       outputState.CM = CM || CM_initial;
       outputState.vCM = [vCMx, vCMy];
       outputState.driftCM = [driftCMx, driftCMy];
+    }
   };
 };
 

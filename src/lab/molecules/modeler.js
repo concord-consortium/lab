@@ -35,7 +35,7 @@ modeler.model = function() {
       //
       // Individual property arrays for the nodes
       //
-      radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
 
       //
       // Number of individual properties for a node
@@ -62,7 +62,7 @@ modeler.model = function() {
     SPEED    : coreModel.INDICES.SPEED,
     AX       : coreModel.INDICES.AX,
     AY       : coreModel.INDICES.AY,
-    HALFMASS : coreModel.INDICES.HALFMASS,
+    MASS     : coreModel.INDICES.MASS,
     CHARGE   : coreModel.INDICES.CHARGE
   };
 
