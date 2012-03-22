@@ -1,6 +1,6 @@
 /** Provides a few simple helper functions for converting related unit types.
 
-    This sub-module doesn't do unit conversion between compound unit types (i.e., Joules divided by Kelvin = J/K)
+    This sub-module doesn't do unit conversion between compound unit types (e.g., knowing that kg*m/s^2 = J)
     only simple scaling between units measuring the same type of quantity.
 */
 
@@ -32,6 +32,9 @@ var KILOGRAMS_PER_DALTON  = 1.660540e-27,
       ENTROPY: "entropy",
       CHARGE: "charge",
       INVERSE_QUANTITY: "inverse quantity",
+
+      FARADS_PER_METER: "farads per meter",
+      METERS_PER_FARAD: "meters per farad",
 
       FORCE: "force",
 
@@ -71,6 +74,10 @@ exports.unit = unit = {
   COULOMB:           { name: "Coulomb",           value: COULOMBS_PER_ELEMENTARY_CHARGE, type: types.CHARGE },
 
   INVERSE_MOLE: { name: "inverse moles", value: 1, type: types.INVERSE_QUANTITY },
+
+  FARADS_PER_METER: { name: "Farads per meter", value: 1, type: types.FARADS_PER_METER },
+
+  METERS_PER_FARAD: { name: "meters per Farad", value: 1, type: types.METERS_PER_FARAD },
 
   MW_FORCE_UNIT: {
     name: "MW force units (Dalton * nm / fs^2)",
