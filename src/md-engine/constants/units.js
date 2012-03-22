@@ -37,6 +37,7 @@ var KILOGRAMS_PER_DALTON  = 1.660540e-27,
       METERS_PER_FARAD: "meters per farad",
 
       FORCE: "force",
+      VELOCITY: "velocity",
 
       // unused as of yet
       AREA: "area",
@@ -64,8 +65,28 @@ exports.unit = unit = {
   GRAM:     { name: "gram",     value: 1 * KILOGRAMS_PER_DALTON * GRAMS_PER_KILOGRAM, type: types.MASS },
   KILOGRAM: { name: "kilogram", value: 1 * KILOGRAMS_PER_DALTON,                      type: types.MASS },
 
-  EV:    { name: "electron volt", value: 1,                 type: types.ENERGY },
-  JOULE: { name: "Joule",         value: 1 * JOULES_PER_EV, type: types.ENERGY },
+  MW_ENERGY_UNIT: {
+    name: "MW Energy Unit (Dalton * nm^2 / fs^2)",
+    value: 1,
+    type: types.ENERGY
+  },
+
+  JOULE: {
+    name: "Joule",
+    value: KILOGRAMS_PER_DALTON *
+           METERS_PER_NANOMETER * METERS_PER_NANOMETER *
+           (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND),
+    type: types.ENERGY
+  },
+
+  EV: {
+    name: "electron volt",
+    value: KILOGRAMS_PER_DALTON *
+            METERS_PER_NANOMETER * METERS_PER_NANOMETER *
+            (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND) *
+            (1/JOULES_PER_EV),
+    type: types.ENERGY
+  },
 
   EV_PER_KELVIN:     { name: "electron volts per Kelvin", value: 1,                 type: types.ENTROPY },
   JOULES_PER_KELVIN: { name: "Joules per Kelvin",         value: 1 * JOULES_PER_EV, type: types.ENTROPY },
@@ -89,6 +110,18 @@ exports.unit = unit = {
     name: "Newton",
     value: 1 * KILOGRAMS_PER_DALTON * METERS_PER_NANOMETER * (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND),
     type: types.FORCE
+  },
+
+  MW_VELOCITY_UNIT: {
+    name: "MW velocity units (nm / fs)",
+    value: 1,
+    type: types.VELOCITY
+  },
+
+  METERS_PER_SECOND: {
+    name: "meters per second",
+    value: 1 * METERS_PER_NANOMETER * (1 / SECONDS_PER_FEMTOSECOND),
+    type: types.VELOCITY
   }
 
 };
