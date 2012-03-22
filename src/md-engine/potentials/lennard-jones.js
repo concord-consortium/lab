@@ -1,3 +1,7 @@
+var constants = require('./constants'),
+    unit      = constants.unit,
+    MW_FORCE_UNITS_PER_NEWTON = constants.ratio( unit.MW_FORCE_UNIT, { per: unit.NEWTON });
+
 /**
   Returns a new object with methods for calculating the force and potential for a Lennard-Jones
   potential with particular values of its parameters epsilon and sigma. These can be adjusted.
@@ -11,20 +15,31 @@
 */
 exports.getLennardJonesCalculator = function(cb) {
 
-  var epsilon = -1.0,   // depth of the potential well
+  var epsilon = -1.0,   // depth of the potential well, in eV ?
       sigma   =  4.0,   // distance from particle at which the potential is 0
 
       rmin,             // distance from particle at which the potential is minimimal, and equal to -epsilon
-      alpha,            // precalculated from epsilon and sigma for computational convenience
-      beta,             // precalculated from epsilon and sigma for computational convenience
+      alpha_Potential,  // precalculated from epsilon and sigma for computational convenience
+      beta_Potential,   // precalculated from epsilon and sigma for computational convenience
+      alpha_Force,      // precalculated from epsilon and sigma for computational convenience
+      beta_Force,       // precalculated from epsilon and sigma for computational convenience
+
 
       coefficients = function(e, s) {
+        // Input units:
+        //  epsilon: eV
+        //  sigma:   nm
+
         if (arguments.length) {
           epsilon = e;
           sigma   = s;
           rmin    = Math.pow(2, 1/6) * sigma;
-          alpha   = 4 * epsilon * Math.pow(sigma, 12);
-          beta    = 4 * epsilon * Math.pow(sigma, 6);
+
+          alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
+          beta_Potential  = 4 * epsilon * Math.pow(sigma, 6);
+
+          alpha_Force = unit.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+          beta_Force =  unit.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
         }
 
         var coefficients = {
@@ -40,10 +55,18 @@ exports.getLennardJonesCalculator = function(cb) {
         return coefficients;
       },
 
+      /**
+        Input units: r_sq: nm^2
+        Output units: eV
+      */
       potentialFromSquaredDistance = function(r_sq) {
-        return -(alpha*Math.pow(r_sq, -6) - beta*Math.pow(r_sq, -3));
+         return -(alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3)) + epsilon;
       },
 
+      /**
+        Input units: r_sq: nm^2
+        Output units: MW Force Units / nm (= Dalton / fs^2)
+      */
       forceOverDistanceFromSquaredDistance = function(r_sq) {
         // optimizing divisions actually does appear to be *slightly* faster
         var r_minus2nd  = 1 / r_sq,
@@ -51,7 +74,7 @@ exports.getLennardJonesCalculator = function(cb) {
             r_minus8th  = r_minus6th * r_minus2nd,
             r_minus14th = r_minus8th * r_minus6th;
 
-        return 12*alpha*r_minus14th - 6*beta*r_minus8th;
+        return 12*alpha_Force*r_minus14th - 6*beta_Force*r_minus8th;
       };
 
   // initial calculation of values dependent on (epsilon, sigma)
@@ -72,12 +95,20 @@ exports.getLennardJonesCalculator = function(cb) {
     // "fast" forms which avoid the need for a square root
     potentialFromSquaredDistance: potentialFromSquaredDistance,
 
+    /**
+      Input units: r: nm
+      Output units: eV
+    */
     potential: function(r) {
       return potentialFromSquaredDistance(r*r);
     },
 
     forceOverDistanceFromSquaredDistance: forceOverDistanceFromSquaredDistance,
 
+    /**
+      Input units: r: nm
+      Output units: MW Force Units (= Dalton * nm / fs^2)
+    */
     force: function(r) {
       return r * forceOverDistanceFromSquaredDistance(r*r);
     }
