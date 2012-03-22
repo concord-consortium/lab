@@ -356,8 +356,8 @@ modeler.model = function() {
 
   model.relax = function() {
     // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
-    integrator.integrate(100, 1/20);
-    integrator.relaxToTemperature();
+    // integrator.integrate(100, 1/20);
+    // integrator.relaxToTemperature();
     return model;
   };
 
