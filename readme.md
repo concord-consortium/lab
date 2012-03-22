@@ -623,8 +623,6 @@ are distributed under both BSD and MIT licenses; [jQuery](http://jquery.com/) is
 the MIT license; [jQuery-UI](jQuery-UI) is distributed under both the MIT license and GPL licenses;
 [MathJax](http://www.mathjax.org/) is distributed under the Apache 2.0 license.
 
-<<<<<<< Local Changes
-<<<<<<< Local Changes
 ## HTML and CSS
 
 [Haml](http://haml-lang.com/) is used to generate most of the HTML in the `dist/` directory.
