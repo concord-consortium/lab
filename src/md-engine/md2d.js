@@ -8,7 +8,7 @@ var model = exports.model = {},
     unit         = constants.unit,
     math         = require('./math'),
     coulomb      = require('./potentials').coulomb,
-    lennardJones = require('./potentials').getLennardJonesCalculator(),
+    lennardJones = window.lennardJones = require('./potentials').getLennardJonesCalculator(),
 
     // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
     ARGON_LJ_EPSILON_IN_EV = 120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
@@ -39,14 +39,14 @@ var model = exports.model = {},
     }()),
 
     // FIXME: revisit
-    maxLJRepulsion  = -200.0,
+    maxLJRepulsion = 0.001,
     cutoffDistance_LJ,
 
     minCoulombForce =   0.01,
     maxCoulombForce = 20.0,
     cutoffDistance_Coulomb,
 
-    size = [10, 10],
+    size = [20, 20],
 
     //
     // Individual property arrays for the particles
@@ -153,7 +153,7 @@ setup_ljf_limits = function() {
   //   }
   // }
 
-  cutoffDistance_LJ = lennardJones.coefficients().rmin * 5;
+  cutoffDistance_LJ = lennardJones.coefficients().rmin * 20;
   ljfLimitsNeedToBeUpdated = false;
 };
 
@@ -190,7 +190,7 @@ model.createNodes = function(options) {
 
       rmin = lennardJones.coefficients().rmin,
 
-      mol_rmin_radius_factor = 0.7,
+      mol_rmin_radius_factor = 1.0,
 
       // special-case:
       arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
@@ -262,6 +262,7 @@ model.createNodes = function(options) {
   colSpacing = size[0] / (1+ncols);
   rowSpacing = size[1] / (1+nrows);
 
+  console.log('initializing to temp', temperature);
   // Arrange molecules in a lattice. Not guaranteed to have CM exactly on center, and is an artificially low-energy
   // configuration. But it works OK for now.
   i = -1;
@@ -289,7 +290,9 @@ model.createNodes = function(options) {
 
         mass_in_kg = constants.convert(mass[i], { from: unit.DALTON, to: unit.KILOGRAM });
         v0_MKS = Math.sqrt(2 * k_inJoulesPerKelvin * temperature / mass_in_kg);
-        v0 = constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNIT });
+        // FIXME: why does this velocity need a sqrt(2)/10 correction?
+        // (no, not because of potentials...)
+        v0 = 0.1414 * constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNIT });
 
         vMagnitude = math.normal(v0, v0/4);
         vDirection = 2 * Math.random() * Math.PI;
@@ -322,7 +325,7 @@ makeIntegrator = function(args) {
       readWriteState = args.readWriteState,
       settableState  = args.settableState || {},
 
-      outputState    = {},
+      outputState    = window.state = {},
 
       size                   = setOnceState.size,
 
@@ -435,6 +438,7 @@ makeIntegrator = function(args) {
     },
 
     setTargetTemperature       : function(v) {
+      console.log('target temp = ', v);
       if (v !== T_target) {
         T_target = v;
         adjustTemperature();
