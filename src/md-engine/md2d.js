@@ -39,10 +39,10 @@ var model = exports.model = {},
     }()),
 
     // FIXME: revisit
-    maxLJRepulsion = 0.001,
+    maxLJRepulsion = 0.01,
     cutoffDistance_LJ,
 
-    minCoulombForce =   0.01,
+    minCoulombForce =   0.1,
     maxCoulombForce = 20.0,
     cutoffDistance_Coulomb,
 
@@ -670,7 +670,7 @@ makeIntegrator = function(args) {
 
           r_sq = dx*dx + dy*dy;
 
-          if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
+          if (useLennardJonesInteraction ) {//&& r_sq < cutoffDistance_LJ_sq) {
             PE += lennardJones.potentialFromSquaredDistance(r_sq);
           }
           if (useCoulombInteraction && r_sq < cutoffDistance_Coulomb_sq) {
