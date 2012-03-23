@@ -292,7 +292,7 @@ model.createNodes = function(options) {
         v0_MKS = Math.sqrt(2 * k_inJoulesPerKelvin * temperature / mass_in_kg);
         // FIXME: why does this velocity need a sqrt(2)/10 correction?
         // (no, not because of potentials...)
-        v0 = 0.1414 * constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNIT });
+        v0 = constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNIT });
 
         vMagnitude = math.normal(v0, v0/4);
         vDirection = 2 * Math.random() * Math.PI;
@@ -408,9 +408,12 @@ makeIntegrator = function(args) {
         Output units:
           T: K
       */
-      KE_to_T = function(KE) {
+      KE_to_T = function(totalKEinMWUnits) {
         // again kT = m<v^2>/2 in 2D
-        return constants.convert(KE, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE }) / BOLTZMANN_CONSTANT_IN_JOULES;
+        var averageKEinMWUnits = totalKEinMWUnits / nodes[0].length,
+            averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
+
+        return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
       };
 
   outputState.time = time;
