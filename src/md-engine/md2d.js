@@ -38,8 +38,7 @@ var model = exports.model = {},
       return true;
     }()),
 
-    // FIXME: revist
-    minLJAttraction =    0.001,
+    // FIXME: revisit
     maxLJRepulsion  = -200.0,
     cutoffDistance_LJ,
 
@@ -47,7 +46,7 @@ var model = exports.model = {},
     maxCoulombForce = 20.0,
     cutoffDistance_Coulomb,
 
-    size = [100, 100],
+    size = [10, 10],
 
     //
     // Individual property arrays for the particles
@@ -100,7 +99,7 @@ model.INDICES = {
   SPEED    : SPEED_INDEX,
   AX       : AX_INDEX,
   AY       : AY_INDEX,
-  MASS : MASS_INDEX,
+  MASS     : MASS_INDEX,
   CHARGE   : CHARGE_INDEX
 };
 
@@ -128,31 +127,33 @@ model.setLJSigma = function(s) {
 // Calculate the minimum and maximum distances for applying Lennard-Jones forces
 //
 setup_ljf_limits = function() {
-  var i, f,
-      min_ljf_distance;
+  // var i, f,
+  //     min_ljf_distance;
 
-  for (i = 0; i <= 100; i+=0.001) {
-    f = lennardJones.force(i);
-    if (f > maxLJRepulsion) {
-      min_ljf_distance = i;
-      break;
-    }
-  }
+  // for (i = 0; i <= 100; i+=0.001) {
+  //   f = lennardJones.force(i);
+  //   if (f > maxLJRepulsion) {
+  //     min_ljf_distance = i;
+  //     break;
+  //   }
+  // }
 
-  for (;i <= 100; i+=0.001) {
-    f = lennardJones.force(i);
-    if (f > minLJAttraction) {
-      break;
-    }
-  }
+  // for (;i <= 100; i+=0.001) {
+  //   f = lennardJones.force(i);
+  //   if (f > minLJAttraction) {
+  //     break;
+  //   }
+  // }
 
-  for (;i <= 100; i+=0.001) {
-    f = lennardJones.force(i);
-    if (f < minLJAttraction) {
-      cutoffDistance_LJ = i;
-      break;
-    }
-  }
+  // for (;i <= 100; i+=0.001) {
+  //   f = lennardJones.force(i);
+  //   if (f < minLJAttraction) {
+  //     cutoffDistance_LJ = i;
+  //     break;
+  //   }
+  // }
+
+  cutoffDistance_LJ = lennardJones.coefficients().rmin * 5;
   ljfLimitsNeedToBeUpdated = false;
 };
 
@@ -160,24 +161,25 @@ setup_ljf_limits = function() {
 // Calculate the minimum and maximum distances for applying Coulomb forces
 //
 setup_coulomb_limits = function() {
-  var i, f,
-      min_coulomb_distance;
+  // var i, f,
+  //     min_coulomb_distance;
 
-  for (i = 0.001; i <= 100; i+=0.001) {
-    f = coulomb.force(i, -1, 1);
-    if (f < maxCoulombForce) {
-      min_coulomb_distance = i;
-      break;
-    }
-  }
+  // for (i = 0.001; i <= 100; i+=0.001) {
+  //   f = coulomb.force(i, -1, 1);
+  //   if (f < maxCoulombForce) {
+  //     min_coulomb_distance = i;
+  //     break;
+  //   }
+  // }
 
-  for (;i <= 100; i+=0.001) {
-    f = coulomb.force(i, -1, 1);
-    if (f < minCoulombForce) {
-      break;
-    }
-  }
-  cutoffDistance_Coulomb = i;
+  // for (;i <= 100; i+=0.001) {
+  //   f = coulomb.force(i, -1, 1);
+  //   if (f < minCoulombForce) {
+  //     break;
+  //   }
+  // }
+  // cutoffDistance_Coulomb = i;
+  cutoffDistance_Coulomb = 1000;
 };
 
 model.createNodes = function(options) {
@@ -408,6 +410,7 @@ makeIntegrator = function(args) {
 
   outputState.time = time;
 
+  debugger;
   return {
 
     useCoulombInteraction      : function(v) {
@@ -462,6 +465,9 @@ makeIntegrator = function(args) {
 
       if (duration == null)  duration = 1;  // how much "time" to integrate over
       if (dt == null)        dt = 1/50;     // time step
+
+      duration *= 1e5;
+      dt *= 1e5;
 
       if (ljfLimitsNeedToBeUpdated) setup_ljf_limits();
 

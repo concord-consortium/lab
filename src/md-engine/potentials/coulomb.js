@@ -44,7 +44,7 @@ potential = exports.potential = function(r, q1, q2) {
     Output units: "MW Force Units" (Dalton * nm / fs^2)
 */
 forceFromSquaredDistance = exports.forceFromSquaredDistance = function(r_sq, q1, q2) {
-  return k_eForce * ((q1 * q2) / r_sq);
+  return -k_eForce * ((q1 * q2) / r_sq);
 },
 
 
