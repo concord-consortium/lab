@@ -73,7 +73,7 @@ modeler.model = function() {
   // within a range of 0..10 to the 'real' temperature <mv^2>/2k (remember there's only 2 DOF)
   //
   function abstract_to_real_temperature(t) {
-    return 0.19*t + 0.1;  // Translate 0..10 to 0.1..2
+    return 0.1 + 19.99*t;  // Translate 0..10 to 0.1..200
   }
 
   function average_speed() {
