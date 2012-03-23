@@ -190,7 +190,7 @@ model.createNodes = function(options) {
 
       rmin = lennardJones.coefficients().rmin,
 
-      mol_rmin_radius_factor = options.mol_rmin_radius_factor || 0.38,
+      mol_rmin_radius_factor = 0.7,
 
       // special-case:
       arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
@@ -412,7 +412,6 @@ makeIntegrator = function(args) {
 
   outputState.time = time;
 
-  debugger;
   return {
 
     useCoulombInteraction      : function(v) {
@@ -468,8 +467,8 @@ makeIntegrator = function(args) {
       if (duration == null)  duration = 1;  // how much "time" to integrate over
       if (dt == null)        dt = 1/50;     // time step
 
-      duration *= 1e5;
-      dt *= 1e5;
+      duration *= 1e3;
+      dt *= 1e3;
 
       if (ljfLimitsNeedToBeUpdated) setup_ljf_limits();
 
