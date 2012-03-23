@@ -108,7 +108,7 @@ lennardJones.setEpsilon(ARGON_LJ_EPSILON_IN_EV);
 lennardJones.setSigma(ARGON_LJ_SIGMA_IN_NM);
 
 model.setSize = function(x) {
-  size = x;
+  //size = x;
 };
 
 // FIXME: disabled for now, so the view doesn't try to change epsilon
