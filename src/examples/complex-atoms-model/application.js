@@ -88,9 +88,9 @@ var mc_graph = {
       yunits:               true,
       atom_mubers:          false,
       xmin:                 0,
-      xmax:                 100,
+      xmax:                 10,
       ymin:                 0,
-      ymax:                 100
+      ymax:                 10
     };
 
     mc_graph.xdomain = mc_graph.xmax - mc_graph.xmin;
@@ -246,7 +246,6 @@ function generate_atoms() {
           xdomain: mc_graph.xdomain,
           ydomain: mc_graph.ydomain,
           temperature: temperature,
-          rmin: 4.4,
           mol_rmin_radius_factor: 0.38
         })
       .initialize({
