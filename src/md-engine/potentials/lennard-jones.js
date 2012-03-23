@@ -41,8 +41,8 @@ exports.getLennardJonesCalculator = function(cb) {
 
           // (1 J * nm^12) = (1 N * m * nm^12)
           // (1 N * m * nm^12) * (b nm / m) * (c MWUnits / N) = (abc MWUnits nm^13)
-          alpha_Force = constants.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
-          beta_Force =  constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+          alpha_Force = 12 * constants.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+          beta_Force =  6 * constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
         }
 
         var coefficients = {
@@ -75,7 +75,7 @@ exports.getLennardJonesCalculator = function(cb) {
             r_minus8th  = r_minus6th * r_minus2nd,
             r_minus14th = r_minus8th * r_minus6th;
 
-        return 12*alpha_Force*r_minus14th - 6*beta_Force*r_minus8th;
+        return alpha_Force*r_minus14th - beta_Force*r_minus8th;
       };
 
   // initial calculation of values dependent on (epsilon, sigma)
