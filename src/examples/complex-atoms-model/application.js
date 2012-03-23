@@ -88,9 +88,9 @@ var mc_graph = {
       yunits:               true,
       atom_mubers:          false,
       xmin:                 0,
-      xmax:                 20,
+      xmax:                 10,
       ymin:                 0,
-      ymax:                 20
+      ymax:                 10
     };
 
     mc_graph.xdomain = mc_graph.xmax - mc_graph.xmin;
