@@ -466,13 +466,13 @@ makeIntegrator = function(args) {
     },
 
     integrate: function(duration, dt) {
-      console.log('integrating');
 
-      if (duration == null)  duration = 1;  // how much "time" to integrate over
-      if (dt == null)        dt = 1/50;     // time step
+      // FIXME. Recommended timestep for accurate simulation is τ/200
+      // using rescaled t where t → τ(mσ²/ϵ)^½
+      // This is hardcoded below for the "Argon" case by setting dt = 10 fs:
 
-      duration *= 1e3;
-      dt *= 1e3;
+      if (duration == null)  duration = 500;  // how much "time" to integrate over
+      if (dt == null)        dt = 10;     // time step
 
       if (ljfLimitsNeedToBeUpdated) setup_ljf_limits();
 
