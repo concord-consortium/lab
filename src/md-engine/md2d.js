@@ -127,33 +127,7 @@ model.setLJSigma = function(s) {
 // Calculate the minimum and maximum distances for applying Lennard-Jones forces
 //
 setup_ljf_limits = function() {
-  // var i, f,
-  //     min_ljf_distance;
-
-  // for (i = 0; i <= 100; i+=0.001) {
-  //   f = lennardJones.force(i);
-  //   if (f > maxLJRepulsion) {
-  //     min_ljf_distance = i;
-  //     break;
-  //   }
-  // }
-
-  // for (;i <= 100; i+=0.001) {
-  //   f = lennardJones.force(i);
-  //   if (f > minLJAttraction) {
-  //     break;
-  //   }
-  // }
-
-  // for (;i <= 100; i+=0.001) {
-  //   f = lennardJones.force(i);
-  //   if (f < minLJAttraction) {
-  //     cutoffDistance_LJ = i;
-  //     break;
-  //   }
-  // }
-
-  cutoffDistance_LJ = lennardJones.coefficients().rmin * 20;
+  cutoffDistance_LJ = lennardJones.coefficients().rmin * 3;
   ljfLimitsNeedToBeUpdated = false;
 };
 
@@ -179,7 +153,7 @@ setup_coulomb_limits = function() {
   //   }
   // }
   // cutoffDistance_Coulomb = i;
-  cutoffDistance_Coulomb = 1000;
+  cutoffDistance_Coulomb = Infinity;
 };
 
 model.createNodes = function(options) {
