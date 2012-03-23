@@ -135,14 +135,22 @@ model.setSize = function(x) {
 
 // FIXME: disabled for now, so the view doesn't try to change epsilon
 model.setLJEpsilon = function(e) {
-  //lennardJones.setEpsilon(e);
+  lennardJones.setEpsilon(e);
   ljfLimitsNeedToBeUpdated = true;
 };
 
 // FIXME: disabled for now, so the view doesn't try to change sigma
 model.setLJSigma = function(s) {
-  //lennardJones.setSigma(s);
+  lennardJones.setSigma(s);
   ljfLimitsNeedToBeUpdated = true;
+};
+
+model.getLJEpsilon = function() {
+  return lennardJones.coefficients().epsilon;
+};
+
+model.getLJSigma = function() {
+  return lennardJones.coefficients().sigma;
 };
 
 //

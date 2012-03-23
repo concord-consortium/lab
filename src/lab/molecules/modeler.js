@@ -282,17 +282,33 @@ modeler.model = function() {
     epsilon = e;
     sigma = s;
 
-    // Does nothing useful now. TODO adapt for multiple models & multiple molecule types.
+    // TODO. Disabled for now because application.js doesn't yet know correct units, etc.
+    //coreModel.setLJEpsilon(e);
+    //coreModel.setLJSigma(s);
+  };
+
+  /** Accepts an epsilon value in eV.
+
+      Example value for argon is 0.013 (positive)
+  */
+  model.setEpsilon = function(e) {
     coreModel.setLJEpsilon(e);
+  };
+
+  /** Accepts a sigma value in nm
+
+    Example value for argon is 3.4 nm
+  */
+  model.setSigma = function(s) {
     coreModel.setLJSigma(s);
   };
 
   model.getEpsilon = function() {
-    return epsilon;
+    return coreModel.getLJEpsilon();
   };
 
   model.getSigma = function() {
-    return sigma;
+    return coreModel.getLJSigma();
   };
 
   model.set_radius = function(r) {
