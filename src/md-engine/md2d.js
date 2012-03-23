@@ -1,6 +1,8 @@
 /*globals Float32Array */
 /*jslint eqnull: true */
 
+if (typeof window === 'undefined') window = {};
+
 var model = exports.model = {},
 
     arrays       = require('./arrays/arrays').arrays,
