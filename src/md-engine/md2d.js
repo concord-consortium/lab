@@ -68,7 +68,7 @@ var model = exports.model = {},
     maxCoulombForce = 20.0,
     cutoffDistance_Coulomb,
 
-    size = [20, 20],
+    size = [10, 10],
 
     //
     // Individual property arrays for the particles
@@ -196,7 +196,7 @@ model.createNodes = function(options) {
 
       rmin = lennardJones.coefficients().rmin,
 
-      mol_rmin_radius_factor = 1.0,
+      mol_rmin_radius_factor = 0.5,
 
       // special-case:
       arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
