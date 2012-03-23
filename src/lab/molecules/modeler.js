@@ -296,8 +296,8 @@ modeler.model = function() {
   };
 
   model.set_radius = function(r) {
-    var i, n = nodes[0].length;
-    i = -1; while(++i < n) { radius[i] = r; }
+    // var i, n = nodes[0].length;
+    // i = -1; while(++i < n) { radius[i] = r; }
   };
 
   // return a copy of the array of speeds

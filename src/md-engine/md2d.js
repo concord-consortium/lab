@@ -187,7 +187,9 @@ model.createNodes = function(options) {
 
   var num                    = options.num                    || 50,
       temperature            = options.temperature            || 100,
-      rmin                   = options.rmin                   || 4.4,
+
+      rmin = lennardJones.coefficients().rmin,
+
       mol_rmin_radius_factor = options.mol_rmin_radius_factor || 0.38,
 
       // special-case:
