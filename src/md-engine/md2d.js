@@ -13,7 +13,7 @@ var model = exports.model = {},
     lennardJones = window.lennardJones = require('./potentials').getLennardJonesCalculator(),
 
     // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
-    ARGON_LJ_EPSILON_IN_EV = 120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
+    ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
     ARGON_LJ_SIGMA_IN_NM   = 0.34,
 
     ARGON_MASS_IN_DALTON = 39.95,
