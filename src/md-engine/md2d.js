@@ -157,7 +157,9 @@ model.getLJSigma = function() {
 // Calculate the minimum and maximum distances for applying Lennard-Jones forces
 //
 setup_ljf_limits = function() {
-  cutoffDistance_LJ = lennardJones.coefficients().rmin * 3;
+  // for any epsilon:
+  // 1 - lennardJones.potential(5*lennardJones.coefficients().rmin) / lennardJones.potential(Infinity) ~= 1e-4
+  cutoffDistance_LJ = lennardJones.coefficients().rmin * 5;
   ljfLimitsNeedToBeUpdated = false;
 };
 
