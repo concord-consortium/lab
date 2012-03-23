@@ -40,8 +40,28 @@ var model = exports.model = {},
       return true;
     }()),
 
-    // FIXME: revisit
-    maxLJRepulsion = 0.01,
+    // To avoid diverging, we want to cap the repulsion force between the Lennard-Jones particles.
+    //
+    // If the force is allowed to be too large, then particles which "jump" into Pauli-exclusion region in one time
+    // step may acquire enormous (and unrealistic) energies which cause a chain reaction of similar high-energy jumps;
+    // the model then quickly diverges.
+    //
+    // One strategy is to choose a maximum force such that as 2 molecules approach and bounce off, the speed of
+    // departure "|v_out|" does not exceed the speed of approach, "|v_in|".
+    // If typical velocities are on the order of sqrt(2kT/m) (T = temperature in Kelvin, m = mass of particles)
+    // then we want |v_out| < |v_in| + 0.5 * a_max * dt
+    // Assuming v_in > 0 and a_max < 0 (we want |a| < |a_max|, or which is to say a > a_max)
+    // then 0.5 * a_max * dt > 2 * v_in
+    // so f_max > -(4 * m / dt) * sqrt(2kT/m)
+    //
+    // This is an approximate analysis at best (assuming there are no gross errors), and actual velocities vary, so
+    // in practice I have found capping the force at 0.01 of the f_max calculated per the above seems to work.
+
+    // calculate in "MW Units"
+    maxLJRepulsion = 0.01 *
+       -(4 * ARGON_MASS_IN_DALTON / 10) *
+       Math.sqrt(2 * BOLTZMANN_CONSTANT_IN_JOULES * constants.ratio(unit.MW_ENERGY_UNIT, { per: unit.JOULE }) * 200 / ARGON_MASS_IN_DALTON),
+
     cutoffDistance_LJ,
 
     minCoulombForce =   0.1,
@@ -588,6 +608,7 @@ makeIntegrator = function(args) {
                 aPair_x = aPair_over_r * dx;
                 aPair_y = aPair_over_r * dy;
 
+                // positive = attractive, negative = repulsive
                 ax[i] += aPair_x;
                 ay[i] += aPair_y;
                 ax[j] -= aPair_x;
