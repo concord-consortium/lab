@@ -8,7 +8,7 @@ navigator = window.navigator;
 
 CSSStyleDeclaration = window.CSSStyleDeclaration;
 
-require("../vendor/sizzle/sizzle");
+require("../src/vendor/sizzle/sizzle");
 Sizzle = window.Sizzle;
 
 process.env.TZ = "America/Los_Angeles";
