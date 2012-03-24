@@ -1,0 +1,81 @@
+#molecule-container {
+  position: relative;
+  background-color: #f9eec1;
+  width: 200px;
+  height: 200px;
+  border: solid 1px #f4b626;
+  margin: 2px 0px 2px 0px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px; }
+  #molecule-container circle {
+    stroke: transparent;
+    stroke-width: 1;
+    fill: white;
+    fill-opacity: 1;
+    cursor: move; }
+    #molecule-container circle.selected {
+      fill: #ff7f0e;
+      stroke: #ff7f0e; }
+  #molecule-container rect {
+    border: solid 1px #cccccc; }
+
+text.index {
+  text-anchor: middle; }
+
+text.shadow {
+  text-anchor: middle;
+  stroke: white;
+  stroke-width: 3px;
+  stroke-opacity: 0.8; }
+
+#number-frame {
+  text-align: right; }
+  #number-frame legend {
+    text-align: left; }
+
+#select-temperature-display {
+  margin: 0px 2px 0px 2px;
+  vertical-align: top; }
+
+.component_group {
+  margin: 5px 0px 10px 0px;
+  display: inline-block;
+  vertical-align: bottom; }
+  .component_group .slider {
+    width: 20em; }
+
+.slider_container {
+  font-size: 1em;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0.5em 1em 0.5em 0em;
+  min-height: 4.8em;
+  padding: 3px;
+  border: 1px solid #f4b626;
+  border-radius: 0.5em; }
+  .slider_container .left_half {
+    width: 49%;
+    float: left;
+    text-align: left; }
+  .slider_container .right_half {
+    text-align: right;
+    width: 49%;
+    float: right; }
+  .slider_container .container {
+    display: inline-block;
+    margin: auto;
+    text-align: center; }
+  .slider_container .below {
+    display: none;
+    margin: auto;
+    text-align: center; }
+
+#components-description {
+  display: inline-block;
+  vertical-align: top;
+  float: none;
+  width: 40%; }
+
+.playbacksvg .button-art {
+  fill: #f7f2c5; }

@@ -1,0 +1,2 @@
+
+graph = grapher.simpleGraph2();

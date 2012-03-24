@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <title>
+      Lab: Technical Documentation
+    </title>
+    <meta content='text/xhtml; charset=utf-8' http-equiv='content-type'>
+    <meta content='all' name='distribution'>
+    <meta content='all' name='robots'>
+    <script src='http://use.typekit.com/hdw8ayt.js' type='text/javascript'></script>
+    <script type='text/javascript'>
+      try{Typekit.load();}catch(e){}
+    </script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css' />
+    <link href="readme.css" media="screen" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div id="main">
+      <h1 id="labhttpsgithubcomconcord-consortiumlab"><a href="https://github.com/concord-consortium/lab">Lab</a></h1>
+
+<p>HTML5-based open source scientific models, visualizations, graphing, and probeware from the 
+<a href="http://www.concord.org">Concord Consortium</a>.</p>
+
+<p><strong>Table of Contents</strong></p>
+
+<ul id="markdown-toc">
+  <li><a href="#license">License</a></li>
+  <li><a href="#distribution-of-project-examples">Distribution of Project Examples</a></li>
+  <li><a href="#molecular-modeling-examples">Molecular Modeling Examples:</a></li>
+  <li><a href="#graphing-examples">Graphing examples:</a></li>
+  <li><a href="#todo">TODO</a></li>
+  <li><a href="#setup-development">Setup Development</a>    <ul>
+      <li><a href="#prerequisites">Prerequisites:</a>        <ul>
+          <li><a href="#ruby-19-and-the-rubygem-bundler">Ruby 1.9 and the RubyGem bundler</a></li>
+          <li><a href="#nodejs-and-npm-the-node-package-manager">nodejs and npm, the Node Package Manager</a></li>
+        </ul>
+      </li>
+      <li><a href="#use-git-to-create-a-local-clone-of-the-lab-repository">Use git to create a local clone of the Lab repository.</a></li>
+      <li><a href="#setup-the-local-lab-repository-for-development">Setup the local Lab repository for development</a></li>
+      <li><a href="#serving-dist-locally-with-apache">Serving <code>dist/</code> locally with Apache</a></li>
+      <li><a href="#serving-dist-using-pow">Serving <code>dist/</code> using POW</a></li>
+      <li><a href="#contributing-to-lab">Contributing to Lab</a></li>
+    </ul>
+  </li>
+  <li><a href="#measuring-performance">Measuring Performance</a>    <ul>
+      <li><a href="#installing-and-using-performancerb">Installing and using <code>performance.rb</code></a></li>
+    </ul>
+  </li>
+  <li><a href="#repository-structure">Repository structure</a>    <ul>
+      <li><a href="#source-code-src">Source Code: <code>src/</code></a></li>
+      <li><a href="#adding-new-source-files-or-modules">Adding new source files or modules</a></li>
+      <li><a href="#testing-test">Testing: <code>test/</code></a></li>
+      <li><a href="#a-simple-example-of-test-driven-development">A Simple Example of Test Driven Development</a></li>
+      <li><a href="#debugging-tests-using-the-node-debugger">Debugging Tests using the node debugger</a></li>
+      <li><a href="#generated-lab-modules-lab">Generated Lab Modules: <code>lab/</code></a></li>
+      <li><a href="#generated-examples-distexamples">Generated Examples: <code>dist/examples/</code></a></li>
+      <li><a href="#external-javascript-frameworks-vendor">External JavaScript Frameworks: <code>vendor/</code></a></li>
+    </ul>
+  </li>
+  <li><a href="#html-and-css">HTML and CSS</a></li>
+  <li><a href="#updating-an-external-server-with-the-contents-of-dist">Updating an external server with the contents of <code>dist/</code></a></li>
+  <li><a href="#references">References</a>    <ul>
+      <li><a href="#molecular-simulation">Molecular Simulation</a>        <ul>
+          <li><a href="#courses">Courses</a></li>
+          <li><a href="#reduced-units">Reduced Units</a></li>
+        </ul>
+      </li>
+      <li><a href="#runtime-dependencies">Runtime Dependencies</a>        <ul>
+          <li><a href="#d3">D3</a></li>
+          <li><a href="#sciencejs">science.js</a></li>
+          <li><a href="#modernizr">Modernizr</a></li>
+          <li><a href="#jquery">JQuery</a></li>
+          <li><a href="#jquery-ui">JQuery-UI</a></li>
+          <li><a href="#mathjax">MathJax</a></li>
+        </ul>
+      </li>
+      <li><a href="#development-dependencies">Development Dependencies</a>        <ul>
+          <li><a href="#node">node</a></li>
+          <li><a href="#npm">npm</a></li>
+        </ul>
+      </li>
+      <li><a href="#rubygems">RubyGems</a>        <ul>
+          <li><a href="#haml">Haml</a></li>
+          <li><a href="#sass">Sass</a></li>
+          <li><a href="#guard">Guard</a></li>
+        </ul>
+      </li>
+      <li><a href="#additional-testing-dependencies">Additional Testing Dependencies</a>        <ul>
+          <li><a href="#vows">Vows</a></li>
+          <li><a href="#jsdom">jsdom</a></li>
+        </ul>
+      </li>
+      <li><a href="#miscellaneous">Miscellaneous</a>        <ul>
+          <li><a href="#livereload">livereload</a></li>
+        </ul>
+      </li>
+      <li><a href="#full-screen-api">Full Screen API</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="license">License</h2>
+
+<p>Lab is Copyright 2012 (c) by the Concord Consortium and is distributed under
+any of the following licenses:</p>
+
+<ul>
+  <li><a href="http://www.opensource.org/licenses/BSD-2-Clause">Simplified BSD</a>,</li>
+  <li><a href="http://www.opensource.org/licenses/MIT">MIT</a>, or</li>
+  <li><a href="http://www.opensource.org/licenses/Apache-2.0">Apache 2.0</a>.</li>
+</ul>
+
+<p>The complete text of all three licenses can be read <a href="license.html">here</a>.</p>
+
+<p>If you have have received a <strong>distribution archive</strong> of the
+<a href="https://github.com/concord-consortium/lab">Concord Consortium Lab project</a>
+our copyright applies to all resources <strong>except</strong> the files in the
+<code>vendor/</code> directory. The files in the <code>vendor/</code> directory are from
+third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.</p>
+
+<h2 id="distribution-of-project-examples">Distribution of Project Examples</h2>
+
+<p>Downloads of the generated example distribution are available from the github project downloads page:
+<a href="https://github.com/concord-consortium/lab/downloads">concord-consortium/lab/downloads</a>.</p>
+
+<p>Click on the link titled: <a href="https://github.com/downloads/concord-consortium/lab/lab-dist-v0.1.tar.gz">lab-dist-v0.1.tar.gz</a></p>
+
+<p>Download this and expand the archive and a folder named <code>dist</code> will be created.
+Open the file index.html in the <code>dist</code> folder in your browser. You now have a working
+offline version of this project.</p>
+
+<h2 id="molecular-modeling-examples">Molecular Modeling Examples:</h2>
+
+<ul>
+  <li><a href="http://lab.dev.concord.org/examples/simple-atoms-model/simple-atoms-model.html">Simple Atoms Model</a></li>
+  <li><a href="http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html">More Complex Atoms Model</a></li>
+</ul>
+
+<h2 id="graphing-examples">Graphing examples:</h2>
+
+<ul>
+  <li><a href="http://lab.dev.concord.org/examples/surface-temperature/surface-temperature.html">Earth&rsquo;s Surface Temperature: years 500-2009</a></li>
+  <li><a href="http://lab.dev.concord.org/examples/seasons/canberra-question.html">Question about seasonal temperatures and geography</a></li>
+  <li><a href="http://lab.dev.concord.org/examples/lennard-jones-potential/lennard-jones-potential.html">Lennard-Jones-Potential</a></li>
+</ul>
+
+<h2 id="todo">TODO</h2>
+
+<ul>
+  <li>The tests need to be expanded a great deal.</li>
+  <li>Probeware needs to be added.</li>
+  <li>Molecular model in progress.</li>
+  <li>Include JQuery UI as a git submodule. (note: its a bit complicated,
+because we do a custom build of JQuery UI with only a few components,
+and only one simpletheme)</li>
+</ul>
+
+<h2 id="setup-development">Setup Development</h2>
+
+<p>Lab uses a number of RubyGems and node modules to manage development. Lab&rsquo;s test framework
+uses <a href="http://vowsjs.org">Vows</a>, which depends on <a href="http://nodejs.org/">nodejs</a> and
+<a href="http://npmjs.org/">npm</a> (Node Package Manager). In addition JavaScript minification is
+done using <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a>.</p>
+
+<h3 id="prerequisites">Prerequisites:</h3>
+
+<h4 id="ruby-19-and-the-rubygem-bundler">Ruby 1.9 and the RubyGem bundler</h4>
+
+<p><a href="http://www.ruby-lang.org/en/">Ruby 1.9</a> is a development dependency for the Lab codebase however
+often the older Ruby version 1.8.7 is what comes pre-installed on Mac OS X and Linux.</p>
+
+<pre><code>$ ruby -v
+ruby 1.8.7 (2010-01-10 patchlevel 249) [universal-darwin10.0]
+</code></pre>
+
+<p><a href="http://beginrescueend.com/">RVM</a> is a good way to install and manage multiple updated versions
+of Ruby without affecting the Ruby that comes pre-installed in the OS.</p>
+
+<p>Once you have a working version of Ruby 1.9.2 (or newer) install the RubyGem <a href="http://gembundler.com/">bundler</a>.</p>
+
+<pre><code>$  ruby -v
+ruby 1.9.2p290 (2011-07-09 revision 32553) [x86_64-darwin10.8.0]
+
+$ gem install bundler
+Fetching: bundler-1.0.22.gem (100%)
+Successfully installed bundler-1.0.22
+1 gem installed
+</code></pre>
+
+<h4 id="nodejs-and-npm-the-node-package-manager">nodejs and npm, the Node Package Manager</h4>
+
+<p><a href="http://nodejs.org/">nodejs</a> and <a href="http://npmjs.org/">npm</a>, the Node Package Manager are additional
+development dependencies.</p>
+
+<p><a href="http://npmjs.org/">npm</a>, the Node Package Manager has been included as part of <a href="http://nodejs.org/">nodejs</a>
+since version 0.6.3.</p>
+
+<p>Install the latest stable version of node (currently v0.6.13) with installers available here: <a href="http://nodejs.org/#download">http://nodejs.org/#download</a></p>
+
+<p>Currently development is being done with these versions of node and npm:</p>
+
+<pre><code>$ node -v
+v0.6.13
+
+$ npm -v
+1.1.9
+</code></pre>
+
+<h3 id="use-git-to-create-a-local-clone-of-the-lab-repository">Use git to create a local clone of the Lab repository.</h3>
+
+<p>If you have commit access to the repository use this form:</p>
+
+<pre><code>git clone git@github.com:concord-consortium/lab.git
+</code></pre>
+
+<p>Alternatively if you don&rsquo;t have commit access use this form:</p>
+
+<pre><code>git clone git://github.com/concord-consortium/lab.git
+</code></pre>
+
+<h3 id="setup-the-local-lab-repository-for-development">Setup the local Lab repository for development</h3>
+
+<p>Make sure you have already installed the prerequistes: <a href="http://www.ruby-lang.org/en/">Ruby 1.9</a>,
+the RubyGem <a href="http://gembundler.com/">bundler</a>, and <a href="http://nodejs.org/">nodejs</a> (which now includes
+<a href="http://npmjs.org/">npm</a> the Node Package Manager.</p>
+
+<p>Change to the <code>lab/</code> directory and run <code>make clean; make</code> to install the runtime and development dependencies and generate 
+the <code>dist/</code> directory:</p>
+
+<pre><code>cd lab
+make clean; make
+</code></pre>
+
+<p>When <code>make</code> is run on a freshly cloned repository it performs the following tasks:</p>
+
+<ol>
+  <li>
+    <p>Install the runtime dependencies as git submodules into the <code>vendor/</code> directory:</p>
+
+    <pre><code> git submodule update --init --recursive
+</code></pre>
+  </li>
+  <li>
+    <p>Install the development dependencies that use <a href="http://nodejs.org/">nodejs</a> and
+are managed by <a href="http://npmjs.org/">npm</a>:</p>
+
+    <pre><code> npm install
+</code></pre>
+
+    <p>You can see the list of dependencies to be installed in the file <code>package.json</code>. In addition
+<code>vendor/d3</code> and <code>vendor/science.js</code> are manually installed into <code>node_modules/</code>.</p>
+  </li>
+  <li>
+    <p>Install the additional RubyGems used for development: haml, sass, guard &hellip;</p>
+
+    <pre><code> bundle install --binstubs
+</code></pre>
+
+    <p>This creates the <code>bin/</code> directory and populates it with command-line executables for running
+the specific versions of the RubyGems installed for development.</p>
+  </li>
+  <li>
+    <p>Generates the <code>dist/</code> directory:</p>
+  </li>
+</ol>
+
+<p>You should now be able to open the file: <code>dist/index.html</code> in a browser and run the examples.</p>
+
+<p>Start watching the <code>src/</code> and <code>test/</code> directories and when files are changed automatically
+generate the JavaScript Lab modules, the examples, and run the tests.</p>
+
+<pre><code>bin/guard
+</code></pre>
+
+<p>Now any change you make in <code>src/examples/</code> will generate the corresponding content in <code>dist/examples/</code>.
+In addition changes in <code>src/lab/</code> generate the associated Lab modules in <code>lab/</code> and copy these modules 
+to <code>dist/lab/</code>. In addition any change in either the <code>src/lab/</code> or <code>test/</code>directories will run the
+tests and display the results in the console window where <code>bin/guard</code>
+is running.</p>
+
+<h3 id="serving-dist-locally-with-apache">Serving <code>dist/</code> locally with Apache</h3>
+
+<p>You can also create a localhost and local Apache vhost for Lab:</p>
+
+<p>file: <code>/etc/hosts</code></p>
+
+<pre><code>127.0.0.1       lab.local
+127.0.0.1       d3.local
+</code></pre>
+
+<p>file: <code>/etc/apache2/extra/httpd-vhosts.conf</code></p>
+
+<pre><code>&lt;VirtualHost lab.local:80&gt;
+   ServerName lab
+   DocumentRoot /path/to/lab-repo/dist
+   PassengerEnabled off
+   &lt;Directory /path/to/lab-repo/dist &gt;
+     Options +Indexes +FollowSymLinks +MultiViews +Includes
+     AllowOverride All
+     Order allow,deny
+     Allow from all
+     DirectoryIndex index.html
+  &lt;/Directory&gt;
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>Test the syntax after making Apache configuration changes:</p>
+
+<pre><code>$ apachectl configtest
+Syntax OK
+</code></pre>
+
+<p>Restart Apache when the configuration syntax is OK :</p>
+
+<pre><code>$ sudo apachectl restart
+</code></pre>
+
+<p>Now open: <a href="http://lab.local/">http://lab.local/</a></p>
+
+<p>Or go directly to your local instance of <a href="http://lab.local/examples/simplemolecules/simplemolecules.html">Simple Molecules</a>.</p>
+
+<p>Whenever guard is running and you save changes to any files in the src/ directory the corresponding files in
+the <code>dist/</code> directory will be updated.</p>
+
+<p>To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small &ldquo;LR&rdquo; button on the toolbar.</p>
+
+<h3 id="serving-dist-using-pow">Serving <code>dist/</code> using POW</h3>
+
+<p>You can also serve the dist directory using <a href="http://pow.cx/">POW</a>.</p>
+
+<ol>
+  <li>install pow: <code>curl get.pow.cx | sh</code></li>
+  <li>create a lab folder in <code>~/.pow/</code>  by doing <code>mkdir -p ~/.pow/lab</code></li>
+  <li>symlink the dist folder for the Lab project <code>cd ~/.pow/lab; ln -s
+&lt;lab/dist&gt; ./public</code></li>
+  <li>Thats it! your app should be available at <a href="http://lab.dev">http://lab.dev</a> 
+assuming that you had already built the Lab project, and the <code>dist</code> directory
+exists.</li>
+</ol>
+
+<h3 id="contributing-to-lab">Contributing to Lab</h3>
+
+<p>If you think you&rsquo;d like to contribute to Lab as an external developer:</p>
+
+<ol>
+  <li>
+    <p>Create a local clone from the repository located here: http://github.com/concord-consortium/lab.
+This will by default have the git-remote name: <strong>origin</strong>. </p>
+  </li>
+  <li>
+    <p>Make a fork of http://github.com/concord-consortium/lab to your account on github.</p>
+  </li>
+  <li>
+    <p>Make a new git-remote referencing your fork. I recommend making the remote name your github user name.
+For example my username is <code>stepheneb</code> so I would add a remote to my fork like this: </p>
+
+    <pre><code> git remote add stepheneb git@github.com:stepheneb/lab.git
+</code></pre>
+  </li>
+  <li>
+    <p>Create your changes on a topic branch. Please include tests if you can. When your commits are ready
+push your topic branch to your fork and send a pull request.</p>
+  </li>
+</ol>
+
+<h2 id="measuring-performance">Measuring Performance</h2>
+
+<p>The <a href="http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html">Complex Atoms Model</a>
+includes several features for estimating and measuring performance of the molecular modeler.</p>
+
+<ol>
+  <li>
+    <p>End of <strong>Stats</strong> section displays average number of model steps/s.</p>
+  </li>
+  <li>
+    <p><strong>Run Benchmarks</strong> button stops model and measures time for running the model
+100 steps and also time for running the model and rendering the graphics for 100
+steps. When measuring the speed of the model and graphics together the test is run
+continuously and control is <em>not</em> returned to the browser for repainting the screen.</p>
+  </li>
+  <li>
+    <p>A separate Ruby program <a href="https://gist.github.com/2026947">performance.rb</a> available which
+uses Selenium Webdriver to automate running the <strong>Run Benchmarks</strong> test 10 times and
+collects , averages, and reports the results.</p>
+  </li>
+</ol>
+
+<h3 id="installing-and-using-performancerb">Installing and using <code>performance.rb</code></h3>
+
+<p><a href="https://gist.github.com/2026947">performance.rb</a> requires the Ruby Gem <code>selenium-webdriver</code> be installed.</p>
+
+<pre><code>gem install selenium-webdriver
+</code></pre>
+
+<p>Installation:</p>
+
+<pre><code>curl https://raw.github.com/gist/2026947/performance.rb -o performance.rb
+chmod u+x performance.rb
+</code></pre>
+
+<p>Edit paths in the file <code>performance.rb</code> to reference locations for FireFox and Chrome
+on your computer as well as the variable <code>URL_TO_COMPLEX_MODEL</code> for running the
+<a href="http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html">Complex Atoms Model</a>
+locally.</p>
+
+<p><strong>Running <code>performance.rb</code></strong>:</p>
+
+<pre><code>$ ./performance.rb
+
+browser: Chrome: 19.0.1070.0, Intel Mac OS X 10_6_8
+Date: 2012-03-15 12:54
+Molecule number: 50
+Temperature: 5
+
+git commit
+commit 356b81226403703e16788217da80875b74a4dc27
+Author: Richard Klancer &lt;rpk@pobox.com&gt;
+Date:   Thu Mar 15 11:53:52 2012 -0400
+
+   Further prune sqrts inside N^2 loops
+true
+
+average steps                  592.45
+average steps w/graphics       208.46
+</code></pre>
+
+<p>Documentation for the <a href="http://code.google.com/p/selenium/wiki/RubyBindings">Ruby bindings for Selenium WebDriver</a>.</p>
+
+<h2 id="repository-structure">Repository structure</h2>
+
+<h3 id="source-code-src">Source Code: <code>src/</code></h3>
+
+<p>The <code>src/</code> directory includes both JavaScript source code for the Lab modules as well as the <code>src/examples/</code>
+directory containing the additional resources for generating the html, css, and image resources for
+<code>dist/examples/</code>.</p>
+
+<ul>
+  <li><code>src/examples</code></li>
+</ul>
+
+<p>Files and folders in <code>src/examples</code> are either copied directly to <code>dist/examples</code> or in the case of coffeescript
+files are compiled to javascript before being copied.</p>
+
+<p>The source code for the Lab modules is all contained in <code>src/lab/</code></p>
+
+<p>The following directories contain the source code for the main Lab modules:</p>
+
+<ul>
+  <li><code>src/lab/arrays/</code></li>
+  <li><code>src/lab/benchmark/</code></li>
+  <li><code>src/lab/components/</code></li>
+  <li><code>src/lab/css/</code></li>
+  <li><code>src/lab/graphx/</code></li>
+  <li><code>src/lab/layout/</code></li>
+  <li><code>src/lab/molecules/</code></li>
+</ul>
+
+<p>In addition the following module is in process of being combined with the newer graphing code in <code>graphx/</code>.</p>
+
+<ul>
+  <li><code>src/lab/grapher/</code></li>
+</ul>
+
+<p>Lastly there are the following JavaScript fragments that are used in the build process:</p>
+
+<ul>
+  <li><code>src/lab/start.js</code></li>
+  <li><code>src/lab/lab-module.js</code></li>
+  <li><code>src/lab/end.js</code></li>
+</ul>
+
+<p>There are Sass mixins from the Bourbon Ruby Gem and custom ones for the Lab project in the following directories:</p>
+
+<ul>
+  <li><code>src/sass/bourbon/</code></li>
+  <li><code>src/sass/lab/</code></li>
+</ul>
+
+<p>Images used in the Lab project are saved here:</p>
+
+<ul>
+  <li><code>src/resources/</code></li>
+</ul>
+
+<p>Small examples used to test libraries or demostrate bugs are located here:</p>
+
+<ul>
+  <li><code>src/tests/</code></li>
+</ul>
+
+<p>After running <code>bundle install --binstubs</code> the <code>bin/</code> directory will be created.</p>
+
+<p><strong>Note:</strong> remember to make changes you want saved in the <code>src/examples/</code> directory <strong>not</strong> in the 
+<code>dist/examples/</code> directory.</p>
+
+<h3 id="adding-new-source-files-or-modules">Adding new source files or modules</h3>
+
+<p>If you add a new JavaScript file to an existing Lab module also add it to the associated section of the <code>MakeFile</code>.</p>
+
+<p>For example if you created a pie chart grapher and intended it to be part of <code>lab.layout.js</code> save the JavaScript 
+source file here:</p>
+
+<pre><code>src/lab/layout/pie-chart.js
+</code></pre>
+
+<p>Add the path to <code>pie-chart.js</code> to the <code>lab/lab.layout.js</code> target section of the MakeFile:</p>
+
+<pre><code>lab/lab.layout.js: \
+	src/lab/start.js \
+	src/lab/layout/layout.js \
+	src/lab/layout/molecule-container.js \
+	src/lab/layout/potential-chart.js \
+	src/lab/layout/speed-distribution-histogram.js \
+	src/lab/layout/benchmarks.js \
+	src/lab/layout/datatable.js \
+	src/lab/layout/temperature-control.js \
+	src/lab/layout/force-interaction-controls.js \
+	src/lab/layout/display-stats.js \
+	src/lab/layout/fullscreen.js \
+	src/lab/end.js
+</code></pre>
+
+<p>Similarly if you add a new module to Lab you will need to create a new target to represent the module
+using a similar form to the <code>lab/lab.layout.js</code> target as well as adding the target to the <code>LAB_JS_FILES</code> 
+make variable containing the list of Lab JavaScript files to be generated:</p>
+
+<pre><code>LAB_JS_FILES = \
+	lab/lab.grapher.js \
+	lab/lab.graphx.js \
+	lab/lab.benchmark.js \
+	lab/lab.layout.js \
+	lab/lab.arrays.js \
+	lab/lab.molecules.js \
+	lab/lab.js
+</code></pre>
+
+<p>If you are just modifying an existing example or adding a new one just create or edit the files in 
+the <code>src/examples</code> directory and run <code>make</code> or <code>bin/guard</code> to generate the associated resources 
+in the <code>dist/examples/</code> directory.</p>
+
+<p>The html file are generated from <a href="http://haml-lang.com/">Haml</a> markup. Add the suffix <code>.html.haml</code> 
+to these files.</p>
+
+<p>The css stylesheets are generated from <a href="http://sass-lang.com/">Sass</a> markup. Add the suffix <code>.sass</code> to these 
+files. The stylesheets may also be written using the newer <code>*.scss</code> variant of Sass.</p>
+
+<h3 id="testing-test">Testing: <code>test/</code></h3>
+
+<p>Lab&rsquo;s JavaScript tests use <a href="http://vowsjs.org">Vows</a>, an asynchronous behavior driven framework based 
+on <a href="http://nodejs.org/">Node.js</a>. In addition Lab uses <a href="https://github.com/tmpvar/jsdom">jsdom</a>, a
+lightweight CommonJS implementation of the W3C DOM specifications. Lab&rsquo;s test setup was inspired
+by that used by <a href="http://mbostock.github.com/d3/">d3.js</a>. The development dependencies for running the
+tests are installed using <a href="http://npmjs.org/">npm</a>.</p>
+
+<p>Running the tests:</p>
+
+<pre><code>$ make test
+................................. . . .. . . .
+x OK &gt; 40 honored (0.012s)
+</code></pre>
+
+<p>If you are running <code>bin/guard</code> the tests run automatically anytime a change is made in the JavaScript 
+files in the <code>src/</code> or <code>test/</code> directory.</p>
+
+<p>The results of the tests are displayed in the console that <code>bin/guard</code> is running in.</p>
+
+<p>If the bottom of the console window is viewable you will see new test results whenever you save a changes.</p>
+
+<p>Recent versions of nodejs/v8 support TypedArrays &ndash; this make it possible to more extensively
+test lab.arrays which is designed to support using either typed or regular arrays for computation. </p>
+
+<p><code>test/env.js</code> uses the node module <a href="https://github.com/tmpvar/jsdom">jsdom</a> to setup resources for 
+simple emulation of a browser.</p>
+
+<p><a href="http://vowsjs.org">Vows</a> integrates the <a href="http://nodejs.org/docs/latest/api/assert.html">standard nodejs assertions</a>
+with an additional collection of useful <a href="http://vowsjs.org/#assertions">assertions</a> summarized below:</p>
+
+<ul>
+  <li>
+    <p>numerical</p>
+
+    <pre><code>  assert.greater (3, 2);
+  assert.lesser (2, 3);
+  assert.inDelta (Math.random(), 0, 1);
+</code></pre>
+  </li>
+  <li>
+    <p>equality</p>
+
+    <pre><code>  assert.equal          (4, 4);
+  assert.strictEqual    (4 &gt; 2, true);
+  assert.notEqual       (4, 2);
+  assert.strictNotEqual (1, true);
+  assert.deepEqual      ([4, 2], [4, 2]);
+  assert.notDeepEqual   ([4, 2], [2, 4]);
+</code></pre>
+  </li>
+  <li>
+    <p>type</p>
+
+    <pre><code>  assert.isFunction (function () {});
+  assert.isObject   ({goo:true});
+  assert.isString   ('goo');
+  assert.isArray    ([4, 2]);
+  assert.isNumber   (42);
+  assert.isBoolean  (true);
+  assert.typeOf     (42, 'number');
+  assert.instanceOf ([], Array);
+</code></pre>
+  </li>
+  <li>
+    <p>truth</p>
+
+    <pre><code>  assert.isTrue  (true);
+  assert.isFalse (false);
+</code></pre>
+  </li>
+  <li>
+    <p>null, undefined, NaN</p>
+
+    <pre><code>  assert.isNull      (null);
+  assert.isNotNull   (undefined);
+  assert.isUndefined ('goo'[9]);
+  assert.isNaN       (0/0);
+</code></pre>
+  </li>
+  <li>
+    <p>inclusion</p>
+
+    <pre><code>  assert.include ([4, 2, 0], 2);
+  assert.include ({goo:true}, 'goo');
+  assert.include ('goo', 'o');
+</code></pre>
+  </li>
+  <li>
+    <p>regexp matching</p>
+
+    <pre><code>  assert.match ('hello', /^[a-z]+/);
+</code></pre>
+  </li>
+  <li>
+    <p>length</p>
+
+    <pre><code>  assert.length ([4, 2, 0], 3);
+  assert.length ('goo', 3);  *** not working ***
+</code></pre>
+  </li>
+  <li>
+    <p>emptiness</p>
+
+    <pre><code>  assert.isEmpty ([]);
+  assert.isEmpty ({});
+  assert.isEmpty ("");
+</code></pre>
+  </li>
+  <li>
+    <p>exceptions</p>
+
+    <pre><code>  assert.throws(function () { x + x }, ReferenceError);
+  assert.doesNotThrow(function () { 1 + 1 }, Error);
+</code></pre>
+  </li>
+</ul>
+
+<p>Additionally <code>test/env-assert.js</code> has a number of useful additional assertions copied from 
+<a href="http://mbostock.github.com/d3/">d3.js</a>.</p>
+
+<p><em><strong>Note</strong>: Using a more specific assertion usually results in more useful error reports.</em></p>
+
+<p>There are also many interesting test examples and patterns in the 
+<a href="https://github.com/mbostock/d3/tree/master/test">d3.js test directory</a> that can be adapted for use in Lab.</p>
+
+<h3 id="a-simple-example-of-test-driven-development">A Simple Example of Test Driven Development</h3>
+
+<p>Here&rsquo;s a simple example that is part of the tests for <code>lab.arrays.js</code> to test the <code>arrays.max()</code> function:</p>
+
+<pre><code>"find max in array with negative and positive numbers": function(max) {
+  assert.equal(max([3, -1, 0, 1, 2, 3]), 3);
+},
+</code></pre>
+
+<p>The &lsquo;model stepping&rsquo; tests are a good example where the tests help helped drive new features. The basic 
+features I was testing in this section relate to the existing functionality exposed by the Stop, Start, Go, and 
+Reset buttons as wells as the extended keyboard controls that allow stepping forward and backwards a step at a time.</p>
+
+<p>First I created this test that passed:</p>
+
+<pre><code>"after running running one tick the model is at step 1": function(model) {
+  model.tick();
+  assert.equal(model.stepCounter(), 1);
+  assert.isTrue(model.isNewStep());
+},
+</code></pre>
+
+<p>In thinking about driving out changes to KE, PE and Temperature of the molecular model itself I realized 
+I&rsquo;d like the capability to run a specific number of steps forward and then check the results.</p>
+
+<p>I then wrote this test that failed &ndash; because the model.tick() function didn&rsquo;t yet take an optional argument to 
+run multiple steps forward:</p>
+
+<pre><code>"after running 9 more ticks the model is at step 10": function(model) {
+  model.tick(9);
+  assert.equal(model.stepCounter(), 10);
+  assert.isTrue(model.isNewStep());
+},
+</code></pre>
+
+<p>After saving the change I saw the new test failure reported in my console. I then implemented the new
+feature in the actual <code>src/lab/molecules.js</code>. Less than a second after saving the file the tests 
+completed and the report showed it passing.</p>
+
+<p>This is a very simple example &ndash; but part of the value of this kind of test driven development is in first 
+thinking of how something should behave rather than in how to get it to actually do the work.</p>
+
+<p>Since I already had this function for running one model step:</p>
+
+<pre><code>model.tick()
+</code></pre>
+
+<p>Adding an optional numeric argument for running more steps is a fine way to express the intent of the new feature:</p>
+
+<pre><code>model.tick(9)
+</code></pre>
+
+<p>In more complicated coding thinking about how to express the intent clearly and then what the result 
+should be if that intent is successful <strong>FIRST</strong> &hellip; and then &lsquo;driving out&rsquo; the actual implementation to 
+achieve that result can result in a better architecture &ndash; and of course you also end up with tests.</p>
+
+<p>Because the tests run SO quickly I can interactively change the code in the module or the test and 
+immediately see results.</p>
+
+<h3 id="debugging-tests-using-the-node-debugger">Debugging Tests using the node debugger</h3>
+
+<p>Sometimes it can be helpful to break into a debugger when there is a problem in either the code 
+or the test setup itself. Node comes with a <a href="http://nodejs.org/docs/latest/api/debugger.html">debugger</a> 
+which can be used in combination with vows and the tests.</p>
+
+<p>First set a breakpoint by inserting the statement: <code>debugger;</code></p>
+
+<pre><code>suite.addBatch({
+  "Thermometer": {
+    topic: function() {
+      debugger;
+      return new components.Thermometer("#thermometer");
+    },
+    "creates thermometer": function(t) {
+      assert.equal(t.max, 0.7)
+    }
+  }
+});
+</code></pre>
+
+<p>Start the node debugger and pass in the full command line to run the tests:</p>
+
+<pre><code>node debug ./node_modules/vows/bin/vows --no-color
+</code></pre>
+
+<p>The debugger will break at the beginning of vows:</p>
+
+<pre><code>&lt; debugger listening on port 5858
+connecting... ok
+break in node_modules/vows/bin/vows:3
+  1
+  2
+  3 var path   = require('path'),
+  4     fs     = require('fs'),
+  5     util   = require('util'),
+</code></pre>
+
+<p>Enter <code>cont</code> to continue execution until your breakpoint.</p>
+
+<pre><code>debug&gt; cont
+&lt; ·
+&lt; ········
+&lt; ·
+&lt;
+break in test/lab/components/components-test.js:13
+ 11   "Thermometer": {
+ 12     topic: function() {
+ 13       debugger;
+ 14       return new components.Thermometer("#thermometer");
+ 15     },
+</code></pre>
+
+<p>To evaluate expressions type <code>repl</code>  &ndash; use ctrl-C to exit the repl:</p>
+
+<pre><code>repl
+Press Ctrl + C to leave debug repl
+&gt; initialization_options
+{ model_listener: false,
+  lennard_jones_forces: true,
+  coulomb_forces: true }
+&gt; atoms[0].charge
+-1
+</code></pre>
+
+<p>Enter <strong>ctrl-C</strong> to exit the repl and return to the debugger.</p>
+
+<p>Enter <strong>ctrl-D</strong> to exit the debugger.</p>
+
+<p><a href="https://github.com/dannycoates/node-inspector">node-inspector</a>
+<a href="http://search.npmjs.org/#/node-inspector">npm package for node-inspector</a></p>
+
+<h3 id="generated-lab-modules-lab">Generated Lab Modules: <code>lab/</code></h3>
+
+<p>The <code>lab/</code> directory contains the Lab modules generated from JavaScript source code in the <code>src/lab/</code>
+directory. The <code>lab/</code> directory is not checked into the repository</p>
+
+<p>Here are the standard Lab modules:</p>
+
+<ul>
+  <li><code>lab.arrays.js</code></li>
+  <li><code>lab.benchmark.js</code></li>
+  <li><code>lab.grapher.js</code></li>
+  <li><code>lab.graphx.js</code></li>
+  <li><code>lab.layout.js</code></li>
+  <li><code>lab.molecules.js</code></li>
+</ul>
+
+<p>And one additional file which combines them all:</p>
+
+<ul>
+  <li><code>lab.js</code></li>
+</ul>
+
+<p>Minimized versions of these files are also generated.</p>
+
+<p>When working on the source code please keep commits of the generated JavaScript files in the <code>lab/</code> directory
+separate from other commits to make it easier to see and understand the narrative of source code changes.</p>
+
+<h3 id="generated-examples-distexamples">Generated Examples: <code>dist/examples/</code></h3>
+
+<p>The <code>dist/examples/</code> directory is automatically generated running <code>make</code> and is not part of the repository.</p>
+
+<p>When <code>bin/guard</code> is running any changes to files in the <code>src/examples/</code> directory cause automatic rebuilding 
+of the associated files in the <code>dist/examples/</code> directory.</p>
+
+<h3 id="external-javascript-frameworks-vendor">External JavaScript Frameworks: <code>vendor/</code></h3>
+
+<p>External JavaScript runtime dependencies for running Lab are located in the vendor/ directory and are 
+installed as git submodules the first time <code>make</code> is run in a new checkout of the source code repository.</p>
+
+<p>The javascript frameworks along with their licensing and readme files are copied into the <code>dist/vendor/</code> 
+directory when either <code>make</code> or <code>bin/guard</code> are run.</p>
+
+<ul>
+  <li><code>vendor/d3/</code></li>
+  <li><code>vendor/hijs/</code></li>
+  <li><code>vendor/modernizr/</code></li>
+  <li><code>vendor/science.js/</code></li>
+  <li><code>vendor/sizzle/</code></li>
+  <li><code>vendor/jquery/</code></li>
+  <li><code>vendor/jquery-ui/</code></li>
+  <li><code>vendor/mathjax/</code></li>
+</ul>
+
+<p><a href="http://mbostock.github.com/d3/">d3.js</a>, <a href="https://github.com/cloudhead/hijs">hijs</a>, and
+<a href="https://github.com/jasondavies/science.js">science.js</a> are all distributed under a BSD license;
+<a href="https://github.com/jquery/sizzle">sizzle</a> and <a href="https://github.com/Modernizr/Modernizr">modernizr</a>
+are distributed under both BSD and MIT licenses; <a href="http://jquery.com/">jQuery</a> is licensed under 
+the MIT license; <a href="jQuery-UI">jQuery-UI</a> is distributed under both the MIT license and GPL licenses;
+<a href="http://www.mathjax.org/">MathJax</a> is distributed under the Apache 2.0 license.</p>
+
+<h2 id="html-and-css">HTML and CSS</h2>
+
+<p><a href="http://haml-lang.com/">Haml</a> is used to generate most of the HTML in the <code>dist/</code> directory.</p>
+
+<p><a href="http://kramdown.rubyforge.org/">kramdown</a> is used to generate <code>readme.html</code> in <code>dist/</code> from Mardown markup.</p>
+
+<p><a href="http://sass-lang.com/">Sass</a> is used to generate the CSS assets. The Sass markup may be in the form of
+<code>*.sass</code> or <code>*.scss</code> files</p>
+
+<p>The <a href="http://thoughtbot.com/bourbon/">Bourbon</a> library of Sass mixins is included.</p>
+
+<ul>
+  <li><a href="http://thoughtbot.com/bourbon/">Bourbon documentation</a></li>
+  <li><a href="http://asciicasts.com/episodes/330-better-sass-with-bourbon">ASCIIcast 330: Better SASS With Bourbon</a></li>
+  <li><a href="http://robots.thoughtbot.com/post/7846399901/introducing-bourbon-sass-mixins">Introducing Bourbon Sass Mixins</a></li>
+</ul>
+
+<h2 id="updating-an-external-server-with-the-contents-of-dist">Updating an external server with the contents of <code>dist/</code></h2>
+
+<p>Currently <a href="http://lab.dev.concord.org/">http://lab.dev.concord.org/</a> is updated by using rsynch to copy
+the content of the <code>dist/</code> directory to the server.</p>
+
+<p>Modify the example script below with your username, server host, and path to the directory apache is serving:</p>
+
+<p>file: <code>bin/update.sh</code></p>
+
+<pre><code>#!/bin/sh
+rsync -rvz --delete --quiet --perms --chmod=ug=rwX,o=rX dist/ username@server:/path/to/dist
+</code></pre>
+
+<p>Running <code>bin/update.sh</code> will now copy and update the directory at <a href="http://lab.dev.concord.org/">http://lab.dev.concord.org/</a></p>
+
+<h2 id="references">References</h2>
+
+<h3 id="molecular-simulation">Molecular Simulation</h3>
+
+<ul>
+  <li><a href="http://li.mit.edu/Archive/Papers/05/Li05-2.8.pdf">Basic molecular dynamics</a></li>
+  <li>
+    <p><a href="http://www.ch.embnet.org/MD_tutorial/">CHARMM: A theoretical introduction to molecular dynamics simulations and practical examples</a></p>
+
+    <p>This site has a basic introduction to the physics of molecular dynamics simulations, and practical 
+exercises with the CHARMM package</p>
+  </li>
+  <li><a href="http://phjoan23.technion.ac.il/~phr76ja/thermostats.pdf">Thermostat Algorithms for Molecular Dynamics Simulations</a></li>
+  <li>
+    <p><a href="http://en.wikipedia.org/wiki/Flying_ice_cube">the &ldquo;flying ice cube&rdquo;</a></p>
+
+    <p>One kind of unphysical effect that can arise. See linked paper.</p>
+  </li>
+  <li><a href="http://www.sklogwiki.org/SklogWiki/index.php/Lennard-Jones_model">SklogWiki: Lennard-Jones</a></li>
+</ul>
+
+<h4 id="courses">Courses</h4>
+
+<ul>
+  <li>
+    <p><a href="http://www.pages.drexel.edu/~cfa22/msim/msim.html">CHE 800-002: Molecular Simulation</a>
+  Cameron Abrams Department of Chemical Engineering at Drexel  </p>
+  </li>
+  <li><a href="http://courses.theophys.kth.se/SI2530/">Computational Physics</a></li>
+  <li><a href="http://www.cstl.nist.gov/srs/LJ_PURE/index.htm">Benchmark results for Lennard-Jones fluid</a></li>
+  <li><a href="http://homepage.univie.ac.at/franz.vesely/simsp/dx/dx.html">Statistical Physics and Simulation</a></li>
+</ul>
+
+<h4 id="reduced-units">Reduced Units</h4>
+
+<ul>
+  <li><a href="http://matdl.org/matdlwiki/index.php/softmatter:Reduced_units">softmatter:Simulation Variables/Units</a></li>
+  <li><a href="http://www.pages.drexel.edu/~cfa22/msim/node27.html">An MD Code for the Lennard-Jones Fluid</a></li>
+  <li><a href="http://homepage.univie.ac.at/franz.vesely/simsp/dx/node11.html">2.4 Reduced Units</a></li>
+  <li><a href="http://books.google.com/books?id=XmyO2oRUg0cC&amp;pg=PA41&amp;lpg=PA41&amp;dq=Reduced+Units+Lennard-Jones&amp;source=bl&amp;ots=Zx0F10o1yR&amp;sig=2UJ4C-W8LuASjrvkoTxPA63XBos&amp;hl=en&amp;sa=X&amp;ei=R0AWT7fmNOn10gHKx4jxAg&amp;ved=0CGIQ6AEwBw#v=onepage&amp;q=Reduced%20Units%20Lennard-Jones&amp;f=false">Understanding molecular simulation: from algorithms to applications</a></li>
+  <li><a href="http://users.aims.ac.za/~nneoma/theses/NneomaAimsEssay.pdf">Molecular Dynamics Simulation: Nneoma Ogbonna</a></li>
+</ul>
+
+<h3 id="runtime-dependencies">Runtime Dependencies</h3>
+
+<h4 id="d3">D3</h4>
+
+<ul>
+  <li><a href="http://mbostock.github.com/d3/">D3</a></li>
+  <li><a href="https://github.com/mbostock/d3">repo</a></li>
+  <li><a href="http://mbostock.github.com/d3/api/">documentation</a></li>
+  <li><a href="https://github.com/mbostock/d3/issues">issues</a></li>
+  <li><a href="http://groups.google.com/group/d3-js">google group</a></li>
+  <li><a href="https://github.com/mbostock/d3/wiki/API-Reference">API reference</a>
+    <ul>
+      <li><a href="https://github.com/mbostock/d3/wiki/Arrays">Arrays</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="sciencejs">science.js</h4>
+
+<ul>
+  <li><a href="https://github.com/jasondavies/science.js">science.js</a></li>
+</ul>
+
+<h4 id="modernizr">Modernizr</h4>
+
+<ul>
+  <li><a href="https://github.com/Modernizr/Modernizr">modernizr</a></li>
+</ul>
+
+<h4 id="jquery">JQuery</h4>
+
+<ul>
+  <li><a href="http://jquery.com/">JQuery</a></li>
+</ul>
+
+<h4 id="jquery-ui">JQuery-UI</h4>
+
+<ul>
+  <li><a href="http://jqueryui.com/">JQuery-UI</a></li>
+</ul>
+
+<h4 id="mathjax">MathJax</h4>
+
+<ul>
+  <li><a href="http://mathjax.com/">MathJax</a></li>
+</ul>
+
+<h3 id="development-dependencies">Development Dependencies</h3>
+
+<h4 id="node">node</h4>
+
+<ul>
+  <li><a href="http://nodejs.org/">node</a></li>
+  <li><a href="https://github.com/joyent/node">repo</a></li>
+  <li><a href="http://nodejs.org/docs/latest/api/index.html">documentation</a></li>
+  <li><a href="http://nodejs.org/docs/latest/api/debugger.html">debugger</a></li>
+  <li><a href="https://github.com/joyent/node/issues">issues</a></li>
+  <li><a href="http://groups.google.com/group/nodejs">google group</a></li>
+  <li><a href="http://howtonode.org/">How To Node</a></li>
+</ul>
+
+<p><strong><a href="https://github.com/dannycoates/node-inspector">node-inspector</a></strong>
+- <a href="http://search.npmjs.org/#/node-inspector">npm package for node-inspector</a></p>
+
+<h4 id="npm">npm</h4>
+
+<ul>
+  <li><a href="http://npmjs.org/">npm</a></li>
+  <li><a href="https://github.com/isaacs/npm">repo</a></li>
+  <li><a href="http://npmjs.org/doc/faq.html">faq</a></li>
+  <li><a href="https://groups.google.com/group/npm-">google group</a></li>
+  <li><a href="https://github.com/isaacs/npm/issues">issues</a></li>
+</ul>
+
+<p>More about using npm for development:</p>
+
+<ul>
+  <li><a href="http://howtonode.org/introduction-to-npm">Introduction to npm</a></li>
+  <li><a href="http://www.mikealrogers.com/posts/nodemodules-in-git.html">node_modules in git</a></li>
+  <li><a href="http://howtonode.org/managing-module-dependencies">Managing module dependencies</a></li>
+  <li><a href="https://groups.google.com/group/nodejs/browse_thread/thread/9aa563f1fe3b3ff5">What do people do for versioning node modules within git?</a></li>
+</ul>
+
+<p><strong><a href="http://coffeescript.org/">CoffeeScript</a></strong></p>
+
+<ul>
+  <li><a href="https://github.com/rstacruz/js2coffee">repo</a></li>
+  <li><a href="https://github.com/jashkenas/coffee-script/issues">issues</a></li>
+</ul>
+
+<p><strong><a href="http://js2coffee.org/">js2cofee</a></strong></p>
+
+<ul>
+  <li><a href="https://github.com/jashkenas/coffee-script">repo</a></li>
+  <li><a href="https://github.com/rstacruz/js2coffee/issues">issues</a></li>
+</ul>
+
+<h3 id="rubygems">RubyGems</h3>
+
+<h4 id="haml">Haml</h4>
+
+<ul>
+  <li><a href="http://haml-lang.com/">Haml</a></li>
+  <li><a href="http://haml-lang.com/docs.html">documentation</a></li>
+  <li><a href="http://haml-lang.com/docs/yardoc/file.HAML_REFERENCE.html">reference</a></li>
+</ul>
+
+<h4 id="sass">Sass</h4>
+
+<ul>
+  <li><a href="http://sass-lang.com/">Sass</a></li>
+  <li><a href="http://sass-lang.com/docs.html">documentation</a></li>
+  <li><a href="http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html">reference</a></li>
+</ul>
+
+<h4 id="guard">Guard</h4>
+
+<ul>
+  <li><a href="https://github.com/guard/guard">guard</a></li>
+  <li><a href="https://github.com/hawx/guard-shell">guard-shell</a></li>
+  <li><a href="https://github.com/manufaktor/guard-haml">guard-haml</a></li>
+  <li><a href="https://github.com/hawx/guard-sass">guard-sass</a></li>
+  <li><a href="https://github.com/guard/guard-coffeescript">guard-coffeescript</a></li>
+  <li><a href="https://github.com/darwalenator/guard-markdown">guard-markdown</a></li>
+  <li><a href="https://github.com/guard/guard-livereload">guard-livereload</a></li>
+</ul>
+
+<h3 id="additional-testing-dependencies">Additional Testing Dependencies</h3>
+
+<h4 id="vows">Vows</h4>
+
+<ul>
+  <li><a href="http://vowsjs.org">Vows</a></li>
+  <li><a href="https://github.com/cloudhead/vows">repo</a></li>
+</ul>
+
+<h4 id="jsdom">jsdom</h4>
+
+<ul>
+  <li><a href="http://jsdom.org">jsdom</a></li>
+  <li><a href="https://github.com/tmpvar/jsdom">repo</a></li>
+  <li><a href="https://github.com/tmpvar/jsdom/issues">issues</a></li>
+</ul>
+
+<h3 id="miscellaneous">Miscellaneous</h3>
+
+<h4 id="livereload">livereload</h4>
+
+<p><a href="https://github.com/mockko/livereload">livereload</a> is project that has created extensions
+for Chrome FireFox, and Safari to provide automatic browser reloading when the HTML,
+CSS and JavaScript files are changed on the server. The older version 1 extensions
+work with the guard-livereload gem.</p>
+
+<ul>
+  <li><a href="https://github.com/mockko/livereload/blob/master/README-old.md">livereload v1 readme</a></li>
+</ul>
+
+<h3 id="full-screen-api">Full Screen API</h3>
+
+<ul>
+  <li><a href="http://peter.sh/2011/01/javascript-full-screen-api-navigation-timing-and-repeating-css-gradients/">JavaScript Full Screen API, Navigation Timing and repeating CSS Gradients</a></li>
+  <li><a href="http://peter.sh/2011/08/fullscreen-api-enhanced-element-highlighting-and-progress-on-flexbox/">Fullscreen API, enhanced Element Highlighting and progress on Flexbox</a></li>
+  <li><a href="http://johndyer.name/native-fullscreen-javascript-api-plus-jquery-plugin/">Native Fullscreen JavaScript API (plus jQuery plugin)</a></li>
+  <li><a href="https://wiki.mozilla.org/Gecko:FullScreenAPI">Gecko:FullScreenAPI</a></li>
+  <li><a href="http://blog.pearce.org.nz/2011/09/mozilla-full-screen-api-progress-update.html">Mozilla full-screen API progress update</a></li>
+  <li><a href="http://ajaxian.com/archives/fullscreen-api-coming-to-browsers-near-you">fullscreen API coming to browsers near you?</a></li>
+  <li><a href="http://html5-demos.appspot.com/static/fullscreen.html">Full Screen Demos</a></li>
+  <li><a href="http://stackoverflow.com/questions/7836204/chrome-fullscreen-api">stackoverflow: Chrome Fullscreen API</a></li>
+</ul>
+
+    </div>
+    <script src="vendor/hijs/hijs.js"></script>
+  </body>
+</html>

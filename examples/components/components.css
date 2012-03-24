@@ -1,0 +1,114 @@
+#app-container {
+  background-color: #f7f2c5;
+  border: solid 1px #cccccc;
+  margin: 2px 0px 2px 0px; }
+  #app-container #molecule-container {
+    position: relative;
+    background-color: inherit;
+    border: none;
+    width: 200px;
+    height: 200px;
+    margin: 2px 0px 2px 0px; }
+    #app-container #molecule-container circle {
+      stroke: transparent;
+      stroke-width: 1px;
+      fill: white;
+      fill-opacity: 1;
+      cursor: move; }
+      #app-container #molecule-container circle.selected {
+        fill: #ff7f0e;
+        stroke: #ff7f0e; }
+    #app-container #molecule-container rect {
+      border: solid 1px #cccccc; }
+  #app-container .components {
+    display: block;
+    width: 90%;
+    margin: auto;
+    text-align: center; }
+    #app-container .components .component_group {
+      display: inline-block;
+      vertical-align: bottom; }
+      #app-container .components .component_group .slider {
+        width: 100px; }
+    #app-container .components #player {
+      display: inline-block;
+      background-color: white;
+      margin: auto;
+      margin-bottom: 4px;
+      vertical-align: bottom; }
+
+#lj-potential-chart {
+  position: relative;
+  background-color: #f7f2c5;
+  width: 180px;
+  height: 140px;
+  border: solid 1px #cccccc;
+  margin: 2px 0px 2px 0px; }
+
+#speed-distribution-chart {
+  position: relative;
+  background-color: #f7f2c5;
+  width: 180px;
+  height: 140px;
+  border: solid 1px #cccccc;
+  margin: 2px 0px 2px 0px; }
+
+#ke-chart {
+  position: relative;
+  background-color: #f7f2c5;
+  width: 280px;
+  height: 160px;
+  border: solid 1px #cccccc;
+  margin: 2px 0px 2px 0px; }
+
+text.index {
+  text-anchor: middle; }
+
+text.shadow {
+  text-anchor: middle;
+  stroke: white;
+  stroke-width: 3px;
+  stroke-opacity: 0.8; }
+
+#number-frame {
+  text-align: right; }
+  #number-frame legend {
+    text-align: left; }
+
+#select-temperature-display {
+  margin: 0px 2px 0px 2px;
+  vertical-align: top; }
+
+.slider_container {
+  font-size: 1.2em;
+  display: inline-block;
+  vertical-align: top;
+  margin: 5px;
+  padding: 4px;
+  border: 1px solid #aaaaaa;
+  border-radius: 5px; }
+  .slider_container .left_half {
+    width: 49%;
+    float: left;
+    text-align: left; }
+  .slider_container .right_half {
+    text-align: right;
+    width: 49%;
+    float: right; }
+  .slider_container .container {
+    display: inline-block;
+    margin: auto;
+    text-align: center; }
+  .slider_container .below {
+    display: none;
+    margin: auto;
+    text-align: center; }
+
+#components-description {
+  display: inline-block;
+  vertical-align: top;
+  float: none;
+  width: 40%; }
+
+.playbacksvg .button-art {
+  fill: #f7f2c5; }

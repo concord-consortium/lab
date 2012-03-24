@@ -1,0 +1,9 @@
+#chart.circle {
+  stroke: steelblue;
+  stroke-width: 1px;
+  fill: white;
+  fill-opacity: 0.2;
+  cursor: move; }
+  #chart.circle.selected {
+    fill: #ff7f0e;
+    stroke: #ff7f0e; }

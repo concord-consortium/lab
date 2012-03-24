@@ -1,0 +1,101 @@
+#molecule-container {
+  position: relative;
+  background-color: #f7f2c5;
+  width: 200px;
+  height: 200px;
+  border: solid 1px #cccccc;
+  margin: 2px 0px 2px 0px; }
+  #molecule-container circle {
+    stroke: transparent;
+    stroke-width: 1;
+    fill: white;
+    fill-opacity: 1;
+    cursor: move; }
+    #molecule-container circle.selected {
+      fill: #ff7f0e;
+      stroke: #ff7f0e; }
+  #molecule-container rect {
+    border: solid 1px #cccccc; }
+
+#lj-potential-chart {
+  position: relative;
+  background-color: #f7f2c5;
+  width: 180px;
+  height: 140px;
+  border: solid 1px #cccccc;
+  margin: 2px 0px 2px 0px; }
+  #lj-potential-chart circle {
+    stroke: steelblue;
+    stroke-width: 1px;
+    fill: white;
+    fill-opacity: 0.2;
+    cursor: move; }
+    #lj-potential-chart circle.selected {
+      fill: #ff7f0e;
+      stroke: #ff7f0e; }
+
+#speed-distribution-chart {
+  position: relative;
+  background-color: #f7f2c5;
+  width: 180px;
+  height: 140px;
+  border: solid 1px #cccccc;
+  margin: 2px 0px 2px 0px; }
+
+#ke-chart {
+  position: relative;
+  background-color: #f7f2c5;
+  width: 280px;
+  height: 160px;
+  border: solid 1px #cccccc;
+  margin: 0em 1em;
+  padding: 0em 0em; }
+
+text.index {
+  text-anchor: middle; }
+
+text.shadow {
+  text-anchor: middle;
+  stroke: white;
+  stroke-width: 3px;
+  stroke-opacity: 0.8; }
+
+#number-frame {
+  text-align: right; }
+  #number-frame legend {
+    text-align: left; }
+
+#select-temperature-display {
+  margin: 0px 2px 0px 2px;
+  vertical-align: top; }
+
+.slider_container {
+  font-size: 12px;
+  display: inline-block;
+  vertical-align: top;
+  margin: 5px;
+  padding: 4px;
+  border: 1px solid #aaaaaa;
+  border-radius: 5px; }
+  .slider_container .left_half {
+    width: 49%;
+    float: left;
+    text-align: left; }
+  .slider_container .right_half {
+    text-align: right;
+    width: 49%;
+    float: right; }
+  .slider_container .container {
+    display: inline-block;
+    margin: auto;
+    text-align: center; }
+  .slider_container .below {
+    display: none;
+    margin: auto;
+    text-align: center; }
+
+#components-description {
+  display: inline-block;
+  vertical-align: top;
+  float: none;
+  width: 40%; }
