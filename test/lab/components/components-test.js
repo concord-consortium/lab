@@ -1,6 +1,6 @@
 require("../../env");
 require("d3");
-components = require("../../../lab/lab.components");
+components = require("../../../dist/lab/lab.components");
 
 var vows = require("vows"),
     assert = require("assert");

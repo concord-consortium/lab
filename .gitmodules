@@ -1,21 +1,21 @@
-[submodule "vendor/d3"]
-	path = vendor/d3
+[submodule "src/vendor/d3"]
+	path = src/vendor/d3
 	url = git://github.com/mbostock/d3.git
-[submodule "vendor/science.js"]
-	path = vendor/science.js
+[submodule "src/vendor/science.js"]
+	path = src/vendor/science.js
 	url = git://github.com/jasondavies/science.js.git
-[submodule "vendor/sizzle"]
-	path = vendor/sizzle
+[submodule "src/vendor/sizzle"]
+	path = src/vendor/sizzle
 	url = git://github.com/jquery/sizzle.git
-[submodule "vendor/hijs"]
-	path = vendor/hijs
+[submodule "src/vendor/hijs"]
+	path = src/vendor/hijs
 	url = git://github.com/cloudhead/hijs.git
-[submodule "vendor/modernizr"]
-	path = vendor/modernizr
+[submodule "src/vendor/modernizr"]
+	path = src/vendor/modernizr
 	url = git://github.com/Modernizr/Modernizr.git
-[submodule "vendor/jquery"]
-	path = vendor/jquery
-	url = https://github.com/jquery/jquery.git
-[submodule "vendor/mathjax"]
-	path = vendor/mathjax
+[submodule "src/vendor/jquery"]
+	path = src/vendor/jquery
+	url = git://github.com/jquery/jquery.git
+[submodule "src/vendor/mathjax"]
+	path = src/vendor/mathjax
 	url = git://github.com/mathjax/MathJax.git
