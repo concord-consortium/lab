@@ -1,0 +1,12 @@
+/src
+/.*
+!.gitignore
+/Gemfile*
+/bin
+/dist
+/md-engine
+/node_modules
+/test
+/*.log
+performance.rb
+/uploads
