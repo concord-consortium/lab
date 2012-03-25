@@ -256,6 +256,7 @@ dist/lab/lab.layout.js: \
 	src/lab/layout/force-interaction-controls.js \
 	src/lab/layout/display-stats.js \
 	src/lab/layout/fullscreen.js \
+	src/lab/layout/heat-cool-buttons.js \
 	src/lab/end.js
 
 dist/lab/lab.graphx.js: \

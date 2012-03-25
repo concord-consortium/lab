@@ -30,32 +30,8 @@ var model_player = new ModelPlayer(model);
 // ------------------------------------------------------------
 // Setup heat and cool buttons
 // ------------------------------------------------------------
-var heat_button = new ButtonComponent("#heat_button", 'circlesmall-plus');
-var cool_button = new ButtonComponent("#cool_button", 'circlesmall-minus');
 
-heat_button.add_action(function() {
-  var t = model.temperature();
-  if (t < 10) {
-    $('#heat_button').removeClass('inactive');
-    $('#cool_button').removeClass('inactive');
-    t = Math.floor((t * 2))/2 + 0.5;
-    model.temperature(t);
-  } else {
-    $('#heat_button').addClass('inactive');
-  }
-});
-
-cool_button.add_action(function() {
-  var t = model.temperature();
-  if (t > 0) {
-    $('#heat_button').removeClass('inactive');
-    $('#cool_button').removeClass('inactive');
-    t = Math.floor((t * 2))/2 - 0.5;
-    model.temperature(t);
-  } else {
-    $('#cool_button').addClass('inactive');
-  }
-});
+layout.heatCoolButtons("#heat_button", "#cool_button", 0, 10)
 
 // ------------------------------------------------------------
 //
