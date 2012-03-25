@@ -32,32 +32,8 @@ var model_player = new ModelPlayer(model);
 // ------------------------------------------------------------
 // Setup heat and cool buttons
 // ------------------------------------------------------------
-var heat_button = new ButtonComponent("#heat_button", 'circlesmall-plus');
-var cool_button = new ButtonComponent("#cool_button", 'circlesmall-minus');
 
-heat_button.add_action(function() {
-  var t = model.temperature();
-  if (t < 10) {
-    $('#heat_button').removeClass('inactive');
-    $('#cool_button').removeClass('inactive');
-    t = Math.floor((t * 2))/2 + 0.5;
-    model.temperature(t);
-  } else {
-    $('#heat_button').addClass('inactive');
-  }
-});
-
-cool_button.add_action(function() {
-  var t = model.temperature();
-  if (t > 0) {
-    $('#heat_button').removeClass('inactive');
-    $('#cool_button').removeClass('inactive');
-    t = Math.floor((t * 2))/2 - 0.5;
-    model.temperature(t);
-  } else {
-    $('#cool_button').addClass('inactive');
-  }
-});
+layout.heatCoolButtons("#heat_button", "#cool_button", 0, 10)
 
 // ------------------------------------------------------------
 //
@@ -69,7 +45,7 @@ cool_button.add_action(function() {
 
 var model_listener = function(e) {
   layout.update_molecule_positions();
-  therm.add_value(model.ave_ke());
+  therm.add_value(model.temperature());
   if (step_counter >= model.stepCounter()) { modelStop(); }
 }
 
@@ -91,9 +67,9 @@ var mc_graph = {
   yunits:               false,
   atom_mubers:          false,
   xmin:                 0,
-  xmax:                 100,
+  xmax:                 10,
   ymin:                 0,
-  ymax:                 100
+  ymax:                 10
 };
 
 mc_graph.xdomain = mc_graph.xmax - mc_graph.xmin,
@@ -172,7 +148,7 @@ function update_coefficients(coefficients) {
 
 function generate_atoms() {
   model.nodes({ num: mol_number,
-          xdomain: 100, ydomain: 100,
+          xdomain: 10, ydomain: 10,
           temperature: temperature, rmin: 4.4,
           mol_rmin_radius_factor: 0.38
         })
@@ -333,8 +309,8 @@ modelReset();
 // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
 // ------------------------------------------------------------
 
-var therm        = new Thermometer('#thermometer');
-therm.max = 2.1;
+var therm = new Thermometer('#thermometer');
+therm.max = 10;
 
 var epsilon_slider  = new  SliderComponent('#attraction_slider');
 epsilon_slider.max = lj_epsilon_min;
@@ -345,16 +321,7 @@ epsilon_slider.value_changed_function = function (v) {
 }
 epsilon_slider.update_label();
 
-var temperature_slider = new  SliderComponent('#temperature_slider');
-temperature_slider.max = 7;
-temperature_slider.min = 0;
-temperature_slider.value = 0.5;
-temperature_slider.value_changed_function = function (v) {
-  model.temperature(v);
-}
-temperature_slider.update_label();
-
-therm.add_value(model.ave_ke());
+therm.add_value(model.temperature());
 
 if (autostart) {
   modelGo();
