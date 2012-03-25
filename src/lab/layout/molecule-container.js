@@ -495,7 +495,7 @@ function molecule_mousemove(d) {
 }
 
 function molecule_mouseout() {
-  // molecule_div.style("opacity", 1e-6);
+  molecule_div.style("opacity", 1e-6);
 }
 
 layout.update_molecule_positions = function() {
