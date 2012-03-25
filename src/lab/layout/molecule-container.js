@@ -484,10 +484,11 @@ function molecule_mousedown(d, i) {
 
   molecule_div_pre.text(
       modelTimeLabel() + "\n" +
-      "speed: " + d3.format("6.3f")(get_speed(i)) + "\n" + "vx:    " + d3.format("6.3f")(get_vx(i))    + "\n" +
-      "vy:    " + d3.format("6.3f")(get_vy(i))    + "\n" +
-      "ax:    " + d3.format("6.3f")(get_ax(i))    + "\n" +
-      "ay:    " + d3.format("6.3f")(get_ay(i))    + "\n"
+      "speed: " + d3.format("+6.3e")(get_speed(i)) + "\n" +
+      "vx:    " + d3.format("+6.3e")(get_vx(i))    + "\n" +
+      "vy:    " + d3.format("+6.3e")(get_vy(i))    + "\n" +
+      "ax:    " + d3.format("+6.3e")(get_ax(i))    + "\n" +
+      "ay:    " + d3.format("+6.3e")(get_ay(i))    + "\n"
     )
 }
 
