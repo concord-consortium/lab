@@ -67,4 +67,4 @@
     %script{:src => "../../lab/lab.components.js", :type => "text/javascript"}
     %script{:src => "application.js", :type => "text/javascript"}
     %script{:type => "text/javascript"}
-      document.domain = "concord.org"
+      try { document.domain = "concord.org" } catch(e) { }
