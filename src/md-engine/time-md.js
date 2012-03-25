@@ -1,6 +1,5 @@
 var model = require('./md2d').model,
     nodes,
-    radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge,
     integrator, state;
 
 // obvious API fix: there should be no need to interrupt the 'var' statement to run createNodes()
