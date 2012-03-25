@@ -396,6 +396,14 @@ function get_vy(i) {
   return nodes[model.INDICES.VY][i];
 }
 
+function get_ax(i) {
+  return nodes[model.INDICES.AX][i];
+}
+
+function get_ay(i) {
+  return nodes[model.INDICES.AY][i];
+}
+
 function get_charge(i) {
   return nodes[model.INDICES.CHARGE][i];
 }
@@ -822,9 +830,11 @@ function molecule_mousedown(d, i) {
         .transition().duration(250);
 
   molecule_div_pre.text(
-      "speed: " + d3.format("6.3f")(get_speed(i)) + "\n" +
-      "vx:    " + d3.format("6.3f")(get_vx(i))    + "\n" +
-      "vy:    " + d3.format("6.3f")(get_vy(i))    + "\n"
+      modelTimeLabel() + "\n" +
+      "speed: " + d3.format("6.3f")(get_speed(i)) + "\n" + "vx:    " + d3.format("6.3f")(get_vx(i))    + "\n" +
+      "vy:    " + d3.format("6.3f")(get_vy(i))    + "\n" +
+      "ax:    " + d3.format("6.3f")(get_ax(i))    + "\n" +
+      "ay:    " + d3.format("6.3f")(get_ay(i))    + "\n"
     )
 }
 
@@ -832,7 +842,7 @@ function molecule_mousemove(d) {
 }
 
 function molecule_mouseout() {
-  molecule_div.style("opacity", 1e-6);
+  // molecule_div.style("opacity", 1e-6);
 }
 
 layout.update_molecule_positions = function() {

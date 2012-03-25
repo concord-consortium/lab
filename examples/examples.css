@@ -94,15 +94,14 @@ input[type=checkbox] {
 
 div.tooltip {
   position: absolute;
-  text-align: center;
-  width: 80px;
-  height: 48px;
-  padding: 2px 8px 4px 8px;
-  font-size: 1em;
+  padding: 0.4em 0.6em;
+  font-size: 0.9em;
   background: white;
   border: solid 1px #aaaaaa;
-  border-radius: 8px;
+  border-radius: 0.8em;
   pointer-events: none; }
+  div.tooltip pre {
+    margin: 0.2em; }
 
 #heat_button.inactive {
   background-color: #ff6666; }
