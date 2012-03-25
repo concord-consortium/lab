@@ -67,7 +67,7 @@ cool_button.add_action(function() {
 
 var model_listener = function(e) {
   layout.update_molecule_positions();
-  therm.add_value(model.ave_ke());
+  therm.add_value(model.temperature());
   if (step_counter >= model.stepCounter()) { modelStop(); }
 }
 
@@ -89,9 +89,9 @@ var mc_graph = {
   yunits:               false,
   atom_mubers:          false,
   xmin:                 0,
-  xmax:                 100,
+  xmax:                 10,
   ymin:                 0,
-  ymax:                 100
+  ymax:                 10
 };
 
 mc_graph.xdomain = mc_graph.xmax - mc_graph.xmin,
@@ -162,6 +162,7 @@ function update_coefficients(coefficients) {
   }
 }
 
+
 // ------------------------------------------------------------
 //
 //   Molecular Model Setup
@@ -170,7 +171,7 @@ function update_coefficients(coefficients) {
 
 function generate_atoms() {
   model.nodes({ num: mol_number,
-          xdomain: 100, ydomain: 100,
+          xdomain: 10, ydomain: 10,
           temperature: temperature, rmin: 4.4,
           mol_rmin_radius_factor: 0.38
         })
@@ -331,8 +332,8 @@ modelReset();
 // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
 // ------------------------------------------------------------
 
-var therm        = new Thermometer('#thermometer');
-therm.max = 2.1;
+var therm = new Thermometer('#thermometer');
+therm.max = 10;
 
 var epsilon_slider  = new  SliderComponent('#attraction_slider');
 epsilon_slider.max = lj_epsilon_min;
@@ -352,7 +353,7 @@ temperature_slider.value_changed_function = function (v) {
 }
 temperature_slider.update_label();
 
-therm.add_value(model.ave_ke());
+therm.add_value(model.temperature());
 
 if (autostart) {
   modelGo();
