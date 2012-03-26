@@ -19,7 +19,9 @@ var mc_cx, mc_cy, mc_padding, mc_size,
     ns_string_suffix = " (ns)",
     mc_red_gradient,
     mc_blue_gradient,
-    mc_green_gradient;
+    mc_green_gradient,
+    mc_atom_tooltip_on,
+    mc_offset_left, mc_offset_top;
 
 function modelTimeLabel() {
   return ns_string_prefix + model_time_formatter(model.stepCounter() * sample_time) + ns_string_suffix;
@@ -86,6 +88,8 @@ layout.finishSetupMoleculeContainer = function() {
     "width":  mc_cx - mc_padding.left - mc_padding.right,
     "height": mc_cy - mc_padding.top  - mc_padding.bottom
   },
+  mc_offset_left = moleculecontainer.offsetLeft + mc_padding.left,
+  mc_offset_top = moleculecontainer.offsetTop + mc_padding.top,
   pc_xpos = mc_size.width / 2 - 50,
   pc_ypos = mc_size.height + (mc_graph.ylabel ? 75 * layout.screen_factor : 30),
   mc_mw = mc_size.width,
@@ -476,10 +480,24 @@ function molecule_mouseover(d) {
 }
 
 function molecule_mousedown(d, i) {
+  if (mc_atom_tooltip_on) {
+    molecule_div.style("opacity", 1e-6);
+    mc_atom_tooltip_on = false
+  } else {
+    if (d3.event.shiftKey) {
+      mc_atom_tooltip_on = i;
+    } else {
+      mc_atom_tooltip_on = false
+    }
+    render_atom_tooltip(i);
+  }
+}
+
+function render_atom_tooltip(i) {
   molecule_div
         .style("opacity", 1)
-        .style("left", (d3.event.pageX + 6) + "px")
-        .style("top", (d3.event.pageY - 30) + "px")
+        .style("left", mc_x(nodes[model.INDICES.X][i]) + mc_offset_left + 6 + "px")
+        .style("top",  mc_y(nodes[model.INDICES.Y][i]) + mc_offset_top - 30 + "px")
         .transition().duration(250);
 
   molecule_div_pre.text(
@@ -496,7 +514,9 @@ function molecule_mousemove(d) {
 }
 
 function molecule_mouseout() {
-  molecule_div.style("opacity", 1e-6);
+  if (!mc_atom_tooltip_on) {
+    molecule_div.style("opacity", 1e-6);
+  }
 }
 
 layout.update_molecule_positions = function() {
@@ -520,4 +540,7 @@ layout.update_molecule_positions = function() {
             return mc_y(nodes[model.INDICES.Y][i]); })
           .attr("r",  function(d, i) {
             return mc_x(nodes[model.INDICES.RADIUS][i]) });
+  if (mc_atom_tooltip_on) {
+    render_atom_tooltip(mc_atom_tooltip_on)
+  }
 }
