@@ -40,12 +40,11 @@ var model = exports.model = {},
       return true;
     }()),
 
+    // having finite values for these are a hack that get the relative strength of the forces wrong
     maxLJRepulsion = -Infinity,
-    cutoffDistance_LJ,
 
-    minCoulombForce =   0.1,
-    maxCoulombForce = 20.0,
-    cutoffDistance_Coulomb,
+    // determined by sigma
+    cutoffDistance_LJ,
 
     size = [10, 10],
 
@@ -146,25 +145,6 @@ setup_ljf_limits = function() {
 // Calculate the minimum and maximum distances for applying Coulomb forces
 //
 setup_coulomb_limits = function() {
-  // var i, f,
-  //     min_coulomb_distance;
-
-  // for (i = 0.001; i <= 100; i+=0.001) {
-  //   f = coulomb.force(i, -1, 1);
-  //   if (f < maxCoulombForce) {
-  //     min_coulomb_distance = i;
-  //     break;
-  //   }
-  // }
-
-  // for (;i <= 100; i+=0.001) {
-  //   f = coulomb.force(i, -1, 1);
-  //   if (f < minCoulombForce) {
-  //     break;
-  //   }
-  // }
-  // cutoffDistance_Coulomb = i;
-  cutoffDistance_Coulomb = Infinity;
 };
 
 model.createNodes = function(options) {
@@ -473,7 +453,6 @@ makeIntegrator = function(args) {
           v_sq, r_sq,
 
           cutoffDistance_LJ_sq      = cutoffDistance_LJ * cutoffDistance_LJ,
-          cutoffDistance_Coulomb_sq = cutoffDistance_Coulomb * cutoffDistance_Coulomb,
           maxLJRepulsion_sq         = maxLJRepulsion * maxLJRepulsion,
 
           f, f_over_r, aPair_over_r, aPair_x, aPair_y, // pairwise forces /accelerations and their x, y components
@@ -604,9 +583,8 @@ makeIntegrator = function(args) {
                 ay[j] -= aPair_y;
               }
 
-              if (useCoulombInteraction && r_sq < cutoffDistance_Coulomb_sq) {
-                f = Math.min(coulomb.forceFromSquaredDistance(r_sq, charge[i], charge[j]), maxCoulombForce);
-
+              if (useCoulombInteraction) {
+                f = coulomb.forceFromSquaredDistance(r_sq, charge[i], charge[j]);
                 f_over_r = f / Math.sqrt(r_sq);
 
                 aPair_over_r = f_over_r / mass[i];
@@ -659,10 +637,10 @@ makeIntegrator = function(args) {
 
           r_sq = dx*dx + dy*dy;
 
-          if (useLennardJonesInteraction ) {//&& r_sq < cutoffDistance_LJ_sq) {
+          if (useLennardJonesInteraction ) {
             PE += lennardJones.potentialFromSquaredDistance(r_sq);
           }
-          if (useCoulombInteraction && r_sq < cutoffDistance_Coulomb_sq) {
+          if (useCoulombInteraction) {
             PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
         }
