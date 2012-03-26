@@ -1624,7 +1624,7 @@ layout.render_datatable = function(reset) {
   var i,
       titlerows = datatable_table.getElementsByClassName("title"),
       datarows = datatable_table.getElementsByClassName("data"),
-      column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'RADIUS', 'MASS', 'CHARGE'],
+      column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'RADIUS', 'HALFMASS', 'CHARGE'],
       i_formatter = d3.format(" 2d"),
       f_formatter = d3.format(" 3.4f"),
       formatters = [i_formatter, f_formatter, f_formatter, f_formatter, 
