@@ -465,7 +465,7 @@ layout.setup_particles = function() {
         .attr("y", "0.31em")
         .text(function(d, i) {
           if (layout.coulomb_forces_checkbox.checked) {
-            return (mc_x(get_charge(i)) > 0) ? "+" : "–"
+            return "";//, (mc_x(get_charge(i)) > 0) ? "+" : "–"
           } else {
             return ""
           }
