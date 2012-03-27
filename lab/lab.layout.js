@@ -812,7 +812,7 @@ layout.setup_particles = function() {
         .attr("y", "0.31em")
         .text(function(d, i) {
           if (layout.coulomb_forces_checkbox.checked) {
-            return (mc_x(get_charge(i)) > 0) ? "+" : "–"
+            return "";//, (mc_x(get_charge(i)) > 0) ? "+" : "–"
           } else {
             return ""
           }
@@ -1624,7 +1624,7 @@ layout.render_datatable = function(reset) {
   var i,
       titlerows = datatable_table.getElementsByClassName("title"),
       datarows = datatable_table.getElementsByClassName("data"),
-      column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'RADIUS', 'HALFMASS', 'CHARGE'],
+      column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'RADIUS', 'MASS', 'CHARGE'],
       i_formatter = d3.format(" 2d"),
       f_formatter = d3.format(" 3.4f"),
       formatters = [i_formatter, f_formatter, f_formatter, f_formatter, 
@@ -1755,7 +1755,7 @@ else {
       var temp_range = document.createElement("input");
       temp_range.type = "range";
       temp_range.min = "0";
-      temp_range.max = "10";
+      temp_range.max = "25";
       temp_range.step = "0.5";
       temp_range.value = +select_temperature.value;
       select_temperature.parentNode.replaceChild(temp_range, select_temperature);

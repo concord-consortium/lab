@@ -550,6 +550,271 @@ arrays.average = function(array) {
 };
 });
 
+require.define("/constants/index.js", function (require, module, exports, __dirname, __filename) {
+/*jslint loopfunc: true */
+
+/** A list of physical constants. To access any given constant, require() this module
+    and call the 'as' method of the desired constant to get the constant in the desired unit.
+
+    This module also provides a few helper functions for unit conversion.
+
+    Usage:
+      var constants = require('./constants'),
+
+          ATOMIC_MASS_IN_GRAMS = constants.ATOMIC_MASS.as(constants.unit.GRAM),
+
+          GRAMS_PER_KILOGRAM = constants.ratio(constants.unit.GRAM, { per: constants.unit.KILOGRAM }),
+
+          // this works for illustration purposes, although the preferred method would be to pass
+          // constants.unit.KILOGRAM to the 'as' method:
+
+          ATOMIC_MASS_IN_KILOGRAMS = constants.convert(ATOMIC_MASS_IN_GRAMS, {
+            from: constants.unit.GRAM,
+            to:   constants.unit.KILOGRAM
+          });
+*/
+
+var units = require('./units'),
+    unit  = units.unit,
+    ratio = units.ratio,
+    convert = units.convert,
+
+    constants = {
+
+      ELEMENTARY_CHARGE: {
+        value: 1,
+        unit: unit.ELEMENTARY_CHARGE
+      },
+
+      ATOMIC_MASS: {
+        value: 1,
+        unit: unit.DALTON
+      },
+
+      BOLTZMANN_CONSTANT: {
+        value: 1.380658e-23,
+        unit: unit.JOULES_PER_KELVIN
+      },
+
+      AVAGADRO_CONSTANT: {
+        // N_A is numerically equal to Dalton per gram
+        value: ratio( unit.DALTON, { per: unit.GRAM }),
+        unit: unit.INVERSE_MOLE
+      },
+
+      PERMITTIVITY_OF_FREE_SPACE: {
+        value: 8.854187e-12,
+        unit: unit.FARADS_PER_METER
+      }
+    },
+
+    constantName, constant;
+
+
+// Derived units
+constants.COULOMB_CONSTANT = {
+  value: 1 / (4 * Math.PI * constants.PERMITTIVITY_OF_FREE_SPACE.value),
+  unit: unit.METERS_PER_FARAD
+};
+
+// Exports
+
+exports.unit = unit;
+exports.ratio = ratio;
+exports.convert = convert;
+
+// Require explicitness about units by publishing constants as a set of objects with only an 'as' property,
+// which will return the constant in the specified unit.
+
+for (constantName in constants) {
+  if (constants.hasOwnProperty(constantName)) {
+    constant = constants[constantName];
+
+    exports[constantName] = (function(constant) {
+      return {
+        as: function(toUnit) {
+          return units.convert(constant.value, { from: constant.unit, to: toUnit });
+        }
+      };
+    }(constant));
+  }
+}
+
+});
+
+require.define("/constants/units.js", function (require, module, exports, __dirname, __filename) {
+/** Provides a few simple helper functions for converting related unit types.
+
+    This sub-module doesn't do unit conversion between compound unit types (e.g., knowing that kg*m/s^2 = J)
+    only simple scaling between units measuring the same type of quantity.
+*/
+
+// Prefer the "per" formulation to the "in" formulation.
+//
+// If KILOGRAMS_PER_AMU is 1.660540e-27 we know the math is:
+// "1 amu * 1.660540e-27 kg/amu = 1.660540e-27 kg"
+// (Whereas the "in" forumulation might be slighty more error prone:
+// given 1 amu and 6.022e-26 kg in an amu, how do you get kg again?)
+
+    // These you might have to look up...
+var KILOGRAMS_PER_DALTON  = 1.660540e-27,
+    COULOMBS_PER_ELEMENTARY_CHARGE = 1.602177e-19,
+
+    // 1 eV = 1 e * 1 V = (COULOMBS_PER_ELEMENTARY_CHARGE) C * 1 J/C
+    JOULES_PER_EV = COULOMBS_PER_ELEMENTARY_CHARGE,
+
+    // though these are equally important!
+    SECONDS_PER_FEMTOSECOND = 1e-15,
+    METERS_PER_NANOMETER    = 1e-9,
+    ANGSTROMS_PER_NANOMETER = 10,
+    GRAMS_PER_KILOGRAM      = 1000,
+
+    types = {
+      TIME: "time",
+      LENGTH: "length",
+      MASS: "mass",
+      ENERGY: "energy",
+      ENTROPY: "entropy",
+      CHARGE: "charge",
+      INVERSE_QUANTITY: "inverse quantity",
+
+      FARADS_PER_METER: "farads per meter",
+      METERS_PER_FARAD: "meters per farad",
+
+      FORCE: "force",
+      VELOCITY: "velocity",
+
+      // unused as of yet
+      AREA: "area",
+      PRESSURE: "pressure"
+    },
+
+  unit,
+  ratio,
+  convert;
+
+/**
+  In each of these units, the reference type we actually use has value 1, and conversion
+  ratios for the others are listed.
+*/
+exports.unit = unit = {
+
+  FEMTOSECOND: { name: "femtosecond", value: 1,                       type: types.TIME },
+  SECOND:      { name: "second",      value: SECONDS_PER_FEMTOSECOND, type: types.TIME },
+
+  NANOMETER:   { name: "nanometer", value: 1,                           type: types.LENGTH },
+  ANGSTROM:    { name: "Angstrom",  value: 1 * ANGSTROMS_PER_NANOMETER, type: types.LENGTH },
+  METER:       { name: "meter",     value: 1 * METERS_PER_NANOMETER,    type: types.LENGTH },
+
+  DALTON:   { name: "Dalton",   value: 1,                                             type: types.MASS },
+  GRAM:     { name: "gram",     value: 1 * KILOGRAMS_PER_DALTON * GRAMS_PER_KILOGRAM, type: types.MASS },
+  KILOGRAM: { name: "kilogram", value: 1 * KILOGRAMS_PER_DALTON,                      type: types.MASS },
+
+  MW_ENERGY_UNIT: {
+    name: "MW Energy Unit (Dalton * nm^2 / fs^2)",
+    value: 1,
+    type: types.ENERGY
+  },
+
+  JOULE: {
+    name: "Joule",
+    value: KILOGRAMS_PER_DALTON *
+           METERS_PER_NANOMETER * METERS_PER_NANOMETER *
+           (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND),
+    type: types.ENERGY
+  },
+
+  EV: {
+    name: "electron volt",
+    value: KILOGRAMS_PER_DALTON *
+            METERS_PER_NANOMETER * METERS_PER_NANOMETER *
+            (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND) *
+            (1/JOULES_PER_EV),
+    type: types.ENERGY
+  },
+
+  EV_PER_KELVIN:     { name: "electron volts per Kelvin", value: 1,                 type: types.ENTROPY },
+  JOULES_PER_KELVIN: { name: "Joules per Kelvin",         value: 1 * JOULES_PER_EV, type: types.ENTROPY },
+
+  ELEMENTARY_CHARGE: { name: "elementary charge", value: 1,                             type: types.CHARGE },
+  COULOMB:           { name: "Coulomb",           value: COULOMBS_PER_ELEMENTARY_CHARGE, type: types.CHARGE },
+
+  INVERSE_MOLE: { name: "inverse moles", value: 1, type: types.INVERSE_QUANTITY },
+
+  FARADS_PER_METER: { name: "Farads per meter", value: 1, type: types.FARADS_PER_METER },
+
+  METERS_PER_FARAD: { name: "meters per Farad", value: 1, type: types.METERS_PER_FARAD },
+
+  MW_FORCE_UNIT: {
+    name: "MW force units (Dalton * nm / fs^2)",
+    value: 1,
+    type: types.FORCE
+  },
+
+  NEWTON: {
+    name: "Newton",
+    value: 1 * KILOGRAMS_PER_DALTON * METERS_PER_NANOMETER * (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND),
+    type: types.FORCE
+  },
+
+  MW_VELOCITY_UNIT: {
+    name: "MW velocity units (nm / fs)",
+    value: 1,
+    type: types.VELOCITY
+  },
+
+  METERS_PER_SECOND: {
+    name: "meters per second",
+    value: 1 * METERS_PER_NANOMETER * (1 / SECONDS_PER_FEMTOSECOND),
+    type: types.VELOCITY
+  }
+
+};
+
+
+/** Provide ratios for conversion of one unit to an equivalent unit type.
+
+   Usage: ratio(units.GRAM, { per: units.KILOGRAM }) === 1000
+          ratio(units.GRAM, { as: units.KILOGRAM }) === 0.001
+*/
+exports.ratio = ratio = function(from, to) {
+  var checkCompatibility = function(fromUnit, toUnit) {
+    if (fromUnit.type !== toUnit.type) {
+      throw new Error("Attempt to convert incompatible type '" + fromUnit.name + "'' to '" + toUnit.name + "'");
+    }
+  };
+
+  if (to.per) {
+    checkCompatibility(from, to.per);
+    return from.value / to.per.value;
+  } else if (to.as) {
+    checkCompatibility(from, to.as);
+    return to.as.value / from.value;
+  } else {
+    throw new Error("units.ratio() received arguments it couldn't understand.");
+  }
+};
+
+/** Scale 'val' to a different unit of the same type.
+
+  Usage: convert(1, { from: unit.KILOGRAM, to: unit.GRAM }) === 1000
+*/
+exports.convert = convert = function(val, fromTo) {
+  var from = fromTo && fromTo.from,
+      to   = fromTo && fromTo.to;
+
+  if (!from) {
+    throw new Error("units.convert() did not receive a \"from\" argument");
+  }
+  if (!to) {
+    throw new Error("units.convert() did not receive a \"to\" argument");
+  }
+
+  return val * ratio(to, { per: from });
+};
+
+});
+
 require.define("/math/index.js", function (require, module, exports, __dirname, __filename) {
 exports.normal              = require('./distributions').normal;
 exports.getWindowedAverager = require('./utils').getWindowedAverager;
@@ -633,31 +898,81 @@ exports.getWindowedAverager = function(windowSize) {
 require.define("/potentials/index.js", function (require, module, exports, __dirname, __filename) {
 var potentials = exports.potentials = {};
 
-exports.coulomb = require('./coulomb').coulomb;
+exports.coulomb = require('./coulomb');
 exports.getLennardJonesCalculator = require('./lennard-jones').getLennardJonesCalculator;
 
 });
 
 require.define("/potentials/coulomb.js", function (require, module, exports, __dirname, __filename) {
-var coulomb = exports.coulomb = {};
+var
+constants = require('../constants'),
+unit      = constants.unit,
 
-var k_e = -50;            // Coulomb constant
+COULOMB_CONSTANT_IN_METERS_PER_FARAD = constants.COULOMB_CONSTANT.as( constants.unit.METERS_PER_FARAD ),
 
-coulomb.potential = function(r, q1, q2) {
-  return -k_e * ((q1 * q2) / r);
-};
+NANOMETERS_PER_METER = constants.ratio(unit.NANOMETER, { per: unit.METER }),
+COULOMBS_SQ_PER_ELEMENTARY_CHARGE_SQ = Math.pow( constants.ratio(unit.COULOMB, { per: unit.ELEMENTARY_CHARGE }), 2),
 
-coulomb.force = function(r, q1, q2) {
-  return coulomb.forceFromSquaredDistance(r*r);
-};
+EV_PER_JOULE = constants.ratio(unit.EV, { per: unit.JOULE }),
+MW_FORCE_UNITS_PER_NEWTON = constants.ratio(unit.MW_FORCE_UNIT, { per: unit.NEWTON }),
 
-coulomb.forceFromSquaredDistance = function(r_sq, q1, q2) {
-  return k_e * ((q1 * q2) / r_sq);
+// Coulomb constant for expressing potential in eV given elementary charges, nanometers
+k_ePotential = COULOMB_CONSTANT_IN_METERS_PER_FARAD *
+               COULOMBS_SQ_PER_ELEMENTARY_CHARGE_SQ *
+               NANOMETERS_PER_METER *
+               EV_PER_JOULE,
+
+// Coulomb constant for expressing force in Dalton*nm/fs^2 given elementary charges, nanometers
+k_eForce = COULOMB_CONSTANT_IN_METERS_PER_FARAD *
+           COULOMBS_SQ_PER_ELEMENTARY_CHARGE_SQ *
+           NANOMETERS_PER_METER *
+           NANOMETERS_PER_METER *
+           MW_FORCE_UNITS_PER_NEWTON,
+
+
+// Exports
+
+/** Input units:
+     r: nanometers,
+     q1, q2: elementary charges
+
+    Output units: eV
+*/
+potential = exports.potential = function(r, q1, q2) {
+  return -k_ePotential * ((q1 * q2) / r);
+},
+
+
+/** Input units:
+    r_sq: nanometers^2
+    q1, q2: elementary charges
+
+    Output units: "MW Force Units" (Dalton * nm / fs^2)
+*/
+forceFromSquaredDistance = exports.forceFromSquaredDistance = function(r_sq, q1, q2) {
+  return -k_eForce * ((q1 * q2) / r_sq);
+},
+
+
+/** Input units:
+     r: nanometers,
+     q1, q2: elementary charges
+
+    Output units: "MW Force Units" (Dalton * nm / fs^2)
+*/
+force = exports.force = function(r, q1, q2) {
+  return forceFromSquaredDistance(r*r);
 };
 
 });
 
 require.define("/potentials/lennard-jones.js", function (require, module, exports, __dirname, __filename) {
+var constants = require('../constants'),
+    unit      = constants.unit,
+
+    NANOMETERS_PER_METER = constants.ratio( unit.NANOMETER, { per: unit.METER }),
+    MW_FORCE_UNITS_PER_NEWTON = constants.ratio( unit.MW_FORCE_UNIT, { per: unit.NEWTON });
+
 /**
   Returns a new object with methods for calculating the force and potential for a Lennard-Jones
   potential with particular values of its parameters epsilon and sigma. These can be adjusted.
@@ -671,28 +986,38 @@ require.define("/potentials/lennard-jones.js", function (require, module, export
 */
 exports.getLennardJonesCalculator = function(cb) {
 
-  var epsilon = -1.0,   // depth of the potential well
-      sigma   =  4.0,   // distance from particle at which the potential is 0
+  var epsilon = -1.0,   // parameter; depth of the potential well, in eV
+      sigma   =  4.0,   // parameter: characteristic distance from particle, in nm
 
-      rmin,             // distance from particle at which the potential is minimimal, and equal to -epsilon
-      alpha,            // precalculated from epsilon and sigma for computational convenience
-      beta,             // precalculated from epsilon and sigma for computational convenience
+      rmin,             // distance from particle at which the potential is at its minimum
+      alpha_Potential,  // precalculated; units are eV * nm^12
+      beta_Potential,   // precalculated; units are eV * nm^6
+      alpha_Force,      // units are "MW Force Units" * nm^13
+      beta_Force,       // units are "MW Force Units" * nm^7
 
       coefficients = function(e, s) {
+        // Input units:
+        //  epsilon: eV
+        //  sigma:   nm
+
         if (arguments.length) {
           epsilon = e;
           sigma   = s;
           rmin    = Math.pow(2, 1/6) * sigma;
-          alpha   = 4 * epsilon * Math.pow(sigma, 12);
-          beta    = 4 * epsilon * Math.pow(sigma, 6);
+
+          alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
+          beta_Potential  = 4 * epsilon * Math.pow(sigma, 6);
+
+          // (1 J * nm^12) = (1 N * m * nm^12)
+          // (1 N * m * nm^12) * (b nm / m) * (c MWUnits / N) = (abc MWUnits nm^13)
+          alpha_Force = 12 * constants.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+          beta_Force =  6 * constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
         }
 
         var coefficients = {
           epsilon: epsilon,
           sigma  : sigma,
-          rmin   : rmin,
-          alpha  : alpha,
-          beta   : beta
+          rmin   : rmin
         };
 
         if (typeof cb === 'function') cb(coefficients);
@@ -700,10 +1025,18 @@ exports.getLennardJonesCalculator = function(cb) {
         return coefficients;
       },
 
+      /**
+        Input units: r_sq: nm^2
+        Output units: eV
+      */
       potentialFromSquaredDistance = function(r_sq) {
-        return -(alpha*Math.pow(r_sq, -6) - beta*Math.pow(r_sq, -3));
+         return (alpha_Potential*Math.pow(r_sq, -6) + beta_Potential*Math.pow(r_sq, -3)) - epsilon;
       },
 
+      /**
+        Input units: r_sq: nm^2
+        Output units: MW Force Units / nm (= Dalton / fs^2)
+      */
       forceOverDistanceFromSquaredDistance = function(r_sq) {
         // optimizing divisions actually does appear to be *slightly* faster
         var r_minus2nd  = 1 / r_sq,
@@ -711,7 +1044,7 @@ exports.getLennardJonesCalculator = function(cb) {
             r_minus8th  = r_minus6th * r_minus2nd,
             r_minus14th = r_minus8th * r_minus6th;
 
-        return 12*alpha*r_minus14th - 6*beta*r_minus8th;
+        return alpha_Force*r_minus14th - beta_Force*r_minus8th;
       };
 
   // initial calculation of values dependent on (epsilon, sigma)
@@ -732,12 +1065,20 @@ exports.getLennardJonesCalculator = function(cb) {
     // "fast" forms which avoid the need for a square root
     potentialFromSquaredDistance: potentialFromSquaredDistance,
 
+    /**
+      Input units: r: nm
+      Output units: eV
+    */
     potential: function(r) {
       return potentialFromSquaredDistance(r*r);
     },
 
     forceOverDistanceFromSquaredDistance: forceOverDistanceFromSquaredDistance,
 
+    /**
+      Input units: r: nm
+      Output units: MW Force Units (= Dalton * nm / fs^2)
+    */
     force: function(r) {
       return r * forceOverDistanceFromSquaredDistance(r*r);
     }
@@ -750,15 +1091,28 @@ require.define("/md2d.js", function (require, module, exports, __dirname, __file
     /*globals Float32Array */
 /*jslint eqnull: true */
 
+if (typeof window === 'undefined') window = {};
+
 var model = exports.model = {},
 
     arrays       = require('./arrays/arrays').arrays,
+    constants    = require('./constants'),
+    unit         = constants.unit,
     math         = require('./math'),
     coulomb      = require('./potentials').coulomb,
-    lennardJones = require('./potentials').getLennardJonesCalculator(),
+    lennardJones = window.lennardJones = require('./potentials').getLennardJonesCalculator(),
+
+    // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
+    ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
+    ARGON_LJ_SIGMA_IN_NM   = 0.34,
+
+    ARGON_MASS_IN_DALTON = 39.95,
+    ARGON_MASS_IN_KG = constants.convert(ARGON_MASS_IN_DALTON, { from: unit.DALTON, to: unit.KILOGRAM }),
+
+    BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
     makeIntegrator,
-    ljfLimitsNeedCalculating = true,
+    ljfLimitsNeedToBeUpdated = true,
     setup_ljf_limits,
     setup_coulomb_limits,
 
@@ -776,34 +1130,37 @@ var model = exports.model = {},
       return true;
     }()),
 
-    // revisit these for export:
-    minLJAttraction =    0.001,
-    maxLJRepulsion  = -200.0,
+    // having finite values for these are a hack that get the relative strength of the forces wrong
+    maxLJRepulsion = -Infinity,
+
+    // determined by sigma
     cutoffDistance_LJ,
 
-    minCoulombForce =   0.01,
-    maxCoulombForce = 20.0,
-    cutoffDistance_Coulomb,
-
-    size = [100, 100],
+    size = [10, 10],
 
     //
-    // Individual property arrays for the nodes
+    // Individual property arrays for the particles
     //
-    radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge,
+    radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
 
     //
-    // Number of individual properties for a node
+    // Total mass of all particles in the system
+    //
+    totalMass,
+
+    // the total mass of all particles
+    //
+    // Number of individual properties for a particle
     //
     nodePropertiesCount = 12,
 
     //
-    // A two dimensional array consisting of arrays of node property values
+    // A two dimensional array consisting of arrays of particle property values
     //
     nodes,
 
     //
-    // Indexes into the nodes array for the individual node property arrays
+    // Indexes into the nodes array for the individual particle property arrays
     //
     // Access to these within this module will be faster if they are vars in this closure rather than property lookups.
     // However, publish the indices to model.INDICES for use outside this module.
@@ -818,7 +1175,7 @@ var model = exports.model = {},
     SPEED_INDEX    =  7,
     AX_INDEX       =  8,
     AY_INDEX       =  9,
-    HALFMASS_INDEX = 10,
+    MASS_INDEX = 10,
     CHARGE_INDEX   = 11;
 
 model.INDICES = {
@@ -832,94 +1189,80 @@ model.INDICES = {
   SPEED    : SPEED_INDEX,
   AX       : AX_INDEX,
   AY       : AY_INDEX,
-  HALFMASS : HALFMASS_INDEX,
+  MASS     : MASS_INDEX,
   CHARGE   : CHARGE_INDEX
 };
 
+
+lennardJones.setEpsilon(ARGON_LJ_EPSILON_IN_EV);
+lennardJones.setSigma(ARGON_LJ_SIGMA_IN_NM);
+
 model.setSize = function(x) {
-  size = x;
+  //size = x;
 };
 
+// FIXME: disabled for now, so the view doesn't try to change epsilon
 model.setLJEpsilon = function(e) {
   lennardJones.setEpsilon(e);
-  ljfLimitsNeedCalculating = true;
+  ljfLimitsNeedToBeUpdated = true;
 };
 
+// FIXME: disabled for now, so the view doesn't try to change sigma
 model.setLJSigma = function(s) {
   lennardJones.setSigma(s);
-  ljfLimitsNeedCalculating = true;
+  ljfLimitsNeedToBeUpdated = true;
+};
+
+model.getLJEpsilon = function() {
+  return lennardJones.coefficients().epsilon;
+};
+
+model.getLJSigma = function() {
+  return lennardJones.coefficients().sigma;
+};
+
+// Returns the LJ calculator. Be careful with it!
+model.getLJCalculator = function() {
+  return lennardJones;
 };
 
 //
 // Calculate the minimum and maximum distances for applying Lennard-Jones forces
 //
 setup_ljf_limits = function() {
-  var i, f,
-      min_ljf_distance;
-
-  for (i = 0; i <= 100; i+=0.001) {
-    f = lennardJones.force(i);
-    if (f > maxLJRepulsion) {
-      min_ljf_distance = i;
-      break;
-    }
-  }
-
-  for (;i <= 100; i+=0.001) {
-    f = lennardJones.force(i);
-    if (f > minLJAttraction) {
-      break;
-    }
-  }
-
-  for (;i <= 100; i+=0.001) {
-    f = lennardJones.force(i);
-    if (f < minLJAttraction) {
-      cutoffDistance_LJ = i;
-      break;
-    }
-  }
-  ljfLimitsNeedCalculating = false;
+  // for any epsilon:
+  // 1 - lennardJones.potential(5*lennardJones.coefficients().rmin) / lennardJones.potential(Infinity) ~= 1e-4
+  cutoffDistance_LJ = lennardJones.coefficients().rmin * 5;
+  ljfLimitsNeedToBeUpdated = false;
 };
 
 //
 // Calculate the minimum and maximum distances for applying Coulomb forces
 //
 setup_coulomb_limits = function() {
-  var i, f,
-      min_coulomb_distance;
-
-  for (i = 0.001; i <= 100; i+=0.001) {
-    f = coulomb.force(i, -1, 1);
-    if (f < maxCoulombForce) {
-      min_coulomb_distance = i;
-      break;
-    }
-  }
-
-  for (;i <= 100; i+=0.001) {
-    f = coulomb.force(i, -1, 1);
-    if (f < minCoulombForce) {
-      break;
-    }
-  }
-  cutoffDistance_Coulomb = i;
 };
 
 model.createNodes = function(options) {
   options = options || {};
 
   var num                    = options.num                    || 50,
-      temperature            = options.temperature            || 1,
-      rmin                   = options.rmin                   || 4.4,
-      mol_rmin_radius_factor = options.mol_rmin_radius_factor || 0.38,
+      temperature            = options.temperature            || 100,
+
+      rmin = lennardJones.coefficients().rmin,
+
+      mol_rmin_radius_factor = 0.5,
 
       // special-case:
       arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
 
-      v0,
+      k_inJoulesPerKelvin = constants.BOLTZMANN_CONSTANT.as(unit.JOULES_PER_KELVIN),
+
+      mass_in_kg, v0_MKS, v0,
       i, r, c, nrows, ncols, rowSpacing, colSpacing,
-      vMagnitude, vDirection, v_CM_initial;
+      vMagnitude, vDirection,
+      pCMx = 0,
+      pCMy = 0,
+      vCMx, vCMy;
 
   nrows = Math.floor(Math.sqrt(num));
   ncols = Math.ceil(num/nrows);
@@ -966,25 +1309,23 @@ model.createNodes = function(options) {
   nodes[model.INDICES.AY] = arrays.create(num, 0, arrayType);
   model.ay = ay = nodes[model.INDICES.AY];
 
-  // model.INDICES.HALFMASS = 10;
-  nodes[model.INDICES.HALFMASS] = arrays.create(num, 0.5, arrayType);
-  model.halfmass = halfmass = nodes[model.INDICES.HALFMASS];
+  // model.INDICES.MASS = 10;
+  nodes[model.INDICES.MASS] = arrays.create(num, ARGON_MASS_IN_DALTON, arrayType);
+  model.mass = mass = nodes[model.INDICES.MASS];
+
+  totalMass = model.totalMass = ARGON_MASS_IN_DALTON * num;
 
   // model.INDICES.CHARGE   = 11;
   nodes[model.INDICES.CHARGE] = arrays.create(num, 0, arrayType);
   model.charge = charge = nodes[model.INDICES.CHARGE];
 
-  // Actually arrange the atoms.
-  v0 = Math.sqrt(2*temperature);
-
   colSpacing = size[0] / (1+ncols);
   rowSpacing = size[1] / (1+nrows);
 
+  console.log('initializing to temp', temperature);
   // Arrange molecules in a lattice. Not guaranteed to have CM exactly on center, and is an artificially low-energy
   // configuration. But it works OK for now.
   i = -1;
-
-  v_CM_initial = [0, 0];
 
   for (r = 1; r <= nrows; r++) {
     for (c = 1; c <= ncols; c++) {
@@ -1003,6 +1344,16 @@ model.createNodes = function(options) {
       // configuration.
 
       if (i < Math.floor(num/2)) {      // 'middle' atom will have 0 velocity
+
+        // Note kT = m<v^2>/2 because there are 2 degrees of freedom per atom, not 3
+        // TODO: define constants to avoid unnecesssary conversions below.
+
+        mass_in_kg = constants.convert(mass[i], { from: unit.DALTON, to: unit.KILOGRAM });
+        v0_MKS = Math.sqrt(2 * k_inJoulesPerKelvin * temperature / mass_in_kg);
+        // FIXME: why does this velocity need a sqrt(2)/10 correction?
+        // (no, not because of potentials...)
+        v0 = constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNIT });
+
         vMagnitude = math.normal(v0, v0/4);
         vDirection = 2 * Math.random() * Math.PI;
         vx[i] = vMagnitude * Math.cos(vDirection);
@@ -1011,8 +1362,8 @@ model.createNodes = function(options) {
         vy[num-i-1] = -vy[i];
       }
 
-      v_CM_initial[0] += vx[i];
-      v_CM_initial[1] += vy[i];
+      pCMx += vx[i] * mass[i];
+      pCMy += vy[i] * mass[i];
 
       ax[i] = 0;
       ay[i] = 0;
@@ -1022,8 +1373,8 @@ model.createNodes = function(options) {
     }
   }
 
-  v_CM_initial[0] /= num;
-  v_CM_initial[1] /= num;
+  vCMx = pCMx / totalMass;
+  vCMy = pCMy / totalMass;
 };
 
 
@@ -1034,7 +1385,7 @@ makeIntegrator = function(args) {
       readWriteState = args.readWriteState,
       settableState  = args.settableState || {},
 
-      outputState    = {},
+      outputState    = window.state = {},
 
       size                   = setOnceState.size,
 
@@ -1064,10 +1415,10 @@ makeIntegrator = function(args) {
       // Used only by relaxToTemperature()
       breakOnTargetTemperature = false,
 
-      twoKE = (function() {
+      twoKE_in_MW_Units = (function() {
         var twoKE = 0, i, n = nodes[0].length;
         for (i = 0; i < n; i++) {
-          twoKE += speed[i]*speed[i];
+          twoKE += mass[i] * speed[i] * speed[i];
         }
         return twoKE;
       }()),
@@ -1076,19 +1427,21 @@ makeIntegrator = function(args) {
       CM_initial = (function() {
         var CM = [0, 0], i, n = nodes[0].length;
         for (i = 0; i < n; i++) {
-          CM[0] += x[i];
-          CM[1] += y[i];
+          CM[0] += x[i] * mass[i];
+          CM[1] += y[i] * mass[i];
         }
-        CM[0] /= n;
-        CM[1] /= n;
+        CM[0] = CM[0] / totalMass;
+        CM[1] = CM[1] / totalMass;
 
         return CM;
       }()),
 
-      driftCM = [0, 0],
+      driftCMx = 0,
+      driftCMy = 0,
 
-      // Coupling factor for Berendsen thermostat.
-      dt_over_tau = 0.5,
+      // Coupling factor for Berendsen thermostat. In theory, 1 = "perfectly" constrained temperature.
+      // (Of course, we're not measuring temperature *quite* correctly.)
+      thermostatCouplingFactor = 0.1,
 
       // Tolerance for (T_actual - T_target) relative to T_target
       tempTolerance = 0.001,
@@ -1110,8 +1463,18 @@ makeIntegrator = function(args) {
         T_windowed = math.getWindowedAverager( windowSize );
       },
 
-      KE_to_T = function(KE) {
-        return KE / nodes[0].length;
+      /**
+        Input units:
+          KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
+        Output units:
+          T: K
+      */
+      KE_to_T = function(totalKEinMWUnits) {
+        // again kT = m<v^2>/2 in 2D
+        var averageKEinMWUnits = totalKEinMWUnits / nodes[0].length,
+            averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
+
+        return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
       };
 
   outputState.time = time;
@@ -1139,6 +1502,7 @@ makeIntegrator = function(args) {
     },
 
     setTargetTemperature       : function(v) {
+      console.log('target temp = ', v);
       if (v !== T_target) {
         T_target = v;
         adjustTemperature();
@@ -1167,10 +1531,14 @@ makeIntegrator = function(args) {
 
     integrate: function(duration, dt) {
 
-      if (duration == null)  duration = 1;  // how much "time" to integrate over
-      if (dt == null)        dt = 1/50;     // time step
+      // FIXME. Recommended timestep for accurate simulation is τ/200
+      // using rescaled t where t → τ(mσ²/ϵ)^½
+      // This is hardcoded below for the "Argon" case by setting dt = 10 fs:
 
-      if (ljfLimitsNeedCalculating) setup_ljf_limits();
+      if (duration == null)  duration = 500;  // how much "time" to integrate over
+      if (dt == null)        dt = 10;     // time step
+
+      if (ljfLimitsNeedToBeUpdated) setup_ljf_limits();
 
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
@@ -1181,10 +1549,9 @@ makeIntegrator = function(args) {
           v_sq, r_sq,
 
           cutoffDistance_LJ_sq      = cutoffDistance_LJ * cutoffDistance_LJ,
-          cutoffDistance_Coulomb_sq = cutoffDistance_Coulomb * cutoffDistance_Coulomb,
           maxLJRepulsion_sq         = maxLJRepulsion * maxLJRepulsion,
 
-          f, f_over_r, fx, fy,        // pairwise forces and their x, y components
+          f, f_over_r, aPair_over_r, aPair_x, aPair_y, // pairwise forces /accelerations and their x, y components
           dx, dy,
           iloop,
           leftwall   = radius[0],
@@ -1193,9 +1560,13 @@ makeIntegrator = function(args) {
           topwall    = size[1] - radius[0],
 
           PE,                               // potential energy
-          CM,                               // center of mass as [x, y]
-          vCM = [0,0],                      // velocity of center of mass, sort of.
-          T = KE_to_T(twoKE/2),             // temperature
+          CM,                               // center of mass as [x, y] in nm
+          pCMx,                             // total (center-of-mass) momentum, x component, in Dalton * nm/fs
+          pCMy,                             // total (center-of-mass) momentum, y component, in Dalton * nm/fs
+          vCMx,                             // velocity of center of mass, x component, in nm/fs
+          vCMy,                             // velocity of center of mass, y component, in nm/fs
+
+          T = KE_to_T(twoKE_in_MW_Units/2), // instantaneous temperature, in Kelvin
           vRescalingFactor;                 // rescaling factor for Berendsen thermostat
 
           // measurements to be accumulated during the integration loop:
@@ -1213,11 +1584,11 @@ makeIntegrator = function(args) {
         // rescale velocities based on ratio of target temp to measured temp (Berendsen thermostat)
         vRescalingFactor = 1;
         if (temperatureChangeInProgress || useThermostat && T > 0) {
-          vRescalingFactor = 1 + dt_over_tau * ((T_target / T) - 1);
+          vRescalingFactor = Math.sqrt(1 + thermostatCouplingFactor * (T_target / T - 1));
         }
 
         // Initialize sums such as 'twoKE' which need be accumulated once per integration loop:
-        twoKE = 0;
+        twoKE_in_MW_Units = 0;
         CM = [0, 0];
 
         //
@@ -1260,8 +1631,8 @@ makeIntegrator = function(args) {
           }
 
           // Accumulate xs & ys for CM (AFTER collision)
-          CM[0] += x[i];
-          CM[1] += y[i];
+          CM[0] += x[i] * mass[i];
+          CM[1] += y[i] * mass[i];
 
           // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
           vx[i] += 0.5*ax[i]*dt;
@@ -1269,8 +1640,8 @@ makeIntegrator = function(args) {
         }
 
         // Calculate center of mass and change in center of mass between t and t+dt
-        CM[0] /= n;
-        CM[1] /= n;
+        CM[0] /= totalMass;
+        CM[1] /= totalMass;
 
         // Calculate a(t+dt), step 1: Zero out the acceleration, in order to accumulate pairwise interactions.
         for (i = 0; i < n; i++) {
@@ -1296,57 +1667,62 @@ makeIntegrator = function(args) {
                   f_over_r = maxLJRepulsion / Math.sqrt(r_sq);
                 }
 
-                fx = f_over_r * dx;
-                fy = f_over_r * dy;
+                // Units of fx, fy are "MW Force Units", Dalton * nm / fs^2
+                aPair_over_r = f_over_r / mass[i];
+                aPair_x = aPair_over_r * dx;
+                aPair_y = aPair_over_r * dy;
 
-                ax[i] += fx;
-                ay[i] += fy;
-                ax[j] -= fx;
-                ay[j] -= fy;
+                // positive = attractive, negative = repulsive
+                ax[i] += aPair_x;
+                ay[i] += aPair_y;
+                ax[j] -= aPair_x;
+                ay[j] -= aPair_y;
               }
-              if (useCoulombInteraction && r_sq < cutoffDistance_Coulomb_sq) {
-                f = Math.min(coulomb.forceFromSquaredDistance(r_sq, charge[i], charge[j]), maxCoulombForce);
 
+              if (useCoulombInteraction) {
+                f = coulomb.forceFromSquaredDistance(r_sq, charge[i], charge[j]);
                 f_over_r = f / Math.sqrt(r_sq);
-                fx = f_over_r * dx;
-                fy = f_over_r * dy;
 
-                ax[i] += fx;
-                ay[i] += fy;
-                ax[j] -= fx;
-                ay[j] -= fy;
+                aPair_over_r = f_over_r / mass[i];
+                aPair_x = aPair_over_r * dx;
+                aPair_y = aPair_over_r * dy;
+
+                ax[i] += aPair_x;
+                ay[i] += aPair_y;
+                ax[j] -= aPair_x;
+                ay[j] -= aPair_y;
               }
             }
           }
         }
 
-        vCM[0] = 0;
-        vCM[1] = 0;
+        pCMx = 0;
+        pCMy = 0;
 
         // SECOND HALF of calculation of v(t+dt): v(t+dt) <- v1(t+dt) + 0.5*a(t+dt)*dt
         for (i = 0; i < n; i++) {
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
 
-          vCM[0] += vx[i];
-          vCM[1] += vy[i];
+          pCMx += mass[i] * vx[i];
+          pCMy += mass[i] * vy[i];
 
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
-          twoKE += v_sq;
+          twoKE_in_MW_Units += mass[i] * v_sq;
           speed[i] = Math.sqrt(v_sq);
         }
 
-        vCM[0] /= n;
-        vCM[1] /= n;
+        vCMx = pCMx / totalMass;
+        vCMy = pCMy / totalMass;
 
-        driftCM[0] += vCM[0]*dt;
-        driftCM[1] += vCM[1]*dt;
+        driftCMx += vCMx*dt;
+        driftCMy += vCMy*dt;
 
         // Calculate T(t+dt) from v(t+dt)
-        T = KE_to_T( twoKE/2 );
+        T = KE_to_T( twoKE_in_MW_Units/2 );
       }
 
-      // Calculate potentials. Note that we only want to do this once per call to integrate(), not once per
+      // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
       // integration loop!
       PE = 0;
 
@@ -1357,10 +1733,10 @@ makeIntegrator = function(args) {
 
           r_sq = dx*dx + dy*dy;
 
-          if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
+          if (useLennardJonesInteraction ) {
             PE += lennardJones.potentialFromSquaredDistance(r_sq);
           }
-          if (useCoulombInteraction && r_sq < cutoffDistance_Coulomb_sq) {
+          if (useCoulombInteraction) {
             PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
         }
@@ -1370,11 +1746,11 @@ makeIntegrator = function(args) {
       outputState.time = time;
       outputState.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
       outputState.PE = PE;
-      outputState.KE = twoKE / 2;
+      outputState.KE = 0.5 * constants.convert(twoKE_in_MW_Units, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
       outputState.T = T;
       outputState.CM = CM || CM_initial;
-      outputState.vCM = vCM;
-      outputState.driftCM = driftCM;
+      outputState.vCM = [vCMx, vCMy];
+      outputState.driftCM = [driftCMx, driftCMy];
     }
   };
 };
@@ -1547,7 +1923,7 @@ modeler.model = function() {
       //
       // Individual property arrays for the nodes
       //
-      radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
 
       //
       // Number of individual properties for a node
@@ -1574,7 +1950,7 @@ modeler.model = function() {
     SPEED    : coreModel.INDICES.SPEED,
     AX       : coreModel.INDICES.AX,
     AY       : coreModel.INDICES.AY,
-    HALFMASS : coreModel.INDICES.HALFMASS,
+    MASS     : coreModel.INDICES.MASS,
     CHARGE   : coreModel.INDICES.CHARGE
   };
 
@@ -1582,10 +1958,10 @@ modeler.model = function() {
 
   //
   // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
-  // within a range of 0..10 to the 'real' temperature <mv^2>/2k (remember there's only 2 DOF)
+  // within a range of 0..50 to the 'real' temperature <mv^2>/2k (remember there's only 2N DOF)
   //
   function abstract_to_real_temperature(t) {
-    return 0.19*t + 0.1;  // Translate 0..10 to 0.1..2
+    return 5 + t * (2500-5)/25;  // Translate 0..25 to 5K..2500K
   }
 
   function average_speed() {
@@ -1794,22 +2170,42 @@ modeler.model = function() {
     epsilon = e;
     sigma = s;
 
-    // Does nothing useful now. TODO adapt for multiple models & multiple molecule types.
+    // TODO. Disabled for now because application.js doesn't yet know correct units, etc.
+    //coreModel.setLJEpsilon(e);
+    //coreModel.setLJSigma(s);
+  };
+
+  /** Accepts an epsilon value in eV.
+
+      Example value for argon is 0.013 (positive)
+  */
+  model.setEpsilon = function(e) {
     coreModel.setLJEpsilon(e);
+  };
+
+  /** Accepts a sigma value in nm
+
+    Example value for argon is 3.4 nm
+  */
+  model.setSigma = function(s) {
     coreModel.setLJSigma(s);
   };
 
   model.getEpsilon = function() {
-    return epsilon;
+    return coreModel.getLJEpsilon();
   };
 
   model.getSigma = function() {
-    return sigma;
+    return coreModel.getLJSigma();
+  };
+
+  model.getLJCalculator = function() {
+    return coreModel.getLJCalculator();
   };
 
   model.set_radius = function(r) {
-    var i, n = nodes[0].length;
-    i = -1; while(++i < n) { radius[i] = r; }
+    // var i, n = nodes[0].length;
+    // i = -1; while(++i < n) { radius[i] = r; }
   };
 
   // return a copy of the array of speeds
@@ -1868,8 +2264,8 @@ modeler.model = function() {
 
   model.relax = function() {
     // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
-    integrator.integrate(100, 1/20);
-    integrator.relaxToTemperature();
+    // integrator.integrate(100, 1/20);
+    // integrator.relaxToTemperature();
     return model;
   };
 
@@ -1910,7 +2306,7 @@ modeler.model = function() {
     speed    = coreModel.speed;
     ax       = coreModel.ax;
     ay       = coreModel.ay;
-    halfmass = coreModel.halfmass;
+    halfMass = coreModel.halfMass;
     charge   = coreModel.charge;
 
     // The d3 molecule viewer requires this length to be set correctly:
