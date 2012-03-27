@@ -304,6 +304,7 @@ makeIntegrator = function(args) {
       ay                   = readWriteState.ay,
       charge               = readWriteState.charge,
       nodes                = readWriteState.nodes,
+      N                    = nodes[0].length,
       radius               = readWriteState.radius,
       speed                = readWriteState.speed,
       vx                   = readWriteState.vx,
@@ -325,14 +326,6 @@ makeIntegrator = function(args) {
       // Whether to immediately break out of the integration loop when the target temperature is reached.
       // Used only by relaxToTemperature()
       breakOnTargetTemperature = false,
-
-      twoKE_in_MW_Units = (function() {
-        var twoKE = 0, i, n = nodes[0].length;
-        for (i = 0; i < n; i++) {
-          twoKE += mass[i] * speed[i] * speed[i];
-        }
-        return twoKE;
-      }()),
 
       // Coupling factor for Berendsen thermostat. In theory, 1 = "perfectly" constrained temperature.
       // (Of course, we're not measuring temperature *quite* correctly.)
@@ -364,13 +357,50 @@ makeIntegrator = function(args) {
         Output units:
           T: K
       */
-      KE_to_T = function(totalKEinMWUnits) {
-        // again kT = m<v^2>/2 in 2D
-        var averageKEinMWUnits = totalKEinMWUnits / nodes[0].length,
+      KE_to_T = function(internalKEinMWUnits) {
+        // In 2 dimensions, kT = (2/N_df) * KE
+
+        // We are using "internal coordinates" from which 2 (1?) angular and 2 translational degrees of freedom have
+        // been removed
+
+        var N_df = 2 * N - 4,
+            averageKEinMWUnits = (2 / N_df) * internalKEinMWUnits,
             averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
 
         return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
-      };
+      },
+
+      x_CM, y_CM,         // x, y position of center of mass in "real" coordinates
+      px_CM, py_CM,       // x, y velocity of center of mass in "real" coordinates
+      vx_CM, vy_CM,       // x, y velocity of center of mass in "real" coordinates
+      omega_CM,           // angular velocity around the center of mass
+
+      convertToReal = function(i) {
+        vx[i] += vx_CM;
+        vy[i] += vy_CM;
+      },
+
+      convertToInternal = function(i) {
+        vx[i] -= vx_CM;
+        vy[i] -= vy_CM;
+      },
+
+      i;
+
+      x_CM = y_CM = px_CM = py_CM = vx_CM = vy_CM = 0;
+
+      for (i = 0; i < N; i++) {
+        x_CM += x_CM + x[i];
+        y_CM += y_CM + x[i];
+        px_CM += vx[i] * mass[i];
+        py_CM += vy[i] * mass[i];
+      }
+
+      x_CM /= N;
+      y_CM /= N;
+      vx_CM = px_CM / totalMass;
+      vy_CM = py_CM / totalMass;
+
 
   outputState.time = time;
 
@@ -454,13 +484,23 @@ makeIntegrator = function(args) {
           rightwall  = size[0] - radius[0],
           topwall    = size[1] - radius[0],
 
-          PE,                               // potential energy
+          realKEinMWUnits,   // KE in "real" coordinates, in MW Units
+          PE,                // potential energy, in eV
 
-          T = KE_to_T(twoKE_in_MW_Units/2), // instantaneous temperature, in Kelvin
-          vRescalingFactor;                 // rescaling factor for Berendsen thermostat
+          twoKE_internal,    // 2*KE in "internal" coordinates, in MW Units
+          T,                 // instantaneous temperature, in Kelvin
+          vRescalingFactor;  // rescaling factor for Berendsen thermostat
 
           // measurements to be accumulated during the integration loop:
           // pressure = 0;
+
+      // when coordinates are converted to "real" coordinates when leaving this method, so convert back
+      twoKE_internal = 0;
+      for (i = 0; i < N; i++) {
+        convertToInternal(i);
+        twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+      }
+      T = KE_to_T( twoKE_internal/2 );
 
       // update time
       for (iloop = 1; iloop <= n_steps; iloop++) {
@@ -477,8 +517,10 @@ makeIntegrator = function(args) {
           vRescalingFactor = Math.sqrt(1 + thermostatCouplingFactor * (T_target / T - 1));
         }
 
-        // Initialize sums such as 'twoKE' which need be accumulated once per integration loop:
-        twoKE_in_MW_Units = 0;
+        // Initialize sums such as 'twoKE_internal' which need be accumulated once per integration loop:
+        twoKE_internal = 0;
+        px_CM = 0;
+        py_CM = 0;
 
         //
         // Use velocity Verlet integration to continue particle movement integrating acceleration with
@@ -494,6 +536,9 @@ makeIntegrator = function(args) {
             vy[i] *= vRescalingFactor;
           }
 
+          // (1) convert velocities from "internal" to "real" velocities before calculating x, y and updating px, py
+          convertToReal(i);
+
           // calculate x(t+dt) from v(t) and a(t)
           x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
           y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
@@ -501,7 +546,7 @@ makeIntegrator = function(args) {
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
           speed[i] = Math.sqrt(v_sq);
 
-          // Bounce off vertical walls
+          // Bounce off vertical walls.
           if (x[i] < leftwall) {
             x[i]  = leftwall + (leftwall - x[i]);
             vx[i] *= -1;
@@ -519,16 +564,38 @@ makeIntegrator = function(args) {
             vy[i] *= -1;
           }
 
+          // Bouncing of walls like changes the overall momentum and center of mass, so accumulate them for later
+          px_CM += mass[i] * vx[i];
+          py_CM += mass[i] * vy[i];
+
+          x_CM += x[i];
+          y_CM += y[i];
+        }
+
+        // (2) recaclulate CM, v_CM, omega_CM for translation back to "internal" coordinates
+
+        // Note:
+        // px_CM = px_CM(t+dt) even though we haven't updated velocities using accelerations a(t) and a(t+dt).
+        // That is because the accelerations are strictly pairwise and should be momentum-conserving.
+        // Momentum
+
+        x_CM /= N;
+        y_CM /= N;
+
+        vx_CM = px_CM / totalMass;
+        vy_CM = py_CM / totalMass;
+
+
+        for (i = 0; i < n; i++) {
+
+          // (3) convert back to internal coordinates
+          convertToInternal(i);
+
           // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
-        }
 
-        // (2) RECALCULATE CM, V_CM, I_CM, L_CM
-        // (3) CONVERT BACK TO INTERNAL COORDINATES ("SUBTRACTING OUT" V_CM, I_CM, L_CM)
-
-        // Calculate a(t+dt), step 1: Zero out the acceleration, in order to accumulate pairwise interactions.
-        for (i = 0; i < n; i++) {
+          // now that we used ax[i], ay[i] from a(t), zero them out for accumulation of pairwise interactions in a(t+dt)
           ax[i] = 0;
           ay[i] = 0;
         }
@@ -586,19 +653,22 @@ makeIntegrator = function(args) {
           vy[i] += 0.5*ay[i]*dt;
 
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
-          twoKE_in_MW_Units += mass[i] * v_sq;
+          twoKE_internal += mass[i] * v_sq;
           speed[i] = Math.sqrt(v_sq);
         }
 
         // Calculate T(t+dt) from v(t+dt)
-        T = KE_to_T( twoKE_in_MW_Units/2 );
+        T = KE_to_T( twoKE_internal/2 );
       }
 
       // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
       // integration loop!
       PE = 0;
-
+      realKEinMWUnits= 0;
       for (i = 0; i < n; i++) {
+        convertToReal(i);
+
+        realKEinMWUnits += 0.5 * mass[i] * vx[i] * vx[i] + vy[i] * vy[i];
         for (j = i+1; j < n; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -618,7 +688,7 @@ makeIntegrator = function(args) {
       outputState.time = time;
       outputState.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
       outputState.PE = PE;
-      outputState.KE = 0.5 * constants.convert(twoKE_in_MW_Units, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+      outputState.KE = constants.convert(realKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
       outputState.T = T;
     }
   };
