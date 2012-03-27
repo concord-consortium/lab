@@ -344,8 +344,9 @@ makeIntegrator = function(args) {
       driftCMx = 0,
       driftCMy = 0,
 
-      // Coupling factor for Berendsen thermostat.
-      dt_over_tau = 0.5,
+      // Coupling factor for Berendsen thermostat. In theory, 1 = "perfectly" constrained temperature.
+      // (Of course, we're not measuring temperature *quite* correctly.)
+      thermostatCouplingFactor = 0.1,
 
       // Tolerance for (T_actual - T_target) relative to T_target
       tempTolerance = 0.001,
@@ -488,7 +489,7 @@ makeIntegrator = function(args) {
         // rescale velocities based on ratio of target temp to measured temp (Berendsen thermostat)
         vRescalingFactor = 1;
         if (temperatureChangeInProgress || useThermostat && T > 0) {
-          vRescalingFactor = 1 + dt_over_tau * ((T_target / T) - 1);
+          vRescalingFactor = Math.sqrt(1 + thermostatCouplingFactor * (T_target / T - 1));
         }
 
         // Initialize sums such as 'twoKE' which need be accumulated once per integration loop:
