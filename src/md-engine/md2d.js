@@ -1,4 +1,5 @@
 /*globals Float32Array */
+/*globals Float32Array window*/
 /*jslint eqnull: true */
 
 if (typeof window === 'undefined') window = {};
@@ -333,22 +334,6 @@ makeIntegrator = function(args) {
         return twoKE;
       }()),
 
-      // initial center of mass; used to calculate drift
-      CM_initial = (function() {
-        var CM = [0, 0], i, n = nodes[0].length;
-        for (i = 0; i < n; i++) {
-          CM[0] += x[i] * mass[i];
-          CM[1] += y[i] * mass[i];
-        }
-        CM[0] = CM[0] / totalMass;
-        CM[1] = CM[1] / totalMass;
-
-        return CM;
-      }()),
-
-      driftCMx = 0,
-      driftCMy = 0,
-
       // Coupling factor for Berendsen thermostat. In theory, 1 = "perfectly" constrained temperature.
       // (Of course, we're not measuring temperature *quite* correctly.)
       thermostatCouplingFactor = 0.1,
@@ -470,11 +455,6 @@ makeIntegrator = function(args) {
           topwall    = size[1] - radius[0],
 
           PE,                               // potential energy
-          CM,                               // center of mass as [x, y] in nm
-          pCMx,                             // total (center-of-mass) momentum, x component, in Dalton * nm/fs
-          pCMy,                             // total (center-of-mass) momentum, y component, in Dalton * nm/fs
-          vCMx,                             // velocity of center of mass, x component, in nm/fs
-          vCMy,                             // velocity of center of mass, y component, in nm/fs
 
           T = KE_to_T(twoKE_in_MW_Units/2), // instantaneous temperature, in Kelvin
           vRescalingFactor;                 // rescaling factor for Berendsen thermostat
@@ -499,7 +479,6 @@ makeIntegrator = function(args) {
 
         // Initialize sums such as 'twoKE' which need be accumulated once per integration loop:
         twoKE_in_MW_Units = 0;
-        CM = [0, 0];
 
         //
         // Use velocity Verlet integration to continue particle movement integrating acceleration with
@@ -540,18 +519,13 @@ makeIntegrator = function(args) {
             vy[i] *= -1;
           }
 
-          // Accumulate xs & ys for CM (AFTER collision)
-          CM[0] += x[i] * mass[i];
-          CM[1] += y[i] * mass[i];
-
           // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
         }
 
-        // Calculate center of mass and change in center of mass between t and t+dt
-        CM[0] /= totalMass;
-        CM[1] /= totalMass;
+        // (2) RECALCULATE CM, V_CM, I_CM, L_CM
+        // (3) CONVERT BACK TO INTERNAL COORDINATES ("SUBTRACTING OUT" V_CM, I_CM, L_CM)
 
         // Calculate a(t+dt), step 1: Zero out the acceleration, in order to accumulate pairwise interactions.
         for (i = 0; i < n; i++) {
@@ -606,27 +580,15 @@ makeIntegrator = function(args) {
           }
         }
 
-        pCMx = 0;
-        pCMy = 0;
-
         // SECOND HALF of calculation of v(t+dt): v(t+dt) <- v1(t+dt) + 0.5*a(t+dt)*dt
         for (i = 0; i < n; i++) {
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
 
-          pCMx += mass[i] * vx[i];
-          pCMy += mass[i] * vy[i];
-
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
           twoKE_in_MW_Units += mass[i] * v_sq;
           speed[i] = Math.sqrt(v_sq);
         }
-
-        vCMx = pCMx / totalMass;
-        vCMy = pCMy / totalMass;
-
-        driftCMx += vCMx*dt;
-        driftCMy += vCMy*dt;
 
         // Calculate T(t+dt) from v(t+dt)
         T = KE_to_T( twoKE_in_MW_Units/2 );
@@ -658,9 +620,6 @@ makeIntegrator = function(args) {
       outputState.PE = PE;
       outputState.KE = 0.5 * constants.convert(twoKE_in_MW_Units, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
       outputState.T = T;
-      outputState.CM = CM || CM_initial;
-      outputState.vCM = [vCMx, vCMy];
-      outputState.driftCM = [driftCMx, driftCMy];
     }
   };
 };
