@@ -15,7 +15,6 @@ layout.canonical = {
   height: 800
 };
 
-
 layout.regular_display = false;
 
 layout.not_rendered = true;
@@ -25,12 +24,12 @@ layout.screen_factor = 1;
 layout.checkbox_factor = 1.1;
 layout.checkbox_scale = 1.1;
 
-layout.canonical.width  = 1280
-layout.canonical.height = 800
+layout.canonical.width  = 1280;
+layout.canonical.height = 800;
 
 layout.getDisplayProperties = function(obj) {
   if (!arguments.length) {
-    var obj = {}
+    var obj = {};
   }
   obj.screen = {
       width:  screen.width,
@@ -47,18 +46,18 @@ layout.getDisplayProperties = function(obj) {
   obj.page = {
       width: layout.getPageWidth(),
       height: layout.getPageHeight()
-  }
-  return obj
-}
+  };
+  return obj;
+};
 
 layout.checkForResize = function() {
   if ((layout.display.screen.width  != screen.width) ||
       (layout.display.screen.height != screen.height) ||
       (layout.display.window.width  != document.width) ||
       (layout.display.window.height != document.height)) {
-    layout.setupScreen()
+    layout.setupScreen();
   }
-}
+};
 
 layout.setupScreen = function(layout_selection) {
   var fullscreen = document.fullScreen ||
@@ -106,7 +105,7 @@ layout.setupScreen = function(layout_selection) {
   } else {
     if (layout.cancelFullScreen) {
       layout.cancelFullScreen = false;
-      layout.regular_display = layout.previous_display
+      layout.regular_display = layout.previous_display;
     } else {
       layout.regular_display = layout.getDisplayProperties();
     }
@@ -156,7 +155,7 @@ layout.setupScreen = function(layout_selection) {
     layout.regular_display = layout.getDisplayProperties();
   }
   if (layout.transform) {
-    $('input[type=checkbox]').css(layout.transform, 'scale(' + layout.checkbox_factor + ',' + layout.checkbox_factor + ')')
+    $('input[type=checkbox]').css(layout.transform, 'scale(' + layout.checkbox_factor + ',' + layout.checkbox_factor + ')');
   }
   layout.setupTemperature();
   if (benchmarks_table) {
@@ -167,9 +166,7 @@ layout.setupScreen = function(layout_selection) {
   // Regular Screen Layout
   //
   function setupRegularScreenMoleculeContainer() {
-    moleculecontainer.style.width = layout.display.page.width * 0.42 +"px";
-    moleculecontainer.style.height = layout.display.page.width * 0.40 - 4 +"px";
-    layout.finishSetupMoleculeContainer();
+    molecule_container.resize(layout.display.page.width * 0.42, layout.display.page.width * 0.40 - 4);
   }
 
   function setupRegularScreenPotentialChart() {
@@ -194,9 +191,7 @@ layout.setupScreen = function(layout_selection) {
   // Full Screen Layout
   //
   function setupFullScreenMoleculeContainer() {
-    moleculecontainer.style.width = layout.display.page.height * 0.70 + "px";
-    moleculecontainer.style.height = layout.display.page.height * 0.70 + "px";
-    layout.finishSetupMoleculeContainer();
+    molecule_container.resize(layout.display.page.width * 0.70, layout.display.page.width * 0.70);
   }
 
   function setupFullScreenPotentialChart() {
@@ -222,9 +217,7 @@ layout.setupScreen = function(layout_selection) {
   //
   function setupSimpleMoleculeContainer() {
     var size = layout.display.page.height * 0.74;
-    moleculecontainer.style.width = size +"px";
-    moleculecontainer.style.height = size +"px";
-    layout.finishSetupMoleculeContainer();
+    molecule_container.resize(size, size);
   }
 
   function setupDescriptionRight() {
@@ -239,9 +232,7 @@ layout.setupScreen = function(layout_selection) {
   //
   function setupSimpleIFrameMoleculeContainer() {
     var size = layout.display.page.height * 0.78;
-    moleculecontainer.style.width = size +"px";
-    moleculecontainer.style.height = size +"px";
-    layout.finishSetupMoleculeContainer();
+    molecule_container.resize(size, size);
   }
 
   //
@@ -249,9 +240,7 @@ layout.setupScreen = function(layout_selection) {
   //
   function setupSimpleFullScreenMoleculeContainer() {
     var size = layout.display.page.height * 0.75;
-    moleculecontainer.style.width = size +"px";
-    moleculecontainer.style.height = size +"px";
-    layout.finishSetupMoleculeContainer();
+    molecule_container.resize(size, size);
   }
 
   function setupFullScreenDescriptionRight() {
@@ -260,18 +249,18 @@ layout.setupScreen = function(layout_selection) {
       description_right.style.width = layout.display.window.width * 0.30 +"px";
     }
   }
-}
+};
 
 layout.getStyleForSelector = function(selector) {
   var rules, rule_lists = document.styleSheets;
   for(var i = 0; i < rule_lists.length; i++) {
     if (rule_lists[i]) {
       try {
-         rules = rule_lists[i].rules || rule_lists[i].cssRules
+         rules = rule_lists[i].rules || rule_lists[i].cssRules;
          if (rules) {
            for(var j = 0; j < rules.length; j++) {
              if (rules[j].selectorText == selector) {
-               return rules[j]
+               return rules[j];
              }
            }
          }
@@ -280,12 +269,12 @@ layout.getStyleForSelector = function(selector) {
       }
     }
   }
-  return false
+  return false;
 };
 
 // Adapted from getPageSize() by quirksmode.com
 layout.getPageHeight = function() {
-  var windowHeight
+  var windowHeight;
   if (self.innerHeight) { // all except Explorer
     windowHeight = self.innerHeight;
   } else if (document.documentElement && document.documentElement.clientHeight) {
@@ -293,11 +282,11 @@ layout.getPageHeight = function() {
   } else if (document.body) { // other Explorers
     windowHeight = layout.display.window.height;
   }
-  return windowHeight
-}
+  return windowHeight;
+};
 
 layout.getPageWidth = function() {
-  var windowWidth
+  var windowWidth;
   if (self.innerWidth) { // all except Explorer
     windowWidth = self.innerWidth;
   } else if (document.documentElement && document.documentElement.clientWidth) {
@@ -305,8 +294,8 @@ layout.getPageWidth = function() {
   } else if (document.body) { // other Explorers
     windowWidth = window.width;
   }
-  return windowWidth
-}
+  return windowWidth;
+};
 
 // http://www.zachstronaut.com/posts/2009/02/17/animate-css-transforms-firefox-webkit.html
 layout.getTransformProperty = function(element) {
@@ -326,7 +315,7 @@ layout.getTransformProperty = function(element) {
         }
     }
     return false;
-}
+};
 
 var description_right = document.getElementById("description-right");
 if (description_right !== null) {
