@@ -29,12 +29,6 @@ var autostart = true,
 var model_player = new ModelPlayer(model);
 
 // ------------------------------------------------------------
-// Setup heat and cool buttons
-// ------------------------------------------------------------
-
-layout.heatCoolButtons("#heat_button", "#cool_button", 0, 10)
-
-// ------------------------------------------------------------
 //
 // Main callback from model process
 //
@@ -305,11 +299,17 @@ document.onkeydown = handleKeyboardForModel;
 modelReset();
 
 // ------------------------------------------------------------
+// Setup heat and cool buttons
+// ------------------------------------------------------------
+
+layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25)
+
+// ------------------------------------------------------------
 // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
 // ------------------------------------------------------------
 
 var therm = new Thermometer('#thermometer');
-therm.max = 10;
+therm.max = 25;
 
 var epsilon_slider  = new  SliderComponent('#attraction_slider');
 epsilon_slider.max = lj_epsilon_min;
