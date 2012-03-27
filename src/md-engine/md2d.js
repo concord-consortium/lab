@@ -716,6 +716,10 @@ makeIntegrator = function(args) {
       outputState.PE = PE;
       outputState.KE = constants.convert(realKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
       outputState.T = T;
+      outputState.pCM = [px_CM, py_CM];
+      outputState.CM = [x_CM, y_CM];
+      outputState.vCM = [vx_CM, vy_CM];
+      outputState.omega_CM = omega_CM;
     }
   };
 };
