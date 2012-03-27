@@ -12,8 +12,8 @@ var autostart = true,
     atoms, model,
     lj_sigma_min = 1,
     lj_sigma_max = 10,
-    lj_epsilon_max = -0.00001,
-    lj_epsilon_min = -5.0,
+    lj_epsilon_max = -0.00258,
+    lj_epsilon_min = -0.0414,
     lennard_jones_potential = [],
     lj_alpha, lj_beta,
     mol_rmin_radius_factor = 0.38,
@@ -316,7 +316,7 @@ epsilon_slider.max = lj_epsilon_min;
 epsilon_slider.min = lj_epsilon_max;
 
 epsilon_slider.value_changed_function = function (v) {
-  model.set_lj_coefficients(v,model.getSigma());
+  model.setEpsilon(v);
 }
 epsilon_slider.update_label();
 
