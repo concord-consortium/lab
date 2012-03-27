@@ -311,6 +311,10 @@ modeler.model = function() {
     return coreModel.getLJSigma();
   };
 
+  model.getLJCalculator = function() {
+    return coreModel.getLJCalculator();
+  };
+
   model.set_radius = function(r) {
     // var i, n = nodes[0].length;
     // i = -1; while(++i < n) { radius[i] = r; }
