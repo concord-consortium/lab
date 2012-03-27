@@ -408,8 +408,8 @@ makeIntegrator = function(args) {
       x_CM = y_CM = px_CM = py_CM = vx_CM = vy_CM = 0;
 
       for (i = 0; i < N; i++) {
-        x_CM += x_CM + x[i];
-        y_CM += y_CM + x[i];
+        x_CM += x[i];
+        y_CM += y[i];
         px_CM += vx[i] * mass[i];
         py_CM += vy[i] * mass[i];
       }
@@ -492,6 +492,8 @@ makeIntegrator = function(args) {
           j,
           v_sq, r_sq,
 
+          x_sum, y_sum,
+
           cutoffDistance_LJ_sq      = cutoffDistance_LJ * cutoffDistance_LJ,
           maxLJRepulsion_sq         = maxLJRepulsion * maxLJRepulsion,
 
@@ -538,6 +540,8 @@ makeIntegrator = function(args) {
 
         // Initialize sums such as 'twoKE_internal' which need be accumulated once per integration loop:
         twoKE_internal = 0;
+        x_sum = 0;
+        y_sum = 0;
         px_CM = 0;
         py_CM = 0;
 
@@ -587,8 +591,8 @@ makeIntegrator = function(args) {
           px_CM += mass[i] * vx[i];
           py_CM += mass[i] * vy[i];
 
-          x_CM += x[i];
-          y_CM += y[i];
+          x_sum += x[i];
+          y_sum += y[i];
         }
 
         // (2) recaclulate CM, v_CM, omega_CM for translation back to "internal" coordinates
@@ -598,8 +602,8 @@ makeIntegrator = function(args) {
         // That is because the accelerations are strictly pairwise and should be momentum-conserving.
         // Momentum
 
-        x_CM /= N;
-        y_CM /= N;
+        x_CM = x_sum / N;
+        y_CM = y_sum / N;
 
         vx_CM = px_CM / totalMass;
         vy_CM = py_CM / totalMass;
