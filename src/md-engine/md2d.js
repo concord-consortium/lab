@@ -480,7 +480,9 @@ makeIntegrator = function(args) {
       // This is hardcoded below for the "Argon" case by setting dt = 10 fs:
 
       if (duration == null)  duration = 500;  // how much "time" to integrate over
-      if (dt == null)        dt = 10;     // time step
+      if (dt == null) {
+        dt = useCoulombInteraction ? 5 : 10;  // time step
+      }
 
       if (ljfLimitsNeedToBeUpdated) setup_ljf_limits();
 
