@@ -375,6 +375,24 @@ makeIntegrator = function(args) {
       vx_CM, vy_CM,       // x, y velocity of center of mass in "real" coordinates
       omega_CM,           // angular velocity around the center of mass
 
+      cross = function(a, b) {
+        return a[0]*b[1] - a[1]*b[0];
+      },
+
+      sumSquare = function(a,b) {
+        return a*a + b*b;
+      },
+
+      calculateOmega_CM = function() {
+        var i, I_CM = 0, L_CM = 0;
+        for (i = 0; i < N; i++) {
+          // I_CM = sum over N of of mr_i x p_i (where r_i and p_i are position & momentum vectors relative to the CM)
+          I_CM += mass[i] * cross( [x[i]-x_CM, y[i]-y_CM], [vx[i]-vx_CM, vy[i]-vy_CM]);
+          L_CM += mass[i] * sumSquare( x[i]-x_CM, y[i]-y_CM );
+        }
+        return I_CM / L_CM;
+      },
+
       convertToReal = function(i) {
         vx[i] += vx_CM;
         vy[i] += vy_CM;
@@ -401,6 +419,7 @@ makeIntegrator = function(args) {
       vx_CM = px_CM / totalMass;
       vy_CM = py_CM / totalMass;
 
+      omega_CM = calculateOmega_CM();
 
   outputState.time = time;
 
@@ -585,6 +604,7 @@ makeIntegrator = function(args) {
         vx_CM = px_CM / totalMass;
         vy_CM = py_CM / totalMass;
 
+        omega_CM = calculateOmega_CM();
 
         for (i = 0; i < n; i++) {
 
