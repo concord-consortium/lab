@@ -131,6 +131,11 @@ model.getLJSigma = function() {
   return lennardJones.coefficients().sigma;
 };
 
+// Returns the LJ calculator. Be careful with it!
+model.getLJCalculator = function() {
+  return lennardJones;
+};
+
 //
 // Calculate the minimum and maximum distances for applying Lennard-Jones forces
 //
