@@ -70,10 +70,10 @@ modeler.model = function() {
 
   //
   // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
-  // within a range of 0..10 to the 'real' temperature <mv^2>/2k (remember there's only 2 DOF)
+  // within a range of 0..50 to the 'real' temperature <mv^2>/2k (remember there's only 2N DOF)
   //
   function abstract_to_real_temperature(t) {
-    return 0.1 + 19.99*t;  // Translate 0..10 to 0.1..200
+    return 5 + t * (2500-5)/25;  // Translate 0..25 to 5K..2500K
   }
 
   function average_speed() {

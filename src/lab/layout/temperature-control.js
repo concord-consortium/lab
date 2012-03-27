@@ -16,7 +16,7 @@ else {
       var temp_range = document.createElement("input");
       temp_range.type = "range";
       temp_range.min = "0";
-      temp_range.max = "10";
+      temp_range.max = "25";
       temp_range.step = "0.5";
       temp_range.value = +select_temperature.value;
       select_temperature.parentNode.replaceChild(temp_range, select_temperature);
