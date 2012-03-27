@@ -394,13 +394,13 @@ makeIntegrator = function(args) {
       },
 
       convertToReal = function(i) {
-        vx[i] += vx_CM;
-        vy[i] += vy_CM;
+        vx[i] = vx[i] + vx_CM - omega_CM * (y[i] - y_CM);
+        vy[i] = vy[i] + vy_CM + omega_CM * (x[i] - x_CM);
       },
 
       convertToInternal = function(i) {
-        vx[i] -= vx_CM;
-        vy[i] -= vy_CM;
+        vx[i] = vx[i] - vx_CM + omega_CM * (y[i] - y_CM);
+        vy[i] = vy[i] - vy_CM - omega_CM * (x[i] - x_CM);
       },
 
       i;
