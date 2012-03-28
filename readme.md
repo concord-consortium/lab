@@ -38,6 +38,9 @@ Download this and expand one of these archives to create a folder named `concord
 Open the file index.html in this folder in your browser to get a working
 offline version of this project.
 
+**NOTE:** the distribution does *not* work in Chrome due to a long-standing bug in Chrome:
+[Issue 49001: Regression: cssRules null when stylesheets loaded from local disk](http://code.google.com/p/chromium/issues/detail?id=49001)
+
 ### Updating the gh-pages branch on github
 
 After making changes that either fix bugs or add new features or examples first make sure they
