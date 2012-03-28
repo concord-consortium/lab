@@ -332,39 +332,6 @@ controllers.complexModelController = function(layout_style) {
 
   // ------------------------------------------------------------
   //
-  // Average Kinetic Energy Graph
-  //
-  // ------------------------------------------------------------
-
-  var te_data = [];
-
-  var kechart = document.getElementById("ke-chart");
-
-  var ke_graph_options = {
-    title:     "Kinetic Energy of the System",
-    xlabel:    "Model Time (ns)",
-    xmin:      0,
-    xmax:      2500,
-    sample:    sample_time,
-    ylabel:    null,
-    ymin:      0.0,
-    ymax:      200,
-    dataset:   te_data,
-    container: kechart
-  };
-
-  var ke_graph;
-
-  layout.finishSetupKEChart = function() {
-    if (undefined !== ke_graph) {
-      ke_graph.setup_graph();
-    } else {
-      ke_graph = graphx.graph(ke_graph_options);
-    }
-  }
-
-  // ------------------------------------------------------------
-  //
   // Get a few DOM elements
   //
   // ------------------------------------------------------------
