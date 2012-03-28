@@ -46,13 +46,16 @@
         _this = this;
       self = this;
       this.dom_element.mousedown(function(e) {
-        return self.set_state("down");
+        self.set_state("down");
+        return self.start_down_ticker();
       });
       this.dom_element.mouseup(function() {
+        clearInterval(_this.ticker);
         self.set_state("up");
         return self.do_action();
       });
       return this.dom_element.mouseleave(function() {
+        clearInterval(_this.ticker);
         return self.set_state("up");
       });
     };
@@ -70,6 +73,21 @@
         _results.push(action());
       }
       return _results;
+    };
+
+    ButtonComponent.prototype.start_down_ticker = function() {
+      var self;
+      self = this;
+      this.ticker_count = 0;
+      return this.ticker = setInterval(function() {
+        self.do_action();
+        self.ticker_count += 1;
+        if (self.ticker_count > 4) self.do_action();
+        if (self.ticker_count > 8) {
+          self.do_action();
+          return self.do_action();
+        }
+      }, 250);
     };
 
     return ButtonComponent;

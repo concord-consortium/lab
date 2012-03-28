@@ -942,7 +942,7 @@ k_eForce = COULOMB_CONSTANT_IN_METERS_PER_FARAD *
     Output units: eV
 */
 potential = exports.potential = function(r, q1, q2) {
-  return -k_ePotential * ((q1 * q2) / r);
+  return k_ePotential * ((q1 * q2) / r);
 },
 
 
@@ -1031,9 +1031,11 @@ exports.getLennardJonesCalculator = function(cb) {
       /**
         Input units: r_sq: nm^2
         Output units: eV
+
+        minimum is at r=rmin, V(rmin) = 0
       */
       potentialFromSquaredDistance = function(r_sq) {
-         return (alpha_Potential*Math.pow(r_sq, -6) + beta_Potential*Math.pow(r_sq, -3)) - epsilon;
+         return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3) + epsilon;
       },
 
       /**
@@ -1569,20 +1571,17 @@ makeIntegrator = function(args) {
     integrate: function(duration, dt) {
 
       // FIXME. Recommended timestep for accurate simulation is τ/200
-      // using rescaled t where t → τ(mσ²/ϵ)^½
-      // This is hardcoded below for the "Argon" case by setting dt = 10 fs:
+      // using rescaled t where t → τ(mσ²/ϵ)^½  (~= 1 ps for argon)
+      // This is hardcoded below for the "Argon" case by setting dt = 5 fs:
 
       if (duration == null)  duration = 500;  // how much "time" to integrate over
-      if (dt == null) {
-        dt = useCoulombInteraction ? 5 : 10;  // time step
-      }
+      if (dt == null) dt = 5;
 
       if (ljfLimitsNeedToBeUpdated) setup_ljf_limits();
 
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
           dt_sq = dt*dt,                      // time step, squared
-          n = nodes[0].length,                // number of particles
           i,
           j,
           v_sq, r_sq,
@@ -1646,7 +1645,7 @@ makeIntegrator = function(args) {
         //
         // Update positions for first half of verlet integration
         //
-        for (i = 0; i < n; i++) {
+        for (i = 0; i < N; i++) {
 
           // Rescale v(t) using T(t)
           if (vRescalingFactor !== 1) {
@@ -1705,11 +1704,7 @@ makeIntegrator = function(args) {
 
         omega_CM = calculateOmega_CM();
 
-        for (i = 0; i < n; i++) {
-
-          // (3) convert back to internal coordinates
-          convertToInternal(i);
-
+        for (i = 0; i < N; i++) {
           // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
@@ -1721,8 +1716,8 @@ makeIntegrator = function(args) {
 
         // Calculate a(t+dt), step 2: Sum over all pairwise interactions.
         if (useLennardJonesInteraction || useCoulombInteraction) {
-          for (i = 0; i < n; i++) {
-            for (j = i+1; j < n; j++) {
+          for (i = 0; i < N; i++) {
+            for (j = i+1; j < N; j++) {
               dx = x[j] - x[i];
               dy = y[j] - y[i];
 
@@ -1767,9 +1762,11 @@ makeIntegrator = function(args) {
         }
 
         // SECOND HALF of calculation of v(t+dt): v(t+dt) <- v1(t+dt) + 0.5*a(t+dt)*dt
-        for (i = 0; i < n; i++) {
+        for (i = 0; i < N; i++) {
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
+
+          convertToInternal(i);
 
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
           twoKE_internal += mass[i] * v_sq;
@@ -1784,21 +1781,22 @@ makeIntegrator = function(args) {
       // integration loop!
       PE = 0;
       realKEinMWUnits= 0;
-      for (i = 0; i < n; i++) {
+      for (i = 0; i < N; i++) {
         convertToReal(i);
 
         realKEinMWUnits += 0.5 * mass[i] * vx[i] * vx[i] + vy[i] * vy[i];
-        for (j = i+1; j < n; j++) {
+        for (j = i+1; j < N; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
 
           r_sq = dx*dx + dy*dy;
 
+          // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
           if (useLennardJonesInteraction ) {
-            PE += lennardJones.potentialFromSquaredDistance(r_sq);
+            PE += -lennardJones.potentialFromSquaredDistance(r_sq);
           }
           if (useCoulombInteraction) {
-            PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
+            PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
         }
       }
