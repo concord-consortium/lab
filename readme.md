@@ -25,15 +25,17 @@ our copyright applies to all resources **except** the files in the
 `vendor/` directory. The files in the `vendor/` directory are from
 third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 
-## Distribution of Project Examples
+## Distribution of Project and Examples
 
-Downloads of the generated example distribution are available from the github project downloads page:
-[concord-consortium/lab/downloads](https://github.com/concord-consortium/lab/downloads).
+Zip archives of the generated example distribution are available from the
+[gh-pages branch](https://github.com/concord-consortium/lab/tree/gh-pages) on
+the github repository for the Lab project.
 
-Click on the link titled: [lab-dist-v0.1.tar.gz](https://github.com/downloads/concord-consortium/lab/lab-dist-v0.1.tar.gz)
+- [zip archive of Lab distribution](https://github.com/concord-consortium/lab/zipball/gh-pages)
+- [tar.gz archive of Lab distribution](https://github.com/concord-consortium/lab/tarball/gh-pages)
 
-Download this and expand the archive and a folder named `dist` will be created.
-Open the file index.html in the `dist` folder in your browser. You now have a working
+Download this and expand one of these archives to create a folder named `concord-consortium-lab-xxxx`.
+Open the file index.html in this folder in your browser to get a working
 offline version of this project.
 
 ## Molecular Modeling Examples:
