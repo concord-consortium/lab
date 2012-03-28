@@ -2768,6 +2768,7 @@ exports.getLennardJonesCalculator = function(cb) {
 
 require.define("/md2d.js", function (require, module, exports, __dirname, __filename) {
     /*globals Float32Array */
+/*globals Float32Array window*/
 /*jslint eqnull: true */
 
 if (typeof window === 'undefined') window = {};
@@ -3072,6 +3073,7 @@ makeIntegrator = function(args) {
       ay                   = readWriteState.ay,
       charge               = readWriteState.charge,
       nodes                = readWriteState.nodes,
+      N                    = nodes[0].length,
       radius               = readWriteState.radius,
       speed                = readWriteState.speed,
       vx                   = readWriteState.vx,
@@ -3093,30 +3095,6 @@ makeIntegrator = function(args) {
       // Whether to immediately break out of the integration loop when the target temperature is reached.
       // Used only by relaxToTemperature()
       breakOnTargetTemperature = false,
-
-      twoKE_in_MW_Units = (function() {
-        var twoKE = 0, i, n = nodes[0].length;
-        for (i = 0; i < n; i++) {
-          twoKE += mass[i] * speed[i] * speed[i];
-        }
-        return twoKE;
-      }()),
-
-      // initial center of mass; used to calculate drift
-      CM_initial = (function() {
-        var CM = [0, 0], i, n = nodes[0].length;
-        for (i = 0; i < n; i++) {
-          CM[0] += x[i] * mass[i];
-          CM[1] += y[i] * mass[i];
-        }
-        CM[0] = CM[0] / totalMass;
-        CM[1] = CM[1] / totalMass;
-
-        return CM;
-      }()),
-
-      driftCMx = 0,
-      driftCMy = 0,
 
       // Coupling factor for Berendsen thermostat. In theory, 1 = "perfectly" constrained temperature.
       // (Of course, we're not measuring temperature *quite* correctly.)
@@ -3148,13 +3126,69 @@ makeIntegrator = function(args) {
         Output units:
           T: K
       */
-      KE_to_T = function(totalKEinMWUnits) {
-        // again kT = m<v^2>/2 in 2D
-        var averageKEinMWUnits = totalKEinMWUnits / nodes[0].length,
+      KE_to_T = function(internalKEinMWUnits) {
+        // In 2 dimensions, kT = (2/N_df) * KE
+
+        // We are using "internal coordinates" from which 2 (1?) angular and 2 translational degrees of freedom have
+        // been removed
+
+        var N_df = 2 * N - 4,
+            averageKEinMWUnits = (2 / N_df) * internalKEinMWUnits,
             averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
 
         return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
-      };
+      },
+
+      x_CM, y_CM,         // x, y position of center of mass in "real" coordinates
+      px_CM, py_CM,       // x, y velocity of center of mass in "real" coordinates
+      vx_CM, vy_CM,       // x, y velocity of center of mass in "real" coordinates
+      omega_CM,           // angular velocity around the center of mass
+
+      cross = function(a, b) {
+        return a[0]*b[1] - a[1]*b[0];
+      },
+
+      sumSquare = function(a,b) {
+        return a*a + b*b;
+      },
+
+      calculateOmega_CM = function() {
+        var i, I_CM = 0, L_CM = 0;
+        for (i = 0; i < N; i++) {
+          // I_CM = sum over N of of mr_i x p_i (where r_i and p_i are position & momentum vectors relative to the CM)
+          I_CM += mass[i] * cross( [x[i]-x_CM, y[i]-y_CM], [vx[i]-vx_CM, vy[i]-vy_CM]);
+          L_CM += mass[i] * sumSquare( x[i]-x_CM, y[i]-y_CM );
+        }
+        return I_CM / L_CM;
+      },
+
+      convertToReal = function(i) {
+        vx[i] = vx[i] + vx_CM - omega_CM * (y[i] - y_CM);
+        vy[i] = vy[i] + vy_CM + omega_CM * (x[i] - x_CM);
+      },
+
+      convertToInternal = function(i) {
+        vx[i] = vx[i] - vx_CM + omega_CM * (y[i] - y_CM);
+        vy[i] = vy[i] - vy_CM - omega_CM * (x[i] - x_CM);
+      },
+
+      i;
+
+      x_CM = y_CM = px_CM = py_CM = vx_CM = vy_CM = 0;
+
+      for (i = 0; i < N; i++) {
+        x_CM += x[i];
+        y_CM += y[i];
+        px_CM += vx[i] * mass[i];
+        py_CM += vy[i] * mass[i];
+      }
+
+      x_CM /= N;
+      y_CM /= N;
+      vx_CM = px_CM / totalMass;
+      vy_CM = py_CM / totalMass;
+
+      omega_CM = calculateOmega_CM();
 
   outputState.time = time;
 
@@ -3215,7 +3249,9 @@ makeIntegrator = function(args) {
       // This is hardcoded below for the "Argon" case by setting dt = 10 fs:
 
       if (duration == null)  duration = 500;  // how much "time" to integrate over
-      if (dt == null)        dt = 10;     // time step
+      if (dt == null) {
+        dt = useCoulombInteraction ? 5 : 10;  // time step
+      }
 
       if (ljfLimitsNeedToBeUpdated) setup_ljf_limits();
 
@@ -3226,6 +3262,8 @@ makeIntegrator = function(args) {
           i,
           j,
           v_sq, r_sq,
+
+          x_sum, y_sum,
 
           cutoffDistance_LJ_sq      = cutoffDistance_LJ * cutoffDistance_LJ,
           maxLJRepulsion_sq         = maxLJRepulsion * maxLJRepulsion,
@@ -3238,18 +3276,23 @@ makeIntegrator = function(args) {
           rightwall  = size[0] - radius[0],
           topwall    = size[1] - radius[0],
 
-          PE,                               // potential energy
-          CM,                               // center of mass as [x, y] in nm
-          pCMx,                             // total (center-of-mass) momentum, x component, in Dalton * nm/fs
-          pCMy,                             // total (center-of-mass) momentum, y component, in Dalton * nm/fs
-          vCMx,                             // velocity of center of mass, x component, in nm/fs
-          vCMy,                             // velocity of center of mass, y component, in nm/fs
+          realKEinMWUnits,   // KE in "real" coordinates, in MW Units
+          PE,                // potential energy, in eV
 
-          T = KE_to_T(twoKE_in_MW_Units/2), // instantaneous temperature, in Kelvin
-          vRescalingFactor;                 // rescaling factor for Berendsen thermostat
+          twoKE_internal,    // 2*KE in "internal" coordinates, in MW Units
+          T,                 // instantaneous temperature, in Kelvin
+          vRescalingFactor;  // rescaling factor for Berendsen thermostat
 
           // measurements to be accumulated during the integration loop:
           // pressure = 0;
+
+      // when coordinates are converted to "real" coordinates when leaving this method, so convert back
+      twoKE_internal = 0;
+      for (i = 0; i < N; i++) {
+        convertToInternal(i);
+        twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+      }
+      T = KE_to_T( twoKE_internal/2 );
 
       // update time
       for (iloop = 1; iloop <= n_steps; iloop++) {
@@ -3266,9 +3309,12 @@ makeIntegrator = function(args) {
           vRescalingFactor = Math.sqrt(1 + thermostatCouplingFactor * (T_target / T - 1));
         }
 
-        // Initialize sums such as 'twoKE' which need be accumulated once per integration loop:
-        twoKE_in_MW_Units = 0;
-        CM = [0, 0];
+        // Initialize sums such as 'twoKE_internal' which need be accumulated once per integration loop:
+        twoKE_internal = 0;
+        x_sum = 0;
+        y_sum = 0;
+        px_CM = 0;
+        py_CM = 0;
 
         //
         // Use velocity Verlet integration to continue particle movement integrating acceleration with
@@ -3284,6 +3330,9 @@ makeIntegrator = function(args) {
             vy[i] *= vRescalingFactor;
           }
 
+          // (1) convert velocities from "internal" to "real" velocities before calculating x, y and updating px, py
+          convertToReal(i);
+
           // calculate x(t+dt) from v(t) and a(t)
           x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
           y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
@@ -3291,7 +3340,7 @@ makeIntegrator = function(args) {
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
           speed[i] = Math.sqrt(v_sq);
 
-          // Bounce off vertical walls
+          // Bounce off vertical walls.
           if (x[i] < leftwall) {
             x[i]  = leftwall + (leftwall - x[i]);
             vx[i] *= -1;
@@ -3309,21 +3358,39 @@ makeIntegrator = function(args) {
             vy[i] *= -1;
           }
 
-          // Accumulate xs & ys for CM (AFTER collision)
-          CM[0] += x[i] * mass[i];
-          CM[1] += y[i] * mass[i];
+          // Bouncing of walls like changes the overall momentum and center of mass, so accumulate them for later
+          px_CM += mass[i] * vx[i];
+          py_CM += mass[i] * vy[i];
+
+          x_sum += x[i];
+          y_sum += y[i];
+        }
+
+        // (2) recaclulate CM, v_CM, omega_CM for translation back to "internal" coordinates
+
+        // Note:
+        // px_CM = px_CM(t+dt) even though we haven't updated velocities using accelerations a(t) and a(t+dt).
+        // That is because the accelerations are strictly pairwise and should be momentum-conserving.
+        // Momentum
+
+        x_CM = x_sum / N;
+        y_CM = y_sum / N;
+
+        vx_CM = px_CM / totalMass;
+        vy_CM = py_CM / totalMass;
+
+        omega_CM = calculateOmega_CM();
+
+        for (i = 0; i < n; i++) {
+
+          // (3) convert back to internal coordinates
+          convertToInternal(i);
 
           // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
-        }
 
-        // Calculate center of mass and change in center of mass between t and t+dt
-        CM[0] /= totalMass;
-        CM[1] /= totalMass;
-
-        // Calculate a(t+dt), step 1: Zero out the acceleration, in order to accumulate pairwise interactions.
-        for (i = 0; i < n; i++) {
+          // now that we used ax[i], ay[i] from a(t), zero them out for accumulation of pairwise interactions in a(t+dt)
           ax[i] = 0;
           ay[i] = 0;
         }
@@ -3375,37 +3442,28 @@ makeIntegrator = function(args) {
           }
         }
 
-        pCMx = 0;
-        pCMy = 0;
-
         // SECOND HALF of calculation of v(t+dt): v(t+dt) <- v1(t+dt) + 0.5*a(t+dt)*dt
         for (i = 0; i < n; i++) {
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
 
-          pCMx += mass[i] * vx[i];
-          pCMy += mass[i] * vy[i];
-
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
-          twoKE_in_MW_Units += mass[i] * v_sq;
+          twoKE_internal += mass[i] * v_sq;
           speed[i] = Math.sqrt(v_sq);
         }
 
-        vCMx = pCMx / totalMass;
-        vCMy = pCMy / totalMass;
-
-        driftCMx += vCMx*dt;
-        driftCMy += vCMy*dt;
-
         // Calculate T(t+dt) from v(t+dt)
-        T = KE_to_T( twoKE_in_MW_Units/2 );
+        T = KE_to_T( twoKE_internal/2 );
       }
 
       // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
       // integration loop!
       PE = 0;
-
+      realKEinMWUnits= 0;
       for (i = 0; i < n; i++) {
+        convertToReal(i);
+
+        realKEinMWUnits += 0.5 * mass[i] * vx[i] * vx[i] + vy[i] * vy[i];
         for (j = i+1; j < n; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -3425,11 +3483,12 @@ makeIntegrator = function(args) {
       outputState.time = time;
       outputState.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
       outputState.PE = PE;
-      outputState.KE = 0.5 * constants.convert(twoKE_in_MW_Units, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+      outputState.KE = constants.convert(realKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
       outputState.T = T;
-      outputState.CM = CM || CM_initial;
-      outputState.vCM = [vCMx, vCMy];
-      outputState.driftCM = [driftCMx, driftCMy];
+      outputState.pCM = [px_CM, py_CM];
+      outputState.CM = [x_CM, y_CM];
+      outputState.vCM = [vx_CM, vy_CM];
+      outputState.omega_CM = omega_CM;
     }
   };
 };
@@ -3637,10 +3696,10 @@ modeler.model = function() {
 
   //
   // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
-  // within a range of 0..50 to the 'real' temperature <mv^2>/2k (remember there's only 2N DOF)
+  // within a range of 0..25 to the 'real' temperature (2/N_df) * <mv^2>/2 where N_df = 2N-4
   //
   function abstract_to_real_temperature(t) {
-    return 5 + t * (2500-5)/25;  // Translate 0..25 to 5K..2500K
+    return 5 + t * (2000-5)/25;  // Translate 0..25 to 5K..2500K
   }
 
   function average_speed() {
@@ -4488,7 +4547,6 @@ layout.canonical = {
   height: 800
 };
 
-
 layout.regular_display = false;
 
 layout.not_rendered = true;
@@ -4498,12 +4556,12 @@ layout.screen_factor = 1;
 layout.checkbox_factor = 1.1;
 layout.checkbox_scale = 1.1;
 
-layout.canonical.width  = 1280
-layout.canonical.height = 800
+layout.canonical.width  = 1280;
+layout.canonical.height = 800;
 
 layout.getDisplayProperties = function(obj) {
   if (!arguments.length) {
-    var obj = {}
+    var obj = {};
   }
   obj.screen = {
       width:  screen.width,
@@ -4520,18 +4578,18 @@ layout.getDisplayProperties = function(obj) {
   obj.page = {
       width: layout.getPageWidth(),
       height: layout.getPageHeight()
-  }
-  return obj
-}
+  };
+  return obj;
+};
 
 layout.checkForResize = function() {
   if ((layout.display.screen.width  != screen.width) ||
       (layout.display.screen.height != screen.height) ||
       (layout.display.window.width  != document.width) ||
       (layout.display.window.height != document.height)) {
-    layout.setupScreen()
+    layout.setupScreen();
   }
-}
+};
 
 layout.setupScreen = function(layout_selection) {
   var fullscreen = document.fullScreen ||
@@ -4579,7 +4637,7 @@ layout.setupScreen = function(layout_selection) {
   } else {
     if (layout.cancelFullScreen) {
       layout.cancelFullScreen = false;
-      layout.regular_display = layout.previous_display
+      layout.regular_display = layout.previous_display;
     } else {
       layout.regular_display = layout.getDisplayProperties();
     }
@@ -4629,7 +4687,7 @@ layout.setupScreen = function(layout_selection) {
     layout.regular_display = layout.getDisplayProperties();
   }
   if (layout.transform) {
-    $('input[type=checkbox]').css(layout.transform, 'scale(' + layout.checkbox_factor + ',' + layout.checkbox_factor + ')')
+    $('input[type=checkbox]').css(layout.transform, 'scale(' + layout.checkbox_factor + ',' + layout.checkbox_factor + ')');
   }
   layout.setupTemperature();
   if (benchmarks_table) {
@@ -4640,9 +4698,7 @@ layout.setupScreen = function(layout_selection) {
   // Regular Screen Layout
   //
   function setupRegularScreenMoleculeContainer() {
-    moleculecontainer.style.width = layout.display.page.width * 0.42 +"px";
-    moleculecontainer.style.height = layout.display.page.width * 0.40 - 4 +"px";
-    layout.finishSetupMoleculeContainer();
+    molecule_container.resize(layout.display.page.width * 0.42, layout.display.page.width * 0.40 - 4);
   }
 
   function setupRegularScreenPotentialChart() {
@@ -4667,9 +4723,7 @@ layout.setupScreen = function(layout_selection) {
   // Full Screen Layout
   //
   function setupFullScreenMoleculeContainer() {
-    moleculecontainer.style.width = layout.display.page.height * 0.70 + "px";
-    moleculecontainer.style.height = layout.display.page.height * 0.70 + "px";
-    layout.finishSetupMoleculeContainer();
+    molecule_container.resize(layout.display.page.width * 0.70, layout.display.page.width * 0.70);
   }
 
   function setupFullScreenPotentialChart() {
@@ -4695,9 +4749,7 @@ layout.setupScreen = function(layout_selection) {
   //
   function setupSimpleMoleculeContainer() {
     var size = layout.display.page.height * 0.74;
-    moleculecontainer.style.width = size +"px";
-    moleculecontainer.style.height = size +"px";
-    layout.finishSetupMoleculeContainer();
+    molecule_container.resize(size, size);
   }
 
   function setupDescriptionRight() {
@@ -4712,9 +4764,7 @@ layout.setupScreen = function(layout_selection) {
   //
   function setupSimpleIFrameMoleculeContainer() {
     var size = layout.display.page.height * 0.78;
-    moleculecontainer.style.width = size +"px";
-    moleculecontainer.style.height = size +"px";
-    layout.finishSetupMoleculeContainer();
+    molecule_container.resize(size, size);
   }
 
   //
@@ -4722,9 +4772,7 @@ layout.setupScreen = function(layout_selection) {
   //
   function setupSimpleFullScreenMoleculeContainer() {
     var size = layout.display.page.height * 0.75;
-    moleculecontainer.style.width = size +"px";
-    moleculecontainer.style.height = size +"px";
-    layout.finishSetupMoleculeContainer();
+    molecule_container.resize(size, size);
   }
 
   function setupFullScreenDescriptionRight() {
@@ -4733,18 +4781,18 @@ layout.setupScreen = function(layout_selection) {
       description_right.style.width = layout.display.window.width * 0.30 +"px";
     }
   }
-}
+};
 
 layout.getStyleForSelector = function(selector) {
   var rules, rule_lists = document.styleSheets;
   for(var i = 0; i < rule_lists.length; i++) {
     if (rule_lists[i]) {
       try {
-         rules = rule_lists[i].rules || rule_lists[i].cssRules
+         rules = rule_lists[i].rules || rule_lists[i].cssRules;
          if (rules) {
            for(var j = 0; j < rules.length; j++) {
              if (rules[j].selectorText == selector) {
-               return rules[j]
+               return rules[j];
              }
            }
          }
@@ -4753,12 +4801,12 @@ layout.getStyleForSelector = function(selector) {
       }
     }
   }
-  return false
+  return false;
 };
 
 // Adapted from getPageSize() by quirksmode.com
 layout.getPageHeight = function() {
-  var windowHeight
+  var windowHeight;
   if (self.innerHeight) { // all except Explorer
     windowHeight = self.innerHeight;
   } else if (document.documentElement && document.documentElement.clientHeight) {
@@ -4766,11 +4814,11 @@ layout.getPageHeight = function() {
   } else if (document.body) { // other Explorers
     windowHeight = layout.display.window.height;
   }
-  return windowHeight
-}
+  return windowHeight;
+};
 
 layout.getPageWidth = function() {
-  var windowWidth
+  var windowWidth;
   if (self.innerWidth) { // all except Explorer
     windowWidth = self.innerWidth;
   } else if (document.documentElement && document.documentElement.clientWidth) {
@@ -4778,8 +4826,8 @@ layout.getPageWidth = function() {
   } else if (document.body) { // other Explorers
     windowWidth = window.width;
   }
-  return windowWidth
-}
+  return windowWidth;
+};
 
 // http://www.zachstronaut.com/posts/2009/02/17/animate-css-transforms-firefox-webkit.html
 layout.getTransformProperty = function(element) {
@@ -4799,7 +4847,7 @@ layout.getTransformProperty = function(element) {
         }
     }
     return false;
-}
+};
 
 var description_right = document.getElementById("description-right");
 if (description_right !== null) {
@@ -4815,546 +4863,609 @@ layout.transform = layout.getTransformProperty(document.body);
 //
 // ------------------------------------------------------------
 
-var moleculecontainer = document.getElementById("molecule-container");
+layout.moleculeContainer = function(e, options) {
+  var elem = d3.select(e),
+      node = elem.node(),
+      cx = elem.property("clientWidth"),
+      cy = elem.property("clientHeight"),
+      vis1, vis, plot, 
+      playback_component, time_label,
+      padding, size,
+      mw, mh, tx, ty, stroke,
+      x, downscalex, downx,
+      y, downscaley, downy,
+      dragged,
+      pc_xpos, pc_ypos,
+      model_time_formatter = d3.format("5.3f"),
+      ns_string_prefix = "time: ",
+      ns_string_suffix = " (ns)",
+      gradient_container,
+      red_gradient,
+      blue_gradient,
+      green_gradient,
+      atom_tooltip_on,
+      offset_left, offset_top,
+      particle, label, labelEnter, tail,
+      molecule_div, molecule_div_pre,
+      default_options = {
+        title:                false,
+        xlabel:               false,
+        ylabel:               false,
+        playback_controller:  false,
+        play_only_controller: true,
+        model_time_label:     false,
+        grid_lines:           false,
+        xunits:               false,
+        yunits:               false,
+        atom_mubers:          false,
+        xmin:                 0,
+        xmax:                 10,
+        ymin:                 0,
+        ymax:                 10
+      };
 
-var mc_cx, mc_cy, mc_padding, mc_size,
-    mc_mw, mc_mh, mc_tx, mc_ty, mc_stroke,
-    mc_x, mc_downscalex, mc_downx,
-    mc_y, mc_downscaley, mc_downy,
-    mc_dragged,
-    mc_vis1, playback_component,
-    mc_vis, mc_plot, mc_time_label,
-    pc_xpos, pc_ypos,
-    model_time_formatter = d3.format("5.3f"),
-    ns_string_prefix = "time: ",
-    ns_string_suffix = " (ns)",
-    mc_red_gradient,
-    mc_blue_gradient,
-    mc_green_gradient,
-    mc_atom_tooltip_on,
-    mc_offset_left, mc_offset_top;
-
-function modelTimeLabel() {
-  return ns_string_prefix + model_time_formatter(model.stepCounter() * sample_time) + ns_string_suffix;
-}
-
-function get_x(i) {
-  return nodes[model.INDICES.X][i];
-}
-
-function get_y(i) {
-  return nodes[model.INDICES.Y][i];
-}
-
-function get_radius(i) {
-  return nodes[model.INDICES.RADIUS][i];
-}
-
-function get_speed(i) {
-  return nodes[model.INDICES.SPEED][i];
-}
-
-function get_vx(i) {
-  return nodes[model.INDICES.VX][i];
-}
-
-function get_vy(i) {
-  return nodes[model.INDICES.VY][i];
-}
-
-function get_ax(i) {
-  return nodes[model.INDICES.AX][i];
-}
-
-function get_ay(i) {
-  return nodes[model.INDICES.AY][i];
-}
-
-function get_charge(i) {
-  return nodes[model.INDICES.CHARGE][i];
-}
-
-layout.finishSetupMoleculeContainer = function() {
-  mc_graph.grid_lines = (mc_graph.grid_lines == undefined) | mc_graph.grid_lines;
-  mc_graph.xunits = (mc_graph.xunits == undefined) | mc_graph.xunits;
-  mc_graph.yunits = (mc_graph.yunits == undefined) | mc_graph.yunits;
-  mc_graph.model_time_label = (mc_graph.model_time_label == undefined) | mc_graph.model_time_label;
-
-  mc_graph.atom_mubers = (mc_graph.atom_mubers == undefined) | mc_graph.atom_mubers;
-
-  mc_graph.playback_controller = (mc_graph.playback_controller == undefined) | mc_graph.playback_controller;
-  mc_graph.playback_only_controller = (mc_graph.playback_only_controller == undefined) | mc_graph.playback_only_controller;
-
-  mc_cx = moleculecontainer.clientWidth;
-  mc_cy = moleculecontainer.clientHeight;
-
-  mc_padding = {
-     "top":    mc_graph.title  ? 40 * layout.screen_factor : 20,
-     "right":                    25,
-     "bottom": mc_graph.xlabel ? 46  * layout.screen_factor : 20,
-     "left":   mc_graph.ylabel ? 60  * layout.screen_factor : 25
-  };
-  if (mc_graph.playback_controller || mc_graph.playback_only_controller) { mc_padding.bottom += (30  * layout.screen_factor) }
-  mc_size = {
-    "width":  mc_cx - mc_padding.left - mc_padding.right,
-    "height": mc_cy - mc_padding.top  - mc_padding.bottom
-  },
-  mc_offset_left = moleculecontainer.offsetLeft + mc_padding.left,
-  mc_offset_top = moleculecontainer.offsetTop + mc_padding.top,
-  pc_xpos = mc_size.width / 2 - 50,
-  pc_ypos = mc_size.height + (mc_graph.ylabel ? 75 * layout.screen_factor : 30),
-  mc_mw = mc_size.width,
-  mc_mh = mc_size.height,
-  mc_tx = function(d, i) { return "translate(" + mc_x(d) + ",0)"; },
-  mc_ty = function(d, i) { return "translate(0," + mc_y(d) + ")"; },
-  mc_stroke = function(d, i) { return d ? "#ccc" : "#666"; }
-  // mc_x-scale
-  mc_x = d3.scale.linear()
-      .domain([mc_graph.xmin, mc_graph.xmax])
-      .range([0, mc_mw]),
-
-  // drag x-axis logic
-  mc_downscalex = mc_x.copy(),
-  mc_downx = Math.NaN,
-
-  // mc_y-scale (inverted domain)
-  mc_y = d3.scale.linear()
-      .domain([mc_graph.ymax, mc_graph.ymin])
-      .nice()
-      .range([0, mc_mh])
-      .nice(),
-
-  // drag mc_x-axis logic
-  mc_downscaley = mc_y.copy(),
-  mc_downy = Math.NaN,
-  mc_dragged = null;
-
-  if (undefined !== mc_vis) {
-    d3.select(moleculecontainer).select("svg")
-        .attr("width", mc_cx)
-        .attr("height", mc_cy);
-
-    mc_vis.select("svg")
-        .attr("width", mc_cx)
-        .attr("height", mc_cy);
-
-    mc_vis.select("rect.mc_plot")
-      .attr("width", mc_size.width)
-      .attr("height", mc_size.height)
-      .style("fill", "#EEEEEE");
-
-    mc_vis.select("svg.mc_container")
-      .attr("top", 0)
-      .attr("left", 0)
-      .attr("width", mc_size.width)
-      .attr("height", mc_size.height)
-      .attr("viewBox", "0 0 "+mc_size.width+" "+mc_size.height);
-
-    if (mc_graph.title) {
-      mc_vis.select("text.title")
-          .attr("x", mc_size.width/2)
-          .attr("dy","-1em");
+  if (options) {
+    for(var p in default_options) {
+      if (options[p] === undefined) {
+        options[p] = default_options[p];
+      }
     }
-
-    if (mc_graph.xlabel) {
-      mc_vis.select("text.xlabel")
-          .attr("x", mc_size.width/2)
-          .attr("y", mc_size.height);
-    }
-
-    if (mc_graph.ylabel) {
-      mc_vis.select("text.ylabel")
-          .attr("transform","translate(" + -40 + " " + mc_size.height/2+") rotate(-90)");
-    }
-
-    if (mc_graph.model_time_label) {
-      mc_time_label.text(modelTimeLabel())
-          .attr("x", mc_size.width - 100)
-          .attr("y", mc_size.height)
-    }
-
-    mc_vis.selectAll("g.x").remove();
-    mc_vis.selectAll("g.y").remove();
-
-    layout.update_molecule_radius();
-
-    particle.attr("cx", function(d, i) { return mc_x(get_x(i)); })
-            .attr("cy", function(d, i) { return mc_y(get_y(i)); })
-            .attr("r",  function(d, i) { return mc_x(get_radius(i)) });
-
-    label.attr("transform", function(d, i) {
-      return "translate(" + mc_x(get_x(i)) + "," + mc_y(get_y(i)) + ")";
-    });
-
-    if (mc_graph.playback_controller || mc_graph.play_only_controller) {
-      playback_component.position(pc_xpos, pc_ypos, layout.screen_factor);
-    }
-    layout.mc_redraw();
   } else {
-    mc_vis1 = d3.select(moleculecontainer).append("svg:svg")
-      .attr("width", mc_cx)
-      .attr("height", mc_cy);
-
-    mc_vis = mc_vis1.append("svg:g")
-        .attr("transform", "translate(" + mc_padding.left + "," + mc_padding.top + ")");
-
-    mc_plot = mc_vis.append("svg:rect")
-      .attr("class", "mc_plot")
-      .attr("width", mc_size.width)
-      .attr("height", mc_size.height)
-      .style("fill", "#EEEEEE");
-
-    // add Chart Title
-    if (mc_graph.title) {
-      mc_vis.append("svg:text")
-          .attr("class", "title")
-          .text(mc_graph.title)
-          .attr("x", mc_size.width/2)
-          .attr("dy","-1em")
-          .style("text-anchor","middle");
-    }
-
-    // Add the x-axis label
-    if (mc_graph.xlabel) {
-      mc_vis.append("svg:text")
-          .attr("class", "xlabel")
-          .text(mc_graph.xlabel)
-          .attr("x", mc_size.width/2)
-          .attr("y", mc_size.height)
-          .attr("dy","2.4em")
-          .style("text-anchor","middle");
-    }
-
-    // add y-axis label
-    if (mc_graph.ylabel) {
-      mc_vis.append("svg:g")
-          .append("svg:text")
-              .attr("class", "ylabel")
-              .text(mc_graph.ylabel)
-              .style("text-anchor","middle")
-              .attr("transform","translate(" + -40 + " " + mc_size.height/2+") rotate(-90)");
-    }
-
-    // add model time display
-    if (mc_graph.model_time_label) {
-      mc_time_label = mc_vis.append("svg:text")
-          .attr("class", "model_time_label")
-          .text(modelTimeLabel())
-          .attr("x", mc_size.width - 100)
-          .attr("y", mc_size.height)
-          .attr("dy","2.4em")
-          .style("text-anchor","start");
-    }
-    if (mc_graph.playback_controller) {
-      playback_component = new PlaybackComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos, layout.screen_factor);
-    }
-    if (mc_graph.play_only_controller) {
-      playback_component = new PlayOnlyComponentSVG(mc_vis1, model_player, pc_xpos, pc_ypos, layout.screen_factor);
-    }
-    layout.mc_redraw();
-    mc_create_container();
-  }
-};
-
-layout.mc_redraw = function() {
-  if (d3.event && d3.event.transform && isNaN(mc_downx) && isNaN(mc_downy)) {
-      d3.event.transform(x, y);
-  };
-
-  var mc_fx = mc_x.tickFormat(10),
-      mc_fy = mc_y.tickFormat(10);
-
-  if (mc_graph.xunits) {
-    // Regenerate x-ticks…
-    var mc_gx = mc_vis.selectAll("g.x")
-        .data(mc_x.ticks(10), String)
-        .attr("transform", mc_tx);
-
-    mc_gx.select("text")
-        .text(mc_fx);
-
-    var mc_gxe = mc_gx.enter().insert("svg:g", "a")
-        .attr("class", "x")
-        .attr("transform", mc_tx);
-
-    if (mc_graph.grid_lines) {
-      mc_gxe.append("svg:line")
-          .attr("stroke", mc_stroke)
-          .attr("y1", 0)
-          .attr("y2", mc_size.height);
-    }
-
-    mc_gxe.append("svg:text")
-        .attr("y", mc_size.height)
-        .attr("dy", "1em")
-        .attr("text-anchor", "middle")
-        .text(mc_fx);
-
-    mc_gx.exit().remove();
+    options = default_options;
   }
 
-  if (mc_graph.xunits) {
-    // Regenerate y-ticks…
-    var mc_gy = mc_vis.selectAll("g.y")
-        .data(mc_y.ticks(10), String)
-        .attr("transform", mc_ty);
+  scale(cx, cy);
 
-    mc_gy.select("text")
-        .text(mc_fy);
+  tx = function(d, i) { return "translate(" + x(d) + ",0)"; };
+  ty = function(d, i) { return "translate(0," + y(d) + ")"; };
+  stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
-    var mc_gye = mc_gy.enter().insert("svg:g", "a")
-        .attr("class", "y")
-        .attr("transform", mc_ty)
-        .attr("background-fill", "#FFEEB6");
+  function scale(width, height) {
+    cx = width;
+    cy = height;
+    node.style.width = width +"px";
+    node.style.height = height +"px";
+    padding = {
+       "top":    options.title  ? 40 * layout.screen_factor : 20,
+       "right":                    25,
+       "bottom": options.xlabel ? 46  * layout.screen_factor : 20,
+       "left":   options.ylabel ? 60  * layout.screen_factor : 25
+    };
 
-    if (mc_graph.grid_lines) {
-      mc_gye.append("svg:line")
-          .attr("stroke", mc_stroke)
-          .attr("x1", 0)
-          .attr("x2", mc_size.width);
+    if (options.playback_controller || options.play_only_controller) {
+      padding.bottom += (30  * layout.screen_factor);
     }
 
-    mc_gye.append("svg:text")
-        .attr("x", -3)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .text(mc_fy);
+    size = {
+      "width":  cx - padding.left - padding.right,
+      "height": cy - padding.top  - padding.bottom
+    };
 
-    // update model time display
-    if (mc_graph.model_time_label) {
-      mc_time_label.text(modelTimeLabel());
+    offset_left = node.offsetLeft + padding.left;
+    offset_top = node.offsetTop + padding.top;
+    pc_xpos = size.width / 2 - 50;
+    pc_ypos = size.height + (options.ylabel ? 75 * layout.screen_factor : 30);
+    mw = size.width;
+    mh = size.height;
+
+    // x-scale
+    x = d3.scale.linear()
+        .domain([options.xmin, options.xmax])
+        .range([0, mw]);
+
+    // drag x-axis logic
+    downscalex = x.copy();
+    downx = Math.NaN;
+
+    // y-scale (inverted domain)
+    y = d3.scale.linear()
+        .domain([options.ymax, options.ymin])
+        .nice()
+        .range([0, mh])
+        .nice();
+
+    // drag x-axis logic
+    downscaley = y.copy();
+    downy = Math.NaN;
+    dragged = null;
+
+  }
+
+  function modelTimeLabel() {
+    return ns_string_prefix + model_time_formatter(model.stepCounter() * sample_time) + ns_string_suffix;
+  }
+
+  function get_x(i) {
+    return nodes[model.INDICES.X][i];
+  }
+
+  function get_y(i) {
+    return nodes[model.INDICES.Y][i];
+  }
+
+  function get_radius(i) {
+    return nodes[model.INDICES.RADIUS][i];
+  }
+
+  function get_speed(i) {
+    return nodes[model.INDICES.SPEED][i];
+  }
+
+  function get_vx(i) {
+    return nodes[model.INDICES.VX][i];
+  }
+
+  function get_vy(i) {
+    return nodes[model.INDICES.VY][i];
+  }
+
+  function get_ax(i) {
+    return nodes[model.INDICES.AX][i];
+  }
+
+  function get_ay(i) {
+    return nodes[model.INDICES.AY][i];
+  }
+
+  function get_charge(i) {
+    return nodes[model.INDICES.CHARGE][i];
+  }
+
+  function container() {
+    if (node.clientWidth && node.clientHeight) {
+      cx = node.clientWidth;
+      cy = node.clientHeight;
+      size.width  = cx - padding.left - padding.right;
+      size.height = cy - padding.top  - padding.bottom;
     }
 
-    mc_gy.exit().remove();
-  }
-}
+    if (vis === undefined) {
+      vis1 = d3.select(node).append("svg")
+        .attr("width", cx)
+        .attr("height", cy);
 
-function mc_create_container() {
-  layout.mc_container = mc_vis.append("svg:svg")
-    .attr("class", "mc_container")
-    .attr("top", 0)
-    .attr("left", 0)
-    .attr("width", mc_size.width)
-    .attr("height", mc_size.height)
-    .attr("viewBox", "0 0 "+mc_size.width+" "+mc_size.height);
+      vis = vis1.append("g")
+          .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
-  // add gradient defs
-  mc_red_gradient = layout.mc_container.append("svg:defs")
-      .append("svg:radialGradient")
-      .attr("id", "neg-grad")
-      .attr("cx", "50%")
-      .attr("cy", "47%")
-      .attr("r", "53%")
-      .attr("fx", "35%")
-      .attr("fy", "30%");
-  mc_red_gradient.append("svg:stop")
-      .attr("stop-color", "#ffefff")
-      .attr("offset", "0%");
-  mc_red_gradient.append("svg:stop")
-      .attr("stop-color", "#fdadad")
-      .attr("offset", "40%");
-  mc_red_gradient.append("svg:stop")
-      .attr("stop-color", "#e95e5e")
-      .attr("offset", "80%");
-  mc_red_gradient.append("svg:stop")
-      .attr("stop-color", "#fdadad")
-      .attr("offset", "100%");
+      plot = vis.append("rect")
+        .attr("class", "plot")
+        .attr("width", size.width)
+        .attr("height", size.height)
+        .style("fill", "#EEEEEE");
 
-  mc_blue_gradient = layout.mc_container.append("svg:defs")
-      .append("svg:radialGradient")
-      .attr("id", "pos-grad")
-      .attr("cx", "50%")
-      .attr("cy", "47%")
-      .attr("r", "53%")
-      .attr("fx", "35%")
-      .attr("fy", "30%");
-  mc_blue_gradient.append("svg:stop")
-      .attr("stop-color", "#dfffff")
-      .attr("offset", "0%");
-  mc_blue_gradient.append("svg:stop")
-      .attr("stop-color", "#9abeff")
-      .attr("offset", "40%");
-  mc_blue_gradient.append("svg:stop")
-      .attr("stop-color", "#767fbf")
-      .attr("offset", "80%");
-  mc_blue_gradient.append("svg:stop")
-      .attr("stop-color", "#9abeff")
-      .attr("offset", "100%");
+      // add Chart Title
+      if (options.title) {
+        vis.append("text")
+            .attr("class", "title")
+            .text(options.title)
+            .attr("x", size.width/2)
+            .attr("dy","-1em")
+            .style("text-anchor","middle");
+      }
 
-  mc_green_gradient = layout.mc_container.append("svg:defs")
-      .append("svg:radialGradient")
-      .attr("id", "neu-grad")
-      .attr("cx", "50%")
-      .attr("cy", "47%")
-      .attr("r", "53%")
-      .attr("fx", "35%")
-      .attr("fy", "30%");
-  mc_green_gradient.append("svg:stop")
-      .attr("stop-color", "#dfffef")
-      .attr("offset", "0%");
-  mc_green_gradient.append("svg:stop")
-      .attr("stop-color", "#75a643")
-      .attr("offset", "40%");
-  mc_green_gradient.append("svg:stop")
-      .attr("stop-color", "#2a7216")
-      .attr("offset", "80%");
-  mc_green_gradient.append("svg:stop")
-      .attr("stop-color", "#75a643")
-      .attr("offset", "100%");
-}
+      // Add the x-axis label
+      if (options.xlabel) {
+        vis.append("text")
+            .attr("class", "xlabel")
+            .text(options.xlabel)
+            .attr("x", size.width/2)
+            .attr("y", size.height)
+            .attr("dy","2.4em")
+            .style("text-anchor","middle");
+      }
 
-layout.update_molecule_radius = function() {
-  var ljf = molecules_lennard_jones.coefficients();
-  var r = ljf.rmin * mol_rmin_radius_factor;
-  model.set_radius(r);
-  layout.mc_container.selectAll("circle")
-      .data(atoms)
-    .attr("r",  function(d, i) { return mc_x(get_radius(i)) });
-  layout.mc_container.selectAll("text")
-    .attr("font-size", mc_x(r * 1.3) );
-}
+      // add y-axis label
+      if (options.ylabel) {
+        vis.append("g")
+            .append("text")
+                .attr("class", "ylabel")
+                .text(options.ylabel)
+                .style("text-anchor","middle")
+                .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+      }
 
-var particle, label, labelEnter, tail;
+      // add model time display
+      if (options.model_time_label) {
+        time_label = vis.append("text")
+            .attr("class", "model_time_label")
+            .text(modelTimeLabel())
+            .attr("x", size.width - 100)
+            .attr("y", size.height)
+            .attr("dy","2.4em")
+            .style("text-anchor","start");
+      }
+      if (options.playback_controller) {
+        playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, layout.screen_factor);
+      }
+      if (options.play_only_controller) {
+        playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, layout.screen_factor);
+      }
 
-var molecule_div = d3.select("#viz").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 1e-6);
+      molecule_div = d3.select("#viz").append("div")
+          .attr("class", "tooltip")
+          .style("opacity", 1e-6);
 
-var molecule_div_pre = molecule_div.append("pre")
+      molecule_div_pre = molecule_div.append("pre");
 
-layout.setup_particles = function() {
-  var ljf = molecules_lennard_jones.coefficients();
-  var r = ljf.rmin * mol_rmin_radius_factor;
-  model.set_radius(r);
+      redraw();
+      create_gradients();
 
-  layout.mc_container.selectAll("circle").remove();
-  layout.mc_container.selectAll("g").remove();
-
-  particle = layout.mc_container.selectAll("circle").data(atoms);
-
-  particle.enter().append("svg:circle")
-      .attr("r",  function(d, i) { return mc_x(get_radius(i)); })
-      .attr("cx", function(d, i) { return mc_x(get_x(i)); })
-      .attr("cy", function(d, i) { return mc_y(get_y(i)); })
-      .style("cursor", "crosshair")
-      .style("fill", function(d, i) {
-        if (layout.coulomb_forces_checkbox.checked) {
-          return (mc_x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')"
-        } else {
-          return "url('#neu-grad')"
-        }
-      })
-      .on("mousedown", molecule_mousedown)
-      .on("mouseout", molecule_mouseout);
-
-  var font_size = mc_x(ljf.rmin * mol_rmin_radius_factor * 1.5);
-  if (mol_number > 100) { font_size *= 0.9 };
-
-  label = layout.mc_container.selectAll("g.label")
-        .data(atoms);
-
-  labelEnter = label.enter().append("svg:g")
-      .attr("class", "label")
-      .attr("transform", function(d, i) {
-        return "translate(" + mc_x(get_x(i)) + "," + mc_y(get_y(i)) + ")";
-      });
-
-  if (mc_graph.atom_mubers) {
-    labelEnter.append("svg:text")
-        .attr("class", "index")
-        .attr("font-size", font_size)
-        .attr("style", "font-weight: bold; opacity: .7")
-        .attr("x", 0)
-        .attr("y", "0.31em")
-        .text(function(d) { return d.index; })
-  } else {
-    labelEnter.append("svg:text")
-        .attr("class", "index")
-        .attr("font-size", font_size)
-        .attr("style", "font-weight: bold; opacity: .7")
-        .attr("x", 0)
-        .attr("y", "0.31em")
-        .text(function(d, i) {
-          if (layout.coulomb_forces_checkbox.checked) {
-            return "";//, (mc_x(get_charge(i)) > 0) ? "+" : "–"
-          } else {
-            return ""
-          }
-        })
-  }
-}
-
-function molecule_mouseover(d) {
-  // molecule_div.transition()
-  //       .duration(250)
-  //       .style("opacity", 1);
-}
-
-function molecule_mousedown(d, i) {
-  if (mc_atom_tooltip_on) {
-    molecule_div.style("opacity", 1e-6);
-    mc_atom_tooltip_on = false
-  } else {
-    if (d3.event.shiftKey) {
-      mc_atom_tooltip_on = i;
     } else {
-      mc_atom_tooltip_on = false
+
+      d3.select(node).select("svg")
+          .attr("width", cx)
+          .attr("height", cy);
+
+      vis.select("svg")
+          .attr("width", cx)
+          .attr("height", cy);
+
+      vis.select("rect.plot")
+        .attr("width", size.width)
+        .attr("height", size.height)
+        .style("fill", "#EEEEEE");
+
+      vis.select("svg.container")
+        .attr("top", 0)
+        .attr("left", 0)
+        .attr("width", size.width)
+        .attr("height", size.height)
+        .attr("viewBox", "0 0 "+size.width+" "+size.height);
+
+      if (options.title) {
+        vis.select("text.title")
+            .attr("x", size.width/2)
+            .attr("dy","-1em");
+      }
+
+      if (options.xlabel) {
+        vis.select("text.xlabel")
+            .attr("x", size.width/2)
+            .attr("y", size.height);
+      }
+
+      if (options.ylabel) {
+        vis.select("text.ylabel")
+            .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+      }
+
+      if (options.model_time_label) {
+        time_label.text(modelTimeLabel())
+            .attr("x", size.width - 100)
+            .attr("y", size.height);
+      }
+
+      vis.selectAll("g.x").remove();
+      vis.selectAll("g.y").remove();
+
+      if (particle) {
+        update_molecule_radius();
+
+        particle.attr("cx", function(d, i) { return x(get_x(i)); })
+                .attr("cy", function(d, i) { return y(get_y(i)); })
+                .attr("r",  function(d, i) { return x(get_radius(i)); });
+
+        label.attr("transform", function(d, i) {
+          return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
+        });
+      }
+
+      if (options.playback_controller || options.play_only_controller) {
+        playback_component.position(pc_xpos, pc_ypos, layout.screen_factor);
+      }
+      redraw();
+
     }
-    render_atom_tooltip(i);
+
+    function redraw() {
+      if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
+          d3.event.transform(x, y);
+      }
+
+      var fx = x.tickFormat(10),
+          fy = y.tickFormat(10);
+
+      if (options.xunits) {
+        // Regenerate x-ticks…
+        var gx = vis.selectAll("g.x")
+            .data(x.ticks(10), String)
+            .attr("transform", tx);
+
+        gx.select("text")
+            .text(fx);
+
+        var gxe = gx.enter().insert("svg:g", "a")
+            .attr("class", "x")
+            .attr("transform", tx);
+
+        if (options.grid_lines) {
+          gxe.append("svg:line")
+              .attr("stroke", stroke)
+              .attr("y1", 0)
+              .attr("y2", size.height);
+        }
+
+        gxe.append("svg:text")
+            .attr("y", size.height)
+            .attr("dy", "1em")
+            .attr("text-anchor", "middle")
+            .text(fx);
+
+        gx.exit().remove();
+      }
+
+      if (options.xunits) {
+        // Regenerate y-ticks…
+        var gy = vis.selectAll("g.y")
+            .data(y.ticks(10), String)
+            .attr("transform", ty);
+
+        gy.select("text")
+            .text(fy);
+
+        var gye = gy.enter().insert("svg:g", "a")
+            .attr("class", "y")
+            .attr("transform", ty)
+            .attr("background-fill", "#FFEEB6");
+
+        if (options.grid_lines) {
+          gye.append("svg:line")
+              .attr("stroke", stroke)
+              .attr("x1", 0)
+              .attr("x2", size.width);
+        }
+
+        gye.append("svg:text")
+            .attr("x", -3)
+            .attr("dy", ".35em")
+            .attr("text-anchor", "end")
+            .text(fy);
+
+        // update model time display
+        if (options.model_time_label) {
+          time_label.text(modelTimeLabel());
+        }
+
+        gy.exit().remove();
+      }
+    }
+
+    function create_gradients() {
+      gradient_container = vis.append("svg")
+          .attr("class", "container")
+          .attr("top", 0)
+          .attr("left", 0)
+          .attr("width", size.width)
+          .attr("height", size.height)
+          .attr("viewBox", "0 0 "+size.width+" "+size.height);
+
+      red_gradient = gradient_container.append("defs")
+          .append("radialGradient")
+          .attr("id", "neg-grad")
+          .attr("cx", "50%")
+          .attr("cy", "47%")
+          .attr("r", "53%")
+          .attr("fx", "35%")
+          .attr("fy", "30%");
+      red_gradient.append("stop")
+          .attr("stop-color", "#ffefff")
+          .attr("offset", "0%");
+      red_gradient.append("stop")
+          .attr("stop-color", "#fdadad")
+          .attr("offset", "40%");
+      red_gradient.append("stop")
+          .attr("stop-color", "#e95e5e")
+          .attr("offset", "80%");
+      red_gradient.append("stop")
+          .attr("stop-color", "#fdadad")
+          .attr("offset", "100%");
+
+      blue_gradient = gradient_container.append("defs")
+          .append("radialGradient")
+          .attr("id", "pos-grad")
+          .attr("cx", "50%")
+          .attr("cy", "47%")
+          .attr("r", "53%")
+          .attr("fx", "35%")
+          .attr("fy", "30%");
+      blue_gradient.append("stop")
+          .attr("stop-color", "#dfffff")
+          .attr("offset", "0%");
+      blue_gradient.append("stop")
+          .attr("stop-color", "#9abeff")
+          .attr("offset", "40%");
+      blue_gradient.append("stop")
+          .attr("stop-color", "#767fbf")
+          .attr("offset", "80%");
+      blue_gradient.append("stop")
+          .attr("stop-color", "#9abeff")
+          .attr("offset", "100%");
+
+      green_gradient = gradient_container.append("defs")
+          .append("radialGradient")
+          .attr("id", "neu-grad")
+          .attr("cx", "50%")
+          .attr("cy", "47%")
+          .attr("r", "53%")
+          .attr("fx", "35%")
+          .attr("fy", "30%");
+      green_gradient.append("stop")
+          .attr("stop-color", "#dfffef")
+          .attr("offset", "0%");
+      green_gradient.append("stop")
+          .attr("stop-color", "#75a643")
+          .attr("offset", "40%");
+      green_gradient.append("stop")
+          .attr("stop-color", "#2a7216")
+          .attr("offset", "80%");
+      green_gradient.append("stop")
+          .attr("stop-color", "#75a643")
+          .attr("offset", "100%");
+    }
+
+    function update_molecule_radius() {
+      var ljf = model.getLJCalculator().coefficients();
+      var r = ljf.rmin * mol_rmin_radius_factor;
+      // model.set_radius(r);
+      vis.selectAll("circle")
+          .data(atoms)
+        .attr("r",  function(d, i) { return x(get_radius(i)); });
+      vis.selectAll("text")
+        .attr("font-size", x(r * 1.3) );
+    }
+
+    function setup_particles() {
+      var ljf = model.getLJCalculator().coefficients();
+      var r = ljf.rmin * mol_rmin_radius_factor;
+      model.set_radius(r);
+
+      gradient_container.selectAll("circle").remove();
+      gradient_container.selectAll("g").remove();
+
+      particle = gradient_container.selectAll("circle").data(atoms);
+
+      particle.enter().append("circle")
+          .attr("r",  function(d, i) { return x(get_radius(i)); })
+          .attr("cx", function(d, i) { return x(get_x(i)); })
+          .attr("cy", function(d, i) { return y(get_y(i)); })
+          .style("cursor", "crosshair")
+          .style("fill", function(d, i) {
+            if (layout.coulomb_forces_checkbox.checked) {
+              return (x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')";
+            } else {
+              return "url('#neu-grad')";
+            }
+          })
+          .on("mousedown", molecule_mousedown)
+          .on("mouseout", molecule_mouseout);
+
+      var font_size = x(ljf.rmin * mol_rmin_radius_factor * 1.5);
+      if (mol_number > 100) { font_size *= 0.9; }
+
+      label = gradient_container.selectAll("g.label")
+          .data(atoms);
+
+      labelEnter = label.enter().append("g")
+          .attr("class", "label")
+          .attr("transform", function(d, i) {
+            return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
+          });
+
+      if (options.atom_mubers) {
+        labelEnter.append("text")
+            .attr("class", "index")
+            .attr("font-size", font_size)
+            .attr("style", "font-weight: bold; opacity: .7")
+            .attr("x", 0)
+            .attr("y", "0.31em")
+            .text(function(d) { return d.index; });
+      } else {
+        labelEnter.append("text")
+            .attr("class", "index")
+            .attr("font-size", font_size)
+            .attr("style", "font-weight: bold; opacity: .7")
+            .attr("x", 0)
+            .attr("y", "0.31em")
+            .text(function(d, i) {
+              if (layout.coulomb_forces_checkbox.checked) {
+                return ""; //, (x(get_charge(i)) > 0) ? "+" : "–"
+              } else {
+                return;    // ""
+              }
+            });
+      }
+    }
+
+    function molecule_mouseover(d) {
+      // molecule_div.transition()
+      //       .duration(250)
+      //       .style("opacity", 1);
+    }
+
+    function molecule_mousedown(d, i) {
+      if (atom_tooltip_on) {
+        molecule_div.style("opacity", 1e-6);
+        atom_tooltip_on = false;
+      } else {
+        if (d3.event.shiftKey) {
+          atom_tooltip_on = i;
+        } else {
+          atom_tooltip_on = false;
+        }
+        render_atom_tooltip(i);
+      }
+    }
+
+    function render_atom_tooltip(i) {
+      molecule_div
+            .style("opacity", 1)
+            .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 6 + "px")
+            .style("top",  y(nodes[model.INDICES.Y][i]) + offset_top - 30 + "px")
+            .transition().duration(250);
+
+      molecule_div_pre.text(
+          modelTimeLabel() + "\n" +
+          "speed: " + d3.format("+6.3e")(get_speed(i)) + "\n" +
+          "vx:    " + d3.format("+6.3e")(get_vx(i))    + "\n" +
+          "vy:    " + d3.format("+6.3e")(get_vy(i))    + "\n" +
+          "ax:    " + d3.format("+6.3e")(get_ax(i))    + "\n" +
+          "ay:    " + d3.format("+6.3e")(get_ay(i))    + "\n"
+        );
+    }
+
+    function molecule_mousemove(d) {
+    }
+
+    function molecule_mouseout() {
+      if (!atom_tooltip_on) {
+        molecule_div.style("opacity", 1e-6);
+      }
+    }
+
+    function update_molecule_positions() {
+      // update model time display
+      if (options.model_time_label) {
+        time_label.text(modelTimeLabel());
+      }
+
+      label = elem.selectAll("g.label").data(atoms);
+
+      label.attr("transform", function(d, i) {
+          return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
+        });
+
+      particle = elem.selectAll("circle").data(atoms);
+
+      particle.attr("cx", function(d, i) {
+          return x(nodes[model.INDICES.X][i]); })
+        .attr("cy", function(d, i) {
+          return y(nodes[model.INDICES.Y][i]); })
+        .attr("r",  function(d, i) {
+          return x(nodes[model.INDICES.RADIUS][i]); });
+      if (atom_tooltip_on) {
+        render_atom_tooltip(atom_tooltip_on);
+      }
+    }
+
+    // make these private variables and functions available
+    container.node = node;
+    container.update_molecule_radius = update_molecule_radius;
+    container.setup_particles = setup_particles;
+    container.update_molecule_positions = update_molecule_positions;
+    container.scale = scale;
   }
-}
 
-function render_atom_tooltip(i) {
-  molecule_div
-        .style("opacity", 1)
-        .style("left", mc_x(nodes[model.INDICES.X][i]) + mc_offset_left + 6 + "px")
-        .style("top",  mc_y(nodes[model.INDICES.Y][i]) + mc_offset_top - 30 + "px")
-        .transition().duration(250);
+  container.resize = function(width, height) {
+    container.scale(width, height);
+    container();
+    container.setup_particles();
+  };
 
-  molecule_div_pre.text(
-      modelTimeLabel() + "\n" +
-      "speed: " + d3.format("+6.3e")(get_speed(i)) + "\n" +
-      "vx:    " + d3.format("+6.3e")(get_vx(i))    + "\n" +
-      "vy:    " + d3.format("+6.3e")(get_vy(i))    + "\n" +
-      "ax:    " + d3.format("+6.3e")(get_ax(i))    + "\n" +
-      "ay:    " + d3.format("+6.3e")(get_ay(i))    + "\n"
-    )
-}
 
-function molecule_mousemove(d) {
-}
+ if (node) { container(); }
 
-function molecule_mouseout() {
-  if (!mc_atom_tooltip_on) {
-    molecule_div.style("opacity", 1e-6);
-  }
-}
-
-layout.update_molecule_positions = function() {
-
-  // update model time display
-  if (mc_graph.model_time_label) {
-    mc_time_label.text(modelTimeLabel());
-  }
-
-  label = layout.mc_container.selectAll("g.label").data(atoms);
-
-  label.attr("transform", function(d, i) {
-      return "translate(" + mc_x(get_x(i)) + "," + mc_y(get_y(i)) + ")";
-    });
-
-  particle = layout.mc_container.selectAll("circle").data(atoms);
-
-  particle.attr("cx", function(d, i) {
-            return mc_x(nodes[model.INDICES.X][i]); })
-          .attr("cy", function(d, i) {
-            return mc_y(nodes[model.INDICES.Y][i]); })
-          .attr("r",  function(d, i) {
-            return mc_x(nodes[model.INDICES.RADIUS][i]) });
-  if (mc_atom_tooltip_on) {
-    render_atom_tooltip(mc_atom_tooltip_on)
-  }
-}
+  return container;
+};
 // ------------------------------------------------------------
 //
 //   Lennard-Jones Potential Chart
@@ -6292,7 +6403,7 @@ function coulombForcesInteractionHandler() {
     } else {
       model.set_coulomb_forces(false);
     };
-    layout.setup_particles()
+    molecule_container.setup_particles()
 };
 
 if (layout.coulomb_forces_checkbox) {
@@ -8147,16 +8258,20 @@ graphx.graph = function(options) {
 
   SliderComponent = (function() {
 
-    function SliderComponent(dom_id, value_changed_function) {
+    function SliderComponent(dom_id, value_changed_function, min, max, value) {
       this.dom_id = dom_id != null ? dom_id : "#slider";
       this.value_changed_function = value_changed_function;
+      this.min = min;
+      this.max = max;
+      this.value = value;
       this.dom_element = $(this.dom_id);
       this.dom_element.addClass('component').addClass('slider');
+      this.min = this.min || this.dom_element.attr('data-min') || 0;
+      this.max = this.max || this.dom_element.attr('data-max') || 1;
+      this.value = this.value || this.dom_element.attr('data-value') || 0.5;
       this.precision = this.dom_element.attr('data-precision') || 3;
-      this.min = this.dom_element.attr('data-min') || 0;
-      this.max = this.dom_element.attr('data-max') || 1;
-      this.value = this.dom_element.attr('data-value') || 0.5;
       this.label = this.dom_element.attr('data-label');
+      this.domain = this.max - this.min;
       this.mouse_down = false;
       this.width = this.dom_element.width();
       this.height = this.dom_element.height();
@@ -8176,14 +8291,16 @@ graphx.graph = function(options) {
       this.y1 = this.height;
       this.y2 = 0;
       this.x1 = this.x2 = midpoint;
+      this.handle_y = (this.y1 + this.y2) / 2;
+      this.handle_x = (this.x1 + this.x2) / 2;
       if (this.horizontal_orientation()) {
         midpoint = this.height / 4;
         this.y1 = this.y2 = midpoint;
         this.x1 = 0;
         this.x2 = this.width;
+        this.handle_y = (this.y1 + this.y2) / 2;
+        this.handle_x = this.value / this.domain * this.width;
       }
-      this.handle_y = (this.y1 + this.y2) / 2;
-      this.handle_x = (this.x1 + this.x2) / 2;
       this.init_slider_fill();
       this.slider_well_height = this.slider_well.height();
       this.slider_well_width = this.slider_well.width();
@@ -8220,6 +8337,12 @@ graphx.graph = function(options) {
       return this.update_handle();
     };
 
+    SliderComponent.prototype.update = function() {
+      this.update_handle();
+      this.update_slider_filled();
+      return this.update_label();
+    };
+
     SliderComponent.prototype.update_handle = function() {
       return this.handle.css('left', "" + (this.handle_x - (this.handle_width / 2)) + "px").css('top', "" + (this.handle_y - this.handle_height_offset) + "px");
     };
@@ -8228,6 +8351,14 @@ graphx.graph = function(options) {
       this.text_label = $('<div/>').addClass('label');
       this.dom_element.append(this.text_label);
       return this.update_label();
+    };
+
+    SliderComponent.prototype.set_scaled_value = function(v) {
+      var results;
+      results = this.value;
+      results = results * (this.max - this.min);
+      results = results + this.min;
+      return results;
     };
 
     SliderComponent.prototype.scaled_value = function() {
@@ -8284,9 +8415,7 @@ graphx.graph = function(options) {
         if (typeof this.value_changed_function === 'function') {
           this.value_changed_function(this.scaled_value());
         }
-        this.update_handle();
-        this.update_slider_filled();
-        return this.update_label();
+        return this.update();
       } else {
         return false;
       }
@@ -8392,3 +8521,609 @@ graphx.graph = function(options) {
   root.Thermometer = Thermometer;
 
 }).call(this);
+(function(){
+
+  // prevent a console.log from blowing things up if we are on a browser that
+  // does not support it
+  if (typeof console === 'undefined') {
+    window.console = {} ;
+    console.log = console.info = console.warn = console.error = function(){};
+  }
+
+// ------------------------------------------------------------
+//
+//   Controllers
+//
+// ------------------------------------------------------------
+
+controllers = { version: "0.0.1" };
+
+
+controllers.simpleModelController = function(layout_style) {
+
+  layout.selection = layout_style;
+
+  // ------------------------------------------------------------
+  //
+  // Main callback from model process
+  //
+  // Pass this function to be called by the model on every model step
+  //
+  // ------------------------------------------------------------
+
+  var model_listener = function(e) {
+    molecule_container.update_molecule_positions();
+    therm.add_value(model.temperature());
+    if (step_counter >= model.stepCounter()) { modelStop(); }
+  }
+
+  // ------------------------------------------------------------
+  //
+  //   Lennard-Jones Coefficients Setup
+  //
+  // ------------------------------------------------------------
+
+  var lj_coefficients = molecules_lennard_jones.coefficients();
+
+  var lj_data = {
+    coefficients: lj_coefficients,
+    variables: [
+      {
+        coefficient:"epsilon",
+        x: lj_coefficients.rmin,
+        y: lj_coefficients.epsilon
+      },
+      {
+        coefficient:"sigma",
+        x: lj_coefficients.sigma,
+        y: 0
+      }
+    ]
+  };
+
+  function update_epsilon(e) {
+    update_coefficients(molecules_lennard_jones.epsilon(e));
+  }
+
+  function update_sigma(s) {
+    update_coefficients(molecules_lennard_jones.sigma(s));
+  }
+
+  function update_coefficients(coefficients) {
+    var sigma   = coefficients.sigma,
+        epsilon = coefficients.epsilon,
+        rmin    = coefficients.rmin,
+        y;
+
+    model.set_lj_coefficients(epsilon, sigma);
+
+    lj_data.coefficients.sigma   = sigma;
+    lj_data.coefficients.epsilon = epsilon;
+    lj_data.coefficients.rmin    = rmin;
+
+    lj_data.xmax    = sigma * 3;
+    lj_data.xmin    = Math.floor(sigma/2);
+    lj_data.ymax    = Math.ceil(epsilon*-1) + 0.0;
+    lj_data.ymin    = Math.ceil(epsilon*1) - 2.0;
+
+    // update the positions of the adjustable circles on the graph
+    lj_data.variables[1].x = sigma;
+
+    // change the x value for epsilon to match the new rmin value
+    lj_data.variables[0].x = rmin;
+
+    lennard_jones_potential = []
+
+    for(var r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
+      y = molecules_lennard_jones.potential(r)
+      if (y < 100) {
+        lennard_jones_potential.push([r, y]);
+      }
+    }
+  }
+
+  // ------------------------------------------------------------
+  //
+  //   Molecular Model Setup
+  //
+  // ------------------------------------------------------------
+
+  function generate_atoms() {
+    model.nodes({ num: mol_number,
+            xdomain: 10, ydomain: 10,
+            temperature: temperature, rmin: 4.4,
+            mol_rmin_radius_factor: 0.38
+          })
+        .initialize({
+            temperature: temperature,
+            lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked,
+            coulomb_forces: layout.coulomb_forces_checkbox.checked,
+            model_listener: model_listener
+          });
+    atoms = model.get_atoms();
+    nodes = model.get_nodes();
+  }
+
+  function modelSetup() {
+    generate_atoms();
+    model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
+    model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
+    model.set_temperature_control(true);
+    model.relax();
+  }
+
+  var mol_number_to_lj_sigma_map = {
+    2: 7.0,
+    5: 6.0,
+    10: 5.5,
+    20: 5.0,
+    50: 4.5,
+    100: 4.0,
+    200: 3.5,
+    500: 3.0
+  }
+
+  function updateMolNumberViewDependencies() {
+    update_sigma(mol_number_to_lj_sigma_map[mol_number]);
+  }
+
+  // ------------------------------------------------------------
+  //
+  // Model Controller
+  //
+  // ------------------------------------------------------------
+
+  function modelController() {
+    for(i = 0; i < this.elements.length; i++) {
+        if (this.elements[i].checked) { run_mode = this.elements[i].value; }
+    }
+    switch(run_mode) {
+      case "stop":
+        modelStop();
+        break;
+      case "step":
+        modelStep();
+        break;
+      case "go":
+        modelGo();
+        break;
+      case "reset":
+        modelReset();
+        break;
+    }
+  }
+
+  function modelStop() {
+    model_stopped = true;
+    model.stop();
+  }
+
+  function modelStep() {
+    model_stopped = true;
+    model.stop();
+    if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
+      model.stepForward();
+    }
+  }
+
+  function modelGo() {
+    model_stopped = false;
+    model.on("tick", model_listener);
+    if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
+      model.resume();
+    }
+  }
+
+  function modelStepBack() {
+    modelStop();
+    model.stepBack();
+  }
+
+  function modelStepForward() {
+    model_stopped = true;
+    if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
+      model.stepForward();
+    }
+  }
+
+  function modelReset() {
+    modelSetup();
+    model.temperature(temperature);
+    updateMolNumberViewDependencies();
+    modelStop();
+    molecule_container.update_molecule_radius();
+    molecule_container.setup_particles();
+    layout.setupScreen(layout.selection);
+    step_counter = model.stepCounter();
+  }
+
+  // ------------------------------------------------------------
+  //
+  //  Wire up screen-resize handlers
+  //
+  // ------------------------------------------------------------
+
+  document.onwebkitfullscreenchange = layout.setupScreen;
+  window.onresize = layout.setupScreen;
+
+  // ------------------------------------------------------------
+  //
+  // Handle keyboard shortcuts for model operation
+  //
+  // ------------------------------------------------------------
+
+  function handleKeyboardForModel(evt) {
+    evt = (evt) ? evt : ((window.event) ? event : null);
+    if (evt) {
+      switch (evt.keyCode) {
+        case 32:                // spacebar
+        model_stopped ? modelGo() : modelStop();
+        evt.preventDefault();
+        break;
+        case 13:                // return
+        modelGo();
+        evt.preventDefault();
+        break;
+        case 37:                // left-arrow
+        modelStepBack();
+        evt.preventDefault();
+        break;
+        case 39:                // right-arrow
+        modelStepForward();
+        evt.preventDefault();
+        break;
+      }
+    }
+  }
+
+  document.onkeydown = handleKeyboardForModel;
+
+  // ------------------------------------------------------------
+  //
+  // Start the model after everything else ...
+  //
+  // ------------------------------------------------------------
+
+  modelReset();
+
+  // ------------------------------------------------------------
+  // Setup heat and cool buttons
+  // ------------------------------------------------------------
+
+  layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25)
+
+  // ------------------------------------------------------------
+  // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
+  // ------------------------------------------------------------
+
+  var therm = new Thermometer('#thermometer');
+  therm.max = 25;
+
+  var epsilon_slider  = new  SliderComponent('#attraction_slider', 
+    function (v) {
+      model.setEpsilon(v);
+    }, lj_epsilon_max, lj_epsilon_min, model.getEpsilon());
+
+  therm.add_value(model.temperature());
+
+  if (autostart) {
+    modelGo();
+  }
+}
+
+/*globals modeler, ModelPlayer, layout, graphx, molecules_lennard_jones, modelController */
+
+controllers.complexModelController = function(layout_style) {
+
+  layout.selection = layout_style;
+
+  // ------------------------------------------------------------
+  //
+  // Main callback from model process
+  //
+  // Pass this function to be called by the model on every model step
+  //
+  // ------------------------------------------------------------
+
+  var model_listener = function(e) {
+    var ke = model.ke(),
+        pe = model.pe(),
+        step_counter = model.stepCounter();
+
+    layout.speed_update();
+
+     molecule_container.update_molecule_positions();
+
+    if (model.isNewStep()) {
+      te_data.push( ke );
+      if (model_stopped) {
+        ke_graph.add_point( ke );
+        ke_graph.update_canvas();
+      } else {
+        ke_graph.add_canvas_point( ke );
+      }
+    } else {
+      ke_graph.update();
+    }
+    if (step_counter > 0.95 * ke_graph.xmax && ke_graph.xmax < maximum_model_steps) {
+      ke_graph.change_xaxis(ke_graph.xmax * 2);
+    }
+    if (step_counter >= maximum_model_steps) { modelStop(); }
+    layout.displayStats();
+    if (layout.datatable_visible) { layout.render_datatable(); }
+  };
+
+  // ------------------------------------------------------------
+  //
+  // Average Kinetic Energy Graph
+  //
+  // ------------------------------------------------------------
+
+  var te_data = [];
+
+  var kechart = document.getElementById("ke-chart");
+
+  var ke_graph_options = {
+    title:     "Kinetic Energy of the System",
+    xlabel:    "Model Time (ns)",
+    xmin:      0,
+    xmax:      2500,
+    sample:    sample_time,
+    ylabel:    null,
+    ymin:      0.0,
+    ymax:      200,
+    dataset:   te_data,
+    container: kechart
+  };
+
+  var ke_graph;
+
+  layout.finishSetupKEChart = function() {
+    if (undefined !== ke_graph) {
+      ke_graph.setup_graph();
+    } else {
+      ke_graph = graphx.graph(ke_graph_options);
+    }
+  }
+
+  // ------------------------------------------------------------
+  //
+  // Get a few DOM elements
+  //
+  // ------------------------------------------------------------
+
+  var model_controls = document.getElementById("model-controls");
+
+  if (model_controls) {
+    var model_controls_inputs = model_controls.getElementsByTagName("input");
+  }
+
+  // ------------------------------------------------------------
+  //
+  //   Molecular Model Setup
+  //
+  // ------------------------------------------------------------
+
+  function generate_atoms() {
+    model.nodes({ num: mol_number,
+            xdomain: 10, ydomain: 10,
+            temperature: temperature,
+            mol_rmin_radius_factor: 0.38
+          })
+        .initialize({
+            temperature: temperature,
+            coulomb_forces: layout.coulomb_forces_checkbox.checked,
+            model_listener: model_listener
+          });
+    atoms = model.get_atoms();
+    nodes = model.get_nodes();
+  }
+
+  function modelSetup() {
+    generate_atoms();
+    model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
+    model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
+    model.relax();
+    te_data = [model.ke()];
+  }
+
+  // ------------------------------------------------------------
+  //
+  // Molecule Number Selector
+  //
+  // ------------------------------------------------------------
+
+  var select_molecule_number = document.getElementById("select-molecule-number");
+
+  function selectMoleculeNumberChange() {
+    mol_number = +select_molecule_number.value;
+    modelReset();
+    updateMolNumberViewDependencies();
+  }
+
+  var mol_number_to_ke_yxais_map = {
+    2: 0.02 * 50 * 2,
+    5: 0.05 * 50 * 5,
+    10: 0.01 * 50 * 10,
+    20: 0.01 * 50 * 20,
+    50: 120,
+    100: 0.05 * 50 * 100,
+    200: 0.1 * 50 * 200,
+    500: 0.2 * 50 * 500
+  };
+
+  var mol_number_to_speed_yaxis_map = {
+    2: 2,
+    5: 2,
+    10: 5,
+    20: 5,
+    50: 10,
+    100: 15,
+    200: 20,
+    500: 40
+  };
+
+  function updateMolNumberViewDependencies() {
+    ke_graph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
+    layout.lj_redraw();
+    speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
+    layout.speed_update();
+    layout.speed_redraw();
+  }
+
+  select_molecule_number.onchange = selectMoleculeNumberChange;
+
+  select_molecule_number.value = mol_number;
+
+  // ------------------------------------------------------------
+  //
+  // Model Controller
+  //
+  // ------------------------------------------------------------
+
+  if (model_controls) {
+    model_controls.onchange = modelController;
+  }
+
+  function modelStop() {
+    model_stopped = true;
+    model.stop();
+    ke_graph.hide_canvas();
+    // ke_graph.new_data(ke_data);
+    if (model_controls) {
+      model_controls_inputs[0].checked = true;
+    }
+  }
+
+  function modelStep() {
+    model_stopped = true;
+    model.stop();
+    if (model.stepCounter() < maximum_model_steps) {
+      model.stepForward();
+      ke_graph.hide_canvas();
+      if (model_controls) {
+        model_controls_inputs[0].checked = true;
+      }
+    } else {
+      if (model_controls) {
+        model_controls_inputs[0].checked = false;
+      }
+    }
+  }
+
+  function modelGo() {
+    model_stopped = false;
+    model.on("tick", model_listener);
+    if (model.stepCounter() < maximum_model_steps) {
+      ke_graph.show_canvas();
+      model.resume();
+      if (model_controls) {
+        model_controls_inputs[0].checked = true;
+      }
+    } else {
+      if (model_controls) {
+        model_controls_inputs[0].checked = false;
+      }
+    }
+  }
+
+  function modelStepBack() {
+    modelStop();
+    model.stepBack();
+    ke_graph.new_data(te_data);
+  }
+
+  function modelStepForward() {
+    model_stopped = true;
+    if (model.stepCounter() < maximum_model_steps) {
+      model.stepForward();
+    } else {
+      if (model_controls) {
+        model_controls_inputs[0].checked = true;
+      }
+    }
+  }
+
+  function modelReset() {
+    mol_number = +select_molecule_number.value;
+    update_coefficients(molecules_lennard_jones.coefficients());
+    modelSetup();
+    model.temperature(temperature);
+    layout.temperature_control_checkbox.onchange();
+    molecule_container.update_molecule_radius();
+    molecule_container.setup_particles();
+    layout.setupScreen(layout.selection);
+    updateMolNumberViewDependencies();
+    modelStop();
+
+    step_counter = model.stepCounter();
+    layout.displayStats();
+    if (layout.datatable_visible) {
+      layout.render_datatable(true);
+    } else {
+      layout.hide_datatable();
+    }
+    te_data = [model.ke()];
+    ke_graph.new_data(te_data);
+    ke_graph.hide_canvas();
+    if (model_controls) {
+      model_controls_inputs[0].checked = true;
+    }
+  }
+
+  // ------------------------------------------------------------
+  //
+  //  Wire up screen-resize handlers
+  //
+  // ------------------------------------------------------------
+
+  document.onwebkitfullscreenchange = layout.setupScreen;
+  window.onresize = layout.setupScreen;
+
+  // ------------------------------------------------------------
+  //
+  // Handle keyboard shortcuts for model operation
+  //
+  // ------------------------------------------------------------
+
+  function handleKeyboardForModel(evt) {
+    evt = (evt) ? evt : ((window.event) ? event : null);
+    if (evt) {
+      switch (evt.keyCode) {
+        case 32:                // spacebar
+          if (model_stopped) {
+            modelGo();
+          } else {
+            modelStop();
+          }
+          evt.preventDefault();
+          break;
+        case 13:                // return
+          modelGo();
+          evt.preventDefault();
+          break;
+        case 37:                // left-arrow
+          modelStepBack();
+          evt.preventDefault();
+          break;
+        case 39:                // right-arrow
+          modelStepForward();
+          evt.preventDefault();
+          break;
+      }
+    }
+  }
+
+  document.onkeydown = handleKeyboardForModel;
+
+  // ------------------------------------------------------------
+  //
+  // Start the model after everything else ...
+  //
+  // ------------------------------------------------------------
+
+  modelReset();
+  if (autostart) {
+    modelGo();
+  }
+}})();

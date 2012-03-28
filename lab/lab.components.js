@@ -1067,16 +1067,20 @@
 
   SliderComponent = (function() {
 
-    function SliderComponent(dom_id, value_changed_function) {
+    function SliderComponent(dom_id, value_changed_function, min, max, value) {
       this.dom_id = dom_id != null ? dom_id : "#slider";
       this.value_changed_function = value_changed_function;
+      this.min = min;
+      this.max = max;
+      this.value = value;
       this.dom_element = $(this.dom_id);
       this.dom_element.addClass('component').addClass('slider');
+      this.min = this.min || this.dom_element.attr('data-min') || 0;
+      this.max = this.max || this.dom_element.attr('data-max') || 1;
+      this.value = this.value || this.dom_element.attr('data-value') || 0.5;
       this.precision = this.dom_element.attr('data-precision') || 3;
-      this.min = this.dom_element.attr('data-min') || 0;
-      this.max = this.dom_element.attr('data-max') || 1;
-      this.value = this.dom_element.attr('data-value') || 0.5;
       this.label = this.dom_element.attr('data-label');
+      this.domain = this.max - this.min;
       this.mouse_down = false;
       this.width = this.dom_element.width();
       this.height = this.dom_element.height();
@@ -1096,14 +1100,16 @@
       this.y1 = this.height;
       this.y2 = 0;
       this.x1 = this.x2 = midpoint;
+      this.handle_y = (this.y1 + this.y2) / 2;
+      this.handle_x = (this.x1 + this.x2) / 2;
       if (this.horizontal_orientation()) {
         midpoint = this.height / 4;
         this.y1 = this.y2 = midpoint;
         this.x1 = 0;
         this.x2 = this.width;
+        this.handle_y = (this.y1 + this.y2) / 2;
+        this.handle_x = this.value / this.domain * this.width;
       }
-      this.handle_y = (this.y1 + this.y2) / 2;
-      this.handle_x = (this.x1 + this.x2) / 2;
       this.init_slider_fill();
       this.slider_well_height = this.slider_well.height();
       this.slider_well_width = this.slider_well.width();
@@ -1140,6 +1146,12 @@
       return this.update_handle();
     };
 
+    SliderComponent.prototype.update = function() {
+      this.update_handle();
+      this.update_slider_filled();
+      return this.update_label();
+    };
+
     SliderComponent.prototype.update_handle = function() {
       return this.handle.css('left', "" + (this.handle_x - (this.handle_width / 2)) + "px").css('top', "" + (this.handle_y - this.handle_height_offset) + "px");
     };
@@ -1148,6 +1160,14 @@
       this.text_label = $('<div/>').addClass('label');
       this.dom_element.append(this.text_label);
       return this.update_label();
+    };
+
+    SliderComponent.prototype.set_scaled_value = function(v) {
+      var results;
+      results = this.value;
+      results = results * (this.max - this.min);
+      results = results + this.min;
+      return results;
     };
 
     SliderComponent.prototype.scaled_value = function() {
@@ -1204,9 +1224,7 @@
         if (typeof this.value_changed_function === 'function') {
           this.value_changed_function(this.scaled_value());
         }
-        this.update_handle();
-        this.update_slider_filled();
-        return this.update_label();
+        return this.update();
       } else {
         return false;
       }

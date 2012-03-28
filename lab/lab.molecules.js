@@ -1089,6 +1089,7 @@ exports.getLennardJonesCalculator = function(cb) {
 
 require.define("/md2d.js", function (require, module, exports, __dirname, __filename) {
     /*globals Float32Array */
+/*globals Float32Array window*/
 /*jslint eqnull: true */
 
 if (typeof window === 'undefined') window = {};
@@ -1393,6 +1394,7 @@ makeIntegrator = function(args) {
       ay                   = readWriteState.ay,
       charge               = readWriteState.charge,
       nodes                = readWriteState.nodes,
+      N                    = nodes[0].length,
       radius               = readWriteState.radius,
       speed                = readWriteState.speed,
       vx                   = readWriteState.vx,
@@ -1414,30 +1416,6 @@ makeIntegrator = function(args) {
       // Whether to immediately break out of the integration loop when the target temperature is reached.
       // Used only by relaxToTemperature()
       breakOnTargetTemperature = false,
-
-      twoKE_in_MW_Units = (function() {
-        var twoKE = 0, i, n = nodes[0].length;
-        for (i = 0; i < n; i++) {
-          twoKE += mass[i] * speed[i] * speed[i];
-        }
-        return twoKE;
-      }()),
-
-      // initial center of mass; used to calculate drift
-      CM_initial = (function() {
-        var CM = [0, 0], i, n = nodes[0].length;
-        for (i = 0; i < n; i++) {
-          CM[0] += x[i] * mass[i];
-          CM[1] += y[i] * mass[i];
-        }
-        CM[0] = CM[0] / totalMass;
-        CM[1] = CM[1] / totalMass;
-
-        return CM;
-      }()),
-
-      driftCMx = 0,
-      driftCMy = 0,
 
       // Coupling factor for Berendsen thermostat. In theory, 1 = "perfectly" constrained temperature.
       // (Of course, we're not measuring temperature *quite* correctly.)
@@ -1469,13 +1447,69 @@ makeIntegrator = function(args) {
         Output units:
           T: K
       */
-      KE_to_T = function(totalKEinMWUnits) {
-        // again kT = m<v^2>/2 in 2D
-        var averageKEinMWUnits = totalKEinMWUnits / nodes[0].length,
+      KE_to_T = function(internalKEinMWUnits) {
+        // In 2 dimensions, kT = (2/N_df) * KE
+
+        // We are using "internal coordinates" from which 2 (1?) angular and 2 translational degrees of freedom have
+        // been removed
+
+        var N_df = 2 * N - 4,
+            averageKEinMWUnits = (2 / N_df) * internalKEinMWUnits,
             averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
 
         return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
-      };
+      },
+
+      x_CM, y_CM,         // x, y position of center of mass in "real" coordinates
+      px_CM, py_CM,       // x, y velocity of center of mass in "real" coordinates
+      vx_CM, vy_CM,       // x, y velocity of center of mass in "real" coordinates
+      omega_CM,           // angular velocity around the center of mass
+
+      cross = function(a, b) {
+        return a[0]*b[1] - a[1]*b[0];
+      },
+
+      sumSquare = function(a,b) {
+        return a*a + b*b;
+      },
+
+      calculateOmega_CM = function() {
+        var i, I_CM = 0, L_CM = 0;
+        for (i = 0; i < N; i++) {
+          // I_CM = sum over N of of mr_i x p_i (where r_i and p_i are position & momentum vectors relative to the CM)
+          I_CM += mass[i] * cross( [x[i]-x_CM, y[i]-y_CM], [vx[i]-vx_CM, vy[i]-vy_CM]);
+          L_CM += mass[i] * sumSquare( x[i]-x_CM, y[i]-y_CM );
+        }
+        return I_CM / L_CM;
+      },
+
+      convertToReal = function(i) {
+        vx[i] = vx[i] + vx_CM - omega_CM * (y[i] - y_CM);
+        vy[i] = vy[i] + vy_CM + omega_CM * (x[i] - x_CM);
+      },
+
+      convertToInternal = function(i) {
+        vx[i] = vx[i] - vx_CM + omega_CM * (y[i] - y_CM);
+        vy[i] = vy[i] - vy_CM - omega_CM * (x[i] - x_CM);
+      },
+
+      i;
+
+      x_CM = y_CM = px_CM = py_CM = vx_CM = vy_CM = 0;
+
+      for (i = 0; i < N; i++) {
+        x_CM += x[i];
+        y_CM += y[i];
+        px_CM += vx[i] * mass[i];
+        py_CM += vy[i] * mass[i];
+      }
+
+      x_CM /= N;
+      y_CM /= N;
+      vx_CM = px_CM / totalMass;
+      vy_CM = py_CM / totalMass;
+
+      omega_CM = calculateOmega_CM();
 
   outputState.time = time;
 
@@ -1536,7 +1570,9 @@ makeIntegrator = function(args) {
       // This is hardcoded below for the "Argon" case by setting dt = 10 fs:
 
       if (duration == null)  duration = 500;  // how much "time" to integrate over
-      if (dt == null)        dt = 10;     // time step
+      if (dt == null) {
+        dt = useCoulombInteraction ? 5 : 10;  // time step
+      }
 
       if (ljfLimitsNeedToBeUpdated) setup_ljf_limits();
 
@@ -1547,6 +1583,8 @@ makeIntegrator = function(args) {
           i,
           j,
           v_sq, r_sq,
+
+          x_sum, y_sum,
 
           cutoffDistance_LJ_sq      = cutoffDistance_LJ * cutoffDistance_LJ,
           maxLJRepulsion_sq         = maxLJRepulsion * maxLJRepulsion,
@@ -1559,18 +1597,23 @@ makeIntegrator = function(args) {
           rightwall  = size[0] - radius[0],
           topwall    = size[1] - radius[0],
 
-          PE,                               // potential energy
-          CM,                               // center of mass as [x, y] in nm
-          pCMx,                             // total (center-of-mass) momentum, x component, in Dalton * nm/fs
-          pCMy,                             // total (center-of-mass) momentum, y component, in Dalton * nm/fs
-          vCMx,                             // velocity of center of mass, x component, in nm/fs
-          vCMy,                             // velocity of center of mass, y component, in nm/fs
+          realKEinMWUnits,   // KE in "real" coordinates, in MW Units
+          PE,                // potential energy, in eV
 
-          T = KE_to_T(twoKE_in_MW_Units/2), // instantaneous temperature, in Kelvin
-          vRescalingFactor;                 // rescaling factor for Berendsen thermostat
+          twoKE_internal,    // 2*KE in "internal" coordinates, in MW Units
+          T,                 // instantaneous temperature, in Kelvin
+          vRescalingFactor;  // rescaling factor for Berendsen thermostat
 
           // measurements to be accumulated during the integration loop:
           // pressure = 0;
+
+      // when coordinates are converted to "real" coordinates when leaving this method, so convert back
+      twoKE_internal = 0;
+      for (i = 0; i < N; i++) {
+        convertToInternal(i);
+        twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+      }
+      T = KE_to_T( twoKE_internal/2 );
 
       // update time
       for (iloop = 1; iloop <= n_steps; iloop++) {
@@ -1587,9 +1630,12 @@ makeIntegrator = function(args) {
           vRescalingFactor = Math.sqrt(1 + thermostatCouplingFactor * (T_target / T - 1));
         }
 
-        // Initialize sums such as 'twoKE' which need be accumulated once per integration loop:
-        twoKE_in_MW_Units = 0;
-        CM = [0, 0];
+        // Initialize sums such as 'twoKE_internal' which need be accumulated once per integration loop:
+        twoKE_internal = 0;
+        x_sum = 0;
+        y_sum = 0;
+        px_CM = 0;
+        py_CM = 0;
 
         //
         // Use velocity Verlet integration to continue particle movement integrating acceleration with
@@ -1605,6 +1651,9 @@ makeIntegrator = function(args) {
             vy[i] *= vRescalingFactor;
           }
 
+          // (1) convert velocities from "internal" to "real" velocities before calculating x, y and updating px, py
+          convertToReal(i);
+
           // calculate x(t+dt) from v(t) and a(t)
           x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
           y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
@@ -1612,7 +1661,7 @@ makeIntegrator = function(args) {
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
           speed[i] = Math.sqrt(v_sq);
 
-          // Bounce off vertical walls
+          // Bounce off vertical walls.
           if (x[i] < leftwall) {
             x[i]  = leftwall + (leftwall - x[i]);
             vx[i] *= -1;
@@ -1630,21 +1679,39 @@ makeIntegrator = function(args) {
             vy[i] *= -1;
           }
 
-          // Accumulate xs & ys for CM (AFTER collision)
-          CM[0] += x[i] * mass[i];
-          CM[1] += y[i] * mass[i];
+          // Bouncing of walls like changes the overall momentum and center of mass, so accumulate them for later
+          px_CM += mass[i] * vx[i];
+          py_CM += mass[i] * vy[i];
+
+          x_sum += x[i];
+          y_sum += y[i];
+        }
+
+        // (2) recaclulate CM, v_CM, omega_CM for translation back to "internal" coordinates
+
+        // Note:
+        // px_CM = px_CM(t+dt) even though we haven't updated velocities using accelerations a(t) and a(t+dt).
+        // That is because the accelerations are strictly pairwise and should be momentum-conserving.
+        // Momentum
+
+        x_CM = x_sum / N;
+        y_CM = y_sum / N;
+
+        vx_CM = px_CM / totalMass;
+        vy_CM = py_CM / totalMass;
+
+        omega_CM = calculateOmega_CM();
+
+        for (i = 0; i < n; i++) {
+
+          // (3) convert back to internal coordinates
+          convertToInternal(i);
 
           // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
-        }
 
-        // Calculate center of mass and change in center of mass between t and t+dt
-        CM[0] /= totalMass;
-        CM[1] /= totalMass;
-
-        // Calculate a(t+dt), step 1: Zero out the acceleration, in order to accumulate pairwise interactions.
-        for (i = 0; i < n; i++) {
+          // now that we used ax[i], ay[i] from a(t), zero them out for accumulation of pairwise interactions in a(t+dt)
           ax[i] = 0;
           ay[i] = 0;
         }
@@ -1696,37 +1763,28 @@ makeIntegrator = function(args) {
           }
         }
 
-        pCMx = 0;
-        pCMy = 0;
-
         // SECOND HALF of calculation of v(t+dt): v(t+dt) <- v1(t+dt) + 0.5*a(t+dt)*dt
         for (i = 0; i < n; i++) {
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
 
-          pCMx += mass[i] * vx[i];
-          pCMy += mass[i] * vy[i];
-
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
-          twoKE_in_MW_Units += mass[i] * v_sq;
+          twoKE_internal += mass[i] * v_sq;
           speed[i] = Math.sqrt(v_sq);
         }
 
-        vCMx = pCMx / totalMass;
-        vCMy = pCMy / totalMass;
-
-        driftCMx += vCMx*dt;
-        driftCMy += vCMy*dt;
-
         // Calculate T(t+dt) from v(t+dt)
-        T = KE_to_T( twoKE_in_MW_Units/2 );
+        T = KE_to_T( twoKE_internal/2 );
       }
 
       // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
       // integration loop!
       PE = 0;
-
+      realKEinMWUnits= 0;
       for (i = 0; i < n; i++) {
+        convertToReal(i);
+
+        realKEinMWUnits += 0.5 * mass[i] * vx[i] * vx[i] + vy[i] * vy[i];
         for (j = i+1; j < n; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -1746,11 +1804,12 @@ makeIntegrator = function(args) {
       outputState.time = time;
       outputState.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
       outputState.PE = PE;
-      outputState.KE = 0.5 * constants.convert(twoKE_in_MW_Units, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+      outputState.KE = constants.convert(realKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
       outputState.T = T;
-      outputState.CM = CM || CM_initial;
-      outputState.vCM = [vCMx, vCMy];
-      outputState.driftCM = [driftCMx, driftCMy];
+      outputState.pCM = [px_CM, py_CM];
+      outputState.CM = [x_CM, y_CM];
+      outputState.vCM = [vx_CM, vy_CM];
+      outputState.omega_CM = omega_CM;
     }
   };
 };
@@ -1958,10 +2017,10 @@ modeler.model = function() {
 
   //
   // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
-  // within a range of 0..50 to the 'real' temperature <mv^2>/2k (remember there's only 2N DOF)
+  // within a range of 0..25 to the 'real' temperature (2/N_df) * <mv^2>/2 where N_df = 2N-4
   //
   function abstract_to_real_temperature(t) {
-    return 5 + t * (2500-5)/25;  // Translate 0..25 to 5K..2500K
+    return 5 + t * (2000-5)/25;  // Translate 0..25 to 5K..2500K
   }
 
   function average_speed() {
