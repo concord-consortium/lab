@@ -7,7 +7,6 @@ class Component
       @dom_element = $('<div>')
     @dom_element.addClass('component')
 
-
 class ButtonComponent extends Component
   constructor: (@dom_id,@name='play',@actions = []) ->
     super(@dom_id)
@@ -24,11 +23,15 @@ class ButtonComponent extends Component
     self = this
     @dom_element.mousedown  (e) =>
       self.set_state "down"
+      self.start_down_ticker()
 
     @dom_element.mouseup =>
+      clearInterval(@ticker)
       self.set_state "up"
       self.do_action()
+
     @dom_element.mouseleave =>
+      clearInterval(@ticker)
       self.set_state "up"
 
   add_action: (action) ->
@@ -37,6 +40,19 @@ class ButtonComponent extends Component
   do_action: ->
     for action in @actions
       action()
+
+  start_down_ticker: ->
+    self = this
+    @ticker_count = 0
+    @ticker = setInterval ->
+      self.do_action()
+      self.ticker_count += 1
+      if self.ticker_count > 4
+        self.do_action()
+      if self.ticker_count > 8
+        self.do_action()
+        self.do_action()
+    , 250
 
 root.ButtonComponent = ButtonComponent
 
