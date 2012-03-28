@@ -487,7 +487,6 @@ makeIntegrator = function(args) {
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
           dt_sq = dt*dt,                      // time step, squared
-          n = nodes[0].length,                // number of particles
           i,
           j,
           v_sq, r_sq,
@@ -551,7 +550,7 @@ makeIntegrator = function(args) {
         //
         // Update positions for first half of verlet integration
         //
-        for (i = 0; i < n; i++) {
+        for (i = 0; i < N; i++) {
 
           // Rescale v(t) using T(t)
           if (vRescalingFactor !== 1) {
@@ -610,7 +609,7 @@ makeIntegrator = function(args) {
 
         omega_CM = calculateOmega_CM();
 
-        for (i = 0; i < n; i++) {
+        for (i = 0; i < N; i++) {
 
           // (3) convert back to internal coordinates
           convertToInternal(i);
@@ -626,8 +625,8 @@ makeIntegrator = function(args) {
 
         // Calculate a(t+dt), step 2: Sum over all pairwise interactions.
         if (useLennardJonesInteraction || useCoulombInteraction) {
-          for (i = 0; i < n; i++) {
-            for (j = i+1; j < n; j++) {
+          for (i = 0; i < N; i++) {
+            for (j = i+1; j < N; j++) {
               dx = x[j] - x[i];
               dy = y[j] - y[i];
 
@@ -672,7 +671,7 @@ makeIntegrator = function(args) {
         }
 
         // SECOND HALF of calculation of v(t+dt): v(t+dt) <- v1(t+dt) + 0.5*a(t+dt)*dt
-        for (i = 0; i < n; i++) {
+        for (i = 0; i < N; i++) {
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
 
@@ -689,11 +688,11 @@ makeIntegrator = function(args) {
       // integration loop!
       PE = 0;
       realKEinMWUnits= 0;
-      for (i = 0; i < n; i++) {
+      for (i = 0; i < N; i++) {
         convertToReal(i);
 
         realKEinMWUnits += 0.5 * mass[i] * vx[i] * vx[i] + vy[i] * vy[i];
-        for (j = i+1; j < n; j++) {
+        for (j = i+1; j < N; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
 
