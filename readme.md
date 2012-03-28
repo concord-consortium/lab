@@ -38,6 +38,30 @@ Download this and expand one of these archives to create a folder named `concord
 Open the file index.html in this folder in your browser to get a working
 offline version of this project.
 
+### Updating the gh-pages branch on github
+
+After making changes that either fix bugs or add new features or examples first make sure they
+are all there when you build a clean dist/ directory.
+
+    make clean; make
+
+If your testing show the bugs are fixed or the new features or examples are stable then push
+these changes to the master branch.
+
+    git push origin master
+
+Switch to the gh-pages branch and copy the changes or added files from the dist / directory into
+their correct locations in the top-level directory:
+
+    git co gh-pages
+    rsync -rvz --quiet --perms --chmod=ug=rwX,o=rX dist/ .
+
+Take a careful look at the changed files and commit and push the changes if they look appropriate.
+
+    git commit -a -m 'gh-pages master'
+    git push origin gh-pages
+    git co master
+
 ## Molecular Modeling Examples:
 
 - [Simple Atoms Model](http://lab.dev.concord.org/examples/simple-atoms-model/simple-atoms-model.html)
