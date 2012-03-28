@@ -108,16 +108,18 @@ div.tooltip {
 
 #heat_button {
   background-color: red;
-  height: 1.6em;
-  width: 2em; }
+  height: 1.8em;
+  width: 2em;
+  margin: 0.4em 1em; }
 
 #cool_button.inactive {
   background-color: #6666ff; }
 
 #cool_button {
   background-color: blue;
-  height: 1.6em;
-  width: 2em; }
+  height: 1.8em;
+  width: 2em;
+  margin: 0.4em 1em; }
 
 #intro {
   padding: 0.5em 1em 0; }
