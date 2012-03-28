@@ -696,11 +696,12 @@ makeIntegrator = function(args) {
 
           r_sq = dx*dx + dy*dy;
 
+          // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
           if (useLennardJonesInteraction ) {
-            PE += lennardJones.potentialFromSquaredDistance(r_sq);
+            PE += -lennardJones.potentialFromSquaredDistance(r_sq);
           }
           if (useCoulombInteraction) {
-            PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
+            PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
         }
       }
