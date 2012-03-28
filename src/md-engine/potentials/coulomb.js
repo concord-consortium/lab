@@ -33,7 +33,7 @@ k_eForce = COULOMB_CONSTANT_IN_METERS_PER_FARAD *
     Output units: eV
 */
 potential = exports.potential = function(r, q1, q2) {
-  return -k_ePotential * ((q1 * q2) / r);
+  return k_ePotential * ((q1 * q2) / r);
 },
 
 

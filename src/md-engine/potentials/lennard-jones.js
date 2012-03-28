@@ -59,9 +59,11 @@ exports.getLennardJonesCalculator = function(cb) {
       /**
         Input units: r_sq: nm^2
         Output units: eV
+
+        minimum is at r=rmin, V(rmin) = 0
       */
       potentialFromSquaredDistance = function(r_sq) {
-         return (alpha_Potential*Math.pow(r_sq, -6) + beta_Potential*Math.pow(r_sq, -3)) - epsilon;
+         return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3) + epsilon;
       },
 
       /**
