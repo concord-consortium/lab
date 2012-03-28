@@ -26,7 +26,7 @@ function coulombForcesInteractionHandler() {
     } else {
       model.set_coulomb_forces(false);
     };
-    layout.setup_particles()
+    molecule_container.setup_particles()
 };
 
 if (layout.coulomb_forces_checkbox) {
