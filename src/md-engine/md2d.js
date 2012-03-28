@@ -476,13 +476,11 @@ makeIntegrator = function(args) {
     integrate: function(duration, dt) {
 
       // FIXME. Recommended timestep for accurate simulation is τ/200
-      // using rescaled t where t → τ(mσ²/ϵ)^½
-      // This is hardcoded below for the "Argon" case by setting dt = 10 fs:
+      // using rescaled t where t → τ(mσ²/ϵ)^½  (~= 1 ps for argon)
+      // This is hardcoded below for the "Argon" case by setting dt = 5 fs:
 
       if (duration == null)  duration = 500;  // how much "time" to integrate over
-      if (dt == null) {
-        dt = useCoulombInteraction ? 5 : 10;  // time step
-      }
+      if (dt == null) dt = 5;
 
       if (ljfLimitsNeedToBeUpdated) setup_ljf_limits();
 
