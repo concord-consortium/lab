@@ -36,6 +36,7 @@ LAB_JS_FILES = \
 	dist/lab/lab.arrays.js \
 	dist/lab/lab.molecules.js \
 	dist/lab/lab.components.js \
+	dist/lab/lab.controllers.js \
 	dist/lab/lab.js
 
 all: \
@@ -211,7 +212,8 @@ dist/lab/lab.js: \
 	dist/lab/lab.arrays.js \
 	dist/lab/lab.layout.js \
 	dist/lab/lab.graphx.js \
-	dist/lab/lab.components.js
+	dist/lab/lab.components.js \
+  dist/lab/lab.controllers.js
 
 dist/lab/lab.grapher.js: \
 	src/lab/start.js \
@@ -257,6 +259,12 @@ dist/lab/lab.layout.js: \
 	src/lab/layout/display-stats.js \
 	src/lab/layout/fullscreen.js \
 	src/lab/layout/heat-cool-buttons.js \
+	src/lab/end.js
+
+dist/lab/lab.controllers.js: \
+	src/lab/start.js \
+	src/lab/controllers/controllers.js \
+	src/lab/controllers/simple-model-controller.js \
 	src/lab/end.js
 
 dist/lab/lab.graphx.js: \

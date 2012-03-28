@@ -1,15 +1,16 @@
 class SliderComponent
 
-  constructor: (@dom_id="#slider", @value_changed_function) ->
+  constructor: (@dom_id="#slider", @value_changed_function, @min, @max, @value) ->
     @dom_element = $(@dom_id)
     @dom_element.addClass('component').addClass('slider')
 
     # use html5 data-attributes to configure components
+    @min         = @min   || @dom_element.attr('data-min')   || 0
+    @max         = @max   || @dom_element.attr('data-max')   || 1
+    @value       = @value || @dom_element.attr('data-value') || 0.5
     @precision   = @dom_element.attr('data-precision') || 3
-    @min         = @dom_element.attr('data-min')       || 0
-    @max         = @dom_element.attr('data-max')       || 1
-    @value       = @dom_element.attr('data-value')     || 0.5
     @label       = @dom_element.attr('data-label')
+    @domain      = @max - @min
 
     @mouse_down  = false
 
@@ -29,14 +30,17 @@ class SliderComponent
     @y1 = @height
     @y2 = 0
     @x1 = @x2 = midpoint
+    @handle_y = (@y1 + @y2) / 2
+    @handle_x = (@x1 + @x2) / 2
+
     if this.horizontal_orientation()
       midpoint = @height/4
       @y1 = @y2 = midpoint
       @x1 = 0
       @x2 = @width
+      @handle_y = (@y1 + @y2) / 2
+      @handle_x = @value / @domain * @width
 
-    @handle_y = (@y1 + @y2) / 2
-    @handle_x = (@x1 + @x2) / 2
     this.init_slider_fill()
     @slider_well_height = @slider_well.height()
     @slider_well_width = @slider_well.width()
@@ -68,6 +72,11 @@ class SliderComponent
     @handle_height_offset = (@handle_height/2) - (@handle_height - @slider_well_height) / 2
     this.update_handle()
 
+  update: ->
+     this.update_handle()
+     this.update_slider_filled()
+     this.update_label()
+
   update_handle: ->
     @handle
       .css('left',"#{@handle_x - (@handle_width /2) }px")
@@ -78,6 +87,12 @@ class SliderComponent
       .addClass('label')
     @dom_element.append(@text_label)
     this.update_label()
+
+  set_scaled_value: (v) ->
+    results = @value
+    results = results * (@max - @min)
+    results = results + @min
+    results
 
   scaled_value: ->
     results = @value
@@ -120,9 +135,7 @@ class SliderComponent
         @value = @handle_y / @height
       if (typeof @value_changed_function == 'function')
         @value_changed_function(this.scaled_value())
-      this.update_handle()
-      this.update_slider_filled()
-      this.update_label()
+      this.update()
     else
       false
 
