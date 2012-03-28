@@ -12,49 +12,59 @@ function simpleGraph(elem, options) {
   }
 
   var vis, plot, title, xlabel, ylabel, points, xtic, ytic,
-      options = options || {
+      padding, size,
+      xScale, yScale, xValue, yValue, line,
+      downx = Math.NaN,
+      downy = Math.NaN,
+      dragged = null,
+      selected = null,
+      default_options = {
         "xmax": 60, "xmin": 0,
         "ymax": 40, "ymin": 0, 
         "title": "Simple Graph1",
         "xlabel": "X Axis",
         "ylabel": "Y Axis"
-      },
-      padding = {
-       "top":    options.title  ? 40 : 20,
-       "right":                 30,
-       "bottom": options.xlabel ? 60 : 10,
-       "left":   options.ylabel ? 70 : 45
-      },
+      };
 
-      size = {
-        "width":  cx - padding.left - padding.right,
-        "height": cy - padding.top  - padding.bottom
-      },
+  if (options) {
+    for(var p in default_options) {
+      if (options[p] === undefined) {
+        options[p] = default_options[p];
+      }
+    }
+  } else {
+    options = default_options;
+  }
 
-      xValue = function(d) { return d[0]; },
-      yValue = function(d) { return d[1]; },
+  options.xrange = options.xmax - options.xmin;
+  options.yrange = options.ymax - options.ymin;
 
-      xScale = d3.scale.linear()
-        .domain([options.xmin, options.xmax])
-        .range([0, size.width]),
+  padding = {
+   "top":    options.title  ? 40 : 20,
+   "right":                 30,
+   "bottom": options.xlabel ? 60 : 10,
+   "left":   options.ylabel ? 70 : 45
+  };
 
-      downx = Math.NaN,
+  size = {
+    "width":  cx - padding.left - padding.right,
+    "height": cy - padding.top  - padding.bottom
+  };
 
-      yScale = d3.scale.linear()
-        .domain([options.ymax, options.ymin]).nice()
-        .range([0, size.height]).nice(),
+  xValue = function(d) { return d[0]; };
+  yValue = function(d) { return d[1]; };
 
-      downy = Math.NaN,
+  xScale = d3.scale.linear()
+    .domain([options.xmin, options.xmax])
+    .range([0, size.width]);
 
-      dragged = null,
-      selected = null,
+  yScale = d3.scale.linear()
+    .domain([options.ymax, options.ymin]).nice()
+    .range([0, size.height]).nice();
 
-      line = d3.svg.line()
-          .x(function(d, i) { return xScale(points[i].x); })
-          .y(function(d, i) { return yScale(points[i].y); });
-
-      options.xrange = options.xmax - options.xmin;
-      options.yrange = options.ymax - options.ymin;
+  line = d3.svg.line()
+      .x(function(d, i) { return xScale(points[i].x); })
+      .y(function(d, i) { return yScale(points[i].y); });
 
   function graph(selection) {
     if (!selection) { selection = elem; };
@@ -146,7 +156,7 @@ function simpleGraph(elem, options) {
 
       points = d3.range(options.datacount).map(function(i) {
         return { x: i * options.xtic + options.xmin, y: options.ymin + yrange4 + Math.random() * yrange2 };
-      })
+      });
     }
 
     function keydown() {

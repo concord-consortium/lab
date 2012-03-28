@@ -35,7 +35,7 @@ modeler.model = function() {
       //
       // Individual property arrays for the nodes
       //
-      radius, px, py, x, y, vx, vy, speed, ax, ay, halfmass, charge,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
 
       //
       // Number of individual properties for a node
@@ -62,7 +62,7 @@ modeler.model = function() {
     SPEED    : coreModel.INDICES.SPEED,
     AX       : coreModel.INDICES.AX,
     AY       : coreModel.INDICES.AY,
-    HALFMASS : coreModel.INDICES.HALFMASS,
+    MASS     : coreModel.INDICES.MASS,
     CHARGE   : coreModel.INDICES.CHARGE
   };
 
@@ -70,10 +70,10 @@ modeler.model = function() {
 
   //
   // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
-  // within a range of 0..10 to the 'real' temperature <mv^2>/2k (remember there's only 2 DOF)
+  // within a range of 0..25 to the 'real' temperature (2/N_df) * <mv^2>/2 where N_df = 2N-4
   //
   function abstract_to_real_temperature(t) {
-    return 0.19*t + 0.1;  // Translate 0..10 to 0.1..2
+    return 5 + t * (2000-5)/25;  // Translate 0..25 to 5K..2500K
   }
 
   function average_speed() {
@@ -282,22 +282,42 @@ modeler.model = function() {
     epsilon = e;
     sigma = s;
 
-    // Does nothing useful now. TODO adapt for multiple models & multiple molecule types.
+    // TODO. Disabled for now because application.js doesn't yet know correct units, etc.
+    //coreModel.setLJEpsilon(e);
+    //coreModel.setLJSigma(s);
+  };
+
+  /** Accepts an epsilon value in eV.
+
+      Example value for argon is 0.013 (positive)
+  */
+  model.setEpsilon = function(e) {
     coreModel.setLJEpsilon(e);
+  };
+
+  /** Accepts a sigma value in nm
+
+    Example value for argon is 3.4 nm
+  */
+  model.setSigma = function(s) {
     coreModel.setLJSigma(s);
   };
 
   model.getEpsilon = function() {
-    return epsilon;
+    return coreModel.getLJEpsilon();
   };
 
   model.getSigma = function() {
-    return sigma;
+    return coreModel.getLJSigma();
+  };
+
+  model.getLJCalculator = function() {
+    return coreModel.getLJCalculator();
   };
 
   model.set_radius = function(r) {
-    var i, n = nodes[0].length;
-    i = -1; while(++i < n) { radius[i] = r; }
+    // var i, n = nodes[0].length;
+    // i = -1; while(++i < n) { radius[i] = r; }
   };
 
   // return a copy of the array of speeds
@@ -356,8 +376,8 @@ modeler.model = function() {
 
   model.relax = function() {
     // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
-    integrator.integrate(100, 1/20);
-    integrator.relaxToTemperature();
+    // integrator.integrate(100, 1/20);
+    // integrator.relaxToTemperature();
     return model;
   };
 
@@ -398,7 +418,7 @@ modeler.model = function() {
     speed    = coreModel.speed;
     ax       = coreModel.ax;
     ay       = coreModel.ay;
-    halfmass = coreModel.halfmass;
+    halfMass = coreModel.halfMass;
     charge   = coreModel.charge;
 
     // The d3 molecule viewer requires this length to be set correctly:
