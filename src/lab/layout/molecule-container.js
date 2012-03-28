@@ -29,9 +29,9 @@ layout.moleculeContainer = function(e, options) {
       particle, label, labelEnter, tail,
       molecule_div, molecule_div_pre,
       default_options = {
-        title:               false,
-        xlabel:              false,
-        ylabel:              false,
+        title:                false,
+        xlabel:               false,
+        ylabel:               false,
         playback_controller:  false,
         play_only_controller: true,
         model_time_label:     false,
@@ -47,7 +47,7 @@ layout.moleculeContainer = function(e, options) {
 
   if (options) {
     for(var p in default_options) {
-      if (!options[p]) {
+      if (options[p] === undefined) {
         options[p] = default_options[p];
       }
     }
