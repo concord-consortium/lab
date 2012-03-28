@@ -28,7 +28,7 @@ function simpleGraph(elem, options) {
 
   if (options) {
     for(var p in default_options) {
-      if (!options[p]) {
+      if (options[p] === undefined) {
         options[p] = default_options[p];
       }
     }
