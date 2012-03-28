@@ -610,10 +610,6 @@ makeIntegrator = function(args) {
         omega_CM = calculateOmega_CM();
 
         for (i = 0; i < N; i++) {
-
-          // (3) convert back to internal coordinates
-          convertToInternal(i);
-
           // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
@@ -674,6 +670,8 @@ makeIntegrator = function(args) {
         for (i = 0; i < N; i++) {
           vx[i] += 0.5*ax[i]*dt;
           vy[i] += 0.5*ay[i]*dt;
+
+          convertToInternal(i);
 
           v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
           twoKE_internal += mass[i] * v_sq;
