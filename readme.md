@@ -31,15 +31,19 @@ Zip archives of the generated example distribution are available from the
 [gh-pages branch](https://github.com/concord-consortium/lab/tree/gh-pages) on
 the github repository for the Lab project.
 
-- [zip archive of Lab distribution](https://github.com/concord-consortium/lab/zipball/gh-pages)
-- [tar.gz archive of Lab distribution](https://github.com/concord-consortium/lab/tarball/gh-pages)
+- [tar.gz archive of Lab distribution](https://github.com/concord-consortium/lab/tarball/gh-pages) _(9.5MB)_
+- [zip archive of Lab distribution](https://github.com/concord-consortium/lab/zipball/gh-pages) _(20MB)_
 
-Download this and expand one of these archives to create a folder named `concord-consortium-lab-xxxx`.
-Open the file index.html in this folder in your browser to get a working
+Download and expand one of these archives to create a folder named `concord-consortium-lab-xxxxxxx`.
+The seven characters at the end of the archive filename are the first seven characters of the git
+commit SHA. Open the file index.html in this folder in your browser to get a working
 offline version of this project.
 
-**NOTE:** the distribution does *not* work in Chrome due to a long-standing bug in Chrome:
-[Issue 49001: Regression: cssRules null when stylesheets loaded from local disk](http://code.google.com/p/chromium/issues/detail?id=49001)
+**NOTE:** the downloaded distribution of examples does *not* work properly
+in Chrome due to a long-standing bug in Chrome:
+[Issue 49001: Regression: cssRules null when stylesheets loaded from local disk](http://code.google.com/p/chromium/issues/detail?id=49001).
+The problem only occurs when loading the web pages directly from your filesystem. If instead you
+use a local web server on your computer to serve the downloaded distribution Chrome works properly.
 
 ### Updating the gh-pages branch on github
 
@@ -56,14 +60,14 @@ these changes to the master branch.
 Switch to the gh-pages branch and copy the changes or added files from the dist / directory into
 their correct locations in the top-level directory:
 
-    git co gh-pages
+    git checkout gh-pages
     rsync -rvz --quiet --perms --chmod=ug=rwX,o=rX dist/ .
 
 Take a careful look at the changed files and commit and push the changes if they look appropriate.
 
     git commit -a -m 'gh-pages master'
     git push origin gh-pages
-    git co master
+    git checkout master
 
 ## Molecular Modeling Examples:
 
