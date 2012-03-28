@@ -265,6 +265,7 @@ dist/lab/lab.controllers.js: \
 	src/lab/start.js \
 	src/lab/controllers/controllers.js \
 	src/lab/controllers/simple-model-controller.js \
+	src/lab/controllers/complex-model-controller.js \
 	src/lab/end.js
 
 dist/lab/lab.graphx.js: \
