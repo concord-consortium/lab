@@ -1882,6 +1882,9 @@ if (!process.binding) process.binding = function (name) {
 
 if (!process.cwd) process.cwd = function () { return '.' };
 
+if (!process.env) process.env = {};
+if (!process.argv) process.argv = [];
+
 require.define("path", function (require, module, exports, __dirname, __filename) {
 function filter (xs, fn) {
     var res = [];
@@ -5398,7 +5401,8 @@ layout.moleculeContainer = function(e, options) {
 
     function render_atom_tooltip(i) {
       molecule_div
-            .style("opacity", 1)
+            .style("opacity", 1.0)
+            .style("background", "rgba(100%, 100%, 100%, 0.5)")
             .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 6 + "px")
             .style("top",  y(nodes[model.INDICES.Y][i]) + offset_top - 30 + "px")
             .transition().duration(250);
