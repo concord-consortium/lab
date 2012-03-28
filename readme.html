@@ -25,7 +25,10 @@
 
 <ul id="markdown-toc">
   <li><a href="#license">License</a></li>
-  <li><a href="#distribution-of-project-and-examples">Distribution of Project and Examples</a></li>
+  <li><a href="#distribution-of-project-and-examples">Distribution of Project and Examples</a>    <ul>
+      <li><a href="#updating-the-gh-pages-branch-on-github">Updating the gh-pages branch on github</a></li>
+    </ul>
+  </li>
   <li><a href="#molecular-modeling-examples">Molecular Modeling Examples:</a></li>
   <li><a href="#graphing-examples">Graphing examples:</a></li>
   <li><a href="#todo">TODO</a></li>
@@ -132,6 +135,34 @@ the github repository for the Lab project.</p>
 <p>Download this and expand one of these archives to create a folder named <code>concord-consortium-lab-xxxx</code>.
 Open the file index.html in this folder in your browser to get a working
 offline version of this project.</p>
+
+<h3 id="updating-the-gh-pages-branch-on-github">Updating the gh-pages branch on github</h3>
+
+<p>After making changes that either fix bugs or add new features or examples first make sure they
+are all there when you build a clean dist/ directory.</p>
+
+<pre><code>make clean; make
+</code></pre>
+
+<p>If your testing show the bugs are fixed or the new features or examples are stable then push
+these changes to the master branch.</p>
+
+<pre><code>git push origin master
+</code></pre>
+
+<p>Switch to the gh-pages branch and copy the changes or added files from the dist / directory into
+their correct locations in the top-level directory:</p>
+
+<pre><code>git co gh-pages
+rsync -rvz --quiet --perms --chmod=ug=rwX,o=rX dist/ .
+</code></pre>
+
+<p>Take a careful look at the changed files and commit and push the changes if they look appropriate.</p>
+
+<pre><code>git commit -a -m 'gh-pages master'
+git push origin gh-pages
+git co master
+</code></pre>
 
 <h2 id="molecular-modeling-examples">Molecular Modeling Examples:</h2>
 
