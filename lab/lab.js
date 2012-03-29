@@ -2668,8 +2668,8 @@ var constants = require('../constants'),
 */
 exports.getLennardJonesCalculator = function(cb) {
 
-  var epsilon = -1.0,   // parameter; depth of the potential well, in eV
-      sigma   =  4.0,   // parameter: characteristic distance from particle, in nm
+  var epsilon,          // parameter; depth of the potential well, in eV
+      sigma,            // parameter: characteristic distance from particle, in nm
 
       rmin,             // distance from particle at which the potential is at its minimum
       alpha_Potential,  // precalculated; units are eV * nm^12
@@ -2730,9 +2730,6 @@ exports.getLennardJonesCalculator = function(cb) {
 
         return alpha_Force*r_minus14th - beta_Force*r_minus8th;
       };
-
-  // initial calculation of values dependent on (epsilon, sigma)
-  coefficients(epsilon, sigma);
 
   return {
 
@@ -3253,7 +3250,7 @@ makeIntegrator = function(args) {
       // using rescaled t where t → τ(mσ²/ϵ)^½  (~= 1 ps for argon)
       // This is hardcoded below for the "Argon" case by setting dt = 5 fs:
 
-      if (duration == null)  duration = 500;  // how much "time" to integrate over
+      if (duration == null)  duration = 250;  // how much "time" to integrate over
       if (dt == null) dt = 5;
 
       if (ljfLimitsNeedToBeUpdated) setup_ljf_limits();
@@ -4003,8 +4000,8 @@ modeler.model = function() {
 
   model.relax = function() {
     // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
-    // integrator.integrate(100, 1/20);
-    // integrator.relaxToTemperature();
+    integrator.integrate(50);
+    integrator.relaxToTemperature();
     return model;
   };
 
