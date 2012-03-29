@@ -668,6 +668,36 @@ Minimized versions of these files are also generated.
 When working on the source code please keep commits of the generated JavaScript files in the `lab/` directory
 separate from other commits to make it easier to see and understand the narrative of source code changes.
 
+### Molecular dynamics Node module: `src/md-engine`
+
+The source code of the core molecular dynamics engine is currently located in the `src/md-engine`
+directory, which is organized as a set of related Node modules. The entry point for external
+applications is the file `src/md-engine/md2d.js`.
+
+A build step uses the [`node-browserify`](https://github.com/substack/node-browserify) Node module
+to convert this entry point and all its dependencies into a single JavaScript file located at `md-
+engine/md2d.js`. Another build step automatically appends this browser-compatible version to the
+beginning of the `lab.molecules.js` file.
+
+This means that the global function `require()` is defined at the beginnig of `lab.molecules.js`,
+and can be used by any code that runs after that point to obtain the modeler defined in `md2d.js`
+and its dependencies. The argument to `require()` should be written as if one were using Node with a
+current working directory of `src/md-engine`, e.g., in a web application that includes
+`lab.molecules.js`, write `var md2d = require('./md2d');` to get a reference to the modeler.
+
+In addition, Node-based executables can be written and placed in `src/md-engine` or a subdirectory.
+These are expected to be useful for verifying and tuning the model by running the model headless and
+saving summary results into a file for offline analysis; see, e.g., [https://github.com/rklancer
+/script-md](https://github.com/rklancer/script-md).
+
+Hashbang scripts for starting these executables (i.e., files which start with the line
+`#!/usr/bin/env node` and which have the execute bit set) should be placed in the directory `node-
+bin`, and should execute by `require()`ing the appropriate module and calling its entry point
+method. Lab's `package.json` file specifies `node-bin/` as the location of the executable scripts
+which `npm` should make available whenever Lab is imported into another project as a Node module.
+(For developer convenience, `bin/` is being reserved for Ruby executables made available via
+Bundler.)
+
 ### Generated Examples: `dist/examples/`
 
 The `dist/examples/` directory is automatically generated running `make` and is not part of the repository.
