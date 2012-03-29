@@ -1623,7 +1623,7 @@ var benchmarks_to_run = [
   {
     name: "100 Steps (steps/s)",
     run: function() {
-      modelStop();
+      model_controller.modelStop();
       var start = +Date.now();
       var i = -1;
       while (i++ < 100) {
@@ -1636,12 +1636,12 @@ var benchmarks_to_run = [
   {
     name: "100 Steps w/graphics",
     run: function() {
-      modelStop();
+      model_controller.modelStop();
       var start = +Date.now();
       var i = -1;
       while (i++ < 100) {
         model.tick();
-        model_listener();
+        model_controller.modelListener();
       }
       elapsed = Date.now() - start;
       return d3.format("5.1f")(100/elapsed*1000)
