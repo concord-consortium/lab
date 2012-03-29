@@ -119,3 +119,27 @@ ul {
     .item-list ol li {
       margin: 0.5em 0.2em 0 0;
       padding: 0; }
+
+.content h2, .content p {
+  margin: 1em; }
+.content ul {
+  margin: 1em 1em 1em 2em; }
+.content .float-right {
+  float: right;
+  margin: 0.01em 0 0 1em; }
+
+@media screen and (max-width: 700px) {
+  .content .float-right {
+    clear: both;
+    float: none; } }
+.framed img {
+  margin: 1em;
+  max-width: 533px;
+  width: 100%; }
+
+.warning {
+  background: #ffcccc;
+  font-size: 0.9em;
+  margin: 0;
+  padding: 0.5em;
+  text-align: center !important; }
