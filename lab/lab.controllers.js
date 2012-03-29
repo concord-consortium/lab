@@ -573,7 +573,9 @@ controllers.complexModelController = function(layout_style) {
     }
 
     controller.modelListener = modelListener;
+    controller.modelGo = modelGo;
     controller.modelStop = modelStop;
+    controller.modelReset = modelReset;
   }
 
   controller();
