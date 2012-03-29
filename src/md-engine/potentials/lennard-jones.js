@@ -17,8 +17,8 @@ var constants = require('../constants'),
 */
 exports.getLennardJonesCalculator = function(cb) {
 
-  var epsilon = -1.0,   // parameter; depth of the potential well, in eV
-      sigma   =  4.0,   // parameter: characteristic distance from particle, in nm
+  var epsilon,          // parameter; depth of the potential well, in eV
+      sigma,            // parameter: characteristic distance from particle, in nm
 
       rmin,             // distance from particle at which the potential is at its minimum
       alpha_Potential,  // precalculated; units are eV * nm^12
@@ -79,9 +79,6 @@ exports.getLennardJonesCalculator = function(cb) {
 
         return alpha_Force*r_minus14th - beta_Force*r_minus8th;
       };
-
-  // initial calculation of values dependent on (epsilon, sigma)
-  coefficients(epsilon, sigma);
 
   return {
 
