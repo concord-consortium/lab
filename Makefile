@@ -108,7 +108,7 @@ dist: \
 	dist/vendor \
 	dist/resources \
 	dist/examples \
-	dist/tests
+	dist/experiments
 	mkdir -p dist/lab/css
 
 dist/examples:
@@ -116,8 +116,8 @@ dist/examples:
 	# copy directories, javascript, json, and image resources from src/examples/
 	rsync -avq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/examples/ dist/examples/
 
-dist/tests:
-	cp -R src/tests dist
+dist/experiments:
+	cp -R src/experiments dist
 
 dist/resources:
 	cp -R ./src/resources ./dist/
