@@ -128,16 +128,20 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 the github repository for the Lab project.</p>
 
 <ul>
-  <li><a href="https://github.com/concord-consortium/lab/zipball/gh-pages">zip archive of Lab distribution</a></li>
-  <li><a href="https://github.com/concord-consortium/lab/tarball/gh-pages">tar.gz archive of Lab distribution</a></li>
+  <li><a href="https://github.com/concord-consortium/lab/tarball/gh-pages">tar.gz archive of Lab distribution</a> <em>(9.5MB)</em></li>
+  <li><a href="https://github.com/concord-consortium/lab/zipball/gh-pages">zip archive of Lab distribution</a> <em>(20MB)</em></li>
 </ul>
 
-<p>Download this and expand one of these archives to create a folder named <code>concord-consortium-lab-xxxx</code>.
-Open the file index.html in this folder in your browser to get a working
+<p>Download and expand one of these archives to create a folder named <code>concord-consortium-lab-xxxxxxx</code>.
+The seven characters at the end of the archive filename are the first seven characters of the git
+commit SHA. Open the file index.html in this folder in your browser to get a working
 offline version of this project.</p>
 
-<p><strong>NOTE:</strong> the distribution does <em>not</em> work in Chrome due to a long-standing bug in Chrome:
-<a href="http://code.google.com/p/chromium/issues/detail?id=49001">Issue 49001: Regression: cssRules null when stylesheets loaded from local disk</a></p>
+<p><strong>NOTE:</strong> the downloaded distribution of examples does <em>not</em> work properly
+in Chrome due to a long-standing bug in Chrome:
+<a href="http://code.google.com/p/chromium/issues/detail?id=49001">Issue 49001: Regression: cssRules null when stylesheets loaded from local disk</a>.
+The problem only occurs when loading the web pages directly from your filesystem. If instead you
+use a local web server on your computer to serve the downloaded distribution Chrome works properly.</p>
 
 <h3 id="updating-the-gh-pages-branch-on-github">Updating the gh-pages branch on github</h3>
 
@@ -156,7 +160,7 @@ these changes to the master branch.</p>
 <p>Switch to the gh-pages branch and copy the changes or added files from the dist / directory into
 their correct locations in the top-level directory:</p>
 
-<pre><code>git co gh-pages
+<pre><code>git checkout gh-pages
 rsync -rvz --quiet --perms --chmod=ug=rwX,o=rX dist/ .
 </code></pre>
 
@@ -164,7 +168,7 @@ rsync -rvz --quiet --perms --chmod=ug=rwX,o=rX dist/ .
 
 <pre><code>git commit -a -m 'gh-pages master'
 git push origin gh-pages
-git co master
+git checkout master
 </code></pre>
 
 <h2 id="molecular-modeling-examples">Molecular Modeling Examples:</h2>
