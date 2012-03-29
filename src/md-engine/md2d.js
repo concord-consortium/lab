@@ -479,7 +479,7 @@ makeIntegrator = function(args) {
       // using rescaled t where t → τ(mσ²/ϵ)^½  (~= 1 ps for argon)
       // This is hardcoded below for the "Argon" case by setting dt = 5 fs:
 
-      if (duration == null)  duration = 500;  // how much "time" to integrate over
+      if (duration == null)  duration = 250;  // how much "time" to integrate over
       if (dt == null) dt = 5;
 
       if (ljfLimitsNeedToBeUpdated) setup_ljf_limits();
