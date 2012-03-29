@@ -3,8 +3,12 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <title>Two Graphs (prototypical class-pattern)</title>
+    <script type="text/javascript" src="../../vendor/modernizer/modernizer.js"></script>
     <script type="text/javascript" src="../../vendor/d3/d3.v2.js"></script>
     <script type="text/javascript" src="simple-graph.js"></script>
+    <script type="text/javascript">
+    if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
+    </script>
     <style type="text/css">
       body { font: 13px sans-serif; }
       p { font-size: 1.5em;

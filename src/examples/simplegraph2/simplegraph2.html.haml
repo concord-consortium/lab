@@ -3,10 +3,12 @@
   %head
     %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
     %title Simple Graph2
+    %script{:src => "../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
     %script{:src => "../../vendor/d3/d3.v2.js", :type => "text/javascript"}
     %script{:src => "../../lab/lab.grapher.js", :type => "text/javascript"}
     %script{:type => "text/javascript"}
       try{Typekit.load();}catch(e){}
+      if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
     %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&subset=latin,greek,latin-ext", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
   %body

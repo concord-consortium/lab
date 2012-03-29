@@ -71,3 +71,29 @@ ul
       margin: .5em 0.2em 0 0
       padding: 0
 
+.content
+  h2, p
+    margin: 1em
+  ul
+    margin: 1em 1em 1em 2em
+  .float-right
+    float: right
+    margin: .01em 0 0 1em
+@media screen and (max-width: 700px)
+  .content
+    .float-right
+      clear: both
+      float: none
+
+.framed
+  img
+    margin: 1em
+    max-width: 533px
+    width: 100%
+ 
+.warning
+  background: #fcc
+  font-size: .9em
+  margin: 0
+  padding: .5em
+  text-align: center !important
