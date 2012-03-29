@@ -1,6 +1,6 @@
 # [Lab](https://github.com/concord-consortium/lab)
 
-HTML5-based open source scientific models, visualizations, graphing, and probeware from the 
+HTML5-based open source scientific models, visualizations, graphing, and probeware from the
 [Concord Consortium](http://www.concord.org).
 
 **Table of Contents**
@@ -113,7 +113,7 @@ Once you have a working version of Ruby 1.9.2 (or newer) install the RubyGem [bu
 
     $  ruby -v
     ruby 1.9.2p290 (2011-07-09 revision 32553) [x86_64-darwin10.8.0]
-    
+
     $ gem install bundler
     Fetching: bundler-1.0.22.gem (100%)
     Successfully installed bundler-1.0.22
@@ -153,7 +153,7 @@ Make sure you have already installed the prerequistes: [Ruby 1.9](http://www.rub
 the RubyGem [bundler](http://gembundler.com/), and [nodejs](http://nodejs.org/) (which now includes
 [npm](http://npmjs.org/) the Node Package Manager.
 
-Change to the `lab/` directory and run `make clean; make` to install the runtime and development dependencies and generate 
+Change to the `lab/` directory and run `make clean; make` to install the runtime and development dependencies and generate
 the `dist/` directory:
 
     cd lab
@@ -190,7 +190,7 @@ generate the JavaScript Lab modules, the examples, and run the tests.
     bin/guard
 
 Now any change you make in `src/examples/` will generate the corresponding content in `dist/examples/`.
-In addition changes in `src/lab/` generate the associated Lab modules in `lab/` and copy these modules 
+In addition changes in `src/lab/` generate the associated Lab modules in `lab/` and copy these modules
 to `dist/lab/`. In addition any change in either the `src/lab/` or `test/`directories will run the
 tests and display the results in the console window where `bin/guard`
 is running.
@@ -245,7 +245,7 @@ You can also serve the dist directory using [POW](http://pow.cx/).
 2. create a lab folder in `~/.pow/`  by doing `mkdir -p ~/.pow/lab`
 3. symlink the dist folder for the Lab project `cd ~/.pow/lab; ln -s
    <lab/dist> ./public`
-4. Thats it! your app should be available at [http://lab.dev](http://lab.dev) 
+4. Thats it! your app should be available at [http://lab.dev](http://lab.dev)
    assuming that you had already built the Lab project, and the `dist` directory
    exists.
 
@@ -254,12 +254,12 @@ You can also serve the dist directory using [POW](http://pow.cx/).
 If you think you'd like to contribute to Lab as an external developer:
 
 1. Create a local clone from the repository located here: http://github.com/concord-consortium/lab.
-   This will by default have the git-remote name: **origin**. 
+   This will by default have the git-remote name: **origin**.
 
 2. Make a fork of http://github.com/concord-consortium/lab to your account on github.
 
 3. Make a new git-remote referencing your fork. I recommend making the remote name your github user name.
-   For example my username is `stepheneb` so I would add a remote to my fork like this: 
+   For example my username is `stepheneb` so I would add a remote to my fork like this:
 
         git remote add stepheneb git@github.com:stepheneb/lab.git
 
@@ -371,14 +371,14 @@ Small examples used to test libraries or demostrate bugs are located here:
 
 After running `bundle install --binstubs` the `bin/` directory will be created.
 
-**Note:** remember to make changes you want saved in the `src/examples/` directory **not** in the 
+**Note:** remember to make changes you want saved in the `src/examples/` directory **not** in the
 `dist/examples/` directory.
 
 ### Adding new source files or modules
 
 If you add a new JavaScript file to an existing Lab module also add it to the associated section of the `MakeFile`.
 
-For example if you created a pie chart grapher and intended it to be part of `lab.layout.js` save the JavaScript 
+For example if you created a pie chart grapher and intended it to be part of `lab.layout.js` save the JavaScript
 source file here:
 
     src/lab/layout/pie-chart.js
@@ -398,9 +398,9 @@ Add the path to `pie-chart.js` to the `lab/lab.layout.js` target section of the 
     	src/lab/layout/display-stats.js \
     	src/lab/layout/fullscreen.js \
     	src/lab/end.js
-    
+
 Similarly if you add a new module to Lab you will need to create a new target to represent the module
-using a similar form to the `lab/lab.layout.js` target as well as adding the target to the `LAB_JS_FILES` 
+using a similar form to the `lab/lab.layout.js` target as well as adding the target to the `LAB_JS_FILES`
 make variable containing the list of Lab JavaScript files to be generated:
 
     LAB_JS_FILES = \
@@ -412,19 +412,19 @@ make variable containing the list of Lab JavaScript files to be generated:
     	lab/lab.molecules.js \
     	lab/lab.js
 
-If you are just modifying an existing example or adding a new one just create or edit the files in 
-the `src/examples` directory and run `make` or `bin/guard` to generate the associated resources 
+If you are just modifying an existing example or adding a new one just create or edit the files in
+the `src/examples` directory and run `make` or `bin/guard` to generate the associated resources
 in the `dist/examples/` directory.
 
-The html file are generated from [Haml](http://haml-lang.com/) markup. Add the suffix `.html.haml` 
+The html file are generated from [Haml](http://haml-lang.com/) markup. Add the suffix `.html.haml`
 to these files.
 
-The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `.sass` to these 
+The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `.sass` to these
 files. The stylesheets may also be written using the newer `*.scss` variant of Sass.
 
 ### Testing: `test/`
 
-Lab's JavaScript tests use [Vows](http://vowsjs.org), an asynchronous behavior driven framework based 
+Lab's JavaScript tests use [Vows](http://vowsjs.org), an asynchronous behavior driven framework based
 on [Node.js](http://nodejs.org/). In addition Lab uses [jsdom](https://github.com/tmpvar/jsdom), a
 lightweight CommonJS implementation of the W3C DOM specifications. Lab's test setup was inspired
 by that used by [d3.js](http://mbostock.github.com/d3/). The development dependencies for running the
@@ -436,7 +436,7 @@ Running the tests:
     ................................. . . .. . . .
     x OK > 40 honored (0.012s)
 
-If you are running `bin/guard` the tests run automatically anytime a change is made in the JavaScript 
+If you are running `bin/guard` the tests run automatically anytime a change is made in the JavaScript
 files in the `src/` or `test/` directory.
 
 The results of the tests are displayed in the console that `bin/guard` is running in.
@@ -444,9 +444,9 @@ The results of the tests are displayed in the console that `bin/guard` is runnin
 If the bottom of the console window is viewable you will see new test results whenever you save a changes.
 
 Recent versions of nodejs/v8 support TypedArrays -- this make it possible to more extensively
-test lab.arrays which is designed to support using either typed or regular arrays for computation. 
+test lab.arrays which is designed to support using either typed or regular arrays for computation.
 
-`test/env.js` uses the node module [jsdom](https://github.com/tmpvar/jsdom) to setup resources for 
+`test/env.js` uses the node module [jsdom](https://github.com/tmpvar/jsdom) to setup resources for
 simple emulation of a browser.
 
 [Vows](http://vowsjs.org) integrates the [standard nodejs assertions](http://nodejs.org/docs/latest/api/assert.html)
@@ -516,12 +516,12 @@ with an additional collection of useful [assertions](http://vowsjs.org/#assertio
         assert.throws(function () { x + x }, ReferenceError);
         assert.doesNotThrow(function () { 1 + 1 }, Error);
 
-Additionally `test/env-assert.js` has a number of useful additional assertions copied from 
+Additionally `test/env-assert.js` has a number of useful additional assertions copied from
 [d3.js](http://mbostock.github.com/d3/).
 
 _**Note**: Using a more specific assertion usually results in more useful error reports._
 
-There are also many interesting test examples and patterns in the 
+There are also many interesting test examples and patterns in the
 [d3.js test directory](https://github.com/mbostock/d3/tree/master/test) that can be adapted for use in Lab.
 
 ### A Simple Example of Test Driven Development
@@ -532,8 +532,8 @@ Here's a simple example that is part of the tests for `lab.arrays.js` to test th
       assert.equal(max([3, -1, 0, 1, 2, 3]), 3);
     },
 
-The 'model stepping' tests are a good example where the tests help helped drive new features. The basic 
-features I was testing in this section relate to the existing functionality exposed by the Stop, Start, Go, and 
+The 'model stepping' tests are a good example where the tests help helped drive new features. The basic
+features I was testing in this section relate to the existing functionality exposed by the Stop, Start, Go, and
 Reset buttons as wells as the extended keyboard controls that allow stepping forward and backwards a step at a time.
 
 First I created this test that passed:
@@ -544,10 +544,10 @@ First I created this test that passed:
       assert.isTrue(model.isNewStep());
     },
 
-In thinking about driving out changes to KE, PE and Temperature of the molecular model itself I realized 
+In thinking about driving out changes to KE, PE and Temperature of the molecular model itself I realized
 I'd like the capability to run a specific number of steps forward and then check the results.
 
-I then wrote this test that failed -- because the model.tick() function didn't yet take an optional argument to 
+I then wrote this test that failed -- because the model.tick() function didn't yet take an optional argument to
 run multiple steps forward:
 
     "after running 9 more ticks the model is at step 10": function(model) {
@@ -557,10 +557,10 @@ run multiple steps forward:
     },
 
 After saving the change I saw the new test failure reported in my console. I then implemented the new
-feature in the actual `src/lab/molecules.js`. Less than a second after saving the file the tests 
+feature in the actual `src/lab/molecules.js`. Less than a second after saving the file the tests
 completed and the report showed it passing.
 
-This is a very simple example -- but part of the value of this kind of test driven development is in first 
+This is a very simple example -- but part of the value of this kind of test driven development is in first
 thinking of how something should behave rather than in how to get it to actually do the work.
 
 Since I already had this function for running one model step:
@@ -571,17 +571,17 @@ Adding an optional numeric argument for running more steps is a fine way to expr
 
     model.tick(9)
 
-In more complicated coding thinking about how to express the intent clearly and then what the result 
-should be if that intent is successful **FIRST** ... and then 'driving out' the actual implementation to 
+In more complicated coding thinking about how to express the intent clearly and then what the result
+should be if that intent is successful **FIRST** ... and then 'driving out' the actual implementation to
 achieve that result can result in a better architecture -- and of course you also end up with tests.
 
-Because the tests run SO quickly I can interactively change the code in the module or the test and 
+Because the tests run SO quickly I can interactively change the code in the module or the test and
 immediately see results.
 
 ### Debugging Tests using the node debugger
 
-Sometimes it can be helpful to break into a debugger when there is a problem in either the code 
-or the test setup itself. Node comes with a [debugger](http://nodejs.org/docs/latest/api/debugger.html) 
+Sometimes it can be helpful to break into a debugger when there is a problem in either the code
+or the test setup itself. Node comes with a [debugger](http://nodejs.org/docs/latest/api/debugger.html)
 which can be used in combination with vows and the tests.
 
 First set a breakpoint by inserting the statement: `debugger;`
@@ -639,7 +639,7 @@ To evaluate expressions type `repl`  -- use ctrl-C to exit the repl:
     -1
 
 Enter **ctrl-C** to exit the repl and return to the debugger.
-    
+
 Enter **ctrl-D** to exit the debugger.
 
 [node-inspector](https://github.com/dannycoates/node-inspector)
@@ -672,15 +672,15 @@ separate from other commits to make it easier to see and understand the narrativ
 
 The `dist/examples/` directory is automatically generated running `make` and is not part of the repository.
 
-When `bin/guard` is running any changes to files in the `src/examples/` directory cause automatic rebuilding 
+When `bin/guard` is running any changes to files in the `src/examples/` directory cause automatic rebuilding
 of the associated files in the `dist/examples/` directory.
 
 ### External JavaScript Frameworks: `vendor/`
 
-External JavaScript runtime dependencies for running Lab are located in the vendor/ directory and are 
+External JavaScript runtime dependencies for running Lab are located in the vendor/ directory and are
 installed as git submodules the first time `make` is run in a new checkout of the source code repository.
 
-The javascript frameworks along with their licensing and readme files are copied into the `dist/vendor/` 
+The javascript frameworks along with their licensing and readme files are copied into the `dist/vendor/`
 directory when either `make` or `bin/guard` are run.
 
 - `vendor/d3/`
@@ -695,7 +695,7 @@ directory when either `make` or `bin/guard` are run.
 [d3.js](http://mbostock.github.com/d3/), [hijs](https://github.com/cloudhead/hijs), and
 [science.js](https://github.com/jasondavies/science.js) are all distributed under a BSD license;
 [sizzle](https://github.com/jquery/sizzle) and [modernizr](https://github.com/Modernizr/Modernizr)
-are distributed under both BSD and MIT licenses; [jQuery](http://jquery.com/) is licensed under 
+are distributed under both BSD and MIT licenses; [jQuery](http://jquery.com/) is licensed under
 the MIT license; [jQuery-UI](jQuery-UI) is distributed under both the MIT license and GPL licenses;
 [MathJax](http://www.mathjax.org/) is distributed under the Apache 2.0 license.
 
@@ -735,7 +735,7 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 - [Basic molecular dynamics](http://li.mit.edu/Archive/Papers/05/Li05-2.8.pdf)
 - [CHARMM: A theoretical introduction to molecular dynamics simulations and practical examples](http://www.ch.embnet.org/MD_tutorial/)
 
-  This site has a basic introduction to the physics of molecular dynamics simulations, and practical 
+  This site has a basic introduction to the physics of molecular dynamics simulations, and practical
   exercises with the CHARMM package
 
 - [Thermostat Algorithms for Molecular Dynamics Simulations](http://phjoan23.technion.ac.il/~phr76ja/thermostats.pdf)
@@ -748,7 +748,7 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 #### Courses
 
 - [CHE 800-002: Molecular Simulation](http://www.pages.drexel.edu/~cfa22/msim/msim.html)
-    Cameron Abrams Department of Chemical Engineering at Drexel  
+    Cameron Abrams Department of Chemical Engineering at Drexel
 
 - [Computational Physics](http://courses.theophys.kth.se/SI2530/)
 - [Benchmark results for Lennard-Jones fluid](http://www.cstl.nist.gov/srs/LJ_PURE/index.htm)
