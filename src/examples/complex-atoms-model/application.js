@@ -177,6 +177,4 @@ function update_coefficients(coefficients) {
   }
 }
 
-var modelController = controllers.complexModelController("full-static-screen");
-
-
+model_controller = controllers.complexModelController("full-static-screen");
