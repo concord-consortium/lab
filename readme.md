@@ -279,47 +279,50 @@ includes several features for estimating and measuring performance of the molecu
    steps. When measuring the speed of the model and graphics together the test is run
    continuously and control is *not* returned to the browser for repainting the screen.
 
-3. A separate Ruby program [performance.rb](https://gist.github.com/2026947) available which
+3. A separate [lab.performance](https://github.com/concord-consortium/lab) repository with a 
+   Ruby script [performance.rb](https://github.com/concord-consortium/lab) available which
    uses Selenium Webdriver to automate running the **Run Benchmarks** test 10 times and
    collects , averages, and reports the results.
 
 ### Installing and using `performance.rb`
 
-[performance.rb](https://gist.github.com/2026947) requires the Ruby Gem `selenium-webdriver` be installed.
+We use a completely separate repository for the performance monitoring tools so the
+same performance mesuring scripts can be used to measure performance over a range of
+commits to the Lab project. This  makes it easier to monitor performance and investigate
+performance regressions.
 
-    gem install selenium-webdriver
+In your working copy of the Lab project:
 
-Installation:
+    git checkout git://github.com/concord-consortium/lab.performance.git
 
-    curl https://raw.github.com/gist/2026947/performance.rb -o performance.rb
-    chmod u+x performance.rb
-
-Edit paths in the file `performance.rb` to reference locations for FireFox and Chrome
+Edit paths in the file `lab.performance/performance.rb` to reference locations for FireFox and Chrome
 on your computer as well as the variable `URL_TO_COMPLEX_MODEL` for running the
 [Complex Atoms Model](http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html)
 locally.
 
-**Running `performance.rb`**:
+Gem prequisites: [selenium-webdriver](http://code.google.com/p/selenium/wiki/RubyBindings)
 
-    $ ./performance.rb
+    gem install selenium-webdriver
 
-    browser: Chrome: 19.0.1070.0, Intel Mac OS X 10_6_8
-    Date: 2012-03-15 12:54
+**Measuring performance:**
+
+    $ ./lab.performance/performance.rb
+
+    browser: Chrome: 19.0.1085.0, Intel Mac OS X 10_6_8
+    Date: 2012-03-30 08:44
     Molecule number: 50
     Temperature: 5
 
     git commit
-    commit 356b81226403703e16788217da80875b74a4dc27
-    Author: Richard Klancer <rpk@pobox.com>
-    Date:   Thu Mar 15 11:53:52 2012 -0400
+    commit 2c3a9328a43964485ed5f661cfb6e6cc6850ce95
+    Author: Stephen Bannasch <stephen.bannasch@gmail.com>
+    Date:   Fri Mar 30 08:44:05 2012 -0400
 
-       Further prune sqrts inside N^2 loops
+        whitespace fixups
     true
 
-    average steps                  592.45
-    average steps w/graphics       208.46
-
-Documentation for the [Ruby bindings for Selenium WebDriver](http://code.google.com/p/selenium/wiki/RubyBindings).
+    average steps                  167.30
+    average steps w/graphics       101.63
 
 ## Repository structure
 

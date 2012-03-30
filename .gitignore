@@ -12,5 +12,6 @@ npm-debug.log
 /md-engine
 *.sublime-workspace
 performance.rb
+/lab.performance
 /*.log
 /uploads
