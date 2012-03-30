@@ -18,7 +18,7 @@
     <div id="main">
       <h1 id="labhttpsgithubcomconcord-consortiumlab"><a href="https://github.com/concord-consortium/lab">Lab</a></h1>
 
-<p>HTML5-based open source scientific models, visualizations, graphing, and probeware from the 
+<p>HTML5-based open source scientific models, visualizations, graphing, and probeware from the
 <a href="http://www.concord.org">Concord Consortium</a>.</p>
 
 <p><strong>Table of Contents</strong></p>
@@ -56,8 +56,19 @@
       <li><a href="#a-simple-example-of-test-driven-development">A Simple Example of Test Driven Development</a></li>
       <li><a href="#debugging-tests-using-the-node-debugger">Debugging Tests using the node debugger</a></li>
       <li><a href="#generated-lab-modules-lab">Generated Lab Modules: <code>lab/</code></a></li>
+      <li><a href="#molecular-dynamics-node-module-srcmd-engine">Molecular dynamics Node module: <code>src/md-engine</code></a></li>
       <li><a href="#generated-examples-distexamples">Generated Examples: <code>dist/examples/</code></a></li>
       <li><a href="#external-javascript-frameworks-vendor">External JavaScript Frameworks: <code>vendor/</code></a></li>
+    </ul>
+  </li>
+  <li><a href="#physical-constants-and-units">Physical constants and units</a>    <ul>
+      <li><a href="#units">Units</a></li>
+      <li><a href="#physical-constants">Physical Constants</a></li>
+      <li><a href="#unit-conversions">Unit conversions</a>        <ul>
+          <li><a href="#converting-a-value-between-two-unit-types">Converting a value between two unit types:</a></li>
+          <li><a href="#finding-the-ratio-between-two-unit-types-and-rolling-your-own-unit-conversions">Finding the ratio between two unit types and rolling your own unit conversions:</a></li>
+        </ul>
+      </li>
     </ul>
   </li>
   <li><a href="#html-and-css">HTML and CSS</a></li>
@@ -181,7 +192,7 @@ git checkout master
 <h2 id="graphing-examples">Graphing examples:</h2>
 
 <ul>
-  <li><a href="http://lab.dev.concord.org/examples/surface-temperature/surface-temperature.html">Earth&rsquo;s Surface Temperature: years 500-2009</a></li>
+  <li><a href="http://lab.dev.concord.org/examples/surface-temperature/surface-temperature.html">Earth’s Surface Temperature: years 500-2009</a></li>
   <li><a href="http://lab.dev.concord.org/examples/seasons/canberra-question.html">Question about seasonal temperatures and geography</a></li>
   <li><a href="http://lab.dev.concord.org/examples/lennard-jones-potential/lennard-jones-potential.html">Lennard-Jones-Potential</a></li>
 </ul>
@@ -199,7 +210,7 @@ and only one simpletheme)</li>
 
 <h2 id="setup-development">Setup Development</h2>
 
-<p>Lab uses a number of RubyGems and node modules to manage development. Lab&rsquo;s test framework
+<p>Lab uses a number of RubyGems and node modules to manage development. Lab’s test framework
 uses <a href="http://vowsjs.org">Vows</a>, which depends on <a href="http://nodejs.org/">nodejs</a> and
 <a href="http://npmjs.org/">npm</a> (Node Package Manager). In addition JavaScript minification is
 done using <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a>.</p>
@@ -255,7 +266,7 @@ $ npm -v
 <pre><code>git clone git@github.com:concord-consortium/lab.git
 </code></pre>
 
-<p>Alternatively if you don&rsquo;t have commit access use this form:</p>
+<p>Alternatively if you don’t have commit access use this form:</p>
 
 <pre><code>git clone git://github.com/concord-consortium/lab.git
 </code></pre>
@@ -266,7 +277,7 @@ $ npm -v
 the RubyGem <a href="http://gembundler.com/">bundler</a>, and <a href="http://nodejs.org/">nodejs</a> (which now includes
 <a href="http://npmjs.org/">npm</a> the Node Package Manager.</p>
 
-<p>Change to the <code>lab/</code> directory and run <code>make clean; make</code> to install the runtime and development dependencies and generate 
+<p>Change to the <code>lab/</code> directory and run <code>make clean; make</code> to install the runtime and development dependencies and generate
 the <code>dist/</code> directory:</p>
 
 <pre><code>cd lab
@@ -293,7 +304,7 @@ are managed by <a href="http://npmjs.org/">npm</a>:</p>
 <code>vendor/d3</code> and <code>vendor/science.js</code> are manually installed into <code>node_modules/</code>.</p>
   </li>
   <li>
-    <p>Install the additional RubyGems used for development: haml, sass, guard &hellip;</p>
+    <p>Install the additional RubyGems used for development: haml, sass, guard …</p>
 
     <pre><code> bundle install --binstubs
 </code></pre>
@@ -315,7 +326,7 @@ generate the JavaScript Lab modules, the examples, and run the tests.</p>
 </code></pre>
 
 <p>Now any change you make in <code>src/examples/</code> will generate the corresponding content in <code>dist/examples/</code>.
-In addition changes in <code>src/lab/</code> generate the associated Lab modules in <code>lab/</code> and copy these modules 
+In addition changes in <code>src/lab/</code> generate the associated Lab modules in <code>lab/</code> and copy these modules
 to <code>dist/lab/</code>. In addition any change in either the <code>src/lab/</code> or <code>test/</code>directories will run the
 tests and display the results in the console window where <code>bin/guard</code>
 is running.</p>
@@ -364,7 +375,7 @@ Syntax OK
 <p>Whenever guard is running and you save changes to any files in the src/ directory the corresponding files in
 the <code>dist/</code> directory will be updated.</p>
 
-<p>To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small &ldquo;LR&rdquo; button on the toolbar.</p>
+<p>To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small “LR” button on the toolbar.</p>
 
 <h3 id="serving-dist-using-pow">Serving <code>dist/</code> using POW</h3>
 
@@ -375,26 +386,26 @@ the <code>dist/</code> directory will be updated.</p>
   <li>create a lab folder in <code>~/.pow/</code>  by doing <code>mkdir -p ~/.pow/lab</code></li>
   <li>symlink the dist folder for the Lab project <code>cd ~/.pow/lab; ln -s
 &lt;lab/dist&gt; ./public</code></li>
-  <li>Thats it! your app should be available at <a href="http://lab.dev">http://lab.dev</a> 
+  <li>Thats it! your app should be available at <a href="http://lab.dev">http://lab.dev</a>
 assuming that you had already built the Lab project, and the <code>dist</code> directory
 exists.</li>
 </ol>
 
 <h3 id="contributing-to-lab">Contributing to Lab</h3>
 
-<p>If you think you&rsquo;d like to contribute to Lab as an external developer:</p>
+<p>If you think you’d like to contribute to Lab as an external developer:</p>
 
 <ol>
   <li>
     <p>Create a local clone from the repository located here: http://github.com/concord-consortium/lab.
-This will by default have the git-remote name: <strong>origin</strong>. </p>
+This will by default have the git-remote name: <strong>origin</strong>.</p>
   </li>
   <li>
     <p>Make a fork of http://github.com/concord-consortium/lab to your account on github.</p>
   </li>
   <li>
     <p>Make a new git-remote referencing your fork. I recommend making the remote name your github user name.
-For example my username is <code>stepheneb</code> so I would add a remote to my fork like this: </p>
+For example my username is <code>stepheneb</code> so I would add a remote to my fork like this:</p>
 
     <pre><code> git remote add stepheneb git@github.com:stepheneb/lab.git
 </code></pre>
@@ -532,14 +543,14 @@ files are compiled to javascript before being copied.</p>
 
 <p>After running <code>bundle install --binstubs</code> the <code>bin/</code> directory will be created.</p>
 
-<p><strong>Note:</strong> remember to make changes you want saved in the <code>src/examples/</code> directory <strong>not</strong> in the 
+<p><strong>Note:</strong> remember to make changes you want saved in the <code>src/examples/</code> directory <strong>not</strong> in the
 <code>dist/examples/</code> directory.</p>
 
 <h3 id="adding-new-source-files-or-modules">Adding new source files or modules</h3>
 
 <p>If you add a new JavaScript file to an existing Lab module also add it to the associated section of the <code>MakeFile</code>.</p>
 
-<p>For example if you created a pie chart grapher and intended it to be part of <code>lab.layout.js</code> save the JavaScript 
+<p>For example if you created a pie chart grapher and intended it to be part of <code>lab.layout.js</code> save the JavaScript
 source file here:</p>
 
 <pre><code>src/lab/layout/pie-chart.js
@@ -563,7 +574,7 @@ source file here:</p>
 </code></pre>
 
 <p>Similarly if you add a new module to Lab you will need to create a new target to represent the module
-using a similar form to the <code>lab/lab.layout.js</code> target as well as adding the target to the <code>LAB_JS_FILES</code> 
+using a similar form to the <code>lab/lab.layout.js</code> target as well as adding the target to the <code>LAB_JS_FILES</code>
 make variable containing the list of Lab JavaScript files to be generated:</p>
 
 <pre><code>LAB_JS_FILES = \
@@ -576,21 +587,21 @@ make variable containing the list of Lab JavaScript files to be generated:</p>
 	lab/lab.js
 </code></pre>
 
-<p>If you are just modifying an existing example or adding a new one just create or edit the files in 
-the <code>src/examples</code> directory and run <code>make</code> or <code>bin/guard</code> to generate the associated resources 
+<p>If you are just modifying an existing example or adding a new one just create or edit the files in
+the <code>src/examples</code> directory and run <code>make</code> or <code>bin/guard</code> to generate the associated resources
 in the <code>dist/examples/</code> directory.</p>
 
-<p>The html file are generated from <a href="http://haml-lang.com/">Haml</a> markup. Add the suffix <code>.html.haml</code> 
+<p>The html file are generated from <a href="http://haml-lang.com/">Haml</a> markup. Add the suffix <code>.html.haml</code>
 to these files.</p>
 
-<p>The css stylesheets are generated from <a href="http://sass-lang.com/">Sass</a> markup. Add the suffix <code>.sass</code> to these 
+<p>The css stylesheets are generated from <a href="http://sass-lang.com/">Sass</a> markup. Add the suffix <code>.sass</code> to these
 files. The stylesheets may also be written using the newer <code>*.scss</code> variant of Sass.</p>
 
 <h3 id="testing-test">Testing: <code>test/</code></h3>
 
-<p>Lab&rsquo;s JavaScript tests use <a href="http://vowsjs.org">Vows</a>, an asynchronous behavior driven framework based 
+<p>Lab’s JavaScript tests use <a href="http://vowsjs.org">Vows</a>, an asynchronous behavior driven framework based
 on <a href="http://nodejs.org/">Node.js</a>. In addition Lab uses <a href="https://github.com/tmpvar/jsdom">jsdom</a>, a
-lightweight CommonJS implementation of the W3C DOM specifications. Lab&rsquo;s test setup was inspired
+lightweight CommonJS implementation of the W3C DOM specifications. Lab’s test setup was inspired
 by that used by <a href="http://mbostock.github.com/d3/">d3.js</a>. The development dependencies for running the
 tests are installed using <a href="http://npmjs.org/">npm</a>.</p>
 
@@ -601,17 +612,17 @@ tests are installed using <a href="http://npmjs.org/">npm</a>.</p>
 x OK &gt; 40 honored (0.012s)
 </code></pre>
 
-<p>If you are running <code>bin/guard</code> the tests run automatically anytime a change is made in the JavaScript 
+<p>If you are running <code>bin/guard</code> the tests run automatically anytime a change is made in the JavaScript
 files in the <code>src/</code> or <code>test/</code> directory.</p>
 
 <p>The results of the tests are displayed in the console that <code>bin/guard</code> is running in.</p>
 
 <p>If the bottom of the console window is viewable you will see new test results whenever you save a changes.</p>
 
-<p>Recent versions of nodejs/v8 support TypedArrays &ndash; this make it possible to more extensively
-test lab.arrays which is designed to support using either typed or regular arrays for computation. </p>
+<p>Recent versions of nodejs/v8 support TypedArrays – this make it possible to more extensively
+test lab.arrays which is designed to support using either typed or regular arrays for computation.</p>
 
-<p><code>test/env.js</code> uses the node module <a href="https://github.com/tmpvar/jsdom">jsdom</a> to setup resources for 
+<p><code>test/env.js</code> uses the node module <a href="https://github.com/tmpvar/jsdom">jsdom</a> to setup resources for
 simple emulation of a browser.</p>
 
 <p><a href="http://vowsjs.org">Vows</a> integrates the <a href="http://nodejs.org/docs/latest/api/assert.html">standard nodejs assertions</a>
@@ -704,25 +715,25 @@ with an additional collection of useful <a href="http://vowsjs.org/#assertions">
   </li>
 </ul>
 
-<p>Additionally <code>test/env-assert.js</code> has a number of useful additional assertions copied from 
+<p>Additionally <code>test/env-assert.js</code> has a number of useful additional assertions copied from
 <a href="http://mbostock.github.com/d3/">d3.js</a>.</p>
 
 <p><em><strong>Note</strong>: Using a more specific assertion usually results in more useful error reports.</em></p>
 
-<p>There are also many interesting test examples and patterns in the 
+<p>There are also many interesting test examples and patterns in the
 <a href="https://github.com/mbostock/d3/tree/master/test">d3.js test directory</a> that can be adapted for use in Lab.</p>
 
 <h3 id="a-simple-example-of-test-driven-development">A Simple Example of Test Driven Development</h3>
 
-<p>Here&rsquo;s a simple example that is part of the tests for <code>lab.arrays.js</code> to test the <code>arrays.max()</code> function:</p>
+<p>Here’s a simple example that is part of the tests for <code>lab.arrays.js</code> to test the <code>arrays.max()</code> function:</p>
 
 <pre><code>"find max in array with negative and positive numbers": function(max) {
   assert.equal(max([3, -1, 0, 1, 2, 3]), 3);
 },
 </code></pre>
 
-<p>The &lsquo;model stepping&rsquo; tests are a good example where the tests help helped drive new features. The basic 
-features I was testing in this section relate to the existing functionality exposed by the Stop, Start, Go, and 
+<p>The ‘model stepping’ tests are a good example where the tests help helped drive new features. The basic
+features I was testing in this section relate to the existing functionality exposed by the Stop, Start, Go, and
 Reset buttons as wells as the extended keyboard controls that allow stepping forward and backwards a step at a time.</p>
 
 <p>First I created this test that passed:</p>
@@ -734,10 +745,10 @@ Reset buttons as wells as the extended keyboard controls that allow stepping for
 },
 </code></pre>
 
-<p>In thinking about driving out changes to KE, PE and Temperature of the molecular model itself I realized 
-I&rsquo;d like the capability to run a specific number of steps forward and then check the results.</p>
+<p>In thinking about driving out changes to KE, PE and Temperature of the molecular model itself I realized
+I’d like the capability to run a specific number of steps forward and then check the results.</p>
 
-<p>I then wrote this test that failed &ndash; because the model.tick() function didn&rsquo;t yet take an optional argument to 
+<p>I then wrote this test that failed – because the model.tick() function didn’t yet take an optional argument to
 run multiple steps forward:</p>
 
 <pre><code>"after running 9 more ticks the model is at step 10": function(model) {
@@ -748,10 +759,10 @@ run multiple steps forward:</p>
 </code></pre>
 
 <p>After saving the change I saw the new test failure reported in my console. I then implemented the new
-feature in the actual <code>src/lab/molecules.js</code>. Less than a second after saving the file the tests 
+feature in the actual <code>src/lab/molecules.js</code>. Less than a second after saving the file the tests
 completed and the report showed it passing.</p>
 
-<p>This is a very simple example &ndash; but part of the value of this kind of test driven development is in first 
+<p>This is a very simple example – but part of the value of this kind of test driven development is in first
 thinking of how something should behave rather than in how to get it to actually do the work.</p>
 
 <p>Since I already had this function for running one model step:</p>
@@ -764,17 +775,17 @@ thinking of how something should behave rather than in how to get it to actually
 <pre><code>model.tick(9)
 </code></pre>
 
-<p>In more complicated coding thinking about how to express the intent clearly and then what the result 
-should be if that intent is successful <strong>FIRST</strong> &hellip; and then &lsquo;driving out&rsquo; the actual implementation to 
-achieve that result can result in a better architecture &ndash; and of course you also end up with tests.</p>
+<p>In more complicated coding thinking about how to express the intent clearly and then what the result
+should be if that intent is successful <strong>FIRST</strong> … and then ‘driving out’ the actual implementation to
+achieve that result can result in a better architecture – and of course you also end up with tests.</p>
 
-<p>Because the tests run SO quickly I can interactively change the code in the module or the test and 
+<p>Because the tests run SO quickly I can interactively change the code in the module or the test and
 immediately see results.</p>
 
 <h3 id="debugging-tests-using-the-node-debugger">Debugging Tests using the node debugger</h3>
 
-<p>Sometimes it can be helpful to break into a debugger when there is a problem in either the code 
-or the test setup itself. Node comes with a <a href="http://nodejs.org/docs/latest/api/debugger.html">debugger</a> 
+<p>Sometimes it can be helpful to break into a debugger when there is a problem in either the code
+or the test setup itself. Node comes with a <a href="http://nodejs.org/docs/latest/api/debugger.html">debugger</a>
 which can be used in combination with vows and the tests.</p>
 
 <p>First set a breakpoint by inserting the statement: <code>debugger;</code></p>
@@ -824,7 +835,7 @@ break in test/lab/components/components-test.js:13
  15     },
 </code></pre>
 
-<p>To evaluate expressions type <code>repl</code>  &ndash; use ctrl-C to exit the repl:</p>
+<p>To evaluate expressions type <code>repl</code>  – use ctrl-C to exit the repl:</p>
 
 <pre><code>repl
 Press Ctrl + C to leave debug repl
@@ -870,19 +881,49 @@ directory. The <code>lab/</code> directory is not checked into the repository</p
 <p>When working on the source code please keep commits of the generated JavaScript files in the <code>lab/</code> directory
 separate from other commits to make it easier to see and understand the narrative of source code changes.</p>
 
+<h3 id="molecular-dynamics-node-module-srcmd-engine">Molecular dynamics Node module: <code>src/md-engine</code></h3>
+
+<p>The source code of the core molecular dynamics engine is currently located in the <code>src/md-engine</code>
+directory, which is organized as a set of related Node modules. The entry point for external
+applications is the file <code>src/md-engine/md2d.js</code>.</p>
+
+<p>A build step uses the <a href="https://github.com/substack/node-browserify"><code>node-browserify</code></a> Node module
+to convert this entry point and all its dependencies into a single JavaScript file located at <code>md-
+engine/md2d.js</code>. Another build step automatically appends this browser-compatible version to the
+beginning of the <code>lab.molecules.js</code> file.</p>
+
+<p>This means that the global function <code>require()</code> is defined at the beginnig of <code>lab.molecules.js</code>,
+and can be used by any code that runs after that point to obtain the modeler defined in <code>md2d.js</code>
+and its dependencies. The argument to <code>require()</code> should be written as if one were using Node with a
+current working directory of <code>src/md-engine</code>, e.g., in a web application that includes
+<code>lab.molecules.js</code>, write <code>var md2d = require('./md2d');</code> to get a reference to the modeler.</p>
+
+<p>In addition, Node-based executables can be written and placed in <code>src/md-engine</code> or a subdirectory.
+These are expected to be useful for verifying and tuning the model by running the model headless and
+saving summary results into a file for offline analysis; see, e.g., <a href="https://github.com/rklancer/script-md">https://github.com/rklancer
+/script-md</a>.</p>
+
+<p>Hashbang scripts for starting these executables (i.e., files which start with the line
+<code>#!/usr/bin/env node</code> and which have the execute bit set) should be placed in the directory <code>node-
+bin</code>, and should execute by <code>require()</code>ing the appropriate module and calling its entry point
+method. Lab’s <code>package.json</code> file specifies <code>node-bin/</code> as the location of the executable scripts
+which <code>npm</code> should make available whenever Lab is imported into another project as a Node module.
+(For developer convenience, <code>bin/</code> is being reserved for Ruby executables made available via
+Bundler.)</p>
+
 <h3 id="generated-examples-distexamples">Generated Examples: <code>dist/examples/</code></h3>
 
 <p>The <code>dist/examples/</code> directory is automatically generated running <code>make</code> and is not part of the repository.</p>
 
-<p>When <code>bin/guard</code> is running any changes to files in the <code>src/examples/</code> directory cause automatic rebuilding 
+<p>When <code>bin/guard</code> is running any changes to files in the <code>src/examples/</code> directory cause automatic rebuilding
 of the associated files in the <code>dist/examples/</code> directory.</p>
 
 <h3 id="external-javascript-frameworks-vendor">External JavaScript Frameworks: <code>vendor/</code></h3>
 
-<p>External JavaScript runtime dependencies for running Lab are located in the vendor/ directory and are 
+<p>External JavaScript runtime dependencies for running Lab are located in the vendor/ directory and are
 installed as git submodules the first time <code>make</code> is run in a new checkout of the source code repository.</p>
 
-<p>The javascript frameworks along with their licensing and readme files are copied into the <code>dist/vendor/</code> 
+<p>The javascript frameworks along with their licensing and readme files are copied into the <code>dist/vendor/</code>
 directory when either <code>make</code> or <code>bin/guard</code> are run.</p>
 
 <ul>
@@ -899,9 +940,98 @@ directory when either <code>make</code> or <code>bin/guard</code> are run.</p>
 <p><a href="http://mbostock.github.com/d3/">d3.js</a>, <a href="https://github.com/cloudhead/hijs">hijs</a>, and
 <a href="https://github.com/jasondavies/science.js">science.js</a> are all distributed under a BSD license;
 <a href="https://github.com/jquery/sizzle">sizzle</a> and <a href="https://github.com/Modernizr/Modernizr">modernizr</a>
-are distributed under both BSD and MIT licenses; <a href="http://jquery.com/">jQuery</a> is licensed under 
+are distributed under both BSD and MIT licenses; <a href="http://jquery.com/">jQuery</a> is licensed under
 the MIT license; <a href="jQuery-UI">jQuery-UI</a> is distributed under both the MIT license and GPL licenses;
 <a href="http://www.mathjax.org/">MathJax</a> is distributed under the Apache 2.0 license.</p>
+
+<h2 id="physical-constants-and-units">Physical constants and units</h2>
+
+<p>The core of the molecular dynamics engine performs computations using dimensioned quantities; we do
+not nondimensionalize to reduced units.  The units used internally are:</p>
+
+<ul>
+  <li>femtoseconds</li>
+  <li>nanometers</li>
+  <li>Dalton (atomic mass units)</li>
+  <li>elementary charges</li>
+  <li>Kelvin</li>
+</ul>
+
+<p>(Note that we will shortly switch to representing time in picoseconds rather than femtoseconds.)</p>
+
+<p>The above implies that the ‘natural’ unit of energy within the application is the “Dalton nm^2 /
+fs^2”, and the natural unit of force is the “Dalton nm / fs^2”. We call these “MW Energy Units” and
+“MW Force Units” respectively; however, externally-facing methods accept and report energies in
+electron volts, rather than “MW Units”.</p>
+
+<p>The molecular dynamics engine in <code>src/md-engine</code> contains a submodule, defined in <code>src/md-
+engine/constants/</code> which defines physical useful constants and allows one to perform some unit
+conversions in a mnemonic way.</p>
+
+<p>Once you have <code>require()</code>d the constants module appropriately, you can access the constants, 2
+converter methods, and an object that defines the various units. For the following, assume the
+<code>constants</code> module has been <code>require()</code>d into the variable <code>constants</code>.</p>
+
+<h3 id="units">Units</h3>
+
+<p>The various units are available as properties of the object <code>constants.unit</code>, and are named
+appropriately. The units themselves are objects, but their properties are not external API; rather,
+the unit objects are expected to be passed as arguments to conversion methods which return numeric
+values. Units are named in the singular and are written as all-uppercase (they are constants).</p>
+
+<p>Some example units are:</p>
+
+<ul>
+  <li><code>constants.unit.JOULE</code> constants.unit.MW_ENERGY_UNIT` (Dalton nm^2 / fs^2, see above)</li>
+  <li><code>constants.unit.METERS_PER_FARAD</code></li>
+</ul>
+
+<h3 id="physical-constants">Physical Constants</h3>
+
+<p>The various constants are defined as properties of the <code>constants</code> object. However, these do not
+have numerical values; instead, they each contain a single method, <code>as</code>, which accepts a unit (see
+above) and returns the numerical value of that constant in terms of that unit. This is intended to
+be a convenience for the programmer and to reduce the likelihood that he or she will forget to keep
+track of the units in which a value is stored.</p>
+
+<p>For example,</p>
+
+<ul>
+  <li><code>constants.BOLTZMANN_CONSTANT.as(constants.unit.JOULES_PER_KELVIN)</code> (== 1.380658e-23)</li>
+  <li><code>constants.PERMITTIVITY_OF_FREE_SPACE.as(constants.unit.FARADS_PER_METER)</code> (== 8.854187e-12)</li>
+</ul>
+
+<h3 id="unit-conversions">Unit conversions</h3>
+
+<p>The <code>constants</code> module does not attempt to do dimensional analysis (for example, converting kg m/s^2
+into Newtons). However, it can convert a value between two different units that measure the same
+type of quantity, and it can supply conversion ratios that make it easier to do dimensional analysis
+carefully in your own code.</p>
+
+<h4 id="converting-a-value-between-two-unit-types">Converting a value between two unit types:</h4>
+
+<p>To convert the value 1kg into Daltons (aka atomic mass units), use the <code>convert</code> method:</p>
+
+<p><code>constants.convert(1, { from: constants.unit.KILOGRAM, to: constants.unit.DALTON })</code> (==
+6.022137376997844e+26)</p>
+
+<h4 id="finding-the-ratio-between-two-unit-types-and-rolling-your-own-unit-conversions">Finding the ratio between two unit types and rolling your own unit conversions:</h4>
+
+<p>To find the number of atomic masses in 1 kg, use the <code>ratio</code> method with the <code>per</code> argument:</p>
+
+<p><code>constants.ratio(constants.unit.DALTON, { per: constants.unit.KILOGRAM })</code>
+(== 6.022137376997844e+26)</p>
+
+<p>This form of ratio is especially useful for unit conversion, and the “per” is intended as a
+mnemonic. The number reported above, for example, is easily understood to be “6.022 x 10^26 Dalton
+per kilogram” and can therefore be used as a factor that “cancels” kilograms and replaces them with
+Daltons in a compound unit such as “kg m/s”.</p>
+
+<p>However, sometimes you want the value of a Dalton expressed as kilograms. Although you <em>could</em>
+reverse the units in the above function call, or divide 1 by the result above, it is better to use
+the mnemonic <code>as</code> form of <code>ratio</code>:</p>
+
+<p><code>constants.ratio(constants.unit.DALTON, { as: constants.unit.KILOGRAM })</code> (== 1.66054e-27)</p>
 
 <h2 id="html-and-css">HTML and CSS</h2>
 
@@ -944,12 +1074,12 @@ rsync -rvz --delete --quiet --perms --chmod=ug=rwX,o=rX dist/ username@server:/p
   <li>
     <p><a href="http://www.ch.embnet.org/MD_tutorial/">CHARMM: A theoretical introduction to molecular dynamics simulations and practical examples</a></p>
 
-    <p>This site has a basic introduction to the physics of molecular dynamics simulations, and practical 
+    <p>This site has a basic introduction to the physics of molecular dynamics simulations, and practical
 exercises with the CHARMM package</p>
   </li>
   <li><a href="http://phjoan23.technion.ac.il/~phr76ja/thermostats.pdf">Thermostat Algorithms for Molecular Dynamics Simulations</a></li>
   <li>
-    <p><a href="http://en.wikipedia.org/wiki/Flying_ice_cube">the &ldquo;flying ice cube&rdquo;</a></p>
+    <p><a href="http://en.wikipedia.org/wiki/Flying_ice_cube">the “flying ice cube”</a></p>
 
     <p>One kind of unphysical effect that can arise. See linked paper.</p>
   </li>
@@ -961,7 +1091,7 @@ exercises with the CHARMM package</p>
 <ul>
   <li>
     <p><a href="http://www.pages.drexel.edu/~cfa22/msim/msim.html">CHE 800-002: Molecular Simulation</a>
-  Cameron Abrams Department of Chemical Engineering at Drexel  </p>
+  Cameron Abrams Department of Chemical Engineering at Drexel</p>
   </li>
   <li><a href="http://courses.theophys.kth.se/SI2530/">Computational Physics</a></li>
   <li><a href="http://www.cstl.nist.gov/srs/LJ_PURE/index.htm">Benchmark results for Lennard-Jones fluid</a></li>
