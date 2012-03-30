@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>One Chart</title>
+    <script type="text/javascript" src="../../vendor/modernizer/modernizer.js"></script>
+    <script type="text/javascript" src="../../vendor/d3/d3.v2.js"></script>
+    <script type="text/javascript" src="time-series-chart.js"></script>
+    <script type="text/javascript">
+    if (!Modernizr.svg) { window.location = '/browser-upgrade.html'; }
+    </script>
+    <style type="text/css">
+      body { font: 16px sans-serif; }
+      rect { fill: #fff; }
+      ul {
+        list-style-type: none;
+        margin: 0.5em 0em 0.5em 0em; 
+        padding: 0px; }
+        ul li {
+          margin: 1em 0em;
+          padding: 1em 0em; }
+      .axis {
+        font-size: 1.3em; }
+      .chart {
+        background-color: #F7F2C5; 
+        width: 500px;
+        height: 200px;
+        margin: 1em;
+        font: 13px sans-serif; }
+      .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2px; }
+    </style>
+  </head>
+  <body>
+    <p>
+       Implementation of D3 author Mike Bostok's ideas and code here:
+       <a href="http://bost.ocks.org/mike/chart/">Towards Reusable Charts<a>
+       that implement reusable charts as closures with getter-setter methods.
+    </p>
+    <p id="example" class="chart">
+    <script type="text/javascript">
+      var chart = timeSeriesChart()
+          .x(function(d) { return formatDate.parse(d.date); })
+          .y(function(d) { return +d.price; });
+
+      var formatDate = d3.time.format("%b %Y");
+
+      d3.csv("sp500.csv", function(data) {
+        d3.select("#example")
+            .datum(data)
+            .call(chart);
+      });
+    </script>
+  </body>
+</html>
