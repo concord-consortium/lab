@@ -55,5 +55,5 @@ forceFromSquaredDistance = exports.forceFromSquaredDistance = function(r_sq, q1,
     Output units: "MW Force Units" (Dalton * nm / fs^2)
 */
 force = exports.force = function(r, q1, q2) {
-  return forceFromSquaredDistance(r*r);
+  return forceFromSquaredDistance(r*r, q1, q2);
 };
