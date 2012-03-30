@@ -4125,19 +4125,19 @@ modeler.model = function() {
 // ------------------------------------------------------------
 //
 // Runs benchmarks and generates the results in a table.
-// 
+//
 // Setup benchmarks to run in an array of objects with two properties:
-// 
+//
 //   name: a title for the table column of results
 //   run: a function that is called to run the benchmark and returns a value
-// 
+//
 // Start the benchmarks by passing the table element where the results are to
 // be placed and an array of benchmarks to run.
-// 
+//
 // Example:
-// 
+//
 //   var benchmarks_table = document.getElementById("benchmarks-table");
-// 
+//
 //   var benchmarks_to_run = [
 //     {
 //       name: "molecules",
@@ -4159,15 +4159,15 @@ modeler.model = function() {
 //       }
 //     },
 //   ];
-//   
+//
 //   benchmark.run(benchmarks_table, benchmarks_to_run)
-// 
+//
 // The first four columns in the generated table consist of:
-// 
+//
 //   browser, version, cpu/os, date
-// 
+//
 // These columns are followed by a column for each benchmark passed in.
-// 
+//
 // Subsequent calls to: benchmark.run(benchmarks_table, benchmarks_to_run) will
 // add additional rows to the table.
 //
@@ -4182,7 +4182,7 @@ modeler.model = function() {
 //   td {
 //     border-top: 1px solid #cccccc;
 //     padding: 0 1em; }
-// 
+//
 
 benchmark = {};
 benchmark = { version: "0.0.1" };

@@ -432,7 +432,8 @@ steps. When measuring the speed of the model and graphics together the test is r
 continuously and control is <em>not</em> returned to the browser for repainting the screen.</p>
   </li>
   <li>
-    <p>A separate Ruby program <a href="https://gist.github.com/2026947">performance.rb</a> available which
+    <p>A separate <a href="https://github.com/concord-consortium/lab">lab.performance</a> repository with a 
+Ruby script <a href="https://github.com/concord-consortium/lab">performance.rb</a> available which
 uses Selenium Webdriver to automate running the <strong>Run Benchmarks</strong> test 10 times and
 collects , averages, and reports the results.</p>
   </li>
@@ -440,44 +441,46 @@ collects , averages, and reports the results.</p>
 
 <h3 id="installing-and-using-performancerb">Installing and using <code>performance.rb</code></h3>
 
-<p><a href="https://gist.github.com/2026947">performance.rb</a> requires the Ruby Gem <code>selenium-webdriver</code> be installed.</p>
+<p>We use a completely separate repository for the performance monitoring tools so the
+same performance mesuring scripts can be used to measure performance over a range of
+commits to the Lab project. This  makes it easier to monitor performance and investigate
+performance regressions.</p>
 
-<pre><code>gem install selenium-webdriver
+<p>In your working copy of the Lab project:</p>
+
+<pre><code>git checkout git://github.com/concord-consortium/lab.performance.git
 </code></pre>
 
-<p>Installation:</p>
-
-<pre><code>curl https://raw.github.com/gist/2026947/performance.rb -o performance.rb
-chmod u+x performance.rb
-</code></pre>
-
-<p>Edit paths in the file <code>performance.rb</code> to reference locations for FireFox and Chrome
+<p>Edit paths in the file <code>lab.performance/performance.rb</code> to reference locations for FireFox and Chrome
 on your computer as well as the variable <code>URL_TO_COMPLEX_MODEL</code> for running the
 <a href="http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html">Complex Atoms Model</a>
 locally.</p>
 
-<p><strong>Running <code>performance.rb</code></strong>:</p>
+<p>Gem prequisites: <a href="http://code.google.com/p/selenium/wiki/RubyBindings">selenium-webdriver</a></p>
 
-<pre><code>$ ./performance.rb
+<pre><code>gem install selenium-webdriver
+</code></pre>
 
-browser: Chrome: 19.0.1070.0, Intel Mac OS X 10_6_8
-Date: 2012-03-15 12:54
+<p><strong>Measuring performance:</strong></p>
+
+<pre><code>$ ./lab.performance/performance.rb
+
+browser: Chrome: 19.0.1085.0, Intel Mac OS X 10_6_8
+Date: 2012-03-30 08:44
 Molecule number: 50
 Temperature: 5
 
 git commit
-commit 356b81226403703e16788217da80875b74a4dc27
-Author: Richard Klancer &lt;rpk@pobox.com&gt;
-Date:   Thu Mar 15 11:53:52 2012 -0400
+commit 2c3a9328a43964485ed5f661cfb6e6cc6850ce95
+Author: Stephen Bannasch &lt;stephen.bannasch@gmail.com&gt;
+Date:   Fri Mar 30 08:44:05 2012 -0400
 
-   Further prune sqrts inside N^2 loops
+    whitespace fixups
 true
 
-average steps                  592.45
-average steps w/graphics       208.46
+average steps                  167.30
+average steps w/graphics       101.63
 </code></pre>
-
-<p>Documentation for the <a href="http://code.google.com/p/selenium/wiki/RubyBindings">Ruby bindings for Selenium WebDriver</a>.</p>
 
 <h2 id="repository-structure">Repository structure</h2>
 
