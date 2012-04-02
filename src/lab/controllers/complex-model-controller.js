@@ -62,8 +62,7 @@ controllers.complexModelController = function(layout_style) {
     function generate_atoms() {
       model.nodes({ num: mol_number,
               xdomain: 10, ydomain: 10,
-              temperature: temperature,
-              mol_rmin_radius_factor: 0.38
+              temperature: temperature
             })
           .initialize({
               temperature: temperature,

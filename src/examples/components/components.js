@@ -17,7 +17,6 @@ var autostart = true,
     lj_epsilon_min = -5.0,
     lennard_jones_potential = [],
     lj_alpha, lj_beta,
-    mol_rmin_radius_factor = 0.38,
     frame_number = 0,
     model_stopped = true,
     model = modeler.model(),
@@ -142,8 +141,7 @@ function update_coefficients(coefficients) {
 function generate_atoms() {
   model.nodes({ num: mol_number, 
           xdomain: 100, ydomain: 100, 
-          temperature: temperature, rmin: 4.4, 
-          mol_rmin_radius_factor: 0.38
+          temperature: temperature, rmin: 4.4
         })
       .initialize({
           temperature: temperature,
