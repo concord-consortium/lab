@@ -22,6 +22,10 @@ var model = exports.model = {},
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
+    // These eventually will be factored into a proper state diagram for the underlying modeler:
+    sizeHasBeenInitialized = false,
+    nodesHaveBeenCreated = false,
+
     makeIntegrator,
     ljfLimitsNeedToBeUpdated = true,
     setup_ljf_limits,
@@ -48,7 +52,6 @@ var model = exports.model = {},
     cutoffDistance_LJ,
 
     size = [10, 10],
-    sizeHasBeenInitialized = false,
 
     //
     // Individual property arrays for the particles
@@ -164,6 +167,11 @@ setup_coulomb_limits = function() {
 
 model.createNodes = function(options) {
   options = options || {};
+
+  if (nodesHaveBeenCreated) {
+    throw new Error("Nodes have already been created, and cannot be recreated.");
+  }
+  nodesHaveBeenCreated = true;
 
   var num                    = options.num                    || 50,
       temperature            = options.temperature            || 100,
