@@ -15,7 +15,7 @@ var constants = require('../constants'),
   This function also accepts a callback function which will be called with a hash representing
   the new coefficients, whenever the LJ coefficients are changed for the returned calculator.
 */
-exports.getLennardJonesCalculator = function(cb) {
+exports.makeLennardJonesCalculator = function(params, cb) {
 
   var epsilon,          // parameter; depth of the potential well, in eV
       sigma,            // parameter: characteristic distance from particle, in nm
@@ -51,7 +51,7 @@ exports.getLennardJonesCalculator = function(cb) {
           rmin   : rmin
         };
 
-        if (typeof cb === 'function') cb(coefficients);
+        if (typeof cb === 'function') cb(coefficients, this);
 
         return coefficients;
       },
@@ -79,6 +79,9 @@ exports.getLennardJonesCalculator = function(cb) {
 
         return alpha_Force*r_minus14th - beta_Force*r_minus8th;
       };
+
+      // Initialize coefficients to passed-in values
+      coefficients(params.epsilon, params.sigma);
 
   return {
 
