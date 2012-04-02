@@ -564,16 +564,17 @@ exports.makeModel = function() {
   };
 
   model.createNodes = function(options) {
-    options = options || {};
 
     if (nodesHaveBeenCreated) {
       throw new Error("createNodes() was called even though the particles have already been created for this model instance.");
     }
     nodesHaveBeenCreated = true;
+    sizeHasBeenInitialized = true;
 
-    var num         = options.num         || 50,
-        temperature = options.temperature || 100,
+    options = options || {};
+    N = options.num || 50;
 
+    var temperature = options.temperature || 100,
         rmin = lennardJones.coefficients().rmin,
 
         // special-case:
@@ -583,17 +584,14 @@ exports.makeModel = function() {
 
         mass_in_kg, v0_MKS, v0,
 
-        nrows = Math.floor(Math.sqrt(num)),
-        ncols = Math.ceil(num/nrows),
+        nrows = Math.floor(Math.sqrt(N)),
+        ncols = Math.ceil(N/nrows),
 
         i, r, c, rowSpacing, colSpacing,
         vMagnitude, vDirection,
         pCMx = 0,
         pCMy = 0,
         vCMx, vCMy;
-
-    sizeHasBeenInitialized = true;
-    N = num;
 
     nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
 
@@ -608,7 +606,7 @@ exports.makeModel = function() {
     ax     = model.ax     = nodes[AX_INDEX]     = arrays.create(N, 0, arrayType);
     ay     = model.ay     = nodes[AY_INDEX]     = arrays.create(N, 0, arrayType);
     mass   = model.mass   = nodes[MASS_INDEX]   = arrays.create(N, ARGON_MASS_IN_DALTON, arrayType);
-    charge = model.charge = nodes[CHARGE_INDEX] = arrays.create(num, 0, arrayType);
+    charge = model.charge = nodes[CHARGE_INDEX] = arrays.create(N, 0, arrayType);
 
     totalMass = model.totalMass = N * ARGON_MASS_IN_DALTON;
 
@@ -622,7 +620,7 @@ exports.makeModel = function() {
     for (r = 1; r <= nrows; r++) {
       for (c = 1; c <= ncols; c++) {
         i++;
-        if (i === num) break;
+        if (i === N) break;
 
         x[i] = c*colSpacing;
         y[i] = r*rowSpacing;
@@ -635,7 +633,7 @@ exports.makeModel = function() {
         // settle to a lower value because we are initializing the atoms spaced far apart, in an artificially low-energy
         // configuration.
 
-        if (i < Math.floor(num/2)) {      // 'middle' atom will have 0 velocity
+        if (i < Math.floor(N/2)) {      // 'middle' atom will have 0 velocity
 
           // Note kT = m<v^2>/2 because there are 2 degrees of freedom per atom, not 3
           // TODO: define constants to avoid unnecesssary conversions below.
@@ -650,8 +648,8 @@ exports.makeModel = function() {
           vDirection = 2 * Math.random() * Math.PI;
           vx[i] = vMagnitude * Math.cos(vDirection);
           vy[i] = vMagnitude * Math.sin(vDirection);
-          vx[num-i-1] = -vx[i];
-          vy[num-i-1] = -vy[i];
+          vx[N-i-1] = -vx[i];
+          vy[N-i-1] = -vy[i];
         }
 
         pCMx += vx[i] * mass[i];
