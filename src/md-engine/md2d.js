@@ -27,9 +27,6 @@ var model = exports.model = {},
     nodesHaveBeenCreated = false,
 
     makeIntegrator,
-    ljfLimitsNeedToBeUpdated = true,
-    setup_ljf_limits,
-    setup_coulomb_limits,
 
     // TODO: Actually check for Safari. Typed arrays are faster almost everywhere
     // ... except Safari.
@@ -109,9 +106,6 @@ model.INDICES = {
 };
 
 
-lennardJones.setEpsilon(ARGON_LJ_EPSILON_IN_EV);
-lennardJones.setSigma(ARGON_LJ_SIGMA_IN_NM);
-
 model.setSize = function(x) {
   // NB. We may want to create a simple state diagram for the md engine (as well as for the 'modeler' defined in
   // lab.molecules.js)
@@ -124,17 +118,17 @@ model.getSize = function() {
   return size;
 };
 
-// FIXME: disabled for now, so the view doesn't try to change epsilon
 model.setLJEpsilon = function(e) {
   lennardJones.setEpsilon(e);
-  ljfLimitsNeedToBeUpdated = true;
 };
 
-// FIXME: disabled for now, so the view doesn't try to change sigma
 model.setLJSigma = function(s) {
   lennardJones.setSigma(s);
-  ljfLimitsNeedToBeUpdated = true;
+  cutoffDistance_LJ = lennardJones.coefficients().rmin * 5;
 };
+
+model.setLJEpsilon(ARGON_LJ_EPSILON_IN_EV);
+model.setLJSigma(ARGON_LJ_SIGMA_IN_NM);
 
 model.getLJEpsilon = function() {
   return lennardJones.coefficients().epsilon;
@@ -147,22 +141,6 @@ model.getLJSigma = function() {
 // Returns the LJ calculator. Be careful with it!
 model.getLJCalculator = function() {
   return lennardJones;
-};
-
-//
-// Calculate the minimum and maximum distances for applying Lennard-Jones forces
-//
-setup_ljf_limits = function() {
-  // for any epsilon:
-  // 1 - lennardJones.potential(5*lennardJones.coefficients().rmin) / lennardJones.potential(Infinity) ~= 1e-4
-  cutoffDistance_LJ = lennardJones.coefficients().rmin * 5;
-  ljfLimitsNeedToBeUpdated = false;
-};
-
-//
-// Calculate the minimum and maximum distances for applying Coulomb forces
-//
-setup_coulomb_limits = function() {
 };
 
 model.createNodes = function(options) {
@@ -499,8 +477,6 @@ makeIntegrator = function(args) {
       if (duration == null)  duration = 250;  // how much "time" to integrate over
       if (dt == null) dt = 5;
 
-      if (ljfLimitsNeedToBeUpdated) setup_ljf_limits();
-
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
           dt_sq = dt*dt,                      // time step, squared
@@ -744,9 +720,6 @@ model.getIntegrator = function(options, integratorOutputState) {
       temperature_control  = options.temperature_control  || false,
       temperature          = options.temperature          || 1,
       integrator;
-
-  // just needs to be done once, right now.
-  setup_coulomb_limits();
 
   integrator = makeIntegrator({
 
