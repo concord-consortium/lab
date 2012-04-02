@@ -4,7 +4,8 @@
 // modeler.js
 //
 
-var coreModel = require('./md2d').model;
+var md2d      = require('./md2d'),
+    coreModel = md2d.makeModel();
 
 modeler = {};
 modeler.VERSION = '0.2.0';
@@ -51,18 +52,18 @@ modeler.model = function() {
   // (re-export these from coreModel for convenience)
   //
   model.INDICES = {
-    RADIUS   : coreModel.INDICES.RADIUS,
-    PX       : coreModel.INDICES.PX,
-    PY       : coreModel.INDICES.PY,
-    X        : coreModel.INDICES.X,
-    Y        : coreModel.INDICES.Y,
-    VX       : coreModel.INDICES.VX,
-    VY       : coreModel.INDICES.VY,
-    SPEED    : coreModel.INDICES.SPEED,
-    AX       : coreModel.INDICES.AX,
-    AY       : coreModel.INDICES.AY,
-    MASS     : coreModel.INDICES.MASS,
-    CHARGE   : coreModel.INDICES.CHARGE
+    RADIUS   : md2d.INDICES.RADIUS,
+    PX       : md2d.INDICES.PX,
+    PY       : md2d.INDICES.PY,
+    X        : md2d.INDICES.X,
+    Y        : md2d.INDICES.Y,
+    VX       : md2d.INDICES.VX,
+    VY       : md2d.INDICES.VY,
+    SPEED    : md2d.INDICES.SPEED,
+    AX       : md2d.INDICES.AX,
+    AY       : md2d.INDICES.AY,
+    MASS     : md2d.INDICES.MASS,
+    CHARGE   : md2d.INDICES.CHARGE
   };
 
   //
