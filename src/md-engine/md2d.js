@@ -243,7 +243,6 @@ model.createNodes = function(options) {
   colSpacing = size[0] / (1+ncols);
   rowSpacing = size[1] / (1+nrows);
 
-  console.log('initializing to temp', temperature);
   // Arrange molecules in a lattice. Not guaranteed to have CM exactly on center, and is an artificially low-energy
   // configuration. But it works OK for now.
   i = -1;
