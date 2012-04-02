@@ -144,7 +144,7 @@ model.createNodes = function(options) {
   options = options || {};
 
   if (nodesHaveBeenCreated) {
-    throw new Error("Nodes have already been created, and cannot be recreated.");
+    throw new Error("createNodes() was called even though the particles have already been created for this model instance.");
   }
   nodesHaveBeenCreated = true;
 
