@@ -11,7 +11,7 @@ var model = exports.model = {},
     unit         = constants.unit,
     math         = require('./math'),
     coulomb      = require('./potentials').coulomb,
-    lennardJones = window.lennardJones = require('./potentials').getLennardJonesCalculator(),
+    makeLennardJonesCalculator = require('./potentials').makeLennardJonesCalculator,
 
     // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
     ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
@@ -25,6 +25,17 @@ var model = exports.model = {},
     // These eventually will be factored into a proper state diagram for the underlying modeler:
     sizeHasBeenInitialized = false,
     nodesHaveBeenCreated = false,
+
+    cutoffDistance_LJ,
+
+    ljCoefficientsChanged = function(coefficients) {
+      cutoffDistance_LJ = coefficients.rmin * 5;
+    },
+
+    lennardJones = window.lennardJones = makeLennardJonesCalculator({
+      epsilon: ARGON_LJ_EPSILON_IN_EV,
+      sigma: ARGON_LJ_SIGMA_IN_NM
+    }, ljCoefficientsChanged),
 
     makeIntegrator,
 
@@ -41,9 +52,6 @@ var model = exports.model = {},
       }
       return true;
     }()),
-
-    // determined by sigma
-    cutoffDistance_LJ,
 
     size = [10, 10],
 
@@ -84,7 +92,7 @@ var model = exports.model = {},
     SPEED_INDEX    =  7,
     AX_INDEX       =  8,
     AY_INDEX       =  9,
-    MASS_INDEX = 10,
+    MASS_INDEX     = 10,
     CHARGE_INDEX   = 11;
 
 model.INDICES = {
@@ -121,11 +129,7 @@ model.setLJEpsilon = function(e) {
 
 model.setLJSigma = function(s) {
   lennardJones.setSigma(s);
-  cutoffDistance_LJ = lennardJones.coefficients().rmin * 5;
 };
-
-model.setLJEpsilon(ARGON_LJ_EPSILON_IN_EV);
-model.setLJSigma(ARGON_LJ_SIGMA_IN_NM);
 
 model.getLJEpsilon = function() {
   return lennardJones.coefficients().epsilon;
