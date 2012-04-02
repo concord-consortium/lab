@@ -13,68 +13,10 @@ var model = exports.model = {},
     coulomb      = require('./potentials').coulomb,
     makeLennardJonesCalculator = require('./potentials').makeLennardJonesCalculator,
 
-    // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
-    ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
-    ARGON_LJ_SIGMA_IN_NM   = 0.34,
-
-    ARGON_MASS_IN_DALTON = 39.95,
-    ARGON_MASS_IN_KG = constants.convert(ARGON_MASS_IN_DALTON, { from: unit.DALTON, to: unit.KILOGRAM }),
-
-    BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
-
-    // These eventually will be factored into a proper state diagram for the underlying modeler:
-    sizeHasBeenInitialized = false,
-    nodesHaveBeenCreated = false,
-
-    cutoffDistance_LJ,
-
-    ljCoefficientsChanged = function(coefficients) {
-      cutoffDistance_LJ = coefficients.rmin * 5;
-    },
-
-    lennardJones = window.lennardJones = makeLennardJonesCalculator({
-      epsilon: ARGON_LJ_EPSILON_IN_EV,
-      sigma: ARGON_LJ_SIGMA_IN_NM
-    }, ljCoefficientsChanged),
-
-    makeIntegrator,
-
-    // TODO: Actually check for Safari. Typed arrays are faster almost everywhere
-    // ... except Safari.
-    notSafari = true,
-
-    hasTypedArrays = (function() {
-      try {
-        new Float32Array();
-      }
-      catch(e) {
-        return false;
-      }
-      return true;
-    }()),
-
-    size = [10, 10],
-
-    //
-    // Individual property arrays for the particles
-    //
-    radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
-
-    //
-    // Total mass of all particles in the system
-    //
-    totalMass,
-
-    // the total mass of all particles
     //
     // Number of individual properties for a particle
     //
     nodePropertiesCount = 12,
-
-    //
-    // A two dimensional array consisting of arrays of particle property values
-    //
-    nodes,
 
     //
     // Indexes into the nodes array for the individual particle property arrays
@@ -93,7 +35,67 @@ var model = exports.model = {},
     AX_INDEX       =  8,
     AY_INDEX       =  9,
     MASS_INDEX     = 10,
-    CHARGE_INDEX   = 11;
+    CHARGE_INDEX   = 11,
+
+    // TODO: Actually check for Safari. Typed arrays are faster almost everywhere
+    // ... except Safari.
+    notSafari = true,
+
+    hasTypedArrays = (function() {
+      try {
+        new Float32Array();
+      }
+      catch(e) {
+        return false;
+      }
+      return true;
+    }()),
+
+    // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
+    ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
+    ARGON_LJ_SIGMA_IN_NM   = 0.34,
+
+    ARGON_MASS_IN_DALTON = 39.95,
+    ARGON_MASS_IN_KG = constants.convert(ARGON_MASS_IN_DALTON, { from: unit.DALTON, to: unit.KILOGRAM }),
+
+    BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
+
+
+    // These eventually will be factored into a proper state diagram for the underlying modeler:
+    sizeHasBeenInitialized = false,
+    nodesHaveBeenCreated = false,
+
+    cutoffDistance_LJ,
+
+    ljCoefficientsChanged = function(coefficients) {
+      cutoffDistance_LJ = coefficients.rmin * 5;
+    },
+
+    lennardJones = window.lennardJones = makeLennardJonesCalculator({
+      epsilon: ARGON_LJ_EPSILON_IN_EV,
+      sigma: ARGON_LJ_SIGMA_IN_NM
+    }, ljCoefficientsChanged),
+
+    makeIntegrator,
+
+    size = [10, 10],
+
+    //
+    // Individual property arrays for the particles
+    //
+    radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
+
+    //
+    // Total mass of all particles in the system
+    //
+    totalMass,
+
+
+    //
+    // A two dimensional array consisting of arrays of particle property values
+    //
+    nodes;
+
 
 model.INDICES = {
   RADIUS   : RADIUS_INDEX,
