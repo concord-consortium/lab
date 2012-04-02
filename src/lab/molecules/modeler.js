@@ -13,7 +13,6 @@ modeler.model = function() {
   var model = {},
       atoms = [],
       event = d3.dispatch("tick"),
-      size = [100, 100],
       temperature_control,
       lennard_jones_forces, coulomb_forces,
       pe,
@@ -65,8 +64,6 @@ modeler.model = function() {
     MASS     : coreModel.INDICES.MASS,
     CHARGE   : coreModel.INDICES.CHARGE
   };
-
-  coreModel.setSize(size);
 
   //
   // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
@@ -418,7 +415,7 @@ modeler.model = function() {
     speed    = coreModel.speed;
     ax       = coreModel.ax;
     ay       = coreModel.ay;
-    halfMass = coreModel.halfMass;
+    mass     = coreModel.mass;
     charge   = coreModel.charge;
 
     // The d3 molecule viewer requires this length to be set correctly:
@@ -474,8 +471,7 @@ modeler.model = function() {
   };
 
   model.size = function(x) {
-    if (!arguments.length) return size;
-    size = x;
+    if (!arguments.length) return coreModel.getSize();
     coreModel.setSize(x);
     return model;
   };

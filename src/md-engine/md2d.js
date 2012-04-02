@@ -48,6 +48,7 @@ var model = exports.model = {},
     cutoffDistance_LJ,
 
     size = [10, 10],
+    sizeHasBeenInitialized = false,
 
     //
     // Individual property arrays for the particles
@@ -109,7 +110,15 @@ lennardJones.setEpsilon(ARGON_LJ_EPSILON_IN_EV);
 lennardJones.setSigma(ARGON_LJ_SIGMA_IN_NM);
 
 model.setSize = function(x) {
-  //size = x;
+  // NB. We may want to create a simple state diagram for the md engine (as well as for the 'modeler' defined in
+  // lab.molecules.js)
+  if (sizeHasBeenInitialized) {
+    throw new Error("The molecular model's size has already been set, and cannot be reset.");
+  }
+};
+
+model.getSize = function() {
+  return size;
 };
 
 // FIXME: disabled for now, so the view doesn't try to change epsilon
@@ -179,6 +188,7 @@ model.createNodes = function(options) {
   ncols = Math.ceil(num/nrows);
 
   model.nodes = nodes = arrays.create(nodePropertiesCount, null, 'regular');
+  sizeHasBeenInitialized = true;
 
   // model.INDICES.RADIUS = 0
   nodes[model.INDICES.RADIUS] = arrays.create(num, rmin * mol_rmin_radius_factor, arrayType );
