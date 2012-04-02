@@ -153,8 +153,6 @@ model.createNodes = function(options) {
 
       rmin = lennardJones.coefficients().rmin,
 
-      mol_rmin_radius_factor = 0.5,
-
       // special-case:
       arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
 
@@ -174,7 +172,7 @@ model.createNodes = function(options) {
   sizeHasBeenInitialized = true;
 
   // model.INDICES.RADIUS = 0
-  nodes[model.INDICES.RADIUS] = arrays.create(num, rmin * mol_rmin_radius_factor, arrayType );
+  nodes[model.INDICES.RADIUS] = arrays.create(num, 0.5 * rmin, arrayType );
   model.radius = radius = nodes[model.INDICES.RADIUS];
 
   // model.INDICES.PX     = 1;
