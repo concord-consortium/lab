@@ -42,9 +42,6 @@ var model = exports.model = {},
       return true;
     }()),
 
-    // having finite values for these are a hack that get the relative strength of the forces wrong
-    maxLJRepulsion = -Infinity,
-
     // determined by sigma
     cutoffDistance_LJ,
 
@@ -484,7 +481,6 @@ makeIntegrator = function(args) {
           x_sum, y_sum,
 
           cutoffDistance_LJ_sq      = cutoffDistance_LJ * cutoffDistance_LJ,
-          maxLJRepulsion_sq         = maxLJRepulsion * maxLJRepulsion,
 
           f, f_over_r, aPair_over_r, aPair_x, aPair_y, // pairwise forces /accelerations and their x, y components
           dx, dy,
@@ -620,12 +616,6 @@ makeIntegrator = function(args) {
 
               if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
                 f_over_r = lennardJones.forceOverDistanceFromSquaredDistance(r_sq);
-
-                // Cap force to maxLJRepulsion. This should be a relatively rare occurrence, so ignore
-                // the cost of the (expensive) square root calculation.
-                if (f_over_r * f_over_r * r_sq > maxLJRepulsion_sq) {
-                  f_over_r = maxLJRepulsion / Math.sqrt(r_sq);
-                }
 
                 // Units of fx, fy are "MW Force Units", Dalton * nm / fs^2
                 aPair_over_r = f_over_r / mass[i];
