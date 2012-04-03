@@ -476,6 +476,7 @@ exports.makeModel = function() {
       }
 
       computeCMMotion();
+      model.computeOutputState();
     },
 
 
