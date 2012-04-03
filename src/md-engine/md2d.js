@@ -35,8 +35,8 @@ var arrays       = require('./arrays/arrays').arrays,
 
     NODE_PROPERTIES_COUNT, INDICES,
 
-    cross = function(a, b) {
-      return a[0]*b[1] - a[1]*b[0];
+    cross = function(a0, a1, b0, b1) {
+      return a0*b1 - a1*b0;
     },
 
     sumSquare = function(a,b) {
@@ -196,7 +196,7 @@ exports.makeModel = function() {
         var i, I_CM = 0, L_CM = 0;
         for (i = 0; i < N; i++) {
           // I_CM = sum over N of of mr_i x p_i (where r_i and p_i are position & momentum vectors relative to the CM)
-          I_CM += mass[i] * cross( [x[i]-x_CM, y[i]-y_CM], [vx[i]-vx_CM, vy[i]-vy_CM]);
+          I_CM += mass[i] * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
           L_CM += mass[i] * sumSquare( x[i]-x_CM, y[i]-y_CM );
         }
         omega_CM = I_CM / L_CM;
