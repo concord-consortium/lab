@@ -506,8 +506,6 @@ exports.makeModel = function() {
           r_sq,
           dx, dy,
           iloop,
-          realKEinMWUnits,   // KE in "real" coordinates, in MW Units
-          PE,                // potential energy, in eV
           T,                 // instantaneous temperature, in Kelvin
           vRescalingFactor;  // rescaling factor for Berendsen thermostat
 
@@ -577,15 +575,31 @@ exports.makeModel = function() {
         }
 
         T = calculateTemperature();
+
+      } // end of integration loop
+
+      // convert to real coordinates before leaving integrate()
+      for (i = 0; i < N; i++) {
+        convertToReal(i);
       }
+
+      model.computeOutputState();
+    },
+
+    computeOutputState: function() {
+      var i, j,
+          dx, dy,
+          r_sq,
+          realKEinMWUnits,   // KE in "real" coordinates, in MW Units
+          T,                 // temperature in Kelvin
+          PE;                // potential energy, in eV
 
       // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
       // integration loop!
       PE = 0;
       realKEinMWUnits= 0;
-      for (i = 0; i < N; i++) {
-        convertToReal(i);
 
+      for (i = 0; i < N; i++) {
         realKEinMWUnits += 0.5 * mass[i] * vx[i] * vx[i] + vy[i] * vy[i];
         for (j = i+1; j < N; j++) {
           dx = x[j] - x[i];

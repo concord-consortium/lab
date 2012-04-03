@@ -370,7 +370,7 @@ modeler.model = function() {
     coreModel.useThermostat(temperature_control);
     coreModel.setTargetTemperature(options.temperature);
 
-    coreModel.integrate(0);
+    coreModel.computeOutputState();
 
     return model;
   };
