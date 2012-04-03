@@ -190,30 +190,43 @@ exports.makeModel = function() {
         }
       },
 
-      // Subroutine that sets `omega_CM` to the current angular velocity around the center of mass.
+      // Calculates the angular velocity around the center of mass.
       // Requires x_CM, y_CM, vx_CM, vy_CM to have been calculated.
-      computeOmega_CM = function() {
+      calculateAngularVelocity = function() {
         var i, I_CM = 0, L_CM = 0;
         for (i = 0; i < N; i++) {
           // I_CM = sum over N of of mr_i x p_i (where r_i and p_i are position & momentum vectors relative to the CM)
           I_CM += mass[i] * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
           L_CM += mass[i] * sumSquare( x[i]-x_CM, y[i]-y_CM );
         }
-        omega_CM = I_CM / L_CM;
+        return I_CM / L_CM;
+      },
+
+      // Translate velocity vector
+      addVelocity = function(i, vx_t, vy_t) {
+        vx[i] += vx_t;
+        vy[i] += vy_t;
+      },
+
+      // Add effect of angular velocity omega, relative to (x_CM, y_CM), to velocity vector of particle irotate velocity
+      // vector of particle i
+      addAngularVelocity = function(i, omega) {
+        vx[i] -= omega * (y[i] - y_CM);
+        vy[i] += omega * (x[i] - x_CM);
       },
 
       // Subroutine that adds back to vx, vy the center-of-mass linear velocity and the system angular velocity around
       // the center of mass.
-      convertToReal = function(i) {
-        vx[i] = vx[i] + vx_CM - omega_CM * (y[i] - y_CM);
-        vy[i] = vy[i] + vy_CM + omega_CM * (x[i] - x_CM);
+      convertVelocityToRealCoordinates = function(i) {
+        addVelocity(i, vx_CM, vy_CM);
+        addAngularVelocity(i, omega_CM);
       },
 
       // Subroutine that removes from vx, vy the center-of-mass linear velocity and the system angular velocity around
       // the center of mass.
-      convertToInternal = function(i) {
-        vx[i] = vx[i] - vx_CM + omega_CM * (y[i] - y_CM);
-        vy[i] = vy[i] - vy_CM - omega_CM * (x[i] - x_CM);
+      convertVelocityToInternalCoordinates = function(i) {
+        addVelocity(i, -vx_CM, -vy_CM);
+        addAngularVelocity(i, -omega_CM);
       },
 
       // Subroutine that calculates the position and velocity of the center of mass, leaving these in x_CM, y_CM,
@@ -236,27 +249,30 @@ exports.makeModel = function() {
         vx_CM = px_CM / totalMass;
         vy_CM = py_CM / totalMass;
 
-        computeOmega_CM();
+        omega_CM = calculateAngularVelocity();
       },
 
-      updatePairwiseAccelerations = function(forceCalculator, i, j, dx, dy, r_sq, q1, q2) {
-        var f_over_r = forceCalculator.forceOverDistanceFromSquaredDistance(r_sq, q1, q2),
+      calculateTemperature = function() {
+        var twoKE_internal = 0,
+            i;
 
-            // Units of fx, fy are "MW Force Units", Dalton * nm / fs^2
-            aPair_over_r = f_over_r / mass[i],
-            aPair_x = aPair_over_r * dx,
-            aPair_y = aPair_over_r * dy;
-
-        // positive = attractive, negative = repulsive
-        ax[i] += aPair_x;
-        ay[i] += aPair_y;
-        ax[j] -= aPair_x;
-        ay[j] -= aPair_y;
+        for (i = 0; i < N; i++) {
+          twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+        }
+        return KE_to_T( twoKE_internal/2, N );
       },
 
-      halfUpdateVelocityFromAcceleration = function(i) {
-        vx[i] += 0.5*ax[i]*dt;
-        vy[i] += 0.5*ay[i]*dt;
+      rescaleVelocity = function(factor, i) {
+        if (factor !== 1) {
+          vx[i] *= factor;
+          vy[i] *= factor;
+        }
+      },
+
+      // calculate x(t+dt) from v(t) and a(t)
+      updatePosition = function(i) {
+        x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
+        y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
       },
 
       bounceOffWalls = function(i) {
@@ -279,27 +295,24 @@ exports.makeModel = function() {
         }
       },
 
-      // calculate x(t+dt) from v(t) and a(t)
-      updatePosition = function(i) {
-        x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
-        y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
+      halfUpdateVelocityFromAcceleration = function(i) {
+        vx[i] += 0.5*ax[i]*dt;
+        vy[i] += 0.5*ay[i]*dt;
       },
 
-      rescaleVelocities = function(factor, i) {
-        if (factor !== 1) {
-          vx[i] *= factor;
-          vy[i] *= factor;
-        }
-      },
+      updatePairwiseAccelerations = function(forceCalculator, i, j, dx, dy, r_sq, q1, q2) {
+        var f_over_r = forceCalculator.forceOverDistanceFromSquaredDistance(r_sq, q1, q2),
 
-      calculateTemperature = function() {
-        var twoKE_internal = 0,
-            i;
+            // Units of fx, fy are "MW Force Units", Dalton * nm / fs^2
+            aPair_over_r = f_over_r / mass[i],
+            aPair_x = aPair_over_r * dx,
+            aPair_y = aPair_over_r * dy;
 
-        for (i = 0; i < N; i++) {
-          twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
-        }
-        return KE_to_T( twoKE_internal/2, N );
+        // positive = attractive, negative = repulsive
+        ax[i] += aPair_x;
+        ay[i] += aPair_y;
+        ax[j] -= aPair_x;
+        ay[j] -= aPair_y;
       };
 
 
@@ -511,7 +524,7 @@ exports.makeModel = function() {
 
 
       for (i = 0; i < N; i++) {
-        convertToInternal(i);
+        convertVelocityToInternalCoordinates(i);
       }
       T = calculateTemperature();
 
@@ -530,10 +543,10 @@ exports.makeModel = function() {
         }
 
         for (i = 0; i < N; i++) {
-          rescaleVelocities(vRescalingFactor, i);
+          rescaleVelocity(vRescalingFactor, i);
 
           // convert velocities from "internal" to "real" velocities before calculating x, y and updating px, py
-          convertToReal(i);
+          convertVelocityToRealCoordinates(i);
           updatePosition(i);
           bounceOffWalls(i);
         }
@@ -571,7 +584,7 @@ exports.makeModel = function() {
         for (i = 0; i < N; i++) {
           halfUpdateVelocityFromAcceleration(i);
           speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
-          convertToInternal(i);
+          convertVelocityToInternalCoordinates(i);
         }
 
         T = calculateTemperature();
@@ -580,7 +593,7 @@ exports.makeModel = function() {
 
       // convert to real coordinates before leaving integrate()
       for (i = 0; i < N; i++) {
-        convertToReal(i);
+        convertVelocityToRealCoordinates(i);
       }
 
       model.computeOutputState();
