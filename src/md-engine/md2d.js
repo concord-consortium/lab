@@ -37,41 +37,26 @@ var arrays       = require('./arrays/arrays').arrays,
     //
     // Number of properties each particle has. Each propety is represented by a (num particles)-long array.
     //
-    NODE_PROPERTIES_COUNT = 12,
+    NODE_PROPERTIES_COUNT,
 
-    //
-    // Indexes into the nodes array for the individual particle property arrays
-    //
-    // Access to these within this module will be faster if they are vars in this closure rather than property lookups.
-    // However, publish the indices to exports.INDICES for use outside this module.
-    //
-    RADIUS_INDEX   =  0,
-    PX_INDEX       =  1,
-    PY_INDEX       =  2,
-    X_INDEX        =  3,
-    Y_INDEX        =  4,
-    VX_INDEX       =  5,
-    VY_INDEX       =  6,
-    SPEED_INDEX    =  7,
-    AX_INDEX       =  8,
-    AY_INDEX       =  9,
-    MASS_INDEX     = 10,
-    CHARGE_INDEX   = 11;
+    INDICES;
 
-exports.INDICES = {
-  RADIUS   : RADIUS_INDEX,
-  PX       : PX_INDEX,
-  PY       : PY_INDEX,
-  X        : X_INDEX,
-  Y        : Y_INDEX,
-  VX       : VX_INDEX,
-  VY       : VY_INDEX,
-  SPEED    : SPEED_INDEX,
-  AX       : AX_INDEX,
-  AY       : AY_INDEX,
-  MASS     : MASS_INDEX,
-  CHARGE   : CHARGE_INDEX
+exports.INDICES = INDICES = {
+  RADIUS :  0,
+  PX     :  1,
+  PY     :  2,
+  X      :  3,
+  Y      :  4,
+  VX     :  5,
+  VY     :  6,
+  SPEED  :  7,
+  AX     :  8,
+  AY     :  9,
+  MASS   : 10,
+  CHARGE : 11
 };
+
+exports.NODE_PROPERTIES_COUNT = NODE_PROPERTIES_COUNT = 12;
 
 exports.makeModel = function() {
 
@@ -571,18 +556,18 @@ exports.makeModel = function() {
 
     nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
 
-    radius = model.radius = nodes[RADIUS_INDEX] = arrays.create(N, 0.5 * rmin, arrayType );
-    px     = model.px     = nodes[PX_INDEX]     = arrays.create(N, 0, arrayType);
-    py     = model.py     = nodes[PY_INDEX]     = arrays.create(N, 0, arrayType);
-    x      = model.x      = nodes[X_INDEX]      = arrays.create(N, 0, arrayType);
-    y      = model.y      = nodes[Y_INDEX]      = arrays.create(N, 0, arrayType);
-    vx     = model.vx     = nodes[VX_INDEX]     = arrays.create(N, 0, arrayType);
-    vy     = model.vy     = nodes[VY_INDEX]     = arrays.create(N, 0, arrayType);
-    speed  = model.speed  = nodes[SPEED_INDEX]  = arrays.create(N, 0, arrayType);
-    ax     = model.ax     = nodes[AX_INDEX]     = arrays.create(N, 0, arrayType);
-    ay     = model.ay     = nodes[AY_INDEX]     = arrays.create(N, 0, arrayType);
-    mass   = model.mass   = nodes[MASS_INDEX]   = arrays.create(N, ARGON_MASS_IN_DALTON, arrayType);
-    charge = model.charge = nodes[CHARGE_INDEX] = arrays.create(N, 0, arrayType);
+    radius = model.radius = nodes[INDICES.RADIUS] = arrays.create(N, 0.5 * rmin, arrayType );
+    px     = model.px     = nodes[INDICES.PX]     = arrays.create(N, 0, arrayType);
+    py     = model.py     = nodes[INDICES.PY]     = arrays.create(N, 0, arrayType);
+    x      = model.x      = nodes[INDICES.X]      = arrays.create(N, 0, arrayType);
+    y      = model.y      = nodes[INDICES.Y]      = arrays.create(N, 0, arrayType);
+    vx     = model.vx     = nodes[INDICES.VX]     = arrays.create(N, 0, arrayType);
+    vy     = model.vy     = nodes[INDICES.VY]     = arrays.create(N, 0, arrayType);
+    speed  = model.speed  = nodes[INDICES.SPEED]  = arrays.create(N, 0, arrayType);
+    ax     = model.ax     = nodes[INDICES.AX]     = arrays.create(N, 0, arrayType);
+    ay     = model.ay     = nodes[INDICES.AY]     = arrays.create(N, 0, arrayType);
+    mass   = model.mass   = nodes[INDICES.MASS]   = arrays.create(N, ARGON_MASS_IN_DALTON, arrayType);
+    charge = model.charge = nodes[INDICES.CHARGE] = arrays.create(N, 0, arrayType);
 
     totalMass = model.totalMass = N * ARGON_MASS_IN_DALTON;
 
