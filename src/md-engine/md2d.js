@@ -269,7 +269,7 @@ exports.makeModel = function() {
       if (sizeHasBeenInitialized) {
         throw new Error("The molecular model's size has already been set, and cannot be reset.");
       }
-      size = v;
+      size = [v[0], v[1]];
     },
 
     getSize: function() {
