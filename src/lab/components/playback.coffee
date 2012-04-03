@@ -2,8 +2,11 @@
 # A simplistic player-wrapper for the model
 ############################################
 class ModelPlayer
-  constructor: (@model)->
-    @playing = true
+  constructor: (@model, playing)->
+    if (arguments.length > 1)
+      @playing = playing
+    else
+      @playing = true
 
   play: ->
     @model.resume()
