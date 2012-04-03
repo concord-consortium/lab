@@ -147,7 +147,7 @@ exports.makeModel = function() {
       omega_CM,
 
       // Object containing observations of the sytem (temperature, etc)
-      outputState    = window.state = {},
+      outputState = window.state = {},
 
       // Cutoff distance beyond which the Lennard-Jones force is clipped to 0.
       cutoffDistance_LJ,
@@ -171,14 +171,14 @@ exports.makeModel = function() {
         return useCoulombInteraction ? 1000 : 1000;
       },
 
-      // Begin transiently adjusting the system temperature; this turns the thermostat on (nudging the temperature
-      // toward T_target) until a windowed average of the temperature comes within `tempTolerance` of `T_target`.
-      adjustTemperature = function(options)  {
-        if (options == null) options = {};
-
-        var windowSize = options.windowSize || getWindowSize();
-        temperatureChangeInProgress = true;
-        T_windowed = math.getWindowedAverager( windowSize );
+      // If the thermostat is not being used, begins transiently adjusting the system temperature; this turns the
+      // thermostat on (nudging the temperature toward T_target) until a windowed average of the temperature comes
+      // within `tempTolerance` of `T_target`.
+      beginTransientTemperatureChange = function()  {
+        if (!useThermostat) {
+          temperatureChangeInProgress = true;
+          T_windowed = math.getWindowedAverager( getWindowSize() );
+        }
       },
 
       // Subroutine that sets `omega_CM` to the current angular velocity around the center of mass.
@@ -238,7 +238,7 @@ exports.makeModel = function() {
     useCoulombInteraction: function(v) {
       if (v !== useCoulombInteraction) {
         useCoulombInteraction = v;
-        adjustTemperature();
+        beginTransientTemperatureChange();
       }
     },
 
@@ -246,7 +246,7 @@ exports.makeModel = function() {
       if (v !== useLennardJonesInteraction) {
         useLennardJonesInteraction = v;
         if (useLennardJonesInteraction) {
-          adjustTemperature();
+          beginTransientTemperatureChange();
         }
       }
     },
@@ -258,7 +258,7 @@ exports.makeModel = function() {
     setTargetTemperature: function(v) {
       if (v !== T_target) {
         T_target = v;
-        adjustTemperature();
+        beginTransientTemperatureChange();
       }
       T_target = v;
     },
@@ -397,9 +397,7 @@ exports.makeModel = function() {
     relaxToTemperature: function(T) {
       if (T != null) T_target = T;
 
-      // override window size
-      adjustTemperature();
-
+      beginTransientTemperatureChange();
       breakOnTargetTemperature = true;
       while (temperatureChangeInProgress) {
         this.integrate();
