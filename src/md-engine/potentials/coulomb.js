@@ -48,6 +48,10 @@ forceFromSquaredDistance = exports.forceFromSquaredDistance = function(r_sq, q1,
 },
 
 
+forceOverDistanceFromSquaredDistance = exports.forceOverDistanceFromSquaredDistance = function(r_sq, q1, q2) {
+  return forceFromSquaredDistance(r_sq, q1, q2) / Math.sqrt(r_sq);
+},
+
 /** Input units:
      r: nanometers,
      q1, q2: elementary charges
