@@ -43,6 +43,8 @@ var arrays       = require('./arrays/arrays').arrays,
       return a*a + b*b;
     },
 
+    emptyFunction = function() {},
+
     /**
       Input units:
         KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
@@ -216,6 +218,12 @@ exports.makeModel = function() {
         return I_CM / L_CM;
       },
 
+      // Scales the velocity vector of particle i by `factor`.
+      scaleVelocity = function(i, factor) {
+        vx[i] *= factor;
+        vy[i] *= factor;
+      },
+
       // Adds the velocity vector (vx_t, vy_t) to the velocity vector of particle i
       addVelocity = function(i, vx_t, vy_t) {
         vx[i] += vx_t;
@@ -263,13 +271,6 @@ exports.makeModel = function() {
         vy_CM = py_CM / totalMass;
 
         omega_CM = calculateAngularVelocity();
-      },
-
-      rescaleVelocity = function(factor, i) {
-        if (factor !== 1) {
-          vx[i] *= factor;
-          vy[i] *= factor;
-        }
       },
 
       // calculate x(t+dt) from v(t) and a(t)
@@ -524,7 +525,8 @@ exports.makeModel = function() {
           dx, dy,
           iloop,
           T,                 // instantaneous temperature, in Kelvin
-          vRescalingFactor;  // rescaling factor for Berendsen thermostat
+          rescalingFactor, // rescaling factor for Berendsen thermostat
+          rescalingFunc;
 
 
       for (i = 0; i < N; i++) {
@@ -541,13 +543,16 @@ exports.makeModel = function() {
         }
 
         // rescale velocities based on ratio of target temp to measured temp (Berendsen thermostat)
-        vRescalingFactor = 1;
         if (temperatureChangeInProgress || useThermostat && T > 0) {
-          vRescalingFactor = Math.sqrt(1 + thermostatCouplingFactor * (T_target / T - 1));
+          rescalingFunc = scaleVelocity;
+          rescalingFactor = Math.sqrt(1 + thermostatCouplingFactor * (T_target / T - 1));
+        }
+        else {
+          rescalingFunc = emptyFunction;
         }
 
         for (i = 0; i < N; i++) {
-          rescaleVelocity(vRescalingFactor, i);
+          rescalingFunc(i, rescalingFactor);
 
           // convert velocities from "internal" to "real" velocities before calculating x, y and updating px, py
           convertVelocityToRealCoordinates(i);
