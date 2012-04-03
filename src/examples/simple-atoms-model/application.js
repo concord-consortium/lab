@@ -26,5 +26,5 @@ var model_player = new ModelPlayer(model, autostart);
 
 var molecule_container = layout.moleculeContainer("#molecule-container");
 
-var modelController = controllers.simpleModelController("simple-static-screen");
+var modelController = controllers.simpleModelController("simple-static-screen", molecule_container);
 

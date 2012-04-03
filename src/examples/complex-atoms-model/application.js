@@ -177,4 +177,4 @@ function update_coefficients(coefficients) {
   }
 }
 
-model_controller = controllers.complexModelController("full-static-screen");
+model_controller = controllers.complexModelController("full-static-screen", molecule_container);

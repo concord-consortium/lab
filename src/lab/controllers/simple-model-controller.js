@@ -1,6 +1,6 @@
 
 
-controllers.simpleModelController = function(layout_style) {
+controllers.simpleModelController = function(layout_style, molecule_view) {
 
   layout.selection = layout_style;
 
@@ -13,7 +13,7 @@ controllers.simpleModelController = function(layout_style) {
   // ------------------------------------------------------------
 
   var model_listener = function(e) {
-    molecule_container.update_molecule_positions();
+    molecule_view.update_molecule_positions();
     therm.add_value(model.temperature());
     if (step_counter >= model.stepCounter()) { modelStop(); }
   }
@@ -155,12 +155,10 @@ controllers.simpleModelController = function(layout_style) {
   }
 
   function modelStop() {
-    model_stopped = true;
     model.stop();
   }
 
   function modelStep() {
-    model_stopped = true;
     model.stop();
     if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
       model.stepForward();
@@ -168,7 +166,6 @@ controllers.simpleModelController = function(layout_style) {
   }
 
   function modelGo() {
-    model_stopped = false;
     model.on("tick", model_listener);
     if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
       model.resume();
@@ -181,7 +178,6 @@ controllers.simpleModelController = function(layout_style) {
   }
 
   function modelStepForward() {
-    model_stopped = true;
     if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
       model.stepForward();
     }
@@ -192,8 +188,9 @@ controllers.simpleModelController = function(layout_style) {
     model.temperature(temperature);
     updateMolNumberViewDependencies();
     modelStop();
-    molecule_container.update_molecule_radius();
-    molecule_container.setup_particles();
+    model.on("tick", model_listener);
+    molecule_view.update_molecule_radius();
+    molecule_view.setup_particles();
     layout.setupScreen(layout.selection);
     step_counter = model.stepCounter();
   }
@@ -218,20 +215,30 @@ controllers.simpleModelController = function(layout_style) {
     if (evt) {
       switch (evt.keyCode) {
         case 32:                // spacebar
-        model_stopped ? modelGo() : modelStop();
-        evt.preventDefault();
+          if (model.is_stopped()) {
+            molecule_view.playback_component.action('play')
+          } else {
+            molecule_view.playback_component.action('stop')
+          };
+          evt.preventDefault();
         break;
         case 13:                // return
-        modelGo();
-        evt.preventDefault();
+          molecule_view.playback_component.action('play')
+          evt.preventDefault();
         break;
         case 37:                // left-arrow
-        modelStepBack();
-        evt.preventDefault();
+          if (!model.is_stopped()) {
+            molecule_view.playback_component.action('stop')
+          };
+          modelStepBack();
+          evt.preventDefault();
         break;
         case 39:                // right-arrow
-        modelStepForward();
-        evt.preventDefault();
+          if (!model.is_stopped()) {
+            molecule_view.playback_component.action('stop')
+          };
+          modelStepForward();
+          evt.preventDefault();
         break;
       }
     }

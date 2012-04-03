@@ -1,6 +1,6 @@
 /*globals modeler, ModelPlayer, layout, graphx, molecules_lennard_jones, modelController */
 
-controllers.complexModelController = function(layout_style) {
+controllers.complexModelController = function(layout_style, molecule_view) {
 
   layout.selection = layout_style;
 
@@ -20,7 +20,7 @@ controllers.complexModelController = function(layout_style) {
 
       layout.speed_update();
 
-       molecule_container.update_molecule_positions();
+       molecule_view.update_molecule_positions();
 
       if (model.isNewStep()) {
         te_data.push( ke );
@@ -205,12 +205,12 @@ controllers.complexModelController = function(layout_style) {
       modelSetup();
       model.temperature(temperature);
       layout.temperature_control_checkbox.onchange();
-      molecule_container.update_molecule_radius();
-      molecule_container.setup_particles();
+      molecule_view.update_molecule_radius();
+      molecule_view.setup_particles();
       layout.setupScreen(layout.selection);
       updateMolNumberViewDependencies();
       modelStop();
-
+      model.on("tick", modelListener);
       step_counter = model.stepCounter();
       layout.displayStats();
       if (layout.datatable_visible) {
@@ -246,25 +246,31 @@ controllers.complexModelController = function(layout_style) {
       if (evt) {
         switch (evt.keyCode) {
           case 32:                // spacebar
-            if (model_stopped) {
-              modelGo();
+            if (model.is_stopped()) {
+              molecule_view.playback_component.action('play')
             } else {
-              modelStop();
-            }
+              molecule_view.playback_component.action('stop')
+            };
             evt.preventDefault();
-            break;
+          break;
           case 13:                // return
-            modelGo();
+            molecule_view.playback_component.action('play')
             evt.preventDefault();
-            break;
+          break;
           case 37:                // left-arrow
+            if (!model.is_stopped()) {
+              molecule_view.playback_component.action('stop')
+            };
             modelStepBack();
             evt.preventDefault();
-            break;
+          break;
           case 39:                // right-arrow
+            if (!model.is_stopped()) {
+              molecule_view.playback_component.action('stop')
+            };
             modelStepForward();
             evt.preventDefault();
-            break;
+          break;
         }
       }
     }
