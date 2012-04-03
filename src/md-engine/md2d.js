@@ -34,9 +34,6 @@ var arrays       = require('./arrays/arrays').arrays,
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
-    //
-    // Number of properties each particle has. Each propety is represented by a (num particles)-long array.
-    //
     NODE_PROPERTIES_COUNT, INDICES,
 
     cross = function(a, b) {
@@ -45,6 +42,25 @@ var arrays       = require('./arrays/arrays').arrays,
 
     sumSquare = function(a,b) {
       return a*a + b*b;
+    },
+
+    /**
+      Input units:
+        KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
+      Output units:
+        T: K
+    */
+    KE_to_T = function(internalKEinMWUnits, N) {
+      // In 2 dimensions, kT = (2/N_df) * KE
+
+      // We are using "internal coordinates" from which 2 (1?) angular and 2 translational degrees of freedom have
+      // been removed
+
+      var N_df = 2 * N - 4,
+          averageKEinMWUnits = (2 / N_df) * internalKEinMWUnits,
+          averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
+
+      return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
     };
 
 
@@ -144,25 +160,6 @@ exports.makeModel = function() {
         var windowSize = options.windowSize || getWindowSize();
         temperatureChangeInProgress = true;
         T_windowed = math.getWindowedAverager( windowSize );
-      },
-
-      /**
-        Input units:
-          KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
-        Output units:
-          T: K
-      */
-      KE_to_T = function(internalKEinMWUnits) {
-        // In 2 dimensions, kT = (2/N_df) * KE
-
-        // We are using "internal coordinates" from which 2 (1?) angular and 2 translational degrees of freedom have
-        // been removed
-
-        var N_df = 2 * N - 4,
-            averageKEinMWUnits = (2 / N_df) * internalKEinMWUnits,
-            averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
-
-        return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
       },
 
       computeOmega_CM = function() {
@@ -298,7 +295,7 @@ exports.makeModel = function() {
       convertToInternal(i);
       twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
     }
-    T = KE_to_T( twoKE_internal/2 );
+    T = KE_to_T( twoKE_internal/2, N );
 
     // update time
     for (iloop = 1; iloop <= n_steps; iloop++) {
@@ -451,7 +448,7 @@ exports.makeModel = function() {
       }
 
       // Calculate T(t+dt) from v(t+dt)
-      T = KE_to_T( twoKE_internal/2 );
+      T = KE_to_T( twoKE_internal/2, N );
     }
 
     // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
