@@ -426,9 +426,7 @@ exports.makeModel = function() {
           j,
           v_sq, r_sq,
 
-          x_sum, y_sum,
-
-          cutoffDistance_LJ_sq      = cutoffDistance_LJ * cutoffDistance_LJ,
+          cutoffDistance_LJ_sq = cutoffDistance_LJ * cutoffDistance_LJ,
 
           f, f_over_r, aPair_over_r, aPair_x, aPair_y, // pairwise forces /accelerations and their x, y components
           dx, dy,
@@ -443,20 +441,80 @@ exports.makeModel = function() {
 
           twoKE_internal,    // 2*KE in "internal" coordinates, in MW Units
           T,                 // instantaneous temperature, in Kelvin
-          vRescalingFactor;  // rescaling factor for Berendsen thermostat
+          vRescalingFactor,  // rescaling factor for Berendsen thermostat
 
-          // measurements to be accumulated during the integration loop:
-          // pressure = 0;
+          computeTemperature = function() {
+            twoKE_internal = 0;
+            for (i = 0; i < N; i++) {
+              twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+            }
+            T = KE_to_T( twoKE_internal/2, N );
+          },
 
-      // when coordinates are converted to "real" coordinates when leaving this method, so convert back
-      twoKE_internal = 0;
+          rescaleVelocities = function(factor, i) {
+            if (factor !== 1) {
+              vx[i] *= factor;
+              vy[i] *= factor;
+            }
+          },
+
+          // calculate x(t+dt) from v(t) and a(t)
+          updatePosition = function(i) {
+            x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
+            y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
+
+            v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
+            speed[i] = Math.sqrt(v_sq);
+          },
+
+          bounceOffWalls = function(i) {
+            // Bounce off vertical walls.
+            if (x[i] < leftwall) {
+              x[i]  = leftwall + (leftwall - x[i]);
+              vx[i] *= -1;
+            } else if (x[i] > rightwall) {
+              x[i]  = rightwall - (x[i] - rightwall);
+              vx[i] *= -1;
+            }
+
+            // Bounce off horizontal walls
+            if (y[i] < bottomwall) {
+              y[i]  = bottomwall + (bottomwall - y[i]);
+              vy[i] *= -1;
+            } else if (y[i] > topwall) {
+              y[i]  = topwall - (y[i] - topwall);
+              vy[i] *= -1;
+            }
+          },
+
+          // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
+          halfUpdateVelocityFromAcceleration = function(i) {
+            vx[i] += 0.5*ax[i]*dt;
+            vy[i] += 0.5*ay[i]*dt;
+          },
+
+          updatePairwiseAccelerations = function(forceCalculator, i, j, r_sq, q1, q2) {
+            f_over_r = forceCalculator.forceOverDistanceFromSquaredDistance(r_sq, q1, q2);
+
+            // Units of fx, fy are "MW Force Units", Dalton * nm / fs^2
+            aPair_over_r = f_over_r / mass[i];
+            aPair_x = aPair_over_r * dx;
+            aPair_y = aPair_over_r * dy;
+
+            // positive = attractive, negative = repulsive
+            ax[i] += aPair_x;
+            ay[i] += aPair_y;
+            ax[j] -= aPair_x;
+            ay[j] -= aPair_y;
+          };
+
+
       for (i = 0; i < N; i++) {
         convertToInternal(i);
-        twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
       }
-      T = KE_to_T( twoKE_internal/2, N );
+      computeTemperature();
 
-      // update time
+
       for (iloop = 1; iloop <= n_steps; iloop++) {
         time = t_start + iloop*dt;
 
@@ -471,86 +529,23 @@ exports.makeModel = function() {
           vRescalingFactor = Math.sqrt(1 + thermostatCouplingFactor * (T_target / T - 1));
         }
 
-        // Initialize sums such as 'twoKE_internal' which need be accumulated once per integration loop:
-        twoKE_internal = 0;
-        x_sum = 0;
-        y_sum = 0;
-        px_CM = 0;
-        py_CM = 0;
-
-        //
-        // Use velocity Verlet integration to continue particle movement integrating acceleration with
-        // existing position and previous position while managing collision with boundaries.
-        //
-        // Update positions for first half of verlet integration
-        //
         for (i = 0; i < N; i++) {
+          rescaleVelocities(vRescalingFactor, i);
 
-          // Rescale v(t) using T(t)
-          if (vRescalingFactor !== 1) {
-            vx[i] *= vRescalingFactor;
-            vy[i] *= vRescalingFactor;
-          }
-
-          // (1) convert velocities from "internal" to "real" velocities before calculating x, y and updating px, py
+          // convert velocities from "internal" to "real" velocities before calculating x, y and updating px, py
           convertToReal(i);
-
-          // calculate x(t+dt) from v(t) and a(t)
-          x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
-          y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
-
-          v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
-          speed[i] = Math.sqrt(v_sq);
-
-          // Bounce off vertical walls.
-          if (x[i] < leftwall) {
-            x[i]  = leftwall + (leftwall - x[i]);
-            vx[i] *= -1;
-          } else if (x[i] > rightwall) {
-            x[i]  = rightwall - (x[i] - rightwall);
-            vx[i] *= -1;
-          }
-
-          // Bounce off horizontal walls
-          if (y[i] < bottomwall) {
-            y[i]  = bottomwall + (bottomwall - y[i]);
-            vy[i] *= -1;
-          } else if (y[i] > topwall) {
-            y[i]  = topwall - (y[i] - topwall);
-            vy[i] *= -1;
-          }
-
-          // Bouncing of walls like changes the overall momentum and center of mass, so accumulate them for later
-          px_CM += mass[i] * vx[i];
-          py_CM += mass[i] * vy[i];
-
-          x_sum += x[i];
-          y_sum += y[i];
+          updatePosition(i);
+          bounceOffWalls(i);
         }
 
-        // (2) recaclulate CM, v_CM, omega_CM for translation back to "internal" coordinates
-
-        // Note:
-        // px_CM = px_CM(t+dt) even though we haven't updated velocities using accelerations a(t) and a(t+dt).
+        // Recalculate CM, v_CM, omega_CM for translation back to "internal" coordinates.
+        // Note px_CM = px_CM(t+dt) even though we haven't updated velocities using accelerations a(t) and a(t+dt).
         // That is because the accelerations are strictly pairwise and should be momentum-conserving.
-        // Momentum
-
-        x_CM = x_sum / N;
-        y_CM = y_sum / N;
-
-        vx_CM = px_CM / totalMass;
-        vy_CM = py_CM / totalMass;
-
-        computeOmega_CM();
+        computeCMMotion();
 
         for (i = 0; i < N; i++) {
-          // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
-          vx[i] += 0.5*ax[i]*dt;
-          vy[i] += 0.5*ay[i]*dt;
-
-          // now that we used ax[i], ay[i] from a(t), zero them out for accumulation of pairwise interactions in a(t+dt)
-          ax[i] = 0;
-          ay[i] = 0;
+          halfUpdateVelocityFromAcceleration(i);
+          ax[i] = ay[i] = 0;
         }
 
         // Calculate a(t+dt), step 2: Sum over all pairwise interactions.
@@ -559,36 +554,14 @@ exports.makeModel = function() {
             for (j = i+1; j < N; j++) {
               dx = x[j] - x[i];
               dy = y[j] - y[i];
-
               r_sq = dx*dx + dy*dy;
 
               if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
-                f_over_r = lennardJones.forceOverDistanceFromSquaredDistance(r_sq);
-
-                // Units of fx, fy are "MW Force Units", Dalton * nm / fs^2
-                aPair_over_r = f_over_r / mass[i];
-                aPair_x = aPair_over_r * dx;
-                aPair_y = aPair_over_r * dy;
-
-                // positive = attractive, negative = repulsive
-                ax[i] += aPair_x;
-                ay[i] += aPair_y;
-                ax[j] -= aPair_x;
-                ay[j] -= aPair_y;
+                updatePairwiseAccelerations(lennardJones, i, j, r_sq);
               }
 
               if (useCoulombInteraction) {
-                f = coulomb.forceFromSquaredDistance(r_sq, charge[i], charge[j]);
-                f_over_r = f / Math.sqrt(r_sq);
-
-                aPair_over_r = f_over_r / mass[i];
-                aPair_x = aPair_over_r * dx;
-                aPair_y = aPair_over_r * dy;
-
-                ax[i] += aPair_x;
-                ay[i] += aPair_y;
-                ax[j] -= aPair_x;
-                ay[j] -= aPair_y;
+                updatePairwiseAccelerations(coulomb, i, j, r_sq, charge[i], charge[j]);
               }
             }
           }
@@ -596,18 +569,11 @@ exports.makeModel = function() {
 
         // SECOND HALF of calculation of v(t+dt): v(t+dt) <- v1(t+dt) + 0.5*a(t+dt)*dt
         for (i = 0; i < N; i++) {
-          vx[i] += 0.5*ax[i]*dt;
-          vy[i] += 0.5*ay[i]*dt;
-
+          halfUpdateVelocityFromAcceleration(i);
           convertToInternal(i);
-
-          v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
-          twoKE_internal += mass[i] * v_sq;
-          speed[i] = Math.sqrt(v_sq);
         }
 
-        // Calculate T(t+dt) from v(t+dt)
-        T = KE_to_T( twoKE_internal/2, N );
+        computeTemperature();
       }
 
       // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
