@@ -206,24 +206,25 @@ exports.makeModel = function() {
         vy[i] = vy[i] - vy_CM - omega_CM * (x[i] - x_CM);
       },
 
-      i;
+      computeCMMotion = function() {
+        var i;
 
-  x_CM = y_CM = px_CM = py_CM = vx_CM = vy_CM = 0;
+        x_CM = y_CM = px_CM = py_CM = vx_CM = vy_CM = 0;
 
-  for (i = 0; i < N; i++) {
-    x_CM += x[i];
-    y_CM += y[i];
-    px_CM += vx[i] * mass[i];
-    py_CM += vy[i] * mass[i];
-  }
+        for (i = 0; i < N; i++) {
+          x_CM += x[i];
+          y_CM += y[i];
+          px_CM += vx[i] * mass[i];
+          py_CM += vy[i] * mass[i];
+        }
 
-  x_CM /= N;
-  y_CM /= N;
-  vx_CM = px_CM / totalMass;
-  vy_CM = py_CM / totalMass;
+        x_CM /= N;
+        y_CM /= N;
+        vx_CM = px_CM / totalMass;
+        vy_CM = py_CM / totalMass;
 
-  omega_CM = calculateOmega_CM();
-
+        omega_CM = calculateOmega_CM();
+      };
 
   model.useCoulombInteraction =function(v) {
     if (v !== useCoulombInteraction) {
@@ -266,11 +267,13 @@ exports.makeModel = function() {
     breakOnTargetTemperature = false;
   };
 
-  model.getOutputState = function() {
-    return outputState;
-  };
+  model.outputState = outputState;
 
   model.integrate = function(duration, dt) {
+
+    if (!nodesHaveBeenCreated) {
+      throw new Error("md2d: integrate called before nodes created.");
+    }
 
     // FIXME. Recommended timestep for accurate simulation is τ/200
     // using rescaled t where t → τ(mσ²/ϵ)^½  (~= 1 ps for argon)
@@ -542,7 +545,7 @@ exports.makeModel = function() {
   model.createNodes = function(options) {
 
     if (nodesHaveBeenCreated) {
-      throw new Error("createNodes() was called even though the particles have already been created for this model instance.");
+      throw new Error("md2d: createNodes was called even though the particles have already been created for this model instance.");
     }
     nodesHaveBeenCreated = true;
     sizeHasBeenInitialized = true;
@@ -564,10 +567,7 @@ exports.makeModel = function() {
         ncols = Math.ceil(N/nrows),
 
         i, r, c, rowSpacing, colSpacing,
-        vMagnitude, vDirection,
-        pCMx = 0,
-        pCMy = 0,
-        vCMx, vCMy;
+        vMagnitude, vDirection;
 
     nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
 
@@ -628,9 +628,6 @@ exports.makeModel = function() {
           vy[N-i-1] = -vy[i];
         }
 
-        pCMx += vx[i] * mass[i];
-        pCMy += vy[i] * mass[i];
-
         ax[i] = 0;
         ay[i] = 0;
 
@@ -639,56 +636,7 @@ exports.makeModel = function() {
       }
     }
 
-    vCMx = pCMx / totalMass;
-    vCMy = pCMy / totalMass;
-  };
-
-  model.getIntegrator = function(options, integratorOutputState) {
-
-
-
-    options = options || {};
-    var lennard_jones_forces = options.lennard_jones_forces || true,
-        coulomb_forces       = options.coulomb_forces       || false,
-        temperature_control  = options.temperature_control  || false,
-        temperature          = options.temperature          || 1,
-        integrator;
-
-    integrator = makeIntegrator({
-
-      setOnceState: {
-        size                : size
-      },
-
-      settableState: {
-        useLennardJonesInteraction : lennard_jones_forces,
-        useCoulombInteraction      : coulomb_forces,
-        useThermostat              : temperature_control,
-        targetTemperature          : temperature
-      },
-
-      readWriteState: {
-        ax     : ax,
-        ay     : ay,
-        charge : charge,
-        nodes  : nodes,
-        px     : px,
-        py     : py,
-        radius : radius,
-        speed  : speed,
-        vx     : vx,
-        vy     : vy,
-        x      : x,
-        y      : y
-      },
-
-      outputState: integratorOutputState
-    });
-
-    // get initial state
-    integrator.integrate(0);
-
-    return integrator;
+    computeCMMotion();
   };
 
   return model;

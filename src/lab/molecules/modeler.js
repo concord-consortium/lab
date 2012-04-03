@@ -28,8 +28,7 @@ modeler.model = function() {
       sample_time, sample_times = [],
       temperature,
 
-      integrator,
-      integratorOutputState,
+      modelOutputState = coreModel.outputState,
       model_listener,
 
       //
@@ -110,13 +109,13 @@ modeler.model = function() {
       tick_history_list_push();
     }
 
-    integrator.integrate();
-    pressure = integratorOutputState.pressure;
-    pe = integratorOutputState.PE;
+    coreModel.integrate();
+    pressure = modelOutputState.pressure;
+    pe = modelOutputState.PE;
 
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-    ke = integratorOutputState.KE;
+    ke = modelOutputState.KE;
     tick_history_list_push();
     if (!stopped) {
       t = Date.now();
@@ -180,7 +179,7 @@ modeler.model = function() {
 
   function set_temperature(t) {
     temperature = t;
-    if (integrator) integrator.setTargetTemperature(abstract_to_real_temperature(t));
+    coreModel.setTargetTemperature(abstract_to_real_temperature(t));
   }
 
   // ------------------------------------------------------------
@@ -329,17 +328,17 @@ modeler.model = function() {
 
   model.set_temperature_control = function(tc) {
    temperature_control = tc;
-   if (integrator) integrator.useThermostat(tc);
+   coreModel.useThermostat(tc);
   };
 
   model.set_lennard_jones_forces = function(lj) {
    lennard_jones_forces = lj;
-   if (integrator) integrator.useLennardJonesInteraction(lj);
+   coreModel.useLennardJonesInteraction(lj);
   };
 
   model.set_coulomb_forces = function(cf) {
    coulomb_forces = cf;
-   if (integrator) integrator.useCoulombInteraction(cf);
+   coreModel.useCoulombInteraction(cf);
   };
 
   model.get_nodes = function() {
@@ -366,16 +365,20 @@ modeler.model = function() {
     // pressures.push(pressure);
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
 
-    integrator = coreModel.getIntegrator(options);
-    integratorOutputState = integrator.getOutputState();
+    coreModel.useLennardJonesInteraction(lennard_jones_forces);
+    coreModel.useCoulombInteraction(coulomb_forces);
+    coreModel.useThermostat(temperature_control);
+    coreModel.setTargetTemperature(options.temperature);
+
+    coreModel.integrate(0);
 
     return model;
   };
 
   model.relax = function() {
     // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
-    integrator.integrate(50);
-    integrator.relaxToTemperature();
+    coreModel.integrate(50);
+    coreModel.relaxToTemperature();
     return model;
   };
 
@@ -442,19 +445,19 @@ modeler.model = function() {
   };
 
   model.ke = function() {
-    return integratorOutputState ? integratorOutputState.KE : undefined;
+    return modelOutputState ? modelOutputState.KE : undefined;
   };
 
   model.ave_ke = function() {
-    return integratorOutputState? integratorOutputState.KE / nodes[0].length : undefined;
+    return modelOutputState? modelOutputState.KE / nodes[0].length : undefined;
   };
 
   model.pe = function() {
-    return integratorOutputState ? integratorOutputState.PE : undefined;
+    return modelOutputState ? modelOutputState.PE : undefined;
   };
 
   model.ave_pe = function() {
-    return integratorOutputState? integratorOutputState.PE / nodes[0].length : undefined;
+    return modelOutputState? modelOutputState.PE / nodes[0].length : undefined;
   };
 
   model.speed = function() {
