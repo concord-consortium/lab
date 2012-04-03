@@ -28,6 +28,7 @@ class PlayOnlyComponentSVG
       .attr('y',@vertical_padding)
       .attr('width',@unit_width)
       .attr('height',@unit_width)
+      .attr('style','fill: #cccccc')
     for points in point_set
       art = button_group.append(type)
       art.attr('class', "#{button_name} button-art")
