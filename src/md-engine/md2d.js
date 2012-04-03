@@ -157,6 +157,9 @@ exports.makeModel = function() {
       // (= angular momentum about CM / instantaneous moment of inertia about CM)
       omega_CM,
 
+      // instantaneous system temperature, in Kelvin
+      T,
+
       // Object containing observations of the sytem (temperature, etc)
       outputState = window.state = {},
 
@@ -248,6 +251,18 @@ exports.makeModel = function() {
       convertVelocityToInternalCoordinates = function(i) {
         addVelocity(i, -vx_CM, -vy_CM);
         addAngularVelocity(i, -omega_CM);
+      },
+
+      convertAllVelocitiesToRealCoordinates = function() {
+        for (var i = 0; i < N; i++) {
+          convertVelocityToRealCoordinates(i);
+        }
+      },
+
+      convertAllVelocitiesToInternalCoordinates = function() {
+        for (var i = 0; i < N; i++) {
+          convertVelocityToInternalCoordinates(i);
+        }
       },
 
       // Subroutine that calculates the position and velocity of the center of mass, leaving these in x_CM, y_CM,
@@ -483,7 +498,13 @@ exports.makeModel = function() {
         }
       }
 
+      // Compute linear and angular velocity of CM, compute temperature, and publish output state:
       computeCMMotion();
+
+      convertAllVelocitiesToInternalCoordinates();
+      T = calculateTemperature();
+      convertAllVelocitiesToRealCoordinates();
+
       model.computeOutputState();
     },
 
@@ -528,16 +549,11 @@ exports.makeModel = function() {
           r_sq,
           dx, dy,
           iloop,
-          T,                 // instantaneous temperature, in Kelvin
           rescalingFactor, // rescaling factor for Berendsen thermostat
           rescalingFunc;
 
       // Velocities are always in 'real' coodinates when entering or exiting the integrate() function.
-      for (i = 0; i < N; i++) {
-        convertVelocityToInternalCoordinates(i);
-      }
-
-      T = calculateTemperature();
+      convertAllVelocitiesToInternalCoordinates();
 
       for (iloop = 1; iloop <= n_steps; iloop++) {
         time = t_start + iloop*dt;
@@ -601,13 +617,10 @@ exports.makeModel = function() {
         }
 
         T = calculateTemperature();
-
       } // end of integration loop
 
       // convert to real coordinates before leaving integrate()
-      for (i = 0; i < N; i++) {
-        convertVelocityToRealCoordinates(i);
-      }
+      convertAllVelocitiesToRealCoordinates();
 
       model.computeOutputState();
     },
@@ -617,7 +630,6 @@ exports.makeModel = function() {
           dx, dy,
           r_sq,
           realKEinMWUnits,   // KE in "real" coordinates, in MW Units
-          T,                 // temperature in Kelvin
           PE;                // potential energy, in eV
 
       // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
