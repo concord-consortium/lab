@@ -273,12 +273,14 @@ exports.makeModel = function() {
         omega_CM = calculateAngularVelocity();
       },
 
-      // calculate x(t+dt) from v(t) and a(t)
+      // Calculate x(t+dt, i) from v(t) and a(t)
       updatePosition = function(i) {
         x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
         y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
       },
 
+      // Constrain particle i to the area between the walls by simulating perfectly elastic collisions with the walls.
+      // Note this may change the linear and angular momentum.
       bounceOffWalls = function(i) {
         // Bounce off vertical walls.
         if (x[i] < leftwall) {
@@ -299,15 +301,17 @@ exports.makeModel = function() {
         }
       },
 
+      // Half of the update of v(t+dt, i) using a; during a single integration loop, call once when a = a(t) and
+      // once when a = a(t+dt)
       halfUpdateVelocityFromAcceleration = function(i) {
         vx[i] += 0.5*ax[i]*dt;
         vy[i] += 0.5*ay[i]*dt;
       },
 
+      // Update a(t+dt, i) and a(t+dt, j) with using the force due to one type of interaction between particle i and j.
+      // Pass in an appropriate forceCalculator depending on the type of interaction (LJ, Coulomb).
       updatePairwiseAccelerations = function(forceCalculator, i, j, dx, dy, r_sq, q1, q2) {
         var f_over_r = forceCalculator.forceOverDistanceFromSquaredDistance(r_sq, q1, q2),
-
-            // Units of fx, fy are "MW Force Units", Dalton * nm / fs^2
             aPair_over_r = f_over_r / mass[i],
             aPair_x = aPair_over_r * dx,
             aPair_y = aPair_over_r * dy;
@@ -528,10 +532,11 @@ exports.makeModel = function() {
           rescalingFactor, // rescaling factor for Berendsen thermostat
           rescalingFunc;
 
-
+      // Velocities are always in 'real' coodinates when entering or exiting the integrate() function.
       for (i = 0; i < N; i++) {
         convertVelocityToInternalCoordinates(i);
       }
+
       T = calculateTemperature();
 
       for (iloop = 1; iloop <= n_steps; iloop++) {
@@ -589,7 +594,6 @@ exports.makeModel = function() {
           }
         }
 
-        // SECOND HALF of calculation of v(t+dt): v(t+dt) <- v1(t+dt) + 0.5*a(t+dt)*dt
         for (i = 0; i < N; i++) {
           halfUpdateVelocityFromAcceleration(i);
           speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
