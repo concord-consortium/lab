@@ -52,10 +52,10 @@ var arrays       = require('./arrays/arrays').arrays,
     KE_to_T = function(internalKEinMWUnits, N) {
       // In 2 dimensions, kT = (2/N_df) * KE
 
-      // We are using "internal coordinates" from which 2 (1?) angular and 2 translational degrees of freedom have
+      // We are using "internal coordinates" from which 1 angular and 2 translational degrees of freedom have
       // been removed
 
-      var N_df = 2 * N - 4,
+      var N_df = 2 * N - 3,
           averageKEinMWUnits = (2 / N_df) * internalKEinMWUnits,
           averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
 
