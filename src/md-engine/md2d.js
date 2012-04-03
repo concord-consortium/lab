@@ -118,8 +118,17 @@ exports.makeModel = function() {
       // System dimensions as [x, y] in nanometers. Default value can be changed until particles are created.
       size = [10, 10],
 
+      // Wall locations in nm
+      topwall, rightwall, bottomwall, leftwall,
+
       // The current model time, in femtoseconds.
       time = 0,
+
+      // The current integration time step
+      dt,
+
+      // Square of integration time step
+      dt_sq = dt*dt,                      // time step, squared
 
       // The number of molecules in the system.
       N,
@@ -228,6 +237,69 @@ exports.makeModel = function() {
         vy_CM = py_CM / totalMass;
 
         computeOmega_CM();
+      },
+
+      updatePairwiseAccelerations = function(forceCalculator, i, j, dx, dy, r_sq, q1, q2) {
+        var f_over_r = forceCalculator.forceOverDistanceFromSquaredDistance(r_sq, q1, q2),
+
+            // Units of fx, fy are "MW Force Units", Dalton * nm / fs^2
+            aPair_over_r = f_over_r / mass[i],
+            aPair_x = aPair_over_r * dx,
+            aPair_y = aPair_over_r * dy;
+
+        // positive = attractive, negative = repulsive
+        ax[i] += aPair_x;
+        ay[i] += aPair_y;
+        ax[j] -= aPair_x;
+        ay[j] -= aPair_y;
+      },
+
+      halfUpdateVelocityFromAcceleration = function(i) {
+        vx[i] += 0.5*ax[i]*dt;
+        vy[i] += 0.5*ay[i]*dt;
+      },
+
+      bounceOffWalls = function(i) {
+        // Bounce off vertical walls.
+        if (x[i] < leftwall) {
+          x[i]  = leftwall + (leftwall - x[i]);
+          vx[i] *= -1;
+        } else if (x[i] > rightwall) {
+          x[i]  = rightwall - (x[i] - rightwall);
+          vx[i] *= -1;
+        }
+
+        // Bounce off horizontal walls
+        if (y[i] < bottomwall) {
+          y[i]  = bottomwall + (bottomwall - y[i]);
+          vy[i] *= -1;
+        } else if (y[i] > topwall) {
+          y[i]  = topwall - (y[i] - topwall);
+          vy[i] *= -1;
+        }
+      },
+
+      // calculate x(t+dt) from v(t) and a(t)
+      updatePosition = function(i) {
+        x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
+        y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
+      },
+
+      rescaleVelocities = function(factor, i) {
+        if (factor !== 1) {
+          vx[i] *= factor;
+          vy[i] *= factor;
+        }
+      },
+
+      calculateTemperature = function() {
+        var twoKE_internal = 0,
+            i;
+
+        for (i = 0; i < N; i++) {
+          twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+        }
+        return KE_to_T( twoKE_internal/2, N );
       };
 
 
@@ -406,7 +478,7 @@ exports.makeModel = function() {
     },
 
 
-    integrate: function(duration, dt) {
+    integrate: function(duration, opt_dt) {
 
       if (!nodesHaveBeenCreated) {
         throw new Error("md2d: integrate called before nodes created.");
@@ -417,103 +489,33 @@ exports.makeModel = function() {
       // This is hardcoded below for the "Argon" case by setting dt = 5 fs:
 
       if (duration == null)  duration = 250;  // how much "time" to integrate over
-      if (dt == null) dt = 5;
+
+      dt = opt_dt || 5;
+      dt_sq = dt*dt;                      // time step, squared
+
+      leftwall   = radius[0];
+      bottomwall = radius[0];
+      rightwall  = size[0] - radius[0];
+      topwall    = size[1] - radius[0];
 
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
-          dt_sq = dt*dt,                      // time step, squared
+          cutoffDistance_LJ_sq = cutoffDistance_LJ * cutoffDistance_LJ,
           i,
           j,
-          v_sq, r_sq,
-
-          cutoffDistance_LJ_sq = cutoffDistance_LJ * cutoffDistance_LJ,
-
-          f, f_over_r, aPair_over_r, aPair_x, aPair_y, // pairwise forces /accelerations and their x, y components
+          r_sq,
           dx, dy,
           iloop,
-          leftwall   = radius[0],
-          bottomwall = radius[0],
-          rightwall  = size[0] - radius[0],
-          topwall    = size[1] - radius[0],
-
           realKEinMWUnits,   // KE in "real" coordinates, in MW Units
           PE,                // potential energy, in eV
-
-          twoKE_internal,    // 2*KE in "internal" coordinates, in MW Units
           T,                 // instantaneous temperature, in Kelvin
-          vRescalingFactor,  // rescaling factor for Berendsen thermostat
-
-          computeTemperature = function() {
-            twoKE_internal = 0;
-            for (i = 0; i < N; i++) {
-              twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
-            }
-            T = KE_to_T( twoKE_internal/2, N );
-          },
-
-          rescaleVelocities = function(factor, i) {
-            if (factor !== 1) {
-              vx[i] *= factor;
-              vy[i] *= factor;
-            }
-          },
-
-          // calculate x(t+dt) from v(t) and a(t)
-          updatePosition = function(i) {
-            x[i] += vx[i]*dt + 0.5*ax[i]*dt_sq;
-            y[i] += vy[i]*dt + 0.5*ay[i]*dt_sq;
-
-            v_sq  = vx[i]*vx[i] + vy[i]*vy[i];
-            speed[i] = Math.sqrt(v_sq);
-          },
-
-          bounceOffWalls = function(i) {
-            // Bounce off vertical walls.
-            if (x[i] < leftwall) {
-              x[i]  = leftwall + (leftwall - x[i]);
-              vx[i] *= -1;
-            } else if (x[i] > rightwall) {
-              x[i]  = rightwall - (x[i] - rightwall);
-              vx[i] *= -1;
-            }
-
-            // Bounce off horizontal walls
-            if (y[i] < bottomwall) {
-              y[i]  = bottomwall + (bottomwall - y[i]);
-              vy[i] *= -1;
-            } else if (y[i] > topwall) {
-              y[i]  = topwall - (y[i] - topwall);
-              vy[i] *= -1;
-            }
-          },
-
-          // FIRST HALF of calculation of v(t+dt):  v1(t+dt) <- v(t) + 0.5*a(t)*dt;
-          halfUpdateVelocityFromAcceleration = function(i) {
-            vx[i] += 0.5*ax[i]*dt;
-            vy[i] += 0.5*ay[i]*dt;
-          },
-
-          updatePairwiseAccelerations = function(forceCalculator, i, j, r_sq, q1, q2) {
-            f_over_r = forceCalculator.forceOverDistanceFromSquaredDistance(r_sq, q1, q2);
-
-            // Units of fx, fy are "MW Force Units", Dalton * nm / fs^2
-            aPair_over_r = f_over_r / mass[i];
-            aPair_x = aPair_over_r * dx;
-            aPair_y = aPair_over_r * dy;
-
-            // positive = attractive, negative = repulsive
-            ax[i] += aPair_x;
-            ay[i] += aPair_y;
-            ax[j] -= aPair_x;
-            ay[j] -= aPair_y;
-          };
+          vRescalingFactor;  // rescaling factor for Berendsen thermostat
 
 
       for (i = 0; i < N; i++) {
         convertToInternal(i);
       }
-      computeTemperature();
-
+      T = calculateTemperature();
 
       for (iloop = 1; iloop <= n_steps; iloop++) {
         time = t_start + iloop*dt;
@@ -557,11 +559,11 @@ exports.makeModel = function() {
               r_sq = dx*dx + dy*dy;
 
               if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
-                updatePairwiseAccelerations(lennardJones, i, j, r_sq);
+                updatePairwiseAccelerations(lennardJones, i, j, dx, dy, r_sq);
               }
 
               if (useCoulombInteraction) {
-                updatePairwiseAccelerations(coulomb, i, j, r_sq, charge[i], charge[j]);
+                updatePairwiseAccelerations(coulomb, i, j, dx, dy, r_sq, charge[i], charge[j]);
               }
             }
           }
@@ -570,10 +572,11 @@ exports.makeModel = function() {
         // SECOND HALF of calculation of v(t+dt): v(t+dt) <- v1(t+dt) + 0.5*a(t+dt)*dt
         for (i = 0; i < N; i++) {
           halfUpdateVelocityFromAcceleration(i);
+          speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
           convertToInternal(i);
         }
 
-        computeTemperature();
+        T = calculateTemperature();
       }
 
       // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
