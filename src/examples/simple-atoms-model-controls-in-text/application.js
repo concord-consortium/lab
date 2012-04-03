@@ -22,7 +22,7 @@ var autostart = true,
     model = modeler.model(),
     nodes;
 
-var model_player = new ModelPlayer(model);
+var model_player = new ModelPlayer(model, autostart);
 
 var molecule_container = layout.moleculeContainer("#molecule-container");
 
