@@ -2274,6 +2274,10 @@ modeler.model = function() {
     return average_rate();
   };
 
+  model.is_stopped = function() {
+    return stopped;
+  };
+
   model.set_temperature_control = function(tc) {
    temperature_control = tc;
    if (integrator) integrator.useThermostat(tc);

@@ -931,6 +931,7 @@ layout.moleculeContainer = function(e, options) {
     container.setup_particles = setup_particles;
     container.update_molecule_positions = update_molecule_positions;
     container.scale = scale;
+    container.playback_component = playback_component;
   }
 
   container.resize = function(width, height) {

@@ -29,7 +29,7 @@ var autostart = false,
     atoms,
     nodes;
 
-var model_player = new ModelPlayer(model);
+var model_player = new ModelPlayer(model, autostart);
 
 var molecule_container = layout.moleculeContainer("#molecule-container",
     {
@@ -177,4 +177,4 @@ function update_coefficients(coefficients) {
   }
 }
 
-model_controller = controllers.complexModelController("full-static-screen");
+model_controller = controllers.complexModelController("full-static-screen", molecule_container);

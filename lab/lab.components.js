@@ -490,7 +490,11 @@
       this.group = this.svg.append("g").attr("transform", "scale(" + this.scale + "," + this.scale + ")").attr("width", this.width).attr("height", this.height);
       this.init_play_button();
       this.init_stop_button();
-      return this.hide(this.play);
+      if (this.playable.playing) {
+        return this.hide(this.play);
+      } else {
+        return this.hide(this.stop);
+      }
     };
 
     PlayOnlyComponentSVG.prototype.position = function(xpos, ypos, scale) {
@@ -533,9 +537,13 @@
 
   ModelPlayer = (function() {
 
-    function ModelPlayer(model) {
+    function ModelPlayer(model, playing) {
       this.model = model;
-      this.playing = true;
+      if (arguments.length > 1) {
+        this.playing = playing;
+      } else {
+        this.playing = true;
+      }
     }
 
     ModelPlayer.prototype.play = function() {
@@ -1042,7 +1050,11 @@
       this.init_stop_button();
       this.init_forward_button();
       this.init_back_button();
-      return this.hide(this.play);
+      if (this.playable.playing) {
+        return this.hide(this.play);
+      } else {
+        return this.hide(this.stop);
+      }
     };
 
     PlaybackComponentSVG.prototype.position = function(xpos, ypos, scale) {
