@@ -1,0 +1,39 @@
+.button:hover
+  cursor: pointer
+  .bg
+    fill: #ccc
+  .symbol
+    fill: #333
+  .highlight
+    fill: transparent
+.component_group button
+  border: solid 1px #999
+  color: #222
+  margin: 0
+  padding: .75em 1.5em
+  @include linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #ddd 50%, #ddd 100%, $fallback: #ddd)
+  @include box-shadow(0 0 0 rgba(000,000,000,0.5), inset 0 0 1px rgba(255,255,255,0.7))
+.component_group button:hover, .component_group button:active
+  background: #aaa
+  color: #000
+  cursor: pointer
+.component_group button.left_edge
+  border-right-width: 0
+  @include border-top-left-radius(3px)
+  @include border-top-right-radius(0)
+  @include border-bottom-right-radius(0)
+  @include border-bottom-left-radius(3px)
+.component_group button.right_edge
+  @include border-top-left-radius(0)
+  @include border-top-right-radius(3px)
+  @include border-bottom-right-radius(3px)
+  @include border-bottom-left-radius(0)
+.component_group 
+  button#cool_button, button#heat_button
+    height: auto !important
+    padding: .75em 1.5em
+    width: 6.9em !important
+  button#cool_button:hover, button#heat_button:hover
+    background: #ccc
+    color: #111
+  
