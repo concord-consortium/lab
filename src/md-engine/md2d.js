@@ -190,10 +190,24 @@ exports.makeModel = function() {
         }
       },
 
+      // Calculates & returns instantaneous temperature of the system. If we're using "internal" coordinates (i.e.,
+      // subtracting the center of mass translation and rotation from particle velocities), convert to internal coords
+      // before calling this.
+      calculateTemperature = function() {
+        var twoKE_internal = 0,
+            i;
+
+        for (i = 0; i < N; i++) {
+          twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+        }
+        return KE_to_T( twoKE_internal/2, N );
+      },
+
       // Calculates the angular velocity around the center of mass.
       // Requires x_CM, y_CM, vx_CM, vy_CM to have been calculated.
       calculateAngularVelocity = function() {
         var i, I_CM = 0, L_CM = 0;
+
         for (i = 0; i < N; i++) {
           // I_CM = sum over N of of mr_i x p_i (where r_i and p_i are position & momentum vectors relative to the CM)
           I_CM += mass[i] * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
@@ -202,28 +216,27 @@ exports.makeModel = function() {
         return I_CM / L_CM;
       },
 
-      // Translate velocity vector
+      // Adds the velocity vector (vx_t, vy_t) to the velocity vector of particle i
       addVelocity = function(i, vx_t, vy_t) {
         vx[i] += vx_t;
         vy[i] += vy_t;
       },
 
-      // Add effect of angular velocity omega, relative to (x_CM, y_CM), to velocity vector of particle irotate velocity
-      // vector of particle i
+      // Adds effect of angular velocity omega, relative to (x_CM, y_CM), to the velocity vector of particle i
       addAngularVelocity = function(i, omega) {
         vx[i] -= omega * (y[i] - y_CM);
         vy[i] += omega * (x[i] - x_CM);
       },
 
-      // Subroutine that adds back to vx, vy the center-of-mass linear velocity and the system angular velocity around
-      // the center of mass.
+      // Adds the center-of-mass linear velocity and the system angular velocity back into the velocity vector of
+      // particle i.
       convertVelocityToRealCoordinates = function(i) {
         addVelocity(i, vx_CM, vy_CM);
         addAngularVelocity(i, omega_CM);
       },
 
-      // Subroutine that removes from vx, vy the center-of-mass linear velocity and the system angular velocity around
-      // the center of mass.
+      // Subtracts the center-of-mass linear velocity and the system angular velocity from the velocity vector of
+      // particle i.
       convertVelocityToInternalCoordinates = function(i) {
         addVelocity(i, -vx_CM, -vy_CM);
         addAngularVelocity(i, -omega_CM);
@@ -250,16 +263,6 @@ exports.makeModel = function() {
         vy_CM = py_CM / totalMass;
 
         omega_CM = calculateAngularVelocity();
-      },
-
-      calculateTemperature = function() {
-        var twoKE_internal = 0,
-            i;
-
-        for (i = 0; i < N; i++) {
-          twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
-        }
-        return KE_to_T( twoKE_internal/2, N );
       },
 
       rescaleVelocity = function(factor, i) {
