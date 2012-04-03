@@ -86,7 +86,10 @@ class PlayOnlyComponentSVG
 
     this.init_play_button()
     this.init_stop_button()
-    this.hide(@play)
+    if @playable.playing
+      this.hide(@play)
+    else
+      this.hide(@stop)
 
   position: (xpos, ypos, scale) ->
     @xpos = xpos

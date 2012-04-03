@@ -128,7 +128,10 @@ class PlaybackComponentSVG
     this.init_stop_button()
     this.init_forward_button()
     this.init_back_button()
-    this.hide(@play)
+    if @playable.playing
+      this.hide(@play)
+    else
+      this.hide(@stop)
 
   position: (xpos, ypos, scale) ->
     @xpos = xpos
