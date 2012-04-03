@@ -123,6 +123,19 @@ exports.makeModel = function() {
       time           = 0,
       outputState    = window.state = {},
 
+      // location of the center of mass
+      x_CM, y_CM,
+
+      // linear momentum of the system
+      px_CM, py_CM,
+
+      // velocity of the center of mass
+      vx_CM, vy_CM,
+
+      // angular velocity of the system
+      // (= angular momentum about CM / instantaneous moment of inertia about CM)
+      omega_CM,
+
       useCoulombInteraction      = false,
       useLennardJonesInteraction = true,
       useThermostat              = false,
