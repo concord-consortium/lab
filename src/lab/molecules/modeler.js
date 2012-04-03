@@ -5,7 +5,7 @@
 //
 
 var md2d      = require('./md2d'),
-    coreModel = md2d.makeModel();
+    coreModel;
 
 modeler = {};
 modeler.VERSION = '0.2.0';
@@ -28,7 +28,7 @@ modeler.model = function() {
       sample_time, sample_times = [],
       temperature,
 
-      modelOutputState = coreModel.outputState,
+      modelOutputState,
       model_listener,
 
       //
@@ -406,6 +406,9 @@ modeler.model = function() {
 
     if (options.temperature != null) options.temperature = abstract_to_real_temperature(options.temperature);
 
+    // get a fresh model
+    coreModel = md2d.makeModel();
+
     coreModel.createNodes(options);
 
     nodes    = coreModel.nodes;
@@ -421,6 +424,8 @@ modeler.model = function() {
     ay       = coreModel.ay;
     mass     = coreModel.mass;
     charge   = coreModel.charge;
+
+    modelOutputState = coreModel.outputState;
 
     // The d3 molecule viewer requires this length to be set correctly:
     atoms.length = nodes[0].length;
