@@ -153,6 +153,12 @@ exports.makeModel = function() {
       // Velocity of the center of mass, in nm / fs.
       vx_CM, vy_CM,
 
+      // Angular momentum of the system wrt its center of mass
+      L_CM,
+
+      // (Instantaneous) moment of inertia of the system wrt its center of mass
+      I_CM,
+
       // Angular velocity of the system about the center of mass, in radians / fs.
       // (= angular momentum about CM / instantaneous moment of inertia about CM)
       omega_CM,
@@ -212,19 +218,6 @@ exports.makeModel = function() {
         return KE_to_T( twoKE_internal/2, N );
       },
 
-      // Calculates the angular velocity around the center of mass.
-      // Requires x_CM, y_CM, vx_CM, vy_CM to have been calculated.
-      calculateAngularVelocity = function() {
-        var i, I_CM = 0, L_CM = 0;
-
-        for (i = 0; i < N; i++) {
-          // I_CM = sum over N of of mr_i x p_i (where r_i and p_i are position & momentum vectors relative to the CM)
-          I_CM += mass[i] * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
-          L_CM += mass[i] * sumSquare( x[i]-x_CM, y[i]-y_CM );
-        }
-        return I_CM / L_CM;
-      },
-
       // Scales the velocity vector of particle i by `factor`.
       scaleVelocity = function(i, factor) {
         vx[i] *= factor;
@@ -272,7 +265,7 @@ exports.makeModel = function() {
       // Subroutine that calculates the position and velocity of the center of mass, leaving these in x_CM, y_CM,
       // vx_CM, and vy_CM, and that then computes the system angular velocity around the center of mass, leaving it
       // in omega_CM.
-      computeCMMotion = function() {
+      computeSystemTranslation = function() {
         var x_sum = 0,
             y_sum = 0,
             i;
@@ -290,8 +283,28 @@ exports.makeModel = function() {
         y_CM = y_sum / N;
         vx_CM = px_CM / totalMass;
         vy_CM = py_CM / totalMass;
+      },
 
-        omega_CM = calculateAngularVelocity();
+      // Subroutine that calculates the angular momentum and moment of inertia around the center of mass, and then
+      // uses these to calculate the weighted angular velocity around the center of mass.
+      // Updates I_CM, L_CM, and omega_CM.
+      // Requires x_CM, y_CM, vx_CM, vy_CM to have been calculated.
+      computeSystemRotation = function() {
+        var i;
+
+        L_CM = I_CM = 0;
+
+        for (i = 0; i < N; i++) {
+          // L_CM = sum over N of of mr_i x p_i (where r_i and p_i are position & momentum vectors relative to the CM)
+          L_CM += mass[i] * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
+          I_CM += mass[i] * sumSquare( x[i]-x_CM, y[i]-y_CM );
+        }
+        omega_CM = L_CM / I_CM;
+      },
+
+      computeCMMotion = function() {
+        computeSystemTranslation();
+        computeSystemRotation();
       },
 
       // Calculate x(t+dt, i) from v(t) and a(t)
@@ -637,7 +650,7 @@ exports.makeModel = function() {
           speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
         }
 
-        // Update CM(t+dt), v_CM(t+dt), omega_CM(t+dt)
+        // Update CM(t+dt), p_CM(t+dt), v_CM(t+dt), omega_CM(t+dt)
         computeCMMotion();
 
         convertAllVelocitiesToInternalCoordinates();
