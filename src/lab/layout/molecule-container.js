@@ -446,7 +446,7 @@ layout.moleculeContainer = function(e, options) {
 
     function update_molecule_radius() {
       var ljf = model.getLJCalculator().coefficients();
-      var r = ljf.rmin * mol_rmin_radius_factor;
+      var r = ljf.rmin * 0.5;
       // model.set_radius(r);
       vis.selectAll("circle")
           .data(atoms)
@@ -457,7 +457,7 @@ layout.moleculeContainer = function(e, options) {
 
     function setup_particles() {
       var ljf = model.getLJCalculator().coefficients();
-      var r = ljf.rmin * mol_rmin_radius_factor;
+      var r = ljf.rmin * 0.5;
       model.set_radius(r);
 
       gradient_container.selectAll("circle").remove();
@@ -480,7 +480,7 @@ layout.moleculeContainer = function(e, options) {
           .on("mousedown", molecule_mousedown)
           .on("mouseout", molecule_mouseout);
 
-      var font_size = x(ljf.rmin * mol_rmin_radius_factor * 1.5);
+      var font_size = x(ljf.rmin * 0.5 * 1.5);
       if (mol_number > 100) { font_size *= 0.9; }
 
       label = gradient_container.selectAll("g.label")

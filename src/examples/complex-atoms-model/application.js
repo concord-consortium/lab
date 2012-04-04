@@ -9,7 +9,7 @@
 //
 // ------------------------------------------------------------
 
-var autostart = false,
+var autostart = true,
     mol_number = 50,
     sample_time = 0.01,
     temperature = 5,
@@ -21,7 +21,6 @@ var autostart = false,
     lj_epsilon_min = -5.0,
     lennard_jones_potential = [],
     lj_alpha, lj_beta,
-    mol_rmin_radius_factor = 0.38,
     frame_number = 0,
     model_stopped = true,
     model = modeler.model(),
