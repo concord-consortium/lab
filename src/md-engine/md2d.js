@@ -633,23 +633,18 @@ exports.makeModel = function() {
           updateAccelerationsFunc(i);
         }
 
-        // Recalculate CM, v_CM, omega_CM for translation back to "internal" coordinates.
-        // Note that p_CM and I_CM will be valid even though momenta and velocities have only been partially updated,
-        // because the accelerations are strictly pairwise and should be momentum-conserving. (However, L_CM will be a
-        // little off because it can be affected by changes in the positions of the particles. Does this matter or
-        // should it be accumulated more carefully? Not sure yet.)
-        computeCMMotion();
-
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
           halfUpdateVelocityFromAcceleration(i);
 
           // Now that we have velocity, update speed
           speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
-
-          // ... and convert velocity i back into internal coordinates.
-          convertVelocityToInternalCoordinates(i);
         }
+
+        // Update CM(t+dt), v_CM(t+dt), omega_CM(t+dt)
+        computeCMMotion();
+
+        convertAllVelocitiesToInternalCoordinates();
 
         T = calculateTemperature();
       } // end of integration loop
