@@ -4,7 +4,8 @@
 // modeler.js
 //
 
-var coreModel = require('./md2d').model;
+var md2d      = require('./md2d'),
+    coreModel;
 
 modeler = {};
 modeler.VERSION = '0.2.0';
@@ -13,7 +14,6 @@ modeler.model = function() {
   var model = {},
       atoms = [],
       event = d3.dispatch("tick"),
-      size = [100, 100],
       temperature_control,
       lennard_jones_forces, coulomb_forces,
       pe,
@@ -28,8 +28,7 @@ modeler.model = function() {
       sample_time, sample_times = [],
       temperature,
 
-      integrator,
-      integratorOutputState,
+      modelOutputState,
       model_listener,
 
       //
@@ -52,21 +51,19 @@ modeler.model = function() {
   // (re-export these from coreModel for convenience)
   //
   model.INDICES = {
-    RADIUS   : coreModel.INDICES.RADIUS,
-    PX       : coreModel.INDICES.PX,
-    PY       : coreModel.INDICES.PY,
-    X        : coreModel.INDICES.X,
-    Y        : coreModel.INDICES.Y,
-    VX       : coreModel.INDICES.VX,
-    VY       : coreModel.INDICES.VY,
-    SPEED    : coreModel.INDICES.SPEED,
-    AX       : coreModel.INDICES.AX,
-    AY       : coreModel.INDICES.AY,
-    MASS     : coreModel.INDICES.MASS,
-    CHARGE   : coreModel.INDICES.CHARGE
+    RADIUS   : md2d.INDICES.RADIUS,
+    PX       : md2d.INDICES.PX,
+    PY       : md2d.INDICES.PY,
+    X        : md2d.INDICES.X,
+    Y        : md2d.INDICES.Y,
+    VX       : md2d.INDICES.VX,
+    VY       : md2d.INDICES.VY,
+    SPEED    : md2d.INDICES.SPEED,
+    AX       : md2d.INDICES.AX,
+    AY       : md2d.INDICES.AY,
+    MASS     : md2d.INDICES.MASS,
+    CHARGE   : md2d.INDICES.CHARGE
   };
-
-  coreModel.setSize(size);
 
   //
   // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
@@ -112,13 +109,13 @@ modeler.model = function() {
       tick_history_list_push();
     }
 
-    integrator.integrate();
-    pressure = integratorOutputState.pressure;
-    pe = integratorOutputState.PE;
+    coreModel.integrate();
+    pressure = modelOutputState.pressure;
+    pe = modelOutputState.PE;
 
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-    ke = integratorOutputState.KE;
+    ke = modelOutputState.KE;
     tick_history_list_push();
     if (!stopped) {
       t = Date.now();
@@ -182,7 +179,7 @@ modeler.model = function() {
 
   function set_temperature(t) {
     temperature = t;
-    if (integrator) integrator.setTargetTemperature(abstract_to_real_temperature(t));
+    coreModel.setTargetTemperature(abstract_to_real_temperature(t));
   }
 
   // ------------------------------------------------------------
@@ -335,17 +332,17 @@ modeler.model = function() {
 
   model.set_temperature_control = function(tc) {
    temperature_control = tc;
-   if (integrator) integrator.useThermostat(tc);
+   coreModel.useThermostat(tc);
   };
 
   model.set_lennard_jones_forces = function(lj) {
    lennard_jones_forces = lj;
-   if (integrator) integrator.useLennardJonesInteraction(lj);
+   coreModel.useLennardJonesInteraction(lj);
   };
 
   model.set_coulomb_forces = function(cf) {
    coulomb_forces = cf;
-   if (integrator) integrator.useCoulombInteraction(cf);
+   coreModel.useCoulombInteraction(cf);
   };
 
   model.get_nodes = function() {
@@ -372,16 +369,18 @@ modeler.model = function() {
     // pressures.push(pressure);
     // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
 
-    integrator = coreModel.getIntegrator(options);
-    integratorOutputState = integrator.getOutputState();
+    coreModel.useLennardJonesInteraction(lennard_jones_forces);
+    coreModel.useCoulombInteraction(coulomb_forces);
+    coreModel.useThermostat(temperature_control);
+    coreModel.setTargetTemperature(options.temperature);
 
     return model;
   };
 
   model.relax = function() {
     // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
-    integrator.integrate(50);
-    integrator.relaxToTemperature();
+    coreModel.integrate(50);
+    coreModel.relaxToTemperature();
     return model;
   };
 
@@ -409,6 +408,9 @@ modeler.model = function() {
 
     if (options.temperature != null) options.temperature = abstract_to_real_temperature(options.temperature);
 
+    // get a fresh model
+    coreModel = md2d.makeModel();
+
     coreModel.createNodes(options);
 
     nodes    = coreModel.nodes;
@@ -422,8 +424,10 @@ modeler.model = function() {
     speed    = coreModel.speed;
     ax       = coreModel.ax;
     ay       = coreModel.ay;
-    halfMass = coreModel.halfMass;
+    mass     = coreModel.mass;
     charge   = coreModel.charge;
+
+    modelOutputState = coreModel.outputState;
 
     // The d3 molecule viewer requires this length to be set correctly:
     atoms.length = nodes[0].length;
@@ -448,19 +452,19 @@ modeler.model = function() {
   };
 
   model.ke = function() {
-    return integratorOutputState ? integratorOutputState.KE : undefined;
+    return modelOutputState ? modelOutputState.KE : undefined;
   };
 
   model.ave_ke = function() {
-    return integratorOutputState? integratorOutputState.KE / nodes[0].length : undefined;
+    return modelOutputState? modelOutputState.KE / nodes[0].length : undefined;
   };
 
   model.pe = function() {
-    return integratorOutputState ? integratorOutputState.PE : undefined;
+    return modelOutputState ? modelOutputState.PE : undefined;
   };
 
   model.ave_pe = function() {
-    return integratorOutputState? integratorOutputState.PE / nodes[0].length : undefined;
+    return modelOutputState? modelOutputState.PE / nodes[0].length : undefined;
   };
 
   model.speed = function() {
@@ -478,8 +482,7 @@ modeler.model = function() {
   };
 
   model.size = function(x) {
-    if (!arguments.length) return size;
-    size = x;
+    if (!arguments.length) return coreModel.getSize();
     coreModel.setSize(x);
     return model;
   };

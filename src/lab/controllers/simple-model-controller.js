@@ -92,8 +92,7 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   function generate_atoms() {
     model.nodes({ num: mol_number,
             xdomain: 10, ydomain: 10,
-            temperature: temperature, rmin: 4.4,
-            mol_rmin_radius_factor: 0.38
+            temperature: temperature, rmin: 4.4
           })
         .initialize({
             temperature: temperature,
