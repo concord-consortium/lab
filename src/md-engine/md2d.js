@@ -126,11 +126,11 @@ exports.makeModel = function() {
       // The current model time, in femtoseconds.
       time = 0,
 
-      // The current integration time step
+      // The current integration time step, in femtoseconds.
       dt,
 
-      // Square of integration time step
-      dt_sq = dt*dt,                      // time step, squared
+      // Square of integration time step, in fs^2.
+      dt_sq,
 
       // The number of molecules in the system.
       N,
@@ -166,9 +166,13 @@ exports.makeModel = function() {
       // Cutoff distance beyond which the Lennard-Jones force is clipped to 0.
       cutoffDistance_LJ,
 
+      // Square of cutoff distance; this is a convenience for updatePairwiseAccelerations
+      cutoffDistance_LJ_sq,
+
       // Callback that recalculates cutoffDistance_LJ when the Lennard-Jones sigma parameter changes.
       ljCoefficientsChanged = function(coefficients) {
         cutoffDistance_LJ = coefficients.rmin * 5;
+        cutoffDistance_LJ_sq = cutoffDistance_LJ * cutoffDistance_LJ;
       },
 
       // An object that calculates the magnitude of the Lennard-Jones force or potential at a given distance.
@@ -323,19 +327,44 @@ exports.makeModel = function() {
         vy[i] += 0.5*ay[i]*dt;
       },
 
-      // Update a(t+dt, i) and a(t+dt, j) with using the force due to one type of interaction between particle i and j.
-      // Pass in an appropriate forceCalculator depending on the type of interaction (LJ, Coulomb).
-      updatePairwiseAccelerations = function(forceCalculator, i, j, dx, dy, r_sq, q1, q2) {
-        var f_over_r = forceCalculator.forceOverDistanceFromSquaredDistance(r_sq, q1, q2),
-            aPair_over_r = f_over_r / mass[i],
-            aPair_x = aPair_over_r * dx,
+      // Accumulate accelerations into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between particles i and j
+      // where j < i. Note a(t, i) and a(t, j) (accelerations from the previous time step) should be cleared from arrays
+      // ax and ay before calling this function.
+      updatePairwiseAccelerations = function(i) {
+        var j, dx, dy, r_sq, f_over_r, aPair_over_r, aPair_x, aPair_y, mass_inv = 1/mass[i], q_i = charge[i];
+
+        for (j = 0; j < i; j++) {
+          dx = x[j] - x[i];
+          dy = y[j] - y[i];
+          r_sq = dx*dx + dy*dy;
+
+          // Accumulating into f_over_r turns out to be significantly slower when LJ forces only are used.
+          if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
+            f_over_r = lennardJones.forceOverDistanceFromSquaredDistance(r_sq);
+
+            aPair_over_r = f_over_r * mass_inv;
+            aPair_x = aPair_over_r * dx;
             aPair_y = aPair_over_r * dy;
 
-        // positive = attractive, negative = repulsive
-        ax[i] += aPair_x;
-        ay[i] += aPair_y;
-        ax[j] -= aPair_x;
-        ay[j] -= aPair_y;
+            ax[i] += aPair_x;
+            ay[i] += aPair_y;
+            ax[j] -= aPair_x;
+            ay[j] -= aPair_y;
+          }
+
+          if (useCoulombInteraction) {
+            f_over_r = coulomb.forceOverDistanceFromSquaredDistance(r_sq, q_i, charge[j]);
+
+            aPair_over_r = f_over_r * mass_inv;
+            aPair_x = aPair_over_r * dx;
+            aPair_y = aPair_over_r * dy;
+
+            ax[i] += aPair_x;
+            ay[i] += aPair_y;
+            ax[j] -= aPair_x;
+            ay[j] -= aPair_y;
+          }
+        }
       };
 
 
@@ -531,7 +560,7 @@ exports.makeModel = function() {
       // using rescaled t where t → τ(mσ²/ϵ)^½  (~= 1 ps for argon)
       // This is hardcoded below for the "Argon" case by setting dt = 5 fs:
 
-      if (duration == null)  duration = 250;  // how much "time" to integrate over
+      if (duration == null)  duration = 250;  // how much time to integrate over, in fs
 
       dt = opt_dt || 5;
       dt_sq = dt*dt;                      // time step, squared
@@ -543,14 +572,16 @@ exports.makeModel = function() {
 
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
-          cutoffDistance_LJ_sq = cutoffDistance_LJ * cutoffDistance_LJ,
-          i,
-          j,
-          r_sq,
-          dx, dy,
           iloop,
+          i,
           rescalingFactor, // rescaling factor for Berendsen thermostat
-          rescalingFunc;
+          rescalingFunc,
+          updateAccelerationsFunc = emptyFunction;
+
+      // We'll just skip right over updating pairwise accelerations if LJ and Coulomb forces are off
+      if (useLennardJonesInteraction || useCoulombInteraction) {
+        updateAccelerationsFunc = updatePairwiseAccelerations;
+      }
 
       // Velocities are always in 'real' coodinates when entering or exiting the integrate() function.
       convertAllVelocitiesToInternalCoordinates();
@@ -575,8 +606,10 @@ exports.makeModel = function() {
         for (i = 0; i < N; i++) {
           rescalingFunc(i, rescalingFactor);
 
-          // convert velocities from "internal" to "real" velocities before calculating x, y and updating px, py
+          // Convert velocities from "internal" to "real" velocities before calculating x, y and updating px, py
           convertVelocityToRealCoordinates(i);
+
+          // Update r(t+dt) using v(t) and a(t)
           updatePosition(i);
           bounceOffWalls(i);
         }
@@ -586,33 +619,27 @@ exports.makeModel = function() {
         // That is because the accelerations are strictly pairwise and should be momentum-conserving.
         computeCMMotion();
 
+
         for (i = 0; i < N; i++) {
+          // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
           halfUpdateVelocityFromAcceleration(i);
+
+          // zero out a(t, i) for accumulation of a(t+dt, i)
           ax[i] = ay[i] = 0;
-        }
 
-        // Calculate a(t+dt), step 2: Sum over all pairwise interactions.
-        if (useLennardJonesInteraction || useCoulombInteraction) {
-          for (i = 0; i < N; i++) {
-            for (j = i+1; j < N; j++) {
-              dx = x[j] - x[i];
-              dy = y[j] - y[i];
-              r_sq = dx*dx + dy*dy;
-
-              if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
-                updatePairwiseAccelerations(lennardJones, i, j, dx, dy, r_sq);
-              }
-
-              if (useCoulombInteraction) {
-                updatePairwiseAccelerations(coulomb, i, j, dx, dy, r_sq, charge[i], charge[j]);
-              }
-            }
-          }
+          // Accumulate accelerations for time t+dt into a(t+dt, k) for k <= i. Note that a(t+dt, i) won't be
+          // usable until this loop completes; it won't have contributions from a(t+dt, k) for k > i
+          updateAccelerationsFunc(i);
         }
 
         for (i = 0; i < N; i++) {
+          // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
           halfUpdateVelocityFromAcceleration(i);
+
+          // Now that we have velocity, update speed.
           speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
+
+          // ... and convert velocity i back into internal coordinates.
           convertVelocityToInternalCoordinates(i);
         }
 
