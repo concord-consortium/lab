@@ -1,7 +1,33 @@
 #molecule-container
   position: relative
-  background-color: #eee
+  background: #f9eec1
   width: 200px
   height: 200px
   border: none
   margin: 2px 0px 2px 0px
+  @include border-radius(0.5em)
+  @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
+  circle
+    stroke: transparent
+    stroke-width: 1.0
+    fill: #fff
+    fill-opacity: 1.0
+    cursor: move
+    &.selected
+      fill: #ff7f0e
+      stroke: #ff7f0e
+  rect
+    border: solid 1px #ccc
+
+.playbacksvg:hover
+  .bg
+    background: #666
+  .highlight
+    display: none
+
+.slider_container
+  background: #f9eec1
+  border: none !important
+  padding: .3em !important
+  @include border-radius(0.5em)
+  @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))

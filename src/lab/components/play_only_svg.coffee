@@ -27,27 +27,47 @@ class PlayOnlyComponentSVG
     button_group.attr('x', x)
       .attr('y',@vertical_padding)
       .attr('width',@unit_width)
-      .attr('height',@unit_width)
+      .attr('height',@unit_width*2)
       .attr('style','fill: #cccccc')
+    # button background
+    button_bg = button_group.append('rect')
+    button_bg.attr('class', 'bg')
+      .attr('x', this.offset(button_name)/1.20)
+      .attr('y', @vertical_padding/3)
+      .attr('width', @unit_width*2)
+      .attr('height', @unit_width*1.5)
+      .attr('rx', '0')
+      .attr('stroke-width', '1px')
+      .attr('style', 'fill: #ddd; stroke: #ccc;')
+    # button symbol
     for points in point_set
       art = button_group.append(type)
       art.attr('class', "#{button_name} button-art")
       if button_name == 'stop'
-        art.attr('style', 'stroke: transparent')
+        art.attr('style', 'border: none; stroke: transparent; stroke-width: 0;')
       points_string = ""
       for point in points
         x = this.offset(button_name) + point['x'] * @unit_width
-        y = @vertical_padding + point['y'] * @unit_width
+        y = @vertical_padding/.75 + point['y'] * @unit_width
         points_string = points_string + " #{x},#{y}"
         art.attr('points',points_string)
       if button_name == 'stop'
         art2 = button_group.append('rect')
         art2.attr('id','pause-center')
           .attr('x',x + @unit_width/3)
-          .attr('y',@vertical_padding)
+          .attr('y',@vertical_padding/.75-1)
           .attr('width',@unit_width/3)
-          .attr('height',@unit_width)
-          .attr('style','fill: #f9eec1')
+          .attr('height',@unit_width+2)
+          .attr('style','border: none; fill: #dddddd; stroke: transparent; stroke-width: 0')
+    # button highlight
+    button_highlight = button_group.append('rect')
+    button_highlight.attr('class', 'highlight')
+      .attr('x', this.offset(button_name)/1.20+1)
+      .attr('y', @vertical_padding/1.85+1)
+      .attr('width', @unit_width*2-2)
+      .attr('height', @unit_width/1.4-1)
+      .attr('rx', '0')
+      .attr('style', 'border: none; fill: #ffffff; stroke: transparent; opacity: .4')
     button_group.on 'click',  => this.action(button_name)
     return button_group
 
