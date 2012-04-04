@@ -604,6 +604,8 @@ exports.makeModel = function() {
         }
 
         for (i = 0; i < N; i++) {
+          // Rescale "internal" velocities to match the desired temperature; i.e., don't scale the overall system
+          // rotation and translation when adjusting temperature.
           rescalingFunc(i, rescalingFactor);
 
           // Convert velocities from "internal" to "real" velocities before calculating x, y and updating px, py
@@ -612,25 +614,22 @@ exports.makeModel = function() {
           // Update r(t+dt) using v(t) and a(t)
           updatePosition(i);
           bounceOffWalls(i);
-        }
 
-        // Recalculate CM, v_CM, omega_CM for translation back to "internal" coordinates.
-        // Note px_CM = px_CM(t+dt) even though we haven't updated velocities using accelerations a(t) and a(t+dt).
-        // That is because the accelerations are strictly pairwise and should be momentum-conserving.
-        computeCMMotion();
-
-
-        for (i = 0; i < N; i++) {
           // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
           halfUpdateVelocityFromAcceleration(i);
 
-          // zero out a(t, i) for accumulation of a(t+dt, i)
+          // Zero out a(t, i) for accumulation of a(t+dt, i)
           ax[i] = ay[i] = 0;
 
           // Accumulate accelerations for time t+dt into a(t+dt, k) for k <= i. Note that a(t+dt, i) won't be
           // usable until this loop completes; it won't have contributions from a(t+dt, k) for k > i
           updateAccelerationsFunc(i);
         }
+
+        // Recalculate CM, v_CM, omega_CM for translation back to "internal" coordinates.
+        // Note px_CM = px_CM(t+dt) even though we have only updated velocities using a(t) but not yet a(t+dt).
+        // That is because the accelerations are strictly pairwise and should be momentum-conserving.
+        computeCMMotion();
 
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
