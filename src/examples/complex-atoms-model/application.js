@@ -9,7 +9,7 @@
 //
 // ------------------------------------------------------------
 
-var autostart = true,
+var autostart = false,
     mol_number = 50,
     sample_time = 0.01,
     temperature = 5,
