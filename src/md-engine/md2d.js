@@ -268,21 +268,23 @@ exports.makeModel = function() {
       computeSystemTranslation = function() {
         var x_sum = 0,
             y_sum = 0,
+            px_sum = 0,
+            py_sum = 0,
             i;
-
-        px_CM = py_CM = 0;
 
         for (i = 0; i < N; i++) {
           x_sum += x[i];
           y_sum += y[i];
-          px_CM += px[i];
-          py_CM += py[i];
+          px_sum += px[i];
+          py_sum += py[i];
         }
 
         x_CM = x_sum / N;
         y_CM = y_sum / N;
-        vx_CM = px_CM / totalMass;
-        vy_CM = py_CM / totalMass;
+        px_CM = px_sum;
+        py_CM = py_sum;
+        vx_CM = px_sum / totalMass;
+        vy_CM = py_sum / totalMass;
       },
 
       // Subroutine that calculates the angular momentum and moment of inertia around the center of mass, and then
@@ -290,15 +292,18 @@ exports.makeModel = function() {
       // Updates I_CM, L_CM, and omega_CM.
       // Requires x_CM, y_CM, vx_CM, vy_CM to have been calculated.
       computeSystemRotation = function() {
-        var i;
-
-        L_CM = I_CM = 0;
+        var L = 0,
+            I = 0,
+            i;
 
         for (i = 0; i < N; i++) {
           // L_CM = sum over N of of mr_i x p_i (where r_i and p_i are position & momentum vectors relative to the CM)
-          L_CM += mass[i] * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
-          I_CM += mass[i] * sumSquare( x[i]-x_CM, y[i]-y_CM );
+          L += mass[i] * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
+          I += mass[i] * sumSquare( x[i]-x_CM, y[i]-y_CM );
         }
+
+        L_CM = L;
+        I_CM = I;
         omega_CM = L_CM / I_CM;
       },
 
