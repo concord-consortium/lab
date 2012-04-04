@@ -342,23 +342,17 @@ exports.makeModel = function() {
           dy = y[j] - y[i];
           r_sq = dx*dx + dy*dy;
 
-          // Accumulating into f_over_r turns out to be significantly slower when LJ forces only are used.
+          f_over_r = 0;
+
           if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
-            f_over_r = lennardJones.forceOverDistanceFromSquaredDistance(r_sq);
-
-            aPair_over_r = f_over_r * mass_inv;
-            aPair_x = aPair_over_r * dx;
-            aPair_y = aPair_over_r * dy;
-
-            ax[i] += aPair_x;
-            ay[i] += aPair_y;
-            ax[j] -= aPair_x;
-            ay[j] -= aPair_y;
+            f_over_r += lennardJones.forceOverDistanceFromSquaredDistance(r_sq);
           }
 
           if (useCoulombInteraction) {
-            f_over_r = coulomb.forceOverDistanceFromSquaredDistance(r_sq, q_i, charge[j]);
+            f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, q_i, charge[j]);
+          }
 
+          if (f_over_r) {
             aPair_over_r = f_over_r * mass_inv;
             aPair_x = aPair_over_r * dx;
             aPair_y = aPair_over_r * dy;
