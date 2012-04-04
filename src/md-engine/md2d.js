@@ -280,8 +280,8 @@ exports.makeModel = function() {
         for (i = 0; i < N; i++) {
           x_CM += x[i];
           y_CM += y[i];
-          px_CM += vx[i] * mass[i];
-          py_CM += vy[i] * mass[i];
+          px_CM += px[i];
+          py_CM += py[i];
         }
 
         x_CM /= N;
@@ -320,11 +320,13 @@ exports.makeModel = function() {
         }
       },
 
-      // Half of the update of v(t+dt, i) using a; during a single integration loop, call once when a = a(t) and
-      // once when a = a(t+dt)
+      // Half of the update of v(t+dt, i) and p(t+dt, i) using a; during a single integration loop,
+      // call once when a = a(t) and once when a = a(t+dt)
       halfUpdateVelocityFromAcceleration = function(i) {
         vx[i] += 0.5*ax[i]*dt;
+        px[i] = mass[i] * vx[i];
         vy[i] += 0.5*ay[i]*dt;
+        py[i] = mass[i] * vy[i];
       },
 
       // Accumulate accelerations into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between particles i and j
@@ -514,9 +516,14 @@ exports.makeModel = function() {
             vMagnitude = math.normal(v0, v0/4);
             vDirection = 2 * Math.random() * Math.PI;
             vx[i] = vMagnitude * Math.cos(vDirection);
+            px[i] = mass[i] * vx[i];
             vy[i] = vMagnitude * Math.sin(vDirection);
+            py[i] = mass[i] * vy[i];
+
             vx[N-i-1] = -vx[i];
+            px[N-i-1] = mass[N-i-1] * vx[N-i-1];
             vy[N-i-1] = -vy[i];
+            py[N-i-1] = mass[N-i-1] * vy[N-i-1];
           }
 
           ax[i] = 0;
@@ -627,15 +634,17 @@ exports.makeModel = function() {
         }
 
         // Recalculate CM, v_CM, omega_CM for translation back to "internal" coordinates.
-        // Note px_CM = px_CM(t+dt) even though we have only updated velocities using a(t) but not yet a(t+dt).
-        // That is because the accelerations are strictly pairwise and should be momentum-conserving.
+        // Note that p_CM and I_CM will be valid even though momenta and velocities have only been partially updated,
+        // because the accelerations are strictly pairwise and should be momentum-conserving. (However, L_CM will be a
+        // little off because it can be affected by changes in the positions of the particles. Does this matter or
+        // should it be accumulated more carefully? Not sure yet.)
         computeCMMotion();
 
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
           halfUpdateVelocityFromAcceleration(i);
 
-          // Now that we have velocity, update speed.
+          // Now that we have velocity, update speed
           speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
 
           // ... and convert velocity i back into internal coordinates.
