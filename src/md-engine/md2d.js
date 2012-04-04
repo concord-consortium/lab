@@ -688,14 +688,14 @@ exports.makeModel = function() {
       }
 
       // State to be read by the rest of the system:
-      outputState.time = time;
+      outputState.time     = time;
       outputState.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
-      outputState.PE = PE;
-      outputState.KE = constants.convert(realKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
-      outputState.T = T;
-      outputState.pCM = [px_CM, py_CM];
-      outputState.CM = [x_CM, y_CM];
-      outputState.vCM = [vx_CM, vy_CM];
+      outputState.PE       = PE;
+      outputState.KE       = constants.convert(realKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+      outputState.T        = T;
+      outputState.pCM      = [px_CM, py_CM];
+      outputState.CM       = [x_CM, y_CM];
+      outputState.vCM      = [vx_CM, vy_CM];
       outputState.omega_CM = omega_CM;
     }
   };
