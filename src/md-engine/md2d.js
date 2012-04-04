@@ -273,19 +273,21 @@ exports.makeModel = function() {
       // vx_CM, and vy_CM, and that then computes the system angular velocity around the center of mass, leaving it
       // in omega_CM.
       computeCMMotion = function() {
-        var i;
+        var x_sum = 0,
+            y_sum = 0,
+            i;
 
-        x_CM = y_CM = px_CM = py_CM = vx_CM = vy_CM = 0;
+        px_CM = py_CM = 0;
 
         for (i = 0; i < N; i++) {
-          x_CM += x[i];
-          y_CM += y[i];
+          x_sum += x[i];
+          y_sum += y[i];
           px_CM += px[i];
           py_CM += py[i];
         }
 
-        x_CM /= N;
-        y_CM /= N;
+        x_CM = x_sum / N;
+        y_CM = y_sum / N;
         vx_CM = px_CM / totalMass;
         vy_CM = py_CM / totalMass;
 
