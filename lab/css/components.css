@@ -87,15 +87,15 @@
     stroke-linecap: round;
     stroke-linejoin: round; }
   .playback .button-art:hover {
-    stroke: black; }
+    stroke: #777777; }
   .playback .play.button-art {
-    fill: #aaaaaa; }
+    fill: #999999; }
   .playback .play.button-art:hover {
-    fill: black; }
+    fill: #777777; }
   .playback .stop.button-art {
-    fill: #aaaaaa; }
+    fill: #999999; }
   .playback .stop.button-art:hover {
-    fill: black; }
+    fill: #777777; }
 
 .playbacksvg {
   border: 1px solid #aaaaaa;
@@ -103,21 +103,27 @@
   cursor: pointer;
   fill: red; }
   .playbacksvg .button-art {
-    stroke-width: 4px;
+    stroke-width: 2px;
     fill: white;
-    stroke: #aaaaaa;
+    stroke: #999999;
     stroke-linecap: round;
     stroke-linejoin: round; }
   .playbacksvg .button-art:hover {
-    stroke: black; }
+    stroke: #777777; }
   .playbacksvg .play.button-art {
-    fill: #aaaaaa; }
+    fill: #999999; }
   .playbacksvg .play.button-art:hover {
-    fill: black; }
+    fill: #777777; }
   .playbacksvg .stop.button-art {
-    fill: #aaaaaa; }
+    fill: #999999; }
   .playbacksvg .stop.button-art:hover {
-    fill: black; }
+    fill: #777777; }
+
+.playbacksvg:hover polygon {
+  fill: #777777 !important; }
+
+.playbacksvg:hover polygon {
+  fill: black !important; }
 
 .component.button {
   border-radius: 5px;

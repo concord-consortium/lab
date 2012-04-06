@@ -4900,7 +4900,7 @@ layout.moleculeContainer = function(e, options) {
     offset_left = node.offsetLeft + padding.left;
     offset_top = node.offsetTop + padding.top;
     pc_xpos = size.width / 2 - 50;
-    pc_ypos = size.height + (options.ylabel ? 75 * layout.screen_factor : 30);
+    pc_ypos = size.height + (options.ylabel ? 75 * layout.screen_factor : 27);
     mw = size.width;
     mh = size.height;
 
@@ -7538,24 +7538,35 @@ graphx.graph = function(options) {
     };
 
     PlayOnlyComponentSVG.prototype.make_button = function(button_name, type, point_set) {
-      var art, button_group, point, points, points_string, x, y, _i, _j, _len, _len2,
+      var art, art2, button_bg, button_group, button_highlight, point, points, points_string, x, y, _i, _j, _len, _len2,
         _this = this;
       button_group = this.group.append('svg:g');
       x = this.offset(button_name);
-      button_group.attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width);
+      button_group.attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width * 2).attr('style', 'fill: #cccccc');
+      button_bg = button_group.append('rect');
+      button_bg.attr('class', 'bg').attr('x', this.offset(button_name) / 1.20).attr('y', this.vertical_padding / 3).attr('width', this.unit_width * 2).attr('height', this.unit_width * 1.5).attr('rx', '0').attr('stroke-width', '1px').attr('style', 'fill: #ddd; stroke: #ccc;');
       for (_i = 0, _len = point_set.length; _i < _len; _i++) {
         points = point_set[_i];
         art = button_group.append(type);
         art.attr('class', "" + button_name + " button-art");
+        if (button_name === 'stop') {
+          art.attr('style', 'border: none; stroke: transparent; stroke-width: 0;');
+        }
         points_string = "";
         for (_j = 0, _len2 = points.length; _j < _len2; _j++) {
           point = points[_j];
           x = this.offset(button_name) + point['x'] * this.unit_width;
-          y = this.vertical_padding + point['y'] * this.unit_width;
+          y = this.vertical_padding / .75 + point['y'] * this.unit_width;
           points_string = points_string + (" " + x + "," + y);
           art.attr('points', points_string);
         }
+        if (button_name === 'stop') {
+          art2 = button_group.append('rect');
+          art2.attr('id', 'pause-center').attr('x', x + this.unit_width / 3).attr('y', this.vertical_padding / .75 - 1).attr('width', this.unit_width / 3).attr('height', this.unit_width + 2).attr('style', 'border: none; fill: #dddddd; stroke: transparent; stroke-width: 0');
+        }
       }
+      button_highlight = button_group.append('rect');
+      button_highlight.attr('class', 'highlight').attr('x', this.offset(button_name) / 1.20 + 1).attr('y', this.vertical_padding / 1.85 + 1).attr('width', this.unit_width * 2 - 2).attr('height', this.unit_width / 1.4 - 1).attr('rx', '0').attr('style', 'border: none; fill: #ffffff; stroke: transparent; opacity: .4');
       button_group.on('click', function() {
         return _this.action(button_name);
       });
@@ -7632,6 +7643,31 @@ graphx.graph = function(options) {
         ]
       ];
       return this.stop = this.make_button('stop', 'svg:polygon', points);
+    };
+
+    PlayOnlyComponentSVG.prototype.init_pause_button = function() {
+      var points;
+      points = [
+        [
+          {
+            x: .5,
+            y: .5
+          }, {
+            x: .5,
+            y: 0
+          }, {
+            x: .5,
+            y: 1
+          }, {
+            x: 0,
+            y: 1
+          }, {
+            x: 0,
+            y: 0
+          }
+        ]
+      ];
+      return this.pause = this.make_button('pause', 'svg:polygon', points);
     };
 
     PlayOnlyComponentSVG.prototype.init_view = function() {

@@ -421,7 +421,7 @@ layout.moleculeContainer = function(e, options) {
     offset_left = node.offsetLeft + padding.left;
     offset_top = node.offsetTop + padding.top;
     pc_xpos = size.width / 2 - 50;
-    pc_ypos = size.height + (options.ylabel ? 75 * layout.screen_factor : 30);
+    pc_ypos = size.height + (options.ylabel ? 75 * layout.screen_factor : 27);
     mw = size.width;
     mh = size.height;
 
