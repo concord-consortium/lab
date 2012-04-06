@@ -53,7 +53,7 @@ h3 {
   .button:hover .symbol {
     fill: #333333; }
   .button:hover .highlight {
-    fill: transparent; }
+    opacity: 0.2; }
 
 .component_group button {
   border: solid 1px #999999;
@@ -136,8 +136,23 @@ h3 {
   text-align: center;
   width: 50% !important; }
 .component_group button#cool_button:hover, .component_group button#heat_button:hover {
-  background: #cccccc;
+  background-color: #cccccc;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c9c9c9), color-stop(50%, #c9c9c9), color-stop(50%, #bbbbbb), color-stop(100%, #bbbbbb));
+  background-image: -webkit-linear-gradient(top, #c9c9c9 0%, #c9c9c9 50%, #bbbbbb 50%, #bbbbbb 100%);
+  background-image: -moz-linear-gradient(top, #c9c9c9 0%, #c9c9c9 50%, #bbbbbb 50%, #bbbbbb 100%);
+  background-image: -ms-linear-gradient(top, #c9c9c9 0%, #c9c9c9 50%, #bbbbbb 50%, #bbbbbb 100%);
+  background-image: -o-linear-gradient(top, #c9c9c9 0%, #c9c9c9 50%, #bbbbbb 50%, #bbbbbb 100%);
+  background-image: linear-gradient(top, #c9c9c9 0%, #c9c9c9 50%, #bbbbbb 50%, #bbbbbb 100%);
   color: #111111; }
+.component_group button#cool_button.inactive, .component_group button#heat_button.inactive, .component_group button#cool_button.inactive:hover, .component_group button#heat_button.inactive:hover {
+  background-color: #dddddd;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(50%, #f6f6f6), color-stop(50%, #dddddd), color-stop(100%, #dddddd));
+  background-image: -webkit-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: -moz-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: -ms-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: -o-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  color: #999999; }
 
 #molecule-container {
   position: relative;
@@ -166,10 +181,38 @@ h3 {
   #molecule-container rect {
     border: solid 1px #cccccc; }
 
+.playbacksvg .button-art {
+  border: none;
+  fill: #777777 !important;
+  stroke: transparent !important;
+  stroke-width: 0 !important; }
+.playbacksvg .bg {
+  fill: #dddddd;
+  stroke: #aaaaaa;
+  stroke-width: 1px; }
+.playbacksvg .highlight {
+  border: solid 1px #cccccc;
+  border-bottom: none;
+  fill: white;
+  opacity: 0.6;
+  stroke: transparent;
+  stroke-width: 0; }
+.playbacksvg .pause-center {
+  border: none;
+  fill: #dddddd;
+  stroke: transparent;
+  stroke-width: 0; }
+
+.playbacksvg:hover .button-art {
+  fill: #777777 !important;
+  stroke: transparent !important;
+  stroke-width: 0 !important; }
 .playbacksvg:hover .bg {
-  background: #666666; }
+  fill: #bbbbbb; }
 .playbacksvg:hover .highlight {
-  display: none; }
+  opacity: 0.3; }
+.playbacksvg:hover .pause-center {
+  fill: #bbbbbb; }
 
 .slider_container {
   background: #f9eec1;

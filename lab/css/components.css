@@ -119,12 +119,6 @@
   .playbacksvg .stop.button-art:hover {
     fill: #777777; }
 
-.playbacksvg:hover polygon {
-  fill: #777777 !important; }
-
-.playbacksvg:hover polygon {
-  fill: black !important; }
-
 .component.button {
   border-radius: 5px;
   border: 1px solid #aaaaaa;
