@@ -1,4 +1,4 @@
-
+var INITIAL_EPSILON = -0.1;
 
 controllers.simpleModelController = function(layout_style, molecule_view) {
 
@@ -109,6 +109,7 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
     model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
     model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
     model.set_temperature_control(true);
+    model.setEpsilon(INITIAL_EPSILON);
     model.relax();
   }
 
@@ -269,7 +270,7 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   var epsilon_slider  = new  SliderComponent('#attraction_slider', 
     function (v) {
       model.setEpsilon(v);
-    }, lj_epsilon_max, lj_epsilon_min, model.getEpsilon());
+    }, lj_epsilon_max, lj_epsilon_min, INITIAL_EPSILON);
 
   therm.add_value(model.temperature());
 
