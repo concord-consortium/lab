@@ -71,13 +71,11 @@
               atoms will form a gas.
             .component_group
               .slider_container
-                .left_half
-                  Colder
-                .right_half
-                  Hotter
+                Change Temperature
                 .content
-                  #cool_button
-                  #heat_button
+                  %div{:style=> "width: 10em; height: 2em; display: inline-block; margin: 0.5em"}
+                    %button#cool_button(type="button" class="left_edge" value="colder")colder
+                    %button#heat_button(type="button" class="right_edge" value="hotter")hotter
         -# %li
         -#   %fieldset
         -#     %legend Particle Force Interactions

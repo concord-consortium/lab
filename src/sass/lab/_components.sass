@@ -5,7 +5,7 @@
   .symbol
     fill: #333
   .highlight
-    fill: transparent
+    opacity: .2
 .component_group button
   border: solid 1px #999
   color: #222
@@ -36,6 +36,8 @@
     text-align: center
     width: 50% !important
   button#cool_button:hover, button#heat_button:hover
-    background: #ccc
+    @include linear-gradient(top, #c9c9c9 0%, #c9c9c9 50%, #bbb 50%, #bbb 100%, $fallback: #ccc)
     color: #111
-  
+  button#cool_button.inactive, button#heat_button.inactive, button#cool_button.inactive:hover, button#heat_button.inactive:hover
+    @include linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #ddd 50%, #ddd 100%, $fallback: #ddd)
+    color: #999
