@@ -1781,7 +1781,7 @@ exports.makeModel = function() {
       realKEinMWUnits= 0;
 
       for (i = 0; i < N; i++) {
-        realKEinMWUnits += 0.5 * mass[i] * vx[i] * vx[i] + vy[i] * vy[i];
+        realKEinMWUnits += 0.5 * mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
         for (j = i+1; j < N; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
