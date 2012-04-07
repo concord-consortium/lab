@@ -3,7 +3,7 @@ class Thermometer
   constructor: (@dom_id="#thermometer") ->
     @dom_element = d3.select(@dom_id).attr('class','thermometer')
     @width   = 1
-    @height  = 12
+    @height  = 16
     @max     = 0.7
     @samples = []
 
@@ -20,9 +20,9 @@ class Thermometer
       .append("svg:g")
 
     @thermometer = @svg.append('svg:rect')
-    @thermometer.attr("width",@width + "em")
-    @thermometer.attr("height", @height + "em")
-    @thermometer.style("fill","#f4b626")
+      .attr("width",@width + "em")
+      .attr("height", @height + "em")
+      .style("fill","#f4b626")
     d3.select('#therm_text').attr('class','therm_text')
 
   time_to_redraw: ->
