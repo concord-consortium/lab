@@ -24,7 +24,9 @@ class PlayOnlyComponentSVG
   make_button: (button_name, type, point_set) ->
     button_group = @group.append('svg:g')
     x = this.offset(button_name)
-    button_group.attr('x', x)
+    button_group
+      .attr("class", "component playbacksvgbutton")
+      .attr('x', x)
       .attr('y',@vertical_padding)
       .attr('width',@unit_width)
       .attr('height',@unit_width*2)
