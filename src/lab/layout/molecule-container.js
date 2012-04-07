@@ -9,6 +9,7 @@ layout.moleculeContainer = function(e, options) {
       node = elem.node(),
       cx = elem.property("clientWidth"),
       cy = elem.property("clientHeight"),
+      scale_factor,
       vis1, vis, plot, 
       playback_component, time_label,
       padding, size,
@@ -66,15 +67,20 @@ layout.moleculeContainer = function(e, options) {
     cy = height;
     node.style.width = width +"px";
     node.style.height = height +"px";
+    scale_factor = layout.screen_factor;
+    if (layout.screen_factor_width && layout.screen_factor_height) {
+      scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height)
+    };
+    scale_factor = cx/600;
     padding = {
        "top":    options.title  ? 40 * layout.screen_factor : 20,
-       "right":                    25,
-       "bottom": options.xlabel ? 46  * layout.screen_factor : 20,
+       "right":                   25,
+       "bottom": options.xlabel ? 56  * layout.screen_factor : 20,
        "left":   options.ylabel ? 60  * layout.screen_factor : 25
     };
 
     if (options.playback_controller || options.play_only_controller) {
-      padding.bottom += (30  * layout.screen_factor);
+      padding.bottom += (30  * scale_factor);
     }
 
     size = {
@@ -84,8 +90,10 @@ layout.moleculeContainer = function(e, options) {
 
     offset_left = node.offsetLeft + padding.left;
     offset_top = node.offsetTop + padding.top;
-    pc_xpos = size.width / 2 - 50;
-    pc_ypos = size.height + (options.ylabel ? 75 * layout.screen_factor : 27);
+    pc_xpos = padding.left + size.width / 2 - (80 * scale_factor);
+    pc_ypos = cy - 42 * scale_factor;
+    // pc_ypos = cy - (options.ylabel ? 40 * scale_factor : 20 * scale_factor);
+    // pc_ypos = size.height + (options.ylabel ? 85 * scale_factor : 27);
     mw = size.width;
     mh = size.height;
 
@@ -216,10 +224,10 @@ layout.moleculeContainer = function(e, options) {
             .style("text-anchor","start");
       }
       if (options.playback_controller) {
-        playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, layout.screen_factor);
+        playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
       if (options.play_only_controller) {
-        playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, layout.screen_factor);
+        playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
 
       molecule_div = d3.select("#viz").append("div")
@@ -292,7 +300,7 @@ layout.moleculeContainer = function(e, options) {
       }
 
       if (options.playback_controller || options.play_only_controller) {
-        playback_component.position(pc_xpos, pc_ypos, layout.screen_factor);
+        playback_component.position(pc_xpos, pc_ypos, scale_factor);
       }
       redraw();
 
