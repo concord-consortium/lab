@@ -20,6 +20,7 @@ end
 require './src/sass/bourbon/lib/bourbon.rb'
 
 guard 'sass',         :input => 'src/examples', :output => 'dist/examples', :all_on_start => false
+guard 'sass',         :input => 'src/doc',      :output => 'dist/doc',      :all_on_start => false
 guard 'coffeescript', :input => 'src/examples', :output => 'dist/examples', :all_on_start => false
 guard 'haml',         :input => 'src', :output => 'dist', :all_on_start => false do
   watch %r{^src.+(\.html\.haml)}
