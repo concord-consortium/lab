@@ -125,7 +125,8 @@ layout.setupScreen = function(layout_selection) {
 
       case "simple-static-screen":
       if (layout.not_rendered) {
-        layout.bodycss.style.fontSize = layout.screen_factor + 'em';
+        var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+        layout.bodycss.style.fontSize = emsize + 'em';
         setupSimpleMoleculeContainer();
         setupDescriptionRight();
         layout.not_rendered = false;
@@ -135,13 +136,13 @@ layout.setupScreen = function(layout_selection) {
       case "simple-iframe":
       var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
       layout.bodycss.style.fontSize = emsize + 'em';
-      // layout.bodycss.style.fontSize = layout.screen_factor + 'em';
       setupSimpleIFrameMoleculeContainer();
       break;
 
       case "full-static-screen":
       if (layout.not_rendered) {
-        layout.bodycss.style.fontSize = layout.screen_factor + 'em';
+        var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+        layout.bodycss.style.fontSize = emsize + 'em';
         setupRegularScreenMoleculeContainer();
         setupRegularScreenPotentialChart();
         setupRegularSpeedDistributionChart();
@@ -172,28 +173,29 @@ layout.setupScreen = function(layout_selection) {
   // Regular Screen Layout
   //
   function setupRegularScreenMoleculeContainer() {
-    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.8);
-    molecule_container.resize(layout.display.page.width * 0.42, layout.display.page.width * 0.40 - 4);
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
     molecule_container.resize(size, size);
-
-    molecule_container.resize(layout.display.page.width * 0.42, layout.display.page.width * 0.40 - 4);
   }
 
   function setupRegularScreenPotentialChart() {
-    lj_potential_chart.style.width = layout.display.page.width * 0.24 +"px";
-    lj_potential_chart.style.height = layout.display.page.width * 0.18 +"px";
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    lj_potential_chart.style.width = layout.display.page.width * 0.22 +"px";
+    lj_potential_chart.style.height = size / 2.35 +"px";
     layout.finishSetupPotentialChart();
   }
 
   function setupRegularSpeedDistributionChart() {
-    speed_distribution_chart.style.width = layout.display.page.width * 0.23 +"px";
-    speed_distribution_chart.style.height = layout.display.page.width * 0.18 +"px";
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    speed_distribution_chart.style.width = layout.display.page.width * 0.22 +"px";
+    speed_distribution_chart.style.height = size / 2.35 +"px";
     layout.finishSetupSpeedDistributionChart();
   }
 
   function setupRegularScreenKEChart() {
-    kechart.style.width = layout.display.page.width * 0.48  + 4 +"px";
-    kechart.style.height = layout.display.page.width * 0.20 + 5 +"px";
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    kechart.style.width = layout.display.page.width * 0.45 +"px";
+    // kechart.style.height = layout.display.page.width * 0.20 + 5 +"px";
+    kechart.style.height = size / 1.82 +"px";
     layout.finishSetupKEChart();
   }
 
@@ -227,7 +229,7 @@ layout.setupScreen = function(layout_selection) {
   // Simple Screen Layout
   //
   function setupSimpleMoleculeContainer() {
-    var size = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.8);
+    var size = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
     molecule_container.resize(size, size);
   }
 
