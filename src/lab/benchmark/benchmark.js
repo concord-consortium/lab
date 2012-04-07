@@ -92,13 +92,13 @@ function what_browser() {
         browser: match[1],
         version: match[2],
         oscpu: navigator.platform
-      }
+      };
     } else {
       return {
         browser: match[1],
         version: match[2],
         oscpu: navigator.appVersion.match(/(Macintosh); (.*?)\)/)[2]
-      }
+      };
     }
   }
   match = navigator.userAgent.match(ffmatch);
@@ -108,13 +108,13 @@ function what_browser() {
         browser: match[1],
         version: match[2],
         oscpu: navigator.platform
-      }
+      };
     } else {
       return {
         browser: match[1],
         version: match[2],
         oscpu: navigator.oscpu
-      }
+      };
     }
   }
   match = navigator.userAgent.match(safarimatch);
@@ -124,7 +124,7 @@ function what_browser() {
       version: match[1],
       oscpu: ""
     };
-    if navigator.appVersion.match(/Macintosh/) {
+    if (navigator.appVersion.match(/Macintosh/)) {
       results.oscpu = navigator.appVersion.match(/(Macintosh); (.*?)\)/)[2];
     } else if (navigator.appVersion.match(/Windows/)) {
       results.oscpu = navigator.platform;
@@ -137,7 +137,7 @@ function what_browser() {
       browser: match[1],
       version: match[2],
       oscpu: navigator.cpuClass + "/" + navigator.platform
-    }
+    };
   }
   match = navigator.userAgent.match(ipadmatch);
   if (match && match[2]) {
@@ -145,20 +145,20 @@ function what_browser() {
       browser: match[2],
       version: match[3] + "/" + match[4],
       oscpu: match[1]
-    }
+    };
   }
   return {
     browser: "",
     version: navigator.appVersion,
     oscpu:   ""
-  }
+  };
 }
 
 function run(benchmarks_table, benchmarks_to_run) {
   var i = 0, b, browser_info, results = [];
   benchmarks_table.style.display = "";
 
-  var empty_table = benchmarks_table.getElementsByTagName("tr").length == 0;
+  var empty_table = benchmarks_table.getElementsByTagName("tr").length === 0;
   function add_row() {
     return benchmarks_table.appendChild(document.createElement("tr"));
   }
@@ -173,8 +173,8 @@ function run(benchmarks_table, benchmarks_to_run) {
   }
 
   function add_column(title, data) {
-    if (empty_table) { add_data(title_row, title, "th") };
-    add_data(results_row, data)
+    if (empty_table) { add_data(title_row, title, "th"); }
+    add_data(results_row, data);
   }
 
   browser_info = what_browser();
@@ -183,7 +183,7 @@ function run(benchmarks_table, benchmarks_to_run) {
   add_column("cpu/os", browser_info.oscpu);
 
   var formatter = d3.time.format("%Y-%m-%d %H:%M");
-  add_column("date", formatter(new Date()))
+  add_column("date", formatter(new Date()));
 
   // add_column("molecules", mol_number);
   // add_column("temperature", temperature);
