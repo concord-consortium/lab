@@ -264,17 +264,11 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
 
   // ------------------------------------------------------------
   //
-  // Start the model after everything else ...
+  // Reset the model after everything else ...
   //
   // ------------------------------------------------------------
 
   modelReset();
-
-  // ------------------------------------------------------------
-  // Setup heat and cool buttons
-  // ------------------------------------------------------------
-
-  layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25)
 
   // ------------------------------------------------------------
   // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
@@ -289,6 +283,18 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
     }, lj_epsilon_max, lj_epsilon_min, INITIAL_EPSILON);
 
   therm.add_value(model.temperature());
+
+  // ------------------------------------------------------------
+  // Setup heat and cool buttons
+  // ------------------------------------------------------------
+
+  layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25, model, function (t) { therm.add_value(t) });
+
+  // ------------------------------------------------------------
+  //
+  // Start if autostart is true
+  //
+  // ------------------------------------------------------------
 
   if (autostart) {
     modelGo();

@@ -4,16 +4,20 @@
 
 #molecule-container {
   position: relative;
-  background-color: #f9eec1;
+  background: #f9eec1;
+  -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  -ms-border-radius: 0.5em;
+  -o-border-radius: 0.5em;
+  border-radius: 0.5em;
+  -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   width: 20em;
   height: 20em;
   min-width: 10em;
   min-height: 10em;
-  border: solid 1px #f4b626;
-  margin: 2px 0px 2px 0px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px; }
+  margin: 2px 0px 2px 0px; }
   #molecule-container circle {
     stroke: transparent;
     stroke-width: 1;
@@ -44,37 +48,8 @@ text.shadow {
   margin: 0px 2px 0px 2px;
   vertical-align: top; }
 
-.slider_container {
-  font-size: 1em;
-  display: inline-block;
-  vertical-align: top;
-  margin: 0.5em 1em 0.5em 0em;
-  min-height: 4.6em;
-  padding: 3px;
-  border: 1px solid #f4b626;
-  border-radius: 0.5em; }
-  .slider_container .left_half {
-    width: 49%;
-    float: left;
-    text-align: left; }
-  .slider_container .right_half {
-    text-align: right;
-    width: 49%;
-    float: right; }
-  .slider_container .container {
-    display: inline-block;
-    margin: auto;
-    text-align: center; }
-  .slider_container .below {
-    display: none;
-    margin: auto;
-    text-align: center; }
-
 #components-description {
   display: inline-block;
   vertical-align: top;
   float: none;
   width: 40%; }
-
-.playbacksvg .button-art {
-  fill: #f7f2c5; }

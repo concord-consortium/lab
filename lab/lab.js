@@ -4560,7 +4560,9 @@ layout.setupScreen = function(layout_selection) {
 
 
   if(fullscreen) {
-    layout.screen_factor = layout.display.screen.width / layout.canonical.width;
+    layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
+    layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
+    layout.screen_factor = layout.screen_factor_height;
     layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
     layout.bodycss.style.fontSize = layout.screen_factor + 'em';
     layout.not_rendered = true;
@@ -4597,7 +4599,9 @@ layout.setupScreen = function(layout_selection) {
     } else {
       layout.regular_display = layout.getDisplayProperties();
     }
-    layout.screen_factor = layout.regular_display.page.width / layout.canonical.width;
+    layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
+    layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
+    layout.screen_factor = layout.screen_factor_height;
     layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
     switch (layout.selection) {
 
@@ -4609,7 +4613,8 @@ layout.setupScreen = function(layout_selection) {
 
       case "simple-static-screen":
       if (layout.not_rendered) {
-        layout.bodycss.style.fontSize = layout.screen_factor + 'em';
+        var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+        layout.bodycss.style.fontSize = emsize + 'em';
         setupSimpleMoleculeContainer();
         setupDescriptionRight();
         layout.not_rendered = false;
@@ -4617,13 +4622,15 @@ layout.setupScreen = function(layout_selection) {
       break;
 
       case "simple-iframe":
-      layout.bodycss.style.fontSize = layout.screen_factor + 'em';
+      var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
       setupSimpleIFrameMoleculeContainer();
       break;
 
       case "full-static-screen":
       if (layout.not_rendered) {
-        layout.bodycss.style.fontSize = layout.screen_factor + 'em';
+        var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+        layout.bodycss.style.fontSize = emsize + 'em';
         setupRegularScreenMoleculeContainer();
         setupRegularScreenPotentialChart();
         setupRegularSpeedDistributionChart();
@@ -4654,24 +4661,29 @@ layout.setupScreen = function(layout_selection) {
   // Regular Screen Layout
   //
   function setupRegularScreenMoleculeContainer() {
-    molecule_container.resize(layout.display.page.width * 0.42, layout.display.page.width * 0.40 - 4);
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    molecule_container.resize(size, size);
   }
 
   function setupRegularScreenPotentialChart() {
-    lj_potential_chart.style.width = layout.display.page.width * 0.24 +"px";
-    lj_potential_chart.style.height = layout.display.page.width * 0.18 +"px";
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    lj_potential_chart.style.width = layout.display.page.width * 0.22 +"px";
+    lj_potential_chart.style.height = size / 2.35 +"px";
     layout.finishSetupPotentialChart();
   }
 
   function setupRegularSpeedDistributionChart() {
-    speed_distribution_chart.style.width = layout.display.page.width * 0.23 +"px";
-    speed_distribution_chart.style.height = layout.display.page.width * 0.18 +"px";
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    speed_distribution_chart.style.width = layout.display.page.width * 0.22 +"px";
+    speed_distribution_chart.style.height = size / 2.35 +"px";
     layout.finishSetupSpeedDistributionChart();
   }
 
   function setupRegularScreenKEChart() {
-    kechart.style.width = layout.display.page.width * 0.48  + 4 +"px";
-    kechart.style.height = layout.display.page.width * 0.20 + 5 +"px";
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    kechart.style.width = layout.display.page.width * 0.45 +"px";
+    // kechart.style.height = layout.display.page.width * 0.20 + 5 +"px";
+    kechart.style.height = size / 1.82 +"px";
     layout.finishSetupKEChart();
   }
 
@@ -4679,7 +4691,8 @@ layout.setupScreen = function(layout_selection) {
   // Full Screen Layout
   //
   function setupFullScreenMoleculeContainer() {
-    molecule_container.resize(layout.display.page.width * 0.70, layout.display.page.width * 0.70);
+    var size = layout.display.page.height * 0.70;
+    molecule_container.resize(size, size);
   }
 
   function setupFullScreenPotentialChart() {
@@ -4704,14 +4717,14 @@ layout.setupScreen = function(layout_selection) {
   // Simple Screen Layout
   //
   function setupSimpleMoleculeContainer() {
-    var size = layout.display.page.height * 0.74;
+    var size = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
     molecule_container.resize(size, size);
   }
 
   function setupDescriptionRight() {
     var description_right = document.getElementById("description-right");
     if (description_right !== null) {
-      description_right.style.width = Math.max(layout.display.page.width * 0.3,  layout.display.page.width - layout.display.page.height - 20) +"px";
+      // description_right.style.width = Math.max(layout.display.page.width * 0.3,  layout.display.page.width - layout.display.page.height - 20) +"px";
     }
   }
 
@@ -4719,7 +4732,7 @@ layout.setupScreen = function(layout_selection) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameMoleculeContainer() {
-    var size = layout.display.page.height * 0.78;
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.80);
     molecule_container.resize(size, size);
   }
 
@@ -4727,14 +4740,14 @@ layout.setupScreen = function(layout_selection) {
   // Simple Full Screen Layout
   //
   function setupSimpleFullScreenMoleculeContainer() {
-    var size = layout.display.page.height * 0.75;
+    var size = layout.display.page.height * 0.70;
     molecule_container.resize(size, size);
   }
 
   function setupFullScreenDescriptionRight() {
     var description_right = document.getElementById("description-right");
     if (description_right !== null) {
-      description_right.style.width = layout.display.window.width * 0.30 +"px";
+      // description_right.style.width = layout.display.window.width * 0.30 +"px";
     }
   }
 };
@@ -4824,6 +4837,7 @@ layout.moleculeContainer = function(e, options) {
       node = elem.node(),
       cx = elem.property("clientWidth"),
       cy = elem.property("clientHeight"),
+      scale_factor,
       vis1, vis, plot, 
       playback_component, time_label,
       padding, size,
@@ -4881,15 +4895,20 @@ layout.moleculeContainer = function(e, options) {
     cy = height;
     node.style.width = width +"px";
     node.style.height = height +"px";
+    scale_factor = layout.screen_factor;
+    if (layout.screen_factor_width && layout.screen_factor_height) {
+      scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height)
+    };
+    scale_factor = cx/600;
     padding = {
        "top":    options.title  ? 40 * layout.screen_factor : 20,
-       "right":                    25,
-       "bottom": options.xlabel ? 46  * layout.screen_factor : 20,
+       "right":                   25,
+       "bottom": options.xlabel ? 56  * layout.screen_factor : 20,
        "left":   options.ylabel ? 60  * layout.screen_factor : 25
     };
 
     if (options.playback_controller || options.play_only_controller) {
-      padding.bottom += (30  * layout.screen_factor);
+      padding.bottom += (30  * scale_factor);
     }
 
     size = {
@@ -4899,8 +4918,10 @@ layout.moleculeContainer = function(e, options) {
 
     offset_left = node.offsetLeft + padding.left;
     offset_top = node.offsetTop + padding.top;
-    pc_xpos = size.width / 2 - 50;
-    pc_ypos = size.height + (options.ylabel ? 75 * layout.screen_factor : 27);
+    pc_xpos = padding.left + size.width / 2 - (80 * scale_factor);
+    pc_ypos = cy - 42 * scale_factor;
+    // pc_ypos = cy - (options.ylabel ? 40 * scale_factor : 20 * scale_factor);
+    // pc_ypos = size.height + (options.ylabel ? 85 * scale_factor : 27);
     mw = size.width;
     mh = size.height;
 
@@ -5031,10 +5052,10 @@ layout.moleculeContainer = function(e, options) {
             .style("text-anchor","start");
       }
       if (options.playback_controller) {
-        playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, layout.screen_factor);
+        playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
       if (options.play_only_controller) {
-        playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, layout.screen_factor);
+        playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
 
       molecule_div = d3.select("#viz").append("div")
@@ -5107,7 +5128,7 @@ layout.moleculeContainer = function(e, options) {
       }
 
       if (options.playback_controller || options.play_only_controller) {
-        playback_component.position(pc_xpos, pc_ypos, layout.screen_factor);
+        playback_component.position(pc_xpos, pc_ypos, scale_factor);
       }
       redraw();
 
@@ -6441,7 +6462,7 @@ if (document.querySelectorAll) {
     }, false);
   }
 }
-layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max) {
+layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, callback) {
   var heat_button = new ButtonComponent(heat_elem_id, 'circlesmall-plus');
   var cool_button = new ButtonComponent(cool_elem_id, 'circlesmall-minus');
 
@@ -6452,6 +6473,9 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max) {
       $(cool_elem_id).removeClass('inactive');
       t = Math.floor((t * 2))/2 + 0.5;
       model.temperature(t);
+      if (typeof callback === 'function') {
+        callback(t)
+      }
     } else {
       $(heat_elem_id).addClass('inactive');
     }
@@ -6464,11 +6488,13 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max) {
       $(cool_elem_id).removeClass('inactive');
       t = Math.floor((t * 2))/2 - 0.5;
       model.temperature(t);
+      if (typeof callback === 'function') {
+        callback(t)
+      }
     } else {
       $(cool_elem_id).addClass('inactive');
     }
   });
-
 }
 })();
 (function(){
@@ -7542,7 +7568,7 @@ graphx.graph = function(options) {
         _this = this;
       button_group = this.group.append('svg:g');
       x = this.offset(button_name);
-      button_group.attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width * 2).attr('style', 'fill: #cccccc');
+      button_group.attr("class", "component playbacksvgbutton").attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width * 2).attr('style', 'fill: #cccccc');
       button_bg = button_group.append('rect');
       button_bg.attr('class', 'bg').attr('x', this.offset(button_name) / 1.20).attr('y', this.vertical_padding / 3).attr('width', this.unit_width * 2).attr('height', this.unit_width * 1.5).attr('rx', '0');
       for (_i = 0, _len = point_set.length; _i < _len; _i++) {
@@ -8040,11 +8066,13 @@ graphx.graph = function(options) {
     };
 
     PlaybackComponentSVG.prototype.make_button = function(button_name, type, point_set) {
-      var art, button_group, point, points, points_string, x, y, _i, _j, _len, _len2,
+      var art, art2, button_bg, button_group, button_highlight, point, points, points_string, x, xoffset, y, _i, _j, _len, _len2,
         _this = this;
       button_group = this.group.append('svg:g');
-      x = this.offset(button_name);
-      button_group.attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width);
+      xoffset = this.offset(button_name);
+      button_group.attr("class", "component playbacksvgbutton").attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width * 2).attr('style', 'fill: #cccccc');
+      button_bg = button_group.append('rect');
+      button_bg.attr('class', 'bg').attr('x', xoffset).attr('y', this.vertical_padding / 3).attr('width', this.unit_width * 2).attr('height', this.unit_width * 1.5).attr('rx', '0');
       for (_i = 0, _len = point_set.length; _i < _len; _i++) {
         points = point_set[_i];
         art = button_group.append(type);
@@ -8052,12 +8080,18 @@ graphx.graph = function(options) {
         points_string = "";
         for (_j = 0, _len2 = points.length; _j < _len2; _j++) {
           point = points[_j];
-          x = this.offset(button_name) + point['x'] * this.unit_width;
-          y = this.vertical_padding + point['y'] * this.unit_width;
+          x = xoffset + 8 + point['x'] * this.unit_width;
+          y = this.vertical_padding / .75 + point['y'] * this.unit_width;
           points_string = points_string + (" " + x + "," + y);
           art.attr('points', points_string);
         }
+        if (button_name === 'stop') {
+          art2 = button_group.append('rect');
+          art2.attr('class', 'pause-center').attr('x', x + this.unit_width / 3).attr('y', this.vertical_padding / .75 - 1).attr('width', this.unit_width / 3).attr('height', this.unit_width + 2);
+        }
       }
+      button_highlight = button_group.append('rect');
+      button_highlight.attr('class', 'highlight').attr('x', xoffset + 1).attr('y', this.vertical_padding / 1.85).attr('width', this.unit_width * 2 - 2).attr('height', this.unit_width / 1.4).attr('rx', '0');
       button_group.on('click', function() {
         return _this.action(button_name);
       });
@@ -8164,6 +8198,31 @@ graphx.graph = function(options) {
       return this.stop = this.make_button('stop', 'svg:polygon', points);
     };
 
+    PlaybackComponentSVG.prototype.init_pause_button = function() {
+      var points;
+      points = [
+        [
+          {
+            x: .5,
+            y: .5
+          }, {
+            x: .5,
+            y: 0
+          }, {
+            x: .5,
+            y: 1
+          }, {
+            x: 0,
+            y: 1
+          }, {
+            x: 0,
+            y: 0
+          }
+        ]
+      ];
+      return this.pause = this.make_button('pause', 'svg:polygon', points);
+    };
+
     PlaybackComponentSVG.prototype.init_back_button = function() {
       var points;
       points = [
@@ -8228,10 +8287,10 @@ graphx.graph = function(options) {
       this.svg = this.svg_element.append("svg:svg").attr("class", "component playbacksvg").attr("x", this.xpos).attr("y", this.ypos);
       this.group = this.svg.append("g").attr("transform", "scale(" + this.scale + "," + this.scale + ")").attr("width", this.width).attr("height", this.height);
       this.init_reset_button();
+      this.init_back_button();
       this.init_play_button();
       this.init_stop_button();
       this.init_forward_button();
-      this.init_back_button();
       if (this.playable.playing) {
         return this.hide(this.play);
       } else {
@@ -8475,7 +8534,7 @@ graphx.graph = function(options) {
       this.dom_id = dom_id != null ? dom_id : "#thermometer";
       this.dom_element = d3.select(this.dom_id).attr('class', 'thermometer');
       this.width = 1;
-      this.height = 12;
+      this.height = 16;
       this.max = 0.7;
       this.samples = [];
       this.last_draw_time = new Date().getTime();
@@ -8487,10 +8546,7 @@ graphx.graph = function(options) {
     Thermometer.prototype.init_svg = function() {
       this.dom_element.style("border", "1px solid black");
       this.svg = this.dom_element.append("svg:svg").attr("width", this.width + "em").attr("height", this.height + "em").append("svg:g");
-      this.thermometer = this.svg.append('svg:rect');
-      this.thermometer.attr("width", this.width + "em");
-      this.thermometer.attr("height", this.height + "em");
-      this.thermometer.style("fill", "#f4b626");
+      this.thermometer = this.svg.append('svg:rect').attr("width", this.width + "em").attr("height", this.height + "em").style("fill", "#f4b626");
       return d3.select('#therm_text').attr('class', 'therm_text');
     };
 
@@ -8808,17 +8864,11 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
 
   // ------------------------------------------------------------
   //
-  // Start the model after everything else ...
+  // Reset the model after everything else ...
   //
   // ------------------------------------------------------------
 
   modelReset();
-
-  // ------------------------------------------------------------
-  // Setup heat and cool buttons
-  // ------------------------------------------------------------
-
-  layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25)
 
   // ------------------------------------------------------------
   // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
@@ -8833,6 +8883,18 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
     }, lj_epsilon_max, lj_epsilon_min, INITIAL_EPSILON);
 
   therm.add_value(model.temperature());
+
+  // ------------------------------------------------------------
+  // Setup heat and cool buttons
+  // ------------------------------------------------------------
+
+  layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25, model, function (t) { therm.add_value(t) });
+
+  // ------------------------------------------------------------
+  //
+  // Start if autostart is true
+  //
+  // ------------------------------------------------------------
 
   if (autostart) {
     modelGo();

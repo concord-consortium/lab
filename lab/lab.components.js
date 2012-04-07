@@ -393,7 +393,7 @@
         _this = this;
       button_group = this.group.append('svg:g');
       x = this.offset(button_name);
-      button_group.attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width * 2).attr('style', 'fill: #cccccc');
+      button_group.attr("class", "component playbacksvgbutton").attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width * 2).attr('style', 'fill: #cccccc');
       button_bg = button_group.append('rect');
       button_bg.attr('class', 'bg').attr('x', this.offset(button_name) / 1.20).attr('y', this.vertical_padding / 3).attr('width', this.unit_width * 2).attr('height', this.unit_width * 1.5).attr('rx', '0');
       for (_i = 0, _len = point_set.length; _i < _len; _i++) {
@@ -891,11 +891,13 @@
     };
 
     PlaybackComponentSVG.prototype.make_button = function(button_name, type, point_set) {
-      var art, button_group, point, points, points_string, x, y, _i, _j, _len, _len2,
+      var art, art2, button_bg, button_group, button_highlight, point, points, points_string, x, xoffset, y, _i, _j, _len, _len2,
         _this = this;
       button_group = this.group.append('svg:g');
-      x = this.offset(button_name);
-      button_group.attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width);
+      xoffset = this.offset(button_name);
+      button_group.attr("class", "component playbacksvgbutton").attr('x', x).attr('y', this.vertical_padding).attr('width', this.unit_width).attr('height', this.unit_width * 2).attr('style', 'fill: #cccccc');
+      button_bg = button_group.append('rect');
+      button_bg.attr('class', 'bg').attr('x', xoffset).attr('y', this.vertical_padding / 3).attr('width', this.unit_width * 2).attr('height', this.unit_width * 1.5).attr('rx', '0');
       for (_i = 0, _len = point_set.length; _i < _len; _i++) {
         points = point_set[_i];
         art = button_group.append(type);
@@ -903,12 +905,18 @@
         points_string = "";
         for (_j = 0, _len2 = points.length; _j < _len2; _j++) {
           point = points[_j];
-          x = this.offset(button_name) + point['x'] * this.unit_width;
-          y = this.vertical_padding + point['y'] * this.unit_width;
+          x = xoffset + 8 + point['x'] * this.unit_width;
+          y = this.vertical_padding / .75 + point['y'] * this.unit_width;
           points_string = points_string + (" " + x + "," + y);
           art.attr('points', points_string);
         }
+        if (button_name === 'stop') {
+          art2 = button_group.append('rect');
+          art2.attr('class', 'pause-center').attr('x', x + this.unit_width / 3).attr('y', this.vertical_padding / .75 - 1).attr('width', this.unit_width / 3).attr('height', this.unit_width + 2);
+        }
       }
+      button_highlight = button_group.append('rect');
+      button_highlight.attr('class', 'highlight').attr('x', xoffset + 1).attr('y', this.vertical_padding / 1.85).attr('width', this.unit_width * 2 - 2).attr('height', this.unit_width / 1.4).attr('rx', '0');
       button_group.on('click', function() {
         return _this.action(button_name);
       });
@@ -1015,6 +1023,31 @@
       return this.stop = this.make_button('stop', 'svg:polygon', points);
     };
 
+    PlaybackComponentSVG.prototype.init_pause_button = function() {
+      var points;
+      points = [
+        [
+          {
+            x: .5,
+            y: .5
+          }, {
+            x: .5,
+            y: 0
+          }, {
+            x: .5,
+            y: 1
+          }, {
+            x: 0,
+            y: 1
+          }, {
+            x: 0,
+            y: 0
+          }
+        ]
+      ];
+      return this.pause = this.make_button('pause', 'svg:polygon', points);
+    };
+
     PlaybackComponentSVG.prototype.init_back_button = function() {
       var points;
       points = [
@@ -1079,10 +1112,10 @@
       this.svg = this.svg_element.append("svg:svg").attr("class", "component playbacksvg").attr("x", this.xpos).attr("y", this.ypos);
       this.group = this.svg.append("g").attr("transform", "scale(" + this.scale + "," + this.scale + ")").attr("width", this.width).attr("height", this.height);
       this.init_reset_button();
+      this.init_back_button();
       this.init_play_button();
       this.init_stop_button();
       this.init_forward_button();
-      this.init_back_button();
       if (this.playable.playing) {
         return this.hide(this.play);
       } else {
@@ -1326,7 +1359,7 @@
       this.dom_id = dom_id != null ? dom_id : "#thermometer";
       this.dom_element = d3.select(this.dom_id).attr('class', 'thermometer');
       this.width = 1;
-      this.height = 12;
+      this.height = 16;
       this.max = 0.7;
       this.samples = [];
       this.last_draw_time = new Date().getTime();
@@ -1338,10 +1371,7 @@
     Thermometer.prototype.init_svg = function() {
       this.dom_element.style("border", "1px solid black");
       this.svg = this.dom_element.append("svg:svg").attr("width", this.width + "em").attr("height", this.height + "em").append("svg:g");
-      this.thermometer = this.svg.append('svg:rect');
-      this.thermometer.attr("width", this.width + "em");
-      this.thermometer.attr("height", this.height + "em");
-      this.thermometer.style("fill", "#f4b626");
+      this.thermometer = this.svg.append('svg:rect').attr("width", this.width + "em").attr("height", this.height + "em").style("fill", "#f4b626");
       return d3.select('#therm_text').attr('class', 'therm_text');
     };
 

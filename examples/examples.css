@@ -17,14 +17,14 @@
   src: url("../vendor/fonts/open-sans/OpenSans-Italic.ttf") format("truetype"), url("vendor/fonts/open-sans/OpenSans-Italic.ttf") format("truetype"); }
 
 html {
-  margin: 0;
-  padding: 0; }
+  margin: 0em;
+  padding: 0em; }
 
 body {
   font-size: 1em;
   font-family: museo-sans, "Open Sans", Verdana, Geneva, sans-serif;
-  margin: 0;
-  padding: 0;
+  margin: 0em;
+  padding: 0em;
   background-color: white;
   color: #3f3f3f; }
 
@@ -45,6 +45,212 @@ h3 {
   font-family: museo-slab, "Open Sans", georgia, times, "times new roman", serif;
   font-weight: bold;
   font-size: 1.165em; }
+
+.thermometer {
+  display: inline-block;
+  width: 1em;
+  height: 16em;
+  margin: 0.5em 3em 0.5em 3em;
+  padding: 2px;
+  border: 1px solid #f4b626;
+  border-radius: 5px; }
+
+.therm_text {
+  display: block;
+  width: 6.5em;
+  height: 1.5em;
+  margin-left: 0.5em;
+  padding: 0em 0em;
+  font-size: 1.2em;
+  overflow: hidden; }
+
+.component {
+  display: inline-block;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  vertical-align: top;
+  overflow: hidden;
+  margin: 5px;
+  padding: 2px; }
+  .component div {
+    display: block;
+    position: relative;
+    margin: 0px;
+    padding: 0px; }
+
+.slider_content {
+  margin: 0em;
+  padding: 0em; }
+
+.slider {
+  left: 0px;
+  top: 0px;
+  width: 16em;
+  height: 1.4em; }
+  .slider .slider_well {
+    width: 100%;
+    height: 80%;
+    background: #bddfdf;
+    border: 1px solid #8cbbb8;
+    cursor: pointer;
+    border-radius: 0.5em; }
+    .slider .slider_well:hover {
+      background: #eeeeee; }
+    .slider .slider_well .slider_fill {
+      background-color: #8cbbb8;
+      position: absolute;
+      height: 100%; }
+    .slider .slider_well .handle {
+      width: 1.4em;
+      height: 1.4em;
+      border-radius: 0.7em;
+      left: 1em;
+      top: 1em;
+      position: absolute;
+      background-color: #3a878b; }
+      .slider .slider_well .handle:hover {
+        background-color: #2b6467; }
+  .slider .label {
+    width: 100%;
+    height: 20%;
+    font-color: blue;
+    font-size: 9px; }
+
+.playback {
+  display: inline-block;
+  width: 20em;
+  height: 3.4em;
+  border: 1px solid #aaaaaa;
+  border-radius: 5px;
+  padding: 0px;
+  cursor: pointer; }
+  .playback .button-art {
+    stroke-width: 0.4em;
+    fill: white;
+    stroke: #aaaaaa;
+    stroke-linecap: round;
+    stroke-linejoin: round; }
+  .playback .button-art:hover {
+    stroke: #777777; }
+  .playback .play.button-art {
+    fill: #999999; }
+  .playback .play.button-art:hover {
+    fill: #777777; }
+  .playback .stop.button-art {
+    fill: #999999; }
+  .playback .stop.button-art:hover {
+    fill: #777777; }
+
+.playbacksvg .button-art {
+  border: none;
+  fill: #777777 !important;
+  stroke: transparent !important;
+  stroke-width: 0 !important; }
+.playbacksvg .bg {
+  fill: #dddddd;
+  stroke: #aaaaaa;
+  stroke-width: 1px; }
+.playbacksvg .highlight {
+  border: solid 1px #cccccc;
+  border-bottom: none;
+  fill: white;
+  opacity: 0.6;
+  stroke: transparent;
+  stroke-width: 0; }
+.playbacksvg .pause-center {
+  border: none;
+  fill: #dddddd;
+  stroke: transparent;
+  stroke-width: 0; }
+
+.playbacksvgbutton .button-art {
+  border: none;
+  fill: #777777 !important;
+  stroke: transparent !important;
+  stroke-width: 0 !important; }
+.playbacksvgbutton .bg {
+  fill: #dddddd;
+  stroke: #aaaaaa;
+  stroke-width: 1px; }
+.playbacksvgbutton .highlight {
+  border: solid 1px #cccccc;
+  border-bottom: none;
+  fill: white;
+  opacity: 0.6;
+  stroke: transparent;
+  stroke-width: 0; }
+.playbacksvgbutton .pause-center {
+  border: none;
+  fill: #dddddd;
+  stroke: transparent;
+  stroke-width: 0; }
+
+.playbacksvgbutton:hover .button-art {
+  fill: #777777 !important;
+  stroke: transparent !important;
+  stroke-width: 0 !important; }
+.playbacksvgbutton:hover .bg {
+  fill: #bbbbbb; }
+.playbacksvgbutton:hover .highlight {
+  opacity: 0.3; }
+.playbacksvgbutton:hover .pause-center {
+  fill: #bbbbbb; }
+
+.component.button {
+  border-radius: 5px;
+  border: 1px solid #aaaaaa;
+  width: 3em;
+  height: 3em;
+  position: static;
+  float: left;
+  clear: none;
+  background-color: rgba(250, 216, 209, 0.1);
+  background-size: 100%;
+  opacity: 0.7; }
+  .component.button:hover {
+    background-color: rgba(240, 138, 117, 0.1);
+    opacity: 0.8; }
+  .component.button.up {
+    background-color: rgba(250, 216, 209, 0.1);
+    opacity: 0.7; }
+    .component.button.up:hover {
+      opacity: 0.8;
+      background-color: rgba(240, 138, 117, 0.1); }
+  .component.button.down {
+    opacity: 1;
+    background-color: rgba(230, 59, 25, 0.1); }
+  .component.button.hidden {
+    display: none; }
+.component.play {
+  background-image: url(../../resources/play.png); }
+.component.pause {
+  background-image: url(../../resources/pause.png); }
+.component.reset {
+  background-image: url(../../resources/reset.png); }
+.component.forward {
+  background-image: url(../../resources/forward.png); }
+.component.back {
+  background-image: url(../../resources/back.png); }
+.component.toggle {
+  display: inline-block;
+  overflow: hidden;
+  background-color: none;
+  opacity: 1; }
+  .component.toggle .button {
+    padding: 0px;
+    margin: 0px;
+    border: none; }
+.component.button_bar {
+  padding: 0px;
+  display: block;
+  border-radius: 5px;
+  border: 1px solid #aaaaaa; }
+  .component.button_bar .button {
+    margin: 4px; }
 
 .button:hover {
   cursor: pointer; }
@@ -157,10 +363,6 @@ h3 {
 #molecule-container {
   position: relative;
   background: #f9eec1;
-  width: 200px;
-  height: 200px;
-  border: none;
-  margin: 2px 0px 2px 0px;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
   -ms-border-radius: 0.5em;
@@ -168,7 +370,11 @@ h3 {
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); }
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  width: 200px;
+  height: 200px;
+  border: none;
+  margin: 0em 0.5em 0.5em 0em; }
   #molecule-container circle {
     stroke: transparent;
     stroke-width: 1;
@@ -181,38 +387,60 @@ h3 {
   #molecule-container rect {
     border: solid 1px #cccccc; }
 
-.playbacksvg .button-art {
-  border: none;
-  fill: #777777 !important;
-  stroke: transparent !important;
-  stroke-width: 0 !important; }
-.playbacksvg .bg {
-  fill: #dddddd;
-  stroke: #aaaaaa;
-  stroke-width: 1px; }
-.playbacksvg .highlight {
-  border: solid 1px #cccccc;
-  border-bottom: none;
-  fill: white;
-  opacity: 0.6;
-  stroke: transparent;
-  stroke-width: 0; }
-.playbacksvg .pause-center {
-  border: none;
-  fill: #dddddd;
-  stroke: transparent;
-  stroke-width: 0; }
+#lj-potential-chart {
+  position: relative;
+  background: #f9eec1;
+  -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  -ms-border-radius: 0.5em;
+  -o-border-radius: 0.5em;
+  border-radius: 0.5em;
+  -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  width: 180px;
+  height: 140px;
+  margin: 0em 0.5em 0.5em 1em; }
+  #lj-potential-chart circle {
+    stroke: steelblue;
+    stroke-width: 1px;
+    fill: white;
+    fill-opacity: 0.2;
+    cursor: move; }
+    #lj-potential-chart circle.selected {
+      fill: #ff7f0e;
+      stroke: #ff7f0e; }
 
-.playbacksvg:hover .button-art {
-  fill: #777777 !important;
-  stroke: transparent !important;
-  stroke-width: 0 !important; }
-.playbacksvg:hover .bg {
-  fill: #bbbbbb; }
-.playbacksvg:hover .highlight {
-  opacity: 0.3; }
-.playbacksvg:hover .pause-center {
-  fill: #bbbbbb; }
+#speed-distribution-chart {
+  position: relative;
+  background: #f9eec1;
+  -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  -ms-border-radius: 0.5em;
+  -o-border-radius: 0.5em;
+  border-radius: 0.5em;
+  -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  width: 180px;
+  height: 140px;
+  margin: 0em 0.5em 0.5em 0.5em; }
+
+#ke-chart {
+  position: relative;
+  background: #f9eec1;
+  -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  -ms-border-radius: 0.5em;
+  -o-border-radius: 0.5em;
+  border-radius: 0.5em;
+  -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  width: 280px;
+  height: 160px;
+  margin: 0em 1em;
+  padding: 0em 0em; }
 
 .slider_container {
   background: #f9eec1;
@@ -225,7 +453,29 @@ h3 {
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); }
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  vertical-align: top;
+  margin: 0.5em 1em 0.5em 0em;
+  min-height: 4.8em;
+  font-size: 1em;
+  padding: 3px; }
+  .slider_container .left_half {
+    width: 49%;
+    float: left;
+    text-align: left; }
+  .slider_container .right_half {
+    text-align: right;
+    width: 49%;
+    float: right; }
+  .slider_container .container {
+    display: inline-block;
+    margin: auto;
+    text-align: center; }
+  .slider_container .below {
+    display: none;
+    margin: auto;
+    text-align: center; }
 
 #header {
   background-color: #3a878b;
@@ -315,7 +565,7 @@ div.tooltip {
 
 .description {
   padding: 1em;
-  width: 70em; }
+  width: 80%; }
   .description ul {
     margin: 0.5em 0em 0.5em 1em; }
     .description ul li {
@@ -472,7 +722,7 @@ ul {
   margin: 0em;
   padding: 0em 1em;
   text-align: center;
-  width: 100%; }
+  width: 95%; }
   #controls ul {
     display: inline-block;
     list-style-type: none;

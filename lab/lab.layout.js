@@ -81,7 +81,9 @@ layout.setupScreen = function(layout_selection) {
 
 
   if(fullscreen) {
-    layout.screen_factor = layout.display.screen.width / layout.canonical.width;
+    layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
+    layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
+    layout.screen_factor = layout.screen_factor_height;
     layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
     layout.bodycss.style.fontSize = layout.screen_factor + 'em';
     layout.not_rendered = true;
@@ -118,7 +120,9 @@ layout.setupScreen = function(layout_selection) {
     } else {
       layout.regular_display = layout.getDisplayProperties();
     }
-    layout.screen_factor = layout.regular_display.page.width / layout.canonical.width;
+    layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
+    layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
+    layout.screen_factor = layout.screen_factor_height;
     layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
     switch (layout.selection) {
 
@@ -130,7 +134,8 @@ layout.setupScreen = function(layout_selection) {
 
       case "simple-static-screen":
       if (layout.not_rendered) {
-        layout.bodycss.style.fontSize = layout.screen_factor + 'em';
+        var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+        layout.bodycss.style.fontSize = emsize + 'em';
         setupSimpleMoleculeContainer();
         setupDescriptionRight();
         layout.not_rendered = false;
@@ -138,13 +143,15 @@ layout.setupScreen = function(layout_selection) {
       break;
 
       case "simple-iframe":
-      layout.bodycss.style.fontSize = layout.screen_factor + 'em';
+      var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
       setupSimpleIFrameMoleculeContainer();
       break;
 
       case "full-static-screen":
       if (layout.not_rendered) {
-        layout.bodycss.style.fontSize = layout.screen_factor + 'em';
+        var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+        layout.bodycss.style.fontSize = emsize + 'em';
         setupRegularScreenMoleculeContainer();
         setupRegularScreenPotentialChart();
         setupRegularSpeedDistributionChart();
@@ -175,24 +182,29 @@ layout.setupScreen = function(layout_selection) {
   // Regular Screen Layout
   //
   function setupRegularScreenMoleculeContainer() {
-    molecule_container.resize(layout.display.page.width * 0.42, layout.display.page.width * 0.40 - 4);
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    molecule_container.resize(size, size);
   }
 
   function setupRegularScreenPotentialChart() {
-    lj_potential_chart.style.width = layout.display.page.width * 0.24 +"px";
-    lj_potential_chart.style.height = layout.display.page.width * 0.18 +"px";
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    lj_potential_chart.style.width = layout.display.page.width * 0.22 +"px";
+    lj_potential_chart.style.height = size / 2.35 +"px";
     layout.finishSetupPotentialChart();
   }
 
   function setupRegularSpeedDistributionChart() {
-    speed_distribution_chart.style.width = layout.display.page.width * 0.23 +"px";
-    speed_distribution_chart.style.height = layout.display.page.width * 0.18 +"px";
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    speed_distribution_chart.style.width = layout.display.page.width * 0.22 +"px";
+    speed_distribution_chart.style.height = size / 2.35 +"px";
     layout.finishSetupSpeedDistributionChart();
   }
 
   function setupRegularScreenKEChart() {
-    kechart.style.width = layout.display.page.width * 0.48  + 4 +"px";
-    kechart.style.height = layout.display.page.width * 0.20 + 5 +"px";
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    kechart.style.width = layout.display.page.width * 0.45 +"px";
+    // kechart.style.height = layout.display.page.width * 0.20 + 5 +"px";
+    kechart.style.height = size / 1.82 +"px";
     layout.finishSetupKEChart();
   }
 
@@ -200,7 +212,8 @@ layout.setupScreen = function(layout_selection) {
   // Full Screen Layout
   //
   function setupFullScreenMoleculeContainer() {
-    molecule_container.resize(layout.display.page.width * 0.70, layout.display.page.width * 0.70);
+    var size = layout.display.page.height * 0.70;
+    molecule_container.resize(size, size);
   }
 
   function setupFullScreenPotentialChart() {
@@ -225,14 +238,14 @@ layout.setupScreen = function(layout_selection) {
   // Simple Screen Layout
   //
   function setupSimpleMoleculeContainer() {
-    var size = layout.display.page.height * 0.74;
+    var size = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
     molecule_container.resize(size, size);
   }
 
   function setupDescriptionRight() {
     var description_right = document.getElementById("description-right");
     if (description_right !== null) {
-      description_right.style.width = Math.max(layout.display.page.width * 0.3,  layout.display.page.width - layout.display.page.height - 20) +"px";
+      // description_right.style.width = Math.max(layout.display.page.width * 0.3,  layout.display.page.width - layout.display.page.height - 20) +"px";
     }
   }
 
@@ -240,7 +253,7 @@ layout.setupScreen = function(layout_selection) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameMoleculeContainer() {
-    var size = layout.display.page.height * 0.78;
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.80);
     molecule_container.resize(size, size);
   }
 
@@ -248,14 +261,14 @@ layout.setupScreen = function(layout_selection) {
   // Simple Full Screen Layout
   //
   function setupSimpleFullScreenMoleculeContainer() {
-    var size = layout.display.page.height * 0.75;
+    var size = layout.display.page.height * 0.70;
     molecule_container.resize(size, size);
   }
 
   function setupFullScreenDescriptionRight() {
     var description_right = document.getElementById("description-right");
     if (description_right !== null) {
-      description_right.style.width = layout.display.window.width * 0.30 +"px";
+      // description_right.style.width = layout.display.window.width * 0.30 +"px";
     }
   }
 };
@@ -345,6 +358,7 @@ layout.moleculeContainer = function(e, options) {
       node = elem.node(),
       cx = elem.property("clientWidth"),
       cy = elem.property("clientHeight"),
+      scale_factor,
       vis1, vis, plot, 
       playback_component, time_label,
       padding, size,
@@ -402,15 +416,20 @@ layout.moleculeContainer = function(e, options) {
     cy = height;
     node.style.width = width +"px";
     node.style.height = height +"px";
+    scale_factor = layout.screen_factor;
+    if (layout.screen_factor_width && layout.screen_factor_height) {
+      scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height)
+    };
+    scale_factor = cx/600;
     padding = {
        "top":    options.title  ? 40 * layout.screen_factor : 20,
-       "right":                    25,
-       "bottom": options.xlabel ? 46  * layout.screen_factor : 20,
+       "right":                   25,
+       "bottom": options.xlabel ? 56  * layout.screen_factor : 20,
        "left":   options.ylabel ? 60  * layout.screen_factor : 25
     };
 
     if (options.playback_controller || options.play_only_controller) {
-      padding.bottom += (30  * layout.screen_factor);
+      padding.bottom += (30  * scale_factor);
     }
 
     size = {
@@ -420,8 +439,10 @@ layout.moleculeContainer = function(e, options) {
 
     offset_left = node.offsetLeft + padding.left;
     offset_top = node.offsetTop + padding.top;
-    pc_xpos = size.width / 2 - 50;
-    pc_ypos = size.height + (options.ylabel ? 75 * layout.screen_factor : 27);
+    pc_xpos = padding.left + size.width / 2 - (80 * scale_factor);
+    pc_ypos = cy - 42 * scale_factor;
+    // pc_ypos = cy - (options.ylabel ? 40 * scale_factor : 20 * scale_factor);
+    // pc_ypos = size.height + (options.ylabel ? 85 * scale_factor : 27);
     mw = size.width;
     mh = size.height;
 
@@ -552,10 +573,10 @@ layout.moleculeContainer = function(e, options) {
             .style("text-anchor","start");
       }
       if (options.playback_controller) {
-        playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, layout.screen_factor);
+        playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
       if (options.play_only_controller) {
-        playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, layout.screen_factor);
+        playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
 
       molecule_div = d3.select("#viz").append("div")
@@ -628,7 +649,7 @@ layout.moleculeContainer = function(e, options) {
       }
 
       if (options.playback_controller || options.play_only_controller) {
-        playback_component.position(pc_xpos, pc_ypos, layout.screen_factor);
+        playback_component.position(pc_xpos, pc_ypos, scale_factor);
       }
       redraw();
 
@@ -1962,7 +1983,7 @@ if (document.querySelectorAll) {
     }, false);
   }
 }
-layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max) {
+layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, callback) {
   var heat_button = new ButtonComponent(heat_elem_id, 'circlesmall-plus');
   var cool_button = new ButtonComponent(cool_elem_id, 'circlesmall-minus');
 
@@ -1973,6 +1994,9 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max) {
       $(cool_elem_id).removeClass('inactive');
       t = Math.floor((t * 2))/2 + 0.5;
       model.temperature(t);
+      if (typeof callback === 'function') {
+        callback(t)
+      }
     } else {
       $(heat_elem_id).addClass('inactive');
     }
@@ -1985,10 +2009,12 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max) {
       $(cool_elem_id).removeClass('inactive');
       t = Math.floor((t * 2))/2 - 0.5;
       model.temperature(t);
+      if (typeof callback === 'function') {
+        callback(t)
+      }
     } else {
       $(cool_elem_id).addClass('inactive');
     }
   });
-
 }
 })();
