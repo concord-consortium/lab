@@ -56,8 +56,30 @@
   padding: 0em 0em
 
 .slider_container
-  background: #f9eec1
+  background: $component-background-color
   border: none !important
   padding: .3em !important
   @include border-radius(0.5em)
   @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
+  display: inline-block
+  vertical-align: top
+  margin: 0.5em 1.0em 0.5em 0em
+  min-height: 4.8em
+  font-size: 1.0em
+  padding: 3px
+  .left_half
+    width: 49%
+    float: left
+    text-align: left
+  .right_half
+    text-align: right
+    width: 49%
+    float: right
+  .container
+    display: inline-block
+    margin: auto
+    text-align: center
+  .below
+    display: none
+    margin: auto
+    text-align: center
