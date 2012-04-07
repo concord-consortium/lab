@@ -4,16 +4,14 @@
 
 #molecule-container
   position: relative
-  background-color: #f9eec1
+  background: $component-background-color
+  @include border-radius(0.5em)
+  @include box-shadow(1px 1px 3px rgba(000,000,000,0.2))
   width: 20em
   height: 20em
   min-width: 10em
   min-height: 10em
-  border: solid 1px #f4b626
   margin: 2px 0px 2px 0px
-  -moz-border-radius: 5px
-  -webkit-border-radius: 5px
-  border-radius: 5px
   circle
     stroke: transparent
     stroke-width: 1.0
