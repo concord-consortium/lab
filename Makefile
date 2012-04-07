@@ -13,8 +13,6 @@ vpath %.haml src
 SASS_EXAMPLE_FILES := $(shell find src/examples -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/dist\/\1.css/' )
 vpath %.sass src/examples
 
-SASS_LIBRARY_FILES := $(shell find src/lab -name '*.sass' -exec echo {} \; | sed s'/src\/.*\/\(.*\)\.sass/dist\/lab\/css\/\1.css/' )
-vpath %.sass src/lab
 SASS_DOC_FILES := $(shell find src/doc -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/dist\/\1.css/' )
 vpath %.sass src/doc
 
@@ -54,7 +52,6 @@ all: \
 	$(SASS_EXAMPLE_FILES) \
 	$(SASS_DOC_FILES) \
 	$(SCSS_EXAMPLE_FILES) \
-	$(SASS_LIBRARY_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
 	dist/index.css
 
