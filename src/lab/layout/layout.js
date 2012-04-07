@@ -72,7 +72,9 @@ layout.setupScreen = function(layout_selection) {
 
 
   if(fullscreen) {
-    layout.screen_factor = layout.display.screen.width / layout.canonical.width;
+    layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
+    layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
+    layout.screen_factor = layout.screen_factor_height;
     layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
     layout.bodycss.style.fontSize = layout.screen_factor + 'em';
     layout.not_rendered = true;
@@ -109,7 +111,9 @@ layout.setupScreen = function(layout_selection) {
     } else {
       layout.regular_display = layout.getDisplayProperties();
     }
-    layout.screen_factor = layout.regular_display.page.width / layout.canonical.width;
+    layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
+    layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
+    layout.screen_factor = layout.screen_factor_height;
     layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
     switch (layout.selection) {
 
@@ -129,7 +133,9 @@ layout.setupScreen = function(layout_selection) {
       break;
 
       case "simple-iframe":
-      layout.bodycss.style.fontSize = layout.screen_factor + 'em';
+      var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
+      // layout.bodycss.style.fontSize = layout.screen_factor + 'em';
       setupSimpleIFrameMoleculeContainer();
       break;
 
@@ -166,6 +172,10 @@ layout.setupScreen = function(layout_selection) {
   // Regular Screen Layout
   //
   function setupRegularScreenMoleculeContainer() {
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.8);
+    molecule_container.resize(layout.display.page.width * 0.42, layout.display.page.width * 0.40 - 4);
+    molecule_container.resize(size, size);
+
     molecule_container.resize(layout.display.page.width * 0.42, layout.display.page.width * 0.40 - 4);
   }
 
@@ -191,7 +201,8 @@ layout.setupScreen = function(layout_selection) {
   // Full Screen Layout
   //
   function setupFullScreenMoleculeContainer() {
-    molecule_container.resize(layout.display.page.width * 0.70, layout.display.page.width * 0.70);
+    var size = layout.display.page.height * 0.70;
+    molecule_container.resize(size, size);
   }
 
   function setupFullScreenPotentialChart() {
@@ -216,14 +227,14 @@ layout.setupScreen = function(layout_selection) {
   // Simple Screen Layout
   //
   function setupSimpleMoleculeContainer() {
-    var size = layout.display.page.height * 0.74;
+    var size = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.8);
     molecule_container.resize(size, size);
   }
 
   function setupDescriptionRight() {
     var description_right = document.getElementById("description-right");
     if (description_right !== null) {
-      description_right.style.width = Math.max(layout.display.page.width * 0.3,  layout.display.page.width - layout.display.page.height - 20) +"px";
+      // description_right.style.width = Math.max(layout.display.page.width * 0.3,  layout.display.page.width - layout.display.page.height - 20) +"px";
     }
   }
 
@@ -231,7 +242,7 @@ layout.setupScreen = function(layout_selection) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameMoleculeContainer() {
-    var size = layout.display.page.height * 0.78;
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.80);
     molecule_container.resize(size, size);
   }
 
@@ -239,14 +250,14 @@ layout.setupScreen = function(layout_selection) {
   // Simple Full Screen Layout
   //
   function setupSimpleFullScreenMoleculeContainer() {
-    var size = layout.display.page.height * 0.75;
+    var size = layout.display.page.height * 0.70;
     molecule_container.resize(size, size);
   }
 
   function setupFullScreenDescriptionRight() {
     var description_right = document.getElementById("description-right");
     if (description_right !== null) {
-      description_right.style.width = layout.display.window.width * 0.30 +"px";
+      // description_right.style.width = layout.display.window.width * 0.30 +"px";
     }
   }
 };
