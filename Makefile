@@ -7,7 +7,7 @@ JS_TESTER   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 
-HAML_EXAMPLE_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/dist\/\1/' )
+HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/dist\/\1/' )
 vpath %.haml src
 
 SASS_EXAMPLE_FILES := $(shell find src/examples -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/dist\/\1.css/' )
@@ -15,6 +15,8 @@ vpath %.sass src/examples
 
 SASS_LIBRARY_FILES := $(shell find src/lab -name '*.sass' -exec echo {} \; | sed s'/src\/.*\/\(.*\)\.sass/dist\/lab\/css\/\1.css/' )
 vpath %.sass src/lab
+SASS_DOC_FILES := $(shell find src/doc -name '*.sass' -exec echo {} \; | sed s'/src\/\(.*\)\.sass/dist\/\1.css/' )
+vpath %.sass src/doc
 
 SCSS_EXAMPLE_FILES := $(shell find src -name '*.scss' -exec echo {} \; | grep -v bourbon | sed s'/src\/\(.*\)\.scss/dist\/\1.css/' )
 vpath %.scss src
@@ -48,8 +50,9 @@ all: \
 	$(MARKDOWN_EXAMPLE_FILES) \
 	$(LAB_JS_FILES) \
 	$(LAB_JS_FILES:.js=.min.js) \
-	$(HAML_EXAMPLE_FILES) \
+	$(HAML_FILES) \
 	$(SASS_EXAMPLE_FILES) \
+	$(SASS_DOC_FILES) \
 	$(SCSS_EXAMPLE_FILES) \
 	$(SASS_LIBRARY_FILES) \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
@@ -108,6 +111,7 @@ dist: \
 	dist/vendor \
 	dist/resources \
 	dist/examples \
+	dist/doc \
 	dist/experiments
 	mkdir -p dist/lab/css
 
@@ -115,6 +119,11 @@ dist/examples:
 	mkdir -p dist/examples
 	# copy directories, javascript, json, and image resources from src/examples/
 	rsync -avq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/examples/ dist/examples/
+
+dist/doc:
+	mkdir -p dist/doc
+	# copy directories, javascript, json, and image resources from src/examples/
+	rsync -avq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ dist/doc/
 
 dist/experiments:
 	cp -R src/experiments dist
@@ -299,13 +308,16 @@ test/%.html: test/%.html.haml
 	haml $< $@
 
 h:
-	@echo $(HAML_EXAMPLE_FILES)
+	@echo $(HAML_FILES)
 
 dist/%.html: src/%.html.haml Makefile
 	haml $< $@
 
-s:
+se:
 	@echo $(SASS_EXAMPLE_FILES)
+
+sd:
+	@echo $(SASS_DOC_FILES)
 
 sl:
 	@echo $(SASS_LIBRARY_FILES)
@@ -314,6 +326,9 @@ dist/index.css:
 	$(SASS_COMPILER) src/index.sass dist/index.css
 
 dist/examples/%.css: %.sass Makefile
+	$(SASS_COMPILER) $< $@
+
+dist/doc/%.css: %.sass Makefile
 	$(SASS_COMPILER) $< $@
 
 dist/lab/%.css: %.sass Makefile
