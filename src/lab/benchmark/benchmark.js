@@ -119,11 +119,17 @@ function what_browser() {
   }
   match = navigator.userAgent.match(safarimatch);
   if (match && match[2]) {
-    return {
+    var results = {
       browser: match[2],
       version: match[1],
-      oscpu: navigator.appVersion.match(/(Macintosh); (.*?)\)/)[2]
+      oscpu: ""
+    };
+    if navigator.appVersion.match(/Macintosh/) {
+      results.oscpu = navigator.appVersion.match(/(Macintosh); (.*?)\)/)[2];
+    } else if (navigator.appVersion.match(/Windows/)) {
+      results.oscpu = navigator.platform;
     }
+    return results;
   }
   match = navigator.userAgent.match(iematch);
   if (match && match[1]) {
