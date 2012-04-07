@@ -1,3 +1,223 @@
+@import 'sass/bourbon/bourbon'
+
+.thermometer
+  display: inline-block
+  width: 1em
+  height: 12em
+  margin: 0.5em 3em 0.5em 3em
+  padding: 2px
+  border: 1px solid #f4b626
+  border-radius: 5px
+
+.therm_text
+  display: block
+  width: 6.5em
+  height: 1.5em
+  margin-left: 0.5em
+  padding: 0em 0em
+  font-size: 1.0em
+  overflow: hidden
+
+.component
+  display: inline-block
+  div
+    display: block
+    position: relative
+    margin: 0px
+    padding: 0px
+  -webkit-user-select: none
+  -khtml-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  -o-user-select: none
+  user-select: none
+  vertical-align: top
+  overflow: hidden
+  margin:  5px
+  padding: 2px
+
+.slider_content
+  margin: 0em
+  padding: 0em
+
+.slider
+  left: 0px
+  top: 0px
+  width: 16em
+  height: 1.4em
+  .slider_well
+    width: 100%
+    height: 80%
+    background: #bddfdf
+    border: 1px solid #8cbbb8
+    cursor: pointer
+    border-radius: 0.5em
+    // overflow: hidden
+    &:hover
+      background: #eee
+    .slider_fill
+      background-color: #8cbbb8
+      position: absolute
+      height: 100%
+
+    .handle
+      width: 1.4em
+      height: 1.4em
+      border-radius: 0.7em
+      left: 1em
+      top: 1em
+      position: absolute
+      background-color: #3a878b
+      &:hover
+        $hover: darken(#3a878b, 10%)
+        background-color: $hover
+
+  .label
+    width: 100%
+    height: 20%
+    font-color: blue
+    font-size: 9px
+
+.playback
+  display: inline-block
+  width: 20em
+  height: 3.4em
+  border: 1px solid #aaa
+  border-radius: 5px
+  padding: 0px
+  cursor: pointer
+
+  .button-art
+    stroke-width: 0.4em
+    fill: #fff
+    stroke: #aaa
+    stroke-linecap: round
+    stroke-linejoin: round
+
+  .button-art:hover
+    stroke: #777
+  .play.button-art
+    fill: #999
+  .play.button-art:hover
+    fill: #777
+  .stop.button-art
+    fill: #999
+  .stop.button-art:hover
+    fill: #777
+
+.playbacksvg
+  .button-art
+    border: none
+    fill: #777 !important
+    stroke: transparent !important
+    stroke-width: 0 !important
+  .bg
+    fill: #ddd
+    stroke: #aaa
+    stroke-width: 1px
+  .highlight
+    border: solid 1px #ccc
+    border-bottom: none
+    fill: #fff
+    opacity: 0.6
+    stroke: transparent
+    stroke-width: 0
+  .pause-center
+    border: none
+    fill: #ddd
+    stroke: transparent
+    stroke-width: 0
+
+.playbacksvgbutton
+  .button-art
+    border: none
+    fill: #777 !important
+    stroke: transparent !important
+    stroke-width: 0 !important
+  .bg
+    fill: #ddd
+    stroke: #aaa
+    stroke-width: 1px
+  .highlight
+    border: solid 1px #ccc
+    border-bottom: none
+    fill: #fff
+    opacity: 0.6
+    stroke: transparent
+    stroke-width: 0
+  .pause-center
+    border: none
+    fill: #ddd
+    stroke: transparent
+    stroke-width: 0
+.playbacksvgbutton:hover
+  .button-art
+    fill: #777 !important
+    stroke: transparent !important
+    stroke-width: 0 !important
+  .bg
+    fill: #bbb
+  .highlight
+    opacity: 0.3
+  .pause-center
+    fill: #bbb
+
+$button_color: hsla(10,80%,90%,0.1)
+$button_hover: darken($button_color, 20%)
+$button_down: darken($button_hover, 20%)
+.component
+  &.button
+    border-radius: 5px
+    border: 1px solid #aaa
+    width: 3em
+    height: 3em
+    position: static
+    float: left
+    clear: none
+    background-color: $button_color
+    background-size: 100%
+    opacity: 0.7
+    &:hover
+      background-color: $button_hover
+      opacity: 0.8
+    &.up
+      background-color: $button_color
+      opacity: 0.7
+      &:hover
+        opacity: 0.8
+        background-color: $button_hover
+    &.down
+      opacity: 1
+      background-color: $button_down
+    &.hidden
+      display: none
+  &.play
+    background-image: url(../../resources/play.png)
+  &.pause
+    background-image: url(../../resources/pause.png)
+  &.reset
+    background-image: url(../../resources/reset.png)
+  &.forward
+    background-image: url(../../resources/forward.png)
+  &.back
+    background-image: url(../../resources/back.png)
+  &.toggle
+    display: inline-block
+    overflow: hidden
+    background-color: none
+    opacity: 1
+    .button
+      padding: 0px
+      margin: 0px
+      border: none
+  &.button_bar
+    padding: 0px
+    .button
+      margin: 4px
+    display: block
+    border-radius: 5px
+    border: 1px solid #aaa
+
 .button:hover
   cursor: pointer
   .bg

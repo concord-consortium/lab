@@ -23,20 +23,47 @@ class PlaybackComponentSVG
   # TODO: make a button class
   make_button: (button_name, type, point_set) ->
     button_group = @group.append('svg:g')
-    x = this.offset(button_name)
-    button_group.attr('x', x)
+    xoffset = this.offset(button_name)
+    button_group
+      .attr("class", "component playbacksvgbutton")
+      .attr('x', x)
       .attr('y',@vertical_padding)
       .attr('width',@unit_width)
-      .attr('height',@unit_width)
+      .attr('height',@unit_width*2)
+      .attr('style','fill: #cccccc')
+    # button background
+    button_bg = button_group.append('rect')
+    button_bg.attr('class', 'bg')
+      .attr('x', xoffset)
+      .attr('y', @vertical_padding/3)
+      .attr('width', @unit_width*2)
+      .attr('height', @unit_width*1.5)
+      .attr('rx', '0')
+    # button symbol
     for points in point_set
       art = button_group.append(type)
       art.attr('class', "#{button_name} button-art")
       points_string = ""
       for point in points
-        x = this.offset(button_name) + point['x'] * @unit_width
-        y = @vertical_padding + point['y'] * @unit_width
+        x = xoffset + 8 + point['x'] * @unit_width
+        y = @vertical_padding/.75 + point['y'] * @unit_width
         points_string = points_string + " #{x},#{y}"
         art.attr('points',points_string)
+      if button_name == 'stop'
+        art2 = button_group.append('rect')
+        art2.attr('class','pause-center')
+          .attr('x',x + @unit_width/3)
+          .attr('y',@vertical_padding/.75-1)
+          .attr('width',@unit_width/3)
+          .attr('height',@unit_width+2)
+    # button highlight
+    button_highlight = button_group.append('rect')
+    button_highlight.attr('class', 'highlight')
+      .attr('x', xoffset + 1)
+      .attr('y', @vertical_padding/1.85)
+      .attr('width', @unit_width*2-2)
+      .attr('height', @unit_width/1.4)
+      .attr('rx', '0')
     button_group.on 'click',  => this.action(button_name)
     return button_group
 
@@ -52,7 +79,6 @@ class PlaybackComponentSVG
         else console.log("cant find action for #{action}")
     else console.log("no @playable defined")
     this.update_ui()
-
 
   # <-
   init_reset_button: ->
@@ -85,6 +111,17 @@ class PlaybackComponentSVG
       {x: 0, y: 0  }
     ]]
     @stop = this.make_button('stop', 'svg:polygon', points)
+
+  # ||
+  init_pause_button: ->
+    points = [[
+      {x: .5, y: .5  },
+      {x: .5, y: 0  },
+      {x: .5, y: 1  },
+      {x: 0, y: 1  },
+      {x: 0, y: 0  }
+    ]]
+    @pause = this.make_button('pause', 'svg:polygon', points)
 
   # <<
   init_back_button:  ->
@@ -124,10 +161,10 @@ class PlaybackComponentSVG
         .attr("height",@height);
 
     this.init_reset_button()
+    this.init_back_button()
     this.init_play_button()
     this.init_stop_button()
     this.init_forward_button()
-    this.init_back_button()
     if @playable.playing
       this.hide(@play)
     else
