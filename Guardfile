@@ -21,7 +21,9 @@ require './src/sass/bourbon/lib/bourbon.rb'
 
 guard 'sass',         :input => 'src/examples', :output => 'dist/examples', :all_on_start => false
 guard 'sass',         :input => 'src/doc',      :output => 'dist/doc',      :all_on_start => false
+
 guard 'coffeescript', :input => 'src/examples', :output => 'dist/examples', :all_on_start => false
+
 guard 'haml',         :input => 'src', :output => 'dist', :all_on_start => false do
   watch %r{^src.+(\.html\.haml)}
 end
@@ -36,6 +38,12 @@ guard 'shell' do
     puts "re-generating javascript libraries and css resources for these libraries ..."
     command("make")
     command("make test")
+  end
+  watch(%r{(src\/sass\/.+)}) do |match|
+    puts match[0]
+    puts "re-generating all css resources because sass mixin updated ..."
+    command("find dist \! -path 'dist/vendor*' -name '*.css' | xargs rm -f")
+    command("make")
   end
   watch("src/index.sass") do
     command("bin/sass -r ./src/sass/bourbon/lib/bourbon.rb src/index.sass dist/index.css")
