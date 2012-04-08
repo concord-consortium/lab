@@ -110,7 +110,6 @@ dist: \
 	dist/examples \
 	dist/doc \
 	dist/experiments
-	mkdir -p dist/lab/css
 
 dist/examples:
 	mkdir -p dist/examples
