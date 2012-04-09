@@ -342,7 +342,7 @@ exports.makeModel = function() {
 
       // Half of the update of v(t+dt, i) and p(t+dt, i) using a; during a single integration loop,
       // call once when a = a(t) and once when a = a(t+dt)
-      halfUpdateVelocityFromAcceleration = function(i) {
+      halfUpdateVelocity = function(i) {
         vx[i] += 0.5*ax[i]*dt;
         px[i] = mass[i] * vx[i];
         vy[i] += 0.5*ay[i]*dt;
@@ -637,7 +637,7 @@ exports.makeModel = function() {
           bounceOffWalls(i);
 
           // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
-          halfUpdateVelocityFromAcceleration(i);
+          halfUpdateVelocity(i);
 
           // Zero out a(t, i) for accumulation of a(t+dt, i)
           ax[i] = ay[i] = 0;
@@ -649,7 +649,7 @@ exports.makeModel = function() {
 
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
-          halfUpdateVelocityFromAcceleration(i);
+          halfUpdateVelocity(i);
 
           // Now that we have velocity, update speed
           speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
