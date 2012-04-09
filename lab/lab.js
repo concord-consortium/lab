@@ -4268,7 +4268,7 @@ function os_platform() {
     return match[2];
   } else if (match[1].match(/^Windows/)) {
     var arch = windows_feature_token[match[2]] || "32";
-    return windows_platform_token[match[1]] + ""/" + arch";
+    return windows_platform_token[match[1]] + "/" + arch;
   }
 }
 
