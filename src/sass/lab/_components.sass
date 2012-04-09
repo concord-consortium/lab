@@ -1,13 +1,29 @@
 @import 'sass/bourbon/bourbon'
 
 .thermometer
-  display: inline-block
-  width: 1em
-  height: 16em
-  margin: 0.5em 3em 0.5em 3em
-  padding: 2px
-  border: 1px solid #f4b626
-  border-radius: 5px
+  display: list-item
+  width: 2em
+  height: 20em
+  margin: auto
+  padding-top: 0.2em
+  padding-bottom: 0.1em
+  border: 2px solid #f4b626
+  position: relative
+  @include border-top-radius(1.0em)
+  @include border-bottom-radius(0.2em)
+  div
+    display: block
+    position: relative
+    margin: 0px
+    padding: 0px
+  .thermometer_fill
+    width: 70%
+    vertical-align: bottom
+    margin-left: auto
+    margin-right: auto
+    background: #AA0E15
+    @include border-top-radius(0.5em)
+
 
 .therm_text
   display: block

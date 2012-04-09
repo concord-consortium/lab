@@ -258,8 +258,8 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
   // ------------------------------------------------------------
 
-  var therm = new Thermometer('#thermometer');
-  therm.max = 25;
+  var therm = new Thermometer('#thermometer', 25);
+  // therm.max = 25;
 
   var epsilon_slider  = new  SliderComponent('#attraction_slider', 
     function (v) {

@@ -1,29 +1,41 @@
 class Thermometer
 
-  constructor: (@dom_id="#thermometer") ->
-    @dom_element = d3.select(@dom_id).attr('class','thermometer')
-    @width   = 1
-    @height  = 16
-    @max     = 0.7
-    @samples = []
-
+  constructor: (@dom_id="#thermometer", @max) ->
+    @dom_element = $(@dom_id)
+    @dom_element.addClass('thermometer')
+    @samples = [0]
     @last_draw_time = new Date().getTime()
     @sample_interval_ms = 250
     @last_draw_time -= @sample_interval_ms
-    this.init_svg()
+    this.init_view()
 
-  init_svg: ->
-    @dom_element.style("border", "1px solid black")
-    @svg = @dom_element.append("svg:svg")
-      .attr("width", @width + "em")
-      .attr("height",@height + "em")
-      .append("svg:g")
-
-    @thermometer = @svg.append('svg:rect')
-      .attr("width",@width + "em")
-      .attr("height", @height + "em")
-      .style("fill","#f4b626")
+  init_view: ->
+    @width  = @dom_element.width()
+    @height = @dom_element.height()
+    midpoint = @width/2
+    @y1 = @height
+    @y2 = 0
+    @x1 = @x2 = midpoint
+    this.init_thermometer_fill()
     d3.select('#therm_text').attr('class','therm_text')
+
+  init_thermometer_fill: ->
+    @thermometer_fill = $('<div>').addClass('thermometer_fill')
+    @dom_element.append(@thermometer_fill)
+    # @thermometer_fill.addClass('vertical')
+    this.redraw()
+
+  set_scaled_value: (v) ->
+    results = @value
+    results = results * (@max - @min)
+    results = results + @min
+    results
+
+  scaled_value: ->
+    results = @value
+    results = results * (@max - @min)
+    results = results + @min
+    results
 
   time_to_redraw: ->
     timestamp = new Date().getTime()
@@ -45,10 +57,13 @@ class Thermometer
     (this.get_avg() / @max) * @height
 
   redraw: ->
+    @width  = @dom_element.width()
+    @height = @dom_element.height()
     avg = this.get_avg().toFixed(4)
     value = this.scaled_display_value()
-    @thermometer.attr("y", @height - value + "em")
-    @thermometer.attr("height", value + "em")
+    # @thermometer_fill.attr("height", value)
+    @thermometer_fill.css("bottom", "#{value-@height}px")
+    @thermometer_fill.height("#{value}px")
     @last_draw_time = new Date().getTime()
     d3.select('#therm_text').text("Temperature")
 
