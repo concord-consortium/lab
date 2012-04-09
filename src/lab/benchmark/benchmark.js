@@ -77,13 +77,25 @@ benchmark.run = function(benchmarks_table, benchmarks_to_run) {
   run(benchmarks_table, benchmarks_to_run);
 };
 
+windows_platform_token = {
+  "Windows NT 6.1":	"Windows 7",
+  "Windows NT 6.0":	"Windows Vista",
+  "Windows NT 5.2":	"Windows Server 2003; Windows XP x64 Edition",
+  "Windows NT 5.1":	"Windows XP",
+  "Windows NT 5.01": "Windows 2000, Service Pack 1 (SP1)",
+  "Windows NT 5.0":	"Windows 2000",
+  "Windows NT 4.0":	"Microsoft Windows NT 4.0"
+};
+
 function what_browser() {
-  var chromematch = / (Chrome)\/(.*?) /,
-      ffmatch     = / (Firefox)\/([0123456789ab.]+)/,
-      safarimatch = / Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
-      iematch     = / (MSIE) ([0123456789.]+);/,
-      operamatch  = /^(Opera)\/.+? Version\/([0123456789.]+)$/,
-      ipadmatch   = /([0123456789.]+) \((iPad);.*? Version\/([0123456789.]+) Mobile\/(\S+)/,
+  var chromematch  = / (Chrome)\/(.*?) /,
+      ffmatch      = / (Firefox)\/([0123456789ab.]+)/,
+      safarimatch  = / Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
+      iematch      = / (MSIE) ([0123456789.]+);/,
+      operamatch   = /^(Opera)\/.+? Version\/([0123456789.]+)$/,
+      ipadmatch    = /([0123456789.]+) \((iPad);.*? Version\/([0123456789.]+) Mobile\/(\S+)/,
+      ipodmatch    = /.+?\((iPod); CPU (iPhone.+?) like.+?Version\/([0123456789ab.]+)/,
+      androidmatch = /.+?(Android) ([0123456789ab.]+).+?; (.+?)\)/,
       match;
 
   match = navigator.userAgent.match(chromematch);
@@ -112,10 +124,11 @@ function what_browser() {
   }
   match = navigator.userAgent.match(iematch);
   if (match && match[1]) {
+    var platform_match = navigator.userAgent.match(/\(.*?(Windows.+?); (.+?)[;)].*/);
     return {
       browser: match[1],
       version: match[2],
-      oscpu: navigator.cpuClass + "/" + navigator.platform
+      oscpu: windows_platform_token[platform_match[1]] + "/" + navigator.cpuClass + "/" + navigator.platform
     };
   }
   match = navigator.userAgent.match(operamatch);
@@ -134,6 +147,22 @@ function what_browser() {
       oscpu: match[1]
     };
   }
+  match = navigator.userAgent.match(ipodmatch);
+  if (match && match[1]) {
+    return {
+      browser: "Mobile Safari",
+      version: match[3],
+      oscpu: match[1] + "/" + match[2]
+    };
+  }
+  match = navigator.userAgent.match(androidmatch);
+  if (match && match[1]) {
+    return {
+      browser: "Android",
+      version: match[2],
+      oscpu: match[1] + "/" + match[2] + "/" + match[3]
+    };
+  }
   return {
     browser: "",
     version: navigator.appVersion,
@@ -142,21 +171,12 @@ function what_browser() {
 }
 
 function os_platform() {
-  var match = navigator.userAgent.match(/\((.+?); (.+?)[;)].*/),
-      platform_token = {
-        "Windows NT 6.1":	"Windows 7",
-        "Windows NT 6.0":	"Windows Vista",
-        "Windows NT 5.2":	"Windows Server 2003; Windows XP x64 Edition",
-        "Windows NT 5.1":	"Windows XP",
-        "Windows NT 5.01": "Windows 2000, Service Pack 1 (SP1)",
-        "Windows NT 5.0":	"Windows 2000",
-        "Windows NT 4.0":	"Microsoft Windows NT 4.0"
-      };
+  var match = navigator.userAgent.match(/\((.+?); (.+?)[;)].*/);
   if (!match) { return "na"; }
   if (match[1] === "Macintosh") {
     return match[2];
   } else if (match[1].match(/^Windows/)) {
-    return platform_token[match[1]];
+    return windows_platform_token[match[1]];
   }
 }
 
