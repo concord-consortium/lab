@@ -523,8 +523,6 @@ exports.makeModel = function() {
 
             mass_in_kg = constants.convert(mass[i], { from: unit.DALTON, to: unit.KILOGRAM });
             v0_MKS = Math.sqrt(2 * k_inJoulesPerKelvin * temperature / mass_in_kg);
-            // FIXME: why does this velocity need a sqrt(2)/10 correction?
-            // (no, not because of potentials...)
             v0 = constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNIT });
 
             vMagnitude = math.normal(v0, v0/4);
