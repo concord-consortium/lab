@@ -614,13 +614,7 @@ exports.makeModel = function() {
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
           iloop,
-          i,
-          updateAccelerationsFunc = emptyFunction;
-
-      // We'll just skip right over updating pairwise accelerations if LJ and Coulomb forces are off
-      if (useLennardJonesInteraction || useCoulombInteraction) {
-        updateAccelerationsFunc = updatePairwiseAccelerations;
-      }
+          i;
 
       for (iloop = 1; iloop <= n_steps; iloop++) {
         time = t_start + iloop*dt;
@@ -638,7 +632,7 @@ exports.makeModel = function() {
 
           // Accumulate accelerations for time t+dt into a(t+dt, k) for k <= i. Note that a(t+dt, i) won't be
           // usable until this loop completes; it won't have contributions from a(t+dt, k) for k > i
-          updateAccelerationsFunc(i);
+          updatePairwiseAccelerations(i);
         }
 
         for (i = 0; i < N; i++) {
