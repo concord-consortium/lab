@@ -1204,14 +1204,8 @@ exports.makeModel = function() {
       // Whether a transient temperature change is in progress.
       temperatureChangeInProgress = false,
 
-      // Whether to immediately break out of the integration loop when the target temperature is reached.
-      breakOnTargetTemperature = false,
-
       // Desired system temperature, in Kelvin.
       T_target = 100,
-
-      // Coupling factor for Berendsen thermostat. In theory, 1 = "perfectly" constrained temperature.
-      thermostatCouplingFactor = 0.1,
 
       // Tolerance for (T_actual - T_target) relative to T_target
       tempTolerance = 0.001,
@@ -1294,14 +1288,12 @@ exports.makeModel = function() {
         return useCoulombInteraction ? 1000 : 1000;
       },
 
-      // If the thermostat is not being used, begins transiently adjusting the system temperature; this turns the
-      // thermostat on (nudging the temperature toward T_target) until a windowed average of the temperature comes
-      // within `tempTolerance` of `T_target`.
+      // Whether or not the thermostat is not being used, begins transiently adjusting the system temperature; this
+      // causes the adjustTemperature portion of the integration loop to rescale velocities until a windowed average of
+      // the temperature comes within `tempTolerance` of `T_target`.
       beginTransientTemperatureChange = function()  {
-        if (!useThermostat) {
-          temperatureChangeInProgress = true;
-          T_windowed = math.getWindowedAverager( getWindowSize() );
-        }
+        temperatureChangeInProgress = true;
+        T_windowed = math.getWindowedAverager( getWindowSize() );
       },
 
       // Calculates & returns instantaneous temperature of the system. If we're using "internal" coordinates (i.e.,
@@ -1441,7 +1433,7 @@ exports.makeModel = function() {
 
       // Half of the update of v(t+dt, i) and p(t+dt, i) using a; during a single integration loop,
       // call once when a = a(t) and once when a = a(t+dt)
-      halfUpdateVelocityFromAcceleration = function(i) {
+      halfUpdateVelocity = function(i) {
         vx[i] += 0.5*ax[i]*dt;
         px[i] = mass[i] * vx[i];
         vy[i] += 0.5*ay[i]*dt;
@@ -1480,6 +1472,29 @@ exports.makeModel = function() {
             ay[j] -= aPair_y;
           }
         }
+      },
+
+      adjustTemperature = function() {
+        var rescalingFactor,
+            i;
+
+        convertAllVelocitiesToInternalCoordinates();
+        T = calculateTemperature();
+
+        if (temperatureChangeInProgress && Math.abs(T_windowed(T) - T_target) <= T_target * tempTolerance) {
+          temperatureChangeInProgress = false;
+        }
+
+        // rescale velocities based on ratio of target temp to measured temp (Berendsen thermostat)
+        if (temperatureChangeInProgress || useThermostat && T > 0) {
+          rescalingFactor = Math.sqrt(T_target / T);
+          for (i = 0; i < N; i++) {
+            scaleVelocity(i, rescalingFactor);
+          }
+          T = T_target;
+        }
+
+        convertAllVelocitiesToRealCoordinates();
       };
 
 
@@ -1573,7 +1588,8 @@ exports.makeModel = function() {
           ncols = Math.ceil(N/nrows),
 
           i, r, c, rowSpacing, colSpacing,
-          vMagnitude, vDirection;
+          vMagnitude, vDirection,
+          rescalingFactor;
 
       nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
 
@@ -1622,8 +1638,6 @@ exports.makeModel = function() {
 
             mass_in_kg = constants.convert(mass[i], { from: unit.DALTON, to: unit.KILOGRAM });
             v0_MKS = Math.sqrt(2 * k_inJoulesPerKelvin * temperature / mass_in_kg);
-            // FIXME: why does this velocity need a sqrt(2)/10 correction?
-            // (no, not because of potentials...)
             v0 = constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNIT });
 
             vMagnitude = math.normal(v0, v0/4);
@@ -1650,10 +1664,18 @@ exports.makeModel = function() {
       // Compute linear and angular velocity of CM, compute temperature, and publish output state:
       computeCMMotion();
 
+
+      // Adjust for center of mass motion
       convertAllVelocitiesToInternalCoordinates();
       T = calculateTemperature();
+      rescalingFactor = Math.sqrt(temperature / T);
+      for (i = 0; i < N; i++) {
+        scaleVelocity(i, rescalingFactor);
+      }
+      T = temperature;
       convertAllVelocitiesToRealCoordinates();
 
+      // Pubish the current state
       model.computeOutputState();
     },
 
@@ -1662,11 +1684,9 @@ exports.makeModel = function() {
       if (T != null) T_target = T;
 
       beginTransientTemperatureChange();
-      breakOnTargetTemperature = true;
       while (temperatureChangeInProgress) {
         this.integrate();
       }
-      breakOnTargetTemperature = false;
     },
 
 
@@ -1693,62 +1713,30 @@ exports.makeModel = function() {
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
           iloop,
-          i,
-          rescalingFactor, // rescaling factor for Berendsen thermostat
-          rescalingFunc,
-          updateAccelerationsFunc = emptyFunction;
-
-      // We'll just skip right over updating pairwise accelerations if LJ and Coulomb forces are off
-      if (useLennardJonesInteraction || useCoulombInteraction) {
-        updateAccelerationsFunc = updatePairwiseAccelerations;
-      }
-
-      // Velocities are always in 'real' coodinates when entering or exiting the integrate() function.
-      convertAllVelocitiesToInternalCoordinates();
+          i;
 
       for (iloop = 1; iloop <= n_steps; iloop++) {
         time = t_start + iloop*dt;
 
-        if (temperatureChangeInProgress && Math.abs(T_windowed(T) - T_target) <= T_target * tempTolerance) {
-          temperatureChangeInProgress = false;
-          if (breakOnTargetTemperature) break;
-        }
-
-        // rescale velocities based on ratio of target temp to measured temp (Berendsen thermostat)
-        if (temperatureChangeInProgress || useThermostat && T > 0) {
-          rescalingFunc = scaleVelocity;
-          rescalingFactor = Math.sqrt(1 + thermostatCouplingFactor * (T_target / T - 1));
-        }
-        else {
-          rescalingFunc = emptyFunction;
-        }
-
         for (i = 0; i < N; i++) {
-          // Rescale "internal" velocities to match the desired temperature; i.e., don't scale the overall system
-          // rotation and translation when adjusting temperature.
-          rescalingFunc(i, rescalingFactor);
-
-          // Convert velocities from "internal" to "real" velocities before calculating x, y and updating px, py
-          convertVelocityToRealCoordinates(i);
-
           // Update r(t+dt) using v(t) and a(t)
           updatePosition(i);
           bounceOffWalls(i);
 
           // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
-          halfUpdateVelocityFromAcceleration(i);
+          halfUpdateVelocity(i);
 
           // Zero out a(t, i) for accumulation of a(t+dt, i)
           ax[i] = ay[i] = 0;
 
           // Accumulate accelerations for time t+dt into a(t+dt, k) for k <= i. Note that a(t+dt, i) won't be
           // usable until this loop completes; it won't have contributions from a(t+dt, k) for k > i
-          updateAccelerationsFunc(i);
+          updatePairwiseAccelerations(i);
         }
 
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
-          halfUpdateVelocityFromAcceleration(i);
+          halfUpdateVelocity(i);
 
           // Now that we have velocity, update speed
           speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
@@ -1757,13 +1745,8 @@ exports.makeModel = function() {
         // Update CM(t+dt), p_CM(t+dt), v_CM(t+dt), omega_CM(t+dt)
         computeCMMotion();
 
-        convertAllVelocitiesToInternalCoordinates();
-
-        T = calculateTemperature();
+        adjustTemperature();
       } // end of integration loop
-
-      // convert to real coordinates before leaving integrate()
-      convertAllVelocitiesToRealCoordinates();
 
       model.computeOutputState();
     },

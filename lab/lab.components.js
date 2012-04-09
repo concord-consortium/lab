@@ -1238,7 +1238,7 @@
       this.handle_width = parseInt(this.handle.width());
       this.handle_height = parseInt(this.handle.height());
       this.handle_width_offset = (this.handle_width / 2) - (this.handle_width - this.slider_well_width) / 2;
-      this.handle_height_offset = (this.handle_height / 2) - (this.handle_height - this.slider_well_height) / 2;
+      this.handle_height_offset = (this.handle_height / 2) - (this.handle_height - this.slider_well_height) / 4;
       return this.update_handle();
     };
 
