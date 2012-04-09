@@ -59,6 +59,10 @@ class Thermometer
   redraw: ->
     @width  = @dom_element.width()
     @height = @dom_element.height()
+    midpoint = @width/2
+    @y1 = @height
+    @y2 = 0
+    @x1 = @x2 = midpoint
     avg = this.get_avg().toFixed(4)
     value = this.scaled_display_value()
     # @thermometer_fill.attr("height", value)
