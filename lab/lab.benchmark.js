@@ -195,13 +195,13 @@ function what_browser() {
 }
 
 function os_platform() {
-  var match = navigator.userAgent.match(/\((.+?); (.+?)[;)].*/);
+  var match = navigator.userAgent.match(/\((.+?)[;)] (.+?)[;)].*/);
   if (!match) { return "na"; }
   if (match[1] === "Macintosh") {
     return match[2];
   } else if (match[1].match(/^Windows/)) {
     var arch  = windows_feature_token[match[2]] || "32",
-        token = navigator.userAgent.match(/\(.+?(Windows NT.+?);/);
+        token = navigator.userAgent.match(/\(.*?(Windows NT.+?)[;)]/);
     return windows_platform_token[token[1]] + "/" + arch;
   }
 }
