@@ -376,7 +376,6 @@ exports.makeModel = function() {
           temperatureChangeInProgress = false;
         }
 
-        // rescale velocities based on ratio of target temp to measured temp (Berendsen thermostat)
         if (temperatureChangeInProgress || useThermostat && T > 0) {
           rescalingFactor = Math.sqrt(T_target / T);
           for (i = 0; i < N; i++) {
