@@ -93,7 +93,7 @@ function what_browser() {
       safarimatch  = / Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
       iematch      = / (MSIE) ([0123456789.]+);/,
       operamatch   = /^(Opera)\/.+? Version\/([0123456789.]+)$/,
-      ipadmatch    = /([0123456789.]+) \((iPad);.*? Version\/([0123456789.]+) Mobile\/(\S+)/,
+      ipadmatch    = /.+?\((iPad); CPU OS .+?Version\/([0123456789ab.]+)/,
       ipodmatch    = /.+?\((iPod); CPU (iPhone.+?) like.+?Version\/([0123456789ab.]+)/,
       androidmatch = /.+?(Android) ([0123456789ab.]+).+?; (.+?)\)/,
       match;
@@ -112,6 +112,14 @@ function what_browser() {
       browser: match[1],
       version: match[2],
       oscpu: os_platform()
+    };
+  }
+  match = navigator.userAgent.match(androidmatch);
+  if (match && match[1]) {
+    return {
+      browser: "Android",
+      version: match[2],
+      oscpu: match[1] + "/" + match[2] + "/" + match[3]
     };
   }
   match = navigator.userAgent.match(safarimatch);
@@ -140,11 +148,11 @@ function what_browser() {
     };
   }
   match = navigator.userAgent.match(ipadmatch);
-  if (match && match[2]) {
+  if (match && match[1]) {
     return {
-      browser: match[2],
-      version: match[3] + "/" + match[4],
-      oscpu: match[1]
+      browser: "Mobile Safari",
+      version: match[2],
+      oscpu: match[1] + "/" + "iOS" + "/" + match[2]
     };
   }
   match = navigator.userAgent.match(ipodmatch);
@@ -152,15 +160,7 @@ function what_browser() {
     return {
       browser: "Mobile Safari",
       version: match[3],
-      oscpu: match[1] + "/" + match[2]
-    };
-  }
-  match = navigator.userAgent.match(androidmatch);
-  if (match && match[1]) {
-    return {
-      browser: "Android",
-      version: match[2],
-      oscpu: match[1] + "/" + match[2] + "/" + match[3]
+      oscpu: match[1] + "/" + "iOS" + "/" + match[2]
     };
   }
   return {
