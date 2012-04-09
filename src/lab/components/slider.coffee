@@ -69,7 +69,7 @@ class SliderComponent
     @handle_width  = parseInt(@handle.width())
     @handle_height = parseInt(@handle.height())
     @handle_width_offset  = (@handle_width/2)  - (@handle_width  - @slider_well_width) / 2
-    @handle_height_offset = (@handle_height/2) - (@handle_height - @slider_well_height) / 2
+    @handle_height_offset = (@handle_height/2) - (@handle_height - @slider_well_height) / 4
     this.update_handle()
 
   update: ->
