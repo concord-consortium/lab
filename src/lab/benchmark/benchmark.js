@@ -99,6 +99,7 @@ function what_browser() {
       safarimatch  = / Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
       iematch      = / (MSIE) ([0123456789.]+);/,
       operamatch   = /^(Opera)\/.+? Version\/([0123456789.]+)$/,
+      iphonematch  = /.+?\((iPhone); CPU OS .+?Version\/([0123456789ab.]+)/,
       ipadmatch    = /.+?\((iPad); CPU OS .+?Version\/([0123456789ab.]+)/,
       ipodmatch    = /.+?\((iPod); CPU (iPhone.+?) like.+?Version\/([0123456789ab.]+)/,
       androidchromematch = /.+?(Android) ([0123456789.]+).+?; (.+?)\).+? CrMo\/([0123456789.]+)/,
@@ -160,6 +161,14 @@ function what_browser() {
       browser: match[1],
       version: match[2],
       oscpu: os_platform()
+    };
+  }
+  match = navigator.userAgent.match(iphonematch);
+  if (match && match[1]) {
+    return {
+      browser: "Mobile Safari",
+      version: match[2],
+      oscpu: match[1] + "/" + "iOS" + "/" + match[2]
     };
   }
   match = navigator.userAgent.match(ipadmatch);
