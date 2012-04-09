@@ -178,6 +178,17 @@
     opacity: 0.3
   .pause-center
     fill: #bbb
+.playbacksvgbutton:active
+  .button-art
+    fill: #666 !important
+    stroke: transparent !important
+    stroke-width: 0 !important
+  .bg
+    fill: #a5a5a5
+  .highlight
+    opacity: 0.2
+  .pause-center
+    fill: #a5a5a5
 
 $button_color: hsla(10,80%,90%,0.1)
 $button_hover: darken($button_color, 20%)
@@ -268,12 +279,16 @@ $button_down: darken($button_hover, 20%)
   @include border-bottom-left-radius(0)
 .component_group 
   button#cool_button, button#heat_button
+    font-size: 1em
     height: auto !important
     padding: .5em 0
     text-align: center
     width: 50% !important
   button#cool_button:hover, button#heat_button:hover
     @include linear-gradient(top, #c9c9c9 0%, #c9c9c9 50%, #bbb 50%, #bbb 100%, $fallback: #ccc)
+    color: #111
+  button#cool_button:active, button#heat_button:active
+    @include linear-gradient(top, #a5a5a5 0%, #a5a5a5 50%, #999 50%, #999 100%, $fallback: #aaa)
     color: #111
   button#cool_button.inactive, button#heat_button.inactive, button#cool_button.inactive:hover, button#heat_button.inactive:hover
     @include linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #ddd 50%, #ddd 100%, $fallback: #ddd)
