@@ -87,6 +87,12 @@ windows_platform_token = {
   "Windows NT 4.0":	"Microsoft Windows NT 4.0"
 };
 
+windows_feature_token = {
+  "WOW64":       "64/32",
+  "Win64; IA64": "64",
+  "Win64; x64":  "64"
+};
+
 function what_browser() {
   var chromematch  = / (Chrome)\/(.*?) /,
       ffmatch      = / (Firefox)\/([0123456789ab.]+)/,
@@ -185,7 +191,8 @@ function os_platform() {
   if (match[1] === "Macintosh") {
     return match[2];
   } else if (match[1].match(/^Windows/)) {
-    return windows_platform_token[match[1]];
+    var arch = windows_feature_token[match[2]] || "32";
+    return windows_platform_token[match[1]] + ""/" + arch";
   }
 }
 
