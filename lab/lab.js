@@ -4175,9 +4175,9 @@ function what_browser() {
       safarimatch  = / Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
       iematch      = / (MSIE) ([0123456789.]+);/,
       operamatch   = /^(Opera)\/.+? Version\/([0123456789.]+)$/,
-      iphonematch  = /.+?\((iPhone); CPU OS .+?Version\/([0123456789ab.]+)/,
-      ipadmatch    = /.+?\((iPad); CPU OS .+?Version\/([0123456789ab.]+)/,
-      ipodmatch    = /.+?\((iPod); CPU (iPhone.+?) like.+?Version\/([0123456789ab.]+)/,
+      iphonematch  = /.+?\((iPhone); CPU.+?OS .+?Version\/([0123456789._]+)/,
+      ipadmatch    = /.+?\((iPad); CPU.+?OS .+?Version\/([0123456789._]+)/,
+      ipodmatch    = /.+?\((iPod); CPU (iPhone.+?) like.+?Version\/([0123456789ab._]+)/,
       androidchromematch = /.+?(Android) ([0123456789.]+).+?; (.+?)\).+? CrMo\/([0123456789.]+)/,
       androidmatch = /.+?(Android) ([0123456789ab.]+).+?; (.+?)\)/,
       match;
