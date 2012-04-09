@@ -8571,24 +8571,50 @@ graphx.graph = function(options) {
 
   Thermometer = (function() {
 
-    function Thermometer(dom_id) {
+    function Thermometer(dom_id, max) {
       this.dom_id = dom_id != null ? dom_id : "#thermometer";
-      this.dom_element = d3.select(this.dom_id).attr('class', 'thermometer');
-      this.width = 1;
-      this.height = 16;
-      this.max = 0.7;
-      this.samples = [];
+      this.max = max;
+      this.dom_element = $(this.dom_id);
+      this.dom_element.addClass('thermometer');
+      this.samples = [0];
       this.last_draw_time = new Date().getTime();
       this.sample_interval_ms = 250;
       this.last_draw_time -= this.sample_interval_ms;
-      this.init_svg();
+      this.init_view();
     }
 
-    Thermometer.prototype.init_svg = function() {
-      this.dom_element.style("border", "1px solid black");
-      this.svg = this.dom_element.append("svg:svg").attr("width", this.width + "em").attr("height", this.height + "em").append("svg:g");
-      this.thermometer = this.svg.append('svg:rect').attr("width", this.width + "em").attr("height", this.height + "em").style("fill", "#f4b626");
+    Thermometer.prototype.init_view = function() {
+      var midpoint;
+      this.width = this.dom_element.width();
+      this.height = this.dom_element.height();
+      midpoint = this.width / 2;
+      this.y1 = this.height;
+      this.y2 = 0;
+      this.x1 = this.x2 = midpoint;
+      this.init_thermometer_fill();
       return d3.select('#therm_text').attr('class', 'therm_text');
+    };
+
+    Thermometer.prototype.init_thermometer_fill = function() {
+      this.thermometer_fill = $('<div>').addClass('thermometer_fill');
+      this.dom_element.append(this.thermometer_fill);
+      return this.redraw();
+    };
+
+    Thermometer.prototype.set_scaled_value = function(v) {
+      var results;
+      results = this.value;
+      results = results * (this.max - this.min);
+      results = results + this.min;
+      return results;
+    };
+
+    Thermometer.prototype.scaled_value = function() {
+      var results;
+      results = this.value;
+      results = results * (this.max - this.min);
+      results = results + this.min;
+      return results;
     };
 
     Thermometer.prototype.time_to_redraw = function() {
@@ -8621,11 +8647,17 @@ graphx.graph = function(options) {
     };
 
     Thermometer.prototype.redraw = function() {
-      var avg, value;
+      var avg, midpoint, value;
+      this.width = this.dom_element.width();
+      this.height = this.dom_element.height();
+      midpoint = this.width / 2;
+      this.y1 = this.height;
+      this.y2 = 0;
+      this.x1 = this.x2 = midpoint;
       avg = this.get_avg().toFixed(4);
       value = this.scaled_display_value();
-      this.thermometer.attr("y", this.height - value + "em");
-      this.thermometer.attr("height", value + "em");
+      this.thermometer_fill.css("bottom", "" + (value - this.height) + "px");
+      this.thermometer_fill.height("" + value + "px");
       this.last_draw_time = new Date().getTime();
       return d3.select('#therm_text').text("Temperature");
     };
@@ -8915,8 +8947,8 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
   // ------------------------------------------------------------
 
-  var therm = new Thermometer('#thermometer');
-  therm.max = 25;
+  var therm = new Thermometer('#thermometer', 25);
+  // therm.max = 25;
 
   var epsilon_slider  = new  SliderComponent('#attraction_slider', 
     function (v) {

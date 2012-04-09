@@ -47,13 +47,61 @@ h3 {
   font-size: 1.165em; }
 
 .thermometer {
-  display: inline-block;
-  width: 1em;
-  height: 16em;
-  margin: 0.5em 3em 0.5em 3em;
-  padding: 2px;
-  border: 1px solid #f4b626;
-  border-radius: 5px; }
+  display: list-item;
+  width: 2em;
+  height: 20em;
+  margin: auto;
+  padding-top: 0.2em;
+  padding-bottom: 0.1em;
+  border: 2px solid #f4b626;
+  position: relative;
+  -webkit-border-top-left-radius: 1em;
+  -moz-border-top-left-radius: 1em;
+  -moz-border-radius-topleft: 1em;
+  -ms-border-top-left-radius: 1em;
+  -o-border-top-left-radius: 1em;
+  border-top-left-radius: 1em;
+  -webkit-border-top-right-radius: 1em;
+  -moz-border-top-right-radius: 1em;
+  -moz-border-radius-topright: 1em;
+  -ms-border-top-right-radius: 1em;
+  -o-border-top-right-radius: 1em;
+  border-top-right-radius: 1em;
+  -webkit-border-bottom-left-radius: 0.2em;
+  -moz-border-bottom-left-radius: 0.2em;
+  -moz-border-radius-bottomleft: 0.2em;
+  -ms-border-bottom-left-radius: 0.2em;
+  -o-border-bottom-left-radius: 0.2em;
+  border-bottom-left-radius: 0.2em;
+  -webkit-border-bottom-right-radius: 0.2em;
+  -moz-border-bottom-right-radius: 0.2em;
+  -moz-border-radius-bottomright: 0.2em;
+  -ms-border-bottom-right-radius: 0.2em;
+  -o-border-bottom-right-radius: 0.2em;
+  border-bottom-right-radius: 0.2em; }
+  .thermometer div {
+    display: block;
+    position: relative;
+    margin: 0px;
+    padding: 0px; }
+  .thermometer .thermometer_fill {
+    width: 70%;
+    vertical-align: bottom;
+    margin-left: auto;
+    margin-right: auto;
+    background: #aa0e15;
+    -webkit-border-top-left-radius: 0.5em;
+    -moz-border-top-left-radius: 0.5em;
+    -moz-border-radius-topleft: 0.5em;
+    -ms-border-top-left-radius: 0.5em;
+    -o-border-top-left-radius: 0.5em;
+    border-top-left-radius: 0.5em;
+    -webkit-border-top-right-radius: 0.5em;
+    -moz-border-top-right-radius: 0.5em;
+    -moz-border-radius-topright: 0.5em;
+    -ms-border-top-right-radius: 0.5em;
+    -o-border-top-right-radius: 0.5em;
+    border-top-right-radius: 0.5em; }
 
 .therm_text {
   display: block;
@@ -201,6 +249,17 @@ h3 {
 .playbacksvgbutton:hover .pause-center {
   fill: #bbbbbb; }
 
+.playbacksvgbutton:active .button-art {
+  fill: #666666 !important;
+  stroke: transparent !important;
+  stroke-width: 0 !important; }
+.playbacksvgbutton:active .bg {
+  fill: #a5a5a5; }
+.playbacksvgbutton:active .highlight {
+  opacity: 0.2; }
+.playbacksvgbutton:active .pause-center {
+  fill: #a5a5a5; }
+
 .component.button {
   border-radius: 5px;
   border: 1px solid #aaaaaa;
@@ -338,6 +397,7 @@ h3 {
   border-bottom-left-radius: 0; }
 
 .component_group button#cool_button, .component_group button#heat_button {
+  font-size: 1em;
   height: auto !important;
   padding: 0.5em 0;
   text-align: center;
@@ -350,6 +410,15 @@ h3 {
   background-image: -ms-linear-gradient(top, #c9c9c9 0%, #c9c9c9 50%, #bbbbbb 50%, #bbbbbb 100%);
   background-image: -o-linear-gradient(top, #c9c9c9 0%, #c9c9c9 50%, #bbbbbb 50%, #bbbbbb 100%);
   background-image: linear-gradient(top, #c9c9c9 0%, #c9c9c9 50%, #bbbbbb 50%, #bbbbbb 100%);
+  color: #111111; }
+.component_group button#cool_button:active, .component_group button#heat_button:active {
+  background-color: #aaaaaa;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a5a5a5), color-stop(50%, #a5a5a5), color-stop(50%, #999999), color-stop(100%, #999999));
+  background-image: -webkit-linear-gradient(top, #a5a5a5 0%, #a5a5a5 50%, #999999 50%, #999999 100%);
+  background-image: -moz-linear-gradient(top, #a5a5a5 0%, #a5a5a5 50%, #999999 50%, #999999 100%);
+  background-image: -ms-linear-gradient(top, #a5a5a5 0%, #a5a5a5 50%, #999999 50%, #999999 100%);
+  background-image: -o-linear-gradient(top, #a5a5a5 0%, #a5a5a5 50%, #999999 50%, #999999 100%);
+  background-image: linear-gradient(top, #a5a5a5 0%, #a5a5a5 50%, #999999 50%, #999999 100%);
   color: #111111; }
 .component_group button#cool_button.inactive, .component_group button#heat_button.inactive, .component_group button#cool_button.inactive:hover, .component_group button#heat_button.inactive:hover {
   background-color: #dddddd;
