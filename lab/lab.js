@@ -4155,57 +4155,36 @@ benchmark.run = function(benchmarks_table, benchmarks_to_run) {
 
 function what_browser() {
   var chromematch = / (Chrome)\/(.*?) /,
-      ffmatch =     / (Firefox)\/([0123456789ab.]+)/,
+      ffmatch     = / (Firefox)\/([0123456789ab.]+)/,
       safarimatch = / Version\/([0123456789.]+) (Safari)\/([0123456789.]+)/,
-      iematch =     / (MSIE) ([0123456789.]+);/,
-      ipadmatch =   /([0123456789.]+) \((iPad);.*? Version\/([0123456789.]+) Mobile\/(\S+)/,
+      iematch     = / (MSIE) ([0123456789.]+);/,
+      operamatch  = /^(Opera)\/.+? Version\/([0123456789.]+)$/,
+      ipadmatch   = /([0123456789.]+) \((iPad);.*? Version\/([0123456789.]+) Mobile\/(\S+)/,
       match;
 
   match = navigator.userAgent.match(chromematch);
   if (match && match[1]) {
-    if (navigator.platform.match(/Win/)) {
-      return {
-        browser: match[1],
-        version: match[2],
-        oscpu: navigator.platform
-      };
-    } else {
-      return {
-        browser: match[1],
-        version: match[2],
-        oscpu: navigator.appVersion.match(/(Macintosh); (.*?)\)/)[2]
-      };
-    }
+    return {
+      browser: match[1],
+      version: match[2],
+      oscpu: os_platform()
+    };
   }
   match = navigator.userAgent.match(ffmatch);
   if (match && match[1]) {
-    if (navigator.oscpu.match(/Windows /)) {
-      return {
-        browser: match[1],
-        version: match[2],
-        oscpu: navigator.platform
-      };
-    } else {
-      return {
-        browser: match[1],
-        version: match[2],
-        oscpu: navigator.oscpu
-      };
-    }
+    return {
+      browser: match[1],
+      version: match[2],
+      oscpu: os_platform()
+    };
   }
   match = navigator.userAgent.match(safarimatch);
   if (match && match[2]) {
-    var results = {
+    return {
       browser: match[2],
       version: match[1],
-      oscpu: ""
+      oscpu: os_platform()
     };
-    if (navigator.appVersion.match(/Macintosh/)) {
-      results.oscpu = navigator.appVersion.match(/(Macintosh); (.*?)\)/)[2];
-    } else if (navigator.appVersion.match(/Windows/)) {
-      results.oscpu = navigator.platform;
-    }
-    return results;
   }
   match = navigator.userAgent.match(iematch);
   if (match && match[1]) {
@@ -4213,6 +4192,14 @@ function what_browser() {
       browser: match[1],
       version: match[2],
       oscpu: navigator.cpuClass + "/" + navigator.platform
+    };
+  }
+  match = navigator.userAgent.match(operamatch);
+  if (match && match[1]) {
+    return {
+      browser: match[1],
+      version: match[2],
+      oscpu: os_platform()
     };
   }
   match = navigator.userAgent.match(ipadmatch);
@@ -4228,6 +4215,25 @@ function what_browser() {
     version: navigator.appVersion,
     oscpu:   ""
   };
+}
+
+function os_platform() {
+  var match = navigator.userAgent.match(/\((.+?); (.+?)[;)].*/),
+      platform_token = {
+        "Windows NT 6.1":	"Windows 7",
+        "Windows NT 6.0":	"Windows Vista",
+        "Windows NT 5.2":	"Windows Server 2003; Windows XP x64 Edition",
+        "Windows NT 5.1":	"Windows XP",
+        "Windows NT 5.01": "Windows 2000, Service Pack 1 (SP1)",
+        "Windows NT 5.0":	"Windows 2000",
+        "Windows NT 4.0":	"Microsoft Windows NT 4.0"
+      };
+  if (!match) { return "na"; }
+  if (match[1] === "Macintosh") {
+    return match[2];
+  } else if (match[1].match(/^Windows/)) {
+    return platform_token[match[1]];
+  }
 }
 
 function run(benchmarks_table, benchmarks_to_run) {
