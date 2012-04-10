@@ -1300,13 +1300,13 @@ exports.makeModel = function() {
       // subtracting the center of mass translation and rotation from particle velocities), convert to internal coords
       // before calling this.
       calculateTemperature = function() {
-        var twoKE_internal = 0,
+        var twoKE = 0,
             i;
 
         for (i = 0; i < N; i++) {
-          twoKE_internal += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+          twoKE += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
         }
-        return KE_to_T( twoKE_internal/2, N );
+        return KE_to_T( twoKE/2, N );
       },
 
       // Scales the velocity vector of particle i by `factor`.
@@ -1327,29 +1327,19 @@ exports.makeModel = function() {
         vy[i] += omega * (x[i] - x_CM);
       },
 
-      // Adds the center-of-mass linear velocity and the system angular velocity back into the velocity vector of
-      // particle i.
-      convertVelocityToRealCoordinates = function(i) {
-        addVelocity(i, vx_CM, vy_CM);
-        addAngularVelocity(i, omega_CM);
-      },
-
-      // Subtracts the center-of-mass linear velocity and the system angular velocity from the velocity vector of
-      // particle i.
-      convertVelocityToInternalCoordinates = function(i) {
-        addVelocity(i, -vx_CM, -vy_CM);
-        addAngularVelocity(i, -omega_CM);
-      },
-
-      convertAllVelocitiesToRealCoordinates = function() {
+      // Subtracts the center-of-mass linear velocity and the system angular velocity from the velocity vectors
+      removeTranslationAndRotationFromVelocities = function() {
         for (var i = 0; i < N; i++) {
-          convertVelocityToRealCoordinates(i);
+          addVelocity(i, -vx_CM, -vy_CM);
+          addAngularVelocity(i, -omega_CM);
         }
       },
 
-      convertAllVelocitiesToInternalCoordinates = function() {
+      // Adds the center-of-mass linear velocity and the system angular velocity back into the velocity vectors
+      addTranslationAndRotationToVelocities = function() {
         for (var i = 0; i < N; i++) {
-          convertVelocityToInternalCoordinates(i);
+          addVelocity(i, vx_CM, vy_CM);
+          addAngularVelocity(i, omega_CM);
         }
       },
 
@@ -1478,14 +1468,13 @@ exports.makeModel = function() {
         var rescalingFactor,
             i;
 
-        convertAllVelocitiesToInternalCoordinates();
+        removeTranslationAndRotationFromVelocities();
         T = calculateTemperature();
 
         if (temperatureChangeInProgress && Math.abs(T_windowed(T) - T_target) <= T_target * tempTolerance) {
           temperatureChangeInProgress = false;
         }
 
-        // rescale velocities based on ratio of target temp to measured temp (Berendsen thermostat)
         if (temperatureChangeInProgress || useThermostat && T > 0) {
           rescalingFactor = Math.sqrt(T_target / T);
           for (i = 0; i < N; i++) {
@@ -1494,7 +1483,7 @@ exports.makeModel = function() {
           T = T_target;
         }
 
-        convertAllVelocitiesToRealCoordinates();
+        addTranslationAndRotationToVelocities();
       };
 
 
@@ -1666,14 +1655,14 @@ exports.makeModel = function() {
 
 
       // Adjust for center of mass motion
-      convertAllVelocitiesToInternalCoordinates();
+      removeTranslationAndRotationFromVelocities();
       T = calculateTemperature();
       rescalingFactor = Math.sqrt(temperature / T);
       for (i = 0; i < N; i++) {
         scaleVelocity(i, rescalingFactor);
       }
       T = temperature;
-      convertAllVelocitiesToRealCoordinates();
+      addTranslationAndRotationToVelocities();
 
       // Pubish the current state
       model.computeOutputState();

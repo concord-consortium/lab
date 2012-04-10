@@ -1360,7 +1360,8 @@
       this.max = max;
       this.dom_element = $(this.dom_id);
       this.dom_element.addClass('thermometer');
-      this.samples = [0];
+      this.samples = [];
+      this.first_sample = true;
       this.last_draw_time = new Date().getTime();
       this.sample_interval_ms = 250;
       this.last_draw_time -= this.sample_interval_ms;
@@ -1409,7 +1410,8 @@
 
     Thermometer.prototype.add_value = function(new_value) {
       this.samples.push(new_value);
-      if (this.time_to_redraw()) {
+      if (this.time_to_redraw() || this.first_sample) {
+        this.first_sample = false;
         this.redraw();
         return this.samples = [];
       }
