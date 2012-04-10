@@ -3,7 +3,8 @@ class Thermometer
   constructor: (@dom_id="#thermometer", @max) ->
     @dom_element = $(@dom_id)
     @dom_element.addClass('thermometer')
-    @samples = [0]
+    @samples = []
+    @first_sample = true
     @last_draw_time = new Date().getTime()
     @sample_interval_ms = 250
     @last_draw_time -= @sample_interval_ms
@@ -43,7 +44,8 @@ class Thermometer
 
   add_value: (new_value) ->
     @samples.push new_value
-    if this.time_to_redraw()
+    if this.time_to_redraw() || @first_sample
+      @first_sample = false
       this.redraw()
       @samples = []
 
