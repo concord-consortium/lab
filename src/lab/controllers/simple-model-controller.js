@@ -201,8 +201,13 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   //
   // ------------------------------------------------------------
 
-  document.onwebkitfullscreenchange = layout.setupScreen;
-  window.onresize = layout.setupScreen;
+  function onresize() {
+    layout.setupScreen();
+    therm.resize();
+  };
+
+  document.onwebkitfullscreenchange = onresize;
+  window.onresize = onresize;
 
   // ------------------------------------------------------------
   //
@@ -258,15 +263,12 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
   // ------------------------------------------------------------
 
-  var therm = new Thermometer('#thermometer', 25);
-  // therm.max = 25;
+  var therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
 
   var epsilon_slider  = new  SliderComponent('#attraction_slider', 
     function (v) {
       model.setEpsilon(v);
     }, lj_epsilon_max, lj_epsilon_min, INITIAL_EPSILON);
-
-  therm.add_value(model.temperature());
 
   // ------------------------------------------------------------
   // Setup heat and cool buttons
