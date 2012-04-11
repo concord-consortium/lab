@@ -7206,7 +7206,8 @@ graphx.graph = function(options) {
 (function() {
   var ButtonBarComponent, ButtonComponent, Component, JSliderComponent, ModelPlayer, PlayOnlyComponentSVG, PlaybackBarComponent, PlaybackComponent, PlaybackComponentSVG, SliderComponent, Thermometer, ToggleButtonComponent, root,
     __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
@@ -8560,12 +8561,16 @@ graphx.graph = function(options) {
 
   Thermometer = (function() {
 
-    function Thermometer(dom_id, max) {
+    function Thermometer(dom_id, initial_value, min, max) {
       this.dom_id = dom_id != null ? dom_id : "#thermometer";
+      this.min = min;
       this.max = max;
+      this.resize = __bind(this.resize, this);
       this.dom_element = $(this.dom_id);
       this.dom_element.addClass('thermometer');
       this.samples = [];
+      this.samples.push(initial_value);
+      this.value = initial_value;
       this.first_sample = true;
       this.last_draw_time = new Date().getTime();
       this.sample_interval_ms = 250;
@@ -8588,6 +8593,17 @@ graphx.graph = function(options) {
     Thermometer.prototype.init_thermometer_fill = function() {
       this.thermometer_fill = $('<div>').addClass('thermometer_fill');
       this.dom_element.append(this.thermometer_fill);
+      return this.redraw();
+    };
+
+    Thermometer.prototype.resize = function() {
+      var midpoint;
+      this.width = this.dom_element.width();
+      this.height = this.dom_element.height();
+      midpoint = this.width / 2;
+      this.y1 = this.height;
+      this.y2 = 0;
+      this.x1 = this.x2 = midpoint;
       return this.redraw();
     };
 
@@ -8615,6 +8631,7 @@ graphx.graph = function(options) {
 
     Thermometer.prototype.add_value = function(new_value) {
       this.samples.push(new_value);
+      this.value = new_value;
       if (this.time_to_redraw() || this.first_sample) {
         this.first_sample = false;
         this.redraw();
@@ -8624,28 +8641,31 @@ graphx.graph = function(options) {
 
     Thermometer.prototype.get_avg = function() {
       var sample, total, _i, _len, _ref;
-      total = 0;
-      _ref = this.samples;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        sample = _ref[_i];
-        total = total + sample;
+      if (this.samples.length > 0) {
+        total = 0;
+        _ref = this.samples;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          sample = _ref[_i];
+          total = total + sample;
+        }
+        return this.value = total / this.samples.length;
+      } else {
+        return this.value;
       }
-      return total / this.samples.length;
     };
 
     Thermometer.prototype.scaled_display_value = function() {
-      return (this.get_avg() / this.max) * this.height;
+      return (this.get_avg() / (this.max - this.min)) * this.height;
     };
 
     Thermometer.prototype.redraw = function() {
-      var avg, midpoint, value;
+      var midpoint, value;
       this.width = this.dom_element.width();
       this.height = this.dom_element.height();
       midpoint = this.width / 2;
       this.y1 = this.height;
       this.y2 = 0;
       this.x1 = this.x2 = midpoint;
-      avg = this.get_avg().toFixed(4);
       value = this.scaled_display_value();
       this.thermometer_fill.css("bottom", "" + (value - this.height) + "px");
       this.thermometer_fill.height("" + value + "px");
@@ -8881,8 +8901,13 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   //
   // ------------------------------------------------------------
 
-  document.onwebkitfullscreenchange = layout.setupScreen;
-  window.onresize = layout.setupScreen;
+  function onresize() {
+    layout.setupScreen();
+    therm.resize();
+  };
+
+  document.onwebkitfullscreenchange = onresize;
+  window.onresize = onresize;
 
   // ------------------------------------------------------------
   //
@@ -8938,15 +8963,12 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
   // ------------------------------------------------------------
 
-  var therm = new Thermometer('#thermometer', 25);
-  // therm.max = 25;
+  var therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
 
   var epsilon_slider  = new  SliderComponent('#attraction_slider', 
     function (v) {
       model.setEpsilon(v);
     }, lj_epsilon_max, lj_epsilon_min, INITIAL_EPSILON);
-
-  therm.add_value(model.temperature());
 
   // ------------------------------------------------------------
   // Setup heat and cool buttons
