@@ -63,16 +63,16 @@ layout.moleculeContainer = function(e, options) {
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
   function scale() {
-    cx = elem.property("clientWidth"),
-    cy = elem.property("clientHeight"),
+    cx = elem.property("clientWidth");
+    cy = elem.property("clientHeight");
     // cx = width;
     // cy = height;
     // node.style.width = width +"px";
     // node.style.height = height +"px";
     scale_factor = layout.screen_factor;
     if (layout.screen_factor_width && layout.screen_factor_height) {
-      scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height)
-    };
+      scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
+    }
     scale_factor = cx/600;
     padding = {
        "top":    options.title  ? 40 * layout.screen_factor : 20,
