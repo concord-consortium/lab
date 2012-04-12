@@ -28,6 +28,7 @@ body {
   margin: 0em;
   padding: 0em;
   background-color: white;
+  background: url(/resources/aspect-ratio-1x1.png) no-repeat -9999px -9999px;
   color: #3f3f3f; }
 
 h1 {
@@ -819,75 +820,3 @@ ul {
   #example-list ol li {
     margin: 0.5em 0.2em 0.5em 0.2em;
     padding: 0em 0em 0em 0em; }
-
-#benchmarks {
-  margin: 0em;
-  padding: 1em; }
-  #benchmarks button {
-    margin-top: 1.5em; }
-  #benchmarks table {
-    font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
-    border-collapse: collapse; }
-  #benchmarks th {
-    padding: 0 1em;
-    text-align: left; }
-  #benchmarks td {
-    border-top: 1px solid #cccccc;
-    padding: 0 1em; }
-  #benchmarks ul {
-    display: inline-block;
-    list-style-type: none;
-    margin: 0.5em 0em 0.5em 0em;
-    width: 90%; }
-    #benchmarks ul li {
-      line-height: 1em;
-      display: inline-table;
-      vertical-align: top;
-      padding: 0.2em 1em 0.2em 0em; }
-      #benchmarks ul li fieldset {
-        height: 2.2em;
-        vertical-align: middle;
-        width: 100%;
-        border-bottom: 0px;
-        border-left: 0px;
-        border-right: 0px; }
-
-#run-benchmarks {
-  margin: 1em; }
-
-#datatable {
-  margin: 0em;
-  padding: 1em; }
-  #datatable button {
-    margin-top: 1.5em; }
-  #datatable table {
-    font: 10px/24px Verdana, Arial, Helvetica, sans-serif;
-    border-collapse: collapse; }
-  #datatable th {
-    padding: 0em 1em;
-    text-align: center; }
-  #datatable td {
-    border-top: 1px solid #cccccc;
-    padding: 0em 1.5em 0em 0.5em;
-    text-align: right;
-    width: 5em; }
-  #datatable ul {
-    display: inline-block;
-    list-style-type: none;
-    margin: 0.5em 0em 0.5em 0em;
-    width: 90%; }
-    #datatable ul li {
-      line-height: 1em;
-      display: inline-table;
-      vertical-align: top;
-      padding: 0.2em 1em 0.2em 0em; }
-      #datatable ul li fieldset {
-        height: 2.2em;
-        vertical-align: middle;
-        width: 100%;
-        border-bottom: 0px;
-        border-left: 0px;
-        border-right: 0px; }
-
-#benchmark-results {
-  margin-left: 2em; }
