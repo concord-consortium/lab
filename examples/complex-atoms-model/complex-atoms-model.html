@@ -29,75 +29,78 @@
     </div>
     <div id='content'>
       <div id='viz'>
-        <ul>
-          <li>
-            <div id='molecule-container'></div>
-          </li>
-          <li class='baseline'>
-            <ul class='twox'>
-              <li class='top'>
-                <div id='lj-potential-chart'></div>
+        <div class='top'>
+          <div class='top-left'>
+            <div class='square'>
+              <img src='../../resources/aspect-ratio-1x1.png' />
+              <div id='molecule-container'></div>
+            </div>
+          </div>
+          <div class='top-right'>
+            <div class='top-right-upper'>
+              <div id='lj-potential-chart'></div>
+              <div id='speed-distribution-chart'></div>
+            </div>
+            <div class='top-right-lower'>
+              <div id='ke-chart'></div>
+            </div>
+          </div>
+        </div>
+        <div class='bottom'>
+          <div class='left' id='controls'>
+            <ul>
+              <li>
+                <fieldset>
+                  <legend>Molecules</legend>
+                  <select id='select-molecule-number'>
+                    <option value='10'>10</option>
+                    <option selected='selected' value='20'>20</option>
+                    <option value='50'>50</option>
+                    <option value='100'>100</option>
+                    <option value='200'>200</option>
+                    <option value='500'>500</option>
+                  </select>
+                </fieldset>
               </li>
-              <li class='top'>
-                <div id='speed-distribution-chart'></div>
+              <li>
+                <fieldset>
+                  <legend>Temperature Control</legend>
+                  <input id='temperature-control-checkbox' type='checkbox' />
+                  <select id='select-temperature'>
+                    <option value='25'>25</option>
+                    <option value='20'>20</option>
+                    <option value='15'>15</option>
+                    <option value='10'>10</option>
+                    <option selected='selected' value='5'>5</option>
+                    <option value='0'>0</option>
+                  </select>
+                </fieldset>
               </li>
+              <li>
+                <fieldset>
+                  <legend>Particle Force Interactions</legend>
+                  <label>
+                    Lennard-Jones
+                    <input checked='checked' id='lennard-jones-forces-checkbox' type='checkbox' />
+                  </label>
+                  <label>
+                    Coulomb
+                    <input id='coulomb-forces-checkbox' type='checkbox' />
+                  </label>
+                </fieldset>
+              </li>
+              <br />
+              <ul>
+                <li>
+                  <fieldset id='stats-container'>
+                    <legend>Stats</legend>
+                    <pre id='stats'></pre>
+                  </fieldset>
+                </li>
+              </ul>
             </ul>
-            <div id='ke-chart'></div>
-          </li>
-        </ul>
-      </div>
-      <div class='left' id='controls'>
-        <ul>
-          <li>
-            <fieldset>
-              <legend>Molecules</legend>
-              <select id='select-molecule-number'>
-                <option value='10'>10</option>
-                <option selected='selected' value='20'>20</option>
-                <option value='50'>50</option>
-                <option value='100'>100</option>
-                <option value='200'>200</option>
-                <option value='500'>500</option>
-              </select>
-            </fieldset>
-          </li>
-          <li>
-            <fieldset>
-              <legend>Temperature Control</legend>
-              <input id='temperature-control-checkbox' type='checkbox' />
-              <select id='select-temperature'>
-                <option value='25'>25</option>
-                <option value='20'>20</option>
-                <option value='15'>15</option>
-                <option value='10'>10</option>
-                <option selected='selected' value='5'>5</option>
-                <option value='0'>0</option>
-              </select>
-            </fieldset>
-          </li>
-          <li>
-            <fieldset>
-              <legend>Particle Force Interactions</legend>
-              <label>
-                Lennard-Jones
-                <input checked='checked' id='lennard-jones-forces-checkbox' type='checkbox' />
-              </label>
-              <label>
-                Coulomb
-                <input id='coulomb-forces-checkbox' type='checkbox' />
-              </label>
-            </fieldset>
-          </li>
-          <br />
-          <ul>
-            <li>
-              <fieldset id='stats-container'>
-                <legend>Stats</legend>
-                <pre id='stats'></pre>
-              </fieldset>
-            </li>
-          </ul>
-        </ul>
+          </div>
+        </div>
       </div>
     </div>
     <div id='datatable'>

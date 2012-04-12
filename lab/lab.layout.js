@@ -188,23 +188,22 @@ layout.setupScreen = function(layout_selection) {
 
   function setupRegularScreenPotentialChart() {
     var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    lj_potential_chart.style.width = layout.display.page.width * 0.22 +"px";
-    lj_potential_chart.style.height = size / 2.35 +"px";
+    // lj_potential_chart.style.width = layout.display.page.width * 0.22 +"px";
+    // lj_potential_chart.style.height = size / 2.35 +"px";
     layout.finishSetupPotentialChart();
   }
 
   function setupRegularSpeedDistributionChart() {
     var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    speed_distribution_chart.style.width = layout.display.page.width * 0.22 +"px";
-    speed_distribution_chart.style.height = size / 2.35 +"px";
+    // speed_distribution_chart.style.width = layout.display.page.width * 0.22 +"px";
+    // speed_distribution_chart.style.height = size / 2.35 +"px";
     layout.finishSetupSpeedDistributionChart();
   }
 
   function setupRegularScreenKEChart() {
     var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    kechart.style.width = layout.display.page.width * 0.45 +"px";
-    // kechart.style.height = layout.display.page.width * 0.20 + 5 +"px";
-    kechart.style.height = size / 1.82 +"px";
+    // kechart.style.width = layout.display.page.width * 0.45 +"px";
+    // kechart.style.height = size / 2.05 +"px";
     layout.finishSetupKEChart();
   }
 
@@ -253,7 +252,7 @@ layout.setupScreen = function(layout_selection) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameMoleculeContainer() {
-    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.80);
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
     molecule_container.resize(size, size);
   }
 
@@ -411,11 +410,13 @@ layout.moleculeContainer = function(e, options) {
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
-  function scale(width, height) {
-    cx = width;
-    cy = height;
-    node.style.width = width +"px";
-    node.style.height = height +"px";
+  function scale() {
+    cx = elem.property("clientWidth"),
+    cy = elem.property("clientHeight"),
+    // cx = width;
+    // cy = height;
+    // node.style.width = width +"px";
+    // node.style.height = height +"px";
     scale_factor = layout.screen_factor;
     if (layout.screen_factor_width && layout.screen_factor_height) {
       scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height)
@@ -956,7 +957,8 @@ layout.moleculeContainer = function(e, options) {
   }
 
   container.resize = function(width, height) {
-    container.scale(width, height);
+    // container.scale(width, height);
+    container.scale();
     container();
     container.setup_particles();
   };

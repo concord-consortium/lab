@@ -21,6 +21,8 @@ html {
   padding: 0em; }
 
 body {
+  height: 100%;
+  min-height: 100%;
   font-size: 1em;
   font-family: museo-sans, "Open Sans", Verdana, Geneva, sans-serif;
   margin: 0em;
@@ -47,7 +49,7 @@ h3 {
   font-size: 1.165em; }
 
 .thermometer {
-  display: list-item;
+  display: block;
   width: 2em;
   height: 20em;
   margin: auto;
@@ -131,7 +133,7 @@ h3 {
     padding: 0px; }
 
 .slider_content {
-  margin: 0em;
+  margin: 0em 0em;
   padding: 0em; }
 
 .slider {
@@ -431,8 +433,55 @@ h3 {
   background-image: linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
   color: #999999; }
 
-#molecule-container {
+#content {
+  margin: 0em;
+  padding: 0em;
+  height: 45em;
   position: relative;
+  display: inline-block; }
+
+#description-right {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  max-width: 35%;
+  min-width: 20%;
+  width: auto; }
+
+#viz {
+  margin: 0em;
+  padding: 0em;
+  height: 100%;
+  display: inline-block; }
+
+.top {
+  height: 80%;
+  padding: 0.5em 1em;
+  position: relative;
+  display: inline-block; }
+
+.bottom {
+  padding: 0.1em 1em;
+  position: relative;
+  display: list-item; }
+
+.square {
+  height: 100%;
+  width: auto;
+  display: inline-block;
+  position: relative;
+  vertical-align: top; }
+  .square img {
+    postion: relative;
+    display: block;
+    height: 100%; }
+
+#molecule-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background: #f9eec1;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
@@ -442,10 +491,11 @@ h3 {
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  width: 200px;
-  height: 200px;
-  border: none;
-  margin: 0em 0.5em 0.5em 0em; }
+  height: 100%;
+  width: 100%;
+  min-width: 20em;
+  min-height: 20em;
+  margin: 2px 0px 2px 0px; }
   #molecule-container circle {
     stroke: transparent;
     stroke-width: 1;
@@ -458,8 +508,55 @@ h3 {
   #molecule-container rect {
     border: solid 1px #cccccc; }
 
+circle, .line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px; }
+
+text.title {
+  font-size: 1em; }
+
+text.xlabel {
+  font-size: 0.85em; }
+
+text.ylabel {
+  font-size: 0.85em; }
+
+text.model_time_label {
+  font-size: 0.85em; }
+
+g.y {
+  font-size: 0.75em; }
+
+g.x {
+  font-size: 0.75em; }
+
+div.tooltip {
+  display: none;
+  position: absolute;
+  padding: 0.4em 0.6em;
+  font-size: 0.9em;
+  background: white;
+  border: solid 1px #aaaaaa;
+  border-radius: 0.8em;
+  pointer-events: none; }
+  div.tooltip pre {
+    margin: 0.2em; }
+
+.therm {
+  display: inline-block;
+  vertical-align: bottom;
+  padding-bottom: 4em; }
+
+.component_group {
+  display: inline-block; }
+
 #lj-potential-chart {
+  display: inline-block;
+  vertical-align: top;
   position: relative;
+  width: 20em;
+  height: 16em;
   background: #f9eec1;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
@@ -469,8 +566,6 @@ h3 {
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  width: 180px;
-  height: 140px;
   margin: 0em 0.5em 0.5em 1em; }
   #lj-potential-chart circle {
     stroke: steelblue;
@@ -483,7 +578,11 @@ h3 {
       stroke: #ff7f0e; }
 
 #speed-distribution-chart {
+  display: inline-block;
+  vertical-align: top;
   position: relative;
+  width: 20em;
+  height: 16em;
   background: #f9eec1;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
@@ -493,12 +592,14 @@ h3 {
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  width: 180px;
-  height: 140px;
   margin: 0em 0.5em 0.5em 0.5em; }
 
 #ke-chart {
+  display: inline-block;
+  vertical-align: bottom;
   position: relative;
+  width: 41em;
+  height: 21.5em;
   background: #f9eec1;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
@@ -508,15 +609,13 @@ h3 {
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  width: 280px;
-  height: 160px;
   margin: 0em 1em;
   padding: 0em 0em; }
 
 .slider_container {
   background: #f9eec1;
   border: none !important;
-  padding: 0.3em !important;
+  padding: 0.3em 0.5em !important;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
   -ms-border-radius: 0.5em;
@@ -547,3 +646,75 @@ h3 {
     display: none;
     margin: auto;
     text-align: center; }
+
+#benchmarks {
+  margin: 0em;
+  padding: 1em; }
+  #benchmarks button {
+    margin-top: 1.5em; }
+  #benchmarks table {
+    font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
+    border-collapse: collapse; }
+  #benchmarks th {
+    padding: 0 1em;
+    text-align: left; }
+  #benchmarks td {
+    border-top: 1px solid #cccccc;
+    padding: 0 1em; }
+  #benchmarks ul {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0.5em 0em 0.5em 0em;
+    width: 90%; }
+    #benchmarks ul li {
+      line-height: 1em;
+      display: inline-table;
+      vertical-align: top;
+      padding: 0.2em 1em 0.2em 0em; }
+      #benchmarks ul li fieldset {
+        height: 2.2em;
+        vertical-align: middle;
+        width: 100%;
+        border-bottom: 0px;
+        border-left: 0px;
+        border-right: 0px; }
+
+#run-benchmarks {
+  margin: 1em; }
+
+#datatable {
+  margin: 0em;
+  padding: 1em; }
+  #datatable button {
+    margin-top: 1.5em; }
+  #datatable table {
+    font: 10px/24px Verdana, Arial, Helvetica, sans-serif;
+    border-collapse: collapse; }
+  #datatable th {
+    padding: 0em 1em;
+    text-align: center; }
+  #datatable td {
+    border-top: 1px solid #cccccc;
+    padding: 0em 1.5em 0em 0.5em;
+    text-align: right;
+    width: 5em; }
+  #datatable ul {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0.5em 0em 0.5em 0em;
+    width: 90%; }
+    #datatable ul li {
+      line-height: 1em;
+      display: inline-table;
+      vertical-align: top;
+      padding: 0.2em 1em 0.2em 0em; }
+      #datatable ul li fieldset {
+        height: 2.2em;
+        vertical-align: middle;
+        width: 100%;
+        border-bottom: 0px;
+        border-left: 0px;
+        border-right: 0px; }
+
+#benchmark-results {
+  margin-left: 2em; }

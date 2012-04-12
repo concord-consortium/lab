@@ -19,66 +19,58 @@
   </head>
   <body>
     <div id='viz'>
-      <ul>
-        <li class='top'>
+      <div class='top'>
+        <div class='square'>
+          <img src='../../resources/aspect-ratio-1x1.png' />
           <div id='molecule-container'></div>
-        </li>
-        <li>
+        </div>
+        <div class='therm'>
           <div id='thermometer'></div>
           <div id='therm_text'></div>
-        </li>
-      </ul>
-      <ul>
-        <li>
-          <div class='component_group'>
-            <div class='slider_container'>
-              Intermolecular Attraction
-              <div class='slider_content'>
-                <div id='attraction_slider'></div>
-              </div>
-              <div class='left_half'>
-                weaker
-              </div>
-              <div class='right_half'>
-                stronger
-              </div>
-              <div class='below'>
-                Attractive Force
+        </div>
+      </div>
+      <div class='bottom'>
+        <div class='component_group'>
+          <div class='slider_container'>
+            Intermolecular Attraction
+            <div class='slider_content'>
+              <div id='attraction_slider'></div>
+            </div>
+            <div class='left_half'>
+              weaker
+            </div>
+            <div class='right_half'>
+              stronger
+            </div>
+            <div class='below'>
+              Attractive Force
+            </div>
+          </div>
+        </div>
+        <div class='component_group'>
+          <div class='slider_container'>
+            Force Interactions
+            <div class='slider_content'>
+              Coulomb
+              <input id='coulomb-forces-checkbox' type='checkbox' />
+            </div>
+            <div class='below'>
+              <input checked='checked' id='lennard-jones-forces-checkbox' type='checkbox' />
+            </div>
+          </div>
+        </div>
+        <div class='component_group'>
+          <div class='slider_container'>
+            Change Temperature
+            <div class='content'>
+              <div style='width: 10em; height: 2em; display: inline-block; margin: 0.5em'>
+                <button class='left_edge' id='cool_button' type='button' value='colder'>colder</button>
+                <button class='right_edge' id='heat_button' type='button' value='hotter'>hotter</button>
               </div>
             </div>
           </div>
-        </li>
-        <li>
-          <div class='component_group'>
-            <div class='slider_container'>
-              Force Interactions
-              <div class='left_half'></div>
-              <div class='content'>
-                <div style='width: 10em; height: 2em; display: inline-block; margin: 0.5em'>
-                  Coulomb
-                  <input id='coulomb-forces-checkbox' type='checkbox' />
-                </div>
-              </div>
-              <div class='below'>
-                <input checked='checked' id='lennard-jones-forces-checkbox' type='checkbox' />
-              </div>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class='component_group'>
-            <div class='slider_container'>
-              Change Temperature
-              <div class='content'>
-                <div style='width: 10em; height: 2em; display: inline-block; margin: 0.5em'>
-                  <button class='left_edge' id='cool_button' type='button' value='colder'>colder</button>
-                  <button class='right_edge' id='heat_button' type='button' value='hotter'>hotter</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
     <script src='../../lab/lab.js' type='text/javascript'></script>
     <script src='application.js' type='text/javascript'></script>
