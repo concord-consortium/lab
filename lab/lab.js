@@ -4920,16 +4920,16 @@ layout.moleculeContainer = function(e, options) {
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
   function scale() {
-    cx = elem.property("clientWidth"),
-    cy = elem.property("clientHeight"),
+    cx = elem.property("clientWidth");
+    cy = elem.property("clientHeight");
     // cx = width;
     // cy = height;
     // node.style.width = width +"px";
     // node.style.height = height +"px";
     scale_factor = layout.screen_factor;
     if (layout.screen_factor_width && layout.screen_factor_height) {
-      scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height)
-    };
+      scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
+    }
     scale_factor = cx/600;
     padding = {
        "top":    options.title  ? 40 * layout.screen_factor : 20,
@@ -5393,6 +5393,7 @@ layout.moleculeContainer = function(e, options) {
     function molecule_mousedown(d, i) {
       if (atom_tooltip_on) {
         molecule_div.style("opacity", 1e-6);
+        molecule_div.style("display", "none");
         atom_tooltip_on = false;
       } else {
         if (d3.event.shiftKey) {
@@ -5407,8 +5408,9 @@ layout.moleculeContainer = function(e, options) {
     function render_atom_tooltip(i) {
       molecule_div
             .style("opacity", 1.0)
+            .style("display", "inline")
             .style("background", "rgba(100%, 100%, 100%, 0.5)")
-            .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 6 + "px")
+            .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 16 + "px")
             .style("top",  y(nodes[model.INDICES.Y][i]) + offset_top - 30 + "px")
             .transition().duration(250);
 
