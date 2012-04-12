@@ -17,44 +17,40 @@
     %link{:href => "application.css", :rel => "stylesheet", :type => "text/css"}/
   %body
     #viz
-      %ul
-        %li.top
+      .top
+        .square
+          %img{:src => "../../resources/aspect-ratio-1x1.png"}
           #molecule-container
-        %li
+        .therm
           #thermometer
           #therm_text
-      %ul
-        %li
-          .component_group
-            .slider_container
-              Intermolecular Attraction
-              .slider_content
-                #attraction_slider
-              .left_half
-                weaker
-              .right_half
-                stronger
-              .below
-                Attractive Force
-        %li
-          .component_group
-            .slider_container
-              Force Interactions
-              .left_half
-              .content
-                %div{:style=> "width: 10em; height: 2em; display: inline-block; margin: 0.5em"}
-                  Coulomb
-                  %input(id="coulomb-forces-checkbox" type="checkbox")
-              .below
-                %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
-        %li
-          .component_group
-            .slider_container
-              Change Temperature
-              .content
-                %div{:style=> "width: 10em; height: 2em; display: inline-block; margin: 0.5em"}
-                  %button#cool_button(type="button" class="left_edge" value="colder")colder
-                  %button#heat_button(type="button" class="right_edge" value="hotter")hotter
+      .bottom
+        .component_group
+          .slider_container
+            Intermolecular Attraction
+            .slider_content
+              #attraction_slider
+            .left_half
+              weaker
+            .right_half
+              stronger
+            .below
+              Attractive Force
+        .component_group
+          .slider_container
+            Force Interactions
+            .slider_content
+              Coulomb
+              %input(id="coulomb-forces-checkbox" type="checkbox")
+            .below
+              %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
+        .component_group
+          .slider_container
+            Change Temperature
+            .content
+              %div{:style=> "width: 10em; height: 2em; display: inline-block; margin: 0.5em"}
+                %button#cool_button(type="button" class="left_edge" value="colder")colder
+                %button#heat_button(type="button" class="right_edge" value="hotter")hotter
 
 
 

@@ -14,7 +14,6 @@
       if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
     %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&subset=latin,greek,latin-ext", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
-    %link{:href => "application.css", :rel => "stylesheet", :type => "text/css"}/
   %body
     #header
       %a#logo(href="http://www.concord.org/")
@@ -23,66 +22,59 @@
         %a(href="http://lab.dev.concord.org/examples/simple-atoms-model/simple-atoms-model.html") Simple Atoms Model
       %img#fullscreen(class="size-full wp-image-1880" src="../../resources/layout/fullscreen.gif")
     #content
-      %ul
-        %li.top
-          #viz
-            %ul
-              %li.top
-                #molecule-container
-              %li
-                #thermometer
-                #therm_text
-            %ul
-              %li
-                .component_group
-                  .slider_container
-                    Intermolecular Attraction
-                    .slider_content
-                      #attraction_slider
-                    .left_half
-                      weaker
-                    .right_half
-                      stronger
-                    .below
-                      Attractive Force
-              %li
-                .component_group
-                  .slider_container
-                    Force Interactions
-                    .left_half
-                    .content
-                      %div{:style=> "width: 10em; height: 2em; display: inline-block; margin: 0.5em"}
-                        Coulomb
-                        %input(id="coulomb-forces-checkbox" type="checkbox")
-                    .below
-                      %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
-              %li
-                .component_group
-                  .slider_container
-                    Change Temperature
-                    .content
-                      %div{:style=> "width: 10em; height: 2em; display: inline-block; margin: 0.5em"}
-                        %button#cool_button(type="button" class="left_edge" value="colder")colder
-                        %button#heat_button(type="button" class="right_edge" value="hotter")hotter
+      #viz
+        .top
+          .square
+            %img{:src => "../../resources/aspect-ratio-1x1.png"}
+            #molecule-container
+          .therm
+            #thermometer
+            #therm_text
+        .bottom
+          .component_group
+            .slider_container
+              Intermolecular Attraction
+              .slider_content
+                #attraction_slider
+              .left_half
+                weaker
+              .right_half
+                stronger
+              .below
+                Attractive Force
+          .component_group
+            .slider_container
+              Force Interactions
+              .slider_content
+                Coulomb
+                %input(id="coulomb-forces-checkbox" type="checkbox")
+              .below
+                %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
+          .component_group
+            .slider_container
+              Change Temperature
+              .content
+                %div{:style=> "width: 10em; height: 2em; display: inline-block; margin: 0.5em"}
+                  %button#cool_button(type="button" class="left_edge" value="colder")colder
+                  %button#heat_button(type="button" class="right_edge" value="hotter")hotter
 
-        %li.top
-          #description-right
-            %p
-              A computational simulation of a collection of simple &ldquo;atoms&rdquo; which are free to move in two
-              dimensions. The force between pairs of atoms is modeled using a
-              <a href="http://en.wikipedia.org/wiki/Lennard-Jones_potential" target="_blank">Lennard-Jones</a>
-              potential.
+      #description-right
+        %p
+          A computational simulation of a collection of simple &ldquo;atoms&rdquo; which are free to move in two
+          dimensions. The force between pairs of atoms is modeled using a
+          <a href="http://en.wikipedia.org/wiki/Lennard-Jones_potential" target="_blank">Lennard-Jones</a>
+          potential.
 
-            %p
-              So that you can more easily explore how temperature and intermolecular attraction strength affect phase
-              changes, intermolecular attractions are much stronger in this simulation than they are for the equivalent
-              &ldquo;featureless&rdquo; and nonreactive atoms found in nature, those of the noble gases.
+        %p
+          So that you can more easily explore how temperature and intermolecular attraction strength affect phase
+          changes, intermolecular attractions are much stronger in this simulation than they are for the equivalent
+          &ldquo;featureless&rdquo; and nonreactive atoms found in nature, those of the noble gases.
 
-            %p
-              When the Coulomb force interaction checkbox is checked, atoms also experience electrostatic interactions.
-              Opposite charges of +1 or -1 are evenly distributed among the atoms, and then particles with opposite
-              charge attract each other according to Coulomb's Law, while particles with the same charge repel.
-              Particles with a positive charge appear blue and those with a negative charge appear red.
+        %p
+          When the Coulomb force interaction checkbox is checked, atoms also experience electrostatic interactions.
+          Opposite charges of +1 or -1 are evenly distributed among the atoms, and then particles with opposite
+          charge attract each other according to Coulomb's Law, while particles with the same charge repel.
+          Particles with a positive charge appear blue and those with a negative charge appear red.
 
 
     %script{:src => "../../lab/lab.js", :type => "text/javascript"}
