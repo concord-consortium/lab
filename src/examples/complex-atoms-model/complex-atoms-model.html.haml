@@ -24,54 +24,56 @@
       %img#fullscreen(class="size-full wp-image-1880" src="../../resources/layout/fullscreen.gif")
     #content
       #viz
-        %ul
-          %li
-            #molecule-container
-          %li.baseline
-            %ul.twox
-              %li.top
-                #lj-potential-chart
-              %li.top
-                #speed-distribution-chart
-            #ke-chart
-      #controls.left
-        %ul
-          %li
-            %fieldset
-              %legend Molecules
-              %select(id="select-molecule-number")
-                %option(value="10") 10
-                %option(value="20" selected) 20
-                %option(value="50") 50
-                %option(value="100") 100
-                %option(value="200") 200
-                %option(value="500") 500
-          %li
-            %fieldset
-              %legend Temperature Control
-              %input(id="temperature-control-checkbox" type="checkbox")
-              %select(id="select-temperature")
-                %option(value="25") 25
-                %option(value="20") 20
-                %option(value="15") 15
-                %option(value="10") 10
-                %option(value="5" selected) 5
-                %option(value="0") 0
-          %li
-            %fieldset
-              %legend Particle Force Interactions
-              %label
-                Lennard-Jones
-                %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
-              %label
-                Coulomb
-                %input(id="coulomb-forces-checkbox" type="checkbox")
-          %br
-          %ul
-            %li
-              %fieldset#stats-container
-                %legend Stats
-                %pre#stats
+        .top
+          .top-left
+            .square
+              %img{:src => "../../resources/aspect-ratio-1x1.png"}
+              #molecule-container
+          .top-right
+            .top-right-upper
+              #lj-potential-chart
+              #speed-distribution-chart
+            .top-right-lower
+              #ke-chart
+        .bottom
+          #controls.left
+            %ul
+              %li
+                %fieldset
+                  %legend Molecules
+                  %select(id="select-molecule-number")
+                    %option(value="10") 10
+                    %option(value="20" selected) 20
+                    %option(value="50") 50
+                    %option(value="100") 100
+                    %option(value="200") 200
+                    %option(value="500") 500
+              %li
+                %fieldset
+                  %legend Temperature Control
+                  %input(id="temperature-control-checkbox" type="checkbox")
+                  %select(id="select-temperature")
+                    %option(value="25") 25
+                    %option(value="20") 20
+                    %option(value="15") 15
+                    %option(value="10") 10
+                    %option(value="5" selected) 5
+                    %option(value="0") 0
+              %li
+                %fieldset
+                  %legend Particle Force Interactions
+                  %label
+                    Lennard-Jones
+                    %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
+                  %label
+                    Coulomb
+                    %input(id="coulomb-forces-checkbox" type="checkbox")
+              %br
+              %ul
+                %li
+                  %fieldset#stats-container
+                    %legend Stats
+                    %pre#stats
 
     #datatable
       %ul

@@ -41,45 +41,12 @@ select
 input[type=checkbox]
   -webkit-transform: scale(1,1)
 
-div.tooltip
-  position: absolute
-  padding: 0.4em 0.6em
-  font-size: 0.9em
-  background: #fff
-  border: solid 1px #aaa
-  border-radius: 0.8em
-  pointer-events: none
-  pre
-    margin: 0.2em
-
 #intro
   padding: .5em 1em 0
 
 #description
   padding: 1em
   width: 100em
-
-#description-right
-  padding: 1em 0.5em
-  width: 90%
-  p
-    line-height: 135%
-    margin: 0em 0em 0.5em 0em
-  ul
-    list-style-type: none
-    margin: 0.5em 0em 0.5em 0em
-    width: 95%
-    li
-      display: table-cell
-      vertical-align: middle
-      margin: 0em
-      padding: 0em
-      fieldset
-        height: 2.2em
-    li.top
-      vertical-align: top
-    li.baseline
-      vertical-align: baseline
 
 .description
   padding: 1em
@@ -109,48 +76,6 @@ a
   &:hover
     color: #da5936
 
-label
-  margin-left: 0.2em
-
-rect
-  fill: #fff
-
-rect.bar
-  fill: #5CACEE
-
-circle, .line
-  fill: none
-  stroke: steelblue
-  stroke-width: 1.5px
-
-circle
-  fill: #fff
-  fill-opacity: 0.2
-  cursor: move
-  stroke: steelblue
-  &.selected
-    fill: #ff7f0e
-    stroke: #ff7f0e
-  &:hover
-    stroke: #ff7f0e
-
-text.title
-  font-size: 1.0em
-
-text.xlabel
-  font-size: 0.85em
-
-text.ylabel
-  font-size: 0.85em
-
-text.model_time_label
-  font-size: 0.85em
-
-g.y
-  font-size: 0.75em
-g.x
-  font-size: 0.75em
-
 ul
   margin: 1em 0em 1em 0em
   padding: 0em 0em 0em 0em
@@ -171,95 +96,6 @@ ul
     li
       margin: 0.5em 0.2em 0.5em 0.2em
       padding: 0em 0em 0em 0em
-
-#content
-  margin: 0
-  padding: 0em
-  ul
-    list-style-type: none
-    margin: 0em 0em 0em 0em
-    width: 100%
-    li
-      display: table-cell
-      vertical-align: middle
-      margin: 0
-      padding: 0
-      fieldset
-        height: 2.2em
-    li.top
-      vertical-align: top
-    li.baseline
-      vertical-align: baseline
-  ul.twox
-    margin: 0em 0em 0em 0em
-    li
-      margin: 0em
-      padding-bottom: 0.5em
-    li.top
-      vertical-align: top
-      padding-bottom: 0.5em
-    li.bottom
-      vertical-align: bottom
-      padding-bottom: 0em
-  ul.right
-    float: right
-
-#viz
-  margin: 0em
-  padding: 0.5em 1em
-  ul
-    list-style-type: none
-    margin: 0.5em 0em 0.5em 0em
-    width: 100%
-    li
-      display: table-cell
-      vertical-align: middle
-      margin: 0
-      padding: 0
-      fieldset
-        height: 2.2em
-    li.top
-      vertical-align: top
-    li.baseline
-      vertical-align: baseline
-  ul.twox
-    margin: 0em 0em 0em 0em
-    li
-      margin: 0em
-      padding-bottom: 0.5em
-    li.top
-      vertical-align: top
-      padding-bottom: 0.5em
-    li.bottom
-      vertical-align: bottom
-      padding-bottom: 0em
-  ul.right
-    float: right
-
-#controls
-  margin: 0em
-  padding: 0.0em 1em
-  text-align: center
-  width: 95%
-  ul
-    display: inline-block
-    list-style-type: none
-    margin: 0.2em 0em 0.2em 0em
-    li
-      line-height: 1.0em
-      display: inline-table
-      vertical-align: middle
-      padding: 0.2em 1em 0.2em 0em
-      input
-        vertical-align: middle
-      fieldset
-        height: 2.2em
-        vertical-align: middle
-  ul.right
-    float: right
-
-#controls.left
-  text-align: left
 
 #benchmarks
   margin: 0em
@@ -332,19 +168,3 @@ ul
 
 #benchmark-results
   margin-left: 2em
-
-#stats-container
-  width: 100%
-  ul
-    display: inline-block
-    list-style-type: none
-    margin: 0px
-    padding: 0px
-    li
-      display: inline-table
-      vertical-align: middle
-
-#stats
-  margin: 2px 5px 5px 5px
-  font-family: "New Courier", Courier, monospace
-  font-size: 80%

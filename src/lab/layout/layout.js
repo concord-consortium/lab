@@ -179,23 +179,22 @@ layout.setupScreen = function(layout_selection) {
 
   function setupRegularScreenPotentialChart() {
     var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    lj_potential_chart.style.width = layout.display.page.width * 0.22 +"px";
-    lj_potential_chart.style.height = size / 2.35 +"px";
+    // lj_potential_chart.style.width = layout.display.page.width * 0.22 +"px";
+    // lj_potential_chart.style.height = size / 2.35 +"px";
     layout.finishSetupPotentialChart();
   }
 
   function setupRegularSpeedDistributionChart() {
     var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    speed_distribution_chart.style.width = layout.display.page.width * 0.22 +"px";
-    speed_distribution_chart.style.height = size / 2.35 +"px";
+    // speed_distribution_chart.style.width = layout.display.page.width * 0.22 +"px";
+    // speed_distribution_chart.style.height = size / 2.35 +"px";
     layout.finishSetupSpeedDistributionChart();
   }
 
   function setupRegularScreenKEChart() {
     var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    kechart.style.width = layout.display.page.width * 0.45 +"px";
-    // kechart.style.height = layout.display.page.width * 0.20 + 5 +"px";
-    kechart.style.height = size / 1.82 +"px";
+    // kechart.style.width = layout.display.page.width * 0.45 +"px";
+    // kechart.style.height = size / 2.05 +"px";
     layout.finishSetupKEChart();
   }
 
@@ -244,7 +243,7 @@ layout.setupScreen = function(layout_selection) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameMoleculeContainer() {
-    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.80);
+    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
     molecule_container.resize(size, size);
   }
 
