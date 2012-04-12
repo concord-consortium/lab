@@ -536,6 +536,7 @@ layout.moleculeContainer = function(e, options) {
     function molecule_mousedown(d, i) {
       if (atom_tooltip_on) {
         molecule_div.style("opacity", 1e-6);
+        molecule_div.style("display", "none");
         atom_tooltip_on = false;
       } else {
         if (d3.event.shiftKey) {
@@ -550,8 +551,9 @@ layout.moleculeContainer = function(e, options) {
     function render_atom_tooltip(i) {
       molecule_div
             .style("opacity", 1.0)
+            .style("display", "inline")
             .style("background", "rgba(100%, 100%, 100%, 0.5)")
-            .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 6 + "px")
+            .style("left", x(nodes[model.INDICES.X][i]) + offset_left + 16 + "px")
             .style("top",  y(nodes[model.INDICES.Y][i]) + offset_top - 30 + "px")
             .transition().duration(250);
 
