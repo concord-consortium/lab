@@ -4921,21 +4921,9 @@ layout.moleculeContainer = function(e, options) {
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
   function scale() {
-    cx = elem.property("clientWidth");
     cy = elem.property("clientHeight");
-    // cx = width;
-    // cy = height;
-    if (options.ylabel) {
-      if (cx !== cy * 1.2) {
-        cx = cy * 1.2;
-        node.style.width = cx +"px";
-      }
-    } else {
-      if (cx !== cy) {
-        cx = cy;
-        node.style.width = cx +"px";
-      }
-    }
+    cx = cy;
+    node.style.width = cx +"px";
     scale_factor = layout.screen_factor;
     if (layout.screen_factor_width && layout.screen_factor_height) {
       scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
@@ -4961,7 +4949,8 @@ layout.moleculeContainer = function(e, options) {
 
     offset_left = node.offsetLeft + padding.left;
     offset_top = node.offsetTop + padding.top;
-    pc_xpos = padding.left + size.width / 2 - (80 * scale_factor);
+    pc_xpos = padding.left + size.width / 2 - 60;
+    if (options.playback_controller) { pc_xpos -= 50 * scale_factor; }
     pc_ypos = cy - 42 * scale_factor;
     // pc_ypos = cy - (options.ylabel ? 40 * scale_factor : 20 * scale_factor);
     // pc_ypos = size.height + (options.ylabel ? 85 * scale_factor : 27);
@@ -5038,7 +5027,7 @@ layout.moleculeContainer = function(e, options) {
     //   size.width  = cx - padding.left - padding.right;
     //   size.height = cy - padding.top  - padding.bottom;
     // }
-
+    scale();
     if (vis === undefined) {
       vis1 = d3.select(node).append("svg")
         .attr("width", cx)
