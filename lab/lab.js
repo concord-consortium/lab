@@ -4924,8 +4924,9 @@ layout.moleculeContainer = function(e, options) {
     cy = elem.property("clientHeight");
     // cx = width;
     // cy = height;
-    // node.style.width = width +"px";
-    // node.style.height = height +"px";
+    if (cx !== cy) {
+      node.style.width = cy +"px";
+    }
     scale_factor = layout.screen_factor;
     if (layout.screen_factor_width && layout.screen_factor_height) {
       scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
@@ -5372,7 +5373,7 @@ layout.moleculeContainer = function(e, options) {
             .attr("class", "index")
             .attr("font-size", font_size)
             .attr("style", "font-weight: bold; opacity: .7")
-            .attr("x", 0)
+            .attr("x", "-0.31em")
             .attr("y", "0.31em")
             .text(function(d, i) {
               if (layout.coulomb_forces_checkbox.checked) {
