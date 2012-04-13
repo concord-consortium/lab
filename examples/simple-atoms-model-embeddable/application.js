@@ -19,10 +19,13 @@ var autostart = false,
     frame_number = 0,
     model_stopped = true,
     model = modeler.model(),
-    nodes;
+    nodes,
+    model_player,
+    molecule_container,
+    modelController;
 
-var model_player = new ModelPlayer(model, autostart);
-
-var molecule_container = layout.moleculeContainer("#molecule-container");
-
-var modelController = controllers.simpleModelController("simple-iframe", molecule_container);
+$(window).load(function() {
+  model_player = new ModelPlayer(model, autostart);
+  molecule_container = layout.moleculeContainer("#molecule-container");
+  modelController = controllers.simpleModelController("simple-iframe", molecule_container);
+});
