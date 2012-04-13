@@ -67,8 +67,9 @@ layout.moleculeContainer = function(e, options) {
     cy = elem.property("clientHeight");
     // cx = width;
     // cy = height;
-    // node.style.width = width +"px";
-    // node.style.height = height +"px";
+    if (cx !== cy) {
+      node.style.width = cy +"px";
+    }
     scale_factor = layout.screen_factor;
     if (layout.screen_factor_width && layout.screen_factor_height) {
       scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
