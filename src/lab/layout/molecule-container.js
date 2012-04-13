@@ -515,7 +515,7 @@ layout.moleculeContainer = function(e, options) {
             .attr("class", "index")
             .attr("font-size", font_size)
             .attr("style", "font-weight: bold; opacity: .7")
-            .attr("x", 0)
+            .attr("x", "-0.31em")
             .attr("y", "0.31em")
             .text(function(d, i) {
               if (layout.coulomb_forces_checkbox.checked) {
