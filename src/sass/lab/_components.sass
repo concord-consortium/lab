@@ -21,7 +21,7 @@
     vertical-align: bottom
     margin-left: auto
     margin-right: auto
-    background: #eb8723
+    background: #e16a3e
     @include border-top-radius(0.5em)
 
 .therm_text
@@ -279,6 +279,7 @@ $button_down: darken($button_hover, 20%)
   @include border-bottom-left-radius(0)
 .component_group 
   button#cool_button, button#heat_button
+    @include linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #ddd 50%, #ddd 100%, $fallback: #ddd)
     font-size: 1em
     height: auto !important
     padding: .5em 0
