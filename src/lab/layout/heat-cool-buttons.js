@@ -3,12 +3,12 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
   var cool_button = new ButtonComponent(cool_elem_id, 'circlesmall-minus');
 
   heat_button.add_action(function() {
-    var t = model.temperature();
+    var t = model.get('temperature');
     if (t < max) {
       $(heat_elem_id).removeClass('inactive');
       $(cool_elem_id).removeClass('inactive');
       t = Math.floor((t * 2))/2 + 0.5;
-      model.temperature(t);
+      model.set({temperature: t});
       if (typeof callback === 'function') {
         callback(t)
       }
@@ -18,12 +18,12 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
   });
 
   cool_button.add_action(function() {
-    var t = model.temperature();
+    var t = model.get('temperature');
     if (t > min) {
       $(heat_elem_id).removeClass('inactive');
       $(cool_elem_id).removeClass('inactive');
       t = Math.floor((t * 2))/2 - 0.5;
-      model.temperature(t);
+      model.set({temperature: t});
       if (typeof callback === 'function') {
         callback(t)
       }

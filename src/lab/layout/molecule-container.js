@@ -482,7 +482,7 @@ layout.moleculeContainer = function(e, options) {
           .attr("cy", function(d, i) { return y(get_y(i)); })
           .style("cursor", "crosshair")
           .style("fill", function(d, i) {
-            if (layout.coulomb_forces_checkbox.checked) {
+            if (model.get("coulomb_forces")) {
               return (x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')";
             } else {
               return "url('#neu-grad')";

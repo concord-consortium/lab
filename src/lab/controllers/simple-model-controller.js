@@ -267,7 +267,7 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
 
   var epsilon_slider  = new  SliderComponent('#attraction_slider', 
     function (v) {
-      model.setEpsilon(v);
+      model.set({epsilon: v});
     }, lj_epsilon_max, lj_epsilon_min, INITIAL_EPSILON);
 
   // ------------------------------------------------------------
