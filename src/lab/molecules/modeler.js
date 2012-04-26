@@ -487,5 +487,48 @@ modeler.model = function() {
     return model;
   };
 
+  var properties = {
+    temperature     : 3,
+    coulomb_forces  : false,
+    epsilon         : -0.1,
+
+    set_temperature: function(t) {
+      this.temperature = t;
+      temperature = t;
+      coreModel.setTargetTemperature(abstract_to_real_temperature(t));
+    },
+    set_coulomb_forces: function(cf) {
+      this.coulomb_forces = cf;
+      coulomb_forces = cf;
+      coreModel.useCoulombInteraction(cf);
+      molecule_container.setup_particles();
+    },
+    set_epsilon: function(e) {
+      this.epsilon = e;
+      coreModel.setLJEpsilon(e);
+    }
+  }
+
+  model.set = function(hash) {
+    for (property in hash) {
+      if (properties["set_"+property]) {
+        properties["set_"+property](hash[property]);
+      }
+    }
+  };
+
+  model.get = function(property) {
+    return properties[property];
+  }
+
+  model.serialize = function() {
+    var props = {
+      "temperature": properties.temperature,
+      "coulomb_forces": properties.coulomb_forces,
+      "epsilon": properties.epsilon
+    }
+    return JSON.stringify(properties);
+  };
+
   return model;
 };

@@ -22,9 +22,9 @@ layout.coulomb_forces_checkbox = document.getElementById("coulomb-forces-checkbo
 
 function coulombForcesInteractionHandler() {
     if (layout.coulomb_forces_checkbox.checked) {
-      model.set_coulomb_forces(true);
+      model.set({coulomb_forces: true});
     } else {
-      model.set_coulomb_forces(false);
+      model.set({coulomb_forces: false});
     };
     molecule_container.setup_particles()
 };
