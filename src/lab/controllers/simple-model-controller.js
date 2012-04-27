@@ -73,40 +73,8 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   //
   // ------------------------------------------------------------
 
-  function modelController() {
-    debugger;
-    var i, run_mode;
-
-    for(i = 0; i < this.elements.length; i++) {
-      if (this.elements[i].checked) {
-        run_mode = this.elements[i].value;
-      }
-    }
-    switch(run_mode) {
-      case "stop":
-        modelStop();
-        break;
-      case "step":
-        modelStep();
-        break;
-      case "go":
-        modelGo();
-        break;
-      case "reset":
-        modelReset();
-        break;
-    }
-  }
-
   function modelStop() {
     model.stop();
-  }
-
-  function modelStep() {
-    model.stop();
-    if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
-      model.stepForward();
-    }
   }
 
   function modelGo() {
