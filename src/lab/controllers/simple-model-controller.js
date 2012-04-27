@@ -1,6 +1,27 @@
-var INITIAL_EPSILON = -0.1;
+/*globals
 
+  controllers
+
+  Thermometer
+  SliderComponent
+  layout
+
+  model
+  mol_number
+  atoms: true
+  nodes: true
+
+  temperature
+  lj_epsilon_max
+  lj_epsilon_min
+
+  maximum_model_steps
+  step_counter: true
+  autostart
+*/
 controllers.simpleModelController = function(layout_style, molecule_view) {
+
+  var INITIAL_EPSILON = -0.1;
 
   layout.selection = layout_style;
 
@@ -15,13 +36,12 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   var model_listener = function(e) {
     molecule_view.update_molecule_positions();
     if (step_counter >= model.stepCounter()) { modelStop(); }
-  }
+  };
 
   // ------------------------------------------------------------
   //
   //   Molecular Model Setup
   //
-  // ------------------------------------------------------------
 
   function generate_atoms() {
     model.nodes({ num: mol_number,
@@ -54,8 +74,13 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   // ------------------------------------------------------------
 
   function modelController() {
+    debugger;
+    var i, run_mode;
+
     for(i = 0; i < this.elements.length; i++) {
-        if (this.elements[i].checked) { run_mode = this.elements[i].value; }
+      if (this.elements[i].checked) {
+        run_mode = this.elements[i].value;
+      }
     }
     switch(run_mode) {
       case "stop":
@@ -105,7 +130,6 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   function modelReset() {
     modelSetup();
     model.temperature(temperature);
-    updateMolNumberViewDependencies();
     modelStop();
     model.on("tick", model_listener);
     molecule_view.update_molecule_radius();
@@ -123,7 +147,7 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   function onresize() {
     layout.setupScreen();
     therm.resize();
-  };
+  }
 
   document.onwebkitfullscreenchange = onresize;
   window.onresize = onresize;
@@ -140,27 +164,27 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
       switch (evt.keyCode) {
         case 32:                // spacebar
           if (model.is_stopped()) {
-            molecule_view.playback_component.action('play')
+            molecule_view.playback_component.action('play');
           } else {
-            molecule_view.playback_component.action('stop')
-          };
+            molecule_view.playback_component.action('stop');
+          }
           evt.preventDefault();
         break;
         case 13:                // return
-          molecule_view.playback_component.action('play')
+          molecule_view.playback_component.action('play');
           evt.preventDefault();
         break;
         case 37:                // left-arrow
           if (!model.is_stopped()) {
-            molecule_view.playback_component.action('stop')
-          };
+            molecule_view.playback_component.action('stop');
+          }
           modelStepBack();
           evt.preventDefault();
         break;
         case 39:                // right-arrow
           if (!model.is_stopped()) {
-            molecule_view.playback_component.action('stop')
-          };
+            molecule_view.playback_component.action('stop');
+          }
           modelStepForward();
           evt.preventDefault();
         break;
@@ -194,14 +218,14 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
     }, lj_epsilon_max, lj_epsilon_min, INITIAL_EPSILON);
 
   model.addPropertiesListener(["epsilon"], function(){
-    epsilon_slider.set_scaled_value(model.get("epsilon"))
+    epsilon_slider.set_scaled_value(model.get("epsilon"));
   });
 
   // ------------------------------------------------------------
   // Setup heat and cool buttons
   // ------------------------------------------------------------
 
-  layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25, model, function (t) { therm.add_value(t) });
+  layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25, model, function (t) { therm.add_value(t); });
 
   // ------------------------------------------------------------
   //
