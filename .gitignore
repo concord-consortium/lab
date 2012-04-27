@@ -13,5 +13,6 @@ npm-debug.log
 *.sublime-workspace
 performance.rb
 /lab.performance
+/lab.server
 /*.log
 /uploads
