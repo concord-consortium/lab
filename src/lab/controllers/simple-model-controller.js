@@ -19,71 +19,6 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
 
   // ------------------------------------------------------------
   //
-  //   Lennard-Jones Coefficients Setup
-  //
-  // ------------------------------------------------------------
-
-  var lj_coefficients = molecules_lennard_jones.coefficients();
-
-  var lj_data = {
-    coefficients: lj_coefficients,
-    variables: [
-      {
-        coefficient:"epsilon",
-        x: lj_coefficients.rmin,
-        y: lj_coefficients.epsilon
-      },
-      {
-        coefficient:"sigma",
-        x: lj_coefficients.sigma,
-        y: 0
-      }
-    ]
-  };
-
-  function update_epsilon(e) {
-    update_coefficients(molecules_lennard_jones.epsilon(e));
-  }
-
-  function update_sigma(s) {
-    update_coefficients(molecules_lennard_jones.sigma(s));
-  }
-
-  function update_coefficients(coefficients) {
-    var sigma   = coefficients.sigma,
-        epsilon = coefficients.epsilon,
-        rmin    = coefficients.rmin,
-        y;
-
-    model.set_lj_coefficients(epsilon, sigma);
-
-    lj_data.coefficients.sigma   = sigma;
-    lj_data.coefficients.epsilon = epsilon;
-    lj_data.coefficients.rmin    = rmin;
-
-    lj_data.xmax    = sigma * 3;
-    lj_data.xmin    = Math.floor(sigma/2);
-    lj_data.ymax    = Math.ceil(epsilon*-1) + 0.0;
-    lj_data.ymin    = Math.ceil(epsilon*1) - 2.0;
-
-    // update the positions of the adjustable circles on the graph
-    lj_data.variables[1].x = sigma;
-
-    // change the x value for epsilon to match the new rmin value
-    lj_data.variables[0].x = rmin;
-
-    lennard_jones_potential = []
-
-    for(var r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
-      y = molecules_lennard_jones.potential(r)
-      if (y < 100) {
-        lennard_jones_potential.push([r, y]);
-      }
-    }
-  }
-
-  // ------------------------------------------------------------
-  //
   //   Molecular Model Setup
   //
   // ------------------------------------------------------------
@@ -110,21 +45,6 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
     model.set_temperature_control(true);
     model.setEpsilon(INITIAL_EPSILON);
     model.relax();
-  }
-
-  var mol_number_to_lj_sigma_map = {
-    2: 7.0,
-    5: 6.0,
-    10: 5.5,
-    20: 5.0,
-    50: 4.5,
-    100: 4.0,
-    200: 3.5,
-    500: 3.0
-  }
-
-  function updateMolNumberViewDependencies() {
-    update_sigma(mol_number_to_lj_sigma_map[mol_number]);
   }
 
   // ------------------------------------------------------------
@@ -268,9 +188,9 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
     therm.add_value(model.get("temperature"));
   });
 
-  var epsilon_slider  = new  SliderComponent('#attraction_slider', 
+  var epsilon_slider = new SliderComponent('#attraction_slider',
     function (v) {
-      model.set({epsilon: v});
+      model.set({epsilon: v} );
     }, lj_epsilon_max, lj_epsilon_min, INITIAL_EPSILON);
 
   model.addPropertiesListener(["epsilon"], function(){
@@ -292,5 +212,4 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   if (autostart) {
     modelGo();
   }
-}
-
+};
