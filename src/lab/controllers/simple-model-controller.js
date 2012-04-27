@@ -14,7 +14,6 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
 
   var model_listener = function(e) {
     molecule_view.update_molecule_positions();
-    therm.add_value(model.temperature());
     if (step_counter >= model.stepCounter()) { modelStop(); }
   }
 
@@ -264,6 +263,10 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   // ------------------------------------------------------------
 
   var therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
+
+  model.addPropertiesListener(["temperature"], function(){
+    therm.add_value(model.get("temperature"));
+  });
 
   var epsilon_slider  = new  SliderComponent('#attraction_slider', 
     function (v) {
