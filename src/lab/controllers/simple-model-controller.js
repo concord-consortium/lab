@@ -270,6 +270,10 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
       model.set({epsilon: v});
     }, lj_epsilon_max, lj_epsilon_min, INITIAL_EPSILON);
 
+  model.addPropertiesListener(["epsilon"], function(){
+    epsilon_slider.set_scaled_value(model.get("epsilon"))
+  });
+
   // ------------------------------------------------------------
   // Setup heat and cool buttons
   // ------------------------------------------------------------

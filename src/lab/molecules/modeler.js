@@ -489,6 +489,15 @@ modeler.model = function() {
     return model;
   };
 
+  var listeners = {};
+
+  function notifyListeners(listeners) {
+    $.unique(listeners);
+    for (var i=0, ii=listeners.length; i<ii; i++){
+      listeners[i]();
+    }
+  };
+
   properties = {
     temperature   : 3,
     coulomb_forces: false,
@@ -516,16 +525,36 @@ modeler.model = function() {
   };
 
   model.set = function(hash) {
+    var waitingToBeNotified = [];
     for (var property in hash) {
       if (hash.hasOwnProperty(property) && properties["set_"+property]) {
         properties["set_"+property](hash[property]);
       }
+      if (listeners[property]) {
+        waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
+      }
     }
+    notifyListeners(waitingToBeNotified);
   };
 
   model.get = function(property) {
     return properties[property];
   };
+
+  // Add a listener that will be notified any time any of the properties
+  // ithe passed-in array of properties is changed.
+  // This is a simple way for views to update themselves in response to
+  // properties being set on the model object.
+  model.addPropertiesListener = function(properties, callback) {
+    var i, ii, prop;
+    for (i=0, ii=properties.length; i<ii; i++){
+      var prop = properties[i];
+      if (!listeners[prop]) {
+        listeners[prop] = [];
+      }
+      listeners[prop].push(callback);
+    }
+  }
 
   model.serialize = function() {
     return JSON.stringify(properties);
