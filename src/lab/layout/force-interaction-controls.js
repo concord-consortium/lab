@@ -32,3 +32,14 @@ function coulombForcesInteractionHandler() {
 if (layout.coulomb_forces_checkbox) {
   layout.coulomb_forces_checkbox.onchange = coulombForcesInteractionHandler;
 }
+
+// We have to add this listener onLoad, because even though 'model' is used
+// as a global everywhere, it only gets created after lab.js is parsed...
+// NOTE: In the tests model doesn't exist, so we check first or the test fails...
+$(function() {
+  if (window.model) {
+    model.addPropertiesListener(["coulomb_forces"], function(){
+      $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+    });
+  }
+})
