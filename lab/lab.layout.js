@@ -830,7 +830,7 @@ layout.moleculeContainer = function(e, options) {
           .attr("cy", function(d, i) { return y(get_y(i)); })
           .style("cursor", "crosshair")
           .style("fill", function(d, i) {
-            if (layout.coulomb_forces_checkbox.checked) {
+            if (model.get("coulomb_forces")) {
               return (x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')";
             } else {
               return "url('#neu-grad')";
@@ -1904,9 +1904,9 @@ layout.coulomb_forces_checkbox = document.getElementById("coulomb-forces-checkbo
 
 function coulombForcesInteractionHandler() {
     if (layout.coulomb_forces_checkbox.checked) {
-      model.set_coulomb_forces(true);
+      model.set({coulomb_forces: true});
     } else {
-      model.set_coulomb_forces(false);
+      model.set({coulomb_forces: false});
     };
     molecule_container.setup_particles()
 };
@@ -1914,6 +1914,17 @@ function coulombForcesInteractionHandler() {
 if (layout.coulomb_forces_checkbox) {
   layout.coulomb_forces_checkbox.onchange = coulombForcesInteractionHandler;
 }
+
+// We have to add this listener onLoad, because even though 'model' is used
+// as a global everywhere, it only gets created after lab.js is parsed...
+// NOTE: In the tests model doesn't exist, so we check first or the test fails...
+$(function() {
+  if (window.model) {
+    model.addPropertiesListener(["coulomb_forces"], function(){
+      $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+    });
+  }
+})
 // ------------------------------------------------------------
 //
 // Display Model Statistics
@@ -1993,12 +2004,12 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
   var cool_button = new ButtonComponent(cool_elem_id, 'circlesmall-minus');
 
   heat_button.add_action(function() {
-    var t = model.temperature();
+    var t = model.get('temperature');
     if (t < max) {
       $(heat_elem_id).removeClass('inactive');
       $(cool_elem_id).removeClass('inactive');
       t = Math.floor((t * 2))/2 + 0.5;
-      model.temperature(t);
+      model.set({temperature: t});
       if (typeof callback === 'function') {
         callback(t)
       }
@@ -2008,12 +2019,12 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
   });
 
   cool_button.add_action(function() {
-    var t = model.temperature();
+    var t = model.get('temperature');
     if (t > min) {
       $(heat_elem_id).removeClass('inactive');
       $(cool_elem_id).removeClass('inactive');
       t = Math.floor((t * 2))/2 - 0.5;
-      model.temperature(t);
+      model.set({temperature: t});
       if (typeof callback === 'function') {
         callback(t)
       }

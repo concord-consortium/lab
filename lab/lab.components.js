@@ -1260,11 +1260,9 @@
     };
 
     SliderComponent.prototype.set_scaled_value = function(v) {
-      var results;
-      results = this.value;
-      results = results * (this.max - this.min);
-      results = results + this.min;
-      return results;
+      this.value = (v - this.min) / this.domain;
+      this.handle_x = v / this.domain * this.width;
+      return this.update();
     };
 
     SliderComponent.prototype.scaled_value = function() {

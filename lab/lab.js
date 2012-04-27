@@ -3545,13 +3545,13 @@ molecules_lennard_jones.force = function(distance) {
 
   return (12*alpha/r_13th - 6*beta/r_7th);
 };
-/*globals modeler:true, require, d3, arrays, benchmark */
+/*globals modeler:true, require, d3, arrays, benchmark, molecule_container */
 /*jslint onevar: true devel:true eqnull: true */
 
 // modeler.js
 //
 
-var md2d      = require('./md2d'),
+var md2d = require('./md2d'),
     coreModel;
 
 modeler = {};
@@ -3591,7 +3591,9 @@ modeler.model = function() {
       //
       // A two dimensional array consisting of arrays of node property values
       //
-      nodes;
+      nodes,
+
+      properties;
 
   //
   // Indexes into the nodes array for the individual node property arrays
@@ -4032,6 +4034,77 @@ modeler.model = function() {
     if (!arguments.length) return coreModel.getSize();
     coreModel.setSize(x);
     return model;
+  };
+
+  var listeners = {};
+
+  function notifyListeners(listeners) {
+    $.unique(listeners);
+    for (var i=0, ii=listeners.length; i<ii; i++){
+      listeners[i]();
+    }
+  };
+
+  properties = {
+    temperature   : 3,
+    coulomb_forces: false,
+    epsilon       : -0.1,
+
+    set_temperature: function(t) {
+      this.temperature = t;
+      temperature = t;
+      coreModel.setTargetTemperature(abstract_to_real_temperature(t));
+    },
+
+    set_coulomb_forces: function(cf) {
+      this.coulomb_forces = cf;
+      coulomb_forces = cf;
+      coreModel.useCoulombInteraction(cf);
+
+      // FIXME
+      molecule_container.setup_particles();
+    },
+
+    set_epsilon: function(e) {
+      this.epsilon = e;
+      coreModel.setLJEpsilon(e);
+    }
+  };
+
+  model.set = function(hash) {
+    var waitingToBeNotified = [];
+    for (var property in hash) {
+      if (hash.hasOwnProperty(property) && properties["set_"+property]) {
+        properties["set_"+property](hash[property]);
+      }
+      if (listeners[property]) {
+        waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
+      }
+    }
+    notifyListeners(waitingToBeNotified);
+  };
+
+  model.get = function(property) {
+    return properties[property];
+  };
+
+  // Add a listener that will be notified any time any of the properties
+  // ithe passed-in array of properties is changed.
+  // This is a simple way for views to update themselves in response to
+  // properties being set on the model object.
+  model.addPropertiesListener = function(properties, callback) {
+    var i, ii, prop;
+    for (i=0, ii=properties.length; i<ii; i++){
+      var prop = properties[i];
+      if (!listeners[prop]) {
+        listeners[prop] = [];
+      }
+      listeners[prop].push(callback);
+    }
+  }
+
+  model.serialize = function() {
+    return JSON.stringify(properties);
   };
 
   return model;
@@ -5339,7 +5412,7 @@ layout.moleculeContainer = function(e, options) {
           .attr("cy", function(d, i) { return y(get_y(i)); })
           .style("cursor", "crosshair")
           .style("fill", function(d, i) {
-            if (layout.coulomb_forces_checkbox.checked) {
+            if (model.get("coulomb_forces")) {
               return (x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')";
             } else {
               return "url('#neu-grad')";
@@ -6413,9 +6486,9 @@ layout.coulomb_forces_checkbox = document.getElementById("coulomb-forces-checkbo
 
 function coulombForcesInteractionHandler() {
     if (layout.coulomb_forces_checkbox.checked) {
-      model.set_coulomb_forces(true);
+      model.set({coulomb_forces: true});
     } else {
-      model.set_coulomb_forces(false);
+      model.set({coulomb_forces: false});
     };
     molecule_container.setup_particles()
 };
@@ -6423,6 +6496,17 @@ function coulombForcesInteractionHandler() {
 if (layout.coulomb_forces_checkbox) {
   layout.coulomb_forces_checkbox.onchange = coulombForcesInteractionHandler;
 }
+
+// We have to add this listener onLoad, because even though 'model' is used
+// as a global everywhere, it only gets created after lab.js is parsed...
+// NOTE: In the tests model doesn't exist, so we check first or the test fails...
+$(function() {
+  if (window.model) {
+    model.addPropertiesListener(["coulomb_forces"], function(){
+      $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+    });
+  }
+})
 // ------------------------------------------------------------
 //
 // Display Model Statistics
@@ -6502,12 +6586,12 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
   var cool_button = new ButtonComponent(cool_elem_id, 'circlesmall-minus');
 
   heat_button.add_action(function() {
-    var t = model.temperature();
+    var t = model.get('temperature');
     if (t < max) {
       $(heat_elem_id).removeClass('inactive');
       $(cool_elem_id).removeClass('inactive');
       t = Math.floor((t * 2))/2 + 0.5;
-      model.temperature(t);
+      model.set({temperature: t});
       if (typeof callback === 'function') {
         callback(t)
       }
@@ -6517,12 +6601,12 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
   });
 
   cool_button.add_action(function() {
-    var t = model.temperature();
+    var t = model.get('temperature');
     if (t > min) {
       $(heat_elem_id).removeClass('inactive');
       $(cool_elem_id).removeClass('inactive');
       t = Math.floor((t * 2))/2 - 0.5;
-      model.temperature(t);
+      model.set({temperature: t});
       if (typeof callback === 'function') {
         callback(t)
       }
@@ -8470,11 +8554,9 @@ graphx.graph = function(options) {
     };
 
     SliderComponent.prototype.set_scaled_value = function(v) {
-      var results;
-      results = this.value;
-      results = results * (this.max - this.min);
-      results = results + this.min;
-      return results;
+      this.value = (v - this.min) / this.domain;
+      this.handle_x = v / this.domain * this.width;
+      return this.update();
     };
 
     SliderComponent.prototype.scaled_value = function() {
@@ -8719,7 +8801,6 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
 
   var model_listener = function(e) {
     molecule_view.update_molecule_positions();
-    therm.add_value(model.temperature());
     if (step_counter >= model.stepCounter()) { modelStop(); }
   }
 
@@ -8970,10 +9051,18 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
 
   var therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
 
+  model.addPropertiesListener(["temperature"], function(){
+    therm.add_value(model.get("temperature"));
+  });
+
   var epsilon_slider  = new  SliderComponent('#attraction_slider', 
     function (v) {
-      model.setEpsilon(v);
+      model.set({epsilon: v});
     }, lj_epsilon_max, lj_epsilon_min, INITIAL_EPSILON);
+
+  model.addPropertiesListener(["epsilon"], function(){
+    epsilon_slider.set_scaled_value(model.get("epsilon"))
+  });
 
   // ------------------------------------------------------------
   // Setup heat and cool buttons

@@ -1866,13 +1866,13 @@ molecules_lennard_jones.force = function(distance) {
 
   return (12*alpha/r_13th - 6*beta/r_7th);
 };
-/*globals modeler:true, require, d3, arrays, benchmark */
+/*globals modeler:true, require, d3, arrays, benchmark, molecule_container */
 /*jslint onevar: true devel:true eqnull: true */
 
 // modeler.js
 //
 
-var md2d      = require('./md2d'),
+var md2d = require('./md2d'),
     coreModel;
 
 modeler = {};
@@ -1912,7 +1912,9 @@ modeler.model = function() {
       //
       // A two dimensional array consisting of arrays of node property values
       //
-      nodes;
+      nodes,
+
+      properties;
 
   //
   // Indexes into the nodes array for the individual node property arrays
@@ -2353,6 +2355,77 @@ modeler.model = function() {
     if (!arguments.length) return coreModel.getSize();
     coreModel.setSize(x);
     return model;
+  };
+
+  var listeners = {};
+
+  function notifyListeners(listeners) {
+    $.unique(listeners);
+    for (var i=0, ii=listeners.length; i<ii; i++){
+      listeners[i]();
+    }
+  };
+
+  properties = {
+    temperature   : 3,
+    coulomb_forces: false,
+    epsilon       : -0.1,
+
+    set_temperature: function(t) {
+      this.temperature = t;
+      temperature = t;
+      coreModel.setTargetTemperature(abstract_to_real_temperature(t));
+    },
+
+    set_coulomb_forces: function(cf) {
+      this.coulomb_forces = cf;
+      coulomb_forces = cf;
+      coreModel.useCoulombInteraction(cf);
+
+      // FIXME
+      molecule_container.setup_particles();
+    },
+
+    set_epsilon: function(e) {
+      this.epsilon = e;
+      coreModel.setLJEpsilon(e);
+    }
+  };
+
+  model.set = function(hash) {
+    var waitingToBeNotified = [];
+    for (var property in hash) {
+      if (hash.hasOwnProperty(property) && properties["set_"+property]) {
+        properties["set_"+property](hash[property]);
+      }
+      if (listeners[property]) {
+        waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
+      }
+    }
+    notifyListeners(waitingToBeNotified);
+  };
+
+  model.get = function(property) {
+    return properties[property];
+  };
+
+  // Add a listener that will be notified any time any of the properties
+  // ithe passed-in array of properties is changed.
+  // This is a simple way for views to update themselves in response to
+  // properties being set on the model object.
+  model.addPropertiesListener = function(properties, callback) {
+    var i, ii, prop;
+    for (i=0, ii=properties.length; i<ii; i++){
+      var prop = properties[i];
+      if (!listeners[prop]) {
+        listeners[prop] = [];
+      }
+      listeners[prop].push(callback);
+    }
+  }
+
+  model.serialize = function() {
+    return JSON.stringify(properties);
   };
 
   return model;

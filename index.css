@@ -92,7 +92,7 @@ h3 {
     vertical-align: bottom;
     margin-left: auto;
     margin-right: auto;
-    background: #aa0e15;
+    background: #e16a3e;
     -webkit-border-top-left-radius: 0.5em;
     -moz-border-top-left-radius: 0.5em;
     -moz-border-radius-topleft: 0.5em;
@@ -108,7 +108,7 @@ h3 {
 
 .therm_text {
   display: block;
-  width: 6.5em;
+  width: 6em;
   height: 1.5em;
   margin-left: 0.5em;
   padding: 0em 0em;
@@ -401,6 +401,13 @@ h3 {
   border-bottom-left-radius: 0; }
 
 .component_group button#cool_button, .component_group button#heat_button {
+  background-color: #dddddd;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(50%, #f6f6f6), color-stop(50%, #dddddd), color-stop(100%, #dddddd));
+  background-image: -webkit-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: -moz-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: -ms-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: -o-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
   font-size: 1em;
   height: auto !important;
   padding: 0.5em 0;
@@ -800,7 +807,7 @@ ul {
   margin: 1em 1em 1em 2em; }
 .content .float-right {
   float: right;
-  margin: 0.01em 0 0 1em; }
+  margin: 0.01em 1em 0 1em; }
 
 @media screen and (max-width: 700px) {
   .content .float-right {
@@ -808,7 +815,7 @@ ul {
     float: none; } }
 .framed img {
   margin: 1em;
-  max-width: 533px;
+  max-width: 600px;
   width: 100%; }
 
 .warning {

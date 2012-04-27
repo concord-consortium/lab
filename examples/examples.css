@@ -92,7 +92,7 @@ h3 {
     vertical-align: bottom;
     margin-left: auto;
     margin-right: auto;
-    background: #eb8723;
+    background: #e16a3e;
     -webkit-border-top-left-radius: 0.5em;
     -moz-border-top-left-radius: 0.5em;
     -moz-border-radius-topleft: 0.5em;
@@ -401,6 +401,13 @@ h3 {
   border-bottom-left-radius: 0; }
 
 .component_group button#cool_button, .component_group button#heat_button {
+  background-color: #dddddd;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(50%, #f6f6f6), color-stop(50%, #dddddd), color-stop(100%, #dddddd));
+  background-image: -webkit-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: -moz-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: -ms-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: -o-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
   font-size: 1em;
   height: auto !important;
   padding: 0.5em 0;
