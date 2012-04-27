@@ -1,10 +1,10 @@
-/*globals modeler:true, require, d3, arrays, benchmark */
+/*globals modeler:true, require, d3, arrays, benchmark, molecule_container */
 /*jslint onevar: true devel:true eqnull: true */
 
 // modeler.js
 //
 
-var md2d      = require('./md2d'),
+var md2d = require('./md2d'),
     coreModel;
 
 modeler = {};
@@ -44,7 +44,9 @@ modeler.model = function() {
       //
       // A two dimensional array consisting of arrays of node property values
       //
-      nodes;
+      nodes,
+
+      properties;
 
   //
   // Indexes into the nodes array for the individual node property arrays
@@ -487,31 +489,35 @@ modeler.model = function() {
     return model;
   };
 
-  var properties = {
-    temperature     : 3,
-    coulomb_forces  : false,
-    epsilon         : -0.1,
+  properties = {
+    temperature   : 3,
+    coulomb_forces: false,
+    epsilon       : -0.1,
 
     set_temperature: function(t) {
       this.temperature = t;
       temperature = t;
       coreModel.setTargetTemperature(abstract_to_real_temperature(t));
     },
+
     set_coulomb_forces: function(cf) {
       this.coulomb_forces = cf;
       coulomb_forces = cf;
       coreModel.useCoulombInteraction(cf);
+
+      // FIXME
       molecule_container.setup_particles();
     },
+
     set_epsilon: function(e) {
       this.epsilon = e;
       coreModel.setLJEpsilon(e);
     }
-  }
+  };
 
   model.set = function(hash) {
-    for (property in hash) {
-      if (properties["set_"+property]) {
+    for (var property in hash) {
+      if (hash.hasOwnProperty(property) && properties["set_"+property]) {
         properties["set_"+property](hash[property]);
       }
     }
@@ -519,14 +525,9 @@ modeler.model = function() {
 
   model.get = function(property) {
     return properties[property];
-  }
+  };
 
   model.serialize = function() {
-    var props = {
-      "temperature": properties.temperature,
-      "coulomb_forces": properties.coulomb_forces,
-      "epsilon": properties.epsilon
-    }
     return JSON.stringify(properties);
   };
 
