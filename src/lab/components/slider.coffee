@@ -89,10 +89,9 @@ class SliderComponent
     this.update_label()
 
   set_scaled_value: (v) ->
-    results = @value
-    results = results * (@max - @min)
-    results = results + @min
-    results
+    @value = (v - @min) / @domain
+    @handle_x = v / @domain * @width
+    @update()
 
   scaled_value: ->
     results = @value
