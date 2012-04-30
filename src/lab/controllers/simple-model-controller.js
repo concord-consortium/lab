@@ -65,6 +65,7 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
     model.set_temperature_control(true);
     model.setEpsilon(INITIAL_EPSILON);
     model.relax();
+    model.resetTime();
   }
 
   // ------------------------------------------------------------

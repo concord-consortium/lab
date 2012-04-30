@@ -78,6 +78,7 @@ controllers.complexModelController = function(layout_style, molecule_view) {
       model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
       model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
       model.relax();
+      model.resetTime();
       te_data = [model.ke()];
     }
 
