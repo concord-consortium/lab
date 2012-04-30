@@ -15,11 +15,14 @@ var autostart = false,
     model = modeler.model(),
     nodes,
     model_player,
-    molecule_container,
-    modelController;
+    molecule_container;
 
 $(window).load(function() {
+  var controller;
+
   model_player = new ModelPlayer(model, autostart);
   molecule_container = layout.moleculeContainer("#molecule-container");
-  modelController = controllers.simpleModelController("simple-static-screen", molecule_container);
+  controller = controllers.simpleModelController(molecule_container, {
+    layoutStyle: 'simple-static-screen'
+  });
 });

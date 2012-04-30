@@ -19,11 +19,12 @@
   step_counter: true
   autostart
 */
-controllers.simpleModelController = function(layout_style, molecule_view) {
+controllers.simpleModelController = function(molecule_view, args) {
 
-  var INITIAL_EPSILON = -0.1;
+  var layoutStyle = args.layoutStyle,
+      INITIAL_EPSILON = -0.1;
 
-  layout.selection = layout_style;
+  layout.selection = layoutStyle;
 
   // ------------------------------------------------------------
   //
