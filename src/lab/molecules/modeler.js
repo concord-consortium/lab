@@ -416,37 +416,6 @@ modeler.model = function() {
     return atoms;
   };
 
-  model.initialize = function(options) {
-    options = options || {};
-
-    if (options.temperature != null) options.temperature = abstract_to_real_temperature(options.temperature);
-    lennard_jones_forces = options.lennard_jones_forces || true;
-    coulomb_forces       = options.coulomb_forces       || false;
-    temperature_control  = options.temperature_control  || false;
-
-    // who is listening to model tick completions
-    model_listener = options.model_listener || false;
-
-    reset_tick_history_list();
-    new_step = true;
-    // pressures.push(pressure);
-    // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-
-    coreModel.useLennardJonesInteraction(lennard_jones_forces);
-    coreModel.useCoulombInteraction(coulomb_forces);
-    coreModel.useThermostat(temperature_control);
-    coreModel.setTargetTemperature(options.temperature);
-
-    return model;
-  };
-
-  model.relax = function() {
-    // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
-    coreModel.integrate(50);
-    coreModel.relaxToTemperature();
-    return model;
-  };
-
   model.on = function(type, listener) {
     event.on(type, listener);
     return model;
@@ -495,6 +464,37 @@ modeler.model = function() {
     // The d3 molecule viewer requires this length to be set correctly:
     atoms.length = nodes[0].length;
 
+    return model;
+  };
+
+  model.initialize = function(options) {
+    options = options || {};
+
+    if (options.temperature != null) options.temperature = abstract_to_real_temperature(options.temperature);
+    lennard_jones_forces = options.lennard_jones_forces || true;
+    coulomb_forces       = options.coulomb_forces       || false;
+    temperature_control  = options.temperature_control  || false;
+
+    // who is listening to model tick completions
+    model_listener = options.model_listener || false;
+
+    reset_tick_history_list();
+    new_step = true;
+    // pressures.push(pressure);
+    // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
+
+    coreModel.useLennardJonesInteraction(lennard_jones_forces);
+    coreModel.useCoulombInteraction(coulomb_forces);
+    coreModel.useThermostat(temperature_control);
+    coreModel.setTargetTemperature(options.temperatu2re);
+
+    return model;
+  };
+
+  model.relax = function() {
+    // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
+    coreModel.integrate(50);
+    coreModel.relaxToTemperature();
     return model;
   };
 
