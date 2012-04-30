@@ -6,7 +6,6 @@
 
 var autostart = false,
     mol_number = 50,
-    sample_time = 0.01,
     temperature = 3,
     maximum_model_steps = false,
     atoms, model,
