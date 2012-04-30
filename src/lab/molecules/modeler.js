@@ -46,8 +46,34 @@ modeler.model = function() {
       //
       nodes,
 
-      listeners,
-      properties;
+      listeners = {},
+
+      properties = {
+        temperature   : 3,
+        coulomb_forces: false,
+        epsilon       : -0.1,
+
+        set_temperature: function(t) {
+          this.temperature = t;
+          temperature = t;
+          coreModel.setTargetTemperature(abstract_to_real_temperature(t));
+        },
+
+        set_coulomb_forces: function(cf) {
+          this.coulomb_forces = cf;
+          coulomb_forces = cf;
+          coreModel.useCoulombInteraction(cf);
+
+          // FIXME
+          molecule_container.setup_particles();
+        },
+
+        set_epsilon: function(e) {
+          this.epsilon = e;
+          coreModel.setLJEpsilon(e);
+        }
+      };
+
 
   //
   // Indexes into the nodes array for the individual node property arrays
@@ -67,6 +93,13 @@ modeler.model = function() {
     MASS     : md2d.INDICES.MASS,
     CHARGE   : md2d.INDICES.CHARGE
   };
+
+  function notifyListeners(listeners) {
+    $.unique(listeners);
+    for (var i=0, ii=listeners.length; i<ii; i++){
+      listeners[i]();
+    }
+  }
 
   //
   // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
@@ -488,41 +521,6 @@ modeler.model = function() {
     if (!arguments.length) return coreModel.getSize();
     coreModel.setSize(x);
     return model;
-  };
-
-  listeners = {};
-
-  function notifyListeners(listeners) {
-    $.unique(listeners);
-    for (var i=0, ii=listeners.length; i<ii; i++){
-      listeners[i]();
-    }
-  }
-
-  properties = {
-    temperature   : 3,
-    coulomb_forces: false,
-    epsilon       : -0.1,
-
-    set_temperature: function(t) {
-      this.temperature = t;
-      temperature = t;
-      coreModel.setTargetTemperature(abstract_to_real_temperature(t));
-    },
-
-    set_coulomb_forces: function(cf) {
-      this.coulomb_forces = cf;
-      coulomb_forces = cf;
-      coreModel.useCoulombInteraction(cf);
-
-      // FIXME
-      molecule_container.setup_particles();
-    },
-
-    set_epsilon: function(e) {
-      this.epsilon = e;
-      coreModel.setLJEpsilon(e);
-    }
   };
 
   model.set = function(hash) {
