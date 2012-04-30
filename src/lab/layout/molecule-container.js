@@ -11,7 +11,7 @@ layout.moleculeContainer = function(e, options) {
       cy = elem.property("clientHeight"),
       height,
       scale_factor,
-      vis1, vis, plot, 
+      vis1, vis, plot,
       playback_component, time_label,
       padding, size,
       mw, mh, tx, ty, stroke,
@@ -20,8 +20,8 @@ layout.moleculeContainer = function(e, options) {
       dragged,
       pc_xpos, pc_ypos,
       model_time_formatter = d3.format("5.3f"),
-      ns_string_prefix = "time: ",
-      ns_string_suffix = " (ns)",
+      time_prefix = "time: ",
+      time_suffix = " (ps)",
       gradient_container,
       red_gradient,
       blue_gradient,
@@ -124,7 +124,7 @@ layout.moleculeContainer = function(e, options) {
   }
 
   function modelTimeLabel() {
-    return ns_string_prefix + model_time_formatter(model.stepCounter() * sample_time) + ns_string_suffix;
+    return time_prefix + model_time_formatter(model.getTime() / 1000) + time_suffix;
   }
 
   function get_x(i) {
