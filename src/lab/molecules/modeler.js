@@ -486,7 +486,7 @@ modeler.model = function() {
     coreModel.useLennardJonesInteraction(lennard_jones_forces);
     coreModel.useCoulombInteraction(coulomb_forces);
     coreModel.useThermostat(temperature_control);
-    coreModel.setTargetTemperature(options.temperatu2re);
+    coreModel.setTargetTemperature(options.temperature);
 
     return model;
   };
