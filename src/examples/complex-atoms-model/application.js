@@ -11,7 +11,7 @@
 
 var autostart = false,
     mol_number = 50,
-    sample_time = 0.01,
+    samplingPeriod = 0.25,
     temperature = 5,
     maximum_model_steps = 5000,
     molecules = [], model,
@@ -59,12 +59,13 @@ var te_data = [];
 
 var kechart = document.getElementById("ke-chart");
 
+// FIXME this graph has "magic" knowledge of the sampling period used by the modeler
 var ke_graph_options = {
   title:     "Kinetic Energy of the System",
-  xlabel:    "Model Time (ns)",
+  xlabel:    "Model Time (ps)",
   xmin:      0,
   xmax:      2500,
-  sample:    sample_time,
+  sample:    samplingPeriod,
   ylabel:    null,
   ymin:      0.0,
   ymax:      200,
