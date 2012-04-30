@@ -16,8 +16,6 @@ modeler.model = function() {
       event = d3.dispatch("tick"),
       temperature_control,
       lennard_jones_forces, coulomb_forces,
-      pe,
-      ke,
       stopped = true,
       tick_history_list = [],
       tick_history_list_index = 0,
@@ -26,7 +24,18 @@ modeler.model = function() {
       epsilon, sigma,
       pressure, pressures = [0],
       sample_time, sample_times = [],
+
+      // N.B. this is the thermostat (temperature control) setting
       temperature,
+
+      // current model time, in fs
+      time,
+
+      // potential energy
+      pe,
+
+      // kinetic energy
+      ke,
 
       modelOutputState,
       model_listener,
@@ -131,7 +140,11 @@ modeler.model = function() {
     tick_history_list_index++;
     tick_counter++;
     new_step = true;
-    tick_history_list.push({ nodes: newnodes, ke:ke });
+    tick_history_list.push({
+      nodes: newnodes,
+      ke   :ke,
+      time :time
+    });
     if (tick_history_list_index > 1000) {
       tick_history_list.splice(0,1);
       tick_history_list_index = 1000;
@@ -146,13 +159,17 @@ modeler.model = function() {
     }
 
     coreModel.integrate();
+
     pressure = modelOutputState.pressure;
-    pe = modelOutputState.PE;
+    pe       = modelOutputState.PE;
+    ke       = modelOutputState.KE;
+    time     = modelOutputState.time;
 
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-    ke = modelOutputState.KE;
+
     tick_history_list_push();
+
     if (!stopped) {
       t = Date.now();
       if (sample_time) {
@@ -190,6 +207,8 @@ modeler.model = function() {
       arrays.copy(tick_history_list[index].nodes[i], nodes[i]);
     }
     ke = tick_history_list[index].ke;
+    time = tick_history_list[index].time;
+    coreModel.setTime(time);
   }
 
   function container_pressure() {
@@ -346,6 +365,14 @@ modeler.model = function() {
 
   model.getLJCalculator = function() {
     return coreModel.getLJCalculator();
+  };
+
+  model.resetTime = function() {
+    coreModel.setTime(0);
+  };
+
+  model.getTime = function() {
+    return modelOutputState ? modelOutputState.time : undefined;
   };
 
   model.set_radius = function(r) {

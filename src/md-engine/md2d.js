@@ -420,6 +420,11 @@ exports.makeModel = function() {
       T_target = v;
     },
 
+    // Our timekeeping is really a convenience for users of this lib, so let them reset time at will
+    setTime: function(t) {
+      outputState.time = time = t;
+    },
+
     setSize: function(v) {
       // NB. We may want to create a simple state diagram for the md engine (as well as for the 'modeler' defined in
       // lab.molecules.js)
