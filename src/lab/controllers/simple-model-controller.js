@@ -75,8 +75,7 @@ controllers.simpleModelController = function(molecule_view, args) {
     model.nodes({
       num: mol_number,
       xdomain: 10,
-      ydomain: 10,
-      temperature: temperature
+      ydomain: 10
     })
 
     model.initialize({
