@@ -46,6 +46,7 @@ modeler.model = function() {
       //
       nodes,
 
+      listeners,
       properties;
 
   //
@@ -489,14 +490,14 @@ modeler.model = function() {
     return model;
   };
 
-  var listeners = {};
+  listeners = {};
 
   function notifyListeners(listeners) {
     $.unique(listeners);
     for (var i=0, ii=listeners.length; i<ii; i++){
       listeners[i]();
     }
-  };
+  }
 
   properties = {
     temperature   : 3,
@@ -525,13 +526,15 @@ modeler.model = function() {
   };
 
   model.set = function(hash) {
-    var waitingToBeNotified = [];
-    for (var property in hash) {
-      if (hash.hasOwnProperty(property) && properties["set_"+property]) {
-        properties["set_"+property](hash[property]);
-      }
-      if (listeners[property]) {
-        waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
+    var property, waitingToBeNotified = [];
+    for (property in hash) {
+      if (hash.hasOwnProperty(property)) {
+        if (properties["set_"+property]) {
+          properties["set_"+property](hash[property]);
+        }
+        if (listeners[property]) {
+          waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
+        }
       }
     }
     notifyListeners(waitingToBeNotified);
@@ -548,13 +551,13 @@ modeler.model = function() {
   model.addPropertiesListener = function(properties, callback) {
     var i, ii, prop;
     for (i=0, ii=properties.length; i<ii; i++){
-      var prop = properties[i];
+      prop = properties[i];
       if (!listeners[prop]) {
         listeners[prop] = [];
       }
       listeners[prop].push(callback);
     }
-  }
+  };
 
   model.serialize = function() {
     return JSON.stringify(properties);
