@@ -11,8 +11,6 @@
   atoms: true
   nodes: true
 
-  temperature
-
   step_counter: true
 */
 controllers.simpleModelController = function(molecule_view, args) {
@@ -22,7 +20,8 @@ controllers.simpleModelController = function(molecule_view, args) {
       maximum_model_steps = args.maximum_model_steps,
       lj_epsilon_max      = args.lj_epsilon_max,
       lj_epsilon_min      = args.lj_epsilon_min,
-      initial_epsilon     = args.initial_epsilon;
+      initial_epsilon     = args.initial_epsilon,
+      temperature         = args.temperature;
 
   layout.selection = layoutStyle;
 
