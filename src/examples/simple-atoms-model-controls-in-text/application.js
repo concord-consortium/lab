@@ -21,7 +21,7 @@ $(window).load(function() {
   var controller;
 
   model_player = new ModelPlayer(model, autostart);
-  molecule_container = layout.moleculeContainer("#molecule-container");
+  molecule_container = layout.moleculeContainer('#molecule-container');
   controller = controllers.simpleModelController(molecule_container, {
     layoutStyle: 'simple-static-screen'
   });
