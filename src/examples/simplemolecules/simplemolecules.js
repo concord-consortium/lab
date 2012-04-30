@@ -83,9 +83,9 @@ var mc_graph = {
   xunits:               true,
   yunits:               true,
   atom_mubers:          false,
-  xmin:                 0, 
-  xmax:                 100, 
-  ymin:                 0, 
+  xmin:                 0,
+  xmax:                 100,
+  ymin:                 0,
   ymax:                 100
 };
 
@@ -105,7 +105,7 @@ var kechart = document.getElementById("ke-chart");
 var ke_graph_options = {
   title:     "Kinetic Energy of the System",
   xlabel:    "Model Time (ns)",
-  xmin:      0, 
+  xmin:      0,
   xmax:      2500,
   sample:    sample_time,
   ylabel:    null,
@@ -166,13 +166,13 @@ var lj_data = {
   coefficients: lj_coefficients,
   variables: [
     {
-      coefficient:"epsilon", 
-      x: lj_coefficients.rmin, 
+      coefficient:"epsilon",
+      x: lj_coefficients.rmin,
       y: lj_coefficients.epsilon
-    }, 
+    },
     {
-      coefficient:"sigma", 
-      x: lj_coefficients.sigma, 
+      coefficient:"sigma",
+      x: lj_coefficients.sigma,
       y: 0
     }
   ]
@@ -238,16 +238,16 @@ if (model_controls) {
 // ------------------------------------------------------------
 
 function generate_atoms() {
-  model.nodes({ num: mol_number, 
-          xdomain: mc_graph.xdomain, 
-          ydomain: mc_graph.ydomain, 
-          temperature: temperature, 
+  model.nodes({ num: mol_number,
+          xdomain: mc_graph.xdomain,
+          ydomain: mc_graph.ydomain,
+          temperature: temperature,
           rmin: 4.4
         })
       .initialize({
           temperature: temperature,
-          lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked, 
-          coulomb_forces: layout.coulomb_forces_checkbox.checked, 
+          lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked,
+          coulomb_forces: layout.coulomb_forces_checkbox.checked,
           model_listener: model_listener
         });
   atoms = model.get_atoms();
