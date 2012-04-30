@@ -12,17 +12,17 @@
   nodes: true
 
   temperature
-  lj_epsilon_max
-  lj_epsilon_min
 
-  maximum_model_steps
   step_counter: true
-  autostart
 */
 controllers.simpleModelController = function(molecule_view, args) {
 
-  var layoutStyle = args.layoutStyle,
-      INITIAL_EPSILON = -0.1;
+  var layoutStyle         = args.layoutStyle,
+      autostart           = args.autostart,
+      maximum_model_steps = args.maximum_model_steps,
+      lj_epsilon_max      = args.lj_epsilon_max,
+      lj_epsilon_min      = args.lj_epsilon_min,
+      initial_epsilon     = args.initial_epsilon;
 
   layout.selection = layoutStyle;
 
@@ -64,7 +64,7 @@ controllers.simpleModelController = function(molecule_view, args) {
     model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
     model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
     model.set_temperature_control(true);
-    model.setEpsilon(INITIAL_EPSILON);
+    model.setEpsilon(initial_epsilon);
     model.relax();
     model.resetTime();
   }
@@ -185,7 +185,7 @@ controllers.simpleModelController = function(molecule_view, args) {
   var epsilon_slider = new SliderComponent('#attraction_slider',
     function (v) {
       model.set({epsilon: v} );
-    }, lj_epsilon_max, lj_epsilon_min, INITIAL_EPSILON);
+    }, lj_epsilon_max, lj_epsilon_min, initial_epsilon);
 
   model.addPropertiesListener(["epsilon"], function(){
     epsilon_slider.set_scaled_value(model.get("epsilon"));
