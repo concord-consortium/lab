@@ -58,9 +58,9 @@ var mc_graph = {
   xunits:               false,
   yunits:               false,
   atom_mubers:          false,
-  xmin:                 0, 
-  xmax:                 100, 
-  ymin:                 0, 
+  xmin:                 0,
+  xmax:                 100,
+  ymin:                 0,
   ymax:                 100
 };
 
@@ -78,15 +78,15 @@ var lj_coefficients = molecules_lennard_jones.coefficients();
 var lj_data = {
   coefficients: lj_coefficients,
   variables: [
-    { 
-      coefficient:"epsilon", 
-      x: lj_coefficients.rmin, 
-      y: lj_coefficients.epsilon 
-    }, 
-    { 
-      coefficient:"sigma", 
-      x: lj_coefficients.sigma, 
-      y: 0 
+    {
+      coefficient:"epsilon",
+      x: lj_coefficients.rmin,
+      y: lj_coefficients.epsilon
+    },
+    {
+      coefficient:"sigma",
+      x: lj_coefficients.sigma,
+      y: 0
     }
   ]
 };
@@ -123,7 +123,7 @@ function update_coefficients(coefficients) {
   lj_data.variables[0].x = rmin;
 
   lennard_jones_potential = []
-  
+
   for(var r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
     y = molecules_lennard_jones.potential(r)
     if (y < 100) {
@@ -139,14 +139,14 @@ function update_coefficients(coefficients) {
 // ------------------------------------------------------------
 
 function generate_atoms() {
-  model.nodes({ num: mol_number, 
-          xdomain: 100, ydomain: 100, 
+  model.nodes({ num: mol_number,
+          xdomain: 100, ydomain: 100,
           temperature: temperature, rmin: 4.4
         })
       .initialize({
           temperature: temperature,
-          lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked, 
-          coulomb_forces: layout.coulomb_forces_checkbox.checked, 
+          lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked,
+          coulomb_forces: layout.coulomb_forces_checkbox.checked,
           model_listener: model_listener
         });
   atoms = model.get_atoms();
@@ -262,11 +262,11 @@ window.onresize = layout.setupScreen;
 // ------------------------------------------------------------
 
 function handleKeyboardForModel(evt) {
-  evt = (evt) ? evt : ((window.event) ? event : null); 
+  evt = (evt) ? evt : ((window.event) ? event : null);
   if (evt) {
     switch (evt.keyCode) {
       case 32:                // spacebar
-      model_stopped ? modelGo() : modelStop(); 
+      model_stopped ? modelGo() : modelStop();
       evt.preventDefault();
       break;
       case 13:                // return
