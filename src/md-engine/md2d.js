@@ -459,6 +459,8 @@ exports.makeModel = function() {
     },
 
     createAtoms: function(options) {
+      var rmin = lennardJones.coefficients().rmin,
+          arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
 
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
@@ -468,23 +470,6 @@ exports.makeModel = function() {
 
       options = options || {};
       N = options.num || 50;
-
-      var temperature = options.temperature || 100,
-          rmin = lennardJones.coefficients().rmin,
-
-          // special-case:
-          arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-
-          k_inJoulesPerKelvin = constants.BOLTZMANN_CONSTANT.as(unit.JOULES_PER_KELVIN),
-
-          mass_in_kg, v0_MKS, v0,
-
-          nrows = Math.floor(Math.sqrt(N)),
-          ncols = Math.ceil(N/nrows),
-
-          i, r, c, rowSpacing, colSpacing,
-          vMagnitude, vDirection,
-          rescalingFactor;
 
       nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
 
@@ -502,6 +487,21 @@ exports.makeModel = function() {
       charge = model.charge = nodes[INDICES.CHARGE] = arrays.create(N, 0, arrayType);
 
       totalMass = model.totalMass = N * ARGON_MASS_IN_DALTON;
+    },
+
+    initializeAtomsRandomly: function(options) {
+      var temperature = options.temperature || 100,
+
+          k_inJoulesPerKelvin = constants.BOLTZMANN_CONSTANT.as(unit.JOULES_PER_KELVIN),
+
+          mass_in_kg, v0_MKS, v0,
+
+          nrows = Math.floor(Math.sqrt(N)),
+          ncols = Math.ceil(N/nrows),
+
+          i, r, c, rowSpacing, colSpacing,
+          vMagnitude, vDirection,
+          rescalingFactor;
 
       colSpacing = size[0] / (1+ncols);
       rowSpacing = size[1] / (1+nrows);

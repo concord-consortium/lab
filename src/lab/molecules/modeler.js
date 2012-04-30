@@ -488,6 +488,8 @@ modeler.model = function() {
     coreModel.useThermostat(temperature_control);
     coreModel.setTargetTemperature(options.temperature);
 
+    coreModel.initializeAtomsRandomly(options);
+
     return model;
   };
 
