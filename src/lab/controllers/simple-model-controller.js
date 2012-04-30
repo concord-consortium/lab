@@ -76,28 +76,25 @@ controllers.simpleModelController = function(molecule_view, args) {
       num: mol_number,
       xdomain: 10,
       ydomain: 10,
-      temperature: temperature,
-      rmin: 4.4
+      temperature: temperature
     })
 
     model.initialize({
-      temperature: temperature,
-      lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked,
-      coulomb_forces: layout.coulomb_forces_checkbox.checked,
+      temperature: temperature,         // intentionally repeated here
+      lennard_jones_forces: true,
+      coulomb_forces: false,
+      temperature_control: true,
       model_listener: model_listener
     });
+
+    model.setEpsilon(initial_epsilon);
 
     atoms = model.get_atoms();
     nodes = model.get_nodes();
 
-    model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
-    model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
-    model.set_temperature_control(true);
-    model.setEpsilon(initial_epsilon);
     model.relax();
     model.resetTime();
 
-    model.temperature(temperature);
     modelStop();
     model.on("tick", model_listener);
     molecule_view.update_molecule_radius();
