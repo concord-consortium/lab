@@ -90,8 +90,8 @@ exports.makeModel = function() {
       // Whether system dimensions have been set. This is only allowed to happen once.
       sizeHasBeenInitialized = false,
 
-      // Whether "nodes" (particles) have been created & initialized. This is only allowed to happen once.
-      nodesHaveBeenCreated = false,
+      // Whether "atoms" (particles) have been created & initialized. This is only allowed to happen once.
+      atomsHaveBeenCreated = false,
 
       // Whether to simulate Coulomb forces between particles.
       useCoulombInteraction = false,
@@ -458,12 +458,12 @@ exports.makeModel = function() {
       return lennardJones;
     },
 
-    createNodes: function(options) {
+    createAtoms: function(options) {
 
-      if (nodesHaveBeenCreated) {
-        throw new Error("md2d: createNodes was called even though the particles have already been created for this model instance.");
+      if (atomsHaveBeenCreated) {
+        throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
       }
-      nodesHaveBeenCreated = true;
+      atomsHaveBeenCreated = true;
       sizeHasBeenInitialized = true;
 
       options = options || {};
@@ -587,8 +587,8 @@ exports.makeModel = function() {
 
     integrate: function(duration, opt_dt) {
 
-      if (!nodesHaveBeenCreated) {
-        throw new Error("md2d: integrate called before nodes created.");
+      if (!atomsHaveBeenCreated) {
+        throw new Error("md2d: integrate called before atoms created.");
       }
 
       // FIXME. Recommended timestep for accurate simulation is τ/200
