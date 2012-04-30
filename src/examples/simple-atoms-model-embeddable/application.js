@@ -19,7 +19,11 @@ var autostart = false,
     modelController;
 
 $(window).load(function() {
+  var controller;
+
   model_player = new ModelPlayer(model, autostart);
   molecule_container = layout.moleculeContainer("#molecule-container");
-  modelController = controllers.simpleModelController("simple-iframe", molecule_container);
+  controller = controllers.simpleModelController(molecule_container, {
+    layoutStyle: 'simple-static-screen'
+  });
 });
