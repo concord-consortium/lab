@@ -443,7 +443,7 @@ modeler.model = function() {
     // get a fresh model
     coreModel = md2d.makeModel();
 
-    coreModel.createNodes(options);
+    coreModel.createAtoms(options);
 
     nodes    = coreModel.nodes;
     radius   = coreModel.radius;
