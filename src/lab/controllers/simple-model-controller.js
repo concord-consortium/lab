@@ -40,36 +40,6 @@ controllers.simpleModelController = function(molecule_view, args) {
 
   // ------------------------------------------------------------
   //
-  //   Molecular Model Setup
-  //
-
-  function generate_atoms() {
-    model.nodes({ num: mol_number,
-            xdomain: 10, ydomain: 10,
-            temperature: temperature, rmin: 4.4
-          })
-        .initialize({
-            temperature: temperature,
-            lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked,
-            coulomb_forces: layout.coulomb_forces_checkbox.checked,
-            model_listener: model_listener
-          });
-    atoms = model.get_atoms();
-    nodes = model.get_nodes();
-  }
-
-  function modelSetup() {
-    generate_atoms();
-    model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
-    model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
-    model.set_temperature_control(true);
-    model.setEpsilon(initial_epsilon);
-    model.relax();
-    model.resetTime();
-  }
-
-  // ------------------------------------------------------------
-  //
   // Model Controller
   //
   // ------------------------------------------------------------
@@ -96,8 +66,37 @@ controllers.simpleModelController = function(molecule_view, args) {
     }
   }
 
-  function modelReset() {
-    modelSetup();
+  // ------------------------------------------------------------
+  //
+  //   Molecular Model Setup
+  //
+
+  function setup() {
+    model.nodes({
+      num: mol_number,
+      xdomain: 10,
+      ydomain: 10,
+      temperature: temperature,
+      rmin: 4.4
+    })
+
+    model.initialize({
+      temperature: temperature,
+      lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked,
+      coulomb_forces: layout.coulomb_forces_checkbox.checked,
+      model_listener: model_listener
+    });
+
+    atoms = model.get_atoms();
+    nodes = model.get_nodes();
+
+    model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
+    model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
+    model.set_temperature_control(true);
+    model.setEpsilon(initial_epsilon);
+    model.relax();
+    model.resetTime();
+
     model.temperature(temperature);
     modelStop();
     model.on("tick", model_listener);
@@ -169,7 +168,7 @@ controllers.simpleModelController = function(molecule_view, args) {
   //
   // ------------------------------------------------------------
 
-  modelReset();
+  setup();
 
   // ------------------------------------------------------------
   // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
