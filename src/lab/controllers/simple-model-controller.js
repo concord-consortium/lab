@@ -23,6 +23,8 @@ controllers.simpleModelController = function(molecule_view_id, args) {
       initial_epsilon     = args.initial_epsilon,
       temperature         = args.temperature;
 
+  model = modeler.model();
+
   layout.selection = layoutStyle;
 
   model_player = new ModelPlayer(model, autostart);
