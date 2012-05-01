@@ -442,12 +442,12 @@ modeler.model = function(initialProperties) {
   model.nodes = function(options) {
     options = options || {};
 
-    if (options.temperature != null) options.temperature = abstract_to_real_temperature(options.temperature);
-
     // get a fresh model
     coreModel = md2d.makeModel();
 
-    coreModel.createAtoms(options);
+    coreModel.createAtoms({
+      num: options.num
+    });
 
     nodes    = coreModel.nodes;
     radius   = coreModel.radius;
@@ -472,27 +472,31 @@ modeler.model = function(initialProperties) {
   };
 
   model.initialize = function(options) {
+    var T;
+
     options = options || {};
 
-    if (options.temperature != null) options.temperature = abstract_to_real_temperature(options.temperature);
     lennard_jones_forces = options.lennard_jones_forces || true;
     coulomb_forces       = options.coulomb_forces       || false;
     temperature_control  = options.temperature_control  || false;
+    temperature          = options.temperature          || 5;
 
     // who is listening to model tick completions
-    model_listener = options.model_listener || false;
+    model_listener       = options.model_listener || false;
 
     reset_tick_history_list();
     new_step = true;
-    // pressures.push(pressure);
-    // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
 
     coreModel.useLennardJonesInteraction(lennard_jones_forces);
     coreModel.useCoulombInteraction(coulomb_forces);
     coreModel.useThermostat(temperature_control);
-    coreModel.setTargetTemperature(options.temperature);
 
-    coreModel.initializeAtomsRandomly(options);
+    T = abstract_to_real_temperature(temperature);
+
+    coreModel.setTargetTemperature(T);
+    coreModel.initializeAtomsRandomly({
+      temperature: T
+    });
 
     return model;
   };

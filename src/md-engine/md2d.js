@@ -24,6 +24,12 @@ var arrays       = require('./arrays/arrays').arrays,
       return true;
     }()),
 
+    // make at least 2 atoms
+    N_MIN = 2,
+
+    // make no more than this many atoms:
+    N_MAX = 1000,
+
     // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
     ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
     ARGON_LJ_SIGMA_IN_NM   = 0.34,
@@ -458,6 +464,9 @@ exports.makeModel = function() {
       return lennardJones;
     },
 
+    // allocates 'nodes' array of arrays, sets number of atoms
+    // options:
+    //   num (required): the number of atoms to create
     createAtoms: function(options) {
       var rmin = lennardJones.coefficients().rmin,
           arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
@@ -468,8 +477,20 @@ exports.makeModel = function() {
       atomsHaveBeenCreated = true;
       sizeHasBeenInitialized = true;
 
-      options = options || {};
-      N = options.num || 50;
+      if (!options || typeof options.num === 'undefined') {
+        throw new Error("md2d: createAtoms was called without the required 'N' option specifying the number of atoms to create.");
+      }
+      if (options.num !== Math.floor(options.num)) {
+        throw new Error("md2d: createAtoms was passed a non-integral 'N' option.");
+      }
+      if (options.num < N_MIN) {
+        throw new Error("md2d: create Atoms was passed an 'N' option less than the minimum allowable value N_MIN = " + N_MIN + ".");
+      }
+      if (options.num > N_MAX) {
+        throw new Error("md2d: create Atoms was passed an 'N' option greater than the maximum allowable value N_MAX = " + N_MAX + ".");
+      }
+
+      N = options.num;
 
       nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
 
@@ -490,6 +511,7 @@ exports.makeModel = function() {
     },
 
     initializeAtomsRandomly: function(options) {
+          // don't read too much into this default temperature; any value will do if velocities are to be rescaled immediately
       var temperature = options.temperature || 100,
 
           k_inJoulesPerKelvin = constants.BOLTZMANN_CONSTANT.as(unit.JOULES_PER_KELVIN),
@@ -558,7 +580,6 @@ exports.makeModel = function() {
 
       // Compute linear and angular velocity of CM, compute temperature, and publish output state:
       computeCMMotion();
-
 
       // Adjust for center of mass motion
       removeTranslationAndRotationFromVelocities();
