@@ -44,7 +44,7 @@ controllers.simpleModelController = function(molecule_view_id, args) {
   // ------------------------------------------------------------
 
   model = modeler.model({
-      temperature: temperature,         // intentionally repeated here
+      temperature: temperature,
       lennard_jones_forces: true,
       coulomb_forces: false,
       temperature_control: true,
