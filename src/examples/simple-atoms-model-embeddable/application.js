@@ -15,7 +15,6 @@
 var mol_number = 50,
     atoms,
     model_stopped = true,
-    model = modeler.model(),
     nodes,
     model_player,
     molecule_container;
