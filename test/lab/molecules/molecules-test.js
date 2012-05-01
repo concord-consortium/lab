@@ -15,7 +15,8 @@ var get_charge = function (i) {
 var initialization_options = {
       lennard_jones_forces: true,
       coulomb_forces: true,
-      model_listener: false
+      model_listener: false,
+      mol_number: 50
     },
     node_options = {
       xdomain: 100,
@@ -39,11 +40,10 @@ suite.addBatch({
 suite.addBatch({
   "model initialization": {
     topic: function() {
-      return model = modeler.model();
+      return model = modeler.model(initialization_options);
     },
     "creates default molecular model": function(model) {
       assert.equal(atoms.length, 0);
-      model.nodes();
       atoms = model.get_atoms();
       assert.equal(atoms.length, 50);
       // FIXME: custom error strings
@@ -97,9 +97,7 @@ suite.addBatch({
   "model stepping": {
     topic: function() {
       node_options.num = 10;
-      return model = modeler.model()
-                    .nodes(node_options)
-                    .initialize(initialization_options);
+      return model = modeler.model(initialization_options);
     },
     "a newly initialized model starts at step 0": function(model) {
       assert.equal(model.steps(), 0);
