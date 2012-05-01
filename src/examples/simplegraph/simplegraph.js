@@ -1,2 +1,2 @@
 
-graph = new  grapher.sampleGraph();
+graph = grapher.graph('#chart');
