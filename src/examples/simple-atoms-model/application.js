@@ -20,6 +20,11 @@
 
   $(window).load(function() {
     windowLoad.resolve();
+
+    $('#save-button').click(function() {
+      var json = model.serialize();
+      alert(json);
+    });
   });
 
   $.when(request, windowLoad).done(function(xhr) {
