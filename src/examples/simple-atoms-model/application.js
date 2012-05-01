@@ -30,7 +30,7 @@
       lj_epsilon_max : -0.01034,
       initial_epsilon: -0.1,
       temperature    : 3,
-      coulomb_forces : true
+      coulomb_forces : false
     };
   }).always(function() {
     $.extend(modelConfig, opts);
