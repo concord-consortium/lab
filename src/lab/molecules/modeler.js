@@ -1,4 +1,4 @@
-/*globals modeler:true, require, d3, arrays, benchmark, molecule_container */
+/*globals $ modeler:true, require, d3, arrays, benchmark, molecule_container */
 /*jslint onevar: true devel:true eqnull: true */
 
 // modeler.js
@@ -272,6 +272,29 @@ modeler.model = function(initialProperties) {
   // The d3 molecule viewer requires this length to be set correctly:
   atoms.length = nodes[0].length;
 
+  // Initialize properties
+  lennard_jones_forces = initialProperties.lennard_jones_forces || true;
+  coulomb_forces       = initialProperties.coulomb_forces       || false;
+  temperature_control  = initialProperties.temperature_control  || false;
+  temperature          = initialProperties.temperature          || 5;
+
+  // who is listening to model tick completions
+  model_listener       = initialProperties.model_listener || false;
+
+  reset_tick_history_list();
+  new_step = true;
+
+  coreModel.useLennardJonesInteraction(lennard_jones_forces);
+  coreModel.useCoulombInteraction(coulomb_forces);
+  coreModel.useThermostat(temperature_control);
+
+  var T = abstract_to_real_temperature(temperature);
+
+  coreModel.setTargetTemperature(T);
+  coreModel.initializeAtomsRandomly({
+    temperature: T
+  });
+
   // ------------------------------------------------------------
   //
   // Public functions
@@ -470,43 +493,12 @@ modeler.model = function(initialProperties) {
     return model;
   };
 
-  model.initialize = function(options) {
-    var T;
-
-    options = options || {};
-
-    lennard_jones_forces = options.lennard_jones_forces || true;
-    coulomb_forces       = options.coulomb_forces       || false;
-    temperature_control  = options.temperature_control  || false;
-    temperature          = options.temperature          || 5;
-
-    // who is listening to model tick completions
-    model_listener       = options.model_listener || false;
-
-    reset_tick_history_list();
-    new_step = true;
-
-    coreModel.useLennardJonesInteraction(lennard_jones_forces);
-    coreModel.useCoulombInteraction(coulomb_forces);
-    coreModel.useThermostat(temperature_control);
-
-    T = abstract_to_real_temperature(temperature);
-
-    coreModel.setTargetTemperature(T);
-    coreModel.initializeAtomsRandomly({
-      temperature: T
-    });
-
-    return model;
-  };
-
   model.relax = function() {
     coreModel.relaxToTemperature();
     return model;
   };
 
   model.start = function() {
-    model.initialize();
     return model.resume();
   };
 
@@ -597,8 +589,6 @@ modeler.model = function(initialProperties) {
   model.serialize = function() {
     return JSON.stringify(properties);
   };
-
-  model.initialize(initialProperties);
 
   return model;
 };
