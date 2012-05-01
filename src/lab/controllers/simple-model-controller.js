@@ -18,17 +18,11 @@ controllers.simpleModelController = function(molecule_view_id, args) {
   var layoutStyle         = args.layoutStyle,
       autostart           = args.autostart,
       maximum_model_steps = args.maximum_model_steps,
+      mol_number          = args.mol_number,
       lj_epsilon_max      = args.lj_epsilon_max,
       lj_epsilon_min      = args.lj_epsilon_min,
       initial_epsilon     = args.initial_epsilon,
       temperature         = args.temperature;
-
-  model = modeler.model();
-
-  layout.selection = layoutStyle;
-
-  model_player = new ModelPlayer(model, autostart);
-  molecule_container = layout.moleculeContainer(molecule_view_id);
 
   // ------------------------------------------------------------
   //
@@ -42,6 +36,31 @@ controllers.simpleModelController = function(molecule_view_id, args) {
     molecule_container.update_molecule_positions();
     if (step_counter >= model.stepCounter()) { modelStop(); }
   };
+
+  // ------------------------------------------------------------
+  //
+  // Create model and pass in properties
+  //
+  // ------------------------------------------------------------
+
+  model = modeler.model({
+      temperature: temperature,         // intentionally repeated here
+      lennard_jones_forces: true,
+      coulomb_forces: false,
+      temperature_control: true,
+      model_listener: model_listener
+    });
+
+  // ------------------------------------------------------------
+  //
+  // Create player and container view for model
+  //
+  // ------------------------------------------------------------
+
+  layout.selection = layoutStyle;
+
+  model_player = new ModelPlayer(model, autostart);
+  molecule_container = layout.moleculeContainer(molecule_view_id);
 
   // ------------------------------------------------------------
   //
@@ -77,20 +96,6 @@ controllers.simpleModelController = function(molecule_view_id, args) {
   //
 
   function setup() {
-    model.nodes({
-      num: mol_number,
-      xdomain: 10,
-      ydomain: 10
-    })
-
-    model.initialize({
-      temperature: temperature,         // intentionally repeated here
-      lennard_jones_forces: true,
-      coulomb_forces: false,
-      temperature_control: true,
-      model_listener: model_listener
-    });
-
     model.setEpsilon(initial_epsilon);
 
     atoms = model.get_atoms();
