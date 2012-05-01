@@ -19,7 +19,7 @@ layout.moleculeContainer = function(e, options) {
       y, downscaley, downy,
       dragged,
       pc_xpos, pc_ypos,
-      model_time_formatter = d3.format("5.3f"),
+      model_time_formatter = d3.format("5.2f"),
       time_prefix = "time: ",
       time_suffix = " (ps)",
       gradient_container,
