@@ -179,16 +179,12 @@ layout.setupScreen = function(layout_selection) {
 
   function setupRegularScreenPotentialChart() {
     var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    // lj_potential_chart.style.width = layout.display.page.width * 0.22 +"px";
-    // lj_potential_chart.style.height = size / 2.35 +"px";
-    layout.finishSetupPotentialChart();
+    potentialChart.resize(size, size);
   }
 
   function setupRegularSpeedDistributionChart() {
     var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    // speed_distribution_chart.style.width = layout.display.page.width * 0.22 +"px";
-    // speed_distribution_chart.style.height = size / 2.35 +"px";
-    layout.finishSetupSpeedDistributionChart();
+    speedDistributionChart.resize(size, size);
   }
 
   function setupRegularScreenKEChart() {

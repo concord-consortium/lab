@@ -226,6 +226,7 @@ dist/lab/lab.grapher.js: \
 	src/lab/grapher/core/data.js \
 	src/lab/grapher/core/indexed-data.js \
 	src/lab/grapher/core/graph.js \
+	src/lab/grapher/core/real-time-graph.js \
 	src/lab/grapher/core/colors.js \
 	src/lab/grapher/core/register-keyboard-handler.js \
 	src/lab/end.js
