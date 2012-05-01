@@ -242,6 +242,36 @@ modeler.model = function(initialProperties) {
     coreModel.setTargetTemperature(abstract_to_real_temperature(t));
   }
 
+  // ------------------------------
+  // finish setting up the model
+  // ------------------------------
+
+  // get a fresh model
+  coreModel = md2d.makeModel();
+
+  coreModel.createAtoms({
+    num: initialProperties.mol_number
+  });
+
+  nodes    = coreModel.nodes;
+  radius   = coreModel.radius;
+  px       = coreModel.px;
+  py       = coreModel.py;
+  x        = coreModel.x;
+  y        = coreModel.y;
+  vx       = coreModel.vx;
+  vy       = coreModel.vy;
+  speed    = coreModel.speed;
+  ax       = coreModel.ax;
+  ay       = coreModel.ay;
+  mass     = coreModel.mass;
+  charge   = coreModel.charge;
+
+  modelOutputState = coreModel.outputState;
+
+  // The d3 molecule viewer requires this length to be set correctly:
+  atoms.length = nodes[0].length;
+
   // ------------------------------------------------------------
   //
   // Public functions
@@ -567,36 +597,6 @@ modeler.model = function(initialProperties) {
   model.serialize = function() {
     return JSON.stringify(properties);
   };
-
-  // ------------------------------
-  // finish setting up the model
-  // ------------------------------
-
-  // get a fresh model
-  coreModel = md2d.makeModel();
-
-  coreModel.createAtoms({
-    num: initialProperties.mol_number
-  });
-
-  nodes    = coreModel.nodes;
-  radius   = coreModel.radius;
-  px       = coreModel.px;
-  py       = coreModel.py;
-  x        = coreModel.x;
-  y        = coreModel.y;
-  vx       = coreModel.vx;
-  vy       = coreModel.vy;
-  speed    = coreModel.speed;
-  ax       = coreModel.ax;
-  ay       = coreModel.ay;
-  mass     = coreModel.mass;
-  charge   = coreModel.charge;
-
-  modelOutputState = coreModel.outputState;
-
-  // The d3 molecule viewer requires this length to be set correctly:
-  atoms.length = nodes[0].length;
 
   model.initialize(initialProperties);
 
