@@ -22,8 +22,8 @@ else {
       select_temperature.parentNode.replaceChild(temp_range, select_temperature);
       temp_range.id = "select-temperature";
       select_temperature = temp_range;
-      select_temperature_display.id = "select-temperature-display"
-      select_temperature_display.innerText = temperature;
+      select_temperature_display.id = "select-temperature-display";
+      select_temperature_display.innerText = model.temperature();
       select_temperature.parentNode.appendChild(select_temperature_display);
       select_temperature = document.getElementById("select-temperature");
     }
@@ -31,7 +31,7 @@ else {
   }
 
   function selectTemperatureChange() {
-    temperature = +select_temperature.value;
+    var temperature = +select_temperature.value;
     if (select_temperature.type === "range") {
       select_temperature_display.innerText = d3.format("4.1f")(temperature);
     }
@@ -39,7 +39,8 @@ else {
   }
 
   if (select_temperature.type === "range") {
-    select_temperature.value = temperature;
+    var temperature = model.temperature();
+    select_temperature.value =  model.temperature();
     select_temperature_display.innerText = d3.format("4.1f")(temperature);
   }
 
