@@ -266,6 +266,7 @@ modeler.model = function(initialProperties) {
 
   // get a fresh model
   coreModel = md2d.makeModel();
+  coreModel.setLJEpsilon(properties.epsilon);
 
   coreModel.createAtoms({
     num: properties.mol_number

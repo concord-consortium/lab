@@ -106,8 +106,6 @@ controllers.simpleModelController = function(molecule_view_id, args) {
   //
 
   function setup() {
-    model.setEpsilon(initial_epsilon);
-
     atoms = model.get_atoms();
     nodes = model.get_nodes();
 
