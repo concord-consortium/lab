@@ -498,8 +498,6 @@ modeler.model = function(initialProperties) {
   };
 
   model.relax = function() {
-    // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
-    coreModel.integrate(50);
     coreModel.relaxToTemperature();
     return model;
   };
