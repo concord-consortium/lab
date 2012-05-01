@@ -225,11 +225,9 @@ dist/lab/lab.grapher.js: \
 	src/lab/grapher/core/core.js \
 	src/lab/grapher/core/data.js \
 	src/lab/grapher/core/indexed-data.js \
+	src/lab/grapher/core/graph.js \
 	src/lab/grapher/core/colors.js \
-	src/lab/grapher/samples/sample-graph.js \
-	src/lab/grapher/samples/cities-sample.js \
-	src/lab/grapher/samples/surface-temperature-sample.js \
-	src/lab/grapher/samples/lennard-jones-sample.js \
+	src/lab/grapher/core/register-keyboard-handler.js \
 	src/lab/end.js
 
 dist/lab/lab.molecules.js: \
