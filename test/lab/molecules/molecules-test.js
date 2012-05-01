@@ -52,40 +52,38 @@ suite.addBatch({
       assert.deepEqual(model.size(), [10, 10]);
     },
     "creates 50 molecules without setting model size or initializing forces": function(model) {
-      node_options.num = 50;
-      model.nodes(node_options);
       assert.equal(atoms.length, 50);
     },
     "creates 50 molecules with a total charge of 0": function(model) {
       var nodes, total_charge;
 
-      node_options.num = 50;
-      model.nodes(node_options)
-          .initialize(initialization_options);
+      initialization_options.mol_number = 50;
+      model = modeler.model(initialization_options);
       nodes = model.get_nodes();
+      atoms = model.get_atoms();
 
       assert.equal(atoms.length, 50);
       total_charge = d3.sum(atoms, function(d, i) { return get_charge(i);  });
       assert.equal(total_charge, 0);
     },
     "creates 100 molecules with a total charge of 0": function(model) {
-      node_options.num = 100;
-      model.nodes(node_options)
-          .initialize(initialization_options);
+      initialization_options.mol_number = 100;
+      model = modeler.model(initialization_options);
+      atoms = model.get_atoms();
       assert.equal(atoms.length, 100);
       var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
     },
     "creates first 50 and then 100 molecules with a total charge of 0": function(model) {
-      node_options.num = 50;
-      model.nodes(node_options)
-          .initialize(initialization_options);
+      initialization_options.mol_number = 50;
+      model = modeler.model(initialization_options);
+      atoms = model.get_atoms();
       assert.equal(atoms.length, 50);
       var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
-      node_options.num = 100;
-      model.nodes(node_options)
-          .initialize(initialization_options);
+      initialization_options.mol_number = 100;
+      model = modeler.model(initialization_options);
+      atoms = model.get_atoms();
       assert.equal(atoms.length, 100);
       var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
