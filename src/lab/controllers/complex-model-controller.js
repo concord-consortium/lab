@@ -10,12 +10,19 @@
 
   model: true
   molecule_container: true
+  potentialChart: true
+  sppedDistributionChart: true
   model_player: true
   atoms: true
   nodes: true
 */
 /*jslint onevar: true*/
-controllers.complexModelController = function(molecule_view_id, ke_chart_view_id, args) {
+controllers.complexModelController =
+    function(molecule_view_id,
+             ke_chart_view_id,
+             lj_potential_chart_id,
+             speed_distribution_chart_id,
+             args) {
 
   var layoutStyle         = args.layoutStyle,
       autostart           = args.autostart,
@@ -30,7 +37,12 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
       step_counter,
       therm,
       epsilon_slider,
-      ke_graph;
+      kechart, ke_graph, ke_graph_options,
+      te_data,
+      model_controls_inputs,
+      select_molecule_number,
+      mol_number_to_ke_yxais_map,
+      mol_number_to_speed_yaxis_map;
 
   function controller() {
     // ------------------------------------------------------------
@@ -45,7 +57,7 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
       var ke = model.ke(),
           pe = model.pe();
 
-      layout.speed_update();
+      speedDistributionChart.update();
 
        molecule_container.update_molecule_positions();
 
@@ -66,7 +78,7 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
       if (step_counter >= maximum_model_steps) { modelStop(); }
       layout.displayStats();
       if (layout.datatable_visible) { layout.render_datatable(); }
-    };
+    }
 
     // ------------------------------------------------------------
     //
@@ -117,12 +129,12 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
     //
     // ------------------------------------------------------------
 
-    var te_data = [];
+    te_data = [];
 
-    var kechart = document.getElementById(ke_chart_view_id);
+    kechart = document.getElementById(ke_chart_view_id);
 
     // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
-    var ke_graph_options = {
+    ke_graph_options = {
       title:     "Kinetic Energy of the System",
       xlabel:    "Model Time (ps)",
       xmin:      0,
@@ -141,7 +153,7 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
       } else {
         ke_graph = graphx.graph(ke_graph_options);
       }
-    }
+    };
 
     // ------------------------------------------------------------
     //
@@ -159,6 +171,8 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
       ymin     : 0,
       quantile : 0.01
     };
+
+    speedDistributionChart = layout.speedDistributionChart(speed_distribution_chart_id);
 
     // ------------------------------------------------------------
     //
@@ -208,7 +222,7 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
       var sigma   = coefficients.sigma,
           epsilon = coefficients.epsilon,
           rmin    = coefficients.rmin,
-          y;
+          y, r;
 
       model.set_lj_coefficients(epsilon, sigma);
 
@@ -229,7 +243,7 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
 
       lennard_jones_potential = [];
 
-      for(var r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
+      for(r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
         y = molecules_lennard_jones.potential(r);
         if (y < 100) {
           lennard_jones_potential.push([r, y]);
@@ -238,6 +252,16 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
     }
 
     update_coefficients(lj_coefficients);
+
+    potentialChart = layout.potentialChart(lj_potential_chart_id, lj_data, {
+        title   : "Lennard-Jones potential",
+        xlabel  : "Radius",
+        ylabel  : "Potential Energy",
+        epsilon_max:     args.epsilon_max,
+        epsilon_min:     args.epsilon_min,
+        initial_epsilon: args.initial_epsilon,
+        epsilon_callback: update_epsilon
+      });
 
     // ------------------------------------------------------------
     //
@@ -248,7 +272,7 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
     var model_controls = document.getElementById("model-controls");
 
     if (model_controls) {
-      var model_controls_inputs = model_controls.getElementsByTagName("input");
+      model_controls_inputs = model_controls.getElementsByTagName("input");
     }
 
     // ------------------------------------------------------------
@@ -282,7 +306,7 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
     //
     // ------------------------------------------------------------
 
-    var select_molecule_number = document.getElementById("select-molecule-number");
+    select_molecule_number = document.getElementById("select-molecule-number");
 
     function selectMoleculeNumberChange() {
       mol_number = +select_molecule_number.value;
@@ -290,7 +314,7 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
       updateMolNumberViewDependencies();
     }
 
-    var mol_number_to_ke_yxais_map = {
+    mol_number_to_ke_yxais_map = {
       2: 0.02 * 50 * 2,
       5: 0.05 * 50 * 5,
       10: 0.01 * 50 * 10,
@@ -301,7 +325,7 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
       500: 0.2 * 50 * 500
     };
 
-    var mol_number_to_speed_yaxis_map = {
+    mol_number_to_speed_yaxis_map = {
       2: 2,
       5: 2,
       10: 5,
@@ -446,27 +470,27 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
         switch (evt.keyCode) {
           case 32:                // spacebar
             if (model.is_stopped()) {
-              molecule_container.playback_component.action('play')
+              molecule_container.playback_component.action('play');
             } else {
-              molecule_container.playback_component.action('stop')
-            };
+              molecule_container.playback_component.action('stop');
+            }
             evt.preventDefault();
           break;
           case 13:                // return
-            molecule_container.playback_component.action('play')
+            molecule_container.playback_component.action('play');
             evt.preventDefault();
           break;
           case 37:                // left-arrow
             if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop')
-            };
+              molecule_container.playback_component.action('stop');
+            }
             modelStepBack();
             evt.preventDefault();
           break;
           case 39:                // right-arrow
             if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop')
-            };
+              molecule_container.playback_component.action('stop');
+            }
             modelStepForward();
             evt.preventDefault();
           break;
@@ -527,4 +551,4 @@ controllers.complexModelController = function(molecule_view_id, ke_chart_view_id
 
   controller();
   return controller;
-}
+};
