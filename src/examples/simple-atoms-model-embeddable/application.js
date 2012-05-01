@@ -12,8 +12,7 @@
 //
 // ------------------------------------------------------------
 
-var mol_number = 50,
-    atoms,
+var atoms,
     model_stopped = true,
     nodes,
     model_player,
@@ -27,6 +26,8 @@ $(window).load(function() {
     layoutStyle: 'simple-static-screen',
     autostart: autostart,
     maximum_model_steps: Infinity,
+
+    mol_number = 50,
 
     lj_epsilon_min: -0.4,
     lj_epsilon_max: -0.01034,

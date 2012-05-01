@@ -58,6 +58,7 @@ modeler.model = function(initialProperties) {
       listeners = {},
 
       properties = {
+        mol_number    : 50,
         temperature   : 3,
         coulomb_forces: false,
         epsilon       : -0.1,
@@ -562,8 +563,11 @@ modeler.model = function(initialProperties) {
     var property, waitingToBeNotified = [];
     for (property in hash) {
       if (hash.hasOwnProperty(property)) {
+        // look for set method first, otherwise just set the property
         if (properties["set_"+property]) {
           properties["set_"+property](hash[property]);
+        } else if (properties[property]) {
+          properties[property] = hash[property];
         }
         if (listeners[property]) {
           waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
@@ -597,7 +601,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.nodes({
-    num: mol_number,
+    num: initialProperties.mol_number,
     xdomain: 10,
     ydomain: 10
   })

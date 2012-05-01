@@ -48,7 +48,8 @@ controllers.simpleModelController = function(molecule_view_id, args) {
       lennard_jones_forces: true,
       coulomb_forces: false,
       temperature_control: true,
-      model_listener: model_listener
+      model_listener: model_listener,
+      mol_number: mol_number
     });
 
   // ------------------------------------------------------------
