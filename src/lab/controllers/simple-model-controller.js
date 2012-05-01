@@ -2,16 +2,17 @@
 
   controllers
 
+  modeler
+  ModelPlayer
   Thermometer
   SliderComponent
   layout
 
-  model
-  mol_number
+  model: true
+  molecule_container: true
+  model_player: true
   atoms: true
   nodes: true
-
-  step_counter: true
 */
 controllers.simpleModelController = function(molecule_view_id, args) {
 
@@ -22,7 +23,9 @@ controllers.simpleModelController = function(molecule_view_id, args) {
       lj_epsilon_max      = args.lj_epsilon_max,
       lj_epsilon_min      = args.lj_epsilon_min,
       initial_epsilon     = args.initial_epsilon,
-      temperature         = args.temperature;
+      temperature         = args.temperature,
+
+      step_counter;
 
   // ------------------------------------------------------------
   //

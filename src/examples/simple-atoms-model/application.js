@@ -1,11 +1,4 @@
-/*globals
-  modeler
-  ModelPlayer
-  $
-  layout
-  controllers
-*/
-
+/*globals $ controllers */
 // ------------------------------------------------------------
 //
 // General Parameters for the Molecular Simulation
