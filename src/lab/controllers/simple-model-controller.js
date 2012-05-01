@@ -25,6 +25,7 @@ controllers.simpleModelController = function(molecule_view_id, args) {
       lj_epsilon_min      = args.lj_epsilon_min,
       initial_epsilon     = args.initial_epsilon,
       temperature         = args.temperature,
+      coulomb_forces      = args.coulomb_forces,
 
       model_listener,
       step_counter,
@@ -53,7 +54,7 @@ controllers.simpleModelController = function(molecule_view_id, args) {
   model = modeler.model({
       temperature: temperature,
       lennard_jones_forces: true,
-      coulomb_forces: false,
+      coulomb_forces: coulomb_forces,
       temperature_control: true,
       model_listener: model_listener,
       mol_number: mol_number
