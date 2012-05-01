@@ -24,10 +24,7 @@ $(window).load(function() {
   var autostart = false,
       controller;
 
-  model_player = new ModelPlayer(model, autostart);
-  molecule_container = layout.moleculeContainer('#molecule-container');
-
-  controller = controllers.simpleModelController(molecule_container, {
+  controller = controllers.simpleModelController('#molecule-container', {
     layoutStyle: 'simple-static-screen',
     autostart: autostart,
     maximum_model_steps: Infinity,
