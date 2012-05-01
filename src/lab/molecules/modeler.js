@@ -10,7 +10,7 @@ var md2d = require('./md2d'),
 modeler = {};
 modeler.VERSION = '0.2.0';
 
-modeler.model = function() {
+modeler.model = function(initialProperties) {
   var model = {},
       atoms = [],
       event = d3.dispatch("tick"),
@@ -64,25 +64,29 @@ modeler.model = function() {
 
         set_temperature: function(t) {
           this.temperature = t;
-          temperature = t;
-          coreModel.setTargetTemperature(abstract_to_real_temperature(t));
+          if (coreModel) {
+            coreModel.setTargetTemperature(abstract_to_real_temperature(t));
+          }
         },
 
         set_coulomb_forces: function(cf) {
           this.coulomb_forces = cf;
-          coulomb_forces = cf;
-          coreModel.useCoulombInteraction(cf);
+          if (coreModel) {
+            coreModel.useCoulombInteraction(cf);
+          }
 
-          // FIXME
-          molecule_container.setup_particles();
+          if (molecule_container) {
+            molecule_container.setup_particles();
+          }
         },
 
         set_epsilon: function(e) {
           this.epsilon = e;
-          coreModel.setLJEpsilon(e);
+          if (coreModel) {
+            coreModel.setLJEpsilon(e);
+          }
         }
       };
-
 
   //
   // Indexes into the nodes array for the individual node property arrays
@@ -589,6 +593,14 @@ modeler.model = function() {
   model.serialize = function() {
     return JSON.stringify(properties);
   };
+
+  model.nodes({
+    num: mol_number,
+    xdomain: 10,
+    ydomain: 10
+  })
+
+  model.initialize(initialProperties);
 
   return model;
 };
