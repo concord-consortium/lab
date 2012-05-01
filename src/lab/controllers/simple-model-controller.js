@@ -13,7 +13,7 @@
 
   step_counter: true
 */
-controllers.simpleModelController = function(molecule_view, args) {
+controllers.simpleModelController = function(molecule_view_id, args) {
 
   var layoutStyle         = args.layoutStyle,
       autostart           = args.autostart,
@@ -25,6 +25,9 @@ controllers.simpleModelController = function(molecule_view, args) {
 
   layout.selection = layoutStyle;
 
+  model_player = new ModelPlayer(model, autostart);
+  molecule_container = layout.moleculeContainer(molecule_view_id);
+
   // ------------------------------------------------------------
   //
   // Main callback from model process
@@ -34,7 +37,7 @@ controllers.simpleModelController = function(molecule_view, args) {
   // ------------------------------------------------------------
 
   var model_listener = function(e) {
-    molecule_view.update_molecule_positions();
+    molecule_container.update_molecule_positions();
     if (step_counter >= model.stepCounter()) { modelStop(); }
   };
 
@@ -96,8 +99,8 @@ controllers.simpleModelController = function(molecule_view, args) {
 
     modelStop();
     model.on("tick", model_listener);
-    molecule_view.update_molecule_radius();
-    molecule_view.setup_particles();
+    molecule_container.update_molecule_radius();
+    molecule_container.setup_particles();
     layout.setupScreen(layout.selection);
     step_counter = model.stepCounter();
   }
@@ -128,26 +131,26 @@ controllers.simpleModelController = function(molecule_view, args) {
       switch (evt.keyCode) {
         case 32:                // spacebar
           if (model.is_stopped()) {
-            molecule_view.playback_component.action('play');
+            molecule_container.playback_component.action('play');
           } else {
-            molecule_view.playback_component.action('stop');
+            molecule_container.playback_component.action('stop');
           }
           evt.preventDefault();
         break;
         case 13:                // return
-          molecule_view.playback_component.action('play');
+          molecule_container.playback_component.action('play');
           evt.preventDefault();
         break;
         case 37:                // left-arrow
           if (!model.is_stopped()) {
-            molecule_view.playback_component.action('stop');
+            molecule_container.playback_component.action('stop');
           }
           modelStepBack();
           evt.preventDefault();
         break;
         case 39:                // right-arrow
           if (!model.is_stopped()) {
-            molecule_view.playback_component.action('stop');
+            molecule_container.playback_component.action('stop');
           }
           modelStepForward();
           evt.preventDefault();
