@@ -12,22 +12,13 @@
 //
 // ------------------------------------------------------------
 
-var atoms,
-    model_stopped = true,
-    nodes,
-    model_player,
-    molecule_container;
-
 $(window).load(function() {
-  var autostart = false,
-      controller;
-
-  controller = controllers.simpleModelController('#molecule-container', {
+  var controller = controllers.simpleModelController('#molecule-container', {
     layoutStyle: 'simple-static-screen',
-    autostart: autostart,
+    autostart: false,
     maximum_model_steps: Infinity,
 
-    mol_number = 50,
+    mol_number: 50,
 
     lj_epsilon_min: -0.4,
     lj_epsilon_max: -0.01034,
