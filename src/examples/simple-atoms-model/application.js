@@ -10,6 +10,7 @@
   var request = $.get('/model-config'),
       windowLoad = $.Deferred(),
       controller,
+      opts,
       modelConfig = {
         layoutStyle: 'simple-static-screen',
         autostart: false,
