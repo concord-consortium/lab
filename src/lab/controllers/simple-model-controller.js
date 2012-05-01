@@ -57,6 +57,7 @@ controllers.simpleModelController = function(molecule_view_id, args) {
       coulomb_forces: coulomb_forces,
       temperature_control: true,
       model_listener: model_listener,
+      epsilon: initial_epsilon,
       mol_number: mol_number
     });
 
@@ -191,24 +192,44 @@ controllers.simpleModelController = function(molecule_view_id, args) {
 
   therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
 
-  model.addPropertiesListener(["temperature"], function(){
+  function updateTherm(){
     therm.add_value(model.get("temperature"));
-  });
+  }
+
+  model.addPropertiesListener(["temperature"], updateTherm);
+  updateTherm();
 
   epsilon_slider = new SliderComponent('#attraction_slider',
     function (v) {
       model.set({epsilon: v} );
     }, lj_epsilon_max, lj_epsilon_min, initial_epsilon);
 
-  model.addPropertiesListener(["epsilon"], function(){
+  function updateEpsilon(){
     epsilon_slider.set_scaled_value(model.get("epsilon"));
-  });
+  }
+
+  model.addPropertiesListener(["epsilon"], updateEpsilon);
+  updateEpsilon();
 
   // ------------------------------------------------------------
   // Setup heat and cool buttons
   // ------------------------------------------------------------
 
   layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25, model, function (t) { therm.add_value(t); });
+
+  // ------------------------------------------------------------
+  // Add listener for coulomb_forces checkbox
+  // ------------------------------------------------------------
+
+  // $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+
+  function updateCoulombCheckbox() {
+    $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+    molecule_container.setup_particles();
+  }
+
+  model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
+  updateCoulombCheckbox();
 
   // ------------------------------------------------------------
   //
