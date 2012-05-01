@@ -14,6 +14,7 @@
   atoms: true
   nodes: true
 */
+/*jslint onevar: true*/
 controllers.simpleModelController = function(molecule_view_id, args) {
 
   var layoutStyle         = args.layoutStyle,
@@ -25,7 +26,10 @@ controllers.simpleModelController = function(molecule_view_id, args) {
       initial_epsilon     = args.initial_epsilon,
       temperature         = args.temperature,
 
-      step_counter;
+      model_listener,
+      step_counter,
+      therm,
+      epsilon_slider;
 
   // ------------------------------------------------------------
   //
@@ -35,7 +39,7 @@ controllers.simpleModelController = function(molecule_view_id, args) {
   //
   // ------------------------------------------------------------
 
-  var model_listener = function(e) {
+  model_listener = function(e) {
     molecule_container.update_molecule_positions();
     if (step_counter >= model.stepCounter()) { modelStop(); }
   };
@@ -184,13 +188,13 @@ controllers.simpleModelController = function(molecule_view_id, args) {
   // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
   // ------------------------------------------------------------
 
-  var therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
+  therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
 
   model.addPropertiesListener(["temperature"], function(){
     therm.add_value(model.get("temperature"));
   });
 
-  var epsilon_slider = new SliderComponent('#attraction_slider',
+  epsilon_slider = new SliderComponent('#attraction_slider',
     function (v) {
       model.set({epsilon: v} );
     }, lj_epsilon_max, lj_epsilon_min, initial_epsilon);
