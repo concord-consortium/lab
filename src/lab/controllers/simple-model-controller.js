@@ -23,7 +23,7 @@ controllers.simpleModelController = function(molecule_view_id, args) {
       mol_number          = args.mol_number,
       lj_epsilon_max      = args.lj_epsilon_max,
       lj_epsilon_min      = args.lj_epsilon_min,
-      initial_epsilon     = args.initial_epsilon,
+      epsilon             = args.epsilon,
       temperature         = args.temperature,
       coulomb_forces      = args.coulomb_forces,
 
@@ -57,7 +57,7 @@ controllers.simpleModelController = function(molecule_view_id, args) {
       coulomb_forces: coulomb_forces,
       temperature_control: true,
       model_listener: model_listener,
-      epsilon: initial_epsilon,
+      epsilon: epsilon,
       mol_number: mol_number
     });
 
@@ -200,7 +200,7 @@ controllers.simpleModelController = function(molecule_view_id, args) {
   epsilon_slider = new SliderComponent('#attraction_slider',
     function (v) {
       model.set({epsilon: v} );
-    }, lj_epsilon_max, lj_epsilon_min, initial_epsilon);
+    }, lj_epsilon_max, lj_epsilon_min, epsilon);
 
   function updateEpsilon(){
     epsilon_slider.set_scaled_value(model.get("epsilon"));
