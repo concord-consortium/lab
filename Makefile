@@ -227,7 +227,6 @@ dist/lab/lab.grapher.js: \
 	src/lab/grapher/core/indexed-data.js \
 	src/lab/grapher/core/colors.js \
 	src/lab/grapher/samples/sample-graph.js \
-	src/lab/grapher/samples/simple-graph2.js \
 	src/lab/grapher/samples/cities-sample.js \
 	src/lab/grapher/samples/surface-temperature-sample.js \
 	src/lab/grapher/samples/lennard-jones-sample.js \
