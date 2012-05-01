@@ -1,9 +1,24 @@
-#chart.circle {
+.title {
+  font-size: 1.3em; }
+
+.axis {
+  font-size: 1.1em; }
+
+circle, .line {
+  fill: none;
   stroke: steelblue;
-  stroke-width: 1px;
+  stroke-width: 2px; }
+
+circle {
   fill: white;
   fill-opacity: 0.2;
   cursor: move; }
-  #chart.circle.selected {
+  circle.selected {
+    fill: #ff7f0e;
+    stroke: #ff7f0e; }
+  circle:hover {
+    fill: #ff7f0e;
+    stroke: #707f0e; }
+  circle.selected:hover {
     fill: #ff7f0e;
     stroke: #ff7f0e; }

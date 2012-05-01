@@ -14,11 +14,38 @@
 // ------------------------------------------------------------
 
 controllers = { version: "0.0.1" };
-var INITIAL_EPSILON = -0.1;
+/*globals
 
-controllers.simpleModelController = function(layout_style, molecule_view) {
+  controllers
 
-  layout.selection = layout_style;
+  modeler
+  ModelPlayer
+  Thermometer
+  SliderComponent
+  layout
+
+  model: true
+  molecule_container: true
+  model_player: true
+  atoms: true
+  nodes: true
+*/
+/*jslint onevar: true*/
+controllers.simpleModelController = function(molecule_view_id, args) {
+
+  var layoutStyle         = args.layoutStyle,
+      autostart           = args.autostart,
+      maximum_model_steps = args.maximum_model_steps,
+      mol_number          = args.mol_number,
+      lj_epsilon_max      = args.lj_epsilon_max,
+      lj_epsilon_min      = args.lj_epsilon_min,
+      initial_epsilon     = args.initial_epsilon,
+      temperature         = args.temperature,
+
+      model_listener,
+      step_counter,
+      therm,
+      epsilon_slider;
 
   // ------------------------------------------------------------
   //
@@ -28,120 +55,36 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   //
   // ------------------------------------------------------------
 
-  var model_listener = function(e) {
-    molecule_view.update_molecule_positions();
+  model_listener = function(e) {
+    molecule_container.update_molecule_positions();
     if (step_counter >= model.stepCounter()) { modelStop(); }
-  }
-
-  // ------------------------------------------------------------
-  //
-  //   Lennard-Jones Coefficients Setup
-  //
-  // ------------------------------------------------------------
-
-  var lj_coefficients = molecules_lennard_jones.coefficients();
-
-  var lj_data = {
-    coefficients: lj_coefficients,
-    variables: [
-      {
-        coefficient:"epsilon",
-        x: lj_coefficients.rmin,
-        y: lj_coefficients.epsilon
-      },
-      {
-        coefficient:"sigma",
-        x: lj_coefficients.sigma,
-        y: 0
-      }
-    ]
   };
 
-  function update_epsilon(e) {
-    update_coefficients(molecules_lennard_jones.epsilon(e));
-  }
-
-  function update_sigma(s) {
-    update_coefficients(molecules_lennard_jones.sigma(s));
-  }
-
-  function update_coefficients(coefficients) {
-    var sigma   = coefficients.sigma,
-        epsilon = coefficients.epsilon,
-        rmin    = coefficients.rmin,
-        y;
-
-    model.set_lj_coefficients(epsilon, sigma);
-
-    lj_data.coefficients.sigma   = sigma;
-    lj_data.coefficients.epsilon = epsilon;
-    lj_data.coefficients.rmin    = rmin;
-
-    lj_data.xmax    = sigma * 3;
-    lj_data.xmin    = Math.floor(sigma/2);
-    lj_data.ymax    = Math.ceil(epsilon*-1) + 0.0;
-    lj_data.ymin    = Math.ceil(epsilon*1) - 2.0;
-
-    // update the positions of the adjustable circles on the graph
-    lj_data.variables[1].x = sigma;
-
-    // change the x value for epsilon to match the new rmin value
-    lj_data.variables[0].x = rmin;
-
-    lennard_jones_potential = []
-
-    for(var r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
-      y = molecules_lennard_jones.potential(r)
-      if (y < 100) {
-        lennard_jones_potential.push([r, y]);
-      }
-    }
-  }
-
   // ------------------------------------------------------------
   //
-  //   Molecular Model Setup
+  // Create model and pass in properties
   //
   // ------------------------------------------------------------
 
-  function generate_atoms() {
-    model.nodes({ num: mol_number,
-            xdomain: 10, ydomain: 10,
-            temperature: temperature, rmin: 4.4
-          })
-        .initialize({
-            temperature: temperature,
-            lennard_jones_forces: layout.lennard_jones_forces_checkbox.checked,
-            coulomb_forces: layout.coulomb_forces_checkbox.checked,
-            model_listener: model_listener
-          });
-    atoms = model.get_atoms();
-    nodes = model.get_nodes();
-  }
+  model = modeler.model({
+      temperature: temperature,
+      lennard_jones_forces: true,
+      coulomb_forces: false,
+      temperature_control: true,
+      model_listener: model_listener,
+      mol_number: mol_number
+    });
 
-  function modelSetup() {
-    generate_atoms();
-    model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
-    model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
-    model.set_temperature_control(true);
-    model.setEpsilon(INITIAL_EPSILON);
-    model.relax();
-  }
+  // ------------------------------------------------------------
+  //
+  // Create player and container view for model
+  //
+  // ------------------------------------------------------------
 
-  var mol_number_to_lj_sigma_map = {
-    2: 7.0,
-    5: 6.0,
-    10: 5.5,
-    20: 5.0,
-    50: 4.5,
-    100: 4.0,
-    200: 3.5,
-    500: 3.0
-  }
+  layout.selection = layoutStyle;
 
-  function updateMolNumberViewDependencies() {
-    update_sigma(mol_number_to_lj_sigma_map[mol_number]);
-  }
+  model_player = new ModelPlayer(model, autostart);
+  molecule_container = layout.moleculeContainer(molecule_view_id);
 
   // ------------------------------------------------------------
   //
@@ -149,35 +92,8 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   //
   // ------------------------------------------------------------
 
-  function modelController() {
-    for(i = 0; i < this.elements.length; i++) {
-        if (this.elements[i].checked) { run_mode = this.elements[i].value; }
-    }
-    switch(run_mode) {
-      case "stop":
-        modelStop();
-        break;
-      case "step":
-        modelStep();
-        break;
-      case "go":
-        modelGo();
-        break;
-      case "reset":
-        modelReset();
-        break;
-    }
-  }
-
   function modelStop() {
     model.stop();
-  }
-
-  function modelStep() {
-    model.stop();
-    if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
-      model.stepForward();
-    }
   }
 
   function modelGo() {
@@ -198,14 +114,24 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
     }
   }
 
-  function modelReset() {
-    modelSetup();
-    model.temperature(temperature);
-    updateMolNumberViewDependencies();
+  // ------------------------------------------------------------
+  //
+  //   Molecular Model Setup
+  //
+
+  function setup() {
+    model.setEpsilon(initial_epsilon);
+
+    atoms = model.get_atoms();
+    nodes = model.get_nodes();
+
+    model.relax();
+    model.resetTime();
+
     modelStop();
     model.on("tick", model_listener);
-    molecule_view.update_molecule_radius();
-    molecule_view.setup_particles();
+    molecule_container.update_molecule_radius();
+    molecule_container.setup_particles();
     layout.setupScreen(layout.selection);
     step_counter = model.stepCounter();
   }
@@ -219,7 +145,7 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   function onresize() {
     layout.setupScreen();
     therm.resize();
-  };
+  }
 
   document.onwebkitfullscreenchange = onresize;
   window.onresize = onresize;
@@ -236,27 +162,27 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
       switch (evt.keyCode) {
         case 32:                // spacebar
           if (model.is_stopped()) {
-            molecule_view.playback_component.action('play')
+            molecule_container.playback_component.action('play');
           } else {
-            molecule_view.playback_component.action('stop')
-          };
+            molecule_container.playback_component.action('stop');
+          }
           evt.preventDefault();
         break;
         case 13:                // return
-          molecule_view.playback_component.action('play')
+          molecule_container.playback_component.action('play');
           evt.preventDefault();
         break;
         case 37:                // left-arrow
           if (!model.is_stopped()) {
-            molecule_view.playback_component.action('stop')
-          };
+            molecule_container.playback_component.action('stop');
+          }
           modelStepBack();
           evt.preventDefault();
         break;
         case 39:                // right-arrow
           if (!model.is_stopped()) {
-            molecule_view.playback_component.action('stop')
-          };
+            molecule_container.playback_component.action('stop');
+          }
           modelStepForward();
           evt.preventDefault();
         break;
@@ -272,32 +198,32 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   //
   // ------------------------------------------------------------
 
-  modelReset();
+  setup();
 
   // ------------------------------------------------------------
   // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
   // ------------------------------------------------------------
 
-  var therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
+  therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
 
   model.addPropertiesListener(["temperature"], function(){
     therm.add_value(model.get("temperature"));
   });
 
-  var epsilon_slider  = new  SliderComponent('#attraction_slider', 
+  epsilon_slider = new SliderComponent('#attraction_slider',
     function (v) {
-      model.set({epsilon: v});
-    }, lj_epsilon_max, lj_epsilon_min, INITIAL_EPSILON);
+      model.set({epsilon: v} );
+    }, lj_epsilon_max, lj_epsilon_min, initial_epsilon);
 
   model.addPropertiesListener(["epsilon"], function(){
-    epsilon_slider.set_scaled_value(model.get("epsilon"))
+    epsilon_slider.set_scaled_value(model.get("epsilon"));
   });
 
   // ------------------------------------------------------------
   // Setup heat and cool buttons
   // ------------------------------------------------------------
 
-  layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25, model, function (t) { therm.add_value(t) });
+  layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25, model, function (t) { therm.add_value(t); });
 
   // ------------------------------------------------------------
   //
@@ -308,8 +234,7 @@ controllers.simpleModelController = function(layout_style, molecule_view) {
   if (autostart) {
     modelGo();
   }
-}
-
+};
 /*globals modeler, ModelPlayer, layout, graphx, molecules_lennard_jones, modelController */
 
 controllers.complexModelController = function(layout_style, molecule_view) {
@@ -390,6 +315,7 @@ controllers.complexModelController = function(layout_style, molecule_view) {
       model.set_coulomb_forces(layout.coulomb_forces_checkbox.checked);
       model.set_lennard_jones_forces(layout.lennard_jones_forces_checkbox.checked);
       model.relax();
+      model.resetTime();
       te_data = [model.ke()];
     }
 

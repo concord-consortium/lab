@@ -359,7 +359,7 @@ layout.moleculeContainer = function(e, options) {
       cy = elem.property("clientHeight"),
       height,
       scale_factor,
-      vis1, vis, plot, 
+      vis1, vis, plot,
       playback_component, time_label,
       padding, size,
       mw, mh, tx, ty, stroke,
@@ -367,9 +367,9 @@ layout.moleculeContainer = function(e, options) {
       y, downscaley, downy,
       dragged,
       pc_xpos, pc_ypos,
-      model_time_formatter = d3.format("5.3f"),
-      ns_string_prefix = "time: ",
-      ns_string_suffix = " (ns)",
+      model_time_formatter = d3.format("5.2f"),
+      time_prefix = "time: ",
+      time_suffix = " (ps)",
       gradient_container,
       red_gradient,
       blue_gradient,
@@ -472,7 +472,7 @@ layout.moleculeContainer = function(e, options) {
   }
 
   function modelTimeLabel() {
-    return ns_string_prefix + model_time_formatter(model.stepCounter() * sample_time) + ns_string_suffix;
+    return time_prefix + model_time_formatter(model.getTime() / 1000) + time_suffix;
   }
 
   function get_x(i) {
@@ -840,7 +840,7 @@ layout.moleculeContainer = function(e, options) {
           .on("mouseout", molecule_mouseout);
 
       var font_size = x(ljf.rmin * 0.5 * 1.5);
-      if (mol_number > 100) { font_size *= 0.9; }
+      if (model.get('mol_number') > 100) { font_size *= 0.9; }
 
       label = gradient_container.selectAll("g.label")
           .data(atoms);
@@ -1940,7 +1940,7 @@ layout.displayStats = function() {
 
   if (stats) {
     stats.textContent =
-      "Time: "     + d3.format("5.3f")(model.stepCounter() * sample_time) + " (ns), " +
+      "Time: "     + d3.format("5.2f")(model.getTime() / 1000) + " (ps), " +
       "KE: "       + d3.format("1.4f")(ke) + ", " +
       // "PE: "       + d3.format("1.6f")(pe) + ", " +
       "TE: "       + d3.format("1.4f")(te) + ", " +

@@ -1123,6 +1123,12 @@ var arrays       = require('./arrays/arrays').arrays,
       return true;
     }()),
 
+    // make at least 2 atoms
+    N_MIN = 2,
+
+    // make no more than this many atoms:
+    N_MAX = 1000,
+
     // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
     ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
     ARGON_LJ_SIGMA_IN_NM   = 0.34,
@@ -1189,8 +1195,8 @@ exports.makeModel = function() {
       // Whether system dimensions have been set. This is only allowed to happen once.
       sizeHasBeenInitialized = false,
 
-      // Whether "nodes" (particles) have been created & initialized. This is only allowed to happen once.
-      nodesHaveBeenCreated = false,
+      // Whether "atoms" (particles) have been created & initialized. This is only allowed to happen once.
+      atomsHaveBeenCreated = false,
 
       // Whether to simulate Coulomb forces between particles.
       useCoulombInteraction = false,
@@ -1519,6 +1525,11 @@ exports.makeModel = function() {
       T_target = v;
     },
 
+    // Our timekeeping is really a convenience for users of this lib, so let them reset time at will
+    setTime: function(t) {
+      outputState.time = time = t;
+    },
+
     setSize: function(v) {
       // NB. We may want to create a simple state diagram for the md engine (as well as for the 'modeler' defined in
       // lab.molecules.js)
@@ -1552,33 +1563,33 @@ exports.makeModel = function() {
       return lennardJones;
     },
 
-    createNodes: function(options) {
+    // allocates 'nodes' array of arrays, sets number of atoms
+    // options:
+    //   num (required): the number of atoms to create
+    createAtoms: function(options) {
+      var rmin = lennardJones.coefficients().rmin,
+          arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
 
-      if (nodesHaveBeenCreated) {
-        throw new Error("md2d: createNodes was called even though the particles have already been created for this model instance.");
+      if (atomsHaveBeenCreated) {
+        throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
       }
-      nodesHaveBeenCreated = true;
+      atomsHaveBeenCreated = true;
       sizeHasBeenInitialized = true;
 
-      options = options || {};
-      N = options.num || 50;
+      if (!options || typeof options.num === 'undefined') {
+        throw new Error("md2d: createAtoms was called without the required 'N' option specifying the number of atoms to create.");
+      }
+      if (options.num !== Math.floor(options.num)) {
+        throw new Error("md2d: createAtoms was passed a non-integral 'N' option.");
+      }
+      if (options.num < N_MIN) {
+        throw new Error("md2d: create Atoms was passed an 'N' option less than the minimum allowable value N_MIN = " + N_MIN + ".");
+      }
+      if (options.num > N_MAX) {
+        throw new Error("md2d: create Atoms was passed an 'N' option greater than the maximum allowable value N_MAX = " + N_MAX + ".");
+      }
 
-      var temperature = options.temperature || 100,
-          rmin = lennardJones.coefficients().rmin,
-
-          // special-case:
-          arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-
-          k_inJoulesPerKelvin = constants.BOLTZMANN_CONSTANT.as(unit.JOULES_PER_KELVIN),
-
-          mass_in_kg, v0_MKS, v0,
-
-          nrows = Math.floor(Math.sqrt(N)),
-          ncols = Math.ceil(N/nrows),
-
-          i, r, c, rowSpacing, colSpacing,
-          vMagnitude, vDirection,
-          rescalingFactor;
+      N = options.num;
 
       nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
 
@@ -1596,6 +1607,22 @@ exports.makeModel = function() {
       charge = model.charge = nodes[INDICES.CHARGE] = arrays.create(N, 0, arrayType);
 
       totalMass = model.totalMass = N * ARGON_MASS_IN_DALTON;
+    },
+
+    initializeAtomsRandomly: function(options) {
+          // don't read too much into this default temperature; any value will do if velocities are to be rescaled immediately
+      var temperature = options.temperature || 100,
+
+          k_inJoulesPerKelvin = constants.BOLTZMANN_CONSTANT.as(unit.JOULES_PER_KELVIN),
+
+          mass_in_kg, v0_MKS, v0,
+
+          nrows = Math.floor(Math.sqrt(N)),
+          ncols = Math.ceil(N/nrows),
+
+          i, r, c, rowSpacing, colSpacing,
+          vMagnitude, vDirection,
+          rescalingFactor;
 
       colSpacing = size[0] / (1+ncols);
       rowSpacing = size[1] / (1+nrows);
@@ -1653,7 +1680,6 @@ exports.makeModel = function() {
       // Compute linear and angular velocity of CM, compute temperature, and publish output state:
       computeCMMotion();
 
-
       // Adjust for center of mass motion
       removeTranslationAndRotationFromVelocities();
       T = calculateTemperature();
@@ -1681,8 +1707,8 @@ exports.makeModel = function() {
 
     integrate: function(duration, opt_dt) {
 
-      if (!nodesHaveBeenCreated) {
-        throw new Error("md2d: integrate called before nodes created.");
+      if (!atomsHaveBeenCreated) {
+        throw new Error("md2d: integrate called before atoms created.");
       }
 
       // FIXME. Recommended timestep for accurate simulation is τ/200
@@ -1866,7 +1892,7 @@ molecules_lennard_jones.force = function(distance) {
 
   return (12*alpha/r_13th - 6*beta/r_7th);
 };
-/*globals modeler:true, require, d3, arrays, benchmark, molecule_container */
+/*globals $ modeler:true, require, d3, arrays, benchmark, molecule_container */
 /*jslint onevar: true devel:true eqnull: true */
 
 // modeler.js
@@ -1878,14 +1904,12 @@ var md2d = require('./md2d'),
 modeler = {};
 modeler.VERSION = '0.2.0';
 
-modeler.model = function() {
+modeler.model = function(initialProperties) {
   var model = {},
       atoms = [],
       event = d3.dispatch("tick"),
       temperature_control,
       lennard_jones_forces, coulomb_forces,
-      pe,
-      ke,
       stopped = true,
       tick_history_list = [],
       tick_history_list_index = 0,
@@ -1894,7 +1918,18 @@ modeler.model = function() {
       epsilon, sigma,
       pressure, pressures = [0],
       sample_time, sample_times = [],
+
+      // N.B. this is the thermostat (temperature control) setting
       temperature,
+
+      // current model time, in fs
+      time,
+
+      // potential energy
+      pe,
+
+      // kinetic energy
+      ke,
 
       modelOutputState,
       model_listener,
@@ -1914,7 +1949,39 @@ modeler.model = function() {
       //
       nodes,
 
-      properties;
+      listeners = {},
+
+      properties = {
+        mol_number    : 50,
+        temperature   : 3,
+        coulomb_forces: false,
+        epsilon       : -0.1,
+
+        set_temperature: function(t) {
+          this.temperature = t;
+          if (coreModel) {
+            coreModel.setTargetTemperature(abstract_to_real_temperature(t));
+          }
+        },
+
+        set_coulomb_forces: function(cf) {
+          this.coulomb_forces = cf;
+          if (coreModel) {
+            coreModel.useCoulombInteraction(cf);
+          }
+
+          if (molecule_container) {
+            molecule_container.setup_particles();
+          }
+        },
+
+        set_epsilon: function(e) {
+          this.epsilon = e;
+          if (coreModel) {
+            coreModel.setLJEpsilon(e);
+          }
+        }
+      };
 
   //
   // Indexes into the nodes array for the individual node property arrays
@@ -1934,6 +2001,13 @@ modeler.model = function() {
     MASS     : md2d.INDICES.MASS,
     CHARGE   : md2d.INDICES.CHARGE
   };
+
+  function notifyListeners(listeners) {
+    $.unique(listeners);
+    for (var i=0, ii=listeners.length; i<ii; i++){
+      listeners[i]();
+    }
+  }
 
   //
   // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
@@ -1965,7 +2039,11 @@ modeler.model = function() {
     tick_history_list_index++;
     tick_counter++;
     new_step = true;
-    tick_history_list.push({ nodes: newnodes, ke:ke });
+    tick_history_list.push({
+      nodes: newnodes,
+      ke   :ke,
+      time :time
+    });
     if (tick_history_list_index > 1000) {
       tick_history_list.splice(0,1);
       tick_history_list_index = 1000;
@@ -1980,13 +2058,17 @@ modeler.model = function() {
     }
 
     coreModel.integrate();
+
     pressure = modelOutputState.pressure;
-    pe = modelOutputState.PE;
+    pe       = modelOutputState.PE;
+    ke       = modelOutputState.KE;
+    time     = modelOutputState.time;
 
     pressures.push(pressure);
     pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-    ke = modelOutputState.KE;
+
     tick_history_list_push();
+
     if (!stopped) {
       t = Date.now();
       if (sample_time) {
@@ -2024,6 +2106,8 @@ modeler.model = function() {
       arrays.copy(tick_history_list[index].nodes[i], nodes[i]);
     }
     ke = tick_history_list[index].ke;
+    time = tick_history_list[index].time;
+    coreModel.setTime(time);
   }
 
   function container_pressure() {
@@ -2051,6 +2135,59 @@ modeler.model = function() {
     temperature = t;
     coreModel.setTargetTemperature(abstract_to_real_temperature(t));
   }
+
+  // ------------------------------
+  // finish setting up the model
+  // ------------------------------
+
+  // get a fresh model
+  coreModel = md2d.makeModel();
+
+  coreModel.createAtoms({
+    num: initialProperties.mol_number
+  });
+
+  nodes    = coreModel.nodes;
+  radius   = coreModel.radius;
+  px       = coreModel.px;
+  py       = coreModel.py;
+  x        = coreModel.x;
+  y        = coreModel.y;
+  vx       = coreModel.vx;
+  vy       = coreModel.vy;
+  speed    = coreModel.speed;
+  ax       = coreModel.ax;
+  ay       = coreModel.ay;
+  mass     = coreModel.mass;
+  charge   = coreModel.charge;
+
+  modelOutputState = coreModel.outputState;
+
+  // The d3 molecule viewer requires this length to be set correctly:
+  atoms.length = nodes[0].length;
+
+  // Initialize properties
+  lennard_jones_forces = initialProperties.lennard_jones_forces || true;
+  coulomb_forces       = initialProperties.coulomb_forces       || false;
+  temperature_control  = initialProperties.temperature_control  || false;
+  temperature          = initialProperties.temperature          || 5;
+
+  // who is listening to model tick completions
+  model_listener       = initialProperties.model_listener || false;
+
+  reset_tick_history_list();
+  new_step = true;
+
+  coreModel.useLennardJonesInteraction(lennard_jones_forces);
+  coreModel.useCoulombInteraction(coulomb_forces);
+  coreModel.useThermostat(temperature_control);
+
+  var T = abstract_to_real_temperature(temperature);
+
+  coreModel.setTargetTemperature(T);
+  coreModel.initializeAtomsRandomly({
+    temperature: T
+  });
 
   // ------------------------------------------------------------
   //
@@ -2182,6 +2319,14 @@ modeler.model = function() {
     return coreModel.getLJCalculator();
   };
 
+  model.resetTime = function() {
+    coreModel.setTime(0);
+  };
+
+  model.getTime = function() {
+    return modelOutputState ? modelOutputState.time : undefined;
+  };
+
   model.set_radius = function(r) {
     // var i, n = nodes[0].length;
     // i = -1; while(++i < n) { radius[i] = r; }
@@ -2223,37 +2368,6 @@ modeler.model = function() {
     return atoms;
   };
 
-  model.initialize = function(options) {
-    options = options || {};
-
-    if (options.temperature != null) options.temperature = abstract_to_real_temperature(options.temperature);
-    lennard_jones_forces = options.lennard_jones_forces || true;
-    coulomb_forces       = options.coulomb_forces       || false;
-    temperature_control  = options.temperature_control  || false;
-
-    // who is listening to model tick completions
-    model_listener = options.model_listener || false;
-
-    reset_tick_history_list();
-    new_step = true;
-    // pressures.push(pressure);
-    // pressures.splice(0, pressures.length - 16); // limit the pressures array to the most recent 16 entries
-
-    coreModel.useLennardJonesInteraction(lennard_jones_forces);
-    coreModel.useCoulombInteraction(coulomb_forces);
-    coreModel.useThermostat(temperature_control);
-    coreModel.setTargetTemperature(options.temperature);
-
-    return model;
-  };
-
-  model.relax = function() {
-    // thermalize enough that relaxToTemperature doesn't need a ridiculous window size
-    coreModel.integrate(50);
-    coreModel.relaxToTemperature();
-    return model;
-  };
-
   model.on = function(type, listener) {
     event.on(type, listener);
     return model;
@@ -2273,40 +2387,12 @@ modeler.model = function() {
     return model;
   };
 
-  model.nodes = function(options) {
-    options = options || {};
-
-    if (options.temperature != null) options.temperature = abstract_to_real_temperature(options.temperature);
-
-    // get a fresh model
-    coreModel = md2d.makeModel();
-
-    coreModel.createNodes(options);
-
-    nodes    = coreModel.nodes;
-    radius   = coreModel.radius;
-    px       = coreModel.px;
-    py       = coreModel.py;
-    x        = coreModel.x;
-    y        = coreModel.y;
-    vx       = coreModel.vx;
-    vy       = coreModel.vy;
-    speed    = coreModel.speed;
-    ax       = coreModel.ax;
-    ay       = coreModel.ay;
-    mass     = coreModel.mass;
-    charge   = coreModel.charge;
-
-    modelOutputState = coreModel.outputState;
-
-    // The d3 molecule viewer requires this length to be set correctly:
-    atoms.length = nodes[0].length;
-
+  model.relax = function() {
+    coreModel.relaxToTemperature();
     return model;
   };
 
   model.start = function() {
-    model.initialize();
     return model.resume();
   };
 
@@ -2357,49 +2443,19 @@ modeler.model = function() {
     return model;
   };
 
-  var listeners = {};
-
-  function notifyListeners(listeners) {
-    $.unique(listeners);
-    for (var i=0, ii=listeners.length; i<ii; i++){
-      listeners[i]();
-    }
-  };
-
-  properties = {
-    temperature   : 3,
-    coulomb_forces: false,
-    epsilon       : -0.1,
-
-    set_temperature: function(t) {
-      this.temperature = t;
-      temperature = t;
-      coreModel.setTargetTemperature(abstract_to_real_temperature(t));
-    },
-
-    set_coulomb_forces: function(cf) {
-      this.coulomb_forces = cf;
-      coulomb_forces = cf;
-      coreModel.useCoulombInteraction(cf);
-
-      // FIXME
-      molecule_container.setup_particles();
-    },
-
-    set_epsilon: function(e) {
-      this.epsilon = e;
-      coreModel.setLJEpsilon(e);
-    }
-  };
-
   model.set = function(hash) {
-    var waitingToBeNotified = [];
-    for (var property in hash) {
-      if (hash.hasOwnProperty(property) && properties["set_"+property]) {
-        properties["set_"+property](hash[property]);
-      }
-      if (listeners[property]) {
-        waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
+    var property, waitingToBeNotified = [];
+    for (property in hash) {
+      if (hash.hasOwnProperty(property)) {
+        // look for set method first, otherwise just set the property
+        if (properties["set_"+property]) {
+          properties["set_"+property](hash[property]);
+        } else if (properties[property]) {
+          properties[property] = hash[property];
+        }
+        if (listeners[property]) {
+          waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
+        }
       }
     }
     notifyListeners(waitingToBeNotified);
@@ -2416,13 +2472,13 @@ modeler.model = function() {
   model.addPropertiesListener = function(properties, callback) {
     var i, ii, prop;
     for (i=0, ii=properties.length; i<ii; i++){
-      var prop = properties[i];
+      prop = properties[i];
       if (!listeners[prop]) {
         listeners[prop] = [];
       }
       listeners[prop].push(callback);
     }
-  }
+  };
 
   model.serialize = function() {
     return JSON.stringify(properties);

@@ -27,6 +27,593 @@ grapher.indexedData = function(array, initial_index) {
   };
   return points;
 };
+grapher.graph = function(elem, options) {
+  var cx = 600, cy = 300;
+
+  if (arguments.length) {
+    elem = d3.select(elem);
+    cx = elem.property("clientWidth");
+    cy = elem.property("clientHeight");
+  }
+
+  var vis, plot, title, xlabel, ylabel, xtic, ytic,
+      padding, size,
+      xScale, yScale, xValue, yValue, line,
+      circleCursorStyle,
+      downx = Math.NaN,
+      downy = Math.NaN,
+      dragged = null,
+      selected = null,
+      default_options = {
+        "xmax": 60, "xmin": 0,
+        "ymax": 40, "ymin": 0, 
+        "title": "Simple Graph1",
+        "xlabel": "X Axis",
+        "ylabel": "Y Axis",
+        "circleRadius": 10.0,
+        "dataChange": true
+      };
+
+  if (options) {
+    for(var p in default_options) {
+      if (options[p] === undefined) {
+        options[p] = default_options[p];
+      }
+    }
+  } else {
+    options = default_options;
+  }
+
+  if (options.dataChange) {
+    circleCursorStyle = "ns-resize"
+  } else {
+    circleCursorStyle = "crosshair"
+  }
+
+  options.xrange = options.xmax - options.xmin;
+  options.yrange = options.ymax - options.ymin;
+
+
+  padding = {
+   "top":    options.title  ? 40 : 20,
+   "right":                 30,
+   "bottom": options.xlabel ? 60 : 10,
+   "left":   options.ylabel ? 70 : 45
+  };
+
+  size = {
+    "width":  cx - padding.left - padding.right,
+    "height": cy - padding.top  - padding.bottom
+  };
+
+  xValue = function(d) { return d[0]; };
+  yValue = function(d) { return d[1]; };
+
+  xScale = d3.scale.linear()
+    .domain([options.xmin, options.xmax])
+    .range([0, size.width]);
+
+  yScale = d3.scale.linear()
+    .domain([options.ymax, options.ymin]).nice()
+    .range([0, size.height]).nice();
+
+  line = d3.svg.line()
+      .x(function(d, i) { return xScale(points[i][0]); })
+      .y(function(d, i) { return yScale(points[i][1]); });
+
+  function graph(selection) {
+    if (!selection) { selection = elem; };
+    selection.each(function() {
+
+      if (this.clientWidth && this.clientHeight) {
+        cx = this.clientWidth;
+        cy = this.clientHeight;
+        size.width  = cx - padding.left - padding.right;
+        size.height = cy - padding.top  - padding.bottom;
+      }
+
+      points = options.points || fakeDataPoints();
+      updateXScale();
+      updateYScale();
+
+      vis = d3.select(this).append("svg")
+          .attr("width",  cx)
+          .attr("height", cy)
+          .append("g")
+            .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
+      plot = vis.append("rect")
+          .attr("width", size.width)
+          .attr("height", size.height)
+          .style("fill", "#EEEEEE")
+          .attr("pointer-events", "all")
+          .on("mousedown.drag", plot_drag)
+          .on("touchstart.drag", plot_drag)
+          .call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
+
+      vis.append("svg")
+          .attr("top", 0)
+          .attr("left", 0)
+          .attr("width", size.width)
+          .attr("height", size.height)
+          .attr("viewBox", "0 0 "+size.width+" "+size.height)
+          .attr("class", "line")
+          .append("path")
+              .attr("class", "line")
+              .attr("d", line(points));
+
+      // add Chart Title
+      if (options.title) {
+        title = vis.append("text")
+            .attr("class", "title")
+            .text(options.title)
+            .attr("x", size.width/2)
+            .attr("dy","-0.8em")
+            .style("text-anchor","middle");
+      }
+
+      // Add the x-axis label
+      if (options.xlabel) {
+        xlabel = vis.append("text")
+            .attr("class", "axis")
+            .text(options.xlabel)
+            .attr("x", size.width/2)
+            .attr("y", size.height)
+            .attr("dy","2.4em")
+            .style("text-anchor","middle");
+      }
+
+      // add y-axis label
+      if (options.ylabel) {
+        ylabel = vis.append("g").append("text")
+            .attr("class", "axis")
+            .text(options.ylabel)
+            .style("text-anchor","middle")
+            .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+      }
+
+      d3.select(this)
+          .on("mousemove.drag", mousemove)
+          .on("touchmove.drag", mousemove)
+          .on("mouseup.drag",   mouseup)
+          .on("touchend.drag",  mouseup);
+
+      redraw();
+    });
+
+    function fakeDataPoints() {
+      var yrange2 = options.yrange / 2,
+          yrange4 = yrange2 / 2,
+          pnts;
+
+      options.datacount = size.width/30;
+      options.xtic = options.xrange / options.datacount;
+      options.ytic = options.yrange / options.datacount;
+
+      pnts = d3.range(options.datacount).map(function(i) {
+        return [i * options.xtic + options.xmin, options.ymin + yrange4 + Math.random() * yrange2 ];
+      });
+      return pnts;
+    }
+
+    function keydown() {
+      if (!selected) return;
+      switch (d3.event.keyCode) {
+        case 8:   // backspace
+        case 46:  // delete
+        if (options.dataChange) {
+          var i = points.indexOf(selected);
+          points.splice(i, 1);
+          selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
+          update();
+        }
+        if (d3.event && d3.event.keyCode) {
+          d3.event.preventDefault();
+          d3.event.stopPropagation();
+        }
+        break;
+      }
+    }
+
+    // update the layout
+    function updateLayout() {
+      padding = {
+       "top":    options.title  ? 40 : 20,
+       "right":                 30,
+       "bottom": options.xlabel ? 60 : 10,
+       "left":   options.ylabel ? 70 : 45
+      };
+
+      size.width  = cx - padding.left - padding.right;
+      size.height = cy - padding.top  - padding.bottom;
+
+      plot.attr("width", size.width)
+          .attr("height", size.height);
+    }
+
+    // Update the x-scale.
+    function updateXScale() {
+      xScale.domain([options.xmin, options.xmax])
+            .range([0, size.width]);
+    }
+
+    // Update the y-scale.
+    function updateYScale() {
+      yScale.domain([options.ymin, options.ymax])
+            .range([size.height, 0]);
+    }
+
+    function redraw() {
+      var tx = function(d) {
+        return "translate(" + xScale(d) + ",0)";
+      },
+      ty = function(d) {
+        return "translate(0," + yScale(d) + ")";
+      },
+      stroke = function(d) {
+        return d ? "#ccc" : "#666";
+      },
+
+      fx = xScale.tickFormat(options.datacount),
+      fy = xScale.tickFormat(options.datacount);
+
+      // Regenerate x-ticks…
+      var gx = vis.selectAll("g.x")
+          .data(xScale.ticks(10), String)
+          .attr("transform", tx);
+
+      gx.select("text")
+          .text(fx);
+
+      var gxe = gx.enter().insert("g", "a")
+          .attr("class", "x")
+          .attr("transform", tx);
+
+      gxe.append("line")
+          .attr("stroke", stroke)
+          .attr("y1", 0)
+          .attr("y2", size.height);
+
+      gxe.append("text")
+          .attr("class", "axis")
+          .attr("y", size.height)
+          .attr("dy", "1em")
+          .attr("text-anchor", "middle")
+          .text(fx)
+          .style("cursor", "ew-resize")
+          .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+          .on("mousedown.drag",  xaxis_drag)
+          .on("touchstart.drag", xaxis_drag);
+
+      gx.exit().remove();
+
+      // Regenerate y-ticks…
+      var gy = vis.selectAll("g.y")
+          .data(yScale.ticks(10), String)
+          .attr("transform", ty);
+
+      gy.select("text")
+          .text(fy);
+
+      var gye = gy.enter().insert("g", "a")
+          .attr("class", "y")
+          .attr("transform", ty)
+          .attr("background-fill", "#FFEEB6");
+
+      gye.append("line")
+          .attr("stroke", stroke)
+          .attr("x1", 0)
+          .attr("x2", size.width);
+
+      gye.append("text")
+          .attr("class", "axis")
+          .attr("x", -3)
+          .attr("dy", ".35em")
+          .attr("text-anchor", "end")
+          .text(fy)
+          .style("cursor", "ns-resize")
+          .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+          .on("mousedown.drag",  yaxis_drag)
+          .on("touchstart.drag", yaxis_drag);
+
+      gy.exit().remove();
+      plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
+      update();
+    }
+
+    function update() {
+      var lines = vis.select("path").attr("d", line(points));
+
+      var circle = vis.select("svg").selectAll("circle")
+          .data(points, function(d) { return d; });
+
+      circle.enter().append("circle")
+          .attr("class", function(d) { return d === selected ? "selected" : null; })
+          .attr("cx",    function(d) { return xScale(d[0]); })
+          .attr("cy",    function(d) { return yScale(d[1]); })
+          .attr("r", options.circleRadius)
+          .style("cursor", circleCursorStyle)
+          .on("mousedown.drag",  datapoint_drag)
+          .on("touchstart.drag", datapoint_drag);
+
+      circle
+          .attr("class", function(d) { return d === selected ? "selected" : null; })
+          .attr("cx",    function(d) { return xScale(d[0]); })
+          .attr("cy",    function(d) { return yScale(d[1]); });
+
+      circle.exit().remove();
+
+      if (d3.event && d3.event.keyCode) {
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+    }
+
+    function plot_drag() {
+      grapher.registerKeyboardHandler(keydown);
+      d3.select('body').style("cursor", "move");
+      if (d3.event.altKey) {
+        if (options.dataChange) {
+          var p = d3.svg.mouse(vis.node());
+          var newpoint = [];
+          newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
+          newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+          points.push(newpoint);
+          points.sort(function(a, b) {
+            if (a[0] < b[0]) { return -1; }
+            if (a[0] > b[0]) { return  1; }
+            return 0;
+          });
+          selected = newpoint;
+          update();
+        }
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+    }
+
+    function xaxis_drag(d) {
+      document.onselectstart = function() { return false; };
+      var p = d3.svg.mouse(vis[0][0]);
+      downx = xScale.invert(p[0]);
+    }
+
+    function yaxis_drag(d) {
+      document.onselectstart = function() { return false; };
+      var p = d3.svg.mouse(vis[0][0]);
+      downy = yScale.invert(p[1]);
+    }
+
+    function datapoint_drag(d) {
+      grapher.registerKeyboardHandler(keydown);
+      document.onselectstart = function() { return false; };
+      selected = dragged = d;
+      update();
+    }
+
+    function mousemove() {
+      var p = d3.svg.mouse(vis[0][0]),
+          changex, changey, new_domain,
+          t = d3.event.changedTouches;
+
+      if (dragged && options.dataChange) {
+        dragged[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+        update();
+      }
+
+      if (!isNaN(downx)) {
+        d3.select('body').style("cursor", "ew-resize");
+        var rupx = xScale.invert(p[0]),
+            xaxis1 = xScale.domain()[0],
+            xaxis2 = xScale.domain()[1],
+            xextent = xaxis2 - xaxis1;
+        if (rupx !== 0) {
+          changex = downx / rupx;
+          new_domain = [xaxis1, xaxis1 + (xextent * changex)];
+          xScale.domain(new_domain);
+          redraw();
+        }
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+
+      if (!isNaN(downy)) {
+        d3.select('body').style("cursor", "ns-resize");
+        var rupy = yScale.invert(p[1]),
+            yaxis1 = yScale.domain()[1],
+            yaxis2 = yScale.domain()[0],
+            yextent = yaxis2 - yaxis1;
+        if (rupy !== 0) {
+          changey = downy / rupy;
+          new_domain = [yaxis2, yaxis2 - yextent * changey];
+          yScale.domain(new_domain);
+          redraw();
+        }
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+    }
+
+    function mouseup() {
+      document.onselectstart = function() { return true; };
+      d3.select('body').style("cursor", "auto");
+      d3.select('body').style("cursor", "auto");
+      if (!isNaN(downx)) {
+        redraw();
+        downx = Math.NaN;
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+      if (!isNaN(downy)) {
+        redraw();
+        downy = Math.NaN;
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+      if (dragged) {
+        dragged = null;
+      }
+    }
+
+    // make these private variables and functions available
+    graph.elem = elem;
+    graph.redraw = redraw;
+    graph.updateXScale = updateXScale;
+    graph.updateYScale = updateYScale;
+
+  }
+
+  // update the title
+  function updateTitle() {
+    if (options.title && title) {
+      title.text(options.title);
+    }
+  }
+
+  // update the x-axis label
+  function updateXlabel() {
+    if (options.xlabel && xlabel) {
+      xlabel.text(options.xlabel);
+    }
+  }
+
+  // update the y-axis label
+  function updateYlabel() {
+    if (options.ylabel && ylabel) {
+      ylabel.text(options.ylabel);
+    } else {
+      ylabel.style("display", "none");
+    }
+  }
+
+  // The x-accessor for the path generator; xScale âˆ˜ xValue.
+  function X(d) {
+    return xScale(d[0]);
+  }
+
+  // The x-accessor for the path generator; yScale âˆ˜ yValue.
+  function Y(d) {
+    return yScale(d[1]);
+  }
+
+  function gRedraw() {
+    redraw();
+  }
+
+  graph.options = function(_) {
+    if (!arguments.length) return options;
+    // options = _;
+    return graph;
+  };
+
+  graph.margin = function(_) {
+    if (!arguments.length) return margin;
+    margin = _;
+    return graph;
+  };
+
+  graph.xmin = function(_) {
+    if (!arguments.length) return options.xmin;
+    options.xmin = _;
+    options.xrange = options.xmax - options.xmin;
+    if (graph.updateXScale) {
+      graph.updateXScale();
+      graph.redraw();
+    }
+    return graph;
+  };
+
+  graph.xmax = function(_) {
+    if (!arguments.length) return options.xmax;
+    options.xmax = _;
+    options.xrange = options.xmax - options.xmin;
+    if (graph.updateXScale) {
+      graph.updateXScale();
+      graph.redraw();
+    }
+    return graph;
+  };
+
+  graph.ymin = function(_) {
+    if (!arguments.length) return options.ymin;
+    options.ymin = _;
+    options.yrange = options.ymax - options.ymin;
+    if (graph.updateYScale) {
+      graph.updateYScale();
+      graph.redraw();
+    }
+    return graph;
+  };
+
+  graph.ymax = function(_) {
+    if (!arguments.length) return options.ymax;
+    options.ymax = _;
+    options.yrange = options.ymax - options.ymin;
+    if (graph.updateYScale) {
+      graph.updateYScale();
+      graph.redraw();
+    }
+    return graph;
+  };
+
+  graph.xLabel = function(_) {
+    if (!arguments.length) return options.xlabel;
+    options.xlabel = _;
+    updateXlabel();
+    return graph;
+  };
+
+  graph.yLabel = function(_) {
+    if (!arguments.length) return options.ylabel;
+    options.ylabel = _;
+    updateYlabel();
+    return graph;
+  };
+
+  graph.title = function(_) {
+    if (!arguments.length) return options.title;
+    options.title = _;
+    updateTitle();
+    return graph;
+  };
+
+  graph.width = function(_) {
+    if (!arguments.length) return size.width;
+    size.width = _;
+    return graph;
+  };
+
+  graph.height = function(_) {
+    if (!arguments.length) return size.height;
+    size.height = _;
+    return graph;
+  };
+
+  graph.x = function(_) {
+    if (!arguments.length) return xValue;
+    xValue = _;
+    return graph;
+  };
+
+  graph.y = function(_) {
+    if (!arguments.length) return yValue;
+    yValue = _;
+    return graph;
+  };
+
+  graph.elem = function(_) {
+    if (!arguments.length) return elem;
+    elem = d3.select(_);
+    elem.call(graph);
+    return graph;
+  };
+
+  if (elem) { elem.call(graph); }
+
+  return graph;
+}
 // comments
 grapher.colors = function(color) {
   var colors = {
@@ -46,1634 +633,8 @@ grapher.colors = function(color) {
   return colors[color]
 };
 
-grapher.sampleGraph = function(array) {
-
-  var graph = {};
-
-  graph.xmax    = 60;
-  graph.xmin    = 0;
-
-  graph.ymax    = 40;
-  graph.ymin    = 0;
-
-  graph.title   = "Simple Graph";
-  graph.xlabel  = "X Axis";
-  graph.ylabel  = "Y Axis";
-
-  var chart = document.getElementById("chart"),
-      cx = chart.clientWidth,
-      cy = chart.clientHeight,
-      padding = {
-         "top":    graph.title  ? 30 : 20,
-         "right":                 30,
-         "bottom": graph.xlabel ? 40 : 10,
-         "left":   graph.ylabel ? 70 : 45
-      },
-      size = {
-        "width":  cx - padding.left - padding.right,
-        "height": cy - padding.top  - padding.bottom
-      },
-      tx = function(d) { return "translate(" + x(d) + ",0)"; },
-      ty = function(d) { return "translate(0," + y(d) + ")"; },
-      stroke = function(d) { return d ? "#ccc" : "#666"; },
-      points = grapher.indexedData(d3.range(1, 60).map(function(i) { return i , 15 + Math.random() * 10 ; }))
-
-      // x-scale
-      x = d3.scale.linear()
-          .domain([graph.xmin, graph.xmax])
-          .range([0, size.width]),
-
-      // drag x-axis logic
-      downscalex = x.copy(),
-      downx = Math.NaN,
-
-      // y-scale (inverted domain)
-      y = d3.scale.linear()
-          .domain([graph.ymax, graph.ymin])
-          .nice()
-          .range([0, size.height])
-          .nice(),
-      line = d3.svg.line()
-          .x(function(d, i) { return x(points[i].x); })
-          .y(function(d, i) { return y(points[i].y); }),
-
-      // drag y-axis logic
-      downscaley = y.copy(),
-      downy = Math.NaN,
-
-      dragged = selected = null;
-
-  var vis = d3.select(chart).append("svg:svg")
-      .attr("width", cx)
-      .attr("height", cy)
-      .append("svg:g")
-        .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
-
-  var plot = vis.append("svg:rect")
-      .attr("width", size.width)
-      .attr("height", size.height)
-      .style("fill", "#EEEEEE")
-      .attr("pointer-events", "all")
-      .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", redraw))
-      .on("mousedown", function() {
-        if (d3.event.altKey) {
-            points.push(selected = dragged = d3.svg.mouse(vis.node()));
-            update();
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-        }
-      });
-
-  vis.append("svg:svg")
-      .attr("top", 0)
-      .attr("left", 0)
-      .attr("width", size.width)
-      .attr("height", size.height)
-      .attr("viewBox", "0 0 "+size.width+" "+size.height)
-      .append("svg:path")
-          .attr("class", "line")
-          .attr("d", line(points))
-
-  // add Chart Title
-  if (graph.title) {
-    vis.append("svg:text")
-        .text(graph.title)
-        .attr("x", size.width/2)
-        .attr("dy","-1em")
-        .style("text-anchor","middle");
-  }
-
-  // Add the x-axis label
-  if (graph.xlabel) {
-    vis.append("svg:text")
-        .text(graph.xlabel)
-        .attr("x", size.width/2)
-        .attr("y", size.height)
-        .attr("dy","2.4em")
-        .style("text-anchor","middle");
-  }
-
-  // add y-axis label
-  if (graph.ylabel) {
-    vis.append("svg:g")
-        .append("svg:text")
-            .text( graph.ylabel)
-            .style("text-anchor","middle")
-            .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
-  }
-
-  d3.select(window)
-      .on("mousemove", mousemove)
-      .on("mouseup", mouseup)
-      .on("keydown", keydown);
-
-  function update() {
-    var lines = vis.select("path").attr("d", line(points));
-
-    var circle = vis.select("svg").selectAll("circle")
-        .data(points, function(d) { return d; });
-
-    circle.enter().append("svg:circle")
-        .attr("class", function(d) { return d === selected ? "selected" : null; })
-        .attr("cx",    function(d) { return x(d.x); })
-        .attr("cy",    function(d) { return y(d.y); })
-        .attr("r", 6.0)
-        .on("mousedown", function(d) {
-          selected = dragged = d;
-          update();
-        });
-
-    circle
-        .attr("class", function(d) { return d === selected ? "selected" : null; })
-        .attr("cx",    function(d) { return x(d.x); })
-        .attr("cy",    function(d) { return y(d.y); });
-
-    circle.exit().remove();
-
-    if (d3.event && d3.event.keyCode) {
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    }
-  }
-
-  function mousemove() {
-    if (!dragged) return;
-    var m = d3.svg.mouse(vis.node());
-    dragged.x = x.invert(Math.max(0, Math.min(size.width, m[0])));
-    dragged.y = y.invert(Math.max(0, Math.min(size.height, m[1])));
-    update();
-  }
-
-  function mouseup() {
-    if (!dragged) return;
-    mousemove();
-    dragged = null;
-  }
-
-  function keydown() {
-    if (!selected) return;
-    switch (d3.event.keyCode) {
-      case 8: // backspace
-      case 46: { // delete
-        var i = points.indexOf(selected);
-        points.splice(i, 1);
-        selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
-        update();
-        break;
-      }
-    }
-  }
-
-  redraw();
-
-  function redraw() {
-
-    var fx = x.tickFormat(10),
-        fy = y.tickFormat(10);
-
-    // Regenerate x-ticks…
-    var gx = vis.selectAll("g.x")
-        .data(x.ticks(10), String)
-        .attr("transform", tx);
-
-    gx.select("text")
-        .text(fx);
-
-    var gxe = gx.enter().insert("svg:g", "a")
-        .attr("class", "x")
-        .attr("transform", tx);
-
-    gxe.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("y1", 0)
-        .attr("y2", size.height);
-
-    gxe.append("svg:text")
-        .attr("y", size.height)
-        .attr("dy", "1em")
-        .attr("text-anchor", "middle")
-        .style("cursor", "ew-resize")
-        .text(fx)
-        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown", function(d) {
-             var p = d3.svg.mouse(vis[0][0]);
-             downx = x.invert(p[0]);
-             downscalex = null;
-             downscalex = x.copy();
-        });
-
-    gx.exit().remove();
-
-    // Regenerate y-ticks…
-    var gy = vis.selectAll("g.y")
-        .data(y.ticks(10), String)
-        .attr("transform", ty);
-
-    gy.select("text")
-        .text(fy);
-
-    var gye = gy.enter().insert("svg:g", "a")
-        .attr("class", "y")
-        .attr("transform", ty)
-        .attr("background-fill", "#FFEEB6");
-
-    gye.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("x1", 0)
-        .attr("x2", size.width);
-
-    gye.append("svg:text")
-        .attr("x", -3)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .style("cursor", "ns-resize")
-        .text(fy)
-        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown", function(d) {
-             var p = d3.svg.mouse(vis[0][0]);
-             downy = y.invert(p[1]);
-             downscaley = y.copy();
-        });
-
-    gy.exit().remove();
-    update();
-
-  }
-
-  // attach the mousemove and mouseup to the body
-  // in case one wonders off the axis line
-
-  d3.select('body')
-    .on("mousemove", function(d) {
-      var p = d3.svg.mouse(vis[0][0]);
-      if (!isNaN(downx)) {
-        var rupx = downscalex.invert(p[0]),
-          xaxis1 = downscalex.domain()[0],
-          xaxis2 = downscalex.domain()[1],
-          xextent = xaxis2 - xaxis1;
-        if (rupx != 0) {
-            var changex, new_domain;
-            changex = 1 + (downx / rupx - 1) * (xextent/(downx-xaxis1));
-            new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-            x.domain(new_domain);
-            redraw();
-        }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      };
-      if (!isNaN(downy)) {
-          rupy = downscaley.invert(p[1]),
-          yaxis1 = downscaley.domain()[1],
-          yaxis2 = downscaley.domain()[0],
-          yextent = yaxis2 - yaxis1;
-        if (rupy != 0) {
-            var changey, new_domain;
-            changey = downy / rupy;
-            new_domain = [yaxis1 + (yextent * changey), yaxis1];
-            y.domain(new_domain);
-            redraw();
-        }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      }
-    })
-    .on("mouseup", function(d) {
-        if (!isNaN(downx)) {
-            redraw();
-            downx = Math.NaN;
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-            // graph.call(d3.behavior.zoom().on("zoom", redraw));
-        };
-        if (!isNaN(downy)) {
-            redraw();
-            downy = Math.NaN;
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-            // graph.call(d3.behavior.zoom().on("zoom", redraw));
-        };
-        // d3.event.preventDefault();
-        // d3.event.stopPropagation();
-    });
+grapher.registerKeyboardHandler = function(callback) {
+  d3.select(window).on("keydown", callback);
 };
-grapher.graph = function(array) {
-  
-  function graph(g) {
-    g.each(function(d, i) {
-      var g = d3.select(this),
-          xMin = Infinity, xMin = Infinity,
-          xMax = -Infinity, xMax = -Infinity,
-          dx = x.call(this, d, i),
-          dy = y.call(this, d, i),
-          xd = domain && domain.call(this, d, i) || [d3.min(dx), d3.max(dx)], // new x-domain
-          yd = domain && domain.call(this, d, i) || [d3.min(dy), d3.max(dy)], // new y-domain
-          x1 = d3.scale.linear().domain(xd).range([0, width]), // new x-scale
-          y1 = d3.scale.linear().domain(yd).range([height, 0]), // new y-scale
-          x0 = this.__chart__ && this.__chart__.x || x1, // old x-scale
-          y0 = this.__chart__ && this.__chart__.y || y1; // old y-scale
 
-      // x-axis
-      var gx = g.selectAll(".x.axis").data([,]);
-      gx.enter().append("svg:g").attr("class", "x axis");
-      gx.attr("transform", "translate(0," + height + ")").call(xAxis.scales([x0, x1]));
-
-      // y-axis
-      var gy = g.selectAll(".y.axis").data([,]);
-      gy.enter().append("svg:g").attr("class", "y axis")
-      gy.call(yAxis.scales([y0, y1]));
-
-      // Stash the new scales.
-      this.__chart__ = {x: x1, y: y1};
-
-      // Update scatter plots.
-      var datum = g.selectAll("g.datum")
-          .data(dx);
-
-      var t = function(d, i) { return "translate(" + x1(d) + "," + y1(dy[i]) + ")"; };
-
-      datum.enter().append("svg:g")
-          .attr("class", "datum")
-          .attr("transform", function(d, i) { return "translate(" + x0(d) + "," + y0(dy[i]) + ")"; })
-          .style("opacity", 1e-6)
-        .transition()
-          .duration(duration)
-          .delay(function(d) { return x0(d) * 5; })
-          .attr("transform", t)
-          .style("opacity", 1);
-
-      datum.transition()
-          .duration(duration)
-          .delay(function(d) { return x1(d) * 5; })
-          .attr("transform", t)
-          .style("opacity", 1);
-
-      datum.exit().transition()
-          .duration(duration)
-          .delay(function(d) { return x1(d) * 5; })
-          .attr("transform", t)
-          .style("opacity", 1e-6)
-          .remove();
-
-      d3.timer.flush();
-    });
-  }
-  
-  var size = [890, 450],
-      padding = [20, 30, 20, 40], // top right bottom left
-      mw = size[0] - padding[1] - padding[3],
-      mh = size[1] - padding[0] - padding[2],
-      tx = function(d) { return "translate(" + x(d) + ",0)"; },
-      ty = function(d) { return "translate(0," + y(d) + ")"; },
-      stroke = function(d) { return d ? "#ccc" : "#666"; },
-      points = grapher.indexedData(d3.range(1, 60).map(function(i) { return i , 15 + Math.random() * 10 ; }))
-      // x = d3.time.scale()
-      //     .domain([0,60])
-      //     .range([0,mw]),
-      // x-scale
-      x = d3.scale.linear()
-          .domain([15,45])
-          .range([0, mw]),
-      // drag x-axis logic
-      downscalex = x.copy(),
-      downx = Math.NaN,
-      // y-scale (inverted domain)
-      y = d3.scale.linear()
-          .domain([40, 10])
-          .range([0, mh]),
-      line = d3.svg.line()
-          .x(function(d, i) { return x(points[i].x); })
-          .y(function(d, i) { return y(points[i].y); }),
-      // drag x-axis logic
-      downscaley = y.copy(),
-      downy = Math.NaN,
-      dragged = null,
-      selected = points[0];
-
-  var vis = d3.select("#chart").append("svg:svg")
-      .attr("width", size[0] + padding[3] + padding[1])
-      .attr("height", size[1] + padding[0] + padding[2])
-      // .style("background-fill", "#FFEEB6")
-      .append("svg:g")
-        .attr("transform", "translate(" + padding[3] + "," + padding[0] + ")");
-
-  var graph = vis.append("svg:rect")
-      .attr("width", size[0])
-      .attr("height", size[1])
-      // .attr("stroke", "none")
-      .style("fill", "#EEEEEE")
-      .attr("pointer-events", "all")
-      .call(d3.behavior.zoom().on("zoom", redraw))
-      .on("mousedown", function() {
-        if (d3.event.altKey) {
-            points.push(selected = dragged = d3.svg.mouse(vis.node()));
-            update();
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-        }
-      });
-
-  vis.append("svg:path")
-      .attr("class", "line")
-      .attr("d", line(points));
-
-  d3.select(window)
-      .on("mousemove", mousemove)
-      .on("mouseup", mouseup)
-      .on("keydown", keydown);
-
-  // Add interpolator dropdown
-  d3.select("#interpolate")
-      .on("change", function() {
-        line.interpolate(this.value);
-        update();
-      })
-    .selectAll("option")
-      .data([
-        "linear",
-        "step-before",
-        "step-after",
-        "basis",
-        "basis-open",
-        "basis-closed",
-        "cardinal",
-        "cardinal-open",
-        "cardinal-closed",
-        "monotone"
-      ])
-    .enter().append("option")
-      .attr("value", String)
-      .text(String);
-
-  function update() {
-    var lines = vis.select("path").attr("d", line(points));
-        
-    var circle = vis.selectAll("circle")
-        .data(points, function(d) { return d; });
-
-    circle.enter().append("svg:circle")
-        .attr("class", function(d) { return d === selected ? "selected" : null; })
-        .attr("cx",    function(d) { return x(d.x); })
-        .attr("cy",    function(d) { return y(d.y); })
-        .attr("r", 6.0)
-        .on("mousedown", function(d) {
-          selected = dragged = d;
-          update();
-        });
-      // .transition()
-      //   .duration(100)
-      //   .ease("elastic")
-      //   .attr("r", 6.0);
-
-    circle
-        .attr("class", function(d) { return d === selected ? "selected" : null; })
-        .attr("cx",    function(d) { return x(d.x); })
-        .attr("cy",    function(d) { return y(d.y); });
-
-    circle.exit().remove();
-
-    if (d3.event && d3.event.keyCode) {
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    }
-  }
-
-  function mousemove() {
-    if (!dragged) return;
-    var m = d3.svg.mouse(vis.node());
-    dragged.x = x.invert(Math.max(0, Math.min(size[0], m[0])));
-    dragged.y = y.invert(Math.max(0, Math.min(size[1], m[1])));
-    update();
-  }
-
-  function mouseup() {
-    if (!dragged) return;
-    mousemove();
-    dragged = null;
-  }
-
-  function keydown() {
-    if (!selected) return;
-    switch (d3.event.keyCode) {
-      case 8: // backspace
-      case 46: { // delete
-        var i = points.indexOf(selected);
-        points.splice(i, 1);
-        selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
-        update();
-        break;
-      }
-    }
-  }
-
-  redraw();
-
-  function redraw() {
-    if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-        d3.event.transform(x, y);
-    };
-
-    var fx = x.tickFormat(10),
-        fy = y.tickFormat(10);
-
-    // Regenerate x-ticks…
-    var gx = vis.selectAll("g.x")
-        .data(x.ticks(10), String)
-        .attr("transform", tx);
-
-    gx.select("text")
-        .text(fx);
-
-    var gxe = gx.enter().insert("svg:g", "a")
-        .attr("class", "x")
-        .attr("transform", tx);
-
-    gxe.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("y1", 0)
-        .attr("y2", size[1]);
-
-     gxe.append("svg:text")
-         .attr("y", size[1])
-         .attr("dy", "1em")
-         .attr("text-anchor", "middle")
-         .style("cursor", "ew-resize")
-         .text(fx)
-         .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-         .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-         .on("mousedown", function(d) {
-              var p = d3.svg.mouse(vis[0][0]);
-              downx = x.invert(p[0]);
-              downscalex = null;
-              downscalex = x.copy();
-              // d3.behavior.zoom().off("zoom", redraw);
-         });
-      
-
-    gx.exit().remove();
-
-    // Regenerate y-ticks…
-    var gy = vis.selectAll("g.y")
-        .data(y.ticks(10), String)
-        .attr("transform", ty);
-
-    gy.select("text")
-        .text(fy);
-
-    var gye = gy.enter().insert("svg:g", "a")
-        .attr("class", "y")
-        .attr("transform", ty)
-        .attr("background-fill", "#FFEEB6");
-
-    gye.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("x1", 0)
-        .attr("x2", size[0]);
-
-    gye.append("svg:text")
-        .attr("x", -3)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .style("cursor", "ns-resize")
-        .text(fy)
-        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown", function(d) {
-             var p = d3.svg.mouse(vis[0][0]);
-             downy = y.invert(p[1]);
-             downscaley = y.copy();
-             // d3.behavior.zoom().off("zoom", redraw);
-        });
-      
-
-    gy.exit().remove();
-    update();
-
-  }
-
-  // attach the mousemove and mouseup to the body
-  // in case one wonders off the axis line
-
-  d3.select('body')
-    .on("mousemove", function(d) {
-      var p = d3.svg.mouse(vis[0][0]);
-      if (!isNaN(downx)) {
-        var rupx = downscalex.invert(p[0]),
-          xaxis1 = downscalex.domain()[0],
-          xaxis2 = downscalex.domain()[1],
-          xextent = xaxis2 - xaxis1;
-        if (rupx != 0) {
-            var changex, new_domain;
-            changex = 1 + (downx / rupx - 1) * (xextent/(downx-xaxis1));
-            new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-            x.domain(new_domain);
-            redraw();
-        }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      };
-      if (!isNaN(downy)) {
-          rupy = downscaley.invert(p[1]),
-          yaxis1 = downscaley.domain()[1],
-          yaxis2 = downscaley.domain()[0],
-          yextent = yaxis2 - yaxis1;
-        if (rupy != 0) {
-            var changey, new_domain;
-            changey = downy / rupy;
-            new_domain = [yaxis1 + (yextent * changey), yaxis1];
-            y.domain(new_domain);
-            redraw();
-        }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      }
-    })
-    .on("mouseup", function(d) {
-        if (!isNaN(downx)) {
-            redraw();
-            downx = Math.NaN;
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-            // graph.call(d3.behavior.zoom().on("zoom", redraw));
-        };
-        if (!isNaN(downy)) {
-            redraw();
-            downy = Math.NaN;
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-            // graph.call(d3.behavior.zoom().on("zoom", redraw));
-        };
-        // d3.event.preventDefault();
-        // d3.event.stopPropagation();
-    });
-};
-grapher.citiesSampleGraph = function(city) {
-  
-  var size = [890, 450],
-      padding = [20, 30, 20, 40], // top right bottom left
-      mw = size[0] - padding[1] - padding[3],
-      mh = size[1] - padding[0] - padding[2],
-      tx = function(d) { return "translate(" + x(d) + ",0)"; },
-      ty = function(d) { return "translate(0," + y(d) + ")"; },
-      stroke = function(d) { return d ? "#ccc" : "#666"; },
-      points = grapher.indexedData(city.average_temperatures, 1)
-      // x = d3.time.scale()
-      //     .domain([0,60])
-      //     .range([0,mw]),
-      // x-scale
-      x = d3.scale.linear()
-          .domain([1,12])
-          .range([0, mw]),
-      // drag x-axis logic
-      downscalex = x.copy(),
-      downx = Math.NaN,
-      // y-scale (inverted domain)
-      y = d3.scale.linear()
-          .domain([30, -30])
-          .range([0, mh]),
-      line = d3.svg.line()
-          .x(function(d, i) { return x(points[i].x); })
-          .y(function(d, i) { return y(points[i].y); }),
-      // drag x-axis logic
-      downscaley = y.copy(),
-      downy = Math.NaN,
-      dragged = null,
-      selected = points[0];
-
-  var vis = d3.select("#chart").append("svg:svg")
-      .attr("width", size[0] + padding[3] + padding[1])
-      .attr("height", size[1] + padding[0] + padding[2])
-      // .style("background-fill", "#FFEEB6")
-      .append("svg:g")
-        .attr("transform", "translate(" + padding[3] + "," + padding[0] + ")");
-
-  var graph = vis.append("svg:rect")
-      .attr("width", size[0])
-      .attr("height", size[1])
-      // .attr("stroke", "none")
-      .style("fill", "#EEEEEE")
-      .attr("pointer-events", "all")
-      .call(d3.behavior.zoom().on("zoom", redraw))
-      .on("mousedown", function() {
-        if (d3.event.altKey) {
-            points.push(selected = dragged = d3.svg.mouse(vis.node()));
-            update();
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-        }
-      });
-
-  vis.append("svg:path")
-      .attr("class", "line")
-      .attr("d", line(points));
-
-  d3.select(window)
-      .on("mousemove", mousemove)
-      .on("mouseup", mouseup)
-      .on("keydown", keydown);
-
-  // Add interpolator dropdown
-  d3.select("#interpolate")
-      .on("change", function() {
-        line.interpolate(this.value);
-        update();
-      })
-    .selectAll("option")
-      .data([
-        "linear",
-        "step-before",
-        "step-after",
-        "basis",
-        "basis-open",
-        "basis-closed",
-        "cardinal",
-        "cardinal-open",
-        "cardinal-closed",
-        "monotone"
-      ])
-    .enter().append("option")
-      .attr("value", String)
-      .text(String);
-
-  function update() {
-    var lines = vis.select("path").attr("d", line(points));
-        
-    var circle = vis.selectAll("circle")
-        .data(points, function(d) { return d; });
-
-    circle.enter().append("svg:circle")
-        .attr("class", function(d) { return d === selected ? "selected" : null; })
-        .attr("cx",    function(d) { return x(d.x); })
-        .attr("cy",    function(d) { return y(d.y); })
-        .attr("r", 6.0)
-        .on("mousedown", function(d) {
-          selected = dragged = d;
-          update();
-        });
-      // .transition()
-      //   .duration(100)
-      //   .ease("elastic")
-      //   .attr("r", 6.0);
-
-    circle
-        .attr("class", function(d) { return d === selected ? "selected" : null; })
-        .attr("cx",    function(d) { return x(d.x); })
-        .attr("cy",    function(d) { return y(d.y); });
-
-    circle.exit().remove();
-
-    if (d3.event && d3.event.keyCode) {
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    }
-  }
-
-  function mousemove() {
-    if (!dragged) return;
-    var m = d3.svg.mouse(vis.node());
-    dragged.x = x.invert(Math.max(0, Math.min(size[0], m[0])));
-    dragged.y = y.invert(Math.max(0, Math.min(size[1], m[1])));
-    update();
-  }
-
-  function mouseup() {
-    if (!dragged) return;
-    mousemove();
-    dragged = null;
-  }
-
-  function keydown() {
-    if (!selected) return;
-    switch (d3.event.keyCode) {
-      case 8: // backspace
-      case 46: { // delete
-        var i = points.indexOf(selected);
-        points.splice(i, 1);
-        selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
-        update();
-        break;
-      }
-    }
-  }
-
-  redraw();
-
-  function redraw() {
-    if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-        d3.event.transform(x, y);
-    };
-
-    var fx = x.tickFormat(10),
-        fy = y.tickFormat(10);
-
-    // Regenerate x-ticks…
-    var gx = vis.selectAll("g.x")
-        .data(x.ticks(10), String)
-        .attr("transform", tx);
-
-    gx.select("text")
-        .text(fx);
-
-    var gxe = gx.enter().insert("svg:g", "a")
-        .attr("class", "x")
-        .attr("transform", tx);
-
-    gxe.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("y1", 0)
-        .attr("y2", size[1]);
-
-     gxe.append("svg:text")
-         .attr("y", size[1])
-         .attr("dy", "1em")
-         .attr("text-anchor", "middle")
-         .style("cursor", "ew-resize")
-         .text(fx)
-         .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-         .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-         .on("mousedown", function(d) {
-              var p = d3.svg.mouse(vis[0][0]);
-              downx = x.invert(p[0]);
-              downscalex = null;
-              downscalex = x.copy();
-              // d3.behavior.zoom().off("zoom", redraw);
-         });
-      
-
-    gx.exit().remove();
-
-    // Regenerate y-ticks…
-    var gy = vis.selectAll("g.y")
-        .data(y.ticks(10), String)
-        .attr("transform", ty);
-
-    gy.select("text")
-        .text(fy);
-
-    var gye = gy.enter().insert("svg:g", "a")
-        .attr("class", "y")
-        .attr("transform", ty)
-        .attr("background-fill", "#FFEEB6");
-
-    gye.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("x1", 0)
-        .attr("x2", size[0]);
-
-    gye.append("svg:text")
-        .attr("x", -3)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .style("cursor", "ns-resize")
-        .text(fy)
-        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown", function(d) {
-             var p = d3.svg.mouse(vis[0][0]);
-             downy = y.invert(p[1]);
-             downscaley = y.copy();
-             // d3.behavior.zoom().off("zoom", redraw);
-        });
-      
-
-    gy.exit().remove();
-    update();
-
-  }
-
-  // attach the mousemove and mouseup to the body
-  // in case one wonders off the axis line
-
-  d3.select('body')
-    .on("mousemove", function(d) {
-      var p = d3.svg.mouse(vis[0][0]);
-      if (!isNaN(downx)) {
-        var rupx = downscalex.invert(p[0]),
-          xaxis1 = downscalex.domain()[0],
-          xaxis2 = downscalex.domain()[1],
-          xextent = xaxis2 - xaxis1;
-        if (rupx != 0) {
-            var changex, new_domain;
-            changex = downx / rupx;
-            new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-            x.domain(new_domain);
-            redraw();
-        }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      };
-      if (!isNaN(downy)) {
-          rupy = downscaley.invert(p[1]),
-          yaxis1 = downscaley.domain()[1],
-          yaxis2 = downscaley.domain()[0],
-          yextent = yaxis2 - yaxis1;
-        if (rupy != 0) {
-            var changey, new_domain;
-            changey = downy / rupy;
-            new_domain = [yaxis1 + (yextent * changey), yaxis1];
-            y.domain(new_domain);
-            redraw();
-        }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      }
-    })
-    .on("mouseup", function(d) {
-        if (!isNaN(downx)) {
-            redraw();
-            downx = Math.NaN;
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-            // graph.call(d3.behavior.zoom().on("zoom", redraw));
-        };
-        if (!isNaN(downy)) {
-            redraw();
-            downy = Math.NaN;
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-            // graph.call(d3.behavior.zoom().on("zoom", redraw));
-        };
-        // d3.event.preventDefault();
-        // d3.event.stopPropagation();
-    });
-};
-grapher.surfaceTemperatureSampleGraph = function(global_temperatures) {
-
-  var graph = {};
-
-  graph.xmax    = 2000;
-  graph.xmin    = 500;
-
-  graph.ymax    = 15;
-  graph.ymin    = 13;
-
-  graph.title   = "Earth's Surface Temperature: years 500-2009";
-  graph.xlabel  = "Year";
-  graph.ylabel  = "Degrees C";
-
-  var chart = document.getElementById("chart"),
-      cx = chart.clientWidth,
-      cy = chart.clientHeight,
-      padding = {
-         "top":    graph.title  ? 30 : 20,
-         "right":                 30,
-         "bottom": graph.xlabel ? 40 : 10,
-         "left":   graph.ylabel ? 70 : 45
-      },
-      size = {
-        "width":  cx - padding.left - padding.right,
-        "height": cy - padding.top  - padding.bottom
-      },
-      tx = function(d) { return "translate(" + x(d) + ",0)"; },
-      ty = function(d) { return "translate(0," + y(d) + ")"; },
-      stroke = function(d) { return d ? "#ccc" : "#666"; },
-
-      surface_temperature = global_temperatures
-        .temperature_anomolies.map(function(e) {
-          return [e[0], e[1] + global_temperatures.global_surface_temperature_1961_1990];
-        }),
-
-      // x-scale
-      x = d3.scale.linear()
-          .domain([graph.xmin, graph.xmax])
-          .range([0, size.width]),
-
-      // drag x-axis logic
-      downscalex = x.copy(),
-      downx = Math.NaN,
-
-      // y-scale (inverted domain)
-      y = d3.scale.linear()
-          .domain([graph.ymax, graph.ymin])
-          .nice()
-          .range([0, size.height])
-          .nice(),
-      line = d3.svg.line()
-          .x(function(d, i) { return x(surface_temperature[i][0]); })
-          .y(function(d, i) { return y(surface_temperature[i][1]); }),
-
-      // drag y-axis logic
-      downscaley = y.copy(),
-      downy = Math.NaN,
-
-      dragged = selected = null;
-
-  var vis = d3.select("#chart").append("svg:svg")
-      .attr("width", cx)
-      .attr("height", cy)
-      .append("svg:g")
-        .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
-
-  var plot = vis.append("svg:rect")
-      .attr("width", size.width)
-      .attr("height", size.height)
-      .style("fill", "#EEEEEE")
-      .attr("pointer-events", "all")
-      .call(d3.behavior.zoom().x(x).y(y).on("zoom", redraw))
-      .on("mousedown", function() {
-        if (d3.event.altKey) {
-            points.push(selected = dragged = d3.svg.mouse(vis.node()));
-            update();
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-        }
-      });
-
-  vis.append("svg:svg")
-      .attr("top", 0)
-      .attr("left", 0)
-      .attr("width", size.width)
-      .attr("height", size.height)
-      .attr("viewBox", "0 0 "+size.width+" "+size.height)
-      .append("svg:path")
-          .attr("class", "line")
-          .attr("d", line(surface_temperature));
-
-  // add Chart Title
-  if (graph.title) {
-    vis.append("svg:text")
-        .text(graph.title)
-        .attr("x", size.width/2)
-        .attr("dy","-1em")
-        .style("text-anchor","middle");
-  }
-
-  // Add the x-axis label
-  if (graph.xlabel) {
-    vis.append("svg:text")
-        .text(graph.xlabel)
-        .attr("x", size.width/2)
-        .attr("y", size.height)
-        .attr("dy","2.4em")
-        .style("text-anchor","middle");
-  }
-
-  // add y-axis label
-  if (graph.ylabel) {
-    vis.append("svg:g")
-        .append("svg:text")
-            .text( graph.ylabel)
-            .style("text-anchor","middle")
-            .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
-  }
-
-  d3.select(window)
-      .on("mousemove", mousemove)
-      .on("mouseup", mouseup)
-      .on("keydown", keydown);
-
-  //
-  // draw the data
-  //
-  function update() {
-    var lines = vis.select("path").attr("d", line(surface_temperature));
-
-    var circle = vis.select("svg").selectAll("circle")
-        .data(surface_temperature, function(d) { return d; });
-
-    circle.enter().append("svg:circle")
-        .attr("class", function(d) { return d === selected ? "selected" : null; })
-        .attr("cx",    function(d) { return
-          x(d[0]); })
-        .attr("cy",    function(d) { return y(d[1]); })
-        .attr("r", 4.0)
-        // .attr("r", function(d) { return 800 / (x.domain()[1] - x.domain()[0]); })
-        .on("mousedown", function(d) {
-          selected = dragged = d;
-          update();
-        })
-      .transition()
-        .duration(300)
-        .ease("elastic")
-        .attr("r", 2.0);
-        // .attr("r", function(d) { return 400 / (x.domain()[1] - x.domain()[0]); });
-
-    circle
-        .attr("class", function(d) { return d === selected ? "selected" : null; })
-        .attr("cx",    function(d) { return x(d[0]); })
-        .attr("cy",    function(d) { return y(d[1]); });
-
-    circle.exit().remove();
-
-    if (d3.event && d3.event.keyCode) {
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    }
-  }
-
-
-  function mousemove() {
-    if (!dragged) return;
-    var m = d3.svg.mouse(vis.node());
-    dragged[0] = x.invert(Math.max(0, Math.min(size.width, m[0])));
-    dragged[1] = y.invert(Math.max(0, Math.min(size.height, m[1])));
-    update();
-  }
-
-  function mouseup() {
-    if (!dragged) return;
-    mousemove();
-    dragged = null;
-  }
-
-  function keydown() {
-    if (!selected) return;
-    switch (d3.event.keyCode) {
-      case 8: // backspace
-      case 46: { // delete
-        var i = surface_temperature.indexOf(selected);
-        surface_temperature.splice(i, 1);
-        selected = surface_temperature.length ? surface_temperature[i > 0 ? i - 1 : 0] : null;
-        update();
-        break;
-      }
-    }
-  }
-
-  redraw();
-
-  function redraw() {
-    if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-        d3.event.transform(x, y);
-    };
-
-    var fx = x.tickFormat(10),
-        fy = y.tickFormat(10);
-
-    // Regenerate x-ticks…
-    var gx = vis.selectAll("g.x")
-        .data(x.ticks(10), String)
-        .attr("transform", tx);
-
-    gx.select("text")
-        .text(fx);
-
-    var gxe = gx.enter().insert("svg:g", "a")
-        .attr("class", "x")
-        .attr("transform", tx);
-
-    gxe.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("y1", 0)
-        .attr("y2", size.height);
-
-    gxe.append("svg:text")
-        .attr("y", size.height)
-        .attr("dy", "1em")
-        .attr("text-anchor", "middle")
-        .style("cursor", "ew-resize")
-        .text(fx)
-        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown", function(d) {
-             var p = d3.svg.mouse(vis[0][0]);
-             downx = x.invert(p[0]);
-             downscalex = null;
-             downscalex = x.copy();
-             // d3.behavior.zoom().off("zoom", redraw);
-        });
-
-    gx.exit().remove();
-
-    // Regenerate y-ticks…
-    var gy = vis.selectAll("g.y")
-        .data(y.ticks(10), String)
-        .attr("transform", ty);
-
-    gy.select("text")
-        .text(fy);
-
-    var gye = gy.enter().insert("svg:g", "a")
-        .attr("class", "y")
-        .attr("transform", ty)
-        .attr("background-fill", "#FFEEB6");
-
-    gye.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("x1", 0)
-        .attr("x2", size.width);
-
-    gye.append("svg:text")
-        .attr("x", -3)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .style("cursor", "ns-resize")
-        .text(fy)
-        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown", function(d) {
-             var p = d3.svg.mouse(vis[0][0]);
-             downy = y.invert(p[1]);
-             downscaley = y.copy();
-             // d3.behavior.zoom().off("zoom", redraw);
-        });
-
-
-    gy.exit().remove();
-    update();
-
-  }
-
-  //
-  // axis scaling
-  //
-  // attach the mousemove and mouseup to the body
-  // in case one wanders off the axis line
-  d3.select('body')
-    .on("mousemove", function(d) {
-      var p = d3.svg.mouse(vis[0][0]);
-      if (!isNaN(downx)) {
-        var rupx = downscalex.invert(p[0]),
-          xaxis1 = downscalex.domain()[0],
-          xaxis2 = downscalex.domain()[1],
-          xextent = xaxis2 - xaxis1;
-        if (rupx !== 0) {
-            var changex, dragx_factor, new_domain;
-            dragx_factor = xextent/downx;
-            changex = 1 + (downx / rupx - 1) * (xextent/(downx-xaxis1))/dragx_factor;
-            new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-            x.domain(new_domain);
-            redraw();
-        }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      }
-      if (!isNaN(downy)) {
-          var rupy = downscaley.invert(p[1]),
-          yaxis1 = downscaley.domain()[1],
-          yaxis2 = downscaley.domain()[0],
-          yextent = yaxis2 - yaxis1;
-        if (rupy !== 0) {
-            var changey, dragy_factor, new_range;
-            dragy_factor = yextent/downy;
-            changey = 1 - (rupy / downy - 1) * (yextent/(downy-yaxis1))/dragy_factor;
-            new_range = [yaxis1 + (yextent * changey), yaxis1];
-            y.domain(new_range);
-            redraw();
-        }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      }
-    })
-    .on("mouseup", function(d) {
-        if (!isNaN(downx)) {
-            redraw();
-            downx = Math.NaN;
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-        }
-        if (!isNaN(downy)) {
-            redraw();
-            downy = Math.NaN;
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-        }
-    });
-
-};
-grapher.lennardJonesSampleGraph = function() {
-
-  
-  var graph = {};
-
-  graph.epsilon = -0.5;                           // depth of the potential well
-  graph.sigma   = 10;                             // finite distance at which the inter-particle potential is zero
-  graph.r_min   = Math.pow(2, 1/6) * graph.sigma; // distance at which the potential well reaches its minimum
-  graph.alpha   = 4 * Math.pow(graph.epsilon * graph.sigma, 12);
-  graph.beta    = 4 * Math.pow(graph.epsilon * graph.sigma, 6);
-
-  graph.xmax    = graph.sigma;
-  graph.xmin    = 0;
-
-  graph.ymax    = 5;
-  graph.ymin    = -1;
-
-  graph.title   = "Lennard-Jones potential";
-  graph.xlabel  = "Radius";
-  graph.ylabel  = "Potential Well";
-
-  var chart = document.getElementById("chart"),
-      cx = chart.clientWidth,
-      cy = chart.clientHeight,
-      padding = {
-         "top":    graph.title  ? 100 : 20, 
-         "right":                 30, 
-         "bottom": graph.xlabel ? 40 : 10,
-         "left":   graph.ylabel ? 70 : 45
-      },
-      size = { 
-        "width":  cx - padding.left - padding.right, 
-        "height": cy - padding.top  - padding.bottom 
-      },
-      mw = size.width,
-      mh = size.height,
-      tx = function(d) { return "translate(" + x(d) + ",0)"; },
-      ty = function(d) { return "translate(0," + y(d) + ")"; },
-      stroke = function(d) { return d ? "#ccc" : "#666"; };
-
-
-      var lennard_jones_potential = d3.range(graph.sigma * 10).map(function(i) {
-        return { x: i* 0.1, y: graph.alpha/Math.pow(i*10, 12) - graph.beta/Math.pow(i*10, 6) }
-      });
-
-      // x-scale
-      x = d3.scale.linear()
-          .domain([graph.xmin, graph.xmax])
-          .range([0, mw]),
-
-      // drag x-axis logic
-      downscalex = x.copy(),
-      downx = Math.NaN,
-
-      // y-scale (inverted domain)
-      y = d3.scale.linear()
-          .domain([graph.ymax, graph.ymin])
-          .nice()
-          .range([0, mh])
-          .nice(),
-      line = d3.svg.line()
-          .x(function(d, i) { return x(lennard_jones_potential[i].x); })
-          .y(function(d, i) { return y(lennard_jones_potential[i].y); }),
-
-      // drag x-axis logic
-      downscaley = y.copy(),
-      downy = Math.NaN,
-      dragged = null,
-      selected = lennard_jones_potential[0];
-
-  var vis = d3.select("#chart").append("svg:svg")
-      .attr("width", cx)
-      .attr("height", cy)
-      .append("svg:g")
-        .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
-
-  var plot = vis.append("svg:rect")
-      .attr("width", size.width)
-      .attr("height", size.height)
-      .style("fill", "#EEEEEE")
-      .attr("pointer-events", "all")
-      .call(d3.behavior.zoom().on("zoom", redraw))
-      .on("mousedown", function() {
-        if (d3.event.altKey) {
-            points.push(selected = dragged = d3.svg.mouse(vis.node()));
-            update();
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-        }
-      });
-
-  vis.append("svg:svg")
-      .attr("top", 0)
-      .attr("left", 0)
-      .attr("width", size.width)
-      .attr("height", size.height)
-      .attr("viewBox", "0 0 "+size.width+" "+size.height)
-      .append("svg:path")
-          .attr("class", "line")
-          .attr("d", line(lennard_jones_potential))
-
-  // add Chart Title
-  if (graph.title) {
-    vis.append("svg:text")
-        .text(graph.title)
-        .attr("x", size.width/2)
-        .attr("dy","-1em")
-        .style("text-anchor","middle");
-  }
-
-  // Add the x-axis label
-  if (graph.xlabel) {
-    vis.append("svg:text")
-        .text(graph.xlabel)
-        .attr("x", size.width/2)
-        .attr("y", size.height)
-        .attr("dy","2.4em")
-        .style("text-anchor","middle");
-  }
-
-  // add y-axis label
-  if (graph.ylabel) {
-    vis.append("svg:g")
-        .append("svg:text")
-            .text( graph.ylabel)
-            .style("text-anchor","middle")
-            .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
-  }
-
-  d3.select(window)
-      .on("mousemove", mousemove)
-      .on("mouseup", mouseup)
-      .on("keydown", keydown);
-
-  //
-  // draw the data
-  //
-  function update() {
-    var lines = vis.select("path").attr("d", line(lennard_jones_potential)),
-        x_extent = x.domain()[1] - x.domain()[0];
-        
-    var circle = vis.select("svg").selectAll("circle")
-        .data(lennard_jones_potential, function(d) { return d; });
-
-    circle.enter().append("svg:circle")
-        .attr("class", function(d) { return d === selected ? "selected" : null; })
-        .attr("cx",    function(d) { return x(d.x); })
-        .attr("cy",    function(d) { return y(d.y); })
-        .attr("r", 4.0)
-        // .attr("r", function(d) { return 800 / (x.domain()[1] - x.domain()[0]); })
-        .on("mousedown", function(d) {
-          selected = dragged = d;
-          update();
-        })
-      .transition()
-        .duration(300)
-        .ease("elastic")
-        .attr("r", 2.0);
-        // .attr("r", function(d) { return 400 / (x.domain()[1] - x.domain()[0]); });
-
-    circle
-        .attr("class", function(d) { return d === selected ? "selected" : null; })
-        .attr("cx",    function(d) { return x(d.x); })
-        .attr("cy",    function(d) { return y(d.y); });
-
-    circle.exit().remove();
-
-    if (d3.event && d3.event.keyCode) {
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    }
-  }
-
-
-  function mousemove() {
-    if (!dragged) return;
-    var m = d3.svg.mouse(vis.node());
-    dragged[0] = x.invert(Math.max(0, Math.min(size.width, m[0])));
-    dragged[1] = y.invert(Math.max(0, Math.min(size.height, m[1])));
-    update();
-  }
-
-  function mouseup() {
-    if (!dragged) return;
-    mousemove();
-    dragged = null;
-  }
-
-  function keydown() {
-    if (!selected) return;
-    switch (d3.event.keyCode) {
-      case 8: // backspace
-      case 46: { // delete
-        var i = lennard_jones_potential.indexOf(selected);
-        lennard_jones_potential.splice(i, 1);
-        selected = lennard_jones_potential.length ? lennard_jones_potential[i > 0 ? i - 1 : 0] : null;
-        update();
-        break;
-      }
-    }
-  }
-
-  redraw();
-
-  function redraw() {
-    if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-        d3.event.transform(x, y);
-    };
-
-    var fx = x.tickFormat(10),
-        fy = y.tickFormat(10);
-
-    // Regenerate x-ticks…
-    var gx = vis.selectAll("g.x")
-        .data(x.ticks(10), String)
-        .attr("transform", tx);
-
-    gx.select("text")
-        .text(fx);
-
-    var gxe = gx.enter().insert("svg:g", "a")
-        .attr("class", "x")
-        .attr("transform", tx);
-
-    gxe.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("y1", 0)
-        .attr("y2", size.height);
-
-     gxe.append("svg:text")
-         .attr("y", size.height)
-         .attr("dy", "1em")
-         .attr("text-anchor", "middle")
-         .style("cursor", "ew-resize")
-         .text(fx)
-         .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-         .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-         .on("mousedown", function(d) {
-              var p = d3.svg.mouse(vis[0][0]);
-              downx = x.invert(p[0]);
-              downscalex = null;
-              downscalex = x.copy();
-              // d3.behavior.zoom().off("zoom", redraw);
-         });
-      
-
-    gx.exit().remove();
-
-    // Regenerate y-ticks…
-    var gy = vis.selectAll("g.y")
-        .data(y.ticks(10), String)
-        .attr("transform", ty);
-
-    gy.select("text")
-        .text(fy);
-
-    var gye = gy.enter().insert("svg:g", "a")
-        .attr("class", "y")
-        .attr("transform", ty)
-        .attr("background-fill", "#FFEEB6");
-
-    gye.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("x1", 0)
-        .attr("x2", size.width);
-
-    gye.append("svg:text")
-        .attr("x", -3)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .style("cursor", "ns-resize")
-        .text(fy)
-        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown", function(d) {
-             var p = d3.svg.mouse(vis[0][0]);
-             downy = y.invert(p[1]);
-             downscaley = y.copy();
-             // d3.behavior.zoom().off("zoom", redraw);
-        });
-      
-
-    gy.exit().remove();
-    update();
-
-  }
-
-  //
-  // axis scaling
-  //
-  // attach the mousemove and mouseup to the body
-  // in case one wanders off the axis line
-  d3.select('body')
-    .on("mousemove", function(d) {
-      var p = d3.svg.mouse(vis[0][0]);
-      if (!isNaN(downx)) {
-        var rupx = downscalex.invert(p[0]),
-          xaxis1 = downscalex.domain()[0],
-          xaxis2 = downscalex.domain()[1],
-          xextent = xaxis2 - xaxis1;
-        if (rupx !== 0) {
-            var changex, dragx_factor, new_domain;
-            dragx_factor = xextent/downx;
-            changex = 1 + (downx / rupx - 1) * (xextent/(downx-xaxis1))/dragx_factor;
-            new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-            x.domain(new_domain);
-            redraw();
-        }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      }
-      if (!isNaN(downy)) {
-          var rupy = downscaley.invert(p[1]),
-          yaxis1 = downscaley.domain()[1],
-          yaxis2 = downscaley.domain()[0],
-          yextent = yaxis2 - yaxis1;
-        if (rupy !== 0) {
-            var changey, dragy_factor, new_range;
-            dragy_factor = yextent/downy;
-            changey = 1 - (rupy / downy - 1) * (yextent/(downy-yaxis1))/dragy_factor;
-            new_range = [yaxis1 + (yextent * changey), yaxis1];
-            y.domain(new_range);
-            redraw();
-        }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      }
-    })
-    .on("mouseup", function(d) {
-        if (!isNaN(downx)) {
-            redraw();
-            downx = Math.NaN;
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-        }
-        if (!isNaN(downy)) {
-            redraw();
-            downy = Math.NaN;
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-        }
-    });
-
-};
 })();
