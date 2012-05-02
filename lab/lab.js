@@ -2592,10 +2592,12 @@ modeler.model = function(initialProperties) {
       listeners = {},
 
       properties = {
-        mol_number    : 50,
-        temperature   : 3,
-        coulomb_forces: false,
-        epsilon       : -0.1,
+        mol_number            : 50,
+        temperature           : 3,
+        coulomb_forces        : false,
+        epsilon               : -0.1,
+        lennard_jones_forces  : true,
+        temperature_control   : true,
 
         set_temperature: function(t) {
           this.temperature = t;
@@ -2608,10 +2610,6 @@ modeler.model = function(initialProperties) {
           this.coulomb_forces = cf;
           if (coreModel) {
             coreModel.useCoulombInteraction(cf);
-          }
-
-          if (molecule_container) {
-            molecule_container.setup_particles();
           }
         },
 
@@ -2776,15 +2774,36 @@ modeler.model = function(initialProperties) {
     coreModel.setTargetTemperature(abstract_to_real_temperature(t));
   }
 
+  function set_properties(hash) {
+    var property, waitingToBeNotified = [];
+    for (property in hash) {
+      if (hash.hasOwnProperty(property)) {
+        // look for set method first, otherwise just set the property
+        if (properties["set_"+property]) {
+          properties["set_"+property](hash[property]);
+        } else if (properties[property]) {
+          properties[property] = hash[property];
+        }
+        if (listeners[property]) {
+          waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
+        }
+      }
+    }
+    notifyListeners(waitingToBeNotified);
+  }
+
   // ------------------------------
   // finish setting up the model
   // ------------------------------
 
+  set_properties(initialProperties);
+
   // get a fresh model
   coreModel = md2d.makeModel();
+  coreModel.setLJEpsilon(properties.epsilon);
 
   coreModel.createAtoms({
-    num: initialProperties.mol_number
+    num: properties.mol_number
   });
 
   nodes    = coreModel.nodes;
@@ -2807,13 +2826,13 @@ modeler.model = function(initialProperties) {
   atoms.length = nodes[0].length;
 
   // Initialize properties
-  lennard_jones_forces = initialProperties.lennard_jones_forces || true;
-  coulomb_forces       = initialProperties.coulomb_forces       || false;
-  temperature_control  = initialProperties.temperature_control  || false;
-  temperature          = initialProperties.temperature          || 5;
+  lennard_jones_forces = properties.lennard_jones_forces;
+  coulomb_forces       = properties.coulomb_forces;
+  temperature_control  = properties.temperature_control;
+  temperature          = properties.temperature;
 
   // who is listening to model tick completions
-  model_listener       = initialProperties.model_listener || false;
+  model_listener       = properties.model_listener;
 
   reset_tick_history_list();
   new_step = true;
@@ -3084,21 +3103,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.set = function(hash) {
-    var property, waitingToBeNotified = [];
-    for (property in hash) {
-      if (hash.hasOwnProperty(property)) {
-        // look for set method first, otherwise just set the property
-        if (properties["set_"+property]) {
-          properties["set_"+property](hash[property]);
-        } else if (properties[property]) {
-          properties[property] = hash[property];
-        }
-        if (listeners[property]) {
-          waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
-        }
-      }
-    }
-    notifyListeners(waitingToBeNotified);
+    set_properties(hash);
   };
 
   model.get = function(property) {
@@ -3121,7 +3126,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.serialize = function() {
-    return JSON.stringify(properties);
+    return properties;
   };
 
   return model;
@@ -5512,19 +5517,7 @@ function coulombForcesInteractionHandler() {
 
 if (layout.coulomb_forces_checkbox) {
   layout.coulomb_forces_checkbox.onchange = coulombForcesInteractionHandler;
-}
-
-// We have to add this listener onLoad, because even though 'model' is used
-// as a global everywhere, it only gets created after lab.js is parsed...
-// NOTE: In the tests model doesn't exist, so we check first or the test fails...
-$(function() {
-  if (window.model) {
-    model.addPropertiesListener(["coulomb_forces"], function(){
-      $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-    });
-  }
-})
-// ------------------------------------------------------------
+}// ------------------------------------------------------------
 //
 // Display Model Statistics
 //
@@ -7827,8 +7820,9 @@ controllers.simpleModelController = function(molecule_view_id, args) {
       mol_number          = args.mol_number,
       lj_epsilon_max      = args.lj_epsilon_max,
       lj_epsilon_min      = args.lj_epsilon_min,
-      initial_epsilon     = args.initial_epsilon,
+      epsilon             = args.epsilon,
       temperature         = args.temperature,
+      coulomb_forces      = args.coulomb_forces,
 
       model_listener,
       step_counter,
@@ -7857,9 +7851,10 @@ controllers.simpleModelController = function(molecule_view_id, args) {
   model = modeler.model({
       temperature: temperature,
       lennard_jones_forces: true,
-      coulomb_forces: false,
+      coulomb_forces: coulomb_forces,
       temperature_control: true,
       model_listener: model_listener,
+      epsilon: epsilon,
       mol_number: mol_number
     });
 
@@ -7908,8 +7903,6 @@ controllers.simpleModelController = function(molecule_view_id, args) {
   //
 
   function setup() {
-    model.setEpsilon(initial_epsilon);
-
     atoms = model.get_atoms();
     nodes = model.get_nodes();
 
@@ -7994,24 +7987,44 @@ controllers.simpleModelController = function(molecule_view_id, args) {
 
   therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
 
-  model.addPropertiesListener(["temperature"], function(){
+  function updateTherm(){
     therm.add_value(model.get("temperature"));
-  });
+  }
+
+  model.addPropertiesListener(["temperature"], updateTherm);
+  updateTherm();
 
   epsilon_slider = new SliderComponent('#attraction_slider',
     function (v) {
       model.set({epsilon: v} );
-    }, lj_epsilon_max, lj_epsilon_min, initial_epsilon);
+    }, lj_epsilon_max, lj_epsilon_min, epsilon);
 
-  model.addPropertiesListener(["epsilon"], function(){
+  function updateEpsilon(){
     epsilon_slider.set_scaled_value(model.get("epsilon"));
-  });
+  }
+
+  model.addPropertiesListener(["epsilon"], updateEpsilon);
+  updateEpsilon();
 
   // ------------------------------------------------------------
   // Setup heat and cool buttons
   // ------------------------------------------------------------
 
   layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25, model, function (t) { therm.add_value(t); });
+
+  // ------------------------------------------------------------
+  // Add listener for coulomb_forces checkbox
+  // ------------------------------------------------------------
+
+  // $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+
+  function updateCoulombCheckbox() {
+    $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+    molecule_container.setup_particles();
+  }
+
+  model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
+  updateCoulombCheckbox();
 
   // ------------------------------------------------------------
   //
