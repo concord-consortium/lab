@@ -48,11 +48,10 @@
       $.ajax('/model-config', {
         type: 'PUT',
         contentType: 'application/json',
-        data: propsStr,
-        success: function() {
-          model.lastModelConfig = propsStr;
-          $('#save-button').attr("disabled", "disabled");
-        }
+        data: propsStr
+      }).done(function() {
+        model.lastModelConfig = propsStr;
+        $('#save-button').attr("disabled", "disabled");
       });
     });
 
