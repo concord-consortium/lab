@@ -23,8 +23,7 @@
       windowLoad = $.Deferred(),
 
       controller,
-      opts,
-      _rev;
+      opts;
 
   $(window).load(function() {
     windowLoad.resolve();
@@ -32,7 +31,6 @@
 
   $.when(request, windowLoad).done(function(xhr) {
     opts = xhr[0];
-    _rev = opts._rev;
   }).fail(function() {
     opts = {};
   }).always(function() {
@@ -41,7 +39,6 @@
 
     $('#save-button').click(function() {
       var props = model.serialize();
-      props._rev = _rev;
 
       $.ajax('/model-config', {
         type: 'PUT',
