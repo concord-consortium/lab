@@ -1,4 +1,4 @@
-/*globals $ controllers */
+/*globals $ controllers model */
 // ------------------------------------------------------------
 //
 // General Parameters for the Molecular Simulation
