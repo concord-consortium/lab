@@ -87,6 +87,31 @@ suite.addBatch({
       assert.equal(atoms.length, 100);
       var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
+    },
+    "creates a model with json and then gets values in json": function(model) {
+      initialization_options = {
+        lennard_jones_forces: true,
+        coulomb_forces: true,
+        model_listener: false,
+        mol_number: 5
+      }
+      model = modeler.model(initialization_options);
+      modelHash = model.serialize();
+      assert.equal(modelHash.lennard_jones_forces, initialization_options.lennard_jones_forces);
+      assert.equal(modelHash.coulomb_forces, initialization_options.coulomb_forces);
+      assert.equal(modelHash.mol_number, initialization_options.mol_number);
+
+      new_options = {
+        lennard_jones_forces: false,
+        coulomb_forces: false,
+        model_listener: true,
+        mol_number: 10
+      }
+      model.set(new_options);
+      modelHash = model.serialize();
+      assert.equal(modelHash.lennard_jones_forces, new_options.lennard_jones_forces);
+      assert.equal(modelHash.coulomb_forces, new_options.coulomb_forces);
+      assert.equal(modelHash.mol_number, new_options.mol_number);
     }
   }
 });
