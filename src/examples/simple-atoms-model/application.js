@@ -1,4 +1,5 @@
 /*globals $ controllers model alert */
+/*jshint boss:true */
 // ------------------------------------------------------------
 //
 // General Parameters for the Molecular Simulation
@@ -23,21 +24,33 @@
         lj_epsilon_max     : -0.01034
       },
 
-      request = $.get('/model-config'),
-      windowLoad = $.Deferred(),
+      optsLoaded = $.Deferred(),
+      windowLoaded = $.Deferred(),
 
+      hash,
       controller,
       opts;
 
+  if (hash = document.location.hash) {
+    hash = hash.substr(1, hash.length);
+    $.get('/model-config/' + hash).done(function(results) {
+      opts = results;
+      optsLoaded.resolve();
+    }).fail(function() {
+      $('#flash').html('<p class="error-message">Could not load config ' + document.location.hash + '</p>');
+      optsLoaded.resolve();
+    });
+  }
+  else {
+    optsLoaded.resolve();
+  }
+
   $(window).load(function() {
-    windowLoad.resolve();
+    windowLoaded.resolve();
   });
 
-  $.when(request, windowLoad).done(function(xhr) {
-    opts = xhr[0];
-  }).fail(function() {
-    opts = {};
-  }).always(function() {
+  $.when(optsLoaded, windowLoaded).done(function(results) {
+    // update modelConfig with opts, if any
     $.extend(modelConfig, opts);
     controller = controllers.simpleModelController('#molecule-container', modelConfig, playerConfig);
 
@@ -46,26 +59,21 @@
           propsStr  = JSON.stringify(props, 2),
           req;
 
-      $.ajax('/model-config', {
-        type: 'PUT',
-        contentType: 'application/json',
-        data: propsStr
-      }).done(function() {
-        model.lastModelConfig = propsStr;
-        $('#save-button').attr("disabled", "disabled");
-      });
-
       // temporarily, for debugging, also POST to /model-configs and show the resulting config
       req = $.ajax('/model-configs', {
         type: 'POST',
         contentType: 'application/json',
         data: propsStr
       }).done(function(data) {
-        alert("Model config saved to " + req.getResponseHeader('Location'));
-      }).fail(function() {
-        alert("There was an error POSTING to /model-configs");
-      });
+        var loc  = req.getResponseHeader('Location'),
+            hash = '#' + /\/model-config\/(.*)$/.exec(loc)[1],
+            url  = document.location.pathname + hash;
 
+        document.location.hash = hash;
+        $('#flash').html('Saved to <a href="' + url + '">' + url + '</a>');
+      }).fail(function() {
+        $('#flash').html('<p class="error-message">Could not save model</p>');
+      });
     });
 
     // we will be rearanging this when we have a better model for history
