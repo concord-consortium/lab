@@ -20,16 +20,18 @@ controllers.complexModelController =
              ke_chart_view_id,
              lj_potential_chart_id,
              speed_distribution_chart_id,
-             args) {
+             modelConfig,
+             playerConfig) {
 
-  var layoutStyle         = args.layoutStyle,
-      autostart           = args.autostart,
-      maximum_model_steps = args.maximum_model_steps,
-      mol_number          = args.mol_number,
-      lj_epsilon_max      = args.lj_epsilon_max,
-      lj_epsilon_min      = args.lj_epsilon_min,
-      initial_epsilon     = args.initial_epsilon,
-      temperature         = args.temperature,
+  var layoutStyle         = playerConfig.layoutStyle,
+      autostart           = playerConfig.autostart,
+      maximum_model_steps = playerConfig.maximum_model_steps,
+      lj_epsilon_max      = playerConfig.lj_epsilon_max,
+      lj_epsilon_min      = playerConfig.lj_epsilon_min,
+
+      mol_number          = modelConfig.mol_number,
+      initial_epsilon     = modelConfig.initial_epsilon,
+      temperature         = modelConfig.temperature,
 
       model_listener,
       step_counter,
@@ -248,9 +250,9 @@ controllers.complexModelController =
         title   : "Lennard-Jones potential",
         xlabel  : "Radius",
         ylabel  : "Potential Energy",
-        epsilon_max:     args.epsilon_max,
-        epsilon_min:     args.epsilon_min,
-        initial_epsilon: args.initial_epsilon,
+        epsilon_max:     lj_epsilon_max,
+        epsilon_min:     lj_epsilon_min,
+        initial_epsilon: initial_epsilon,
         epsilon_callback: update_epsilon
       });
 
