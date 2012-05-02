@@ -12,30 +12,54 @@
 //
 // ------------------------------------------------------------
 
-var mol_number = 50,
-    atoms,
-    model_stopped = true,
-    model = modeler.model(),
-    nodes,
-    model_player,
-    molecule_container;
+(function() {
 
-$(window).load(function() {
-  var autostart = false,
-      controller;
+  var modelConfig = {
+        layoutStyle        : 'simple-static-screen',
+        mol_number         : 50,
+        autostart          : false,
+        maximum_model_steps: Infinity,
+        lj_epsilon_min     : -0.4,
+        lj_epsilon_max     : -0.01034,
+        epsilon            : -0.1
+      },
 
-  model_player = new ModelPlayer(model, autostart);
-  molecule_container = layout.moleculeContainer('#molecule-container');
+      request = $.get('/model-config'),
+      windowLoad = $.Deferred(),
 
-  controller = controllers.simpleModelController(molecule_container, {
-    layoutStyle: 'simple-static-screen',
-    autostart: autostart,
-    maximum_model_steps: Infinity,
+      controller,
+      opts,
+      _rev;
 
-    lj_epsilon_min: -0.4,
-    lj_epsilon_max: -0.01034,
-    initial_epsilon: -0.1,
+  $(window).load(function() {
+    windowLoad.resolve();
 
-    temperature: 3
+    $('#save-button').click(function() {
+      var props = model.serialize();
+      props._rev = _rev;
+
+      $.ajax('/model-config', {
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(props, 2)
+      });
+    });
   });
-});
+
+  $.when(request, windowLoad).done(function(xhr) {
+    opts = xhr[0];
+    _rev = opts._rev;
+  }).fail(function() {
+    opts = {
+      mol_number          : 50,
+      temperature         : 3,
+      epsilon             : -0.1,
+      lennard_jones_forces: true,
+      coulomb_forces      : false
+    };
+  }).always(function() {
+    $.extend(modelConfig, opts);
+    controller = controllers.simpleModelController('#molecule-container', modelConfig);
+  });
+
+}());
