@@ -28,6 +28,16 @@
 
   $(window).load(function() {
     windowLoad.resolve();
+  });
+
+  $.when(request, windowLoad).done(function(xhr) {
+    opts = xhr[0];
+    _rev = opts._rev;
+  }).fail(function() {
+    opts = {};
+  }).always(function() {
+    $.extend(modelConfig, opts);
+    controller = controllers.simpleModelController('#molecule-container', modelConfig);
 
     $('#save-button').click(function() {
       var props = model.serialize();
@@ -39,16 +49,6 @@
         data: JSON.stringify(props, 2)
       });
     });
-  });
-
-  $.when(request, windowLoad).done(function(xhr) {
-    opts = xhr[0];
-    _rev = opts._rev;
-  }).fail(function() {
-    opts = {};
-  }).always(function() {
-    $.extend(modelConfig, opts);
-    controller = controllers.simpleModelController('#molecule-container', modelConfig);
   });
 
 }());
