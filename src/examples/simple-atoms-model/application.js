@@ -1,4 +1,4 @@
-/*globals $ controllers model */
+/*globals $ controllers model alert */
 // ------------------------------------------------------------
 //
 // General Parameters for the Molecular Simulation
@@ -43,7 +43,8 @@
 
     $('#save-button').attr("disabled", "disabled").click(function() {
       var props     = model.serialize(),
-          propsStr  = JSON.stringify(props, 2);
+          propsStr  = JSON.stringify(props, 2),
+          req;
 
       $.ajax('/model-config', {
         type: 'PUT',
@@ -53,6 +54,18 @@
         model.lastModelConfig = propsStr;
         $('#save-button').attr("disabled", "disabled");
       });
+
+      // temporarily, for debugging, also POST to /model-configs and show the resulting config
+      req = $.ajax('/model-configs', {
+        type: 'POST',
+        contentType: 'application/json',
+        data: propsStr
+      }).done(function(data) {
+        alert("Model config saved to " + req.getResponseHeader('Location'));
+      }).fail(function() {
+        alert("There was an error POSTING to /model-configs");
+      });
+
     });
 
     // we will be rearanging this when we have a better model for history
