@@ -592,7 +592,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.serialize = function() {
-    return JSON.stringify(properties);
+    return properties;
   };
 
   return model;
