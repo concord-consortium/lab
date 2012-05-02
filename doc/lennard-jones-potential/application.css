@@ -112,7 +112,7 @@ h3 {
   height: 1.5em;
   margin-left: 0.5em;
   padding: 0em 0em;
-  font-size: 1.2em;
+  font-size: 1.1em;
   overflow: hidden; }
 
 .component {
@@ -342,6 +342,16 @@ h3 {
   -moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.7);
   box-shadow: 0 0 0 rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.7); }
 
+.component_group button[disabled="disabled"] {
+  color: #999999;
+  background-color: #f6f6f6;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(50%, #f6f6f6), color-stop(50%, #f6f6f6), color-stop(100%, #f6f6f6));
+  background-image: -webkit-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #f6f6f6 50%, #f6f6f6 100%);
+  background-image: -moz-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #f6f6f6 50%, #f6f6f6 100%);
+  background-image: -ms-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #f6f6f6 50%, #f6f6f6 100%);
+  background-image: -o-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #f6f6f6 50%, #f6f6f6 100%);
+  background-image: linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #f6f6f6 50%, #f6f6f6 100%); }
+
 .component_group button:hover, .component_group button:active {
   background: #aaaaaa;
   color: black;
@@ -452,7 +462,7 @@ h3 {
   display: inline-block;
   position: relative;
   vertical-align: top;
-  max-width: 35%;
+  max-width: 33%;
   min-width: 20%;
   width: auto; }
 

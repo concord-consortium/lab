@@ -1167,8 +1167,21 @@ var arrays       = require('./arrays/arrays').arrays,
           averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
 
       return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
-    };
+    },
 
+    validateTemperature = function(t) {
+      var temperature = parseFloat(t);
+
+      if (isNaN(temperature)) {
+        throw new Error("md2d: requested temperature " + t + " could not be understood.");
+      }
+      if (temperature <= 0) {
+        throw new Error("md2d: requested temperature " + temperature + " was less than zero");
+      }
+      if (temperature === Infinity) {
+        throw new Error("md2d: requested temperature was Infinity!");
+      }
+    };
 
 exports.INDICES = INDICES = {
   RADIUS :  0,
@@ -1211,7 +1224,7 @@ exports.makeModel = function() {
       temperatureChangeInProgress = false,
 
       // Desired system temperature, in Kelvin.
-      T_target = 100,
+      T_target,
 
       // Tolerance for (T_actual - T_target) relative to T_target
       tempTolerance = 0.001,
@@ -1519,6 +1532,7 @@ exports.makeModel = function() {
 
     setTargetTemperature: function(v) {
       if (v !== T_target) {
+        validateTemperature(v);
         T_target = v;
         beginTransientTemperatureChange();
       }
@@ -1610,8 +1624,8 @@ exports.makeModel = function() {
     },
 
     initializeAtomsRandomly: function(options) {
-          // don't read too much into this default temperature; any value will do if velocities are to be rescaled immediately
-      var temperature = options.temperature || 100,
+
+      var temperature = options.temperature || 100,  // if not requested, just need any number
 
           k_inJoulesPerKelvin = constants.BOLTZMANN_CONSTANT.as(unit.JOULES_PER_KELVIN),
 
@@ -1623,6 +1637,8 @@ exports.makeModel = function() {
           i, r, c, rowSpacing, colSpacing,
           vMagnitude, vDirection,
           rescalingFactor;
+
+      validateTemperature(temperature);
 
       colSpacing = size[0] / (1+ncols);
       rowSpacing = size[1] / (1+nrows);
@@ -1697,6 +1713,8 @@ exports.makeModel = function() {
 
     relaxToTemperature: function(T) {
       if (T != null) T_target = T;
+
+      validateTemperature(T_target);
 
       beginTransientTemperatureChange();
       while (temperatureChangeInProgress) {
@@ -2137,7 +2155,7 @@ modeler.model = function(initialProperties) {
   function set_properties(hash) {
     var property, waitingToBeNotified = [];
     for (property in hash) {
-      if (hash.hasOwnProperty(property)) {
+      if (hash.hasOwnProperty(property) && hash[property] !== undefined && hash[property] !== null) {
         // look for set method first, otherwise just set the property
         if (properties["set_"+property]) {
           properties["set_"+property](hash[property]);
@@ -2148,6 +2166,9 @@ modeler.model = function(initialProperties) {
           waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
         }
       }
+    }
+    if (listeners["all"]){      // listeners that want to be notified on any change
+      waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
     }
     notifyListeners(waitingToBeNotified);
   }
@@ -2474,6 +2495,7 @@ modeler.model = function(initialProperties) {
   // ithe passed-in array of properties is changed.
   // This is a simple way for views to update themselves in response to
   // properties being set on the model object.
+  // Observer all properties with addPropertiesListener(["all"], callback);
   model.addPropertiesListener = function(properties, callback) {
     var i, ii, prop;
     for (i=0, ii=properties.length; i<ii; i++){
