@@ -243,7 +243,7 @@ modeler.model = function(initialProperties) {
   function set_properties(hash) {
     var property, waitingToBeNotified = [];
     for (property in hash) {
-      if (hash.hasOwnProperty(property)) {
+      if (hash.hasOwnProperty(property) && hash[property]) {
         // look for set method first, otherwise just set the property
         if (properties["set_"+property]) {
           properties["set_"+property](hash[property]);
