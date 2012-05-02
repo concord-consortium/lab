@@ -14,7 +14,9 @@
         maximum_model_steps: Infinity,
         lj_epsilon_min     : -0.4,
         lj_epsilon_max     : -0.01034,
-        epsilon            : -0.1
+        epsilon            : -0.1,
+        lennard_jones_forces: true,
+        coulomb_forces      : false
       },
 
       request = $.get('/model-config'),
@@ -43,13 +45,7 @@
     opts = xhr[0];
     _rev = opts._rev;
   }).fail(function() {
-    opts = {
-      mol_number          : 50,
-      temperature         : 3,
-      epsilon             : -0.1,
-      lennard_jones_forces: true,
-      coulomb_forces      : false
-    };
+    opts = {};
   }).always(function() {
     $.extend(modelConfig, opts);
     controller = controllers.simpleModelController('#molecule-container', modelConfig);
