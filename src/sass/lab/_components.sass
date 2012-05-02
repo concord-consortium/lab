@@ -262,6 +262,10 @@ $button_down: darken($button_hover, 20%)
   padding: .75em 1.5em
   @include linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #ddd 50%, #ddd 100%, $fallback: #ddd)
   @include box-shadow(0 0 0 rgba(000,000,000,0.5), inset 0 0 1px rgba(255,255,255,0.7))
+.component_group button
+  &[disabled="disabled"]
+    color: #999
+    @include linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #f6f6f6 50%, #f6f6f6 100%, $fallback: #f6f6f6)
 .component_group button:hover, .component_group button:active
   background: #aaa
   color: #000
