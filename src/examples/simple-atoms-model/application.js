@@ -41,14 +41,30 @@
     $.extend(modelConfig, opts);
     controller = controllers.simpleModelController('#molecule-container', modelConfig, playerConfig);
 
-    $('#save-button').click(function() {
-      var props = model.serialize();
+    $('#save-button').attr("disabled", "disabled").click(function() {
+      var props     = model.serialize(),
+          propsStr  = JSON.stringify(props, 2);
 
       $.ajax('/model-config', {
         type: 'PUT',
         contentType: 'application/json',
-        data: JSON.stringify(props, 2)
+        data: propsStr,
+        success: function() {
+          model.lastModelConfig = propsStr;
+          $('#save-button').attr("disabled", "disabled");
+        }
       });
+    });
+
+    // we will be rearanging this when we have a better model for history
+    model.lastModelConfig = JSON.stringify(model.serialize(), 2);
+
+    model.addPropertiesListener(["all"], function() {
+      if (JSON.stringify(model.serialize(), 2) !== model.lastModelConfig) {
+        $('#save-button').removeAttr("disabled");
+      } else {
+        $('#save-button').attr("disabled", "disabled");
+      }
     });
   });
 
