@@ -59,7 +59,7 @@ layout.checkForResize = function() {
   }
 };
 
-layout.setupScreen = function(layout_selection) {
+layout.setupScreen = function(viewLists) {
   var fullscreen = document.fullScreen ||
                    document.webkitIsFullScreen ||
                    document.mozFullScreen;
@@ -98,10 +98,7 @@ layout.setupScreen = function(layout_selection) {
       break;
 
       default:
-      setupFullScreenMoleculeContainer();
-      setupFullScreenPotentialChart();
-      setupFullScreenSpeedDistributionChart();
-      setupFullScreenKEChart();
+      setupFullScreen();
       break;
     }
   } else {
@@ -143,20 +140,14 @@ layout.setupScreen = function(layout_selection) {
       if (layout.not_rendered) {
         var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
         layout.bodycss.style.fontSize = emsize + 'em';
-        setupRegularScreenMoleculeContainer();
-        setupRegularScreenPotentialChart();
-        setupRegularSpeedDistributionChart();
-        setupRegularScreenKEChart();
+        setupRegularScreen();
         layout.not_rendered = false;
       }
       break;
 
       default:
       layout.bodycss.style.fontSize = layout.screen_factor + 'em';
-      setupRegularScreenMoleculeContainer();
-      setupRegularScreenPotentialChart();
-      setupRegularSpeedDistributionChart();
-      setupRegularScreenKEChart();
+      setupRegularScreen();
       break;
     }
     layout.regular_display = layout.getDisplayProperties();
@@ -172,52 +163,57 @@ layout.setupScreen = function(layout_selection) {
   //
   // Regular Screen Layout
   //
-  function setupRegularScreenMoleculeContainer() {
-    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    molecule_container.resize(size, size);
-  }
-
-  function setupRegularScreenPotentialChart() {
-    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    potentialChart.resize(size, size);
-  }
-
-  function setupRegularSpeedDistributionChart() {
-    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    speedDistributionChart.resize(size, size);
-  }
-
-  function setupRegularScreenKEChart() {
-    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    // kechart.style.width = layout.display.page.width * 0.45 +"px";
-    // kechart.style.height = size / 2.05 +"px";
-    layout.finishSetupKEChart();
+  function setupRegularScreen() {
+    var i, width, height;;
+    height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    i = -1;  while(++i < viewLists.moleculeContainers.length) {
+      viewLists.moleculeContainers[i].resize(height, height);
+    };
+    width = layout.display.page.width * 0.24;
+    height = layout.display.page.height * 0.32;
+    i = -1;  while(++i < viewLists.potentialCharts.length) {
+      viewLists.potentialCharts[i].resize(width, height);
+    };
+    width = layout.display.page.width * 0.22;
+    height = layout.display.page.height * 0.32;
+    i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
+      viewLists.speedDistributionCharts[i].resize(width, height);
+    };
+    width = layout.display.page.width * 0.47 + 5;
+    height = layout.display.page.height * 0.43 + 0;
+    layout.finishSetupKEChart(width, height);
+    // var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    // i = -1;  while(++i < viewLists.energyCharts) {
+    //   viewLists.energyCharts[i].resize(size, size);
+    // };
   }
 
   //
   // Full Screen Layout
   //
-  function setupFullScreenMoleculeContainer() {
-    var size = layout.display.page.height * 0.70;
-    molecule_container.resize(size, size);
-  }
-
-  function setupFullScreenPotentialChart() {
-    lj_potential_chart.style.width = layout.display.page.width * 0.24 +"px";
-    lj_potential_chart.style.height = layout.display.page.height * 0.28 +"px";
-    layout.finishSetupPotentialChart();
-  }
-
-  function setupFullScreenSpeedDistributionChart() {
-    speed_distribution_chart.style.width = layout.display.page.width * 0.22 +"px";
-    speed_distribution_chart.style.height = layout.display.page.height * 0.28 +"px";
-    layout.finishSetupSpeedDistributionChart();
-  }
-
-  function setupFullScreenKEChart() {
-    kechart.style.width = layout.display.page.width * 0.47 + 5 + "px";
-    kechart.style.height = layout.display.page.height * 0.40 + 0 +"px";
-    layout.finishSetupKEChart();
+  function setupFullScreen() {
+    var i, width, height;
+    height = layout.display.page.height * 0.70;
+    i = -1;  while(++i < viewLists.moleculeContainers.length) {
+      viewLists.moleculeContainers[i].resize(height, height);
+    };
+    width = layout.display.page.width * 0.24;
+    height = layout.display.page.height * 0.35;
+    i = -1;  while(++i < viewLists.potentialCharts.length) {
+      viewLists.potentialCharts[i].resize(width, height);
+    };
+    width = layout.display.page.width * 0.22;
+    height = layout.display.page.height * 0.35;
+    i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
+      viewLists.speedDistributionCharts[i].resize(width, height);
+    };
+    width = layout.display.page.width * 0.47 + 5;
+    height = layout.display.page.height * 0.40 + 0;
+    layout.finishSetupKEChart(width, height);
+    // var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    // i = -1;  while(++i < viewLists.energyCharts) {
+    //   viewLists.energyCharts[i].resize(size, size);
+    // };
   }
 
   //

@@ -30,7 +30,8 @@ controllers.simpleModelController = function(molecule_view_id, args) {
       model_listener,
       step_counter,
       therm,
-      epsilon_slider;
+      epsilon_slider,
+      viewLists;
 
   // ------------------------------------------------------------
   //
@@ -71,6 +72,16 @@ controllers.simpleModelController = function(molecule_view_id, args) {
 
   model_player = new ModelPlayer(model, autostart);
   molecule_container = layout.moleculeContainer(molecule_view_id);
+
+  // ------------------------------------------------------------
+  //
+  // Setup list of views used by layout system
+  //
+  // ------------------------------------------------------------
+
+  viewLists = {
+    moleculeContainers:      [molecule_container]
+  };
 
   // ------------------------------------------------------------
   //
@@ -116,7 +127,7 @@ controllers.simpleModelController = function(molecule_view_id, args) {
     model.on("tick", model_listener);
     molecule_container.update_molecule_radius();
     molecule_container.setup_particles();
-    layout.setupScreen(layout.selection);
+    layout.setupScreen(viewLists);
     step_counter = model.stepCounter();
   }
 
