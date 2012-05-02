@@ -10,8 +10,6 @@
 
   model: true
   molecule_container: true
-  potentialChart: true
-  sppedDistributionChart: true
   model_player: true
   atoms: true
   nodes: true
@@ -42,7 +40,10 @@ controllers.complexModelController =
       model_controls_inputs,
       select_molecule_number,
       mol_number_to_ke_yxais_map,
-      mol_number_to_speed_yaxis_map;
+      mol_number_to_speed_yaxis_map,
+      potentialChart,
+      speedDistributionChart,
+      viewLists;
 
   function controller() {
     // ------------------------------------------------------------
@@ -63,7 +64,7 @@ controllers.complexModelController =
 
       if (model.isNewStep()) {
         te_data.push( ke );
-        if (model_stopped) {
+        if (model.is_stopped()) {
           ke_graph.add_point( ke );
           ke_graph.update_canvas();
         } else {
@@ -147,7 +148,9 @@ controllers.complexModelController =
       container: kechart
     };
 
-    layout.finishSetupKEChart = function() {
+    layout.finishSetupKEChart = function(width, height) {
+      kechart.style.width = width + "px";
+      kechart.style.height = height +"px";
       if (undefined !== ke_graph) {
         ke_graph.setup_graph();
       } else {
@@ -161,7 +164,7 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    speed_graph      = {
+    speedDistributionChart = layout.speedDistributionChart(speed_distribution_chart_id, {
       title    : "Distribution of Speeds",
       xlabel   : null,
       ylabel   : "Count",
@@ -170,9 +173,7 @@ controllers.complexModelController =
       ymax     : 15,
       ymin     : 0,
       quantile : 0.01
-    };
-
-    speedDistributionChart = layout.speedDistributionChart(speed_distribution_chart_id);
+    });
 
     // ------------------------------------------------------------
     //
@@ -180,18 +181,8 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    lj_graph = {
-      title   : "Lennard-Jones potential",
-      xlabel  : "Radius",
-      ylabel  : "Potential Energy"
-    };
 
-    // ------------------------------------------------------------
-    //
     //   Lennard-Jones Coefficients Setup
-    //
-    // ------------------------------------------------------------
-
     lj_coefficients = molecules_lennard_jones.coefficients();
 
     lj_data = {
@@ -265,6 +256,19 @@ controllers.complexModelController =
 
     // ------------------------------------------------------------
     //
+    // Setup list of views used by layout sustem
+    //
+    // ------------------------------------------------------------
+
+    viewLists = {
+      moleculeContainers:      [molecule_container],
+      potentialCharts:         [potentialChart],
+      speedDistributionCharts: [speedDistributionChart],
+      energyCharts:            []
+    };
+
+    // ------------------------------------------------------------
+    //
     // Get a few DOM elements
     //
     // ------------------------------------------------------------
@@ -293,7 +297,7 @@ controllers.complexModelController =
 
       molecule_container.update_molecule_radius();
       molecule_container.setup_particles();
-      layout.setupScreen(layout.selection);
+      layout.setupScreen(viewLists);
       step_counter = model.stepCounter();
 
       modelStop();
@@ -359,7 +363,6 @@ controllers.complexModelController =
     }
 
     function modelStop() {
-      model_stopped = true;
       model.stop();
       ke_graph.hide_canvas();
       // ke_graph.new_data(ke_data);
@@ -369,7 +372,6 @@ controllers.complexModelController =
     }
 
     function modelStep() {
-      model_stopped = true;
       model.stop();
       if (model.stepCounter() < maximum_model_steps) {
         model.stepForward();
@@ -385,7 +387,6 @@ controllers.complexModelController =
     }
 
     function modelGo() {
-      model_stopped = false;
       model.on("tick", modelListener);
       if (model.stepCounter() < maximum_model_steps) {
         ke_graph.show_canvas();
@@ -407,7 +408,6 @@ controllers.complexModelController =
     }
 
     function modelStepForward() {
-      model_stopped = true;
       if (model.stepCounter() < maximum_model_steps) {
         model.stepForward();
       } else {
@@ -425,7 +425,7 @@ controllers.complexModelController =
       layout.temperature_control_checkbox.onchange();
       molecule_container.update_molecule_radius();
       molecule_container.setup_particles();
-      layout.setupScreen(layout.selection);
+      layout.setupScreen(viewLists);
       updateMolNumberViewDependencies();
       modelStop();
       model.on("tick", modelListener);
@@ -451,8 +451,7 @@ controllers.complexModelController =
     // ------------------------------------------------------------
 
     function onresize() {
-      layout.setupScreen();
-      therm.resize();
+      layout.setupScreen(viewLists);
     }
 
     document.onwebkitfullscreenchange = onresize;
@@ -512,20 +511,20 @@ controllers.complexModelController =
     // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
     // ------------------------------------------------------------
 
-    therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
-
-    model.addPropertiesListener(["temperature"], function(){
-      therm.add_value(model.get("temperature"));
-    });
-
-    epsilon_slider = new SliderComponent('#attraction_slider',
-      function (v) {
-        model.set({epsilon: v} );
-      }, lj_epsilon_max, lj_epsilon_min, initial_epsilon);
-
-    model.addPropertiesListener(["epsilon"], function(){
-      epsilon_slider.set_scaled_value(model.get("epsilon"));
-    });
+    // therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
+    //
+    // model.addPropertiesListener(["temperature"], function(){
+    //   therm.add_value(model.get("temperature"));
+    // });
+    //
+    // epsilon_slider = new SliderComponent('#attraction_slider',
+    //   function (v) {
+    //     model.set({epsilon: v} );
+    //   }, lj_epsilon_max, lj_epsilon_min, initial_epsilon);
+    //
+    // model.addPropertiesListener(["epsilon"], function(){
+    //   epsilon_slider.set_scaled_value(model.get("epsilon"));
+    // });
 
     // ------------------------------------------------------------
     // Setup heat and cool buttons

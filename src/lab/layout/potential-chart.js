@@ -31,45 +31,27 @@ layout.potentialChart = function(e, data, options) {
     options = default_options;
   }
 
+  // drag coefficients logic
+  coefficient_dragged = false;
+  coefficient_selected = data.variables[0];
+
   scale(cx, cy);
 
   tx = function(d, i) { return "translate(" + xScale(d) + ",0)"; };
   ty = function(d, i) { return "translate(0," + yScale(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
-  // x-scale
-  xScale = d3.scale.linear()
-    .domain([lj_data.xmin, lj_data.xmax])
-    .range([0, mw]);
-
-  // drag x-axis logic
-  downx = Math.NaN;
-
-  // y-scale (inverted domain)
-  yScale = d3.scale.linear()
-      .domain([lj_data.ymax, lj_data.ymin])
-      .nice()
-      .range([0, mh])
-      .nice();
-
   line = d3.svg.line()
       .x(function(d, i) { return xScale(lennard_jones_potential[i][0]); })
       .y(function(d, i) { return yScale(lennard_jones_potential[i][1]); });
 
-  // drag x-axis logic
-  downy = Math.NaN;
-  dragged = null;
-  selected = data.variables[0];
-
-  // drag coefficients logic
-  coefficient_dragged = false;
-  coefficient_selected = data.variables[0];
-
-  function scale() {
+  function scale(w, h) {
+    cx = w;
+    cy = h;
     // cx = elem.property("clientWidth");
     // cy = elem.property("clientHeight");
-    // node.style.width = cx +"px";
-    // node.style.height = cy +"px";
+    node.style.width = cx +"px";
+    node.style.height = cy +"px";
     // scale_factor = layout.screen_factor;
     // if (layout.screen_factor_width && layout.screen_factor_height) {
     //   scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
@@ -101,30 +83,29 @@ layout.potentialChart = function(e, data, options) {
     mh = size.height;
 
     // x-scale
-    x = d3.scale.linear()
-        .domain([options.xmin, options.xmax])
-        .range([0, mw]);
-
-    // drag x-axis logic
-    downscalex = x.copy();
-    downx = Math.NaN;
+    xScale = d3.scale.linear()
+      .domain([lj_data.xmin, lj_data.xmax])
+      .range([0, mw]);
 
     // y-scale (inverted domain)
-    y = d3.scale.linear()
-        .domain([options.ymax, options.ymin])
+    yScale = d3.scale.linear()
+        .domain([lj_data.ymax, lj_data.ymin])
         .nice()
         .range([0, mh])
         .nice();
 
     // drag x-axis logic
-    downscaley = y.copy();
+    downscalex = xScale.copy();
+    downx = Math.NaN;
+
+    // drag y-axis logic
+    downscaley = yScale.copy();
     downy = Math.NaN;
     dragged = null;
-
   }
 
   function container() {
-    scale();
+    scale(cx, cy);
     if (vis === undefined) {
       vis = d3.select(node).append("svg")
         .attr("width", cx)
@@ -406,8 +387,8 @@ layout.potentialChart = function(e, data, options) {
   }
 
   container.resize = function(width, height) {
-    // container.scale(width, height);
-    container.scale();
+    container.scale(width, height);
+    // container.scale();
     container();
   };
 

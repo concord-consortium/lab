@@ -38,24 +38,9 @@ layout.speedDistributionChart = function(e, options) {
 
   scale(cx, cy);
 
-  tx = function(d, i) { return "translate(" + x(d) + ",0)"; };
-  ty = function(d, i) { return "translate(0," + y(d) + ")"; };
+  tx = function(d, i) { return "translate(" + xScale(d) + ",0)"; };
+  ty = function(d, i) { return "translate(0," + yScale(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
-
-  // x-scale
-  xScale = d3.scale.linear()
-    .domain([options.xmin, options.xmax])
-    .range([0, mw]);
-
-  // drag x-axis logic
-  downx = Math.NaN;
-
-  // y-scale (inverted domain)
-  yScale = d3.scale.linear()
-      .domain([options.ymax, options.ymin])
-      .nice()
-      .range([0, mh])
-      .nice();
 
   function generateSpeedData() {
     speedData = model.get_speed();
@@ -81,11 +66,13 @@ layout.speedDistributionChart = function(e, options) {
     speedMax  = d3.max(bins, function(d) { return d.y; });
   }
 
-  function scale() {
+  function scale(w, h) {
+    cx = w;
+    cy = h;
     // cx = elem.property("clientWidth");
     // cy = elem.property("clientHeight");
-    // node.style.width = cx +"px";
-    // node.style.height = cy +"px";
+    node.style.width = cx +"px";
+    node.style.height = cy +"px";
     // scale_factor = layout.screen_factor;
     // if (layout.screen_factor_width && layout.screen_factor_height) {
     //   scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
@@ -117,12 +104,12 @@ layout.speedDistributionChart = function(e, options) {
     mh = size.height;
 
     // x-scale
-    x = d3.scale.linear()
-        .domain([options.xmin, options.xmax])
-        .range([0, mw]);
+    xScale = d3.scale.linear()
+      .domain([options.xmin, options.xmax])
+      .range([0, mw]);
 
     // y-scale (inverted domain)
-    y = d3.scale.linear()
+    yScale = d3.scale.linear()
         .domain([options.ymax, options.ymin])
         .nice()
         .range([0, mh])
@@ -134,7 +121,7 @@ layout.speedDistributionChart = function(e, options) {
   }
 
   function container() {
-    scale();
+    scale(cx, cy);
     if (vis === undefined) {
       vis = d3.select(node).append("svg")
         .attr("width", cx)
@@ -304,8 +291,8 @@ layout.speedDistributionChart = function(e, options) {
   }
 
   container.resize = function(width, height) {
-    // container.scale(width, height);
-    container.scale();
+    container.scale(width, height);
+    // container.scale();
     container();
   };
 
