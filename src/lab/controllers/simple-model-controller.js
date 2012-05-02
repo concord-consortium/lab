@@ -15,17 +15,18 @@
   nodes: true
 */
 /*jslint onevar: true*/
-controllers.simpleModelController = function(molecule_view_id, args) {
+controllers.simpleModelController = function(molecule_view_id, modelConfig, playerConfig) {
 
-  var layoutStyle         = args.layoutStyle,
-      autostart           = args.autostart,
-      maximum_model_steps = args.maximum_model_steps,
-      mol_number          = args.mol_number,
-      lj_epsilon_max      = args.lj_epsilon_max,
-      lj_epsilon_min      = args.lj_epsilon_min,
-      epsilon             = args.epsilon,
-      temperature         = args.temperature,
-      coulomb_forces      = args.coulomb_forces,
+  var layoutStyle         = playerConfig.layoutStyle,
+      autostart           = playerConfig.autostart,
+      maximum_model_steps = playerConfig.maximum_model_steps,
+      lj_epsilon_max      = playerConfig.lj_epsilon_max,
+      lj_epsilon_min      = playerConfig.lj_epsilon_min,
+
+      mol_number          = modelConfig.mol_number,
+      epsilon             = modelConfig.epsilon,
+      temperature         = modelConfig.temperature,
+      coulomb_forces      = modelConfig.coulomb_forces,
 
       model_listener,
       step_counter,
