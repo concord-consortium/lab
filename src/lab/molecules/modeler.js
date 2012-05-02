@@ -62,6 +62,7 @@ modeler.model = function(initialProperties) {
         temperature           : 3,
         coulomb_forces        : false,
         epsilon               : -0.1,
+        sigma                 : 0.34,
         lennard_jones_forces  : true,
         temperature_control   : true,
 
@@ -83,6 +84,13 @@ modeler.model = function(initialProperties) {
           this.epsilon = e;
           if (coreModel) {
             coreModel.setLJEpsilon(e);
+          }
+        },
+
+        set_sigma: function(s) {
+          this.sigma = s;
+          if (coreModel) {
+            coreModel.setLJSigma(s);
           }
         }
       };
@@ -408,16 +416,6 @@ modeler.model = function(initialProperties) {
   // The next four functions assume we're are doing this for
   // all the atoms will need to be changed when different atoms
   // can have different LJ sigma values
-
-  model.set_lj_coefficients = function(e, s) {
-    // am not using the coefficients beyond setting the ljf limits yet ...
-    epsilon = e;
-    sigma = s;
-
-    // TODO. Disabled for now because application.js doesn't yet know correct units, etc.
-    //coreModel.setLJEpsilon(e);
-    //coreModel.setLJSigma(s);
-  };
 
   /** Accepts an epsilon value in eV.
 
