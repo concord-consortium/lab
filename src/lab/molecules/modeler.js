@@ -255,6 +255,9 @@ modeler.model = function(initialProperties) {
         }
       }
     }
+    if (listeners["all"]){      // listeners that want to be notified on any change
+      waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
+    }
     notifyListeners(waitingToBeNotified);
   }
 
@@ -580,6 +583,7 @@ modeler.model = function(initialProperties) {
   // ithe passed-in array of properties is changed.
   // This is a simple way for views to update themselves in response to
   // properties being set on the model object.
+  // Observer all properties with addPropertiesListener(["all"], callback);
   model.addPropertiesListener = function(properties, callback) {
     var i, ii, prop;
     for (i=0, ii=properties.length; i<ii; i++){
