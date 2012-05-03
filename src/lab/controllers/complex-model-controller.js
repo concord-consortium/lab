@@ -17,7 +17,7 @@
 /*jslint onevar: true*/
 controllers.complexModelController =
     function(molecule_view_id,
-             ke_chart_view_id,
+             energy_graph_view_id,
              lj_potential_chart_id,
              speed_distribution_chart_id,
              modelConfig,
