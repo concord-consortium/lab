@@ -159,6 +159,8 @@ controllers.complexModelController =
         ke_graph = graphx.graph(ke_graph_options);
       }
     };
+    model.on('play', energyGraph.show_canvas);
+    model.on('stop', energyGraph.hide_canvas);
 
     // ------------------------------------------------------------
     //

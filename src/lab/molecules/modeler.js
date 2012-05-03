@@ -13,7 +13,7 @@ modeler.VERSION = '0.2.0';
 modeler.model = function(initialProperties) {
   var model = {},
       atoms = [],
-      event = d3.dispatch("tick"),
+      dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack"),
       temperature_control,
       lennard_jones_forces, coulomb_forces,
       stopped = true,
@@ -191,7 +191,7 @@ modeler.model = function(initialProperties) {
       } else {
         sample_time = t;
       }
-      event.tick({type: "tick"});
+      dispatch.tick({type: "tick"});
     }
     return stopped;
   }
@@ -495,12 +495,12 @@ modeler.model = function(initialProperties) {
   };
 
   model.on = function(type, listener) {
-    event.on(type, listener);
+    dispatch.on(type, listener);
     return model;
   };
 
   model.tickInPlace = function() {
-    event.tick({type: "tick"});
+    dispatch.tick({type: "tick"});
     return model;
   };
 
@@ -525,11 +525,13 @@ modeler.model = function(initialProperties) {
   model.resume = function() {
     stopped = false;
     d3.timer(tick);
+    dispatch.play();
     return model;
   };
 
   model.stop = function() {
     stopped = true;
+    dispatch.stop();
     return model;
   };
 
@@ -578,7 +580,7 @@ modeler.model = function(initialProperties) {
   };
 
   // Add a listener that will be notified any time any of the properties
-  // ithe passed-in array of properties is changed.
+  // in the passed-in array of properties is changed.
   // This is a simple way for views to update themselves in response to
   // properties being set on the model object.
   // Observer all properties with addPropertiesListener(["all"], callback);
