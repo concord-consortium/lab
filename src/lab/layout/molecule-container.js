@@ -29,6 +29,7 @@ layout.moleculeContainer = function(e, options) {
       atom_tooltip_on,
       offset_left, offset_top,
       particle, label, labelEnter, tail,
+      molRadius,
       molecule_div, molecule_div_pre,
       default_options = {
         title:                false,
@@ -291,7 +292,7 @@ layout.moleculeContainer = function(e, options) {
       vis.selectAll("g.y").remove();
 
       if (particle) {
-        update_molecule_radius();
+        updateMoleculeRadius();
 
         particle.attr("cx", function(d, i) { return x(get_x(i)); })
                 .attr("cy", function(d, i) { return y(get_y(i)); })
@@ -455,21 +456,15 @@ layout.moleculeContainer = function(e, options) {
           .attr("offset", "100%");
     }
 
-    function update_molecule_radius() {
-      var ljf = model.getLJCalculator().coefficients();
-      var r = ljf.rmin * 0.5;
-      // model.set_radius(r);
-      vis.selectAll("circle")
-          .data(atoms)
-        .attr("r",  function(d, i) { return x(get_radius(i)); });
-      vis.selectAll("text")
-        .attr("font-size", x(r * 1.3) );
+    function updateMoleculeRadius() {
+      vis.selectAll("circle").data(atoms).attr("r",  function(d, i) { return x(get_radius(i)); });
+      // vis.selectAll("text").attr("font-size", x(molRadius * 1.3) );
     }
 
     function setup_particles() {
       var ljf = model.getLJCalculator().coefficients();
-      var r = ljf.rmin * 0.5;
-      model.set_radius(r);
+      // molRadius = ljf.rmin * 0.5;
+      // model.set_radius(molRadius);
 
       gradient_container.selectAll("circle").remove();
       gradient_container.selectAll("g").remove();
@@ -604,7 +599,7 @@ layout.moleculeContainer = function(e, options) {
 
     // make these private variables and functions available
     container.node = node;
-    container.update_molecule_radius = update_molecule_radius;
+    container.updateMoleculeRadius = updateMoleculeRadius;
     container.setup_particles = setup_particles;
     container.update_molecule_positions = update_molecule_positions;
     container.scale = scale;
