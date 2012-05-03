@@ -82,7 +82,15 @@ var arrays       = require('./arrays/arrays').arrays,
       if (temperature === Infinity) {
         throw new Error("md2d: requested temperature was Infinity!");
       }
-    };
+    },
+
+    copyTypedArray = function(arr) {
+      var copy = []
+      for (var i=0,ii=arr.length; i<ii; i++){
+        copy[i] = arr[i]
+      }
+      return copy;
+    }
 
 exports.INDICES = INDICES = {
   RADIUS :  0,
@@ -98,6 +106,8 @@ exports.INDICES = INDICES = {
   MASS   : 10,
   CHARGE : 11
 };
+
+exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY"];
 
 exports.NODE_PROPERTIES_COUNT = NODE_PROPERTIES_COUNT = 12;
 
@@ -725,6 +735,19 @@ exports.makeModel = function() {
       outputState.CM       = [x_CM, y_CM];
       outputState.vCM      = [vx_CM, vy_CM];
       outputState.omega_CM = omega_CM;
+    },
+
+    serialize: function() {
+      var serializedData = {},
+          prop,
+          array,
+          i, ii;
+      for (i=0, ii=SAVEABLE_INDICES.length; i<ii; i++) {
+        prop = SAVEABLE_INDICES[i];
+        array = nodes[INDICES[prop]];
+        serializedData[prop] = array.slice ? array.slize() : copyTypedArray(array);
+      }
+      return serializedData;
     }
   };
 };

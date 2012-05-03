@@ -595,8 +595,12 @@ modeler.model = function(initialProperties) {
     }
   };
 
-  model.serialize = function() {
-    return properties;
+  model.serialize = function(includeAtoms) {
+    var propCopy = $.extend({}, properties)
+    if (includeAtoms) {
+      propCopy.atoms = coreModel.serialize();
+    }
+    return propCopy;
   };
 
   return model;
