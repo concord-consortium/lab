@@ -129,6 +129,8 @@ controllers.complexModelController =
       }
     );
 
+    model.addPropertiesListener(["sigma"], molecule_container.updateMoleculeRadius);
+
     // ------------------------------------------------------------
     //
     // Average Kinetic Energy Graph
@@ -188,78 +190,20 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-
-    //   Lennard-Jones Coefficients Setup
-    lj_coefficients = molecules_lennard_jones.coefficients();
-
-    lj_data = {
-      coefficients: lj_coefficients,
-      variables: [
-        {
-          coefficient:"epsilon",
-          x: lj_coefficients.rmin,
-          y: lj_coefficients.epsilon
-        },
-        {
-          coefficient:"sigma",
-          x: lj_coefficients.sigma,
-          y: 0
-        }
-      ]
-    };
-
-    function update_epsilon(e) {
-      update_coefficients(molecules_lennard_jones.epsilon(e));
-    }
-
-    function update_sigma(s) {
-      update_coefficients(molecules_lennard_jones.sigma(s));
-    }
-
-    function update_coefficients(coefficients) {
-      var sigma   = coefficients.sigma,
-          epsilon = coefficients.epsilon,
-          rmin    = coefficients.rmin,
-          y, r;
-
-      model.set_lj_coefficients(epsilon, sigma);
-
-      lj_data.coefficients.sigma   = sigma;
-      lj_data.coefficients.epsilon = epsilon;
-      lj_data.coefficients.rmin    = rmin;
-
-      lj_data.xmax    = sigma * 3;
-      lj_data.xmin    = Math.floor(sigma/2);
-      lj_data.ymax    = Math.ceil(epsilon*-1) + 0.0;
-      lj_data.ymin    = Math.ceil(epsilon*1) - 2.0;
-
-      // update the positions of the adjustable circles on the graph
-      lj_data.variables[1].x = sigma;
-
-      // change the x value for epsilon to match the new rmin value
-      lj_data.variables[0].x = rmin;
-
-      lennard_jones_potential = [];
-
-      for(r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
-        y = molecules_lennard_jones.potential(r);
-        if (y < 100) {
-          lennard_jones_potential.push([r, y]);
-        }
-      }
-    }
-
-    update_coefficients(lj_coefficients);
-
-    potentialChart = layout.potentialChart(lj_potential_chart_id, lj_data, {
+    potentialChart = layout.potentialChart(lj_potential_chart_id, model, {
         title   : "Lennard-Jones potential",
         xlabel  : "Radius",
         ylabel  : "Potential Energy",
         epsilon_max:     lj_epsilon_max,
         epsilon_min:     lj_epsilon_min,
-        initial_epsilon: initial_epsilon,
-        epsilon_callback: update_epsilon
+        epsilon:         epsilon,
+        sigma_max:       lj_sigma_max,
+        sigma_min:       lj_sigma_min,
+        sigma:           sigma
       });
+
+    model.addPropertiesListener(["epsilon"], potentialChart.ljUpdate);
+    model.addPropertiesListener(["sigma"], potentialChart.ljUpdate);
 
     // ------------------------------------------------------------
     //
@@ -351,6 +295,7 @@ controllers.complexModelController =
       speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
       layout.speed_update();
       layout.speed_redraw();
+      potentialChart.redraw();
     }
 
     select_molecule_number.onchange = selectMoleculeNumberChange;
