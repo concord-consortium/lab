@@ -231,16 +231,16 @@ layout.setupScreen = function(viewLists) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameMoleculeContainer() {
-    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
-    molecule_container.resize(size, size);
+    var height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
+    viewLists.moleculeContainers[0].resize(height, height);
   }
 
   //
   // Simple Full Screen Layout
   //
   function setupSimpleFullScreenMoleculeContainer() {
-    var size = layout.display.page.height * 0.70;
-    molecule_container.resize(size, size);
+    var height = layout.display.page.height * 0.70;
+    viewLists.moleculeContainers[0].resize(height, height);
   }
 
   function setupFullScreenDescriptionRight() {
