@@ -131,7 +131,7 @@ exports.makeLennardJonesCalculator = function(params, cb) {
       Output units: MW Force Units (= Dalton * nm / fs^2)
     */
     force: function(r) {
-// "fast" form which avoids the need for a square root      return r * calculator.forceOverDistanceFromSquaredDistance(r*r);
+      return r * calculator.forceOverDistanceFromSquaredDistance(r*r);
     }
   };
 };
