@@ -39,7 +39,7 @@ var arrays       = require('./arrays/arrays').arrays,
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
-    NODE_PROPERTIES_COUNT, INDICES,
+    NODE_PROPERTIES_COUNT, INDICES, SAVEABLE_INDICES,
 
     cross = function(a0, a1, b0, b1) {
       return a0*b1 - a1*b0;
@@ -85,12 +85,12 @@ var arrays       = require('./arrays/arrays').arrays,
     },
 
     copyTypedArray = function(arr) {
-      var copy = []
+      var copy = [];
       for (var i=0,ii=arr.length; i<ii; i++){
-        copy[i] = arr[i]
+        copy[i] = arr[i];
       }
       return copy;
-    }
+    };
 
 exports.INDICES = INDICES = {
   RADIUS :  0,
@@ -745,7 +745,7 @@ exports.makeModel = function() {
       for (i=0, ii=SAVEABLE_INDICES.length; i<ii; i++) {
         prop = SAVEABLE_INDICES[i];
         array = nodes[INDICES[prop]];
-        serializedData[prop] = array.slice ? array.slize() : copyTypedArray(array);
+        serializedData[prop] = array.slice ? array.slice() : copyTypedArray(array);
       }
       return serializedData;
     }
