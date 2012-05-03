@@ -288,6 +288,7 @@ layout.speedDistributionChart = function(e, options) {
     container.node = node;
     container.scale = scale;
     container.update = update;
+    container.redraw = redraw;
   }
 
   container.resize = function(width, height) {
