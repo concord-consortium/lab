@@ -448,31 +448,6 @@ controllers.complexModelController =
     setup();
 
     // ------------------------------------------------------------
-    // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
-    // ------------------------------------------------------------
-
-    // therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
-    //
-    // model.addPropertiesListener(["temperature"], function(){
-    //   therm.add_value(model.get("temperature"));
-    // });
-    //
-    // epsilon_slider = new SliderComponent('#attraction_slider',
-    //   function (v) {
-    //     model.set({epsilon: v} );
-    //   }, lj_epsilon_max, lj_epsilon_min, initial_epsilon);
-    //
-    // model.addPropertiesListener(["epsilon"], function(){
-    //   epsilon_slider.set_scaled_value(model.get("epsilon"));
-    // });
-
-    // ------------------------------------------------------------
-    // Setup heat and cool buttons
-    // ------------------------------------------------------------
-
-    layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25, model, function (t) { therm.add_value(t); });
-
-    // ------------------------------------------------------------
     //
     // Start if autostart is true after everything else ...
     //
