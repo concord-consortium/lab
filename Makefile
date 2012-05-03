@@ -229,8 +229,6 @@ dist/lab/lab.md2d.js: \
 
 dist/lab/lab.molecules.js: \
 	src/lab/start.js \
-	src/lab/molecules/coulomb.js \
-	src/lab/molecules/lennard-jones.js \
 	dist/lab/lab.md2d.js \
 	src/lab/molecules/modeler.js \
 	src/lab/end.js
