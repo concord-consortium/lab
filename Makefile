@@ -30,7 +30,6 @@ BROWSERIFY = ./node_modules/.bin/browserify
 
 LAB_JS_FILES = \
 	dist/lab/lab.grapher.js \
-	dist/lab/lab.graphx.js \
 	dist/lab/lab.benchmark.js \
 	dist/lab/lab.layout.js \
 	dist/lab/lab.arrays.js \
@@ -208,7 +207,6 @@ dist/lab/lab.js: \
 	dist/lab/lab.benchmark.js \
 	dist/lab/lab.arrays.js \
 	dist/lab/lab.layout.js \
-	dist/lab/lab.graphx.js \
 	dist/lab/lab.components.js \
   dist/lab/lab.controllers.js
 
@@ -263,11 +261,6 @@ dist/lab/lab.controllers.js: \
 	src/lab/controllers/controllers.js \
 	src/lab/controllers/simple-model-controller.js \
 	src/lab/controllers/complex-model-controller.js \
-	src/lab/end.js
-
-dist/lab/lab.graphx.js: \
-	src/lab/start.js \
-	src/lab/graphx/graphx.js \
 	src/lab/end.js
 
 dist/lab/lab.components.js: src/lab/components/*.coffee
