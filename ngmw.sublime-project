@@ -3,7 +3,8 @@
   [
     {
       "path": ".",
-      "folder_exclude_patterns": [".sass-cache", ".bundle", "node_modules", "seasons", "simplebeam", "simplecollision", "simpleforce", "surface-temperature"]
+      "folder_exclude_patterns": [".sass-cache", ".bundle", "bin", "node_modules", "lab.*", "dist"],
+      "file_exclude_patterns": ["Gemfile.lock", "*.sublime-workspace"]
     }
   ],
   "settings":
