@@ -9,7 +9,6 @@
   layout
 
   model: true
-  molecule_container: true
   model_player: true
   atoms: true
   nodes: true
@@ -33,6 +32,7 @@ controllers.complexModelController =
       initial_epsilon     = modelConfig.initial_epsilon,
       temperature         = modelConfig.temperature,
 
+      molecule_container,
       model_listener,
       step_counter,
       therm,
@@ -288,8 +288,6 @@ controllers.complexModelController =
     // ------------------------------------------------------------
 
     function setup() {
-      model.setEpsilon(initial_epsilon);
-
       atoms = model.get_atoms();
       nodes = model.get_nodes();
 
@@ -297,7 +295,7 @@ controllers.complexModelController =
       model.resetTime();
       te_data = [model.ke()];
 
-      molecule_container.update_molecule_radius();
+      molecule_container.updateMoleculeRadius();
       molecule_container.setup_particles();
       layout.setupScreen(viewLists);
       step_counter = model.stepCounter();

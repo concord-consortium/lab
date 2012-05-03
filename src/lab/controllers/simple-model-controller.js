@@ -9,7 +9,6 @@
   layout
 
   model: true
-  molecule_container: true
   model_player: true
   atoms: true
   nodes: true
@@ -28,6 +27,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       temperature         = modelConfig.temperature,
       coulomb_forces      = modelConfig.coulomb_forces,
 
+      molecule_container,
       model_listener,
       step_counter,
       therm,
@@ -54,11 +54,11 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   // ------------------------------------------------------------
 
   model = modeler.model({
+      model_listener: model_listener,
       temperature: temperature,
       lennard_jones_forces: true,
       coulomb_forces: coulomb_forces,
       temperature_control: true,
-      model_listener: model_listener,
       epsilon: epsilon,
       mol_number: mol_number
     });
@@ -126,7 +126,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
 
     modelStop();
     model.on("tick", model_listener);
-    molecule_container.update_molecule_radius();
+    molecule_container.updateMoleculeRadius();
     molecule_container.setup_particles();
     layout.setupScreen(viewLists);
     step_counter = model.stepCounter();
