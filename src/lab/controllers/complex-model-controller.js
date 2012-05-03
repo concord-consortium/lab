@@ -92,11 +92,12 @@ controllers.complexModelController =
     // ------------------------------------------------------------
 
     model = modeler.model({
+        model_listener: modelListener,
         temperature: temperature,
         lennard_jones_forces: true,
         coulomb_forces: false,
         temperature_control: true,
-        model_listener: modelListener,
+        epsilon: epsilon,
         mol_number: mol_number
       });
 
