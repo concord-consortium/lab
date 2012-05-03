@@ -43,7 +43,6 @@ all: \
 	src/vendor/d3 \
 	node_modules \
 	bin \
-	md-engine \
 	dist \
 	$(MARKDOWN_EXAMPLE_FILES) \
 	$(LAB_JS_FILES) \
@@ -58,7 +57,6 @@ all: \
 clean:
 	rm -rf dist
 	rm -rf lab
-	rm -rf md-engine
 	rm -rf node_modules
 	git submodule update --init --recursive
 	rm -f src/vendor/jquery/dist/jquery.min.js
@@ -201,12 +199,6 @@ dist/vendor/jquery-ui:
 	cp src/vendor/jquery-ui/js/jquery-ui-1.8.17.custom.min.js dist/vendor/jquery-ui/js/jquery-ui.custom.min.js
 	cp -R src/vendor/jquery-ui/css dist/vendor/jquery-ui
 
-md-engine:
-	mkdir -p md-engine
-
-md-engine/md2d.js: $(MD_ENGINE_JS_FILES)
-	$(BROWSERIFY) src/md-engine/md2d.js -o md-engine/md2d.js
-
 dist/lab:
 	mkdir -p dist/lab
 
@@ -231,11 +223,15 @@ dist/lab/lab.grapher.js: \
 	src/lab/grapher/core/register-keyboard-handler.js \
 	src/lab/end.js
 
+dist/lab/lab.md2d.js: \
+	$(MD_ENGINE_JS_FILES)
+	$(BROWSERIFY) src/md-engine/md2d.js -o dist/lab/lab.md2d.js
+
 dist/lab/lab.molecules.js: \
-	md-engine/md2d.js \
 	src/lab/start.js \
 	src/lab/molecules/coulomb.js \
 	src/lab/molecules/lennard-jones.js \
+	dist/lab/lab.md2d.js \
 	src/lab/molecules/modeler.js \
 	src/lab/end.js
 
