@@ -309,7 +309,7 @@ modeler.model = function(initialProperties) {
   temperature          = properties.temperature;
 
   // who is listening to model tick completions
-  model_listener       = properties.model_listener;
+  model_listener       = initialProperties.model_listener;
 
   reset_tick_history_list();
   new_step = true;
