@@ -50,6 +50,7 @@ controllers.complexModelController =
       viewLists;
 
   function controller() {
+
     // ------------------------------------------------------------
     //
     // Main callback from model process
@@ -60,25 +61,26 @@ controllers.complexModelController =
 
     function modelListener(e) {
       var ke = model.ke(),
-          pe = model.pe();
+          pe = model.pe(),
+          te = ke + pe;
 
       speedDistributionChart.update();
 
-       molecule_container.update_molecule_positions();
+      molecule_container.update_molecule_positions();
 
       if (model.isNewStep()) {
-        te_data.push( ke );
+        te_data.push(te);
         if (model.is_stopped()) {
-          ke_graph.add_point( ke );
-          ke_graph.update_canvas();
+          energyGraph.add_point(te);
+          energyGraph.update_canvas();
         } else {
-          ke_graph.add_canvas_point( ke );
+          energyGraph.add_canvas_point(te);
         }
       } else {
-        ke_graph.update();
+        energyGraph.update();
       }
-      if (step_counter > 0.95 * ke_graph.xmax && ke_graph.xmax < maximum_model_steps) {
-        ke_graph.change_xaxis(ke_graph.xmax * 2);
+      if (step_counter > 0.95 * energyGraph.xmax && energyGraph.xmax < maximum_model_steps) {
+        energyGraph.change_xaxis(energyGraph.xmax * 2);
       }
       if (step_counter >= maximum_model_steps) { modelStop(); }
       layout.displayStats();
@@ -137,13 +139,10 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    te_data = [];
-
-    kechart = document.getElementById(ke_chart_view_id);
-
     // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
-    ke_graph_options = {
-      title:     "Kinetic Energy of the System",
+
+    energyGraph = grapher.realTimeGraph(energy_graph_view_id, {
+      title:     "Total Energy of the System",
       xlabel:    "Model Time (ps)",
       xmin:      0,
       xmax:      2500,
@@ -152,18 +151,11 @@ controllers.complexModelController =
       ymin:      0.0,
       ymax:      200,
       dataset:   te_data,
-      container: kechart
-    };
+    });
 
-    layout.finishSetupKEChart = function(width, height) {
-      kechart.style.width = width + "px";
-      kechart.style.height = height +"px";
-      if (undefined !== ke_graph) {
-        ke_graph.setup_graph();
-      } else {
-        ke_graph = graphx.graph(ke_graph_options);
-      }
-    };
+    te_data = [model.ke() + model.pe()];
+    energyGraph.new_data(te_data);
+
     model.on('play', energyGraph.show_canvas);
     model.on('stop', energyGraph.hide_canvas);
 
@@ -215,7 +207,7 @@ controllers.complexModelController =
       moleculeContainers:      [molecule_container],
       potentialCharts:         [potentialChart],
       speedDistributionCharts: [speedDistributionChart],
-      energyCharts:            []
+      energyCharts:            [energyGraph]
     };
 
     // ------------------------------------------------------------
@@ -290,12 +282,10 @@ controllers.complexModelController =
     };
 
     function updateMolNumberViewDependencies() {
-      ke_graph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
-      layout.lj_redraw();
-      speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
-      layout.speed_update();
-      layout.speed_redraw();
+      energyGraph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
       potentialChart.redraw();
+      // speedDistributionChart.ymax = mol_number_to_speed_yaxis_map[mol_number];
+      speedDistributionChart.redraw();
     }
 
     select_molecule_number.onchange = selectMoleculeNumberChange;
@@ -314,8 +304,8 @@ controllers.complexModelController =
 
     function modelStop() {
       model.stop();
-      ke_graph.hide_canvas();
-      // ke_graph.new_data(ke_data);
+      energyGraph.hide_canvas();
+      // energyGraph.new_data(ke_data);
       if (model_controls) {
         model_controls_inputs[0].checked = true;
       }
@@ -325,7 +315,7 @@ controllers.complexModelController =
       model.stop();
       if (model.stepCounter() < maximum_model_steps) {
         model.stepForward();
-        ke_graph.hide_canvas();
+        energyGraph.hide_canvas();
         if (model_controls) {
           model_controls_inputs[0].checked = true;
         }
@@ -339,7 +329,7 @@ controllers.complexModelController =
     function modelGo() {
       model.on("tick", modelListener);
       if (model.stepCounter() < maximum_model_steps) {
-        ke_graph.show_canvas();
+        energyGraph.show_canvas();
         model.resume();
         if (model_controls) {
           model_controls_inputs[0].checked = true;
@@ -354,7 +344,7 @@ controllers.complexModelController =
     function modelStepBack() {
       modelStop();
       model.stepBack();
-      ke_graph.new_data(te_data);
+      energyGraph.new_data(te_data);
     }
 
     function modelStepForward() {
@@ -387,8 +377,8 @@ controllers.complexModelController =
         layout.hide_datatable();
       }
       te_data = [model.ke()];
-      ke_graph.new_data(te_data);
-      ke_graph.hide_canvas();
+      energyGraph.new_data(te_data);
+      energyGraph.hide_canvas();
       if (model_controls) {
         model_controls_inputs[0].checked = true;
       }
