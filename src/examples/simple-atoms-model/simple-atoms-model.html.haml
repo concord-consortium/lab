@@ -76,11 +76,9 @@
           charge attract each other according to Coulomb's Law, while particles with the same charge repel.
           Particles with a positive charge appear blue and those with a negative charge appear red.
 
-      #save-far-right{:style=> "position: absolute; right: 2px; top: 4px;"}
-        .component_group
-          %button{:id=>"save-button", :class=>"component button", :style=> "width: 5em;"}
-            Save
-
+        %button{:id=>"save-button", :class=>"component button", :style=> "width: 5em; display: block"}
+          Save
+        #flash
 
     %script{:src => "../../lab/lab.js", :type => "text/javascript"}
     %script{:src => "application.js", :type => "text/javascript"}
