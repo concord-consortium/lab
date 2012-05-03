@@ -57,8 +57,25 @@ exports.makeLennardJonesCalculator = function(params, cb) {
         };
       },
 
+      validateEpsilon = function(e) {
+        if (e == null || parseFloat(e) !== e) {
+          throw new Error("lennardJones: epsilon value " + e + " is invalid");
+        }
+      },
+
+      validateSigma = function(s) {
+        if (s == null || parseFloat(s) !== s || s <= 0) {
+          throw new Error("lennardJones: sigma value " + s + " is invalid");
+        }
+      },
+
       // this object
       calculator;
+
+      // At creation time, there must be a valid epsilon and sigma ... we're not gonna check during
+      // inner-loop force calculations!
+      validateEpsilon(params.epsilon);
+      validateSigma(params.sigma);
 
       // Initialize coefficients to passed-in values
       setCoefficients(params.epsilon, params.sigma);
@@ -68,10 +85,12 @@ exports.makeLennardJonesCalculator = function(params, cb) {
     coefficients: getCoefficients,
 
     setEpsilon: function(e) {
+      validateEpsilon(e);
       setCoefficients(e, sigma);
     },
 
     setSigma: function(s) {
+      validateSigma(s);
       setCoefficients(epsilon, s);
     },
 
@@ -112,7 +131,7 @@ exports.makeLennardJonesCalculator = function(params, cb) {
       Output units: MW Force Units (= Dalton * nm / fs^2)
     */
     force: function(r) {
-      return r * calculator.forceOverDistanceFromSquaredDistance(r*r);
+// "fast" form which avoids the need for a square root      return r * calculator.forceOverDistanceFromSquaredDistance(r*r);
     }
   };
 };
