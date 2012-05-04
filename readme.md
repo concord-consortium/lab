@@ -73,11 +73,8 @@ their correct locations in the top-level directory:
     git checkout gh-pages
     rsync -rvz --quiet --perms --chmod=ug=rwX,o=rX dist/ .
 
-Take a careful look at the changed files and commit and push the changes if they look appropriate.
-
-Run git status tand take a careful look at the changed files and commit and push the changes
-to the gh-pages branch if they look appropriate. Check to see if there are new files that need
-to be added to the repopsitory.
+Take a careful look at the changed files and commit and push the changes if they look appropriate --
+alsp check to see if there are new files that need to be added to the repopsitory.
 
     git status
     # On branch gh-pages
