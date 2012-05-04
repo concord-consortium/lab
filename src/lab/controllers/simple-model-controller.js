@@ -53,14 +53,18 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   //
   // ------------------------------------------------------------
 
+  // FIXME: options hash is fragile because setting mol_number
+  // creates a new coreModel right now -- which resets to default
+  // parameters -- which mean other regular properties must follow
+  // mol_number.
   model = modeler.model({
       model_listener: model_listener,
+      mol_number: mol_number,
       temperature: temperature,
       lennard_jones_forces: true,
       coulomb_forces: coulomb_forces,
       temperature_control: true,
-      epsilon: epsilon,
-      mol_number: mol_number
+      epsilon: epsilon
     });
 
   // ------------------------------------------------------------
