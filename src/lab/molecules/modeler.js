@@ -316,6 +316,9 @@ modeler.model = function(initialProperties) {
     coreModel.useCoulombInteraction(coulomb_forces);
     coreModel.useThermostat(temperature_control);
 
+    coreModel.setLJEpsilon(properties.epsilon);
+    coreModel.setLJSigma(properties.sigma);
+
     var T = abstract_to_real_temperature(temperature);
 
     coreModel.setTargetTemperature(T);
