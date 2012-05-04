@@ -208,6 +208,19 @@ controllers.complexModelController =
 
       // ------------------------------------------------------------
       //
+      // Coulomb Forces Checkbox
+      //
+      // ------------------------------------------------------------
+
+      function updateCoulombCheckbox() {
+        $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+        molecule_container.setup_particles();
+      }
+
+      model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
+
+      // ------------------------------------------------------------
+      //
       // Setup list of views used by layout sustem
       //
       // ------------------------------------------------------------
