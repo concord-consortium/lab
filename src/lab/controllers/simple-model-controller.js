@@ -130,6 +130,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     atoms = model.get_atoms();
     nodes = model.get_nodes();
 
+    model.relax();
     model.resetTime();
 
     modelStop();
