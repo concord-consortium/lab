@@ -660,7 +660,7 @@ exports.makeModel = function() {
 
       beginTransientTemperatureChange();
       while (temperatureChangeInProgress) {
-        this.integrate();
+        model.integrate();
       }
     },
 
