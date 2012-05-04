@@ -92,7 +92,14 @@ modeler.model = function(initialProperties) {
           if (coreModel) {
             coreModel.setLJSigma(s);
           }
-        }
+        },
+
+        set_mol_number: function(n) {
+          this.mol_number = n;
+          if (coreModel) {
+            createNewCoreModel();
+          }
+        },
       };
 
   //
@@ -269,61 +276,65 @@ modeler.model = function(initialProperties) {
     notifyListeners(waitingToBeNotified);
   }
 
+  function createNewCoreModel() {
+    // get a fresh model
+    coreModel = md2d.makeModel();
+
+    coreModel.createAtoms({
+      num: properties.mol_number
+    });
+
+    nodes    = coreModel.nodes;
+    radius   = coreModel.radius;
+    px       = coreModel.px;
+    py       = coreModel.py;
+    x        = coreModel.x;
+    y        = coreModel.y;
+    vx       = coreModel.vx;
+    vy       = coreModel.vy;
+    speed    = coreModel.speed;
+    ax       = coreModel.ax;
+    ay       = coreModel.ay;
+    mass     = coreModel.mass;
+    charge   = coreModel.charge;
+
+    modelOutputState = coreModel.outputState;
+
+    // The d3 molecule viewer requires this length to be set correctly:
+    atoms.length = nodes[0].length;
+
+    // Initialize properties
+    lennard_jones_forces = properties.lennard_jones_forces;
+    coulomb_forces       = properties.coulomb_forces;
+    temperature_control  = properties.temperature_control;
+    temperature          = properties.temperature;
+
+    reset_tick_history_list();
+    new_step = true;
+
+    coreModel.useLennardJonesInteraction(lennard_jones_forces);
+    coreModel.useCoulombInteraction(coulomb_forces);
+    coreModel.useThermostat(temperature_control);
+
+    var T = abstract_to_real_temperature(temperature);
+
+    coreModel.setTargetTemperature(T);
+    coreModel.initializeAtomsRandomly({
+      temperature: T
+    });
+  }
+
   // ------------------------------
   // finish setting up the model
   // ------------------------------
 
+  // who is listening to model tick completions
+  model_listener = initialProperties.model_listener;
+
+  // set the rest of the regular properties
   set_properties(initialProperties);
 
-  // get a fresh model
-  coreModel = md2d.makeModel();
-  coreModel.setLJEpsilon(properties.epsilon);
-
-  coreModel.createAtoms({
-    num: properties.mol_number
-  });
-
-  nodes    = coreModel.nodes;
-  radius   = coreModel.radius;
-  px       = coreModel.px;
-  py       = coreModel.py;
-  x        = coreModel.x;
-  y        = coreModel.y;
-  vx       = coreModel.vx;
-  vy       = coreModel.vy;
-  speed    = coreModel.speed;
-  ax       = coreModel.ax;
-  ay       = coreModel.ay;
-  mass     = coreModel.mass;
-  charge   = coreModel.charge;
-
-  modelOutputState = coreModel.outputState;
-
-  // The d3 molecule viewer requires this length to be set correctly:
-  atoms.length = nodes[0].length;
-
-  // Initialize properties
-  lennard_jones_forces = properties.lennard_jones_forces;
-  coulomb_forces       = properties.coulomb_forces;
-  temperature_control  = properties.temperature_control;
-  temperature          = properties.temperature;
-
-  // who is listening to model tick completions
-  model_listener       = initialProperties.model_listener;
-
-  reset_tick_history_list();
-  new_step = true;
-
-  coreModel.useLennardJonesInteraction(lennard_jones_forces);
-  coreModel.useCoulombInteraction(coulomb_forces);
-  coreModel.useThermostat(temperature_control);
-
-  var T = abstract_to_real_temperature(temperature);
-
-  coreModel.setTargetTemperature(T);
-  coreModel.initializeAtomsRandomly({
-    temperature: T
-  });
+  createNewCoreModel();
 
   // ------------------------------------------------------------
   //
