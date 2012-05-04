@@ -222,11 +222,6 @@ grapher.realTimeGraph = function(e, options) {
       redraw();
     }
 
-    function new_data(d) {
-      points = indexedData(d, 0);
-      update();
-    }
-
     // ------------------------------------------------------------
     //
     // Redraw the plot canvas when it is translated or axes are re-scaled
@@ -439,6 +434,34 @@ grapher.realTimeGraph = function(e, options) {
       // FIXME: FireFox bug
     }
 
+    function new_data(d) {
+      points = indexedData(d, 0);
+      update();
+    };
+
+    function change_xaxis(xmax) {
+      x = d3.scale.linear()
+          .domain([0, xmax])
+          .range([0, mw]);
+      graph.xmax = xmax;
+      x_tics_scale = d3.scale.linear()
+          .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
+          .range([0, mw]);
+      update();
+      update_canvas();
+      redraw();
+    };
+
+    function change_yaxis(ymax) {
+      y = d3.scale.linear()
+          .domain([ymax, 0])
+          .range([0, mh]);
+      graph.ymax = ymax;
+      update();
+      update_canvas();
+      redraw();
+    };
+
     function clear_canvas() {
       gcanvas.width = gcanvas.width;
       gctx.fillStyle = "rgba(0,255,0, 0.05)";
@@ -594,6 +617,9 @@ grapher.realTimeGraph = function(e, options) {
     graph.hide_canvas = hide_canvas;
     graph.clear_canvas = clear_canvas;
     graph.update_canvas = update_canvas;
+
+    graph.change_xaxis = change_xaxis;
+    graph.change_yaxis = change_yaxis;
   }
 
   graph.resize = function(width, height) {
