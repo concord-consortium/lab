@@ -54,7 +54,7 @@ all: \
 	dist/index.css
 
 clean:
-	rm -rf dist
+	bash -O extglob -c 'rm -rf dist/* dist/.!(git|.|)'
 	rm -rf lab
 	rm -rf node_modules
 	git submodule update --init --recursive
