@@ -45,123 +45,73 @@ in Chrome due to a long-standing bug in Chrome:
 The problem only occurs when loading the web pages directly from your filesystem. If instead you
 use a local web server on your computer to serve the downloaded distribution Chrome works properly.
 
-### Updating the gh-pages branch on github
+### Distributing the built repository via the gh-pages branch
 
-Make sure there is nothing that isn't committed -- commit it, commit it to a separate branch or stash it.
+The [gh-pages branch of the repository](https://github.com/concord-consortium/lab/tree/gh-pages) is
+used to store the static pages and client-side code built by the Makefile. The contents of the
+gh-pages branch are automatically shown at our
+[Github Page URL](http://concord-consortium.github.com/lab/) when you push to the gh-pages branch;
+the gh-pages branch is used to deploy to our EC2 instance.
 
-Turn off bin/guard before starting the rest of this process.
+If you maintain a fork of this project, you get a Github Page for free, and Github the instructions below apply to you as well! (However, you will have to set up your own EC2 server
+or equivalent.)
 
-Run make clean; make and then test to make sure what's generated in the dist directory works.
+#### Making the dist folder track the gh-pages branch
 
-    git co gh-pages
-    git reset --hard origin/gh-pages
-    rsync -rvz --quiet --perms --chmod=ug=rwX,o=rX dist/ .
+If you haven't done this yet, make the `dist/` folder track the contents of the gh-pages branch.
 
-After making changes that either fix bugs or add new features or examples first make sure they
-work and are all there when you build a clean dist/ directory.
+    # make sure to stop Guard first!
 
-    make clean; make
+    # dist/ needs to be empty for git clone to be happy:
+    rm -rf dist
+
+    # substitute the URL for whatever fork of the Lab repository you have write access to:
+    git clone git@github.com:concord-consortium/lab.git -b gh-pages dist
+
+Note that `make clean` now empties the `dist` folder in-place, leaving however the Git directory
+`dist/.git` intact.
+
+#### Pushing changes to gh-pages branch
+
+First, make sure your `dist/` folder tracks the gh-pages branch, as per the above.
+
+Make sure there is nothing that isn't committed -- commit it, commit it to a
+separate branch or stash it.
 
 If your testing show the bugs are fixed or the new features or examples are stable then push
 these changes to the master branch.
 
     git push origin master
 
-Switch to the gh-pages branch and copy the changes or added files from the dist / directory into
-their correct locations in the top-level directory:
+Now, change to the dist directory, commit *all* of its contents, and push your changes:
 
-    git checkout gh-pages
-    rsync -rvz --quiet --perms --chmod=ug=rwX,o=rX dist/ .
+    cd dist
+    # Make sure you base your changes on top of other's most recent pushes to github:
+    git fetch origin gh-pages
+    git reset --hard origin/gh-pages
+    cd ..
+    make clean; make
 
-Take a careful look at the changed files and commit and push the changes if they look appropriate --
-alsp check to see if there are new files that need to be added to the repopsitory.
+    # At this point, make sure the contents of the dist/ branch work correctly!
+    # ...
 
-    git status
-    # On branch gh-pages
-    # Changes not staged for commit:
-    #   (use "git add <file>..." to update what will be committed)
-    #   (use "git checkout -- <file>..." to discard changes in working directory)
-    #
-    #	modified:   examples/complex-atoms-model/application.js
-    #	modified:   examples/simple-atoms-model-controls-in-text/application.js
-    #	modified:   lab/lab.controllers.js
-    #	modified:   lab/lab.controllers.min.js
-    #	modified:   lab/lab.grapher.js
-    #	modified:   lab/lab.grapher.min.js
-    #	modified:   lab/lab.js
-    #	modified:   lab/lab.layout.js
-    #	modified:   lab/lab.layout.min.js
-    #	modified:   lab/lab.min.js
-    #	modified:   lab/lab.molecules.js
-    #	modified:   lab/lab.molecules.min.js
-    #	modified:   license.html
-    #	modified:   readme.html
-    #
-    # Untracked files:
-    #   (use "git add <file>..." to include in what will be committed)
-    #
-    #	examples/surface-temperature/surface-temperature.css
-    #	lab.server/
-    #	lab/lab.md2d.js
-    no changes added to commit (use "git add" and/or "git commit -a")
+    cd dist
+    git add .
 
-In this case I needed to add examples/surface-temperature/surface-temperature.css and lab/lab.md2d.js.
+    # the complicated message below is not necessary, but is helpful
+    git commit -m "gh-pages generated from `git --git-dir ../.git log -1 --format=%H`"
 
-    git add examples/surface-temperature/surface-temperature.css
-    git add lab/lab.md2d.js
+    # if you set up dist/ by cloning the gh-pages branch specifically, `git push` by itself should
+    # work
+    git push
+    cd ..
 
-I also edited the .gitignore in the gh-pages branch and added '/lab.server'.
+#### Pushing the gh-pages branch to a remote server
 
-Here's what git status reports now.
+If you have ssh access to the EC2 server, deploying the changed client code is simple:
 
-    git status
-    # On branch gh-pages
-    # Changes to be committed:
-    #   (use "git reset HEAD <file>..." to unstage)
-    #
-    #	new file:   examples/surface-temperature/surface-temperature.css
-    #	new file:   lab/lab.md2d.js
-    #
-    # Changes not staged for commit:
-    #   (use "git add <file>..." to update what will be committed)
-    #   (use "git checkout -- <file>..." to discard changes in working directory)
-    #
-    #	modified:   .gitignore
-    #	modified:   examples/complex-atoms-model/application.js
-    #	modified:   examples/simple-atoms-model-controls-in-text/application.js
-    #	modified:   lab/lab.controllers.js
-    #	modified:   lab/lab.controllers.min.js
-    #	modified:   lab/lab.grapher.js
-    #	modified:   lab/lab.grapher.min.js
-    #	modified:   lab/lab.js
-    #	modified:   lab/lab.layout.js
-    #	modified:   lab/lab.layout.min.js
-    #	modified:   lab/lab.min.js
-    #	modified:   lab/lab.molecules.js
-    #	modified:   lab/lab.molecules.min.js
-    #	modified:   license.html
-    #	modified:   readme.html
-    #
+    ssh deploy@<temporary EC2 domain name> "cd /var/www/public; git pull"
 
-Commit the changes to the gh-pages branch.
-Including the '-a' argument when committing also includes all the file that are part
-of the repo but NOT yet staged for the commit into the commit.
-
-    git commit -a -m 'gh-pages master-ffd242a071'
-    [gh-pages aaedcb5] gh-pages master-ffd242a071
-     17 files changed, 4089 insertions(+), 2949 deletions(-)
-     create mode 100644 examples/surface-temperature/surface-temperature.css
-     rewrite lab/lab.controllers.min.js (96%)
-     rewrite lab/lab.layout.min.js (93%)
-     create mode 100644 lab/lab.md2d.js
-     rewrite lab/lab.min.js (90%)
-     rewrite lab/lab.molecules.min.js (95%)
-
-Push the changes to gh-pages, switch back to master and manually remove the top-level directories that were created for the gh-pages branch.
-
-    git push origin gh-pages
-    git co master
-    rm -rf examples experiments lab resources vendor doc
 
 ## Molecular Modeling Examples:
 
@@ -373,7 +323,7 @@ includes several features for estimating and measuring performance of the molecu
    steps. When measuring the speed of the model and graphics together the test is run
    continuously and control is *not* returned to the browser for repainting the screen.
 
-3. A separate [lab.performance](https://github.com/concord-consortium/lab) repository with a 
+3. A separate [lab.performance](https://github.com/concord-consortium/lab) repository with a
    Ruby script [performance.rb](https://github.com/concord-consortium/lab) available which
    uses Selenium Webdriver to automate running the **Run Benchmarks** test 10 times and
    collects , averages, and reports the results.
@@ -927,6 +877,10 @@ The [Bourbon](http://thoughtbot.com/bourbon/) library of Sass mixins is included
 - [Introducing Bourbon Sass Mixins](http://robots.thoughtbot.com/post/7846399901/introducing-bourbon-sass-mixins)
 
 ## Updating an external server with the contents of `dist/`
+
+*Note:* This is only used for deploys to [http://lab.dev.concord.org/](http://lab.dev.concord.org/)!
+For deploys to Github Pages, or to EC2, see the discussion at the top of the document about the
+gh-pages branch.
 
 Currently [http://lab.dev.concord.org/](http://lab.dev.concord.org/) is updated by using rsynch to copy
 the content of the `dist/` directory to the server.
