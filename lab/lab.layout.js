@@ -190,11 +190,9 @@ layout.setupScreen = function(viewLists) {
     };
     width = layout.display.page.width * 0.47 + 5;
     height = layout.display.page.height * 0.43 + 0;
-    layout.finishSetupKEChart(width, height);
-    // var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    // i = -1;  while(++i < viewLists.energyCharts) {
-    //   viewLists.energyCharts[i].resize(size, size);
-    // };
+    i = -1;  while(++i < viewLists.energyCharts.length) {
+      viewLists.energyCharts[i].resize(width, height);
+    };
   }
 
   //
@@ -218,19 +216,17 @@ layout.setupScreen = function(viewLists) {
     };
     width = layout.display.page.width * 0.47 + 5;
     height = layout.display.page.height * 0.40 + 0;
-    layout.finishSetupKEChart(width, height);
-    // var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    // i = -1;  while(++i < viewLists.energyCharts) {
-    //   viewLists.energyCharts[i].resize(size, size);
-    // };
+    i = -1;  while(++i < viewLists.energyCharts.length) {
+      viewLists.energyCharts[i].resize(width, height);
+    };
   }
 
   //
   // Simple Screen Layout
   //
   function setupSimpleMoleculeContainer() {
-    var size = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
-    molecule_container.resize(size, size);
+    var height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
+    viewLists.moleculeContainers[0].resize(height, height);
   }
 
   function setupDescriptionRight() {
@@ -244,16 +240,16 @@ layout.setupScreen = function(viewLists) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameMoleculeContainer() {
-    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
-    molecule_container.resize(size, size);
+    var height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
+    viewLists.moleculeContainers[0].resize(height, height);
   }
 
   //
   // Simple Full Screen Layout
   //
   function setupSimpleFullScreenMoleculeContainer() {
-    var size = layout.display.page.height * 0.70;
-    molecule_container.resize(size, size);
+    var height = layout.display.page.height * 0.70;
+    viewLists.moleculeContainers[0].resize(height, height);
   }
 
   function setupFullScreenDescriptionRight() {
@@ -369,6 +365,7 @@ layout.moleculeContainer = function(e, options) {
       atom_tooltip_on,
       offset_left, offset_top,
       particle, label, labelEnter, tail,
+      molRadius,
       molecule_div, molecule_div_pre,
       default_options = {
         title:                false,
@@ -631,7 +628,7 @@ layout.moleculeContainer = function(e, options) {
       vis.selectAll("g.y").remove();
 
       if (particle) {
-        update_molecule_radius();
+        updateMoleculeRadius();
 
         particle.attr("cx", function(d, i) { return x(get_x(i)); })
                 .attr("cy", function(d, i) { return y(get_y(i)); })
@@ -795,21 +792,15 @@ layout.moleculeContainer = function(e, options) {
           .attr("offset", "100%");
     }
 
-    function update_molecule_radius() {
-      var ljf = model.getLJCalculator().coefficients();
-      var r = ljf.rmin * 0.5;
-      // model.set_radius(r);
-      vis.selectAll("circle")
-          .data(atoms)
-        .attr("r",  function(d, i) { return x(get_radius(i)); });
-      vis.selectAll("text")
-        .attr("font-size", x(r * 1.3) );
+    function updateMoleculeRadius() {
+      vis.selectAll("circle").data(atoms).attr("r",  function(d, i) { return x(get_radius(i)); });
+      // vis.selectAll("text").attr("font-size", x(molRadius * 1.3) );
     }
 
     function setup_particles() {
       var ljf = model.getLJCalculator().coefficients();
-      var r = ljf.rmin * 0.5;
-      model.set_radius(r);
+      // molRadius = ljf.rmin * 0.5;
+      // model.set_radius(molRadius);
 
       gradient_container.selectAll("circle").remove();
       gradient_container.selectAll("g").remove();
@@ -944,7 +935,7 @@ layout.moleculeContainer = function(e, options) {
 
     // make these private variables and functions available
     container.node = node;
-    container.update_molecule_radius = update_molecule_radius;
+    container.updateMoleculeRadius = updateMoleculeRadius;
     container.setup_particles = setup_particles;
     container.update_molecule_positions = update_molecule_positions;
     container.scale = scale;
@@ -969,17 +960,20 @@ layout.moleculeContainer = function(e, options) {
 //
 // ------------------------------------------------------------
 
-layout.potentialChart = function(e, data, options) {
+layout.potentialChart = function(e, model, options) {
   var elem = d3.select(e),
       node = elem.node(),
       cx = elem.property("clientWidth"),
       cy = elem.property("clientHeight"),
       padding, size,
       mw, mh, tx, ty, stroke,
-      xScale, downscalex, downx,
-      yScale, downscaley, downy,
+      xScale = d3.scale.linear(), downx,
+      yScale = d3.scale.linear(), downy,
       dragged, coefficient_dragged,
-      vis, plot,
+      vis, plot, 
+      ljCalculator,
+      ljData = {},
+      ljPotentialGraphData = [],
       default_options = {
         title   : "Lennard-Jones potential",
         xlabel  : "Radius",
@@ -996,19 +990,53 @@ layout.potentialChart = function(e, data, options) {
     options = default_options;
   }
 
+  ljData.variables = [];
+  ljData.variables[0] = { coefficient: "epsilon", cursorStyle: "ns-resize" };
+  ljData.variables[1] = { coefficient: "sigma", cursorStyle: "ew-resize" };
+
+  updateLJData();
+
   // drag coefficients logic
   coefficient_dragged = false;
-  coefficient_selected = data.variables[0];
+  coefficient_selected = ljData.variables[0];
 
   scale(cx, cy);
 
   tx = function(d, i) { return "translate(" + xScale(d) + ",0)"; };
   ty = function(d, i) { return "translate(0," + yScale(d) + ")"; };
-  stroke = function(d, i) { return d ? "#ccc" : "#666"; };
+  stroke = function(d, i) { return Math.abs(d) > 0.0001 ? "#ccc" : "#666"; };
 
   line = d3.svg.line()
-      .x(function(d, i) { return xScale(lennard_jones_potential[i][0]); })
-      .y(function(d, i) { return yScale(lennard_jones_potential[i][1]); });
+      .x(function(d, i) { return xScale(ljPotentialGraphData[i][0]); })
+      .y(function(d, i) { return yScale(ljPotentialGraphData[i][1]); });
+
+  function updateLJData() {
+    var sigma, epsilon, rmin, y, r, i;
+
+    ljCalculator = model.getLJCalculator();
+    ljData.coefficients = ljCalculator.coefficients();
+    sigma   = ljData.coefficients.sigma;
+    epsilon = ljData.coefficients.epsilon;
+    rmin    = ljData.coefficients.rmin;
+    ljData.xmax    = sigma * 3;
+    ljData.xmin    = Math.floor(sigma/2);
+    ljData.ymax    = 0.4;
+    ljData.ymin    = Math.ceil(epsilon*1) - 1.0;
+
+    // update the positions of the circles for epsilon and sigma on the graph
+    ljData.variables[0].x = rmin;
+    ljData.variables[0].y = epsilon;
+    ljData.variables[1].x = sigma;
+    ljData.variables[1].y = 0;
+
+    ljPotentialGraphData.length = 0;
+    for(r = sigma * 0.5; r < ljData.xmax * 3;  r += 0.01) {
+      y = -ljCalculator.potential(r) + epsilon;
+      if (Math.abs(y) < 100) {
+        ljPotentialGraphData.push([r, y]);
+      }
+    }
+  }
 
   function scale(w, h) {
     cx = w;
@@ -1048,23 +1076,15 @@ layout.potentialChart = function(e, data, options) {
     mh = size.height;
 
     // x-scale
-    xScale = d3.scale.linear()
-      .domain([lj_data.xmin, lj_data.xmax])
-      .range([0, mw]);
+    xScale.domain([ljData.xmin, ljData.xmax]).range([0, mw]);
 
     // y-scale (inverted domain)
-    yScale = d3.scale.linear()
-        .domain([lj_data.ymax, lj_data.ymin])
-        .nice()
-        .range([0, mh])
-        .nice();
+    yScale.domain([ljData.ymax, ljData.ymin]).range([0, mh]);
 
     // drag x-axis logic
-    downscalex = xScale.copy();
     downx = Math.NaN;
 
     // drag y-axis logic
-    downscaley = yScale.copy();
     downy = Math.NaN;
     dragged = null;
   }
@@ -1083,8 +1103,9 @@ layout.potentialChart = function(e, data, options) {
         .attr("width", size.width)
         .attr("height", size.height)
         .style("fill", "#EEEEEE")
-        .attr("pointer-events", "all")
-        .call(d3.behavior.zoom().x(xScale).y(yScale).scaleExtent([1, 8]).on("zoom", redraw));
+        .attr("pointer-events", "all");
+
+      plot.call(d3.behavior.zoom().x(xScale).y(yScale).scaleExtent([1, 8]).on("zoom", redraw));
 
       vis.append("svg")
         .attr("class", "linebox")
@@ -1095,7 +1116,7 @@ layout.potentialChart = function(e, data, options) {
         .attr("viewBox", "0 0 "+size.width+" "+size.height)
         .append("path")
             .attr("class", "line")
-            .attr("d", line(lennard_jones_potential));
+            .attr("d", line(ljPotentialGraphData));
 
       // add Chart Title
       if (options.title) {
@@ -1220,7 +1241,7 @@ layout.potentialChart = function(e, data, options) {
          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
          .on("mousedown", function(d) {
               var p = d3.svg.mouse(vis[0][0]);
-              downx = x.invert(p[0]);
+              downx = xScale.invert(p[0]);
               // d3.behavior.zoom().off("zoom", redraw);
          });
 
@@ -1254,7 +1275,7 @@ layout.potentialChart = function(e, data, options) {
           .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
           .on("mousedown", function(d) {
                var p = d3.svg.mouse(vis[0][0]);
-               downy = y.invert(p[1]);
+               downy = yScale.invert(p[1]);
                // d3.behavior.zoom().off("zoom", redraw);
           });
 
@@ -1270,19 +1291,20 @@ layout.potentialChart = function(e, data, options) {
 
     function update() {
       var epsilon_circle = vis.selectAll("circle")
-          .data(data.variables, function(d) { return d; });
+          .data(ljData.variables, function(d) { return d; });
 
-      var lines = vis.select("path").attr("d", line(lennard_jones_potential)),
+      var lines = vis.select("path").attr("d", line(ljPotentialGraphData)),
           x_extent = xScale.domain()[1] - xScale.domain()[0];
 
       epsilon_circle.enter().append("circle")
           .attr("class", function(d) { return d === coefficient_dragged ? "selected" : null; })
           .attr("cx",    function(d) { return xScale(d.x); })
           .attr("cy",    function(d) { return yScale(d.y); })
+          .style("cursor", function(d) { return d.cursorStyle; })
           .attr("r", 8.0)
           .on("mousedown", function(d) {
             if (d.coefficient == "epsilon") {
-              d.x = data.coefficients.rmin;
+              d.x = ljData.coefficients.rmin;
             } else {
               d.y = 0;
             }
@@ -1303,27 +1325,28 @@ layout.potentialChart = function(e, data, options) {
       }
     }
 
+    function plot_drag() {
+      elem.style("cursor", "move");
+    }
+
     function mousemove() {
       if (!coefficient_dragged) return;
       node.onselectstart = function(){ return false; };
       var m = d3.svg.mouse(vis.node()),
         newx, newy;
       if (coefficient_dragged.coefficient == "epsilon") {
-        newx = data.coefficients.rmin;
-        newy = y.invert(Math.max(0, Math.min(size.height, m[1])));
+        newx = ljData.coefficients.rmin;
+        newy = yScale.invert(Math.max(0, Math.min(size.height, m[1])));
         if (newy > options.epsilon_max) { newy = options.epsilon_max; }
         if (newy < options.epsilon_min) { newy = options.epsilon_min; }
-        options.epsilon_callback(newy);
+        model.set( { epsilon: newy } );
       } else {
         newy = 0;
-        newx = x.invert(Math.max(0, Math.min(size.width, m[0])));
-        if (newx < sigma_min) { newx = sigma_min; }
-        if (newx > sigma_max) { newx = sigma_max; }
-        update_sigma(newx);
+        newx = xScale.invert(Math.max(0, Math.min(size.width, m[0])));
+        if (newx < options.sigma_min) { newx = options.sigma_min; }
+        if (newx > options.sigma_max) { newx = options.sigma_max; }
+        model.set( { sigma: newx } );
       }
-      // layout.update_molecule_radius();
-      // model.resolve_collisions(molecules);
-      // model.tick();
       coefficient_dragged.x = newx;
       coefficient_dragged.y = newy;
       update();
@@ -1331,7 +1354,7 @@ layout.potentialChart = function(e, data, options) {
 
     function mouseup() {
       if (!isNaN(downx)) {
-        mode.onselectstart = function(){ return true; };
+        node.onselectstart = function(){ return true; };
         redraw();
         downx = Math.NaN;
         d3.event.preventDefault();
@@ -1346,15 +1369,83 @@ layout.potentialChart = function(e, data, options) {
       coefficient_dragged = null;
     }
 
+    // ------------------------------------------------------------
+    //
+    // Potential Chart axis scaling
+    //
+    // attach the mousemove and mouseup to the body
+    // in case one wanders off the axis line
+    //
+    // ------------------------------------------------------------
+
+    elem.on("mousemove", function(d) {
+      document.onselectstart = function() { return true; };
+      var p = d3.svg.mouse(vis[0][0]);
+      if (!isNaN(downx)) {
+        var rupx = xScale.invert(p[0]),
+          xaxis1 = xScale.domain()[0],
+          xaxis2 = xScale.domain()[1],
+          xextent = xaxis2 - xaxis1;
+        if (rupx !== 0) {
+            var changex, dragx_factor, new_domain;
+            dragx_factor = xextent/downx;
+            changex = 1 + (downx / rupx - 1) * (xextent/(downx-xaxis1))/dragx_factor;
+            new_domain = [xaxis1, xaxis1 + (xextent * changex)];
+            xScale.domain(new_domain);
+            redraw();
+        }
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+      if (!isNaN(downy)) {
+          var rupy = yScale.invert(p[1]),
+          yaxis1 = yScale.domain()[1],
+          yaxis2 = yScale.domain()[0],
+          yextent = yaxis2 - yaxis1;
+        if (rupy !== 0) {
+            var changey, dragy_factor, new_range;
+            dragy_factor = yextent/downy;
+            changey = 1 - (rupy / downy - 1) * (yextent/(downy-yaxis1))/dragy_factor;
+            new_range = [yaxis1 + (yextent * changey), yaxis1];
+            yScale.domain(new_range);
+            redraw();
+        }
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+    })
+    .on("mouseup", function(d) {
+        document.onselectstart = function() { return true; };
+        if (!isNaN(downx)) {
+            redraw();
+            downx = Math.NaN;
+            d3.event.preventDefault();
+            d3.event.stopPropagation();
+        }
+        if (!isNaN(downy)) {
+            redraw();
+            downy = Math.NaN;
+            d3.event.preventDefault();
+            d3.event.stopPropagation();
+        }
+    });
+
     // make these private variables and functions available
     container.node = node;
     container.scale = scale;
+    container.updateLJData = updateLJData;
+    container.update = update;
+    container.redraw = redraw;
   }
 
   container.resize = function(width, height) {
     container.scale(width, height);
-    // container.scale();
     container();
+  };
+
+  container.ljUpdate = function() {
+    container.updateLJData();
+    container.redraw();
   };
 
  if (node) { container(); }
@@ -1651,6 +1742,7 @@ layout.speedDistributionChart = function(e, options) {
     container.node = node;
     container.scale = scale;
     container.update = update;
+    container.redraw = redraw;
   }
 
   container.resize = function(width, height) {
@@ -1968,7 +2060,7 @@ layout.displayStats = function() {
     stats.textContent =
       "Time: "     + d3.format("5.2f")(model.getTime() / 1000) + " (ps), " +
       "KE: "       + d3.format("1.4f")(ke) + ", " +
-      // "PE: "       + d3.format("1.6f")(pe) + ", " +
+      "PE: "       + d3.format("1.4f")(pe) + ", " +
       "TE: "       + d3.format("1.4f")(te) + ", " +
       "Pressure: " + d3.format("6.3f")(model.pressure()) + ", " +
       "Rate: " + d3.format("5.1f")(model.get_rate()) + " (steps/s)";

@@ -614,171 +614,191 @@ grapher.graph = function(elem, options) {
 
   return graph;
 }
-grapher.realTimeGraph = function(options) {
+grapher.realTimeGraph = function(e, options) {
+  var elem = d3.select(e),
+      node = elem.node(),
+      cx = elem.property("clientWidth"),
+      cy = elem.property("clientHeight"),
+      padding, size,
+      mw, mh, 
+      stroke = function(d) { return d ? "#ccc" : "#666"; },
+      xScale = d3.scale.linear(), downx,
+      tx = function(d) { return "translate(" + xScale(d) + ",0)"; },
+      xTicsScale = d3.scale.linear(),
+      txTics = function(d) { return "translate(" + xTicsScale(d) + ",0)"; },
+      yScale = d3.scale.linear(), downy,
+      ty = function(d) { return "translate(0," + yScale(d) + ")"; },
+      line = d3.svg.line()
+            .x(function(d, i) { return xScale(points[i].x ); })
+            .y(function(d, i) { return yScale(points[i].y); }),
+      dragged, selected,
+      line_path, line_seglist, cpoint,
+      vis, plot, points,
+      default_options = {
+        title   : "graph",
+        xlabel  : "x-axis",
+        ylabel  : "y-axis",
+        xmax:       10,
+        xmin:       0,
+        ymax:       10,
+        ymin:       0,
+        dataset:    [0],
+        selectable_points: true,
+        circleRadius: false,
+        dataChange: false
+      };
 
-  graph = {};
+  if (options) {
+    for(var p in default_options) {
+      if (options[p] === undefined) {
+        options[p] = default_options[p];
+      }
+    }
+  } else {
+    options = default_options;
+  }
 
-  graph.container = options.container || document.getElementById("chart");
+  if (options.dataChange) {
+    circleCursorStyle = "ns-resize";
+  } else {
+    circleCursorStyle = "crosshair";
+  }
 
-  graph.dataset = options.dataset || [0];
+  options.xrange = options.xmax - options.xmin;
+  options.yrange = options.ymax - options.ymin;
 
-  graph.xmax    = options.xmax    || 10;
-  graph.xmin    = options.xmin    || 0;
-  graph.sample  = options.sample  || 1;
+  scale(cx, cy);
+  points = indexedData(options.dataset, 0);
 
-  graph.ymax    = options.ymax    || 10;
-  graph.ymin    = options.ymin    || 0;
+  function indexedData(dataset, initial_index) {
+    var i = 0,
+        start_index = initial_index || 0,
+        n = dataset.length,
+        points = [];
+    for (i = 0; i < n;  i++) {
+      points.push({ x: i+start_index, y: dataset[i] });
+    }
+    return points;
+  }
 
-  graph.title   = options.title;
-  graph.xlabel  = options.xlabel;
-  graph.ylabel  = options.ylabel;
+  function scale(w, h) {
+    cx = w;
+    cy = h;
+    node.style.width = cx +"px";
+    node.style.height = cy +"px";
 
-  graph.selectable_points = options.selectable_points || false;
-
-  graph.setup_graph = function(p) {
-    setupGraph();
-  };
-
-  graph.new_data = function(points) {
-    new_data(points);
-    update();
-  };
-
-  graph.change_xaxis = function(xmax) {
-    x = d3.scale.linear()
-        .domain([0, xmax])
-        .range([0, mw]);
-    graph.xmax = xmax;
-    x_tics_scale = d3.scale.linear()
-        .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
-        .range([0, mw]);
-    update();
-    update_canvas();
-    redraw();
-  };
-
-  graph.change_yaxis = function(ymax) {
-    y = d3.scale.linear()
-        .domain([ymax, 0])
-        .range([0, mh]);
-    graph.ymax = ymax;
-    update();
-    update_canvas();
-    redraw();
-  };
-
-  graph.add_point = function(p) {
-    add_point(p);
-  };
-
-  graph.update = function() {
-    update();
-  };
-
-  graph.add_canvas_point = function(p) {
-    add_canvas_point(p);
-  };
-
-  graph.initialize_canvas = function() {
-    initialize_canvas();
-  };
-
-  graph.show_canvas = function() {
-    show_canvas();
-  };
-
-  graph.hide_canvas = function() {
-    hide_canvas();
-  };
-
-  graph.clear_canvas = function() {
-    clear_canvas();
-  };
-
-  graph.update_canvas = function() {
-    update_canvas();
-  };
-
-  var gcanvas, gctx,
-      chart, cx, cy,
-
-      padding = {}, size = {},
-      mw, mh, tx, ty, stroke,
-      x, downx, x_tics_scale, tx_tics,
-      y, downy,
-      line, dragged, selected,
-      line_path, line_seglist, vis_node, vis, cpoint;
-
-  var points = indexedData(graph.dataset, 0);
-  chart = graph.container;
-  setupGraph();
-
-  function setupGraph() {
-    cx = chart.clientWidth;
-    cy = chart.clientHeight;
     padding = {
-       "top":    graph.title  ? 40 : 20,
-
-       "right":                 30,
-
-       "bottom": graph.xlabel ? 50 : 10,
-
-       "left":   graph.ylabel ? 70 : 45
+       "top":    options.title  ? 40  : 20,
+       "right":                   35,
+       "bottom": options.xlabel ? 50  : 30,
+       "left":   options.ylabel ? 60  : 35
     };
+
+    width =  cx - padding.left - padding.right;
+    height = cy - padding.top  - padding.bottom;
+
     size = {
-
-      "width":  cx - padding.left - padding.right,
-
-      "height": cy - padding.top  - padding.bottom
-
+      "width":  width,
+      "height": height
     };
+
     mw = size.width;
     mh = size.height;
-    tx = function(d) { return "translate(" + x(d) + ",0)"; };
-    ty = function(d) { return "translate(0," + y(d) + ")"; };
-    stroke = function(d) { return d ? "#ccc" : "#666"; };
 
     // x-scale
-    x = d3.scale.linear()
-          .domain([graph.xmin, graph.xmax])
-          .range([0, mw]);
+    xScale.domain([options.xmin, options.xmax]).range([0, size.width]);
 
-    x_tics_scale = d3.scale.linear()
-        .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
-        .range([0, mw]);
-    tx_tics = function(d) { return "translate(" + x_tics_scale(d) + ",0)"; };
+    xTicsScale.domain([options.xmin*options.sample, options.xmax*options.sample]).range([0, mw]);
+
+    // y-scale (inverted domain)
+    yScale.domain([options.ymax, options.ymin]).nice().range([0, size.height]).nice();
 
     // drag x-axis logic
     downx = Math.NaN;
 
-    // y-scale (inverted domain)
-    y = d3.scale.linear()
-            .domain([graph.ymax, graph.ymin])
-            .range([0, mh]),
-        line = d3.svg.line()
-            .x(function(d, i) { return x(points[i].x ); })
-            .y(function(d, i) { return y(points[i].y); }),
-        // drag y-axis logic
-        downy = Math.NaN,
-        dragged = null,
-        selected = points[0];
+    // drag y-axis logic
+    downy = Math.NaN;
 
-    if (undefined !== vis) {
+    dragged = null;
+  }
 
-      var fullscreen = document.fullScreen ||
-                       document.webkitIsFullScreen ||
-                       document.mozFullScreen;
-      //
-      // Something very strange happens only when shifting to full-screen to
-      // cause me to have to reverse the order of the Y-axis range() arguments.
-      //
-      if (fullscreen) {
-        y = d3.scale.linear()
-                .domain([graph.ymax, graph.ymin])
-                .range([mh, 0]);
+  function graph() {
+    scale(cx, cy);
+    if (vis === undefined) {
+      vis = d3.select(node).append("svg")
+        .attr("width", cx)
+        .attr("height", cy)
+        .append("g")
+          .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
+      plot = vis.append("rect")
+        .attr("class", "plot")
+        .attr("width", size.width)
+        .attr("height", size.height)
+        .style("fill", "#EEEEEE")
+        .attr("pointer-events", "all");
+
+      plot.call(d3.behavior.zoom().x(xTicsScale).y(yScale).scaleExtent([1, 8]).on("zoom", redraw));
+
+      vis.append("svg")
+        .attr("class", "viewbox")
+        .attr("top", 0)
+        .attr("left", 0)
+        .attr("width", size.width)
+        .attr("height", size.height)
+        .attr("viewBox", "0 0 "+size.width+" "+size.height)
+        .append("path")
+            .attr("class", "line")
+            .attr("d", line(points));
+
+      // add Chart Title
+      if (options.title) {
+        vis.append("text")
+            .attr("class", "title")
+            .text(options.title)
+            .attr("x", size.width/2)
+            .attr("dy","-1em")
+            .style("text-anchor","middle");
       }
 
-      d3.select(chart).select("svg")
+      // Add the x-axis label
+      if (options.xlabel) {
+        vis.append("text")
+            .attr("class", "xlabel")
+            .text(options.xlabel)
+            .attr("x", size.width/2)
+            .attr("y", size.height)
+            .attr("dy","2.4em")
+            .style("text-anchor","middle");
+      }
+
+      // add y-axis label
+      if (options.ylabel) {
+        vis.append("g")
+            .append("text")
+                .attr("class", "ylabel")
+                .text( options.ylabel)
+                .style("text-anchor","middle")
+                .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+      }
+
+      vis.on("mousemove", mousemove).on("mouseup", mouseup);
+
+      // variables for speeding up dynamic plotting
+      line_path = vis.select("path")[0][0];
+      line_seglist = line_path.pathSegList;
+      vis_node = vis.node();
+      cpoint = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      cpoint.setAttribute("cx", 1);
+      cpoint.setAttribute("cy", 1);
+      cpoint.setAttribute("r",  1);
+      initialize_canvas();
+
+      redraw();
+
+    } else {
+
+      d3.select(node).select("svg")
           .attr("width", cx)
           .attr("height", cy);
 
@@ -794,453 +814,369 @@ grapher.realTimeGraph = function(options) {
         .attr("height", size.height)
         .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-      if (graph.title) {
+      if (options.title) {
         vis.select("text.title")
             .attr("x", size.width/2)
             .attr("dy","-1em");
       }
 
-      if (graph.xlabel) {
+      if (options.xlabel) {
         vis.select("text.xlabel")
             .attr("x", size.width/2)
             .attr("y", size.height);
       }
 
-      if (graph.ylabel) {
+      if (options.ylabel) {
         vis.select("text.ylabel")
-            .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
+            .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
       }
 
       vis.selectAll("g.x").remove();
       vis.selectAll("g.y").remove();
 
       resize_canvas();
+      redraw();
+    }
 
-    } else {
+    // ------------------------------------------------------------
+    //
+    // Redraw the plot canvas when it is translated or axes are re-scaled
+    //
+    // ------------------------------------------------------------
 
-      vis = d3.select(chart).append("svg:svg")
-        .attr("width", cx)
-        .attr("height", cy)
-        .append("svg:g")
-          .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+    function redraw() {
+      if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
+          d3.event.transform(x, y);
+      }
 
-      vis.append("svg:rect")
-          .attr("class", "plot")
-          .attr("width", size.width)
-          .attr("height", size.height)
-          .style("fill", "#EEEEEE")
-          .attr("pointer-events", "all")
-          // .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", redraw))
-          .on("mousedown", function() {
-            if (d3.event.altKey) {
-                points.push(selected = dragged = d3.svg.mouse(vis.node()));
-                update();
-                d3.event.preventDefault();
-                d3.event.stopPropagation();
-            }
+      // graph.xmin = xScale.domain()[0];
+      // graph.xmax = xScale.domain()[1];
+      // graph.ymix = yScale.domain()[0];
+      // graph.ymax = yScale.domain()[1];
+
+      var fx = xTicsScale.tickFormat(10),
+          fy = yScale.tickFormat(10);
+
+      // Regenerate x-ticks
+      var gx = vis.selectAll("g.x")
+          .data(xTicsScale.ticks(10), String)
+          .attr("transform", txTics);
+
+      gx.select("text")
+          .text(fx);
+
+      var gxe = gx.enter().insert("g", "a")
+          .attr("class", "x")
+          .attr("transform", txTics);
+
+      gxe.append("line")
+          .attr("stroke", stroke)
+          .attr("y1", 0)
+          .attr("y2", size.height);
+
+      gxe.append("text")
+          .attr("y", size.height)
+          .attr("dy", "1em")
+          .attr("text-anchor", "middle")
+          .style("cursor", "ew-resize")
+          .text(fx)
+          .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+          .on("mousedown", function(d) {
+               var p = d3.svg.mouse(vis[0][0]);
+               downx = xTicsScale.invert(p[0]);
           });
 
-      vis.append("svg:svg")
-          .attr("class", "viewbox")
-          .attr("top", 0)
-          .attr("left", 0)
-          .attr("width", size.width)
-          .attr("height", size.height)
-          .attr("viewBox", "0 0 "+size.width+" "+size.height)
-          .append("svg:path")
-              .attr("class", "line")
-              .attr("d", line(points))
+      gx.exit().remove();
 
-      // variables for speeding up dynamic plotting
-      line_path = vis.select("path")[0][0];
-      line_seglist = line_path.pathSegList;
-      vis_node = vis.node();
-      cpoint = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      cpoint.setAttribute("cx", 1);
-      cpoint.setAttribute("cy", 1);
-      cpoint.setAttribute("r",  1);
+      // Regenerate y-ticks
+      var gy = vis.selectAll("g.y")
+          .data(yScale.ticks(10), String)
+          .attr("transform", ty);
 
-      // add Chart Title
-      if (graph.title) {
-        vis.append("svg:text")
-            .attr("class", "title")
-            .text(graph.title)
-            .attr("x", size.width/2)
-            .attr("dy","-1em")
-            .style("text-anchor","middle");
-      }
+      gy.select("text")
+          .text(fy);
 
-      // Add the x-axis label
-      if (graph.xlabel) {
-        vis.append("svg:text")
-            .attr("class", "xlabel")
-            .text(graph.xlabel)
-            .attr("x", size.width/2)
-            .attr("y", size.height)
-            .attr("dy","2.4em")
-            .style("text-anchor","middle");
-      }
+      var gye = gy.enter().insert("g", "a")
+          .attr("class", "y")
+          .attr("transform", ty)
+          .attr("background-fill", "#FFEEB6");
 
-      // add y-axis label
-      if (graph.ylabel) {
-        vis.append("svg:g")
-            .append("svg:text")
-                .attr("class", "ylabel")
-                .text(graph.ylabel)
-                .style("text-anchor","middle")
-                .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
-      }
-      initialize_canvas();
+      gye.append("line")
+          .attr("stroke", stroke)
+          .attr("x1", 0)
+          .attr("x2", size.width);
+
+      gye.append("text")
+          .attr("x", -3)
+          .attr("dy", ".35em")
+          .attr("text-anchor", "end")
+          .style("cursor", "ns-resize")
+          .text(fy)
+          .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+          .on("mousedown", function(d) {
+               var p = d3.svg.mouse(vis[0][0]);
+               downy = yScale.invert(p[1]);
+          });
+
+      gy.exit().remove();
+
+      update();
     }
-    redraw();
-  }
 
-  d3.select(chart)
-      .on("mousemove", mousemove)
-      .on("mouseup", mouseup)
-      .on("keydown", keydown);
+    // ------------------------------------------------------------
+    //
+    // Draw the data
+    //
+    // ------------------------------------------------------------
 
-  function new_data(d) {
-    points = indexedData(d, 0);
-    update();
-  }
+    function update() {
+      var oldx, oldy, newx, newy, i;
 
-  // ------------------------------------------------------------
-  //
-  // Custom generation of line path 'd' attribute string
-  // using memoized attr_str ... not much faster than d3
-  //
-  // ------------------------------------------------------------
+      var gplot = node.children[0].getElementsByTagName("rect")[0];
 
-  var generate_path_attribute = (function () {
-    var attr_str = '';
-    var gen = function(pts, x, y) {
-      var result = attr_str,
-
-          i = -1,
-
-          n = pts.length,
-
-          path = [],
-          value;
-      if (result.length === 0) {
-        path.push("M",
-          x.call(self, pts[0].x, 0), ",",
-
-          y.call(self, pts[0].y, 0));
-        i++;
-      }
-      while (++i < n) {
-
-        path.push("L", x.call(self, pts[i].x, i), ",", y.call(self, pts[i].y, i));
+      if (gcanvas.style.zIndex == -100) {
+        var lines = vis.select("path").attr("d", line(points));
       }
 
-      return (attr_str += path.join(""));
-    };
-    return gen;
-  }());
+      update_canvas();
 
-  function add_point(p) {
-    var len = points.length;
-    if (len === 0) {
-      line_seglist
-    } else {
+      if (graph.selectable_points) {
+        var circle = vis.selectAll("circle")
+            .data(points, function(d) { return d; });
+
+        circle.enter().append("circle")
+            .attr("class", function(d) { return d === selected ? "selected" : null; })
+            .attr("cx",    function(d) { return x(d.x); })
+            .attr("cy",    function(d) { return y(d.y); })
+            .attr("r", 1.0)
+            .on("mousedown", function(d) {
+              selected = dragged = d;
+              update();
+            });
+
+        circle
+            .attr("class", function(d) { return d === selected ? "selected" : null; })
+            .attr("cx",    function(d) { return x(d.x); })
+            .attr("cy",    function(d) { return y(d.y); });
+
+        circle.exit().remove();
+      }
+
+      if (d3.event && d3.event.keyCode) {
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+    }
+
+    function mousemove() {
+      if (!dragged) { return; }
+      node.onselectstart = function(){ return false; };
+      var m = d3.svg.mouse(vis.node());
+      dragged.x = xScale.invert(Math.max(0, Math.min(size.width, m[0])));
+      dragged.y = yScale.invert(Math.max(0, Math.min(size.height, m[1])));
+      update();
+    }
+
+    function mouseup() {
+      if (!dragged) { return; }
+      node.onselectstart = function(){ return true; };
+      mousemove();
+      dragged = null;
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Custom generation of line path 'd' attribute string
+    // using memoized attr_str ... not much faster than d3
+    //
+    // ------------------------------------------------------------
+
+    var generate_path_attribute = (function () {
+      var attr_str = '';
+      var gen = function(pts, x, y) {
+        var result = attr_str,
+
+            i = -1,
+
+            n = pts.length,
+
+            path = [],
+            value;
+        if (result.length === 0) {
+          path.push("M",
+            xScale.call(self, pts[0].x, 0), ",",
+
+            yScale.call(self, pts[0].y, 0));
+          i++;
+        }
+        while (++i < n) {
+
+          path.push("L", xScale.call(self, pts[i].x, i), ",", yScale.call(self, pts[i].y, i));
+        }
+
+        return (attr_str += path.join(""));
+      };
+      return gen;
+    }());
+
+    function add_point(p) {
+      var len = points.length;
+      if (len === 0) {
+        // line_seglist
+      } else {
+        var point = { x: len, y: p };
+        points.push(point);
+        var newx = xScale.call(self, len, len);
+        var newy = yScale.call(self, p, len);
+        line_seglist.appendItem(line_path.createSVGPathSegLinetoAbs(newx, newy));
+      }
+    }
+
+    function add_canvas_point(p) {
+      if (points.length === 0) { return; }
+      var len = points.length;
+      var oldx = xScale.call(self, len-1, len-1);
+      var oldy = yScale.call(self, points[len-1].y, len-1);
       var point = { x: len, y: p };
       points.push(point);
-      var newx = x.call(self, len, len);
-      var newy = y.call(self, p, len);
-      line_seglist.appendItem(line_path.createSVGPathSegLinetoAbs(newx, newy));
-    }
-  }
-
-  function add_canvas_point(p) {
-    if (points.length == 0) { return };
-    var len = points.length;
-    var oldx = x.call(self, len-1, len-1);
-    var oldy = y.call(self, points[len-1].y, len-1);
-    var point = { x: len, y: p };
-    points.push(point);
-    var newx = x.call(self, len, len);
-    var newy = y.call(self, p, len);
-    gctx.beginPath();
-    gctx.moveTo(oldx, oldy);
-    gctx.lineTo(newx, newy);
-    gctx.stroke();
-    // FIXME: FireFox bug
-  }
-
-  function clear_canvas() {
-    gcanvas.width = gcanvas.width;
-    gctx.fillStyle = "rgba(0,255,0, 0.05)";
-    gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-    gctx.strokeStyle = "rgba(255,65,0, 1.0)";
-  }
-
-  function show_canvas() {
-    line_seglist.clear();
-    // vis.select("path.line").attr("d", line(points));
-    // vis.select("path.line").attr("d", line([{}]));
-    gcanvas.style.zIndex = 100;
-  }
-
-  function hide_canvas() {
-    gcanvas.style.zIndex = -100;
-    vis.select("path.line").attr("d", line(points));
-  }
-
-  // update real-time canvas line graph
-  function update_canvas() {
-    if (points.length == 0) { return };
-    var px = x.call(self, 0, 0),
-        py = y.call(self, points[0].y, 0),
-        i;
-    clear_canvas();
-    gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-    gctx.beginPath();
-    gctx.moveTo(px, py);
-    for (i=0; i < points.length-1; i++) {
-      px = x.call(self, i, i);
-      py = y.call(self, points[i].y, i);
-      gctx.lineTo(px, py);
-    }
-    gctx.stroke();
-  };
-
-  function initialize_canvas() {
-    gcanvas = document.createElement('canvas');
-    chart.appendChild(gcanvas);
-    gcanvas.style.zIndex = -100;
-    setupCanvasProperties(gcanvas);
-  }
-
-  function resize_canvas() {
-    setupCanvasProperties(gcanvas);
-    update_canvas();
-  }
-
-  function setupCanvasProperties(canvas) {
-    var cplot = {};
-    cplot.rect = chart.children[0].getElementsByTagName("rect")[0];
-    cplot.width = cplot.rect.width['baseVal'].value;
-    cplot.height = cplot.rect.height['baseVal'].value;
-    cplot.left = cplot.rect.getCTM().e;
-    cplot.top = cplot.rect.getCTM().f;
-    canvas.style.position = 'absolute';
-    canvas.width = cplot.width;
-    canvas.height = cplot.height;
-    canvas.style.width = cplot.width  + 'px';
-    canvas.style.height = cplot.height  + 'px';
-    canvas.offsetLeft = cplot.left;
-    canvas.offsetTop = cplot.top;
-    canvas.style.left = cplot.left + 'px';
-    canvas.style.top = cplot.top + 'px';
-    canvas.style.border = 'solid 1px red';
-    gctx = gcanvas.getContext( '2d' );
-    gctx.globalCompositeOperation = "source-over";
-    gctx.lineWidth = 1;
-    gctx.fillStyle = "rgba(0,255,0, 0.05)";
-    gctx.fillRect(0, 0, canvas.width, gcanvas.height);
-    gctx.strokeStyle = "rgba(255,65,0, 1.0)";
-    gcanvas.style.border = 'solid 1px red';
-  }
-
-  // ------------------------------------------------------------
-  //
-  // Draw the data
-  //
-  // ------------------------------------------------------------
-
-  function update() {
-    var oldx, oldy, newx, newy, i;
-
-    var gplot = chart.children[0].getElementsByTagName("rect")[0];
-
-    if (gcanvas.style.zIndex == -100) {
-      var lines = vis.select("path").attr("d", line(points));
+      var newx = xScale.call(self, len, len);
+      var newy = yScale.call(self, p, len);
+      gctx.beginPath();
+      gctx.moveTo(oldx, oldy);
+      gctx.lineTo(newx, newy);
+      gctx.stroke();
+      // FIXME: FireFox bug
     }
 
-    update_canvas();
+    function new_data(d) {
+      points = indexedData(d, 0);
+      update();
+    };
 
-    if (graph.selectable_points) {
-      var circle = vis.selectAll("circle")
-          .data(points, function(d) { return d; });
+    function change_xaxis(xmax) {
+      x = d3.scale.linear()
+          .domain([0, xmax])
+          .range([0, mw]);
+      graph.xmax = xmax;
+      x_tics_scale = d3.scale.linear()
+          .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
+          .range([0, mw]);
+      update();
+      update_canvas();
+      redraw();
+    };
 
-      circle.enter().append("svg:circle")
-          .attr("class", function(d) { return d === selected ? "selected" : null; })
-          .attr("cx",    function(d) { return x(d.x); })
-          .attr("cy",    function(d) { return y(d.y); })
-          .attr("r", 1.0)
-          .on("mousedown", function(d) {
-            selected = dragged = d;
-            update();
-          });
+    function change_yaxis(ymax) {
+      y = d3.scale.linear()
+          .domain([ymax, 0])
+          .range([0, mh]);
+      graph.ymax = ymax;
+      update();
+      update_canvas();
+      redraw();
+    };
 
-      circle
-          .attr("class", function(d) { return d === selected ? "selected" : null; })
-          .attr("cx",    function(d) { return x(d.x); })
-          .attr("cy",    function(d) { return y(d.y); });
-
-      circle.exit().remove();
+    function clear_canvas() {
+      gcanvas.width = gcanvas.width;
+      gctx.fillStyle = "rgba(0,255,0, 0.05)";
+      gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
+      gctx.strokeStyle = "rgba(255,65,0, 1.0)";
     }
 
-    if (d3.event && d3.event.keyCode) {
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
+    function show_canvas() {
+      line_seglist.clear();
+      // vis.select("path.line").attr("d", line(points));
+      // vis.select("path.line").attr("d", line([{}]));
+      gcanvas.style.zIndex = 100;
     }
-  }
 
-  function mousemove() {
-    if (!dragged) { return; }
-    chart.onselectstart = function(){ return false; }
-    var m = d3.svg.mouse(vis.node());
-    dragged.x = x.invert(Math.max(0, Math.min(size.width, m[0])));
-    dragged.y = y.invert(Math.max(0, Math.min(size.height, m[1])));
-    update();
-  }
+    function hide_canvas() {
+      gcanvas.style.zIndex = -100;
+      vis.select("path.line").attr("d", line(points));
+    }
 
-  function mouseup() {
-    if (!dragged) { return; }
-    chart.onselectstart = function(){ return true; }
-    mousemove();
-    dragged = null;
-  }
-
-  function keydown() {
-    if (!selected) { return; }
-    switch (d3.event.keyCode) {
-      case 8: // backspace
-      case 46: { // delete
-        var i = points.indexOf(selected);
-        points.splice(i, 1);
-        selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
-        update();
-        break;
+    // update real-time canvas line graph
+    function update_canvas() {
+      if (points.length === 0) { return; }
+      var px = xScale.call(self, 0, 0),
+          py = yScale.call(self, points[0].y, 0),
+          i;
+      clear_canvas();
+      gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
+      gctx.beginPath();
+      gctx.moveTo(px, py);
+      for (i=0; i < points.length-1; i++) {
+        px = xScale.call(self, i, i);
+        py = yScale.call(self, points[i].y, i);
+        gctx.lineTo(px, py);
       }
-    }
-  }
-
-  // ------------------------------------------------------------
-  //
-  // Redraw the plot canvas when it is translated or axes are re-scaled
-  //
-  // ------------------------------------------------------------
-
-  function redraw() {
-    if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-        d3.event.transform(x, y);
+      gctx.stroke();
     }
 
-    graph.xmin = x.domain()[0];
-    graph.xmax = x.domain()[1];
-    graph.ymin = y.domain()[0];
-    graph.ymax = y.domain()[1];
-
-    var fx = x_tics_scale.tickFormat(10),
-        fy = y.tickFormat(10);
-
-    // Regenerate x-ticks
-    var gx = vis.selectAll("g.x")
-        .data(x_tics_scale.ticks(10), String)
-        .attr("transform", tx_tics);
-
-    gx.select("text")
-        .text(fx);
-
-    var gxe = gx.enter().insert("svg:g", "a")
-        .attr("class", "x")
-        .attr("transform", tx_tics);
-
-    gxe.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("y1", 0)
-        .attr("y2", size.height);
-
-    gxe.append("svg:text")
-        .attr("y", size.height)
-        .attr("dy", "1em")
-        .attr("text-anchor", "middle")
-        .style("cursor", "ew-resize")
-        .text(fx)
-        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown", function(d) {
-             var p = d3.svg.mouse(vis[0][0]);
-             downx = x_tics_scale.invert(p[0]);
-        });
-
-    gx.exit().remove();
-
-    // Regenerate y-ticks
-    var gy = vis.selectAll("g.y")
-        .data(y.ticks(10), String)
-        .attr("transform", ty);
-
-    gy.select("text")
-        .text(fy);
-
-    var gye = gy.enter().insert("svg:g", "a")
-        .attr("class", "y")
-        .attr("transform", ty)
-        .attr("background-fill", "#FFEEB6");
-
-    gye.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("x1", 0)
-        .attr("x2", size.width);
-
-    gye.append("svg:text")
-        .attr("x", -3)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .style("cursor", "ns-resize")
-        .text(fy)
-        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown", function(d) {
-             var p = d3.svg.mouse(vis[0][0]);
-             downy = y.invert(p[1]);
-        });
-
-    gy.exit().remove();
-
-    update();
-  }
-
-  function indexedData(dataset, initial_index) {
-    var i = 0,
-        start_index = initial_index || 0,
-        n = dataset.length,
-        points = [];
-    for (i = 0; i < n;  i++) {
-      points.push({ x: i+start_index, y: dataset[i] });
+    function initialize_canvas() {
+      gcanvas = document.createElement('canvas');
+      node.appendChild(gcanvas);
+      gcanvas.style.zIndex = -100;
+      setupCanvasProperties(gcanvas);
     }
-    return points;
-  }
 
-  // ------------------------------------------------------------
-  //
-  // Axis scaling
-  //
-  // attach the mousemove and mouseup to the body
-  // in case one wanders off the axis line
-  // ------------------------------------------------------------
+    function resize_canvas() {
+      setupCanvasProperties(gcanvas);
+      update_canvas();
+    }
 
-  d3.select('body')
-    .on("mousemove", function(d) {
+    function setupCanvasProperties(canvas) {
+      var cplot = {};
+      cplot.rect = node.children[0].getElementsByTagName("rect")[0];
+      cplot.width = cplot.rect.width['baseVal'].value;
+      cplot.height = cplot.rect.height['baseVal'].value;
+      cplot.left = cplot.rect.getCTM().e;
+      cplot.top = cplot.rect.getCTM().f;
+      canvas.style.position = 'absolute';
+      canvas.width = cplot.width;
+      canvas.height = cplot.height;
+      canvas.style.width = cplot.width  + 'px';
+      canvas.style.height = cplot.height  + 'px';
+      canvas.offsetLeft = cplot.left;
+      canvas.offsetTop = cplot.top;
+      canvas.style.left = cplot.left + 'px';
+      canvas.style.top = cplot.top + 'px';
+      canvas.style.border = 'solid 1px red';
+      gctx = gcanvas.getContext( '2d' );
+      gctx.globalCompositeOperation = "source-over";
+      gctx.lineWidth = 1;
+      gctx.fillStyle = "rgba(0,255,0, 0.05)";
+      gctx.fillRect(0, 0, canvas.width, gcanvas.height);
+      gctx.strokeStyle = "rgba(255,65,0, 1.0)";
+      gcanvas.style.border = 'solid 1px red';
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Axis scaling
+    //
+    // attach the mousemove and mouseup to the body
+    // in case one wanders off the axis line
+    // ------------------------------------------------------------
+
+    elem.on("mousemove", function(d) {
+      document.onselectstart = function() { return true; };
       var p = d3.svg.mouse(vis[0][0]);
       if (!isNaN(downx)) {
-        var rupx = x_tics_scale.invert(p[0]),
-          xaxis1 = x_tics_scale.domain()[0],
-          xaxis2 = x_tics_scale.domain()[1],
+        var rupx = xTicsScale.invert(p[0]),
+          xaxis1 = xTicsScale.domain()[0],
+          xaxis2 = xTicsScale.domain()[1],
           xextent = xaxis2 - xaxis1;
         if (rupx !== 0) {
             var changex, dragx_factor, new_domain;
             dragx_factor = xextent/downx;
             changex = 1 + (downx / rupx - 1) * (xextent/(downx-xaxis1))/dragx_factor;
             new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-            x_tics_scale.domain(new_domain);
+            xTicsScale.domain(new_domain);
             if (graph.sample !== 1) {
-              x.domain([new_domain[0]/graph.sample, new_domain[1]/graph.sample])
+              xScale.domain([new_domain[0]/graph.sample, new_domain[1]/graph.sample]);
             }
             redraw();
         }
@@ -1248,9 +1184,9 @@ grapher.realTimeGraph = function(options) {
         d3.event.stopPropagation();
       }
       if (!isNaN(downy)) {
-          var rupy = y.invert(p[1]),
-          yaxis1 = y.domain()[1],
-          yaxis2 = y.domain()[0],
+          var rupy = yScale.invert(p[1]),
+          yaxis1 = yScale.domain()[1],
+          yaxis2 = yScale.domain()[0],
           yextent = yaxis2 - yaxis1;
         if (rupy !== 0) {
             var changey, dragy_factor, new_range;
@@ -1260,7 +1196,7 @@ grapher.realTimeGraph = function(options) {
             if (yaxis1 > 0) {
               new_range[0] += yaxis1;
             }
-            y.domain(new_range);
+            yScale.domain(new_range);
             redraw();
         }
         d3.event.preventDefault();
@@ -1281,6 +1217,34 @@ grapher.realTimeGraph = function(options) {
             d3.event.stopPropagation();
         }
     });
+
+
+    // make these private variables and functions available
+    graph.node = node;
+    graph.scale = scale;
+    graph.update = update;
+    graph.redraw = redraw;
+
+    graph.new_data = new_data;
+    graph.add_point = add_point;
+    graph.add_canvas_point = add_canvas_point;
+    graph.initialize_canvas = initialize_canvas;
+    graph.show_canvas = show_canvas;
+    graph.hide_canvas = hide_canvas;
+    graph.clear_canvas = clear_canvas;
+    graph.update_canvas = update_canvas;
+
+    graph.change_xaxis = change_xaxis;
+    graph.change_yaxis = change_yaxis;
+  }
+
+  graph.resize = function(width, height) {
+    graph.scale(width, height);
+    graph();
+  };
+
+
+ if (node) { graph(); }
 
   return graph;
 };
@@ -1308,6 +1272,15 @@ grapher.registerKeyboardHandler = function(callback) {
 };
 
 })();
+(function(){
+
+  // prevent a console.log from blowing things up if we are on a browser that
+  // does not support it
+  if (typeof console === 'undefined') {
+    window.console = {} ;
+    console.log = console.info = console.warn = console.error = function(){};
+  }
+
 var require = function (file, cwd) {
     var resolved = require.resolve(file, cwd || '/');
     var mod = require.modules[resolved];
@@ -2284,6 +2257,7 @@ force = exports.force = function(r, q1, q2) {
 });
 
 require.define("/potentials/lennard-jones.js", function (require, module, exports, __dirname, __filename) {
+/*jshint eqnull:true boss:true */
 var constants = require('../constants'),
     unit      = constants.unit,
 
@@ -2312,16 +2286,16 @@ exports.makeLennardJonesCalculator = function(params, cb) {
       alpha_Force,      // units are "MW Force Units" * nm^13
       beta_Force,       // units are "MW Force Units" * nm^7
 
-      coefficients = function(e, s) {
+      setCoefficients = function(e, s) {
         // Input units:
         //  epsilon: eV
         //  sigma:   nm
 
-        if (arguments.length) {
-          epsilon = e;
-          sigma   = s;
-          rmin    = Math.pow(2, 1/6) * sigma;
+        epsilon = e;
+        sigma   = s;
+        rmin    = Math.pow(2, 1/6) * sigma;
 
+        if (epsilon != null && sigma != null) {
           alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
           beta_Potential  = 4 * epsilon * Math.pow(sigma, 6);
 
@@ -2331,75 +2305,92 @@ exports.makeLennardJonesCalculator = function(params, cb) {
           beta_Force =  6 * constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
         }
 
-        var coefficients = {
+        if (typeof cb === 'function') cb(getCoefficients(), this);
+      },
+
+      getCoefficients = function() {
+        return {
           epsilon: epsilon,
           sigma  : sigma,
           rmin   : rmin
         };
-
-        if (typeof cb === 'function') cb(coefficients, this);
-
-        return coefficients;
       },
 
-      /**
-        Input units: r_sq: nm^2
-        Output units: eV
-
-        minimum is at r=rmin, V(rmin) = 0
-      */
-      potentialFromSquaredDistance = function(r_sq) {
-         return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3) + epsilon;
+      validateEpsilon = function(e) {
+        if (e == null || parseFloat(e) !== e) {
+          throw new Error("lennardJones: epsilon value " + e + " is invalid");
+        }
       },
 
-      /**
-        Input units: r_sq: nm^2
-        Output units: MW Force Units / nm (= Dalton / fs^2)
-      */
-      forceOverDistanceFromSquaredDistance = function(r_sq) {
-        // optimizing divisions actually does appear to be *slightly* faster
-        var r_minus2nd  = 1 / r_sq,
-            r_minus6th  = r_minus2nd * r_minus2nd * r_minus2nd,
-            r_minus8th  = r_minus6th * r_minus2nd,
-            r_minus14th = r_minus8th * r_minus6th;
+      validateSigma = function(s) {
+        if (s == null || parseFloat(s) !== s || s <= 0) {
+          throw new Error("lennardJones: sigma value " + s + " is invalid");
+        }
+      },
 
-        return alpha_Force*r_minus14th - beta_Force*r_minus8th;
-      };
+      // this object
+      calculator;
+
+      // At creation time, there must be a valid epsilon and sigma ... we're not gonna check during
+      // inner-loop force calculations!
+      validateEpsilon(params.epsilon);
+      validateSigma(params.sigma);
 
       // Initialize coefficients to passed-in values
-      coefficients(params.epsilon, params.sigma);
+      setCoefficients(params.epsilon, params.sigma);
 
-  return {
+  return calculator = {
 
-    coefficients: coefficients,
+    coefficients: getCoefficients,
 
     setEpsilon: function(e) {
-      return coefficients(e, sigma);
+      validateEpsilon(e);
+      setCoefficients(e, sigma);
     },
 
     setSigma: function(s) {
-      return coefficients(epsilon, s);
+      validateSigma(s);
+      setCoefficients(epsilon, s);
     },
 
-    // "fast" forms which avoid the need for a square root
-    potentialFromSquaredDistance: potentialFromSquaredDistance,
+    /**
+      Input units: r_sq: nm^2
+      Output units: eV
+
+      minimum is at r=rmin, V(rmin) = 0
+    */
+    potentialFromSquaredDistance: function(r_sq) {
+       return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3) + epsilon;
+    },
 
     /**
       Input units: r: nm
       Output units: eV
     */
     potential: function(r) {
-      return potentialFromSquaredDistance(r*r);
+      return calculator.potentialFromSquaredDistance(r*r);
     },
 
-    forceOverDistanceFromSquaredDistance: forceOverDistanceFromSquaredDistance,
+    /**
+      Input units: r_sq: nm^2
+      Output units: MW Force Units / nm (= Dalton / fs^2)
+    */
+    forceOverDistanceFromSquaredDistance: function(r_sq) {
+      // optimizing divisions actually does appear to be *slightly* faster
+      var r_minus2nd  = 1 / r_sq,
+          r_minus6th  = r_minus2nd * r_minus2nd * r_minus2nd,
+          r_minus8th  = r_minus6th * r_minus2nd,
+          r_minus14th = r_minus8th * r_minus6th;
+
+      return alpha_Force*r_minus14th - beta_Force*r_minus8th;
+    },
 
     /**
       Input units: r: nm
       Output units: MW Force Units (= Dalton * nm / fs^2)
     */
     force: function(r) {
-      return r * forceOverDistanceFromSquaredDistance(r*r);
+      return r * calculator.forceOverDistanceFromSquaredDistance(r*r);
     }
   };
 };
@@ -2448,7 +2439,7 @@ var arrays       = require('./arrays/arrays').arrays,
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
-    NODE_PROPERTIES_COUNT, INDICES,
+    NODE_PROPERTIES_COUNT, INDICES, SAVEABLE_INDICES,
 
     cross = function(a0, a1, b0, b1) {
       return a0*b1 - a1*b0;
@@ -2491,6 +2482,14 @@ var arrays       = require('./arrays/arrays').arrays,
       if (temperature === Infinity) {
         throw new Error("md2d: requested temperature was Infinity!");
       }
+    },
+
+    copyTypedArray = function(arr) {
+      var copy = [];
+      for (var i=0,ii=arr.length; i<ii; i++){
+        copy[i] = arr[i];
+      }
+      return copy;
     };
 
 exports.INDICES = INDICES = {
@@ -2507,6 +2506,8 @@ exports.INDICES = INDICES = {
   MASS   : 10,
   CHARGE : 11
 };
+
+exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY"];
 
 exports.NODE_PROPERTIES_COUNT = NODE_PROPERTIES_COUNT = 12;
 
@@ -3134,92 +3135,24 @@ exports.makeModel = function() {
       outputState.CM       = [x_CM, y_CM];
       outputState.vCM      = [vx_CM, vy_CM];
       outputState.omega_CM = omega_CM;
+    },
+
+    serialize: function() {
+      var serializedData = {},
+          prop,
+          array,
+          i, ii;
+      for (i=0, ii=SAVEABLE_INDICES.length; i<ii; i++) {
+        prop = SAVEABLE_INDICES[i];
+        array = nodes[INDICES[prop]];
+        serializedData[prop] = array.slice ? array.slice() : copyTypedArray(array);
+      }
+      return serializedData;
     }
   };
 };
 });
 require("/md2d.js");
-(function(){
-
-  // prevent a console.log from blowing things up if we are on a browser that
-  // does not support it
-  if (typeof console === 'undefined') {
-    window.console = {} ;
-    console.log = console.info = console.warn = console.error = function(){};
-  }
-
-// ------------------------------------------------------------
-//
-// Couloumb forces
-//
-// ------------------------------------------------------------
-
-molecules_coulomb = {};
-molecules_coulomb = { version: "0.0.1" };
-
-var ke_constant = -50;            // coulomb constant
-
-molecules_coulomb.force = function(distance, q1, q2) {
-  return ke_constant * ((q1 * q2) / (distance * distance));
-};
-
-molecules_coulomb.potential = function(distance, q1, q2) {
-  return -ke_constant * ((q1 * q2) / distance);
-};
-/*globals molecules_lennard_jones: true */
-// ------------------------------------------------------------
-//
-// Lennard-Jones potential and forces
-//
-// ------------------------------------------------------------
-
-molecules_lennard_jones = {};
-molecules_lennard_jones = { version: "0.0.1" };
-
-var epsilon = -1.0,                   // depth of the potential well
-    sigma   =  4.0,                   // finite distance at which the inter-particle potential is zero
-    rmin = Math.pow(2, 1/6) * sigma,  // distance at which the potential well reaches its minimum
-
-    alpha = 4 * epsilon * Math.pow(sigma, 12),
-    beta  = 4 * epsilon * Math.pow(sigma, 6);
-
-molecules_lennard_jones.epsilon = function(e) {
-  return molecules_lennard_jones.coefficients(e, sigma);
-};
-
-molecules_lennard_jones.sigma = function(s) {
-  return molecules_lennard_jones.coefficients(epsilon, s);
-};
-
-molecules_lennard_jones.coefficients = function(e, s) {
-  if (arguments.length)  {
-    epsilon = e;
-    sigma = s;
-    rmin = Math.pow(2, 1/6) * sigma;
-    alpha = 4 * epsilon * Math.pow(sigma, 12);
-    beta  = 4 * epsilon * Math.pow(sigma, 6);
-  }
-  var coefficients = {
-    epsilon: epsilon,
-    sigma: sigma,
-    rmin: rmin,
-    alpha: alpha,
-    beta: beta
-  };
-  return coefficients;
-};
-
-molecules_lennard_jones.potential = function(distance) {
-  return (alpha/Math.pow(distance, 12) - beta/Math.pow(distance, 6)) * -1;
-};
-
-molecules_lennard_jones.force = function(distance) {
-  var r_6th  = Math.pow(distance, 6),
-      r_7th  = r_6th * distance,
-      r_13th = r_6th * r_7th;
-
-  return (12*alpha/r_13th - 6*beta/r_7th);
-};
 /*globals $ modeler:true, require, d3, arrays, benchmark, molecule_container */
 /*jslint onevar: true devel:true eqnull: true */
 
@@ -3235,7 +3168,7 @@ modeler.VERSION = '0.2.0';
 modeler.model = function(initialProperties) {
   var model = {},
       atoms = [],
-      event = d3.dispatch("tick"),
+      dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack"),
       temperature_control,
       lennard_jones_forces, coulomb_forces,
       stopped = true,
@@ -3284,6 +3217,7 @@ modeler.model = function(initialProperties) {
         temperature           : 3,
         coulomb_forces        : false,
         epsilon               : -0.1,
+        sigma                 : 0.34,
         lennard_jones_forces  : true,
         temperature_control   : true,
 
@@ -3305,6 +3239,20 @@ modeler.model = function(initialProperties) {
           this.epsilon = e;
           if (coreModel) {
             coreModel.setLJEpsilon(e);
+          }
+        },
+
+        set_sigma: function(s) {
+          this.sigma = s;
+          if (coreModel) {
+            coreModel.setLJSigma(s);
+          }
+        },
+
+        set_mol_number: function(n) {
+          this.mol_number = n;
+          if (coreModel) {
+            createNewCoreModel();
           }
         }
       };
@@ -3405,7 +3353,7 @@ modeler.model = function(initialProperties) {
       } else {
         sample_time = t;
       }
-      event.tick({type: "tick"});
+      dispatch.tick({type: "tick"});
     }
     return stopped;
   }
@@ -3483,61 +3431,65 @@ modeler.model = function(initialProperties) {
     notifyListeners(waitingToBeNotified);
   }
 
+  function createNewCoreModel() {
+    // get a fresh model
+    coreModel = md2d.makeModel();
+
+    coreModel.createAtoms({
+      num: properties.mol_number
+    });
+
+    nodes    = coreModel.nodes;
+    radius   = coreModel.radius;
+    px       = coreModel.px;
+    py       = coreModel.py;
+    x        = coreModel.x;
+    y        = coreModel.y;
+    vx       = coreModel.vx;
+    vy       = coreModel.vy;
+    speed    = coreModel.speed;
+    ax       = coreModel.ax;
+    ay       = coreModel.ay;
+    mass     = coreModel.mass;
+    charge   = coreModel.charge;
+
+    modelOutputState = coreModel.outputState;
+
+    // The d3 molecule viewer requires this length to be set correctly:
+    atoms.length = nodes[0].length;
+
+    // Initialize properties
+    lennard_jones_forces = properties.lennard_jones_forces;
+    coulomb_forces       = properties.coulomb_forces;
+    temperature_control  = properties.temperature_control;
+    temperature          = properties.temperature;
+
+    reset_tick_history_list();
+    new_step = true;
+
+    coreModel.useLennardJonesInteraction(lennard_jones_forces);
+    coreModel.useCoulombInteraction(coulomb_forces);
+    coreModel.useThermostat(temperature_control);
+
+    var T = abstract_to_real_temperature(temperature);
+
+    coreModel.setTargetTemperature(T);
+    coreModel.initializeAtomsRandomly({
+      temperature: T
+    });
+  }
+
   // ------------------------------
   // finish setting up the model
   // ------------------------------
 
-  set_properties(initialProperties);
-
-  // get a fresh model
-  coreModel = md2d.makeModel();
-  coreModel.setLJEpsilon(properties.epsilon);
-
-  coreModel.createAtoms({
-    num: properties.mol_number
-  });
-
-  nodes    = coreModel.nodes;
-  radius   = coreModel.radius;
-  px       = coreModel.px;
-  py       = coreModel.py;
-  x        = coreModel.x;
-  y        = coreModel.y;
-  vx       = coreModel.vx;
-  vy       = coreModel.vy;
-  speed    = coreModel.speed;
-  ax       = coreModel.ax;
-  ay       = coreModel.ay;
-  mass     = coreModel.mass;
-  charge   = coreModel.charge;
-
-  modelOutputState = coreModel.outputState;
-
-  // The d3 molecule viewer requires this length to be set correctly:
-  atoms.length = nodes[0].length;
-
-  // Initialize properties
-  lennard_jones_forces = properties.lennard_jones_forces;
-  coulomb_forces       = properties.coulomb_forces;
-  temperature_control  = properties.temperature_control;
-  temperature          = properties.temperature;
-
   // who is listening to model tick completions
-  model_listener       = properties.model_listener;
+  model_listener = initialProperties.model_listener;
 
-  reset_tick_history_list();
-  new_step = true;
+  createNewCoreModel();
 
-  coreModel.useLennardJonesInteraction(lennard_jones_forces);
-  coreModel.useCoulombInteraction(coulomb_forces);
-  coreModel.useThermostat(temperature_control);
-
-  var T = abstract_to_real_temperature(temperature);
-
-  coreModel.setTargetTemperature(T);
-  coreModel.initializeAtomsRandomly({
-    temperature: T
-  });
+  // set the rest of the regular properties
+  set_properties(initialProperties);
 
   // ------------------------------------------------------------
   //
@@ -3631,16 +3583,6 @@ modeler.model = function(initialProperties) {
   // all the atoms will need to be changed when different atoms
   // can have different LJ sigma values
 
-  model.set_lj_coefficients = function(e, s) {
-    // am not using the coefficients beyond setting the ljf limits yet ...
-    epsilon = e;
-    sigma = s;
-
-    // TODO. Disabled for now because application.js doesn't yet know correct units, etc.
-    //coreModel.setLJEpsilon(e);
-    //coreModel.setLJSigma(s);
-  };
-
   /** Accepts an epsilon value in eV.
 
       Example value for argon is 0.013 (positive)
@@ -3719,12 +3661,12 @@ modeler.model = function(initialProperties) {
   };
 
   model.on = function(type, listener) {
-    event.on(type, listener);
+    dispatch.on(type, listener);
     return model;
   };
 
   model.tickInPlace = function() {
-    event.tick({type: "tick"});
+    dispatch.tick({type: "tick"});
     return model;
   };
 
@@ -3749,11 +3691,13 @@ modeler.model = function(initialProperties) {
   model.resume = function() {
     stopped = false;
     d3.timer(tick);
+    dispatch.play();
     return model;
   };
 
   model.stop = function() {
     stopped = true;
+    dispatch.stop();
     return model;
   };
 
@@ -3802,7 +3746,7 @@ modeler.model = function(initialProperties) {
   };
 
   // Add a listener that will be notified any time any of the properties
-  // ithe passed-in array of properties is changed.
+  // in the passed-in array of properties is changed.
   // This is a simple way for views to update themselves in response to
   // properties being set on the model object.
   // Observer all properties with addPropertiesListener(["all"], callback);
@@ -3817,8 +3761,12 @@ modeler.model = function(initialProperties) {
     }
   };
 
-  model.serialize = function() {
-    return properties;
+  model.serialize = function(includeAtoms) {
+    var propCopy = $.extend({}, properties);
+    if (includeAtoms) {
+      propCopy.atoms = coreModel.serialize();
+    }
+    return propCopy;
   };
 
   return model;
@@ -4486,11 +4434,9 @@ layout.setupScreen = function(viewLists) {
     };
     width = layout.display.page.width * 0.47 + 5;
     height = layout.display.page.height * 0.43 + 0;
-    layout.finishSetupKEChart(width, height);
-    // var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    // i = -1;  while(++i < viewLists.energyCharts) {
-    //   viewLists.energyCharts[i].resize(size, size);
-    // };
+    i = -1;  while(++i < viewLists.energyCharts.length) {
+      viewLists.energyCharts[i].resize(width, height);
+    };
   }
 
   //
@@ -4514,19 +4460,17 @@ layout.setupScreen = function(viewLists) {
     };
     width = layout.display.page.width * 0.47 + 5;
     height = layout.display.page.height * 0.40 + 0;
-    layout.finishSetupKEChart(width, height);
-    // var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
-    // i = -1;  while(++i < viewLists.energyCharts) {
-    //   viewLists.energyCharts[i].resize(size, size);
-    // };
+    i = -1;  while(++i < viewLists.energyCharts.length) {
+      viewLists.energyCharts[i].resize(width, height);
+    };
   }
 
   //
   // Simple Screen Layout
   //
   function setupSimpleMoleculeContainer() {
-    var size = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
-    molecule_container.resize(size, size);
+    var height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
+    viewLists.moleculeContainers[0].resize(height, height);
   }
 
   function setupDescriptionRight() {
@@ -4540,16 +4484,16 @@ layout.setupScreen = function(viewLists) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameMoleculeContainer() {
-    var size = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
-    molecule_container.resize(size, size);
+    var height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
+    viewLists.moleculeContainers[0].resize(height, height);
   }
 
   //
   // Simple Full Screen Layout
   //
   function setupSimpleFullScreenMoleculeContainer() {
-    var size = layout.display.page.height * 0.70;
-    molecule_container.resize(size, size);
+    var height = layout.display.page.height * 0.70;
+    viewLists.moleculeContainers[0].resize(height, height);
   }
 
   function setupFullScreenDescriptionRight() {
@@ -4665,6 +4609,7 @@ layout.moleculeContainer = function(e, options) {
       atom_tooltip_on,
       offset_left, offset_top,
       particle, label, labelEnter, tail,
+      molRadius,
       molecule_div, molecule_div_pre,
       default_options = {
         title:                false,
@@ -4927,7 +4872,7 @@ layout.moleculeContainer = function(e, options) {
       vis.selectAll("g.y").remove();
 
       if (particle) {
-        update_molecule_radius();
+        updateMoleculeRadius();
 
         particle.attr("cx", function(d, i) { return x(get_x(i)); })
                 .attr("cy", function(d, i) { return y(get_y(i)); })
@@ -5091,21 +5036,15 @@ layout.moleculeContainer = function(e, options) {
           .attr("offset", "100%");
     }
 
-    function update_molecule_radius() {
-      var ljf = model.getLJCalculator().coefficients();
-      var r = ljf.rmin * 0.5;
-      // model.set_radius(r);
-      vis.selectAll("circle")
-          .data(atoms)
-        .attr("r",  function(d, i) { return x(get_radius(i)); });
-      vis.selectAll("text")
-        .attr("font-size", x(r * 1.3) );
+    function updateMoleculeRadius() {
+      vis.selectAll("circle").data(atoms).attr("r",  function(d, i) { return x(get_radius(i)); });
+      // vis.selectAll("text").attr("font-size", x(molRadius * 1.3) );
     }
 
     function setup_particles() {
       var ljf = model.getLJCalculator().coefficients();
-      var r = ljf.rmin * 0.5;
-      model.set_radius(r);
+      // molRadius = ljf.rmin * 0.5;
+      // model.set_radius(molRadius);
 
       gradient_container.selectAll("circle").remove();
       gradient_container.selectAll("g").remove();
@@ -5240,7 +5179,7 @@ layout.moleculeContainer = function(e, options) {
 
     // make these private variables and functions available
     container.node = node;
-    container.update_molecule_radius = update_molecule_radius;
+    container.updateMoleculeRadius = updateMoleculeRadius;
     container.setup_particles = setup_particles;
     container.update_molecule_positions = update_molecule_positions;
     container.scale = scale;
@@ -5265,17 +5204,20 @@ layout.moleculeContainer = function(e, options) {
 //
 // ------------------------------------------------------------
 
-layout.potentialChart = function(e, data, options) {
+layout.potentialChart = function(e, model, options) {
   var elem = d3.select(e),
       node = elem.node(),
       cx = elem.property("clientWidth"),
       cy = elem.property("clientHeight"),
       padding, size,
       mw, mh, tx, ty, stroke,
-      xScale, downscalex, downx,
-      yScale, downscaley, downy,
+      xScale = d3.scale.linear(), downx,
+      yScale = d3.scale.linear(), downy,
       dragged, coefficient_dragged,
-      vis, plot,
+      vis, plot, 
+      ljCalculator,
+      ljData = {},
+      ljPotentialGraphData = [],
       default_options = {
         title   : "Lennard-Jones potential",
         xlabel  : "Radius",
@@ -5292,19 +5234,53 @@ layout.potentialChart = function(e, data, options) {
     options = default_options;
   }
 
+  ljData.variables = [];
+  ljData.variables[0] = { coefficient: "epsilon", cursorStyle: "ns-resize" };
+  ljData.variables[1] = { coefficient: "sigma", cursorStyle: "ew-resize" };
+
+  updateLJData();
+
   // drag coefficients logic
   coefficient_dragged = false;
-  coefficient_selected = data.variables[0];
+  coefficient_selected = ljData.variables[0];
 
   scale(cx, cy);
 
   tx = function(d, i) { return "translate(" + xScale(d) + ",0)"; };
   ty = function(d, i) { return "translate(0," + yScale(d) + ")"; };
-  stroke = function(d, i) { return d ? "#ccc" : "#666"; };
+  stroke = function(d, i) { return Math.abs(d) > 0.0001 ? "#ccc" : "#666"; };
 
   line = d3.svg.line()
-      .x(function(d, i) { return xScale(lennard_jones_potential[i][0]); })
-      .y(function(d, i) { return yScale(lennard_jones_potential[i][1]); });
+      .x(function(d, i) { return xScale(ljPotentialGraphData[i][0]); })
+      .y(function(d, i) { return yScale(ljPotentialGraphData[i][1]); });
+
+  function updateLJData() {
+    var sigma, epsilon, rmin, y, r, i;
+
+    ljCalculator = model.getLJCalculator();
+    ljData.coefficients = ljCalculator.coefficients();
+    sigma   = ljData.coefficients.sigma;
+    epsilon = ljData.coefficients.epsilon;
+    rmin    = ljData.coefficients.rmin;
+    ljData.xmax    = sigma * 3;
+    ljData.xmin    = Math.floor(sigma/2);
+    ljData.ymax    = 0.4;
+    ljData.ymin    = Math.ceil(epsilon*1) - 1.0;
+
+    // update the positions of the circles for epsilon and sigma on the graph
+    ljData.variables[0].x = rmin;
+    ljData.variables[0].y = epsilon;
+    ljData.variables[1].x = sigma;
+    ljData.variables[1].y = 0;
+
+    ljPotentialGraphData.length = 0;
+    for(r = sigma * 0.5; r < ljData.xmax * 3;  r += 0.01) {
+      y = -ljCalculator.potential(r) + epsilon;
+      if (Math.abs(y) < 100) {
+        ljPotentialGraphData.push([r, y]);
+      }
+    }
+  }
 
   function scale(w, h) {
     cx = w;
@@ -5344,23 +5320,15 @@ layout.potentialChart = function(e, data, options) {
     mh = size.height;
 
     // x-scale
-    xScale = d3.scale.linear()
-      .domain([lj_data.xmin, lj_data.xmax])
-      .range([0, mw]);
+    xScale.domain([ljData.xmin, ljData.xmax]).range([0, mw]);
 
     // y-scale (inverted domain)
-    yScale = d3.scale.linear()
-        .domain([lj_data.ymax, lj_data.ymin])
-        .nice()
-        .range([0, mh])
-        .nice();
+    yScale.domain([ljData.ymax, ljData.ymin]).range([0, mh]);
 
     // drag x-axis logic
-    downscalex = xScale.copy();
     downx = Math.NaN;
 
     // drag y-axis logic
-    downscaley = yScale.copy();
     downy = Math.NaN;
     dragged = null;
   }
@@ -5379,8 +5347,9 @@ layout.potentialChart = function(e, data, options) {
         .attr("width", size.width)
         .attr("height", size.height)
         .style("fill", "#EEEEEE")
-        .attr("pointer-events", "all")
-        .call(d3.behavior.zoom().x(xScale).y(yScale).scaleExtent([1, 8]).on("zoom", redraw));
+        .attr("pointer-events", "all");
+
+      plot.call(d3.behavior.zoom().x(xScale).y(yScale).scaleExtent([1, 8]).on("zoom", redraw));
 
       vis.append("svg")
         .attr("class", "linebox")
@@ -5391,7 +5360,7 @@ layout.potentialChart = function(e, data, options) {
         .attr("viewBox", "0 0 "+size.width+" "+size.height)
         .append("path")
             .attr("class", "line")
-            .attr("d", line(lennard_jones_potential));
+            .attr("d", line(ljPotentialGraphData));
 
       // add Chart Title
       if (options.title) {
@@ -5516,7 +5485,7 @@ layout.potentialChart = function(e, data, options) {
          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
          .on("mousedown", function(d) {
               var p = d3.svg.mouse(vis[0][0]);
-              downx = x.invert(p[0]);
+              downx = xScale.invert(p[0]);
               // d3.behavior.zoom().off("zoom", redraw);
          });
 
@@ -5550,7 +5519,7 @@ layout.potentialChart = function(e, data, options) {
           .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
           .on("mousedown", function(d) {
                var p = d3.svg.mouse(vis[0][0]);
-               downy = y.invert(p[1]);
+               downy = yScale.invert(p[1]);
                // d3.behavior.zoom().off("zoom", redraw);
           });
 
@@ -5566,19 +5535,20 @@ layout.potentialChart = function(e, data, options) {
 
     function update() {
       var epsilon_circle = vis.selectAll("circle")
-          .data(data.variables, function(d) { return d; });
+          .data(ljData.variables, function(d) { return d; });
 
-      var lines = vis.select("path").attr("d", line(lennard_jones_potential)),
+      var lines = vis.select("path").attr("d", line(ljPotentialGraphData)),
           x_extent = xScale.domain()[1] - xScale.domain()[0];
 
       epsilon_circle.enter().append("circle")
           .attr("class", function(d) { return d === coefficient_dragged ? "selected" : null; })
           .attr("cx",    function(d) { return xScale(d.x); })
           .attr("cy",    function(d) { return yScale(d.y); })
+          .style("cursor", function(d) { return d.cursorStyle; })
           .attr("r", 8.0)
           .on("mousedown", function(d) {
             if (d.coefficient == "epsilon") {
-              d.x = data.coefficients.rmin;
+              d.x = ljData.coefficients.rmin;
             } else {
               d.y = 0;
             }
@@ -5599,27 +5569,28 @@ layout.potentialChart = function(e, data, options) {
       }
     }
 
+    function plot_drag() {
+      elem.style("cursor", "move");
+    }
+
     function mousemove() {
       if (!coefficient_dragged) return;
       node.onselectstart = function(){ return false; };
       var m = d3.svg.mouse(vis.node()),
         newx, newy;
       if (coefficient_dragged.coefficient == "epsilon") {
-        newx = data.coefficients.rmin;
-        newy = y.invert(Math.max(0, Math.min(size.height, m[1])));
+        newx = ljData.coefficients.rmin;
+        newy = yScale.invert(Math.max(0, Math.min(size.height, m[1])));
         if (newy > options.epsilon_max) { newy = options.epsilon_max; }
         if (newy < options.epsilon_min) { newy = options.epsilon_min; }
-        options.epsilon_callback(newy);
+        model.set( { epsilon: newy } );
       } else {
         newy = 0;
-        newx = x.invert(Math.max(0, Math.min(size.width, m[0])));
-        if (newx < sigma_min) { newx = sigma_min; }
-        if (newx > sigma_max) { newx = sigma_max; }
-        update_sigma(newx);
+        newx = xScale.invert(Math.max(0, Math.min(size.width, m[0])));
+        if (newx < options.sigma_min) { newx = options.sigma_min; }
+        if (newx > options.sigma_max) { newx = options.sigma_max; }
+        model.set( { sigma: newx } );
       }
-      // layout.update_molecule_radius();
-      // model.resolve_collisions(molecules);
-      // model.tick();
       coefficient_dragged.x = newx;
       coefficient_dragged.y = newy;
       update();
@@ -5627,7 +5598,7 @@ layout.potentialChart = function(e, data, options) {
 
     function mouseup() {
       if (!isNaN(downx)) {
-        mode.onselectstart = function(){ return true; };
+        node.onselectstart = function(){ return true; };
         redraw();
         downx = Math.NaN;
         d3.event.preventDefault();
@@ -5642,15 +5613,83 @@ layout.potentialChart = function(e, data, options) {
       coefficient_dragged = null;
     }
 
+    // ------------------------------------------------------------
+    //
+    // Potential Chart axis scaling
+    //
+    // attach the mousemove and mouseup to the body
+    // in case one wanders off the axis line
+    //
+    // ------------------------------------------------------------
+
+    elem.on("mousemove", function(d) {
+      document.onselectstart = function() { return true; };
+      var p = d3.svg.mouse(vis[0][0]);
+      if (!isNaN(downx)) {
+        var rupx = xScale.invert(p[0]),
+          xaxis1 = xScale.domain()[0],
+          xaxis2 = xScale.domain()[1],
+          xextent = xaxis2 - xaxis1;
+        if (rupx !== 0) {
+            var changex, dragx_factor, new_domain;
+            dragx_factor = xextent/downx;
+            changex = 1 + (downx / rupx - 1) * (xextent/(downx-xaxis1))/dragx_factor;
+            new_domain = [xaxis1, xaxis1 + (xextent * changex)];
+            xScale.domain(new_domain);
+            redraw();
+        }
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+      if (!isNaN(downy)) {
+          var rupy = yScale.invert(p[1]),
+          yaxis1 = yScale.domain()[1],
+          yaxis2 = yScale.domain()[0],
+          yextent = yaxis2 - yaxis1;
+        if (rupy !== 0) {
+            var changey, dragy_factor, new_range;
+            dragy_factor = yextent/downy;
+            changey = 1 - (rupy / downy - 1) * (yextent/(downy-yaxis1))/dragy_factor;
+            new_range = [yaxis1 + (yextent * changey), yaxis1];
+            yScale.domain(new_range);
+            redraw();
+        }
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+    })
+    .on("mouseup", function(d) {
+        document.onselectstart = function() { return true; };
+        if (!isNaN(downx)) {
+            redraw();
+            downx = Math.NaN;
+            d3.event.preventDefault();
+            d3.event.stopPropagation();
+        }
+        if (!isNaN(downy)) {
+            redraw();
+            downy = Math.NaN;
+            d3.event.preventDefault();
+            d3.event.stopPropagation();
+        }
+    });
+
     // make these private variables and functions available
     container.node = node;
     container.scale = scale;
+    container.updateLJData = updateLJData;
+    container.update = update;
+    container.redraw = redraw;
   }
 
   container.resize = function(width, height) {
     container.scale(width, height);
-    // container.scale();
     container();
+  };
+
+  container.ljUpdate = function() {
+    container.updateLJData();
+    container.redraw();
   };
 
  if (node) { container(); }
@@ -5947,6 +5986,7 @@ layout.speedDistributionChart = function(e, options) {
     container.node = node;
     container.scale = scale;
     container.update = update;
+    container.redraw = redraw;
   }
 
   container.resize = function(width, height) {
@@ -6264,7 +6304,7 @@ layout.displayStats = function() {
     stats.textContent =
       "Time: "     + d3.format("5.2f")(model.getTime() / 1000) + " (ps), " +
       "KE: "       + d3.format("1.4f")(ke) + ", " +
-      // "PE: "       + d3.format("1.6f")(pe) + ", " +
+      "PE: "       + d3.format("1.4f")(pe) + ", " +
       "TE: "       + d3.format("1.4f")(te) + ", " +
       "Pressure: " + d3.format("6.3f")(model.pressure()) + ", " +
       "Rate: " + d3.format("5.1f")(model.get_rate()) + " (steps/s)";
@@ -6355,682 +6395,6 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
     }
   });
 }
-})();
-(function(){
-
-  // prevent a console.log from blowing things up if we are on a browser that
-  // does not support it
-  if (typeof console === 'undefined') {
-    window.console = {} ;
-    console.log = console.info = console.warn = console.error = function(){};
-  }
-
-/*global 
-  window, document, navigator, 
-  requestAnimFrame, cancelRequestAnimFrame, myRequire,
-  avalanche2d, grapher, d3,
-  graph
-*/
-graphx = { version: "0.0.1" };
-
-graphx.graph = function(options) {
-
-  graph = {};
-  
-  graph.container = options.container || document.getElementById("chart");
-
-  graph.dataset = options.dataset || [0];
-
-  graph.xmax    = options.xmax    || 10;
-  graph.xmin    = options.xmin    || 0;
-  graph.sample  = options.sample  || 1;
-  
-  graph.ymax    = options.ymax    || 10;
-  graph.ymin    = options.ymin    || 0;
-
-  graph.title   = options.title;
-  graph.xlabel  = options.xlabel;
-  graph.ylabel  = options.ylabel;
-  
-  graph.selectable_points = options.selectable_points || false;
-
-
-  graph.setup_graph = function(p) {
-    setupGraph();
-  };
-
-  graph.new_data = function(points) {
-    new_data(points);
-    update();
-  };
-
-  graph.change_xaxis = function(xmax) {
-    x = d3.scale.linear()
-        .domain([0, xmax])
-        .range([0, mw]);
-    graph.xmax = xmax;
-    x_tics_scale = d3.scale.linear()
-        .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
-        .range([0, mw]);
-    update();
-    update_canvas();
-    redraw();
-  };
-
-  graph.change_yaxis = function(ymax) {
-    y = d3.scale.linear()
-        .domain([ymax, 0])
-        .range([0, mh]);
-    graph.ymax = ymax;
-    update();
-    update_canvas();
-    redraw();
-  };
-
-  graph.add_point = function(p) {
-    add_point(p);
-  };
-  
-  graph.update = function() {
-    update();
-  };
-
-  graph.add_canvas_point = function(p) {
-    add_canvas_point(p);
-  };
-  
-  graph.initialize_canvas = function() {
-    initialize_canvas();
-  };
-  
-  graph.show_canvas = function() {
-    show_canvas();
-  };
-
-  graph.hide_canvas = function() {
-    hide_canvas();
-  };
-  
-  graph.clear_canvas = function() {
-    clear_canvas();
-  };
-
-  graph.update_canvas = function() {
-    update_canvas();
-  };
-
-  var gcanvas, gctx,
-      chart, cx, cy, 
-      padding = {}, size = {},
-      mw, mh, tx, ty, stroke,
-      x, downx, x_tics_scale, tx_tics,
-      y, downy,
-      line, dragged, selected,
-      line_path, line_seglist, vis_node, vis, cpoint;
-  
-  var points = indexedData(graph.dataset, 0);
-  chart = graph.container;
-  setupGraph();
-
-  function setupGraph() {
-    cx = chart.clientWidth;
-    cy = chart.clientHeight;
-    padding = {
-       "top":    graph.title  ? 40 : 20, 
-       "right":                 30, 
-       "bottom": graph.xlabel ? 50 : 10, 
-       "left":   graph.ylabel ? 70 : 45
-    };
-    size = { 
-      "width":  cx - padding.left - padding.right, 
-      "height": cy - padding.top  - padding.bottom 
-    };
-    mw = size.width;
-    mh = size.height;
-    tx = function(d) { return "translate(" + x(d) + ",0)"; };
-    ty = function(d) { return "translate(0," + y(d) + ")"; };
-    stroke = function(d) { return d ? "#ccc" : "#666"; };
-
-    // x-scale
-    x = d3.scale.linear()
-          .domain([graph.xmin, graph.xmax])
-          .range([0, mw]);
-
-    x_tics_scale = d3.scale.linear()
-        .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
-        .range([0, mw]);
-    tx_tics = function(d) { return "translate(" + x_tics_scale(d) + ",0)"; };
-
-    // drag x-axis logic
-    downx = Math.NaN;
-    
-    // y-scale (inverted domain)
-    y = d3.scale.linear()
-            .domain([graph.ymax, graph.ymin])
-            .range([0, mh]),
-        line = d3.svg.line()
-            .x(function(d, i) { return x(points[i].x ); })
-            .y(function(d, i) { return y(points[i].y); }),
-        // drag y-axis logic
-        downy = Math.NaN,
-        dragged = null,
-        selected = points[0];
-
-    if (undefined !== vis) {
-      
-      var fullscreen = document.fullScreen ||
-                       document.webkitIsFullScreen ||
-                       document.mozFullScreen;
-      //
-      // Something very strange happens only when shifting to full-screen to
-      // cause me to have to reverse the order of the Y-axis range() arguments.
-      //
-      if (fullscreen) {
-        y = d3.scale.linear()
-                .domain([graph.ymax, graph.ymin])
-                .range([mh, 0]);
-      }
-
-      d3.select(chart).select("svg")
-          .attr("width", cx)
-          .attr("height", cy);
-
-      vis.select("rect.plot")
-        .attr("width", size.width)
-        .attr("height", size.height)
-        .style("fill", "#EEEEEE");
-
-      vis.select("svg.viewbox")
-        .attr("top", 0)
-        .attr("left", 0)
-        .attr("width", size.width)
-        .attr("height", size.height)
-        .attr("viewBox", "0 0 "+size.width+" "+size.height);
-
-      if (graph.title) {
-        vis.select("text.title")
-            .attr("x", size.width/2)
-            .attr("dy","-1em");
-      }
-
-      if (graph.xlabel) {
-        vis.select("text.xlabel")
-            .attr("x", size.width/2)
-            .attr("y", size.height);
-      }
-
-      if (graph.ylabel) {
-        vis.select("text.ylabel")
-            .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
-      }
-
-      vis.selectAll("g.x").remove();
-      vis.selectAll("g.y").remove();
-      
-      resize_canvas();
-      
-    } else {
-
-      vis = d3.select(chart).append("svg:svg")
-        .attr("width", cx)
-        .attr("height", cy)
-        .append("svg:g")
-          .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
-
-      vis.append("svg:rect")
-          .attr("class", "plot")
-          .attr("width", size.width)
-          .attr("height", size.height)
-          .style("fill", "#EEEEEE")
-          .attr("pointer-events", "all")
-          // .call(d3.behavior.zoom().x(x).y(y).scaleExtent([1, 8]).on("zoom", redraw))
-          .on("mousedown", function() {
-            if (d3.event.altKey) {
-                points.push(selected = dragged = d3.svg.mouse(vis.node()));
-                update();
-                d3.event.preventDefault();
-                d3.event.stopPropagation();
-            }
-          });
-
-      vis.append("svg:svg")
-          .attr("class", "viewbox")
-          .attr("top", 0)
-          .attr("left", 0)
-          .attr("width", size.width)
-          .attr("height", size.height)
-          .attr("viewBox", "0 0 "+size.width+" "+size.height)
-          .append("svg:path")
-              .attr("class", "line")
-              .attr("d", line(points))
-  
-      // variables for speeding up dynamic plotting
-      line_path = vis.select("path")[0][0];
-      line_seglist = line_path.pathSegList;
-      vis_node = vis.node();
-      cpoint = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-      cpoint.setAttribute("cx", 1);
-      cpoint.setAttribute("cy", 1);
-      cpoint.setAttribute("r",  1);
-
-      // add Chart Title
-      if (graph.title) {
-        vis.append("svg:text")
-            .attr("class", "title")
-            .text(graph.title)
-            .attr("x", size.width/2)
-            .attr("dy","-1em")
-            .style("text-anchor","middle");
-      }
-
-      // Add the x-axis label
-      if (graph.xlabel) {
-        vis.append("svg:text")
-            .attr("class", "xlabel")
-            .text(graph.xlabel)
-            .attr("x", size.width/2)
-            .attr("y", size.height)
-            .attr("dy","2.4em")
-            .style("text-anchor","middle");
-      }
-
-      // add y-axis label
-      if (graph.ylabel) {
-        vis.append("svg:g")
-            .append("svg:text")
-                .attr("class", "ylabel")
-                .text(graph.ylabel)
-                .style("text-anchor","middle")
-                .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
-      }
-      initialize_canvas();
-    }
-    redraw();
-  }
-
-  d3.select(chart)
-      .on("mousemove", mousemove)
-      .on("mouseup", mouseup)
-      .on("keydown", keydown);
-
-  function new_data(d) {
-    points = indexedData(d, 0);
-    update();
-  }
-  
-  // ------------------------------------------------------------
-  //
-  // Custom generation of line path 'd' attribute string
-  // using memoized attr_str ... not much faster than d3
-  //
-  // ------------------------------------------------------------
-
-  var generate_path_attribute = (function () {
-    var attr_str = '';
-    var gen = function(pts, x, y) {
-      var result = attr_str, 
-          i = -1, 
-          n = pts.length, 
-          path = [],
-          value;
-      if (result.length === 0) {
-        path.push("M",
-          x.call(self, pts[0].x, 0), ",", 
-          y.call(self, pts[0].y, 0));
-        i++;
-      }
-      while (++i < n) { 
-        path.push("L", x.call(self, pts[i].x, i), ",", y.call(self, pts[i].y, i));
-      } 
-      return (attr_str += path.join(""));
-    };
-    return gen;
-  }());
-  
-  function add_point(p) {
-    var len = points.length;
-    if (len === 0) {
-      line_seglist
-    } else {
-      var point = { x: len, y: p };
-      points.push(point);
-      var newx = x.call(self, len, len);
-      var newy = y.call(self, p, len);
-      line_seglist.appendItem(line_path.createSVGPathSegLinetoAbs(newx, newy));
-    }
-  }
-  
-  function add_canvas_point(p) {
-    if (points.length == 0) { return };
-    var len = points.length;
-    var oldx = x.call(self, len-1, len-1);
-    var oldy = y.call(self, points[len-1].y, len-1);
-    var point = { x: len, y: p };
-    points.push(point);
-    var newx = x.call(self, len, len);
-    var newy = y.call(self, p, len);
-    gctx.beginPath();
-    gctx.moveTo(oldx, oldy);
-    gctx.lineTo(newx, newy);
-    gctx.stroke();
-    // FIXME: FireFox bug
-  }
-
-  function clear_canvas() {
-    gcanvas.width = gcanvas.width;
-    gctx.fillStyle = "rgba(0,255,0, 0.05)";
-    gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-    gctx.strokeStyle = "rgba(255,65,0, 1.0)";
-  }
-  
-  function show_canvas() {
-    line_seglist.clear();
-    // vis.select("path.line").attr("d", line(points));
-    // vis.select("path.line").attr("d", line([{}]));
-    gcanvas.style.zIndex = 100;
-  }
-
-  function hide_canvas() {
-    gcanvas.style.zIndex = -100;
-    vis.select("path.line").attr("d", line(points));
-  }
-
-  // update real-time canvas line graph
-  function update_canvas() {
-    if (points.length == 0) { return };
-    var px = x.call(self, 0, 0),
-        py = y.call(self, points[0].y, 0),
-        i;
-    clear_canvas();
-    gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-    gctx.beginPath();
-    gctx.moveTo(px, py);
-    for (i=0; i < points.length-1; i++) {
-      px = x.call(self, i, i);
-      py = y.call(self, points[i].y, i);
-      gctx.lineTo(px, py);
-    }
-    gctx.stroke();
-  };
-
-  function initialize_canvas() {
-    gcanvas = document.createElement('canvas');
-    chart.appendChild(gcanvas);
-    gcanvas.style.zIndex = -100;
-    setupCanvasProperties(gcanvas);
-  }
-  
-  function resize_canvas() {
-    setupCanvasProperties(gcanvas);
-    update_canvas();
-  }
-
-  function setupCanvasProperties(canvas) {
-    var cplot = {};
-    cplot.rect = chart.children[0].getElementsByTagName("rect")[0];
-    cplot.width = cplot.rect.width['baseVal'].value;
-    cplot.height = cplot.rect.height['baseVal'].value;
-    cplot.left = cplot.rect.getCTM().e;
-    cplot.top = cplot.rect.getCTM().f;
-    canvas.style.position = 'absolute';
-    canvas.width = cplot.width;
-    canvas.height = cplot.height;
-    canvas.style.width = cplot.width  + 'px';
-    canvas.style.height = cplot.height  + 'px';
-    canvas.offsetLeft = cplot.left;
-    canvas.offsetTop = cplot.top;
-    canvas.style.left = cplot.left + 'px';
-    canvas.style.top = cplot.top + 'px';
-    canvas.style.border = 'solid 1px red';
-    gctx = gcanvas.getContext( '2d' );
-    gctx.globalCompositeOperation = "source-over";
-    gctx.lineWidth = 1;
-    gctx.fillStyle = "rgba(0,255,0, 0.05)";
-    gctx.fillRect(0, 0, canvas.width, gcanvas.height);
-    gctx.strokeStyle = "rgba(255,65,0, 1.0)";
-    gcanvas.style.border = 'solid 1px red';
-  }
-
-  // ------------------------------------------------------------
-  //
-  // Draw the data
-  //
-  // ------------------------------------------------------------
-
-  function update() {
-    var oldx, oldy, newx, newy, i;
-    
-    var gplot = chart.children[0].getElementsByTagName("rect")[0];
-
-    if (gcanvas.style.zIndex == -100) {
-      var lines = vis.select("path").attr("d", line(points));
-    }
-
-    update_canvas();
-
-    if (graph.selectable_points) {
-      var circle = vis.selectAll("circle")
-          .data(points, function(d) { return d; });
-       
-      circle.enter().append("svg:circle")
-          .attr("class", function(d) { return d === selected ? "selected" : null; })
-          .attr("cx",    function(d) { return x(d.x); })
-          .attr("cy",    function(d) { return y(d.y); })
-          .attr("r", 1.0)
-          .on("mousedown", function(d) {
-            selected = dragged = d;
-            update();
-          });
-       
-      circle
-          .attr("class", function(d) { return d === selected ? "selected" : null; })
-          .attr("cx",    function(d) { return x(d.x); })
-          .attr("cy",    function(d) { return y(d.y); });
-       
-      circle.exit().remove();
-    }
-
-    if (d3.event && d3.event.keyCode) {
-      d3.event.preventDefault();
-      d3.event.stopPropagation();
-    }
-  }
-
-  function mousemove() {
-    if (!dragged) { return; }
-    chart.onselectstart = function(){ return false; }
-    var m = d3.svg.mouse(vis.node());
-    dragged.x = x.invert(Math.max(0, Math.min(size.width, m[0])));
-    dragged.y = y.invert(Math.max(0, Math.min(size.height, m[1])));
-    update();
-  }
-
-  function mouseup() {
-    if (!dragged) { return; }
-    chart.onselectstart = function(){ return true; }
-    mousemove();
-    dragged = null;
-  }
-
-  function keydown() {
-    if (!selected) { return; }
-    switch (d3.event.keyCode) {
-      case 8: // backspace
-      case 46: { // delete
-        var i = points.indexOf(selected);
-        points.splice(i, 1);
-        selected = points.length ? points[i > 0 ? i - 1 : 0] : null;
-        update();
-        break;
-      }
-    }
-  }
-
-  // ------------------------------------------------------------
-  //
-  // Redraw the plot canvas when it is translated or axes are re-scaled
-  //
-  // ------------------------------------------------------------
-
-  function redraw() {
-    if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-        d3.event.transform(x, y);
-    }
-    
-    graph.xmin = x.domain()[0];
-    graph.xmax = x.domain()[1];
-    graph.ymin = y.domain()[0];
-    graph.ymax = y.domain()[1];
-
-    var fx = x_tics_scale.tickFormat(10),
-        fy = y.tickFormat(10);
-
-    // Regenerate x-ticks
-    var gx = vis.selectAll("g.x")
-        .data(x_tics_scale.ticks(10), String)
-        .attr("transform", tx_tics);
-
-    gx.select("text")
-        .text(fx);
-
-    var gxe = gx.enter().insert("svg:g", "a")
-        .attr("class", "x")
-        .attr("transform", tx_tics);
-
-    gxe.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("y1", 0)
-        .attr("y2", size.height);
-
-    gxe.append("svg:text")
-        .attr("y", size.height)
-        .attr("dy", "1em")
-        .attr("text-anchor", "middle")
-        .style("cursor", "ew-resize")
-        .text(fx)
-        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown", function(d) {
-             var p = d3.svg.mouse(vis[0][0]);
-             downx = x_tics_scale.invert(p[0]);
-        });
-
-    gx.exit().remove();
-
-    // Regenerate y-ticks
-    var gy = vis.selectAll("g.y")
-        .data(y.ticks(10), String)
-        .attr("transform", ty);
-
-    gy.select("text")
-        .text(fy);
-
-    var gye = gy.enter().insert("svg:g", "a")
-        .attr("class", "y")
-        .attr("transform", ty)
-        .attr("background-fill", "#FFEEB6");
-
-    gye.append("svg:line")
-        .attr("stroke", stroke)
-        .attr("x1", 0)
-        .attr("x2", size.width);
-
-    gye.append("svg:text")
-        .attr("x", -3)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .style("cursor", "ns-resize")
-        .text(fy)
-        .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-        .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-        .on("mousedown", function(d) {
-             var p = d3.svg.mouse(vis[0][0]);
-             downy = y.invert(p[1]);
-        });
-
-    gy.exit().remove();
-
-    update();
-  }
-  
-  function indexedData(dataset, initial_index) {
-    var i = 0,
-        start_index = initial_index || 0,
-        n = dataset.length,
-        points = [];
-    for (i = 0; i < n;  i++) {
-      points.push({ x: i+start_index, y: dataset[i] });
-    }
-    return points;
-  }
-
-  // ------------------------------------------------------------
-  //
-  // Axis scaling
-  //
-  // attach the mousemove and mouseup to the body
-  // in case one wanders off the axis line
-  // ------------------------------------------------------------
-
-  d3.select('body')
-    .on("mousemove", function(d) {
-      var p = d3.svg.mouse(vis[0][0]);
-      if (!isNaN(downx)) {
-        var rupx = x_tics_scale.invert(p[0]),
-          xaxis1 = x_tics_scale.domain()[0],
-          xaxis2 = x_tics_scale.domain()[1],
-          xextent = xaxis2 - xaxis1;
-        if (rupx !== 0) {
-            var changex, dragx_factor, new_domain;
-            dragx_factor = xextent/downx;
-            changex = 1 + (downx / rupx - 1) * (xextent/(downx-xaxis1))/dragx_factor;
-            new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-            x_tics_scale.domain(new_domain);
-            if (graph.sample !== 1) {
-              x.domain([new_domain[0]/graph.sample, new_domain[1]/graph.sample])
-            }
-            redraw();
-        }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      }
-      if (!isNaN(downy)) {
-          var rupy = y.invert(p[1]),
-          yaxis1 = y.domain()[1],
-          yaxis2 = y.domain()[0],
-          yextent = yaxis2 - yaxis1;
-        if (rupy !== 0) {
-            var changey, dragy_factor, new_range;
-            dragy_factor = yextent/downy;
-            changey = ((rupy-yaxis1)/(downy-yaxis1)) * (yextent/(downy-yaxis1))/dragy_factor;
-            new_range = [yaxis1 + (yextent * 1/changey), yaxis1];
-            if (yaxis1 > 0) {
-              new_range[0] += yaxis1;
-            }
-            y.domain(new_range);
-            redraw();
-        }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
-      }
-    })
-    .on("mouseup", function(d) {
-        if (!isNaN(downx)) {
-            redraw();
-            downx = Math.NaN;
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-        }
-        if (!isNaN(downy)) {
-            redraw();
-            downy = Math.NaN;
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-        }
-    });
-
-  return graph;
-};
 })();
 (function() {
   var ButtonBarComponent, ButtonComponent, Component, JSliderComponent, ModelPlayer, PlayOnlyComponentSVG, PlaybackBarComponent, PlaybackComponent, PlaybackComponentSVG, SliderComponent, Thermometer, ToggleButtonComponent, root,
@@ -8536,7 +7900,6 @@ controllers = { version: "0.0.1" };
   layout
 
   model: true
-  molecule_container: true
   model_player: true
   atoms: true
   nodes: true
@@ -8555,6 +7918,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       temperature         = modelConfig.temperature,
       coulomb_forces      = modelConfig.coulomb_forces,
 
+      molecule_container,
       model_listener,
       step_counter,
       therm,
@@ -8580,14 +7944,18 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   //
   // ------------------------------------------------------------
 
+  // FIXME: options hash is fragile because setting mol_number
+  // creates a new coreModel right now -- which resets to default
+  // parameters -- which mean other regular properties must follow
+  // mol_number.
   model = modeler.model({
+      model_listener: model_listener,
+      mol_number: mol_number,
       temperature: temperature,
       lennard_jones_forces: true,
       coulomb_forces: coulomb_forces,
       temperature_control: true,
-      model_listener: model_listener,
-      epsilon: epsilon,
-      mol_number: mol_number
+      epsilon: epsilon
     });
 
   // ------------------------------------------------------------
@@ -8653,7 +8021,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
 
     modelStop();
     model.on("tick", model_listener);
-    molecule_container.update_molecule_radius();
+    molecule_container.updateMoleculeRadius();
     molecule_container.setup_particles();
     layout.setupScreen(viewLists);
     step_counter = model.stepCounter();
@@ -8789,7 +8157,6 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   layout
 
   model: true
-  molecule_container: true
   model_player: true
   atoms: true
   nodes: true
@@ -8797,7 +8164,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
 /*jslint onevar: true*/
 controllers.complexModelController =
     function(molecule_view_id,
-             ke_chart_view_id,
+             energy_graph_view_id,
              lj_potential_chart_id,
              speed_distribution_chart_id,
              modelConfig,
@@ -8808,17 +8175,21 @@ controllers.complexModelController =
       maximum_model_steps = playerConfig.maximum_model_steps,
       lj_epsilon_max      = playerConfig.lj_epsilon_max,
       lj_epsilon_min      = playerConfig.lj_epsilon_min,
+      lj_sigma_max        = 2.0,
+      lj_sigma_min        = 0.1,
 
       mol_number          = modelConfig.mol_number,
-      initial_epsilon     = modelConfig.initial_epsilon,
+      epsilon             = modelConfig.epsilon,
+      sigma               = 0.34,
       temperature         = modelConfig.temperature,
 
+      molecule_container,
       model_listener,
       step_counter,
-      therm,
-      epsilon_slider,
-      kechart, ke_graph, ke_graph_options,
+      ljCalculator,
+      kechart, energyGraph, energyGraph_options,
       te_data,
+      model_controls,
       model_controls_inputs,
       select_molecule_number,
       mol_number_to_ke_yxais_map,
@@ -8828,6 +8199,7 @@ controllers.complexModelController =
       viewLists;
 
   function controller() {
+
     // ------------------------------------------------------------
     //
     // Main callback from model process
@@ -8838,25 +8210,26 @@ controllers.complexModelController =
 
     function modelListener(e) {
       var ke = model.ke(),
-          pe = model.pe();
+          pe = model.pe(),
+          te = ke + pe;
 
       speedDistributionChart.update();
 
-       molecule_container.update_molecule_positions();
+      molecule_container.update_molecule_positions();
 
       if (model.isNewStep()) {
-        te_data.push( ke );
+        te_data.push(te);
         if (model.is_stopped()) {
-          ke_graph.add_point( ke );
-          ke_graph.update_canvas();
+          energyGraph.add_point(te);
+          energyGraph.update_canvas();
         } else {
-          ke_graph.add_canvas_point( ke );
+          energyGraph.add_canvas_point(te);
         }
       } else {
-        ke_graph.update();
+        energyGraph.update();
       }
-      if (step_counter > 0.95 * ke_graph.xmax && ke_graph.xmax < maximum_model_steps) {
-        ke_graph.change_xaxis(ke_graph.xmax * 2);
+      if (step_counter > 0.95 * energyGraph.xmax && energyGraph.xmax < maximum_model_steps) {
+        energyGraph.change_xaxis(energyGraph.xmax * 2);
       }
       if (step_counter >= maximum_model_steps) { modelStop(); }
       layout.displayStats();
@@ -8869,196 +8242,191 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    model = modeler.model({
-        temperature: temperature,
-        lennard_jones_forces: true,
-        coulomb_forces: false,
-        temperature_control: true,
-        model_listener: modelListener,
-        mol_number: mol_number
+    // FIXME: options hash is fragile because setting mol_number
+    // creates a new coreModel right now -- which resets to default
+    // parameters -- which mean otherregular properties must follow
+    // mol_number.
+    function createModel() {
+      model = modeler.model({
+          model_listener: modelListener,
+          mol_number: mol_number,
+          temperature: temperature,
+          lennard_jones_forces: true,
+          coulomb_forces: false,
+          temperature_control: true,
+          epsilon: epsilon,
+          sigma: sigma
+        });
+    }
+
+    function setupViews() {
+      // ------------------------------------------------------------
+      //
+      // Create player and container view for model
+      //
+      // ------------------------------------------------------------
+
+      layout.selection = layoutStyle;
+
+      model_player = new ModelPlayer(model, autostart);
+      molecule_container = layout.moleculeContainer(molecule_view_id,
+        {
+          title:               "Simple Molecules",
+          xlabel:              "X position (nm)",
+          ylabel:              "Y position (nm)",
+          playback_controller:  true,
+          play_only_controller: false,
+          model_time_label:     true,
+          grid_lines:           true,
+          xunits:               true,
+          yunits:               true,
+          atom_mubers:          false,
+          xmin:                 0,
+          xmax:                 10,
+          ymin:                 0,
+          ymax:                 10
+        }
+      );
+
+      model.addPropertiesListener(["sigma"], molecule_container.updateMoleculeRadius);
+
+      // ------------------------------------------------------------
+      //
+      // Average Kinetic Energy Graph
+      //
+      // ------------------------------------------------------------
+
+      // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
+
+      energyGraph = grapher.realTimeGraph(energy_graph_view_id, {
+        title:     "Total Energy of the System",
+        xlabel:    "Model Time (ps)",
+        xmin:      0,
+        xmax:      2500,
+        sample:    0.25,
+        ylabel:    null,
+        ymin:      0.0,
+        ymax:      200,
+        dataset:   te_data
       });
 
-    // ------------------------------------------------------------
-    //
-    // Create player and container view for model
-    //
-    // ------------------------------------------------------------
+      te_data = [model.ke() + model.pe()];
+      energyGraph.new_data(te_data);
 
-    layout.selection = layoutStyle;
+      model.on('play', energyGraph.show_canvas);
+      model.on('stop', energyGraph.hide_canvas);
 
-    model_player = new ModelPlayer(model, autostart);
-    molecule_container = layout.moleculeContainer(molecule_view_id,
-      {
-        title:               "Simple Molecules",
-        xlabel:              "X position (nm)",
-        ylabel:              "Y position (nm)",
-        playback_controller:  true,
-        play_only_controller: false,
-        model_time_label:     true,
-        grid_lines:           true,
-        xunits:               true,
-        yunits:               true,
-        atom_mubers:          false,
-        xmin:                 0,
-        xmax:                 10,
-        ymin:                 0,
-        ymax:                 10
-      }
-    );
+      // ------------------------------------------------------------
+      //
+      // Speed Distribution Histogram
+      //
+      // ------------------------------------------------------------
 
-    // ------------------------------------------------------------
-    //
-    // Average Kinetic Energy Graph
-    //
-    // ------------------------------------------------------------
-
-    te_data = [];
-
-    kechart = document.getElementById(ke_chart_view_id);
-
-    // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
-    ke_graph_options = {
-      title:     "Kinetic Energy of the System",
-      xlabel:    "Model Time (ps)",
-      xmin:      0,
-      xmax:      2500,
-      sample:    0.25,
-      ylabel:    null,
-      ymin:      0.0,
-      ymax:      200,
-      dataset:   te_data,
-      container: kechart
-    };
-
-    layout.finishSetupKEChart = function(width, height) {
-      kechart.style.width = width + "px";
-      kechart.style.height = height +"px";
-      if (undefined !== ke_graph) {
-        ke_graph.setup_graph();
-      } else {
-        ke_graph = graphx.graph(ke_graph_options);
-      }
-    };
-
-    // ------------------------------------------------------------
-    //
-    // Speed Distribution Histogram
-    //
-    // ------------------------------------------------------------
-
-    speedDistributionChart = layout.speedDistributionChart(speed_distribution_chart_id, {
-      title    : "Distribution of Speeds",
-      xlabel   : null,
-      ylabel   : "Count",
-      xmax     : 2,
-      xmin     : 0,
-      ymax     : 15,
-      ymin     : 0,
-      quantile : 0.01
-    });
-
-    // ------------------------------------------------------------
-    //
-    // Lennard-Jones Chart
-    //
-    // ------------------------------------------------------------
-
-
-    //   Lennard-Jones Coefficients Setup
-    lj_coefficients = molecules_lennard_jones.coefficients();
-
-    lj_data = {
-      coefficients: lj_coefficients,
-      variables: [
-        {
-          coefficient:"epsilon",
-          x: lj_coefficients.rmin,
-          y: lj_coefficients.epsilon
-        },
-        {
-          coefficient:"sigma",
-          x: lj_coefficients.sigma,
-          y: 0
-        }
-      ]
-    };
-
-    function update_epsilon(e) {
-      update_coefficients(molecules_lennard_jones.epsilon(e));
-    }
-
-    function update_sigma(s) {
-      update_coefficients(molecules_lennard_jones.sigma(s));
-    }
-
-    function update_coefficients(coefficients) {
-      var sigma   = coefficients.sigma,
-          epsilon = coefficients.epsilon,
-          rmin    = coefficients.rmin,
-          y, r;
-
-      model.set_lj_coefficients(epsilon, sigma);
-
-      lj_data.coefficients.sigma   = sigma;
-      lj_data.coefficients.epsilon = epsilon;
-      lj_data.coefficients.rmin    = rmin;
-
-      lj_data.xmax    = sigma * 3;
-      lj_data.xmin    = Math.floor(sigma/2);
-      lj_data.ymax    = Math.ceil(epsilon*-1) + 0.0;
-      lj_data.ymin    = Math.ceil(epsilon*1) - 2.0;
-
-      // update the positions of the adjustable circles on the graph
-      lj_data.variables[1].x = sigma;
-
-      // change the x value for epsilon to match the new rmin value
-      lj_data.variables[0].x = rmin;
-
-      lennard_jones_potential = [];
-
-      for(r = sigma * 0.5; r < lj_data.xmax * 3;  r += 0.05) {
-        y = molecules_lennard_jones.potential(r);
-        if (y < 100) {
-          lennard_jones_potential.push([r, y]);
-        }
-      }
-    }
-
-    update_coefficients(lj_coefficients);
-
-    potentialChart = layout.potentialChart(lj_potential_chart_id, lj_data, {
-        title   : "Lennard-Jones potential",
-        xlabel  : "Radius",
-        ylabel  : "Potential Energy",
-        epsilon_max:     lj_epsilon_max,
-        epsilon_min:     lj_epsilon_min,
-        initial_epsilon: initial_epsilon,
-        epsilon_callback: update_epsilon
+      speedDistributionChart = layout.speedDistributionChart(speed_distribution_chart_id, {
+        title    : "Distribution of Speeds",
+        xlabel   : null,
+        ylabel   : "Count",
+        xmax     : 2,
+        xmin     : 0,
+        ymax     : 15,
+        ymin     : 0,
+        quantile : 0.01
       });
 
-    // ------------------------------------------------------------
-    //
-    // Setup list of views used by layout sustem
-    //
-    // ------------------------------------------------------------
+      // ------------------------------------------------------------
+      //
+      // Lennard-Jones Chart
+      //
+      // ------------------------------------------------------------
 
-    viewLists = {
-      moleculeContainers:      [molecule_container],
-      potentialCharts:         [potentialChart],
-      speedDistributionCharts: [speedDistributionChart],
-      energyCharts:            []
-    };
+      potentialChart = layout.potentialChart(lj_potential_chart_id, model, {
+          title   : "Lennard-Jones potential",
+          xlabel  : "Radius",
+          ylabel  : "Potential Energy",
+          epsilon_max:     lj_epsilon_max,
+          epsilon_min:     lj_epsilon_min,
+          epsilon:         epsilon,
+          sigma_max:       lj_sigma_max,
+          sigma_min:       lj_sigma_min,
+          sigma:           sigma
+        });
 
-    // ------------------------------------------------------------
-    //
-    // Get a few DOM elements
-    //
-    // ------------------------------------------------------------
+      model.addPropertiesListener(["epsilon"], potentialChart.ljUpdate);
+      model.addPropertiesListener(["sigma"], potentialChart.ljUpdate);
 
-    var model_controls = document.getElementById("model-controls");
+      // ------------------------------------------------------------
+      //
+      // Setup list of views used by layout sustem
+      //
+      // ------------------------------------------------------------
 
-    if (model_controls) {
-      model_controls_inputs = model_controls.getElementsByTagName("input");
+      viewLists = {
+        moleculeContainers:      [molecule_container],
+        potentialCharts:         [potentialChart],
+        speedDistributionCharts: [speedDistributionChart],
+        energyCharts:            [energyGraph]
+      };
+
+      // ------------------------------------------------------------
+      //
+      // Get a few DOM elements
+      //
+      // ------------------------------------------------------------
+
+      model_controls = document.getElementById("model-controls");
+
+      if (model_controls) {
+        model_controls_inputs = model_controls.getElementsByTagName("input");
+        model_controls.onchange = modelController;
+      }
+
+      // ------------------------------------------------------------
+      //
+      // Molecule Number Selector
+      //
+      // ------------------------------------------------------------
+
+      select_molecule_number = document.getElementById("select-molecule-number");
+
+      function selectMoleculeNumberChange() {
+        mol_number = +select_molecule_number.value;
+        modelReset();
+        updateMolNumberViewDependencies();
+      }
+
+      mol_number_to_ke_yxais_map = {
+        2: 0.02 * 50 * 2,
+        5: 0.05 * 50 * 5,
+        10: 0.01 * 50 * 10,
+        20: 0.01 * 50 * 20,
+        50: 120,
+        100: 0.05 * 50 * 100,
+        200: 0.1 * 50 * 200,
+        500: 0.2 * 50 * 500
+      };
+
+      mol_number_to_speed_yaxis_map = {
+        2: 2,
+        5: 2,
+        10: 5,
+        20: 5,
+        50: 10,
+        100: 15,
+        200: 20,
+        500: 40
+      };
+
+      function updateMolNumberViewDependencies() {
+        energyGraph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
+        potentialChart.redraw();
+        // speedDistributionChart.ymax = mol_number_to_speed_yaxis_map[mol_number];
+        speedDistributionChart.redraw();
+      }
+
+      select_molecule_number.onchange = selectMoleculeNumberChange;
+
+      select_molecule_number.value = mol_number;
+
     }
 
     // ------------------------------------------------------------
@@ -9067,9 +8435,7 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    function setup() {
-      model.setEpsilon(initial_epsilon);
-
+    function setupModel() {
       atoms = model.get_atoms();
       nodes = model.get_nodes();
 
@@ -9077,7 +8443,7 @@ controllers.complexModelController =
       model.resetTime();
       te_data = [model.ke()];
 
-      molecule_container.update_molecule_radius();
+      molecule_container.updateMoleculeRadius();
       molecule_container.setup_particles();
       layout.setupScreen(viewLists);
       step_counter = model.stepCounter();
@@ -9086,53 +8452,6 @@ controllers.complexModelController =
       model.on("tick", modelListener);
     }
 
-    // ------------------------------------------------------------
-    //
-    // Molecule Number Selector
-    //
-    // ------------------------------------------------------------
-
-    select_molecule_number = document.getElementById("select-molecule-number");
-
-    function selectMoleculeNumberChange() {
-      mol_number = +select_molecule_number.value;
-      modelReset();
-      updateMolNumberViewDependencies();
-    }
-
-    mol_number_to_ke_yxais_map = {
-      2: 0.02 * 50 * 2,
-      5: 0.05 * 50 * 5,
-      10: 0.01 * 50 * 10,
-      20: 0.01 * 50 * 20,
-      50: 120,
-      100: 0.05 * 50 * 100,
-      200: 0.1 * 50 * 200,
-      500: 0.2 * 50 * 500
-    };
-
-    mol_number_to_speed_yaxis_map = {
-      2: 2,
-      5: 2,
-      10: 5,
-      20: 5,
-      50: 10,
-      100: 15,
-      200: 20,
-      500: 40
-    };
-
-    function updateMolNumberViewDependencies() {
-      ke_graph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
-      layout.lj_redraw();
-      speed_graph.ymax = mol_number_to_speed_yaxis_map[mol_number];
-      layout.speed_update();
-      layout.speed_redraw();
-    }
-
-    select_molecule_number.onchange = selectMoleculeNumberChange;
-
-    select_molecule_number.value = mol_number;
 
     // ------------------------------------------------------------
     //
@@ -9140,14 +8459,11 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    if (model_controls) {
-      model_controls.onchange = modelController;
-    }
-
     function modelStop() {
       model.stop();
-      ke_graph.hide_canvas();
-      // ke_graph.new_data(ke_data);
+      energyGraph.hide_canvas();
+      molecule_container.playback_component.action('stop');
+      // energyGraph.new_data(ke_data);
       if (model_controls) {
         model_controls_inputs[0].checked = true;
       }
@@ -9157,7 +8473,7 @@ controllers.complexModelController =
       model.stop();
       if (model.stepCounter() < maximum_model_steps) {
         model.stepForward();
-        ke_graph.hide_canvas();
+        energyGraph.hide_canvas();
         if (model_controls) {
           model_controls_inputs[0].checked = true;
         }
@@ -9171,7 +8487,7 @@ controllers.complexModelController =
     function modelGo() {
       model.on("tick", modelListener);
       if (model.stepCounter() < maximum_model_steps) {
-        ke_graph.show_canvas();
+        energyGraph.show_canvas();
         model.resume();
         if (model_controls) {
           model_controls_inputs[0].checked = true;
@@ -9186,7 +8502,7 @@ controllers.complexModelController =
     function modelStepBack() {
       modelStop();
       model.stepBack();
-      ke_graph.new_data(te_data);
+      energyGraph.new_data(te_data);
     }
 
     function modelStepForward() {
@@ -9201,16 +8517,8 @@ controllers.complexModelController =
 
     function modelReset() {
       mol_number = +select_molecule_number.value;
-      update_coefficients(molecules_lennard_jones.coefficients());
-      modelSetup();
-      model.temperature(temperature);
-      layout.temperature_control_checkbox.onchange();
-      molecule_container.update_molecule_radius();
-      molecule_container.setup_particles();
-      layout.setupScreen(viewLists);
-      updateMolNumberViewDependencies();
-      modelStop();
-      model.on("tick", modelListener);
+      model.set({mol_number: mol_number});
+      setupModel();
       step_counter = model.stepCounter();
       layout.displayStats();
       if (layout.datatable_visible) {
@@ -9219,8 +8527,8 @@ controllers.complexModelController =
         layout.hide_datatable();
       }
       te_data = [model.ke()];
-      ke_graph.new_data(te_data);
-      ke_graph.hide_canvas();
+      energyGraph.new_data(te_data);
+      energyGraph.hide_canvas();
       if (model_controls) {
         model_controls_inputs[0].checked = true;
       }
@@ -9287,32 +8595,9 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    setup();
-
-    // ------------------------------------------------------------
-    // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
-    // ------------------------------------------------------------
-
-    // therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
-    //
-    // model.addPropertiesListener(["temperature"], function(){
-    //   therm.add_value(model.get("temperature"));
-    // });
-    //
-    // epsilon_slider = new SliderComponent('#attraction_slider',
-    //   function (v) {
-    //     model.set({epsilon: v} );
-    //   }, lj_epsilon_max, lj_epsilon_min, initial_epsilon);
-    //
-    // model.addPropertiesListener(["epsilon"], function(){
-    //   epsilon_slider.set_scaled_value(model.get("epsilon"));
-    // });
-
-    // ------------------------------------------------------------
-    // Setup heat and cool buttons
-    // ------------------------------------------------------------
-
-    layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25, model, function (t) { therm.add_value(t); });
+    createModel();
+    setupViews();
+    setupModel();
 
     // ------------------------------------------------------------
     //

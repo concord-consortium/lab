@@ -1,4 +1,4 @@
-/*globals modeler, ModelPlayer, layout, graphx, molecules_lennard_jones, modelController */
+/*globals modeler, ModelPlayer, layout, modelController */
 
 // simplemolecules.js
 //
@@ -25,5 +25,5 @@ var modelConfig = {
     };
 
 $(window).load(function() {
-  var controller = controllers.complexModelController('#molecule-container', 'ke-chart', '#lj-potential-chart', '#speed-distribution-chart', modelConfig, playerConfig);
+  var controller = controllers.complexModelController('#molecule-container', '#ke-chart', '#lj-potential-chart', '#speed-distribution-chart', modelConfig, playerConfig);
 });
