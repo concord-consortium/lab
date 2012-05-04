@@ -309,6 +309,7 @@ controllers.complexModelController =
       atoms = model.get_atoms();
       nodes = model.get_nodes();
 
+      model.relax();
       model.resetTime();
       te_data = [model.ke()];
 
