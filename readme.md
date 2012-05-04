@@ -47,8 +47,18 @@ use a local web server on your computer to serve the downloaded distribution Chr
 
 ### Updating the gh-pages branch on github
 
+Make sure there is nothing that isn't committed -- commit it, commit it to a separate branch or stash it.
+
+Turn off bin/guard before starting the rest of this process.
+
+Run make clean; make and then test to make sure what's generated in the dist directory works.
+
+    git co gh-pages
+    git reset --hard origin/gh-pages
+    rsync -rvz --quiet --perms --chmod=ug=rwX,o=rX dist/ .
+
 After making changes that either fix bugs or add new features or examples first make sure they
-are all there when you build a clean dist/ directory.
+work and are all there when you build a clean dist/ directory.
 
     make clean; make
 
@@ -65,9 +75,96 @@ their correct locations in the top-level directory:
 
 Take a careful look at the changed files and commit and push the changes if they look appropriate.
 
-    git commit -a -m 'gh-pages master'
+Run git status tand take a careful look at the changed files and commit and push the changes
+to the gh-pages branch if they look appropriate. Check to see if there are new files that need
+to be added to the repopsitory.
+
+    git status
+    # On branch gh-pages
+    # Changes not staged for commit:
+    #   (use "git add <file>..." to update what will be committed)
+    #   (use "git checkout -- <file>..." to discard changes in working directory)
+    #
+    #	modified:   examples/complex-atoms-model/application.js
+    #	modified:   examples/simple-atoms-model-controls-in-text/application.js
+    #	modified:   lab/lab.controllers.js
+    #	modified:   lab/lab.controllers.min.js
+    #	modified:   lab/lab.grapher.js
+    #	modified:   lab/lab.grapher.min.js
+    #	modified:   lab/lab.js
+    #	modified:   lab/lab.layout.js
+    #	modified:   lab/lab.layout.min.js
+    #	modified:   lab/lab.min.js
+    #	modified:   lab/lab.molecules.js
+    #	modified:   lab/lab.molecules.min.js
+    #	modified:   license.html
+    #	modified:   readme.html
+    #
+    # Untracked files:
+    #   (use "git add <file>..." to include in what will be committed)
+    #
+    #	examples/surface-temperature/surface-temperature.css
+    #	lab.server/
+    #	lab/lab.md2d.js
+    no changes added to commit (use "git add" and/or "git commit -a")
+
+In this case I needed to add examples/surface-temperature/surface-temperature.css and lab/lab.md2d.js.
+
+    git add examples/surface-temperature/surface-temperature.css
+    git add lab/lab.md2d.js
+
+I also edited the .gitignore in the gh-pages branch and added '/lab.server'.
+
+Here's what git status reports now.
+
+    git status
+    # On branch gh-pages
+    # Changes to be committed:
+    #   (use "git reset HEAD <file>..." to unstage)
+    #
+    #	new file:   examples/surface-temperature/surface-temperature.css
+    #	new file:   lab/lab.md2d.js
+    #
+    # Changes not staged for commit:
+    #   (use "git add <file>..." to update what will be committed)
+    #   (use "git checkout -- <file>..." to discard changes in working directory)
+    #
+    #	modified:   .gitignore
+    #	modified:   examples/complex-atoms-model/application.js
+    #	modified:   examples/simple-atoms-model-controls-in-text/application.js
+    #	modified:   lab/lab.controllers.js
+    #	modified:   lab/lab.controllers.min.js
+    #	modified:   lab/lab.grapher.js
+    #	modified:   lab/lab.grapher.min.js
+    #	modified:   lab/lab.js
+    #	modified:   lab/lab.layout.js
+    #	modified:   lab/lab.layout.min.js
+    #	modified:   lab/lab.min.js
+    #	modified:   lab/lab.molecules.js
+    #	modified:   lab/lab.molecules.min.js
+    #	modified:   license.html
+    #	modified:   readme.html
+    #
+
+Commit the changes to the gh-pages branch.
+Including the '-a' argument when committing also includes all the file that are part
+of the repo but NOT yet staged for the commit into the commit.
+
+    git commit -a -m 'gh-pages master-ffd242a071'
+    [gh-pages aaedcb5] gh-pages master-ffd242a071
+     17 files changed, 4089 insertions(+), 2949 deletions(-)
+     create mode 100644 examples/surface-temperature/surface-temperature.css
+     rewrite lab/lab.controllers.min.js (96%)
+     rewrite lab/lab.layout.min.js (93%)
+     create mode 100644 lab/lab.md2d.js
+     rewrite lab/lab.min.js (90%)
+     rewrite lab/lab.molecules.min.js (95%)
+
+Push the changes to gh-pages, switch back to master and manually remove the top-level directories that were created for the gh-pages branch.
+
     git push origin gh-pages
-    git checkout master
+    git co master
+    rm -rf examples experiments lab resources vendor doc
 
 ## Molecular Modeling Examples:
 
