@@ -99,7 +99,7 @@ modeler.model = function(initialProperties) {
           if (coreModel) {
             createNewCoreModel();
           }
-        },
+        }
       };
 
   //
@@ -331,10 +331,10 @@ modeler.model = function(initialProperties) {
   // who is listening to model tick completions
   model_listener = initialProperties.model_listener;
 
+  createNewCoreModel();
+
   // set the rest of the regular properties
   set_properties(initialProperties);
-
-  createNewCoreModel();
 
   // ------------------------------------------------------------
   //
@@ -607,7 +607,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.serialize = function(includeAtoms) {
-    var propCopy = $.extend({}, properties)
+    var propCopy = $.extend({}, properties);
     if (includeAtoms) {
       propCopy.atoms = coreModel.serialize();
     }
