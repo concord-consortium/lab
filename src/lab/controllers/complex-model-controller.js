@@ -34,6 +34,7 @@ controllers.complexModelController =
       epsilon             = modelConfig.epsilon,
       sigma               = 0.34,
       temperature         = modelConfig.temperature,
+      coulomb_forces      = modelConfig.coulomb_forces,
 
       molecule_container,
       model_listener,
@@ -104,7 +105,7 @@ controllers.complexModelController =
           mol_number: mol_number,
           temperature: temperature,
           lennard_jones_forces: true,
-          coulomb_forces: false,
+          coulomb_forces: coulomb_forces,
           temperature_control: true,
           epsilon: epsilon,
           sigma: sigma
