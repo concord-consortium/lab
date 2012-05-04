@@ -94,15 +94,20 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
+    // FIXME: options hash is fragile because setting mol_number
+    // creates a new coreModel right now -- which resets to default
+    // parameters -- which mean otherregular properties must follow
+    // mol_number.
     function createModel() {
       model = modeler.model({
           model_listener: modelListener,
+          mol_number: mol_number,
           temperature: temperature,
           lennard_jones_forces: true,
           coulomb_forces: false,
           temperature_control: true,
           epsilon: epsilon,
-          mol_number: mol_number
+          sigma: sigma
         });
     }
 
