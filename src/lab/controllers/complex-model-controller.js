@@ -314,6 +314,7 @@ controllers.complexModelController =
     function modelStop() {
       model.stop();
       energyGraph.hide_canvas();
+      molecule_container.playback_component.action('stop');
       // energyGraph.new_data(ke_data);
       if (model_controls) {
         model_controls_inputs[0].checked = true;
@@ -369,7 +370,7 @@ controllers.complexModelController =
     function modelReset() {
       mol_number = +select_molecule_number.value;
       model.set({mol_number: mol_number});
-      setupModel()
+      setupModel();
       step_counter = model.stepCounter();
       layout.displayStats();
       if (layout.datatable_visible) {
