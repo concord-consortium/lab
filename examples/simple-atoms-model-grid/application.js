@@ -9,11 +9,36 @@
 (function() {
 
   var modelConfig = {
-        mol_number          : 50,
         temperature         : 3,
-        epsilon             : -0.1,
+        epsilon             : -0.05,
         lennard_jones_forces: true,
-        coulomb_forces      : false
+        coulomb_forces      : false,
+        atoms : {
+          X : [
+                3.3333332538604736,
+                6.666666507720947,
+                3.3333332538604736,
+                6.666666507720947
+              ],
+          Y : [
+                3.3333332538604736,
+                3.3333332538604736,
+                6.666666507720947,
+                6.666666507720947
+              ],
+          VX: [
+                0.0002,
+                -0.0002,
+                0.0002,
+                -0.0002,
+              ],
+          VY: [
+                0.0002,
+                0.0002,
+                -0.0002,
+                -0.0002,
+              ]
+        }
       },
 
       playerConfig = {
@@ -55,7 +80,7 @@
     controller = controllers.simpleModelController('#molecule-container', modelConfig, playerConfig);
 
     $('#save-button').attr("disabled", "disabled").click(function() {
-      var props     = model.serialize(true),
+      var props     = model.serialize(),
           propsStr  = JSON.stringify(props, 2),
           req;
 

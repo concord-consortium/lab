@@ -38,6 +38,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       lj_epsilon_max      = playerConfig.lj_epsilon_max,
       lj_epsilon_min      = playerConfig.lj_epsilon_min,
 
+      atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
       epsilon             = modelConfig.epsilon,
       temperature         = modelConfig.temperature,
@@ -69,19 +70,23 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   //
   // ------------------------------------------------------------
 
-  // FIXME: options hash is fragile because setting mol_number
-  // creates a new coreModel right now -- which resets to default
-  // parameters -- which mean other regular properties must follow
-  // mol_number.
   model = modeler.model({
       model_listener: model_listener,
-      mol_number: mol_number,
       temperature: temperature,
       lennard_jones_forces: true,
       coulomb_forces: coulomb_forces,
       temperature_control: true,
       epsilon: epsilon
     });
+
+
+  if (atoms_properties) {
+    model.createNewAtoms(atoms_properties);
+  } else if (mol_number) {
+    model.createNewAtoms(mol_number);
+  } else {
+    throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
+  }
 
   // ------------------------------------------------------------
   //
@@ -141,7 +146,6 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     atoms = model.get_atoms();
     nodes = model.get_nodes();
 
-    model.relax();
     model.resetTime();
 
     modelStop();
@@ -303,10 +307,12 @@ controllers.complexModelController =
       lj_sigma_max        = 2.0,
       lj_sigma_min        = 0.1,
 
+      atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
       epsilon             = modelConfig.epsilon,
       sigma               = 0.34,
       temperature         = modelConfig.temperature,
+      coulomb_forces      = modelConfig.coulomb_forces,
 
       molecule_container,
       model_listener,
@@ -367,21 +373,24 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    // FIXME: options hash is fragile because setting mol_number
-    // creates a new coreModel right now -- which resets to default
-    // parameters -- which mean otherregular properties must follow
-    // mol_number.
     function createModel() {
       model = modeler.model({
           model_listener: modelListener,
-          mol_number: mol_number,
           temperature: temperature,
           lennard_jones_forces: true,
-          coulomb_forces: false,
+          coulomb_forces: coulomb_forces,
           temperature_control: true,
           epsilon: epsilon,
           sigma: sigma
         });
+
+      if (atoms_properties) {
+        model.createNewAtoms(atoms_properties);
+      } else if (mol_number) {
+        model.createNewAtoms(mol_number);
+      } else {
+        throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
+      }
     }
 
     function setupViews() {
@@ -481,6 +490,19 @@ controllers.complexModelController =
 
       // ------------------------------------------------------------
       //
+      // Coulomb Forces Checkbox
+      //
+      // ------------------------------------------------------------
+
+      function updateCoulombCheckbox() {
+        $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+        molecule_container.setup_particles();
+      }
+
+      model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
+
+      // ------------------------------------------------------------
+      //
       // Setup list of views used by layout sustem
       //
       // ------------------------------------------------------------
@@ -564,7 +586,6 @@ controllers.complexModelController =
       atoms = model.get_atoms();
       nodes = model.get_nodes();
 
-      model.relax();
       model.resetTime();
       te_data = [model.ke()];
 
@@ -642,7 +663,7 @@ controllers.complexModelController =
 
     function modelReset() {
       mol_number = +select_molecule_number.value;
-      model.set({mol_number: mol_number});
+      model.createNewAtoms(mol_number);
       setupModel();
       step_counter = model.stepCounter();
       layout.displayStats();
