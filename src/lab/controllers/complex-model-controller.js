@@ -41,6 +41,7 @@ controllers.complexModelController =
       ljCalculator,
       kechart, energyGraph, energyGraph_options,
       te_data,
+      model_controls,
       model_controls_inputs,
       select_molecule_number,
       mol_number_to_ke_yxais_map,
@@ -93,133 +94,186 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    model = modeler.model({
-        model_listener: modelListener,
-        temperature: temperature,
-        lennard_jones_forces: true,
-        coulomb_forces: false,
-        temperature_control: true,
-        epsilon: epsilon,
-        mol_number: mol_number
+    function createModel() {
+      model = modeler.model({
+          model_listener: modelListener,
+          temperature: temperature,
+          lennard_jones_forces: true,
+          coulomb_forces: false,
+          temperature_control: true,
+          epsilon: epsilon,
+          mol_number: mol_number
+        });
+    }
+
+    function setupViews() {
+      // ------------------------------------------------------------
+      //
+      // Create player and container view for model
+      //
+      // ------------------------------------------------------------
+
+      layout.selection = layoutStyle;
+
+      model_player = new ModelPlayer(model, autostart);
+      molecule_container = layout.moleculeContainer(molecule_view_id,
+        {
+          title:               "Simple Molecules",
+          xlabel:              "X position (nm)",
+          ylabel:              "Y position (nm)",
+          playback_controller:  true,
+          play_only_controller: false,
+          model_time_label:     true,
+          grid_lines:           true,
+          xunits:               true,
+          yunits:               true,
+          atom_mubers:          false,
+          xmin:                 0,
+          xmax:                 10,
+          ymin:                 0,
+          ymax:                 10
+        }
+      );
+
+      model.addPropertiesListener(["sigma"], molecule_container.updateMoleculeRadius);
+
+      // ------------------------------------------------------------
+      //
+      // Average Kinetic Energy Graph
+      //
+      // ------------------------------------------------------------
+
+      // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
+
+      energyGraph = grapher.realTimeGraph(energy_graph_view_id, {
+        title:     "Total Energy of the System",
+        xlabel:    "Model Time (ps)",
+        xmin:      0,
+        xmax:      2500,
+        sample:    0.25,
+        ylabel:    null,
+        ymin:      0.0,
+        ymax:      200,
+        dataset:   te_data
       });
 
-    // ------------------------------------------------------------
-    //
-    // Create player and container view for model
-    //
-    // ------------------------------------------------------------
+      te_data = [model.ke() + model.pe()];
+      energyGraph.new_data(te_data);
 
-    layout.selection = layoutStyle;
+      model.on('play', energyGraph.show_canvas);
+      model.on('stop', energyGraph.hide_canvas);
 
-    model_player = new ModelPlayer(model, autostart);
-    molecule_container = layout.moleculeContainer(molecule_view_id,
-      {
-        title:               "Simple Molecules",
-        xlabel:              "X position (nm)",
-        ylabel:              "Y position (nm)",
-        playback_controller:  true,
-        play_only_controller: false,
-        model_time_label:     true,
-        grid_lines:           true,
-        xunits:               true,
-        yunits:               true,
-        atom_mubers:          false,
-        xmin:                 0,
-        xmax:                 10,
-        ymin:                 0,
-        ymax:                 10
+      // ------------------------------------------------------------
+      //
+      // Speed Distribution Histogram
+      //
+      // ------------------------------------------------------------
+
+      speedDistributionChart = layout.speedDistributionChart(speed_distribution_chart_id, {
+        title    : "Distribution of Speeds",
+        xlabel   : null,
+        ylabel   : "Count",
+        xmax     : 2,
+        xmin     : 0,
+        ymax     : 15,
+        ymin     : 0,
+        quantile : 0.01
+      });
+
+      // ------------------------------------------------------------
+      //
+      // Lennard-Jones Chart
+      //
+      // ------------------------------------------------------------
+
+      potentialChart = layout.potentialChart(lj_potential_chart_id, model, {
+          title   : "Lennard-Jones potential",
+          xlabel  : "Radius",
+          ylabel  : "Potential Energy",
+          epsilon_max:     lj_epsilon_max,
+          epsilon_min:     lj_epsilon_min,
+          epsilon:         epsilon,
+          sigma_max:       lj_sigma_max,
+          sigma_min:       lj_sigma_min,
+          sigma:           sigma
+        });
+
+      model.addPropertiesListener(["epsilon"], potentialChart.ljUpdate);
+      model.addPropertiesListener(["sigma"], potentialChart.ljUpdate);
+
+      // ------------------------------------------------------------
+      //
+      // Setup list of views used by layout sustem
+      //
+      // ------------------------------------------------------------
+
+      viewLists = {
+        moleculeContainers:      [molecule_container],
+        potentialCharts:         [potentialChart],
+        speedDistributionCharts: [speedDistributionChart],
+        energyCharts:            [energyGraph]
+      };
+
+      // ------------------------------------------------------------
+      //
+      // Get a few DOM elements
+      //
+      // ------------------------------------------------------------
+
+      model_controls = document.getElementById("model-controls");
+
+      if (model_controls) {
+        model_controls_inputs = model_controls.getElementsByTagName("input");
+        model_controls.onchange = modelController;
       }
-    );
 
-    model.addPropertiesListener(["sigma"], molecule_container.updateMoleculeRadius);
+      // ------------------------------------------------------------
+      //
+      // Molecule Number Selector
+      //
+      // ------------------------------------------------------------
 
-    // ------------------------------------------------------------
-    //
-    // Average Kinetic Energy Graph
-    //
-    // ------------------------------------------------------------
+      select_molecule_number = document.getElementById("select-molecule-number");
 
-    // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
+      function selectMoleculeNumberChange() {
+        mol_number = +select_molecule_number.value;
+        modelReset();
+        updateMolNumberViewDependencies();
+      }
 
-    energyGraph = grapher.realTimeGraph(energy_graph_view_id, {
-      title:     "Total Energy of the System",
-      xlabel:    "Model Time (ps)",
-      xmin:      0,
-      xmax:      2500,
-      sample:    0.25,
-      ylabel:    null,
-      ymin:      0.0,
-      ymax:      200,
-      dataset:   te_data,
-    });
+      mol_number_to_ke_yxais_map = {
+        2: 0.02 * 50 * 2,
+        5: 0.05 * 50 * 5,
+        10: 0.01 * 50 * 10,
+        20: 0.01 * 50 * 20,
+        50: 120,
+        100: 0.05 * 50 * 100,
+        200: 0.1 * 50 * 200,
+        500: 0.2 * 50 * 500
+      };
 
-    te_data = [model.ke() + model.pe()];
-    energyGraph.new_data(te_data);
+      mol_number_to_speed_yaxis_map = {
+        2: 2,
+        5: 2,
+        10: 5,
+        20: 5,
+        50: 10,
+        100: 15,
+        200: 20,
+        500: 40
+      };
 
-    model.on('play', energyGraph.show_canvas);
-    model.on('stop', energyGraph.hide_canvas);
+      function updateMolNumberViewDependencies() {
+        energyGraph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
+        potentialChart.redraw();
+        // speedDistributionChart.ymax = mol_number_to_speed_yaxis_map[mol_number];
+        speedDistributionChart.redraw();
+      }
 
-    // ------------------------------------------------------------
-    //
-    // Speed Distribution Histogram
-    //
-    // ------------------------------------------------------------
+      select_molecule_number.onchange = selectMoleculeNumberChange;
 
-    speedDistributionChart = layout.speedDistributionChart(speed_distribution_chart_id, {
-      title    : "Distribution of Speeds",
-      xlabel   : null,
-      ylabel   : "Count",
-      xmax     : 2,
-      xmin     : 0,
-      ymax     : 15,
-      ymin     : 0,
-      quantile : 0.01
-    });
+      select_molecule_number.value = mol_number;
 
-    // ------------------------------------------------------------
-    //
-    // Lennard-Jones Chart
-    //
-    // ------------------------------------------------------------
-
-    potentialChart = layout.potentialChart(lj_potential_chart_id, model, {
-        title   : "Lennard-Jones potential",
-        xlabel  : "Radius",
-        ylabel  : "Potential Energy",
-        epsilon_max:     lj_epsilon_max,
-        epsilon_min:     lj_epsilon_min,
-        epsilon:         epsilon,
-        sigma_max:       lj_sigma_max,
-        sigma_min:       lj_sigma_min,
-        sigma:           sigma
-      });
-
-    model.addPropertiesListener(["epsilon"], potentialChart.ljUpdate);
-    model.addPropertiesListener(["sigma"], potentialChart.ljUpdate);
-
-    // ------------------------------------------------------------
-    //
-    // Setup list of views used by layout sustem
-    //
-    // ------------------------------------------------------------
-
-    viewLists = {
-      moleculeContainers:      [molecule_container],
-      potentialCharts:         [potentialChart],
-      speedDistributionCharts: [speedDistributionChart],
-      energyCharts:            [energyGraph]
-    };
-
-    // ------------------------------------------------------------
-    //
-    // Get a few DOM elements
-    //
-    // ------------------------------------------------------------
-
-    var model_controls = document.getElementById("model-controls");
-
-    if (model_controls) {
-      model_controls_inputs = model_controls.getElementsByTagName("input");
     }
 
     // ------------------------------------------------------------
@@ -228,7 +282,7 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    function setup() {
+    function setupModel() {
       atoms = model.get_atoms();
       nodes = model.get_nodes();
 
@@ -245,62 +299,12 @@ controllers.complexModelController =
       model.on("tick", modelListener);
     }
 
-    // ------------------------------------------------------------
-    //
-    // Molecule Number Selector
-    //
-    // ------------------------------------------------------------
-
-    select_molecule_number = document.getElementById("select-molecule-number");
-
-    function selectMoleculeNumberChange() {
-      mol_number = +select_molecule_number.value;
-      modelReset();
-      updateMolNumberViewDependencies();
-    }
-
-    mol_number_to_ke_yxais_map = {
-      2: 0.02 * 50 * 2,
-      5: 0.05 * 50 * 5,
-      10: 0.01 * 50 * 10,
-      20: 0.01 * 50 * 20,
-      50: 120,
-      100: 0.05 * 50 * 100,
-      200: 0.1 * 50 * 200,
-      500: 0.2 * 50 * 500
-    };
-
-    mol_number_to_speed_yaxis_map = {
-      2: 2,
-      5: 2,
-      10: 5,
-      20: 5,
-      50: 10,
-      100: 15,
-      200: 20,
-      500: 40
-    };
-
-    function updateMolNumberViewDependencies() {
-      energyGraph.change_yaxis(mol_number_to_ke_yxais_map[mol_number]);
-      potentialChart.redraw();
-      // speedDistributionChart.ymax = mol_number_to_speed_yaxis_map[mol_number];
-      speedDistributionChart.redraw();
-    }
-
-    select_molecule_number.onchange = selectMoleculeNumberChange;
-
-    select_molecule_number.value = mol_number;
 
     // ------------------------------------------------------------
     //
     // Model Controller
     //
     // ------------------------------------------------------------
-
-    if (model_controls) {
-      model_controls.onchange = modelController;
-    }
 
     function modelStop() {
       model.stop();
@@ -359,16 +363,8 @@ controllers.complexModelController =
 
     function modelReset() {
       mol_number = +select_molecule_number.value;
-      update_coefficients(molecules_lennard_jones.coefficients());
-      modelSetup();
-      model.temperature(temperature);
-      layout.temperature_control_checkbox.onchange();
-      molecule_container.update_molecule_radius();
-      molecule_container.setup_particles();
-      layout.setupScreen(viewLists);
-      updateMolNumberViewDependencies();
-      modelStop();
-      model.on("tick", modelListener);
+      model.set({mol_number: mol_number});
+      setupModel()
       step_counter = model.stepCounter();
       layout.displayStats();
       if (layout.datatable_visible) {
@@ -445,7 +441,9 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    setup();
+    createModel();
+    setupViews();
+    setupModel();
 
     // ------------------------------------------------------------
     //
