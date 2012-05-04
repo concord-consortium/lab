@@ -15,7 +15,7 @@ layout.potentialChart = function(e, model, options) {
       yScale = d3.scale.linear(), downy,
       dragged, coefficient_dragged,
       vis, plot, 
-      ljCalculator = model.getLJCalculator(),
+      ljCalculator,
       ljData = {},
       ljPotentialGraphData = [],
       default_options = {
@@ -57,6 +57,7 @@ layout.potentialChart = function(e, model, options) {
   function updateLJData() {
     var sigma, epsilon, rmin, y, r, i;
 
+    ljCalculator = model.getLJCalculator();
     ljData.coefficients = ljCalculator.coefficients();
     sigma   = ljData.coefficients.sigma;
     epsilon = ljData.coefficients.epsilon;
