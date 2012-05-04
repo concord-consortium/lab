@@ -617,6 +617,10 @@ exports.makeModel = function() {
       T = temperature;
       addTranslationAndRotationToVelocities();
 
+      // relaxToTemperature after randomizing atoms to put them in random locations
+      // NOTE: this could be handled in other ways if we don't want a target temperature
+      this.relaxToTemperature()
+
       // Pubish the current state
       model.computeOutputState();
     },
