@@ -55,7 +55,7 @@
     controller = controllers.simpleModelController('#molecule-container', modelConfig, playerConfig);
 
     $('#save-button').attr("disabled", "disabled").click(function() {
-      var props     = model.serialize(),
+      var props     = model.serialize(true),
           propsStr  = JSON.stringify(props, 2),
           req;
 
