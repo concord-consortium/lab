@@ -30,6 +30,7 @@ controllers.complexModelController =
       lj_sigma_max        = 2.0,
       lj_sigma_min        = 0.1,
 
+      atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
       epsilon             = modelConfig.epsilon,
       sigma               = 0.34,
@@ -95,14 +96,9 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    // FIXME: options hash is fragile because setting mol_number
-    // creates a new coreModel right now -- which resets to default
-    // parameters -- which mean otherregular properties must follow
-    // mol_number.
     function createModel() {
       model = modeler.model({
           model_listener: modelListener,
-          mol_number: mol_number,
           temperature: temperature,
           lennard_jones_forces: true,
           coulomb_forces: coulomb_forces,
@@ -110,6 +106,14 @@ controllers.complexModelController =
           epsilon: epsilon,
           sigma: sigma
         });
+
+      if (atoms_properties) {
+        model.createNewAtoms(atoms_properties);
+      } else if (mol_number) {
+        model.createNewAtoms(mol_number);
+      } else {
+        throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
+      }
     }
 
     function setupViews() {
@@ -382,7 +386,7 @@ controllers.complexModelController =
 
     function modelReset() {
       mol_number = +select_molecule_number.value;
-      model.set({mol_number: mol_number});
+      model.createNewAtoms(mol_number);
       setupModel();
       step_counter = model.stepCounter();
       layout.displayStats();

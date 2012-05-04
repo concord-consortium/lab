@@ -22,6 +22,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       lj_epsilon_max      = playerConfig.lj_epsilon_max,
       lj_epsilon_min      = playerConfig.lj_epsilon_min,
 
+      atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
       epsilon             = modelConfig.epsilon,
       temperature         = modelConfig.temperature,
@@ -53,19 +54,23 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   //
   // ------------------------------------------------------------
 
-  // FIXME: options hash is fragile because setting mol_number
-  // creates a new coreModel right now -- which resets to default
-  // parameters -- which mean other regular properties must follow
-  // mol_number.
   model = modeler.model({
       model_listener: model_listener,
-      mol_number: mol_number,
       temperature: temperature,
       lennard_jones_forces: true,
       coulomb_forces: coulomb_forces,
       temperature_control: true,
       epsilon: epsilon
     });
+
+
+  if (atoms_properties) {
+    model.createNewAtoms(atoms_properties);
+  } else if (mol_number) {
+    model.createNewAtoms(mol_number);
+  } else {
+    throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
+  }
 
   // ------------------------------------------------------------
   //

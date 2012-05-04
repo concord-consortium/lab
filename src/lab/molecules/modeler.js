@@ -58,7 +58,6 @@ modeler.model = function(initialProperties) {
       listeners = {},
 
       properties = {
-        mol_number            : 50,
         temperature           : 3,
         coulomb_forces        : false,
         epsilon               : -0.1,
@@ -91,13 +90,6 @@ modeler.model = function(initialProperties) {
           this.sigma = s;
           if (coreModel) {
             coreModel.setLJSigma(s);
-          }
-        },
-
-        set_mol_number: function(n) {
-          this.mol_number = n;
-          if (coreModel) {
-            createNewCoreModel();
           }
         }
       };
@@ -276,13 +268,20 @@ modeler.model = function(initialProperties) {
     notifyListeners(waitingToBeNotified);
   }
 
-  function createNewCoreModel() {
+  // Creates a new md2d coreModel
+  // @config: either the number of atoms (for a random setup) or
+  //          a hash specifying the x,y,vx,vy properties of the atoms
+  function createNewCoreModel(config) {
     // get a fresh model
-    coreModel = md2d.makeModel();
+    window.a = coreModel = md2d.makeModel();
 
-    coreModel.createAtoms({
-      num: properties.mol_number
-    });
+    if (typeof config === "number") {
+      coreModel.createAtoms({
+        num: config
+      });
+    } else {
+      coreModel.createAtoms(config);
+    }
 
     nodes    = coreModel.nodes;
     radius   = coreModel.radius;
@@ -312,9 +311,9 @@ modeler.model = function(initialProperties) {
     reset_tick_history_list();
     new_step = true;
 
-    coreModel.useLennardJonesInteraction(lennard_jones_forces);
-    coreModel.useCoulombInteraction(coulomb_forces);
-    coreModel.useThermostat(temperature_control);
+    coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
+    coreModel.useCoulombInteraction(properties.coulomb_forces);
+    coreModel.useThermostat(properties.temperature_control);
 
     coreModel.setLJEpsilon(properties.epsilon);
     coreModel.setLJSigma(properties.sigma);
@@ -322,9 +321,14 @@ modeler.model = function(initialProperties) {
     var T = abstract_to_real_temperature(temperature);
 
     coreModel.setTargetTemperature(T);
-    coreModel.initializeAtomsRandomly({
-      temperature: T
-    });
+
+    if (config.X && config.Y) {
+      coreModel.initializeAtomsFromProperties(config);
+    } else {
+      coreModel.initializeAtomsRandomly({
+        temperature: T
+      });
+    }
   }
 
   // ------------------------------
@@ -333,8 +337,6 @@ modeler.model = function(initialProperties) {
 
   // who is listening to model tick completions
   model_listener = initialProperties.model_listener;
-
-  createNewCoreModel();
 
   // set the rest of the regular properties
   set_properties(initialProperties);
@@ -584,6 +586,13 @@ modeler.model = function(initialProperties) {
     coreModel.setSize(x);
     return model;
   };
+
+  // Creates a new md2d coreModel
+  // @config: either the number of atoms (for a random setup) or
+  //          a hash specifying the x,y,vx,vy properties of the atoms
+  model.createNewAtoms = function(config) {
+    createNewCoreModel(config);
+  }
 
   model.set = function(hash) {
     set_properties(hash);
