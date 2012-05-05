@@ -86,23 +86,35 @@ these changes to the master branch.
 Now, change to the dist directory, commit *all* of its contents, and push your changes:
 
     cd dist
-    # Make sure you base your changes on top of other's most recent pushes to github:
+
+The following commands will make sure you base your changes on top of whatever the most
+recent commit pushed to the gh-pages branch on github:
+
     git fetch origin gh-pages
     git reset --hard origin/gh-pages
+
+Now rebuild the genrated files and resources in the `dist/` directory:
+
     cd ..
     make clean; make
 
-    # At this point, make sure the contents of the dist/ branch work correctly!
-    # ...
+At this point, make sure the contents of the dist/ branch work correctly!
+
+Then add any new files in the dist directory to the git index for the gh-pages branch:
 
     cd dist
     git add .
 
-    # the complicated message below is not necessary, but is helpful
+Using this form of a commit command generates a more useful commit message by ioncluding the commit SHA:
+
     git commit -m "gh-pages generated from `git --git-dir ../.git log -1 --format=%H`"
 
-    # if you set up dist/ by cloning the gh-pages branch specifically, `git push` by itself should
-    # work
+Here's an example:
+
+    gh-pages generated from 9e4453815b8b0f1bd08c123deef6721153bed644
+
+If you set up dist/ by cloning the gh-pages branch specifically, `git push` by itself should work:
+
     git push
     cd ..
 
