@@ -3048,10 +3048,6 @@ exports.makeModel = function() {
       T = temperature;
       addTranslationAndRotationToVelocities();
 
-      // relaxToTemperature after randomizing atoms to put them in random locations
-      // NOTE: this could be handled in other ways if we don't want a target temperature
-      this.relaxToTemperature()
-
       // Pubish the current state
       model.computeOutputState();
     },
@@ -3064,7 +3060,7 @@ exports.makeModel = function() {
 
       beginTransientTemperatureChange();
       while (temperatureChangeInProgress) {
-        this.integrate();
+        model.integrate();
       }
     },
 
@@ -8067,6 +8063,12 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     atoms = model.get_atoms();
     nodes = model.get_nodes();
 
+    // Do not fold the relax() call into modeler.model()!
+    // relax() runs the integration loop. Therefore it should always be called externally, and must
+    // never run as a side effect of calling modeler.model(). (If the integration loop is
+    // inadvertently run when modeler.model() is called, tests which exercise modeler.model run for
+    // a long period of time and may hang if the model diverges.)
+    model.relax();
     model.resetTime();
 
     modelStop();
@@ -8507,6 +8509,12 @@ controllers.complexModelController =
       atoms = model.get_atoms();
       nodes = model.get_nodes();
 
+      // Do not fold the relax() call into modeler.model()!
+      // relax() runs the integration loop. Therefore it should always be called externally, and must
+      // never run as a side effect of calling modeler.model(). (If the integration loop is
+      // inadvertently run when modeler.model() is called, tests which exercise modeler.model run for
+      // a long period of time and may hang if the model diverges.)
+      model.relax();
       model.resetTime();
       te_data = [model.ke()];
 

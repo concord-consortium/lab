@@ -26,7 +26,12 @@
 <ul id="markdown-toc">
   <li><a href="#license">License</a></li>
   <li><a href="#distribution-of-project-and-examples">Distribution of Project and Examples</a>    <ul>
-      <li><a href="#updating-the-gh-pages-branch-on-github">Updating the gh-pages branch on github</a></li>
+      <li><a href="#distributing-the-built-repository-via-the-gh-pages-branch">Distributing the built repository via the gh-pages branch</a>        <ul>
+          <li><a href="#making-the-dist-folder-track-the-gh-pages-branch">Making the dist folder track the gh-pages branch</a></li>
+          <li><a href="#pushing-changes-to-gh-pages-branch">Pushing changes to gh-pages branch</a></li>
+          <li><a href="#pushing-the-gh-pages-branch-to-a-remote-server">Pushing the gh-pages branch to a remote server</a></li>
+        </ul>
+      </li>
     </ul>
   </li>
   <li><a href="#molecular-modeling-examples">Molecular Modeling Examples:</a></li>
@@ -154,24 +159,39 @@ in Chrome due to a long-standing bug in Chrome:
 The problem only occurs when loading the web pages directly from your filesystem. If instead you
 use a local web server on your computer to serve the downloaded distribution Chrome works properly.</p>
 
-<h3 id="updating-the-gh-pages-branch-on-github">Updating the gh-pages branch on github</h3>
+<h3 id="distributing-the-built-repository-via-the-gh-pages-branch">Distributing the built repository via the gh-pages branch</h3>
 
-<p>Make sure there is nothing that isn’t committed – commit it, commit it to a separate branch or stash it.</p>
+<p>The <a href="https://github.com/concord-consortium/lab/tree/gh-pages">gh-pages branch of the repository</a> is
+used to store the static pages and client-side code built by the Makefile. The contents of the
+gh-pages branch are automatically shown at our
+<a href="http://concord-consortium.github.com/lab/">Github Page URL</a> when you push to the gh-pages branch;
+the gh-pages branch is used to deploy to our EC2 instance.</p>
 
-<p>Turn off bin/guard before starting the rest of this process.</p>
+<p>If you maintain a fork of this project, you get a Github Page for free, and Github the instructions below apply to you as well! (However, you will have to set up your own EC2 server
+or equivalent.)</p>
 
-<p>Run make clean; make and then test to make sure what’s generated in the dist directory works.</p>
+<h4 id="making-the-dist-folder-track-the-gh-pages-branch">Making the dist folder track the gh-pages branch</h4>
 
-<pre><code>git co gh-pages
-git reset --hard origin/gh-pages
-rsync -rvz --quiet --perms --chmod=ug=rwX,o=rX dist/ .
+<p>If you haven&rsquo;t done this yet, make the <code>dist/</code> folder track the contents of the gh-pages branch.</p>
+
+<pre><code># make sure to stop Guard first!
+
+# dist/ needs to be empty for git clone to be happy:
+rm -rf dist
+
+# substitute the URL for whatever fork of the Lab repository you have write access to:
+git clone git@github.com:concord-consortium/lab.git -b gh-pages dist
 </code></pre>
 
-<p>After making changes that either fix bugs or add new features or examples first make sure they
-work and are all there when you build a clean dist/ directory.</p>
+<p>Note that <code>make clean</code> now empties the <code>dist</code> folder in-place, leaving however the Git directory
+<code>dist/.git</code> intact.</p>
 
-<pre><code>make clean; make
-</code></pre>
+<h4 id="pushing-changes-to-gh-pages-branch">Pushing changes to gh-pages branch</h4>
+
+<p>First, make sure your <code>dist/</code> folder tracks the gh-pages branch, as per the above.</p>
+
+<p>Make sure there is nothing that isn&rsquo;t committed &ndash; commit it, commit it to a
+separate branch or stash it.</p>
 
 <p>If your testing show the bugs are fixed or the new features or examples are stable then push
 these changes to the master branch.</p>
@@ -179,106 +199,53 @@ these changes to the master branch.</p>
 <pre><code>git push origin master
 </code></pre>
 
-<p>Switch to the gh-pages branch and copy the changes or added files from the dist / directory into
-their correct locations in the top-level directory:</p>
+<p>Now, change to the dist directory, commit <em>all</em> of its contents, and push your changes:</p>
 
-<pre><code>git checkout gh-pages
-rsync -rvz --quiet --perms --chmod=ug=rwX,o=rX dist/ .
+<pre><code>cd dist
 </code></pre>
 
-<p>Take a careful look at the changed files and commit and push the changes if they look appropriate –
-alsp check to see if there are new files that need to be added to the repopsitory.</p>
+<p>The following commands will make sure you base your changes on top of whatever the most
+recent commit pushed to the gh-pages branch on github:</p>
 
-<pre><code>git status
-# On branch gh-pages
-# Changes not staged for commit:
-#   (use "git add &lt;file&gt;..." to update what will be committed)
-#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
-#
-#	modified:   examples/complex-atoms-model/application.js
-#	modified:   examples/simple-atoms-model-controls-in-text/application.js
-#	modified:   lab/lab.controllers.js
-#	modified:   lab/lab.controllers.min.js
-#	modified:   lab/lab.grapher.js
-#	modified:   lab/lab.grapher.min.js
-#	modified:   lab/lab.js
-#	modified:   lab/lab.layout.js
-#	modified:   lab/lab.layout.min.js
-#	modified:   lab/lab.min.js
-#	modified:   lab/lab.molecules.js
-#	modified:   lab/lab.molecules.min.js
-#	modified:   license.html
-#	modified:   readme.html
-#
-# Untracked files:
-#   (use "git add &lt;file&gt;..." to include in what will be committed)
-#
-#	examples/surface-temperature/surface-temperature.css
-#	lab.server/
-#	lab/lab.md2d.js
-no changes added to commit (use "git add" and/or "git commit -a")
+<pre><code>git fetch origin gh-pages
+git reset --hard origin/gh-pages
 </code></pre>
 
-<p>In this case I needed to add examples/surface-temperature/surface-temperature.css and lab/lab.md2d.js.</p>
+<p>Now rebuild the genrated files and resources in the <code>dist/</code> directory:</p>
 
-<pre><code>git add examples/surface-temperature/surface-temperature.css
-git add lab/lab.md2d.js
+<pre><code>cd ..
+make clean; make
 </code></pre>
 
-<p>I also edited the .gitignore in the gh-pages branch and added ‘/lab.server’.</p>
+<p>At this point, make sure the contents of the dist/ branch work correctly!</p>
 
-<p>Here’s what git status reports now.</p>
+<p>Then add any new files in the dist directory to the git index for the gh-pages branch:</p>
 
-<pre><code>git status
-# On branch gh-pages
-# Changes to be committed:
-#   (use "git reset HEAD &lt;file&gt;..." to unstage)
-#
-#	new file:   examples/surface-temperature/surface-temperature.css
-#	new file:   lab/lab.md2d.js
-#
-# Changes not staged for commit:
-#   (use "git add &lt;file&gt;..." to update what will be committed)
-#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
-#
-#	modified:   .gitignore
-#	modified:   examples/complex-atoms-model/application.js
-#	modified:   examples/simple-atoms-model-controls-in-text/application.js
-#	modified:   lab/lab.controllers.js
-#	modified:   lab/lab.controllers.min.js
-#	modified:   lab/lab.grapher.js
-#	modified:   lab/lab.grapher.min.js
-#	modified:   lab/lab.js
-#	modified:   lab/lab.layout.js
-#	modified:   lab/lab.layout.min.js
-#	modified:   lab/lab.min.js
-#	modified:   lab/lab.molecules.js
-#	modified:   lab/lab.molecules.min.js
-#	modified:   license.html
-#	modified:   readme.html
-#
+<pre><code>cd dist
+git add .
 </code></pre>
 
-<p>Commit the changes to the gh-pages branch.
-Including the ‘-a’ argument when committing also includes all the file that are part
-of the repo but NOT yet staged for the commit into the commit.</p>
+<p>Using this form of a commit command generates a more useful commit message by ioncluding the commit SHA:</p>
 
-<pre><code>git commit -a -m 'gh-pages master-ffd242a071'
-[gh-pages aaedcb5] gh-pages master-ffd242a071
- 17 files changed, 4089 insertions(+), 2949 deletions(-)
- create mode 100644 examples/surface-temperature/surface-temperature.css
- rewrite lab/lab.controllers.min.js (96%)
- rewrite lab/lab.layout.min.js (93%)
- create mode 100644 lab/lab.md2d.js
- rewrite lab/lab.min.js (90%)
- rewrite lab/lab.molecules.min.js (95%)
+<pre><code>git commit -m "gh-pages generated from `git --git-dir ../.git log -1 --format=%H`"
 </code></pre>
 
-<p>Push the changes to gh-pages, switch back to master and manually remove the top-level directories that were created for the gh-pages branch.</p>
+<p>Here&rsquo;s an example:</p>
 
-<pre><code>git push origin gh-pages
-git co master
-rm -rf examples experiments lab resources vendor doc
+<pre><code>gh-pages generated from 9e4453815b8b0f1bd08c123deef6721153bed644
+</code></pre>
+
+<p>If you set up dist/ by cloning the gh-pages branch specifically, <code>git push</code> by itself should work:</p>
+
+<pre><code>git push
+cd ..
+</code></pre>
+
+<h4 id="pushing-the-gh-pages-branch-to-a-remote-server">Pushing the gh-pages branch to a remote server</h4>
+
+<p>If you have ssh access to the EC2 server, deploying the changed client code is simple:</p>
+
+<pre><code>ssh deploy@&lt;temporary EC2 domain name&gt; "cd /var/www/public; git pull"
 </code></pre>
 
 <h2 id="molecular-modeling-examples">Molecular Modeling Examples:</h2>
@@ -291,7 +258,7 @@ rm -rf examples experiments lab resources vendor doc
 <h2 id="graphing-examples">Graphing examples:</h2>
 
 <ul>
-  <li><a href="http://lab.dev.concord.org/examples/surface-temperature/surface-temperature.html">Earth’s Surface Temperature: years 500-2009</a></li>
+  <li><a href="http://lab.dev.concord.org/examples/surface-temperature/surface-temperature.html">Earth&rsquo;s Surface Temperature: years 500-2009</a></li>
   <li><a href="http://lab.dev.concord.org/examples/seasons/canberra-question.html">Question about seasonal temperatures and geography</a></li>
   <li><a href="http://lab.dev.concord.org/examples/lennard-jones-potential/lennard-jones-potential.html">Lennard-Jones-Potential</a></li>
 </ul>
@@ -309,7 +276,7 @@ and only one simpletheme)</li>
 
 <h2 id="setup-development">Setup Development</h2>
 
-<p>Lab uses a number of RubyGems and node modules to manage development. Lab’s test framework
+<p>Lab uses a number of RubyGems and node modules to manage development. Lab&rsquo;s test framework
 uses <a href="http://vowsjs.org">Vows</a>, which depends on <a href="http://nodejs.org/">nodejs</a> and
 <a href="http://npmjs.org/">npm</a> (Node Package Manager). In addition JavaScript minification is
 done using <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a>.</p>
@@ -365,7 +332,7 @@ $ npm -v
 <pre><code>git clone git@github.com:concord-consortium/lab.git
 </code></pre>
 
-<p>Alternatively if you don’t have commit access use this form:</p>
+<p>Alternatively if you don&rsquo;t have commit access use this form:</p>
 
 <pre><code>git clone git://github.com/concord-consortium/lab.git
 </code></pre>
@@ -403,7 +370,7 @@ are managed by <a href="http://npmjs.org/">npm</a>:</p>
 <code>vendor/d3</code> and <code>vendor/science.js</code> are manually installed into <code>node_modules/</code>.</p>
   </li>
   <li>
-    <p>Install the additional RubyGems used for development: haml, sass, guard …</p>
+    <p>Install the additional RubyGems used for development: haml, sass, guard &hellip;</p>
 
     <pre><code> bundle install --binstubs
 </code></pre>
@@ -474,7 +441,7 @@ Syntax OK
 <p>Whenever guard is running and you save changes to any files in the src/ directory the corresponding files in
 the <code>dist/</code> directory will be updated.</p>
 
-<p>To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small “LR” button on the toolbar.</p>
+<p>To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small &ldquo;LR&rdquo; button on the toolbar.</p>
 
 <h3 id="serving-dist-using-pow">Serving <code>dist/</code> using POW</h3>
 
@@ -492,7 +459,7 @@ exists.</li>
 
 <h3 id="contributing-to-lab">Contributing to Lab</h3>
 
-<p>If you think you’d like to contribute to Lab as an external developer:</p>
+<p>If you think you&rsquo;d like to contribute to Lab as an external developer:</p>
 
 <ol>
   <li>
@@ -531,7 +498,7 @@ steps. When measuring the speed of the model and graphics together the test is r
 continuously and control is <em>not</em> returned to the browser for repainting the screen.</p>
   </li>
   <li>
-    <p>A separate <a href="https://github.com/concord-consortium/lab">lab.performance</a> repository with a 
+    <p>A separate <a href="https://github.com/concord-consortium/lab">lab.performance</a> repository with a
 Ruby script <a href="https://github.com/concord-consortium/lab">performance.rb</a> available which
 uses Selenium Webdriver to automate running the <strong>Run Benchmarks</strong> test 10 times and
 collects , averages, and reports the results.</p>
@@ -701,9 +668,9 @@ files. The stylesheets may also be written using the newer <code>*.scss</code> v
 
 <h3 id="testing-test">Testing: <code>test/</code></h3>
 
-<p>Lab’s JavaScript tests use <a href="http://vowsjs.org">Vows</a>, an asynchronous behavior driven framework based
+<p>Lab&rsquo;s JavaScript tests use <a href="http://vowsjs.org">Vows</a>, an asynchronous behavior driven framework based
 on <a href="http://nodejs.org/">Node.js</a>. In addition Lab uses <a href="https://github.com/tmpvar/jsdom">jsdom</a>, a
-lightweight CommonJS implementation of the W3C DOM specifications. Lab’s test setup was inspired
+lightweight CommonJS implementation of the W3C DOM specifications. Lab&rsquo;s test setup was inspired
 by that used by <a href="http://mbostock.github.com/d3/">d3.js</a>. The development dependencies for running the
 tests are installed using <a href="http://npmjs.org/">npm</a>.</p>
 
@@ -721,7 +688,7 @@ files in the <code>src/</code> or <code>test/</code> directory.</p>
 
 <p>If the bottom of the console window is viewable you will see new test results whenever you save a changes.</p>
 
-<p>Recent versions of nodejs/v8 support TypedArrays – this make it possible to more extensively
+<p>Recent versions of nodejs/v8 support TypedArrays &ndash; this make it possible to more extensively
 test lab.arrays which is designed to support using either typed or regular arrays for computation.</p>
 
 <p><code>test/env.js</code> uses the node module <a href="https://github.com/tmpvar/jsdom">jsdom</a> to setup resources for
@@ -827,14 +794,14 @@ with an additional collection of useful <a href="http://vowsjs.org/#assertions">
 
 <h3 id="a-simple-example-of-test-driven-development">A Simple Example of Test Driven Development</h3>
 
-<p>Here’s a simple example that is part of the tests for <code>lab.arrays.js</code> to test the <code>arrays.max()</code> function:</p>
+<p>Here&rsquo;s a simple example that is part of the tests for <code>lab.arrays.js</code> to test the <code>arrays.max()</code> function:</p>
 
 <pre><code>"find max in array with negative and positive numbers": function(max) {
   assert.equal(max([3, -1, 0, 1, 2, 3]), 3);
 },
 </code></pre>
 
-<p>The ‘model stepping’ tests are a good example where the tests help helped drive new features. The basic
+<p>The &lsquo;model stepping&rsquo; tests are a good example where the tests help helped drive new features. The basic
 features I was testing in this section relate to the existing functionality exposed by the Stop, Start, Go, and
 Reset buttons as wells as the extended keyboard controls that allow stepping forward and backwards a step at a time.</p>
 
@@ -848,9 +815,9 @@ Reset buttons as wells as the extended keyboard controls that allow stepping for
 </code></pre>
 
 <p>In thinking about driving out changes to KE, PE and Temperature of the molecular model itself I realized
-I’d like the capability to run a specific number of steps forward and then check the results.</p>
+I&rsquo;d like the capability to run a specific number of steps forward and then check the results.</p>
 
-<p>I then wrote this test that failed – because the model.tick() function didn’t yet take an optional argument to
+<p>I then wrote this test that failed &ndash; because the model.tick() function didn&rsquo;t yet take an optional argument to
 run multiple steps forward:</p>
 
 <pre><code>"after running 9 more ticks the model is at step 10": function(model) {
@@ -864,7 +831,7 @@ run multiple steps forward:</p>
 feature in the actual <code>src/lab/molecules.js</code>. Less than a second after saving the file the tests
 completed and the report showed it passing.</p>
 
-<p>This is a very simple example – but part of the value of this kind of test driven development is in first
+<p>This is a very simple example &ndash; but part of the value of this kind of test driven development is in first
 thinking of how something should behave rather than in how to get it to actually do the work.</p>
 
 <p>Since I already had this function for running one model step:</p>
@@ -878,8 +845,8 @@ thinking of how something should behave rather than in how to get it to actually
 </code></pre>
 
 <p>In more complicated coding thinking about how to express the intent clearly and then what the result
-should be if that intent is successful <strong>FIRST</strong> … and then ‘driving out’ the actual implementation to
-achieve that result can result in a better architecture – and of course you also end up with tests.</p>
+should be if that intent is successful <strong>FIRST</strong> &hellip; and then &lsquo;driving out&rsquo; the actual implementation to
+achieve that result can result in a better architecture &ndash; and of course you also end up with tests.</p>
 
 <p>Because the tests run SO quickly I can interactively change the code in the module or the test and
 immediately see results.</p>
@@ -937,7 +904,7 @@ break in test/lab/components/components-test.js:13
  15     },
 </code></pre>
 
-<p>To evaluate expressions type <code>repl</code>  – use ctrl-C to exit the repl:</p>
+<p>To evaluate expressions type <code>repl</code>  &ndash; use ctrl-C to exit the repl:</p>
 
 <pre><code>repl
 Press Ctrl + C to leave debug repl
@@ -1008,7 +975,7 @@ saving summary results into a file for offline analysis; see, e.g., <a href="htt
 <p>Hashbang scripts for starting these executables (i.e., files which start with the line
 <code>#!/usr/bin/env node</code> and which have the execute bit set) should be placed in the directory <code>node-
 bin</code>, and should execute by <code>require()</code>ing the appropriate module and calling its entry point
-method. Lab’s <code>package.json</code> file specifies <code>node-bin/</code> as the location of the executable scripts
+method. Lab&rsquo;s <code>package.json</code> file specifies <code>node-bin/</code> as the location of the executable scripts
 which <code>npm</code> should make available whenever Lab is imported into another project as a Node module.
 (For developer convenience, <code>bin/</code> is being reserved for Ruby executables made available via
 Bundler.)</p>
@@ -1061,10 +1028,10 @@ not nondimensionalize to reduced units.  The units used internally are:</p>
 
 <p>(Note that we will shortly switch to representing time in picoseconds rather than femtoseconds.)</p>
 
-<p>The above implies that the ‘natural’ unit of energy within the application is the “Dalton nm^2 /
-fs^2”, and the natural unit of force is the “Dalton nm / fs^2”. We call these “MW Energy Units” and
-“MW Force Units” respectively; however, externally-facing methods accept and report energies in
-electron volts, rather than “MW Units”.</p>
+<p>The above implies that the &lsquo;natural&rsquo; unit of energy within the application is the &ldquo;Dalton nm^2 /
+fs^2&rdquo;, and the natural unit of force is the &ldquo;Dalton nm / fs^2&rdquo;. We call these &ldquo;MW Energy Units&rdquo; and
+&ldquo;MW Force Units&rdquo; respectively; however, externally-facing methods accept and report energies in
+electron volts, rather than &ldquo;MW Units&rdquo;.</p>
 
 <p>The molecular dynamics engine in <code>src/md-engine</code> contains a submodule, defined in <code>src/md-
 engine/constants/</code> which defines physical useful constants and allows one to perform some unit
@@ -1124,10 +1091,10 @@ carefully in your own code.</p>
 <p><code>constants.ratio(constants.unit.DALTON, { per: constants.unit.KILOGRAM })</code>
 (== 6.022137376997844e+26)</p>
 
-<p>This form of ratio is especially useful for unit conversion, and the “per” is intended as a
-mnemonic. The number reported above, for example, is easily understood to be “6.022 x 10^26 Dalton
-per kilogram” and can therefore be used as a factor that “cancels” kilograms and replaces them with
-Daltons in a compound unit such as “kg m/s”.</p>
+<p>This form of ratio is especially useful for unit conversion, and the &ldquo;per&rdquo; is intended as a
+mnemonic. The number reported above, for example, is easily understood to be &ldquo;6.022 x 10^26 Dalton
+per kilogram&rdquo; and can therefore be used as a factor that &ldquo;cancels&rdquo; kilograms and replaces them with
+Daltons in a compound unit such as &ldquo;kg m/s&rdquo;.</p>
 
 <p>However, sometimes you want the value of a Dalton expressed as kilograms. Although you <em>could</em>
 reverse the units in the above function call, or divide 1 by the result above, it is better to use
@@ -1153,6 +1120,10 @@ the mnemonic <code>as</code> form of <code>ratio</code>:</p>
 </ul>
 
 <h2 id="updating-an-external-server-with-the-contents-of-dist">Updating an external server with the contents of <code>dist/</code></h2>
+
+<p><em>Note:</em> This is only used for deploys to <a href="http://lab.dev.concord.org/">http://lab.dev.concord.org/</a>!
+For deploys to Github Pages, or to EC2, see the discussion at the top of the document about the
+gh-pages branch.</p>
 
 <p>Currently <a href="http://lab.dev.concord.org/">http://lab.dev.concord.org/</a> is updated by using rsynch to copy
 the content of the <code>dist/</code> directory to the server.</p>
@@ -1181,7 +1152,7 @@ exercises with the CHARMM package</p>
   </li>
   <li><a href="http://phjoan23.technion.ac.il/~phr76ja/thermostats.pdf">Thermostat Algorithms for Molecular Dynamics Simulations</a></li>
   <li>
-    <p><a href="http://en.wikipedia.org/wiki/Flying_ice_cube">the “flying ice cube”</a></p>
+    <p><a href="http://en.wikipedia.org/wiki/Flying_ice_cube">the &ldquo;flying ice cube&rdquo;</a></p>
 
     <p>One kind of unphysical effect that can arise. See linked paper.</p>
   </li>
