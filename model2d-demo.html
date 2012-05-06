@@ -8,6 +8,15 @@
     <style type="text/css">
     
     #canvasDestination { 
+      width:800px;
+      height:800px;
+      padding:0px;
+      background-color:lightgray;
+      color:gray;
+      border:1px; 
+    }
+    
+    #colorDivDestination { 
       width:500px;
       height:400px;
       padding:0px;
@@ -16,7 +25,7 @@
       border:1px; 
     }
     
-    #colorDivDestination { 
+     #canvasDebugDestination { 
       width:500px;
       height:400px;
       padding:0px;
@@ -82,6 +91,16 @@
               </form>
             </li>
           </ul>
+          <ul class="hlist">
+            <li>
+              <fieldset>
+              <legend>Select active solvers</legend>
+                <form id="active-solvers">
+                  <label><input id="use-fluid-solver" type="checkbox" checked/> Fluid Solver</label>
+                </form>
+              </fieldset>
+            </li>
+          </ul>
         </li>
         <li>
           <p>Energy2D-JS Model: Rendered using 10,000 colored divs</p>
@@ -105,6 +124,12 @@
         </li>
       </ul>
     </div>
+    <div id="debug">
+	  <h2>Debug view</h2>
+	  <p>Velocity</p>
+	  <canvas id="canvasDebugDestination">
+	  </canvas>
+    </div>
     <div id="info">
       <h2>Getting a browser that supports JavaScript Typed Arrays</h2>
       <div id="getting-webgl">
@@ -122,7 +147,7 @@
 </div>
 <script type="text/javascript">
 
-  function myRequire(src, callback){
+  function myRequire(src, callback) {
     if (src.constructor == Array) {
       var libraries = src;
     } else {
@@ -131,7 +156,7 @@
     var script = document.createElement("script") 
     script.type = "text/javascript";
     // IE
-    script.onreadystatechange = function () {
+    script.onreadystatechange = function() {
       if (script.readyState === 'loaded' || script.readyState == 'complete') {
         script.onreadystatechange = null;
         libraries.shift();
@@ -144,7 +169,7 @@
       }
     }
     // Not IE
-    script.onload = function () {
+    script.onload = function() {
       libraries.shift();
       if (libraries.length > 0) {
         myRequire(libraries)
@@ -157,15 +182,16 @@
     document.getElementsByTagName("head")[0].appendChild(script);
   };
   
-  window.onload=function() {
+  window.onload = function() {
     // var webGLEnabled = Modernizr.webgl;
     webGLEnabled = true;
-    if (webGLEnabled){
+    if (webGLEnabled) {
       myRequire([ "src/model2d.js" ],
       function() {
 
         var webgl = !!window.WebGLRenderingContext;
         var choose_array_type = document.getElementById("choose-array-type");
+        var choose_active_solvers = document.getElementById("active-solvers");
 
         if (webgl) {
           choose_array_type.elements[1].disabled = false;
@@ -173,6 +199,9 @@
 
         // model2d.setupColorDivs();
         model2d.setupRGBAColorTables();
+        
+        var canvas = document.getElementById("canvasDestination");
+        var canvas_debug = document.getElementById("canvasDebugDestination");
         
         var model, array_selection;
         
@@ -183,18 +212,38 @@
             array_selection = "typed";
           }
           model = new model2d.Model2D({}, array_selection);
+          activeSolversUpdate();
           model2d.addHotSpot(model, 50.0);
+          model2d.displayTemperatureCanvas(canvas, model);
+          // TODO: remove it, used only for debugging
+          model2d.requestVelocityRedraw = function() {
+              //model2d.displayTemperatureCanvas(canvas, model); // clear old velocities (slow)
+              //model2d.displayVectorField(canvas, model.u, model.v, model.nx, model.ny, 1);
+              //model2d.displayVelocityCanvas(canvas_debug, model);
+          };
           model.nextStep();
         };
         
         choose_array_type.onchange = arrayTypeChange;
         choose_array_type.onchange();
+        
+        
+        function activeSolversUpdate() {
+            if (choose_active_solvers.elements[0].checked) {
+                model.convective = true;
+            } else {
+                model.convective = false;
+            }
+        };
+        
+        choose_active_solvers.onchange = activeSolversUpdate;
+        choose_active_solvers.onchange();
 
         // var model = new model2d.Model2D({}, array_selection);
         // model2d.addHotSpot(model, 50.0);
         // model.nextStep();
 
-        var tdata =      document.getElementById("tdata");
+        var tdata = document.getElementById("tdata");
         model2d.displayTemperatureTable(tdata, model);
 
         var step_model = document.getElementById("step-model");
@@ -205,10 +254,8 @@
         
         var step_count = document.getElementById("step-count");
 
-        var canvas =     document.getElementById("canvasDestination");
-        var divs =     document.getElementById("colorDivDestination");
+        var divs = document.getElementById("colorDivDestination");
         var run_mode;
-
         
         var one_before_that_sample_time = new Date();
         var last_sample_time = new Date();
@@ -227,6 +274,8 @@
               switch(display_method) {
                 case 'canvas': 
                   model2d.displayTemperatureCanvas(canvas, model);
+                  model2d.displayVectorField(canvas, model.u, model.v, model.nx, model.ny, 1);
+                  model2d.displayVelocityCanvas(canvas_debug, model);
                   break;
                 case 'colored-divs': 
                   model2d.displayTemperatureColorDivs(divs, model); 
