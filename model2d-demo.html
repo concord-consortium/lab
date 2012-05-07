@@ -8,8 +8,8 @@
     <style type="text/css">
     
     #canvasDestination { 
-      width:800px;
-      height:800px;
+      width:500px;
+      height:500px;
       padding:0px;
       background-color:lightgray;
       color:gray;
@@ -126,7 +126,7 @@
     </div>
     <div id="debug">
 	  <h2>Debug view</h2>
-	  <p>Velocity</p>
+	  <p>Velocity vector length</p>
 	  <canvas id="canvasDebugDestination">
 	  </canvas>
     </div>
@@ -217,9 +217,10 @@
           model2d.displayTemperatureCanvas(canvas, model);
           // TODO: remove it, used only for debugging
           model2d.requestVelocityRedraw = function() {
-              //model2d.displayTemperatureCanvas(canvas, model); // clear old velocities (slow)
-              //model2d.displayVectorField(canvas, model.u, model.v, model.nx, model.ny, 1);
-              //model2d.displayVelocityCanvas(canvas_debug, model);
+              return;
+              model2d.displayTemperatureCanvas(canvas, model); // clear old velocities (slow)
+              model2d.displayVectorField(canvas, model.u, model.v, model.nx, model.ny, 1);
+              model2d.displayVelocityCanvas(canvas_debug, model);
           };
           model.nextStep();
         };
@@ -274,7 +275,7 @@
               switch(display_method) {
                 case 'canvas': 
                   model2d.displayTemperatureCanvas(canvas, model);
-                  model2d.displayVectorField(canvas, model.u, model.v, model.nx, model.ny, 1);
+                  model2d.displayVectorField(canvas, model.u, model.v, model.nx, model.ny, 4);
                   model2d.displayVelocityCanvas(canvas_debug, model);
                   break;
                 case 'colored-divs': 
