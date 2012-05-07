@@ -560,6 +560,7 @@ exports.makeModel = function() {
         y[i] = props.Y[i];
         vx[i] = props.VX[i];
         vy[i] = props.VY[i];
+        speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
       }
 
       if (props.CHARGE) {
