@@ -120,6 +120,29 @@ modeler.model = function(initialProperties) {
     }
   }
 
+  function notifyListenersOfEvents(events) {
+    var evt,
+        evts,
+        waitingToBeNotified = [],
+        i, ii;
+
+    if (typeof events == "string") {
+      evts = [events];
+    } else {
+      evts = events;
+    }
+    for (i=0, ii=evts.length; i<ii; i++){
+      evt = evts[i];
+      if (listeners[evt]) {
+        waitingToBeNotified = waitingToBeNotified.concat(listeners[evt]);
+      }
+    }
+    if (listeners["all"]){      // listeners that want to be notified on any change
+      waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
+    }
+    notifyListeners(waitingToBeNotified);
+  }
+
   //
   // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
   // within a range of 0..25 to the 'real' temperature (2/N_df) * <mv^2>/2 where N_df = 2N-4
@@ -248,7 +271,7 @@ modeler.model = function(initialProperties) {
   }
 
   function set_properties(hash) {
-    var property, waitingToBeNotified = [];
+    var property, propsChanged = [];
     for (property in hash) {
       if (hash.hasOwnProperty(property) && hash[property] !== undefined && hash[property] !== null) {
         // look for set method first, otherwise just set the property
@@ -257,15 +280,10 @@ modeler.model = function(initialProperties) {
         } else if (properties[property]) {
           properties[property] = hash[property];
         }
-        if (listeners[property]) {
-          waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
-        }
+        propsChanged.push(property);
       }
     }
-    if (listeners["all"]){      // listeners that want to be notified on any change
-      waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
-    }
-    notifyListeners(waitingToBeNotified);
+    notifyListenersOfEvents(propsChanged);
   }
 
   // Creates a new md2d coreModel
@@ -542,6 +560,7 @@ modeler.model = function(initialProperties) {
     stopped = false;
     d3.timer(tick);
     dispatch.play();
+    notifyListenersOfEvents("play");
     return model;
   };
 
