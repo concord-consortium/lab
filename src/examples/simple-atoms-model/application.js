@@ -29,7 +29,8 @@
 
       hash,
       controller,
-      opts;
+      opts,
+      timer;
 
   if (hash = document.location.hash) {
     hash = hash.substr(1, hash.length);
@@ -67,12 +68,24 @@
       }).done(function(data) {
         var loc  = req.getResponseHeader('Location'),
             hash = '#' + /\/model-config\/(.*)$/.exec(loc)[1],
-            url  = document.location.pathname + hash;
+            url  = document.location.origin + document.location.pathname + hash;
 
         document.location.hash = hash;
-        $('#flash').html('Saved to <a href="' + url + '">' + url + '</a>');
+
+        $('#flash').
+          removeClass().
+          addClass('informational-message').
+          html('<p>Saved to <a href="' + url + '">' + url + '</a></p>');
       }).fail(function() {
-        $('#flash').html('<p class="error-message">Could not save model</p>');
+        $('#flash').
+          removeClass().
+          addClass('error-message').
+          html('<p>Could not save model.</p>');
+      }).always(function() {
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+          $('#flash').addClass('fade-out');
+        }, 100);
       });
     });
 
