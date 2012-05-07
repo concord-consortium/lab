@@ -1233,7 +1233,7 @@ exports.INDICES = INDICES = {
   CHARGE : 11
 };
 
-exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY"];
+exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE"];
 
 exports.NODE_PROPERTIES_COUNT = NODE_PROPERTIES_COUNT = 12;
 
@@ -1686,6 +1686,12 @@ exports.makeModel = function() {
         y[i] = props.Y[i];
         vx[i] = props.VX[i];
         vy[i] = props.VY[i];
+      }
+
+      if (props.CHARGE) {
+        for (var i=0, ii=N; i<ii; i++){
+          charge[i] = props.CHARGE[i];
+        }
       }
 
       model.computeOutputState();
