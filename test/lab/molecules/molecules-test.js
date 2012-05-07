@@ -117,6 +117,36 @@ suite.addBatch({
       assert.equal(modelHash.lennard_jones_forces, new_options.lennard_jones_forces);
       assert.equal(modelHash.coulomb_forces, new_options.coulomb_forces);
       assert.equal(modelHash.atoms.X.length, new_options.mol_number);
+    },
+    "creates a model, saves atom state, loads atom state": function(model) {
+      initialization_options = {
+        lennard_jones_forces: true,
+        coulomb_forces: true,
+        model_listener: false,
+        mol_number: 5
+      }
+      model = modeler.model(initialization_options);
+      model.createNewAtoms(initialization_options.mol_number);
+
+      oldModelHash = model.serialize(true);
+      assert.isObject(oldModelHash.atoms);
+      assert.equal(oldModelHash.atoms.X.length, initialization_options.mol_number);
+
+      oldAtomStates = oldModelHash.atoms;
+
+      model = modeler.model(oldModelHash);
+      model.createNewAtoms(oldAtomStates);
+
+      newModelHash = model.serialize(true);
+
+      for (prop in oldAtomStates) {
+        if (oldAtomStates.hasOwnProperty(prop)) {
+          array = oldAtomStates[prop];
+          for (i = 0, ii = array.length; i<ii; i++){
+            assert.equal(array[i], newModelHash.atoms[prop][i]);
+          }
+        }
+      }
     }
   }
 });
