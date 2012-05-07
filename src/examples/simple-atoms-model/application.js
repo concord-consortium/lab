@@ -94,7 +94,7 @@
     model.lastModelConfig = JSON.stringify(model.serialize(), 2);
 
     model.addPropertiesListener(["all"], function() {
-      if (JSON.stringify(model.serialize(), 2) !== model.lastModelConfig) {
+      if (JSON.stringify(model.serialize(true), 2) !== model.lastModelConfig) {
         $('#save-button').removeAttr("disabled");
       } else {
         $('#save-button').attr("disabled", "disabled");
