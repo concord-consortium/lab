@@ -954,7 +954,7 @@ model2d.FluidSolver2D = function(nx, ny, model) {
     this.relaxationSteps = 5;
     this.timeStep = 0.1;
     this.thermalBuoyancy = model.thermalBuoyancy;
-    this.gravity = 1;
+    this.gravity = 0;
     this.buoyancyApproximation = model.buoyancyApproximation;  // model2d.BUOYANCY_AVERAGE_COLUMN;
     this.viscosity = 10 * model2d.AIR_VISCOSITY;
     this.timeStep = 0.1;
@@ -989,35 +989,23 @@ model2d.FluidSolver2D.prototype.reset = function() {
 // TODO: swap the two arrays instead of copying them every time?
 // float[][] u, float[][] v
 model2d.FluidSolver2D.prototype.solve = function(u, v) {
-    model2d.requestVelocityRedraw();
     if (this.thermalBuoyancy != 0) {
         this.applyBuoyancy(v);
     }
-    model2d.requestVelocityRedraw();
     this.setObstacleVelocity(u, v);
-    model2d.requestVelocityRedraw();
     if (this.viscosity > 0) { // inviscid case
         this.diffuse(1, this.u0, u);
-        model2d.requestVelocityRedraw();
         this.diffuse(2, this.v0, v);
-        model2d.requestVelocityRedraw();
         this.conserve(u, v, this.u0, this.v0);
-        model2d.requestVelocityRedraw();
         this.setObstacleVelocity(u, v);
-        model2d.requestVelocityRedraw();
     }
     
     model2d.copyArray(this.u0, u);
     model2d.copyArray(this.v0, v);
-    model2d.requestVelocityRedraw();
     this.advect(1, this.u0, u);
-    model2d.requestVelocityRedraw();
     this.advect(2, this.v0, v);
-    model2d.requestVelocityRedraw();
     this.conserve(u, v, this.u0, this.v0);
-    model2d.requestVelocityRedraw();
     this.setObstacleVelocity(u, v);
-    model2d.requestVelocityRedraw();
 };
 
 model2d.FluidSolver2D.prototype.setGridCellSize = function(deltaX, deltaY) {
@@ -1371,7 +1359,6 @@ model2d.FluidSolver2D.prototype.conserve = function(u, v, phi, div) {
     }
     this.applyBoundary(1, u);
     this.applyBoundary(2, v);
-
 };
 
 // float[][] u, float[][] v
@@ -2168,7 +2155,7 @@ model2d.displayVectorField = function(canvas, u, v, nx, ny, spacing) {
 };
 
 // TODO: move all properties and functions connected with drawing to another module
-model2d.VECTOR_SCALE = 1000;
+model2d.VECTOR_SCALE = 100;
 model2d.WING_COS = Math.cos(0.523598776);
 model2d.WING_SIN = Math.sin(0.523598776);
 model2d.drawVector = function(canvas_ctx, x, y, vx, vy) {
@@ -2176,12 +2163,12 @@ model2d.drawVector = function(canvas_ctx, x, y, vx, vy) {
     var r = 1.0 / Math.sqrt(vx*vx + vy*vy);
     var arrowx = vx * r;
     var arrowy = vy * r;
-    var x1 = x + arrowx * 12 + vx * model2d.VECTOR_SCALE;
-    var y1 = y + arrowy * 12 + vy * model2d.VECTOR_SCALE;
+    var x1 = x + arrowx * 8 + vx * model2d.VECTOR_SCALE;
+    var y1 = y + arrowy * 8 + vy * model2d.VECTOR_SCALE;
     canvas_ctx.moveTo(x, y);  
     canvas_ctx.lineTo(x1, y1);
     
-    r = 6;
+    r = 4;
     var wingx = r * (arrowx * model2d.WING_COS + arrowy * model2d.WING_SIN);
     var wingy = r * (arrowy * model2d.WING_COS - arrowx * model2d.WING_SIN);
     canvas_ctx.lineTo(x1 - wingx, y1 - wingy);
@@ -2219,10 +2206,18 @@ model2d.displayVelocityCanvas = function(canvas, model) {
     var v = model.v;
     
     var min = 0;
-    var max = model2d.getMaxAnyArray(u) + model2d.getMaxAnyArray(v) +
-              Math.abs(model2d.getMinAnyArray(u)) + Math.abs(model2d.getMinAnyArray(v));
+    
+    // look for max value
+    var max = Number.MIN_VALUE;
+    var length = u.length;
+    var test;
+    for(var i = 0; i < length; i++) {
+        test = u[i]*u[i] + v[i]*v[i];
+        if (test > max)
+            max = test;
+    }
     var scale = 255/(max - min);
-    var temp;
+    var velocity;
     var imageData = ctx.getImageData(0, 0, 100, 100);
     var data = imageData.data;
     var pix_index = 0;
@@ -2230,7 +2225,7 @@ model2d.displayVelocityCanvas = function(canvas, model) {
         ycols = y * rows;
         pix_index = y * 400;
         for (var x = 0; x < columns; x++) {
-            velocity = Math.abs(u[ycols + x]) + Math.abs(v[ycols + x]);
+            velocity = u[ycols + x]*u[ycols + x] + v[ycols + x]*v[ycols + x];
             hue =  Math.abs(Math.round(scale * velocity - min) - 255);
             data[pix_index]     = red_color_table[hue];
             data[pix_index + 1] = blue_color_table[hue];
