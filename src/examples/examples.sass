@@ -83,6 +83,27 @@ ul
     margin: 0.3em 0.2em 0.3em 0.2em
     padding: 0em 0em 0em 0em
 
+#save-button
+  @include button
+
+#flash
+  margin: 1em
+  font-style: italic
+
+.error-message
+  color: fireBrick
+  font-size: 1.5em
+  &.fade-out
+    color: $body-text-color
+
+.informational-message
+  color: black
+  &.fade-out
+    color: $body-text-color
+
+.fade-out
+  @include transition (color, 1.5s, linear)
+
 #example-list
   ul
     margin: 1em 1em 1em 1em

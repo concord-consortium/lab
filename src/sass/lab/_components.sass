@@ -190,21 +190,26 @@
   .pause-center
     fill: #a5a5a5
 
+// Let example CSS reuse button without having to override float
+@mixin button
+  border-radius: 5px
+  border: 1px solid #aaa
+  width: 3em
+  height: 3em
+  position: static
+
+  background-color: $button_color
+  background-size: 100%
+  opacity: 0.7
+
 $button_color: hsla(10,80%,90%,0.1)
 $button_hover: darken($button_color, 20%)
 $button_down: darken($button_hover, 20%)
 .component
   &.button
-    border-radius: 5px
-    border: 1px solid #aaa
-    width: 3em
-    height: 3em
-    position: static
+    @include button
     float: left
     clear: none
-    background-color: $button_color
-    background-size: 100%
-    opacity: 0.7
     &:hover
       background-color: $button_hover
       opacity: 0.8
@@ -219,6 +224,8 @@ $button_down: darken($button_hover, 20%)
       background-color: $button_down
     &.hidden
       display: none
+  &.save-button
+    @include button
   &.play
     background-image: url(../../resources/play.png)
   &.pause
@@ -281,7 +288,7 @@ $button_down: darken($button_hover, 20%)
   @include border-top-right-radius(3px)
   @include border-bottom-right-radius(3px)
   @include border-bottom-left-radius(0)
-.component_group 
+.component_group
   button#cool_button, button#heat_button
     @include linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #ddd 50%, #ddd 100%, $fallback: #ddd)
     font-size: 1em
