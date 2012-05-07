@@ -68,6 +68,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     model.createNewAtoms(atoms_properties);
   } else if (mol_number) {
     model.createNewAtoms(mol_number);
+    model.relax();
   } else {
     throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
   }
@@ -130,12 +131,6 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     atoms = model.get_atoms();
     nodes = model.get_nodes();
 
-    // Do not fold the relax() call into modeler.model()!
-    // relax() runs the integration loop. Therefore it should always be called externally, and must
-    // never run as a side effect of calling modeler.model(). (If the integration loop is
-    // inadvertently run when modeler.model() is called, tests which exercise modeler.model run for
-    // a long period of time and may hang if the model diverges.)
-    model.relax();
     model.resetTime();
 
     modelStop();
