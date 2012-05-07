@@ -40,7 +40,9 @@ suite.addBatch({
 suite.addBatch({
   "model initialization": {
     topic: function() {
-      return model = modeler.model(initialization_options);
+      model = modeler.model(initialization_options);
+      model.createNewAtoms(initialization_options.mol_number);
+      return model;
     },
     "creates default molecular model": function(model) {
       assert.equal(atoms.length, 0);
@@ -57,8 +59,8 @@ suite.addBatch({
     "creates 50 molecules with a total charge of 0": function(model) {
       var nodes, total_charge;
 
-      initialization_options.mol_number = 50;
-      model = modeler.model(initialization_options);
+      model.createNewAtoms(50);
+
       nodes = model.get_nodes();
       atoms = model.get_atoms();
 
@@ -67,22 +69,21 @@ suite.addBatch({
       assert.equal(total_charge, 0);
     },
     "creates 100 molecules with a total charge of 0": function(model) {
-      initialization_options.mol_number = 100;
-      model = modeler.model(initialization_options);
+      model.createNewAtoms(100);
+
       atoms = model.get_atoms();
       assert.equal(atoms.length, 100);
       var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
     },
     "creates first 50 and then 100 molecules with a total charge of 0": function(model) {
-      initialization_options.mol_number = 50;
-      model = modeler.model(initialization_options);
+      model.createNewAtoms(50);
       atoms = model.get_atoms();
       assert.equal(atoms.length, 50);
       var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
-      initialization_options.mol_number = 100;
-      model = modeler.model(initialization_options);
+
+      model.createNewAtoms(100);
       atoms = model.get_atoms();
       assert.equal(atoms.length, 100);
       var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
@@ -96,10 +97,12 @@ suite.addBatch({
         mol_number: 5
       }
       model = modeler.model(initialization_options);
-      modelHash = model.serialize();
+      model.createNewAtoms(initialization_options.mol_number);
+
+      modelHash = model.serialize(true);
       assert.equal(modelHash.lennard_jones_forces, initialization_options.lennard_jones_forces);
       assert.equal(modelHash.coulomb_forces, initialization_options.coulomb_forces);
-      assert.equal(modelHash.mol_number, initialization_options.mol_number);
+      assert.equal(modelHash.atoms.X.length, initialization_options.mol_number);
 
       new_options = {
         lennard_jones_forces: false,
@@ -108,10 +111,12 @@ suite.addBatch({
         mol_number: 10
       }
       model.set(new_options);
-      modelHash = model.serialize();
+      model.createNewAtoms(new_options.mol_number);
+
+      modelHash = model.serialize(true);
       assert.equal(modelHash.lennard_jones_forces, new_options.lennard_jones_forces);
       assert.equal(modelHash.coulomb_forces, new_options.coulomb_forces);
-      assert.equal(modelHash.mol_number, new_options.mol_number);
+      assert.equal(modelHash.atoms.X.length, new_options.mol_number);
     }
   }
 });
@@ -120,7 +125,9 @@ suite.addBatch({
   "model stepping": {
     topic: function() {
       node_options.num = 10;
-      return model = modeler.model(initialization_options);
+      model = modeler.model(initialization_options);
+      model.createNewAtoms(initialization_options.mol_number);
+      return model;
     },
     "a newly initialized model starts at step 0": function(model) {
       assert.equal(model.steps(), 0);
