@@ -562,6 +562,12 @@ exports.makeModel = function() {
         vy[i] = props.VY[i];
       }
 
+      if (props.CHARGE) {
+        for (var i=0, ii=N; i<ii; i++){
+          charge[i] = props.CHARGE[i];
+        }
+      }
+
       model.computeOutputState();
     },
 
