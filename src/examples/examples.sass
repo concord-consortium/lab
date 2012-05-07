@@ -87,22 +87,31 @@ ul
   @include button
 
 #flash
-  margin: 1em
+  margin: 0
+  padding: 1em
   font-style: italic
+  // shrink to fit
+  display: inline-block
+  p
+    margin: 0
+    padding: 0.3em
 
 .error-message
-  color: fireBrick
-  font-size: 1.5em
-  &.fade-out
-    color: $body-text-color
+  p
+    color: fireBrick
+    background-color: yellow
+    font-size: 1.5em
+  &.fade-out p
+    background-color: transparent
 
 .informational-message
-  color: black
-  &.fade-out
-    color: $body-text-color
+  p
+    background-color: yellow
+  &.fade-out p
+    background-color: transparent
 
-.fade-out
-  @include transition (color, 1.5s, linear)
+.fade-out p
+  @include transition (background-color, 0.75s, linear)
 
 #example-list
   ul

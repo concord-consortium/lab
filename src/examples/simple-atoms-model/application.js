@@ -83,6 +83,7 @@
           html('<p>Could not save model.</p>');
       }).always(function() {
         clearTimeout(timer);
+        // add .fade-out after a delay so CSS transitions notice a change.
         timer = setTimeout(function() {
           $('#flash').addClass('fade-out');
         }, 100);
