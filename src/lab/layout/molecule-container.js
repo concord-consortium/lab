@@ -462,6 +462,10 @@ layout.moleculeContainer = function(e, options) {
     }
 
     function setup_particles() {
+      if (typeof atoms == "undefined" || !atoms){
+        return;
+      }
+
       var ljf = model.getLJCalculator().coefficients();
       // molRadius = ljf.rmin * 0.5;
       // model.set_radius(molRadius);
