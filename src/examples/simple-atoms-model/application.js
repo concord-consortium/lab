@@ -68,7 +68,7 @@
       }).done(function(data) {
         var loc  = req.getResponseHeader('Location'),
             hash = '#' + /\/model-config\/(.*)$/.exec(loc)[1],
-            url  = document.location.origin + document.location.pathname + hash;
+            url = /[^#]*/.exec(document.location.href)[0] + hash;
 
         document.location.hash = hash;
 
