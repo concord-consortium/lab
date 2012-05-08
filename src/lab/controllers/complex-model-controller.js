@@ -224,6 +224,7 @@ controllers.complexModelController =
       }
 
       model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
+      updateCoulombCheckbox();
 
       // ------------------------------------------------------------
       //
