@@ -788,7 +788,7 @@ model2d.HeatSolver2D.prototype.solve = function(convective, t, q) {
                     axij = hx * (rij + conductivity[jinx_minus_nx]);
                     bxij = hx * (rij + conductivity[jinx_plus_nx]);
                     ayij = hy * (rij + conductivity[jinx_minus_1]);
-                    byij = hy * (rij + conductivity[jinx_minus_1]);
+                    byij = hy * (rij + conductivity[jinx_plus_1]);
                     t[jinx] = (t0[jinx] * sij + q[jinx] + axij * t[jinx_minus_nx] + bxij
                             * t[jinx_plus_nx] + ayij * t[jinx_minus_1] + byij * t[jinx_plus_1]) /
                             (sij + axij + bxij + ayij + byij);
@@ -827,7 +827,7 @@ model2d.HeatSolver2D.prototype.macCormack  = function(t) {
     var u = this.u;
     var v = this.v;
 
-    for (i = 1; i < this.nx1; i++) {
+    for (i = 1; i < nx1; i++) {
         inx = i * nx;
         inx_minus_nx = inx - nx;
         for (j = 1; j < ny1; j++) {
