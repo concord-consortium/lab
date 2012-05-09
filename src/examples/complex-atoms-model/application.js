@@ -56,7 +56,6 @@ $.when(optsLoaded, windowLoaded).done(function(results) {
   // update modelConfig with opts, if any
   $.extend(modelConfig, opts);
   controller = controllers.complexModelController('#molecule-container', '#ke-chart', '#lj-potential-chart', '#speed-distribution-chart', modelConfig, playerConfig);
-  window.cont = controller;
   $('#save-button').attr("disabled", "disabled").click(function() {
     var props     = model.serialize(true),
         propsStr  = JSON.stringify(props, 2),
