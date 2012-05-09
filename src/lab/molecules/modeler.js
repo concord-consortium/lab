@@ -72,6 +72,13 @@ modeler.model = function(initialProperties) {
           }
         },
 
+        set_temperature_control: function(tc) {
+          this.temperature_control = tc;
+          if (coreModel) {
+            coreModel.useThermostat(tc);
+          }
+        },
+
         set_coulomb_forces: function(cf) {
           this.coulomb_forces = cf;
           if (coreModel) {
@@ -611,7 +618,7 @@ modeler.model = function(initialProperties) {
   //          a hash specifying the x,y,vx,vy properties of the atoms
   model.createNewAtoms = function(config) {
     createNewCoreModel(config);
-  }
+  };
 
   model.set = function(hash) {
     set_properties(hash);
