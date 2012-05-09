@@ -277,11 +277,11 @@ controllers.complexModelController =
       }
 
       mol_number_to_ke_yxais_map = {
-        2: 0.02 * 50 * 2,
-        5: 0.05 * 50 * 5,
-        10: 0.01 * 50 * 10,
-        20: 0.01 * 50 * 20,
-        50: 120,
+        2:   0.02 * 50 * 2,
+        5:   0.05 * 50 * 5,
+        10:  0.01 * 50 * 10,
+        20:  0.01 * 50 * 20,
+        50:  120,
         100: 0.05 * 50 * 100,
         200: 0.1 * 50 * 200,
         500: 0.2 * 50 * 500
@@ -329,6 +329,7 @@ controllers.complexModelController =
       molecule_container.setup_particles();
       layout.setupScreen(viewLists);
       step_counter = model.stepCounter();
+      select_molecule_number.value = atoms.length;
 
       modelStop();
       model.on("tick", modelListener);
