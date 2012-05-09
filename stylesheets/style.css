@@ -98,8 +98,8 @@ h4 {
 
 #container {
     position: relative;
-    width: 1360px !important;
-    min-width: 1360px !important; /*padding: 10px 10px 10px 50px;*/
+    width: 1060px !important;
+    min-width: 1060px !important; /*padding: 10px 10px 10px 50px;*/
     margin: 0 auto;
     border: 0;
     clear: both;
