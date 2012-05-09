@@ -155,7 +155,13 @@ layout.setupScreen = function(viewLists) {
   if (layout.transform) {
     $('input[type=checkbox]').css(layout.transform, 'scale(' + layout.checkbox_factor + ',' + layout.checkbox_factor + ')');
   }
-  layout.setupTemperature();
+
+  layout.setupTemperature(model);
+  if (layout.temperature_control_checkbox) {
+    model.addPropertiesListener(["temperature_control"], layout.temperatureControlUpdate);
+    layout.temperatureControlUpdate();
+  }
+
   if (benchmarks_table) {
     benchmarks_table.style.display = "none";
   }
