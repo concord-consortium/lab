@@ -33,7 +33,7 @@ guard 'haml',         :input => 'test', :output => 'test', :all_on_start => fals
 end
 
 guard 'shell' do
-  watch(%r{(src\/lab\/.+)|(src\/md-engine\/.+)}) do |match|
+  watch(%r{(src\/lab\/.+)|(src\/md-engine\/.+)|(src\/mw-helpers\/.+)}) do |match|
     puts match[0]
     puts "re-generating javascript libraries and css resources for these libraries ..."
     command("make")
