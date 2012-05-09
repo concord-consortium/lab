@@ -51,7 +51,9 @@ controllers.complexModelController =
       mol_number_to_speed_yaxis_map,
       potentialChart,
       speedDistributionChart,
-      viewLists;
+      viewLists,
+      select_molecule_number,
+      radio_randomize_pos_vel;
 
   function controller() {
 
@@ -260,10 +262,17 @@ controllers.complexModelController =
       // ------------------------------------------------------------
 
       select_molecule_number = document.getElementById("select-molecule-number");
+      radio_randomize_pos_vel = document.getElementById("radio-randomize-pos-vel");
+      checkbox_thermalize = document.getElementById("checkbox-thermalize");
 
       function selectMoleculeNumberChange() {
         mol_number = +select_molecule_number.value;
         modelReset();
+        if (checkbox_thermalize.checked) {
+          model.relax();
+          molecule_container.update_molecule_positions();
+        }
+        radio_randomize_pos_vel.checked = false
         updateMolNumberViewDependencies();
       }
 
@@ -297,6 +306,7 @@ controllers.complexModelController =
       }
 
       select_molecule_number.onchange = selectMoleculeNumberChange;
+      radio_randomize_pos_vel.onclick = selectMoleculeNumberChange;
 
       select_molecule_number.value = mol_number;
 
