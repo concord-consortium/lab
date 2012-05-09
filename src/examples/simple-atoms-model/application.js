@@ -66,9 +66,11 @@
         contentType: 'application/json',
         data: propsStr
       }).done(function(data) {
-        var loc  = req.getResponseHeader('Location'),
-            hash = '#' + /\/model-config\/(.*)$/.exec(loc)[1],
-            url = /[^#]*/.exec(document.location.href)[0] + hash;
+        var loc  = req.getResponseHeader('Location');
+
+        hash = '#' + /\/model-config\/(.*)$/.exec(loc)[1];
+
+        var url = /[^#]*/.exec(document.location.href)[0] + hash;
 
         document.location.hash = hash;
 
@@ -100,6 +102,12 @@
         $('#save-button').attr("disabled", "disabled");
       }
     });
+  });
+
+  $(window).bind('hashchange', function() {
+    if (document.location.hash !== hash) {
+      location.reload();
+    }
   });
 
 }());

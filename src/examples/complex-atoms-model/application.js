@@ -56,7 +56,7 @@ $.when(optsLoaded, windowLoaded).done(function(results) {
   // update modelConfig with opts, if any
   $.extend(modelConfig, opts);
   controller = controllers.complexModelController('#molecule-container', '#ke-chart', '#lj-potential-chart', '#speed-distribution-chart', modelConfig, playerConfig);
-
+  window.cont = controller;
   $('#save-button').attr("disabled", "disabled").click(function() {
     var props     = model.serialize(true),
         propsStr  = JSON.stringify(props, 2),
@@ -68,9 +68,9 @@ $.when(optsLoaded, windowLoaded).done(function(results) {
       contentType: 'application/json',
       data: propsStr
     }).done(function(data) {
-      var loc  = req.getResponseHeader('Location'),
-          hash = '#' + /\/model-config\/(.*)$/.exec(loc)[1],
-          url = /[^#]*/.exec(document.location.href)[0] + hash;
+      var loc  = req.getResponseHeader('Location');
+      hash = '#' + /\/model-config\/(.*)$/.exec(loc)[1];
+      var url = /[^#]*/.exec(document.location.href)[0] + hash;
 
       document.location.hash = hash;
       $('#flash').html('Saved to <a href="' + url + '">' + url + '</a>');
@@ -87,6 +87,12 @@ $.when(optsLoaded, windowLoaded).done(function(results) {
       $('#save-button').removeAttr("disabled");
     } else {
       $('#save-button').attr("disabled", "disabled");
+    }
+  });
+
+  $(window).bind('hashchange', function() {
+    if (document.location.hash !== hash) {
+      location.reload();
     }
   });
 });
