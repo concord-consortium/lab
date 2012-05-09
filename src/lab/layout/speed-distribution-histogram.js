@@ -60,10 +60,12 @@ layout.speedDistributionChart = function(e, options) {
   }
 
   function updateSpeedBins() {
-    bins = d3.layout.histogram().frequency(false).bins(xScale.ticks(60))(speedData);
-    barWidth = (size.width - bins.length)/bins.length;
-    lineStep = (options.xmax - options.xmin)/bins.length;
-    speedMax  = d3.max(bins, function(d) { return d.y; });
+    if (speedData.length > 2) {
+      bins = d3.layout.histogram().frequency(false).bins(xScale.ticks(60))(speedData);
+      barWidth = (size.width - bins.length)/bins.length;
+      lineStep = (options.xmax - options.xmin)/bins.length;
+      speedMax  = d3.max(bins, function(d) { return d.y; });
+    }
   }
 
   function scale(w, h) {
