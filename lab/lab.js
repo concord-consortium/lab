@@ -2960,6 +2960,7 @@ exports.makeModel = function() {
         y[i] = props.Y[i];
         vx[i] = props.VX[i];
         vy[i] = props.VY[i];
+        speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
       }
 
       if (props.CHARGE) {
@@ -3264,6 +3265,13 @@ modeler.model = function(initialProperties) {
           }
         },
 
+        set_temperature_control: function(tc) {
+          this.temperature_control = tc;
+          if (coreModel) {
+            coreModel.useThermostat(tc);
+          }
+        },
+
         set_coulomb_forces: function(cf) {
           this.coulomb_forces = cf;
           if (coreModel) {
@@ -3310,6 +3318,29 @@ modeler.model = function(initialProperties) {
     for (var i=0, ii=listeners.length; i<ii; i++){
       listeners[i]();
     }
+  }
+
+  function notifyListenersOfEvents(events) {
+    var evt,
+        evts,
+        waitingToBeNotified = [],
+        i, ii;
+
+    if (typeof events == "string") {
+      evts = [events];
+    } else {
+      evts = events;
+    }
+    for (i=0, ii=evts.length; i<ii; i++){
+      evt = evts[i];
+      if (listeners[evt]) {
+        waitingToBeNotified = waitingToBeNotified.concat(listeners[evt]);
+      }
+    }
+    if (listeners["all"]){      // listeners that want to be notified on any change
+      waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
+    }
+    notifyListeners(waitingToBeNotified);
   }
 
   //
@@ -3440,7 +3471,7 @@ modeler.model = function(initialProperties) {
   }
 
   function set_properties(hash) {
-    var property, waitingToBeNotified = [];
+    var property, propsChanged = [];
     for (property in hash) {
       if (hash.hasOwnProperty(property) && hash[property] !== undefined && hash[property] !== null) {
         // look for set method first, otherwise just set the property
@@ -3449,15 +3480,10 @@ modeler.model = function(initialProperties) {
         } else if (properties[property]) {
           properties[property] = hash[property];
         }
-        if (listeners[property]) {
-          waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
-        }
+        propsChanged.push(property);
       }
     }
-    if (listeners["all"]){      // listeners that want to be notified on any change
-      waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
-    }
-    notifyListeners(waitingToBeNotified);
+    notifyListenersOfEvents(propsChanged);
   }
 
   // Creates a new md2d coreModel
@@ -3734,6 +3760,7 @@ modeler.model = function(initialProperties) {
     stopped = false;
     d3.timer(tick);
     dispatch.play();
+    notifyListenersOfEvents("play");
     return model;
   };
 
@@ -3784,7 +3811,7 @@ modeler.model = function(initialProperties) {
   //          a hash specifying the x,y,vx,vy properties of the atoms
   model.createNewAtoms = function(config) {
     createNewCoreModel(config);
-  }
+  };
 
   model.set = function(hash) {
     set_properties(hash);
@@ -4457,7 +4484,13 @@ layout.setupScreen = function(viewLists) {
   if (layout.transform) {
     $('input[type=checkbox]').css(layout.transform, 'scale(' + layout.checkbox_factor + ',' + layout.checkbox_factor + ')');
   }
-  layout.setupTemperature();
+
+  layout.setupTemperature(model);
+  if (layout.temperature_control_checkbox) {
+    model.addPropertiesListener(["temperature_control"], layout.temperatureControlUpdate);
+    layout.temperatureControlUpdate();
+  }
+
   if (benchmarks_table) {
     benchmarks_table.style.display = "none";
   }
@@ -5091,6 +5124,10 @@ layout.moleculeContainer = function(e, options) {
     }
 
     function setup_particles() {
+      if (typeof atoms == "undefined" || !atoms){
+        return;
+      }
+
       var ljf = model.getLJCalculator().coefficients();
       // molRadius = ljf.rmin * 0.5;
       // model.set_radius(molRadius);
@@ -5807,10 +5844,12 @@ layout.speedDistributionChart = function(e, options) {
   }
 
   function updateSpeedBins() {
-    bins = d3.layout.histogram().frequency(false).bins(xScale.ticks(60))(speedData);
-    barWidth = (size.width - bins.length)/bins.length;
-    lineStep = (options.xmax - options.xmin)/bins.length;
-    speedMax  = d3.max(bins, function(d) { return d.y; });
+    if (speedData.length > 2) {
+      bins = d3.layout.histogram().frequency(false).bins(xScale.ticks(60))(speedData);
+      barWidth = (size.width - bins.length)/bins.length;
+      lineStep = (options.xmax - options.xmin)/bins.length;
+      speedMax  = d3.max(bins, function(d) { return d.y; });
+    }
   }
 
   function scale(w, h) {
@@ -6245,63 +6284,61 @@ if (toggle_datatable) {
 //
 // ------------------------------------------------------------
 
-
 var select_temperature = document.getElementById("select-temperature");
 var select_temperature_display = document.createElement("span");
-if (select_temperature == null) {
-  layout.setupTemperature = function() {};
-}
-else {
-  layout.setupTemperature = function() {
+
+layout.setupTemperature = function(model) {
+  if (select_temperature) {
     if (Modernizr['inputtypes']['range']) {
       var temp_range = document.createElement("input");
       temp_range.type = "range";
       temp_range.min = "0";
       temp_range.max = "25";
       temp_range.step = "0.5";
-      temp_range.value = +select_temperature.value;
+      temp_range.value = model.get("temperature");
       select_temperature.parentNode.replaceChild(temp_range, select_temperature);
       temp_range.id = "select-temperature";
       select_temperature = temp_range;
       select_temperature_display.id = "select-temperature-display";
-      select_temperature_display.innerText = model.temperature();
+      select_temperature_display.innerText = temp_range.value;
       select_temperature.parentNode.appendChild(select_temperature_display);
       select_temperature = document.getElementById("select-temperature");
     }
     select_temperature.onchange = selectTemperatureChange;
   }
+};
 
-  function selectTemperatureChange() {
-    var temperature = +select_temperature.value;
-    if (select_temperature.type === "range") {
-      select_temperature_display.innerText = d3.format("4.1f")(temperature);
-    }
-    model.temperature(temperature);
-  }
-
+function selectTemperatureChange() {
+  var temperature = +select_temperature.value;
   if (select_temperature.type === "range") {
-    var temperature = model.temperature();
-    select_temperature.value =  model.temperature();
     select_temperature_display.innerText = d3.format("4.1f")(temperature);
   }
+  model.set({ "temperature": temperature });
+}
 
-  // ------------------------------------------------------------
-  //
-  // Temperature Control
-  //
-  // ------------------------------------------------------------
 
-  layout.temperature_control_checkbox = document.getElementById("temperature-control-checkbox");
+// ------------------------------------------------------------
+//
+// Temperature Control
+//
+// ------------------------------------------------------------
 
-  function temperatureControlHandler() {
-      if (layout.temperature_control_checkbox.checked) {
-        model.set_temperature_control(true);
-      } else {
-        model.set_temperature_control(false);
-      };
-  };
+layout.temperature_control_checkbox = document.getElementById("temperature-control-checkbox");
 
-  layout.temperature_control_checkbox.onchange = temperatureControlHandler;
+layout.temperatureControlHandler = function () {
+  if (layout.temperature_control_checkbox.checked) {
+    model.set({ "temperature_control": true });
+  } else {
+    model.set({ "temperature_control": false });
+  }
+};
+
+layout.temperatureControlUpdate = function () {
+  layout.temperature_control_checkbox.checked = model.get("temperature_control");
+};
+
+if (layout.temperature_control_checkbox) {
+  layout.temperature_control_checkbox.onchange = layout.temperatureControlHandler;
 }
 // ------------------------------------------------------------
 //
@@ -8236,6 +8273,7 @@ controllers.complexModelController =
       epsilon             = modelConfig.epsilon,
       sigma               = 0.34,
       temperature         = modelConfig.temperature,
+      temperature_control = modelConfig.temperature_control,
       coulomb_forces      = modelConfig.coulomb_forces,
 
       molecule_container,
@@ -8251,7 +8289,9 @@ controllers.complexModelController =
       mol_number_to_speed_yaxis_map,
       potentialChart,
       speedDistributionChart,
-      viewLists;
+      viewLists,
+      select_molecule_number,
+      radio_randomize_pos_vel;
 
   function controller() {
 
@@ -8303,7 +8343,7 @@ controllers.complexModelController =
           temperature: temperature,
           lennard_jones_forces: true,
           coulomb_forces: coulomb_forces,
-          temperature_control: true,
+          temperature_control: temperature_control,
           epsilon: epsilon,
           sigma: sigma
         });
@@ -8425,6 +8465,7 @@ controllers.complexModelController =
       }
 
       model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
+      updateCoulombCheckbox();
 
       // ------------------------------------------------------------
       //
@@ -8459,19 +8500,26 @@ controllers.complexModelController =
       // ------------------------------------------------------------
 
       select_molecule_number = document.getElementById("select-molecule-number");
+      radio_randomize_pos_vel = document.getElementById("radio-randomize-pos-vel");
+      checkbox_thermalize = document.getElementById("checkbox-thermalize");
 
       function selectMoleculeNumberChange() {
         mol_number = +select_molecule_number.value;
         modelReset();
+        if (checkbox_thermalize.checked) {
+          model.relax();
+          molecule_container.update_molecule_positions();
+        }
+        radio_randomize_pos_vel.checked = false
         updateMolNumberViewDependencies();
       }
 
       mol_number_to_ke_yxais_map = {
-        2: 0.02 * 50 * 2,
-        5: 0.05 * 50 * 5,
-        10: 0.01 * 50 * 10,
-        20: 0.01 * 50 * 20,
-        50: 120,
+        2:   0.02 * 50 * 2,
+        5:   0.05 * 50 * 5,
+        10:  0.01 * 50 * 10,
+        20:  0.01 * 50 * 20,
+        50:  120,
         100: 0.05 * 50 * 100,
         200: 0.1 * 50 * 200,
         500: 0.2 * 50 * 500
@@ -8496,6 +8544,7 @@ controllers.complexModelController =
       }
 
       select_molecule_number.onchange = selectMoleculeNumberChange;
+      radio_randomize_pos_vel.onclick = selectMoleculeNumberChange;
 
       select_molecule_number.value = mol_number;
 
@@ -8518,6 +8567,7 @@ controllers.complexModelController =
       molecule_container.setup_particles();
       layout.setupScreen(viewLists);
       step_counter = model.stepCounter();
+      select_molecule_number.value = atoms.length;
 
       modelStop();
       model.on("tick", modelListener);
@@ -8689,3 +8739,215 @@ controllers.complexModelController =
   controller();
   return controller;
 };})();
+(function() {
+
+  window.MWHelpers = {};
+
+  /*
+    Parses an mml file and returns an object containing the stringified JSON
+  
+    @return
+      json: jsonString of the model
+      errors: array of errors encountered
+  */
+
+  MWHelpers.parseMML = function(mmlString) {
+    /* perform any pre-processing on the string
+    */
+    var $mml, $node, $pair, $type, atom, atomNodes, atoms, charge, elem1, elem2, elemId, elemTypes, epsilon, epsilonPairs, getNode, height, id, json, jsonObj, labHeight, labWidth, mass, name, node, pair, rx, ry, sigma, type, typesArr, value, vx, vy, width, x, y, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3, _ref4;
+    mmlString = mmlString.replace(/class=".*"/g, function(match) {
+      return match.replace(/[\.$]/g, "-");
+    });
+    /* parse the string into XML Document using jQuery and get a jQuery object
+    */
+    $mml = $($.parseXML(mmlString));
+    getNode = function($entity) {
+      if ($entity.attr("idref")) return $mml.find("#" + ($entity.attr("idref")));
+      return $entity;
+    };
+    /*
+        Find all elements. Results in:
+        [
+          {
+            name: name,
+            mass: num,
+            sigma: num
+            epsilon: []
+          },
+          { ...
+        ]
+        Elements are sometimes referred to in MML files by the order they are defined in,
+        instead of by name, so we put these in an array instead of a hash so we can get both
+    */
+    typesArr = $mml.find(".org-concord-mw2d-models-Element");
+    elemTypes = [];
+    for (_i = 0, _len = typesArr.length; _i < _len; _i++) {
+      type = typesArr[_i];
+      $type = $(type);
+      name = $type.attr('id');
+      id = ((_ref = $type.find("[property=ID]>int")[0]) != null ? _ref.textContent : void 0) || 0;
+      mass = (_ref2 = $type.find("[property=mass]>double")[0]) != null ? _ref2.textContent : void 0;
+      sigma = (_ref3 = $type.find("[property=sigma]>double")[0]) != null ? _ref3.textContent : void 0;
+      elemTypes[id] = {
+        name: id,
+        mass: mass,
+        sigma: sigma,
+        epsilon: []
+      };
+    }
+    /*
+        Find all the epsilon forces between elements. Add the properties to the elementTypes
+        array so that we get:
+        [
+          {
+            name: name,
+            mass: num,
+            sigma: num,
+            epsilon: [
+              num0,
+              num1,
+              num2...
+            ]
+          },
+          { ...
+        ]
+        where num0 is the epsilon between this first element and the second, num1 is the epsilon between
+        this first element and the third, etc.
+    */
+    epsilonPairs = $mml.find(".org-concord-mw2d-models-Affinity [property=epsilon]>[method=put]");
+    for (_j = 0, _len2 = epsilonPairs.length; _j < _len2; _j++) {
+      pair = epsilonPairs[_j];
+      $pair = getNode($(pair));
+      elem1 = parseInt(getNode($pair.find("[property=element1]>object")).find("[property=ID]>int").text() || 0);
+      elem2 = parseInt(getNode($pair.find("[property=element2]>object")).find("[property=ID]>int").text() || 0);
+      value = $pair.find(">double").text();
+      elemTypes[elem1].epsilon[elem2] = value;
+      elemTypes[elem2].epsilon[elem1] = value;
+    }
+    /*
+        Find all atoms. We end up with:
+          [
+            {
+              element: num,
+              x: num,
+              y: num,
+              vx: num,
+              vy: num,
+              charge: num
+            },
+            {...
+          ]
+    */
+    atoms = [];
+    atomNodes = $mml.find(".org-concord-mw2d-models-Atom");
+    for (_k = 0, _len3 = atomNodes.length; _k < _len3; _k++) {
+      node = atomNodes[_k];
+      $node = getNode($(node));
+      elemId = parseInt(((_ref4 = $node.find("[property=ID]")[0]) != null ? _ref4.textContent : void 0) || 0);
+      x = parseFloat($node.find("[property=rx]").text());
+      y = parseFloat($node.find("[property=ry]").text());
+      vx = parseFloat($node.find("[property=vx]").text() || 0);
+      vy = parseFloat($node.find("[property=vy]").text() || 0);
+      atoms.push({
+        element: elemId,
+        x: x,
+        y: y,
+        vx: vx,
+        vy: vy,
+        charge: 0
+      });
+    }
+    /*
+        Find the container size
+    */
+    width = parseInt($mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate>[property=width]").find(">double").text());
+    height = parseInt($mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate>[property=height]").find(">double").text());
+    /* Put everything together into Lab's JSON format
+    */
+    x = (function() {
+      var _l, _len4, _results;
+      _results = [];
+      for (_l = 0, _len4 = atoms.length; _l < _len4; _l++) {
+        atom = atoms[_l];
+        _results.push(atom.x);
+      }
+      return _results;
+    })();
+    y = (function() {
+      var _l, _len4, _results;
+      _results = [];
+      for (_l = 0, _len4 = atoms.length; _l < _len4; _l++) {
+        atom = atoms[_l];
+        _results.push(atom.y);
+      }
+      return _results;
+    })();
+    vx = (function() {
+      var _l, _len4, _results;
+      _results = [];
+      for (_l = 0, _len4 = atoms.length; _l < _len4; _l++) {
+        atom = atoms[_l];
+        _results.push(atom.vx);
+      }
+      return _results;
+    })();
+    vy = (function() {
+      var _l, _len4, _results;
+      _results = [];
+      for (_l = 0, _len4 = atoms.length; _l < _len4; _l++) {
+        atom = atoms[_l];
+        _results.push(atom.vy);
+      }
+      return _results;
+    })();
+    charge = (function() {
+      var _l, _len4, _results;
+      _results = [];
+      for (_l = 0, _len4 = atoms.length; _l < _len4; _l++) {
+        atom = atoms[_l];
+        _results.push(atom.charge);
+      }
+      return _results;
+    })();
+    labWidth = 10;
+    labHeight = 10;
+    x = (function() {
+      var _l, _len4, _results;
+      _results = [];
+      for (_l = 0, _len4 = x.length; _l < _len4; _l++) {
+        rx = x[_l];
+        _results.push(rx * (labWidth / width));
+      }
+      return _results;
+    })();
+    y = (function() {
+      var _l, _len4, _results;
+      _results = [];
+      for (_l = 0, _len4 = y.length; _l < _len4; _l++) {
+        ry = y[_l];
+        _results.push(labHeight - (ry * (labHeight / height)));
+      }
+      return _results;
+    })();
+    epsilon = elemTypes[0].epsilon[1];
+    epsilon = -epsilon;
+    jsonObj = {
+      temperature_control: false,
+      epsilon: epsilon,
+      lennard_jones_forces: true,
+      coulomb_forces: false,
+      atoms: {
+        X: x,
+        Y: y,
+        VX: vx,
+        VY: vy,
+        CHARGE: charge
+      }
+    };
+    json = JSON.stringify(jsonObj, null, 2);
+    return {
+      json: json
+    };
+  };
+
+}).call(this);

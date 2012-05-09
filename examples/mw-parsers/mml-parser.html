@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html;charset=utf-8' http-equiv='Content-Type' />
+    <title>MML to JSON converter</title>
+    <link href='../../examples/examples.css' rel='stylesheet' type='text/css' />
+    <script src='../../vendor/modernizr/modernizr.js' type='text/javascript'></script>
+    <script src='../../vendor/jquery/jquery.min.js' type='text/javascript'></script>
+    <script src='../../lab/lab.mw-helpers.js' type='text/javascript'></script>
+    <script src='application.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <div id='header'>
+      <a href='http://www.concord.org/' id='logo'>
+        <img src='../../resources/layout/cc-logo.png' />
+      </a>
+      <h1>MML Parser</h1>
+    </div>
+    <div class='description' style='margin-left: 20%; width: 60%'>
+      <p>
+        This MML to JSON converter will parse an MML file and produce a JSON file that
+        matches the molecule set-up to the best of NextGen MW Lab's current specifications.
+      </p>
+    </div>
+    <div style='text-align: center;'>
+      <textarea cols='60' id='input' rows='25'></textarea>
+      <button id='convert'>
+        Convert =>
+      </button>
+      <textarea cols='60' id='output' rows='25'></textarea>
+    </div>
+  </body>
+</html>

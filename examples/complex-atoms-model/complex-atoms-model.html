@@ -52,15 +52,25 @@
             <ul>
               <li>
                 <fieldset>
-                  <legend>Molecules</legend>
+                  <legend>Setup Random Atoms</legend>
                   <select id='select-molecule-number'>
+                    <option value='2'>2</option>
+                    <option value='4'>4</option>
                     <option value='10'>10</option>
-                    <option selected='selected' value='20'>20</option>
-                    <option value='50'>50</option>
+                    <option value='20'>20</option>
+                    <option selected='selected' value='50'>50</option>
                     <option value='100'>100</option>
                     <option value='200'>200</option>
                     <option value='500'>500</option>
                   </select>
+                  <label>
+                    Thermalize
+                    <input checked='checked' id='checkbox-thermalize' type='checkbox' />
+                  </label>
+                  <label>
+                    Randomize Velocity
+                    <input id='radio-randomize-pos-vel' type='radio' />
+                  </label>
                 </fieldset>
               </li>
               <li>
@@ -89,6 +99,12 @@
                     <input id='coulomb-forces-checkbox' type='checkbox' />
                   </label>
                 </fieldset>
+              </li>
+              <li>
+                <button class='component button' id='save-button' style='width: 5em; display: block'>
+                  Save
+                </button>
+                <div id='flash'></div>
               </li>
               <br />
               <ul>

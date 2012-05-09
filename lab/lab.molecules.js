@@ -1686,6 +1686,7 @@ exports.makeModel = function() {
         y[i] = props.Y[i];
         vx[i] = props.VX[i];
         vy[i] = props.VY[i];
+        speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
       }
 
       if (props.CHARGE) {
@@ -1990,6 +1991,13 @@ modeler.model = function(initialProperties) {
           }
         },
 
+        set_temperature_control: function(tc) {
+          this.temperature_control = tc;
+          if (coreModel) {
+            coreModel.useThermostat(tc);
+          }
+        },
+
         set_coulomb_forces: function(cf) {
           this.coulomb_forces = cf;
           if (coreModel) {
@@ -2036,6 +2044,29 @@ modeler.model = function(initialProperties) {
     for (var i=0, ii=listeners.length; i<ii; i++){
       listeners[i]();
     }
+  }
+
+  function notifyListenersOfEvents(events) {
+    var evt,
+        evts,
+        waitingToBeNotified = [],
+        i, ii;
+
+    if (typeof events == "string") {
+      evts = [events];
+    } else {
+      evts = events;
+    }
+    for (i=0, ii=evts.length; i<ii; i++){
+      evt = evts[i];
+      if (listeners[evt]) {
+        waitingToBeNotified = waitingToBeNotified.concat(listeners[evt]);
+      }
+    }
+    if (listeners["all"]){      // listeners that want to be notified on any change
+      waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
+    }
+    notifyListeners(waitingToBeNotified);
   }
 
   //
@@ -2166,7 +2197,7 @@ modeler.model = function(initialProperties) {
   }
 
   function set_properties(hash) {
-    var property, waitingToBeNotified = [];
+    var property, propsChanged = [];
     for (property in hash) {
       if (hash.hasOwnProperty(property) && hash[property] !== undefined && hash[property] !== null) {
         // look for set method first, otherwise just set the property
@@ -2175,15 +2206,10 @@ modeler.model = function(initialProperties) {
         } else if (properties[property]) {
           properties[property] = hash[property];
         }
-        if (listeners[property]) {
-          waitingToBeNotified = waitingToBeNotified.concat(listeners[property]);
-        }
+        propsChanged.push(property);
       }
     }
-    if (listeners["all"]){      // listeners that want to be notified on any change
-      waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
-    }
-    notifyListeners(waitingToBeNotified);
+    notifyListenersOfEvents(propsChanged);
   }
 
   // Creates a new md2d coreModel
@@ -2460,6 +2486,7 @@ modeler.model = function(initialProperties) {
     stopped = false;
     d3.timer(tick);
     dispatch.play();
+    notifyListenersOfEvents("play");
     return model;
   };
 
@@ -2510,7 +2537,7 @@ modeler.model = function(initialProperties) {
   //          a hash specifying the x,y,vx,vy properties of the atoms
   model.createNewAtoms = function(config) {
     createNewCoreModel(config);
-  }
+  };
 
   model.set = function(hash) {
     set_properties(hash);
