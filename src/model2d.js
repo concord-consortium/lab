@@ -2051,69 +2051,38 @@ model2d.displayTemperatureCanvas = function(canvas, model) {
     
     var hue, rgb;
 
-    var x0, y0, y0stride;
-
     var t = model.t;
-    var min = model2d.getMinAnyArray(t);
-    var max = model2d.getMaxAnyArray(t);
+    
+    // constants, as looking for min and max temperature caused that  
+    // areas with constant temperatures were chaning their color
+    var min = 0; // model2d.getMinAnyArray(t);
+    var max = 50; //model2d.getMaxAnyArray(t);
+    
     var scale = 255 / (max - min);
     var temp;
     var imageData = ctx.getImageData(0, 0, real_width, real_height);
     var data = imageData.data;
+    var x, x0, x1, s0, s1, y, y0, y1, t0, t1, x0stride, x1stride;
     var pix_index = 0;
-    for (var y = 0; y < real_height; y++) {
-        y0 = Math.floor(y * dy);
-        y0stride = y0 * nx;
-        for (var x = 0; x < real_width; x++) {
-            x0 = Math.floor(x * dx);
-            temp = model.t[y0stride + x0];
-            hue =  Math.abs(Math.round(scale * temp - min) - 255);
-            data[pix_index]     = red_color_table[hue];
-            data[pix_index + 1] = blue_color_table[hue];
-            data[pix_index + 2] = green_color_table[hue];
-            data[pix_index + 3] = 255;
-            pix_index += 4;
-        }
-    };
-    ctx.putImageData(imageData, 0, 0);
-};
-
-model2d.displayTemperatureCanvasScaled = function(canvas, model) {
-    if (red_color_table.length == 0) {
-        model2d.setupRGBAColorTables;
-    };
-    var ctx = canvas.getContext('2d');
-    ctx.fillStyle = "rgb(0,0,0)";
-    ctx.globalCompositeOperation = "destination-atop";
-
-    var columns = model.nx;
-    var rows = model.ny;
-
-    canvas.style.width = canvas.clientWidth + 'px';
-    canvas.style.height = canvas.clientHeight + 'px';
-
-    // TODO: is it necessary during every frame?
-    canvas.width = columns;
-    canvas.height = rows;
-    
-    var hue, rgb;
-
-    var ycols;
-
-    var t = model.t;
-    var min = model2d.getMinAnyArray(t);
-    var max = model2d.getMaxAnyArray(t);
-    var scale = 255/(max - min);
-    var temp;
-    var imageData = ctx.getImageData(0, 0, 100, 100);
-    var data = imageData.data;
-    var pix_index = 0;
-    for (var y = 0; y < rows; y++) {
-        ycols = y * rows;
-        pix_index = y * 400;
-        for (var x = 0; x < columns; x++) {
-            temp = model.t[ycols + x];
-            hue =  Math.abs(Math.round(scale * temp - min) - 255);
+    for (var i = 0; i < real_width; i++) {
+        x = i * dx;
+        x0 = Math.floor(x);
+        x1 = x0 + 1 < nx ? x0 + 1 : x0;
+        s1 = x - x0;
+        s0 = 1 - s1;
+        x0stride = x0 * nx;
+        x1stride = x1 * nx;
+        for (var j = 0; j < real_height; j++) {
+            y = j * dy;
+            y0 = Math.floor(y);
+            y1 = y0 + 1 < ny ? y0 + 1 : y0;
+            t1 = y - y0;
+            t0 = 1 - t1;
+            avg_temp = s0 * (t0 * t[x0stride + y0] + t1 * t[x0stride + y1]) +
+                       s1 * (t0 * t[x1stride + y0] + t1 * t[x1stride + y1]);
+            hue =  255 - Math.round(scale * (avg_temp - min));
+            if (hue < 0) hue = 0;
+            else if (hue > 255) hue = 255;
             data[pix_index]     = red_color_table[hue];
             data[pix_index + 1] = blue_color_table[hue];
             data[pix_index + 2] = green_color_table[hue];
@@ -2249,25 +2218,6 @@ model2d.displayTemperatureTable = function(destination, model) {
             ycols_plus_x = ycols + x;
             temp = model.t[ycols_plus_x];
             tableStr += sprintf("%2.0f ", temp);
-        }
-        tableStr += '\n';
-    }
-    destination.innerHTML = tableStr;
-};
-
-// TODO: remove it 
-model2d.displayScalarTable = function(destination, model, values) {
-    var columns = model.nx;
-    var rows = model.ny;
-    var ycols, ycols_plus_x;
-    var val;
-    var tableStr = "";
-    for (y = 0; y < rows; y++) {
-        ycols = y * rows;
-        for (x = 0; x < columns; x++) {
-            ycols_plus_x = ycols + x;
-            val = values[ycols_plus_x];
-            tableStr += sprintf("%f ", val);
         }
         tableStr += '\n';
     }
