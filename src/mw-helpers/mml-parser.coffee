@@ -129,7 +129,7 @@ MWHelpers.parseMML = (mmlString) ->
   epsilon = -epsilon
 
   jsonObj =
-    temperature         : 3
+    temperature_control : false
     epsilon             : epsilon
     lennard_jones_forces: true,
     coulomb_forces      : false
