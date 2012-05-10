@@ -571,7 +571,7 @@ layout.moleculeContainer = function(e, options) {
     }
 
     function molecule_mouseout() {
-      if (!atom_tooltip_on) {
+      if (typeof(atom_tooltip_on) !== "number") {
         molecule_div.style("opacity", 1e-6);
       }
     }
@@ -596,7 +596,7 @@ layout.moleculeContainer = function(e, options) {
           return y(nodes[model.INDICES.Y][i]); })
         .attr("r",  function(d, i) {
           return x(nodes[model.INDICES.RADIUS][i]); });
-      if (atom_tooltip_on) {
+      if ((typeof(atom_tooltip_on) === "number")) {
         render_atom_tooltip(atom_tooltip_on);
       }
     }
