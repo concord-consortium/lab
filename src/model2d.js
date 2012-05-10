@@ -335,7 +335,7 @@ model2d.Model2D = function(options, array_type) {
     // internal temperature boundary array
     this.tb = createArray(model2d.ARRAY_SIZE, 0);
 
-    for (i = 0; i < model2d.ARRAY_SIZE; i++) {
+    for (var i = 0; i < model2d.ARRAY_SIZE; i++) {
         this.t[i] = this.backgroundTemperature;
         this.tb[i] = NaN;
     }
@@ -355,25 +355,25 @@ model2d.Model2D = function(options, array_type) {
     
     // conductivity array
     this.conductivity = createArray(model2d.ARRAY_SIZE, 0);
-    for (i = 0; i < model2d.ARRAY_SIZE; i++) {
+    for (var i = 0; i < model2d.ARRAY_SIZE; i++) {
         this.conductivity[i] = this.backgroundConductivity;
     }
     
     // specific heat capacity array
     this.capacity = createArray(model2d.ARRAY_SIZE, 0);
-    for (i = 0; i < model2d.ARRAY_SIZE; i++) {
+    for (var i = 0; i < model2d.ARRAY_SIZE; i++) {
         this.capacity[i] = this.backgroundSpecificHeat;
     }
     
     // density array
     this.density = createArray(model2d.ARRAY_SIZE, 0);
-    for (i = 0; i < model2d.ARRAY_SIZE; i++) {
+    for (var i = 0; i < model2d.ARRAY_SIZE; i++) {
         this.density[i] = this.backgroundDensity;
     }
     
     // fluid cell array
     this.fluidity = createArray(model2d.ARRAY_SIZE, 0);
-    for (i = 0; i < model2d.ARRAY_SIZE; i++) {
+    for (var i = 0; i < model2d.ARRAY_SIZE; i++) {
         this.fluidity[i] = true;
     }
     
@@ -410,9 +410,9 @@ model2d.Model2D = function(options, array_type) {
 
 model2d.Model2D.prototype.reset = function() {
     var array_size = model2d.ARRAY_SIZE;
-    for (i = 0; i < array_size; i++) {
+    for (var i = 0; i < array_size; i++) {
         
-        for (i = 0; i < model2d.ARRAY_SIZE; i++) {
+        for (var i = 0; i < model2d.ARRAY_SIZE; i++) {
             this.t[i] = this.backgroundTemperature;
             this.tb[i] = NaN;
         }
@@ -478,14 +478,8 @@ model2d.Model2D.prototype.setSunny = function(sunny) {
 };
 
 model2d.Model2D.prototype.refreshPowerArray = function() {
-    var x, y;
-
     var nx = this.nx;
     var ny = this.ny;
-    var nx1 = this.nx1;
-    var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
     
     var deltaX = this.deltaX;
     var deltaY = this.deltaY;
@@ -494,10 +488,10 @@ model2d.Model2D.prototype.refreshPowerArray = function() {
     
     this.checkPartPower();
 
-    for (i = 0; i < nx; i++) {
+    for (var i = 0; i < nx; i++) {
         x = i * deltaX;
         inx = i * nx;
-        for (j = 0; j < ny; j++) {
+        for (var j = 0; j < ny; j++) {
             y = j * deltaY;
             
             jinx = inx + j;
@@ -523,21 +517,15 @@ model2d.Model2D.prototype.refreshPowerArray = function() {
 };
 
 model2d.Model2D.prototype.refreshTemperatureBoundaryArray = function() {
-    var x, y;
-
     var nx = this.nx;
     var ny = this.ny;
-    var nx1 = this.nx1;
-    var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
     
-    var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
+    var inx, jinx;
 
-    for (i = 0; i < nx; i++) {
+    for (var i = 0; i < nx; i++) {
         inx = i * nx;
         x = i * deltaX;
-        for (j = 0; j < ny; j++) {
+        for (var j = 0; j < ny; j++) {
             
             jinx = inx + j;
             // jinx_minus_nx = jinx - nx;
@@ -596,15 +584,13 @@ model2d.Model2D.prototype.checkPartRadiation = function() {
 
 
 
-
 //
 // Utilities
 //
 
 model2d.copyArray = function(destination, source) {
     var source_length = source.length;
-    var destination_length = destination.length;
-    for (i = 0; i < source_length; i++) {
+    for (var i = 0; i < source_length; i++) {
         destination[i] = source[i];
     }
 };
@@ -630,7 +616,7 @@ model2d.getMaxTypedArray = function(array) {
     var max = Number.MIN_VALUE;
     var length = array.length;
     var test;
-    for(i = 0; i < length; i++) {
+    for (var i = 0; i < length; i++) {
         test = array[i];
         max = test > max ? test : max;
     }
@@ -642,7 +628,7 @@ model2d.getMinTypedArray = function(array) {
     var min = Number.MAX_VALUE;
     var length = array.length;
     var test;
-    for(i = 0; i < length; i++) {
+    for (var i = 0; i < length; i++) {
         test = array[i];
         min = test < min ? test : min;
     }
@@ -659,7 +645,7 @@ model2d.getMaxAnyArray = function(array) {
             var max = Number.MIN_VALUE;
             var length = array.length;
             var test;
-            for(i = 0; i < length; i++) {
+            for (var i = 0; i < length; i++) {
                 test = array[i];
                 max = test > max ? test : max;
             }
@@ -678,7 +664,7 @@ model2d.getMinAnyArray = function(array) {
             var min = Number.MAX_VALUE;
             var length = array.length;
             var test;
-            for(i = 0; i < length; i++) {
+            for (var i = 0; i < length; i++) {
                 test = array[i];
                 min = test < min ? test : min;
             }
@@ -691,14 +677,11 @@ model2d.getMinAnyArray = function(array) {
 model2d.getAverage = function(array) {
     var acc = 0;
     var length = array.length;
-    for (i = 0; i < length; i++) {
+    for (var i = 0; i < length; i++) {
         acc += array[i];
     };
     return acc / length;
 };
-
-//TODO: remove it, used only for debugging
-model2d.requestVelocityRedraw = function() {};
 
 // *******************************************************
 //
@@ -744,19 +727,12 @@ model2d.HeatSolver2D.prototype.setGridCellSize = function(deltaX, deltaY) {
 
 model2d.HeatSolver2D.prototype.solve = function(convective, t, q) {
     model2d.copyArray(this.t0, t);
-    
+   
     var nx = this.nx;
-    
-    var nx = this.nx;
-    var ny = this.ny;
     var nx1 = this.nx1;
     var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
     
     var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
-    
-    var inx_minus_nx;
     
     var conductivity = this.conductivity;
     var capacity = this.capacity;
@@ -764,17 +740,16 @@ model2d.HeatSolver2D.prototype.solve = function(convective, t, q) {
 
     var tb = this.tb;
     var t0 = this.t0;
-    //var q = q;
     
     var hx = 0.5 / (this.deltaX * this.deltaX);
     var hy = 0.5 / (this.deltaY * this.deltaY);
     var rij, sij, axij, bxij, ayij, byij;
     var invTimeStep = 1.0 / this.timeStep;
 
-    for (k = 0; k < this.relaxationSteps; k++) {
-        for (i = 1; i < nx1; i++) {
+    for (var k = 0; k < this.relaxationSteps; k++) {
+        for (var i = 1; i < nx1; i++) {
             inx = i * nx;
-            for (j = 1; j < ny1; j++) {
+            for (var j = 1; j < ny1; j++) {
                 jinx = inx + j;
                 if (isNaN(tb[jinx])) {
 
@@ -813,11 +788,8 @@ model2d.HeatSolver2D.prototype.macCormack  = function(t) {
     var ty = 0.5 * this.timeStep / this.deltaY;
     
     var nx = this.nx;
-    var ny = this.ny;
     var nx1 = this.nx1;
     var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
     
     var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
     
@@ -827,10 +799,10 @@ model2d.HeatSolver2D.prototype.macCormack  = function(t) {
     var u = this.u;
     var v = this.v;
 
-    for (i = 1; i < nx1; i++) {
+    for (var i = 1; i < nx1; i++) {
         inx = i * nx;
         inx_minus_nx = inx - nx;
-        for (j = 1; j < ny1; j++) {
+        for (var j = 1; j < ny1; j++) {
             jinx = inx + j;
             jinx_minus_nx = jinx - nx;
             jinx_plus_nx = jinx + nx;
@@ -845,9 +817,9 @@ model2d.HeatSolver2D.prototype.macCormack  = function(t) {
     }
     this.applyBoundary(t0);
 
-    for (i = 1; i < nx1; i++) {
+    for (var i = 1; i < nx1; i++) {
         inx = i * nx;
-        for (j = 1; j < ny1; j++) {
+        for (var j = 1; j < ny1; j++) {
             jinx = inx + j;
             if (fluidity[jinx]) {
                 jinx_minus_nx = jinx - nx;
@@ -876,18 +848,18 @@ model2d.HeatSolver2D.prototype.applyBoundary  = function(t) {
     var deltaY = this.deltaY;
     var b = this.boundary;
     var tN, tS, tW, tE;
-    var inx, inx_minus_nx, jinx, jinx_minus_nx, jinx_plus_nx, jinx_minus_1;
+    var inx;
     if (b instanceof model2d.DirichletHeatBoundary) {
         tN = b.getTemperatureAtBorder(model2d.Boundary_UPPER);
         tS = b.getTemperatureAtBorder(model2d.Boundary_LOWER);
         tW = b.getTemperatureAtBorder(model2d.Boundary_LEFT);
         tE = b.getTemperatureAtBorder(model2d.Boundary_RIGHT);
-        for (i = 0; i < nx; i++) {
+        for (var i = 0; i < nx; i++) {
             inx = i * nx;
             t[inx] = tN;
             t[inx + ny1] = tS;
         }
-        for (j = 0; j <  ny; j++) {
+        for (var j = 0; j <  ny; j++) {
             t[j] = tW;
             t[nx1 * nx + j] = tE;
         }
@@ -896,13 +868,13 @@ model2d.HeatSolver2D.prototype.applyBoundary  = function(t) {
         fS = b.getFluxAtBorder(model2d.Boundary_LOWER);
         fW = b.getFluxAtBorder(model2d.Boundary_LEFT);
         fE = b.getFluxAtBorder(model2d.Boundary_RIGHT);
-        for (i = 0; i < this.nx; i++) {
+        for (var i = 0; i < this.nx; i++) {
             inx = i * nx;
             inx_ny1 = inx + ny1;
             t[inx] = t[inx + 1] + fN * deltaY / conductivity[inx];
             t[inx_ny1] = t[inx + ny2] - fS * deltaY / conductivity[inx_ny1];
         }
-        for (j = 0; j < ny; j++) {
+        for (var j = 0; j < ny; j++) {
             t[j] = t[nx + j] - fW * deltaX / conductivity[j];
             t[nx1 * nx + j] = t[nx2 * nx + j] + fE * deltaX / conductivity[nx1 * nx + j];
         }
@@ -978,7 +950,7 @@ model2d.FluidSolver2D = function(nx, ny, model) {
 
 model2d.FluidSolver2D.prototype.reset = function() {
     var array_size = model2d.ARRAY_SIZE;
-    for (i = 0; i < array_size; i++) {
+    for (var i = 0; i < array_size; i++) {
         this.u0[i] = 0;
         this.v0[i] = 0;
         this.vorticity[i] = 0;
@@ -1024,22 +996,21 @@ model2d.FluidSolver2D.prototype.applyBoundary = function(b, f) {
     var vertical = b == 2;
     
     var nx = this.nx;
-    var ny = this.ny;
     var nx1 = this.nx1;
     var ny1 = this.ny1;
     var nx2 = this.nx2;
     var ny2 = this.ny2;
 
-    var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
+    var inx;
 
     var inx_plus1, inx_plus_ny1, inx_plus_ny2;
-    var nx_plusj, nx2_plusj;
+    var nx_plusj;
     var nx1nx, nx2nx;
     
     nx1nx = nx1 * nx;
     nx2nx = nx2 * nx;
     
-    for (i = 1; i < nx1; i++) {
+    for (var i = 1; i < nx1; i++) {
         inx = i * nx;
         inx_plus1 = inx + 1;
         inx_plus_ny1 = inx + ny1;
@@ -1049,13 +1020,11 @@ model2d.FluidSolver2D.prototype.applyBoundary = function(b, f) {
         // lower side
         f[inx_plus_ny1] = vertical ? -f[inx_plus_ny2] : f[inx_plus_ny2];
     }
-    for (j = 1; j < ny1; j++) {
+    for (var j = 1; j < ny1; j++) {
         // left side
         nx_plusj = nx + j;
-        nx2_plusj = nx2 + j;
         f[j] = horizontal ? -f[nx_plusj] : f[nx_plusj];
         // right side
-        // TODO: check it, changed recently!
         f[nx1nx + j] = horizontal ? -f[nx2nx + j] : f[nx2nx + j];
     }
     
@@ -1064,7 +1033,6 @@ model2d.FluidSolver2D.prototype.applyBoundary = function(b, f) {
     // upper-right corner
     f[nx1nx] = 0.5 * (f[nx2nx] + f[nx1nx + 1]);
     // lower-left corner
-    // TODO: check it, changed recently!
     f[ny1] = 0.5 * (f[nx + ny1] + f[ny2]);
     // lower-right corner
     f[nx1nx + ny1] = 0.5 * (f[nx2nx + ny1] + f[nx1nx + ny2]);
@@ -1076,11 +1044,8 @@ model2d.FluidSolver2D.prototype.setObstacleVelocity = function(u, v) {
     var uw, vw;
     
     var nx = this.nx;
-    var ny = this.ny;
     var nx1 = this.nx1;
     var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
 
     var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
 
@@ -1088,9 +1053,9 @@ model2d.FluidSolver2D.prototype.setObstacleVelocity = function(u, v) {
     var uWind = this.uWind;
     var vWind = this.vWind;
 
-    for (i = 1; i < nx1; i++) {
+    for (var i = 1; i < nx1; i++) {
         inx = i * nx;
-        for (j = 1; j < ny1; j++) {
+        for (var j = 1; j < ny1; j++) {
             jinx = inx + j;
             jinx_minus_nx = jinx - nx;
             jinx_plus_nx = jinx + nx;
@@ -1133,19 +1098,16 @@ model2d.FluidSolver2D.prototype.setObstacleVelocity = function(u, v) {
 model2d.FluidSolver2D.prototype.setObstacleBoundary = function(x) {
     
     var nx = this.nx;
-    var ny = this.ny;
     var nx1 = this.nx1;
     var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
     
     var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
 
     var fluidity = this.fluidity;
     
-    for (i = 1; i < nx1; i++) {
+    for (var i = 1; i < nx1; i++) {
         inx = i * nx;
-        for (j = 1; j < ny1; j++) {
+        for (var j = 1; j < ny1; j++) {
             jinx = inx + j;
             if (!fluidity[jinx]) {
                 
@@ -1177,12 +1139,6 @@ model2d.FluidSolver2D.prototype.getMeanTemperature = function(i, j) {
     
     var nx = this.nx;
     var ny = this.ny;
-    var nx1 = this.nx1;
-    var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
-    
-    var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
     
     var inx_plus_k;
     
@@ -1190,7 +1146,7 @@ model2d.FluidSolver2D.prototype.getMeanTemperature = function(i, j) {
     var t = this.t;
     
     // search for the upper bound
-    for (k = j - 1; k > 0; k--) {
+    for (var k = j - 1; k > 0; k--) {
         inx_plus_k = i * nx + k;
         if (!fluidity[inx_plus_k]) {
             lowerBound = k;
@@ -1198,7 +1154,7 @@ model2d.FluidSolver2D.prototype.getMeanTemperature = function(i, j) {
         }
     }
 
-    for (k = j + 1; k < ny; k++) {
+    for (var k = j + 1; k < ny; k++) {
         inx_plus_k = i * nx + k;
         if (!fluidity[inx_plus_k]) {
             upperBound = k;
@@ -1206,7 +1162,7 @@ model2d.FluidSolver2D.prototype.getMeanTemperature = function(i, j) {
         }
     }
 
-    for (k = lowerBound; k < upperBound; k++) {
+    for (var k = lowerBound; k < upperBound; k++) {
         inx_plus_k = i * nx + k;
         t0 += t[inx_plus_k];
     }
@@ -1220,34 +1176,20 @@ model2d.FluidSolver2D.prototype.applyBuoyancy = function(f) {
     var t0;
     
     var nx = this.nx;
-    var ny = this.ny;
     var nx1 = this.nx1;
     var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
-
-    var deltaX = this.deltaX;
-    var deltaY = this.deltaY;
-
-    var idxsq = this.idxsq;
-    var idysq = this.idysq;
-
-    var i2dx = this.i2dx;
-    var i2dy = this.i2dy;
 
     var fluidity = this.fluidity;
     var t = this.t;
-    var vorticity = this.vorticity;
 
-    var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
-    
+    var inx, jinx;
     
     switch (this.buoyancyApproximation) {
     case model2d.BUOYANCY_AVERAGE_ALL:
         t0 = MathUtil.getAverage(t);
-        for (i = 1; i < nx1; i++) {
+        for (var i = 1; i < nx1; i++) {
             inx = i * nx;
-            for (j = 1; j < ny1; j++) {
+            for (var j = 1; j < ny1; j++) {
                 jinx = inx + j;
                 if (fluidity[jinx]) {
                     f[jinx] += (g - b) * t[jinx] + b * t0;
@@ -1256,9 +1198,9 @@ model2d.FluidSolver2D.prototype.applyBuoyancy = function(f) {
         }
         break;
     case model2d.BUOYANCY_AVERAGE_COLUMN:
-        for (i = 1; i < nx1; i++) {
+        for (var i = 1; i < nx1; i++) {
             inx = i * nx;
-            for (j = 1; j < ny1; j++) {
+            for (var j = 1; j < ny1; j++) {
                 jinx = inx + j;
                 if (fluidity[jinx]) {
                     t0 = this.getMeanTemperature(i, j);
@@ -1280,11 +1222,8 @@ model2d.FluidSolver2D.prototype.applyBuoyancy = function(f) {
 model2d.FluidSolver2D.prototype.conserve = function(u, v, phi, div) {
 
     var nx = this.nx;
-    var ny = this.ny;
     var nx1 = this.nx1;
     var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
 
     var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
 
@@ -1295,11 +1234,10 @@ model2d.FluidSolver2D.prototype.conserve = function(u, v, phi, div) {
     var i2dy = this.i2dy;
 
     var fluidity = this.fluidity;
-    var vorticity = this.vorticity;
 
-    for (i = 1; i < nx1; i++) {
+    for (var i = 1; i < nx1; i++) {
         inx = i * nx;
-        for (j = 1; j < ny1; j++) {
+        for (var j = 1; j < ny1; j++) {
             jinx = inx + j;
             if (fluidity[jinx]) {
 
@@ -1321,10 +1259,10 @@ model2d.FluidSolver2D.prototype.conserve = function(u, v, phi, div) {
 
     var s = 0.5 / (idxsq + idysq);
 
-    for (k = 0; k < this.relaxationSteps; k++) {
-        for (i = 1; i < nx1; i++) {
+    for (var k = 0; k < this.relaxationSteps; k++) {
+        for (var i = 1; i < nx1; i++) {
             inx = i * nx;
-            for (j = 1; j < ny1; j++) {
+            for (var j = 1; j < ny1; j++) {
                 jinx = inx + j;
                 if (fluidity[jinx]) {
                     
@@ -1341,9 +1279,9 @@ model2d.FluidSolver2D.prototype.conserve = function(u, v, phi, div) {
         }
     }
 
-    for (i = 1; i < nx1; i++) {
+    for (var i = 1; i < nx1; i++) {
         inx = i * nx;
-        for (j = 1; j < ny1; j++) {
+        for (var j = 1; j < ny1; j++) {
             jinx = inx + j;
             if (fluidity[jinx]) {
                 
@@ -1379,24 +1317,21 @@ model2d.FluidSolver2D.prototype.calculateStreamFunction = function() {
     var s = 0.5 / (this.idxsq + this.idysq);
 
     var nx = this.nx;
-    var ny = this.ny;
     var nx1 = this.nx1;
     var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
 
     var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
 
     var fluidity = this.fluidity;
     var vorticity = this.vorticity;
 
-    for (i = 0; i < nx; i++) {
+    for (var i = 0; i < nx; i++) {
         stream[i] = 0;
     }
-    for (k = 0; k < this.relaxationSteps; k++) {
-        for (i = 1; i < nx1; i++) {
+    for (var k = 0; k < this.relaxationSteps; k++) {
+        for (var i = 1; i < nx1; i++) {
             inx = i * nx;
-            for (j = 1; j < ny1; j++) {
+            for (var j = 1; j < ny1; j++) {
                 jinx = inx + j;
                 if (fluidity[jinx]) {
                     
@@ -1421,11 +1356,8 @@ model2d.FluidSolver2D.prototype.calculateVorticity = function(u, v) {
     var du_dy, dv_dx;
     
     var nx = this.nx;
-    var ny = this.ny;
     var nx1 = this.nx1;
     var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
 
     var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
 
@@ -1435,9 +1367,9 @@ model2d.FluidSolver2D.prototype.calculateVorticity = function(u, v) {
     var fluidity = this.fluidity;
     var vorticity = this.vorticity;
     
-    for (i = 1; i < nx1; i++) {
+    for (var i = 1; i < nx1; i++) {
         inx = i * nx;
-        for (j = 1; j < ny1; j++) {
+        for (var j = 1; j < ny1; j++) {
             jinx = inx + j;
             if (fluidity[jinx]) {
 
@@ -1454,12 +1386,11 @@ model2d.FluidSolver2D.prototype.calculateVorticity = function(u, v) {
     }
     this.applyBoundary(0, vorticity);
     this.setObstacleBoundary(vorticity);
-}
+};
 
 
 // int b, float[][] f0, float[][] f
 model2d.FluidSolver2D.prototype.diffuse = function(b, f0, f) {
-
     model2d.copyArray(f0, f);
 
     var hx = this.timeStep * this.viscosity * this.idxsq;
@@ -1469,18 +1400,15 @@ model2d.FluidSolver2D.prototype.diffuse = function(b, f0, f) {
     var fluidity = this.fluidity;
 
     var nx = this.nx;
-    var ny = this.ny;
     var nx1 = this.nx1;
     var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
 
     var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
 
-    for (k = 0; k < this.relaxationSteps; k++) {
-        for (i = 1; i < nx1; i++) {
+    for (var k = 0; k < this.relaxationSteps; k++) {
+        for (var i = 1; i < nx1; i++) {
             inx = i * nx;
-            for (j = 1; j < ny1; j++) {
+            for (var j = 1; j < ny1; j++) {
                 jinx = inx + j;
                 if (fluidity[jinx]) {
                     
@@ -1513,11 +1441,8 @@ model2d.FluidSolver2D.prototype.macCormack = function(b, f0, f) {
     var ty = 0.5 * this.timeStep / this.deltaY;
 
     var nx = this.nx;
-    var ny = this.ny;
     var nx1 = this.nx1;
     var ny1 = this.ny1;
-    var nx2 = this.nx2;
-    var ny2 = this.ny2;
 
     var inx, jinx, jinx_plus_nx, jinx_minus_nx, jinx_plus_1, jinx_minus_1;
 
@@ -1525,9 +1450,9 @@ model2d.FluidSolver2D.prototype.macCormack = function(b, f0, f) {
     var u0 = this.u0;
     var v0 = this.v0;
 
-    for (i = 1; i < nx1; i++) {
+    for (var i = 1; i < nx1; i++) {
         inx = i * nx;
-        for (j = 1; j < ny1; j++) {
+        for (var j = 1; j < ny1; j++) {
             jinx = inx + j;
             if (fluidity[jinx]) {
                 
@@ -1549,9 +1474,9 @@ model2d.FluidSolver2D.prototype.macCormack = function(b, f0, f) {
 
     this.applyBoundary(b, f);
 
-    for (i = 1; i < nx1; i++) {
+    for (var i = 1; i < nx1; i++) {
         inx = i * nx;
-        for (j = 1; j < ny1; j++) {
+        for (var j = 1; j < ny1; j++) {
             jinx = inx + j;
             if (fluidity[jinx]) {
                 
@@ -1570,7 +1495,6 @@ model2d.FluidSolver2D.prototype.macCormack = function(b, f0, f) {
     model2d.copyArray(f, f0);
 
     this.applyBoundary(b, f);
-
 };
 
 // *******************************************************
@@ -1647,7 +1571,7 @@ model2d.RaySolver2D.prototype.setGridCellSize = function(deltaX, deltaY) {
 // loat x, float y, List<Part> parts
 model2d.RaySolver2D.prototype.isContained = function(x, y, parts) {
     var parts_length = parts.length;
-    for (i = 0; i < parts_length; i++) {
+    for (var i = 0; i < parts_length; i++) {
         if (parts[i].contains(x, y)) {
             return true;
         }
@@ -1658,11 +1582,11 @@ model2d.RaySolver2D.prototype.isContained = function(x, y, parts) {
 // float sunAngle
 model2d.RaySolver2D.prototype.setSunAngle = function(sunAngle) {
     this.sunAngle = Math.PI - sunAngle;
-}
+};
 
 model2d.RaySolver2D.prototype.getSunAngle = function() {
   return Math.PI - sunAngle;
-}
+};
 
 
 // Model2D model
@@ -1701,7 +1625,7 @@ model2d.RaySolver2D.prototype.solve = function(model2d) {
   // boolean remove;
 
   var photonCount = this.photons.length;
-  for (i = 0; i < photonCount; i++) {
+  for (var i = 0; i < photonCount; i++) {
       photon = photons[i];
       photon.move(timeStep);
       // if (model.getPartCount() > 0) {
@@ -1727,7 +1651,7 @@ model2d.RaySolver2D.prototype.solve = function(model2d) {
       // }
   }
   this.applyBoundary(photons);
-}
+};
 
 
 
@@ -1737,7 +1661,7 @@ model2d.RaySolver2D.prototype.applyBoundary = function(photons) {
     var lx = this.lx;
     var ly = this.ly;
     var remainingPhotons = [];
-    for (i = 0; i < photonCount; i++) {
+    for (var i = 0; i < photonCount; i++) {
         photon = photons[i];
         if (photon.isContained(0, lx, 0, ly)) {
             remainingPhotons.push(photon);
@@ -1760,7 +1684,7 @@ model2d.RaySolver2D.prototype.sunShine = function(photons, parts) {
   var spacing = s * ly < c * lx ? ly / c : lx / s;
   spacing /= this.rayCount;
   this.shootAtAngle(spacing / s, spacing / c, photons, parts);
-}
+};
 
 // float dx, float dy, List<Photon> photons, List<Part> parts
 model2d.RaySolver2D.prototype.shootAtAngle = function(dx, dy, photons, parts) {
@@ -1775,58 +1699,58 @@ model2d.RaySolver2D.prototype.shootAtAngle = function(dx, dy, photons, parts) {
     return;
     if (this.sunAngle >= 0 && this.sunAngle < 0.5 * Math.PI) {
         y = 0;
-        for (i = 1; i <= m; i++) {
+        for (var i = 1; i <= m; i++) {
             x = dx * i;
             if (!this.isContained(x, y, parts))
             photons.push(new model2d.Photon(x, y, rayPower, sunAngle, raySpeed));
         }
         x = 0;
-        for (i = 0; i <= n; i++) {
+        for (var i = 0; i <= n; i++) {
             y = dy * i;
             if (!this.isContained(x, y, parts))
             photons.push(new model2d.Photon(x, y, rayPower, sunAngle, raySpeed));
         }
     } else if (sunAngle < 0 && sunAngle >= -0.5 * Math.PI) {
         y = ly;
-        for (i = 1; i <= m; i++) {
+        for (var i = 1; i <= m; i++) {
             x = dx * i;
             if (!this.isContained(x, y, parts))
             photons.push(new model2d.Photon(x, y, rayPower, sunAngle, raySpeed));
         }
         x = 0;
-        for (i = 0; i <= n; i++) {
+        for (var i = 0; i <= n; i++) {
             y = ly - dy * i;
             if (!this.isContained(x, y, parts))
             photons.push(new model2d.Photon(x, y, rayPower, sunAngle, raySpeed));
         }
     } else if (sunAngle < Math.PI + 0.001 && sunAngle >= 0.5 * Math.PI) {
         y = 0;
-        for (i = 0; i <= m; i++) {
+        for (var i = 0; i <= m; i++) {
             x = lx - dx * i;
             if (!this.isContained(x, y, parts))
             photons.push(new model2d.Photon(x, y, rayPower, sunAngle, raySpeed));
         }
         x = lx;
-        for (i = 1; i <= n; i++) {
+        for (var i = 1; i <= n; i++) {
             y = dy * i;
             if (!this.isContained(x, y, parts))
             photons.push(new model2d.Photon(x, y, rayPower, sunAngle, raySpeed));
         }
     } else if (sunAngle >= -Math.PI && sunAngle < -0.5 * Math.PI) {
         y = ly;
-        for (i = 0; i <= m; i++) {
+        for (var i = 0; i <= m; i++) {
             x = lx - dx * i;
             if (!this.isContained(x, y, parts))
             photons.push(new model2d.Photon(x, y, thisr.ayPower, sunAngle, raySpeed));
         }
         x = lx;
-        for (i = 1; i <= n; i++) {
+        for (var i = 1; i <= n; i++) {
             y = ly - dy * i;
             if (!this.isContained(x, y, parts))
             photons.push(new model2d.Photon(x, y, rayPower, sunAngle, raySpeed));
         }
     }
-}
+};
 
 
 // *******************************************************
@@ -1842,24 +1766,24 @@ model2d.Photon = function(x, y, energy, angle, c) {
     this.energy = energy;
     this.c = c;
     this.setAngle(angle);
-}
+};
 
 
 model2d.Photon.prototype.setAngle = function(angle) {
     this.vx =  Math.cos(angle) * this.c;
     this.vy =  Math.sin(angle) * this.c;
-}
+};
 
 // float xmin, float xmax, float ymin, float ymax
 model2d.Photon.prototype.isContained = function(xmin, xmax, ymin, ymax) {
     return x >= xmin && x <= xmax && y >= ymin && y <= ymax;
-}
+};
 
 // float dt
 model2d.Photon.prototype.move = function(dt) {
     this.x += this.vx * dt;
     this.y += this.vy * dt;
-}
+};
 
 
 // *******************************************************
@@ -1870,67 +1794,14 @@ model2d.Photon.prototype.move = function(dt) {
 
 model2d.addHotSpot = function(model, temp) {
     var inx;
-    for (i = 45; i < 55; i++) {
+    for (var i = 45; i < 55; i++) {
       inx = i * model.ny;
-      for (j = 45; j < 55; j++) {
+      for (var j = 45; j < 55; j++) {
           model.t[inx + j] = temp;
           model.fluidity[inx + j] = false;
       }
     }
-}
-
-
-var colorDivs = [];
-
-model2d.setupColorDivs = function(xpx, ypx) {
-    xpx = Math.floor(xpx);
-    ypx = Math.floor(ypx);
-    var style_str;
-    var i;
-    for (i = 0; i < 256; i++) {
-        colorDivs[i] = '<div class="cp' + i + '"></div>'
-    }
-
-    var hue;
-    var cssColorRules = [];
-    for (i = 0; i < 256; i++) {
-        hue = Math.abs(i - 255);
-        style_str =  '.cp' + i + ' { background-color:hsl(' + hue + ',100%,50%); width:' + xpx + 'px; height:' + ypx + 'px; margin:0px; display:inline-block }';
-        cssColorRules[i] = style_str;
-    }
-
-    for (i = 0; i < cssColorRules.length; i++) {
-        document.styleSheets[0].insertRule(cssColorRules[i], 0)
-    }
-}
-
-model2d.displayTemperatureColorDivs = function(destination, model) {
-    var columns = model.nx;
-    var rows = model.ny;
-    var width = destination.clientWidth;
-    var height = destination.clientHeight;
-    
-    if (colorDivs.length == 0) {
-        model2d.setupColorDivs(width/columns, height/rows);
-    };
-    var ycols, ycols_plus_x;
-    var t = model.t;
-    var min = model2d.getMinAnyArray(t);
-    var max = model2d.getMaxAnyArray(t);
-    var scale = 255/(max - min);
-    var temp;
-    var colorDivsStr = "";
-    for (y = 0; y < rows; y++) {
-        ycols = y * rows;
-        for (x = 0; x < columns; x++) {
-            ycols_plus_x = ycols + x;
-            temp = t[ycols_plus_x];
-            colorDivsStr += colorDivs[Math.round(scale * temp - min)]
-        }
-        colorDivsStr += '\n';
-    }
-    destination.innerHTML = colorDivsStr;
-}
+};
 
 /**
 * HSV to RGB color conversion
@@ -2016,7 +1887,6 @@ function hsvToRgb(h, s, v) {
 var red_color_table   = [];
 var blue_color_table  = [];
 var green_color_table = [];
-var alpha_color_table = [];
 
 model2d.setupRGBAColorTables = function() {
     var rgb = [];
@@ -2028,51 +1898,57 @@ model2d.setupRGBAColorTables = function() {
     }
 };
 
+model2d.initCanvas = function(canvas, width, height) {
+    canvas.width = width;
+    canvas.height = height;   
+};
+
+//TODO: move all properties and functions connected with drawing to another module
+model2d.MAX_DISPLAY_TEMP = 50;
+model2d.MIN_DISPLAY_TEMP = 0;
 model2d.displayTemperatureCanvas = function(canvas, model) {
     if (red_color_table.length == 0) {
-        model2d.setupRGBAColorTables;
+        model2d.setupRGBAColorTables();
     };
+    var max_hue = red_color_table.length - 1;
+    
     var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "rgb(0,0,0)";
-    ctx.globalCompositeOperation = "destination-atop";
 
-    var real_width = canvas.clientWidth;
-    var real_height = canvas.clientHeight;
-
-    // TODO: is it necessary during every frame?
-    canvas.width = real_width;
-    canvas.height = real_height;
+    var width = canvas.width;
+    var height = canvas.height;
     
     var nx = model.nx;
     var ny = model.ny;
     
-    var dx = nx / real_width;
-    var dy = ny / real_height;
-    
-    var hue, rgb;
+    var dx = nx / width;
+    var dy = ny / height;
 
     var t = model.t;
     
     // constants, as looking for min and max temperature caused that  
     // areas with constant temperatures were chaning their color
-    var min = 0; // model2d.getMinAnyArray(t);
-    var max = 50; //model2d.getMaxAnyArray(t);
+    var min = model2d.MIN_DISPLAY_TEMP; // model2d.getMinAnyArray(t);
+    var max = model2d.MAX_DISPLAY_TEMP; //model2d.getMaxAnyArray(t);
     
-    var scale = 255 / (max - min);
-    var temp;
-    var imageData = ctx.getImageData(0, 0, real_width, real_height);
+    var scale = max_hue / (max - min);
+    var avg_temp, hue;
+    var imageData = ctx.getImageData(0, 0, width, height);
     var data = imageData.data;
     var x, x0, x1, s0, s1, y, y0, y1, t0, t1, x0stride, x1stride;
     var pix_index = 0;
-    for (var i = 0; i < real_width; i++) {
+    var pix_stride = 4 * width;
+    for (var i = 0; i < width; i++) {
         x = i * dx;
         x0 = Math.floor(x);
         x1 = x0 + 1 < nx ? x0 + 1 : x0;
         s1 = x - x0;
         s0 = 1 - s1;
-        x0stride = x0 * nx;
-        x1stride = x1 * nx;
-        for (var j = 0; j < real_height; j++) {
+        x0stride = x0 * ny;
+        x1stride = x1 * ny;
+        pix_index = 4 * i;
+        for (var j = 0; j < height; j++) {
             y = j * dy;
             y0 = Math.floor(y);
             y1 = y0 + 1 < ny ? y0 + 1 : y0;
@@ -2080,29 +1956,28 @@ model2d.displayTemperatureCanvas = function(canvas, model) {
             t0 = 1 - t1;
             avg_temp = s0 * (t0 * t[x0stride + y0] + t1 * t[x0stride + y1]) +
                        s1 * (t0 * t[x1stride + y0] + t1 * t[x1stride + y1]);
-            hue =  255 - Math.round(scale * (avg_temp - min));
+            hue =  max_hue - Math.round(scale * (avg_temp - min));
             if (hue < 0) hue = 0;
-            else if (hue > 255) hue = 255;
+            else if (hue > max_hue) hue = max_hue;
             data[pix_index]     = red_color_table[hue];
             data[pix_index + 1] = blue_color_table[hue];
             data[pix_index + 2] = green_color_table[hue];
             data[pix_index + 3] = 255;
-            pix_index += 4;
+            pix_index += pix_stride;
         }
     };
     ctx.putImageData(imageData, 0, 0);
 };
 
-model2d.displayVectorField = function(canvas, u, v, nx, ny, spacing) {  
+model2d.displayVectorField = function(canvas, overlay, u, v, nx, ny, spacing) {  
     var ctx = canvas.getContext('2d');
-    ctx.strokeStyle = "rgb(255,255,255)";
+    if (!overlay)
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = "rgb(175,175,175)";
     ctx.lineWidth = 1;
-    
-    var real_width = canvas.clientWidth;
-    var real_height = canvas.clientHeight;
 
-    var dx = real_width / nx;
-    var dy = real_height / ny;
+    var dx = canvas.width / nx;
+    var dy = canvas.height / ny;
     
     var x0, y0;
     var uij, vij;
@@ -2117,13 +1992,12 @@ model2d.displayVectorField = function(canvas, u, v, nx, ny, spacing) {
             uij = u[ijny];
             vij = v[ijny];
             if (uij * uij + vij * vij > 1e-15) {
-                model2d.drawVector(ctx, y0, x0, vij, uij);
+                model2d.drawVector(ctx, x0, y0, uij, vij);
             }
         }
     }
 };
 
-// TODO: move all properties and functions connected with drawing to another module
 model2d.VECTOR_SCALE = 100;
 model2d.WING_COS = Math.cos(0.523598776);
 model2d.WING_SIN = Math.sin(0.523598776);
@@ -2147,28 +2021,25 @@ model2d.drawVector = function(canvas_ctx, x, y, vx, vy) {
     wingy = r * (arrowy * model2d.WING_COS + arrowx * model2d.WING_SIN);
     canvas_ctx.lineTo(x1 - wingx, y1 - wingy);
     
-    canvas_ctx.stroke()
+    canvas_ctx.stroke();
 };
 
-model2d.displayVelocityCanvas = function(canvas, model) {
+model2d.displayVelocityLengthCanvas = function(canvas, model) {
+    if (model.nx != canvas.width || model.ny != canvas.height) 
+        throw "canvas dimensions have to be the same as model grid dimensions.";
     if (red_color_table.length == 0) {
-        model2d.setupRGBAColorTables;
+        model2d.setupRGBAColorTables();
     };
+    var max_hue = red_color_table.length - 1;
+    
     var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "rgb(0,0,0)";
-    ctx.globalCompositeOperation = "destination-atop";
 
     var columns = model.nx;
     var rows = model.ny;
-
-    canvas.style.width = canvas.clientWidth + 'px';
-    canvas.style.height = canvas.clientHeight + 'px';
-
-    canvas.width = columns;
-    canvas.height = rows;
-    
-    var hue, rgb;
-
+   
+    var hue;
     var ycols;
 
     var u = model.u;
@@ -2185,22 +2056,25 @@ model2d.displayVelocityCanvas = function(canvas, model) {
         if (test > max)
             max = test;
     }
-    var scale = 255/(max - min);
+    var scale = red_color_table.length / (max - min);
     var velocity;
     var imageData = ctx.getImageData(0, 0, 100, 100);
     var data = imageData.data;
     var pix_index = 0;
+    var pix_stride = 4 * rows;
     for (var y = 0; y < rows; y++) {
         ycols = y * rows;
-        pix_index = y * 400;
+        pix_index = 4 * y;
         for (var x = 0; x < columns; x++) {
             velocity = u[ycols + x]*u[ycols + x] + v[ycols + x]*v[ycols + x];
-            hue =  Math.abs(Math.round(scale * velocity - min) - 255);
+            hue =  max_hue - Math.round(scale * velocity - min);
+            if (hue < 0) hue = 0;
+            else if (hue > max_hue) hue = max_hue;
             data[pix_index]     = red_color_table[hue];
             data[pix_index + 1] = blue_color_table[hue];
             data[pix_index + 2] = green_color_table[hue];
             data[pix_index + 3] = 255;
-            pix_index += 4;
+            pix_index += pix_stride;
         }
     };
     ctx.putImageData(imageData, 0, 0);
@@ -2209,14 +2083,11 @@ model2d.displayVelocityCanvas = function(canvas, model) {
 model2d.displayTemperatureTable = function(destination, model) {
     var columns = model.nx;
     var rows = model.ny;
-    var ycols, ycols_plus_x;
     var temp;
     var tableStr = "";
-    for (y = 0; y < rows; y++) {
-        ycols = y * rows;
-        for (x = 0; x < columns; x++) {
-            ycols_plus_x = ycols + x;
-            temp = model.t[ycols_plus_x];
+    for (var x = 0; x < columns; x++) {
+        for (var y = 0; y < rows; y++) {
+            temp = model.t[y * columns + x];
             tableStr += sprintf("%2.0f ", temp);
         }
         tableStr += '\n';

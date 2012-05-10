@@ -16,9 +16,9 @@
       border:1px; 
     }
     
-     #canvasDebugDestination { 
-      width:500px;
-      height:500px;
+     #canvasVelocityLenDestination { 
+      width:400px;
+      height:400px;
       padding:0px;
       background-color:lightgray;
       color:gray;
@@ -55,7 +55,6 @@
                   <label><input type="radio" name="step" value="stop" checked> Stop</input></label>
                   <label><input type="radio" name="step" value="step"> Step</input></label>
                   <label><input type="radio" name="step" value="go"> Go</input></label>
-                  <!-- <label><input type="radio" name="step" value="reset"> Reset</input></label> -->
                 </fieldset>
               </form>
             </li>
@@ -74,9 +73,14 @@
             <li>
               <form id="show-me">
                 <fieldset>
-                  <legend>Select Rendering</legend>
+                  <legend>Select basic rendering</legend>
                   <label><input id="show-visualization" type="checkbox" checked/> Visualization</label>
-                  <label><input id="show-data-table" type="checkbox" checked/> Temperature Data Array</label>
+                  <label><input id="show-velocity-arrows" type="checkbox" checked/> Velocity Arrows</label>
+                </fieldset>
+                <fieldset>
+                  <legend>Select debug rendering</legend>
+                  <label><input id="show-velocity-length" type="checkbox"/> Velocity Vector Length</label>
+                  <label><input id="show-temp-data-table" type="checkbox"/> Temperature Data Array</label>
                 </fieldset>
               </form>
             </li>
@@ -86,6 +90,7 @@
               <fieldset>
               <legend>Select active solvers</legend>
                 <form id="active-solvers">
+                <label><input id="use-fluid-solver" type="checkbox" checked disabled/> Heat Solver</label>
                   <label><input id="use-fluid-solver" type="checkbox" checked/> Fluid Solver</label>
                 </form>
               </fieldset>
@@ -93,12 +98,6 @@
           </ul>
         </li>
       </ul>
-    </div>
-    <div id="debug">
-	  <h2>Debug view</h2>
-	  <p>Velocity vector length</p>
-	  <canvas id="canvasDebugDestination">
-	  </canvas>
     </div>
     <div id="info">
       <h2>Getting a browser that supports JavaScript Typed Arrays</h2>
@@ -110,9 +109,15 @@
           factor of two. Get more information about whether your browser supports WebGL here: 
           <a href="http://get.webgl.org/">http://get.webgl.org/</a>.
         </p>
+      </div>
     </div>
-    <h2>Temperature Data Array:</h2>
-    <pre id="tdata" style="font-size:80%"></pre>
+    <div id="debug">
+      <h3>Velocity Vector Length:</h3>
+      <canvas id="canvasVelocityLenDestination">
+      </canvas>
+      <h3>Temperature Data Array:</h3>
+      <pre id="tdata" style="font-size:70%"></pre>
+    </div>
   </div>
 </div>
 <script type="text/javascript">
@@ -123,7 +128,7 @@
     } else {
       var libraries = [src];
     }
-    var script = document.createElement("script") 
+    var script = document.createElement("script");
     script.type = "text/javascript";
     // IE
     script.onreadystatechange = function() {
@@ -153,85 +158,78 @@
   };
   
   window.onload = function() {
+    // init Model2D
     // var webGLEnabled = Modernizr.webgl;
     webGLEnabled = true;
     if (webGLEnabled) {
       myRequire([ "src/model2d.js" ],
-      function() {
-
+      function() {          
         var webgl = !!window.WebGLRenderingContext;
+        // get DOM elements
+        var canvas = document.getElementById("canvasDestination");
+        var canvas_debug = document.getElementById("canvasVelocityLenDestination");
         var choose_array_type = document.getElementById("choose-array-type");
         var choose_active_solvers = document.getElementById("active-solvers");
+        var step_model = document.getElementById("step-model");
+        var step_count = document.getElementById("step-count");
+        var show_visualization = document.getElementById("show-visualization");
+        var show_velocity_arrows = document.getElementById("show-velocity-arrows");
+        var show_velocity_len = document.getElementById("show-velocity-length");
+        var show_data_table = document.getElementById("show-temp-data-table");
+        var tdata = document.getElementById("tdata");
 
         if (webgl) {
-          choose_array_type.elements[1].disabled = false;
+            choose_array_type.elements[1].disabled = false;
         }
-
-        // model2d.setupColorDivs();
+        
+        // setup simulation
+        var run_mode;
+        var model = getDefaultModel();
+        model2d.initCanvas(canvas, canvas.clientWidth, canvas.clientHeight);
+        model2d.initCanvas(canvas_debug, model.nx, model.ny);
         model2d.setupRGBAColorTables();
         
-        var canvas = document.getElementById("canvasDestination");
-        var canvas_debug = document.getElementById("canvasDebugDestination");
-        
-        var model, array_selection;
-        
-        function arrayTypeChange() {
-          if (choose_array_type.elements[0].checked) {
-            array_selection = "regular";
-          } else {
-            array_selection = "typed";
-          }
-          model = new model2d.Model2D({}, array_selection);
-          activeSolversUpdate();
-          model2d.addHotSpot(model, 50.0);
-          model2d.displayTemperatureCanvas(canvas, model);
-          // TODO: remove it, used only for debugging
-          model2d.requestVelocityRedraw = function() {
-              return;
-              model2d.displayTemperatureCanvas(canvas, model); // clear old velocities (slow)
-              model2d.displayVectorField(canvas, model.u, model.v, model.nx, model.ny, 1);
-              model2d.displayVelocityCanvas(canvas_debug, model);
-          };
-          model.nextStep();
-        };
-        
-        choose_array_type.onchange = arrayTypeChange;
-        choose_array_type.onchange();
-        
-        
-        function activeSolversUpdate() {
-            if (choose_active_solvers.elements[0].checked) {
-                model.convective = true;
-            } else {
-                model.convective = false;
-            }
-        };
-        
-        choose_active_solvers.onchange = activeSolversUpdate;
-        choose_active_solvers.onchange();
-
-        // var model = new model2d.Model2D({}, array_selection);
-        // model2d.addHotSpot(model, 50.0);
-        // model.nextStep();
-
-        var tdata = document.getElementById("tdata");
-        model2d.displayTemperatureTable(tdata, model);
-
-        var step_model = document.getElementById("step-model");
-        
-        var show_visualization = document.getElementById("show-visualization");
-        var show_data_table = document.getElementById("show-data-table");
-        
-        var step_count = document.getElementById("step-count");
-
-        var divs = document.getElementById("colorDivDestination");
-        var run_mode;
-        
+        // timing variables
         var one_before_that_sample_time = new Date();
         var last_sample_time = new Date();
         var sample_time = new Date();
         var average_sample_time_ms = sample_time - last_sample_time;
         
+        // setup callbacks
+        choose_array_type.onchange = function() {
+            model = getDefaultModel();
+        };
+        
+        choose_active_solvers.onchange = function() {
+            setupActiveSolvers(model);
+        };
+        
+        step_model.onchange = function() {
+            for(var i = 0; i < this.elements.length; i++)
+                if (this.elements[i].checked) run_mode = this.elements[i].value;
+            
+            switch(run_mode) {
+              case "go":
+                paintInterval = setInterval("renderModelStep()", 0);
+                break;
+              case "step":
+                window.clearInterval(window.paintInterval);
+                renderModelStep();
+                this.elements[0].checked = true;
+                break;
+              case "stop":
+                if (window.paintInterval) {
+                  window.clearInterval(paintInterval);
+                }
+                break;
+            }
+        };
+        
+        // display initial state
+        model2d.displayTemperatureCanvas(canvas, model);
+        step_count.innerHTML = 'frame: ' + model.indexOfStep;
+        
+        // simulation
         window.renderModelStep = function() {
             sample_time = new Date();
             model2d.addHotSpot(model, 50.0);
@@ -240,53 +238,42 @@
             one_before_that_sample_time = last_sample_time;
             last_sample_time = sample_time;
             step_count.innerHTML = 'frame: ' + model.indexOfStep + ': model step rate: ' + sprintf("%3.1f", 1/average_sample_time_ms * 1000) + ' fps';
-            if (show_visualization.checked) {
+            if (show_visualization.checked)
 	            model2d.displayTemperatureCanvas(canvas, model);
-	            model2d.displayVectorField(canvas, model.u, model.v, model.nx, model.ny, 4);
-	            model2d.displayVelocityCanvas(canvas_debug, model);
+            if (show_velocity_arrows.checked)
+                model2d.displayVectorField(canvas, show_visualization.checked, model.u, model.v, model.nx, model.ny, 4);
+            if (show_velocity_len.checked)
+                model2d.displayVelocityLengthCanvas(canvas_debug, model);
+            if (show_data_table.checked) 
+                model2d.displayTemperatureTable(tdata, model);
+        }
+        
+        // utils
+        function getDefaultModel() {
+            if (choose_array_type.elements[0].checked) {
+                array_selection = "regular";
+            } else {
+                array_selection = "typed";
             }
-            if (show_data_table.checked) model2d.displayTemperatureTable(tdata, model);
+            var model = new model2d.Model2D({}, array_selection);
+            setupActiveSolvers(model);
+            model2d.addHotSpot(model, 50.0);      
+            return model;
         }
         
-        window.paintInterval;
-        
-        function runModelStep() {
-          for(var i = 0; i < this.elements.length; i++)
-              if (this.elements[i].checked) run_mode = this.elements[i].value;
-          
-          switch(run_mode) {
-            case "go":
-              paintInterval = setInterval("renderModelStep()", 0);
-              break;
-            case "step":
-              window.clearInterval(window.paintInterval);
-              renderModelStep();
-              this.elements[0].checked = true;
-              break;
-            case "stop":
-              if (window.paintInterval) {
-                window.clearInterval(paintInterval);
-              }
-              break;
-            case "reset":
-              if (window.paintInterval) {
-                window.clearInterval(paintInterval);
-              }
-              model = new model2d.Model2D({}, array_selection);
-              model2d.addHotSpot(model, 50.0);
-              model.nextStep();
-              renderModelStep;
-              break;
-          }
+        function setupActiveSolvers(model) {
+            // TODO: not really general approach
+            if (choose_active_solvers.elements[0].checked) {
+                model.convective = true;
+            } else {
+                model.convective = false;
+            }
         }
         
-        step_model.onchange = runModelStep;
-        model2d.displayTemperatureCanvas(canvas, model);
-        step_count.innerHTML = 'frame: ' + model.indexOfStep;        
       });
     } else {
-      var content = document.getElementById('content');
-      var canvasContainer = document.getElementById('webglCanvasContainer');
+        var content = document.getElementById('content');
+        var canvasContainer = document.getElementById('webglCanvasContainer');
     };
   }
 </script>
