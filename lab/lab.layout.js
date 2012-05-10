@@ -1779,19 +1779,19 @@ var benchmarks_to_run = [
   {
     name: "molecules",
     run: function() {
-      return mol_number
+      return model.get_atoms().length;
     }
   },
   {
     name: "temperature",
     run: function() {
-      return temperature
+      return model.get("temperature");
     }
   },
   {
     name: "100 Steps (steps/s)",
     run: function() {
-      model_controller.modelStop();
+      controller.modelStop();
       var start = +Date.now();
       var i = -1;
       while (i++ < 100) {
@@ -1804,12 +1804,12 @@ var benchmarks_to_run = [
   {
     name: "100 Steps w/graphics",
     run: function() {
-      model_controller.modelStop();
+      controller.modelStop();
       var start = +Date.now();
       var i = -1;
       while (i++ < 100) {
         model.tick();
-        model_controller.modelListener();
+        controller.modelListener();
       }
       elapsed = Date.now() - start;
       return d3.format("5.1f")(100/elapsed*1000)
