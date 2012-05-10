@@ -31,7 +31,6 @@ var modelConfig = {
     windowLoaded = $.Deferred(),
 
     hash,
-    controller,
     opts;
 
 if (hash = document.location.hash) {
