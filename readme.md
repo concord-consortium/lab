@@ -75,48 +75,19 @@ Note that `make clean` now empties the `dist` folder in-place, leaving however t
 
 First, make sure your `dist/` folder tracks the gh-pages branch, as per the above.
 
-Make sure there is nothing that isn't committed -- commit it, commit it to a
-separate branch or stash it.
+Then run the following shell command in the `script/` folder:
 
-If your testing show the bugs are fixed or the new features or examples are stable then push
-these changes to the master branch.
+    script/gh-pages
+
+This script will first make sure there is nothing that isn't committed. If
+there are unstaged or staged and uncommitted files the `gh-pages` script will halt.
+
+Test and commit (or save the changes to a topic branch) and if your testing show
+the bugs are fixed or the new features or examples are stable then push
+these changes to the master branch and try running the `gh-pages` script again:
 
     git push origin master
-
-Now, change to the dist directory, commit *all* of its contents, and push your changes:
-
-    cd dist
-
-The following commands will make sure you base your changes on top of whatever the most
-recent commit pushed to the gh-pages branch on github:
-
-    git fetch origin gh-pages
-    git reset --hard origin/gh-pages
-
-Now rebuild the genrated files and resources in the `dist/` directory:
-
-    cd ..
-    make clean; make
-
-At this point, make sure the contents of the dist/ branch work correctly!
-
-Then add any new files in the dist directory to the git index for the gh-pages branch:
-
-    cd dist
-    git add .
-
-Using this form of a commit command generates a more useful commit message by ioncluding the commit SHA:
-
-    git commit -m "gh-pages generated from `git --git-dir ../.git log -1 --format=%H`"
-
-Here's an example:
-
-    gh-pages generated from 9e4453815b8b0f1bd08c123deef6721153bed644
-
-If you set up dist/ by cloning the gh-pages branch specifically, `git push` by itself should work:
-
-    git push
-    cd ..
+    script/gh-pages
 
 #### Pushing the gh-pages branch to a remote server
 
