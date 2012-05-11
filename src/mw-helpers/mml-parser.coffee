@@ -124,6 +124,7 @@ MWHelpers.parseMML = (mmlString) ->
 
   # for now, just use set epsilon to the e between the first element and the second
   epsilon = elemTypes[0].epsilon[1]
+  sigma   = elemTypes[0].sigma
 
   # epsilon's sign appears to be flipped between MW and Lab
   epsilon = -epsilon
@@ -131,7 +132,8 @@ MWHelpers.parseMML = (mmlString) ->
   jsonObj =
     temperature_control : false
     epsilon             : epsilon
-    lennard_jones_forces: true,
+    sigma               : sigma
+    lennard_jones_forces: true
     coulomb_forces      : false
     atoms :
       X : x
