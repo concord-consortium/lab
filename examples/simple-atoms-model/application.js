@@ -29,7 +29,8 @@
 
       hash,
       controller,
-      opts;
+      opts,
+      timer;
 
   if (hash = document.location.hash) {
     hash = hash.substr(1, hash.length);
@@ -65,14 +66,29 @@
         contentType: 'application/json',
         data: propsStr
       }).done(function(data) {
-        var loc  = req.getResponseHeader('Location'),
-            hash = '#' + /\/model-config\/(.*)$/.exec(loc)[1],
-            url  = document.location.pathname + hash;
+        var loc  = req.getResponseHeader('Location');
+
+        hash = '#' + /\/model-config\/(.*)$/.exec(loc)[1];
+
+        var url = /[^#]*/.exec(document.location.href)[0] + hash;
 
         document.location.hash = hash;
-        $('#flash').html('Saved to <a href="' + url + '">' + url + '</a>');
+
+        $('#flash').
+          removeClass().
+          addClass('informational-message').
+          html('<p>Saved to <a href="' + url + '">' + url + '</a></p>');
       }).fail(function() {
-        $('#flash').html('<p class="error-message">Could not save model</p>');
+        $('#flash').
+          removeClass().
+          addClass('error-message').
+          html('<p>Could not save model.</p>');
+      }).always(function() {
+        clearTimeout(timer);
+        // add .fade-out after a delay so CSS transitions notice a change.
+        timer = setTimeout(function() {
+          $('#flash').addClass('fade-out');
+        }, 100);
       });
     });
 
@@ -80,12 +96,18 @@
     model.lastModelConfig = JSON.stringify(model.serialize(), 2);
 
     model.addPropertiesListener(["all"], function() {
-      if (JSON.stringify(model.serialize(), 2) !== model.lastModelConfig) {
+      if (JSON.stringify(model.serialize(true), 2) !== model.lastModelConfig) {
         $('#save-button').removeAttr("disabled");
       } else {
         $('#save-button').attr("disabled", "disabled");
       }
     });
+  });
+
+  $(window).bind('hashchange', function() {
+    if (document.location.hash !== hash) {
+      location.reload();
+    }
   });
 
 }());

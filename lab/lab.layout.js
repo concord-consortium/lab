@@ -164,7 +164,13 @@ layout.setupScreen = function(viewLists) {
   if (layout.transform) {
     $('input[type=checkbox]').css(layout.transform, 'scale(' + layout.checkbox_factor + ',' + layout.checkbox_factor + ')');
   }
-  layout.setupTemperature();
+
+  layout.setupTemperature(model);
+  if (layout.temperature_control_checkbox) {
+    model.addPropertiesListener(["temperature_control"], layout.temperatureControlUpdate);
+    layout.temperatureControlUpdate();
+  }
+
   if (benchmarks_table) {
     benchmarks_table.style.display = "none";
   }
@@ -798,6 +804,10 @@ layout.moleculeContainer = function(e, options) {
     }
 
     function setup_particles() {
+      if (typeof atoms == "undefined" || !atoms){
+        return;
+      }
+
       var ljf = model.getLJCalculator().coefficients();
       // molRadius = ljf.rmin * 0.5;
       // model.set_radius(molRadius);
@@ -903,7 +913,7 @@ layout.moleculeContainer = function(e, options) {
     }
 
     function molecule_mouseout() {
-      if (!atom_tooltip_on) {
+      if (typeof(atom_tooltip_on) !== "number") {
         molecule_div.style("opacity", 1e-6);
       }
     }
@@ -928,7 +938,7 @@ layout.moleculeContainer = function(e, options) {
           return y(nodes[model.INDICES.Y][i]); })
         .attr("r",  function(d, i) {
           return x(nodes[model.INDICES.RADIUS][i]); });
-      if (atom_tooltip_on) {
+      if ((typeof(atom_tooltip_on) === "number")) {
         render_atom_tooltip(atom_tooltip_on);
       }
     }
@@ -1514,10 +1524,12 @@ layout.speedDistributionChart = function(e, options) {
   }
 
   function updateSpeedBins() {
-    bins = d3.layout.histogram().frequency(false).bins(xScale.ticks(60))(speedData);
-    barWidth = (size.width - bins.length)/bins.length;
-    lineStep = (options.xmax - options.xmin)/bins.length;
-    speedMax  = d3.max(bins, function(d) { return d.y; });
+    if (speedData.length > 2) {
+      bins = d3.layout.histogram().frequency(false).bins(xScale.ticks(60))(speedData);
+      barWidth = (size.width - bins.length)/bins.length;
+      lineStep = (options.xmax - options.xmin)/bins.length;
+      speedMax  = d3.max(bins, function(d) { return d.y; });
+    }
   }
 
   function scale(w, h) {
@@ -1767,19 +1779,19 @@ var benchmarks_to_run = [
   {
     name: "molecules",
     run: function() {
-      return mol_number
+      return model.get_atoms().length;
     }
   },
   {
     name: "temperature",
     run: function() {
-      return temperature
+      return model.get("temperature");
     }
   },
   {
     name: "100 Steps (steps/s)",
     run: function() {
-      model_controller.modelStop();
+      controller.modelStop();
       var start = +Date.now();
       var i = -1;
       while (i++ < 100) {
@@ -1792,12 +1804,12 @@ var benchmarks_to_run = [
   {
     name: "100 Steps w/graphics",
     run: function() {
-      model_controller.modelStop();
+      controller.modelStop();
       var start = +Date.now();
       var i = -1;
       while (i++ < 100) {
         model.tick();
-        model_controller.modelListener();
+        controller.modelListener();
       }
       elapsed = Date.now() - start;
       return d3.format("5.1f")(100/elapsed*1000)
@@ -1952,63 +1964,61 @@ if (toggle_datatable) {
 //
 // ------------------------------------------------------------
 
-
 var select_temperature = document.getElementById("select-temperature");
 var select_temperature_display = document.createElement("span");
-if (select_temperature == null) {
-  layout.setupTemperature = function() {};
-}
-else {
-  layout.setupTemperature = function() {
+
+layout.setupTemperature = function(model) {
+  if (select_temperature) {
     if (Modernizr['inputtypes']['range']) {
       var temp_range = document.createElement("input");
       temp_range.type = "range";
       temp_range.min = "0";
       temp_range.max = "25";
       temp_range.step = "0.5";
-      temp_range.value = +select_temperature.value;
+      temp_range.value = model.get("temperature");
       select_temperature.parentNode.replaceChild(temp_range, select_temperature);
       temp_range.id = "select-temperature";
       select_temperature = temp_range;
       select_temperature_display.id = "select-temperature-display";
-      select_temperature_display.innerText = model.temperature();
+      select_temperature_display.innerText = temp_range.value;
       select_temperature.parentNode.appendChild(select_temperature_display);
       select_temperature = document.getElementById("select-temperature");
     }
     select_temperature.onchange = selectTemperatureChange;
   }
+};
 
-  function selectTemperatureChange() {
-    var temperature = +select_temperature.value;
-    if (select_temperature.type === "range") {
-      select_temperature_display.innerText = d3.format("4.1f")(temperature);
-    }
-    model.temperature(temperature);
-  }
-
+function selectTemperatureChange() {
+  var temperature = +select_temperature.value;
   if (select_temperature.type === "range") {
-    var temperature = model.temperature();
-    select_temperature.value =  model.temperature();
     select_temperature_display.innerText = d3.format("4.1f")(temperature);
   }
+  model.set({ "temperature": temperature });
+}
 
-  // ------------------------------------------------------------
-  //
-  // Temperature Control
-  //
-  // ------------------------------------------------------------
 
-  layout.temperature_control_checkbox = document.getElementById("temperature-control-checkbox");
+// ------------------------------------------------------------
+//
+// Temperature Control
+//
+// ------------------------------------------------------------
 
-  function temperatureControlHandler() {
-      if (layout.temperature_control_checkbox.checked) {
-        model.set_temperature_control(true);
-      } else {
-        model.set_temperature_control(false);
-      };
-  };
+layout.temperature_control_checkbox = document.getElementById("temperature-control-checkbox");
 
-  layout.temperature_control_checkbox.onchange = temperatureControlHandler;
+layout.temperatureControlHandler = function () {
+  if (layout.temperature_control_checkbox.checked) {
+    model.set({ "temperature_control": true });
+  } else {
+    model.set({ "temperature_control": false });
+  }
+};
+
+layout.temperatureControlUpdate = function () {
+  layout.temperature_control_checkbox.checked = model.get("temperature_control");
+};
+
+if (layout.temperature_control_checkbox) {
+  layout.temperature_control_checkbox.onchange = layout.temperatureControlHandler;
 }
 // ------------------------------------------------------------
 //
