@@ -1907,6 +1907,51 @@ model2d.initCanvas = function(canvas, width, height) {
 model2d.MAX_DISPLAY_TEMP = 50;
 model2d.MIN_DISPLAY_TEMP = 0;
 model2d.displayTemperatureCanvas = function(canvas, model) {
+    if (model.nx != canvas.width || model.ny != canvas.height) 
+        throw "canvas dimensions have to be the same as model grid dimensions.";
+    if (red_color_table.length == 0) {
+        model2d.setupRGBAColorTables();
+    };
+    var max_hue = red_color_table.length - 1;
+    
+    var nx = model.nx;
+    var ny = model.ny;
+    
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, nx, ny);
+    ctx.fillStyle = "rgb(0,0,0)";
+    
+    // constants, as looking for min and max temperature caused that  
+    // areas with constant temperatures were chaning their color
+    var min = model2d.MIN_DISPLAY_TEMP; // model2d.getMinAnyArray(t);
+    var max = model2d.MAX_DISPLAY_TEMP; //model2d.getMaxAnyArray(t);
+    
+    var scale = max_hue / (max - min);
+    var hue;
+    var imageData = ctx.getImageData(0, 0, nx, ny);
+    var data = imageData.data;
+    var t = model.t;
+    var iny;
+    var pix_index = 0;
+    var pix_stride = 4 * nx;
+    for (var i = 0; i < nx; i++) {
+        iny = i * ny;
+        pix_index = 4 * i;
+        for (var j = 0; j < ny; j++) {
+            hue =  max_hue - Math.round(scale * (t[iny + j] - min));
+            if (hue < 0) hue = 0;
+            else if (hue > max_hue) hue = max_hue;
+            data[pix_index]     = red_color_table[hue];
+            data[pix_index + 1] = blue_color_table[hue];
+            data[pix_index + 2] = green_color_table[hue];
+            data[pix_index + 3] = 255;
+            pix_index += pix_stride;
+        }
+    };
+    ctx.putImageData(imageData, 0, 0);
+};
+
+model2d.displayTemperatureCanvasWithSmoothing = function(canvas, model) {
     if (red_color_table.length == 0) {
         model2d.setupRGBAColorTables();
     };
@@ -1969,10 +2014,9 @@ model2d.displayTemperatureCanvas = function(canvas, model) {
     ctx.putImageData(imageData, 0, 0);
 };
 
-model2d.displayVectorField = function(canvas, overlay, u, v, nx, ny, spacing) {  
+model2d.displayVectorField = function(canvas, u, v, nx, ny, spacing) {  
     var ctx = canvas.getContext('2d');
-    if (!overlay)
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = "rgb(175,175,175)";
     ctx.lineWidth = 1;
 

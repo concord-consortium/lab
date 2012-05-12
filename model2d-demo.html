@@ -7,22 +7,41 @@
     <script src="lib/sprintf.js" type="text/javascript" ></script>
     <style type="text/css">
     
-    #canvasDestination { 
+    #canvasContainer {
       width:600px;
       height:600px;
+      position:relative;
+    }
+    
+    #canvasTemperatureLayer { 
+      width:100%;
+      height:100%;
+      position:absolute; left:0; top:0; z-index:0;
       padding:0px;
-      background-color:lightgray;
+      background-color:gray;
       color:gray;
       border:1px; 
     }
     
-     #canvasVelocityLenDestination { 
+    #canvasVelocityLayer {
+      width:100%;
+      height:100%;
+      position:absolute; left:0; top:0; z-index:1;
+      padding:0px;
+      border:1px; 
+    }
+    
+    #canvasVelocityLenDestination { 
       width:400px;
       height:400px;
       padding:0px;
       background-color:lightgray;
       color:gray;
       border:1px; 
+    }
+    
+    #step-count {
+      margin: 10px 0px 10px 20px; 
     }
 
     </style>
@@ -45,55 +64,86 @@
       <ul class="hlist">
         <li>
           <p>Energy2D-JS Model: Rendered using an HTML5 canvas</p>
-          <canvas id="canvasDestination">
-          </canvas>
+          <div id="canvasContainer">
+            <canvas id="canvasTemperatureLayer"></canvas>
+            <canvas id="canvasVelocityLayer"></canvas>
+          </div>
           <ul class="hlist">
             <li>
-              <form id="step-model">
+              <form>
                 <fieldset>
-                  <legend>Step: </legend>
-                  <label><input type="radio" name="step" value="stop" checked> Stop</input></label>
-                  <label><input type="radio" name="step" value="step"> Step</input></label>
-                  <label><input type="radio" name="step" value="go"> Go</input></label>
+                  <legend>Simulation: </legend>
+                  <label><input id="sim-stop" type="radio" name="step" value="stop" checked/> Stop</label>
+                  <label><input id="sim-step" type="radio" name="step" value="step"/> Step</label>
+                  <label><input id="sim-go" type="radio" name="step" value="go"/> Go</label>
+                  <label>
+                  <select id="steps-per-frame">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3" selected>3</option>
+                    <option value="4">4</option>
+                  </select>
+                  steps per frame
+                  </label>
                 </fieldset>
               </form>
             </li>
-            <li><h2 id="step-count">frame 0</h2></li>
+            <li>
+              <h2 id="step-count">frame 0</h2>
+            </li>
           </ul>
           <ul class="hlist">
             <li>
               <fieldset>
-                <legend>Select Type of JavaScript Arrays: </legend>
+                <legend>Type of JavaScript arrays</legend>
                 <form id="choose-array-type">
-                  <label><input type="radio" name="array" value="regular" checked> Regular</input></label>
-                  <label><input type="radio" name="array" value="typed" disabled> Typed</input></label>
+                  <label><input type="radio" name="array" value="regular" checked/> Regular</label>
+                  <label><input type="radio" name="array" value="typed" disabled/> Typed</label>
                 </form>
               </fieldset>
             </li>
+            <li>
+              <fieldset>
+              <legend>Active solvers</legend>
+                <form id="active-solvers">
+                  <label><input id="use-heat-solver" type="checkbox" checked disabled/> Heat solver</label>
+                  <label><input id="use-fluid-solver" type="checkbox" checked/> Fluid solver</label>
+                </form>
+              </fieldset>
+            </li>
+          </ul>  
+          <ul class="hlist">
             <li>
               <form id="show-me">
                 <fieldset>
-                  <legend>Select basic rendering</legend>
-                  <label><input id="show-visualization" type="checkbox" checked/> Visualization</label>
-                  <label><input id="show-velocity-arrows" type="checkbox" checked/> Velocity Arrows</label>
-                </fieldset>
-                <fieldset>
-                  <legend>Select debug rendering</legend>
-                  <label><input id="show-velocity-length" type="checkbox"/> Velocity Vector Length</label>
-                  <label><input id="show-temp-data-table" type="checkbox"/> Temperature Data Array</label>
+                  <legend>Rendering</legend>
+                  <label><input id="show-visualization" type="checkbox" checked/> Temperature</label>
+                  <label><input id="show-velocity-arrows" type="checkbox" checked/> Velocity arrows</label>
+                  <label><input id="show-velocity-length" type="checkbox"/> Velocity vector length</label>
+                  <label><input id="show-temp-data-table" type="checkbox"/> Temperature data array</label>
                 </fieldset>
               </form>
             </li>
           </ul>
           <ul class="hlist">
             <li>
-              <fieldset>
-              <legend>Select active solvers</legend>
-                <form id="active-solvers">
-                <label><input id="use-fluid-solver" type="checkbox" checked disabled/> Heat Solver</label>
-                  <label><input id="use-fluid-solver" type="checkbox" checked/> Fluid Solver</label>
-                </form>
-              </fieldset>
+              <form id="smoothing-options">
+                <fieldset>
+                  <legend>HQ smoothing</legend>
+                  <label><input id="hq-smoothing" type="checkbox"/> Enabled</label>
+                  <label>
+                    <select id="hq-smoothing-grid">
+                      <option value="100">100x100</option>
+                      <option value="200">200x200</option>
+                      <option value="300">300x300</option>
+                      <option value="400">400x400</option>
+                      <option value="500">500x500</option>
+                      <option value="600" selected>600x600</option>
+                    </select>
+                    Grid dimensions
+                  </label>
+                </fieldset>
+              </form>
             </li>
           </ul>
         </li>
@@ -166,28 +216,43 @@
       function() {          
         var webgl = !!window.WebGLRenderingContext;
         // get DOM elements
-        var canvas = document.getElementById("canvasDestination");
+        var canvas_temperature = document.getElementById("canvasTemperatureLayer");
+        var canvas_velocity = document.getElementById("canvasVelocityLayer");
         var canvas_debug = document.getElementById("canvasVelocityLenDestination");
+        var tdata = document.getElementById("tdata");
+        
         var choose_array_type = document.getElementById("choose-array-type");
         var choose_active_solvers = document.getElementById("active-solvers");
-        var step_model = document.getElementById("step-model");
+        
+        var sim_stop = document.getElementById("sim-stop");
+        var sim_step = document.getElementById("sim-step");
+        var sim_go = document.getElementById("sim-go");
+        var steps_per_frame_element = document.getElementById("steps-per-frame");
         var step_count = document.getElementById("step-count");
+        
         var show_visualization = document.getElementById("show-visualization");
         var show_velocity_arrows = document.getElementById("show-velocity-arrows");
         var show_velocity_len = document.getElementById("show-velocity-length");
         var show_data_table = document.getElementById("show-temp-data-table");
-        var tdata = document.getElementById("tdata");
-
+        var use_hq_smoothing = document.getElementById("hq-smoothing");
+        var hq_smoothing_grid = document.getElementById("hq-smoothing-grid");
+         
         if (webgl) {
             choose_array_type.elements[1].disabled = false;
         }
         
         // setup simulation
-        var run_mode;
         var model = getDefaultModel();
-        model2d.initCanvas(canvas, canvas.clientWidth, canvas.clientHeight);
-        model2d.initCanvas(canvas_debug, model.nx, model.ny);
+        var steps_per_frame = getStepsPerFrame(); 
+        
+        // setup rendering
         model2d.setupRGBAColorTables();
+        setupTemperatureRenderingMethod();
+        model2d.initCanvas(canvas_velocity, canvas_velocity.clientWidth, canvas_velocity.clientHeight);
+        model2d.initCanvas(canvas_debug, model.nx, model.ny);
+        
+        // display initial state
+        step_count.innerHTML = 'frame: ' + model.indexOfStep;
         
         // timing variables
         var one_before_that_sample_time = new Date();
@@ -196,52 +261,70 @@
         var average_sample_time_ms = sample_time - last_sample_time;
         
         // setup callbacks
+        // model
         choose_array_type.onchange = function() {
             model = getDefaultModel();
         };
+        
+        steps_per_frame_element.onchange = function() {
+            steps_per_frame = getStepsPerFrame();
+        }
         
         choose_active_solvers.onchange = function() {
             setupActiveSolvers(model);
         };
         
-        step_model.onchange = function() {
-            for(var i = 0; i < this.elements.length; i++)
-                if (this.elements[i].checked) run_mode = this.elements[i].value;
-            
-            switch(run_mode) {
-              case "go":
+        sim_go.onchange = function() {
+            if (this.checked) {
                 paintInterval = setInterval("renderModelStep()", 0);
-                break;
-              case "step":
-                window.clearInterval(window.paintInterval);
-                renderModelStep();
-                this.elements[0].checked = true;
-                break;
-              case "stop":
-                if (window.paintInterval) {
-                  window.clearInterval(paintInterval);
-                }
-                break;
             }
         };
+        sim_step.onchange = function() {
+            if (this.checked) {
+              window.clearInterval(window.paintInterval);
+              renderModelStep();
+              sim_stop.checked = true;
+            }
+        };
+        sim_stop.onchange = function() {
+            if (this.checked) {
+                window.clearInterval(paintInterval);
+            }
+        }
         
-        // display initial state
-        model2d.displayTemperatureCanvas(canvas, model);
-        step_count.innerHTML = 'frame: ' + model.indexOfStep;
+        // rendering
+        show_velocity_arrows.onchange = function() {
+            if (!this.checked)
+                // clear arrows when velocity rendering is disabled
+                model2d.initCanvas(canvas_velocity, canvas_velocity.clientWidth, canvas_velocity.clientHeight);
+        };
         
+        use_hq_smoothing.onchange = function() {
+            setupTemperatureRenderingMethod();
+        };
+        
+        hq_smoothing_grid.onchange = function() {
+            if (use_hq_smoothing.checked) {
+                var grid_dim = getSmoothingGridDim();
+                model2d.initCanvas(canvas_temperature, grid_dim, grid_dim);
+                displayTemperatureFunc(canvas_temperature, model);
+            }
+        };
+                
         // simulation
         window.renderModelStep = function() {
             sample_time = new Date();
             model2d.addHotSpot(model, 50.0);
-            model.nextStep();
+            for (var i = 0; i < steps_per_frame; i++)
+                model.nextStep();
             average_sample_time_ms = (average_sample_time_ms * 1.75 + (last_sample_time - one_before_that_sample_time) * 0.25) / 2;
             one_before_that_sample_time = last_sample_time;
             last_sample_time = sample_time;
-            step_count.innerHTML = 'frame: ' + model.indexOfStep + ': model step rate: ' + sprintf("%3.1f", 1/average_sample_time_ms * 1000) + ' fps';
+            step_count.innerHTML = 'step: ' + model.indexOfStep + ', model step rate: ' + sprintf("%3.1f", steps_per_frame/average_sample_time_ms * 1000) + ' fps';
             if (show_visualization.checked)
-	            model2d.displayTemperatureCanvas(canvas, model);
+                displayTemperatureFunc(canvas_temperature, model);
             if (show_velocity_arrows.checked)
-                model2d.displayVectorField(canvas, show_visualization.checked, model.u, model.v, model.nx, model.ny, 4);
+                model2d.displayVectorField(canvas_velocity, model.u, model.v, model.nx, model.ny, 4);
             if (show_velocity_len.checked)
                 model2d.displayVelocityLengthCanvas(canvas_debug, model);
             if (show_data_table.checked) 
@@ -262,12 +345,32 @@
         }
         
         function setupActiveSolvers(model) {
-            // TODO: not really general approach
-            if (choose_active_solvers.elements[0].checked) {
+            if (choose_active_solvers.elements[1].checked) {
                 model.convective = true;
             } else {
                 model.convective = false;
             }
+        }
+        
+        function getStepsPerFrame() {
+            return steps_per_frame_element.selectedIndex + 1;
+        }
+        
+        function setupTemperatureRenderingMethod() {
+            if (use_hq_smoothing.checked){
+                displayTemperatureFunc = model2d.displayTemperatureCanvasWithSmoothing;
+                var grid_dim = getSmoothingGridDim();
+                model2d.initCanvas(canvas_temperature, grid_dim, grid_dim);
+            }
+            else {
+                displayTemperatureFunc = model2d.displayTemperatureCanvas;
+                model2d.initCanvas(canvas_temperature, model.nx, model.ny);
+            }
+            displayTemperatureFunc(canvas_temperature, model);
+        }
+        
+        function getSmoothingGridDim() {
+            return (hq_smoothing_grid.selectedIndex + 1) * 100; // so, first option is 100, next 200, etc.
         }
         
       });
