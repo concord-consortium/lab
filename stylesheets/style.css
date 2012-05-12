@@ -75,6 +75,16 @@ h4 {
 
 }
 
+legend {
+
+    color: #cc6600 !important;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    padding: 5px 0px 5px;
+    font-size: 1.2em;
+    font-weight: normal;
+    line-height: 1.5em;
+}
+
 #banner {
 /*height: 120px;*/
     height: 0px;
@@ -484,11 +494,12 @@ h4 {
 
 fieldset  {
     line-height: 1.2em;
-    margin-top: 5px;
-    padding: 0.5em 0.5em 1.0em 0.5em;
+    /*margin-top: 5px;*/
+    padding: 0.0em 1.0em 0.5em 1.0em;
     font-size: 90%;
     display: inline-block;
     list-style-type: none;
+    border: 1px solid lightgray;
 }
 
 .glCanvasQuarterFrame fieldset  {
@@ -541,10 +552,6 @@ fieldset label  {
     padding-bottom: 20px;
 }
 */
-
-#webglCanvasContainer  {
-    margin-left: 5px;
-}
 
 #webglCanvasContainer ul.hlist li  {
     line-height: 1.4em;
