@@ -37,6 +37,8 @@ controllers.complexModelController =
       temperature         = modelConfig.temperature,
       temperature_control = modelConfig.temperature_control,
       coulomb_forces      = modelConfig.coulomb_forces,
+      width               = modelConfig.width,
+      height              = modelConfig.height,
 
       molecule_container,
       model_listener,
@@ -107,7 +109,9 @@ controllers.complexModelController =
           coulomb_forces: coulomb_forces,
           temperature_control: temperature_control,
           epsilon: epsilon,
-          sigma: sigma
+          sigma: sigma,
+          width: width,
+          height: height
         });
 
       if (atoms_properties) {
@@ -143,9 +147,9 @@ controllers.complexModelController =
           yunits:               true,
           atom_mubers:          false,
           xmin:                 0,
-          xmax:                 10,
+          xmax:                 width,
           ymin:                 0,
-          ymax:                 10
+          ymax:                 height
         }
       );
 
