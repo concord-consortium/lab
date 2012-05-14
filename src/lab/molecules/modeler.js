@@ -45,6 +45,9 @@ modeler.model = function(initialProperties) {
       //
       radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
 
+      width = initialProperties.width,
+      height = initialProperties.height,
+
       //
       // Number of individual properties for a node
       //
@@ -298,8 +301,9 @@ modeler.model = function(initialProperties) {
   //          a hash specifying the x,y,vx,vy properties of the atoms
   function createNewCoreModel(config) {
     // get a fresh model
-    window.a = coreModel = md2d.makeModel();
 
+    coreModel = md2d.makeModel();
+    coreModel.setSize([width,height]);
     if (typeof config === "number") {
       coreModel.createAtoms({
         num: config

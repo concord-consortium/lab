@@ -13,7 +13,9 @@
         temperature         : 3,
         epsilon             : -0.1,
         lennard_jones_forces: true,
-        coulomb_forces      : false
+        coulomb_forces      : false,
+        width               : 10,
+        height              : 10
       },
 
       playerConfig = {

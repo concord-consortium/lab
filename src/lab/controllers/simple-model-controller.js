@@ -27,6 +27,8 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       epsilon             = modelConfig.epsilon,
       temperature         = modelConfig.temperature,
       coulomb_forces      = modelConfig.coulomb_forces,
+      width               = modelConfig.width,
+      height              = modelConfig.height,
 
       molecule_container,
       model_listener,
@@ -60,7 +62,9 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       lennard_jones_forces: true,
       coulomb_forces: coulomb_forces,
       temperature_control: true,
-      epsilon: epsilon
+      epsilon: epsilon,
+      width: width,
+      height: height
     });
 
 
@@ -82,7 +86,12 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   layout.selection = layoutStyle;
 
   model_player = new ModelPlayer(model, autostart);
-  molecule_container = layout.moleculeContainer(molecule_view_id);
+  molecule_container = layout.moleculeContainer(molecule_view_id,
+    {
+      xmax:                 width,
+      ymax:                 height
+    }
+  );
 
   // ------------------------------------------------------------
   //
