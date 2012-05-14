@@ -100,6 +100,13 @@ MWHelpers.parseMML = (mmlString) ->
     y  = parseFloat $node.find("[property=ry]").text()
     vx = parseFloat $node.find("[property=vx]").text() || 0
     vy = parseFloat $node.find("[property=vy]").text() || 0
+
+    # scale from MML units to Lab's units
+    x  = x / 100      # 100 pixels per nm
+    y  = y / 100
+    vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
+    vy = vy / 100
+
     atoms.push element: elemId, x: x, y: y, vx: vx, vy: vy, charge: 0
 
   ###
@@ -108,6 +115,9 @@ MWHelpers.parseMML = (mmlString) ->
   width  = parseInt $mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate>[property=width]").find(">double").text()
   height = parseInt $mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate>[property=height]").find(">double").text()
 
+  # scale from MML units to Lab's units
+  width  = width / 100      # 100 pixels per nm
+  height = height / 100
 
   ### Put everything together into Lab's JSON format ###
   x  = (atom.x for atom in atoms)
@@ -115,12 +125,6 @@ MWHelpers.parseMML = (mmlString) ->
   vx = (atom.vx for atom in atoms)
   vy = (atom.vy for atom in atoms)
   charge = (atom.charge for atom in atoms)
-
-  # for now, scale the x, y positions into the Lab's default model size since we aren't changing Lab's size
-  labWidth  = 10
-  labHeight = 10
-  x = (rx * (labWidth/width) for rx in x)
-  y = ((labHeight - (ry * (labHeight/height))) for ry in y)
 
   # for now, just use set epsilon to the e between the first element and the second
   epsilon = elemTypes[0].epsilon[1]
@@ -135,6 +139,8 @@ MWHelpers.parseMML = (mmlString) ->
     sigma               : sigma
     lennard_jones_forces: true
     coulomb_forces      : false
+    width               : width
+    height              : height
     atoms :
       X : x
       Y : y
