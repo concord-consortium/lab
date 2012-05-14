@@ -25,6 +25,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
       epsilon             = modelConfig.epsilon,
+      sigma               = modelConfig.sigma,
       temperature         = modelConfig.temperature,
       coulomb_forces      = modelConfig.coulomb_forces,
       width               = modelConfig.width,
