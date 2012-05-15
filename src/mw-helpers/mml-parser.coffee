@@ -39,8 +39,8 @@ MWHelpers.parseMML = (mmlString) ->
   if (viewPort)
     viewPortWidth  = parseInt viewPort[0].textContent
     viewPortHeight = parseInt viewPort[1].textContent
-    viewPortX = parseInt viewProps.find(">[property=x]>double").text()
-    viewPortY = parseInt viewProps.find(">[property=y]>double").text()
+    viewPortX = parseInt viewProps.find(">[property=x]>double").text() || 0
+    viewPortY = parseInt viewProps.find(">[property=y]>double").text() || 0
   else
     viewPortWidth  = width
     viewPortHeight = height
