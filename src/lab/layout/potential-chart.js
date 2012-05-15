@@ -324,6 +324,7 @@ layout.potentialChart = function(e, model, options) {
           });
 
       gy.exit().remove();
+      plot.call(d3.behavior.zoom().x(xScale).y(yScale).scaleExtent([1, 8]).on("zoom", redraw));
       update();
     }
 
