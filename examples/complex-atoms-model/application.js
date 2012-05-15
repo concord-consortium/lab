@@ -15,8 +15,11 @@ var modelConfig = {
       temperature         : 3,
       temperature_control : false,
       epsilon             : -0.1,
+      sigma               : 0.34,
       lennard_jones_forces: true,
-      coulomb_forces      : false
+      coulomb_forces      : false,
+      width               : 10,
+      height              : 10
     },
 
     playerConfig = {

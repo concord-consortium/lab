@@ -2861,7 +2861,9 @@ exports.makeModel = function() {
       if (sizeHasBeenInitialized) {
         throw new Error("The molecular model's size has already been set, and cannot be reset.");
       }
-      size = [v[0], v[1]];
+      var width  = (v[0] && v[0] > 0) ? v[0] : 10,
+          height = (v[1] && v[1] > 0) ? v[1] : 10;
+      size = [width, height];
     },
 
     getSize: function() {
@@ -2878,6 +2880,9 @@ exports.makeModel = function() {
 
     setLJSigma: function(s) {
       lennardJones.setSigma(s);
+      for (i = 0; i < N; i++) {
+        radius[i] = s/2;
+      }
     },
 
     getLJSigma: function() {
@@ -3238,6 +3243,9 @@ modeler.model = function(initialProperties) {
       //
       radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
 
+      width = initialProperties.width,
+      height = initialProperties.height,
+
       //
       // Number of individual properties for a node
       //
@@ -3491,8 +3499,9 @@ modeler.model = function(initialProperties) {
   //          a hash specifying the x,y,vx,vy properties of the atoms
   function createNewCoreModel(config) {
     // get a fresh model
-    window.a = coreModel = md2d.makeModel();
 
+    coreModel = md2d.makeModel();
+    coreModel.setSize([width,height]);
     if (typeof config === "number") {
       coreModel.createAtoms({
         num: config
@@ -5300,7 +5309,7 @@ layout.potentialChart = function(e, model, options) {
       xScale = d3.scale.linear(), downx,
       yScale = d3.scale.linear(), downy,
       dragged, coefficient_dragged,
-      vis, plot, 
+      vis, plot,
       ljCalculator,
       ljData = {},
       ljPotentialGraphData = [],
@@ -5360,7 +5369,7 @@ layout.potentialChart = function(e, model, options) {
     ljData.variables[1].y = 0;
 
     ljPotentialGraphData.length = 0;
-    for(r = sigma * 0.5; r < ljData.xmax * 3;  r += 0.01) {
+    for(r = sigma * 0.5; r < ljData.xmax * 3;  r += 0.001) {
       y = -ljCalculator.potential(r) + epsilon;
       if (Math.abs(y) < 100) {
         ljPotentialGraphData.push([r, y]);
@@ -8001,8 +8010,11 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
       epsilon             = modelConfig.epsilon,
+      sigma               = modelConfig.sigma,
       temperature         = modelConfig.temperature,
       coulomb_forces      = modelConfig.coulomb_forces,
+      width               = modelConfig.width,
+      height              = modelConfig.height,
 
       molecule_container,
       model_listener,
@@ -8036,7 +8048,9 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       lennard_jones_forces: true,
       coulomb_forces: coulomb_forces,
       temperature_control: true,
-      epsilon: epsilon
+      epsilon: epsilon,
+      width: width,
+      height: height
     });
 
 
@@ -8058,7 +8072,12 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   layout.selection = layoutStyle;
 
   model_player = new ModelPlayer(model, autostart);
-  molecule_container = layout.moleculeContainer(molecule_view_id);
+  molecule_container = layout.moleculeContainer(molecule_view_id,
+    {
+      xmax:                 width,
+      ymax:                 height
+    }
+  );
 
   // ------------------------------------------------------------
   //
@@ -8271,10 +8290,12 @@ controllers.complexModelController =
       atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
       epsilon             = modelConfig.epsilon,
-      sigma               = 0.34,
+      sigma               = modelConfig.sigma,
       temperature         = modelConfig.temperature,
       temperature_control = modelConfig.temperature_control,
       coulomb_forces      = modelConfig.coulomb_forces,
+      width               = modelConfig.width,
+      height              = modelConfig.height,
 
       molecule_container,
       model_listener,
@@ -8345,7 +8366,9 @@ controllers.complexModelController =
           coulomb_forces: coulomb_forces,
           temperature_control: temperature_control,
           epsilon: epsilon,
-          sigma: sigma
+          sigma: sigma,
+          width: width,
+          height: height
         });
 
       if (atoms_properties) {
@@ -8381,9 +8404,9 @@ controllers.complexModelController =
           yunits:               true,
           atom_mubers:          false,
           xmin:                 0,
-          xmax:                 10,
+          xmax:                 width,
           ymin:                 0,
-          ymax:                 10
+          ymax:                 height
         }
       );
 
@@ -8754,7 +8777,7 @@ controllers.complexModelController =
   MWHelpers.parseMML = function(mmlString) {
     /* perform any pre-processing on the string
     */
-    var $mml, $node, $pair, $type, atom, atomNodes, atoms, charge, elem1, elem2, elemId, elemTypes, epsilon, epsilonPairs, getNode, height, id, json, jsonObj, labHeight, labWidth, mass, name, node, pair, rx, ry, sigma, type, typesArr, value, vx, vy, width, x, y, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3, _ref4;
+    var $mml, $node, $pair, $type, atom, atomNodes, atoms, charge, elem1, elem2, elemId, elemTypes, epsilon, epsilonPairs, getNode, height, id, json, jsonObj, mass, name, node, pair, sigma, type, typesArr, value, viewPort, viewPortHeight, viewPortWidth, viewPortX, viewPortY, viewProps, vx, vy, width, x, y, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3, _ref4;
     mmlString = mmlString.replace(/class=".*"/g, function(match) {
       return match.replace(/[\.$]/g, "-");
     });
@@ -8765,6 +8788,26 @@ controllers.complexModelController =
       if ($entity.attr("idref")) return $mml.find("#" + ($entity.attr("idref")));
       return $entity;
     };
+    /*
+        Find the container size
+    */
+    viewProps = $mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate");
+    width = parseInt(viewProps.find(">[property=width]>double").text());
+    height = parseInt(viewProps.find(">[property=height]>double").text());
+    /*
+        Find the view-port size
+    */
+    viewPort = viewProps.find(">[property=viewSize]>.java-awt-Dimension>int");
+    if (viewPort) {
+      viewPortWidth = parseInt(viewPort[0].textContent);
+      viewPortHeight = parseInt(viewPort[1].textContent);
+      viewPortX = parseInt(viewProps.find(">[property=x]>double").text() || 0);
+      viewPortY = parseInt(viewProps.find(">[property=y]>double").text() || 0);
+    } else {
+      viewPortWidth = width;
+      viewPortHeight = height;
+      viewPortX = viewPortY = 0;
+    }
     /*
         Find all elements. Results in:
         [
@@ -8848,6 +8891,14 @@ controllers.complexModelController =
       y = parseFloat($node.find("[property=ry]").text());
       vx = parseFloat($node.find("[property=vx]").text() || 0);
       vy = parseFloat($node.find("[property=vy]").text() || 0);
+      y = viewPortHeight - y;
+      vy = -vy;
+      x = x - viewPortX;
+      y = y - viewPortY;
+      x = x / 100;
+      y = y / 100;
+      vx = vx / 100;
+      vy = vy / 100;
       atoms.push({
         element: elemId,
         x: x,
@@ -8857,11 +8908,8 @@ controllers.complexModelController =
         charge: 0
       });
     }
-    /*
-        Find the container size
-    */
-    width = parseInt($mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate>[property=width]").find(">double").text());
-    height = parseInt($mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate>[property=height]").find(">double").text());
+    width = width / 100;
+    height = height / 100;
     /* Put everything together into Lab's JSON format
     */
     x = (function() {
@@ -8909,28 +8957,8 @@ controllers.complexModelController =
       }
       return _results;
     })();
-    labWidth = 10;
-    labHeight = 10;
-    x = (function() {
-      var _l, _len4, _results;
-      _results = [];
-      for (_l = 0, _len4 = x.length; _l < _len4; _l++) {
-        rx = x[_l];
-        _results.push(rx * (labWidth / width));
-      }
-      return _results;
-    })();
-    y = (function() {
-      var _l, _len4, _results;
-      _results = [];
-      for (_l = 0, _len4 = y.length; _l < _len4; _l++) {
-        ry = y[_l];
-        _results.push(labHeight - (ry * (labHeight / height)));
-      }
-      return _results;
-    })();
     epsilon = elemTypes[0].epsilon[1];
-    sigma = elemTypes[0].sigma;
+    sigma = elemTypes[0].sigma / 100;
     epsilon = -epsilon;
     jsonObj = {
       temperature_control: false,
@@ -8938,6 +8966,8 @@ controllers.complexModelController =
       sigma: sigma,
       lennard_jones_forces: true,
       coulomb_forces: false,
+      width: width,
+      height: height,
       atoms: {
         X: x,
         Y: y,

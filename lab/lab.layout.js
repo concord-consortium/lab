@@ -980,7 +980,7 @@ layout.potentialChart = function(e, model, options) {
       xScale = d3.scale.linear(), downx,
       yScale = d3.scale.linear(), downy,
       dragged, coefficient_dragged,
-      vis, plot, 
+      vis, plot,
       ljCalculator,
       ljData = {},
       ljPotentialGraphData = [],
@@ -1040,7 +1040,7 @@ layout.potentialChart = function(e, model, options) {
     ljData.variables[1].y = 0;
 
     ljPotentialGraphData.length = 0;
-    for(r = sigma * 0.5; r < ljData.xmax * 3;  r += 0.01) {
+    for(r = sigma * 0.5; r < ljData.xmax * 3;  r += 0.001) {
       y = -ljCalculator.potential(r) + epsilon;
       if (Math.abs(y) < 100) {
         ljPotentialGraphData.push([r, y]);

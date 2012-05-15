@@ -41,8 +41,11 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
       epsilon             = modelConfig.epsilon,
+      sigma               = modelConfig.sigma,
       temperature         = modelConfig.temperature,
       coulomb_forces      = modelConfig.coulomb_forces,
+      width               = modelConfig.width,
+      height              = modelConfig.height,
 
       molecule_container,
       model_listener,
@@ -76,7 +79,9 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       lennard_jones_forces: true,
       coulomb_forces: coulomb_forces,
       temperature_control: true,
-      epsilon: epsilon
+      epsilon: epsilon,
+      width: width,
+      height: height
     });
 
 
@@ -98,7 +103,12 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   layout.selection = layoutStyle;
 
   model_player = new ModelPlayer(model, autostart);
-  molecule_container = layout.moleculeContainer(molecule_view_id);
+  molecule_container = layout.moleculeContainer(molecule_view_id,
+    {
+      xmax:                 width,
+      ymax:                 height
+    }
+  );
 
   // ------------------------------------------------------------
   //
@@ -311,10 +321,12 @@ controllers.complexModelController =
       atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
       epsilon             = modelConfig.epsilon,
-      sigma               = 0.34,
+      sigma               = modelConfig.sigma,
       temperature         = modelConfig.temperature,
       temperature_control = modelConfig.temperature_control,
       coulomb_forces      = modelConfig.coulomb_forces,
+      width               = modelConfig.width,
+      height              = modelConfig.height,
 
       molecule_container,
       model_listener,
@@ -385,7 +397,9 @@ controllers.complexModelController =
           coulomb_forces: coulomb_forces,
           temperature_control: temperature_control,
           epsilon: epsilon,
-          sigma: sigma
+          sigma: sigma,
+          width: width,
+          height: height
         });
 
       if (atoms_properties) {
@@ -421,9 +435,9 @@ controllers.complexModelController =
           yunits:               true,
           atom_mubers:          false,
           xmin:                 0,
-          xmax:                 10,
+          xmax:                 width,
           ymin:                 0,
-          ymax:                 10
+          ymax:                 height
         }
       );
 

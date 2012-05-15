@@ -13,7 +13,7 @@
   MWHelpers.parseMML = function(mmlString) {
     /* perform any pre-processing on the string
     */
-    var $mml, $node, $pair, $type, atom, atomNodes, atoms, charge, elem1, elem2, elemId, elemTypes, epsilon, epsilonPairs, getNode, height, id, json, jsonObj, labHeight, labWidth, mass, name, node, pair, rx, ry, sigma, type, typesArr, value, vx, vy, width, x, y, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3, _ref4;
+    var $mml, $node, $pair, $type, atom, atomNodes, atoms, charge, elem1, elem2, elemId, elemTypes, epsilon, epsilonPairs, getNode, height, id, json, jsonObj, mass, name, node, pair, sigma, type, typesArr, value, viewPort, viewPortHeight, viewPortWidth, viewPortX, viewPortY, viewProps, vx, vy, width, x, y, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3, _ref4;
     mmlString = mmlString.replace(/class=".*"/g, function(match) {
       return match.replace(/[\.$]/g, "-");
     });
@@ -24,6 +24,26 @@
       if ($entity.attr("idref")) return $mml.find("#" + ($entity.attr("idref")));
       return $entity;
     };
+    /*
+        Find the container size
+    */
+    viewProps = $mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate");
+    width = parseInt(viewProps.find(">[property=width]>double").text());
+    height = parseInt(viewProps.find(">[property=height]>double").text());
+    /*
+        Find the view-port size
+    */
+    viewPort = viewProps.find(">[property=viewSize]>.java-awt-Dimension>int");
+    if (viewPort) {
+      viewPortWidth = parseInt(viewPort[0].textContent);
+      viewPortHeight = parseInt(viewPort[1].textContent);
+      viewPortX = parseInt(viewProps.find(">[property=x]>double").text() || 0);
+      viewPortY = parseInt(viewProps.find(">[property=y]>double").text() || 0);
+    } else {
+      viewPortWidth = width;
+      viewPortHeight = height;
+      viewPortX = viewPortY = 0;
+    }
     /*
         Find all elements. Results in:
         [
@@ -107,6 +127,14 @@
       y = parseFloat($node.find("[property=ry]").text());
       vx = parseFloat($node.find("[property=vx]").text() || 0);
       vy = parseFloat($node.find("[property=vy]").text() || 0);
+      y = viewPortHeight - y;
+      vy = -vy;
+      x = x - viewPortX;
+      y = y - viewPortY;
+      x = x / 100;
+      y = y / 100;
+      vx = vx / 100;
+      vy = vy / 100;
       atoms.push({
         element: elemId,
         x: x,
@@ -116,11 +144,8 @@
         charge: 0
       });
     }
-    /*
-        Find the container size
-    */
-    width = parseInt($mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate>[property=width]").find(">double").text());
-    height = parseInt($mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate>[property=height]").find(">double").text());
+    width = width / 100;
+    height = height / 100;
     /* Put everything together into Lab's JSON format
     */
     x = (function() {
@@ -168,28 +193,8 @@
       }
       return _results;
     })();
-    labWidth = 10;
-    labHeight = 10;
-    x = (function() {
-      var _l, _len4, _results;
-      _results = [];
-      for (_l = 0, _len4 = x.length; _l < _len4; _l++) {
-        rx = x[_l];
-        _results.push(rx * (labWidth / width));
-      }
-      return _results;
-    })();
-    y = (function() {
-      var _l, _len4, _results;
-      _results = [];
-      for (_l = 0, _len4 = y.length; _l < _len4; _l++) {
-        ry = y[_l];
-        _results.push(labHeight - (ry * (labHeight / height)));
-      }
-      return _results;
-    })();
     epsilon = elemTypes[0].epsilon[1];
-    sigma = elemTypes[0].sigma;
+    sigma = elemTypes[0].sigma / 100;
     epsilon = -epsilon;
     jsonObj = {
       temperature_control: false,
@@ -197,6 +202,8 @@
       sigma: sigma,
       lennard_jones_forces: true,
       coulomb_forces: false,
+      width: width,
+      height: height,
       atoms: {
         X: x,
         Y: y,

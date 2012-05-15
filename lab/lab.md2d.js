@@ -1578,7 +1578,9 @@ exports.makeModel = function() {
       if (sizeHasBeenInitialized) {
         throw new Error("The molecular model's size has already been set, and cannot be reset.");
       }
-      size = [v[0], v[1]];
+      var width  = (v[0] && v[0] > 0) ? v[0] : 10,
+          height = (v[1] && v[1] > 0) ? v[1] : 10;
+      size = [width, height];
     },
 
     getSize: function() {
@@ -1595,6 +1597,9 @@ exports.makeModel = function() {
 
     setLJSigma: function(s) {
       lennardJones.setSigma(s);
+      for (i = 0; i < N; i++) {
+        radius[i] = s/2;
+      }
     },
 
     getLJSigma: function() {
