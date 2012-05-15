@@ -480,6 +480,9 @@ exports.makeModel = function() {
 
     setLJSigma: function(s) {
       lennardJones.setSigma(s);
+      for (i = 0; i < N; i++) {
+        radius[i] = s/2;
+      }
     },
 
     getLJSigma: function() {
