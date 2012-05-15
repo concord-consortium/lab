@@ -184,9 +184,11 @@ modeler.model = function(initialProperties) {
     tick_counter++;
     new_step = true;
     tick_history_list.push({
-      nodes: newnodes,
-      ke   :ke,
-      time :time
+      nodes:   newnodes,
+      pressure: modelOutputState.pressure,
+      pe:       modelOutputState.PE,
+      ke:       modelOutputState.KE,
+      time:     modelOutputState.time
     });
     if (tick_history_list_index > 1000) {
       tick_history_list.splice(0,1);
