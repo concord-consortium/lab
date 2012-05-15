@@ -128,7 +128,8 @@ MWHelpers.parseMML = (mmlString) ->
 
   # for now, just use set epsilon to the e between the first element and the second
   epsilon = elemTypes[0].epsilon[1]
-  sigma   = elemTypes[0].sigma
+  # for now use first element's sigma; scale to nm
+  sigma   = elemTypes[0].sigma / 100
 
   # epsilon's sign appears to be flipped between MW and Lab
   epsilon = -epsilon
