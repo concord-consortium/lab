@@ -55,7 +55,9 @@ controllers.complexModelController =
       speedDistributionChart,
       viewLists,
       select_molecule_number,
-      radio_randomize_pos_vel;
+      radio_randomize_pos_vel,
+
+      currentTick = 0;
 
   function controller() {
 
@@ -77,10 +79,10 @@ controllers.complexModelController =
       molecule_container.update_molecule_positions();
 
       if (model.isNewStep()) {
+        currentTick++;
         te_data.push(te);
         if (model.is_stopped()) {
           energyGraph.add_point(te);
-          energyGraph.update_canvas();
         } else {
           energyGraph.add_canvas_point(te);
         }
@@ -93,6 +95,10 @@ controllers.complexModelController =
       if (step_counter >= maximum_model_steps) { modelStop(); }
       layout.displayStats();
       if (layout.datatable_visible) { layout.render_datatable(); }
+    }
+
+    function resetTEData() {
+      te_data = [model.ke() + model.pe()];
     }
 
     // ------------------------------------------------------------
@@ -163,11 +169,13 @@ controllers.complexModelController =
 
       // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
 
+      resetTEData();
+
       energyGraph = grapher.realTimeGraph(energy_graph_view_id, {
         title:     "Total Energy of the System",
         xlabel:    "Model Time (ps)",
         xmin:      0,
-        xmax:      2500,
+        xmax:     100,
         sample:    0.25,
         ylabel:    null,
         ymin:      0.0,
@@ -175,11 +183,23 @@ controllers.complexModelController =
         dataset:   te_data
       });
 
-      te_data = [model.ke() + model.pe()];
       energyGraph.new_data(te_data);
 
-      model.on('play', energyGraph.show_canvas);
-      model.on('stop', energyGraph.hide_canvas);
+      model.on('play', function() {
+        if (energyGraph.number_of_points() && currentTick < energyGraph.number_of_points()) {
+          if (currentTick === 0) {
+            resetTEData();
+          } else {
+            te_data.length = currentTick;
+          }
+          energyGraph.new_data(te_data);
+        }
+        energyGraph.show_canvas();
+      });
+
+      model.on('stop', function() {
+        energyGraph.hide_canvas();
+      });
 
       // ------------------------------------------------------------
       //
@@ -327,7 +347,7 @@ controllers.complexModelController =
       nodes = model.get_nodes();
 
       model.resetTime();
-      te_data = [model.ke()];
+      resetTEData();
 
       molecule_container.updateMoleculeRadius();
       molecule_container.setup_particles();
@@ -350,7 +370,7 @@ controllers.complexModelController =
       model.stop();
       energyGraph.hide_canvas();
       molecule_container.playback_component.action('stop');
-      // energyGraph.new_data(ke_data);
+      // energyGraph.new_data(te_data);
       if (model_controls) {
         model_controls_inputs[0].checked = true;
       }
@@ -388,13 +408,14 @@ controllers.complexModelController =
 
     function modelStepBack() {
       modelStop();
-      model.stepBack();
-      energyGraph.new_data(te_data);
+      currentTick = model.stepBack();
+      energyGraph.showMarker(currentTick);
     }
 
     function modelStepForward() {
       if (model.stepCounter() < maximum_model_steps) {
-        model.stepForward();
+        currentTick = model.stepForward();
+        energyGraph.showMarker(currentTick);
       } else {
         if (model_controls) {
           model_controls_inputs[0].checked = true;
@@ -413,7 +434,7 @@ controllers.complexModelController =
       } else {
         layout.hide_datatable();
       }
-      te_data = [model.ke()];
+      resetTEData();
       energyGraph.new_data(te_data);
       energyGraph.hide_canvas();
       if (model_controls) {
@@ -500,6 +521,8 @@ controllers.complexModelController =
     controller.modelGo = modelGo;
     controller.modelStop = modelStop;
     controller.modelReset = modelReset;
+    controller.resetTEData = resetTEData;
+    controller.energyGraph = energyGraph;
   }
 
   controller();
