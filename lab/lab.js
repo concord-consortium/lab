@@ -8434,7 +8434,7 @@ controllers.complexModelController =
         title:     "Total Energy of the System",
         xlabel:    "Model Time (ps)",
         xmin:      0,
-        xmax:     100,
+        xmax:     2500,
         sample:    0.25,
         ylabel:    null,
         ymin:      0.0,
