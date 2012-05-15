@@ -26,6 +26,27 @@ MWHelpers.parseMML = (mmlString) ->
     $entity
 
   ###
+    Find the container size
+  ###
+  viewProps = $mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate")
+  width  = parseInt viewProps.find(">[property=width]>double").text()
+  height = parseInt viewProps.find(">[property=height]>double").text()
+
+  ###
+    Find the view-port size
+  ###
+  viewPort = viewProps.find(">[property=viewSize]>.java-awt-Dimension>int")
+  if (viewPort)
+    viewPortWidth  = parseInt viewPort[0].textContent
+    viewPortHeight = parseInt viewPort[1].textContent
+    viewPortX = parseInt viewProps.find(">[property=x]>double").text()
+    viewPortY = parseInt viewProps.find(">[property=y]>double").text()
+  else
+    viewPortWidth  = width
+    viewPortHeight = height
+    viewPortX = viewPortY = 0
+
+  ###
     Find all elements. Results in:
     [
       {
@@ -101,6 +122,14 @@ MWHelpers.parseMML = (mmlString) ->
     vx = parseFloat $node.find("[property=vx]").text() || 0
     vy = parseFloat $node.find("[property=vy]").text() || 0
 
+    # MW 0,0 is top left, NGMW 0,0 is bottom left
+    y = viewPortHeight - y
+    vy = -vy
+
+    # if there is a view-port, x and y are actually in view-port coords... map to model coords
+    x = x - viewPortX
+    y = y - viewPortY
+
     # scale from MML units to Lab's units
     x  = x / 100      # 100 pixels per nm
     y  = y / 100
@@ -109,11 +138,6 @@ MWHelpers.parseMML = (mmlString) ->
 
     atoms.push element: elemId, x: x, y: y, vx: vx, vy: vy, charge: 0
 
-  ###
-    Find the container size
-  ###
-  width  = parseInt $mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate>[property=width]").find(">double").text()
-  height = parseInt $mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate>[property=height]").find(">double").text()
 
   # scale from MML units to Lab's units
   width  = width / 100      # 100 pixels per nm
