@@ -226,6 +226,8 @@ modeler.model = function(initialProperties) {
         sample_time = t;
       }
       dispatch.tick({type: "tick"});
+    } else {
+      if (model_listener) { model_listener(); }
     }
     return stopped;
   }
@@ -454,7 +456,6 @@ modeler.model = function(initialProperties) {
         if (model_listener) { model_listener(); }
       } else {
         tick();
-        if (model_listener) { model_listener(); }
       }
     }
     return tick_counter;
