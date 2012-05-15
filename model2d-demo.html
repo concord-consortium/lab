@@ -74,6 +74,7 @@
                 <fieldset>
                   <legend>Simulation: </legend>
                   <label><input id="sim-stop" type="radio" name="step" value="stop" checked/> Stop</label>
+                  <label><input id="sim-reset" type="radio" name="step" value="stop"/> Reset</label>
                   <label><input id="sim-step" type="radio" name="step" value="step"/> Step</label>
                   <label><input id="sim-go" type="radio" name="step" value="go"/> Go</label>
                   <label>
@@ -225,6 +226,7 @@
         var choose_active_solvers = document.getElementById("active-solvers");
         
         var sim_stop = document.getElementById("sim-stop");
+        var sim_reset = document.getElementById("sim-reset");
         var sim_step = document.getElementById("sim-step");
         var sim_go = document.getElementById("sim-go");
         var steps_per_frame_element = document.getElementById("steps-per-frame");
@@ -286,6 +288,13 @@
               sim_stop.checked = true;
             }
         };
+        sim_reset.onchange = function() {
+            if (this.checked) {
+              window.clearInterval(window.paintInterval);
+              model = getDefaultModel();
+              sim_stop.checked = true;
+            }
+        };
         sim_stop.onchange = function() {
             if (this.checked) {
                 window.clearInterval(paintInterval);
@@ -314,7 +323,6 @@
         // simulation
         window.renderModelStep = function() {
             sample_time = new Date();
-            model2d.addHotSpot(model, 50.0);
             for (var i = 0; i < steps_per_frame; i++)
                 model.nextStep();
             average_sample_time_ms = (average_sample_time_ms * 1.75 + (last_sample_time - one_before_that_sample_time) * 0.25) / 2;
@@ -338,9 +346,8 @@
             } else {
                 array_selection = "typed";
             }
-            var model = new model2d.Model2D({}, array_selection);
+            var model = new model2d.Model2D(undefined, array_selection);
             setupActiveSolvers(model);
-            model2d.addHotSpot(model, 50.0);      
             return model;
         }
         

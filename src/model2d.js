@@ -42,7 +42,7 @@ function createArray(size, fill) {
     fill = fill || 0;
     var a;
     if (model2d.array_type === "typed") {
-        a = new Float32Array(size);
+        a = new Float64Array(size);
     } else {
         a = new Array(size);
     }
@@ -56,9 +56,9 @@ function createArray(size, fill) {
     return a;
 }
 
-model2d.config = {
+model2d.default_config = {
     model:{
-        timestep: 50,
+        timestep: 0.1,
         measurement_interval: 100,
         viewupdate_interval: 20,
         sunny: true,
@@ -100,162 +100,40 @@ model2d.config = {
             ]
         },
 
-        view:{
-            minimum_temperature: 0,
-            maximum_temperature: 40,
-        },
-
         structure:{
             part:[
                 {
-                    polygon:{
-                        count: 4,
-                        vertices:'8.0, 8.0, 8.5, 8.0, 8.5, 7.0, 8.0, 7.0'
-                    },
-                    thermal_conductivity: 0.08,
-                    specific_heat: 1300,
-                    density: 25,
-                    transmission: 0,
-                    reflection: 1,
-                    absorption: 1,
-                    emissivity: 0,
-                    temperature: 0,
-                    constant_temperature: false,
-                    color:'22ccff'
-                },
-                {
                     rectangle:{
-                        x: 1,
-                        y: 7,
-                        width: 0.5,
+                        x: 4.5,
+                        y: 4.5,
+                        width: 1,
                         height: 1
                     },
-                    thermal_conductivity: 0.001,
+                    thermal_conductivity: 1,
                     specific_heat: 1300,
                     density: 25,
                     transmission: 0,
                     reflection: 0,
                     absorption: 1,
                     emissivity: 0,
-                    temperature: 0,
-                    constant_temperature: false
-                },
-                {
-                    rectangle:{
-                        x: 1,
-                        y: 4,
-                        width: 0.5,
-                        height: 1
-                    },
-                    thermal_conductivity: 0.001,
-                    specific_heat: 1300,
-                    density: 25,
-                    transmission: 0,
-                    reflection: 0,
-                    absorption: 1,
-                    emissivity: 0,
-                    temperature: 0,
-                    constant_temperature: false
-                },
-                {
-                    polygon:{
-                        count: 6,
-                        vertices:'0.5, 3.5, 5.0, 1.0, 9.5, 3.5, 8.5, 3.5, 5.0, 1.6499996, 1.5, 3.5'
-                    },
-                    thermal_conductivity: 0.001,
-                    specific_heat: 1300,
-                    density: 25,
-                    transmission: 0,
-                    reflection: 0,
-                    absorption: 1,
-                    emissivity: 0,
-                    temperature: 0,
-                    constant_temperature: false
-                },
-                {
-                    rectangle:{
-                        x:-0.099999905,
-                        y: 8,
-                        width: 10.2,
-                        height: 2
-                    },
-                    thermal_conductivity: 0.001,
-                    specific_heat: 1300,
-                    density: 25,
-                    transmission: 0,
-                    reflection: 0,
-                    absorption: 1,
-                    emissivity: 0,
-                    temperature: 0,
-                    constant_temperature: false,
-                    color: 333333,
-                    label:'Ground'
-                },
-                {
-                    rectangle:{
-                        x: 8.5,
-                        y: 4,
-                        width: 0.5,
-                        height: 4
-                    },
-                    thermal_conductivity: 0.001,
-                    specific_heat: 1300,
-                    density: 25,
-                    transmission: 0,
-                    reflection: 0,
-                    absorption: 1,
-                    emissivity: 0,
-                    temperature: 0,
-                    constant_temperature: false,
-                    label:'Wall'
-                },
-                {
-                    rectangle:{
-                        x: 1.15,
-                        y: 5,
-                        width: 0.2,
-                        height: 2
-                    },
-                    thermal_conductivity: 0.001,
-                    specific_heat: 1300,
-                    density: 25,
-                    transmission: 1,
-                    reflection: 0,
-                    absorption: 0,
-                    emissivity: 0,
-                    temperature: 0,
-                    constant_temperature: false,
-                    color:'ffffff'
-                },
-                {
-                    rectangle:{
-                        x: 0.5,
-                        y: 3.5,
-                        width: 9,
-                        height: 0.5
-                    },
-                    thermal_conductivity: 0.001,
-                    specific_heat: 1300,
-                    density: 25,
-                    transmission: 0,
-                    reflection: 0,
-                    absorption: 1,
-                    emissivity: 0,
-                    temperature: 0,
-                    constant_temperature: false,
-                    label:'Ceiling'
+                    temperature: 50,
+                    constant_temperature: true
                 }
             ]
         }
+    },
+
+    view:{
+        minimum_temperature: 0,
+        maximum_temperature: 50,
     }
 };
 
 
-
 model2d.Model2D = function(options, array_type) {
 
-    if (!options || options === {}) {
-        options = model2d.config;
+    if (!options) {
+        options = model2d.default_config;
     };
 
     if (!options.model) {
@@ -267,6 +145,7 @@ model2d.Model2D = function(options, array_type) {
     };
     model2d.array_type = array_type;
     
+    this.timeStep = options.model.timestep;
     this.measurementInterval = options.model.measurement_interval || 100;
     this.viewUpdateInterval = options.model.view_update_interval || 20;
     this.sunny = options.model.sunny || true;
@@ -292,19 +171,14 @@ model2d.Model2D = function(options, array_type) {
     this.boundary_settings = options.model.boundary || 
         { temperature_at_border: { upper: 0, lower: 0, left: 0, right: 0 } };
 
-    this.parts = [];
-
-    // private List<Thermometer> thermometers;
-    // 
-    // private List<Part> parts;
-    // private List<Photon> photons;
-    // 
-    // private RaySolver2D raySolver;
-    // private FluidSolver2D fluidSolver;
-    // private HeatSolver2D heatSolver;
+    if (options.model.structure)
+        this.parts = options.model.structure.part;
 
     this.nx = model2d.NX;
     this.ny = model2d.NY;
+    this.nx1 = this.nx - 1;
+    this.ny1 = this.ny - 1;
+    
 
     // length in x direction (unit: meter)
     this.lx = 10;
@@ -323,9 +197,6 @@ model2d.Model2D = function(options, array_type) {
     this.hasPartPower = false;
     this.radiative = true;
     this.convective = true;
-
-    // private List<VisualizationListener> visualizationListeners;
-    // private List<PropertyChangeListener> propertyChangeListeners;
 
     // temperature array
     
@@ -381,6 +252,7 @@ model2d.Model2D = function(options, array_type) {
     this.photons = [];
 
     this.heatSolver = new model2d.HeatSolver2D(this.nx, this.ny, this);
+    this.heatSolver.timeStep = this.timeStep;
     this.heatSolver.capacity = this.capacity;
     this.heatSolver.conductivity = this.conductivity;
     this.heatSolver.density = this.density;
@@ -391,6 +263,7 @@ model2d.Model2D = function(options, array_type) {
     this.heatSolver.fluidity = this.fluidity;
     
     this.fluidSolver = new model2d.FluidSolver2D(this.nx, this.ny, this);
+    this.fluidSolver.timeStep = this.timeStep;
     this.fluidSolver.fluidity = this.fluidity;
     this.fluidSolver.t = this.t;
     this.fluidSolver.uWind = this.uWind;
@@ -400,12 +273,67 @@ model2d.Model2D = function(options, array_type) {
     this.raySolver.q = this.q;
 
     this.setGridCellSize();
-
+    this.refreshMaterialProperties();
     // parts = Collections.synchronizedList(new ArrayList<Part>());
     // thermometers = Collections.synchronizedList(new ArrayList<Thermometer>());
 
     // visualizationListeners = new ArrayList<VisualizationListener>();
     // propertyChangeListeners = new ArrayList<PropertyChangeListener>();
+};
+
+model2d.Model2D.prototype.refreshMaterialProperties = function() {
+    if (!this.parts)
+        return;
+    
+    var parts = this.parts;
+    var t = this.t;
+    var fluidity = this.fluidity;
+    var conductivity = this.conductivity;
+    var capacity = this.capacity;
+    var density = this.density;
+    var tb = this.tb;
+    
+    var part, indexes, idx;
+    for (var i = 0; i < parts.length; i++) {
+        part = parts[i];
+        indexes = this.getFieldsOccupiedByPart(part);
+        for(var ii = 0; ii < indexes.length; ii++) {
+            idx = indexes[ii];
+            
+            fluidity[idx] = false;
+            t[idx] = part.temperature;
+            conductivity[idx] = part.thermal_conductivity;
+            capacity[idx] = part.specific_heat;
+            density[idx] = part.density;
+            
+            if (part.constant_temperature)
+                tb[idx] = part.temperature;
+        }
+    }
+};
+
+model2d.Model2D.prototype.getFieldsOccupiedByPart = function(part) {
+    var indexes;
+    var ny = this.ny;
+    var dx = this.nx1 / this.lx;
+    var dy = this.ny1 / this.ly;
+    if (part.rectangle) {
+        var rect = part.rectangle;
+        var i0 = Math.round(Number(rect.x) * dx);
+        var j0 = Math.round(Number(rect.y) * dy);
+        var i_max = Math.round((Number(rect.x) + Number(rect.width)) * dx);
+        var j_max = Math.round((Number(rect.y) + Number(rect.height)) * dy);
+        indexes = new Array((i_max - i0 + 1) * (j_max - j0 + 1));
+        var idx = 0, iny;
+        for (var i = i0; i <= i_max; i++) {
+            iny = i * ny;
+            for (var j = j0; j <= j_max; j++) {
+                indexes[idx++] = iny + j;
+            }
+        }
+        return indexes;
+    }
+    return undefined;
 };
 
 model2d.Model2D.prototype.reset = function() {
@@ -673,7 +601,6 @@ model2d.getMinAnyArray = function(array) {
     }
 };
 
-
 model2d.getAverage = function(array) {
     var acc = 0;
     var length = array.length;
@@ -682,6 +609,7 @@ model2d.getAverage = function(array) {
     };
     return acc / length;
 };
+
 
 // *******************************************************
 //
@@ -929,7 +857,6 @@ model2d.FluidSolver2D = function(nx, ny, model) {
     this.gravity = 0;
     this.buoyancyApproximation = model.buoyancyApproximation;  // model2d.BUOYANCY_AVERAGE_COLUMN;
     this.viscosity = 10 * model2d.AIR_VISCOSITY;
-    this.timeStep = 0.1;
 
     this.uWind = model.uWind;
     this.vWind = model.vWind;
@@ -1530,7 +1457,6 @@ model2d.RaySolver2D = function(lx, ly) {
     this.deltaY = null;
     
     this.relaxationSteps = 5;
-    this.timeStep = 0.1;
     this.thermalBuoyancy = 0.00025;
     this.gravity = 0;
     this.buoyancyApproximation = 1;  // model2d.BUOYANCY_AVERAGE_COLUMN;
@@ -1607,7 +1533,7 @@ model2d.RaySolver2D.prototype.solve = function(model2d) {
 
   var photon = null;
 
-  var timeStep = model2d.timeStep;
+  var timeStep = this.timeStep;
   var nx = model2d.nx;
   var ny = model2d.ny;
 
@@ -1791,17 +1717,6 @@ model2d.Photon.prototype.move = function(dt) {
 //   Graphics Canvas
 //
 // *******************************************************
-
-model2d.addHotSpot = function(model, temp) {
-    var inx;
-    for (var i = 45; i < 55; i++) {
-      inx = i * model.ny;
-      for (var j = 45; j < 55; j++) {
-          model.t[inx + j] = temp;
-          model.fluidity[inx + j] = false;
-      }
-    }
-};
 
 /**
 * HSV to RGB color conversion
