@@ -2108,9 +2108,11 @@ modeler.model = function(initialProperties) {
     tick_counter++;
     new_step = true;
     tick_history_list.push({
-      nodes: newnodes,
-      ke   :ke,
-      time :time
+      nodes:   newnodes,
+      pressure: modelOutputState.pressure,
+      pe:       modelOutputState.PE,
+      ke:       modelOutputState.KE,
+      time:     modelOutputState.time
     });
     if (tick_history_list_index > 1000) {
       tick_history_list.splice(0,1);
@@ -2148,6 +2150,8 @@ modeler.model = function(initialProperties) {
         sample_time = t;
       }
       dispatch.tick({type: "tick"});
+    } else {
+      if (model_listener) { model_listener(); }
     }
     return stopped;
   }
@@ -2376,7 +2380,6 @@ modeler.model = function(initialProperties) {
         if (model_listener) { model_listener(); }
       } else {
         tick();
-        if (model_listener) { model_listener(); }
       }
     }
     return tick_counter;
