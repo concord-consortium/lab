@@ -24,7 +24,7 @@ $(function() {
       data: jsonModel
     }).done(function(data) {
       var loc  = req.getResponseHeader('Location'),
-          id = /\/model-config\/(.*)$/.exec(loc)[1];
+          id = /\/model-config\/(.*)$/.exec(loc)[1],
           location = document.location,
           host = location.protocol + '//' + location.host,
           jsonLoc = '/couchdb/_utils/document.html?models/'+id
