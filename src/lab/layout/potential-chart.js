@@ -255,12 +255,12 @@ layout.potentialChart = function(e, model, options) {
           d3.event.transform(x, y);
       }
 
-      var fx = xScale.tickFormat(10),
+      var fx = xScale.tickFormat(5),
           fy = yScale.tickFormat(10);
 
       // Regenerate x-ticks…
       var gx = vis.selectAll("g.x")
-          .data(xScale.ticks(10), String)
+          .data(xScale.ticks(5), String)
           .attr("transform", tx);
 
       gx.select("text")
