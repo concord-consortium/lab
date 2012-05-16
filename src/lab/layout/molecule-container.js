@@ -64,9 +64,15 @@ layout.moleculeContainer = function(e, options) {
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
-  function scale() {
-    cy = elem.property("clientHeight");
-    cx = cy;
+  function scale(width, height) {
+    if (!arguments.length) {
+      cy = elem.property("clientHeight");
+      cx = cy;
+    } else {
+      cy = height;
+      node.style.height = cy +"px";
+      cx = cy;
+    }
     node.style.width = cx +"px";
     scale_factor = layout.screen_factor;
     if (layout.screen_factor_width && layout.screen_factor_height) {
@@ -611,8 +617,8 @@ layout.moleculeContainer = function(e, options) {
   }
 
   container.resize = function(width, height) {
-    // container.scale(width, height);
-    container.scale();
+    container.scale(width, height);
+    // container.scale();
     container();
     container.setup_particles();
   };

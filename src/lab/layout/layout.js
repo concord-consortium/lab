@@ -171,22 +171,22 @@ layout.setupScreen = function(viewLists) {
   //
   function setupRegularScreen() {
     var i, width, height;;
-    height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.44);
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
       viewLists.moleculeContainers[i].resize(height, height);
     };
     width = layout.display.page.width * 0.24;
-    height = layout.display.page.height * 0.32;
+    height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.potentialCharts.length) {
       viewLists.potentialCharts[i].resize(width, height);
     };
     width = layout.display.page.width * 0.22;
-    height = layout.display.page.height * 0.32;
+    height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
       viewLists.speedDistributionCharts[i].resize(width, height);
     };
     width = layout.display.page.width * 0.47 + 5;
-    height = layout.display.page.height * 0.43 + 0;
+    height = layout.display.page.height * 0.39 + 0;
     i = -1;  while(++i < viewLists.energyCharts.length) {
       viewLists.energyCharts[i].resize(width, height);
     };
