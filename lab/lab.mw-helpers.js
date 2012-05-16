@@ -13,7 +13,7 @@
   MWHelpers.parseMML = function(mmlString) {
     /* perform any pre-processing on the string
     */
-    var $mml, $node, $pair, $type, atom, atomNodes, atoms, charge, elem1, elem2, elemId, elemTypes, epsilon, epsilonPairs, getNode, height, id, json, jsonObj, mass, name, node, pair, sigma, type, typesArr, value, viewPort, viewPortHeight, viewPortWidth, viewPortX, viewPortY, viewProps, vx, vy, width, x, y, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3, _ref4;
+    var $mml, $node, $type, atom, atomNodes, atoms, charge, elemId, elemTypes, epsilon, getNode, height, id, json, jsonObj, mass, name, node, sigma, type, typesArr, viewPort, viewPortHeight, viewPortWidth, viewPortX, viewPortY, viewProps, vx, vy, width, x, y, _i, _j, _len, _len2, _ref, _ref2, _ref3, _ref4;
     mmlString = mmlString.replace(/class=".*"/g, function(match) {
       return match.replace(/[\.$]/g, "-");
     });
@@ -67,11 +67,12 @@
       id = ((_ref = $type.find("[property=ID]>int")[0]) != null ? _ref.textContent : void 0) || 0;
       mass = (_ref2 = $type.find("[property=mass]>double")[0]) != null ? _ref2.textContent : void 0;
       sigma = (_ref3 = $type.find("[property=sigma]>double")[0]) != null ? _ref3.textContent : void 0;
+      epsilon = (_ref4 = $type.find("[property=epsilon]>double")[0]) != null ? _ref4.textContent : void 0;
       elemTypes[id] = {
         name: id,
         mass: mass,
         sigma: sigma,
-        epsilon: []
+        epsilon: epsilon
       };
     }
     /*
@@ -93,16 +94,6 @@
         where num0 is the epsilon between this first element and the second, num1 is the epsilon between
         this first element and the third, etc.
     */
-    epsilonPairs = $mml.find(".org-concord-mw2d-models-Affinity [property=epsilon]>[method=put]");
-    for (_j = 0, _len2 = epsilonPairs.length; _j < _len2; _j++) {
-      pair = epsilonPairs[_j];
-      $pair = getNode($(pair));
-      elem1 = parseInt(getNode($pair.find("[property=element1]>object")).find("[property=ID]>int").text() || 0);
-      elem2 = parseInt(getNode($pair.find("[property=element2]>object")).find("[property=ID]>int").text() || 0);
-      value = $pair.find(">double").text();
-      elemTypes[elem1].epsilon[elem2] = value;
-      elemTypes[elem2].epsilon[elem1] = value;
-    }
     /*
         Find all atoms. We end up with:
           [
@@ -119,10 +110,10 @@
     */
     atoms = [];
     atomNodes = $mml.find(".org-concord-mw2d-models-Atom");
-    for (_k = 0, _len3 = atomNodes.length; _k < _len3; _k++) {
-      node = atomNodes[_k];
+    for (_j = 0, _len2 = atomNodes.length; _j < _len2; _j++) {
+      node = atomNodes[_j];
       $node = getNode($(node));
-      elemId = parseInt(((_ref4 = $node.find("[property=ID]")[0]) != null ? _ref4.textContent : void 0) || 0);
+      elemId = parseInt($node.find("[property=ID]>int").text() || 0);
       x = parseFloat($node.find("[property=rx]").text());
       y = parseFloat($node.find("[property=ry]").text());
       vx = parseFloat($node.find("[property=vx]").text() || 0);
@@ -136,7 +127,7 @@
       vx = vx / 100;
       vy = vy / 100;
       atoms.push({
-        element: elemId,
+        elemId: elemId,
         x: x,
         y: y,
         vx: vx,
@@ -149,52 +140,53 @@
     /* Put everything together into Lab's JSON format
     */
     x = (function() {
-      var _l, _len4, _results;
+      var _k, _len3, _results;
       _results = [];
-      for (_l = 0, _len4 = atoms.length; _l < _len4; _l++) {
-        atom = atoms[_l];
+      for (_k = 0, _len3 = atoms.length; _k < _len3; _k++) {
+        atom = atoms[_k];
         _results.push(atom.x);
       }
       return _results;
     })();
     y = (function() {
-      var _l, _len4, _results;
+      var _k, _len3, _results;
       _results = [];
-      for (_l = 0, _len4 = atoms.length; _l < _len4; _l++) {
-        atom = atoms[_l];
+      for (_k = 0, _len3 = atoms.length; _k < _len3; _k++) {
+        atom = atoms[_k];
         _results.push(atom.y);
       }
       return _results;
     })();
     vx = (function() {
-      var _l, _len4, _results;
+      var _k, _len3, _results;
       _results = [];
-      for (_l = 0, _len4 = atoms.length; _l < _len4; _l++) {
-        atom = atoms[_l];
+      for (_k = 0, _len3 = atoms.length; _k < _len3; _k++) {
+        atom = atoms[_k];
         _results.push(atom.vx);
       }
       return _results;
     })();
     vy = (function() {
-      var _l, _len4, _results;
+      var _k, _len3, _results;
       _results = [];
-      for (_l = 0, _len4 = atoms.length; _l < _len4; _l++) {
-        atom = atoms[_l];
+      for (_k = 0, _len3 = atoms.length; _k < _len3; _k++) {
+        atom = atoms[_k];
         _results.push(atom.vy);
       }
       return _results;
     })();
     charge = (function() {
-      var _l, _len4, _results;
+      var _k, _len3, _results;
       _results = [];
-      for (_l = 0, _len4 = atoms.length; _l < _len4; _l++) {
-        atom = atoms[_l];
+      for (_k = 0, _len3 = atoms.length; _k < _len3; _k++) {
+        atom = atoms[_k];
         _results.push(atom.charge);
       }
       return _results;
     })();
-    epsilon = elemTypes[0].epsilon[1];
-    sigma = elemTypes[0].sigma / 100;
+    id = atoms[0].elemId || 0;
+    epsilon = elemTypes[id].epsilon;
+    sigma = elemTypes[id].sigma / 100;
     epsilon = -epsilon;
     jsonObj = {
       temperature_control: false,

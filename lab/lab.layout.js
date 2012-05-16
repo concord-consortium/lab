@@ -178,26 +178,25 @@ layout.setupScreen = function(viewLists) {
   // Regular Screen Layout
   //
   function setupRegularScreen() {
-    var i, width, height, mcsize, widthToPageRatio;
-    height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.40);
+    var i, width, height, mcsize;
+    height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.44);
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
       viewLists.moleculeContainers[i].resize(height, height);
     };
     // HACK that will normally only work with one moleculeContainer
     // or if all the moleculeContainers end up the same width
     mcsize = viewLists.moleculeContainers[0].scale();
-    widthToPageRatio = mcsize[0] / layout.display.page.width;
-    width = (layout.display.page.width - mcsize[0]) * 0.34;
+    width = (layout.display.page.width - mcsize[0]) * 0.35;
     height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.potentialCharts.length) {
       viewLists.potentialCharts[i].resize(width, height);
     };
-    width = (layout.display.page.width - mcsize[0]) * 0.34;
+    width = (layout.display.page.width - mcsize[0]) * 0.35;
     height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
       viewLists.speedDistributionCharts[i].resize(width, height);
     };
-    width = (layout.display.page.width - mcsize[0]) * 0.70;
+    width = (layout.display.page.width - mcsize[0]) * 0.72;
     height = layout.display.page.height * 0.39 + 0;
     i = -1;  while(++i < viewLists.energyCharts.length) {
       viewLists.energyCharts[i].resize(width, height);
