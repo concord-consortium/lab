@@ -201,6 +201,11 @@ controllers.complexModelController =
         energyGraph.hide_canvas();
       });
 
+      model.on('seek', function() {
+        resetTEData();
+        energyGraph.new_data(te_data);
+      });
+
       // ------------------------------------------------------------
       //
       // Speed Distribution Histogram
