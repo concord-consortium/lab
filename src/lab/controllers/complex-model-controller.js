@@ -40,7 +40,7 @@ controllers.complexModelController =
       width               = modelConfig.width,
       height              = modelConfig.height,
 
-      molecule_container,
+      moleculeContainer,
       model_listener,
       step_counter,
       ljCalculator,
@@ -76,7 +76,7 @@ controllers.complexModelController =
 
       speedDistributionChart.update();
 
-      molecule_container.update_molecule_positions();
+      moleculeContainer.update_molecule_positions();
 
       if (model.isNewStep()) {
         currentTick++;
@@ -140,7 +140,7 @@ controllers.complexModelController =
       layout.selection = layoutStyle;
 
       model_player = new ModelPlayer(model, autostart);
-      molecule_container = layout.moleculeContainer(molecule_view_id,
+      moleculeContainer = layout.moleculeContainer(molecule_view_id,
         {
           title:               "Simple Molecules",
           xlabel:              "X position (nm)",
@@ -159,7 +159,7 @@ controllers.complexModelController =
         }
       );
 
-      model.addPropertiesListener(["sigma"], molecule_container.updateMoleculeRadius);
+      model.addPropertiesListener(["sigma"], moleculeContainer.updateMoleculeRadius);
 
       // ------------------------------------------------------------
       //
@@ -252,7 +252,7 @@ controllers.complexModelController =
 
       function updateCoulombCheckbox() {
         $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-        molecule_container.setup_particles();
+        moleculeContainer.setup_particles();
       }
 
       model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
@@ -265,7 +265,7 @@ controllers.complexModelController =
       // ------------------------------------------------------------
 
       viewLists = {
-        moleculeContainers:      [molecule_container],
+        moleculeContainers:      [moleculeContainer],
         potentialCharts:         [potentialChart],
         speedDistributionCharts: [speedDistributionChart],
         energyCharts:            [energyGraph]
@@ -299,7 +299,7 @@ controllers.complexModelController =
         modelReset();
         if (checkbox_thermalize.checked) {
           model.relax();
-          molecule_container.update_molecule_positions();
+          moleculeContainer.update_molecule_positions();
         }
         radio_randomize_pos_vel.checked = false
         updateMolNumberViewDependencies();
@@ -354,8 +354,8 @@ controllers.complexModelController =
       model.resetTime();
       resetTEData();
 
-      molecule_container.updateMoleculeRadius();
-      molecule_container.setup_particles();
+      moleculeContainer.updateMoleculeRadius();
+      moleculeContainer.setup_particles();
       layout.setupScreen(viewLists);
       step_counter = model.stepCounter();
       select_molecule_number.value = atoms.length;
@@ -374,7 +374,7 @@ controllers.complexModelController =
     function modelStop() {
       model.stop();
       energyGraph.hide_canvas();
-      molecule_container.playback_component.action('stop');
+      moleculeContainer.playback_component.action('stop');
       // energyGraph.new_data(te_data);
       if (model_controls) {
         model_controls_inputs[0].checked = true;
@@ -472,26 +472,26 @@ controllers.complexModelController =
         switch (evt.keyCode) {
           case 32:                // spacebar
             if (model.is_stopped()) {
-              molecule_container.playback_component.action('play');
+              moleculeContainer.playback_component.action('play');
             } else {
-              molecule_container.playback_component.action('stop');
+              moleculeContainer.playback_component.action('stop');
             }
             evt.preventDefault();
           break;
           case 13:                // return
-            molecule_container.playback_component.action('play');
+            moleculeContainer.playback_component.action('play');
             evt.preventDefault();
           break;
           case 37:                // left-arrow
             if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
+              moleculeContainer.playback_component.action('stop');
             }
             modelStepBack();
             evt.preventDefault();
           break;
           case 39:                // right-arrow
             if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
+              moleculeContainer.playback_component.action('stop');
             }
             modelStepForward();
             evt.preventDefault();
@@ -528,6 +528,7 @@ controllers.complexModelController =
     controller.modelReset = modelReset;
     controller.resetTEData = resetTEData;
     controller.energyGraph = energyGraph;
+    controller.moleculeContainer = moleculeContainer;
   }
 
   controller();
