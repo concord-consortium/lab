@@ -9,7 +9,7 @@ layout.moleculeContainer = function(e, options) {
       node = elem.node(),
       cx = elem.property("clientWidth"),
       cy = elem.property("clientHeight"),
-      height,
+      width, height,
       scale_factor,
       vis1, vis, plot,
       playback_component, time_label,
@@ -64,14 +64,16 @@ layout.moleculeContainer = function(e, options) {
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
-  function scale(width, height) {
+  function scale(w, h) {
+    var modelSize = model.size(),
+        aspectRatio = modelSize[0] / modelSize[1];
     if (!arguments.length) {
       cy = elem.property("clientHeight");
-      cx = cy;
+      cx = cy * aspectRatio;
     } else {
-      cy = height;
+      cy = h;
       node.style.height = cy +"px";
-      cx = cy;
+      cx = cy * aspectRatio;
     }
     node.style.width = cx +"px";
     scale_factor = layout.screen_factor;
@@ -91,9 +93,10 @@ layout.moleculeContainer = function(e, options) {
     }
 
     height = cy - padding.top  - padding.bottom;
+    width  = cx - padding.left  - padding.right;
 
     size = {
-      "width":  height,
+      "width":  width,
       "height": height
     };
 
@@ -127,7 +130,7 @@ layout.moleculeContainer = function(e, options) {
     downscaley = y.copy();
     downy = Math.NaN;
     dragged = null;
-
+    return [cx, cy];
   }
 
   function modelTimeLabel() {
