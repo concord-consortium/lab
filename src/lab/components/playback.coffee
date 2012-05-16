@@ -27,7 +27,6 @@ class ModelPlayer
   seek: (float_index) ->
     this.stop()
     @model.seek(float_index)
-    this.play()
 
 ############################################
 # The player UI
