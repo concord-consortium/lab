@@ -89,7 +89,7 @@ suite.addBatch({
       var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
     },
-    "creates a model with json and then gets values in json": function(model) {
+    "creates a model with json and then gets values in json, modifies the model with new json, and confirms that settable properties change and immutable ones don't": function(model) {
       initialization_options = {
         lennard_jones_forces: true,
         coulomb_forces: true,
