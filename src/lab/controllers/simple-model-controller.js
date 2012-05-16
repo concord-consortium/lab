@@ -64,6 +64,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       coulomb_forces: coulomb_forces,
       temperature_control: true,
       epsilon: epsilon,
+      sigma: sigma,
       width: width,
       height: height
     });
