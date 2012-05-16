@@ -94,7 +94,9 @@ suite.addBatch({
         lennard_jones_forces: true,
         coulomb_forces: true,
         model_listener: false,
-        mol_number: 5
+        mol_number: 5,
+        width: 3,
+        height: 4
       }
       model = modeler.model(initialization_options);
       model.createNewAtoms(initialization_options.mol_number);
@@ -103,12 +105,16 @@ suite.addBatch({
       assert.equal(modelHash.lennard_jones_forces, initialization_options.lennard_jones_forces);
       assert.equal(modelHash.coulomb_forces, initialization_options.coulomb_forces);
       assert.equal(modelHash.atoms.X.length, initialization_options.mol_number);
+      assert.equal(modelHash.width, initialization_options.width);
+      assert.equal(modelHash.height, initialization_options.height);
 
       new_options = {
         lennard_jones_forces: false,
         coulomb_forces: false,
         model_listener: true,
-        mol_number: 10
+        mol_number: 10,
+        width: 4,
+        height: 5
       }
       model.set(new_options);
       model.createNewAtoms(new_options.mol_number);
@@ -117,6 +123,8 @@ suite.addBatch({
       assert.equal(modelHash.lennard_jones_forces, new_options.lennard_jones_forces);
       assert.equal(modelHash.coulomb_forces, new_options.coulomb_forces);
       assert.equal(modelHash.atoms.X.length, new_options.mol_number);
+      assert.equal(modelHash.width, initialization_options.width);
+      assert.equal(modelHash.height, initialization_options.height);
     },
     "creates a model, saves atom state, loads atom state": function(model) {
       initialization_options = {
