@@ -1937,7 +1937,7 @@ modeler.VERSION = '0.2.0';
 modeler.model = function(initialProperties) {
   var model = {},
       atoms = [],
-      dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack"),
+      dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
       lennard_jones_forces, coulomb_forces,
       stopped = true,
@@ -2349,6 +2349,8 @@ modeler.model = function(initialProperties) {
     tick_history_list_index = location;
     tick_counter = location;
     tick_history_list_extract(tick_history_list_index);
+    dispatch.seek();
+    notifyListenersOfEvents("seek");
     return tick_counter;
   };
 

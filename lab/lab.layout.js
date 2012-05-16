@@ -180,22 +180,22 @@ layout.setupScreen = function(viewLists) {
   //
   function setupRegularScreen() {
     var i, width, height;;
-    height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.44);
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
       viewLists.moleculeContainers[i].resize(height, height);
     };
     width = layout.display.page.width * 0.24;
-    height = layout.display.page.height * 0.32;
+    height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.potentialCharts.length) {
       viewLists.potentialCharts[i].resize(width, height);
     };
     width = layout.display.page.width * 0.22;
-    height = layout.display.page.height * 0.32;
+    height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
       viewLists.speedDistributionCharts[i].resize(width, height);
     };
     width = layout.display.page.width * 0.47 + 5;
-    height = layout.display.page.height * 0.43 + 0;
+    height = layout.display.page.height * 0.39 + 0;
     i = -1;  while(++i < viewLists.energyCharts.length) {
       viewLists.energyCharts[i].resize(width, height);
     };
@@ -406,9 +406,15 @@ layout.moleculeContainer = function(e, options) {
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
-  function scale() {
-    cy = elem.property("clientHeight");
-    cx = cy;
+  function scale(width, height) {
+    if (!arguments.length) {
+      cy = elem.property("clientHeight");
+      cx = cy;
+    } else {
+      cy = height;
+      node.style.height = cy +"px";
+      cx = cy;
+    }
     node.style.width = cx +"px";
     scale_factor = layout.screen_factor;
     if (layout.screen_factor_width && layout.screen_factor_height) {
@@ -953,8 +959,8 @@ layout.moleculeContainer = function(e, options) {
   }
 
   container.resize = function(width, height) {
-    // container.scale(width, height);
-    container.scale();
+    container.scale(width, height);
+    // container.scale();
     container();
     container.setup_particles();
   };

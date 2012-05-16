@@ -1100,7 +1100,7 @@ grapher.realTimeGraph = function(e, options) {
       markedPoint = false;
       var index = points.length,
           lengthX = index * sample,
-          previousX = length - sample,
+          previousX = lengthX - sample,
           oldx = xScale.call(self, previousX, previousX),
           oldy = yScale.call(self, points[index-1].y, index-1),
           point = { x: lengthX, y: p },
@@ -3209,7 +3209,7 @@ modeler.VERSION = '0.2.0';
 modeler.model = function(initialProperties) {
   var model = {},
       atoms = [],
-      dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack"),
+      dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
       lennard_jones_forces, coulomb_forces,
       stopped = true,
@@ -3621,6 +3621,8 @@ modeler.model = function(initialProperties) {
     tick_history_list_index = location;
     tick_counter = location;
     tick_history_list_extract(tick_history_list_index);
+    dispatch.seek();
+    notifyListenersOfEvents("seek");
     return tick_counter;
   };
 
@@ -4510,22 +4512,22 @@ layout.setupScreen = function(viewLists) {
   //
   function setupRegularScreen() {
     var i, width, height;;
-    height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.44);
+    height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.44);
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
       viewLists.moleculeContainers[i].resize(height, height);
     };
     width = layout.display.page.width * 0.24;
-    height = layout.display.page.height * 0.32;
+    height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.potentialCharts.length) {
       viewLists.potentialCharts[i].resize(width, height);
     };
     width = layout.display.page.width * 0.22;
-    height = layout.display.page.height * 0.32;
+    height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
       viewLists.speedDistributionCharts[i].resize(width, height);
     };
     width = layout.display.page.width * 0.47 + 5;
-    height = layout.display.page.height * 0.43 + 0;
+    height = layout.display.page.height * 0.39 + 0;
     i = -1;  while(++i < viewLists.energyCharts.length) {
       viewLists.energyCharts[i].resize(width, height);
     };
@@ -4736,9 +4738,15 @@ layout.moleculeContainer = function(e, options) {
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
-  function scale() {
-    cy = elem.property("clientHeight");
-    cx = cy;
+  function scale(width, height) {
+    if (!arguments.length) {
+      cy = elem.property("clientHeight");
+      cx = cy;
+    } else {
+      cy = height;
+      node.style.height = cy +"px";
+      cx = cy;
+    }
     node.style.width = cx +"px";
     scale_factor = layout.screen_factor;
     if (layout.screen_factor_width && layout.screen_factor_height) {
@@ -5283,8 +5291,8 @@ layout.moleculeContainer = function(e, options) {
   }
 
   container.resize = function(width, height) {
-    // container.scale(width, height);
-    container.scale();
+    container.scale(width, height);
+    // container.scale();
     container();
     container.setup_particles();
   };
@@ -7096,8 +7104,7 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
 
     ModelPlayer.prototype.seek = function(float_index) {
       this.stop();
-      this.model.seek(float_index);
-      return this.play();
+      return this.model.seek(float_index);
     };
 
     return ModelPlayer;
@@ -8458,6 +8465,11 @@ controllers.complexModelController =
 
       model.on('stop', function() {
         energyGraph.hide_canvas();
+      });
+
+      model.on('seek', function() {
+        resetTEData();
+        energyGraph.new_data(te_data);
       });
 
       // ------------------------------------------------------------

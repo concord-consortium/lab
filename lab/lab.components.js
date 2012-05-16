@@ -602,8 +602,7 @@
 
     ModelPlayer.prototype.seek = function(float_index) {
       this.stop();
-      this.model.seek(float_index);
-      return this.play();
+      return this.model.seek(float_index);
     };
 
     return ModelPlayer;
