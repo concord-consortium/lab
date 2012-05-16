@@ -68,7 +68,8 @@ MWHelpers.parseMML = (mmlString) ->
     id    = $type.find("[property=ID]>int")[0]?.textContent || 0
     mass  = $type.find("[property=mass]>double")[0]?.textContent
     sigma = $type.find("[property=sigma]>double")[0]?.textContent
-    elemTypes[id] = name: id, mass: mass, sigma: sigma, epsilon: []
+    epsilon = $type.find("[property=epsilon]>double")[0]?.textContent
+    elemTypes[id] = name: id, mass: mass, sigma: sigma, epsilon: epsilon
 
   ###
     Find all the epsilon forces between elements. Add the properties to the elementTypes
@@ -89,14 +90,14 @@ MWHelpers.parseMML = (mmlString) ->
     where num0 is the epsilon between this first element and the second, num1 is the epsilon between
     this first element and the third, etc.
   ###
-  epsilonPairs = $mml.find(".org-concord-mw2d-models-Affinity [property=epsilon]>[method=put]")
-  for pair in epsilonPairs
-    $pair = getNode($(pair))
-    elem1 = parseInt getNode($pair.find("[property=element1]>object")).find("[property=ID]>int").text() || 0
-    elem2 = parseInt getNode($pair.find("[property=element2]>object")).find("[property=ID]>int").text() || 0
-    value = $pair.find(">double").text()
-    elemTypes[elem1].epsilon[elem2] = value
-    elemTypes[elem2].epsilon[elem1] = value   # set mirror value for e from elem2 to elem1
+  #epsilonPairs = $mml.find(".org-concord-mw2d-models-Affinity [property=epsilon]>[method=put]")
+  #for pair in epsilonPairs
+  #  $pair = getNode($(pair))
+  #  elem1 = parseInt getNode($pair.find("[property=element1]>object")).find("[property=ID]>int").text() || 0
+  #  elem2 = parseInt getNode($pair.find("[property=element2]>object")).find("[property=ID]>int").text() || 0
+  #  value = $pair.find(">double").text()
+  #  elemTypes[elem1].epsilon[elem2] = value
+  #  elemTypes[elem2].epsilon[elem1] = value   # set mirror value for e from elem2 to elem1
 
   ###
     Find all atoms. We end up with:
@@ -116,7 +117,7 @@ MWHelpers.parseMML = (mmlString) ->
   atomNodes = $mml.find(".org-concord-mw2d-models-Atom")
   for node in atomNodes
     $node = getNode($(node))
-    elemId = parseInt $node.find("[property=ID]")[0]?.textContent || 0
+    elemId = parseInt $node.find("[property=ID]>int").text() || 0
     x  = parseFloat $node.find("[property=rx]").text()
     y  = parseFloat $node.find("[property=ry]").text()
     vx = parseFloat $node.find("[property=vx]").text() || 0
@@ -136,8 +137,7 @@ MWHelpers.parseMML = (mmlString) ->
     vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
     vy = vy / 100
 
-    atoms.push element: elemId, x: x, y: y, vx: vx, vy: vy, charge: 0
-
+    atoms.push elemId: elemId, x: x, y: y, vx: vx, vy: vy, charge: 0
 
   # scale from MML units to Lab's units
   width  = width / 100      # 100 pixels per nm
@@ -150,10 +150,11 @@ MWHelpers.parseMML = (mmlString) ->
   vy = (atom.vy for atom in atoms)
   charge = (atom.charge for atom in atoms)
 
-  # for now, just use set epsilon to the e between the first element and the second
-  epsilon = elemTypes[0].epsilon[1]
-  # for now use first element's sigma; scale to nm
-  sigma   = elemTypes[0].sigma / 100
+  id = atoms[0].elemId || 0
+  # for now, just use the first atom's element epsilon
+  epsilon = elemTypes[id].epsilon
+  # for now use first atom's element sigma; scale to nm
+  sigma   = elemTypes[id].sigma / 100
 
   # epsilon's sign appears to be flipped between MW and Lab
   epsilon = -epsilon
