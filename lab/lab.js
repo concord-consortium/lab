@@ -866,11 +866,11 @@ grapher.realTimeGraph = function(e, options) {
       }
 
       var fx = xScale.tickFormat(10),
-          fy = yScale.tickFormat(10);
+          fy = yScale.tickFormat(8);
 
       // Regenerate x-ticks
       var gx = vis.selectAll("g.x")
-          .data(xScale.ticks(10), String)
+          .data(xScale.ticks(8), String)
           .attr("transform", tx);
 
       gx.select("text")
@@ -4465,8 +4465,7 @@ layout.setupScreen = function(viewLists) {
       if (layout.not_rendered) {
         var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
         layout.bodycss.style.fontSize = emsize + 'em';
-        setupSimpleMoleculeContainer();
-        setupDescriptionRight();
+        simpleStaticScreen();
         layout.not_rendered = false;
       }
       break;
@@ -4474,7 +4473,7 @@ layout.setupScreen = function(viewLists) {
       case "simple-iframe":
       var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
       layout.bodycss.style.fontSize = emsize + 'em';
-      setupSimpleIFrameMoleculeContainer();
+      setupSimpleIFrameScreen();
       break;
 
       case "full-static-screen":
@@ -4511,22 +4510,25 @@ layout.setupScreen = function(viewLists) {
   // Regular Screen Layout
   //
   function setupRegularScreen() {
-    var i, width, height;;
+    var i, width, height, mcsize;
     height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.44);
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
       viewLists.moleculeContainers[i].resize(height, height);
     };
-    width = layout.display.page.width * 0.24;
+    // HACK that will normally only work with one moleculeContainer
+    // or if all the moleculeContainers end up the same width
+    mcsize = viewLists.moleculeContainers[0].scale();
+    width = (layout.display.page.width - mcsize[0]) * 0.35;
     height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.potentialCharts.length) {
       viewLists.potentialCharts[i].resize(width, height);
     };
-    width = layout.display.page.width * 0.22;
+    width = (layout.display.page.width - mcsize[0]) * 0.35;
     height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
       viewLists.speedDistributionCharts[i].resize(width, height);
     };
-    width = layout.display.page.width * 0.47 + 5;
+    width = (layout.display.page.width - mcsize[0]) * 0.72;
     height = layout.display.page.height * 0.39 + 0;
     i = -1;  while(++i < viewLists.energyCharts.length) {
       viewLists.energyCharts[i].resize(width, height);
@@ -4562,24 +4564,37 @@ layout.setupScreen = function(viewLists) {
   //
   // Simple Screen Layout
   //
-  function setupSimpleMoleculeContainer() {
-    var height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
-    viewLists.moleculeContainers[0].resize(height, height);
-  }
+  function simpleStaticScreen() {
+    var i, width, height, mcsize, widthToPageRatio,
+        description_right = document.getElementById("description-right");
 
-  function setupDescriptionRight() {
-    var description_right = document.getElementById("description-right");
-    if (description_right !== null) {
-      // description_right.style.width = Math.max(layout.display.page.width * 0.3,  layout.display.page.width - layout.display.page.height - 20) +"px";
+    height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
+    viewLists.moleculeContainers[0].resize(height, height);
+    mcsize = viewLists.moleculeContainers[0].scale();
+    widthToPageRatio = mcsize[0] / layout.display.page.width;
+    if (widthToPageRatio > 0.53) {
+      height *= (0.53 / widthToPageRatio);
+      viewLists.moleculeContainers[0].resize(height, height);
+      // if (description_right !== null) {
+      //   description_right.style.width = (layout.display.page.width - mcsize[0]) * 0.50 + "px";
+      // }
     }
   }
 
   //
   // Simple iframe Screen Layout
   //
-  function setupSimpleIFrameMoleculeContainer() {
-    var height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
+  function setupSimpleIFrameScreen() {
+    var i, width, height, mcsize, widthToPageRatio;
+
+    height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
     viewLists.moleculeContainers[0].resize(height, height);
+    mcsize = viewLists.moleculeContainers[0].scale();
+    widthToPageRatio = mcsize[0] / layout.display.page.width;
+    if (widthToPageRatio > 0.75) {
+      height *= (0.75 / widthToPageRatio);
+      viewLists.moleculeContainers[0].resize(height, height);
+    }
   }
 
   //
@@ -4683,7 +4698,7 @@ layout.moleculeContainer = function(e, options) {
       node = elem.node(),
       cx = elem.property("clientWidth"),
       cy = elem.property("clientHeight"),
-      height,
+      width, height,
       scale_factor,
       vis1, vis, plot,
       playback_component, time_label,
@@ -4738,14 +4753,16 @@ layout.moleculeContainer = function(e, options) {
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
-  function scale(width, height) {
+  function scale(w, h) {
+    var modelSize = model.size(),
+        aspectRatio = modelSize[0] / modelSize[1];
     if (!arguments.length) {
       cy = elem.property("clientHeight");
-      cx = cy;
+      cx = cy * aspectRatio;
     } else {
-      cy = height;
+      cy = h;
       node.style.height = cy +"px";
-      cx = cy;
+      cx = cy * aspectRatio;
     }
     node.style.width = cx +"px";
     scale_factor = layout.screen_factor;
@@ -4765,9 +4782,10 @@ layout.moleculeContainer = function(e, options) {
     }
 
     height = cy - padding.top  - padding.bottom;
+    width  = cx - padding.left  - padding.right;
 
     size = {
-      "width":  height,
+      "width":  width,
       "height": height
     };
 
@@ -4801,7 +4819,7 @@ layout.moleculeContainer = function(e, options) {
     downscaley = y.copy();
     downy = Math.NaN;
     dragged = null;
-
+    return [cx, cy];
   }
 
   function modelTimeLabel() {
@@ -5559,12 +5577,12 @@ layout.potentialChart = function(e, model, options) {
           d3.event.transform(x, y);
       }
 
-      var fx = xScale.tickFormat(10),
+      var fx = xScale.tickFormat(5),
           fy = yScale.tickFormat(10);
 
       // Regenerate x-ticks…
       var gx = vis.selectAll("g.x")
-          .data(xScale.ticks(10), String)
+          .data(xScale.ticks(5), String)
           .attr("transform", tx);
 
       gx.select("text")
@@ -8152,7 +8170,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   // ------------------------------------------------------------
 
   function onresize() {
-    layout.setupScreen();
+    layout.setupScreen(viewLists);
     therm.resize();
   }
 
@@ -8306,7 +8324,7 @@ controllers.complexModelController =
       width               = modelConfig.width,
       height              = modelConfig.height,
 
-      molecule_container,
+      moleculeContainer,
       model_listener,
       step_counter,
       ljCalculator,
@@ -8342,7 +8360,7 @@ controllers.complexModelController =
 
       speedDistributionChart.update();
 
-      molecule_container.update_molecule_positions();
+      moleculeContainer.update_molecule_positions();
 
       if (model.isNewStep()) {
         currentTick++;
@@ -8406,7 +8424,7 @@ controllers.complexModelController =
       layout.selection = layoutStyle;
 
       model_player = new ModelPlayer(model, autostart);
-      molecule_container = layout.moleculeContainer(molecule_view_id,
+      moleculeContainer = layout.moleculeContainer(molecule_view_id,
         {
           title:               "Simple Molecules",
           xlabel:              "X position (nm)",
@@ -8425,7 +8443,7 @@ controllers.complexModelController =
         }
       );
 
-      model.addPropertiesListener(["sigma"], molecule_container.updateMoleculeRadius);
+      model.addPropertiesListener(["sigma"], moleculeContainer.updateMoleculeRadius);
 
       // ------------------------------------------------------------
       //
@@ -8518,7 +8536,7 @@ controllers.complexModelController =
 
       function updateCoulombCheckbox() {
         $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-        molecule_container.setup_particles();
+        moleculeContainer.setup_particles();
       }
 
       model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
@@ -8531,7 +8549,7 @@ controllers.complexModelController =
       // ------------------------------------------------------------
 
       viewLists = {
-        moleculeContainers:      [molecule_container],
+        moleculeContainers:      [moleculeContainer],
         potentialCharts:         [potentialChart],
         speedDistributionCharts: [speedDistributionChart],
         energyCharts:            [energyGraph]
@@ -8565,7 +8583,7 @@ controllers.complexModelController =
         modelReset();
         if (checkbox_thermalize.checked) {
           model.relax();
-          molecule_container.update_molecule_positions();
+          moleculeContainer.update_molecule_positions();
         }
         radio_randomize_pos_vel.checked = false
         updateMolNumberViewDependencies();
@@ -8620,8 +8638,8 @@ controllers.complexModelController =
       model.resetTime();
       resetTEData();
 
-      molecule_container.updateMoleculeRadius();
-      molecule_container.setup_particles();
+      moleculeContainer.updateMoleculeRadius();
+      moleculeContainer.setup_particles();
       layout.setupScreen(viewLists);
       step_counter = model.stepCounter();
       select_molecule_number.value = atoms.length;
@@ -8640,7 +8658,7 @@ controllers.complexModelController =
     function modelStop() {
       model.stop();
       energyGraph.hide_canvas();
-      molecule_container.playback_component.action('stop');
+      moleculeContainer.playback_component.action('stop');
       // energyGraph.new_data(te_data);
       if (model_controls) {
         model_controls_inputs[0].checked = true;
@@ -8738,26 +8756,26 @@ controllers.complexModelController =
         switch (evt.keyCode) {
           case 32:                // spacebar
             if (model.is_stopped()) {
-              molecule_container.playback_component.action('play');
+              moleculeContainer.playback_component.action('play');
             } else {
-              molecule_container.playback_component.action('stop');
+              moleculeContainer.playback_component.action('stop');
             }
             evt.preventDefault();
           break;
           case 13:                // return
-            molecule_container.playback_component.action('play');
+            moleculeContainer.playback_component.action('play');
             evt.preventDefault();
           break;
           case 37:                // left-arrow
             if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
+              moleculeContainer.playback_component.action('stop');
             }
             modelStepBack();
             evt.preventDefault();
           break;
           case 39:                // right-arrow
             if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
+              moleculeContainer.playback_component.action('stop');
             }
             modelStepForward();
             evt.preventDefault();
@@ -8794,6 +8812,7 @@ controllers.complexModelController =
     controller.modelReset = modelReset;
     controller.resetTEData = resetTEData;
     controller.energyGraph = energyGraph;
+    controller.moleculeContainer = moleculeContainer;
   }
 
   controller();

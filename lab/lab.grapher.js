@@ -866,11 +866,11 @@ grapher.realTimeGraph = function(e, options) {
       }
 
       var fx = xScale.tickFormat(10),
-          fy = yScale.tickFormat(10);
+          fy = yScale.tickFormat(8);
 
       // Regenerate x-ticks
       var gx = vis.selectAll("g.x")
-          .data(xScale.ticks(10), String)
+          .data(xScale.ticks(8), String)
           .attr("transform", tx);
 
       gx.select("text")

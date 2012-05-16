@@ -133,8 +133,7 @@ layout.setupScreen = function(viewLists) {
       if (layout.not_rendered) {
         var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
         layout.bodycss.style.fontSize = emsize + 'em';
-        setupSimpleMoleculeContainer();
-        setupDescriptionRight();
+        simpleStaticScreen();
         layout.not_rendered = false;
       }
       break;
@@ -142,7 +141,7 @@ layout.setupScreen = function(viewLists) {
       case "simple-iframe":
       var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
       layout.bodycss.style.fontSize = emsize + 'em';
-      setupSimpleIFrameMoleculeContainer();
+      setupSimpleIFrameScreen();
       break;
 
       case "full-static-screen":
@@ -179,22 +178,25 @@ layout.setupScreen = function(viewLists) {
   // Regular Screen Layout
   //
   function setupRegularScreen() {
-    var i, width, height;;
+    var i, width, height, mcsize;
     height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.44);
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
       viewLists.moleculeContainers[i].resize(height, height);
     };
-    width = layout.display.page.width * 0.24;
+    // HACK that will normally only work with one moleculeContainer
+    // or if all the moleculeContainers end up the same width
+    mcsize = viewLists.moleculeContainers[0].scale();
+    width = (layout.display.page.width - mcsize[0]) * 0.35;
     height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.potentialCharts.length) {
       viewLists.potentialCharts[i].resize(width, height);
     };
-    width = layout.display.page.width * 0.22;
+    width = (layout.display.page.width - mcsize[0]) * 0.35;
     height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
       viewLists.speedDistributionCharts[i].resize(width, height);
     };
-    width = layout.display.page.width * 0.47 + 5;
+    width = (layout.display.page.width - mcsize[0]) * 0.72;
     height = layout.display.page.height * 0.39 + 0;
     i = -1;  while(++i < viewLists.energyCharts.length) {
       viewLists.energyCharts[i].resize(width, height);
@@ -230,24 +232,37 @@ layout.setupScreen = function(viewLists) {
   //
   // Simple Screen Layout
   //
-  function setupSimpleMoleculeContainer() {
-    var height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
-    viewLists.moleculeContainers[0].resize(height, height);
-  }
+  function simpleStaticScreen() {
+    var i, width, height, mcsize, widthToPageRatio,
+        description_right = document.getElementById("description-right");
 
-  function setupDescriptionRight() {
-    var description_right = document.getElementById("description-right");
-    if (description_right !== null) {
-      // description_right.style.width = Math.max(layout.display.page.width * 0.3,  layout.display.page.width - layout.display.page.height - 20) +"px";
+    height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
+    viewLists.moleculeContainers[0].resize(height, height);
+    mcsize = viewLists.moleculeContainers[0].scale();
+    widthToPageRatio = mcsize[0] / layout.display.page.width;
+    if (widthToPageRatio > 0.53) {
+      height *= (0.53 / widthToPageRatio);
+      viewLists.moleculeContainers[0].resize(height, height);
+      // if (description_right !== null) {
+      //   description_right.style.width = (layout.display.page.width - mcsize[0]) * 0.50 + "px";
+      // }
     }
   }
 
   //
   // Simple iframe Screen Layout
   //
-  function setupSimpleIFrameMoleculeContainer() {
-    var height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
+  function setupSimpleIFrameScreen() {
+    var i, width, height, mcsize, widthToPageRatio;
+
+    height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
     viewLists.moleculeContainers[0].resize(height, height);
+    mcsize = viewLists.moleculeContainers[0].scale();
+    widthToPageRatio = mcsize[0] / layout.display.page.width;
+    if (widthToPageRatio > 0.75) {
+      height *= (0.75 / widthToPageRatio);
+      viewLists.moleculeContainers[0].resize(height, height);
+    }
   }
 
   //
@@ -351,7 +366,7 @@ layout.moleculeContainer = function(e, options) {
       node = elem.node(),
       cx = elem.property("clientWidth"),
       cy = elem.property("clientHeight"),
-      height,
+      width, height,
       scale_factor,
       vis1, vis, plot,
       playback_component, time_label,
@@ -406,14 +421,16 @@ layout.moleculeContainer = function(e, options) {
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
-  function scale(width, height) {
+  function scale(w, h) {
+    var modelSize = model.size(),
+        aspectRatio = modelSize[0] / modelSize[1];
     if (!arguments.length) {
       cy = elem.property("clientHeight");
-      cx = cy;
+      cx = cy * aspectRatio;
     } else {
-      cy = height;
+      cy = h;
       node.style.height = cy +"px";
-      cx = cy;
+      cx = cy * aspectRatio;
     }
     node.style.width = cx +"px";
     scale_factor = layout.screen_factor;
@@ -433,9 +450,10 @@ layout.moleculeContainer = function(e, options) {
     }
 
     height = cy - padding.top  - padding.bottom;
+    width  = cx - padding.left  - padding.right;
 
     size = {
-      "width":  height,
+      "width":  width,
       "height": height
     };
 
@@ -469,7 +487,7 @@ layout.moleculeContainer = function(e, options) {
     downscaley = y.copy();
     downy = Math.NaN;
     dragged = null;
-
+    return [cx, cy];
   }
 
   function modelTimeLabel() {
@@ -1227,12 +1245,12 @@ layout.potentialChart = function(e, model, options) {
           d3.event.transform(x, y);
       }
 
-      var fx = xScale.tickFormat(10),
+      var fx = xScale.tickFormat(5),
           fy = yScale.tickFormat(10);
 
       // Regenerate x-ticks…
       var gx = vis.selectAll("g.x")
-          .data(xScale.ticks(10), String)
+          .data(xScale.ticks(5), String)
           .attr("transform", tx);
 
       gx.select("text")
