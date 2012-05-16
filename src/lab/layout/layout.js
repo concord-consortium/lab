@@ -124,8 +124,7 @@ layout.setupScreen = function(viewLists) {
       if (layout.not_rendered) {
         var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
         layout.bodycss.style.fontSize = emsize + 'em';
-        setupSimpleMoleculeContainer();
-        setupDescriptionRight();
+        simpleStaticScreen();
         layout.not_rendered = false;
       }
       break;
@@ -133,7 +132,7 @@ layout.setupScreen = function(viewLists) {
       case "simple-iframe":
       var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
       layout.bodycss.style.fontSize = emsize + 'em';
-      setupSimpleIFrameMoleculeContainer();
+      setupSimpleIFrameScreen();
       break;
 
       case "full-static-screen":
@@ -170,22 +169,25 @@ layout.setupScreen = function(viewLists) {
   // Regular Screen Layout
   //
   function setupRegularScreen() {
-    var i, width, height;;
+    var i, width, height, mcsize;
     height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.44);
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
       viewLists.moleculeContainers[i].resize(height, height);
     };
-    width = layout.display.page.width * 0.24;
+    // HACK that will normally only work with one moleculeContainer
+    // or if all the moleculeContainers end up the same width
+    mcsize = viewLists.moleculeContainers[0].scale();
+    width = (layout.display.page.width - mcsize[0]) * 0.35;
     height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.potentialCharts.length) {
       viewLists.potentialCharts[i].resize(width, height);
     };
-    width = layout.display.page.width * 0.22;
+    width = (layout.display.page.width - mcsize[0]) * 0.35;
     height = layout.display.page.height * 0.30;
     i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
       viewLists.speedDistributionCharts[i].resize(width, height);
     };
-    width = layout.display.page.width * 0.47 + 5;
+    width = (layout.display.page.width - mcsize[0]) * 0.72;
     height = layout.display.page.height * 0.39 + 0;
     i = -1;  while(++i < viewLists.energyCharts.length) {
       viewLists.energyCharts[i].resize(width, height);
@@ -221,24 +223,37 @@ layout.setupScreen = function(viewLists) {
   //
   // Simple Screen Layout
   //
-  function setupSimpleMoleculeContainer() {
-    var height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
-    viewLists.moleculeContainers[0].resize(height, height);
-  }
+  function simpleStaticScreen() {
+    var i, width, height, mcsize, widthToPageRatio,
+        description_right = document.getElementById("description-right");
 
-  function setupDescriptionRight() {
-    var description_right = document.getElementById("description-right");
-    if (description_right !== null) {
-      // description_right.style.width = Math.max(layout.display.page.width * 0.3,  layout.display.page.width - layout.display.page.height - 20) +"px";
+    height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.53);
+    viewLists.moleculeContainers[0].resize(height, height);
+    mcsize = viewLists.moleculeContainers[0].scale();
+    widthToPageRatio = mcsize[0] / layout.display.page.width;
+    if (widthToPageRatio > 0.53) {
+      height *= (0.53 / widthToPageRatio);
+      viewLists.moleculeContainers[0].resize(height, height);
+      // if (description_right !== null) {
+      //   description_right.style.width = (layout.display.page.width - mcsize[0]) * 0.50 + "px";
+      // }
     }
   }
 
   //
   // Simple iframe Screen Layout
   //
-  function setupSimpleIFrameMoleculeContainer() {
-    var height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
+  function setupSimpleIFrameScreen() {
+    var i, width, height, mcsize, widthToPageRatio;
+
+    height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
     viewLists.moleculeContainers[0].resize(height, height);
+    mcsize = viewLists.moleculeContainers[0].scale();
+    widthToPageRatio = mcsize[0] / layout.display.page.width;
+    if (widthToPageRatio > 0.75) {
+      height *= (0.75 / widthToPageRatio);
+      viewLists.moleculeContainers[0].resize(height, height);
+    }
   }
 
   //

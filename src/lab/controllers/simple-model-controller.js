@@ -158,7 +158,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   // ------------------------------------------------------------
 
   function onresize() {
-    layout.setupScreen();
+    layout.setupScreen(viewLists);
     therm.resize();
   }
 
