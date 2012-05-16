@@ -22,3 +22,8 @@
       %button{:id => "convert"}
         Convert =>
       %textarea{:id =>"output", :cols => 60, :rows => 25}
+      %div{:style => "text-align: right;"}
+        %button{:id=>"save-button", :class=>"component", :style=> "width: 9em; margin-right: 250px"}
+          Save to Database
+        %p
+        #flash
