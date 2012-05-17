@@ -2582,6 +2582,8 @@ modeler.model = function(initialProperties) {
     if (includeAtoms) {
       propCopy.atoms = coreModel.serialize();
     }
+    propCopy.width = width;
+    propCopy.height = height;
     return propCopy;
   };
 
