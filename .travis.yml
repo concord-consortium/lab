@@ -5,12 +5,10 @@ notifications:
       - stephen.bannasch@gmail.com
       - sfentress@concord.org
       - rpk@pobox.com
-language: ruby
-rvm:
-  - 1.9.3
 language: node_js
 node_js:
   - 0.6
 before_script:
   - bundle install --binstubs
-script: "make clean; make; make test"
+  - make clean; make
+script: "make test"
