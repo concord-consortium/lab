@@ -29,7 +29,7 @@
     "coffee-script": "1.2.0",
     "node-inspector": "0.1.10",
     "jshint": "0.x",
-    "browserify": "~1.10"
+    "browserify": "1.10.12"
   },
   "directories": {
     "bin": "node-bin"
