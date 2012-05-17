@@ -319,10 +319,10 @@ model2d.Model2D.prototype.getFieldsOccupiedByPart = function(part) {
     var dy = this.ny1 / this.ly;
     if (part.rectangle) {
         var rect = part.rectangle;
-        var i0 = Math.round(Number(rect.x) * dx);
-        var j0 = Math.round(Number(rect.y) * dy);
-        var i_max = Math.round((Number(rect.x) + Number(rect.width)) * dx);
-        var j_max = Math.round((Number(rect.y) + Number(rect.height)) * dy);
+        var i0 = Math.round(rect.x * dx);
+        var j0 = Math.round(rect.y * dy);
+        var i_max = Math.round((rect.x + rect.width) * dx);
+        var j_max = Math.round((rect.y + rect.height) * dy);
         indexes = new Array((i_max - i0 + 1) * (j_max - j0 + 1));
         var idx = 0, iny;
         for (var i = i0; i <= i_max; i++) {
