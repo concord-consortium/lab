@@ -1,3 +1,10 @@
+notifications:
+  irc: "irc.freenode.org#otrunk"
+  email:
+    recipients:
+      - stephen.bannasch@gmail.com
+      - sfentress@concord.org
+      - rpk@pobox.com
 language: ruby
 rvm:
   - 1.9.3
@@ -6,4 +13,4 @@ node_js:
   - 0.6
 before_script:
   - bundle install --binstubs
-script: "make clean; make"
+script: "make clean; make; make test"
