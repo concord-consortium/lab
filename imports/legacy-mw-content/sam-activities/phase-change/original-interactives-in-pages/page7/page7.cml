@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Phase Change: Latent Heat</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+ 
+        
+  </text>
+<section start="0" end="15">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+<foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>110.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;The following 
+    model shows a small hexagonal crystal. Press the &amp;quot;Start heating&amp;quot; button to 
+    begin the simulation and heat it up gradually (imagine using a heat 
+    radiator). &lt;b&gt;The model will stop running automatically.&lt;/b&gt; Watch the 
+    simulation until it stops. The two bar graphs in the middle show the 
+    kinetic energy (the red one) and the potential energy (the blue one). The 
+    line graph on the right shows the temperature as a function of the total 
+    energy of the system, which increases over time.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="12">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page7$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="4" end="5">
+</content>
+
+<content start="5" end="6">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Kinetic Energy/Particle</timeseries>
+<description>Kinetic energy</description>
+<width>55</width>
+<height>280</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>true</title>
+<bgcolor>-1</bgcolor>
+<fgcolor>-10000</fgcolor>
+<minimum>0.0</minimum>
+<maximum>1.0</maximum>
+<value>2.7472337023937143E-5</value>
+</component></content>
+
+<content start="6" end="9">
+</content>
+
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Potential Energy/Particle</timeseries>
+<description>Potential energy</description>
+<width>55</width>
+<height>280</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>true</title>
+<bgcolor>-1</bgcolor>
+<fgcolor>-ffff01</fgcolor>
+<minimum>-1.0</minimum>
+<maximum>0.0</maximum>
+<value>-0.7788481116294861</value>
+</component></content>
+
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Total Energy/Particle</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="0" size="4" spacing="5" multiplier="11594.0" smoother="1">Kinetic Energy/Particle</time_series_y1>
+<autofitx>false</autofitx>
+<axis_x_min>-0.8</axis_x_min>
+<axis_x_max>0.3</axis_x_max>
+<autofity>false</autofity>
+<axis_y_min>0.0</axis_y_min>
+<axis_y_max>4000.0</axis_y_max>
+<width>220</width>
+<height>280</height>
+<axis_x_title>Total energy (eV)</axis_x_title>
+<axis_y_title>Temperature (K)</axis_y_title>
+<legend_x>600</legend_x>
+<legend_y>50</legend_y>
+<bgcolor>-333334</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="15">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Kinetic Energy Shading</title>
+<tooltip>Color atoms in different redness according to their kinetic energies.</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Start heating</title>
+<tooltip>Click to start adding energy to the system.</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>run;
+show selectionhalo off;
+loop 1;
+select atom all;
+delay modeltime 1000;
+heat 0.006;
+loop 65;
+delay modeltime 1000;
+heat 0.002;
+loop 65;
+delay modeltime 1000;
+heat 0.007;
+loop 65;
+stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

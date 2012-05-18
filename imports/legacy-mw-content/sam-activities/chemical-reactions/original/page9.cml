@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Chemical Reactions and Stoichiometry: Summary questions.</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+    
+    
+    
+ 
+   
+ 
+ 
+
+
+</text>
+<section start="0" end="39">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+&lt;body&gt;
+&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot; color=&quot;#FFFFFF&quot;&gt;&lt;strong&gt;Chemical Reactions and Stoichiometry:&lt;/strong&gt; Summary questions.&lt;/font&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-59a2d4</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;60&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;img width=&quot;59&quot; height=&quot;26&quot; src=&quot;next.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img width=&quot;46&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page9Selected.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+&lt;body marginheight=&quot;5&quot;&gt;
+&lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+  &lt;tr&gt;
+    &lt;td&gt;&lt;img src=&quot;atomMainIdea.png&quot; width=&quot;98&quot; height=&quot;58&quot;&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;You should now understand basic chemical equations, what they represent, and how heat and concentration affect reaction rates. Please answer the questions below to summarize what you have learned.&lt;/font&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;  
+&lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="16">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>5</row>
+<width>371</width>
+<height>170</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;chemStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Which of the following affect the rate of reaction?
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>concentration of reactants</choice>
+<choice>temperature of reactants</choice>
+<choice>boiling point of reactants</choice>
+<choice>both A and B</choice>
+<choice>none of the above</choice>
+<answer>3</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="12" end="14">
+</content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>371</width>
+<height>170</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;chemStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Explain your answer for the previous question about factors affecting 
+      reaction rates.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="21">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>371</width>
+<height>220</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;The process by 
+    which food rots is ultimately driven by chemical reactions. Why does 
+    refrigerating food make the food last longer? (Be sure to explain it at 
+    the molecular level.)&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="17" end="19">
+</content>
+
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>371</width>
+<height>220</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;Which chemical 
+    equation below is shorthand for the following description? One molecule of 
+    methane (CH&lt;sub&gt;4&lt;/sub&gt;) reacts with two molecules of oxygen (O&lt;sub&gt;2&lt;/sub&gt;) 
+    to form one molecule of carbon dioxide (CO&lt;sub&gt;2&lt;/sub&gt;) and two molecules 
+    of water (H&lt;sub&gt;2&lt;/sub&gt;O):&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>&lt;html&gt;CH&lt;sub&gt;4&lt;/sub&gt; + O&lt;sub&gt;2&lt;/sub&gt; --&gt; CO&lt;sub&gt;2&lt;/sub&gt; + H&lt;sub&gt;2&lt;/sub&gt;O&lt;/html&gt;</choice>
+<choice>&lt;html&gt;2 CH&lt;sub&gt;4&lt;/sub&gt; + 4 O&lt;sub&gt;2&lt;/sub&gt; --&gt; 2 CO&lt;sub&gt;2&lt;/sub&gt; + 4 H&lt;sub&gt;2&lt;/sub&gt;O&lt;/html&gt;</choice>
+<choice>&lt;html&gt;CH&lt;sub&gt;4&lt;/sub&gt; + 2 O&lt;sub&gt;2&lt;/sub&gt; --&gt; CO&lt;sub&gt;2&lt;/sub&gt; + 2 H&lt;sub&gt;2&lt;/sub&gt;O&lt;/html&gt;</choice>
+<choice>&lt;html&gt;CH&lt;sub&gt;4&lt;/sub&gt; + 2 O&lt;sub&gt;2&lt;/sub&gt; --&gt; 2 CO&lt;sub&gt;2&lt;/sub&gt; + 2 H&lt;sub&gt;2&lt;/sub&gt;O&lt;/html&gt;</choice>
+<answer>2</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="26">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>3</row>
+<width>371</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;Aluminum reacts 
+    with oxygen to form aluminum oxide, a thin non-reactive coating that 
+    prevents aluminum from further rusting. The UNBALANCED chemical equation 
+    is: Al + O&lt;sub&gt;2&lt;/sub&gt;&lt;img src=&quot;reactionRight.png&quot;&gt; Al&lt;sub&gt;2&lt;/sub&gt;O&lt;sub&gt;3&lt;/sub&gt;. 
+    What is the correct BALANCED chemical equation?&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>&lt;html&gt;8 Al + 6 O&lt;sub&gt;2&lt;/sub&gt; --&gt; 4 Al&lt;sub&gt;2&lt;/sub&gt;O&lt;sub&gt;3&lt;/sub&gt;&lt;/html&gt;</choice>
+<choice>&lt;html&gt;2 Al + 3 O&lt;sub&gt;2&lt;/sub&gt; --&gt; Al&lt;sub&gt;2&lt;/sub&gt;O&lt;sub&gt;3&lt;/sub&gt;&lt;/html&gt;</choice>
+<choice>&lt;html&gt;4 Al + 3 O&lt;sub&gt;2&lt;/sub&gt; --&gt; 2 Al&lt;sub&gt;2&lt;/sub&gt;O&lt;sub&gt;3&lt;/sub&gt;&lt;/html&gt;</choice>
+<answer>2</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="22" end="24">
+</content>
+
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>371</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;Some dry powder 
+    fire extinguishers contain baking soda and use the following reaction to 
+    produce carbon dioxide (CO&lt;sub&gt;2&lt;/sub&gt;), which helps to smother the fire: 
+    2 NaHCO&lt;sub&gt;3&lt;/sub&gt;&lt;img src=&quot;reactionRight.png&quot;&gt; Na&lt;sub&gt;2&lt;/sub&gt;CO&lt;sub&gt;3&lt;/sub&gt; 
+    + H&lt;sub&gt;2&lt;/sub&gt;O + CO&lt;sub&gt;2&lt;/sub&gt;. What type of reaction is this?&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>synthesis</choice>
+<choice>decomposition</choice>
+<choice>single displacement</choice>
+<choice>double displacement</choice>
+<answer>1</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="28">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>16</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;&lt;body marginheight=&quot;0&quot;&gt;&lt;/body&gt;&lt;/html&gt;</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="27" end="28">
+<size>8</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="28" end="32">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<size>8</size><icon><class>org.concord.modeler.text.LineIcon</class><width>494.0</width><height>44</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+ &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;chemStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+&lt;body&gt;
+&lt;p class=&quot;firstp&quot; align=&quot;center&quot;&gt;&lt;strong&gt;You have reached the end of the activity.&lt;BR&gt;Please submit a report.&lt;/strong&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="29" end="30">
+<size>8</size><component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report of my work.</title>
+<description>Chemical Reactions and Stoichiometry</description>
+<group>page1.cml,page2.cml,page3.cml,page4.cml,page5.cml,page6.cml,page7.cml,page8.cml,page9.cml</group>
+<width>206</width><height>40</height>
+<opaque>false</opaque>
+<action>Create a report for a page group in a new window</action></component></content>
+
+<content start="30" end="31">
+<size>8</size><icon><class>org.concord.modeler.text.LineIcon</class><width>50.0</width><height>44</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;&lt;/html&gt;</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="31" end="32">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="32" end="34">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="32" end="33">
+<size>8</size><icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>16</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;&lt;body marginheight=&quot;0&quot;&gt;&lt;/body&gt;&lt;/html&gt;</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="33" end="34">
+<size>8</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="34" end="36">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img width=&quot;14&quot; height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;8&quot; height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;60&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;img width=&quot;59&quot; height=&quot;26&quot; src=&quot;next.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img width=&quot;46&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page9Selected.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<Alignment>1</Alignment>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<content start="37" end="38">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="38" end="39">
+</paragraph>
+</section>
+</document>

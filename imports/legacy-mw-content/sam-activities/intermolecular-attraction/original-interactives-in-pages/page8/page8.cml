@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Intermolecular Attractions: Your Immune System</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+     
+
+ 
+    
+
+
+
+</text>
+<section start="0" end="19">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="7">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+<content start="2" end="3">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>add image antibodyTitle.png (160,15); select *A; color [0,240,0]; select *B; color [50,200,50]; select HEP; color white; select *;
+wireframe off; cpk on; center HEP; spacefill 100%</script><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>1EAP.pdb.gz</resource><state>page8$0.jms</state><width>430.0</width>
+<height>380.0</height>
+<border>Lowered Bevel</border>
+</component></content>
+
+<content start="3" end="5">
+</content>
+
+<content start="5" end="6">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>310.0</width>
+<height>380.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;To the left, 
+    part of an antibody (green) is shown bound to an antigen (white). As you 
+    learned earlier, how well two molecules stick to each other can be related 
+    to how well the shapes of the molecules fit together.&lt;/font&gt;&lt;br&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Use the 
+        controls below to explore how well the antibody and antigen fit 
+        together.&lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;You can 
+        also drag or shift-drag the molecule to change the view.&lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Then &lt;/font&gt;&lt;font color=&quot;#990000&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;take 
+        a snapshot that shows the excellent fit between antibody and antigen&lt;/strong&gt;.&lt;/font&gt;&lt;br&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;table border=&quot;0&quot; align=&quot;center&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;&lt;strong&gt;Antibody:&lt;/strong&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;input type=&quot;checkbox&quot; name=&quot;checkbox&quot; script_selected=&quot;script:jmol:1:select *A; color atoms opaque&quot; checked=&quot;checked&quot; script_deselected=&quot;script:jmol:1:select *A; color atoms translucent&quot; value=&quot;checkbox&quot;&gt;
+          &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;1st half &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;input type=&quot;checkbox&quot; name=&quot;checkbox2&quot; script_selected=&quot;script:jmol:1:select *B; color atoms opaque&quot; checked=&quot;checked&quot; script_deselected=&quot;script:jmol:1:select *B; color atoms translucent&quot; value=&quot;checkbox&quot;&gt;
+          &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;2nd half &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input type=&quot;radio&quot; name=&quot;RadioGroup1&quot; id=&quot;RadioGroup1_0&quot; script=&quot;script:jmol:1:select *A; spacefill 20%; wireframe 0.15;&quot; value=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;ball &amp;amp; 
+          stick&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input type=&quot;radio&quot; name=&quot;RadioGroup2&quot; id=&quot;RadioGroup2_0&quot; script=&quot;script:jmol:1:select *B; spacefill 20%; wireframe 0.15;&quot; value=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;ball &amp;amp; 
+          stick&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input type=&quot;radio&quot; name=&quot;RadioGroup1&quot; checked=&quot;checked&quot; id=&quot;RadioGroup1_1&quot; script=&quot;script:jmol:1:select *A; spacefill 100%;&quot; value=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;spacefilled&lt;br&gt;&lt;br&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;input type=&quot;radio&quot; name=&quot;RadioGroup2&quot; checked=&quot;checked&quot; id=&quot;RadioGroup2_1&quot; script=&quot;script:jmol:1:select *B; spacefill 100%;&quot; value=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;spacefilled&lt;/font&gt;&lt;br&gt;&lt;br&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Antigen:&lt;/strong&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;radiobutton&quot; checked=&quot;checked&quot; script=&quot;script:jmol:1:select HEP; spacefill 100%;&quot; value=&quot;radiobutton&quot;&gt;
+          &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;spacefilled 
+          &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;input type=&quot;radio&quot; name=&quot;radiobutton&quot; script=&quot;script:jmol:1:select HEP; spacefill 25%; wireframe 0.2;&quot; value=&quot;radiobutton&quot;&gt;
+          &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;ball &amp;amp; 
+          stick &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="10">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;The attraction 
+    between antibody and antigen often utilizes both types of intermolecular 
+    attractions: dipole-dipole and London dispersion.&lt;strong&gt; Your job is to 
+    design an antibody&lt;/strong&gt; that will form the strongest attraction to the 
+    antigen below. To do this you will &lt;strong&gt;select the shape of the 
+    antibody, add charge, dock the antigen to your antibody, and then take a 
+    snapshot&lt;/strong&gt; of your work. &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="15">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page8$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+<button>Add Positive Charge</button><button>Add Negative Charge</button></component></content>
+
+<content start="11" end="13">
+</content>
+
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>390.0</width>
+<height>385.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;map name=&quot;Map&quot;&gt;
+      &lt;area coords=&quot;5,7,111,73&quot; href=&quot;script:mw:1:load antibodyDesign1.mml;&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area coords=&quot;129,5,231,73&quot; href=&quot;script:mw:1:load antibodyDesign3.mml;&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area coords=&quot;143,82,222,137&quot; href=&quot;script:mw:1:load antibodyDesign2.mml;&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+      &lt;area coords=&quot;14,87,112,139&quot; href=&quot;script:mw:1:load antibodyDesign4.mml;&quot; shape=&quot;rect&quot;&gt;&lt;/area&gt;
+    &lt;/map&gt;
+    &lt;div align=&quot;center&quot;&gt;
+      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;&lt;strong&gt;Design 
+      Your Antibody&lt;/strong&gt;&lt;/font&gt;&lt;strong&gt; &lt;/strong&gt;
+    &lt;/div&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;- &lt;strong&gt;Select 
+      a the initial molecule shape&lt;/strong&gt; for the antibody by clicking on 
+      one of these images:&lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p align=&quot;center&quot;&gt;
+      &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;antibodyChoice.gif&quot; usemap=&quot;#Map&quot; width=&quot;240&quot; height=&quot;147&quot;&gt;
+      &lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;- &lt;strong&gt;Add 
+      charge&lt;/strong&gt; to the antibody by using the charge tools &lt;img src=&quot;addPositiveCharge.gif&quot; width=&quot;15&quot; height=&quot;15&quot;&gt; 
+      and &lt;img src=&quot;addNegativeCharge.gif&quot; width=&quot;15&quot; height=&quot;15&quot;&gt; in the 
+      toolbar. To charge part of the antibody, select the appropriate charge 
+      tool and then click on the atoms you want to charge.&lt;br&gt;- &lt;strong&gt;Run 
+      the model, click on the green star, and &amp;quot;dock&amp;quot; the antigen to your 
+      antibody&lt;/strong&gt;.&lt;br&gt;- &lt;strong&gt;Take a snapshot&lt;/strong&gt; of your best 
+      creation. &lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-141617</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<SpaceBelow>15.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<Alignment>1</Alignment>
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<content start="17" end="18">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="18" end="19">
+</paragraph>
+</section>
+</document>

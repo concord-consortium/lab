@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Intermolecular Attractions: Hydrogen &quot;Bonds&quot; - A Special Type of Attraction</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+
+     
+
+
+</text>
+<section start="0" end="11">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="8">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>330.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;To the 
+          right is a model of gaseous water (&lt;em&gt;i.e.&lt;/em&gt; water vapor). To 
+          see the effect the hydrogen bonds have on water, run the model ( &lt;img src=&quot;play.gif&quot; height=&quot;12&quot; width=&quot;7&quot;&gt; 
+          ) and experiment with the controls below. Then &lt;strong&gt;take a 
+          snapshot of the model and annotate your image so that you indicate 
+          where you see at least one hydrogen bond&lt;/strong&gt; in the model. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;table border=&quot;0&quot; width=&quot;207&quot;&gt;
+            &lt;tr&gt;
+              &lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;
+                &lt;input type=&quot;submit&quot; name=&quot;Submit&quot; script=&quot;script:mw:1:select atom all; heat 0.2; select atom none;&quot; value=&quot;Heat&quot;&gt;
+                &amp;#160; &lt;input type=&quot;submit&quot; name=&quot;Submit2&quot; script=&quot;script:mw:1:select atom all; heat -0.2; select atom none;&quot; value=&quot;Cool&quot;&gt;
+              &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td width=&quot;24&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;checkbox&quot; checked=&quot;checked&quot; script_selected=&quot;script:mw:1:show vdwline on&quot; script_deselected=&quot;script:mw:1:show vdwline off&quot; value=&quot;checkbox&quot;&gt;
+                
+              &lt;/td&gt;
+              &lt;td width=&quot;159&quot;&gt;
+                show hydrogen bonds
+              &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;checkbox2&quot; script_selected=&quot;script:mw:1:show charge on&quot; script_deselected=&quot;script:mw:1:show charge off&quot; value=&quot;checkbox&quot;&gt;
+                
+              &lt;/td&gt;
+              &lt;td&gt;
+                show partial charges
+              &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;checkbox3&quot; script_selected=&quot;script:mw:1:set timestep .1;&quot; script_deselected=&quot;script:mw:1:set timestep 1;&quot; value=&quot;checkbox&quot;&gt;
+                
+              &lt;/td&gt;
+              &lt;td&gt;
+                slow motion
+              &lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/table&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="3" end="6">
+</content>
+
+<content start="6" end="7">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page6$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<content start="9" end="10">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="10" end="11">
+</paragraph>
+</section>
+</document>

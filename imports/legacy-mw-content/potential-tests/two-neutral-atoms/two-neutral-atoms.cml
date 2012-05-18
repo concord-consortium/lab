@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<text> </text>
+<section start="0" end="2">
+<paragraph start="0" end="2">
+<content start="0" end="1">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>two-neutral-atoms$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Rotate Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button></component></content>
+
+</paragraph>
+</section>
+</document>
