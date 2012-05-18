@@ -175,6 +175,8 @@ model2d.Model2D = function(options, array_type) {
 
     if (options.model.structure && options.model.structure.part) {
         var parts_options = options.model.structure.part;
+        if (parts_options.constructor != Array)
+            parts_options = [parts_options];
         this.parts = new Array(parts_options.length);
         for (var i = 0; i < parts_options.length; i++)
             this.parts[i] = new model2d.Part(parts_options[i]);
@@ -201,8 +203,7 @@ model2d.Model2D = function(options, array_type) {
 
     // optimization flags (booleans)
     this.hasPartPower = false;
-    this.radiative = true;
-    this.convective = true;
+    this.radiative = false; // not fully implemented yet
 
     // temperature array
     
@@ -328,14 +329,16 @@ model2d.Model2D.prototype.setupMaterialProperties = function() {
 model2d.Model2D.prototype.getFieldsOccupiedByPart = function(part) {
     var indexes;
     var ny = this.ny;
-    var dx = this.nx1 / this.lx;
-    var dy = this.ny1 / this.ly;
+    var nx1 = this.nx1;
+    var ny1 = this.ny1;
+    var dx = nx1 / this.lx;
+    var dy = ny1 / this.ly;
     if (part.rectangle) {
         var rect = part.rectangle;
-        var i0 = Math.round(rect.x * dx);
-        var j0 = Math.round(rect.y * dy);
-        var i_max = Math.round((rect.x + rect.width) * dx);
-        var j_max = Math.round((rect.y + rect.height) * dy);
+        var i0 = Math.min(Math.max(Math.round(rect.x * dx), 0), nx1);
+        var j0 = Math.min(Math.max(Math.round(rect.y * dy), 0), ny1);
+        var i_max = Math.min(Math.max(Math.round((rect.x + rect.width) * dx), 0), nx1);
+        var j_max = Math.min(Math.max(Math.round((rect.y + rect.height) * dy), 0), ny1);
         indexes = new Array((i_max - i0 + 1) * (j_max - j0 + 1));
         var idx = 0, iny;
         for (var i = i0; i <= i_max; i++) {
@@ -346,7 +349,8 @@ model2d.Model2D.prototype.getFieldsOccupiedByPart = function(part) {
         }
         return indexes;
     }
-    return undefined;
+    // TODO: implement another shapes
+    return [];
 };
 
 model2d.Model2D.prototype.reset = function() {
@@ -1196,7 +1200,7 @@ model2d.FluidSolver2D.prototype.applyBuoyancy = function(f) {
     
     switch (this.buoyancyApproximation) {
     case model2d.BUOYANCY_AVERAGE_ALL:
-        t0 = MathUtil.getAverage(t);
+        t0 = model2d.getAverage(t);
         for (var i = 1; i < nx1; i++) {
             inx = i * nx;
             for (var j = 1; j < ny1; j++) {

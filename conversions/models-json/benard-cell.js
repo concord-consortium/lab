@@ -1,4 +1,5 @@
-var benard_cell = {
+var models_library = models_library || {};
+models_library.benard_cell = {
   "model": {
     "timestep": 0.5,
     "measurement_interval": 100,

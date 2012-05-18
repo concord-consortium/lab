@@ -1,4 +1,5 @@
-var ray_optics = {
+var models_library = models_library || {};
+models_library.ray_optics = {
   "model": {
     "timestep": 10.0,
     "measurement_interval": 100,

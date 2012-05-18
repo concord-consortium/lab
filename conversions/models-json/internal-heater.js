@@ -1,4 +1,5 @@
-var internal_heater = {
+var models_library = models_library || {};
+models_library.internal_heater = {
   "model": {
     "timestep": 5000.0,
     "measurement_interval": 100,

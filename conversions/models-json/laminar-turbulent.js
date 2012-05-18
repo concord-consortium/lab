@@ -1,4 +1,5 @@
-var laminar_turbulent = {
+var models_library = models_library || {};
+models_library.laminar_turbulent = {
   "model": {
     "timestep": 0.5,
     "measurement_interval": 100,

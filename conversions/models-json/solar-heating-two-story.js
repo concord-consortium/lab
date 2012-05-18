@@ -1,4 +1,5 @@
-var solar_heating_two_story = {
+var models_library = models_library || {};
+models_library.solar_heating_two_story = {
   "model": {
     "timestep": 50.0,
     "measurement_interval": 100,

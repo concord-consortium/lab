@@ -1,4 +1,5 @@
-var conduction3 = {
+var models_library = models_library || {};
+models_library.conduction3 = {
   "model": {
     "model_width": 0.1,
     "model_height": 0.1,
