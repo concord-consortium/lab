@@ -68,11 +68,10 @@ model2d.default_config = {
         solar_ray_speed: 0.001,
         photon_emission_interval: 5,
         convective: true,
-        background_conductivity: 0.1,
+        background_conductivity: 0.25,
         thermal_buoyancy: 0.00025,
         buoyancy_approximation: 1,
         background_density: 1,
-        
 
         boundary:{
             temperature_at_border:{
@@ -117,7 +116,8 @@ model2d.default_config = {
                     absorption: 1,
                     emissivity: 0,
                     temperature: 50,
-                    constant_temperature: true
+                    constant_temperature: true,
+                    filled: false
                 }
             ]
         }
@@ -145,25 +145,27 @@ model2d.Model2D = function(options, array_type) {
     };
     model2d.array_type = array_type;
     
-    this.timeStep = options.model.timestep;
-    this.measurementInterval = options.model.measurement_interval || 100;
-    this.viewUpdateInterval = options.model.view_update_interval || 20;
-    this.sunny = options.model.sunny || true;
-    this.sun_angle = options.model.sun_angle || 1.5707964;
-    this.solarPowerDensity = options.model.solar_power_density || 20000;
-    this.solarRayCount = options.model.solar_ray_count || 24;
-    this.solarRaySpeed = options.model.solar_ray_speed || 0.001;
-    this.photonEmissionInterval = options.model.photon_emission_interval || 5;
-    this.convective = options.model.convective || true;
-    this.thermalBuoyancy = options.model.thermal_buoyancy || 0.00025;
-    this.buoyancyApproximation = options.model.buoyancy_approximation || 1;
+    var opt = options.model;
+    this.timeStep = opt.timestep != undefined ? opt.timestep : 0.1;
+    this.measurementInterval = opt.measurement_interval != undefined ? opt.measurement_interval : 100;
+    this.viewUpdateInterval = opt.view_update_interval != undefined ? opt.view_update_interval : 20;
+    this.sunny = opt.sunny != undefined ? opt.sunny : true; 
+    this.sun_angle = opt.sun_angle != undefined ? opt.sun_angle : 1.5707964;                
+    this.solarPowerDensity = opt.solar_power_density != undefined ? opt.solar_power_density : 20000;
+    this.solarRayCount = opt.solar_ray_count != undefined ? opt.solar_ray_count : 24;
+    this.solarRaySpeed = opt.solar_ray_speed != undefined ? opt.solar_ray_speed : 0.001;
+    this.photonEmissionInterval = opt.photon_emission_interval != undefined ? opt.photon_emission_interval : 5;
+    this.convective = opt.convective != undefined ? opt.convective : true;
+    this.thermalBuoyancy = opt.thermal_buoyancy != undefined ? opt.thermal_buoyancy : 0.00025;
+    this.buoyancyApproximation = opt.buoyancy_approximation != undefined ? opt.buoyancy_approximation : 1;
 
     this.BUOYANCY_AVERAGE_ALL = 0;
     this.BUOYANCY_AVERAGE_COLUMN = 1;
 
     this.indexOfStep = 0;
 
-    this.backgroundConductivity = 10 * model2d.AIR_THERMAL_CONDUCTIVITY;
+    this.backgroundConductivity = opt.background_conductivity != undefined ? opt.background_conductivity : 10 * model2d.AIR_THERMAL_CONDUCTIVITY;
+    this.backgroundViscosity = opt.background_viscosity != undefined ? opt.background_viscosity : 10 * model2d.AIR_VISCOSITY;
     this.backgroundSpecificHeat = model2d.AIR_SPECIFIC_HEAT;
     this.backgroundDensity = model2d.AIR_DENSITY;
     this.backgroundTemperature = 0.0;
@@ -171,8 +173,12 @@ model2d.Model2D = function(options, array_type) {
     this.boundary_settings = options.model.boundary || 
         { temperature_at_border: { upper: 0, lower: 0, left: 0, right: 0 } };
 
-    if (options.model.structure)
-        this.parts = options.model.structure.part;
+    if (options.model.structure && options.model.structure.part) {
+        var parts_options = options.model.structure.part;
+        this.parts = new Array(parts_options.length);
+        for (var i = 0; i < parts_options.length; i++)
+            this.parts[i] = new model2d.Part(parts_options[i]);
+    }
 
     this.nx = model2d.NX;
     this.ny = model2d.NY;
@@ -273,7 +279,7 @@ model2d.Model2D = function(options, array_type) {
     this.raySolver.q = this.q;
 
     this.setGridCellSize();
-    this.refreshMaterialProperties();
+    this.setupMaterialProperties();
     // parts = Collections.synchronizedList(new ArrayList<Part>());
     // thermometers = Collections.synchronizedList(new ArrayList<Thermometer>());
 
@@ -281,7 +287,7 @@ model2d.Model2D = function(options, array_type) {
     // propertyChangeListeners = new ArrayList<PropertyChangeListener>();
 };
 
-model2d.Model2D.prototype.refreshMaterialProperties = function() {
+model2d.Model2D.prototype.setupMaterialProperties = function() {
     if (!this.parts)
         return;
     
@@ -291,6 +297,8 @@ model2d.Model2D.prototype.refreshMaterialProperties = function() {
     var conductivity = this.conductivity;
     var capacity = this.capacity;
     var density = this.density;
+    var uWind = this.uWind;
+    var vWind = this.vWind;
     var tb = this.tb;
     
     var part, indexes, idx;
@@ -300,11 +308,16 @@ model2d.Model2D.prototype.refreshMaterialProperties = function() {
         for(var ii = 0; ii < indexes.length; ii++) {
             idx = indexes[ii];
             
-            fluidity[idx] = false;
             t[idx] = part.temperature;
+            fluidity[idx] = false;
             conductivity[idx] = part.thermal_conductivity;
             capacity[idx] = part.specific_heat;
             density[idx] = part.density;
+            
+            if (part.wind_speed != 0) {
+                uWind[idx] = part.wind_speed * Math.cos(part.wind_angle);
+                vWind[idx] = part.wind_speed * Math.sin(part.wind_angle);
+            }
             
             if (part.constant_temperature)
                 tb[idx] = part.temperature;
@@ -510,8 +523,6 @@ model2d.Model2D.prototype.checkPartRadiation = function() {
     }
 };
 
-
-
 //
 // Utilities
 //
@@ -611,6 +622,49 @@ model2d.getAverage = function(array) {
 };
 
 
+//*******************************************************
+//
+//   Part
+//
+// *******************************************************
+
+model2d.Part = function(options) {
+    if (!options)
+        options = {};
+    
+    // shape
+    this.rectangle = options.rectangle;
+    this.ellipse = options.ellipse;
+    this.ring = options.ring;
+    this.polygon = options.polygon;
+    
+    // source properties
+    this.thermal_conductivity = options.thermal_conductivity != undefined ? options.thermal_conductivity : 1;
+    this.specific_heat = options.specific_heat != undefined ? options.specific_heat : 1300;
+    this.density = options.density != undefined ? options.density : 25;
+    this.temperature = options.temperature != undefined ? options.temperature : 0;
+    this.constant_temperature = options.constant_temperature != undefined ? options.constant_temperature : false;
+    this.power = options.power != undefined ? options.power : 0;
+    this.wind_speed = options.wind_speed != undefined ? options.wind_speed : 0;
+    this.wind_angle = options.wind_angle != undefined ? options.wind_angle : 0;
+    
+    // optical properties (ray solver not implemented)
+    this.transmission = options.transmission != undefined ? options.transmission : 0;
+    this.reflection = options.reflection != undefined ? options.reflection : 0;
+    this.absorption = options.absorption != undefined ? options.absorption : 1;
+    this.emissivity = options.emissivity != undefined ? options.emissivity : 0;
+    
+    // visual properties
+    this.visible = options.visible != undefined ? options.visible : true;
+    this.filled = options.filled != undefined ? options.filled : true;
+    this.draggable = options.draggable != undefined ? options.draggable : true; 
+    this.color = options.color;
+    this.texture = options.texture; 
+    this.label = options.label;
+    this.uid = options.uid;
+};
+
+
 // *******************************************************
 //
 //   HeatSolver2D
@@ -644,8 +698,10 @@ model2d.HeatSolver2D = function(nx, ny, model) {
     // array that stores the previous temperature results
     this.t0 = createArray(model2d.ARRAY_SIZE, 0);
 
-    this.boundary = new model2d.DirichletHeatBoundary(model.boundary_settings);
-
+    if (model.boundary_settings.temperature_at_border)
+        this.boundary = new model2d.DirichletHeatBoundary(model.boundary_settings);
+    else
+        this.boundary = new model2d.NeumannHeatBoundary(model.boundary_settings);
 };
 
 model2d.HeatSolver2D.prototype.setGridCellSize = function(deltaX, deltaY) {
@@ -791,7 +847,7 @@ model2d.HeatSolver2D.prototype.applyBoundary  = function(t) {
             t[j] = tW;
             t[nx1 * nx + j] = tE;
         }
-    } else if (b instanceof NeumannHeatBoundary) {
+    } else if (b instanceof model2d.NeumannHeatBoundary) {
         fN = b.getFluxAtBorder(model2d.Boundary_UPPER);
         fS = b.getFluxAtBorder(model2d.Boundary_LOWER);
         fW = b.getFluxAtBorder(model2d.Boundary_LEFT);
@@ -817,7 +873,7 @@ model2d.DirichletHeatBoundary = function(boundary_settings) {
     } else {
         settings = { upper: 0, lower: 0, left: 0, right: 0 };
     }
-    this.temperatureAtBorder = createArray(4, 0); // unit: centigrade
+    this.temperature_at_border = createArray(4, 0); // unit: centigrade
     this.setTemperatureAtBorder(model2d.Boundary_UPPER, settings.upper);
     this.setTemperatureAtBorder(model2d.Boundary_LOWER, settings.lower);
     this.setTemperatureAtBorder(model2d.Boundary_LEFT, settings.left);
@@ -827,13 +883,40 @@ model2d.DirichletHeatBoundary = function(boundary_settings) {
 model2d.DirichletHeatBoundary.prototype.getTemperatureAtBorder  = function(side) {
     if (side < model2d.Boundary_UPPER || side > model2d.Boundary_LEFT)
         throw ("side parameter illegal");
-    return this.temperatureAtBorder[side];
+    return this.temperature_at_border[side];
 };
 
 model2d.DirichletHeatBoundary.prototype.setTemperatureAtBorder  = function(side, value) {
     if (side < model2d.Boundary_UPPER || side > model2d.Boundary_LEFT)
         throw ("side parameter illegal");
-     this.temperatureAtBorder[side] = value;
+    this.temperature_at_border[side] = value;
+};
+
+
+model2d.NeumannHeatBoundary = function(boundary_settings) {
+    var settings;
+    if (boundary_settings) {
+        settings = boundary_settings.flux_at_border;
+    } else {
+        settings = { upper: 0, lower: 0, left: 0, right: 0 };
+    }
+    this.flux_at_border = createArray(4, 0); // heat flux: unit w/m^2
+    this.setFluxAtBorder(model2d.Boundary_UPPER, settings.upper);
+    this.setFluxAtBorder(model2d.Boundary_LOWER, settings.lower);
+    this.setFluxAtBorder(model2d.Boundary_LEFT, settings.left);
+    this.setFluxAtBorder(model2d.Boundary_RIGHT, settings.right);
+};
+
+model2d.NeumannHeatBoundary.prototype.getFluxAtBorder  = function(side) {
+    if (side < model2d.Boundary_UPPER || side > model2d.Boundary_LEFT)
+        throw ("side parameter illegal");
+    return this.flux_at_border[side];
+};
+
+model2d.NeumannHeatBoundary.prototype.setFluxAtBorder  = function(side, value) {
+    if (side < model2d.Boundary_UPPER || side > model2d.Boundary_LEFT)
+        throw ("side parameter illegal");
+    this.flux_at_border[side] = value;
 };
 
 
@@ -856,7 +939,7 @@ model2d.FluidSolver2D = function(nx, ny, model) {
     this.thermalBuoyancy = model.thermalBuoyancy;
     this.gravity = 0;
     this.buoyancyApproximation = model.buoyancyApproximation;  // model2d.BUOYANCY_AVERAGE_COLUMN;
-    this.viscosity = 10 * model2d.AIR_VISCOSITY;
+    this.viscosity = model.backgroundViscosity;
 
     this.uWind = model.uWind;
     this.vWind = model.vWind;
@@ -1927,6 +2010,41 @@ model2d.displayTemperatureCanvasWithSmoothing = function(canvas, model) {
         }
     };
     ctx.putImageData(imageData, 0, 0);
+};
+
+model2d.displayParts = function(canvas, parts, scene_width, scene_height) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "gray";
+    ctx.strokeStyle = "black";
+    ctx.lineCap = "round";
+    ctx.lineWidth = 2;
+    
+    var scale_x = (canvas.width - 1) / scene_width;
+    var scale_y = (canvas.height - 1) / scene_height;
+        
+    var part, px, py, pw, ph;
+    var length = parts.length;
+    for (var i = 0; i < length; i++) {
+        part = parts[i];
+        
+        if (part.rectangle) {
+           px = part.rectangle.x * scale_x;
+           py = part.rectangle.y * scale_y;
+           pw = part.rectangle.width * scale_x;
+           ph = part.rectangle.height * scale_y;
+           ctx.beginPath();
+           ctx.moveTo(px, py);
+           ctx.lineTo(px + pw, py);
+           ctx.lineTo(px + pw, py + ph);
+           ctx.lineTo(px, py + ph);
+           ctx.lineTo(px, py);
+        }
+        
+        ctx.stroke();
+        if (part.filled)
+            ctx.fill();
+    }
 };
 
 model2d.displayVectorField = function(canvas, u, v, nx, ny, spacing) {  
