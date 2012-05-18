@@ -1,4 +1,5 @@
-var projection_effect = {
+var models_library = models_library || {};
+models_library.projection_effect = {
   "model": {
     "timestep": 500.0,
     "measurement_interval": 100,

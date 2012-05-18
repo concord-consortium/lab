@@ -1,4 +1,5 @@
-var solar_heating_convection = {
+var models_library = models_library || {};
+models_library.solar_heating_convection = {
   "model": {
     "measurement_interval": 100,
     "viewupdate_interval": 10,

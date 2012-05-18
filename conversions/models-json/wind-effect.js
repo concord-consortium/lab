@@ -1,4 +1,5 @@
-var wind_effect = {
+var models_library = models_library || {};
+models_library.wind_effect = {
   "model": {
     "timestep": 0.1,
     "measurement_interval": 100,

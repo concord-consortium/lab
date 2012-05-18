@@ -1,4 +1,5 @@
-var compare_convection_conduction = {
+var models_library = models_library || {};
+models_library.compare_convection_conduction = {
   "model": {
     "timestep": 0.25,
     "measurement_interval": 100,

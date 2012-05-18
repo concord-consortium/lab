@@ -1,4 +1,5 @@
-var forced_convection = {
+var models_library = models_library || {};
+models_library.forced_convection = {
   "model": {
     "timestep": 0.5,
     "measurement_interval": 50,

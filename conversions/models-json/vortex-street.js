@@ -1,4 +1,5 @@
-var vortex_street = {
+var models_library = models_library || {};
+models_library.vortex_street = {
   "model": {
     "timestep": 0.5,
     "measurement_interval": 50,

@@ -1,4 +1,5 @@
-var fixed_flux_boundary = {
+var models_library = models_library || {};
+models_library.fixed_flux_boundary = {
   "model": {
     "timestep": 100.0,
     "measurement_interval": 100,

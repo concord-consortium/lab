@@ -1,4 +1,5 @@
-var different_specific_heat2 = {
+var models_library = models_library || {};
+models_library.different_specific_heat2 = {
   "model": {
     "model_width": 1.0,
     "model_height": 1.0,

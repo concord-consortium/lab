@@ -1,4 +1,5 @@
-var natural_convection_temperature = {
+var models_library = models_library || {};
+models_library.natural_convection_temperature = {
   "model": {
     "timestep": 0.25,
     "measurement_interval": 100,

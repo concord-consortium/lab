@@ -1,4 +1,5 @@
-var series_circuit_analogy = {
+var models_library = models_library || {};
+models_library.series_circuit_analogy = {
   "model": {
     "model_width": 0.1,
     "model_height": 0.1,

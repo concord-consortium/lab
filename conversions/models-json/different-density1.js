@@ -1,4 +1,5 @@
-var different_density1 = {
+var models_library = models_library || {};
+models_library.different_density1 = {
   "model": {
     "model_width": 1.0,
     "model_height": 1.0,

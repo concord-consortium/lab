@@ -1,4 +1,5 @@
-var smoke_in_wind = {
+var models_library = models_library || {};
+models_library.smoke_in_wind = {
   "model": {
     "timestep": 0.2,
     "measurement_interval": 100,

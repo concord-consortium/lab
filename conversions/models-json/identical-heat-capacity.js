@@ -1,4 +1,5 @@
-var identical_heat_capacity = {
+var models_library = models_library || {};
+models_library.identical_heat_capacity = {
   "model": {
     "model_width": 1.0,
     "model_height": 1.0,
