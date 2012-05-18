@@ -1,4 +1,5 @@
-require("../../env");
+var fs  = require('fs');
+var env = require("../../env");
 require("d3");
 components = require("../../../dist/lab/lab.components");
 jquery = require("../../../dist/vendor/jquery/jquery.min");

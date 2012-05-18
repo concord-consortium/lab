@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Phase Change: Interatomic Interactions and States</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+   
+
+ 
+
+</text>
+<section start="0" end="10">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="5">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>290.0</width>
+<height>340.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot;&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Use the 
+    following model to explore this question. You can use the slider to change 
+    how strong the forces are between atoms. (This really amounts to changing 
+    the type of atoms!)&lt;br&gt;&lt;br&gt;&lt;b&gt;The temperature of this model is kept 
+    constant at 300K, about room temperature&lt;/b&gt;.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="2" end="3">
+</content>
+
+<content start="3" end="4">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page5$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.1439999967813492</value>
+<minimum>0.009999999776482582</minimum>
+<maximum>0.1599999964237213</maximum>
+<nstep>50</nstep>
+<title>Attraction between atoms</title>
+<width>400</width>
+<height>60</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.15899999644607307&quot;, label=&quot;strong&quot;}{value=&quot;0.08399999812245369&quot;, label=&quot;moderate&quot;}{value=&quot;0.008999999798834325&quot;, label=&quot;weak&quot;}</labeltable>
+<change>Element Ws: Epsilon</change>
+</component></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+</paragraph>
+</section>
+</document>

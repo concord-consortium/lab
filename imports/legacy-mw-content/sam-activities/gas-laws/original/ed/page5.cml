@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gay-Lussac&apos;s law: The P-T relationship at constant volume</page_title>
+<text>Gas Laws: Gay-Lussac&apos;s Law
+
+&lt; previous | index | next &gt;
+
+On the previous page we saw the relationship between temperature and volume (at constant pressure and number of particles).  Let&apos;s now alter those parameters slightly by swapping constant pressure for constant volume.  That is, we&apos;ll again raise the temperature of the gas, but this time the size of the container will be fixed.  The piston will be locked in place.
+
+ 
+
+Let&apos;s run the simulator and see if you were correct.
+
+Instructions:
+
+1.  Click the Increase Temperature button to slowly increase the temperature (note that unlike our last simulation, the piston is now in a fixed position).  Observe how the pressure changes as we increase the temperature.  Let the simulator run until it stops automatically.
+           
+ 
+
+3.  Take a snapshot of the graph as you did before.  When the Add Snapshot dialog box appears, type &quot;Pressure vs. Temperature at constant volume and number of particles&quot; in the box below the snapshot.  Click OK.
+
+ 
+
+Was your prediction from the top of the page correct?  Did the pressure change as you expected?
+
+As we increased the temperature, we discovered that the pressure increased because the rate and strength with which the gas molecules collided with the container walls increased.
+
+ 
+
+This direct relationship between temperature and pressure is known as Gay-Lussac&apos;s law.  Later in this activity, we&apos;ll see how Gay-Lussac&apos;s law explains how autoclaves work. 
+
+Now that we&apos;ve seen Boyle&apos;s law (inverse relationship between pressure and volume), Charles&apos;s law (direct relationship between temperature and volume), and Gay-Lussac&apos;s law (direct relationship between temperature and pressure) let&apos;s move on to our fourth and final gas law where we&apos;ll explore the relationship between volume and the number of particles of a gas.
+
+&lt; previous | index | next &gt;
+
+
+
+</text>
+<section start="0" end="1855">
+<paragraph start="0" end="27">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="0" end="26">
+<size>15</size><bold>true</bold></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="56">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="38">
+<size>11</size><href>page4.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="46">
+<size>11</size><href>index.cml</href></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="53">
+<size>11</size><href>page6.cml</href></content>
+
+<content start="53" end="56">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="56" end="57">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="57" end="423">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="57" end="423">
+</content>
+
+</paragraph>
+<paragraph start="423" end="424">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="423" end="424">
+</content>
+
+</paragraph>
+<paragraph start="424" end="426">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="424" end="425">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>600</width>
+<height>160</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;Before we run the simulator below, predict 
+    which of the following best describes what you are likely to observe as we 
+    increase the temperature.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>pressure will decrease because the rate and strength of the collisions with the container wall will decrease</choice>
+<choice>pressure will decrease because the rate and strength of the collisions with the container wall will increase</choice>
+<choice>pressure will increase because the rate and strength of the collisions with the container wall will decrease</choice>
+<choice>pressure will increase because the rate and strength of the collisions with the container wall will increase</choice>
+<answer>3 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="425" end="426">
+</content>
+
+</paragraph>
+<paragraph start="426" end="427">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="426" end="427">
+</content>
+
+</paragraph>
+<paragraph start="427" end="480">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="427" end="480">
+</content>
+
+</paragraph>
+<paragraph start="480" end="481">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="480" end="481">
+</content>
+
+</paragraph>
+<paragraph start="481" end="495">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="481" end="494">
+<bold>true</bold></content>
+
+<content start="494" end="495">
+</content>
+
+</paragraph>
+<paragraph start="495" end="496">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="495" end="496">
+</content>
+
+</paragraph>
+<paragraph start="496" end="771">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="496" end="771">
+</content>
+
+</paragraph>
+<paragraph start="771" end="783">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="771" end="772">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page5$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="772" end="781">
+</content>
+
+<content start="781" end="782">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Kinetic Energy/Particle</time_series_x>
+<multiplier>11594.0</multiplier>
+<time_series_y1 color="-1000000" style="0" width="0.0" symbol="1" size="4" spacing="5">West pressure:Obstacle #0</time_series_y1>
+<autofitx>false</autofitx>
+<axis_x_min>100.0</axis_x_min>
+<axis_x_max>1000.0</axis_x_max>
+<autofity>false</autofity>
+<axis_y_min>0.0</axis_y_min>
+<axis_y_max>4.0</axis_y_max>
+<width>300</width>
+<height>300</height>
+<axis_x_title>Temperature (K)</axis_x_title>
+<axis_y_title>Pressure measured by probe (bar)</axis_y_title>
+<legend_x>598</legend_x>
+<legend_y>42</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<border>Line</border>
+</component></content>
+
+<content start="782" end="783">
+</content>
+
+</paragraph>
+<paragraph start="783" end="785">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="783" end="784">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Increase Temperature</title>
+<tooltip>Automatically heat the gas gradually</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>run;
+loop 1;
+show selectionhalo off;
+select atom all;
+delay modeltime 1000;
+heat 0.002;
+loop 40;
+select atom none;
+show selectionhalo on;
+stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="784" end="785">
+</content>
+
+</paragraph>
+<paragraph start="785" end="786">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="785" end="786">
+</content>
+
+</paragraph>
+<paragraph start="786" end="998">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="786" end="998">
+</content>
+
+</paragraph>
+<paragraph start="998" end="999">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="998" end="999">
+</content>
+
+</paragraph>
+<paragraph start="999" end="1001">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="999" end="1000">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>3</row>
+<width>400</width>
+<height>140</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;As the temperature increased, what happened 
+    to the pressure?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>pressure increased</choice>
+<choice>pressure decreased</choice>
+<choice>pressure remained the same</choice>
+<answer>0 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="1000" end="1001">
+</content>
+
+</paragraph>
+<paragraph start="1001" end="1002">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1001" end="1002">
+</content>
+
+</paragraph>
+<paragraph start="1002" end="1098">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1002" end="1098">
+</content>
+
+</paragraph>
+<paragraph start="1098" end="1099">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1098" end="1099">
+</content>
+
+</paragraph>
+<paragraph start="1099" end="1278">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1099" end="1155">
+</content>
+
+<content start="1155" end="1278">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1278" end="1279">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1278" end="1279">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1279" end="1281">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1279" end="1280">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>2</row>
+<width>400</width>
+<height>130</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;Predict what would have happened to the 
+    pressure if we had decreased the temperature instead of increasing it.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>pressure would have decreased</choice>
+<choice>pressure would have increased</choice>
+<answer>0 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="1280" end="1281">
+</content>
+
+</paragraph>
+<paragraph start="1281" end="1282">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1281" end="1282">
+</content>
+
+</paragraph>
+<paragraph start="1282" end="1457">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1282" end="1352">
+</content>
+
+<content start="1352" end="1368">
+<bold>true</bold></content>
+
+<content start="1368" end="1457">
+</content>
+
+</paragraph>
+<paragraph start="1457" end="1458">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1457" end="1458">
+</content>
+
+</paragraph>
+<paragraph start="1458" end="1822">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1458" end="1821">
+</content>
+
+<content start="1821" end="1822">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1822" end="1823">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1822" end="1823">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1823" end="1851">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="1823" end="1825">
+<size>11</size></content>
+
+<content start="1825" end="1833">
+<size>11</size><href>page4.cml</href></content>
+
+<content start="1833" end="1836">
+<size>11</size></content>
+
+<content start="1836" end="1841">
+<size>11</size><href>index.cml</href></content>
+
+<content start="1841" end="1844">
+<size>11</size></content>
+
+<content start="1844" end="1848">
+<size>11</size><href>page6.cml</href></content>
+
+<content start="1848" end="1851">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1851" end="1852">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="1851" end="1852">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1852" end="1853">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="1852" end="1853">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1853" end="1854">
+<content start="1853" end="1854">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1854" end="1855">
+</paragraph>
+</section>
+</document>

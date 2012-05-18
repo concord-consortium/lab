@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws</page_title>
+<text>Human Breathing: An application of Boyle&apos;s Law
+
+&lt; previous | index | next &gt;
+
+We&apos;ll now see how we can apply our first gas law, Boyle&apos;s law.  Let&apos;s start with a review question.
+
+ 
+
+This inverse relationship between pressure and volume plays a vital role in the mechanism by which we breathe.  Before exploring this, let&apos;s briefly discuss a bit of anatomy related to breathing.  Our lungs are contained within an airtight chamber known as the thoracic cavity.  At the base of this cavity is a muscle known as the diaphragm.
+
+When the diaphragm flattens out, the elastic lungs expand.  We&apos;ll model this in our simulator below by having the diaphragm move downward.  When the diaphragm relaxes, the lungs contract.  We&apos;ll represent this by showing the diaphragm moving upward.
+
+
+Instructions:
+
+1. Click Run.  Observe the movement of the molecules and let the model run until the pressure in the lungs stays relatively constant (as indicated by the triangle on the bar graph).  Wait at least 40,000 fs for this to occur, then click Stop.
+   
+       
+
+                 
+
+          
+
+2. Click Run, then immediately click Increase Lung Volume.  Observe the change in pressure as the lungs fully expand.  Let the diaphragm move all the way down, then wait about another 40,000 fs, then click Stop.
+
+3. The current state represents maximum lung volume. 
+
+     
+
+    Use the Counting tool (looks like this  ) to count the molecules inside the lungs (to count, click the Counting tool button, then drag your mouse over the entire lung area, but not in the Outside body area).    
+
+       
+
+ 
+
+4. Click Run, then immediately click Decrease Lung Volume.  Observe the change in pressure as the lungs decrease in volume.  Let the diaphragm move upward until it stops, then wait about another 40,000 fs, then     click Stop.
+
+5. The current state represents the minimum lung volume. 
+
+     
+
+       
+
+ 
+
+Let&apos;s now move on to learn how Charles&apos;s Law applies to hot air balloons.
+
+&lt; previous | index | next &gt;</text>
+<section start="0" end="1991">
+<paragraph start="0" end="47">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="0" end="47">
+<bold>true</bold><size>16</size></content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="47" end="48">
+<bold>true</bold><size>16</size></content>
+
+</paragraph>
+<paragraph start="48" end="76">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="48" end="50">
+<size>11</size></content>
+
+<content start="50" end="58">
+<href>page7.cml</href><size>11</size></content>
+
+<content start="58" end="61">
+<size>11</size></content>
+
+<content start="61" end="66">
+<href>index.cml</href><size>11</size></content>
+
+<content start="66" end="69">
+<size>11</size></content>
+
+<content start="69" end="73">
+<href>page9.cml</href><size>11</size></content>
+
+<content start="73" end="75">
+<size>11</size></content>
+
+<content start="75" end="76">
+<bold>true</bold><size>16</size></content>
+
+</paragraph>
+<paragraph start="76" end="77">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="76" end="77">
+</content>
+
+</paragraph>
+<paragraph start="77" end="177">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="77" end="177">
+</content>
+
+</paragraph>
+<paragraph start="177" end="178">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="177" end="178">
+</content>
+
+</paragraph>
+<paragraph start="178" end="180">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="178" end="179">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>false</single>
+<row>4</row>
+<width>430</width>
+<height>170</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;verdana&quot; size=&quot;3&quot;&gt;Which of the following best describes the 
+    relationship between the pressure and volume of a gas (check all that 
+    apply)?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>as volume increases, pressure decreases</choice>
+<choice>as volume decreases, pressure increases</choice>
+<choice>as volume increases, pressure increases</choice>
+<choice>as volume decreases, pressure decreases</choice>
+<answer>0 1</answer>
+<opaque>false</opaque>
+<border>Line</border>
+<script> -choiceseparator- </script>
+</component></content>
+
+<content start="179" end="180">
+</content>
+
+</paragraph>
+<paragraph start="180" end="181">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="180" end="181">
+</content>
+
+</paragraph>
+<paragraph start="181" end="523">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="181" end="512">
+</content>
+
+<content start="512" end="521">
+<link_statusbar>false</link_statusbar><href>http://www.nlm.nih.gov/medlineplus/ency/images/ency/fullsize/19380.jpg</href><link_width>600</link_width><link_fullscreen>false</link_fullscreen><link_height>600</link_height><link_left>0</link_left><link_menubar>false</link_menubar><link_top>0</link_top><target>_blank</target><link_toolbar>false</link_toolbar><link_resizable>true</link_resizable></content>
+
+<content start="521" end="523">
+</content>
+
+</paragraph>
+<paragraph start="523" end="524">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="523" end="524">
+</content>
+
+</paragraph>
+<paragraph start="524" end="774">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="524" end="774">
+</content>
+
+</paragraph>
+<paragraph start="774" end="775">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="774" end="775">
+</content>
+
+</paragraph>
+<paragraph start="775" end="776">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="775" end="776">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="776" end="790">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="776" end="789">
+<bold>true</bold></content>
+
+<content start="789" end="790">
+</content>
+
+</paragraph>
+<paragraph start="790" end="791">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="790" end="791">
+</content>
+
+</paragraph>
+<paragraph start="791" end="1034">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="791" end="1034">
+</content>
+
+</paragraph>
+<paragraph start="1034" end="1038">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1034" end="1038">
+</content>
+
+</paragraph>
+<paragraph start="1038" end="1046">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1038" end="1039">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page8$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><button>Count Objects</button></component></content>
+
+<content start="1039" end="1044">
+</content>
+
+<content start="1044" end="1045">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<timeseries>Pl north pressure:Obstacle #1</timeseries>
+<description>Pressure inside lungs</description>
+<width>100</width>
+<height>200</height>
+<tick>true</tick>
+<major_tick>7</major_tick>
+<nstep>14</nstep>
+<label>true</label>
+<title>true</title>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>7.0</maximum>
+<value>0.1538565456867218</value>
+</component></content>
+
+<content start="1045" end="1046">
+</content>
+
+</paragraph>
+<paragraph start="1046" end="1047">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1046" end="1047">
+</content>
+
+</paragraph>
+<paragraph start="1047" end="1065">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1047" end="1048">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1048" end="1053">
+</content>
+
+<content start="1053" end="1054">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1054" end="1060">
+</content>
+
+<content start="1060" end="1061">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1061" end="1065">
+</content>
+
+</paragraph>
+<paragraph start="1065" end="1066">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1065" end="1066">
+</content>
+
+</paragraph>
+<paragraph start="1066" end="1077">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1066" end="1067">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Increase Lung Volume</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set obstacle[1].hy 0.099999;
+</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1067" end="1072">
+</content>
+
+<content start="1072" end="1073">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Decrease Lung Volume</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set obstacle[1].hy -0.099999;
+</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1073" end="1077">
+</content>
+
+</paragraph>
+<paragraph start="1077" end="1078">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1077" end="1078">
+</content>
+
+</paragraph>
+<paragraph start="1078" end="1290">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1078" end="1290">
+</content>
+
+</paragraph>
+<paragraph start="1290" end="1291">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1290" end="1291">
+</content>
+
+</paragraph>
+<paragraph start="1291" end="1345">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1291" end="1345">
+</content>
+
+</paragraph>
+<paragraph start="1345" end="1346">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1345" end="1346">
+</content>
+
+</paragraph>
+<paragraph start="1346" end="1352">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1346" end="1350">
+</content>
+
+<content start="1350" end="1351">
+<component><class>org.concord.modeler.PageTextField</class>
+<layout>West</layout>
+<width>400</width>
+<height>22</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;verdana&quot; size=&quot;3&quot;&gt;Record the pressure in the lungs at maximum 
+    volume:&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="1351" end="1352">
+</content>
+
+</paragraph>
+<paragraph start="1352" end="1353">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1352" end="1353">
+</content>
+
+</paragraph>
+<paragraph start="1353" end="1569">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1353" end="1396">
+</content>
+
+<content start="1396" end="1397">
+<icon>count.png</icon></content>
+
+<content start="1397" end="1534">
+</content>
+
+<content start="1534" end="1537">
+<bold>true</bold></content>
+
+<content start="1537" end="1545">
+</content>
+
+<content start="1545" end="1557">
+<italic>true</italic></content>
+
+<content start="1557" end="1569">
+</content>
+
+</paragraph>
+<paragraph start="1569" end="1570">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1569" end="1570">
+</content>
+
+</paragraph>
+<paragraph start="1570" end="1578">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1570" end="1574">
+</content>
+
+<content start="1574" end="1575">
+<component><class>org.concord.modeler.PageTextField</class>
+<layout>West</layout>
+<width>475</width>
+<height>22</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;verdana&quot; size=&quot;3&quot;&gt;Record the number of molecules in the lungs 
+    at maximum volume:&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="1575" end="1578">
+</content>
+
+</paragraph>
+<paragraph start="1578" end="1579">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1578" end="1579">
+</content>
+
+</paragraph>
+<paragraph start="1579" end="1581">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1579" end="1580">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>650</width>
+<height>170</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;verdana&quot; size=&quot;3&quot;&gt;Which of the following choices best 
+    completes the statement: As your lungs expand...?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>...lung pressure decreases; air is forced into the lungs because atmospheric pressure now exceeds lung pressure.</choice>
+<choice>...lung pressure also increases; there will be no net difference in the amount of air inside the lungs.</choice>
+<choice>...lung pressure also increases; air is forced out of the lungs because of the increased lung pressure.</choice>
+<choice>...lung pressure does not change; air is then forced into the lungs because atmospheric pressure now exceeds lung pressure.</choice>
+<answer>0</answer>
+<opaque>false</opaque>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="1580" end="1581">
+</content>
+
+</paragraph>
+<paragraph start="1581" end="1582">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1581" end="1582">
+</content>
+
+</paragraph>
+<paragraph start="1582" end="1809">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1582" end="1809">
+</content>
+
+</paragraph>
+<paragraph start="1809" end="1810">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1809" end="1810">
+</content>
+
+</paragraph>
+<paragraph start="1810" end="1868">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1810" end="1868">
+</content>
+
+</paragraph>
+<paragraph start="1868" end="1869">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1868" end="1869">
+</content>
+
+</paragraph>
+<paragraph start="1869" end="1875">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1869" end="1873">
+</content>
+
+<content start="1873" end="1874">
+<component><class>org.concord.modeler.PageTextField</class>
+<layout>West</layout>
+<width>400</width>
+<height>22</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;verdana&quot; size=&quot;3&quot;&gt;Record the pressure in the lungs at minimum 
+    volume:&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="1874" end="1875">
+</content>
+
+</paragraph>
+<paragraph start="1875" end="1876">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1875" end="1876">
+</content>
+
+</paragraph>
+<paragraph start="1876" end="1884">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1876" end="1880">
+</content>
+
+<content start="1880" end="1881">
+<component><class>org.concord.modeler.PageTextField</class>
+<layout>West</layout>
+<width>475</width>
+<height>22</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;verdana&quot; size=&quot;3&quot;&gt;Record the number of molecules in the lungs 
+    at minimum volume:&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="1881" end="1884">
+</content>
+
+</paragraph>
+<paragraph start="1884" end="1885">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1884" end="1885">
+</content>
+
+</paragraph>
+<paragraph start="1885" end="1887">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1885" end="1886">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>650</width>
+<height>150</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;verdana&quot; size=&quot;3&quot;&gt;Use the pressure-volume relationship known 
+    as Boyle&apos;s law to explain why we exhale air when our lungs contract. &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="1886" end="1887">
+</content>
+
+</paragraph>
+<paragraph start="1887" end="1888">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1887" end="1888">
+</content>
+
+</paragraph>
+<paragraph start="1888" end="1962">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1888" end="1962">
+</content>
+
+</paragraph>
+<paragraph start="1962" end="1963">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1962" end="1963">
+</content>
+
+</paragraph>
+<paragraph start="1963" end="1991">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1963" end="1965">
+<size>11</size></content>
+
+<content start="1965" end="1973">
+<href>page7.cml</href><size>11</size></content>
+
+<content start="1973" end="1976">
+<size>11</size></content>
+
+<content start="1976" end="1981">
+<href>index.cml</href><size>11</size></content>
+
+<content start="1981" end="1984">
+<size>11</size></content>
+
+<content start="1984" end="1988">
+<href>page9.cml</href><size>11</size></content>
+
+<content start="1988" end="1990">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

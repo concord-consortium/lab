@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws</page_title>
+<text>Gas Laws: Introduction to Gas Pressure
+
+&lt; previous | index | next &gt;
+ 
+
+Before learning about the individual gas laws, let&apos;s briefly examine the concept of gas pressure.  Developing an understanding of the molecular underpinnings of gas pressure will allow us to predict and understand the four gas laws we&apos;ll study.
+
+Consider a linebacker trying to make a goal line stand in football and stop a running back.
+
+ 
+
+The chances of the linebacker sending the ball carrier backwards is greater if the defender is moving forward with considerable energy.  Gas molecules exert pressure in much the same way.  If they collide with the walls of the container with greater force, they will exert more pressure. Increased strength of collisions = increased pressure.
+
+Now consider the possibility that three linebackers, all moving forward with a full head of steam, collide with the runner at the same time.   Collectively they will be exerting so much force they will have no trouble pushing him back and keeping him out of the end zone.  Gases also exert more pressure if the number of collisions is greater.  Increased rate of collisions = increased pressure.
+
+As we explore the gas laws on the next several pages, we will see that the mechanism by which humans breathe, how hot air balloons work, how autoclaves work, and how a simple act such as pumping up a tire can all be easily understood by remembering that:
+Pressure increases as the STRENGTH of collisions increases and/or the RATE of collisions increases.
+
+&lt; previous | index | next &gt; 
+
+</text>
+<section start="0" end="1541">
+<paragraph start="0" end="39">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="0" end="38">
+<size>16</size><bold>true</bold></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="40">
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="68">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="40" end="42">
+<size>11</size></content>
+
+<content start="42" end="50">
+<href>page1.cml</href><size>11</size></content>
+
+<content start="50" end="53">
+<size>11</size></content>
+
+<content start="53" end="58">
+<href>index.cml</href><size>11</size></content>
+
+<content start="58" end="61">
+<size>11</size></content>
+
+<content start="61" end="65">
+<href>page3.cml</href><size>11</size></content>
+
+<content start="65" end="67">
+<size>11</size></content>
+
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="70">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="68" end="69">
+<size>11</size></content>
+
+<content start="69" end="70">
+</content>
+
+</paragraph>
+<paragraph start="70" end="71">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="316">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="71" end="316">
+</content>
+
+</paragraph>
+<paragraph start="316" end="317">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="316" end="317">
+</content>
+
+</paragraph>
+<paragraph start="317" end="409">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="317" end="349">
+</content>
+
+<content start="349" end="388">
+</content>
+
+<content start="388" end="409">
+</content>
+
+</paragraph>
+<paragraph start="409" end="410">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="409" end="410">
+</content>
+
+</paragraph>
+<paragraph start="410" end="412">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="410" end="411">
+<icon>tackle.png</icon></content>
+
+<content start="411" end="412">
+</content>
+
+</paragraph>
+<paragraph start="412" end="413">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="412" end="413">
+</content>
+
+</paragraph>
+<paragraph start="413" end="756">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="413" end="701">
+</content>
+
+<content start="701" end="754">
+<bold>true</bold></content>
+
+<content start="754" end="756">
+</content>
+
+</paragraph>
+<paragraph start="756" end="757">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="756" end="757">
+</content>
+
+</paragraph>
+<paragraph start="757" end="1153">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="757" end="791">
+</content>
+
+<content start="791" end="796">
+<italic>true</italic></content>
+
+<content start="796" end="1102">
+</content>
+
+<content start="1102" end="1153">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1153" end="1154">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1153" end="1154">
+</content>
+
+</paragraph>
+<paragraph start="1154" end="1409">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1154" end="1409">
+</content>
+
+</paragraph>
+<paragraph start="1409" end="1509">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1409" end="1507">
+<bold>true</bold><foreground>255 0 0</foreground></content>
+
+<content start="1507" end="1509">
+</content>
+
+</paragraph>
+<paragraph start="1509" end="1510">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1509" end="1510">
+</content>
+
+</paragraph>
+<paragraph start="1510" end="1539">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1510" end="1512">
+<size>11</size></content>
+
+<content start="1512" end="1520">
+<href>page1.cml</href><size>11</size></content>
+
+<content start="1520" end="1523">
+<size>11</size></content>
+
+<content start="1523" end="1528">
+<href>index.cml</href><size>11</size></content>
+
+<content start="1528" end="1531">
+<size>11</size></content>
+
+<content start="1531" end="1535">
+<href>page3.cml</href><size>11</size></content>
+
+<content start="1535" end="1538">
+<size>11</size></content>
+
+<content start="1538" end="1539">
+</content>
+
+</paragraph>
+<paragraph start="1539" end="1540">
+<content start="1539" end="1540">
+</content>
+
+</paragraph>
+<paragraph start="1540" end="1541">
+</paragraph>
+</section>
+</document>
