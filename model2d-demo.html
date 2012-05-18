@@ -23,10 +23,18 @@
       border:1px; 
     }
     
-    #canvasVelocityLayer {
+    #canvasPartsLayer { 
       width:100%;
       height:100%;
       position:absolute; left:0; top:0; z-index:1;
+      padding:0px;
+      border:1px; 
+    }
+    
+    #canvasVelocityLayer {
+      width:100%;
+      height:100%;
+      position:absolute; left:0; top:0; z-index:2;
       padding:0px;
       border:1px; 
     }
@@ -66,6 +74,7 @@
           <p>Energy2D-JS Model: Rendered using an HTML5 canvas</p>
           <div id="canvasContainer">
             <canvas id="canvasTemperatureLayer"></canvas>
+            <canvas id="canvasPartsLayer"></canvas>
             <canvas id="canvasVelocityLayer"></canvas>
           </div>
           <ul class="hlist">
@@ -171,6 +180,7 @@
     </div>
   </div>
 </div>
+<script type="text/javascript" src="conversions/models-json/laminar-turbulent.js"></script>
 <script type="text/javascript">
 
   function myRequire(src, callback) {
@@ -218,6 +228,7 @@
         var webgl = !!window.WebGLRenderingContext;
         // get DOM elements
         var canvas_temperature = document.getElementById("canvasTemperatureLayer");
+        var canvas_parts = document.getElementById("canvasPartsLayer");
         var canvas_velocity = document.getElementById("canvasVelocityLayer");
         var canvas_debug = document.getElementById("canvasVelocityLenDestination");
         var tdata = document.getElementById("tdata");
@@ -252,6 +263,9 @@
         setupTemperatureRenderingMethod();
         model2d.initCanvas(canvas_velocity, canvas_velocity.clientWidth, canvas_velocity.clientHeight);
         model2d.initCanvas(canvas_debug, model.nx, model.ny);
+        // display parts only once
+        model2d.initCanvas(canvas_parts, canvas_parts.clientWidth, canvas_parts.clientHeight);
+        model2d.displayParts(canvas_parts, model.parts, model.lx, model.ly);
         
         // display initial state
         step_count.innerHTML = 'frame: ' + model.indexOfStep;
@@ -346,7 +360,7 @@
             } else {
                 array_selection = "typed";
             }
-            var model = new model2d.Model2D(undefined, array_selection);
+            var model = new model2d.Model2D(laminar_turbulent, array_selection);
             setupActiveSolvers(model);
             return model;
         }
