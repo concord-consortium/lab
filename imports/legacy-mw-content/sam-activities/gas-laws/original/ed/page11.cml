@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws</page_title>
+<text>Pumping Up Your Tires: An application of Avogadro&apos;s Law
+
+&lt; previous | index | next &gt;
+
+
+You may not have realized it, but every time you pumped air into a flat tire you&apos;ve been applying Avogadro&apos;s law, the relationship between the volume and number of molecules of a gas.
+
+In the simulator below, the area below the obstacle represents the inside of the tire.  In the current state, the tire is flat.
+
+Instructions:
+
+1. Pump 20 molecules of gas into the tire by clicking the 20 molecules button here:      
+
+Observe any change in volume that occurs.  Wait at least 40,000 fs, then click the Take a Snapshot button,  , making sure to label the snapshot by writing something like &quot;20 molecules of air added to the flat tire&quot;.
+
+2. Click here to stop and reset the model:   
+
+3. Repeat steps 1 and 2 for 40 molecules and 60 molecules.
+
+ e:      
+
+4. Click here to review your snapshots:  
+
+ 
+
+
+&lt; previous | index | next &gt;</text>
+<section start="0" end="917">
+<paragraph start="0" end="56">
+<LeftIndent>30.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<content start="0" end="56">
+<bold>true</bold><size>16</size></content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<LeftIndent>30.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<content start="56" end="57">
+<bold>true</bold><size>16</size></content>
+
+</paragraph>
+<paragraph start="57" end="85">
+<LeftIndent>30.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<content start="57" end="59">
+<size>11</size></content>
+
+<content start="59" end="67">
+<href>page10.cml</href><size>11</size></content>
+
+<content start="67" end="70">
+<size>11</size></content>
+
+<content start="70" end="75">
+<href>index.cml</href><size>11</size></content>
+
+<content start="75" end="78">
+<size>11</size></content>
+
+<content start="78" end="82">
+<href>page12.cml</href><size>11</size></content>
+
+<content start="82" end="84">
+<size>11</size></content>
+
+<content start="84" end="85">
+<bold>true</bold><size>16</size></content>
+
+</paragraph>
+<paragraph start="85" end="86">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="85" end="86">
+</content>
+
+</paragraph>
+<paragraph start="86" end="87">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="86" end="87">
+</content>
+
+</paragraph>
+<paragraph start="87" end="271">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="87" end="271">
+</content>
+
+</paragraph>
+<paragraph start="271" end="272">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="271" end="272">
+</content>
+
+</paragraph>
+<paragraph start="272" end="400">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="272" end="400">
+</content>
+
+</paragraph>
+<paragraph start="400" end="401">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="400" end="401">
+</content>
+
+</paragraph>
+<paragraph start="401" end="415">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="401" end="414">
+<bold>true</bold></content>
+
+<content start="414" end="415">
+</content>
+
+</paragraph>
+<paragraph start="415" end="416">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="415" end="416">
+</content>
+
+</paragraph>
+<paragraph start="416" end="506">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="416" end="474">
+</content>
+
+<content start="474" end="486">
+<italic>true</italic></content>
+
+<content start="486" end="500">
+</content>
+
+<content start="500" end="501">
+<component><class>org.concord.modeler.PageButton</class>
+<title>20 molecules</title>
+<tooltip>Add 20 molecules of air to the flat tire</tooltip>
+<width>100</width><height>27</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>add atom 1 (2 27); delay 0.1;
+add atom 2 (4 27); delay 0.1;
+add atom 1 (6 27); delay 0.1;
+add atom 2 (8 27); delay 0.1;
+add atom 1 (10 27); delay 0.1;
+add atom 1 (2 29); delay 0.1;
+add atom 2 (4 29); delay 0.1;
+add atom 1 (6 29); delay 0.1;
+add atom 2 (8 29); delay 0.1;
+add atom 1 (10 29); delay 0.1;
+add atom 1 (2 31); delay 0.1;
+add atom 2 (4 31); delay 0.1;
+add atom 1 (6 31); delay 0.1;
+add atom 2 (8 31); delay 0.1;
+add atom 1 (10 31); delay 0.1;
+add atom 1 (2 33); delay 0.1;
+add atom 2 (4 33); delay 0.1;
+add atom 1 (6 33); delay 0.1;
+add atom 2 (8 33); delay 0.1;
+add atom 1 (10 33); delay 0.1;
+delay 0.2;
+run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="501" end="502">
+</content>
+
+<content start="502" end="503">
+<component><class>org.concord.modeler.PageButton</class>
+<title>40 molecules</title>
+<tooltip>Add 40 molecules of air to the flat tire</tooltip>
+<width>100</width><height>27</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>add atom 1 (2 27); delay 0.1;
+add atom 2 (4 27); delay 0.1;
+add atom 1 (6 27); delay 0.1;
+add atom 2 (8 27); delay 0.1;
+add atom 1 (10 27); delay 0.1;
+add atom 1 (2 29); delay 0.1;
+add atom 2 (4 29); delay 0.1;
+add atom 1 (6 29); delay 0.1;
+add atom 2 (8 29); delay 0.1;
+add atom 1 (10 29); delay 0.1;
+add atom 1 (2 31); delay 0.1;
+add atom 2 (4 31); delay 0.1;
+add atom 1 (6 31); delay 0.1;
+add atom 2 (8 31); delay 0.1;
+add atom 1 (10 31); delay 0.1;
+add atom 1 (2 33); delay 0.1;
+add atom 2 (4 33); delay 0.1;
+add atom 1 (6 33); delay 0.1;
+add atom 2 (8 33); delay 0.1;
+add atom 1 (10 33); delay 0.1;
+add atom 1 (12 27); delay 0.1;
+add atom 2 (14 27); delay 0.1;
+add atom 1 (16 27); delay 0.1;
+add atom 2 (18 27); delay 0.1;
+add atom 1 (20 27); delay 0.1;
+add atom 1 (12 29); delay 0.1;
+add atom 2 (14 29); delay 0.1;
+add atom 1 (16 29); delay 0.1;
+add atom 2 (18 29); delay 0.1;
+add atom 1 (20 29); delay 0.1;
+add atom 1 (12 31); delay 0.1;
+add atom 2 (14 31); delay 0.1;
+add atom 1 (16 31); delay 0.1;
+add atom 2 (18 31); delay 0.1;
+add atom 1 (20 31); delay 0.1;
+add atom 1 (12 33); delay 0.1;
+add atom 2 (14 33); delay 0.1;
+add atom 1 (16 33); delay 0.1;
+add atom 2 (18 33); delay 0.1;
+add atom 1 (20 33); delay 0.1;
+delay 0.2;
+run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="503" end="504">
+</content>
+
+<content start="504" end="505">
+<component><class>org.concord.modeler.PageButton</class>
+<title>60 molecules</title>
+<tooltip>Add 40 molecules of air to the flat tire</tooltip>
+<width>100</width><height>27</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>add atom 1 (2 27); delay 0.1;
+add atom 2 (4 27); delay 0.1;
+add atom 1 (6 27); delay 0.1;
+add atom 2 (8 27); delay 0.1;
+add atom 1 (10 27); delay 0.1;
+add atom 1 (2 29); delay 0.1;
+add atom 2 (4 29); delay 0.1;
+add atom 1 (6 29); delay 0.1;
+add atom 2 (8 29); delay 0.1;
+add atom 1 (10 29); delay 0.1;
+add atom 1 (2 31); delay 0.1;
+add atom 2 (4 31); delay 0.1;
+add atom 1 (6 31); delay 0.1;
+add atom 2 (8 31); delay 0.1;
+add atom 1 (10 31); delay 0.1;
+add atom 1 (2 33); delay 0.1;
+add atom 2 (4 33); delay 0.1;
+add atom 1 (6 33); delay 0.1;
+add atom 2 (8 33); delay 0.1;
+add atom 1 (10 33); delay 0.1;
+add atom 1 (12 27); delay 0.1;
+add atom 2 (14 27); delay 0.1;
+add atom 1 (16 27); delay 0.1;
+add atom 2 (18 27); delay 0.1;
+add atom 1 (20 27); delay 0.1;
+add atom 1 (12 29); delay 0.1;
+add atom 2 (14 29); delay 0.1;
+add atom 1 (16 29); delay 0.1;
+add atom 2 (18 29); delay 0.1;
+add atom 1 (20 29); delay 0.1;
+add atom 1 (12 31); delay 0.1;
+add atom 2 (14 31); delay 0.1;
+add atom 1 (16 31); delay 0.1;
+add atom 2 (18 31); delay 0.1;
+add atom 1 (20 31); delay 0.1;
+add atom 1 (12 33); delay 0.1;
+add atom 2 (14 33); delay 0.1;
+add atom 1 (16 33); delay 0.1;
+add atom 2 (18 33); delay 0.1;
+add atom 1 (20 33); delay 0.1;
+add atom 1 (22 27); delay 0.1;
+add atom 2 (24 27); delay 0.1;
+add atom 1 (26 27); delay 0.1;
+add atom 2 (28 27); delay 0.1;
+add atom 1 (30 27); delay 0.1;
+add atom 1 (22 29); delay 0.1;
+add atom 2 (24 29); delay 0.1;
+add atom 1 (26 29); delay 0.1;
+add atom 2 (28 29); delay 0.1;
+add atom 1 (30 29); delay 0.1;
+add atom 1 (22 31); delay 0.1;
+add atom 2 (24 31); delay 0.1;
+add atom 1 (26 31); delay 0.1;
+add atom 2 (28 31); delay 0.1;
+add atom 1 (30 31); delay 0.1;
+add atom 1 (22 33); delay 0.1;
+add atom 2 (24 33); delay 0.1;
+add atom 1 (26 33); delay 0.1;
+add atom 2 (28 33); delay 0.1;
+add atom 1 (30 33); delay 0.1;
+delay 0.2;
+run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="505" end="506">
+</content>
+
+</paragraph>
+<paragraph start="506" end="507">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="506" end="507">
+</content>
+
+</paragraph>
+<paragraph start="507" end="723">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="507" end="614">
+</content>
+
+<content start="614" end="615">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="615" end="723">
+</content>
+
+</paragraph>
+<paragraph start="723" end="724">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="723" end="724">
+</content>
+
+</paragraph>
+<paragraph start="724" end="770">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="724" end="768">
+</content>
+
+<content start="768" end="769">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop and go back to flat tire</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop;
+reset;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="769" end="770">
+</content>
+
+</paragraph>
+<paragraph start="770" end="771">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="770" end="771">
+</content>
+
+</paragraph>
+<paragraph start="771" end="830">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="771" end="830">
+</content>
+
+</paragraph>
+<paragraph start="830" end="831">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="830" end="831">
+</content>
+
+</paragraph>
+<paragraph start="831" end="841">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="831" end="832">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page11$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="832" end="835">
+</content>
+
+<content start="835" end="836">
+<component><class>org.concord.modeler.PageButton</class>
+<title>20 molecules</title>
+<tooltip>Add 20 molecules of air to the flat tire</tooltip>
+<width>100</width><height>27</height>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>add atom 1 (2, 27); delay 0.1;
+add atom 2 (4, 27); delay 0.1;
+add atom 1 (6, 27); delay 0.1;
+add atom 2 (8, 27); delay 0.1;
+add atom 1 (10, 27); delay 0.1;
+add atom 1 (2, 29); delay 0.1;
+add atom 2 (4, 29); delay 0.1;
+add atom 1 (6, 29); delay 0.1;
+add atom 2 (8 ,29); delay 0.1;
+add atom 1 (10, 29); delay 0.1;
+add atom 1 (2, 31); delay 0.1;
+add atom 2 (4, 31); delay 0.1;
+add atom 1 (6 ,31); delay 0.1;
+add atom 2 (8, 31); delay 0.1;
+add atom 1 (10, 31); delay 0.1;
+add atom 1 (2, 33); delay 0.1;
+add atom 2 (4, 33); delay 0.1;
+add atom 1 (6, 33); delay 0.1;
+add atom 2 (8, 33); delay 0.1;
+add atom 1 (10, 33); delay 0.1;
+delay 0.2;
+run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="836" end="837">
+</content>
+
+<content start="837" end="838">
+<component><class>org.concord.modeler.PageButton</class>
+<title>40 molecules</title>
+<tooltip>Add 40 molecules of air to the flat tire</tooltip>
+<width>100</width><height>27</height>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>add atom 1 (2 27); delay 0.1;
+add atom 2 (4 27); delay 0.1;
+add atom 1 (6 27); delay 0.1;
+add atom 2 (8 27); delay 0.1;
+add atom 1 (10 27); delay 0.1;
+add atom 1 (2 29); delay 0.1;
+add atom 2 (4 29); delay 0.1;
+add atom 1 (6 29); delay 0.1;
+add atom 2 (8 29); delay 0.1;
+add atom 1 (10 29); delay 0.1;
+add atom 1 (2 31); delay 0.1;
+add atom 2 (4 31); delay 0.1;
+add atom 1 (6 31); delay 0.1;
+add atom 2 (8 31); delay 0.1;
+add atom 1 (10 31); delay 0.1;
+add atom 1 (2 33); delay 0.1;
+add atom 2 (4 33); delay 0.1;
+add atom 1 (6 33); delay 0.1;
+add atom 2 (8 33); delay 0.1;
+add atom 1 (10 33); delay 0.1;
+add atom 1 (12 27); delay 0.1;
+add atom 2 (14 27); delay 0.1;
+add atom 1 (16 27); delay 0.1;
+add atom 2 (18 27); delay 0.1;
+add atom 1 (20 27); delay 0.1;
+add atom 1 (12 29); delay 0.1;
+add atom 2 (14 29); delay 0.1;
+add atom 1 (16 29); delay 0.1;
+add atom 2 (18 29); delay 0.1;
+add atom 1 (20 29); delay 0.1;
+add atom 1 (12 31); delay 0.1;
+add atom 2 (14 31); delay 0.1;
+add atom 1 (16 31); delay 0.1;
+add atom 2 (18 31); delay 0.1;
+add atom 1 (20 31); delay 0.1;
+add atom 1 (12 33); delay 0.1;
+add atom 2 (14 33); delay 0.1;
+add atom 1 (16 33); delay 0.1;
+add atom 2 (18 33); delay 0.1;
+add atom 1 (20 33); delay 0.1;
+delay 0.2;
+run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="838" end="839">
+</content>
+
+<content start="839" end="840">
+<component><class>org.concord.modeler.PageButton</class>
+<title>60 molecules</title>
+<tooltip>Add 40 molecules of air to the flat tire</tooltip>
+<width>100</width><height>27</height>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>add atom 1 (2 27); delay 0.1;
+add atom 2 (4 27); delay 0.1;
+add atom 1 (6 27); delay 0.1;
+add atom 2 (8 27); delay 0.1;
+add atom 1 (10 27); delay 0.1;
+add atom 1 (2 29); delay 0.1;
+add atom 2 (4 29); delay 0.1;
+add atom 1 (6 29); delay 0.1;
+add atom 2 (8 29); delay 0.1;
+add atom 1 (10 29); delay 0.1;
+add atom 1 (2 31); delay 0.1;
+add atom 2 (4 31); delay 0.1;
+add atom 1 (6 31); delay 0.1;
+add atom 2 (8 31); delay 0.1;
+add atom 1 (10 31); delay 0.1;
+add atom 1 (2 33); delay 0.1;
+add atom 2 (4 33); delay 0.1;
+add atom 1 (6 33); delay 0.1;
+add atom 2 (8 33); delay 0.1;
+add atom 1 (10 33); delay 0.1;
+add atom 1 (12 27); delay 0.1;
+add atom 2 (14 27); delay 0.1;
+add atom 1 (16 27); delay 0.1;
+add atom 2 (18 27); delay 0.1;
+add atom 1 (20 27); delay 0.1;
+add atom 1 (12 29); delay 0.1;
+add atom 2 (14 29); delay 0.1;
+add atom 1 (16 29); delay 0.1;
+add atom 2 (18 29); delay 0.1;
+add atom 1 (20 29); delay 0.1;
+add atom 1 (12 31); delay 0.1;
+add atom 2 (14 31); delay 0.1;
+add atom 1 (16 31); delay 0.1;
+add atom 2 (18 31); delay 0.1;
+add atom 1 (20 31); delay 0.1;
+add atom 1 (12 33); delay 0.1;
+add atom 2 (14 33); delay 0.1;
+add atom 1 (16 33); delay 0.1;
+add atom 2 (18 33); delay 0.1;
+add atom 1 (20 33); delay 0.1;
+add atom 1 (22 27); delay 0.1;
+add atom 2 (24 27); delay 0.1;
+add atom 1 (26 27); delay 0.1;
+add atom 2 (28 27); delay 0.1;
+add atom 1 (30 27); delay 0.1;
+add atom 1 (22 29); delay 0.1;
+add atom 2 (24 29); delay 0.1;
+add atom 1 (26 29); delay 0.1;
+add atom 2 (28 29); delay 0.1;
+add atom 1 (30 29); delay 0.1;
+add atom 1 (22 31); delay 0.1;
+add atom 2 (24 31); delay 0.1;
+add atom 1 (26 31); delay 0.1;
+add atom 2 (28 31); delay 0.1;
+add atom 1 (30 31); delay 0.1;
+add atom 1 (22 33); delay 0.1;
+add atom 2 (24 33); delay 0.1;
+add atom 1 (26 33); delay 0.1;
+add atom 2 (28 33); delay 0.1;
+add atom 1 (30 33); delay 0.1;
+delay 0.2;
+run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="840" end="841">
+</content>
+
+</paragraph>
+<paragraph start="841" end="842">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="841" end="842">
+</content>
+
+</paragraph>
+<paragraph start="842" end="884">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="842" end="882">
+</content>
+
+<content start="882" end="883">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>View snapshots</title>
+<action>View snapshots</action></component></content>
+
+<content start="883" end="884">
+</content>
+
+</paragraph>
+<paragraph start="884" end="885">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="884" end="885">
+</content>
+
+</paragraph>
+<paragraph start="885" end="887">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="885" end="886">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>600</width>
+<height>120</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;verdana&quot; size=&quot;3&quot;&gt;Incorporating the concept of rate of 
+    collisions and/or strength of collisions, explain why pumping more 
+    molecules of gas into your tire results in a larger volume.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1</bgcolor>
+</component></content>
+
+<content start="886" end="887">
+</content>
+
+</paragraph>
+<paragraph start="887" end="888">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="887" end="888">
+</content>
+
+</paragraph>
+<paragraph start="888" end="889">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="888" end="889">
+</content>
+
+</paragraph>
+<paragraph start="889" end="917">
+<LeftIndent>30.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<content start="889" end="891">
+<size>11</size></content>
+
+<content start="891" end="899">
+<href>page10.cml</href><size>11</size></content>
+
+<content start="899" end="902">
+<size>11</size></content>
+
+<content start="902" end="907">
+<href>index.cml</href><size>11</size></content>
+
+<content start="907" end="910">
+<size>11</size></content>
+
+<content start="910" end="914">
+<href>page12.cml</href><size>11</size></content>
+
+<content start="914" end="916">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

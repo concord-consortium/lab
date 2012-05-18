@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws</page_title>
+<text>Hot Air Balloons: An application of Charles&apos;s Law
+
+&lt; previous | index | next &gt;
+
+It was in part because of the enthusiasm over hot air balloons in the 1800&apos;s that (first name?) Charles decided to further explore the relationship between the volume and temperature of a gas.  Before exploring that relationship further ourselves, let&apos;s first review.
+
+ 
+
+In the simulator below we will observe the direct relationship between temperature and volume of a gas and how it relates to hot air balloons.  
+
+In the simulators current state, the air inside the balloon and the air in the atmosphere are both at the same temperature.
+
+Instructions:
+Heat the air inside the balloon by slowly moving the temperature slider here from left to right:   
+
+	          Inside Balloon				       Atmosphere
+  
+
+	  ---&gt;   ---&gt;  		
+	  ---&gt;   ---&gt;  
+
+ 
+
+ 
+ 
+
+Let&apos;s now move to the next page to see an application of Gay-Lussac&apos;s law, the relationship between temperature and pressure.
+
+&lt; previous | index | next &gt;</text>
+<section start="0" end="989">
+<paragraph start="0" end="50">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="0" end="50">
+<size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="50" end="51">
+<size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="51" end="79">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="51" end="53">
+<size>11</size></content>
+
+<content start="53" end="61">
+<size>11</size><href>page8.cml</href></content>
+
+<content start="61" end="64">
+<size>11</size></content>
+
+<content start="64" end="69">
+<size>11</size><href>index.cml</href></content>
+
+<content start="69" end="72">
+<size>11</size></content>
+
+<content start="72" end="76">
+<size>11</size><href>page10.cml</href></content>
+
+<content start="76" end="78">
+<size>11</size></content>
+
+<content start="78" end="79">
+<size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="79" end="80">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="79" end="80">
+</content>
+
+</paragraph>
+<paragraph start="80" end="348">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="80" end="348">
+</content>
+
+</paragraph>
+<paragraph start="348" end="349">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="348" end="349">
+</content>
+
+</paragraph>
+<paragraph start="349" end="351">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="349" end="350">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>false</single>
+<row>4</row>
+<width>800</width>
+<height>150</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;Which of the following best describes the 
+    relationship between the temperature and volume of a gas (check all that 
+    apply)?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>as volume increases, temperature decreases</choice>
+<choice>as volume decreases, temperature increases</choice>
+<choice>as volume increases, temperature increases</choice>
+<choice>as volume decreases, temperature decreases</choice>
+<answer>2 3 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="350" end="351">
+</content>
+
+</paragraph>
+<paragraph start="351" end="352">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="351" end="352">
+</content>
+
+</paragraph>
+<paragraph start="352" end="497">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="352" end="497">
+</content>
+
+</paragraph>
+<paragraph start="497" end="498">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="497" end="498">
+</content>
+
+</paragraph>
+<paragraph start="498" end="622">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="498" end="621">
+</content>
+
+<content start="621" end="622">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="622" end="623">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="622" end="623">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="623" end="637">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="623" end="636">
+<bold>true</bold></content>
+
+<content start="636" end="637">
+</content>
+
+</paragraph>
+<paragraph start="637" end="737">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="637" end="735">
+</content>
+
+<content start="735" end="736">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>192.0</value>
+<minimum>200.0</minimum>
+<maximum>1000.0</maximum>
+<nstep>25</nstep>
+<title>Temperature INSIDE BALLOON</title>
+<width>200</width>
+<height>60</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;992.0&quot;, label=&quot;high&quot;}{value=&quot;192.0&quot;, label=&quot;low&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="736" end="737">
+</content>
+
+</paragraph>
+<paragraph start="737" end="738">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="737" end="738">
+</content>
+
+</paragraph>
+<paragraph start="738" end="785">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="738" end="749">
+</content>
+
+<content start="749" end="763">
+<bold>true</bold></content>
+
+<content start="763" end="774">
+</content>
+
+<content start="774" end="784">
+<bold>true</bold></content>
+
+<content start="784" end="785">
+</content>
+
+</paragraph>
+<paragraph start="785" end="788">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="785" end="786">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page9$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="786" end="787">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page9$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="787" end="788">
+</content>
+
+</paragraph>
+<paragraph start="788" end="789">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="788" end="789">
+</content>
+
+</paragraph>
+<paragraph start="789" end="808">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="789" end="790">
+</content>
+
+<content start="790" end="791">
+<component><class>org.concord.modeler.PageButton</class>
+<title>&lt;html&gt;Stop &lt;b&gt;Inside Balloon&lt;/b&gt; compartment&lt;/html&gt;</title>
+<tooltip>Stop and reset Atmosphere simulation</tooltip>
+<width>200</width><height>27</height>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="791" end="797">
+</content>
+
+<content start="797" end="798">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset if desired</title>
+<tooltip>Reset</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>reset;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="798" end="804">
+</content>
+
+<content start="804" end="805">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run again if desired</title>
+<tooltip>Run model</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="805" end="808">
+</content>
+
+</paragraph>
+<paragraph start="808" end="825">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="808" end="809">
+</content>
+
+<content start="809" end="810">
+<component><class>org.concord.modeler.PageButton</class>
+<title>&lt;html&gt;Stop &lt;b&gt;Atmosphere&lt;/b&gt; compartment&lt;/html&gt;</title>
+<tooltip>Stop Atmosphere</tooltip>
+<width>200</width><height>27</height>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="810" end="816">
+</content>
+
+<content start="816" end="817">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset if desired</title>
+<tooltip>Reset Atmosphere</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>reset;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="817" end="823">
+</content>
+
+<content start="823" end="824">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run again if desired</title>
+<tooltip>Run model</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="824" end="825">
+</content>
+
+</paragraph>
+<paragraph start="825" end="826">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="825" end="826">
+</content>
+
+</paragraph>
+<paragraph start="826" end="828">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="826" end="827">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>false</single>
+<row>6</row>
+<width>520</width>
+<height>190</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;Which of the following best describes what 
+    occurred to the fixed amount of gas in each compartment above (check all 
+    that apply)?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>inside the balloon, the volume and mass of the gas increased</choice>
+<choice>inside the balloon, the volume of gas increased and the mass of the gas remained the same</choice>
+<choice>inside the balloon, the volume of gas increased and the mass of the gas decreased</choice>
+<choice>in the atmosphere, the volume of gas remained the same and the mass of the gas increased</choice>
+<choice>in the atmosphere, the volume and mass of the gas remained the same</choice>
+<choice>in the atmosphere, the volume of gas remained the same and the mass of the gas decreased</choice>
+<answer>1 4 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="827" end="828">
+</content>
+
+</paragraph>
+<paragraph start="828" end="829">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="828" end="829">
+</content>
+
+</paragraph>
+<paragraph start="829" end="831">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="829" end="830">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>520</width>
+<height>200</height>
+<title>&lt;html&gt;
+   &lt;font face = verdana size = 3&gt;Incorporating the principles learned in this activity (and the hint provided below if needed), explain why hot air balloons rise.
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="830" end="831">
+</content>
+
+</paragraph>
+<paragraph start="831" end="833">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="831" end="832">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Hint</title>
+<hint_text>density = mass/volume</hint_text>
+<action>Hint</action></component></content>
+
+<content start="832" end="833">
+</content>
+
+</paragraph>
+<paragraph start="833" end="834">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="833" end="834">
+</content>
+
+</paragraph>
+<paragraph start="834" end="960">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="834" end="960">
+</content>
+
+</paragraph>
+<paragraph start="960" end="961">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="960" end="961">
+</content>
+
+</paragraph>
+<paragraph start="961" end="989">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="961" end="963">
+<size>11</size></content>
+
+<content start="963" end="971">
+<size>11</size><href>page8.cml</href></content>
+
+<content start="971" end="974">
+<size>11</size></content>
+
+<content start="974" end="979">
+<size>11</size><href>index.cml</href></content>
+
+<content start="979" end="982">
+<size>11</size></content>
+
+<content start="982" end="986">
+<size>11</size><href>page10.cml</href></content>
+
+<content start="986" end="988">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

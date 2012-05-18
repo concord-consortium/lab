@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Chemical Reactions and Stoichiometry: Concentration and reaction rate.</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+         
+
+      
+ 
+
+
+</text>
+<section start="0" end="36">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+&lt;body&gt;
+&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot; color=&quot;#FFFFFF&quot;&gt;&lt;strong&gt;Chemical Reactions and Stoichiometry:&lt;/strong&gt; Concentration and reaction rate.&lt;/font&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-59a2d4</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;60&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;59&quot; height=&quot;26&quot; src=&quot;next.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img width=&quot;46&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page2Selected.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+&lt;body marginheight=&quot;5&quot;&gt;
+&lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+  &lt;tr&gt;
+    &lt;td&gt;&lt;img src=&quot;atomMainIdea.png&quot; width=&quot;98&quot; height=&quot;58&quot;&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;How does concentration affect reaction rate? &lt;/font&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;  
+&lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>65.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;chemStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      You will do a reaction in which two atoms are bonded together to make a 
+      molecule. Experiment with changing &lt;a href=&quot;script:page:0:message concentration.html&quot;&gt;the 
+      concentration&lt;/a&gt; of the atoms in order to see how this affects the 
+      reaction rate (the speed the reaction happens).
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="23">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>250.0</width>
+<height>275.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; width=&quot;100%&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Follow 
+          these steps:&lt;/strong&gt;&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;1. Add 
+          some atoms (press multiple times to add more):&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;input script=&quot;
+		script:mw:1:
+		define %anum %number_of_atoms+2; 
+		if (%anum &lt;= 50); 
+		   while (%number_of_atoms &lt; %anum); 
+		      add atom 1 (rand()*%width, rand()*%height); 
+		   endwhile; 
+		else;
+		   message &lt;t&gt;Maximum Number of Atoms Reached&lt;/t&gt;;
+		endif;&quot; value=&quot;add 2&quot; type=&quot;submit&quot; name=&quot;Submit&quot;&gt;
+          &amp;#160; &lt;input script=&quot;
+		script:mw:1:define %anum %number_of_atoms+10; 
+		if (%anum &lt;= 50); 
+		   while (%number_of_atoms &lt; %anum); 
+		      add atom 1 (rand()*%width, rand()*%height); 
+		   endwhile; 
+		else;
+		   message &lt;t&gt;Maximum Number of Atoms Reached&lt;/t&gt;;
+		endif;&quot; value=&quot;add 10&quot; type=&quot;submit&quot; name=&quot;Submit2&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;br&gt;
+          2. Run &lt;img height=&quot;12&quot; src=&quot;play.gif&quot; width=&quot;7&quot;&gt; the model. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;br&gt;
+          3. Reset &lt;img height=&quot;12&quot; src=&quot;reset.gif&quot; width=&quot;9&quot;&gt; the model and 
+          try a different concentration.&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;br&gt;
+          &lt;/font&gt;&lt;font color=&quot;#990000&quot; size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Gauge 
+          the reaction speed by using the graph to see when the reaction 
+          reaches 80% completion. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="14" end="17">
+</content>
+
+<content start="17" end="18">
+<component><class>org.concord.mw2d.activity.ChemContainer</class>
+<resource>page2$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="18" end="21">
+</content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<timeseries>Mole Fraction A2(%)</timeseries>
+<description>% reaction complete</description>
+<datatype>1</datatype>
+<samplingpoints>10</samplingpoints>
+<max_fraction_digits>0</max_fraction_digits>
+<width>80</width>
+<height>270</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<bgcolor>-1a1a1b</bgcolor>
+<fgcolor>-59a2d4</fgcolor>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<Alignment>1</Alignment>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="31">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>3</row>
+<width>400</width>
+<height>150</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;How does the 
+    atom concentration affect the rate of the chemical reaction?&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>Concentration has no effect.</choice>
+<choice>Increased concentration = increased reaction rate.</choice>
+<choice>Increased concentration = decreased reaction rate.</choice>
+<answer>1</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message noConc.html -choiceseparator- script:page:0:message yesConc.html -choiceseparator- script:page:0:message noIncConc.html</script>
+</component></content>
+
+<content start="25" end="29">
+</content>
+
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>332</width>
+<height>150</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;Explain the 
+    connection between concentration, collisions, and reaction rate.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="33">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img width=&quot;14&quot; height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;8&quot; height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;60&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;59&quot; height=&quot;26&quot; src=&quot;next.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img width=&quot;46&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page2Selected.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<content start="34" end="35">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="35" end="36">
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws</page_title>
+<text>Gas Laws: Some Basic Principles
+
+&lt; previous | index | next &gt;
+
+
+Let&apos;s begin our exploration of the gas laws by observing some still photos of what&apos;s known as the collapsing can demo.  Consider the sequence below.
+
+               
+1) A soda can in which the soda has been	2) The can is taken from the hot plate and       3) When the can is removed from the bath, 
+removed, has been placed on a hot plate.  A	immediately inverted and immersed in an        the effects of the collapse are clearly visible.
+small amount of water which has been added 	ice water bath.  Upon contact with the ice
+to the can is now boiling.			water, the can immediately collapses.
+
+Why did the can collapse? 
+
+When the can was placed in the ice water bath, most of the water vapor inside the can condensed, greatly reducing the number of gas molecules exerting a force on the inside walls of the can.  There was then not enough force on the inside of the can to counteract the atmospheric gas molecules which were bombarding the container on the outside.  Thus, the can was crushed.
+
+Air is a mixture of roughly 80% nitrogen and 20% oxygen by volume.  But what if it were, let&apos;s say, pure nitrogen?  Would the can have been crushed just as easily under similar conditions?  Or what if air were 100% oxygen, or another mixture ratio for that matter? 
+
+The answer lies in the fact that gases, unlike liquids and solids, have almost no intermolecular attractions under ordinary conditions of temperature and pressure.  Every gas molecule acts as an independent particle.  Furthermore, every gas molecule in a sample of nitrogen gas will behave in very much the same way as every gas molecule in a sample of oxygen gas.  Had air been 100% nitrogen, or 100% oxygen, or any other ratio of the two, the can would have been crushed just as a dramatically, whatever the case.
+ 
+Since dissimilar gases exhibit remarkably similar characteristics, gas laws exist which apply to virtually every gas under ordinary conditions.  This activity will give you a chance to discover these laws and how molecular behavior influences them.
+
+&lt; previous | index | next &gt;
+
+</text>
+<section start="0" end="2124">
+<paragraph start="0" end="32">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="0" end="31">
+<bold>true</bold><size>16</size></content>
+
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="33">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="61">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="33" end="35">
+<size>11</size></content>
+
+<content start="35" end="43">
+<size>11</size><href>index.cml</href></content>
+
+<content start="43" end="46">
+<size>11</size></content>
+
+<content start="46" end="51">
+<size>11</size><href>index.cml</href></content>
+
+<content start="51" end="54">
+<size>11</size></content>
+
+<content start="54" end="58">
+<size>11</size><href>page2.cml</href></content>
+
+<content start="58" end="61">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="61" end="62">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="61" end="62">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="212">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="63" end="212">
+</content>
+
+</paragraph>
+<paragraph start="212" end="213">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="212" end="213">
+</content>
+
+</paragraph>
+<paragraph start="213" end="229">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="213" end="214">
+<icon>can1.png</icon></content>
+
+<content start="214" end="220">
+</content>
+
+<content start="220" end="221">
+<icon>can2.png</icon></content>
+
+<content start="221" end="227">
+</content>
+
+<content start="227" end="228">
+<icon>can3.png</icon></content>
+
+<content start="228" end="229">
+</content>
+
+</paragraph>
+<paragraph start="229" end="362">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="229" end="231">
+<italic>true</italic><size>11</size><bold>true</bold></content>
+
+<content start="231" end="232">
+<size>11</size></content>
+
+<content start="232" end="270">
+<italic>true</italic><size>11</size></content>
+
+<content start="270" end="272">
+<italic>true</italic><size>11</size><bold>true</bold></content>
+
+<content start="272" end="319">
+<italic>true</italic><size>11</size></content>
+
+<content start="319" end="321">
+<italic>true</italic><size>11</size><bold>true</bold></content>
+
+<content start="321" end="362">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="362" end="502">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="362" end="502">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="502" end="589">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="502" end="589">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="589" end="656">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="589" end="656">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="656" end="657">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="656" end="657">
+</content>
+
+</paragraph>
+<paragraph start="657" end="684">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="657" end="684">
+</content>
+
+</paragraph>
+<paragraph start="684" end="685">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="684" end="685">
+</content>
+
+</paragraph>
+<paragraph start="685" end="1058">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="685" end="1058">
+</content>
+
+</paragraph>
+<paragraph start="1058" end="1059">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1058" end="1059">
+</content>
+
+</paragraph>
+<paragraph start="1059" end="1325">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1059" end="1325">
+</content>
+
+</paragraph>
+<paragraph start="1325" end="1326">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1325" end="1326">
+</content>
+
+</paragraph>
+<paragraph start="1326" end="1842">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1326" end="1842">
+</content>
+
+</paragraph>
+<paragraph start="1842" end="1844">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1842" end="1844">
+</content>
+
+</paragraph>
+<paragraph start="1844" end="2093">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1844" end="2093">
+</content>
+
+</paragraph>
+<paragraph start="2093" end="2094">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2093" end="2094">
+</content>
+
+</paragraph>
+<paragraph start="2094" end="2122">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2094" end="2096">
+<size>11</size></content>
+
+<content start="2096" end="2104">
+<size>11</size><href>index.cml</href></content>
+
+<content start="2104" end="2107">
+<size>11</size></content>
+
+<content start="2107" end="2112">
+<size>11</size><href>index.cml</href></content>
+
+<content start="2112" end="2115">
+<size>11</size></content>
+
+<content start="2115" end="2119">
+<size>11</size><href>page2.cml</href></content>
+
+<content start="2119" end="2121">
+<size>11</size></content>
+
+<content start="2121" end="2122">
+</content>
+
+</paragraph>
+<paragraph start="2122" end="2123">
+<content start="2122" end="2123">
+</content>
+
+</paragraph>
+<paragraph start="2123" end="2124">
+</paragraph>
+</section>
+</document>

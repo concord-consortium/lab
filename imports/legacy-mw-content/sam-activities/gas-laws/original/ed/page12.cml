@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws</page_title>
+<text>Summary
+
+&lt; previous | index &gt;
+
+
+ 
+
+ 
+
+ 
+
+
+References:
+
+1. Chemistry: The Practical Science. Kelter, Mosher, Scott
+2. Chemistry: The Molecular Nature of Matter and Change. Silberberg
+
+Acknowledgments:
+
+Thanks to Jesse Miller, Teaching Lab Specialist, University of Illinois at Urbana-Champaign, for generously supplying liquid nitrogen.
+Thank to Mike Coulter, Instructional Technology Specialist, Parkland College, for his multimedia support.
+
+&lt; previous | index &gt;</text>
+<section start="0" end="464">
+<paragraph start="0" end="8">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="0" end="8">
+<size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="8" end="9">
+<size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="9" end="30">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="9" end="11">
+<size>11</size></content>
+
+<content start="11" end="19">
+<href>page11.cml</href><size>11</size></content>
+
+<content start="19" end="22">
+<size>11</size></content>
+
+<content start="22" end="27">
+<href>index.cml</href><size>11</size></content>
+
+<content start="27" end="29">
+<size>11</size></content>
+
+<content start="29" end="30">
+<size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="34">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="32" end="33">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>600</width>
+<height>200</height>
+<title>&lt;html&gt;
+   &lt;font face = verdana size = 3&gt;During long drives, especially on hot summer days, car tires become heated as a result of the friction with the road.  Let&apos;s assume for a moment that when this occurs, the pressure in the tire doesn&apos;t change.  Predict what effect this additional heat would have on the tire and use the concept of molecular collisions to explain why this occurs.&lt;/font&gt;
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="37">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="35" end="36">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>600</width>
+<height>200</height>
+<title>&lt;html&gt;
+   &lt;font face = verdana size = 3&gt;Now consider the same &quot;car tire after a long drive&quot; scenario, except this time assume that the volume doesn&apos;t change (note: in reality, both the pressure and volume would likely change).  Predict what effect this additional heat would have on the tire and use the concept of molecular collisions to explain why this occurs.&lt;/font&gt;
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="40">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="38" end="39">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>600</width>
+<height>200</height>
+<title>&lt;html&gt;
+   &lt;font face = verdana size = 3&gt;SCUBA tanks have to be built to withstand very high pressure because many gas molecules are put inside them. Why would putting more molecules inside cause high pressure?&lt;/font&gt;
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="42">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="54">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="42" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="114">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="55" end="114">
+</content>
+
+</paragraph>
+<paragraph start="114" end="182">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="114" end="182">
+</content>
+
+</paragraph>
+<paragraph start="182" end="183">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="182" end="183">
+</content>
+
+</paragraph>
+<paragraph start="183" end="200">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="183" end="200">
+</content>
+
+</paragraph>
+<paragraph start="200" end="201">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="200" end="201">
+</content>
+
+</paragraph>
+<paragraph start="201" end="336">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="201" end="336">
+</content>
+
+</paragraph>
+<paragraph start="336" end="442">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="336" end="442">
+</content>
+
+</paragraph>
+<paragraph start="442" end="443">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="442" end="443">
+</content>
+
+</paragraph>
+<paragraph start="443" end="464">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="443" end="445">
+<size>11</size></content>
+
+<content start="445" end="453">
+<href>page11.cml</href><size>11</size></content>
+
+<content start="453" end="456">
+<size>11</size></content>
+
+<content start="456" end="461">
+<href>index.cml</href><size>11</size></content>
+
+<content start="461" end="463">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

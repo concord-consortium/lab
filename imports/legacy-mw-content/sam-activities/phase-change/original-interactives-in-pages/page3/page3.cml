@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Phase Change: Liquids</page_title>
+<referenced_files>liquid1.mml, liquid2.mml</referenced_files>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+  
+   
+  
+
+</text>
+<section start="0" end="13">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="4">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>350.0</width>
+<height>290.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot; marginwidth=&quot;8&quot; marginheight=&quot;4&quot;&gt;
+    Here are models of two liquids. One liquid is made of atoms only. The 
+    other is made of triatomic molecules. Run the models and watch them 
+    carefully.
+
+    &lt;p&gt;
+      (1) Make sure &amp;quot;Show Attractions&amp;quot; is selected. The attractions between 
+      atoms are shown by dashed lines. (2) Run each liquid model. (3) Then 
+      estimate the average number of dashed lines an atom forms with its 
+      neighbors.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2" end="3">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>liquid1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="8">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Liquid 1</title>
+<tooltip>Show liquid 1.</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1183941194632</groupid>
+<script>load liquid1.mml;
+run;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="5" end="6">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Liquid 2</title>
+<tooltip>Show liquid 2.</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1183941194632</groupid>
+<script>load liquid2.mml;
+run;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="6" end="7">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show Attractions</title>
+<tooltip>Dotted lines represent forces that exist between neighbors</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show van der Waals interactions</action>
+</component></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="11">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Randomly pick an atom and show its trajectory</title>
+<tooltip>Randomly pick an atom and show its trajectory.</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom all;
+traj off;
+select atom none;
+define %i %number_of_atoms*rand();
+if(%i&lt;%number_of_atoms);
+   select atom %i;
+   traj on;
+endif;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Mark atoms near center</title>
+<tooltip>Mark atoms within a rectangle near the center of the box.</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>show selectionhalo off;
+define %xc %width/2-5;
+define %yc %height/2-5;
+select atom within (%xc, %yc, 10, 10);
+mark;
+show selectionhalo off;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="13">
+</paragraph>
+</section>
+</document>

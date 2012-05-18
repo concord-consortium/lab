@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Intermolecular Attractions: Hydrogen &quot;Bonds&quot; - A Special Type of Attraction</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+     
+  
+    
+ 
+
+
+</text>
+<section start="0" end="32">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+&lt;body&gt;
+&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot; color=&quot;#FFFFFF&quot;&gt;&lt;strong&gt;Intermolecular Attractions:&lt;/strong&gt; Hydrogen &quot;Bonds&quot;&lt;/font&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-59a2d4</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot; width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot; width=&quot;14&quot;&gt;
+          &lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;next.jpg&quot; border=&quot;0&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;index.jpg&quot; border=&quot;0&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page1.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page6Selected.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page10.jpg&quot; border=&quot;0&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>120</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+&lt;body marginheight=&quot;5&quot;&gt;
+&lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+  &lt;tr&gt;
+    &lt;td&gt;&lt;img src=&quot;chargeMainIdea.png&quot; width=&quot;98&quot; height=&quot;58&quot;&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Biologists often talk about &quot;hydrogen bonds&quot; and their role in biologically active molecules. It is important to realize that a &quot;hydrogen bond&quot; is really just another polar attraction between molecules. It is not a covalent bond. Often hydrogen is one of the atoms that gets partially charged, so it is common to call the attraction of hydrogen on one molecule for the negative part of another molecule a hydrogen bond.&lt;/font&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;  
+&lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>370.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table cellpadding=&quot;5&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td rowspan=&quot;2&quot;&gt;
+          &lt;img width=&quot;265&quot; height=&quot;351&quot; src=&quot;dipoleHbond.gif&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;img width=&quot;365&quot; height=&quot;201&quot; src=&quot;water_surface2Comp.png&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Water, 
+          one of the most important molecules for life&apos;s existence, is a polar 
+          molecule. So, water molecules attract to each other using the 
+          dipole-dipole intermolecular attraction. Whenever the partially 
+          positive hydrogen from one molecule is attracted to the partially 
+          negative part of another molecule, we use the term &quot;hydrogen bond&quot; 
+          to designate this somewhat stronger type of dipole-dipole 
+          attraction. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="19">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>330.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;To the 
+          right is a model of gaseous water (&lt;em&gt;i.e.&lt;/em&gt; water vapor). To 
+          see the effect the hydrogen bonds have on water, run the model ( &lt;img height=&quot;12&quot; width=&quot;7&quot; src=&quot;play.gif&quot;&gt; 
+          ) and experiment with the controls below. Then &lt;strong&gt;take a 
+          snapshot of the model and annotate your image so that you indicate 
+          where you see at least one hydrogen bond&lt;/strong&gt; in the model. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;table border=&quot;0&quot; width=&quot;207&quot;&gt;
+            &lt;tr&gt;
+              &lt;td align=&quot;center&quot; colspan=&quot;2&quot;&gt;
+                &lt;input value=&quot;Heat&quot; name=&quot;Submit&quot; script=&quot;script:mw:1:select atom all; heat 0.2; select atom none;&quot; type=&quot;submit&quot;&gt;
+                &amp;#160; &lt;input value=&quot;Cool&quot; name=&quot;Submit2&quot; script=&quot;script:mw:1:select atom all; heat -0.2; select atom none;&quot; type=&quot;submit&quot;&gt;
+              &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td width=&quot;24&quot;&gt;
+                &lt;input value=&quot;checkbox&quot; name=&quot;checkbox&quot; script_selected=&quot;script:mw:1:show vdwline on&quot; script_deselected=&quot;script:mw:1:show vdwline off&quot; type=&quot;checkbox&quot; checked=&quot;checked&quot;&gt;
+                
+              &lt;/td&gt;
+              &lt;td width=&quot;159&quot;&gt;
+                show hydrogen bonds
+              &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;
+                &lt;input value=&quot;checkbox&quot; name=&quot;checkbox2&quot; script_selected=&quot;script:mw:1:show charge on&quot; script_deselected=&quot;script:mw:1:show charge off&quot; type=&quot;checkbox&quot;&gt;
+                
+              &lt;/td&gt;
+              &lt;td&gt;
+                show partial charges
+              &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td&gt;
+                &lt;input value=&quot;checkbox&quot; name=&quot;checkbox3&quot; script_selected=&quot;script:mw:1:set timestep .1;&quot; script_deselected=&quot;script:mw:1:set timestep 1;&quot; type=&quot;checkbox&quot;&gt;
+                
+              &lt;/td&gt;
+              &lt;td&gt;
+                slow motion
+              &lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/table&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="14" end="17">
+</content>
+
+<content start="17" end="18">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page6$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="22">
+<Alignment>1</Alignment>
+<SpaceBelow>10.0</SpaceBelow>
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>420.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="27">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="22" end="23">
+<component><class>org.concord.modeler.ImageQuestion</class><width>391</width><height>250</height><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link href=&quot;chemStyles.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Snapshot with annotations indicating hydrogen bonds:
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="23" end="25">
+</content>
+
+<content start="25" end="26">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>351</width>
+<height>250</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginheight=&quot;5&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;While not 
+    possible, imagine that water molecules had no attraction for each other at 
+    all. Would you most likely find water as a solid, liquid, or gas? Explain 
+    your reasoning.&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="29">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;navBarBottomBackground.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot; width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot; width=&quot;14&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot; width=&quot;8&quot;&gt;
+          &lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;next.jpg&quot; border=&quot;0&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;index.jpg&quot; border=&quot;0&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page1.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page6Selected.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page10.jpg&quot; border=&quot;0&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<Alignment>1</Alignment>
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<content start="30" end="31">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="31" end="32">
+</paragraph>
+</section>
+</document>

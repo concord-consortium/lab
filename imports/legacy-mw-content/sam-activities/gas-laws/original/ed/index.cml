@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws</page_title>
+<text>Gas Laws
+
+ 
+
+How does an autoclave work?  What do the gas laws have to do with the mechanism by which humans breathe?  Why do hot air balloons rise?  These are just a few of the questions we&apos;ll answer in this activity on the gas laws.  We will begin on the next two pages by learning about how all gases share some basic characteristics, including that they have almost identical physical properties under certain conditions.  We&apos;ll then move on to study four gas laws: Boyle&apos;s law, Charles&apos;s law, Gay-Lussac&apos;s law, and Avogadro&apos;s law.  We&apos;ll discover how the fundamental relationships between the pressure, temperature, volume, and moles of gas are described by these laws.
+
+Table of Contents
+
+Part I							Part II
+
+1. Some Basic Principles					1. Human Breathing: An application of Boyle&apos;s law
+2. Introduction to Gas Pressure					2. Hot Air Balloons: An application of Charles&apos;s law		
+3. Boyle&apos;s Law						3. Autoclaves: An application of Gay-Lussac&apos;s law
+4. Charles&apos;s Law						4. Pumping Up Your Tires: An application of Avogadro&apos;s law
+5. Gay-Lussac&apos;s Law						5. Summary
+6. Avogadro&apos;s Law
+7. Part I Summary Questions
+
+
+&lt; next &gt; 
+
+</text>
+<section start="0" end="1134">
+<paragraph start="0" end="9">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="0" end="8">
+<bold>true</bold><size>16</size></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="12">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="10" end="11">
+<icon>balloon.jpg</icon></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="13">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="675">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="13" end="675">
+</content>
+
+</paragraph>
+<paragraph start="675" end="676">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="675" end="676">
+</content>
+
+</paragraph>
+<paragraph start="676" end="694">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="676" end="694">
+</content>
+
+</paragraph>
+<paragraph start="694" end="695">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="694" end="695">
+</content>
+
+</paragraph>
+<paragraph start="695" end="716">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="695" end="716">
+</content>
+
+</paragraph>
+<paragraph start="716" end="717">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="716" end="717">
+</content>
+
+</paragraph>
+<paragraph start="717" end="796">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="717" end="720">
+</content>
+
+<content start="720" end="741">
+<href>page1.cml</href></content>
+
+<content start="741" end="749">
+</content>
+
+<content start="749" end="795">
+<href>page8.cml</href></content>
+
+<content start="795" end="796">
+</content>
+
+</paragraph>
+<paragraph start="796" end="887">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="796" end="799">
+</content>
+
+<content start="799" end="827">
+<href>page2.cml</href></content>
+
+<content start="827" end="835">
+</content>
+
+<content start="835" end="884">
+<href>page9.cml</href></content>
+
+<content start="884" end="887">
+</content>
+
+</paragraph>
+<paragraph start="887" end="957">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="887" end="890">
+</content>
+
+<content start="890" end="901">
+<href>page3.cml</href></content>
+
+<content start="901" end="910">
+</content>
+
+<content start="910" end="956">
+<href>page10.cml</href></content>
+
+<content start="956" end="957">
+</content>
+
+</paragraph>
+<paragraph start="957" end="1038">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="957" end="960">
+</content>
+
+<content start="960" end="973">
+<href>page4.cml</href></content>
+
+<content start="973" end="982">
+</content>
+
+<content start="982" end="1037">
+<href>page11.cml</href></content>
+
+<content start="1037" end="1038">
+</content>
+
+</paragraph>
+<paragraph start="1038" end="1074">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1038" end="1041">
+</content>
+
+<content start="1041" end="1057">
+<href>page5.cml</href></content>
+
+<content start="1057" end="1066">
+</content>
+
+<content start="1066" end="1073">
+<href>page12.cml</href></content>
+
+<content start="1073" end="1074">
+</content>
+
+</paragraph>
+<paragraph start="1074" end="1092">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1074" end="1077">
+</content>
+
+<content start="1077" end="1091">
+<href>page6.cml</href></content>
+
+<content start="1091" end="1092">
+</content>
+
+</paragraph>
+<paragraph start="1092" end="1120">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1092" end="1095">
+</content>
+
+<content start="1095" end="1102">
+<href>page7.cml</href></content>
+
+<content start="1102" end="1119">
+<href>page7.cml</href></content>
+
+<content start="1119" end="1120">
+</content>
+
+</paragraph>
+<paragraph start="1120" end="1121">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1120" end="1121">
+</content>
+
+</paragraph>
+<paragraph start="1121" end="1122">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1121" end="1122">
+</content>
+
+</paragraph>
+<paragraph start="1122" end="1132">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1122" end="1124">
+<size>11</size></content>
+
+<content start="1124" end="1128">
+<size>11</size><href>page1.cml</href></content>
+
+<content start="1128" end="1130">
+<size>11</size></content>
+
+<content start="1130" end="1132">
+</content>
+
+</paragraph>
+<paragraph start="1132" end="1133">
+<content start="1132" end="1133">
+</content>
+
+</paragraph>
+<paragraph start="1133" end="1134">
+</paragraph>
+</section>
+</document>

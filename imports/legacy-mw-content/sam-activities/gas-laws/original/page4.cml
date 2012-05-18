@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws: The Temperature-Volume Relationship</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+ 
+ 
+
+ 
+
+  
+   
+  
+   
+
+ 
+
+   
+
+ 
+
+
+</text>
+<section start="0" end="37">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;5&quot; color=&quot;#FFFFFF&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Gas 
+    Laws:&lt;/strong&gt; The Temperature-Volume Relationship&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-59a2d4</bgcolor></icon></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; width=&quot;14&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;a href=&quot;page3.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;60&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;59&quot; src=&quot;next.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; width=&quot;54&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;46&quot; src=&quot;index.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page1.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page3.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;29&quot; src=&quot;page4Selected.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page5.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page6.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;img height=&quot;26&quot; width=&quot;7&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;motionMainIdea.png&quot; width=&quot;98&quot; height=&quot;58&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Molecules 
+          in a gas move faster when temperature is higher, and slower when 
+          temperature is lower. How does temperature affect volume if pressure 
+          is kept the same?&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="12">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot;&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;The Ideal Gas 
+    Law states that the volume of a gas is &amp;#10066; &lt;a href=&quot;script:page:0:message &lt;t&gt;&lt;font face=verdana&gt;Proportional: having same or contant ratios.&lt;/font&gt;&lt;/t&gt;&quot;&gt;proportional&lt;/a&gt; 
+    to the temperature under constant pressure. In the following model, you 
+    can increase or decrease the temperature, and observe how the volume 
+    changes as a result.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="10" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="16">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="12" end="13">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page4$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="13" end="14">
+</content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>240</width>
+<height>280</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; marginheight=&quot;5&quot;&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Why does the 
+    piston move when the temperature changes? Include in your answer how 
+    molecules colliding with the piston can account for the movement.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="19">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>3.2</value>
+<minimum>1.0</minimum>
+<maximum>11.0</maximum>
+<nstep>50</nstep>
+<title>Temperature (K)</title>
+<width>300</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;1000 K&quot;}{value=&quot;1.0&quot;, label=&quot;100 K&quot;}{value=&quot;5.0&quot;, label=&quot;500 K&quot;}</labeltable>
+<script>set heatbath %val*100;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="23">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<component><class>org.concord.modeler.ImageQuestion</class><width>372</width><height>300</height><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; marginheight=&quot;5&quot;&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Use the slider 
+    to select a lower temperature, run the model for a minute, take a snapshot 
+    and describe what happens to the volume of the gas.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="20" end="21">
+</content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.ImageQuestion</class><width>372</width><height>300</height><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; marginheight=&quot;5&quot;&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Use the slider 
+    to select a higher temperature, run the model for a minute, take a 
+    snapshot, and describe what happens to the volume of the gas.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="26">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;motionBullet.png&quot; width=&quot;33&quot; height=&quot;23&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; color=&quot;#a65d2c&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Charles&apos;s 
+          Law&lt;/strong&gt;&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img src=&quot;rule.png&quot; width=&quot;18&quot; height=&quot;6&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="31">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>371.0</width>
+<height>150.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;chemStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      &lt;b&gt;Charles&apos;s law &lt;/b&gt;describes the relationship between temperature and 
+      volume in a closed system when pressure and the number of molecules 
+      remain the same.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="28" end="29">
+</content>
+
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>372</width>
+<height>150</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; marginheight=&quot;5&quot;&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;In your own 
+    words, describe the relationship between temperature and volume in the 
+    ideal gas law.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<SpaceBelow>5.0</SpaceBelow>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="34">
+<Alignment>1</Alignment>
+<content start="32" end="33">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;navBarBottomBackground.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; width=&quot;14&quot; src=&quot;navBarBottomColorBar.gif&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; width=&quot;8&quot; src=&quot;navBarBottomLeftMargin.jpg&quot;&gt;
+          &lt;a href=&quot;page3.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;60&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;59&quot; src=&quot;next.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; width=&quot;54&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;46&quot; src=&quot;index.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page1.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page3.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;29&quot; src=&quot;page4Selected.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page5.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page6.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;img height=&quot;26&quot; width=&quot;7&quot; src=&quot;navBarBottomRightMargin.jpg&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<Alignment>1</Alignment>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<content start="35" end="36">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="36" end="37">
+</paragraph>
+</section>
+</document>

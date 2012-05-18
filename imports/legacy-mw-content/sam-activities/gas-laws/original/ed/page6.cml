@@ -1,0 +1,819 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Avogadro&apos;s law: The V-n relationship at constant temperature and pressure</page_title>
+<text>Gas Laws: Avogadro&apos;s Law
+
+&lt; previous | index | next &gt;
+
+For our final gas law, we&apos;ll explore the relationship that exists between the number of particles and volume of a gas (at constant temperature and pressure).
+
+We&apos;ll do this experiment a little differently than the ones we did for the other three gas laws.  This time we&apos;ll ask you to run a series of trials, one right after another, each time changing the number of molecules of gas and observing how the volume is effected.  Some details about our simulator:
+
+The simulator currently contains 120 molecules.  The piston is not in a fixed position; it can expand or contract so as to maintain a constant pressure.
+
+The small triangle on the right side of the bar graph (it will appear immediately after starting the simulator) records the average volume over the last 20,000 fs.
+
+Since we are using a two-dimensional model, what we are calling &quot;volume&quot; on the bar graph below is really the length the piston moves from the wall (in angstroms).
+
+Instructions:
+
+1. Click Run.  Observe any changes in the volume of the container.  Click Stop when the small triangle on the bar graph stays relatively constant (in other words, for this and each other trial on this page, let the simulator run for about 60,000 fs).
+
+   
+
+    
+
+      
+
+
+2. Record the average volume of the container (the level of the triangle, not the bar) by writing it in the &quot;120 molecules&quot; box below.
+
+
+volume (length in angstroms)                  
+
+3. Select the &quot;100 molecules&quot; button.
+4. Click Run and again observe any changes in volume.  Stop the simulation when the volume stays relatively constant (remember, wait at least 60,000 fs).
+5. Record the volume of the 100 molecules container by writing the value in the appropriate box.
+6. Repeat Steps 3-5 for the remaining four buttons.
+
+ 
+
+a)					b)
+                 
+c)					d)
+
+                 
+
+    
+
+ 
+
+The direct relationship between moles and volume of a gas is known as Avogadro&apos;s law.  This has many practical applications.  Later on, we&apos;ll see how pumping air in your car or bike tire is an example of Avogadro&apos;s Law.
+
+&lt; previous | index | next &gt;
+
+</text>
+<section start="0" end="2135">
+<paragraph start="0" end="25">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="0" end="24">
+<size>15</size><bold>true</bold></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="54">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="26" end="28">
+<size>11</size></content>
+
+<content start="28" end="36">
+<href>page5.cml</href><size>11</size></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="44">
+<href>index.cml</href><size>11</size></content>
+
+<content start="44" end="47">
+<size>11</size></content>
+
+<content start="47" end="51">
+<href>page7.cml</href><size>11</size></content>
+
+<content start="51" end="54">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="213">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="55" end="213">
+</content>
+
+</paragraph>
+<paragraph start="213" end="214">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="213" end="214">
+</content>
+
+</paragraph>
+<paragraph start="214" end="515">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="214" end="515">
+</content>
+
+</paragraph>
+<paragraph start="515" end="516">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="515" end="516">
+</content>
+
+</paragraph>
+<paragraph start="516" end="669">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="516" end="669">
+</content>
+
+</paragraph>
+<paragraph start="669" end="670">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="669" end="670">
+</content>
+
+</paragraph>
+<paragraph start="670" end="834">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="670" end="834">
+</content>
+
+</paragraph>
+<paragraph start="834" end="835">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="834" end="835">
+</content>
+
+</paragraph>
+<paragraph start="835" end="999">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="835" end="999">
+</content>
+
+</paragraph>
+<paragraph start="999" end="1000">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="999" end="1000">
+</content>
+
+</paragraph>
+<paragraph start="1000" end="1014">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1000" end="1013">
+<bold>true</bold></content>
+
+<content start="1013" end="1014">
+</content>
+
+</paragraph>
+<paragraph start="1014" end="1015">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1014" end="1015">
+</content>
+
+</paragraph>
+<paragraph start="1015" end="1266">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1015" end="1266">
+</content>
+
+</paragraph>
+<paragraph start="1266" end="1267">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1266" end="1267">
+</content>
+
+</paragraph>
+<paragraph start="1267" end="1271">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1267" end="1268">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page6$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="1268" end="1269">
+</content>
+
+<content start="1269" end="1270">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<timeseries>X: Obstacle #0</timeseries>
+<description>volume (length in angstroms)</description>
+<multiplier>0.1</multiplier>
+<max_fraction_digits>0</max_fraction_digits>
+<max_integer_digits>2</max_integer_digits>
+<width>100</width>
+<height>250</height>
+<tick>true</tick>
+<major_tick>8</major_tick>
+<nstep>40</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-663301</fgcolor>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>40.0</maximum>
+<value>23.237178385811717</value>
+</component></content>
+
+<content start="1270" end="1271">
+</content>
+
+</paragraph>
+<paragraph start="1271" end="1272">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1271" end="1272">
+</content>
+
+</paragraph>
+<paragraph start="1272" end="1277">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1272" end="1273">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1273" end="1275">
+</content>
+
+<content start="1275" end="1276">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1276" end="1277">
+</content>
+
+</paragraph>
+<paragraph start="1277" end="1278">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1277" end="1278">
+</content>
+
+</paragraph>
+<paragraph start="1278" end="1285">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1278" end="1279">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>120 molecules</title>
+<tooltip>Puts 120 molecules total in the container</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="1279" end="1280">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>100 molecules</title>
+<tooltip>Puts 100 molecules total in the container</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset;
+select atom 1-20;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="1280" end="1281">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>80 molecules</title>
+<tooltip>Puts 80 molecules total in the container</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset;
+select atom 1-40;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="1281" end="1282">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>60 molecules</title>
+<tooltip>Puts 60 molecules total in the container</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset;
+select atom 1-60;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="1282" end="1283">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>40 molecules</title>
+<tooltip>Puts 40 molecules total in the container</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset;
+select atom 1-80;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="1283" end="1284">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>20 molecules</title>
+<tooltip>Puts 20 molecules total in the container</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset;
+select atom 1-100;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="1284" end="1285">
+</content>
+
+</paragraph>
+<paragraph start="1285" end="1286">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1285" end="1286">
+</content>
+
+</paragraph>
+<paragraph start="1286" end="1287">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1286" end="1287">
+</content>
+
+</paragraph>
+<paragraph start="1287" end="1422">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1287" end="1334">
+</content>
+
+<content start="1334" end="1372">
+<italic>true</italic></content>
+
+<content start="1372" end="1422">
+</content>
+
+</paragraph>
+<paragraph start="1422" end="1423">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1422" end="1423">
+</content>
+
+</paragraph>
+<paragraph start="1423" end="1424">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1423" end="1424">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1424" end="1471">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1424" end="1452">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="1452" end="1454">
+</content>
+
+<content start="1454" end="1455">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>80</width>
+<height>44</height>
+<title>&lt;html&gt;
+   120 molecules
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="1455" end="1457">
+</content>
+
+<content start="1457" end="1458">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>80</width>
+<height>44</height>
+<title>&lt;html&gt;
+   100 molecules
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="1458" end="1460">
+</content>
+
+<content start="1460" end="1461">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>80</width>
+<height>44</height>
+<title>&lt;html&gt;
+   80 molecules
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="1461" end="1463">
+</content>
+
+<content start="1463" end="1464">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>80</width>
+<height>44</height>
+<title>&lt;html&gt;
+   60 molecules
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="1464" end="1466">
+</content>
+
+<content start="1466" end="1467">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>80</width>
+<height>44</height>
+<title>&lt;html&gt;
+   40 molecules
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="1467" end="1469">
+</content>
+
+<content start="1469" end="1470">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>80</width>
+<height>44</height>
+<title>&lt;html&gt;
+   20 molecules
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="1470" end="1471">
+</content>
+
+</paragraph>
+<paragraph start="1471" end="1472">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1471" end="1472">
+</content>
+
+</paragraph>
+<paragraph start="1472" end="1510">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1472" end="1510">
+</content>
+
+</paragraph>
+<paragraph start="1510" end="1664">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1510" end="1664">
+</content>
+
+</paragraph>
+<paragraph start="1664" end="1761">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1664" end="1761">
+</content>
+
+</paragraph>
+<paragraph start="1761" end="1813">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1761" end="1813">
+</content>
+
+</paragraph>
+<paragraph start="1813" end="1814">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1813" end="1814">
+</content>
+
+</paragraph>
+<paragraph start="1814" end="1816">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1814" end="1815">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>625</width>
+<height>170</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;Verdana&quot;&gt;Which of the four graphs below best 
+    represents the relationship between the number of particles and volume of 
+    a gas (at constant pressure and temperature)?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>a</choice>
+<choice>b</choice>
+<choice>c</choice>
+<choice>d</choice>
+<answer>3 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="1815" end="1816">
+</content>
+
+</paragraph>
+<paragraph start="1816" end="1817">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1816" end="1817">
+</content>
+
+</paragraph>
+<paragraph start="1817" end="1827">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1817" end="1819">
+<bold>true</bold></content>
+
+<content start="1819" end="1824">
+</content>
+
+<content start="1824" end="1826">
+<bold>true</bold></content>
+
+<content start="1826" end="1827">
+</content>
+
+</paragraph>
+<paragraph start="1827" end="1845">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1827" end="1828">
+<icon>graph1.gif</icon></content>
+
+<content start="1828" end="1843">
+</content>
+
+<content start="1843" end="1844">
+<icon>graph2.gif</icon></content>
+
+<content start="1844" end="1845">
+</content>
+
+</paragraph>
+<paragraph start="1845" end="1855">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1845" end="1847">
+<bold>true</bold></content>
+
+<content start="1847" end="1852">
+</content>
+
+<content start="1852" end="1854">
+<bold>true</bold></content>
+
+<content start="1854" end="1855">
+</content>
+
+</paragraph>
+<paragraph start="1855" end="1856">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1855" end="1856">
+</content>
+
+</paragraph>
+<paragraph start="1856" end="1874">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1856" end="1857">
+<icon>graph3.gif</icon></content>
+
+<content start="1857" end="1872">
+</content>
+
+<content start="1872" end="1873">
+<icon>graph4.gif</icon></content>
+
+<content start="1873" end="1874">
+</content>
+
+</paragraph>
+<paragraph start="1874" end="1875">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1874" end="1875">
+</content>
+
+</paragraph>
+<paragraph start="1875" end="1880">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1875" end="1876">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>3</row>
+<width>300</width>
+<height>160</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;As the moles decreased, what happened to the 
+    volume?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>volume increased</choice>
+<choice>volume decreased</choice>
+<choice>volume remained the same</choice>
+<answer>1 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="1876" end="1878">
+</content>
+
+<content start="1878" end="1879">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>false</single>
+<row>4</row>
+<width>400</width>
+<height>160</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;Which of the following best explains what 
+    occurred as the number of particles decreased (check all that apply)?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>the strength of collisions increased</choice>
+<choice>the strength of collisions decreased</choice>
+<choice>the rate of collisions increased</choice>
+<choice>the rate of collisions decreased</choice>
+<answer>3 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="1879" end="1880">
+</content>
+
+</paragraph>
+<paragraph start="1880" end="1881">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1880" end="1881">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1881" end="1883">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1881" end="1882">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>3</row>
+<width>450</width>
+<height>150</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;Had we run the series of trials by 
+    increasing the number of moles each time, rather than decreasing, what 
+    would have happened to the volume from one trial to the next?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>volume would have  increased</choice>
+<choice>volume would have decreased</choice>
+<choice>volume would have remained the same</choice>
+<answer>0 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="1882" end="1883">
+</content>
+
+</paragraph>
+<paragraph start="1883" end="1884">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1883" end="1884">
+</content>
+
+</paragraph>
+<paragraph start="1884" end="2104">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1884" end="1954">
+</content>
+
+<content start="1954" end="1971">
+<bold>true</bold></content>
+
+<content start="1971" end="2104">
+</content>
+
+</paragraph>
+<paragraph start="2104" end="2105">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2104" end="2105">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2105" end="2133">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="2105" end="2107">
+<size>11</size></content>
+
+<content start="2107" end="2115">
+<href>page5.cml</href><size>11</size></content>
+
+<content start="2115" end="2118">
+<size>11</size></content>
+
+<content start="2118" end="2123">
+<href>index.cml</href><size>11</size></content>
+
+<content start="2123" end="2126">
+<size>11</size></content>
+
+<content start="2126" end="2130">
+<href>page7.cml</href><size>11</size></content>
+
+<content start="2130" end="2133">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2133" end="2134">
+<content start="2133" end="2134">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2134" end="2135">
+</paragraph>
+</section>
+</document>
