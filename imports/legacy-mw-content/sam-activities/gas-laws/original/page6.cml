@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws: The Number-Volume Relationship</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+ 
+ 
+
+ 
+
+ 
+ 
+
+  
+        
+
+ 
+           
+
+   
+
+ 
+
+ 
+
+   
+
+ 
+
+
+</text>
+<section start="0" end="63">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;5&quot; color=&quot;#FFFFFF&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Gas 
+    Laws:&lt;/strong&gt; The Number-Volume Relationship&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-59a2d4</bgcolor></icon></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; width=&quot;14&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;60&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;59&quot; src=&quot;next.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; width=&quot;54&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;46&quot; src=&quot;index.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page1.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page3.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;29&quot; src=&quot;page4.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page5.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page6Selected.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;img height=&quot;26&quot; width=&quot;7&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>100</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot; marginheight=&quot;5&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;motionMainIdea.png&quot; width=&quot;98&quot; height=&quot;58&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          In addition to the relationships between volume, pressure and 
+          temperature, is there a relationship between the number of gas 
+          particles and the volume?
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<SpaceBelow>5.0</SpaceBelow>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="11">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;motionBullet.png&quot; width=&quot;33&quot; height=&quot;23&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; color=&quot;#a65d2c&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;What 
+          is the volume a gas can occupy?&lt;/strong&gt;&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img src=&quot;rule.png&quot; width=&quot;18&quot; height=&quot;6&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>140.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot; marginwidth=&quot;10&quot; marginheight=&quot;10&quot;&gt;
+    You will run a series of trials, one right after another, each time 
+    changing the number of molecules of gas and observing how the volume is 
+    affected. The model initially contains 120 molecules. The piston is not in 
+    a fixed position; it can move so as to maintain a constant pressure. The 
+    number on the piston shows the length of the gas chamber. Since this is a 
+    two-dimensional model, what we are calling &amp;quot;volume&amp;quot; of the gas is really 
+    the length of the chamber (in &amp;#8491;).
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="17">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>346.0</width>
+<height>285.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot; marginwidth=&quot;10&quot; marginheight=&quot;10&quot;&gt;
+    &lt;strong&gt;Directions:&lt;/strong&gt;&lt;br&gt;&lt;br&gt;&lt;font size=&quot;3&quot;&gt;(1) Click Run. Observe 
+    any changes in the volume of the chamber. Click Stop after letting the 
+    model run for at least 30 seconds or until the piston just jiggles in the 
+    same place.&lt;br&gt;&lt;br&gt;(2) Record the average volume of the container (the 
+    number inside the red rectangle) by writing it in the &amp;quot;120 molecules&amp;quot; box 
+    below.&lt;br&gt;&lt;br&gt;(3) Select the other five radio buttons (&amp;quot;100 molecules&amp;quot;, 
+    etc.) and repeat (1) and (2) for each trial. &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-333334</bgcolor>
+<border>Line</border>
+</component></content>
+
+<content start="15" end="16">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page6$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="26">
+<Alignment>1</Alignment>
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>120 molecules</title>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset silently;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="18" end="19">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>100 molecules</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset silently;
+select atom 1-20;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>80 molecules</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset silently;
+select atom 1-40;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>60 molecules</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset silently;
+select atom 1-60;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>40 molecules</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset silently;
+select atom 1-80;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="22" end="23">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>20 molecules</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset silently;
+select atom 1-100;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="23" end="24">
+</content>
+
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Snapshot</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>snapshot</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="29">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    Write down the numbers in the small red box for each case in the text 
+    fields below:
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="41">
+<Alignment>1</Alignment>
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>122</width>
+<height>45</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    120 molecules
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="30" end="31">
+</content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>122</width>
+<height>45</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    100 molecules
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>122</width>
+<height>45</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    80 molecules
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="34" end="35">
+</content>
+
+<content start="35" end="36">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>122</width>
+<height>45</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    60 molecules
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="36" end="37">
+</content>
+
+<content start="37" end="38">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>122</width>
+<height>45</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    40 molecules
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="38" end="39">
+</content>
+
+<content start="39" end="40">
+<component><class>org.concord.modeler.PageTextField</class>
+<width>122</width>
+<height>45</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    20 molecules
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="42">
+<SpaceAbove>4.0</SpaceAbove>
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="46">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="42" end="43">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>372</width>
+<height>220</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;5&quot; face=&quot;Arial&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginheight=&quot;5&quot;&gt;
+    &lt;b&gt;According to your data, which of the four graphs below best represents 
+    the relationship between the number of particles and volume of a gas (at 
+    constant pressure and temperature)? &lt;/b&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>&lt;html&gt;&lt;font size=4&gt;&amp;#10102;&lt;/html&gt;</choice>
+<choice>&lt;html&gt;&lt;font size=4&gt;&amp;#10103;&lt;/html&gt;</choice>
+<choice>&lt;html&gt;&lt;font size=4&gt;&amp;#10104;&lt;/html&gt;</choice>
+<choice>&lt;html&gt;&lt;font size=4&gt;&amp;#10105;&lt;/html&gt;</choice>
+<answer>3</answer>
+<bgcolor>-333334</bgcolor>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="43" end="44">
+</content>
+
+<content start="44" end="45">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>false</single>
+<row>4</row>
+<width>372</width>
+<height>220</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;5&quot; face=&quot;Arial&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginheight=&quot;5&quot;&gt;
+    &lt;b&gt;Which of the following best explains what occurred as the number of 
+    particles decreased (check all that apply)? &lt;/b&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>The strength of collisions increased.</choice>
+<choice>The strength of collisions decreased.</choice>
+<choice>The rate of collisions increased.</choice>
+<choice>The rate of collisions decreased.</choice>
+<answer>3</answer>
+<bgcolor>-333334</bgcolor>
+<border>Line</border>
+<script> -choiceseparator- </script>
+</component></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<Alignment>1</Alignment>
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="49">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="47" end="48">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>600.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    &lt;center&gt;
+      &lt;table width=&quot;100%&quot; marginwidth=&quot;40&quot; border=&quot;0&quot; marginheight=&quot;10&quot;&gt;
+        &lt;tr valign=&quot;top&quot; align=&quot;center&quot;&gt;
+          &lt;td align=&quot;left&quot;&gt;
+            &lt;font size=&quot;6&quot;&gt;&amp;#10102;&lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td align=&quot;left&quot;&gt;
+            &lt;font size=&quot;6&quot;&gt;&amp;#10103;&lt;/font&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr align=&quot;center&quot;&gt;
+          &lt;td align=&quot;left&quot;&gt;
+            &lt;img src=&quot;vn1.gif&quot;&gt;
+            
+          &lt;/td&gt;
+          &lt;td align=&quot;left&quot;&gt;
+            &lt;img src=&quot;vn2.gif&quot;&gt;
+            
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr valign=&quot;top&quot; align=&quot;center&quot;&gt;
+          &lt;td align=&quot;left&quot;&gt;
+            &lt;font size=&quot;6&quot;&gt;&amp;#10104;&lt;/font&gt;
+          &lt;/td&gt;
+          &lt;td align=&quot;left&quot;&gt;
+            &lt;font size=&quot;6&quot;&gt;&amp;#10105;&lt;/font&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr align=&quot;center&quot;&gt;
+          &lt;td align=&quot;left&quot;&gt;
+            &lt;img src=&quot;vn3.gif&quot;&gt;
+            
+          &lt;/td&gt;
+          &lt;td align=&quot;left&quot;&gt;
+            &lt;img src=&quot;vn4.gif&quot;&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-660034</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<Alignment>1</Alignment>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="52">
+<Alignment>1</Alignment>
+<content start="50" end="51">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;motionBullet.png&quot; width=&quot;33&quot; height=&quot;23&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; color=&quot;#a65d2c&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Avogadro&apos;s 
+          Law&lt;/strong&gt;&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img src=&quot;rule.png&quot; width=&quot;18&quot; height=&quot;6&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<Alignment>1</Alignment>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="57">
+<Alignment>1</Alignment>
+<content start="53" end="54">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>371.0</width>
+<height>150.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;chemStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      The direct relationship between moles (number of molecules of a 
+      substance) and volume of a gas is known as &lt;b&gt;Avogadro&apos;s Law&lt;/b&gt;. It 
+      explains why a bike tire expands when you pump air into it.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="54" end="55">
+</content>
+
+<content start="55" end="56">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>372</width>
+<height>150</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; marginheight=&quot;5&quot;&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;In your own 
+    words, describe the relationship between volume and number of molecules.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="58">
+<Alignment>1</Alignment>
+<content start="57" end="58">
+</content>
+
+</paragraph>
+<paragraph start="58" end="60">
+<Alignment>1</Alignment>
+<content start="58" end="59">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; width=&quot;14&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;60&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;59&quot; src=&quot;next.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; width=&quot;54&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;46&quot; src=&quot;index.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page1.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page3.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;29&quot; src=&quot;page4.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page5.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page6Selected.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; width=&quot;28&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;img height=&quot;26&quot; width=&quot;7&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<Alignment>1</Alignment>
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="62">
+<content start="61" end="62">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="62" end="63">
+</paragraph>
+</section>
+</document>

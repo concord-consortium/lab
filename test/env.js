@@ -1,18 +1,24 @@
 var fs  = require('fs');
-var html = fs.readFileSync("./test/layout.html").toString();
 
-document = require('jsdom').jsdom(html);
-window = document.createWindow();
-screen = window.screen;
-navigator = window.navigator;
+env = function(url) {
+    var url  = url ?  url : "./test/layout.html",
+        html = fs.readFileSync(url).toString();
 
-CSSStyleDeclaration = window.CSSStyleDeclaration;
+    document = require('jsdom').jsdom(html);
+    window = document.createWindow();
+    screen = window.screen;
+    navigator = window.navigator;
 
-require("../src/vendor/sizzle/sizzle");
-Sizzle = window.Sizzle;
+    CSSStyleDeclaration = window.CSSStyleDeclaration;
 
-process.env.TZ = "America/Los_Angeles";
+    require("../src/vendor/sizzle/sizzle");
+    Sizzle = window.Sizzle;
 
-require("./env-assert");
-require("./env-xhr");
-require("./env-fragment");
+    process.env.TZ = "America/Los_Angeles";
+
+    require("./env-assert");
+    require("./env-xhr");
+    require("./env-fragment");
+}
+
+module.exports = env;

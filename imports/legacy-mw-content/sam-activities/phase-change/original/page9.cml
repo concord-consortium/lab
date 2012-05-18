@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Phase Change: Summary Questions</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+ 
+ 
+
+ 
+
+    
+   
+
+     
+
+   
+
+   
+
+ 
+   
+ 
+
+ </text>
+<section start="0" end="47">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot; color=&quot;#FFFFFF&quot;&gt;&lt;strong&gt;Phase 
+    Change:&lt;/strong&gt; Summary Questions&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-59a2d4</bgcolor></icon></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; marginwidth=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; id=&quot;Table_01&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;60&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img width=&quot;46&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;index.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page1.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page3.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page4.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page5.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page6.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page9Selected.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>120</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;98&quot; height=&quot;58&quot; src=&quot;atomMainIdea.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;In this 
+          activity you have learned about the arrangement and movement of 
+          atoms and molecules in each state of matter, the role of the 
+          intermolecular attractions in phase change, and about how energy 
+          relates to changing phases of matter. Please answer the questions 
+          below to summarize what you have learned. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="14">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>240.0</width>
+<height>308.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot; face=&quot;verdana&quot;&gt;
+    &lt;h2&gt;
+      What to do?
+    &lt;/h2&gt;
+    (1) Press the &amp;quot;Run&amp;quot; button.&lt;br&gt;(2) Press the &amp;quot;Heat&amp;quot; or &amp;quot;Cool&amp;quot; 
+    button below to add energy.&lt;br&gt;(3) Take snapshots that represent solid, 
+    gas, and liquid states.&lt;br&gt;(4) Fill in snapshot images at the three 
+    questions below.
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="10" end="12">
+</content>
+
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageMd3d</class><resource>page9$0.mdd</resource><coordinate>page9$0.xyz</coordinate><width>500</width><height>300</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Raised Bevel</border>
+<recorderless>true</recorderless>
+</component></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="18">
+<Alignment>1</Alignment>
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<action>Heat</action>
+</component></content>
+
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<action>Cool</action>
+</component></content>
+
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>1</Alignment>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="25">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<component><class>org.concord.modeler.ImageQuestion</class><width>248</width><height>300</height><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;Fill in a 
+    snapshot image of the xenon when it is in a solid state.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="20" end="21">
+</content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.ImageQuestion</class><width>248</width><height>300</height><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;Fill in a 
+    snapshot image of the xenon when it is in a liquid state.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="22" end="23">
+</content>
+
+<content start="23" end="24">
+<component><class>org.concord.modeler.ImageQuestion</class><width>248</width><height>300</height><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;Fill in a 
+    snapshot image of the xenon when it is in a gaseous state.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<Alignment>1</Alignment>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="30">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>372</width>
+<height>230</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;When water 
+    cools from 2&amp;#8451; to &amp;#8211;2&amp;#8451;, what happens to the motion of the molecules?&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>&lt;html&gt;The molecules stop moving.&lt;/html&gt;</choice>
+<choice>&lt;html&gt;The molecules remain moving just the same.&lt;/html&gt;</choice>
+<choice>&lt;html&gt;The molecules move less freely.&lt;/html&gt;</choice>
+<choice>&lt;html&gt;The molecules move more freely.&lt;/html&gt;</choice>
+<answer>2</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script> -choiceseparator-  -choiceseparator-  -choiceseparator- </script>
+</component></content>
+
+<content start="27" end="28">
+</content>
+
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>372</width>
+<height>230</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;Suppose you are 
+    small enough to sit on a molecule. Describe what you see if you were 
+    sitting on a molecule in a gas, and that gas turned into a liquid.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="35">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>372</width>
+<height>230</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;On a 
+    microscopic scale atoms look just about as crowded in a liquid as in a 
+    solid. What are some molecular level ways you can think of to decide 
+    whether a substance is a solid or a liquid.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>372</width>
+<height>230</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot;&gt;
+    &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;When you get 
+    out of the water after swimming, you often feel cold as water evaporates 
+    off of your skin. That means you must be losing heat energy. As the water 
+    evaporates, it is changing from a liquid to a gas. Explain why the process 
+    of evaporation should use up heat from your skin.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<content start="35" end="36">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="36" end="38">
+<Alignment>1</Alignment>
+<content start="36" end="37">
+<size>8</size><icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>16</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>5</cornerarc><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="37" end="38">
+<size>8</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="38" end="42">
+<Alignment>1</Alignment>
+<content start="38" end="39">
+<size>8</size><icon><class>org.concord.modeler.text.LineIcon</class><width>494.0</width><height>44</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;chemStyles.css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p align=&quot;center&quot; class=&quot;firstp&quot;&gt;
+      &lt;strong&gt;You have reached the end of the activity.&lt;br&gt;Please submit a 
+      report.&lt;/strong&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="39" end="40">
+<size>8</size><component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report of my work.</title>
+<description>Phase Change</description>
+<group>page1.cml,page2.cml,page3.cml,page4.cml,page5.cml,page6.cml,page7.cml,page8.cml,page9.cml</group>
+<width>206</width><height>40</height>
+<opaque>false</opaque>
+<action>Create a report for a page group in a new window</action></component></content>
+
+<content start="40" end="41">
+<size>8</size><icon><class>org.concord.modeler.text.LineIcon</class><width>50.0</width><height>44</height><arcwidth>5</arcwidth><archeight>5</archeight><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="41" end="42">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="42" end="44">
+<Alignment>1</Alignment>
+<content start="42" end="43">
+<size>8</size><icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>16</height><arcwidth>5</arcwidth><archeight>5</archeight><cornerarc>10</cornerarc><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="43" end="44">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="47">
+<Alignment>1</Alignment>
+<content start="45" end="46">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; marginwidth=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; border=&quot;0&quot; id=&quot;Table_01&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img width=&quot;14&quot; height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;8&quot; height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;60&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img width=&quot;46&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;index.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page1.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page3.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page4.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page5.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page6.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; height=&quot;26&quot; border=&quot;0&quot; src=&quot;page9Selected.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+</paragraph>
+</section>
+</document>

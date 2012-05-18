@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Chemical Reactions and Stoichiometry: Getting the ratios right.</page_title>
+<referenced_files>twoToTwo.mml,
+twoToOne.mml,
+oneToOne.mml,
+hclReaction.mml,
+fourToFour.mml,
+twoToThree.mml,
+
+water0.mml,
+water1.mml,
+water2.mml,
+water3.mml,
+water4.mml,
+water10.mml,
+water11.mml,
+water12.mml,
+water13.mml,
+water14.mml,
+water20.mml,
+water21.mml,
+water22.mml,
+water23.mml,
+water24.mml,
+water30.mml,
+water31.mml,
+water32.mml,
+water33.mml,
+water34.mml,
+water40.mml,
+water41.mml,
+water42.mml,
+water43.mml,
+water44.mml,</referenced_files>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+  
+      
+    
+
+ 
+    
+ 
+ 
+
+
+</text>
+<section start="0" end="43">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#FFFFFF&quot; size=&quot;5&quot;&gt;Chemical 
+    Reactions and Stoichiometry:&lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#FFFFFF&quot; size=&quot;5&quot;&gt; 
+    Getting the ratios right.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-59a2d4</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; cellpadding=&quot;0&quot; width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot; width=&quot;14&quot;&gt;
+          &lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;next.jpg&quot; height=&quot;26&quot; width=&quot;59&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6Selected.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;page7.jpg&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page8.jpg&quot; height=&quot;26&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page9.jpg&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>105</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;58&quot; width=&quot;98&quot; src=&quot;atomMainIdea.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;There 
+          are many parts of a chemical equation. It is like a recipe that 
+          tells you which ingredients to use and what you will make, but it 
+          also tells you how much you need of each reactant and how much 
+          product you will get. The ratios of reactants and products in 
+          chemical equations is called stoichiometry. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;23&quot; width=&quot;33&quot; src=&quot;atomsBullet.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#a65d2c&quot; size=&quot;5&quot;&gt;Stoichiometry 
+          and Balancing Equations&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; width=&quot;18&quot; src=&quot;rule.png&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="16">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>130.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; width=&quot;100%&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;21&quot; align=&quot;center&quot;&gt;
+          &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;A 
+          simple recipe: making peanut butter cookies&lt;br&gt;&lt;br&gt;&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;8&quot;&gt;
+          &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;Ingredients 
+          with no amounts:&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+        &lt;td rowspan=&quot;2&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;&amp;#160;&amp;#160;&lt;img height=&quot;59&quot; width=&quot;30&quot; src=&quot;separator.png&quot;&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td colspan=&quot;12&quot;&gt;
+          &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;With the 
+          amounts: &lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;&amp;#160;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;peanut&lt;br&gt;butter&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;+&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;sugar&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;+&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;eggs&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;&lt;img height=&quot;9&quot; width=&quot;18&quot; src=&quot;reactionRight.png&quot;&gt;
+          &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;cookies&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &amp;#160;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; color=&quot;#FF0000&quot; size=&quot;3&quot;&gt;1&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;cup peanut&lt;br&gt;butter&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;+&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; color=&quot;#FF0000&quot; size=&quot;3&quot;&gt;1&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;cup&lt;br&gt;sugar&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;+&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; color=&quot;#FF0000&quot; size=&quot;3&quot;&gt;2&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;eggs&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;&lt;img height=&quot;9&quot; width=&quot;18&quot; src=&quot;reactionRight.png&quot;&gt;
+          &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; color=&quot;#FF0000&quot; size=&quot;3&quot;&gt;16&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;cookies&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="14" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="23">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>480.0</width>
+<height>350.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Writing the 
+          recipe for a chemical reaction is a little bit more restricted than 
+          making one for peanut butter cookies. In writing a chemical reaction 
+          you must satisfy these two laws of chemistry:&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;br&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;1) &lt;strong&gt;The 
+          law of conservation of mass&lt;/strong&gt;: The mass of the reactants must 
+          equal the mass of the products. If we look at the unbalanced 
+          chemical equation to the right, you will see this law is violated.&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;2) 
+          &lt;strong&gt;The law of definite proportions:&lt;/strong&gt; When making a 
+          certain chemical there is only one right ratio of reactants. When 
+          making peanut butter cookies one might use different ingredients or 
+          different amounts of the same ingredients. When making hydrogen 
+          chloride or any other chemical there is only one correct recipe or 
+          ratio of reactants. &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;274&quot; width=&quot;137&quot; src=&quot;scales.png&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="17" end="21">
+</content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>250.0</width>
+<height>360.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;div align=&quot;center&quot;&gt;
+      &lt;img height=&quot;330&quot; width=&quot;223&quot; src=&quot;balancedEquationFlat.png&quot;&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="28">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>275.0</width>
+<height>310.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;The chemical 
+    equation should be written using the simplest ratios:&lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt; 
+    An equation gives the basic recipe. There are several ratios of hydrogen 
+    to chlorine that will satisfy the above two laws. However, they all can be 
+    simplified to the 1:1:2 ratio you see in the balanced equation:&lt;sub&gt;&amp;#160;&lt;/sub&gt; 
+    &lt;/font&gt;&lt;strong&gt;&lt;br&gt;&lt;/strong&gt;
+
+    &lt;div align=&quot;center&quot;&gt;
+      &lt;strong&gt;&lt;font face=&quot;Times New Roman, Times, serif&quot;&gt;H&lt;sub&gt;2&lt;/sub&gt; + Cl&lt;sub&gt;2&lt;/sub&gt;&lt;img src=&quot;reactionRight.png&quot; height=&quot;9&quot; width=&quot;18&quot;&gt; 
+      2 HCl&lt;/font&gt;&lt;/strong&gt;
+    &lt;/div&gt;
+    &lt;p align=&quot;center&quot;&gt;
+      &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Try several 
+      different ratios to see which ones form a complete reaction with nothing 
+      left over:&lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;br&gt;&lt;/font&gt; 
+      
+      &lt;select script4=&quot;script:mw:1:load twoToTwo.mml; run;&quot; script3=&quot;script:mw:1:load twoToOne.mml; run;&quot; script2=&quot;script:mw:1:load oneToOne.mml; run;&quot; script1=&quot;script:mw:1:load hclReaction.mml; stop;&quot; name=&quot;menu1&quot; script6=&quot;script:mw:1:load fourToFour.mml; run;&quot; script5=&quot;script:mw:1:load twoToThree.mml; run;&quot;&gt;
+        &lt;option selected&gt;Select a ratio 
+        &lt;option&gt;1 hydrogen : 1 chlorine 
+        &lt;option&gt;2 hydrogen : 1 chlorine 
+        &lt;option&gt;2 hydrogen : 2 chlorine 
+        &lt;option&gt;2 hydrogen : 3 chlorine 
+        &lt;option&gt;4 hydrogen : 4 chlorine 
+      &lt;/select&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="24" end="25">
+<component><class>org.concord.mw2d.activity.ChemContainer</class>
+<resource>page6$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="25" end="26">
+</content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>false</single>
+<row>5</row>
+<width>200</width>
+<height>310</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Which hydrogen 
+    to chlorine ratios give a reaction that forms HCl with nothing left over? 
+    (Select all that work.)&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>1 hydrogen : 1 chlorine</choice>
+<choice>2 hydrogen : 1 chlorine</choice>
+<choice>2 hydrogen : 2 chlorine</choice>
+<choice>2 hydrogen : 3 chlorine</choice>
+<choice>4 hydrogen : 4 chlorine</choice>
+<answer>0 2 4</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message rightRatio.html; -choiceseparator- script:page:0:message wrongRatio.html;</script>
+</component></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="31">
+<Alignment>1</Alignment>
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;23&quot; width=&quot;33&quot; src=&quot;atomsBullet.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#a65d2c&quot; size=&quot;5&quot;&gt;Balancing 
+          the Equation for Water&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; width=&quot;18&quot; src=&quot;rule.png&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="36">
+<Alignment>1</Alignment>
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>480.0</width>
+<height>250.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Water is made 
+    from hydrogen and oxygen. Below is the unbalanced equation.&lt;/font&gt;
+
+    &lt;p align=&quot;center&quot;&gt;
+      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;img height=&quot;55&quot; width=&quot;190&quot; src=&quot;waterEquationFlat.png&quot;&gt;
+      &lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p align=&quot;left&quot;&gt;
+      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Using the menus 
+      below, experiment with determining the correct ratio of hydrogen to 
+      oxygen to water. More than one ratio will work so that water is 
+      produced, using up all of the reactants. However, only one ratio is the 
+      simplest.&lt;/font&gt;&lt;br&gt;&lt;br&gt;
+    &lt;/p&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; align=&quot;center&quot; width=&quot;350&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;select script4=&quot;script:mw:2:set %h 3; set %model (%h*10)+%o; load water%model.mml;&quot; script3=&quot;script:mw:2:set %h 2; set %model (%h*10)+%o; load water%model.mml;&quot; script2=&quot;script:mw:2:set %h 1; set %model (%h*10)+%o; load water%model.mml;&quot; script1=&quot;script:mw:2:set %h 0; set %model (%h*10)+%o; load water%model.mml;&quot; name=&quot;select&quot; script5=&quot;script:mw:2:set %h 4; set %model (%h*10)+%o; load water%model.mml;&quot;&gt;
+            &lt;option value=0&gt;0 
+            &lt;option value=1&gt;1 
+            &lt;option value=2&gt;2 
+            &lt;option value=3&gt;3 
+            &lt;option value=4&gt;4 
+          &lt;/select&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;22&quot; src=&quot;h2.png&quot; width=&quot;60&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;select script4=&quot;script:mw:2:set %o 3; set %model (%h*10)+%o; load water%model.mml;&quot; script3=&quot;script:mw:2:set %o 2; set %model (%h*10)+%o; load water%model.mml;&quot; script2=&quot;script:mw:2:set %o 1; set %model (%h*10)+%o; load water%model.mml;&quot; script1=&quot;script:mw:2:set %o 0; set %model (%h*10)+%o; load water%model.mml;&quot; name=&quot;select2&quot; script5=&quot;script:mw:2:set %o 4; set %model (%h*10)+%o; load water%model.mml;&quot;&gt;
+            &lt;option value=0&gt;0 
+            &lt;option value=1&gt;1 
+            &lt;option value=2&gt;2 
+            &lt;option value=3&gt;3 
+            &lt;option value=4&gt;4 
+          &lt;/select&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;22&quot; src=&quot;o2.png&quot; width=&quot;64&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;select name=&quot;select3&quot;&gt;
+            &lt;option value=0&gt;0 
+            &lt;option value=1&gt;1 
+            &lt;option value=2&gt;2 
+            &lt;option value=3&gt;3 
+            &lt;option value=4&gt;4 
+            &lt;option value=5&gt;5 
+            &lt;option value=6&gt;6 
+            &lt;option value=7&gt;7 
+            &lt;option value=8&gt;8 
+            &lt;option value=9&gt;9 
+          &lt;/select&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;22&quot; src=&quot;h20.png&quot; width=&quot;40&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="32" end="34">
+</content>
+
+<content start="34" end="35">
+<component><class>org.concord.mw2d.activity.ChemContainer</class>
+<resource>page6$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="38">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="36" end="37">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>6</row>
+<width>750</width>
+<height>270</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;What is the 
+    correct balanced equation for making water from hydrogen and oxygen?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>&lt;html&gt;&lt;font color=&quot;#5f28c8&quot; size=&quot;5&quot;&gt; H&lt;sub&gt;2&lt;/sub&gt; + O&lt;sub&gt;2&lt;/sub&gt; --&gt; H&lt;sub&gt;2&lt;/sub&gt;O&lt;/font&gt;&lt;/html&gt;</choice>
+<choice>&lt;html&gt;&lt;font color=&quot;#5f28c8&quot; size=&quot;5&quot;&gt; &lt;strong&gt;2&lt;/strong&gt; H&lt;sub&gt;2&lt;/sub&gt; + O&lt;sub&gt;2&lt;/sub&gt; --&gt; H&lt;sub&gt;2&lt;/sub&gt;O&lt;/font&gt;&lt;/html&gt;</choice>
+<choice>&lt;html&gt;&lt;font color=&quot;#5f28c8&quot; size=&quot;5&quot;&gt; &lt;strong&gt;4&lt;/strong&gt; H&lt;sub&gt;2&lt;/sub&gt; +&lt;strong&gt;2&lt;/strong&gt; O&lt;sub&gt;2&lt;/sub&gt; --&gt; &lt;strong&gt;4&lt;/strong&gt; H&lt;sub&gt;2&lt;/sub&gt;O&lt;/font&gt;&lt;/html&gt;</choice>
+<choice>&lt;html&gt;&lt;font color=&quot;#5f28c8&quot; size=&quot;5&quot;&gt; &lt;strong&gt;2&lt;/strong&gt; H&lt;sub&gt;2&lt;/sub&gt; + O&lt;sub&gt;2&lt;/sub&gt; --&gt; &lt;strong&gt;2&lt;/strong&gt; H&lt;sub&gt;2&lt;/sub&gt;O&lt;/font&gt;&lt;/html&gt;</choice>
+<choice>&lt;html&gt;&lt;font color=&quot;#5f28c8&quot; size=&quot;5&quot;&gt; &lt;strong&gt;2&lt;/strong&gt; H&lt;sub&gt;2&lt;/sub&gt; +&lt;strong&gt;2&lt;/strong&gt; O&lt;sub&gt;2&lt;/sub&gt; --&gt; &lt;strong&gt;4&lt;/strong&gt; H&lt;sub&gt;2&lt;/sub&gt;O&lt;/font&gt;&lt;/html&gt;</choice>
+<choice>&lt;html&gt;&lt;font color=&quot;#5f28c8&quot; size=&quot;5&quot;&gt; H&lt;sub&gt;2&lt;/sub&gt; +&lt;strong&gt;2&lt;/strong&gt; O&lt;sub&gt;2&lt;/sub&gt; --&gt; H&lt;sub&gt;2&lt;/sub&gt;O&lt;/font&gt;&lt;/html&gt;</choice>
+<answer>3</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message wrongWater.html -choiceseparator- script:page:0:message wrongWater.html -choiceseparator- script:page:0:message wrongSortOfWater.html -choiceseparator- script:page:0:message rightWater.html -choiceseparator- script:page:0:message wrongWater.html -choiceseparator- script:page:0:message wrongWater.html</script>
+</component></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="40">
+<Alignment>1</Alignment>
+<content start="38" end="39">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; cellpadding=&quot;0&quot; width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot; width=&quot;14&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot; width=&quot;8&quot;&gt;
+          &lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;next.jpg&quot; height=&quot;26&quot; width=&quot;59&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6Selected.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;page7.jpg&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page8.jpg&quot; height=&quot;26&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page9.jpg&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<Alignment>1</Alignment>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="42">
+<content start="41" end="42">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="42" end="43">
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws: The Number-Volume Relationship</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+ 
+
+  
+       
+
+
+
+
+</text>
+<section start="0" end="20">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>140.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot; face=&quot;verdana&quot;&gt;
+    You will run a series of trials, one right after another, each time 
+    changing the number of molecules of gas and observing how the volume is 
+    affected. The model initially contains 120 molecules. The piston is not in 
+    a fixed position; it can move so as to maintain a constant pressure. The 
+    number on the piston shows the length of the gas chamber. Since this is a 
+    two-dimensional model, what we are calling &amp;quot;volume&amp;quot; of the gas is really 
+    the length of the chamber (in &amp;#8491;).
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="4">
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="7">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>346.0</width>
+<height>285.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot; face=&quot;Verdana&quot;&gt;
+    &lt;strong&gt;Directions:&lt;/strong&gt;&lt;br&gt;&lt;br&gt;&lt;font size=&quot;3&quot;&gt;(1) Click Run. Observe 
+    any changes in the volume of the chamber. Click Stop after letting the 
+    model run for at least 30 seconds or until the piston just jiggles in the 
+    same place.&lt;br&gt;&lt;br&gt;(2) Record the average volume of the container (the 
+    number inside the red rectangle) by writing it in the &amp;quot;120 molecules&amp;quot; box 
+    below.&lt;br&gt;&lt;br&gt;(3) Select the other five radio buttons (&amp;quot;100 molecules&amp;quot;, 
+    etc.) and repeat (1) and (2) for each trial. &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-333334</bgcolor>
+<border>Line</border>
+</component></content>
+
+<content start="5" end="6">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page6$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="15">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>120 molecules</title>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset silently;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>100 molecules</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset silently;
+select atom 1-20;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>80 molecules</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset silently;
+select atom 1-40;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>60 molecules</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset silently;
+select atom 1-60;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>40 molecules</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset silently;
+select atom 1-80;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>20 molecules</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1138816545877</groupid>
+<script>reset silently;
+select atom 1-100;
+remove;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="13" end="14">
+</content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<Alignment>1</Alignment>
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<Alignment>1</Alignment>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<content start="18" end="19">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="19" end="20">
+</paragraph>
+</section>
+</document>

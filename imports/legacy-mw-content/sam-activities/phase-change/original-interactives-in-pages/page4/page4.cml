@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Phase Change: Solids</page_title>
+<referenced_files>solid1.mml, solid2.mml</referenced_files>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+  
+        
+  
+</text>
+<section start="0" end="17">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="4">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>350.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot; marginwidth=&quot;8&quot; marginheight=&quot;8&quot;&gt;
+    &lt;b&gt;Instructions:&lt;/b&gt; Here are models of two types of solids. Run the 
+    models and watch them carefully.
+
+    &lt;p&gt;
+      To see the interactions more clearly, you can change the display style 
+      from &amp;quot;Spacefilling&amp;quot; to &amp;quot;Ball-and-Stick&amp;quot; from the drop-down list below.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2" end="3">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>solid1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="13">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Solid 1</title>
+<tooltip>Show solid 1.</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1183941194632</groupid>
+<script>load solid1.mml;
+run;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="5" end="6">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Solid 2</title>
+<tooltip>Show solid 2.</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1183941194632</groupid>
+<script>load solid2.mml;
+run;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="6" end="9">
+</content>
+
+<content start="9" end="10">
+<size>14</size></content>
+
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Display Style</action>
+</component></content>
+
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show interactions</title>
+<tooltip>Show interactions</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Show van der Waals interactions</action>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="16">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Randomly pick an atom and show its trajectory</title>
+<tooltip>Randomly pick an atom and show its trajectory.</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom all;
+traj off;
+select atom none;
+define %i %number_of_atoms*rand();
+if(%i&lt;%number_of_atoms);
+   select atom %i;
+   traj on;
+endif;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Mark atoms near center</title>
+<tooltip>Mark atoms within a rectangle at the center of the box.</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>show selectionhalo off;
+define %xc %width/2-5;
+define %yc %height/2-5;
+select atom within (%xc, %yc, 10, 10);
+mark;
+show selectionhalo off;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<Alignment>1</Alignment>
+</paragraph>
+</section>
+</document>

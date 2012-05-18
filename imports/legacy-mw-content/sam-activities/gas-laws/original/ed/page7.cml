@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws</page_title>
+<text>Gas Laws: Part I Summary Questions
+
+&lt; previous | index | next &gt;
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+&lt; previous | index | next &gt;</text>
+<section start="0" end="106">
+<paragraph start="0" end="35">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="0" end="35">
+<bold>true</bold><size>16</size></content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="35" end="36">
+<bold>true</bold><size>16</size></content>
+
+</paragraph>
+<paragraph start="36" end="64">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="36" end="38">
+<size>11</size></content>
+
+<content start="38" end="46">
+<size>11</size><href>page6.cml</href></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="54">
+<size>11</size><href>index.cml</href></content>
+
+<content start="54" end="57">
+<size>11</size></content>
+
+<content start="57" end="61">
+<size>11</size><href>page8.cml</href></content>
+
+<content start="61" end="63">
+<size>11</size></content>
+
+<content start="63" end="64">
+<bold>true</bold><size>16</size></content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="67">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="65" end="66">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>500</width>
+<height>200</height>
+<title>&lt;html&gt;&lt;font face = verdana size = 3&gt;
+   List two ways you can increase the pressure in a container with a fixed volume.  In each case, explain why this causes a pressure increase.&lt;/font&gt;
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="68">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="70">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="68" end="69">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>500</width>
+<height>140</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;What type of container would experience the 
+    greatest force from gas molecules?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>low strength and low rate of collisions</choice>
+<choice>low strength and high rate of collisions</choice>
+<choice>high strength and low rate of collisions</choice>
+<choice>high strength and high rate of collisions</choice>
+<answer>3 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="69" end="70">
+</content>
+
+</paragraph>
+<paragraph start="70" end="71">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="73">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="71" end="72">
+<component><class>org.concord.modeler.ImageQuestion</class><width>500</width><height>300</height><border>Lowered Etched</border>
+<title>&lt;html&gt;&lt;font face = verdana size = 3&gt;Which of the snapshots below represents Boyle&apos;s Law?&lt;/font&gt;&lt;/html&gt;</title></component></content>
+
+<content start="72" end="73">
+</content>
+
+</paragraph>
+<paragraph start="73" end="74">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="73" end="74">
+</content>
+
+</paragraph>
+<paragraph start="74" end="76">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="74" end="75">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>false</single>
+<row>4</row>
+<width>500</width>
+<height>140</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;The relationships between pressure, 
+    temperature, volume, and number of particles we&apos;ve learned about in this 
+    activity apply to which of the following (choose all that apply)? &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>ice</choice>
+<choice>liquid water</choice>
+<choice>water vapor</choice>
+<choice>a mixture of water vapor and nitrogen gas</choice>
+<answer>2 3 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="75" end="76">
+</content>
+
+</paragraph>
+<paragraph start="76" end="77">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="76" end="77">
+</content>
+
+</paragraph>
+<paragraph start="77" end="78">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="77" end="78">
+</content>
+
+</paragraph>
+<paragraph start="78" end="106">
+<Alignment>1</Alignment>
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="78" end="80">
+<size>11</size></content>
+
+<content start="80" end="88">
+<size>11</size><href>page6.cml</href></content>
+
+<content start="88" end="91">
+<size>11</size></content>
+
+<content start="91" end="96">
+<size>11</size><href>index.cml</href></content>
+
+<content start="96" end="99">
+<size>11</size></content>
+
+<content start="99" end="103">
+<size>11</size><href>page8.cml</href></content>
+
+<content start="103" end="105">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

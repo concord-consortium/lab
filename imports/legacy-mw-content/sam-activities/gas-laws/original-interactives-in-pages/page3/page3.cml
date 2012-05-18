@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws: The Volume-Pressure Relationship</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+
+ 
+
+    
+       
+
+
+</text>
+<section start="0" end="21">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;A pressure 
+    gauge is an instrument that measures pressure. It does so by converting 
+    the effect of molecular collisions into something we can read. In the 
+    model below, we set up a virtual gauge on one side of a movable wall. The 
+    output, pressure, is shown with a bar graph.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="10">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>290.0</width>
+<height>255.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;5&quot; face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;4&quot;&gt;Directions:&lt;/font&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;3&quot;&gt;Run the simulation &lt;b&gt;until it automatically stops&lt;/b&gt;.&lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;3&quot;&gt;What is the pressure? Read the ruler inside the model 
+        and the bar graph outside, and record the data in the table below. &lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;3&quot;&gt;Press the &amp;quot;Volume &amp;#8593;&amp;quot; or &amp;quot;Volume &amp;#8595;&amp;quot; button to increase 
+        or decrease the volume and repeat the above steps. &lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;3&quot;&gt;Repeat the above procedure to record three more data 
+        points. &lt;/font&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-111112</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="6" end="7">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page3$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="7" end="8">
+</content>
+
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>West pressure:Obstacle #0</timeseries>
+<description>Pressure</description>
+<datatype>1</datatype>
+<samplingpoints>10</samplingpoints>
+<average>true</average>
+<width>90</width>
+<height>255</height>
+<tick>true</tick>
+<major_tick>8</major_tick>
+<nstep>8</nstep>
+<label>true</label>
+<title>true</title>
+<bgcolor>-1</bgcolor>
+<fgcolor>-7f7f80</fgcolor>
+<minimum>0.0</minimum>
+<maximum>0.800000011920929</maximum>
+<value>0.3411674201488495</value>
+</component></content>
+
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="18">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>250.0</width>
+<height>50.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;&lt;b&gt;Note:&lt;/b&gt; The temperature of the gas in the model on 
+      the right is kept constant.&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="11" end="12">
+</content>
+
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Volume &#8593;</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>define %a 1;
+define %x %obstacle[0].x+%a;
+define %i 0;
+define %ratio %x/%obstacle[0].x;
+if(%x&lt;%width-%obstacle[0].width);
+  set obstacle[0].x %x;
+  set rectangle[0].width %x;
+  while(%i&lt;%number_of_atoms);
+    set atom[%i].rx %atom[%i].rx*%ratio;
+    set %i %i+1;
+  endwhile;
+endif;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Volume &#8595;</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>define %a 1;
+define %x %obstacle[0].x-%a;
+define %i 0;
+define %ratio %x/%obstacle[0].x;
+if(%x&gt;%obstacle[0].width+5);
+  set obstacle[0].x %x;
+  set rectangle[0].width %x;
+  while(%i&lt;%number_of_atoms);
+    set atom[%i].rx %atom[%i].rx*%ratio;
+    set %i %i+1;
+  endwhile;
+endif;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<content start="19" end="20">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="20" end="21">
+</paragraph>
+</section>
+</document>

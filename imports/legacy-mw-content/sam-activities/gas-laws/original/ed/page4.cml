@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Charles&apos;s law: The V-T relationship under constant pressure</page_title>
+<text>Gas Laws: Charles&apos;s Law
+
+&lt; previous | index | next &gt;
+
+Let&apos;s now explore the relationship between the volume and temperature of a gas at constant pressure and particles.
+
+To fully understand this relationship it&apos;s important to recognize the relationship between the temperature and the speed at which molecules move.  Run the simulator below (click Run) and then slowly increase the temperature (increase the temperature by clicking on the red triangle).  Continue raising the temperature until the red bar reaches the top.
+
+      
+
+Stop the simulator.  Hopefully you noticed that as we increase temperature, molecules move faster (more exactly, we can say that their kinetic energy has increased).  With this fundamental knowledge in our backpocket, let&apos;s now see how this relates to the relationship between volume and temperature.  In the simulator below, we will increase the temperature while we keep the pressure and particles of gas constant.
+
+Instructions:
+
+1.  Click the Increase Temperature button to slowly increase the temperature (note that the piston will respond to the temperature increase so as to maintain a constant pressure).  Observe how the volume changes as we increase the temperature.  Let the simulator run until it stops automatically.
+               
+ 
+
+3.  Take a snapshot of the graph as you did on the previous page.  When the Add Snapshot dialog box appears, type &quot;Volume vs. Temperature at constant pressure and moles&quot; in the box below the snapshot.  Click OK.
+
+     
+
+As we increased the temperature, we discovered that the volume increased because the strength of the collisions with the container walls increased.  Note that the pressure did not increase because the piston was able to respond to the increased strength of collisions by expanding the container size.
+
+ 
+
+This direct relationship between temperature and volume is known as Charles&apos;s law.  Later in this activity, we&apos;ll see how Charles&apos;s law explains how hot air balloons work.  For now, consider the demonstration in the sequence of photos below.
+
+ 		 
+1) A flask containing very cold liquid nitrogen (77 K, -196 oC,		2) When the liquid nitrogen makes contact with the balloon,
+-321 oF), is readied to be poured on a balloon filled with air.		the volume of the air in the balloon decreases...
+
+ 		 
+3)...until the balloon looks almost flat.			4) As the liquid nitrogen evaporates and the air in the balloon
+						warms, the volume increases.
+
+Did the balloon behave as you expected?  Hopefully you recognized that it followed Charles&apos;s law by losing considerable volume as the cold liquid nitrogen was poured over it.  When the liquid nitrogen was removed, the volume of the air in the balloon then increased as the temperature slowly returned to room temperature.
+
+Let&apos;s now move on to a related gas law.  One where we&apos;ll explore the relationship between temperature and pressure.
+
+&lt; previous | index | next &gt;
+
+
+</text>
+<section start="0" end="2915">
+<paragraph start="0" end="24">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="0" end="23">
+<bold>true</bold><size>15</size></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="53">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="25" end="27">
+<size>11</size></content>
+
+<content start="27" end="35">
+<size>11</size><href>page3.cml</href></content>
+
+<content start="35" end="38">
+<size>11</size></content>
+
+<content start="38" end="43">
+<size>11</size><href>index.cml</href></content>
+
+<content start="43" end="46">
+<size>11</size></content>
+
+<content start="46" end="50">
+<size>11</size><href>page5.cml</href></content>
+
+<content start="50" end="53">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="53" end="54">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="53" end="54">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="54" end="169">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="54" end="169">
+</content>
+
+</paragraph>
+<paragraph start="169" end="170">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="169" end="170">
+</content>
+
+</paragraph>
+<paragraph start="170" end="523">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="170" end="523">
+</content>
+
+</paragraph>
+<paragraph start="523" end="524">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="523" end="524">
+</content>
+
+</paragraph>
+<paragraph start="524" end="531">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="524" end="525">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page4$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+
+<content start="525" end="531">
+</content>
+
+</paragraph>
+<paragraph start="531" end="532">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="531" end="532">
+</content>
+
+</paragraph>
+<paragraph start="532" end="949">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="532" end="949">
+</content>
+
+</paragraph>
+<paragraph start="949" end="950">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="949" end="950">
+</content>
+
+</paragraph>
+<paragraph start="950" end="964">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="950" end="963">
+<bold>true</bold></content>
+
+<content start="963" end="964">
+</content>
+
+</paragraph>
+<paragraph start="964" end="965">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="964" end="965">
+</content>
+
+</paragraph>
+<paragraph start="965" end="1262">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="965" end="1262">
+</content>
+
+</paragraph>
+<paragraph start="1262" end="1278">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1262" end="1263">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page4$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="1263" end="1276">
+</content>
+
+<content start="1276" end="1277">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>1</model>
+<time_series_x>Kinetic Energy/Particle</time_series_x>
+<multiplier>11594.0</multiplier>
+<time_series_y1 color="-1000000" style="0" width="0.0" symbol="1" size="4" spacing="5" multiplier="0.25">X: Obstacle #0</time_series_y1>
+<autofitx>false</autofitx>
+<axis_x_min>200.0</axis_x_min>
+<axis_x_max>700.0</axis_x_max>
+<autofity>false</autofity>
+<axis_y_min>20.0</axis_y_min>
+<axis_y_max>50.0</axis_y_max>
+<width>300</width>
+<height>300</height>
+<axis_x_title>Temperature (K)</axis_x_title>
+<axis_y_title>Volume (angstrom^2)</axis_y_title>
+<legend_x>36</legend_x>
+<legend_y>411</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<border>Line</border>
+</component></content>
+
+<content start="1277" end="1278">
+</content>
+
+</paragraph>
+<paragraph start="1278" end="1280">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1278" end="1279">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Increase Temperature</title>
+<tooltip>Increase Temperature</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<disabled_at_script>true</disabled_at_script>
+<script>show selectionhalo off;
+run;
+loop 1;
+delay modeltime 800;
+select atom all;
+heat 0.002;
+loop 50;
+select atom none;
+show selectionhalo on;
+stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1279" end="1280">
+</content>
+
+</paragraph>
+<paragraph start="1280" end="1281">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1280" end="1281">
+</content>
+
+</paragraph>
+<paragraph start="1281" end="1493">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1281" end="1493">
+</content>
+
+</paragraph>
+<paragraph start="1493" end="1494">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1493" end="1494">
+</content>
+
+</paragraph>
+<paragraph start="1494" end="1500">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1494" end="1495">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>3</row>
+<width>400</width>
+<height>140</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;As the temperature increased, what happened 
+    to the volume?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>volume increased</choice>
+<choice>volume decreased</choice>
+<choice>volume remained the same</choice>
+<answer>0 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="1495" end="1498">
+</content>
+
+<content start="1498" end="1499">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>2</row>
+<width>400</width>
+<height>140</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;Which of the following best explains what 
+    occurred as the temperature increased?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>the strength and/or rate of collisions increased</choice>
+<choice>the strength and/or rate of collisions decreased</choice>
+<answer>0 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="1499" end="1500">
+</content>
+
+</paragraph>
+<paragraph start="1500" end="1501">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1500" end="1501">
+</content>
+
+</paragraph>
+<paragraph start="1501" end="1802">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1501" end="1557">
+</content>
+
+<content start="1557" end="1647">
+<bold>true</bold></content>
+
+<content start="1647" end="1802">
+</content>
+
+</paragraph>
+<paragraph start="1802" end="1803">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1802" end="1803">
+</content>
+
+</paragraph>
+<paragraph start="1803" end="1805">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1803" end="1804">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>2</row>
+<width>400</width>
+<height>130</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;Predict what would have happened to the 
+    volume if we had decreased the temperature instead of increasing it.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>volume would have decreased</choice>
+<choice>volume would have increased</choice>
+<answer>0 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="1804" end="1805">
+</content>
+
+</paragraph>
+<paragraph start="1805" end="1806">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1805" end="1806">
+</content>
+
+</paragraph>
+<paragraph start="1806" end="2048">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="1806" end="1874">
+</content>
+
+<content start="1874" end="1887">
+<bold>true</bold></content>
+
+<content start="1887" end="2048">
+</content>
+
+</paragraph>
+<paragraph start="2048" end="2049">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2048" end="2049">
+</content>
+
+</paragraph>
+<paragraph start="2049" end="2054">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2049" end="2050">
+<icon>balloon1.png</icon></content>
+
+<content start="2050" end="2052">
+</content>
+
+<content start="2052" end="2053">
+<icon>balloon2.png</icon></content>
+
+<content start="2053" end="2054">
+</content>
+
+</paragraph>
+<paragraph start="2054" end="2179">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2054" end="2056">
+<italic>true</italic><size>11</size><bold>true</bold></content>
+
+<content start="2056" end="2114">
+<italic>true</italic><size>11</size></content>
+
+<content start="2114" end="2115">
+<italic>true</italic><size>11</size><superscript>true</superscript></content>
+
+<content start="2115" end="2119">
+<italic>true</italic><size>11</size></content>
+
+<content start="2119" end="2121">
+<italic>true</italic><size>11</size><bold>true</bold></content>
+
+<content start="2121" end="2179">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="2179" end="2294">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2179" end="2184">
+<italic>true</italic><size>11</size></content>
+
+<content start="2184" end="2185">
+<italic>true</italic><size>11</size><superscript>true</superscript></content>
+
+<content start="2185" end="2293">
+<italic>true</italic><size>11</size></content>
+
+<content start="2293" end="2294">
+</content>
+
+</paragraph>
+<paragraph start="2294" end="2295">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2294" end="2295">
+</content>
+
+</paragraph>
+<paragraph start="2295" end="2300">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2295" end="2296">
+<icon>balloon3.png</icon></content>
+
+<content start="2296" end="2298">
+</content>
+
+<content start="2298" end="2299">
+<icon>balloon4.png</icon></content>
+
+<content start="2299" end="2300">
+</content>
+
+</paragraph>
+<paragraph start="2300" end="2408">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2300" end="2302">
+<italic>true</italic><size>11</size><bold>true</bold></content>
+
+<content start="2302" end="2344">
+<italic>true</italic><size>11</size></content>
+
+<content start="2344" end="2346">
+<italic>true</italic><size>11</size><bold>true</bold></content>
+
+<content start="2346" end="2408">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="2408" end="2443">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2408" end="2442">
+<italic>true</italic><size>11</size></content>
+
+<content start="2442" end="2443">
+</content>
+
+</paragraph>
+<paragraph start="2443" end="2444">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2443" end="2444">
+</content>
+
+</paragraph>
+<paragraph start="2444" end="2766">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2444" end="2766">
+</content>
+
+</paragraph>
+<paragraph start="2766" end="2767">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2766" end="2767">
+</content>
+
+</paragraph>
+<paragraph start="2767" end="2883">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2767" end="2883">
+</content>
+
+</paragraph>
+<paragraph start="2883" end="2884">
+<RightIndent>30.0</RightIndent>
+<LeftIndent>30.0</LeftIndent>
+<content start="2883" end="2884">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2884" end="2912">
+<RightIndent>30.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<content start="2884" end="2886">
+<size>11</size></content>
+
+<content start="2886" end="2894">
+<size>11</size><href>page3.cml</href></content>
+
+<content start="2894" end="2897">
+<size>11</size></content>
+
+<content start="2897" end="2902">
+<size>11</size><href>index.cml</href></content>
+
+<content start="2902" end="2905">
+<size>11</size></content>
+
+<content start="2905" end="2909">
+<size>11</size><href>page5.cml</href></content>
+
+<content start="2909" end="2912">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2912" end="2913">
+<Alignment>1</Alignment>
+<content start="2912" end="2913">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2913" end="2914">
+<content start="2913" end="2914">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2914" end="2915">
+</paragraph>
+</section>
+</document>

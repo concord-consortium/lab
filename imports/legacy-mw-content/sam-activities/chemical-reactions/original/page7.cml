@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Chemical Reactions and Stoichiometry: Limiting reactions.</page_title>
+<referenced_files>combustion.mml, combustionLimited.mml, fuelHint.html</referenced_files>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+     
+    
+ 
+ 
+
+
+</text>
+<section start="0" end="31">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#FFFFFF&quot; size=&quot;5&quot;&gt;Chemical 
+    Reactions and Stoichiometry:&lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#FFFFFF&quot; size=&quot;5&quot;&gt; 
+    Limiting reactions.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-59a2d4</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; cellpadding=&quot;0&quot; width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot; width=&quot;14&quot;&gt;
+          &lt;a href=&quot;page6.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;next.jpg&quot; height=&quot;26&quot; width=&quot;59&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page7Selected.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;page8.jpg&quot; height=&quot;26&quot; width=&quot;29&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page9.jpg&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;58&quot; width=&quot;98&quot; src=&quot;atomMainIdea.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;What is 
+          a limiting reactant and when is it useful to set up a reaction to 
+          have a limiting reactant? &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>65.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;chemStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      A balanced chemical reaction tells you the exact ratio to use and how 
+      much product you will get. Frequently the exact ratio is not mixed 
+      together, for example, if you want to make sure to use up ALL of one of 
+      the reactants in a reaction. The reactant that gets used up first is 
+      called a limiting reactant.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="19">
+<Alignment>1</Alignment>
+<SpaceBelow>10.0</SpaceBelow>
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>310.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;A limiting 
+      reactant almost always plays a role is during combustion, the reaction 
+      of a fuel with oxygen. &lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Using the 
+      buttons below, compare the difference between a combustion reaction that 
+      has the exact ratio of reactants with a reaction that has a limiting 
+      reactant. See if you can tell which reactant is considered the &amp;quot;limiting 
+      reactant&amp;quot; in the 2nd model.&lt;/font&gt;&lt;br&gt;&lt;br&gt;
+    &lt;/p&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; align=&quot;center&quot; width=&quot;190&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot; align=&quot;left&quot;&gt;
+          &lt;strong&gt;Choose a Reaction&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot; width=&quot;28&quot;&gt;
+          &lt;input type=&quot;radio&quot; script=&quot;script:mw:1:load combustion.mml&quot; value=&quot;radio&quot; name=&quot;RadioGroup1&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td width=&quot;154&quot;&gt;
+          perfect ratio
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input type=&quot;radio&quot; script=&quot;script:mw:1:load combustionLimited.mml&quot; value=&quot;radio&quot; name=&quot;RadioGroup1&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          limiting reactant
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="14" end="15">
+<component><class>org.concord.mw2d.activity.ChemContainer</class>
+<resource>page7$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="15" end="17">
+</content>
+
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<timeseries>Channel 0</timeseries>
+<description>% Fuel Reacted</description>
+<datatype>1</datatype>
+<samplingpoints>10</samplingpoints>
+<multiplier>100.0</multiplier>
+<max_fraction_digits>0</max_fraction_digits>
+<width>80</width>
+<height>280</height>
+<tick>true</tick>
+<major_tick>10</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<bgcolor>-1a1a1b</bgcolor>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="24">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>3</row>
+<width>371</width>
+<height>150</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;chemStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Which is the limiting reactant in the 2nd reaction?
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>fuel</choice>
+<choice>oxygen</choice>
+<choice>both are limiting</choice>
+<answer>0</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message yesFuel.html -choiceseparator- script:page:0:message noOxygen.html -choiceseparator- script:page:0:message noBoth.html</script>
+</component></content>
+
+<content start="20" end="22">
+</content>
+
+<content start="22" end="23">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>371</width>
+<height>150</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginheight=&quot;5&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Explain why it 
+    is hard to get ALL of the fuel to react if you use exactly the right ratio 
+    of fuel to oxygen. &lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;a href=&quot;script:page:0:message fuelHint.html&quot;&gt;hint&lt;/a&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="26">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>750</width>
+<height>240</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;rgb(230, 230, 230)&quot; marginheight=&quot;5&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;To power your 
+    car a specific amount of gasoline (fuel) is mixed with air (containing 
+    oxygen). If the mixture is not right, then your car will not have much 
+    power, or it will be spitting out lots of unburned fuel as a pollutant, or 
+    both. What do you think is the best fuel/oxygen mixture to optimize power 
+    and reduce pollution (i.e. get the most fuel in the cylinder which can be 
+    burned efficiently)?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>&lt;html&gt;use the perfect ratio of fuel to oxygen as indicated by the chemical equation&lt;/html&gt;</choice>
+<choice>&lt;html&gt;use extra fuel, making oxygen the limiting reactant&lt;/html&gt;</choice>
+<choice>&lt;html&gt;use a lot of extra oxygen, making the fuel a very limiting reactant&lt;/html&gt;</choice>
+<choice>&lt;html&gt;use a little extra oxygen, making the fuel the limiting reactant&lt;/html&gt;</choice>
+<answer>3</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message perfectRatio.html -choiceseparator- script:page:0:message extraFuel.html -choiceseparator- script:page:0:message lotsOfExtraOxygen.html -choiceseparator- script:page:0:message littleExtraOxygen.html</script>
+</component></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="28">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; id=&quot;Table_01&quot; cellpadding=&quot;0&quot; width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot; width=&quot;14&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot; width=&quot;8&quot;&gt;
+          &lt;a href=&quot;page6.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;next.jpg&quot; height=&quot;26&quot; width=&quot;59&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;index.jpg&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page1.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; height=&quot;26&quot; src=&quot;page7Selected.jpg&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; src=&quot;page8.jpg&quot; height=&quot;26&quot; width=&quot;29&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img border=&quot;0&quot; src=&quot;page9.jpg&quot; height=&quot;26&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<content start="29" end="30">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="30" end="31">
+</paragraph>
+</section>
+</document>

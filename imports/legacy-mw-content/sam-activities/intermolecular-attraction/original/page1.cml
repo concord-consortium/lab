@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Intermolecular Attractions: Introduction</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+ 
+ 
+
+
+ 
+    
+  
+   
+ 
+
+
+</text>
+<section start="0" end="38">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font color=&quot;#FFFFFF&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot;&gt;Intermolecular 
+    Attractions:&lt;/font&gt;&lt;/strong&gt;&lt;font color=&quot;#FFFFFF&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot;&gt; 
+    Introduction&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-59a2d4</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table width=&quot;100%&quot; cellpadding=&quot;0&quot; id=&quot;Table_01&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; width=&quot;14&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; width=&quot;60&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; width=&quot;59&quot; src=&quot;next.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; width=&quot;54&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; width=&quot;46&quot; src=&quot;index.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page1Selected.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;29&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;29&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;25&quot; src=&quot;page10.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; width=&quot;7&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>195</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;chargeMainIdea.png&quot; width=&quot;98&quot; height=&quot;58&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;All 
+          molecules attract to each other using forces called &amp;quot;intermolecular 
+          attractions&amp;quot;. These attractions are responsible for:&lt;/font&gt;
+
+          &lt;ul&gt;
+            &lt;li&gt;
+              &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;The 
+              temperatures at which many substances boil.&lt;/font&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;The 
+              ability of your immune system to recognize and disable pathogens 
+              instead of attacking your own cells and organs.&lt;/font&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;The 
+              amazing climbing ability of Geckos.&lt;/font&gt;
+            &lt;/li&gt;
+          &lt;/ul&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;In this 
+          activity you will explore how molecular level attractions are the 
+          foundation of these phenomena and many other everyday experiences. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;chargeBullet.png&quot; width=&quot;33&quot; height=&quot;23&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;strong&gt;&lt;font color=&quot;#a65d2c&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot;&gt;Types 
+          of Bonds and Polarity&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img src=&quot;rule.png&quot; width=&quot;18&quot; height=&quot;6&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="15">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>330.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Two 
+          atoms can bond to form a molecule in two ways:&lt;/font&gt;
+
+          &lt;ul&gt;
+            &lt;li&gt;
+              &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;with 
+              a non-polar covalent bond (when electrons are shared evenly) &lt;/font&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;with 
+              a polar covalent bond (when there is an uneven sharing of the 
+              electrons, causing the formation of a &lt;a href=&quot;script:page:0:message partialCharge.html&quot;&gt;partial 
+              positive and partial negative&lt;/a&gt; charge on the surface of the 
+              molecule.) &lt;/font&gt;
+            &lt;/li&gt;
+          &lt;/ul&gt;
+          &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;
+            &lt;tr&gt;
+              &lt;td valign=&quot;middle&quot;&gt;
+                &lt;a href=&quot;http://chemsite.lsrhs.net/FlashMedia/html/dipoleVsLondon.html&quot;&gt;&lt;img height=&quot;141&quot; width=&quot;165&quot; src=&quot;activateDipoles.gif&quot; border=&quot;2&quot;&gt;
+                &lt;/a&gt;
+              &lt;/td&gt;
+              &lt;td&gt;
+                &lt;div style=&quot;margin-left: 8px&quot;&gt;
+                  &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;All 
+                  molecules have an attraction for other molecules via the 
+                  Coulomb force, the attractive force between positive and 
+                  negative charges. So, how do non-polar molecules form 
+                  attractions if there is no apparent surface charge? Click 
+                  the image to the left to see a more detailed explanation.&lt;/font&gt;
+                &lt;/div&gt;
+              &lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/table&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;304&quot; width=&quot;300&quot; src=&quot;moleculeRepComp.png&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="17">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>744</width>
+<height>114</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;What is the 
+    difference between polar and non-polar molecules? (Be sure to include more 
+    than the colors used to represent them in your response!) &lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<Alignment>1</Alignment>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>1</Alignment>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="21">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;chargeBullet.png&quot; width=&quot;33&quot; height=&quot;23&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;strong&gt;&lt;font color=&quot;#a65d2c&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot;&gt;Seeing 
+          Intermolecular Attractions&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img src=&quot;rule.png&quot; width=&quot;18&quot; height=&quot;6&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="26">
+<Alignment>1</Alignment>
+<content start="21" end="22">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page1$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="22" end="24">
+</content>
+
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>380.0</width>
+<height>220.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;All 
+          molecules attract to each other, but there are different patterns 
+          and strengths of attraction that occur. To the left is a bunch of 
+          polar and non-polar molecules.&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;vdwPointerComp.png&quot; height=&quot;100&quot; width=&quot;102&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Explore 
+          how different or similar molecules form intermolecular attractions 
+          when they are close together. Then take a snapshot of the model, and 
+          use the annotation tools (&lt;img height=&quot;15&quot; width=&quot;16&quot; src=&quot;textAnnotation.gif&quot;&gt;&lt;img height=&quot;12&quot; width=&quot;16&quot; src=&quot;drawRect.gif&quot;&gt;&lt;img height=&quot;14&quot; width=&quot;15&quot; src=&quot;arrow.gif&quot;&gt;) 
+          to show where you see the attractions.&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="29">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>400.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="33">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="29" end="30">
+<component><class>org.concord.modeler.ImageQuestion</class><width>300</width><height>220</height><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link href=&quot;chemStyles.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Image showing intermolecular attractions:
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="30" end="31">
+</content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>false</single>
+<row>6</row>
+<width>442</width>
+<height>220</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;strong&gt;&lt;font face=&quot;Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Which of the 
+    following formed intermolecular attractions (check all that apply):&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>+ ends of polar molecules to + ends of other polar molecules</choice>
+<choice>+ ends of polar molecules to - ends of other polar molecules</choice>
+<choice>- ends of polar molecules to - ends of other polar molecules</choice>
+<choice>non-polar molecules to other non-polar molecules</choice>
+<choice>non-polar molecules to + parts of polar molecules</choice>
+<choice>non-polar molecules to - parts of polar molecules</choice>
+<answer>1 3 4 5</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message yesAllAttractions.html -choiceseparator- script:page:0:message notAllAttractions.html</script>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="35">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot; marginwidth=&quot;0&quot;&gt;
+    &lt;table width=&quot;100%&quot; cellpadding=&quot;0&quot; id=&quot;Table_01&quot; cellspacing=&quot;0&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; width=&quot;14&quot; src=&quot;navBarBottomColorBar.gif&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; width=&quot;8&quot; src=&quot;navBarBottomLeftMargin.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; width=&quot;60&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; width=&quot;59&quot; src=&quot;next.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; width=&quot;54&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; width=&quot;46&quot; src=&quot;index.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page1Selected.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;29&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;29&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;28&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img height=&quot;26&quot; width=&quot;25&quot; src=&quot;page10.jpg&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;img height=&quot;26&quot; width=&quot;7&quot; src=&quot;navBarBottomRightMargin.jpg&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<Alignment>1</Alignment>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<content start="36" end="37">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="37" end="38">
+</paragraph>
+</section>
+</document>
