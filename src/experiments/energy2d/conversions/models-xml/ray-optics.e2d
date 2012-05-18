@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<state>
+<model>
+<timestep>10.0</timestep>
+<measurement_interval>100</measurement_interval>
+<viewupdate_interval>20</viewupdate_interval>
+<sunny>true</sunny><sun_angle>1.5707964</sun_angle>
+<solar_power_density>100000.0</solar_power_density>
+<solar_ray_count>24</solar_ray_count>
+<solar_ray_speed>0.0010</solar_ray_speed>
+<photon_emission_interval>25</photon_emission_interval>
+<convective>false</convective>
+<thermal_buoyancy>2.5E-4</thermal_buoyancy>
+<buoyancy_approximation>1</buoyancy_approximation>
+<boundary>
+<temperature_at_border upper="0.0" lower="0.0" left="0.0" right="0.0"/>
+</boundary>
+<structure>
+<part><rectangle x="-0.099999905" y="8.0" width="10.2" height="2.0"/><thermal_conductivity>0.0010</thermal_conductivity>
+<specific_heat>1000.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>0.0</temperature>
+<constant_temperature>false</constant_temperature>
+<color>333333</color>
+</part>
+<part><ellipse x="5.0" y="4.0" a="4.0" b="2.0"/><thermal_conductivity>0.0010</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>1.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>0.0</temperature>
+<constant_temperature>false</constant_temperature>
+</part>
+<part><ellipse x="2.0" y="2.0" a="2.0" b="2.0"/><thermal_conductivity>0.0010</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>1.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>0.0</temperature>
+<constant_temperature>false</constant_temperature>
+</part>
+<part><polygon count="4" vertices="9.0, 8.0, 8.0, 7.0, 8.0, 6.0, 9.0, 5.0"/>
+<thermal_conductivity>0.0010</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>1.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>0.0</temperature>
+<constant_temperature>false</constant_temperature>
+</part>
+</structure>
+</model>
+<sensor>
+<thermometer x="5.0" y="7.0"/>
+</sensor>
+<view>
+<ruler>true</ruler>
+<rainbow_x>0.0</rainbow_x><rainbow_y>0.0</rainbow_y><rainbow_w>0.0</rainbow_w><rainbow_h>0.0</rainbow_h><minimum_temperature>0.0</minimum_temperature>
+<maximum_temperature>40.0</maximum_temperature>
+<text string="Press 'Q' or 'W' to change the sun angle" name="Arial" size="14" style="1" color="ffffff" x="0.5" y="9.5"/>
+</view>
+</state>
