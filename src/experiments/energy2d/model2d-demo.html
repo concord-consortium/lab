@@ -304,18 +304,24 @@
         var last_sample_time = new Date();
         var sample_time = new Date();
         var average_sample_time_ms = sample_time - last_sample_time;
-        
+
+        a = document.location.hash.match(/#(.*$)/)
+        if (a && a.length > 1) {
+          model_name = a[1];
+          loadModelState(model_name);
+        }
         // setup callbacks
         // model
         models_select.onchange = function() {
             var opt = models_select.options[models_select.selectedIndex];
             model_name = opt.value || opt.text;
             loadModelState(model_name);
+            document.location.hash = "#" + model_name;
         };
         choose_array_type.onchange = function() {
             loadModelState(model_name);
         };
-        
+
         steps_per_frame_element.onchange = function() {
             steps_per_frame = getStepsPerFrame();
         }
