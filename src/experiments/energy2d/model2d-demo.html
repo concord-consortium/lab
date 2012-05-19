@@ -305,11 +305,23 @@
         var sample_time = new Date();
         var average_sample_time_ms = sample_time - last_sample_time;
 
-        a = document.location.hash.match(/#(.*$)/)
-        if (a && a.length > 1) {
-          model_name = a[1];
+        var hash_match = document.location.hash.match(/#(.*$)/)
+        if (hash_match && hash_match.length > 1) {
+          model_name = hash_match[1];
           loadModelState(model_name);
         }
+
+        window.onhashchange = function() {
+          hash_match = document.location.hash.match(/#(.*$)/)
+          if (hash_match && hash_match.length > 1) {
+            if (hash_match !== model_name) {
+              model_name = hash_match[1];
+              loadModelState(model_name);
+              models_select.value = model_name;
+            }
+          }
+        }
+
         // setup callbacks
         // model
         models_select.onchange = function() {
