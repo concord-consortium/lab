@@ -1,7 +1,7 @@
 var models_library = models_library || {};
-models_library.benard_cell = {
+models_library.hot_plate_in_air = {
   "model": {
-    "timestep": 0.5,
+    "timestep": 0.25,
     "measurement_interval": 100,
     "viewupdate_interval": 10,
     "sun_angle": 1.5707964,
@@ -10,10 +10,10 @@ models_library.benard_cell = {
     "solar_ray_speed": 0.1,
     "photon_emission_interval": 20,
     "z_heat_diffusivity": 0.0,
-    "background_conductivity": 5.0,
-    "background_viscosity": 0.0010,
+    "background_conductivity": 0.5,
+    "background_viscosity": 5.0E-5,
     "thermal_buoyancy": 2.5E-4,
-    "buoyancy_approximation": 1,
+    "buoyancy_approximation": 0,
     "boundary": {
       "flux_at_border": {
         "upper": 0.0,
@@ -27,50 +27,32 @@ models_library.benard_cell = {
         {
           "rectangle": {
             "x": 0.0,
-            "y": 3.4000006,
+            "y": 0.0,
             "width": 10.0,
             "height": 1.0
           },
           "thermal_conductivity": 1.0,
-          "specific_heat": 1300.0,
-          "density": 25.0,
-          "transmission": 0.0,
-          "reflection": 0.0,
-          "absorption": 1.0,
-          "emissivity": 0.0,
-          "temperature": 0.0,
-          "constant_temperature": true,
-          "texture": {
-            "texture_fg": -0x1000000,
-            "texture_bg": -0x7f7f80,
-            "texture_style": 9,
-            "texture_width": 8,
-            "texture_height": 8
-          },
-          "filled": false
-        },
-        {
-          "rectangle": {
-            "x": 0.0,
-            "y": 7.0,
-            "width": 10.0,
-            "height": 1.0
-          },
-          "thermal_conductivity": 1.0E-6,
-          "specific_heat": 1300.0,
-          "density": 25.0,
+          "specific_heat": 1000.0,
+          "density": 5.0,
           "transmission": 0.0,
           "reflection": 0.0,
           "absorption": 1.0,
           "emissivity": 0.0,
           "temperature": 0.0,
           "constant_temperature": false,
-          "label": "Insulator"
+          "texture": {
+            "texture_fg": -0x1000000,
+            "texture_bg": -0x7f7f80,
+            "texture_style": 10,
+            "texture_width": 10,
+            "texture_height": 10
+          },
+          "filled": false
         },
         {
           "rectangle": {
             "x": 0.0,
-            "y": 6.8,
+            "y": 4.9,
             "width": 10.0,
             "height": 0.2
           },
@@ -81,24 +63,60 @@ models_library.benard_cell = {
           "reflection": 0.0,
           "absorption": 1.0,
           "emissivity": 0.0,
-          "temperature": 20.0,
+          "temperature": 40.0,
           "constant_temperature": true
+        },
+        {
+          "rectangle": {
+            "x": 0.0,
+            "y": 9.0,
+            "width": 10.0,
+            "height": 1.0
+          },
+          "thermal_conductivity": 1.0,
+          "specific_heat": 1000.0,
+          "density": 5.0,
+          "transmission": 0.0,
+          "reflection": 0.0,
+          "absorption": 1.0,
+          "emissivity": 0.0,
+          "temperature": 0.0,
+          "constant_temperature": false,
+          "texture": {
+            "texture_fg": -0x1000000,
+            "texture_bg": -0x7f7f80,
+            "texture_style": 10,
+            "texture_width": 10,
+            "texture_height": 10
+          },
+          "filled": false
         }
       ]
     }
   },
-  "sensor": "\n",
+  "sensor": {
+    "thermometer": [
+      {
+        "label": "T2",
+        "x": 5.0,
+        "y": 9.25
+      },
+      {
+        "label": "T1",
+        "x": 5.0,
+        "y": 0.75
+      }
+    ]
+  },
   "view": {
     "grid_size": 10,
-    "isotherm": true,
     "color_palette_type": 0,
     "color_palette_x": 0.0,
     "color_palette_y": 0.0,
     "color_palette_w": 0.0,
     "color_palette_h": 0.0,
     "minimum_temperature": 0.0,
-    "maximum_temperature": 20.0,
-    "heat_flux_line": true,
+    "maximum_temperature": 50.0,
     "graph_xlabel": "Time"
   }
 };

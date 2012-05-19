@@ -1,5 +1,5 @@
 var models_library = models_library || {};
-models_library.fixed_flux_boundary = {
+models_library.neumann = {
   "model": {
     "timestep": 100.0,
     "measurement_interval": 100,
@@ -21,53 +21,23 @@ models_library.fixed_flux_boundary = {
         "left": 0.0,
         "right": 0.0
       }
-    },
-    "structure": {
-      "part": {
-        "ellipse": {
-          "x": 5.0,
-          "y": 5.0,
-          "a": 1.0,
-          "b": 1.0
-        },
-        "thermal_conductivity": 1.0,
-        "specific_heat": 1300.0,
-        "density": 25.0,
-        "transmission": 0.0,
-        "reflection": 0.0,
-        "absorption": 1.0,
-        "emissivity": 0.0,
-        "temperature": 20.0,
-        "constant_temperature": true
-      }
     }
   },
-  "sensor": {
-    "thermometer": [
-      {
-        "x": 4.9166665,
-        "y": 3.1333334
-      },
-      {
-        "x": 5.0833335,
-        "y": 8.533334
-      }
-    ]
-  },
+  "sensor": "\n",
   "view": {
+    "grid": true,
     "grid_size": 10,
-    "isotherm": true,
     "color_palette_type": 0,
     "color_palette_x": 0.0,
     "color_palette_y": 0.0,
     "color_palette_w": 0.0,
     "color_palette_h": 0.0,
     "minimum_temperature": 0.0,
-    "maximum_temperature": 40.0,
-    "heat_flux_line": true,
+    "maximum_temperature": 100.0,
     "graph_xlabel": "Time",
+    "clock": false,
     "text": {
-      "string": "Insulative boundary",
+      "string": "Neumann boundary condition",
       "name": "Arial",
       "size": 12,
       "style": 0,
