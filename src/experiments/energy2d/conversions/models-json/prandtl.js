@@ -1,7 +1,7 @@
 var models_library = models_library || {};
-models_library.natural_convection = {
+models_library.prandtl = {
   "model": {
-    "timestep": 0.5,
+    "timestep": 0.25,
     "measurement_interval": 100,
     "viewupdate_interval": 10,
     "sun_angle": 1.5707964,
@@ -9,9 +9,12 @@ models_library.natural_convection = {
     "solar_ray_count": 24,
     "solar_ray_speed": 0.1,
     "photon_emission_interval": 20,
+    "z_heat_diffusivity": 0.0,
     "background_conductivity": 1.0,
-    "background_viscosity": 0.0010,
-    "thermal_buoyancy": 2.5E-4,
+    "background_density": 1.0,
+    "background_specific_heat": 1000.0,
+    "background_viscosity": 0.001,
+    "thermal_buoyancy": 5.0E-4,
     "buoyancy_approximation": 0,
     "boundary": {
       "flux_at_border": {
@@ -39,6 +42,13 @@ models_library.natural_convection = {
           "emissivity": 0.0,
           "temperature": 0.0,
           "constant_temperature": false,
+          "texture": {
+            "texture_fg": -0x1000000,
+            "texture_bg": -0x1,
+            "texture_style": 10,
+            "texture_width": 12,
+            "texture_height": 12
+          },
           "filled": false
         },
         {
@@ -74,40 +84,6 @@ models_library.natural_convection = {
           "emissivity": 0.0,
           "temperature": 30.0,
           "constant_temperature": true
-        },
-        {
-          "rectangle": {
-            "x": -10.0,
-            "y": 6.0,
-            "width": 5.0,
-            "height": 0.8
-          },
-          "thermal_conductivity": 0.08,
-          "specific_heat": 1300.0,
-          "density": 25.0,
-          "transmission": 0.0,
-          "reflection": 0.0,
-          "absorption": 1.0,
-          "emissivity": 0.0,
-          "temperature": 0.0,
-          "constant_temperature": false
-        },
-        {
-          "rectangle": {
-            "x": 10.0,
-            "y": 6.0,
-            "width": 5.0,
-            "height": 0.8
-          },
-          "thermal_conductivity": 0.08,
-          "specific_heat": 1300.0,
-          "density": 25.0,
-          "transmission": 0.0,
-          "reflection": 0.0,
-          "absorption": 1.0,
-          "emissivity": 0.0,
-          "temperature": 0.0,
-          "constant_temperature": false
         }
       ]
     }
@@ -125,20 +101,22 @@ models_library.natural_convection = {
     ]
   },
   "view": {
-    "rainbow": true,
-    "rainbow_x": 0.083333336,
-    "rainbow_y": 0.033333335,
-    "rainbow_w": 0.8333333,
-    "rainbow_h": 0.033333335,
+    "grid_size": 10,
+    "color_palette_type": 0,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
     "minimum_temperature": 0.0,
     "maximum_temperature": 40.0,
+    "graph_xlabel": "Time",
     "text": {
       "string": "Prandtl = %Prandtl",
       "name": "Arial",
       "size": 14,
       "style": 0,
       "color": 0xffffff,
-      "x": 1.0,
+      "x": 4.0,
       "y": 1.0
     }
   }

@@ -1,7 +1,7 @@
 var models_library = models_library || {};
-models_library.smoke_in_wind = {
+models_library.constant_power_sources = {
   "model": {
-    "timestep": 0.2,
+    "timestep": 10.0,
     "measurement_interval": 100,
     "viewupdate_interval": 10,
     "sun_angle": 1.5707964,
@@ -9,12 +9,12 @@ models_library.smoke_in_wind = {
     "solar_ray_count": 24,
     "solar_ray_speed": 0.1,
     "photon_emission_interval": 20,
-    "background_conductivity": 1.0,
-    "background_viscosity": 1.0E-4,
-    "thermal_buoyancy": 0.0010,
+    "z_heat_diffusivity": 0.0,
+    "convective": false,
+    "thermal_buoyancy": 2.5E-4,
     "buoyancy_approximation": 1,
     "boundary": {
-      "temperature_at_border": {
+      "flux_at_border": {
         "upper": 0.0,
         "lower": 0.0,
         "left": 0.0,
@@ -24,11 +24,11 @@ models_library.smoke_in_wind = {
     "structure": {
       "part": [
         {
-          "rectangle": {
-            "x": 0.0,
-            "y": 0.0,
-            "width": 0.2,
-            "height": 5.0
+          "ellipse": {
+            "x": 3.0,
+            "y": 7.0,
+            "a": 1.0,
+            "b": 1.0
           },
           "thermal_conductivity": 0.08,
           "specific_heat": 1300.0,
@@ -39,14 +39,16 @@ models_library.smoke_in_wind = {
           "emissivity": 0.0,
           "temperature": 0.0,
           "constant_temperature": false,
-          "wind_speed": 0.2
+          "power": -10.0,
+          "uid": "SOURCE2",
+          "label": "%power_density"
         },
         {
           "ellipse": {
-            "x": 5.0,
-            "y": 6.0,
-            "a": 0.5,
-            "b": 0.5
+            "x": 6.0,
+            "y": 4.0,
+            "a": 1.0,
+            "b": 1.0
           },
           "thermal_conductivity": 0.08,
           "specific_heat": 1300.0,
@@ -55,8 +57,11 @@ models_library.smoke_in_wind = {
           "reflection": 0.0,
           "absorption": 1.0,
           "emissivity": 0.0,
-          "temperature": 20.0,
-          "constant_temperature": true
+          "temperature": 0.0,
+          "constant_temperature": false,
+          "power": 10.0,
+          "uid": "SOURCE1",
+          "label": "%power_density"
         }
       ]
     }
@@ -64,33 +69,34 @@ models_library.smoke_in_wind = {
   "sensor": {
     "thermometer": [
       {
-        "x": 2.0,
-        "y": 5.0
+        "x": 5.39028,
+        "y": 4.806071
       },
       {
-        "x": 4.0,
-        "y": 5.0
-      },
-      {
-        "x": 8.0,
-        "y": 5.0
+        "x": 3.6671576,
+        "y": 6.340641
       }
     ]
   },
   "view": {
-    "rainbow_x": 0.0,
-    "rainbow_y": 0.0,
-    "rainbow_w": 0.0,
-    "rainbow_h": 0.0,
+    "grid_size": 10,
+    "isotherm": true,
+    "color_palette_type": 0,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
     "minimum_temperature": 0.0,
-    "maximum_temperature": 40.0,
+    "maximum_temperature": 50.0,
+    "heat_flux_line": true,
+    "graph_xlabel": "Time",
     "text": {
-      "string": "Fan",
+      "string": "Constant power sources",
       "name": "Arial",
       "size": 12,
       "style": 0,
       "color": 0xffffff,
-      "x": 1.0,
+      "x": 0.5,
       "y": 9.0
     }
   }

@@ -1,8 +1,7 @@
 var models_library = models_library || {};
-models_library.conduction2 = {
+models_library.natural_convection1 = {
   "model": {
-    "model_width": 0.1,
-    "model_height": 0.1,
+    "timestep": 0.25,
     "measurement_interval": 100,
     "viewupdate_interval": 10,
     "sun_angle": 1.5707964,
@@ -11,10 +10,10 @@ models_library.conduction2 = {
     "solar_ray_speed": 0.1,
     "photon_emission_interval": 20,
     "z_heat_diffusivity": 0.0,
-    "convective": false,
-    "background_conductivity": 1.0E-9,
+    "background_conductivity": 1.0,
     "background_density": 1.0,
-    "background_specific_heat": 100.0,
+    "background_specific_heat": 1000.0,
+    "background_viscosity": 2.0E-4,
     "thermal_buoyancy": 2.5E-4,
     "buoyancy_approximation": 1,
     "boundary": {
@@ -31,59 +30,12 @@ models_library.conduction2 = {
           "rectangle": {
             "x": 0.0,
             "y": 0.0,
-            "width": 0.02,
-            "height": 0.04
-          },
-          "thermal_conductivity": 0.08,
-          "specific_heat": 1300.0,
-          "density": 900.0,
-          "transmission": 0.0,
-          "reflection": 0.0,
-          "absorption": 1.0,
-          "emissivity": 0.0,
-          "temperature": 50.0,
-          "constant_temperature": true,
-          "uid": "UPPER_LEFT",
-          "filled": false,
-          "label": "%temperature",
-          "draggable": false
-        },
-        {
-          "rectangle": {
-            "x": 0.080000006,
-            "y": 0.0,
-            "width": 0.02,
-            "height": 0.04
-          },
-          "thermal_conductivity": 0.08,
-          "specific_heat": 1300.0,
-          "density": 25.0,
-          "transmission": 0.0,
-          "reflection": 0.0,
-          "absorption": 1.0,
-          "emissivity": 0.0,
-          "temperature": 0.0,
-          "constant_temperature": false,
-          "texture": {
-            "texture_fg": -0x1000000,
-            "texture_bg": -0x7f7f80,
-            "texture_style": 16,
-            "texture_width": 12,
-            "texture_height": 12
-          },
-          "filled": false,
-          "draggable": false
-        },
-        {
-          "rectangle": {
-            "x": 0.020000001,
-            "y": 0.0195,
-            "width": 0.06,
-            "height": 0.0010
+            "width": 10.0,
+            "height": 2.0
           },
           "thermal_conductivity": 1.0,
           "specific_heat": 1000.0,
-          "density": 900.0,
+          "density": 25.0,
           "transmission": 0.0,
           "reflection": 0.0,
           "absorption": 1.0,
@@ -97,35 +49,54 @@ models_library.conduction2 = {
             "texture_width": 12,
             "texture_height": 12
           },
-          "filled": false
+          "filled": false,
+          "draggable": false
         },
         {
           "rectangle": {
             "x": 0.0,
-            "y": 0.06,
-            "width": 0.02,
-            "height": 0.04
+            "y": 7.0,
+            "width": 10.0,
+            "height": 1.0
           },
-          "thermal_conductivity": 0.08,
-          "specific_heat": 1300.0,
-          "density": 900.0,
+          "thermal_conductivity": 1.0E-9,
+          "specific_heat": 1000.0,
+          "density": 25.0,
+          "transmission": 0.0,
+          "reflection": 0.0,
+          "absorption": 1.0,
+          "emissivity": 0.0,
+          "temperature": 0.0,
+          "constant_temperature": false,
+          "label": "Insulator",
+          "draggable": false
+        },
+        {
+          "rectangle": {
+            "x": 0.0,
+            "y": 6.8,
+            "width": 4.8,
+            "height": 0.2
+          },
+          "thermal_conductivity": 1.0,
+          "specific_heat": 1000.0,
+          "density": 25.0,
           "transmission": 0.0,
           "reflection": 0.0,
           "absorption": 1.0,
           "emissivity": 0.0,
           "temperature": 50.0,
           "constant_temperature": true,
-          "uid": "LOWER_LEFT",
-          "filled": false,
+          "uid": "left_heater",
           "label": "%temperature",
           "draggable": false
         },
         {
           "rectangle": {
-            "x": 0.080000006,
-            "y": 0.06,
-            "width": 0.02,
-            "height": 0.04
+            "x": -10.0,
+            "y": 6.0,
+            "width": 5.0,
+            "height": 0.8
           },
           "thermal_conductivity": 0.08,
           "specific_heat": 1300.0,
@@ -135,41 +106,80 @@ models_library.conduction2 = {
           "absorption": 1.0,
           "emissivity": 0.0,
           "temperature": 0.0,
-          "constant_temperature": false,
-          "texture": {
-            "texture_fg": -0x1000000,
-            "texture_bg": -0x7f7f80,
-            "texture_style": 16,
-            "texture_width": 12,
-            "texture_height": 12
-          },
-          "filled": false,
-          "draggable": false
+          "constant_temperature": false
         },
         {
           "rectangle": {
-            "x": 0.020000001,
-            "y": 0.074999996,
-            "width": 0.06,
-            "height": 0.01
+            "x": 10.0,
+            "y": 6.0,
+            "width": 5.0,
+            "height": 0.8
           },
-          "thermal_conductivity": 1.0,
-          "specific_heat": 1000.0,
-          "density": 900.0,
+          "thermal_conductivity": 0.08,
+          "specific_heat": 1300.0,
+          "density": 25.0,
+          "transmission": 0.0,
+          "reflection": 0.0,
+          "absorption": 1.0,
+          "emissivity": 0.0,
+          "temperature": 0.0,
+          "constant_temperature": false
+        },
+        {
+          "rectangle": {
+            "x": -0.0333333,
+            "y": 8.05,
+            "width": 10.016666,
+            "height": 2.05
+          },
+          "thermal_conductivity": 1.0E-9,
+          "specific_heat": 1300.0,
+          "density": 25.0,
           "transmission": 0.0,
           "reflection": 0.0,
           "absorption": 1.0,
           "emissivity": 0.0,
           "temperature": 0.0,
           "constant_temperature": false,
-          "texture": {
-            "texture_fg": -0x1000000,
-            "texture_bg": -0x7f7f80,
-            "texture_style": 10,
-            "texture_width": 12,
-            "texture_height": 12
+          "filled": false,
+          "draggable": false
+        },
+        {
+          "rectangle": {
+            "x": 5.2,
+            "y": 6.8,
+            "width": 4.8,
+            "height": 0.2
           },
-          "filled": false
+          "thermal_conductivity": 1.0,
+          "specific_heat": 1000.0,
+          "density": 25.0,
+          "transmission": 0.0,
+          "reflection": 0.0,
+          "absorption": 1.0,
+          "emissivity": 0.0,
+          "temperature": 25.0,
+          "constant_temperature": true,
+          "uid": "right_heater",
+          "label": "%temperature"
+        },
+        {
+          "rectangle": {
+            "x": 4.8,
+            "y": 1.3000001,
+            "width": 0.4,
+            "height": 6.0
+          },
+          "thermal_conductivity": 1.0E-9,
+          "specific_heat": 1000.0,
+          "density": 25.0,
+          "transmission": 0.0,
+          "reflection": 0.0,
+          "absorption": 1.0,
+          "emissivity": 0.0,
+          "temperature": 0.0,
+          "constant_temperature": false,
+          "label": "Insulator"
         }
       ]
     }
@@ -177,29 +187,25 @@ models_library.conduction2 = {
   "sensor": {
     "thermometer": [
       {
-        "label": "T2",
-        "x": 0.09,
-        "y": 0.08
+        "x": 2.5,
+        "y": 1.75
       },
       {
-        "label": "T1",
-        "x": 0.09,
-        "y": 0.020000003
+        "x": 7.5,
+        "y": 1.75
       }
     ]
   },
   "view": {
-    "grid": true,
     "grid_size": 10,
-    "color_palette_type": 0,
+    "ruler": true,
+    "color_palette_type": 1,
     "color_palette_x": 0.0,
     "color_palette_y": 0.0,
     "color_palette_w": 0.0,
     "color_palette_h": 0.0,
     "minimum_temperature": 0.0,
     "maximum_temperature": 100.0,
-    "heat_flux_line": true,
-    "graph_xlabel": "Time",
-    "clock": false
+    "graph_xlabel": "Time"
   }
 };
