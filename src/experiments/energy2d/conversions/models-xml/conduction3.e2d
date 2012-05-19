@@ -10,7 +10,7 @@
 <solar_ray_count>24</solar_ray_count>
 <solar_ray_speed>0.1</solar_ray_speed>
 <photon_emission_interval>20</photon_emission_interval>
-<convective>false</convective>
+<z_heat_diffusivity>0.0</z_heat_diffusivity><convective>false</convective>
 <background_conductivity>1.0E-9</background_conductivity>
 <background_density>1.0</background_density>
 <background_specific_heat>100.0</background_specific_heat>
@@ -22,13 +22,14 @@
 <structure>
 <part><rectangle x="0.0" y="0.0" width="0.02" height="0.04"/><thermal_conductivity>0.08</thermal_conductivity>
 <specific_heat>1300.0</specific_heat>
-<density>25.0</density>
+<density>900.0</density>
 <transmission>0.0</transmission>
 <reflection>0.0</reflection>
 <absorption>1.0</absorption>
 <emissivity>0.0</emissivity>
 <temperature>100.0</temperature>
 <constant_temperature>true</constant_temperature>
+<uid>UPPER_LEFT</uid>
 <filled>false</filled>
 <label>%temperature</label>
 <draggable>false</draggable>
@@ -70,7 +71,7 @@
 </part>
 <part><rectangle x="0.0" y="0.06" width="0.02" height="0.04"/><thermal_conductivity>0.08</thermal_conductivity>
 <specific_heat>1300.0</specific_heat>
-<density>25.0</density>
+<density>900.0</density>
 <transmission>0.0</transmission>
 <reflection>0.0</reflection>
 <absorption>1.0</absorption>
@@ -125,7 +126,8 @@
 <view>
 <grid>true</grid>
 <grid_size>10</grid_size>
-<rainbow_x>0.0</rainbow_x><rainbow_y>0.0</rainbow_y><rainbow_w>0.49333334</rainbow_w><rainbow_h>0.033333335</rainbow_h><minimum_temperature>0.0</minimum_temperature>
+<color_palette_type>0</color_palette_type>
+<color_palette_x>0.0</color_palette_x><color_palette_y>0.0</color_palette_y><color_palette_w>0.0</color_palette_w><color_palette_h>0.0</color_palette_h><minimum_temperature>0.0</minimum_temperature>
 <maximum_temperature>100.0</maximum_temperature>
 <heat_flux_line>true</heat_flux_line>
 <graph_xlabel>Time</graph_xlabel><clock>false</clock>
