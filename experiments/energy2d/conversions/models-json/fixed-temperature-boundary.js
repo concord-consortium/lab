@@ -9,6 +9,7 @@ models_library.fixed_temperature_boundary = {
     "solar_ray_count": 24,
     "solar_ray_speed": 0.1,
     "photon_emission_interval": 20,
+    "z_heat_diffusivity": 0.0,
     "convective": false,
     "background_conductivity": 0.25,
     "thermal_buoyancy": 2.5E-4,
@@ -36,25 +37,37 @@ models_library.fixed_temperature_boundary = {
         "reflection": 0.0,
         "absorption": 1.0,
         "emissivity": 0.0,
-        "temperature": 0.0,
-        "constant_temperature": false,
-        "power": 20.0
+        "temperature": 20.0,
+        "constant_temperature": true
       }
     }
   },
-  "sensor": "\n",
+  "sensor": {
+    "thermometer": [
+      {
+        "x": 4.866667,
+        "y": 3.25
+      },
+      {
+        "x": 4.9666667,
+        "y": 8.433333
+      }
+    ]
+  },
   "view": {
     "grid_size": 10,
     "isotherm": true,
-    "rainbow_x": 0.0,
-    "rainbow_y": 0.0,
-    "rainbow_w": 0.0,
-    "rainbow_h": 0.0,
+    "color_palette_type": 0,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
     "minimum_temperature": 0.0,
     "maximum_temperature": 40.0,
     "heat_flux_line": true,
+    "graph_xlabel": "Time",
     "text": {
-      "string": "Fixed temperature boundary",
+      "string": "Zero degree temperature boundary",
       "name": "Arial",
       "size": 12,
       "style": 0,

@@ -1,7 +1,7 @@
 var models_library = models_library || {};
 models_library.natural_convection = {
   "model": {
-    "timestep": 0.25,
+    "timestep": 0.5,
     "measurement_interval": 100,
     "viewupdate_interval": 10,
     "sun_angle": 1.5707964,
@@ -9,8 +9,8 @@ models_library.natural_convection = {
     "solar_ray_count": 24,
     "solar_ray_speed": 0.1,
     "photon_emission_interval": 20,
-    "background_conductivity": 0.5,
-    "background_viscosity": 5.0E-5,
+    "background_conductivity": 1.0,
+    "background_viscosity": 0.0010,
     "thermal_buoyancy": 2.5E-4,
     "buoyancy_approximation": 0,
     "boundary": {
@@ -28,30 +28,40 @@ models_library.natural_convection = {
             "x": 0.0,
             "y": 0.0,
             "width": 10.0,
-            "height": 1.0
+            "height": 2.0
           },
-          "thermal_conductivity": 1.0,
-          "specific_heat": 1000.0,
-          "density": 5.0,
+          "thermal_conductivity": 10.0,
+          "specific_heat": 1300.0,
+          "density": 1.0,
           "transmission": 0.0,
           "reflection": 0.0,
           "absorption": 1.0,
           "emissivity": 0.0,
           "temperature": 0.0,
           "constant_temperature": false,
-          "texture": {
-            "texture_fg": -0x1000000,
-            "texture_bg": -0x7f7f80,
-            "texture_style": 10,
-            "texture_width": 10,
-            "texture_height": 10
-          },
           "filled": false
         },
         {
           "rectangle": {
             "x": 0.0,
-            "y": 4.9,
+            "y": 7.0,
+            "width": 10.0,
+            "height": 1.0
+          },
+          "thermal_conductivity": 1.0E-6,
+          "specific_heat": 1300.0,
+          "density": 25.0,
+          "transmission": 0.0,
+          "reflection": 0.0,
+          "absorption": 1.0,
+          "emissivity": 0.0,
+          "temperature": 0.0,
+          "constant_temperature": false
+        },
+        {
+          "rectangle": {
+            "x": 0.0,
+            "y": 6.8,
             "width": 10.0,
             "height": 0.2
           },
@@ -62,33 +72,42 @@ models_library.natural_convection = {
           "reflection": 0.0,
           "absorption": 1.0,
           "emissivity": 0.0,
-          "temperature": 40.0,
+          "temperature": 30.0,
           "constant_temperature": true
         },
         {
           "rectangle": {
-            "x": 0.0,
-            "y": 9.0,
-            "width": 10.0,
-            "height": 1.0
+            "x": -10.0,
+            "y": 6.0,
+            "width": 5.0,
+            "height": 0.8
           },
-          "thermal_conductivity": 1.0,
-          "specific_heat": 1000.0,
-          "density": 5.0,
+          "thermal_conductivity": 0.08,
+          "specific_heat": 1300.0,
+          "density": 25.0,
           "transmission": 0.0,
           "reflection": 0.0,
           "absorption": 1.0,
           "emissivity": 0.0,
           "temperature": 0.0,
-          "constant_temperature": false,
-          "texture": {
-            "texture_fg": -0x1000000,
-            "texture_bg": -0x7f7f80,
-            "texture_style": 10,
-            "texture_width": 10,
-            "texture_height": 10
+          "constant_temperature": false
+        },
+        {
+          "rectangle": {
+            "x": 10.0,
+            "y": 6.0,
+            "width": 5.0,
+            "height": 0.8
           },
-          "filled": false
+          "thermal_conductivity": 0.08,
+          "specific_heat": 1300.0,
+          "density": 25.0,
+          "transmission": 0.0,
+          "reflection": 0.0,
+          "absorption": 1.0,
+          "emissivity": 0.0,
+          "temperature": 0.0,
+          "constant_temperature": false
         }
       ]
     }
@@ -96,24 +115,31 @@ models_library.natural_convection = {
   "sensor": {
     "thermometer": [
       {
-        "label": "T2",
         "x": 5.0,
-        "y": 9.25
+        "y": 6.5
       },
       {
-        "label": "T1",
         "x": 5.0,
-        "y": 0.75
+        "y": 1.75
       }
     ]
   },
   "view": {
-    "grid_size": 10,
+    "rainbow": true,
     "rainbow_x": 0.083333336,
     "rainbow_y": 0.033333335,
     "rainbow_w": 0.8333333,
     "rainbow_h": 0.033333335,
     "minimum_temperature": 0.0,
-    "maximum_temperature": 50.0
+    "maximum_temperature": 40.0,
+    "text": {
+      "string": "Prandtl = %Prandtl",
+      "name": "Arial",
+      "size": 14,
+      "style": 0,
+      "color": 0xffffff,
+      "x": 1.0,
+      "y": 1.0
+    }
   }
 };

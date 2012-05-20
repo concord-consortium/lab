@@ -9,7 +9,7 @@
 <solar_ray_count>24</solar_ray_count>
 <solar_ray_speed>0.1</solar_ray_speed>
 <photon_emission_interval>20</photon_emission_interval>
-<background_conductivity>0.1</background_conductivity>
+<z_heat_diffusivity>0.0</z_heat_diffusivity><background_conductivity>0.1</background_conductivity>
 <background_viscosity>1.0E-4</background_viscosity>
 <thermal_buoyancy>0.0</thermal_buoyancy>
 <buoyancy_approximation>1</buoyancy_approximation>
@@ -82,10 +82,10 @@
 </sensor>
 <view>
 <grid_size>10</grid_size>
-<rainbow_x>0.0</rainbow_x><rainbow_y>0.0</rainbow_y><rainbow_w>0.49333334</rainbow_w><rainbow_h>0.033333335</rainbow_h><minimum_temperature>0.0</minimum_temperature>
+<color_palette_type>1</color_palette_type>
+<color_palette_x>0.0</color_palette_x><color_palette_y>0.0</color_palette_y><color_palette_w>0.0</color_palette_w><color_palette_h>0.0</color_palette_h><minimum_temperature>0.0</minimum_temperature>
 <maximum_temperature>40.0</maximum_temperature>
 <velocity>true</velocity>
-<streamline>true</streamline>
 <text string="Vortex street forming" name="Arial" size="14" style="0" color="ffffff" x="1.0" y="9.0"/>
 <text string="Vortex street not forming" name="Arial" size="14" style="0" color="ffffff" x="1.0" y="1.0"/>
 </view>

@@ -64,24 +64,20 @@ models_library.smoke_in_wind = {
   "sensor": {
     "thermometer": [
       {
-        "label": "T1",
         "x": 2.0,
         "y": 5.0
       },
       {
-        "label": "T2",
         "x": 4.0,
         "y": 5.0
       },
       {
-        "label": "T3",
         "x": 8.0,
         "y": 5.0
       }
     ]
   },
   "view": {
-    "grid_size": 10,
     "rainbow_x": 0.0,
     "rainbow_y": 0.0,
     "rainbow_w": 0.0,

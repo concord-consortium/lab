@@ -9,7 +9,7 @@
 <solar_ray_count>24</solar_ray_count>
 <solar_ray_speed>0.1</solar_ray_speed>
 <photon_emission_interval>20</photon_emission_interval>
-<background_conductivity>5.0</background_conductivity>
+<z_heat_diffusivity>0.0</z_heat_diffusivity><background_conductivity>5.0</background_conductivity>
 <background_viscosity>0.0010</background_viscosity>
 <thermal_buoyancy>2.5E-4</thermal_buoyancy>
 <buoyancy_approximation>1</buoyancy_approximation>
@@ -17,7 +17,7 @@
 <flux_at_border upper="0.0" lower="0.0" left="0.0" right="0.0"/>
 </boundary>
 <structure>
-<part><rectangle x="0.0" y="4.0" width="10.0" height="1.0"/><thermal_conductivity>1.0</thermal_conductivity>
+<part><rectangle x="0.0" y="3.4000006" width="10.0" height="1.0"/><thermal_conductivity>1.0</thermal_conductivity>
 <specific_heat>1300.0</specific_heat>
 <density>25.0</density>
 <transmission>0.0</transmission>
@@ -29,8 +29,8 @@
 <texture><texture_fg>-1000000</texture_fg>
 <texture_bg>-7f7f80</texture_bg>
 <texture_style>9</texture_style>
-<texture_width>12</texture_width>
-<texture_height>12</texture_height>
+<texture_width>8</texture_width>
+<texture_height>8</texture_height>
 </texture>
 <filled>false</filled>
 </part>
@@ -43,12 +43,6 @@
 <emissivity>0.0</emissivity>
 <temperature>0.0</temperature>
 <constant_temperature>false</constant_temperature>
-<texture><texture_fg>-1000000</texture_fg>
-<texture_bg>-7f7f80</texture_bg>
-<texture_style>10</texture_style>
-<texture_width>10</texture_width>
-<texture_height>10</texture_height>
-</texture>
 <label>Insulator</label>
 </part>
 <part><rectangle x="0.0" y="6.8" width="10.0" height="0.2"/><thermal_conductivity>1.0</thermal_conductivity>
@@ -67,10 +61,10 @@
 </sensor>
 <view>
 <grid_size>10</grid_size>
-<rainbow>true</rainbow>
-<rainbow_x>0.083333336</rainbow_x><rainbow_y>0.033333335</rainbow_y><rainbow_w>0.8333333</rainbow_w><rainbow_h>0.033333335</rainbow_h><minimum_temperature>0.0</minimum_temperature>
+<isotherm>true</isotherm>
+<color_palette_type>0</color_palette_type>
+<color_palette_x>0.0</color_palette_x><color_palette_y>0.0</color_palette_y><color_palette_w>0.0</color_palette_w><color_palette_h>0.0</color_palette_h><minimum_temperature>0.0</minimum_temperature>
 <maximum_temperature>20.0</maximum_temperature>
-<velocity>true</velocity>
 <heat_flux_line>true</heat_flux_line>
 <graph_xlabel>Time</graph_xlabel></view>
 </state>

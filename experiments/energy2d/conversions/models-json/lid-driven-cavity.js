@@ -9,6 +9,7 @@ models_library.lid_driven_cavity = {
     "solar_ray_count": 24,
     "solar_ray_speed": 0.1,
     "photon_emission_interval": 20,
+    "z_heat_diffusivity": 0.0,
     "background_conductivity": 1.0,
     "background_viscosity": 1.0E-4,
     "thermal_buoyancy": 0.0,
@@ -45,12 +46,12 @@ models_library.lid_driven_cavity = {
   "sensor": "\n",
   "view": {
     "grid_size": 10,
-    "rainbow_x": 0.0,
-    "rainbow_y": 0.0,
-    "rainbow_w": 0.0,
-    "rainbow_h": 0.0,
+    "color_palette_type": 0,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
     "minimum_temperature": 0.0,
-    "maximum_temperature": 40.0,
-    "streamline": true
+    "maximum_temperature": 40.0
   }
 };

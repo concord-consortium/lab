@@ -41,12 +41,11 @@
 </structure>
 </model>
 <sensor>
-<thermometer label="T1" x="2.0" y="5.0"/>
-<thermometer label="T2" x="4.0" y="5.0"/>
-<thermometer label="T3" x="8.0" y="5.0"/>
+<thermometer x="2.0" y="5.0"/>
+<thermometer x="4.0" y="5.0"/>
+<thermometer x="8.0" y="5.0"/>
 </sensor>
 <view>
-<grid_size>10</grid_size>
 <rainbow_x>0.0</rainbow_x><rainbow_y>0.0</rainbow_y><rainbow_w>0.0</rainbow_w><rainbow_h>0.0</rainbow_h><minimum_temperature>0.0</minimum_temperature>
 <maximum_temperature>40.0</maximum_temperature>
 <text string="Fan" name="Arial" size="12" style="0" color="ffffff" x="1.0" y="9.0"/>

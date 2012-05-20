@@ -9,6 +9,7 @@ models_library.vortex_street = {
     "solar_ray_count": 24,
     "solar_ray_speed": 0.1,
     "photon_emission_interval": 20,
+    "z_heat_diffusivity": 0.0,
     "background_conductivity": 0.1,
     "background_viscosity": 1.0E-4,
     "thermal_buoyancy": 0.0,
@@ -123,14 +124,14 @@ models_library.vortex_street = {
   "sensor": "\n",
   "view": {
     "grid_size": 10,
-    "rainbow_x": 0.0,
-    "rainbow_y": 0.0,
-    "rainbow_w": 0.49333334,
-    "rainbow_h": 0.033333335,
+    "color_palette_type": 1,
+    "color_palette_x": 0.0,
+    "color_palette_y": 0.0,
+    "color_palette_w": 0.0,
+    "color_palette_h": 0.0,
     "minimum_temperature": 0.0,
     "maximum_temperature": 40.0,
     "velocity": true,
-    "streamline": true,
     "text": [
       {
         "string": "Vortex street forming",

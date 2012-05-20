@@ -9,7 +9,7 @@
 <solar_ray_count>24</solar_ray_count>
 <solar_ray_speed>0.1</solar_ray_speed>
 <photon_emission_interval>20</photon_emission_interval>
-<convective>false</convective>
+<z_heat_diffusivity>0.0</z_heat_diffusivity><convective>false</convective>
 <background_conductivity>0.25</background_conductivity>
 <thermal_buoyancy>2.5E-4</thermal_buoyancy>
 <buoyancy_approximation>1</buoyancy_approximation>
@@ -24,20 +24,22 @@
 <reflection>0.0</reflection>
 <absorption>1.0</absorption>
 <emissivity>0.0</emissivity>
-<temperature>0.0</temperature>
-<constant_temperature>false</constant_temperature>
-<power>20.0</power>
+<temperature>20.0</temperature>
+<constant_temperature>true</constant_temperature>
 </part>
 </structure>
 </model>
 <sensor>
+<thermometer x="4.866667" y="3.25"/>
+<thermometer x="4.9666667" y="8.433333"/>
 </sensor>
 <view>
 <grid_size>10</grid_size>
 <isotherm>true</isotherm>
-<rainbow_x>0.0</rainbow_x><rainbow_y>0.0</rainbow_y><rainbow_w>0.0</rainbow_w><rainbow_h>0.0</rainbow_h><minimum_temperature>0.0</minimum_temperature>
+<color_palette_type>0</color_palette_type>
+<color_palette_x>0.0</color_palette_x><color_palette_y>0.0</color_palette_y><color_palette_w>0.0</color_palette_w><color_palette_h>0.0</color_palette_h><minimum_temperature>0.0</minimum_temperature>
 <maximum_temperature>40.0</maximum_temperature>
 <heat_flux_line>true</heat_flux_line>
-<text string="Fixed temperature boundary" name="Arial" size="12" style="0" color="ffffff" x="0.5" y="9.0"/>
+<graph_xlabel>Time</graph_xlabel><text string="Zero degree temperature boundary" name="Arial" size="12" style="0" color="ffffff" x="0.5" y="9.0"/>
 </view>
 </state>

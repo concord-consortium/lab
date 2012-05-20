@@ -9,7 +9,7 @@
 <solar_ray_count>24</solar_ray_count>
 <solar_ray_speed>0.0010</solar_ray_speed>
 <photon_emission_interval>5</photon_emission_interval>
-<background_conductivity>0.2</background_conductivity>
+<z_heat_diffusivity>0.0</z_heat_diffusivity><background_conductivity>0.2</background_conductivity>
 <background_density>1.0</background_density>
 <background_specific_heat>100.0</background_specific_heat>
 <background_viscosity>1.0E-4</background_viscosity>
@@ -228,8 +228,9 @@
 <grid>true</grid>
 <grid_size>10</grid_size>
 <ruler>true</ruler>
-<rainbow_x>0.0</rainbow_x><rainbow_y>0.0</rainbow_y><rainbow_w>0.0</rainbow_w><rainbow_h>0.0</rainbow_h><minimum_temperature>0.0</minimum_temperature>
+<color_palette_type>0</color_palette_type>
+<color_palette_x>0.0</color_palette_x><color_palette_y>0.0</color_palette_y><color_palette_w>0.0</color_palette_w><color_palette_h>0.0</color_palette_h><minimum_temperature>0.0</minimum_temperature>
 <maximum_temperature>50.0</maximum_temperature>
-<text string="Where are the energy leaks?" name="Arial" size="14" style="0" color="ffffff" x="3.5" y="9.5"/>
+<graph_xlabel>Time</graph_xlabel><text string="Where are the energy leaks?" name="Arial" size="14" style="0" color="ffffff" x="3.5" y="9.5"/>
 </view>
 </state>
