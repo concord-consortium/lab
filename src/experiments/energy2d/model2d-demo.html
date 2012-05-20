@@ -298,27 +298,23 @@
               
         // display initial state
         step_count.innerHTML = 'frame: ' + model.indexOfStep;
-        
+
         // timing variables
         var one_before_that_sample_time = new Date();
         var last_sample_time = new Date();
         var sample_time = new Date();
         var average_sample_time_ms = sample_time - last_sample_time;
 
-        var hash_match = document.location.hash.match(/#(.*$)/)
-        if (hash_match && hash_match.length > 1) {
-          model_name = hash_match[1];
-          loadModelState(model_name);
-        }
+        window.onhashchange = loadModelFromLocationHash;
 
-        window.onhashchange = function() {
-          hash_match = document.location.hash.match(/#(.*$)/)
+        loadModelFromLocationHash();
+
+        function loadModelFromLocationHash() {
+          var hash_match = document.location.hash.match(/#(.*$)/)
           if (hash_match && hash_match.length > 1) {
-            if (hash_match !== model_name) {
-              model_name = hash_match[1];
-              loadModelState(model_name);
-              models_select.value = model_name;
-            }
+            model_name = hash_match[1];
+            loadModelState(model_name);
+            models_select.value = model_name;
           }
         }
 
