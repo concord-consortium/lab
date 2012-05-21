@@ -41,9 +41,9 @@
           voltage = ((pin0 * 5.0) / 1024.0),
           temperatureC = (voltage - 0.5) * 100; //TMP36
 
-      // scale temperature so that 20-30 is 0-10
-      var scaledTemp = temperatureC - 20;
-      scaledTemp = Math.max(Math.min(scaledTemp, 10), 0);
+      // scale temperature so that 20-30 is 0-20
+      var scaledTemp = (temperatureC - 20)*2;
+      scaledTemp = Math.max(Math.min(scaledTemp, 20), 0);
 
       model.set({temperature: scaledTemp})
       var roundedTemp = Math.floor(temperatureC * 100) / 100
