@@ -4,13 +4,17 @@ For the moment, to run these scripts
   $ node
   > require('./src/mw-helpers/mw-batch-converter.js')
   > convertMMLFolder()
+  > createCmlJsonIndex(outputHtmlFile)
 **/
 require('coffee-script');
 
 var parseMML = require('./mml-parser'),
     fs = require('fs'),
     path = require('path'),
-    legacyFolderPath = './imports/legacy-mw-content/';
+    jade = require('jade'),
+    legacyFolderPath = './imports/legacy-mw-content/',
+    convertedFolderPath = './imports/legacy-mw-content/converted/',
+    templatePath = './imports/legacy-mw-content/legacyMMLRunnables.jade';
 
 // example mmlFileName:
 // 'sam-activities/chemical-reactions/original-interactives-in-pages/page1/page1$0.mml'
@@ -22,7 +26,7 @@ convertMMLFile = function(mmlFileName){
       conversion = parseMML.parseMML(mml),
 
       folders = mmlFileName.split('/'),
-      outputPath = legacyFolderPath + "converted/";
+      outputPath = convertedFolderPath;
 
   if (conversion.json) {
     // create output folders. Will not overwrite anything if it already exists
@@ -86,7 +90,58 @@ convertMMLFolder = function(){
 
   console.log("");
   console.log("Converted "+successes+" files, failed to convert "+(mmlFiles.length - successes)+" files.");
-}
+  return mmlFiles;
+};
+
+// This assumes that convertMMLFolder() has already run. It searches for all the cml files,
+// finds all the related json model files, and creates a web page that has runnable links
+// for both of them
+// @param outputFile = e.g. './dist/imports/legacy-mw-content/legacyMMLRunnables.html'
+createCmlJsonIndex = function(outputFile) {
+  var mmlFiles = collectAllMMLFiles(legacyFolderPath),
+      cmlToJsonHash = {},
+      template, jadeFn, html;
+
+  for (var i=0, ii=mmlFiles.length; i<ii; i++) {
+    var mmlFolderPath = path.dirname(mmlFiles[i]),
+        files = fs.readdirSync(mmlFolderPath),
+        cmlFiles = [],
+        cmlFile, cmlFilePath;
+    for (var j=0, jj=files.length; j<jj; j++) {
+      if (~files[j].indexOf('.cml')) {
+        cmlFiles.push(files[j]);
+      }
+    }
+
+    // for now ignore folders that have more than one cml file
+    if (cmlFiles.length === 1) {
+      cmlFilePath = mmlFolderPath + '/' + cmlFiles[0];
+      cmlToJsonHash[cmlFilePath] = [];
+      // find all the JSON files in the equivalent converted folder
+      var relFolderName = mmlFolderPath.replace(legacyFolderPath.replace('./',''), ''),
+          convertedFolderName = convertedFolderPath + relFolderName,
+          jsonFiles;
+      try {
+        jsonFiles = fs.readdirSync(convertedFolderName);
+        for (var k=0, kk=jsonFiles.length; k<kk; k++) {
+          cmlToJsonHash[cmlFilePath].push(convertedFolderName + '/' +jsonFiles[k]);
+        }
+      } catch (e) {
+        // no converted json files could be found, that's ok
+      }
+    }
+  }
+
+  template = fs.readFileSync(templatePath);
+  jadeFn = jade.compile(template, { pretty: true });
+  html = jadeFn({cmlToJsonHash: cmlToJsonHash});
+
+  fs.writeFile(outputFile, html);
+
+  console.log("Created index at "+outputFile);
+  return cmlToJsonHash;
+};
 
 exports.convertMMLFile = convertMMLFile;
 exports.convertMMLFolder = convertMMLFolder;
+exports.createCmlJsonIndex = createCmlJsonIndex;
