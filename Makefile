@@ -25,6 +25,9 @@ vpath %.coffee src
 MARKDOWN_EXAMPLE_FILES := $(shell find src -name '*.md' -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/dist\/\1.html/' )
 vpath %.md src
 
+IMPORT_FILES := $(shell find imports -name '*.*' -exec echo {} \; | grep -v vendor | sed s'/\(.*\)/dist\/\1/' )
+vpath %.md imports
+
 MD_ENGINE_JS_FILES := $(shell find src/md-engine -name '*.js' -print)
 BROWSERIFY = ./node_modules/.bin/browserify
 
@@ -106,7 +109,8 @@ dist: \
 	dist/resources \
 	dist/examples \
 	dist/doc \
-	dist/experiments
+	dist/experiments \
+  dist/imports
 
 dist/examples:
 	mkdir -p dist/examples
@@ -120,6 +124,10 @@ dist/doc:
 
 dist/experiments:
 	cp -R src/experiments dist
+
+dist/imports: $(IMPORT_FILES)
+	mkdir -p dist/imports
+	rsync -avq imports/ dist/imports/
 
 dist/resources:
 	cp -R ./src/resources ./dist/
