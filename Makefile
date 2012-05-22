@@ -71,7 +71,8 @@ node_modules: node_modules/coffee-script \
 	node_modules/d3 \
 	node_modules/science \
 	node_modules/browserify \
-	node_modules/cherrio
+	node_modules/cherrio \
+	node_modules/jade
 	npm install
 
 node_modules/coffee-script:
