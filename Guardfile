@@ -46,7 +46,7 @@ guard 'shell' do
     command("make")
   end
   watch("src/index.sass") do
-    command("bin/sass -r ./src/sass/bourbon/lib/bourbon.rb src/index.sass dist/index.css")
+    command("bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb src/index.sass dist/index.css")
   end
   watch("src/readme.scss") do
     command("make")
