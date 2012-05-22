@@ -27,6 +27,7 @@ vpath %.md src
 
 MD_ENGINE_JS_FILES := $(shell find src/md-engine -name '*.js' -print)
 BROWSERIFY = ./node_modules/.bin/browserify
+CONVERT_MML_FILES = ./node-bin/mw-batch-converter
 
 LAB_JS_FILES = \
 	dist/lab/lab.grapher.js \
@@ -131,6 +132,7 @@ dist/experiments:
 .PHONY: dist/experiments
 
 dist/imports:
+	$(CONVERT_MML_FILES)
 	mkdir -p dist/imports
 	rsync -avq imports/ dist/imports/
 
