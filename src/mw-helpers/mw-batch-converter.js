@@ -5,7 +5,7 @@ For the moment, to run these scripts
   > require('./src/mw-helpers/mw-batch-converter.js')
   > convertMMLFolder()
 **/
-require('coffee-script')
+require('coffee-script');
 
 var parseMML = require('./mml-parser'),
     fs = require('fs'),
@@ -42,9 +42,10 @@ convertMMLFile = function(mmlFileName){
     console.log(conversion.error);
     return false;
   }
-}
+};
 
-// directory e.g. './imports/legacy-mw-content/sam-activities/'
+// recursively finds and collects all mml files in a directory
+// @param directory e.g. './imports/legacy-mw-content/'
 collectAllMMLFiles = function(directory) {
   function addFiles(dir) {
     var mmlFiles = [];
@@ -69,14 +70,14 @@ collectAllMMLFiles = function(directory) {
   }
 
   return addFiles(directory);
-}
+};
 
+// Batch comverts the entire legacy MML folder
 convertMMLFolder = function(){
   var mmlFiles = collectAllMMLFiles(legacyFolderPath),
       successes = 0;
   for (var i=0, ii=mmlFiles.length; i<ii; i++) {
     var relFileName = mmlFiles[i].replace(legacyFolderPath.replace('./',''), '');
-    console.log("converting "+relFileName);
     var success = convertMMLFile(relFileName);
     if (success) {
       successes++;
