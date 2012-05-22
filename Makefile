@@ -70,7 +70,8 @@ node_modules: node_modules/coffee-script \
 	node_modules/node-inspector \
 	node_modules/d3 \
 	node_modules/science \
-	node_modules/browserify
+	node_modules/browserify \
+	node_modules/cherrio
 	npm install
 
 node_modules/coffee-script:
@@ -95,6 +96,9 @@ node_modules/science:
 	npm install src/vendor/science.js
 
 node_modules/browserify:
+	npm install
+
+node_modules/cherrio:
 	npm install
 
 bin:
