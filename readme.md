@@ -91,9 +91,9 @@ these changes to the master branch and try running the `gh-pages` script again:
 
 #### Pushing the gh-pages branch to a remote server
 
-If you have ssh access to the EC2 server, deploying the changed client code is simple:
+If you have ssh access to lab.dev.concord.org, deploying the changed client code is simple:
 
-    ssh deploy@<temporary EC2 domain name> "cd /var/www/public; git pull"
+    ssh deploy@lab.dev.concord.org "cd /var/www/public; git pull"
 
 
 ## Molecular Modeling Examples:
