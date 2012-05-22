@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Boyle&apos;s law: The P-V relationship at constant temperature</page_title>
+<text>Gas Laws: Boyle&apos;s Law
+
+&lt; previous | index | next &gt;
+
+Let&apos;s first explore the relationship between the pressure and volume of a gas at constant temperature and number of particles.  
+
+In the model container below, each particle represents a gas molecule.  On the right side of the container is a piston with a pressure gauge on the left face.   The graph to the right of the model container will record the change in pressure of the system as we decrease the volume.  The model container is set so the temperature stays constant.
+
+Instructions:
+
+1.  Click the Decrease Volume button.  Observe the movement of the gas molecules and the change in pressure as recorded on the graph.
+2.  Click the Stop Model button when the volume stops decreasing.
+                  
+      
+
+3.  Take a snapshot of the graph by clicking the snapshot button above the graph (the snapshot button looks like this   ).  When the Add Snapshot dialog box appears, type &quot;Volume vs. Pressure at constant temperature and number of particles&quot; in the box below the snapshot.  Click OK.
+
+    
+
+As we decreased the volume, we discovered that the pressure increased because rate of collisions with the container walls increased.
+
+ 
+
+This inverse relationship between pressure and volume is known as Boyle&apos;s law.  Later in this activity, we&apos;ll see how Boyle&apos;s Law explains the mechanism by which humans breathe.  Let&apos;s now move on to explore the relationship between temperature and volume of a gas.
+
+&lt; previous | index | next &gt;</text>
+<section start="0" end="1493">
+<paragraph start="0" end="22">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="0" end="21">
+<size>15</size><bold>true</bold></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="51">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="23" end="25">
+<size>11</size></content>
+
+<content start="25" end="33">
+<href>page2.cml</href><size>11</size></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="41">
+<href>index.cml</href><size>11</size></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="48">
+<href>page4.cml</href><size>11</size></content>
+
+<content start="48" end="51">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="181">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="52" end="181">
+</content>
+
+</paragraph>
+<paragraph start="181" end="182">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="181" end="182">
+</content>
+
+</paragraph>
+<paragraph start="182" end="528">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="182" end="528">
+</content>
+
+</paragraph>
+<paragraph start="528" end="529">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="528" end="529">
+</content>
+
+</paragraph>
+<paragraph start="529" end="543">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="529" end="543">
+</content>
+
+</paragraph>
+<paragraph start="543" end="544">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="543" end="544">
+</content>
+
+</paragraph>
+<paragraph start="544" end="678">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="544" end="678">
+</content>
+
+</paragraph>
+<paragraph start="678" end="744">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="678" end="744">
+</content>
+
+</paragraph>
+<paragraph start="744" end="763">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="744" end="745">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page3$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="745" end="761">
+</content>
+
+<content start="761" end="762">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>West pressure:Obstacle #0</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="0.0" symbol="1" size="4" spacing="5" multiplier="0.25">X: Obstacle #0</time_series_y1>
+<autofitx>false</autofitx>
+<axis_x_min>0.0</axis_x_min>
+<axis_x_max>8.0</axis_x_max>
+<autofity>false</autofity>
+<axis_y_min>20.0</axis_y_min>
+<axis_y_max>80.0</axis_y_max>
+<width>400</width>
+<height>300</height>
+<axis_x_title>Pressure measured by probe (bar)</axis_x_title>
+<axis_y_title>Volume (angstrom^2)</axis_y_title>
+<legend_x>50</legend_x>
+<legend_y>333</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<border>Line</border>
+</component></content>
+
+<content start="762" end="763">
+</content>
+
+</paragraph>
+<paragraph start="763" end="770">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="763" end="764">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Decrease Volume</title>
+<tooltip>Clicking here will start the model and begin moving the piston to the left.</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select textbox 0;
+remove;
+
+show selectionhalo off;
+run;
+loop 1;
+set obstacle[0].externalfx -0.099999</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="764" end="766">
+</content>
+
+<content start="766" end="767">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop  Model</title>
+<tooltip>Clicking here will stop the model</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="767" end="770">
+</content>
+
+</paragraph>
+<paragraph start="770" end="771">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="770" end="771">
+</content>
+
+</paragraph>
+<paragraph start="771" end="1054">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="771" end="889">
+</content>
+
+<content start="889" end="890">
+<icon>snapshot.png</icon></content>
+
+<content start="890" end="1054">
+</content>
+
+</paragraph>
+<paragraph start="1054" end="1055">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1054" end="1055">
+</content>
+
+</paragraph>
+<paragraph start="1055" end="1060">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1055" end="1056">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>3</row>
+<width>400</width>
+<height>140</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;As the volume decreased, what happened to 
+    the pressure?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>pressure increased</choice>
+<choice>pressure decreased</choice>
+<choice>pressure remained the same</choice>
+<answer>0 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="1056" end="1058">
+</content>
+
+<content start="1058" end="1059">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>2</row>
+<width>400</width>
+<height>140</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;Which of the following best explains what 
+    occurred as the volume decreased?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>the strength and/or rate of collisions increased</choice>
+<choice>the strength and/or rate of collisions decreased</choice>
+<answer>0 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="1059" end="1060">
+</content>
+
+</paragraph>
+<paragraph start="1060" end="1061">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1060" end="1061">
+</content>
+
+</paragraph>
+<paragraph start="1061" end="1194">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1061" end="1112">
+</content>
+
+<content start="1112" end="1193">
+<bold>true</bold></content>
+
+<content start="1193" end="1194">
+</content>
+
+</paragraph>
+<paragraph start="1194" end="1195">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1194" end="1195">
+</content>
+
+</paragraph>
+<paragraph start="1195" end="1197">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1195" end="1196">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>2</row>
+<width>400</width>
+<height>130</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;3&quot; face=&quot;verdana&quot;&gt;Predict what would have happened to the 
+    pressure if we had increased the volume instead of decreasing it.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>pressure would have decreased</choice>
+<choice>pressure would have increased</choice>
+<answer>0 </answer>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="1196" end="1197">
+</content>
+
+</paragraph>
+<paragraph start="1197" end="1198">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1197" end="1198">
+</content>
+
+</paragraph>
+<paragraph start="1198" end="1464">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1198" end="1264">
+</content>
+
+<content start="1264" end="1275">
+<bold>true</bold></content>
+
+<content start="1275" end="1464">
+</content>
+
+</paragraph>
+<paragraph start="1464" end="1465">
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1464" end="1465">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1465" end="1493">
+<Alignment>1</Alignment>
+<LeftIndent>30.0</LeftIndent>
+<RightIndent>30.0</RightIndent>
+<content start="1465" end="1467">
+<size>11</size></content>
+
+<content start="1467" end="1475">
+<href>page2.cml</href><size>11</size></content>
+
+<content start="1475" end="1478">
+<size>11</size></content>
+
+<content start="1478" end="1483">
+<href>index.cml</href><size>11</size></content>
+
+<content start="1483" end="1486">
+<size>11</size></content>
+
+<content start="1486" end="1490">
+<href>page4.cml</href><size>11</size></content>
+
+<content start="1490" end="1492">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

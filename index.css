@@ -807,11 +807,19 @@ ul {
   padding: 1em; }
   .item-list ul {
     list-style-type: none;
-    margin: 0.5em 0 0;
-    padding: 0; }
+    margin: 0.5em 0em 0.5em 0em;
+    padding: 0em; }
     .item-list ul li {
-      margin: 0.5em 0.2em 0 0;
-      padding: 0; }
+      margin: 0.5em 0.2em 0em 0em;
+      padding: 0em; }
+      .item-list ul li ul {
+        list-style-type: none;
+        margin: 0.2em 0em 0em 1em;
+        padding: 0em; }
+        .item-list ul li ul li {
+          font-size: 90%;
+          margin: 0.2em 0.2em 0em 0em;
+          padding: 0em; }
   .item-list ol {
     margin: 0.5em 0 0;
     padding: 0; }

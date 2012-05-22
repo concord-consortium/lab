@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Intermolecular Attractions: Hydrogen Bonds in DNA</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+        
+     
+      
+      
+      
+
+</text>
+<section start="0" end="39">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="10">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+<content start="2" end="3">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>set echo top center; color echo violet; echo &quot;DNA Fragment&quot;; select backbone; color atoms [180,120,0]; color bonds [180,120,0]; select A and not backbone; color atoms blue; color bonds blue; select T and not backbone; color atoms yellow; color bonds yellow; select G and not backbone; color atoms green; color bonds green; select C and not backbone; color atoms red; color bonds red; define currentView *; select currentView; hbonds calculate; hbonds .1; color hbonds white; define hbondGroup *; define gcPair 3:A and not backbone or 18:B and not backbone; define atPair (6:A and not backbone or 15:B and not backbone) and not (atomno&gt;=190 and atomno&lt;193); define hbondGroup *;</script><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>1D68.pdb.gz</resource><state>page7$0.jms</state><width>440.0</width>
+<height>350.0</height>
+<border>Lowered Bevel</border>
+</component></content>
+
+<content start="3" end="8">
+</content>
+
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>280.0</width>
+<height>350.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;center&gt;
+      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;b&gt;&lt;strong&gt;Color 
+      Key&lt;/strong&gt;&lt;/b&gt;&lt;/font&gt;
+    &lt;/center&gt;
+    &lt;br&gt;
+    
+
+    &lt;table align=&quot;center&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;b&gt;Bases&lt;/b&gt;&lt;br&gt;&lt;img src=&quot;darkblue.gif&quot;&gt;&amp;#160;A&lt;br&gt;&lt;img src=&quot;yellow.gif&quot;&gt;&amp;#160;T&lt;br&gt;&lt;img src=&quot;green.gif&quot;&gt;&amp;#160;G&lt;br&gt;&lt;img src=&quot;red.gif&quot;&gt;&amp;#160;C&lt;br&gt;&lt;img src=&quot;brown.gif&quot;&gt;&amp;#160;backbone&lt;br&gt;&lt;br&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;b&gt;Elements&lt;/b&gt;&lt;br&gt;&lt;img src=&quot;gray.gif&quot;&gt;&amp;#160;Carbon&lt;br&gt;&lt;img src=&quot;white.gif&quot;&gt;&amp;#160;Hydrogen&lt;br&gt;&lt;img src=&quot;darkblue.gif&quot;&gt;&amp;#160;Nitrogen&lt;br&gt;&lt;img src=&quot;red.gif&quot;&gt;&amp;#160;Oxygen&lt;br&gt;&lt;img src=&quot;orange.gif&quot;&gt;&amp;#160;Phosphorus&lt;br&gt;&lt;br&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;center&gt;
+      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;&lt;b&gt;Instructions&lt;/b&gt;&lt;/font&gt;&lt;font size=&quot;3&quot;&gt; 
+      &lt;/font&gt;
+    &lt;/center&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;Explore the 
+    DNA fragment using the controls below and then answer the question.&lt;br&gt;&lt;br&gt;&lt;b&gt;To 
+    rotate:&lt;/b&gt; click and drag&lt;br&gt;&lt;b&gt;To zoom:&lt;/b&gt; hold down shift and drag &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-333334</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="16">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>280.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;center&gt;
+      &lt;b&gt;Show &lt;/b&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-15235a</bgcolor>
+</component></content>
+
+<content start="11" end="12">
+</content>
+
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>140.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;center&gt;
+      &lt;b&gt;Color Scheme &lt;/b&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-15235a</bgcolor>
+</component></content>
+
+<content start="13" end="14">
+</content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>100.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;center&gt;
+      &lt;b&gt;H-bonds &lt;/b&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-15235a</bgcolor>
+</component></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="23">
+<Alignment>1</Alignment>
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>DNA double strand</title>
+<width>140</width><height>27</height>
+<transparent>false</transparent>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1134415467476</groupid>
+<script>select *; cpk 20%; wireframe .15; center *; moveTo 0 153 -984 89 115.5 98; labels off; define currentView *; select hbondGroup and currentView; hbonds .1; color hbonds white;</script>
+<bgcolor>-15235a</bgcolor>
+<action>Execute Jmol script</action></component></content>
+
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>One A-T pair</title>
+<width>140</width><height>27</height>
+<transparent>false</transparent>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1134415467476</groupid>
+<script>select *; cpk 20%; wireframe .15; labels off; center *; moveTo 0 153 -984 89 115.5 98; select atPair; set display selected; delay 0.25; set display normal; delay 0.25; set display selected; delay 0.25; set display normal; delay 0.25; set display selected; delay .25; restrict atPair; set display normal; center atPair; moveTo 2 -537 668 -516 121.3 500; select atomno=463 or atomno=177; label %n; color labels white; font label 24 bold; select atPair; define currentView atPair; select hbondGroup and currentView; hbonds .1; color hbonds white;</script>
+<bgcolor>-15235a</bgcolor>
+<action>Execute Jmol script</action></component></content>
+
+<content start="18" end="19">
+</content>
+
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Bases</title>
+<width>140</width><height>27</height>
+<transparent>false</transparent>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1134594140012</groupid>
+<script>select *; wireframe .15; cpk 20%; select backbone; color atoms [180,120,0]; color bonds [180,120,0]; select A and not backbone; color atoms blue; color bonds blue; select T and not backbone; color atoms yellow; color bonds yellow; select G and not backbone; color atoms green; color bonds green; select C and not backbone; color atoms red; color bonds red; restrict currentView;</script>
+<bgcolor>-15235a</bgcolor>
+<action>Execute Jmol script</action></component></content>
+
+<content start="20" end="21">
+</content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>On</title>
+<width>100</width><height>27</height>
+<transparent>false</transparent>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1134601520474</groupid>
+<script>select currentView; hbonds calculate; hbonds .1; color hbonds white; define hbondGroup *; </script>
+<bgcolor>-15235a</bgcolor>
+<action>Execute Jmol script</action></component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="30">
+<Alignment>1</Alignment>
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>One strand only</title>
+<width>140</width><height>27</height>
+<transparent>false</transparent>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1134415467476</groupid>
+<script>moveTo 0 153 -984 89 115.5 98; select *; center *; labels off; hbonds off; cpk 20%; wireframe .15; select *a; restrict *a; define currentView *a;</script>
+<bgcolor>-15235a</bgcolor>
+<action>Execute Jmol script</action></component></content>
+
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>One G-C pair</title>
+<width>140</width><height>27</height>
+<transparent>false</transparent>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1134415467476</groupid>
+<script>select *; cpk 20%; wireframe .15; labels off; center *; moveTo 0 153 -984 89 115.5 98; select gcPair; set display selected; delay 0.25; set display normal; delay 0.25; set display selected; delay 0.25; set display normal; delay 0.25; set display selected; restrict gcPair; set display normal; center gcPair; moveTo 2 917 279 286 88.5 800; select atomno=563 or atomno=82; label %n; color labels white; font label 24 bold;  select gcPair; define currentView gcPair; select hbondGroup and currentView; hbonds .1; color hbonds white;</script>
+<bgcolor>-15235a</bgcolor>
+<action>Execute Jmol script</action></component></content>
+
+<content start="25" end="26">
+</content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Elements</title>
+<width>140</width><height>27</height>
+<transparent>false</transparent>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1134594140012</groupid>
+<script>select *; wireframe .15; cpk 20%; color cpk; color bonds cpk; restrict currentView;</script>
+<bgcolor>-15235a</bgcolor>
+<action>Execute Jmol script</action></component></content>
+
+<content start="27" end="28">
+</content>
+
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Off</title>
+<width>100</width><height>27</height>
+<transparent>false</transparent>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1134601520474</groupid>
+<script>select *; hbonds off; define hbondGroup none;</script>
+<bgcolor>-15235a</bgcolor>
+<action>Execute Jmol script</action></component></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="37">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Other strand only</title>
+<width>140</width><height>27</height>
+<transparent>false</transparent>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1134415467476</groupid>
+<script>moveTo 0 153 -984 89 115.5 98; select *;  center *; cpk 20%; wireframe .15; labels off; hbonds off;  select *b; restrict *b;define currentView *b;</script>
+<bgcolor>-15235a</bgcolor>
+<action>Execute Jmol script</action></component></content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>140.0</width>
+<height>27.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-15235a</bgcolor>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>140.0</width>
+<height>27.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-15235a</bgcolor>
+</component></content>
+
+<content start="34" end="35">
+</content>
+
+<content start="35" end="36">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>100.0</width>
+<height>27.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-15235a</bgcolor>
+</component></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<content start="37" end="38">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="38" end="39">
+</paragraph>
+</section>
+</document>

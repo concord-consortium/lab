@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Intermolecular Attractions: Boiling Point and Solubility</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+   
+        
+     
+
+
+ 
+     
+     
+   
+ 
+
+
+</text>
+<section start="0" end="57">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+&lt;body&gt;
+&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot; color=&quot;#FFFFFF&quot;&gt;&lt;strong&gt;Intermolecular Attractions:&lt;/strong&gt; Boiling Point and Solubility&lt;/font&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-59a2d4</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; marginheight=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+    &lt;table id=&quot;Table_01&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; width=&quot;100%&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; src=&quot;topNavBarLeftMargin.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;60&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;59&quot; src=&quot;next.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; src=&quot;page.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img width=&quot;46&quot; src=&quot;index.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page1.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page3Selected.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img width=&quot;25&quot; src=&quot;page10.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img width=&quot;7&quot; src=&quot;topNavBarRightMargin.jpg&quot; height=&quot;26&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+&lt;body marginheight=&quot;5&quot;&gt;
+&lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+  &lt;tr&gt;
+    &lt;td&gt;&lt;img src=&quot;chargeMainIdea.png&quot; width=&quot;98&quot; height=&quot;58&quot;&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Boiling point and solubility are two physical properties that are determined by intermolecular attractions. Did you ever wonder why liquid nitrogen is so cold or why oil and water don&apos;t mix? Explore below.&lt;/font&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;  
+&lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;33&quot; src=&quot;chargeBullet.png&quot; height=&quot;23&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;strong&gt;&lt;font color=&quot;#a65d2c&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot;&gt;Intermolecular Attractions and Boiling Point&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img width=&quot;18&quot; src=&quot;rule.png&quot; height=&quot;6&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="17">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page3$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="14" end="15">
+</content>
+
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>340.0</width>
+<height>260.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;font face=&quot;Verdana,Arial,Helvetica,sans-serif&quot; size=&quot;4&quot;&gt;To the left are 
+    two tiny drops of liquid, one polar and the other non-polar. By heating up 
+    these liquids you can vaporize them (or boil them), causing the molecules 
+    to break free of their intermolecular attractions. You know that something 
+    has been vaporized when most of its molecules have broken free of their 
+    attractions. Pressing the heat and cool buttons will change the 
+    temperature of these liquids.&lt;/font&gt;
+
+    &lt;p align=&quot;center&quot;&gt;
+      &lt;strong&gt;&lt;font face=&quot;Verdana,Arial,Helvetica,sans-serif&quot; size=&quot;4&quot;&gt;Try 
+      heating the liquids slowly to see which one will vaporize first.&lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana,Arial,Helvetica,sans-serif&quot; size=&quot;4&quot;&gt; 
+      &lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="26">
+<Alignment>1</Alignment>
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>100.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="18" end="19">
+</content>
+
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<width>100</width><height>28</height>
+<opaque>false</opaque>
+<model>0</model>
+<action>Cool the system down</action>
+<step>-0.01</step>
+</component></content>
+
+<content start="20" end="21">
+</content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<width>100</width><height>28</height>
+<opaque>false</opaque>
+<model>0</model>
+<action>Heat the system up</action>
+<step>0.01</step>
+</component></content>
+
+<content start="22" end="23">
+</content>
+
+<content start="23" end="24">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>100.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>340.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="32">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>3</row>
+<width>350</width>
+<height>160</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Which liquid 
+    boiled first (&lt;em&gt;i.e.&lt;/em&gt; had the lowest boiling point):&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit>
+<choice>The polar liquid boiled first.</choice>
+<choice>The non-polar liquid boiled first.</choice>
+<choice>They both boiled at the same time.</choice>
+<answer>1</answer>
+<bgcolor>-373738</bgcolor>
+<border>Line</border>
+<script>script:page:0:message notBoiledPolar.html -choiceseparator- script:page:0:message yesBoiledNon.html -choiceseparator- script:page:0:message notBoiledSame.html</script>
+</component></content>
+
+<content start="27" end="30">
+</content>
+
+<content start="30" end="31">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>380</width>
+<height>160</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Explain how 
+    intermolecular attractions affect the boilng point of a substance.&lt;/strong&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="33">
+<Alignment>1</Alignment>
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="36">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;33&quot; src=&quot;chargeBullet.png&quot; height=&quot;23&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;strong&gt;&lt;font color=&quot;#a65d2c&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot;&gt;Intermolecular Attractions and Solubility&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img width=&quot;18&quot; src=&quot;rule.png&quot; height=&quot;6&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="42">
+<Alignment>1</Alignment>
+<content start="36" end="37">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page3$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+</component></content>
+
+<content start="37" end="40">
+</content>
+
+<content start="40" end="41">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>385.0</width>
+<height>210.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana,Arial,Helvetica,sans-serif&quot; size=&quot;4&quot;&gt;It is well 
+          known that &quot;oil and water don&apos;t mix&quot;, but why is that the case? &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;51&quot; width=&quot;131&quot; src=&quot;oilWaterComp.png&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;font size=&quot;4&quot; face=&quot;Verdana,Arial,Helvetica,sans-serif&quot;&gt;The model 
+          to the left shows polar water and non-polar oil in a container 
+          together. Press &quot;run&quot; to see how they interact.&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;4&quot; face=&quot;Verdana,Arial,Helvetica,sans-serif&quot;&gt;Salad dressing 
+      is typically made from oil and vinegar (primarily water). Use the button 
+      below to &quot;shake up the dressing&quot; and watch what happens to the oil and 
+      water as you let it &quot;settle&quot;.&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="48">
+<Alignment>1</Alignment>
+<SpaceBelow>10.0</SpaceBelow>
+<content start="42" end="43">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>354.0</width>
+<height>39.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;img src=&quot;run.png&quot; width=&quot;354&quot; height=&quot;39&quot; border=&quot;0&quot; usemap=&quot;#Map&quot;&gt;
+&lt;map name=&quot;Map&quot;&gt;&lt;area shape=&quot;rect&quot; coords=&quot;85,5,137,29&quot; href=&quot;script:mw:2:run;if (%shaken); set textbox[0].text &lt;t&gt;Oil and Water Settling&lt;/t&gt;; set textbox[0].x 9.9; set textbox[1].y 30; endif; script:textbox:9:load stop.html;&quot;&gt;
+&lt;area shape=&quot;rect&quot; coords=&quot;207,5,266,29&quot; href=&quot;script:mw:2:reset;&quot;&gt;
+&lt;/map&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="43" end="46">
+</content>
+
+<content start="46" end="47">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>385.0</width>
+<height>39.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div align=&quot;center&quot;&gt;
+      &lt;input script=&quot;script:mw:2:load oilAndWaterMix.mml; set %shaken 1; script:textbox:9:load run.html;&quot; value=&quot;shake up the oil and water mixture&quot; type=&quot;submit&quot; name=&quot;Submit&quot;&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component><size>8</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="52">
+<Alignment>1</Alignment>
+<SpaceBelow>8.0</SpaceBelow>
+<content start="48" end="49">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>663</width>
+<height>114</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;5&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot;&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Explain why 
+    polar and non-polar substances won&apos;t stay mixed with each other.&lt;/strong&gt;&lt;/font&gt;&lt;strong&gt; 
+    &lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="49" end="50">
+</content>
+
+<content start="50" end="51">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Hint</title>
+<opaque>false</opaque>
+<hint_text>It has someting to do with the different types and strengths
+of London Dispersion and Dipole-Dipole attractions.</hint_text>
+<action>Hint</action></component></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="54">
+<Alignment>1</Alignment>
+<content start="52" end="53">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; marginheight=&quot;0&quot; background=&quot;navBarBottomBackground.jpg&quot;&gt;
+    &lt;table id=&quot;Table_01&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; width=&quot;100%&quot; border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img width=&quot;14&quot; src=&quot;navBarBottomColorBar.gif&quot; height=&quot;6&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;8&quot; src=&quot;navBarBottomLeftMargin.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;60&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;59&quot; src=&quot;next.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; src=&quot;page.jpg&quot; height=&quot;26&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img width=&quot;46&quot; src=&quot;index.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page1.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page3Selected.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img width=&quot;29&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img width=&quot;29&quot; src=&quot;page8.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img width=&quot;28&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img width=&quot;25&quot; src=&quot;page10.jpg&quot; border=&quot;0&quot; height=&quot;26&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img width=&quot;7&quot; src=&quot;navBarBottomRightMargin.jpg&quot; height=&quot;26&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<Alignment>1</Alignment>
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="56">
+<content start="55" end="56">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="56" end="57">
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Chemical Reactions and Stoichiometry: What is a chemical reaction?</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+            
+
+
+
+</text>
+<section start="0" end="18">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="14">
+<SpaceBelow>15.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.mw2d.activity.ChemContainer</class>
+<resource>page1$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="2" end="12">
+</content>
+
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>450.0</width>
+<height>300.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;A chemical 
+      reaction can occur in three different ways:&lt;/font&gt;
+    &lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;A chemical 
+        bond is formed.&lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;A chemical 
+        bond is broken.&lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;One or 
+        more electrons are transferred between atoms or molecules. &lt;/font&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;This 
+      activity will allow you to explore reactions in which chemical bonds are 
+      formed and broken. In the model to the left you can see both bond 
+      formation and bond breaking.&lt;br&gt;&lt;/font&gt;&lt;font color=&quot;#990000&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;Run 
+      the model &lt;/strong&gt;&lt;/font&gt;&lt;strong&gt;&lt;font color=&quot;#990000&quot;&gt;&lt;img src=&quot;play.gif&quot;&gt;&lt;/font&gt;&lt;font color=&quot;#990000&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;, 
+      and try heating and cooling the chemicals to see how this affects the 
+      kind of reaction that may occur.&lt;/font&gt;&lt;/strong&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;input type=&quot;submit&quot; name=&quot;Submit&quot; script=&quot;script:mw:1:select atom all; heat 0.1; select atom none;&quot; value=&quot;heat&quot;&gt;
+      &amp;#160; &lt;input type=&quot;submit&quot; name=&quot;Submit2&quot; script=&quot;script:mw:1:select atom all; heat -0.1; select atom none;&quot; value=&quot;cool&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<SpaceBelow>15.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<Alignment>1</Alignment>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<content start="16" end="17">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="17" end="18">
+</paragraph>
+</section>
+</document>

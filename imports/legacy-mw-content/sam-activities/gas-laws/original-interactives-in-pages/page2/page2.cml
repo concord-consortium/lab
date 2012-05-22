@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws: What is Pressure?</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+ 
+
+  
+     
+
+
+</text>
+<section start="0" end="16">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>90.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;The following 
+    model shows molecules inside and outside a very tiny section of a balloon. 
+    The rectangle in the middle represents the balloon&apos;s cross-section. The 
+    arrows on the molecules represent their velocities.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="4">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="7">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>346.0</width>
+<height>285.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot; face=&quot;Verdana&quot;&gt;
+    Directions:
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Press the 
+        &amp;quot;Run&amp;quot; button. &lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Use the 
+        &amp;quot;Add...&amp;quot; and &amp;quot;Remove...&amp;quot; buttons to change the number of atoms in the 
+        balloon.&lt;/font&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;strong&gt;Important:&lt;/strong&gt; After you add or remove atoms, run the model 
+    for a minute so that it can have enough time to respond to your changes.&lt;br&gt;&lt;br&gt;&lt;hr&gt;&amp;#10014; 
+    &lt;font size=&quot;2&quot;&gt;&lt;a href=&quot;script:page:0:message &lt;t&gt;&lt;table width=300&gt;&lt;tr&gt;&lt;td&gt;&lt;font face=verdana&gt;The rectangle will continue to jiggle. This is  because there are very few atoms and they are running all the time. Anytime the collisions from the left side and the right side do not balance, the balloon skin (represented by the rectangle) will move. The more atoms we have, the less the jiggling there will be. When there are trillions of atoms, we will not see this effect at all.&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/t&gt;&quot;&gt;Note.&lt;/a&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-333334</bgcolor>
+<border>Line</border>
+</component></content>
+
+<content start="5" end="6">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page2$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="13">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="7" end="8">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove an atom from the balloon</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<continuous_fire>true</continuous_fire>
+<script>define %i 0;
+define %count 0;
+while(%number_of_atoms &gt; %i);
+  if(%atom[%i].id == %leftid);
+    set %count %count+1;
+  endif;
+  set %i %i+1;
+endwhile;
+set %count %count-1;
+set %i 0;
+while(%number_of_atoms &gt; %i);
+  if(%atom[%i].id == %leftid);
+    select atom %i;
+    remove;
+    set textbox[3].text &lt;t&gt;formatvar(%3.0f, %count)&lt;/t&gt;;
+    return;
+  endif;
+  set %i %i+1;
+endwhile;
+</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="8" end="9">
+</content>
+
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Add an atom to the balloon</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<continuous_fire>true</continuous_fire>
+<script>define %x rand()*(%obstacle[0].x-%element[%leftid].sigma);
+define %y rand()*%height;
+define %overlap 0;
+define %i 0;
+define %dx 0;
+define %dy 0;
+define %rsq %element[%leftid].sigma*%element[%leftid].sigma;
+define %count 0;
+
+// detect overlap
+while (%number_of_atoms &gt; %i);
+  if(%atom[%i].id == %leftid) {
+    set %dx %x - %atom[%i].rx;
+    set %dy %y - %atom[%i].ry;
+    if(%dx*%dx + %dy*%dy &lt; %rsq);
+      set %overlap 1;
+    endif;
+  endif;
+  set %i %i+1;
+endwhile;
+
+// if no overlap, add atom
+if(%overlap == 0);
+  add atom %leftid (%x, %y);
+endif;
+
+// count atoms
+set %i 0;
+while(%number_of_atoms &gt; %i);
+  if(%atom[%i].id == %leftid);
+    set %count %count+1;
+  endif;
+  set %i %i+1;
+endwhile;
+set textbox[3].text &lt;t&gt;formatvar(%3.0f,%count)&lt;/t&gt;;
+</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show Velocity</title>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Velocity Vector</action>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<SpaceAbove>4.0</SpaceAbove>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<content start="14" end="15">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="15" end="16">
+</paragraph>
+</section>
+</document>

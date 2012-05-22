@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Gas Laws: The Temperature-Volume Relationship</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+
+  
+ 
+ 
+
+
+</text>
+<section start="0" end="12">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="5">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;The Ideal Gas 
+    Law states that the volume of a gas is &amp;#10066; &lt;a href=&quot;script:page:0:message &lt;t&gt;&lt;font face=verdana&gt;Proportional: having same or contant ratios.&lt;/font&gt;&lt;/t&gt;&quot;&gt;proportional&lt;/a&gt; 
+    to the temperature under constant pressure. In the following model, you 
+    can increase or decrease the temperature, and observe how the volume 
+    changes as a result.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="3" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="7">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="5" end="6">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page4$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>3.2</value>
+<minimum>1.0</minimum>
+<maximum>11.0</maximum>
+<nstep>50</nstep>
+<title>Temperature (K)</title>
+<width>300</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;1000 K&quot;}{value=&quot;1.0&quot;, label=&quot;100 K&quot;}{value=&quot;5.0&quot;, label=&quot;500 K&quot;}</labeltable>
+<script>set heatbath %val*100;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<content start="10" end="11">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="11" end="12">
+</paragraph>
+</section>
+</document>

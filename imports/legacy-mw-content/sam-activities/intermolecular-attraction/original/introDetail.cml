@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Intermolecular Forces</page_title>
+<bg_color><Red>240</Red><Green>228</Green><Blue>207</Blue></bg_color>
+<text>
+STRONG CHEMICAL BONDS VS. WEAK INTERMOLECULAR ATTRACTIONS
+
+ 
+The glue that sticks molecules to each other is electric charge.
+
+&lt;--- BACK
+
+
+</text>
+<section start="0" end="141">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<size>16</size><bold>true</bold><foreground>0 102 153</foreground></content>
+
+</paragraph>
+<paragraph start="1" end="59">
+<Alignment>1</Alignment>
+<content start="1" end="59">
+<size>16</size><bold>true</bold><foreground>0 102 153</foreground></content>
+
+</paragraph>
+<paragraph start="59" end="60">
+<Alignment>1</Alignment>
+<content start="59" end="60">
+<size>14</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="60" end="62">
+<LeftIndent>40.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="60" end="61">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>0.9</width>
+<height>790.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table border=&quot;0&quot; cellpadding=&quot;5&quot; cellspacing=&quot;5&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Molecules are 
+          created when covalent bonds bind a group of atoms together. The 
+          covalent bond, which is a sharing of electrons between two atoms, is 
+          often represented as a stick (the bond) connecting two balls (the 
+          atoms). The sharing of electrons can also be depicted by coloring 
+          the &amp;quot;surface&amp;quot; of a molecule to show how the electrons are 
+          distributed.&lt;br&gt;&lt;br&gt;Depending on how the electrons are shared in the 
+          bond, polar covalent and non-polar covalent bonds are formed. A 
+          non-polar covalent bond is formed when electrons are shared equally 
+          (or almost equally), and a polar covalent bond is formed when 
+          electrons are somewhat unevenly shared. If electrons are unevenly 
+          shared, a partial positive and negative charge can occur, as you can 
+          see by the colors shown on the water molecule.&lt;br&gt;&lt;br&gt;Covalent bonds 
+          are 100 to 1000 times stronger than the inter-molecular attractions 
+          which cause molecules to stick together.&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;365&quot; src=&quot;covalentBonds.png&quot; height=&quot;316&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;table border=&quot;0&quot; cellpadding=&quot;5&quot; cellspacing=&quot;5&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;281&quot; src=&quot;weakBonds.png&quot; height=&quot;343&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;p&gt;
+            &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;The weak 
+            attractions between molecules are called &lt;strong&gt;van der Waals 
+            attractions&lt;/strong&gt;, and can be divided into two categories: &lt;strong&gt;dipole-dipole&lt;/strong&gt; 
+            attractions and &lt;strong&gt;London Dispersion &lt;/strong&gt;attractions. &lt;/font&gt;
+          &lt;/p&gt;
+          &lt;blockquote&gt;
+            &lt;p&gt;
+              &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Dipole-dipole 
+              attractions: &lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;When 
+              a molecule has at least one polar covalent bond, its partial 
+              positive region can attract to the partial negative region of 
+              another polar molecule. If a partially positive hydrogen from 
+              one molecule attracts to the partially negative part of another 
+              molecule, we call this polar attraction a &amp;quot;hydrogen bond&amp;quot;. This 
+              type of intermolecular attraction is common in biologically 
+              important molecules. &lt;/font&gt;
+            &lt;/p&gt;
+            &lt;p&gt;
+              &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;London 
+              dispersion attractions:&lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt; 
+              Even if a molecule does not have partially positive and negative 
+              parts, it can still feel a slight attraction for other 
+              molecules. This attraction is due to the random movement of 
+              electrons which can result in a brief, flickering polarity. This 
+              attraction is even weaker than the weak dipole-dipole 
+              attractions that occur with permanently polar molecules. &lt;/font&gt;
+            &lt;/p&gt;
+          &lt;/blockquote&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="127">
+<Alignment>1</Alignment>
+<content start="62" end="127">
+<size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="127" end="128">
+<LeftIndent>40.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="127" end="128">
+<size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="128" end="138">
+<Alignment>1</Alignment>
+<content start="128" end="137">
+<href>page1.cml</href><size>16</size></content>
+
+<content start="137" end="138">
+<size>16</size></content>
+
+</paragraph>
+<paragraph start="138" end="139">
+<content start="138" end="139">
+</content>
+
+</paragraph>
+<paragraph start="139" end="140">
+<content start="139" end="140">
+</content>
+
+</paragraph>
+<paragraph start="140" end="141">
+</paragraph>
+</section>
+</document>

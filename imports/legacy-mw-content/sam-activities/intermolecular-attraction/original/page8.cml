@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Intermolecular Attractions: Your Immune System</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+
+ 
+ 
+
+ 
+
+
+ 
+     
+  
+
+
+ 
+ 
+    
+    
+    
+ 
+
+
+</text>
+<section start="0" end="48">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+&lt;body&gt;
+&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;5&quot; color=&quot;#FFFFFF&quot;&gt;&lt;strong&gt;Intermolecular Attractions:&lt;/strong&gt; Your Immune System&lt;/font&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-59a2d4</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="6">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot; width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot; width=&quot;14&quot;&gt;
+          &lt;a href=&quot;page7.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;next.jpg&quot; border=&quot;0&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;index.jpg&quot; border=&quot;0&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page1.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;page8Selected.jpg&quot; border=&quot;0&quot; width=&quot;29&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page10.jpg&quot; border=&quot;0&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="9">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>105</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+&lt;body marginheight=&quot;5&quot;&gt;
+&lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+  &lt;tr&gt;
+    &lt;td&gt;&lt;img src=&quot;chargeMainIdea.png&quot; width=&quot;98&quot; height=&quot;58&quot;&gt;&lt;/td&gt;
+    &lt;td&gt;    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Your immune 
+    system works by making molecules called &lt;strong&gt;antibodies&lt;/strong&gt; that 
+    stick to other &quot;bad&quot; molecules in your system. These bad molecules are 
+    called &lt;strong&gt;antigens&lt;/strong&gt; and might be a toxin produced by a 
+    microbe or a molecule on the surface of a bacteria or virus. Intermolecular 
+    attractions are the binding force used to link antibody with antigen. &lt;/font&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;  
+&lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-15235a</bgcolor></icon></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;23&quot; width=&quot;33&quot; src=&quot;chargeBullet.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#a65d2c&quot; size=&quot;5&quot;&gt;3D 
+          Exploration of Bound Antibody &amp;amp; Antigen&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; width=&quot;18&quot; src=&quot;rule.png&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="19">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+</content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>add image antibodyTitle.png (160,15); select *A; color [0,240,0]; select *B; color [50,200,50]; select HEP; color white; select *;
+wireframe off; cpk on; center HEP; spacefill 100%</script><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>1EAP.pdb.gz</resource><state>page8$0.jms</state><width>430.0</width>
+<height>380.0</height>
+<border>Lowered Bevel</border>
+</component></content>
+
+<content start="15" end="17">
+</content>
+
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>310.0</width>
+<height>380.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;To the left, 
+    part of an antibody (green) is shown bound to an antigen (white). As you 
+    learned earlier, how well two molecules stick to each other can be related 
+    to how well the shapes of the molecules fit together.&lt;/font&gt;&lt;br&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Use the 
+        controls below to explore how well the antibody and antigen fit 
+        together.&lt;/font&gt;      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;You can 
+        also drag or shift-drag the molecule to change the view.&lt;/font&gt;      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;Then &lt;strong&gt;&lt;font color=&quot;#990000&quot;&gt;take 
+        a snapshot that shows the excellent fit between antibody and antigen&lt;/font&gt;&lt;/strong&gt;&lt;font color=&quot;#990000&quot;&gt;.&lt;/font&gt;&lt;/font&gt;&lt;br&gt;
+    &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;table align=&quot;center&quot; border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Antibody:&lt;/strong&gt;&lt;/font&gt;        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;input value=&quot;checkbox&quot; type=&quot;checkbox&quot; script_selected=&quot;script:jmol:1:select *A; color atoms opaque&quot; name=&quot;checkbox&quot; script_deselected=&quot;script:jmol:1:select *A; color atoms translucent&quot; checked=&quot;checked&quot;&gt;
+          &lt;/font&gt;        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;1st half &lt;/font&gt;        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;input value=&quot;checkbox&quot; type=&quot;checkbox&quot; script_selected=&quot;script:jmol:1:select *B; color atoms opaque&quot; name=&quot;checkbox2&quot; script_deselected=&quot;script:jmol:1:select *B; color atoms translucent&quot; checked=&quot;checked&quot;&gt;
+          &lt;/font&gt;        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;2nd half &lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          
+            &lt;input type=&quot;radio&quot; name=&quot;RadioGroup1&quot; value=&quot;radio&quot; id=&quot;RadioGroup1_0&quot; script=&quot;script:jmol:1:select *A; spacefill 20%; wireframe 0.15;&quot;&gt;        &lt;/td&gt;
+        &lt;td&gt;&lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;ball &amp;amp; 
+        stick&lt;/font&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          
+            &lt;input type=&quot;radio&quot; name=&quot;RadioGroup2&quot; value=&quot;radio&quot; id=&quot;RadioGroup2_0&quot;  script=&quot;script:jmol:1:select *B; spacefill 20%; wireframe 0.15;&quot;&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;ball &amp;amp; 
+        stick&lt;/font&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;&lt;input name=&quot;RadioGroup1&quot; type=&quot;radio&quot; id=&quot;RadioGroup1_1&quot; value=&quot;radio&quot; script=&quot;script:jmol:1:select *A; spacefill 100%;&quot; checked&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;spacefilled&lt;br&gt;
+          &lt;br&gt;
+        &lt;/font&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;&lt;input name=&quot;RadioGroup2&quot; type=&quot;radio&quot; id=&quot;RadioGroup2_1&quot; value=&quot;radio&quot; script=&quot;script:jmol:1:select *B; spacefill 100%;&quot; checked&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;spacefilled&lt;/font&gt;&lt;br&gt;
+        &lt;br&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;strong&gt;Antigen:&lt;/strong&gt;&lt;/font&gt;        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;input value=&quot;radiobutton&quot; type=&quot;radio&quot; script=&quot;script:jmol:1:select HEP; spacefill 100%;&quot; name=&quot;radiobutton&quot; checked=&quot;checked&quot;&gt;
+          &lt;/font&gt;        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;spacefilled          &lt;/font&gt;        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;input value=&quot;radiobutton&quot; type=&quot;radio&quot; script=&quot;script:jmol:1:select HEP; spacefill 25%; wireframe 0.2;&quot; name=&quot;radiobutton&quot;&gt;
+          &lt;/font&gt;        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;ball &amp;amp; 
+          stick &lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="22">
+<Alignment>1</Alignment>
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<opaque>false</opaque>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>330.0</width>
+<height>15.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<Alignment>1</Alignment>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<Alignment>1</Alignment>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="26">
+<Alignment>1</Alignment>
+<content start="24" end="25">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;23&quot; width=&quot;33&quot; src=&quot;chargeBullet.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#a65d2c&quot; size=&quot;5&quot;&gt;Design 
+          Your Own Antibody&lt;/font&gt;&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; width=&quot;18&quot; src=&quot;rule.png&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="28">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;The attraction 
+    between antibody and antigen often utilizes both types of intermolecular 
+    attractions: dipole-dipole and London dispersion.&lt;strong&gt; Your job is to 
+    design an antibody&lt;/strong&gt; that will form the strongest attraction to the 
+    antigen below. To do this you will &lt;strong&gt;select the shape of the 
+    antibody, add charge, dock the antigen to your antibody, and then take a 
+    snapshot&lt;/strong&gt; of your work. &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="33">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page8$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+<button>Add Positive Charge</button><button>Add Negative Charge</button></component></content>
+
+<content start="29" end="31">
+</content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>390.0</width>
+<height>385.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot;&gt;
+    &lt;map name=&quot;Map&quot;&gt;
+      &lt;area href=&quot;script:mw:1:load antibodyDesign1.mml;&quot; shape=&quot;rect&quot; coords=&quot;5,7,111,73&quot;&gt;&lt;/area&gt;
+      &lt;area href=&quot;script:mw:1:load antibodyDesign3.mml;&quot; shape=&quot;rect&quot; coords=&quot;129,5,231,73&quot;&gt;&lt;/area&gt;
+      &lt;area href=&quot;script:mw:1:load antibodyDesign2.mml;&quot; shape=&quot;rect&quot; coords=&quot;143,82,222,137&quot;&gt;&lt;/area&gt;
+      &lt;area href=&quot;script:mw:1:load antibodyDesign4.mml;&quot; shape=&quot;rect&quot; coords=&quot;14,87,112,139&quot;&gt;&lt;/area&gt;
+    &lt;/map&gt;
+    &lt;div align=&quot;center&quot;&gt;
+      &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;Design 
+      Your Antibody&lt;/font&gt; &lt;/strong&gt;
+    &lt;/div&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;3&quot;&gt;- &lt;strong&gt;Select 
+      a the initial molecule shape&lt;/strong&gt; for the antibody by clicking on 
+      one of these images:&lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p align=&quot;center&quot;&gt;
+      &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;img height=&quot;147&quot; src=&quot;antibodyChoice.gif&quot; border=&quot;0&quot; usemap=&quot;#Map&quot; width=&quot;240&quot;&gt;
+      &lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;- &lt;strong&gt;Add 
+      charge&lt;/strong&gt; to the antibody by using the charge tools &lt;img height=&quot;15&quot; src=&quot;addPositiveCharge.gif&quot; width=&quot;15&quot;&gt; 
+      and &lt;img height=&quot;15&quot; src=&quot;addNegativeCharge.gif&quot; width=&quot;15&quot;&gt; in the 
+      toolbar. To charge part of the antibody, select the appropriate charge 
+      tool and then click on the atoms you want to charge.&lt;br&gt;- &lt;strong&gt;Run 
+      the model, click on the green star, and &amp;quot;dock&amp;quot; the antigen to your 
+      antibody&lt;/strong&gt;.&lt;br&gt;- &lt;strong&gt;Take a snapshot&lt;/strong&gt; of your best 
+      creation. &lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-141617</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="38">
+<SpaceBelow>15.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="33" end="34">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>104.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="34" end="35">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<width>143</width><height>60</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="35" end="36">
+</content>
+
+<content start="36" end="37">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>510.0</width>
+<height>60.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table border=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;middle&quot;&gt;
+          &lt;img height=&quot;14&quot; width=&quot;50&quot; src=&quot;pointer.gif&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Take a 
+          snapshot of your best antibody. If you have time, try using another 
+          shape. What would be the second best design for an antibody that 
+          will attract strongly to the antigen?&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="43">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="38" end="39">
+<component><class>org.concord.modeler.ImageQuestion</class><width>371</width><height>325</height><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link href=&quot;chemStyles.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Image of the 3D anitibody/antigen from top of page:
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="39" end="41">
+</content>
+
+<content start="41" end="42">
+<component><class>org.concord.modeler.ImageQuestion</class><width>371</width><height>325</height><title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link href=&quot;chemStyles.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body class=&quot;question&quot;&gt;
+    &lt;p class=&quot;question&quot;&gt;
+      Image of the anitbody you just designed:
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="45">
+<Alignment>1</Alignment>
+<content start="43" end="44">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>32.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;navBarBottomBackground.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; id=&quot;Table_01&quot; border=&quot;0&quot; width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td colspan=&quot;2&quot;&gt;
+          &lt;img height=&quot;6&quot; src=&quot;navBarBottomColorBar.gif&quot; width=&quot;14&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;26&quot; src=&quot;navBarBottomLeftMargin.jpg&quot; width=&quot;8&quot;&gt;
+          &lt;a href=&quot;page7.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;prev.jpg&quot; border=&quot;0&quot; width=&quot;60&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;next.jpg&quot; border=&quot;0&quot; width=&quot;59&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img height=&quot;26&quot; src=&quot;page.jpg&quot; width=&quot;54&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;index.jpg&quot; border=&quot;0&quot; width=&quot;46&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page1.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page2.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page3.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page4.jpg&quot; border=&quot;0&quot; width=&quot;29&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page5.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page6.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page7.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;page8Selected.jpg&quot; border=&quot;0&quot; width=&quot;29&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page9.cml&quot;&gt;&lt;font&gt;&lt;img height=&quot;26&quot; src=&quot;page9.jpg&quot; border=&quot;0&quot; width=&quot;28&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page10.cml&quot;&gt;&lt;img height=&quot;26&quot; src=&quot;page10.jpg&quot; border=&quot;0&quot; width=&quot;25&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;img height=&quot;26&quot; src=&quot;navBarBottomRightMargin.jpg&quot; width=&quot;7&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<Alignment>1</Alignment>
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<content start="46" end="47">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="47" end="48">
+</paragraph>
+</section>
+</document>
