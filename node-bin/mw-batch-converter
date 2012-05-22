@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+
+require('../src/mw-helpers/mw-batch-converter');
+
+convertMMLFolder();
+createCmlJsonIndex('./imports/legacy-mw-content/legacyMMLRunnables.html');
