@@ -39,6 +39,10 @@ guard 'shell' do
     command("make")
     command("make test")
   end
+  watch(%r{imports}) do |match|
+    command("make dist/imports")
+  end
+
   watch(%r{(src\/sass\/.+)}) do |match|
     puts match[0]
     puts "re-generating all css resources because sass mixin updated ..."
