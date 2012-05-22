@@ -1,4 +1,6 @@
-window.MWHelpers = {};
+cheerio = require('cheerio');
+
+# window.MWHelpers = {};
 
 ###
   Parses an mml file and returns an object containing the stringified JSON
@@ -7,7 +9,7 @@ window.MWHelpers = {};
     json: jsonString of the model
     errors: array of errors encountered
 ###
-MWHelpers.parseMML = (mmlString) ->
+parseMML = (mmlString) ->
 
   ### perform any pre-processing on the string ###
 
@@ -15,32 +17,32 @@ MWHelpers.parseMML = (mmlString) ->
   mmlString = mmlString.replace /class=".*"/g, (match) ->
     match.replace /[\.$]/g, "-"
 
-  ### parse the string into XML Document using jQuery and get a jQuery object ###
-  $mml = $($.parseXML(mmlString))
+  ### load the string into Cheerio ###
+  $mml = cheerio.load mmlString
 
   getNode = ($entity) ->
     # an node may be an object, or it may be a reference to another object. It should
     # be treated the same in either case
     if $entity.attr("idref")
-      return $mml.find("##{$entity.attr("idref")}")
+      return $mml("##{$entity.attr("idref")}")
     $entity
 
   ###
     Find the container size
   ###
-  viewProps = $mml.find(".org-concord-mw2d-models-RectangularBoundary-Delegate")
-  width  = parseInt viewProps.find(">[property=width]>double").text()
-  height = parseInt viewProps.find(">[property=height]>double").text()
+  viewProps = $mml(".org-concord-mw2d-models-RectangularBoundary-Delegate")
+  width  = parseInt viewProps.find(">[property=width] double").text()
+  height = parseInt viewProps.find(">[property=height] double").text()
 
   ###
     Find the view-port size
   ###
-  viewPort = viewProps.find(">[property=viewSize]>.java-awt-Dimension>int")
+  viewPort = viewProps.find("[property=viewSize] .java-awt-Dimension int")
   if (viewPort)
-    viewPortWidth  = parseInt viewPort[0].textContent
-    viewPortHeight = parseInt viewPort[1].textContent
-    viewPortX = parseInt viewProps.find(">[property=x]>double").text() || 0
-    viewPortY = parseInt viewProps.find(">[property=y]>double").text() || 0
+    viewPortWidth  = parseInt viewPort[0].children[0].data
+    viewPortHeight = parseInt viewPort[1].children[0].data
+    viewPortX = parseInt viewProps.find("[property=x] double").text() || 0
+    viewPortY = parseInt viewProps.find("[property=y] double").text() || 0
   else
     viewPortWidth  = width
     viewPortHeight = height
@@ -60,15 +62,16 @@ MWHelpers.parseMML = (mmlString) ->
     Elements are sometimes referred to in MML files by the order they are defined in,
     instead of by name, so we put these in an array instead of a hash so we can get both
   ###
-  typesArr = $mml.find(".org-concord-mw2d-models-Element")
+  typesArr = $mml(".org-concord-mw2d-models-Element")
   elemTypes = []
+
   for type in typesArr
-    $type = $(type)
-    name  = $type.attr('id')
-    id    = $type.find("[property=ID]>int")[0]?.textContent || 0
-    mass  = $type.find("[property=mass]>double")[0]?.textContent
-    sigma = $type.find("[property=sigma]>double")[0]?.textContent
-    epsilon = $type.find("[property=epsilon]>double")[0]?.textContent
+    name  = type.attribs.id
+    $type = cheerio(type)
+    id    = $type.find("[property=ID] int").text() || 0
+    mass  = $type.find("[property=mass] double").text()
+    sigma = $type.find("[property=sigma] double").text()
+    epsilon = $type.find("[property=epsilon] double").text()
     elemTypes[id] = name: id, mass: mass, sigma: sigma, epsilon: epsilon
 
   ###
@@ -90,7 +93,7 @@ MWHelpers.parseMML = (mmlString) ->
     where num0 is the epsilon between this first element and the second, num1 is the epsilon between
     this first element and the third, etc.
   ###
-  #epsilonPairs = $mml.find(".org-concord-mw2d-models-Affinity [property=epsilon]>[method=put]")
+  #epsilonPairs = $mml(".org-concord-mw2d-models-Affinity [property=epsilon]>[method=put]")
   #for pair in epsilonPairs
   #  $pair = getNode($(pair))
   #  elem1 = parseInt getNode($pair.find("[property=element1]>object")).find("[property=ID]>int").text() || 0
@@ -114,10 +117,10 @@ MWHelpers.parseMML = (mmlString) ->
       ]
   ###
   atoms = []
-  atomNodes = $mml.find(".org-concord-mw2d-models-Atom")
+  atomNodes = $mml(".org-concord-mw2d-models-Atom")
   for node in atomNodes
-    $node = getNode($(node))
-    elemId = parseInt $node.find("[property=ID]>int").text() || 0
+    $node = getNode(cheerio(node))
+    elemId = parseInt $node.find("[property=ID] int").text() || 0
     x  = parseFloat $node.find("[property=rx]").text()
     y  = parseFloat $node.find("[property=ry]").text()
     vx = parseFloat $node.find("[property=vx]").text() || 0
@@ -177,3 +180,5 @@ MWHelpers.parseMML = (mmlString) ->
   json = JSON.stringify(jsonObj, null, 2)
 
   return json: json
+
+exports.parseMML = parseMML
