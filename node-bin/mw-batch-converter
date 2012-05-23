@@ -3,4 +3,4 @@
 require('../src/mw-helpers/mw-batch-converter');
 
 convertMMLFolder();
-createCmlJsonIndex('./imports/legacy-mw-content/legacyMMLRunnables.html');
+createCmlJsonIndex('dist/imports/legacy-mw-content/legacyMMLRunnables.html');

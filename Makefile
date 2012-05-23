@@ -1,12 +1,17 @@
 # See the README for installation instructions.
 
+# Utilities
 JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
 COFFEESCRIPT_COMPILER = ./node_modules/coffee-script/bin/coffee
 MARKDOWN_COMPILER = bin/kramdown
 JS_TESTER   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
+MD_ENGINE_JS_FILES := $(shell find src/md-engine -name '*.js' -print)
+BROWSERIFY = ./node_modules/.bin/browserify
+BATCH_CONVERT_MML_FILES = ./node-bin/mw-batch-converter
 
+# targets
 HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/dist\/\1/' )
 vpath %.haml src
 
@@ -25,9 +30,8 @@ vpath %.coffee src
 MARKDOWN_EXAMPLE_FILES := $(shell find src -name '*.md' -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/dist\/\1.html/' )
 vpath %.md src
 
-MD_ENGINE_JS_FILES := $(shell find src/md-engine -name '*.js' -print)
-BROWSERIFY = ./node_modules/.bin/browserify
-CONVERT_MML_FILES = ./node-bin/mw-batch-converter
+MML_IMPORT_FILES := $(shell find imports/legacy-mw-content -name '*.mml' -exec echo {} \; | sed s'/imports\/legacy-mw-content\/\(.*\)/dist\/imports\/legacy-mw-content\/converted\/\1/' )
+vpath %.mml imports/legacy-mw-content
 
 LAB_JS_FILES = \
 	dist/lab/lab.grapher.js \
@@ -125,23 +129,23 @@ dist: \
 dist/examples:
 	mkdir -p dist/examples
 	# copy directories, javascript, json, and image resources from src/examples/
-	rsync -avq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/examples/ dist/examples/
+	rsync -aq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/examples/ dist/examples/
 
 dist/doc:
 	mkdir -p dist/doc
 	# copy directories, javascript, json, and image resources from src/examples/
-	rsync -avq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ dist/doc/
+	rsync -aq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ dist/doc/
 
 dist/experiments:
 	mkdir -p dist/experiments
-	rsync -avq src/experiments dist/
+	rsync -aq src/experiments dist/
 
 .PHONY: dist/experiments
 
 dist/imports:
-	$(CONVERT_MML_FILES)
 	mkdir -p dist/imports
-	rsync -avq imports/ dist/imports/
+	rsync -aq imports/ dist/imports/
+	$(BATCH_CONVERT_MML_FILES)
 
 .PHONY: dist/imports
 

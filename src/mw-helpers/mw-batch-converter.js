@@ -9,11 +9,13 @@ For the moment, to run these scripts
 require('coffee-script');
 
 var parseMML = require('./mml-parser'),
+    mkdirp = require('mkdirp'),
     fs = require('fs'),
     path = require('path'),
     jade = require('jade'),
+    util = require('util'),
     legacyFolderPath = './imports/legacy-mw-content/',
-    convertedFolderPath = './imports/legacy-mw-content/converted/',
+    convertedFolderPath = 'dist/imports/legacy-mw-content/converted/',
     templatePath = './imports/legacy-mw-content/legacyMMLRunnables.jade';
 
 // example mmlFileName:
@@ -26,24 +28,18 @@ convertMMLFile = function(mmlFileName){
       conversion = parseMML.parseMML(mml),
 
       folders = mmlFileName.split('/'),
-      outputPath = convertedFolderPath;
+      outputPath = convertedFolderPath + mmlFileName.match(/.*\//)[0];
 
   if (conversion.json) {
-    // create output folders. Will not overwrite anything if it already exists
-    fs.mkdir(outputPath);
-    for (var i=0, ii=folders.length-1; i<ii; i++){
-      outputPath = outputPath + folders[i] + '/';
-      fs.mkdir(outputPath);
-    }
+    mkdirp(outputPath);
 
     // write model out to file. Overwrites any existing file with the same name
     var outputFile = outputPath+modelName+'.json';
     fs.writeFile(outputFile, conversion.json);
-
     return (outputFile);
   } else {
     console.log("Error converting "+mmlFileName);
-    console.log(conversion.error);
+    console.log("  " + conversion.error);
     return false;
   }
 };
@@ -79,8 +75,9 @@ collectAllMMLFiles = function(directory) {
 // Batch comverts the entire legacy MML folder
 convertMMLFolder = function(){
   var mmlFiles = collectAllMMLFiles(legacyFolderPath),
-      successes = 0;
-  for (var i=0, ii=mmlFiles.length; i<ii; i++) {
+      successes = 0,
+      i, ii;
+  for (i=0, ii=mmlFiles.length; i<ii; i++) {
     var relFileName = mmlFiles[i].replace(legacyFolderPath.replace('./',''), '');
     var success = convertMMLFile(relFileName);
     if (success) {
@@ -115,16 +112,17 @@ createCmlJsonIndex = function(outputFile) {
 
     // for now ignore folders that have more than one cml file
     if (cmlFiles.length === 1) {
-      cmlFilePath = mmlFolderPath + '/' + cmlFiles[0];
+      cmlFilePath = mmlFolderPath.match(path.normalize(legacyFolderPath) + '(.+)')[1] + '/' + cmlFiles[0];
       cmlToJsonHash[cmlFilePath] = [];
       // find all the JSON files in the equivalent converted folder
       var relFolderName = mmlFolderPath.replace(legacyFolderPath.replace('./',''), ''),
           convertedFolderName = convertedFolderPath + relFolderName,
           jsonFiles;
       try {
+        debugger
         jsonFiles = fs.readdirSync(convertedFolderName);
         for (var k=0, kk=jsonFiles.length; k<kk; k++) {
-          cmlToJsonHash[cmlFilePath].push(convertedFolderName + '/' +jsonFiles[k]);
+          cmlToJsonHash[cmlFilePath].push('converted/' + relFolderName + '/' +jsonFiles[k]);
         }
       } catch (e) {
         // no converted json files could be found, that's ok
