@@ -1077,7 +1077,7 @@ exports.makeLennardJonesCalculator = function(params, cb) {
       minimum is at r=rmin, V(rmin) = 0
     */
     potentialFromSquaredDistance: function(r_sq) {
-       return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3) + epsilon;
+       return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3);
     },
 
     /**
@@ -1806,7 +1806,7 @@ exports.makeModel = function() {
 
       if (duration == null)  duration = 250;  // how much time to integrate over, in fs
 
-      dt = opt_dt || 5;
+      dt = opt_dt || 1;
       dt_sq = dt*dt;                      // time step, squared
 
       leftwall   = radius[0];

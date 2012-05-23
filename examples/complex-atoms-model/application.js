@@ -33,12 +33,13 @@ var modelConfig = {
     optsLoaded = $.Deferred(),
     windowLoaded = $.Deferred(),
 
-    hash,
+    hash, modelUrl,
     opts;
 
 if (hash = document.location.hash) {
   hash = hash.substr(1, hash.length);
-  $.get('/model-config/' + hash).done(function(results) {
+  modelUrl = ~hash.indexOf(".json") ? hash : '/model-config/' + hash;
+  $.get(modelUrl).done(function(results) {
     opts = results;
     optsLoaded.resolve();
   }).fail(function() {

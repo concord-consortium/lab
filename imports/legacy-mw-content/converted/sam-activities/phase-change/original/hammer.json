@@ -4,8 +4,8 @@
   "sigma": 0.15442245483398437,
   "lennard_jones_forces": true,
   "coulomb_forces": false,
-  "width": null,
-  "height": null,
+  "width": 5,
+  "height": 3,
   "atoms": {
     "X": [
       1.6603445663817349,

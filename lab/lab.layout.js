@@ -1066,7 +1066,7 @@ layout.potentialChart = function(e, model, options) {
 
     ljPotentialGraphData.length = 0;
     for(r = sigma * 0.5; r < ljData.xmax * 3;  r += 0.001) {
-      y = -ljCalculator.potential(r) + epsilon;
+      y = -ljCalculator.potential(r);
       if (Math.abs(y) < 100) {
         ljPotentialGraphData.push([r, y]);
       }

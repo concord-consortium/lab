@@ -1086,7 +1086,7 @@ exports.makeLennardJonesCalculator = function(params, cb) {
       minimum is at r=rmin, V(rmin) = 0
     */
     potentialFromSquaredDistance: function(r_sq) {
-       return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3) + epsilon;
+       return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3);
     },
 
     /**
@@ -1815,7 +1815,7 @@ exports.makeModel = function() {
 
       if (duration == null)  duration = 250;  // how much time to integrate over, in fs
 
-      dt = opt_dt || 5;
+      dt = opt_dt || 1;
       dt_sq = dt*dt;                      // time step, squared
 
       leftwall   = radius[0];
@@ -2228,8 +2228,9 @@ modeler.model = function(initialProperties) {
   // @config: either the number of atoms (for a random setup) or
   //          a hash specifying the x,y,vx,vy properties of the atoms
   function createNewCoreModel(config) {
-    // get a fresh model
+    var T;
 
+    // get a fresh model
     coreModel = md2d.makeModel();
     coreModel.setSize([width,height]);
     if (typeof config === "number") {
@@ -2272,12 +2273,14 @@ modeler.model = function(initialProperties) {
     coreModel.useCoulombInteraction(properties.coulomb_forces);
     coreModel.useThermostat(properties.temperature_control);
 
+    if (temperature_control) {
+      T = abstract_to_real_temperature(temperature);
+      coreModel.setTargetTemperature(T);
+    }
+
     coreModel.setLJEpsilon(properties.epsilon);
     coreModel.setLJSigma(properties.sigma);
 
-    var T = abstract_to_real_temperature(temperature);
-
-    coreModel.setTargetTemperature(T);
 
     if (config.X && config.Y) {
       coreModel.initializeAtomsFromProperties(config);
@@ -2443,11 +2446,6 @@ modeler.model = function(initialProperties) {
 
   model.is_stopped = function() {
     return stopped;
-  };
-
-  model.set_temperature_control = function(tc) {
-   temperature_control = tc;
-   coreModel.useThermostat(tc);
   };
 
   model.set_lennard_jones_forces = function(lj) {
