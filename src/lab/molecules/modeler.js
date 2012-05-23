@@ -394,6 +394,21 @@ modeler.model = function(initialProperties) {
     };
   };
 
+  // A convenience for interactively getting energy averages
+  model.getStatsHistory = function() {
+    var i, len,
+        tick,
+        ret = [];
+
+    ret.push("time (fs)\ttotal PE (eV)\ttotal KE (eV)\ttotal energy (eV)");
+
+    for (i = 0, len = tick_history_list.length; i < len; i++) {
+      tick = tick_history_list[i];
+      ret.push(tick.time + "\t" + tick.pe + "\t" + tick.ke + "\t" + (tick.pe+tick.ke));
+    }
+    return ret.join('\n');
+  };
+
   /**
     Current seek position
   */
