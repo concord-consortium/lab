@@ -126,15 +126,6 @@
                 </form>
               </fieldset>
             </li>
-            <li>
-              <fieldset>
-              <legend>Active solvers</legend>
-                <form id="active-solvers">
-                  <label><input id="use-heat-solver" type="checkbox" checked disabled/> Heat solver</label>
-                  <label><input id="use-fluid-solver" type="checkbox" checked/> Fluid solver</label>
-                </form>
-              </fieldset>
-            </li>
           </ul>  
           <ul class="hlist">
             <li>
@@ -248,7 +239,6 @@
         var tdata = document.getElementById("tdata");
         
         var choose_array_type = document.getElementById("choose-array-type");
-        var choose_active_solvers = document.getElementById("active-solvers");
         
         var sim_stop = document.getElementById("sim-stop");
         var sim_reset = document.getElementById("sim-reset");
@@ -334,10 +324,6 @@
             steps_per_frame = getStepsPerFrame();
         }
         
-        choose_active_solvers.onchange = function() {
-            setupActiveSolvers(model);
-        };
-        
         sim_go.onchange = function() {
             if (this.checked) {
                 paintInterval = setInterval("renderModelStep()", 0);
@@ -409,16 +395,7 @@
                 array_selection = "typed";
             }
             var model = new model2d.Model2D(options, array_selection);
-            setupActiveSolvers(model);
             return model;
-        }
-        
-        function setupActiveSolvers(model) {
-            if (choose_active_solvers.elements[1].checked) {
-                model.convective = true;
-            } else {
-                model.convective = false;
-            }
         }
         
         function getStepsPerFrame() {
