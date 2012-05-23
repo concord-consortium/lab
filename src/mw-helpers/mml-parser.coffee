@@ -32,8 +32,8 @@ parseMML = (mmlString) ->
       Find the container size
     ###
     viewProps = $mml(".org-concord-mw2d-models-RectangularBoundary-Delegate")
-    width  = parseInt viewProps.find(">[property=width] double").text()
-    height = parseInt viewProps.find(">[property=height] double").text()
+    width  = parseInt viewProps.find("[property=width] double").text()
+    height = parseInt viewProps.find("[property=height] double").text()
 
     ###
       Find the view-port size
