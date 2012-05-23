@@ -31,11 +31,11 @@ convertMMLFile = function(mmlFileName){
       outputPath = convertedFolderPath + mmlFileName.match(/.*\//)[0];
 
   if (conversion.json) {
-    mkdirp(outputPath);
+    mkdirp.sync(outputPath);
 
     // write model out to file. Overwrites any existing file with the same name
     var outputFile = outputPath+modelName+'.json';
-    fs.writeFile(outputFile, conversion.json);
+    fs.writeFileSync(outputFile, conversion.json);
     return (outputFile);
   } else {
     console.log("Error converting "+mmlFileName);
@@ -134,7 +134,7 @@ createCmlJsonIndex = function(outputFile) {
   jadeFn = jade.compile(template, { pretty: true });
   html = jadeFn({cmlToJsonHash: cmlToJsonHash});
 
-  fs.writeFile(outputFile, html);
+  fs.writeFileSync(outputFile, html);
 
   console.log("Created index at "+outputFile);
   return cmlToJsonHash;
