@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<text>   Avg.=            Avg.=       </text>
+<section start="0" end="33">
+<paragraph start="0" end="33">
+<content start="0" end="1">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>two-element-gas-heatbath$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Rotate Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button></component></content>
+
+<content start="1" end="9">
+</content>
+
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<datatype>1</datatype>
+<description>Kinetic Energy/Particle Ck</description>
+<width>50</width>
+<height>20</height>
+<fontname>Lucida Grande</fontname>
+<fontsize>13</fontsize>
+</component></content>
+
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Kinetic Energy/Particle Ck</timeseries>
+<datatype>1</datatype>
+<samplingpoints>100</samplingpoints>
+<width>100</width>
+<height>200</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-ff01</fgcolor>
+<minimum>0.0</minimum>
+<maximum>1.5</maximum>
+<value>0.5209635496139526</value>
+</component></content>
+
+<content start="11" end="26">
+</content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<datatype>1</datatype>
+<description>Kinetic Energy/Particle Nt</description>
+<width>50</width>
+<height>20</height>
+<fontname>Lucida Grande</fontname>
+<fontsize>13</fontsize>
+</component></content>
+
+<content start="27" end="29">
+</content>
+
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<timeseries>Kinetic Energy/Particle Nt</timeseries>
+<datatype>1</datatype>
+<samplingpoints>100</samplingpoints>
+<width>100</width>
+<height>200</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-ff0100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>1.5</maximum>
+<value>0.5553863644599915</value>
+</component></content>
+
+<content start="30" end="32">
+</content>
+
+</paragraph>
+</section>
+</document>
