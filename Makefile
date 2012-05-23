@@ -103,6 +103,9 @@ node_modules/browserify:
 node_modules/cherrio:
 	npm install
 
+node_modules/jade:
+	npm install
+
 bin:
 	bundle install --binstubs
 
