@@ -31,7 +31,8 @@
     "jshint": "0.x",
     "browserify": "1.10.12",
     "cheerio": "0.x",
-    "jade": "*"
+    "jade": "*",
+    "mkdirp": "0.3.2"
   },
   "directories": {
     "bin": "node-bin"
