@@ -689,7 +689,7 @@ exports.makeModel = function() {
 
       if (duration == null)  duration = 250;  // how much time to integrate over, in fs
 
-      dt = opt_dt || 5;
+      dt = opt_dt || 1;
       dt_sq = dt*dt;                      // time step, squared
 
       leftwall   = radius[0];
