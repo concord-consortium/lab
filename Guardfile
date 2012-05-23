@@ -33,44 +33,51 @@ guard 'haml',         :input => 'test', :output => 'test', :all_on_start => fals
 end
 
 guard 'shell' do
-  watch(%r{(src\/lab\/.+)|(src\/md-engine\/.+)|(src\/mw-helpers\/.+)}) do |match|
+  watch(/(^src\/lab\/.+)|(^src\/md-engine\/.+)|(^src\/mw-helpers\/.+)/) do |match|
     puts match[0]
     puts "re-generating javascript libraries and css resources for these libraries ..."
     command("make")
     command("make test")
   end
-  watch(%r{imports}) do |match|
+
+  watch(/^imports\/.+/) do |match|
     command("make dist/imports")
   end
 
-  watch(%r{(src\/sass\/.+)}) do |match|
+  watch(/(^src\/sass\/.+)/) do |match|
     puts match[0]
     puts "re-generating all css resources because sass mixin updated ..."
     command("find dist \! -path 'dist/vendor*' -name '*.css' | xargs rm -f")
     command("make")
   end
-  watch("src/index.sass") do
+
+  watch "src/index.sass" do
     command("bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb src/index.sass dist/index.css")
   end
-  watch("src/readme.scss") do
+
+  watch "src/readme.scss" do
     command("make")
   end
-  watch(%r{test\/.+\.js$}) do
+
+  watch(/^test\/.+\.js$/) do
     system("make test")
   end
-  watch(%r{^(src/examples/[^.].+)$}) do |match|
+
+  watch(/(^src\/examples\/[^.].+)$/) do |match|
     unless match[0][/(\.haml)|(\.sass)|(\.coffee)|(^\..+)$/]
       source_path = match[0]
       destination_path = 'dist/' + source_path[/src\/(.+?)$/, 1]
       command("cp -f #{source_path} #{destination_path}")
     end
   end
-  watch(%r{^(src/resources/[^.].+)$}) do |match|
+
+  watch(/^(src\/resources\/[^.].+)$/) do |match|
     source_path = match[0]
     destination_path = 'dist/' + source_path[/src\/(.+?)$/, 1]
     command("cp -f #{source_path} #{destination_path}")
   end
-  watch(%r{^src/(experiments/.+)$}) do |match|
+
+  watch(/^src\/(experiments\/.+)$/) do |match|
     source_path = match[0]
     destination_path = "dist/#{match[1]}"
     command("cp -f #{source_path} #{destination_path}")
@@ -79,14 +86,14 @@ end
 
 # , :api_version => '1.6', :port => '35728'
 guard 'livereload' do
-  watch(%r{(dist/).+\.(css|js|html)})
+  watch(/^(dist\/).+\.(css|js|html)/)
 end
 
 guard 'markdown', :kram_ops => { :toc_levels => [2,3,4,5] } do
-  watch("readme.md") do |m|
+  watch "readme.md" do |m|
     "readme.md|dist/readme.html|src/layouts/readme.html.erb"
   end
-  watch("license.md") do |m|
+  watch "license.md" do |m|
     "license.md|dist/license.html|src/layouts/license.html.erb"
   end
 end
