@@ -8,6 +8,19 @@ html
     title Legacy MML runnables
     link(href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext', rel='stylesheet', type='text/css')
     link(href='../../index.css', rel='stylesheet', type='text/css')
+    style
+      .item-list ul li {
+        padding: 5px;
+      }
+      .horiz li {
+        display: inline;
+        list-style-type: none;
+        padding-right: 20px;
+      }
+      .horiz span {
+        float: left;
+        width: 180px;
+      }
   body
     div(id='header')
       a(href='http://www.concord.org/', id='logo')
@@ -21,11 +34,15 @@ html
             a(class="convert-to-mw", href=cml) #{shorterCml}
             ul
               each json in jsons
-                shorterJson = json.replace('converted/', '')
+                modelName = /[^\/]*$/.exec(json)[0];
                 li
-                  a(href=simpleModel + "#" + folderName + json) Simple Model
-                li
-                  a(href=complexModel + "#" + folderName + json) Complex Model
+                  ul(class="horiz")
+                    li
+                      span #{modelName}
+                    li
+                      a(href=simpleModel + "#" + folderName + json) Simple Model
+                    li
+                      a(href=complexModel + "#" + folderName + json) Complex Model
     script(type="text/javascript")
       var mw = "http://mw2.concord.org/tmp.jnlp?address=",
           mwLinks = document.getElementsByClassName("convert-to-mw"),
