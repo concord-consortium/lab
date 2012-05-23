@@ -1,3 +1,8 @@
+//- variables
+simpleModel  = "/examples/simple-atoms-model/simple-atoms-model.html"
+complexModel = "/examples/complex-atoms-model/complex-atoms-model.html"
+folderName   = "/imports/legacy-mw-content/"
+
 html
   head
     title Legacy MML runnables
@@ -18,7 +23,9 @@ html
               each json in jsons
                 shorterJson = json.replace('converted/', '')
                 li
-                  a(href=json) #{shorterJson}
+                  a(href=simpleModel + "#" + folderName + json) Simple Model
+                li
+                  a(href=complexModel + "#" + folderName + json) Complex Model
     script(type="text/javascript")
       var mw = "http://mw2.concord.org/tmp.jnlp?address=",
           mwLinks = document.getElementsByClassName("convert-to-mw"),
