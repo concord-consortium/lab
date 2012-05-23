@@ -236,8 +236,7 @@ dist/lab/lab.js: \
 	dist/lab/lab.arrays.js \
 	dist/lab/lab.layout.js \
 	dist/lab/lab.components.js \
-  dist/lab/lab.controllers.js \
-  dist/lab/lab.mw-helpers.js
+  dist/lab/lab.controllers.js
 
 dist/lab/lab.grapher.js: \
 	src/lab/start.js \
