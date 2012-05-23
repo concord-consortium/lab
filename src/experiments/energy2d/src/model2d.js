@@ -74,7 +74,7 @@ model2d.default_config = {
         background_density: 1,
 
         boundary:{
-            temperature_at_border:{
+            flux_at_border:{
                 upper: 0,
                 lower: 0,
                 left: 0,
@@ -166,9 +166,9 @@ model2d.Model2D = function(options, array_type) {
 
     this.backgroundConductivity = opt.background_conductivity != undefined ? opt.background_conductivity : 10 * model2d.AIR_THERMAL_CONDUCTIVITY;
     this.backgroundViscosity = opt.background_viscosity != undefined ? opt.background_viscosity : 10 * model2d.AIR_VISCOSITY;
-    this.backgroundSpecificHeat = model2d.AIR_SPECIFIC_HEAT;
-    this.backgroundDensity = model2d.AIR_DENSITY;
-    this.backgroundTemperature = 0.0;
+    this.backgroundSpecificHeat = opt.background_specific_heat != undefined ? opt.background_specific_heat : model2d.AIR_SPECIFIC_HEAT;
+    this.backgroundDensity = opt.background_density != undefined ? opt.background_density : model2d.AIR_DENSITY;
+    this.backgroundTemperature = opt.background_temperature != undefined ? opt.background_temperature : 0;
 
     this.boundary_settings = options.model.boundary || 
         { temperature_at_border: { upper: 0, lower: 0, left: 0, right: 0 } };
@@ -189,10 +189,10 @@ model2d.Model2D = function(options, array_type) {
     
 
     // length in x direction (unit: meter)
-    this.lx = 10;
+    this.lx = opt.model_width != undefined ? opt.model_width : 10;
 
     // length in y direction (unit: meter)
-    this.ly = 10;
+    this.ly = opt.model_height != undefined ? opt.model_height : 10;
 
     this.deltaX = this.lx / this.nx;
     this.deltaY = this.ly / this.ny;
@@ -668,6 +668,43 @@ model2d.Part = function(options) {
     this.uid = options.uid;
 };
 
+model2d.Part.prototype.getLabel = function() {
+    var s;
+    var label = this.label;
+    if (label === "%temperature")
+        s = this.temperature + " \u00b0C";
+    else if (label === "%density")
+        s = this.density + " kg/m\u00b3";
+    else if (label === "%specific_heat")
+        s = this.specific_heat + " J/(kg\u00d7\u00b0C)";
+    else if (label === "%thermal_conductivity")
+        s = this.thermal_conductivity + " W/(m\u00d7\u00b0C)";
+    else if (label === "%power_density")
+        s = this.power + " W/m\u00b3";
+    else if (label === "%area") {
+        if (this.rectangle) {
+            s = (this.rectangle.width * this.rectangle.height) + " m\u00b2";
+        } else if (this.ellipse) {
+            s = (this.ellipse.width * this.ellipse.height * 0.25 * Math.PI) + " m\u00b2";
+        }
+    } else if (label === "%width") {
+        if (this.rectangle) {
+            s = this.rectangle.width + " m";
+        } else if (this.ellipse) {
+            s = this.ellipse.width + " m";
+        }
+    } else if (label === "%height") {
+        if (this.rectangle) {
+            s = this.rectangle.height + " m";
+        } else if (this.ellipse) {
+            s = this.ellipse.height + " m";
+        }
+    }
+    else {
+        s = label;
+    }
+    return s;
+};
 
 // *******************************************************
 //
@@ -939,7 +976,7 @@ model2d.FluidSolver2D = function(nx, ny, model) {
     this.deltaY = model.deltaY;
     
     this.relaxationSteps = 5;
-    this.timeStep = 0.1;
+    this.timeStep = model.timeStep;
     this.thermalBuoyancy = model.thermalBuoyancy;
     this.gravity = 0;
     this.buoyancyApproximation = model.buoyancyApproximation;  // model2d.BUOYANCY_AVERAGE_COLUMN;
@@ -2017,26 +2054,33 @@ model2d.displayTemperatureCanvasWithSmoothing = function(canvas, model) {
 };
 
 model2d.displayParts = function(canvas, parts, scene_width, scene_height) {
+    if (this.textures.length == 0) {
+        this.setupTextures();
+    }
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "gray";
     ctx.strokeStyle = "black";
     ctx.lineCap = "round";
+    ctx.lineJoin = "round";
     ctx.lineWidth = 2;
-    
-    var scale_x = (canvas.width - 1) / scene_width;
-    var scale_y = (canvas.height - 1) / scene_height;
         
-    var part, px, py, pw, ph;
+    var scale_x = canvas.width / scene_width;
+    var scale_y = canvas.height / scene_height;
+        
+    var part, px, py, pw, ph, color, pattern;
+    var label, label_width;
     var length = parts.length;
     for (var i = 0; i < length; i++) {
         part = parts[i];
         
+        if (!part.visible)
+        	continue;
+        	
         if (part.rectangle) {
-           px = part.rectangle.x * scale_x;
-           py = part.rectangle.y * scale_y;
-           pw = part.rectangle.width * scale_x;
-           ph = part.rectangle.height * scale_y;
+           px = part.rectangle.x * scale_x - 1;        // "- 1 / + 2" too keep positions 
+           py = part.rectangle.y * scale_y - 1;        // consistent with Energy2d
+           pw = part.rectangle.width * scale_x + 2;    // (looks better)
+           ph = part.rectangle.height * scale_y + 2;   
            ctx.beginPath();
            ctx.moveTo(px, py);
            ctx.lineTo(px + pw, py);
@@ -2045,10 +2089,71 @@ model2d.displayParts = function(canvas, parts, scene_width, scene_height) {
            ctx.lineTo(px, py);
         }
         
-        ctx.stroke();
-        if (part.filled)
+        if (part.filled) {
+            color = this.getPartColor(part);
+            ctx.fillStyle = color;
+            ctx.fill();     
+        }
+        if (part.texture) {
+            pattern = ctx.createPattern(this.textures[0], "repeat");
+            ctx.fillStyle = pattern;
             ctx.fill();
+        }
+        ctx.stroke();
+        
+        if (part.label) {
+            ctx.fillStyle = "white";
+            label = part.getLabel();
+            label_width = ctx.measureText(label).width;
+            ctx.fillText(label, px + 0.5 * pw - 0.5 * label_width, py + 0.5 * ph);
+        }
+        
     }
+};
+
+model2d.getPartColor = function(part) {
+    var default_fill_color = "gray";
+    var color;
+    
+    var max_hue = red_color_table.length - 1;
+    var min_temp = model2d.MIN_DISPLAY_TEMP;
+    var max_temp = model2d.MAX_DISPLAY_TEMP;
+    var scale = max_hue / (max_temp - min_temp);
+    
+    if (part.color) {
+        color = part.color.toString(16);
+    }
+    else if (part.constant_temperature) {
+        var hue = max_hue - Math.round(scale * (part.temperature - min_temp));  
+        color = "rgb(" + red_color_table[hue] + ","
+                       + blue_color_table[hue] + ","
+                       + green_color_table[hue] + ")";
+               
+   } 
+   else {
+       color = default_fill_color;
+   }
+   return color;
+}
+
+model2d.textures = [];
+
+model2d.setupTextures = function() {
+    var width = 10;
+    var height = 10;
+    var texture_canvas = window.document.createElement('canvas');
+    texture_canvas.width = width;
+    texture_canvas.height = height;
+   
+    var ctx = texture_canvas.getContext("2d");
+    ctx.clearRect(0, 0, width, height);
+    ctx.strokeStyle = "black";
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(width, height);
+    ctx.stroke();
+    
+    this.textures.push(texture_canvas);
 };
 
 model2d.displayVectorField = function(canvas, u, v, nx, ny, spacing) {  
