@@ -73,7 +73,8 @@ node_modules: node_modules/coffee-script \
 	node_modules/science \
 	node_modules/browserify \
 	node_modules/cherrio \
-	node_modules/jade
+	node_modules/jade \
+	node_modules/mkdirp
 	npm install
 
 node_modules/coffee-script:
@@ -104,6 +105,9 @@ node_modules/cherrio:
 	npm install
 
 node_modules/jade:
+	npm install
+
+node_modules/mkdirp:
 	npm install
 
 bin:
