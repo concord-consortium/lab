@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<text>  
+      </text>
+<section start="0" end="10">
+<paragraph start="0" end="3">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>simpleAtomsModel$0.mml</resource></component></content>
+
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-10000" style="0" width="1.0" symbol="1" size="4" spacing="5">Kinetic Energy/Particle</time_series_y1>
+<time_series_y2 color="-ffff01" style="0" width="1.0" symbol="1" size="4" spacing="5">Potential Energy/Particle</time_series_y2>
+<time_series_y3 color="-1000000" style="0" width="1.0" symbol="1" size="4" spacing="5">Total Energy/Particle</time_series_y3>
+<width>300</width>
+<height>350</height>
+<axis_x_title>x</axis_x_title>
+<axis_y_title>y</axis_y_title>
+<legend_x>0</legend_x>
+<legend_y>45</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+</component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="10">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.010041300519369543</value>
+<minimum>0.0034099998883903027</minimum>
+<maximum>0.0406000018119812</maximum>
+<nstep>100</nstep>
+<title>Element Pl: Epsilon</title>
+<width>200</width>
+<height>60</height>
+<bgcolor>-111112</bgcolor>
+<border>Line</border>
+<change>Element Pl: Epsilon</change>
+</component></content>
+
+<content start="4" end="6">
+</content>
+
+<content start="6" end="7">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Coulomb Forces</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>define %i 0
+while (%i &lt; %number_of_atoms);
+  set atom[%i].charge 1;
+  set %i %i + 1;
+  set atom[%i].charge -1;
+  set %i %i + 1;
+endwhile;
+</script>
+<script2>select atom all;
+set charge 0;
+select atom none;
+</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="7" end="8">
+<component><class>org.concord.modeler.PageButton</class>
+<title>coolder</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>define %temp (%temperature - 39.9);
+if (%temp &lt; 0);
+  set %temp 1;
+endif;
+set heatbath %temp;
+print %temp;</script>
+<action>Execute MW script</action>
+<step>0.01</step>
+</component></content>
+
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageButton</class>
+<title>hotter</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>define %temp (%temperature + 39.9);
+set heatbath %temp;
+print %temp;
+</script>
+<action>Execute MW script</action>
+<step>0.01</step>
+</component></content>
+
+</paragraph>
+</section>
+</document>
