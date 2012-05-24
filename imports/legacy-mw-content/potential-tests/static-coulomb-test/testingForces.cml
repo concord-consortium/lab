@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<text>  
+   
+    
+
+Accl of (-) in x:  A/fs^2</text>
+<section start="0" end="39">
+<paragraph start="0" end="3">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>testingForces$0.mml</resource><button>Select Object</button><button>What's This?</button><button>Draw Lines</button><button>Draw Rectangle</button><button>Draw Ellipse</button><button>Draw Triangle</button><button>Mark Object</button><button>Count Objects</button><button>Measure Distance</button><button>Toggle Trajectory</button><button>Toggle Average Position</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Add Diatomic Molecule</button><button>Add Triatomic Molecule</button><button>Add Benzene</button><button>Add Chain Molecule</button><button>Add Obstacle</button><button>Fill Area with Nt Atoms</button><button>Fill Area with Pl Atoms</button><button>Fill Area with Ws Atoms</button><button>Fill Area with Ck Atoms</button><button>Add Rectangular Molecular Surface</button><button>Add Rectangular Molecular Ribbon</button><button>Add Circular Molecular Surface</button><button>Add Circular Molecular Ribbon</button><button>Add Curved Molecular Surface</button><button>Add Curved Molecular Ribbon</button><button>Add Molecular Surface in Free-Form Shape</button><button>Add an Amino Acid to Polypeptide</button><button>Subtract an Amino Acid from Polypeptide</button><button>Add a Nucleotide to DNA</button><button>Subtract a Nucleotide from DNA</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Add Positive Charge</button><button>Add Negative Charge</button><button>Increase Restraint</button><button>Decrease Restraint</button><button>Increase Damping</button><button>Decrease Damping</button><button>Rotate Object</button><button>Duplicate Object</button><button>Delete Objects</button><button>Setup Boundary</button><button>Change Type</button><button>Change Velocity</button><button>Build Radial Bond</button><button>Create Radial Bond</button><button>Build Angular Bond</button></component></content>
+
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>300</height>
+</component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="7">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.010413200538605453</value>
+<minimum>0.0034099998883903027</minimum>
+<maximum>0.0406000018119812</maximum>
+<nstep>100</nstep>
+<title>Element Pl: Epsilon</title>
+<width>200</width>
+<height>60</height>
+<bgcolor>-111112</bgcolor>
+<border>Line</border>
+<change>Element Pl: Epsilon</change>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+<content start="5" end="6">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<description>Channel 2</description>
+<width>100</width>
+<height>20</height>
+<max_fraction_digits>4</max_fraction_digits>
+<fontname>Lucida Grande</fontname>
+<fontsize>13</fontsize>
+</component></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="12">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+</content>
+
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageSpinner</class>
+<title>dist in angstroms</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>20.0</maximum>
+<step>0.5</step>
+<value>10.0</value>
+<script>define %x %atom[0].rx + %val;
+set %atom[1].rx %x;
+runtask updateGraph;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="9" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="13">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="39">
+<Alignment>1</Alignment>
+<content start="13" end="30">
+<bold>true</bold><size>14</size></content>
+
+<content start="30" end="31">
+</content>
+
+<content start="31" end="32">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<description>Channel 1</description>
+<width>100</width>
+<height>20</height>
+<format>Scientific notation</format>
+<max_integer_digits>1</max_integer_digits>
+<fontname>Lucida Grande</fontname>
+<fontsize>13</fontsize>
+</component></content>
+
+<content start="32" end="38">
+</content>
+
+</paragraph>
+</section>
+</document>
