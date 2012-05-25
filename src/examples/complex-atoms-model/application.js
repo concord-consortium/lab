@@ -38,7 +38,7 @@ var modelConfig = {
 
 if (hash = document.location.hash) {
   hash = hash.substr(1, hash.length);
-  modelUrl = ~hash.indexOf(".json") ? hash : '/model-config/' + hash;
+  modelUrl = ~hash.indexOf(".json") ? hash : '/md2d_models/' + hash;
   $.get(modelUrl).done(function(results) {
     opts = results;
     optsLoaded.resolve();
@@ -65,7 +65,7 @@ $.when(optsLoaded, windowLoaded).done(function(results) {
         req;
 
     // temporarily, for debugging, also POST to /model-configs and show the resulting config
-    req = $.ajax('/model-configs', {
+    req = $.ajax('/md2d_models', {
       type: 'POST',
       contentType: 'application/json',
       data: propsStr
