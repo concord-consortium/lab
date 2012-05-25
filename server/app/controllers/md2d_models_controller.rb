@@ -2,7 +2,9 @@ class Md2dModelsController < ApplicationController
 
   def index
     @md2d_models = Md2dModel.all
-    render :json => @md2d_models.collect { |m| { m.id => md2d_models_path(m) } }
+    render :json => @md2d_models.collect { |m|
+      { "_id" => m.id, "name" => m.name, "location" => md2d_models_path(m) }
+    }
   end
 
   def show
