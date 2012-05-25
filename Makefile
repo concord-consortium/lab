@@ -161,7 +161,8 @@ dist/vendor: \
 	dist/vendor/sizzle \
 	dist/vendor/hijs \
 	dist/vendor/mathjax \
-	dist/vendor/fonts
+	dist/vendor/fonts \
+  dist/favicon
 
 dist/vendor/d3:
 	mkdir -p dist/vendor/d3
@@ -212,6 +213,9 @@ dist/vendor/mathjax:
 dist/vendor/fonts:
 	mkdir -p dist/vendor/fonts
 	cp -R src/vendor/fonts dist/vendor/
+
+dist/favicon:
+	cp -f src/favicon.ico dist/favicon.ico
 
 src/vendor/jquery/dist/jquery.min.js: src/vendor/jquery
 	cd src/vendor/jquery; make
