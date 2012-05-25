@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>Vernier GoIO Temperature Grapher</title>
+    <link href='temperature-graph.css' rel='stylesheet' type='text/css' />
+    <script type="text/javascript" src="../../vendor/modernizr/modernizr.js"></script>
+    <script type="text/javascript">
+      if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
+    </script>
+    <script type="text/javascript" src="../../vendor/d3/d3.v2.js"></script>
+    <script type="text/javascript" src="../../lab/lab.grapher.js"></script>
+    <script src="sensor.js"></script>
+  </head>
+  <body>
+    <h1>Vernier GoIO Temperature Grapher</h1>
+    <p>
+      Connect either a <a href="http://www.vernier.com/products/sensors/temperature-sensors/go-temp/">Vernier GoTemp</a>
+      or a <a href="http://www.vernier.com/products/interfaces/go-link/">Vernier GoLink</a> with an attached
+      <a href="http://www.vernier.com/products/sensors/temperature-sensors/sts-bta/">Temperature Sensor</a>
+      and click the <b>Start</b> button to start graphing temperature.
+    </p>
+    <div id="vis">
+      <div id="graph" class="chart"></div>
+    </div>
+    <div id="applet-container" ></div>
+    <p>
+      This example uses a small Java applet running in the background to collect data from the probe and pass it to the graph.
+    </p>
+    <script type="text/javascript">
+      var vis = document.getElementById("vis"),
+          temperature_data = [],
+          graph = grapher.graph("#graph", {
+            title: "GoIO Temperature Sensor",
+            xlabel:    "Time (s)",
+            xmin: 0, xmax: 60,
+            ylabel:    "Temperature, (Degrees C)",
+            ymin: 10, ymax: 40,
+            points: temperature_data,
+            circleRadius: false,
+            dataChange: false
+          }, "Sensor Applet Loading ...");
+      var applet_string =
+            ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.OTSensorApplet"',
+             '     width="1" height="1" MAYSCRIPT="true"',
+             '     archive="org/concord/sensor-native/sensor-native.jar,',
+             '           org/concord/otrunk/otrunk.jar,',
+             '           org/concord/framework/framework.jar,',
+             '           org/concord/frameworkview/frameworkview.jar,',
+             '           jug/jug/jug.jar,',
+             '           jdom/jdom/jdom.jar,',
+             '           org/concord/sensor/sensor.jar,',
+             '           org/concord/data/data.jar,',
+             '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+             '     MAYSCRIPT="true">',
+             '  <param name="resource" value="/temperature.otml"/>',
+             '  <param name="name" value="sensor"/>',
+             '  <!-- <param name="sensorStatePath" value="sensorState"/> -->',
+             '  <param name="MAYSCRIPT" value="true"/>',
+             '  Your browser is completely ignoring the applet tag!',
+             '</applet>'].join('\n');
+      document.getElementById("applet-container").innerHTML = applet_string;
+      var applet = document.getElementById("sensor-applet");
+      applet_grapher = new sensor.AppletGrapher(applet, vis, graph, 'temperature', "applet_grapher.JsListener()", graph.notify);
+    </script>
+  </body>
+</html>
