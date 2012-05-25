@@ -1,8 +1,8 @@
 var fs  = require('fs');
 var env = require("../../env");
 require("d3");
-components = require("../../../dist/lab/lab.components");
-jquery = require("../../../dist/vendor/jquery/jquery.min");
+components = require("../../../server/public/lab/lab.components");
+jquery = require("../../../server/public/vendor/jquery/jquery.min");
 $ = window.jQuery;
 
 var vows = require("vows"),
