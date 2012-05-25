@@ -73,7 +73,7 @@ Note that `make clean` now empties the `server/public` folder in-place, leaving 
 
 #### Pushing changes to gh-pages branch
 
-First, make sure your `dist/` folder tracks the gh-pages branch, as per the above.
+First, make sure your `server/public` folder tracks the gh-pages branch, as per the above.
 
 Then run the following shell command in the `script/` folder:
 
