@@ -56,20 +56,20 @@ the gh-pages branch is used to deploy to our EC2 instance.
 If you maintain a fork of this project, you get a Github Page for free, and Github the instructions below apply to you as well! (However, you will have to set up your own EC2 server
 or equivalent.)
 
-#### Making the dist folder track the gh-pages branch
+#### Making the distribution folder track the gh-pages branch
 
-If you haven't done this yet, make the `dist/` folder track the contents of the gh-pages branch.
+If you haven't done this yet, make the `server/public` folder track the contents of the gh-pages branch.
 
     # make sure to stop Guard first!
 
-    # dist/ needs to be empty for git clone to be happy:
-    rm -rf dist
+    # server/public/ needs to be empty for git clone to be happy:
+    rm -rf server/public
 
     # substitute the URL for whatever fork of the Lab repository you have write access to:
-    git clone git@github.com:concord-consortium/lab.git -b gh-pages dist
+    git clone git@github.com:concord-consortium/lab.git -b gh-pages server/public
 
-Note that `make clean` now empties the `dist` folder in-place, leaving however the Git directory
-`dist/.git` intact.
+Note that `make clean` now empties the `server/public` folder in-place, leaving however the Git directory
+`server/public/.git` intact.
 
 #### Pushing changes to gh-pages branch
 
@@ -125,25 +125,23 @@ done using [UglifyJS](https://github.com/mishoo/UglifyJS).
 
 ### Prerequisites:
 
-#### Ruby 1.9 and the RubyGem bundler
+#### RVM, Ruby 1.9 and the RubyGem bundler
 
-[Ruby 1.9](http://www.ruby-lang.org/en/) is a development dependency for the Lab codebase however
-often the older Ruby version 1.8.7 is what comes pre-installed on Mac OS X and Linux.
+We use [RVM](https://rvm.io/) to mange our development dependency on [Ruby 1.9.3](http://www.ruby-lang.org/en/)
+and the specific Ruby Gems needed for building Lab and running the Lab server.
 
-    $ ruby -v
-    ruby 1.8.7 (2010-01-10 patchlevel 249) [universal-darwin10.0]
+1. [Install RVM](https://rvm.io/rvm/install/)
 
-[RVM](http://beginrescueend.com/) is a good way to install and manage multiple updated versions
-of Ruby without affecting the Ruby that comes pre-installed in the OS.
-
-Once you have a working version of Ruby 1.9.2 (or newer) install the RubyGem [bundler](http://gembundler.com/).
+After installation you should see:
 
     $  ruby -v
-    ruby 1.9.2p290 (2011-07-09 revision 32553) [x86_64-darwin10.8.0]
+    ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-darwin10.8.0]
+
+Once you have a working version of Ruby 1.9.3 install the RubyGem [bundler](http://gembundler.com/).
 
     $ gem install bundler
-    Fetching: bundler-1.0.22.gem (100%)
-    Successfully installed bundler-1.0.22
+    Fetching: bundler-1.1.3.gem (100%)
+    Successfully installed bundler-1.1.3
     1 gem installed
 
 #### nodejs and npm, the Node Package Manager
@@ -154,15 +152,35 @@ development dependencies.
 [npm](http://npmjs.org/), the Node Package Manager has been included as part of [nodejs](http://nodejs.org/)
 since version 0.6.3.
 
-Install the latest stable version of node (currently v0.6.13) with installers available here: [http://nodejs.org/#download](http://nodejs.org/#download)
+Install the latest stable version of node (currently v0.6.18) with installers available here: [http://nodejs.org/#download](http://nodejs.org/#download)
 
 Currently development is being done with these versions of node and npm:
 
     $ node -v
-    v0.6.13
+    v0.6.18
 
     $ npm -v
     1.1.9
+
+#### CouchDB
+
+Install the nosql document-oriented [CouchDB](http://couchdb.apache.org/) database server to support persistence for the Lab server.
+
+Installation options:
+
+**MacOS X**
+
+Most of the developers on Lab use [Homebrew](http://mxcl.github.com/homebrew/) a package manager for Mac OS X.
+
+1. [Install Homebrew](https://github.com/mxcl/homebrew/wiki/installation)
+2. Install CouchDB using homebrew
+
+        brew doctor     # fix issues if needed
+        brew update     # if you haven't run it in the last 24 hours
+        brew install couchdb
+
+**Linux**
+
 
 ### Use git to create a local clone of the Lab repository.
 
@@ -180,8 +198,11 @@ Make sure you have already installed the prerequistes: [Ruby 1.9](http://www.rub
 the RubyGem [bundler](http://gembundler.com/), and [nodejs](http://nodejs.org/) (which now includes
 [npm](http://npmjs.org/) the Node Package Manager.
 
-Change to the `lab/` directory and run `make clean; make` to install the runtime and development dependencies and generate
-the `dist/` directory:
+Open a shell and change to the `lab/` directory. The first time you `cd` into the `lab/` directory RVM will
+ask you if this *new* `.rvmrc` file should be trusted.
+
+The `.rvmrc` specifies that this project dependeds on Ruby 1.9.3-p194 and all the required Ruby Gems
+will be installed in the RVM gemset named `ruby-1.9.3-p194@lab`.
 
     cd lab
     make clean; make
@@ -209,7 +230,7 @@ When `make` is run on a freshly cloned repository it performs the following task
 
 4.  Generates the `dist/` directory:
 
-You should now be able to open the file: `dist/index.html` in a browser and run the examples.
+You should now be able to open the file: `dist/index.html` in a browser and run some of the examples.
 
 Start watching the `src/` and `test/` directories and when files are changed automatically
 generate the JavaScript Lab modules, the examples, and run the tests.
@@ -222,23 +243,66 @@ to `dist/lab/`. In addition any change in either the `src/lab/` or `test/`direct
 tests and display the results in the console window where `bin/guard`
 is running.
 
-### Serving `dist/` locally with Apache
+#### Setup the Rails Lab server for development
 
-You can also create a localhost and local Apache vhost for Lab:
+The Lab server is a very simple Rails 3.2 application that uses CouchDB for persistence.
+
+Open a shell and change to the `lab/server` directory. The first time you `cd` into the `lab/server` directory RVM will
+ask you if this *new* `.rvmrc` file should be trusted.
+
+The `.rvmrc` specifies that this project dependeds on Ruby 1.9.3-p194-server and all the required Ruby Gems
+will be installed in the RVM gemset named `ruby-1.9.3-p194@lab-server`.
+
+    cd lab/server
+    bundle install
+
+Create a couchdb configuration by copying the sample:
+
+    cp config/couchdb.sample.yml config/couchdb.yml
+
+If you have setup your local CouchDB server to require admin login for creating new databases
+you will need to enter user and password for a valid admin user.
+
+##### Starting the Rails Lab server
+
+    cd lab/server
+    thin start
+
+You can now open your local Lab application at this url:
+
+    http://localhost:3000/
+
+You can use a pre-configured route to open the local CouchDb admin wbe interface:
+
+    http://localhost:3000/_utils
+
+##### Entering the Rails Lab server console
+
+    cd lab/server
+    rails console
+
+### Serving the Lab server locally with Apache and Passenger
+
+#### Mac OS X
+
+[Phusion Passenger](http://www.modrails.com/documentation.html) is an Apache module that enables
+running Ruby and Rack applications.
+
+See: [Installing Passenger](http://www.modrails.com/install.html)
+
+Now create a localhost and local Apache vhost for Lab:
 
 file: `/etc/hosts`
 
     127.0.0.1       lab.local
-    127.0.0.1       d3.local
 
 file: `/etc/apache2/extra/httpd-vhosts.conf`
 
     <VirtualHost lab.local:80>
        ServerName lab
-       DocumentRoot /path/to/lab-repo/dist
-       PassengerEnabled off
-       <Directory /path/to/lab-repo/dist >
-         Options +Indexes +FollowSymLinks +MultiViews +Includes
+       DocumentRoot /path/to/lab-repo/server/public
+       <Directory /path/to/lab-repo/server/public >
+         Options +Indexes +FollowSymLinks -MultiViews +Includes
          AllowOverride All
          Order allow,deny
          Allow from all
@@ -258,6 +322,22 @@ Restart Apache when the configuration syntax is OK :
 Now open: [http://lab.local/](http://lab.local/)
 
 Or go directly to your local instance of [Simple Molecules](http://lab.local/examples/simplemolecules/simplemolecules.html).
+
+Try making a change and clicking **Save** and then reloding the new page.
+
+If there are errors try looking at the Apache log:
+
+    tail -n 200 -f /var/log/apache2/error_log
+
+If you see errors like this:
+
+    No such file or directory – git ls-files
+
+This (or a variation) will probably fix the problem:
+
+    sudo ln -nfs /usr/local/bin/git /usr/bin/git
+
+See: [Phusion Passenger – fixing 'No such file or directory – git ls-files'](http://ficial.wordpress.com/2011/07/13/phusion-passenger-fixing-no-such-file-or-directory-git-ls-files/)
 
 Whenever guard is running and you save changes to any files in the src/ directory the corresponding files in
 the `dist/` directory will be updated.

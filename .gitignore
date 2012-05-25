@@ -1,7 +1,6 @@
 Gemfile.lock
 /bin
 .bundle
-.rvmrc
 .sass-cache
 /dist
 /node_modules
@@ -14,4 +13,5 @@ performance.rb
 /lab.*
 /*.log
 /uploads
-server/config/couchdb.yml
+/server/config/couchdb.yml
+/server/public
