@@ -124,7 +124,8 @@ dist: \
 	dist/examples \
 	dist/doc \
 	dist/experiments \
-  dist/imports
+  dist/imports \
+  dist/jnlp
 
 dist/examples:
 	mkdir -p dist/examples
@@ -141,6 +142,12 @@ dist/experiments:
 	rsync -aq src/experiments dist/
 
 .PHONY: dist/experiments
+
+dist/jnlp:
+	mkdir -p dist/jnlp
+	rsync -aq src/jnlp dist/
+
+.PHONY: dist/jnlp
 
 dist/imports:
 	mkdir -p dist/imports
