@@ -27,7 +27,7 @@
   <li><a href="#license">License</a></li>
   <li><a href="#distribution-of-project-and-examples">Distribution of Project and Examples</a>    <ul>
       <li><a href="#distributing-the-built-repository-via-the-gh-pages-branch">Distributing the built repository via the gh-pages branch</a>        <ul>
-          <li><a href="#making-the-dist-folder-track-the-gh-pages-branch">Making the dist folder track the gh-pages branch</a></li>
+          <li><a href="#making-the-distribution-folder-track-the-gh-pages-branch">Making the distribution folder track the gh-pages branch</a></li>
           <li><a href="#pushing-changes-to-gh-pages-branch">Pushing changes to gh-pages branch</a></li>
           <li><a href="#pushing-the-gh-pages-branch-to-a-remote-server">Pushing the gh-pages branch to a remote server</a></li>
         </ul>
@@ -39,13 +39,24 @@
   <li><a href="#todo">TODO</a></li>
   <li><a href="#setup-development">Setup Development</a>    <ul>
       <li><a href="#prerequisites">Prerequisites:</a>        <ul>
-          <li><a href="#ruby-19-and-the-rubygem-bundler">Ruby 1.9 and the RubyGem bundler</a></li>
+          <li><a href="#rvm-ruby-19-and-the-rubygem-bundler">RVM, Ruby 1.9 and the RubyGem bundler</a></li>
           <li><a href="#nodejs-and-npm-the-node-package-manager">nodejs and npm, the Node Package Manager</a></li>
+          <li><a href="#couchdb">CouchDB</a></li>
         </ul>
       </li>
       <li><a href="#use-git-to-create-a-local-clone-of-the-lab-repository">Use git to create a local clone of the Lab repository.</a></li>
-      <li><a href="#setup-the-local-lab-repository-for-development">Setup the local Lab repository for development</a></li>
-      <li><a href="#serving-dist-locally-with-apache">Serving <code>dist/</code> locally with Apache</a></li>
+      <li><a href="#setup-the-local-lab-repository-for-development">Setup the local Lab repository for development</a>        <ul>
+          <li><a href="#setup-the-rails-lab-server-for-development">Setup the Rails Lab server for development</a>            <ul>
+              <li><a href="#starting-the-rails-lab-server">Starting the Rails Lab server</a></li>
+              <li><a href="#entering-the-rails-lab-server-console">Entering the Rails Lab server console</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#serving-the-lab-server-locally-with-apache-and-passenger">Serving the Lab server locally with Apache and Passenger</a>        <ul>
+          <li><a href="#mac-os-x">Mac OS X</a></li>
+        </ul>
+      </li>
       <li><a href="#serving-dist-using-pow">Serving <code>dist/</code> using POW</a></li>
       <li><a href="#contributing-to-lab">Contributing to Lab</a></li>
     </ul>
@@ -170,25 +181,25 @@ the gh-pages branch is used to deploy to our EC2 instance.</p>
 <p>If you maintain a fork of this project, you get a Github Page for free, and Github the instructions below apply to you as well! (However, you will have to set up your own EC2 server
 or equivalent.)</p>
 
-<h4 id="making-the-dist-folder-track-the-gh-pages-branch">Making the dist folder track the gh-pages branch</h4>
+<h4 id="making-the-distribution-folder-track-the-gh-pages-branch">Making the distribution folder track the gh-pages branch</h4>
 
-<p>If you haven’t done this yet, make the <code>dist/</code> folder track the contents of the gh-pages branch.</p>
+<p>If you haven’t done this yet, make the <code>server/public</code> folder track the contents of the gh-pages branch.</p>
 
 <pre><code># make sure to stop Guard first!
 
-# dist/ needs to be empty for git clone to be happy:
-rm -rf dist
+# server/public/ needs to be empty for git clone to be happy:
+rm -rf server/public
 
 # substitute the URL for whatever fork of the Lab repository you have write access to:
-git clone git@github.com:concord-consortium/lab.git -b gh-pages dist
+git clone git@github.com:concord-consortium/lab.git -b gh-pages server/public
 </code></pre>
 
-<p>Note that <code>make clean</code> now empties the <code>dist</code> folder in-place, leaving however the Git directory
-<code>dist/.git</code> intact.</p>
+<p>Note that <code>make clean</code> now empties the <code>server/public</code> folder in-place, leaving however the Git directory
+<code>server/public/.git</code> intact.</p>
 
 <h4 id="pushing-changes-to-gh-pages-branch">Pushing changes to gh-pages branch</h4>
 
-<p>First, make sure your <code>dist/</code> folder tracks the gh-pages branch, as per the above.</p>
+<p>First, make sure your <code>server/public</code> folder tracks the gh-pages branch, as per the above.</p>
 
 <p>Then run the following shell command in the <code>script/</code> folder:</p>
 
@@ -248,26 +259,26 @@ done using <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a>.</p>
 
 <h3 id="prerequisites">Prerequisites:</h3>
 
-<h4 id="ruby-19-and-the-rubygem-bundler">Ruby 1.9 and the RubyGem bundler</h4>
+<h4 id="rvm-ruby-19-and-the-rubygem-bundler">RVM, Ruby 1.9 and the RubyGem bundler</h4>
 
-<p><a href="http://www.ruby-lang.org/en/">Ruby 1.9</a> is a development dependency for the Lab codebase however
-often the older Ruby version 1.8.7 is what comes pre-installed on Mac OS X and Linux.</p>
+<p>We use <a href="https://rvm.io/">RVM</a> to mange our development dependency on <a href="http://www.ruby-lang.org/en/">Ruby 1.9.3</a>
+and the specific Ruby Gems needed for building Lab and running the Lab server.</p>
 
-<pre><code>$ ruby -v
-ruby 1.8.7 (2010-01-10 patchlevel 249) [universal-darwin10.0]
-</code></pre>
+<ol>
+  <li><a href="https://rvm.io/rvm/install/">Install RVM</a></li>
+</ol>
 
-<p><a href="http://beginrescueend.com/">RVM</a> is a good way to install and manage multiple updated versions
-of Ruby without affecting the Ruby that comes pre-installed in the OS.</p>
-
-<p>Once you have a working version of Ruby 1.9.2 (or newer) install the RubyGem <a href="http://gembundler.com/">bundler</a>.</p>
+<p>After installation you should see:</p>
 
 <pre><code>$  ruby -v
-ruby 1.9.2p290 (2011-07-09 revision 32553) [x86_64-darwin10.8.0]
+ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-darwin10.8.0]
+</code></pre>
 
-$ gem install bundler
-Fetching: bundler-1.0.22.gem (100%)
-Successfully installed bundler-1.0.22
+<p>Once you have a working version of Ruby 1.9.3 install the RubyGem <a href="http://gembundler.com/">bundler</a>.</p>
+
+<pre><code>$ gem install bundler
+Fetching: bundler-1.1.3.gem (100%)
+Successfully installed bundler-1.1.3
 1 gem installed
 </code></pre>
 
@@ -279,16 +290,40 @@ development dependencies.</p>
 <p><a href="http://npmjs.org/">npm</a>, the Node Package Manager has been included as part of <a href="http://nodejs.org/">nodejs</a>
 since version 0.6.3.</p>
 
-<p>Install the latest stable version of node (currently v0.6.13) with installers available here: <a href="http://nodejs.org/#download">http://nodejs.org/#download</a></p>
+<p>Install the latest stable version of node (currently v0.6.18) with installers available here: <a href="http://nodejs.org/#download">http://nodejs.org/#download</a></p>
 
 <p>Currently development is being done with these versions of node and npm:</p>
 
 <pre><code>$ node -v
-v0.6.13
+v0.6.18
 
 $ npm -v
 1.1.9
 </code></pre>
+
+<h4 id="couchdb">CouchDB</h4>
+
+<p>Install the nosql document-oriented <a href="http://couchdb.apache.org/">CouchDB</a> database server to support persistence for the Lab server.</p>
+
+<p>Installation options:</p>
+
+<p><strong>MacOS X</strong></p>
+
+<p>Most of the developers on Lab use <a href="http://mxcl.github.com/homebrew/">Homebrew</a> a package manager for Mac OS X.</p>
+
+<ol>
+  <li><a href="https://github.com/mxcl/homebrew/wiki/installation">Install Homebrew</a></li>
+  <li>
+    <p>Install CouchDB using homebrew</p>
+
+    <pre><code> brew doctor     # fix issues if needed
+ brew update     # if you haven't run it in the last 24 hours
+ brew install couchdb
+</code></pre>
+  </li>
+</ol>
+
+<p><strong>Linux</strong></p>
 
 <h3 id="use-git-to-create-a-local-clone-of-the-lab-repository">Use git to create a local clone of the Lab repository.</h3>
 
@@ -308,8 +343,11 @@ $ npm -v
 the RubyGem <a href="http://gembundler.com/">bundler</a>, and <a href="http://nodejs.org/">nodejs</a> (which now includes
 <a href="http://npmjs.org/">npm</a> the Node Package Manager.</p>
 
-<p>Change to the <code>lab/</code> directory and run <code>make clean; make</code> to install the runtime and development dependencies and generate
-the <code>dist/</code> directory:</p>
+<p>Open a shell and change to the <code>lab/</code> directory. The first time you <code>cd</code> into the <code>lab/</code> directory RVM will
+ask you if this <em>new</em> <code>.rvmrc</code> file should be trusted.</p>
+
+<p>The <code>.rvmrc</code> specifies that this project dependeds on Ruby 1.9.3-p194 and all the required Ruby Gems
+will be installed in the RVM gemset named <code>ruby-1.9.3-p194@lab</code>.</p>
 
 <pre><code>cd lab
 make clean; make
@@ -348,7 +386,7 @@ the specific versions of the RubyGems installed for development.</p>
   </li>
 </ol>
 
-<p>You should now be able to open the file: <code>dist/index.html</code> in a browser and run the examples.</p>
+<p>You should now be able to open the file: <code>dist/index.html</code> in a browser and run some of the examples.</p>
 
 <p>Start watching the <code>src/</code> and <code>test/</code> directories and when files are changed automatically
 generate the JavaScript Lab modules, the examples, and run the tests.</p>
@@ -362,24 +400,73 @@ to <code>dist/lab/</code>. In addition any change in either the <code>src/lab/</
 tests and display the results in the console window where <code>bin/guard</code>
 is running.</p>
 
-<h3 id="serving-dist-locally-with-apache">Serving <code>dist/</code> locally with Apache</h3>
+<h4 id="setup-the-rails-lab-server-for-development">Setup the Rails Lab server for development</h4>
 
-<p>You can also create a localhost and local Apache vhost for Lab:</p>
+<p>The Lab server is a very simple Rails 3.2 application that uses CouchDB for persistence.</p>
+
+<p>Open a shell and change to the <code>lab/server</code> directory. The first time you <code>cd</code> into the <code>lab/server</code> directory RVM will
+ask you if this <em>new</em> <code>.rvmrc</code> file should be trusted.</p>
+
+<p>The <code>.rvmrc</code> specifies that this project dependeds on Ruby 1.9.3-p194-server and all the required Ruby Gems
+will be installed in the RVM gemset named <code>ruby-1.9.3-p194@lab-server</code>.</p>
+
+<pre><code>cd lab/server
+bundle install
+</code></pre>
+
+<p>Create a couchdb configuration by copying the sample:</p>
+
+<pre><code>cp config/couchdb.sample.yml config/couchdb.yml
+</code></pre>
+
+<p>If you have setup your local CouchDB server to require admin login for creating new databases
+you will need to enter user and password for a valid admin user.</p>
+
+<h5 id="starting-the-rails-lab-server">Starting the Rails Lab server</h5>
+
+<pre><code>cd lab/server
+thin start
+</code></pre>
+
+<p>You can now open your local Lab application at this url:</p>
+
+<pre><code>http://localhost:3000/
+</code></pre>
+
+<p>You can use a pre-configured route to open the local CouchDb admin wbe interface:</p>
+
+<pre><code>http://localhost:3000/_utils
+</code></pre>
+
+<h5 id="entering-the-rails-lab-server-console">Entering the Rails Lab server console</h5>
+
+<pre><code>cd lab/server
+rails console
+</code></pre>
+
+<h3 id="serving-the-lab-server-locally-with-apache-and-passenger">Serving the Lab server locally with Apache and Passenger</h3>
+
+<h4 id="mac-os-x">Mac OS X</h4>
+
+<p><a href="http://www.modrails.com/documentation.html">Phusion Passenger</a> is an Apache module that enables
+running Ruby and Rack applications.</p>
+
+<p>See: <a href="http://www.modrails.com/install.html">Installing Passenger</a></p>
+
+<p>Now create a localhost and local Apache vhost for Lab:</p>
 
 <p>file: <code>/etc/hosts</code></p>
 
 <pre><code>127.0.0.1       lab.local
-127.0.0.1       d3.local
 </code></pre>
 
 <p>file: <code>/etc/apache2/extra/httpd-vhosts.conf</code></p>
 
 <pre><code>&lt;VirtualHost lab.local:80&gt;
    ServerName lab
-   DocumentRoot /path/to/lab-repo/dist
-   PassengerEnabled off
-   &lt;Directory /path/to/lab-repo/dist &gt;
-     Options +Indexes +FollowSymLinks +MultiViews +Includes
+   DocumentRoot /path/to/lab-repo/server/public
+   &lt;Directory /path/to/lab-repo/server/public &gt;
+     Options +Indexes +FollowSymLinks -MultiViews +Includes
      AllowOverride All
      Order allow,deny
      Allow from all
@@ -402,6 +489,25 @@ Syntax OK
 <p>Now open: <a href="http://lab.local/">http://lab.local/</a></p>
 
 <p>Or go directly to your local instance of <a href="http://lab.local/examples/simplemolecules/simplemolecules.html">Simple Molecules</a>.</p>
+
+<p>Try making a change and clicking <strong>Save</strong> and then reloding the new page.</p>
+
+<p>If there are errors try looking at the Apache log:</p>
+
+<pre><code>tail -n 200 -f /var/log/apache2/error_log
+</code></pre>
+
+<p>If you see errors like this:</p>
+
+<pre><code>No such file or directory – git ls-files
+</code></pre>
+
+<p>This (or a variation) will probably fix the problem:</p>
+
+<pre><code>sudo ln -nfs /usr/local/bin/git /usr/bin/git
+</code></pre>
+
+<p>See: <a href="http://ficial.wordpress.com/2011/07/13/phusion-passenger-fixing-no-such-file-or-directory-git-ls-files/">Phusion Passenger – fixing ‘No such file or directory – git ls-files’</a></p>
 
 <p>Whenever guard is running and you save changes to any files in the src/ directory the corresponding files in
 the <code>dist/</code> directory will be updated.</p>

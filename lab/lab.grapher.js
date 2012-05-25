@@ -27,7 +27,7 @@ grapher.indexedData = function(array, initial_index) {
   };
   return points;
 };
-grapher.graph = function(elem, options) {
+grapher.graph = function(elem, options, message) {
   var cx = 600, cy = 300;
 
   if (arguments.length) {
@@ -36,7 +36,7 @@ grapher.graph = function(elem, options) {
     cy = elem.property("clientHeight");
   }
 
-  var vis, plot, title, xlabel, ylabel, xtic, ytic,
+  var vis, plot, title, xlabel, ylabel, xtic, ytic, notification,
       padding, size,
       xScale, yScale, xValue, yValue, line,
       circleCursorStyle,
@@ -51,58 +51,71 @@ grapher.graph = function(elem, options) {
         "xlabel": "X Axis",
         "ylabel": "Y Axis",
         "circleRadius": 10.0,
-        "dataChange": true
+        "dataChange": true,
+        "points": false,
+        "notification": false
       };
 
-  if (options) {
-    for(var p in default_options) {
-      if (options[p] === undefined) {
-        options[p] = default_options[p];
+  initialize(options);
+
+  function setupOptions(options) {
+    if (options) {
+      for(var p in default_options) {
+        if (options[p] === undefined) {
+          options[p] = default_options[p];
+        }
       }
+    } else {
+      options = default_options;
     }
-  } else {
-    options = default_options;
+    return options;
   }
 
-  if (options.dataChange) {
-    circleCursorStyle = "ns-resize"
-  } else {
-    circleCursorStyle = "crosshair"
+  function initialize(newOptions) {
+    if (newOptions || !options) {
+      options = setupOptions(options);
+    }
+
+    if (options.dataChange) {
+      circleCursorStyle = "ns-resize";
+    } else {
+      circleCursorStyle = "crosshair";
+    }
+
+    options.xrange = options.xmax - options.xmin;
+    options.yrange = options.ymax - options.ymin;
+
+
+    padding = {
+     "top":    options.title  ? 40 : 20,
+     "right":                 30,
+     "bottom": options.xlabel ? 60 : 10,
+     "left":   options.ylabel ? 70 : 45
+    };
+
+    size = {
+      "width":  cx - padding.left - padding.right,
+      "height": cy - padding.top  - padding.bottom
+    };
+
+    xValue = function(d) { return d[0]; };
+    yValue = function(d) { return d[1]; };
+
+    xScale = d3.scale.linear()
+      .domain([options.xmin, options.xmax])
+      .range([0, size.width]);
+
+    yScale = d3.scale.linear()
+      .domain([options.ymax, options.ymin]).nice()
+      .range([0, size.height]).nice();
+
+    line = d3.svg.line()
+        .x(function(d, i) { return xScale(points[i][0]); })
+        .y(function(d, i) { return yScale(points[i][1]); });
   }
-
-  options.xrange = options.xmax - options.xmin;
-  options.yrange = options.ymax - options.ymin;
-
-
-  padding = {
-   "top":    options.title  ? 40 : 20,
-   "right":                 30,
-   "bottom": options.xlabel ? 60 : 10,
-   "left":   options.ylabel ? 70 : 45
-  };
-
-  size = {
-    "width":  cx - padding.left - padding.right,
-    "height": cy - padding.top  - padding.bottom
-  };
-
-  xValue = function(d) { return d[0]; };
-  yValue = function(d) { return d[1]; };
-
-  xScale = d3.scale.linear()
-    .domain([options.xmin, options.xmax])
-    .range([0, size.width]);
-
-  yScale = d3.scale.linear()
-    .domain([options.ymax, options.ymin]).nice()
-    .range([0, size.height]).nice();
-
-  line = d3.svg.line()
-      .x(function(d, i) { return xScale(points[i][0]); })
-      .y(function(d, i) { return yScale(points[i][1]); });
 
   function graph(selection) {
-    if (!selection) { selection = elem; };
+    if (!selection) { selection = elem; }
     selection.each(function() {
 
       if (this.clientWidth && this.clientHeight) {
@@ -179,7 +192,22 @@ grapher.graph = function(elem, options) {
           .on("touchend.drag",  mouseup);
 
       redraw();
+      notification = vis.append("text")
+          .attr("class", "graph-notification")
+          .text('')
+          .attr("x", size.width/2)
+          .attr("y", size.height/2)
+          .style("text-anchor","middle");
     });
+
+    function notify(mesg) {
+      // add Chart Notification
+      if (mesg) {
+        notification.text(mesg);
+      } else {
+        notification.text('');
+      }
+    }
 
     function fakeDataPoints() {
       var yrange2 = options.yrange / 2,
@@ -460,6 +488,9 @@ grapher.graph = function(elem, options) {
     // make these private variables and functions available
     graph.elem = elem;
     graph.redraw = redraw;
+    graph.update = update;
+    graph.notify = notify;
+    graph.initialize = initialize;
     graph.updateXScale = updateXScale;
     graph.updateYScale = updateYScale;
 
@@ -610,10 +641,72 @@ grapher.graph = function(elem, options) {
     return graph;
   };
 
-  if (elem) { elem.call(graph); }
+  graph.data = function(_) {
+    if (!arguments.length) return points;
+    var domain = xScale.domain(),
+        xextent = domain[1] - domain[0],
+        shift = xextent * 0.8;
+    points = _;
+    if (points.length > domain[1]) {
+      domain[0] += shift;
+      domain[1] += shift;
+      xScale.domain(domain);
+      graph.redraw();
+    } else {
+      graph.update();
+    }
+    return graph;
+  };
+
+  graph.add_data = function(newdata) {
+    if (!arguments.length) return points;
+    var domain = xScale.domain(),
+        xextent = domain[1] - domain[0],
+        shift = xextent * 0.8,
+        i;
+    if (newdata instanceof Array && newdata.length > 0) {
+      if (newdata[0] instanceof Array) {
+        for(i = 0; i < newdata.length; i++) {
+          points.push(newdata[i]);
+        }
+      } else {
+        if (newdata.length === 0) {
+          points.push(newdata);
+        } else {
+          throw new Error("invalid argument to graph.add_data()" + newdata + " could not be understood.");
+        }
+      }
+    }
+    if (points[points.length-1][0] > domain[1]) {
+      domain[0] += shift;
+      domain[1] += shift;
+      xScale.domain(domain);
+      graph.redraw();
+    } else {
+      graph.update();
+    }
+    return graph;
+  };
+
+  graph.reset = function(options) {
+    if (arguments.length) {
+      graph.initialize(options);
+    } else {
+      graph.initialize();
+    }
+    graph.redraw();
+    return graph;
+  };
+
+  if (elem) {
+    elem.call(graph);
+    if (message) {
+      graph.notify(message);
+    }
+  }
 
   return graph;
-}
+};
 grapher.realTimeGraph = function(e, options) {
   var elem = d3.select(e),
       node = elem.node(),
