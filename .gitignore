@@ -14,3 +14,4 @@ performance.rb
 /lab.*
 /*.log
 /uploads
+server/config/couchdb.yml
