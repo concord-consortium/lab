@@ -13,7 +13,6 @@ class Md2dModelsController < ApplicationController
   end
 
   def create
-    debugger
     @md2d_model = Md2dModel.new(params[:md2d_model])
     if @md2d_model.save
       render :json => @md2d_model, :status => :created, :location => @md2d_model
