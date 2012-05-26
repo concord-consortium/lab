@@ -15,27 +15,30 @@ or Apache 2.0 licenses.
 
 The files in the `imports/` directory are all Copyright 2012 (c) by the Concord Consortium and distributed
 under various open source licenses. These resources represent some of the authored content for our earlier
-work on the Java versions of Molecular Workbench and Energy2D and are distributed here to aid in the conversion
-to HTML5.
+work on the Java versions of Molecular Workbench and Energy2D and are distributed here to aid in the
+conversion of these resources to HTML5 for the Lab project.
 
 Many of the files in the `jnlp/` directory are also Copyright 2012 (c) by the Concord Consortium and distributed
-under various open source licenses. These resources represent our earlier work on the Java versions of
+under various open source licenses. These resources represent our earlier work to support the Java versions
+of our computational simulations and probeware.
 
-Here is a list of files in the `jnlp/` directory and their licenses:
+Here is a list of files in the `jnlp/` directory, whethere they were created by Concord Consortium (CC) and
+their licenses:
 
-1.  JDom, an XML processing library: `jnlp/jdom/jdom/jdom.jar`. JDom has an [Apache-like license
+1.  JDom (external), an XML processing library: `jnlp/jdom/jdom/jdom.jar`. JDom has an [Apache-like license
     with the attribution clause removed](http://www.jdom.org/docs/faq.html#a0030)
 
-2.  JUG: Java UUID generator: `jnlp/jug/jug/jug.jar`. [JUG](http://jug.safehaus.org/Download)
+2.  JUG: Java UUID generator (external): `jnlp/jug/jug/jug.jar`. [JUG](http://jug.safehaus.org/Download)
     v2 of JUG is available under: LGPL 2.1 and ASL 2.0, we are using v1.1.2 which is only under the LGPL 2.1
 
-3.  The Java Molecular Workbench files in this directory: `jnlp/org/concord/modeler/`. The Java version
-    of Molecular Workbench is distributed under the GNU General Public License
+3.  The Java Molecular Workbench files in this directory: `jnlp/org/concord/modeler/` (CC and external). The Java version
+    of Molecular Workbench is distributed under the GNU General Public License. The Molecular Workbench
+    jar also includes code from the external GPL-licensed JMol project
 
-4.  The rest of the files created by Concord Consortium in this directory: `jnlp/org/concord/` are all
+4.  The rest of the files in the `jnlp/org/concord/` directory were created by Concord Consortium and are all
     distributed under the LGPL license.
 
-If you have dowloaded the source code repository for the Lab project the files mentioned so far are all present
+If you have downloaded the source code repository for the Lab project the files mentioned so far are all present
 in the repository and during the build process are copied to the distribution directory which is located
 here in the source code repository: `./server/public`.
 
