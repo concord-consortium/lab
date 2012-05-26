@@ -1,0 +1,31 @@
+{
+  "temperature_control": false,
+  "epsilon": -0.4000000059604645,
+  "sigma": 0.3,
+  "lennard_jones_forces": true,
+  "coulomb_forces": false,
+  "width": 4.5,
+  "height": 3,
+  "atoms": {
+    "X": [
+      2.44,
+      1.87
+    ],
+    "Y": [
+      1.46,
+      1.46
+    ],
+    "VX": [
+      0,
+      0
+    ],
+    "VY": [
+      0,
+      0
+    ],
+    "CHARGE": [
+      0,
+      0
+    ]
+  }
+}
