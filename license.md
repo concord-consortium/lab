@@ -1,15 +1,46 @@
 The [Concord Consortium Lab project](https://github.com/concord-consortium/lab)
-is Copyright 2012 (c) by the Concord Consortium and is distributed under 
+is Copyright 2012 (c) by the Concord Consortium and is distributed under
 any of the following licenses:
-[Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause), 
-[MIT](http://www.opensource.org/licenses/MIT), or 
+[Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause),
+[MIT](http://www.opensource.org/licenses/MIT), or
 [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0).
 
-If you have have received a **distribution archive** of the 
-[Concord Consortium Lab project](https://github.com/concord-consortium/lab)
-our copyright applies to all resources **except** the files in the 
-`vendor/` directory. The files in the `vendor/` directory are from 
-third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
+If you have have received a **distribution archive** of the
+[Concord Consortium Lab project](https://github.com/concord-consortium/lab) the standard
+Concord Consortium Lab copyright applies to all resources **except** the files in the
+`vendor/` and `imports/` directories as well as some of the files in the `jnlp` directory.
+
+The files in the `vendor/` directory are from third-parties and are distributed under either BSD, MIT,
+or Apache 2.0 licenses.
+
+The files in the `imports/` directory are all Copyright 2012 (c) by the Concord Consortium and distributed
+under various open source licenses. These resources represent some of the authored content for our earlier
+work on the Java versions of Molecular Workbench and Energy2D and are distributed here to aid in the conversion
+to HTML5.
+
+Many of the files in the `jnlp/` directory are also Copyright 2012 (c) by the Concord Consortium and distributed
+under various open source licenses. These resources represent our earlier work on the Java versions of
+
+Here is a list of files in the `jnlp/` directory and their licenses:
+
+1.  JDom, an XML processing library: `jnlp/jdom/jdom/jdom.jar`. JDom has an [Apache-like license
+    with the attribution clause removed](http://www.jdom.org/docs/faq.html#a0030)
+
+2.  JUG: Java UUID generator: `jnlp/jug/jug/jug.jar`. [JUG](http://jug.safehaus.org/Download)
+    v2 of JUG is available under: LGPL 2.1 and ASL 2.0, we are using v1.1.2 which is only under the LGPL 2.1
+
+3.  The Java Molecular Workbench files in this directory: `jnlp/org/concord/modeler/`. The Java version
+    of Molecular Workbench is distributed under the GNU General Public License
+
+4.  The rest of the files created by Concord Consortium in this directory: `jnlp/org/concord/` are all
+    distributed under the LGPL license.
+
+If you have dowloaded the source code repository for the Lab project the files mentioned so far are all present
+in the repository and during the build process are copied to the distribution directory which is located
+here in the source code repository: `./server/public`.
+
+All other files distributed in the complete source code repository other than the ones specifically mentioned above
+are distributed under the Concord Consortium Lab project software license.
 
 All three licenses for the [Concord Consortium Lab project](https://github.com/concord-consortium/lab)
 are listed below:
