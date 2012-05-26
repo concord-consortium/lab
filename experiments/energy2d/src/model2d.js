@@ -74,7 +74,7 @@ model2d.default_config = {
         background_density: 1,
 
         boundary:{
-            temperature_at_border:{
+            flux_at_border:{
                 upper: 0,
                 lower: 0,
                 left: 0,
@@ -166,9 +166,9 @@ model2d.Model2D = function(options, array_type) {
 
     this.backgroundConductivity = opt.background_conductivity != undefined ? opt.background_conductivity : 10 * model2d.AIR_THERMAL_CONDUCTIVITY;
     this.backgroundViscosity = opt.background_viscosity != undefined ? opt.background_viscosity : 10 * model2d.AIR_VISCOSITY;
-    this.backgroundSpecificHeat = model2d.AIR_SPECIFIC_HEAT;
-    this.backgroundDensity = model2d.AIR_DENSITY;
-    this.backgroundTemperature = 0.0;
+    this.backgroundSpecificHeat = opt.background_specific_heat != undefined ? opt.background_specific_heat : model2d.AIR_SPECIFIC_HEAT;
+    this.backgroundDensity = opt.background_density != undefined ? opt.background_density : model2d.AIR_DENSITY;
+    this.backgroundTemperature = opt.background_temperature != undefined ? opt.background_temperature : 0;
 
     this.boundary_settings = options.model.boundary || 
         { temperature_at_border: { upper: 0, lower: 0, left: 0, right: 0 } };
@@ -189,10 +189,10 @@ model2d.Model2D = function(options, array_type) {
     
 
     // length in x direction (unit: meter)
-    this.lx = 10;
+    this.lx = opt.model_width != undefined ? opt.model_width : 10;
 
     // length in y direction (unit: meter)
-    this.ly = 10;
+    this.ly = opt.model_height != undefined ? opt.model_height : 10;
 
     this.deltaX = this.lx / this.nx;
     this.deltaY = this.ly / this.ny;
@@ -281,11 +281,6 @@ model2d.Model2D = function(options, array_type) {
 
     this.setGridCellSize();
     this.setupMaterialProperties();
-    // parts = Collections.synchronizedList(new ArrayList<Part>());
-    // thermometers = Collections.synchronizedList(new ArrayList<Thermometer>());
-
-    // visualizationListeners = new ArrayList<VisualizationListener>();
-    // propertyChangeListeners = new ArrayList<PropertyChangeListener>();
 };
 
 model2d.Model2D.prototype.setupMaterialProperties = function() {
@@ -301,15 +296,18 @@ model2d.Model2D.prototype.setupMaterialProperties = function() {
     var uWind = this.uWind;
     var vWind = this.vWind;
     var tb = this.tb;
+    var q = this.q;
     
     var part, indexes, idx;
-    for (var i = 0; i < parts.length; i++) {
+    // workaround, to treat overlapping parts as original Energy2D
+    for (var i = parts.length - 1; i >= 0; i--) { 
         part = parts[i];
         indexes = this.getFieldsOccupiedByPart(part);
         for(var ii = 0; ii < indexes.length; ii++) {
             idx = indexes[ii];
             
             t[idx] = part.temperature;
+            q[idx] = part.power;
             fluidity[idx] = false;
             conductivity[idx] = part.thermal_conductivity;
             capacity[idx] = part.specific_heat;
@@ -326,6 +324,7 @@ model2d.Model2D.prototype.setupMaterialProperties = function() {
     }
 };
 
+// TODO: divide this function into smaller parts
 model2d.Model2D.prototype.getFieldsOccupiedByPart = function(part) {
     var indexes;
     var ny = this.ny;
@@ -333,24 +332,137 @@ model2d.Model2D.prototype.getFieldsOccupiedByPart = function(part) {
     var ny1 = this.ny1;
     var dx = nx1 / this.lx;
     var dy = ny1 / this.ly;
+    
     if (part.rectangle) {
         var rect = part.rectangle;
-        var i0 = Math.min(Math.max(Math.round(rect.x * dx), 0), nx1);
-        var j0 = Math.min(Math.max(Math.round(rect.y * dy), 0), ny1);
-        var i_max = Math.min(Math.max(Math.round((rect.x + rect.width) * dx), 0), nx1);
-        var j_max = Math.min(Math.max(Math.round((rect.y + rect.height) * dy), 0), ny1);
+        var i0 = Math.min(Math.max(Math.ceil(rect.x * dx), 0), nx1);
+        var j0 = Math.min(Math.max(Math.ceil(rect.y * dy), 0), ny1);
+        var i_max = Math.min(Math.max(Math.floor((rect.x + rect.width) * dx), 0), nx1);
+        var j_max = Math.min(Math.max(Math.floor((rect.y + rect.height) * dy), 0), ny1);
         indexes = new Array((i_max - i0 + 1) * (j_max - j0 + 1));
-        var idx = 0, iny;
+        var idx = 0;
         for (var i = i0; i <= i_max; i++) {
-            iny = i * ny;
             for (var j = j0; j <= j_max; j++) {
-                indexes[idx++] = iny + j;
+                indexes[idx++] = i * ny + j;
             }
         }
         return indexes;
     }
-    // TODO: implement another shapes
+    
+    if (part.ellipse) {
+        var ellipse = part.ellipse;
+        var px = ellipse.x * dx;
+        var py = ellipse.y * dy;
+        var ra = ellipse.a * 0.5 * dx;
+        var rb = ellipse.b * 0.5 * dy;
+        
+        var i0 = Math.min(Math.max(Math.ceil(px - ra), 0), nx1);
+        var i_max = Math.min(Math.max(Math.floor(px + ra), 0), nx1);
+        var j0, j_max, eq;
+        indexes = [];
+        var idx = 0;
+        for (var i = i0; i <= i_max; i++) {
+            // solve equation x^2/a^2 + y^2/b^2 < 1 for given x (=> i)
+            // to get range of y (=> j)
+            eq = Math.sqrt(1 - (i - px)*(i - px)/(ra * ra));
+            j0 = Math.min(Math.max(Math.ceil(py - rb * eq), 0), ny1);
+            j_max = Math.min(Math.max(Math.floor(py + rb * eq), 0), ny1);
+            for (var j = j0; j <= j_max; j++) {
+                indexes[idx++] = i * ny + j;
+            }
+        }
+        return indexes;
+    }
+    
+    if (part.ring) {
+        var ring = part.ring;
+        var px = ring.x * dx;
+        var py = ring.y * dy;
+        var ra = ring.outer * 0.5 * dx;
+        var rb = ring.outer * 0.5 * dy;
+        var ra_inner = ring.inner * 0.5 * dx;
+        var rb_inner = ring.inner * 0.5 * dy;
+        
+        var i0 = Math.min(Math.max(Math.ceil(px - ra), 0), nx1);
+        var i_max = Math.min(Math.max(Math.floor(px + ra), 0), nx1);
+        var j0, j1, j2, j_max, eq;
+        indexes = [];
+        var idx = 0;
+        for (var i = i0; i <= i_max; i++) {
+            // solve equation x^2/a^2 + y^2/b^2 < 1 for given x (=> i)
+            // to get range of y (=> j)
+            eq = Math.sqrt(1 - (i - px)*(i - px)/(ra * ra));
+            j0 = Math.min(Math.max(Math.ceil(py - rb * eq), 0), ny1);
+            j_max = Math.min(Math.max(Math.floor(py + rb * eq), 0), ny1);
+            
+            if (Math.abs(i - px) < ra_inner) {
+                // also calculate inner ellipse
+                eq = Math.sqrt(1 - (i - px)*(i - px)/(ra_inner * ra_inner));
+                j1 = Math.min(Math.max(Math.ceil(py - rb_inner * eq), 0), ny1);
+                j2 = Math.min(Math.max(Math.floor(py + rb_inner * eq), 0), ny1);
+                for (var j = j0; j <= j1; j++)
+                    indexes[idx++] = i * ny + j;  
+                for (var j = j2; j <= j_max; j++)
+                    indexes[idx++] = i * ny + j;
+            } else {
+                // consider only outer ellipse
+                for (var j = j0; j <= j_max; j++) 
+                    indexes[idx++] = i * ny + j;
+            }
+        }
+        return indexes;
+    }
+    
+    if (part.polygon) {
+        var polygon = part.polygon;
+        var count = polygon.count;
+        var verts = polygon.vertices;
+        var x_coords = new Array(count);
+        var y_coords = new Array(count);
+        var x_min = Number.MAX_VALUE, x_max = Number.MIN_VALUE; 
+        var y_min = Number.MAX_VALUE, y_max = Number.MIN_VALUE;
+        for (var i = 0; i < count; i++) {
+            x_coords[i] = verts[i * 2] * dx;
+            y_coords[i] = verts[i * 2 + 1] * dy;
+            if (x_coords[i] < x_min)
+                x_min = x_coords[i];
+            if (x_coords[i] > x_max)
+                x_max = x_coords[i];
+            if (y_coords[i] < y_min)
+                y_min = y_coords[i];
+            if (y_coords[i] > y_max)
+                y_max = y_coords[i];
+        }
+        
+        var i0 = Math.min(Math.max(Math.round(x_min), 0), nx1);
+        var j0 = Math.min(Math.max(Math.round(y_min), 0), ny1);
+        var i_max = Math.min(Math.max(Math.round(x_max), 0), nx1);
+        var j_max = Math.min(Math.max(Math.round(y_max), 0), ny1);
+        indexes = [];
+        var idx = 0;
+        for (var i = i0; i <= i_max; i++) {
+            for (var j = j0; j <= j_max; j++) {
+                if (this.pointInsidePolygon(count, x_coords, y_coords, i, j)) {
+                    indexes[idx++] = i * ny + j;
+                }
+            }
+        }
+        return indexes;
+    }
     return [];
+};
+
+// TODO: move this function (e.g. to MathUtils) during refactoring 
+// Based on: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+// It is optional to repeat the first vertex at the end of list of polygon vertices.
+model2d.Model2D.prototype.pointInsidePolygon = function(nvert, vertx, verty, testx, testy) {
+    var i, j, c = 0;
+    for (i = 0, j = nvert - 1; i < nvert; j = i++) {
+        if (((verty[i]>testy) != (verty[j]>testy)) &&
+            (testx < (vertx[j]-vertx[i]) * (testy-verty[i]) / (verty[j]-verty[i]) + vertx[i]))
+            c = !c;
+    }
+    return c;
 };
 
 model2d.Model2D.prototype.reset = function() {
@@ -642,6 +754,16 @@ model2d.Part = function(options) {
     this.ring = options.ring;
     this.polygon = options.polygon;
     
+    if (this.polygon && typeof (this.polygon.vertices) == "string") {
+        var count = this.polygon.count;
+        this.polygon.vertices = this.polygon.vertices.split(', ');
+        if (count * 2 != this.polygon.vertices.length)
+            throw new Error("Part: polygon contains different vertices count than declared in the count parameter.");
+        for (var i = 0; i < count * 2; i++) { 
+            this.polygon.vertices[i] = Number(this.polygon.vertices[i])
+        }
+    }
+    
     // source properties
     this.thermal_conductivity = options.thermal_conductivity != undefined ? options.thermal_conductivity : 1;
     this.specific_heat = options.specific_heat != undefined ? options.specific_heat : 1300;
@@ -668,6 +790,43 @@ model2d.Part = function(options) {
     this.uid = options.uid;
 };
 
+model2d.Part.prototype.getLabel = function() {
+    var s;
+    var label = this.label;
+    if (label === "%temperature")
+        s = this.temperature + " \u00b0C";
+    else if (label === "%density")
+        s = this.density + " kg/m\u00b3";
+    else if (label === "%specific_heat")
+        s = this.specific_heat + " J/(kg\u00d7\u00b0C)";
+    else if (label === "%thermal_conductivity")
+        s = this.thermal_conductivity + " W/(m\u00d7\u00b0C)";
+    else if (label === "%power_density")
+        s = this.power + " W/m\u00b3";
+    else if (label === "%area") {
+        if (this.rectangle) {
+            s = (this.rectangle.width * this.rectangle.height) + " m\u00b2";
+        } else if (this.ellipse) {
+            s = (this.ellipse.width * this.ellipse.height * 0.25 * Math.PI) + " m\u00b2";
+        }
+    } else if (label === "%width") {
+        if (this.rectangle) {
+            s = this.rectangle.width + " m";
+        } else if (this.ellipse) {
+            s = this.ellipse.width + " m";
+        }
+    } else if (label === "%height") {
+        if (this.rectangle) {
+            s = this.rectangle.height + " m";
+        } else if (this.ellipse) {
+            s = this.ellipse.height + " m";
+        }
+    }
+    else {
+        s = label;
+    }
+    return s;
+};
 
 // *******************************************************
 //
@@ -886,13 +1045,13 @@ model2d.DirichletHeatBoundary = function(boundary_settings) {
 
 model2d.DirichletHeatBoundary.prototype.getTemperatureAtBorder  = function(side) {
     if (side < model2d.Boundary_UPPER || side > model2d.Boundary_LEFT)
-        throw ("side parameter illegal");
+        throw new Error("DirichletHeatBoundary: side parameter illegal.");
     return this.temperature_at_border[side];
 };
 
 model2d.DirichletHeatBoundary.prototype.setTemperatureAtBorder  = function(side, value) {
     if (side < model2d.Boundary_UPPER || side > model2d.Boundary_LEFT)
-        throw ("side parameter illegal");
+        throw new Error("DirichletHeatBoundary: side parameter illegal.");
     this.temperature_at_border[side] = value;
 };
 
@@ -913,13 +1072,13 @@ model2d.NeumannHeatBoundary = function(boundary_settings) {
 
 model2d.NeumannHeatBoundary.prototype.getFluxAtBorder  = function(side) {
     if (side < model2d.Boundary_UPPER || side > model2d.Boundary_LEFT)
-        throw ("side parameter illegal");
+        throw new Error ("NeumannHeatBoundary: side parameter illegal.");
     return this.flux_at_border[side];
 };
 
 model2d.NeumannHeatBoundary.prototype.setFluxAtBorder  = function(side, value) {
     if (side < model2d.Boundary_UPPER || side > model2d.Boundary_LEFT)
-        throw ("side parameter illegal");
+        throw new Error ("NeumannHeatBoundary: side parameter illegal.");
     this.flux_at_border[side] = value;
 };
 
@@ -939,7 +1098,7 @@ model2d.FluidSolver2D = function(nx, ny, model) {
     this.deltaY = model.deltaY;
     
     this.relaxationSteps = 5;
-    this.timeStep = 0.1;
+    this.timeStep = model.timeStep;
     this.thermalBuoyancy = model.thermalBuoyancy;
     this.gravity = 0;
     this.buoyancyApproximation = model.buoyancyApproximation;  // model2d.BUOYANCY_AVERAGE_COLUMN;
@@ -1910,7 +2069,7 @@ model2d.MAX_DISPLAY_TEMP = 50;
 model2d.MIN_DISPLAY_TEMP = 0;
 model2d.displayTemperatureCanvas = function(canvas, model) {
     if (model.nx != canvas.width || model.ny != canvas.height) 
-        throw "canvas dimensions have to be the same as model grid dimensions.";
+        throw new Error("displayTemperatureCanvas: canvas dimensions have to be the same as model grid dimensions.");
     if (red_color_table.length == 0) {
         model2d.setupRGBAColorTables();
     };
@@ -1975,7 +2134,7 @@ model2d.displayTemperatureCanvasWithSmoothing = function(canvas, model) {
     var t = model.t;
     
     // constants, as looking for min and max temperature caused that  
-    // areas with constant temperatures were chaning their color
+    // areas with constant temperatures were changing their color
     var min = model2d.MIN_DISPLAY_TEMP; // model2d.getMinAnyArray(t);
     var max = model2d.MAX_DISPLAY_TEMP; //model2d.getMaxAnyArray(t);
     
@@ -2017,38 +2176,185 @@ model2d.displayTemperatureCanvasWithSmoothing = function(canvas, model) {
 };
 
 model2d.displayParts = function(canvas, parts, scene_width, scene_height) {
+    if (this.textures.length == 0) {
+        this.setupTextures();
+    }
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "gray";
     ctx.strokeStyle = "black";
     ctx.lineCap = "round";
+    ctx.lineJoin = "round";
     ctx.lineWidth = 2;
-    
-    var scale_x = (canvas.width - 1) / scene_width;
-    var scale_y = (canvas.height - 1) / scene_height;
+    ctx.font = "12px sans-serif";
+    ctx.textBaseline = "middle";
         
-    var part, px, py, pw, ph;
-    var length = parts.length;
+    var scale_x = canvas.width / scene_width;
+    var scale_y = canvas.height / scene_height;
+        
+    var part, label, label_x, label_y, label_width, last_composite_op,
+        px, py, pa, pb, pw, ph, vert_count, verts, x_pos, y_pos,
+        length = parts.length;
     for (var i = 0; i < length; i++) {
         part = parts[i];
         
+        if (!part.visible)
+        	continue;
+        	
         if (part.rectangle) {
-           px = part.rectangle.x * scale_x;
-           py = part.rectangle.y * scale_y;
-           pw = part.rectangle.width * scale_x;
-           ph = part.rectangle.height * scale_y;
+           px = part.rectangle.x * scale_x - 1;        // "- 1 / + 2" too keep positions 
+           py = part.rectangle.y * scale_y - 1;        // consistent with Energy2d
+           pw = part.rectangle.width * scale_x + 2;    
+           ph = part.rectangle.height * scale_y + 2;   
+           label_x = px + 0.5 * pw;
+           label_y = py + 0.5 * ph;
            ctx.beginPath();
            ctx.moveTo(px, py);
            ctx.lineTo(px + pw, py);
            ctx.lineTo(px + pw, py + ph);
            ctx.lineTo(px, py + ph);
            ctx.lineTo(px, py);
+           ctx.closePath();
         }
         
-        ctx.stroke();
-        if (part.filled)
+        if (part.polygon) {
+            vert_count = part.polygon.count;
+            verts = part.polygon.vertices;
+            label_x = 0;
+            label_y = 0;
+            ctx.beginPath();
+            ctx.moveTo(verts[0] * scale_x, verts[1] * scale_y);
+            for (var j = 1; j < vert_count; j++) {
+                x_pos = verts[j * 2] * scale_x;
+                y_pos = verts[j * 2 + 1] * scale_y;
+                label_x += x_pos;
+                label_y += y_pos
+                ctx.lineTo(x_pos, y_pos);
+            }
+            ctx.closePath();
+            label_x /= vert_count;
+            label_y /= vert_count;
+        }
+        
+        if (part.ellipse || part.ring) {
+            if (part.ellipse) {
+                px = part.ellipse.x * scale_x;
+                py = part.ellipse.y * scale_y;
+                pa = part.ellipse.a * scale_x * 0.5;
+                pb = part.ellipse.b * scale_y * 0.5;
+            } else { 
+                px = part.ring.x * scale_x;
+                py = part.ring.y * scale_y;
+                pa = part.ring.outer * scale_x * 0.5;
+                pb = part.ring.outer * scale_y * 0.5;
+            }
+            label_x = px;
+            label_y = py;
+            
+            drawEllipse(ctx, px, py, pa, pb);
+            // if ring is being drawn, 
+            // its interior will be deleted later
+        }
+        
+        if (part.filled) {
+            ctx.fillStyle = this.getPartColor(part);
+            ctx.fill();     
+        }
+        if (part.texture) {
+            // TODO: add support of different patterns
+            ctx.fillStyle = ctx.createPattern(this.textures[0], "repeat");
             ctx.fill();
+        }
+        ctx.stroke();
+        
+        if (part.ring) {
+            // it's time to delete ring's interior
+            px = part.ring.x * scale_x;
+            py = part.ring.y * scale_y;
+            pa = part.ring.inner * scale_x * 0.5;
+            pb = part.ring.inner * scale_y * 0.5;  
+            
+            drawEllipse(ctx, px, py, pa, pb);
+            last_composite_op = ctx.globalCompositeOperation;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fill();
+            ctx.globalCompositeOperation = last_composite_op;
+            ctx.stroke();
+        }
+        
+        if (part.label) {
+            ctx.fillStyle = "white";
+            label = part.getLabel();
+            label_width = ctx.measureText(label).width;
+            ctx.fillText(label, label_x - 0.5 * label_width, label_y);
+        }
+        
     }
+    
+    function drawEllipse(ctx, px, py, pa, pb) {
+        var x_pos, y_pos;
+        ctx.beginPath();
+        for (var t = 0 * Math.PI; t < 2 * Math.PI; t += 0.1) {
+            x_pos = px + (pa * Math.cos(t));
+            y_pos = py + (pb * Math.sin(t));
+        
+            if (t == 0) {
+                ctx.moveTo(x_pos, y_pos);
+            } else {
+                ctx.lineTo(x_pos, y_pos);
+            }
+        }
+        ctx.closePath();
+    }
+};
+
+model2d.getPartColor = function(part) {
+    var default_fill_color = "gray";
+    var color;
+    
+    var max_hue = red_color_table.length - 1;
+    var min_temp = model2d.MIN_DISPLAY_TEMP;
+    var max_temp = model2d.MAX_DISPLAY_TEMP;
+    var scale = max_hue / (max_temp - min_temp);
+    
+    if (part.color) {
+        color = part.color.toString(16);
+        while(color.length < 6) {
+            color = '0' + color;
+        }
+    } else if (part.power > 0) {
+        color = "FFFF00";
+    } else if (part.power < 0) {
+        color = "B0C4DE";
+    } else if (part.constant_temperature) {
+        var hue = max_hue - Math.round(scale * (part.temperature - min_temp));  
+        color = "rgb(" + red_color_table[hue] + ","
+                       + blue_color_table[hue] + ","
+                       + green_color_table[hue] + ")";
+               
+   } else {
+       color = default_fill_color;
+   }
+   return color;
+}
+
+model2d.textures = [];
+
+model2d.setupTextures = function() {
+    var width = 10;
+    var height = 10;
+    var texture_canvas = window.document.createElement('canvas');
+    texture_canvas.width = width;
+    texture_canvas.height = height;
+   
+    var ctx = texture_canvas.getContext("2d");
+    ctx.clearRect(0, 0, width, height);
+    ctx.strokeStyle = "black";
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(width, height);
+    ctx.stroke();
+    
+    this.textures.push(texture_canvas);
 };
 
 model2d.displayVectorField = function(canvas, u, v, nx, ny, spacing) {  
@@ -2064,10 +2370,10 @@ model2d.displayVectorField = function(canvas, u, v, nx, ny, spacing) {
     var uij, vij;
     
     var iny, ijny;
-    for (var i = 0; i < nx; i += spacing) {
+    for (var i = 1; i < nx - 1; i += spacing) {
         iny = i * ny;
         x0 = (i + 0.5) * dx; // + 0.5 to move arrow into field center
-        for (var j = 0; j < ny; j += spacing) {
+        for (var j = 1; j < ny - 1; j += spacing) {
             ijny = iny + j;
             y0 = (j + 0.5) * dy; // + 0.5 to move arrow into field center
             uij = u[ijny];
@@ -2107,7 +2413,7 @@ model2d.drawVector = function(canvas_ctx, x, y, vx, vy) {
 
 model2d.displayVelocityLengthCanvas = function(canvas, model) {
     if (model.nx != canvas.width || model.ny != canvas.height) 
-        throw "canvas dimensions have to be the same as model grid dimensions.";
+        throw new Error("displayVelocityLengthCanvas: canvas dimensions have to be the same as model grid dimensions.");
     if (red_color_table.length == 0) {
         model2d.setupRGBAColorTables();
     };
