@@ -2370,12 +2370,12 @@ model2d.displayVectorField = function(canvas, u, v, nx, ny, spacing) {
     var uij, vij;
     
     var iny, ijny;
-    for (var i = 0; i < nx; i += spacing) {
+    for (var i = 1; i < nx - 1; i += spacing) {
         iny = i * ny;
-        x0 = i * dx;
-        for (var j = 0; j < ny; j += spacing) {
+        x0 = (i + 0.5) * dx; // + 0.5 to move arrow into field center
+        for (var j = 1; j < ny - 1; j += spacing) {
             ijny = iny + j;
-            y0 = j * dy;
+            y0 = (j + 0.5) * dy; // + 0.5 to move arrow into field center
             uij = u[ijny];
             vij = v[ijny];
             if (uij * uij + vij * vij > 1e-15) {
