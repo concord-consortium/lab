@@ -100,6 +100,6 @@ PROJECT_LIST = {
                         # :version => '2.1.0',
                         :build => MAVEN_STD_CLEAN_BUILD,
                         :has_applet_class => true,
-                        :sign => true }
+                        :sign => false }
 
 }
