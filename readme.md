@@ -359,6 +359,92 @@ the command again with the `--maven-update` argument:
 Details about each project, where the repository is located, what branch is compiled, what specific
 compilation details are all contained in `config/java-projects.rb/`.
 
+#### Java build/deploy integration
+
+There is a configuration file expressed in Ruby code here `config/java-projects.rb` for all the
+Java projects that will be checked-out, built, packed, signed if neede, and deployed.
+
+In this configuration file projects are specified like this:
+
+    'otrunk'         => { :repository => 'git://github.com/concord-consortium/otrunk.git',
+                          :branch => 'trunk',
+                          :path => 'org/concord/otrunk',
+                          :build_type => :maven,
+                          :build => MAVEN_STD_CLEAN_BUILD,
+                          :has_applet_class => true,
+                          :sign => true },
+
+The 'trunk' branch of this repo will be checked out into ./java/otrunk and will be built using Maven.
+Becuase the otrunk jar is used with the sensor-applet code it must be signed.
+
+##### Java Projects Build Strategies
+
+The `:build_type` option is used to specify the  Java Projects Build Strategy
+Four different kinds of build strategies can be used. Each strategy includes
+additional build information in the `:build` option.
+
+1. `:maven`
+2. `:ant`
+3. `:custom`
+4. `:copy_jars`
+
+For Energy2D a `:custom` build strategy is used and the command line invocation necessary is in the
+`MANUAL_JAR_BUILD` constant.
+
+  'energy2d'       => { :repository => 'git://github.com/concord-consortium/energy2d.git',
+                        :branch => 'trunk',
+                        :path => 'org/concord/energy2d',
+                        :build_type => :custom,
+                        :version => '0.1.0',
+                        :build => MANUAL_JAR_BUILD,
+                        :has_applet_class => true,
+                        :sign => false },
+
+The script that runs the checkout-build-pack-sign-deploy can either operate on ALL projects specified or on a smaller number.
+
+Running `script/build-and-deploy-jars.rb` with no arguments operates on all projects listed in config/java-projects.rb.
+
+Optionally you can specify one or more projects to operate on. This builds just sensor and sensor-applets:
+
+    script/build-and-deploy-jars.rb sensor sensor-applets
+
+The deployed resources have a timestamp in the deployed artifact so unless you specifically request an earlier version you will always get the latest deployed version.
+
+Normally versions for jars can only be specified by using a jnlp form. A jnlp form of specification can be used for webstart and also for applets.
+
+The older form of applet invocation that uses the <applet> html element normally can't specify version numbers for jar dependencies, however the Jnlp::Rack application included with Lab does allow version specification.
+
+Example: right now on my local system there are two different versions of the vernier-goio-macosx-x86_64-nar.jar:
+
+    $ ls -l server/public/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar*
+      98396 May 28 01:55 ../org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20101012.203835-2.jar
+      99103 May 28 16:40 ../org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20120528.164030-3.jar
+
+Note the different lengths for the two different versions.
+
+If a request comes in from Java for vernier-goio-macosx-x86_64-nar.jar the most recent version is returned:
+
+    $ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar.jar
+    HTTP/1.1 200 OK
+    Last-Modified: Mon, 28 May 2012 20:40:34 GMT
+    Content-Type: application/java-archive
+    Content-Length: 99103
+
+However the version number can be added as a http query parameter.
+
+    $ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar.jar?version-id=1.5.0-20101012.203835-2
+    HTTP/1.1 200 OK
+    Last-Modified: Mon, 28 May 2012 05:55:05 GMT
+    Content-Type: application/java-archive
+    Content-Length: 98396
+    x-java-jnlp-version-id: 1.5.0-20101012.203835-2
+
+Note that in the response the x-java-jnlp-version-id HTTP header is added with teh actual version.
+
+This feature of specifying versioned jar resources should NOT be used for production because Java won't properly cache the jar locally. Eveytime a request is made for a jar with a version-id query parameter the complete jar will be downloaded again.
+
+When a version is specified in a jnlp form for an applet the jar WILL be cached properly.
+
 ### Serving the Lab server locally with Apache and Passenger
 
 #### Mac OS X
