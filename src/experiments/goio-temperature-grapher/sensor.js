@@ -52,6 +52,7 @@ sensor.AppletGrapher = function(applet, container, graph, sensor_type, listener_
   this.StartAppletInitializationTimer();
 };
 
+
 // Setup a timer to check every 250 ms to see if the Java applet
 // has finished loading and is initialized.
 sensor.AppletGrapher.prototype.StartAppletInitializationTimer = function() {
@@ -62,7 +63,7 @@ sensor.AppletGrapher.prototype.StartAppletInitializationTimer = function() {
 // Wait until the applet is loaded and initialized before enabling
 // the data collection buttons.
 sensor.AppletGrapher.prototype.InitSensorInterface = function() {
-  var that = this;
+  var self = this;
 
   // Try to call initSensorInterface, but note:
   //
@@ -75,24 +76,24 @@ sensor.AppletGrapher.prototype.InitSensorInterface = function() {
   //      a property instead of calling it.
 
   try {
-    that.applet_ready = that.applet &&  that.applet.initSensorInterface(that.listener_str);
+    self.applet_ready = self.applet &&  self.applet.initSensorInterface(self.listener_str);
   } catch (e) {
     // Do nothing--we'll try again in the next timer interval.
   }
 
-  if(that.applet_ready) {
-    that.startButton.className = "active";
-    if(that.appletInitializationTimer) {
-      clearInterval(that.appletPoller);
-      that.appletPoller = false;
+  if(self.applet_ready) {
+    self.startButton.className = "active";
+    if(self.appletInitializationTimer) {
+      clearInterval(self.appletPoller);
+      self.appletPoller = false;
     }
     if (typeof this.appletReadyCallback === 'function') {
       this.appletReadyCallback();
     }
   } else {
-    that.startButton.className = "inactive";
-    if(!that.appletInitializationTimer) {
-      that.appletInitializationTimer = window.setInterval(function() { that.InitSensorInterface(); }, 250);
+    self.startButton.className = "inactive";
+    if(!self.appletInitializationTimer) {
+      self.appletInitializationTimer = window.setInterval(function() { self.InitSensorInterface(); }, 250);
     }
   }
 };
