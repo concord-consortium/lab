@@ -16,4 +16,5 @@ gem 'guard-coffeescript', "~> 0.6"
 gem 'kramdown',           "~> 0.13.6"
 gem 'guard-markdown',     "~> 0.2.0"
 
+gem 'debugger-ruby_core_source', :git => "git://github.com/stepheneb/debugger-ruby_core_source.git", :branch => "add-1.9.3-p320-headers"
 gem 'debugger'
