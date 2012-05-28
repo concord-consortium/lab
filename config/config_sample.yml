@@ -1,0 +1,5 @@
+# password and alias for your Java siging certificate.
+---
+:password: abc123
+:alias: lab-sample-keystore
+:path: config/lab-sample-keystore.jks
