@@ -328,14 +328,16 @@ grapher.graph = function(elem, options, message) {
       var circle = vis.select("svg").selectAll("circle")
           .data(points, function(d) { return d; });
 
-      circle.enter().append("circle")
-          .attr("class", function(d) { return d === selected ? "selected" : null; })
-          .attr("cx",    function(d) { return xScale(d[0]); })
-          .attr("cy",    function(d) { return yScale(d[1]); })
-          .attr("r", options.circleRadius)
-          .style("cursor", circleCursorStyle)
-          .on("mousedown.drag",  datapoint_drag)
-          .on("touchstart.drag", datapoint_drag);
+      if (options.circleRadius){
+        circle.enter().append("circle")
+            .attr("class", function(d) { return d === selected ? "selected" : null; })
+            .attr("cx",    function(d) { return xScale(d[0]); })
+            .attr("cy",    function(d) { return yScale(d[1]); })
+            .attr("r", options.circleRadius)
+            .style("cursor", circleCursorStyle)
+            .on("mousedown.drag",  datapoint_drag)
+            .on("touchstart.drag", datapoint_drag);
+      }
 
       circle
           .attr("class", function(d) { return d === selected ? "selected" : null; })
