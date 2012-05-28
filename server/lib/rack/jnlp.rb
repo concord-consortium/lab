@@ -6,9 +6,15 @@ module Rack
     NO_JAR_PACK_GZ = 'jar.no.pack.gz'
     BYTESIZE = "".respond_to?(:bytesize)
 
+    JNLP_APP_PATH_ERROR = <<-HEREDOC
+
+  *** JNLP_APP_PATH constant undefined
+
+    HEREDOC
+
     def initialize app
       @app = app
-      @jnlp_dir = JNLP_APP_PATH
+      raise JNLP_APP_PATH_ERROR unless defined? JNLP_APP_PATH
     end
 
     def jnlp_codebase(env)
@@ -39,11 +45,11 @@ module Rack
     def jar_request(path)
       if path =~ /^(\/.*\/)(.*?)\.(jar|jar\.pack\.gz|jar\.no\.pack\.gz)$/
         dir, name, suffix = $1, $2, $3
-        jars = Dir["#{@jnlp_dir}#{dir}#{name}__*.jar"]
+        jars = Dir["#{JNLP_APP_PATH}#{dir}#{name}__*.jar"]
         if jars.empty?
           [nil, suffix]
         else
-          [jars.sort.last[/#{@jnlp_dir}(.*)/, 1], suffix]
+          [jars.sort.last[/#{JNLP_APP_PATH}(.*)/, 1], suffix]
         end
       else
         [nil, nil]
@@ -65,14 +71,14 @@ module Rack
         pack200_gzip = false if suffix == NO_JAR_PACK_GZ
         if version_id
           versioned_jar_path = path.gsub(/(.*?)(\.jar$)/, "\\1__V#{version_id}\\2")
-          if pack200_gzip && ::File.exists?(@jnlp_dir + versioned_jar_path + Rack::Jnlp::PACK_GZ)
+          if pack200_gzip && ::File.exists?(JNLP_APP_PATH + versioned_jar_path + Rack::Jnlp::PACK_GZ)
             versioned_jar_path << Rack::Jnlp::PACK_GZ
           else
             pack200_gzip = false
           end
           env["PATH_INFO"] = versioned_jar_path
         else
-          if pack200_gzip && ::File.exists?(@jnlp_dir + snapshot_path + Rack::Jnlp::PACK_GZ)
+          if pack200_gzip && ::File.exists?(JNLP_APP_PATH + snapshot_path + Rack::Jnlp::PACK_GZ)
             snapshot_path << Rack::Jnlp::PACK_GZ
           else
             pack200_gzip = false
