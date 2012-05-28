@@ -641,10 +641,10 @@ grapher.graph = function(elem, options, message) {
           points.push(newdata[i]);
         }
       } else {
-        if (newdata.length === 0) {
+        if (newdata.length === 2) {
           points.push(newdata);
         } else {
-          throw new Error("invalid argument to graph.add_data()" + newdata + " could not be understood.");
+          throw new Error("invalid argument to graph.add_data() " + newdata + " length should === 2.");
         }
       }
     }
