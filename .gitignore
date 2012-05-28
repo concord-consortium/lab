@@ -16,3 +16,4 @@ performance.rb
 /server/config/couchdb.yml
 /server/public
 /config/config.yml
+/java
