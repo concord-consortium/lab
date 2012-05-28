@@ -281,6 +281,84 @@ You can use a pre-configured route to open the local CouchDb admin wbe interface
     cd lab/server
     rails console
 
+#### Building the Legacy Java applications and the Sensor Java Applet
+
+The Lab repository can build the legacy Java applications Molecular Workbench and Energy2D we
+are converting to HTML5.
+
+Building these Java applications allows developers to more easily compare the operation
+of the HTML5 versions of these applications to the Java versions running in he browser as applets.
+
+In addition we can create the Java resources to run the invisible Java applet needed for communicating
+with Vernier GoIO probware in the browser however the Java resources for communicating with the
+Vernier GoIO Probeware need to be digitally signed.
+
+##### Java Code-Signing Certificate and Keystore
+
+A self-signed Java certificate is included with the Lab repository: `config/lab-sample-keystore,jks`
+with a password and private key password of *abc123* however for production use you will want to use
+a keystore with a publically-recognized Java code-siging certificate from a company like
+[Thawte](http://www.thawte.com/code-signing/index.html).
+
+To build the Jar resources for the probeware using either the self-signed certificate provided
+with the Lab repository or one of your own first create the file `config/config.yml` by
+copying `config/config.sample.yml` and editing appropriately.
+
+    cp config/config.sample.yml config/config.yml
+
+The `config.yml` yaml file looks like this:
+
+    # password and alias for your Java siging certificate.
+    ---
+    :password: abc123
+    :alias: lab-sample-keystore
+    :keystore_path: config/lab-sample-keystore.jks
+
+If you have a keystore already accessible via an alias replace `lab-sample-keystore` with
+the alias for your existing keystore. If your keystore is stored in your home directory in the
+file `.keystore` then you do should leave the `:keystore_path` empty.
+
+    :keystore_path:
+
+The self-signed `lab-sample-keystore,jks` keystore was generated with the Java keytool command as follows:
+
+    $ keytool -genkey -keyalg RSA -keystore config/lab-sample-keystore,jks -alias lab-sample-keystore -storepass abc123 -validity 360 -keysize 2048
+    What is your first and last name?
+      [Unknown]:  Stephen Bannasch
+    What is the name of your organizational unit?
+      [Unknown]:  Lab Project
+    What is the name of your organization?
+      [Unknown]:  Concord Consortium
+    What is the name of your City or Locality?
+      [Unknown]:  Concord
+    What is the name of your State or Province?
+      [Unknown]:  Massachusetts
+    What is the two-letter country code for this unit?
+      [Unknown]:  US
+    Is CN=Stephen Bannasch, OU=Lab Project, O=Concord Consortium, L=Concord, ST=Massachusetts, C=US correct?
+      [no]:  yes
+    Enter key password for <lab-sample-keystore>
+    	(RETURN if same as keystore password):
+
+    $ keytool -selfcert -alias lab-sample-keystore -keystore config/lab-sample-keystore.jks
+    Enter keystore password:
+
+##### Building the Java Resources
+
+The `script/build-and-deploy-jars.rb` command will:
+
+1.  Create a `java/` top-level directory and check out the required Java projects into this directory
+2.  Build each of the projects
+3.  Copy the jar resources into the `server/public/jnlp/` directory packing and signing them as needed.
+
+If one of the maven projects fails to build because a dependency could not be found try running
+the command again with the `--maven-update` argument:
+
+    script/build-and-deploy-jars.rb --maven-update
+
+Details about each project, where the repository is located, what branch is compiled, what specific
+compilation details are all contained in `config/java-projects.rb/`.
+
 ### Serving the Lab server locally with Apache and Passenger
 
 #### Mac OS X
