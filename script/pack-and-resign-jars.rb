@@ -32,14 +32,24 @@ else
 end
 keystore_expires = keystore[/until:\s(.*)/, 1]
 
-puts <<-HEREDOC
+if @nosign
+  puts <<-HEREDOC
 
-Java Code Siging Certificate Keystore:
+*** GENERATING UNSIGNED RESOURCE
 
-  Alias:   #{CONFIG[:alias]}
-  Expires: #{keystore_expires}
+  HEREDOC
+else
+  puts <<-HEREDOC
 
-HEREDOC
+*** GENERATING SIGNED RESOURCE
+
+    Java Code Siging Certificate Keystore:
+
+      Alias:   #{CONFIG[:alias]}
+      Expires: #{keystore_expires}
+
+  HEREDOC
+end
 
 jars = Dir["#{PUBLIC_ROOT}/jnlp/**/*.jar"]
 if @regex
