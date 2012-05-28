@@ -15,3 +15,5 @@ gem "guard-livereload",   "~> 0.4"
 gem 'guard-coffeescript', "~> 0.6"
 gem 'kramdown',           "~> 0.13.6"
 gem 'guard-markdown',     "~> 0.2.0"
+
+gem 'debugger'
