@@ -25,6 +25,7 @@ gem "couchrest",        :git => "git://github.com/concord-consortium/couchrest.g
 gem "couchrest_model",  '~> 1.1'
 
 group :development do
+  gem 'debugger-ruby_core_source', :git => "git://github.com/stepheneb/debugger-ruby_core_source.git", :branch => "add-1.9.3-p320-headers"
   gem "debugger"
 end
 
