@@ -154,7 +154,7 @@ parseMML = (mmlString) ->
     vy = (atom.vy for atom in atoms)
     charge = (atom.charge for atom in atoms)
 
-    id = atoms[0].elemId || 0
+    id = atoms[0]?.elemId || 0
     # for now, just use the first atom's element epsilon
     epsilon = elemTypes[id].epsilon
     # for now use first atom's element sigma; scale to nm
