@@ -242,10 +242,8 @@ exports.makeModel = function() {
         T_windowed = math.getWindowedAverager( getWindowSize() );
       },
 
-      // Calculates & returns instantaneous temperature of the system. If we're using "internal" coordinates (i.e.,
-      // subtracting the center of mass translation and rotation from particle velocities), convert to internal coords
-      // before calling this.
-      calculateTemperature = function() {
+      // Calculates & returns instantaneous temperature of the system.
+      computeTemperature = function() {
         var twoKE = 0,
             i;
 
@@ -410,22 +408,24 @@ exports.makeModel = function() {
         }
       },
 
-      adjustTemperature = function() {
+      adjustTemperature = function(target, forceAdjustment) {
         var rescalingFactor,
             i;
 
-        T = calculateTemperature();
+        if (target == null) target = T_target;
 
-        if (temperatureChangeInProgress && Math.abs(T_windowed(T) - T_target) <= T_target * tempTolerance) {
+        T = computeTemperature();
+
+        if (temperatureChangeInProgress && Math.abs(T_windowed(T) - target) <= target * tempTolerance) {
           temperatureChangeInProgress = false;
         }
 
-        if (temperatureChangeInProgress || useThermostat && T > 0) {
-          rescalingFactor = Math.sqrt(T_target / T);
+        if (forceAdjustment || useThermostat || temperatureChangeInProgress && T > 0) {
+          rescalingFactor = Math.sqrt(target / T);
           for (i = 0; i < N; i++) {
             scaleVelocity(i, rescalingFactor);
           }
-          T = T_target;
+          T = target;
         }
       };
 
@@ -587,16 +587,14 @@ exports.makeModel = function() {
         }
       }
 
+      // Publish the current state
+      T = computeTemperature();
       model.computeOutputState();
     },
 
     initializeAtomsRandomly: function(options) {
 
       var temperature = options.temperature || 100,  // if not requested, just need any number
-
-          k_inJoulesPerKelvin = constants.BOLTZMANN_CONSTANT.as(unit.JOULES_PER_KELVIN),
-
-          mass_in_kg, v0_MKS, v0,
 
           nrows = Math.floor(Math.sqrt(N)),
           ncols = Math.ceil(N/nrows),
@@ -621,35 +619,12 @@ exports.makeModel = function() {
           x[i] = c*colSpacing;
           y[i] = r*rowSpacing;
 
-          // Randomize velocities, exactly balancing the motion of the center of mass by making the second half of the
-          // set of atoms have the opposite velocities of the first half. (If the atom number is odd, the "odd atom out"
-          // should have 0 velocity).
-          //
-          // Note that although the instantaneous temperature will be 'temperature' exactly, the temperature will quickly
-          // settle to a lower value because we are initializing the atoms spaced far apart, in an artificially low-energy
-          // configuration.
-
-          if (i < Math.floor(N/2)) {      // 'middle' atom will have 0 velocity
-
-            // Note kT = m<v^2>/2 because there are 2 degrees of freedom per atom, not 3
-            // TODO: define constants to avoid unnecesssary conversions below.
-
-            mass_in_kg = constants.convert(mass[i], { from: unit.DALTON, to: unit.KILOGRAM });
-            v0_MKS = Math.sqrt(2 * k_inJoulesPerKelvin * temperature / mass_in_kg);
-            v0 = constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNIT });
-
-            vMagnitude = math.normal(v0, v0/4);
-            vDirection = 2 * Math.random() * Math.PI;
-            vx[i] = vMagnitude * Math.cos(vDirection);
-            px[i] = mass[i] * vx[i];
-            vy[i] = vMagnitude * Math.sin(vDirection);
-            py[i] = mass[i] * vy[i];
-
-            vx[N-i-1] = -vx[i];
-            px[N-i-1] = mass[N-i-1] * vx[N-i-1];
-            vy[N-i-1] = -vy[i];
-            py[N-i-1] = mass[N-i-1] * vy[N-i-1];
-          }
+          vMagnitude = math.normal(1, 1/4);
+          vDirection = 2 * Math.random() * Math.PI;
+          vx[i] = vMagnitude * Math.cos(vDirection);
+          px[i] = mass[i] * vx[i];
+          vy[i] = vMagnitude * Math.sin(vDirection);
+          py[i] = mass[i] * vy[i];
 
           ax[i] = 0;
           ay[i] = 0;
@@ -659,7 +634,20 @@ exports.makeModel = function() {
         }
       }
 
-      // Pubish the current state
+      // now, remove all translation of the center of mass and rotation about the center of mass
+      computeCMMotion();
+      removeTranslationAndRotationFromVelocities();
+
+      // Scale randomized velocities to match the desired initial temperature.
+      //
+      // Note that although the instantaneous temperature will be 'temperature' exactly, the temperature will quickly
+      // settle to a lower value because we are initializing the atoms spaced far apart, in an artificially low-energy
+      // configuration.
+      //
+      adjustTemperature(temperature, true);
+
+      // Publish the current state
+      T = computeTemperature();
       model.computeOutputState();
     },
 
