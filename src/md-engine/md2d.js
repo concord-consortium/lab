@@ -398,7 +398,6 @@ exports.makeModel = function() {
         var rescalingFactor,
             i;
 
-        removeTranslationAndRotationFromVelocities();
         T = calculateTemperature();
 
         if (temperatureChangeInProgress && Math.abs(T_windowed(T) - T_target) <= T_target * tempTolerance) {
@@ -412,8 +411,6 @@ exports.makeModel = function() {
           }
           T = T_target;
         }
-
-        addTranslationAndRotationToVelocities();
       };
 
 
@@ -589,8 +586,7 @@ exports.makeModel = function() {
           ncols = Math.ceil(N/nrows),
 
           i, r, c, rowSpacing, colSpacing,
-          vMagnitude, vDirection,
-          rescalingFactor;
+          vMagnitude, vDirection;
 
       validateTemperature(temperature);
 
@@ -646,19 +642,6 @@ exports.makeModel = function() {
           charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
         }
       }
-
-      // Compute linear and angular velocity of CM, compute temperature, and publish output state:
-      computeCMMotion();
-
-      // Adjust for center of mass motion
-      removeTranslationAndRotationFromVelocities();
-      T = calculateTemperature();
-      rescalingFactor = Math.sqrt(temperature / T);
-      for (i = 0; i < N; i++) {
-        scaleVelocity(i, rescalingFactor);
-      }
-      T = temperature;
-      addTranslationAndRotationToVelocities();
 
       // Pubish the current state
       model.computeOutputState();
@@ -728,9 +711,6 @@ exports.makeModel = function() {
           // Now that we have velocity, update speed
           speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
         }
-
-        // Update CM(t+dt), p_CM(t+dt), v_CM(t+dt), omega_CM(t+dt)
-        computeCMMotion();
 
         adjustTemperature();
       } // end of integration loop
