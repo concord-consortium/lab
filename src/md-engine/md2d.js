@@ -476,6 +476,8 @@ exports.makeModel = function() {
     },
 
     setLJSigma: function(s) {
+      var i;
+
       lennardJones.setSigma(s);
       for (i = 0; i < N; i++) {
         radius[i] = s/2;
@@ -548,6 +550,8 @@ exports.makeModel = function() {
 
     // Sets the X, Y, VX, VY properties of the atoms
     initializeAtomsFromProperties: function(props) {
+      var i, ii;
+
       if (!(props.X && props.Y)) {
         throw new Error("md2d: initializeAtomsFromProperties must specify at minimum X and Y locations.");
       }
@@ -557,7 +561,7 @@ exports.makeModel = function() {
         throw new Error("md2d: For now, velocities must be set when locations are set.");
       }
 
-      for (var i=0, ii=N; i<ii; i++){
+      for (i=0, ii=N; i<ii; i++){
         x[i] = props.X[i];
         y[i] = props.Y[i];
         vx[i] = props.VX[i];
@@ -566,7 +570,7 @@ exports.makeModel = function() {
       }
 
       if (props.CHARGE) {
-        for (var i=0, ii=N; i<ii; i++){
+        for (i=0, ii=N; i<ii; i++){
           charge[i] = props.CHARGE[i];
         }
       }
