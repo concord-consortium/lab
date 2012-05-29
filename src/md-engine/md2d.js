@@ -738,16 +738,16 @@ exports.makeModel = function() {
       var i, j,
           dx, dy,
           r_sq,
-          realKEinMWUnits,   // KE in "real" coordinates, in MW Units
+          KEinMWUnits,       // total kinetic energy, in MW units
           PE;                // potential energy, in eV
 
       // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
       // integration loop!
       PE = 0;
-      realKEinMWUnits= 0;
+      KEinMWUnits = 0;
 
       for (i = 0; i < N; i++) {
-        realKEinMWUnits += 0.5 * mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+        KEinMWUnits += 0.5 * mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
         for (j = i+1; j < N; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -768,7 +768,7 @@ exports.makeModel = function() {
       outputState.time     = time;
       outputState.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
       outputState.PE       = PE;
-      outputState.KE       = constants.convert(realKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+      outputState.KE       = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
       outputState.T        = T;
       outputState.pCM      = [px_CM, py_CM];
       outputState.CM       = [x_CM, y_CM];
