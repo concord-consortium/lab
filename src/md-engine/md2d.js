@@ -458,19 +458,11 @@ exports.makeModel = function() {
     outputState: outputState,
 
     useCoulombInteraction: function(v) {
-      if (v !== useCoulombInteraction) {
-        useCoulombInteraction = v;
-        beginTransientTemperatureChange();
-      }
+      useCoulombInteraction = v;
     },
 
     useLennardJonesInteraction: function(v) {
-      if (v !== useLennardJonesInteraction) {
-        useLennardJonesInteraction = v;
-        if (useLennardJonesInteraction) {
-          beginTransientTemperatureChange();
-        }
-      }
+      useLennardJonesInteraction = v;
     },
 
     useThermostat: function(v) {
