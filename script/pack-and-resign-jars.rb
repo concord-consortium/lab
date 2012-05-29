@@ -36,7 +36,6 @@ if @nosign
   puts <<-HEREDOC
 
 *** GENERATING UNSIGNED RESOURCE
-
   HEREDOC
 else
   puts <<-HEREDOC
@@ -47,7 +46,6 @@ else
 
       Alias:   #{CONFIG[:alias]}
       Expires: #{keystore_expires}
-
   HEREDOC
 end
 
