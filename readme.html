@@ -51,6 +51,15 @@
               <li><a href="#entering-the-rails-lab-server-console">Entering the Rails Lab server console</a></li>
             </ul>
           </li>
+          <li><a href="#building-the-legacy-java-applications-and-the-sensor-java-applet">Building the Legacy Java applications and the Sensor Java Applet</a>            <ul>
+              <li><a href="#java-code-signing-certificate-and-keystore">Java Code-Signing Certificate and Keystore</a></li>
+              <li><a href="#building-the-java-resources">Building the Java Resources</a></li>
+            </ul>
+          </li>
+          <li><a href="#java-builddeploy-integration">Java build/deploy integration</a>            <ul>
+              <li><a href="#java-projects-build-strategies">Java Projects Build Strategies</a></li>
+            </ul>
+          </li>
         </ul>
       </li>
       <li><a href="#serving-the-lab-server-locally-with-apache-and-passenger">Serving the Lab server locally with Apache and Passenger</a>        <ul>
@@ -443,6 +452,184 @@ thin start
 <pre><code>cd lab/server
 rails console
 </code></pre>
+
+<h4 id="building-the-legacy-java-applications-and-the-sensor-java-applet">Building the Legacy Java applications and the Sensor Java Applet</h4>
+
+<p>The Lab repository can build the legacy Java applications Molecular Workbench and Energy2D we
+are converting to HTML5.</p>
+
+<p>Building these Java applications allows developers to more easily compare the operation
+of the HTML5 versions of these applications to the Java versions running in he browser as applets.</p>
+
+<p>In addition we can create the Java resources to run the invisible Java applet needed for communicating
+with Vernier GoIO probware in the browser however the Java resources for communicating with the
+Vernier GoIO Probeware need to be digitally signed.</p>
+
+<h5 id="java-code-signing-certificate-and-keystore">Java Code-Signing Certificate and Keystore</h5>
+
+<p>A self-signed Java certificate is included with the Lab repository: <code>config/lab-sample-keystore,jks</code>
+with a password and private key password of <em>abc123</em> however for production use you will want to use
+a keystore with a publically-recognized Java code-siging certificate from a company like
+<a href="http://www.thawte.com/code-signing/index.html">Thawte</a>.</p>
+
+<p>To build the Jar resources for the probeware using either the self-signed certificate provided
+with the Lab repository or one of your own first create the file <code>config/config.yml</code> by
+copying <code>config/config.sample.yml</code> and editing appropriately.</p>
+
+<pre><code>cp config/config.sample.yml config/config.yml
+</code></pre>
+
+<p>The <code>config.yml</code> yaml file looks like this:</p>
+
+<pre><code># password and alias for your Java siging certificate.
+---
+:password: abc123
+:alias: lab-sample-keystore
+:keystore_path: config/lab-sample-keystore.jks
+</code></pre>
+
+<p>If you have a keystore already accessible via an alias replace <code>lab-sample-keystore</code> with
+the alias for your existing keystore. If your keystore is stored in your home directory in the
+file <code>.keystore</code> then you do should leave the <code>:keystore_path</code> empty.</p>
+
+<pre><code>:keystore_path:
+</code></pre>
+
+<p>The self-signed <code>lab-sample-keystore,jks</code> keystore was generated with the Java keytool command as follows:</p>
+
+<pre><code>$ keytool -genkey -keyalg RSA -keystore config/lab-sample-keystore,jks -alias lab-sample-keystore -storepass abc123 -validity 360 -keysize 2048
+What is your first and last name?
+  [Unknown]:  Stephen Bannasch
+What is the name of your organizational unit?
+  [Unknown]:  Lab Project
+What is the name of your organization?
+  [Unknown]:  Concord Consortium
+What is the name of your City or Locality?
+  [Unknown]:  Concord
+What is the name of your State or Province?
+  [Unknown]:  Massachusetts
+What is the two-letter country code for this unit?
+  [Unknown]:  US
+Is CN=Stephen Bannasch, OU=Lab Project, O=Concord Consortium, L=Concord, ST=Massachusetts, C=US correct?
+  [no]:  yes
+Enter key password for &lt;lab-sample-keystore&gt;
+	(RETURN if same as keystore password):
+
+$ keytool -selfcert -alias lab-sample-keystore -keystore config/lab-sample-keystore.jks
+Enter keystore password:
+</code></pre>
+
+<h5 id="building-the-java-resources">Building the Java Resources</h5>
+
+<p>The <code>script/build-and-deploy-jars.rb</code> command will:</p>
+
+<ol>
+  <li>Create a <code>java/</code> top-level directory and check out the required Java projects into this directory</li>
+  <li>Build each of the projects</li>
+  <li>Copy the jar resources into the <code>server/public/jnlp/</code> directory packing and signing them as needed.</li>
+</ol>
+
+<p>If one of the maven projects fails to build because a dependency could not be found try running
+the command again with the <code>--maven-update</code> argument:</p>
+
+<pre><code>script/build-and-deploy-jars.rb --maven-update
+</code></pre>
+
+<p>Details about each project, where the repository is located, what branch is compiled, what specific
+compilation details are all contained in <code>config/java-projects.rb/</code>.</p>
+
+<h4 id="java-builddeploy-integration">Java build/deploy integration</h4>
+
+<p>There is a configuration file expressed in Ruby code here <code>config/java-projects.rb</code> for all the
+Java projects that will be checked-out, built, packed, signed if neede, and deployed.</p>
+
+<p>In this configuration file projects are specified like this:</p>
+
+<pre><code>'otrunk'         =&gt; { :repository =&gt; 'git://github.com/concord-consortium/otrunk.git',
+                      :branch =&gt; 'trunk',
+                      :path =&gt; 'org/concord/otrunk',
+                      :build_type =&gt; :maven,
+                      :build =&gt; MAVEN_STD_CLEAN_BUILD,
+                      :has_applet_class =&gt; true,
+                      :sign =&gt; true },
+</code></pre>
+
+<p>The ‘trunk’ branch of this repo will be checked out into ./java/otrunk and will be built using Maven.
+Becuase the otrunk jar is used with the sensor-applet code it must be signed.</p>
+
+<h5 id="java-projects-build-strategies">Java Projects Build Strategies</h5>
+
+<p>The <code>:build_type</code> option is used to specify the  Java Projects Build Strategy
+Four different kinds of build strategies can be used. Each strategy includes
+additional build information in the <code>:build</code> option.</p>
+
+<ol>
+  <li><code>:maven</code></li>
+  <li><code>:ant</code></li>
+  <li><code>:custom</code></li>
+  <li><code>:copy_jars</code></li>
+</ol>
+
+<p>For Energy2D a <code>:custom</code> build strategy is used and the command line invocation necessary is in the
+<code>MANUAL_JAR_BUILD</code> constant.</p>
+
+<p>‘energy2d’       =&gt; { :repository =&gt; ‘git://github.com/concord-consortium/energy2d.git’,
+                        :branch =&gt; ‘trunk’,
+                        :path =&gt; ‘org/concord/energy2d’,
+                        :build_type =&gt; :custom,
+                        :version =&gt; ‘0.1.0’,
+                        :build =&gt; MANUAL_JAR_BUILD,
+                        :has_applet_class =&gt; true,
+                        :sign =&gt; false },</p>
+
+<p>The script that runs the checkout-build-pack-sign-deploy can either operate on ALL projects specified or on a smaller number.</p>
+
+<p>Running <code>script/build-and-deploy-jars.rb</code> with no arguments operates on all projects listed in config/java-projects.rb.</p>
+
+<p>Optionally you can specify one or more projects to operate on. This builds just sensor and sensor-applets:</p>
+
+<pre><code>script/build-and-deploy-jars.rb sensor sensor-applets
+</code></pre>
+
+<p>The deployed resources have a timestamp in the deployed artifact so unless you specifically request an earlier version you will always get the latest deployed version.</p>
+
+<p>Normally versions for jars can only be specified by using a jnlp form. A jnlp form of specification can be used for webstart and also for applets.</p>
+
+<p>The older form of applet invocation that uses the &lt;applet&gt; html element normally can’t specify version numbers for jar dependencies, however the Jnlp::Rack application included with Lab does allow version specification.</p>
+
+<p>Example: right now on my local system there are two different versions of the vernier-goio-macosx-x86_64-nar.jar:</p>
+
+<pre><code>$ ls -l server/public/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar*
+  98396 May 28 01:55 ../org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20101012.203835-2.jar
+  99103 May 28 16:40 ../org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar__V1.5.0-20120528.164030-3.jar
+</code></pre>
+
+<p>Note the different lengths for the two different versions.</p>
+
+<p>If a request comes in from Java for vernier-goio-macosx-x86_64-nar.jar the most recent version is returned:</p>
+
+<pre><code>$ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar.jar
+HTTP/1.1 200 OK
+Last-Modified: Mon, 28 May 2012 20:40:34 GMT
+Content-Type: application/java-archive
+Content-Length: 99103
+</code></pre>
+
+<p>However the version number can be added as a http query parameter.</p>
+
+<pre><code>$ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor/vernier/vernier-goio/vernier-goio-macosx-x86_64-nar.jar?version-id=1.5.0-20101012.203835-2
+HTTP/1.1 200 OK
+Last-Modified: Mon, 28 May 2012 05:55:05 GMT
+Content-Type: application/java-archive
+Content-Length: 98396
+x-java-jnlp-version-id: 1.5.0-20101012.203835-2
+</code></pre>
+
+<p>Note that in the response the x-java-jnlp-version-id HTTP header is added with teh actual version.</p>
+
+<p>This feature of specifying versioned jar resources should NOT be used for production because Java won’t properly cache the jar locally. Eveytime a request is made for a jar with a version-id query parameter the complete jar will be downloaded again.</p>
+
+<p>When a version is specified in a jnlp form for an applet the jar WILL be cached properly.</p>
 
 <h3 id="serving-the-lab-server-locally-with-apache-and-passenger">Serving the Lab server locally with Apache and Passenger</h3>
 
