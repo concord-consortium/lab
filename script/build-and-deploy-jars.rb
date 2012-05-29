@@ -34,30 +34,57 @@ end
 
 def checkout_project(project_path, project, options)
   if File.exists? project_path
+    print "\n\nUsing java project: '#{project}'\n"
     Dir.chdir(project_path) do
-      `git checkout #{options[:branch]}`
-    end
-    print <<-HEREDOC
+      case options[:build_type]
+      when :download
+        name = "#{project}-#{options[:version]}.jar"
+        `curl #{options[:url]} -o #{name}` unless File.exists? name
+        print <<-HEREDOC
 
-Using java project: '#{project}'
+  from:    #{options[:url]}
+  version: #{options[:version]}
+  located: #{project_path}
+
+        HEREDOC
+      else
+        `git checkout #{options[:branch]}`
+        print <<-HEREDOC
 
   from:    #{options[:repository]}
   branch:  #{options[:branch]}
   located: #{project_path}
 
-    HEREDOC
+        HEREDOC
+      end
+    end
   else
     FileUtils.mkdir_p(project_path)
-    print <<-HEREDOC
+    Dir.chdir(project_path) do
+      case options[:build_type]
+      when :download
+        name = "#{project}-#{options[:version]}.jar"
+        print "\n\nDownloading java resource: '#{name}'\n"
+        `curl #{options[:url]} -o #{name}`
+        print <<-HEREDOC
 
-Cloning java project: '#{project}'
+  from:    #{options[:url]}
+  version: #{options[:version]}
+  located: #{project_path}
+
+        HEREDOC
+      else
+        print "\n\nCloning java project: '#{project}'\n"
+        print <<-HEREDOC
 
   from:    #{options[:repository]}
   branch:  #{options[:branch]}
   into:    #{project_path}
 
-    HEREDOC
-    `git clone #{options[:repository]} -b #{options[:branch]} #{project_path}`
+        HEREDOC
+        `git clone #{options[:repository]} -b #{options[:branch]} #{project_path}`
+      end
+    end
   end
 end
 
@@ -65,6 +92,9 @@ def prep_project(project, options, project_path)
   version_template = source = ''
   Dir.chdir(project_path) do
     case options[:build_type]
+    when :download
+      name = "#{project}-#{options[:version]}.jar"
+      return [ { :source => File.join(project_path, name), :version_template => options[:version] } ]
     when :maven
       print "\nbuilding maven project: #{project} ... \n\n"
       start = Time.now
@@ -115,12 +145,14 @@ projects.each do |project, options|
   if project_tokens
     project_tokens.each do |project_token|
       source = project_token[:source]
-      version_template = project_token[:version_template]
-
       to_path = File.join(JNLP_ROOT, options[:path])
-      if options[:build_type] == :copy_jars
+      case options[:build_type]
+      when :copy_jars
         versioned_name = File.basename(source)
+      when :download
+        versioned_name = "#{project}__V#{options[:version]}.jar"
       else
+        version_template = project_token[:version_template]
         existing_jars = Dir["#{to_path}/*.jar"]
         if existing_jars.empty?
           new_jar_index = 1
@@ -131,14 +163,21 @@ projects.each do |project, options|
         versioned_name = project + version_str + '.jar'
       end
       destination = File.join(to_path, versioned_name)
-      puts "\ncopy: #{source} \nto:   #{destination}"
-      FileUtils.mkdir_p(to_path) unless File.exists?(to_path)
-      FileUtils.cp(source, destination)
-      pack_and_sign_cmd = "ruby #{SCRIPT_PATH}/pack-and-resign-jars.rb #{versioned_name}"
-      if options[:sign]
-        system(pack_and_sign_cmd)
+      if File.exists? destination
+        puts <<-HEREDOC
+Versioned Java Resource: '#{versioned_name}' already exists.
+Location: #{destination}
+      HEREDOC
       else
-        system(pack_and_sign_cmd + ' --nosign')
+        puts "\ncopy: #{source} \nto:   #{destination}"
+        FileUtils.mkdir_p(to_path) unless File.exists?(to_path)
+        FileUtils.cp(source, destination)
+        pack_and_sign_cmd = "ruby #{SCRIPT_PATH}/pack-and-resign-jars.rb #{versioned_name}"
+        if options[:sign]
+          system(pack_and_sign_cmd)
+        else
+          system(pack_and_sign_cmd + ' --nosign')
+        end
       end
     end
   else
