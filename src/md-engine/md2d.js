@@ -269,12 +269,20 @@ exports.makeModel = function() {
       scaleVelocity = function(i, factor) {
         vx[i] *= factor;
         vy[i] *= factor;
+
+        // scale momentum too
+        px[i] *= factor;
+        py[i] *= factor;
       },
 
       // Adds the velocity vector (vx_t, vy_t) to the velocity vector of particle i
       addVelocity = function(i, vx_t, vy_t) {
         vx[i] += vx_t;
         vy[i] += vy_t;
+
+        // add momenta
+        px[i] += elements[element[i]][0]*vx_t;
+        py[i] += elements[element[i]][0]*vy_t;
       },
 
       // Adds effect of angular velocity omega, relative to (x_CM, y_CM), to the velocity vector of particle i
