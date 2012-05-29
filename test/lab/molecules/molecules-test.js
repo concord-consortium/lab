@@ -155,6 +155,45 @@ suite.addBatch({
           }
         }
       }
+    },
+    "creates a model with elements, checks the total mass": function(model) {
+      // 5 atoms of mass 1
+      initialization_options = {
+        elements: [
+          {id: 0, mass: 1}
+        ],
+        mol_number: 5
+      }
+      model = modeler.model(initialization_options);
+      md2d = model.createNewAtoms(initialization_options.mol_number);
+
+      assert.equal(md2d.totalMass, 5);
+
+      // 5 atoms of mass 2
+      initialization_options = {
+        elements: [
+          {id: 0, mass: 2}
+        ],
+        mol_number: 5
+      }
+      model = modeler.model(initialization_options);
+      md2d = model.createNewAtoms(initialization_options.mol_number);
+
+      assert.equal(md2d.totalMass, 10);
+
+      // 100 atoms randomly created either with mass 1 or 2
+      initialization_options = {
+        elements: [
+          {id: 0, mass: 1},
+          {id: 1, mass: 2}
+        ],
+        mol_number: 100
+      }
+      model = modeler.model(initialization_options);
+      md2d = model.createNewAtoms(initialization_options.mol_number);
+
+      assert(md2d.totalMass > 100, "Total mass should be greater than 100. Actual: "+md2d.totalMass);
+      assert(md2d.totalMass < 200, "Total mass should be less than 200. Actual: "+md2d.totalMass);
     }
   }
 });

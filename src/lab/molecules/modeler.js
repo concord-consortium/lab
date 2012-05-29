@@ -374,6 +374,7 @@ modeler.model = function(initialProperties) {
         temperature: T
       });
     }
+    return coreModel;
   }
 
   // ------------------------------
@@ -648,7 +649,7 @@ modeler.model = function(initialProperties) {
   // @config: either the number of atoms (for a random setup) or
   //          a hash specifying the x,y,vx,vy properties of the atoms
   model.createNewAtoms = function(config) {
-    createNewCoreModel(config);
+    return createNewCoreModel(config);
   };
 
   model.set = function(hash) {
