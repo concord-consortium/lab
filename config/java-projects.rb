@@ -84,6 +84,18 @@ PROJECT_LIST = {
                         :build => MAVEN_STD_CLEAN_BUILD,
                         :sign => true },
 
+  'jdom'           => { :build_type => :download,
+                        :url => 'http://repo1.maven.org/maven2/jdom/jdom/1.0/jdom-1.0.jar',
+                        :path => 'jdom/jdom',
+                        :version => '1.0',
+                        :sign => true },
+
+  'jug'            => { :build_type => :download,
+                        :url => 'http://repo1.maven.org/maven2/jug/jug/1.1.2/jug-1.1.2.jar',
+                        :path => 'jug/jug',
+                        :version => '1.1.2',
+                        :sign => true },
+
   'energy2d'       => { :repository => 'git://github.com/concord-consortium/energy2d.git',
                         :branch => 'trunk',
                         :path => 'org/concord/energy2d',
