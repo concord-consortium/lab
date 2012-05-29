@@ -12,6 +12,7 @@ class Md2dModel < CouchRest::Model::Base
   property :temperature_control,  TrueClass
 
   property :atoms,                Hash
+  property :elements,             Array
 
   timestamps!
 
