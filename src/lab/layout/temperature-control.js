@@ -54,7 +54,11 @@ layout.temperatureControlHandler = function () {
 };
 
 layout.temperatureControlUpdate = function () {
-  layout.temperature_control_checkbox.checked = model.get("temperature_control");
+  var tc = model.get('temperature_control');
+
+  layout.temperature_control_checkbox.checked = tc;
+  select_temperature.disabled = !tc;
+  select_temperature_display.hidden = !tc;
 };
 
 if (layout.temperature_control_checkbox) {
