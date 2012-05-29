@@ -73,7 +73,11 @@ parseMML = (mmlString) ->
       mass  = $type.find("[property=mass] double").text()
       sigma = $type.find("[property=sigma] double").text()
       epsilon = $type.find("[property=epsilon] double").text()
-      elemTypes[id] = name: id, mass: mass, sigma: sigma, epsilon: epsilon
+
+      # scale to NextGen units
+      mass *= 120         #convert to mass in Daltons
+
+      elemTypes[id] = id: id, mass: mass, sigma: sigma, epsilon: epsilon
 
     ###
       Find all the epsilon forces between elements. Add the properties to the elementTypes
@@ -153,6 +157,7 @@ parseMML = (mmlString) ->
     vx = (atom.vx for atom in atoms)
     vy = (atom.vy for atom in atoms)
     charge = (atom.charge for atom in atoms)
+    element = (atom.elemId for atom in atoms)
 
     id = atoms[0]?.elemId || 0
     # for now, just use the first atom's element epsilon
@@ -171,12 +176,14 @@ parseMML = (mmlString) ->
       coulomb_forces      : false
       width               : width
       height              : height
+      elements            : elemTypes
       atoms :
         X : x
         Y : y
         VX: vx
         VY: vy
         CHARGE: charge
+        ELEMENT: element
 
     json = JSON.stringify(jsonObj, null, 2)
 
