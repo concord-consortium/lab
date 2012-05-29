@@ -17,3 +17,5 @@ performance.rb
 /server/public
 /config/config.yml
 /java
+couchdb.stderr
+couchdb.stdout
