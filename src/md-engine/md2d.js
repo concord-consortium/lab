@@ -583,7 +583,8 @@ exports.makeModel = function() {
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
-      var cumulativeTotalMass, i, ii;
+      var cumulativeTotalMass = 0,
+          i, ii;
 
       if (!(props.X && props.Y)) {
         throw new Error("md2d: initializeAtomsFromProperties must specify at minimum X and Y locations.");
