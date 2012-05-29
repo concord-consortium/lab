@@ -677,7 +677,7 @@ exports.makeModel = function() {
 
           element[i] = Math.floor(Math.random() * elements.length);     // random element
 
-          totalMass += elements[element[i]][0];
+          model.totalMass = totalMass += elements[element[i]][0];
         }
       }
 
