@@ -439,11 +439,7 @@ exports.makeModel = function() {
     },
 
     setTargetTemperature: function(v) {
-      if (v !== T_target) {
-        validateTemperature(v);
-        T_target = v;
-        beginTransientTemperatureChange();
-      }
+      validateTemperature(v);
       T_target = v;
     },
 
