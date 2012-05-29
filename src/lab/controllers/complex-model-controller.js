@@ -30,6 +30,7 @@ controllers.complexModelController =
       lj_sigma_max        = 2.0,
       lj_sigma_min        = 0.1,
 
+      elements            = modelConfig.elements,
       atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
       epsilon             = modelConfig.epsilon,
@@ -109,6 +110,7 @@ controllers.complexModelController =
 
     function createModel() {
       model = modeler.model({
+          elements: elements,
           model_listener: modelListener,
           temperature: temperature,
           lennard_jones_forces: true,

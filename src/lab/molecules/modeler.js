@@ -12,6 +12,7 @@ modeler.VERSION = '0.2.0';
 
 modeler.model = function(initialProperties) {
   var model = {},
+      elements = initialProperties.elements,
       atoms = [],
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
@@ -136,7 +137,7 @@ modeler.model = function(initialProperties) {
         waitingToBeNotified = [],
         i, ii;
 
-    if (typeof events == "string") {
+    if (typeof events === "string") {
       evts = [events];
     } else {
       evts = events;
@@ -304,11 +305,22 @@ modeler.model = function(initialProperties) {
   // @config: either the number of atoms (for a random setup) or
   //          a hash specifying the x,y,vx,vy properties of the atoms
   function createNewCoreModel(config) {
-    var T;
+    var T, elemsArray, element, i, ii;
 
     // get a fresh model
     coreModel = md2d.makeModel();
     coreModel.setSize([width,height]);
+
+    if (elements) {
+      // convert from easily-readble json format to simplified array format
+      elemsArray = [];
+      for (i=0, ii=elements.length; i<ii; i++){
+        element = elements[i];
+        elemsArray[element.id] = [element.mass];
+      }
+      coreModel.setElements(elemsArray);
+    }
+
     if (typeof config === "number") {
       coreModel.createAtoms({
         num: config
@@ -667,6 +679,9 @@ modeler.model = function(initialProperties) {
     var propCopy = $.extend({}, properties);
     if (includeAtoms) {
       propCopy.atoms = coreModel.serialize();
+    }
+    if (elements) {
+      propCopy.elements = elements;
     }
     propCopy.width = width;
     propCopy.height = height;
