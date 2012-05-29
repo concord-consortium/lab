@@ -717,10 +717,6 @@ exports.makeModel = function() {
         throw new Error("md2d: integrate called before atoms created.");
       }
 
-      // FIXME. Recommended timestep for accurate simulation is τ/200
-      // using rescaled t where t → τ(mσ²/ϵ)^½  (~= 1 ps for argon)
-      // This is hardcoded below for the "Argon" case by setting dt = 5 fs:
-
       if (duration == null)  duration = 100;  // how much time to integrate over, in fs
 
       dt = opt_dt || 1;
