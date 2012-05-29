@@ -349,14 +349,11 @@ modeler.model = function(initialProperties) {
     coreModel.useCoulombInteraction(properties.coulomb_forces);
     coreModel.useThermostat(properties.temperature_control);
 
-    if (temperature_control) {
-      T = abstract_to_real_temperature(temperature);
-      coreModel.setTargetTemperature(T);
-    }
+    T = abstract_to_real_temperature(temperature);
+    coreModel.setTargetTemperature(T);
 
     coreModel.setLJEpsilon(properties.epsilon);
     coreModel.setLJSigma(properties.sigma);
-
 
     if (config.X && config.Y) {
       coreModel.initializeAtomsFromProperties(config);
