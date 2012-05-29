@@ -103,11 +103,11 @@ exports.INDICES = INDICES = {
   SPEED  :  7,
   AX     :  8,
   AY     :  9,
-  MASS   : 10,
-  CHARGE : 11
+  CHARGE : 10,
+  ELEMENT: 11
 };
 
-exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE"];
+exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
 
 exports.NODE_PROPERTIES_COUNT = NODE_PROPERTIES_COUNT = 12;
 
@@ -161,8 +161,20 @@ exports.makeModel = function() {
       // Total mass of all particles in the system, in Dalton (atomic mass units).
       totalMass,
 
+      // Element properties
+      // elements is an array of elements, each one an array of properties
+      // For now properties are just defined by index, with no additional lookup for
+      // the index (e.g. elements[0][ELEM_MASS_INDEX] for the mass of elem 0). We
+      // have few enough properties that we currently don't need this additional lookup.
+      // element definition: [ MASS_IN_DALTONS ]
+      defaultElements = [
+        [ ARGON_MASS_IN_DALTON ]
+      ],
+
+      elements = defaultElements,       // set elements to defaults immediately, set later if requested
+
       // Individual property arrays for the particles. Each is a length-N array.
-      radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element,
 
       // An array of length NODE_PROPERTIES_COUNT which containes the above length-N arrays.
       nodes,
@@ -234,7 +246,7 @@ exports.makeModel = function() {
             i;
 
         for (i = 0; i < N; i++) {
-          twoKE += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+          twoKE += elements[element[i]][0] * (vx[i] * vx[i] + vy[i] * vy[i]);
         }
         return KE_to_T( twoKE/2, N );
       },
@@ -305,12 +317,14 @@ exports.makeModel = function() {
       computeSystemRotation = function() {
         var L = 0,
             I = 0,
+            mass,
             i;
 
         for (i = 0; i < N; i++) {
+          mass = elements[element[i]][0];
           // L_CM = sum over N of of mr_i x p_i (where r_i and p_i are position & momentum vectors relative to the CM)
-          L += mass[i] * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
-          I += mass[i] * sumSquare( x[i]-x_CM, y[i]-y_CM );
+          L += mass * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
+          I += mass * sumSquare( x[i]-x_CM, y[i]-y_CM );
         }
 
         L_CM = L;
@@ -354,17 +368,18 @@ exports.makeModel = function() {
       // Half of the update of v(t+dt, i) and p(t+dt, i) using a; during a single integration loop,
       // call once when a = a(t) and once when a = a(t+dt)
       halfUpdateVelocity = function(i) {
+        var mass = elements[element[i]][0];
         vx[i] += 0.5*ax[i]*dt;
-        px[i] = mass[i] * vx[i];
+        px[i] = mass * vx[i];
         vy[i] += 0.5*ay[i]*dt;
-        py[i] = mass[i] * vy[i];
+        py[i] = mass * vy[i];
       },
 
       // Accumulate accelerations into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between particles i and j
       // where j < i. Note a(t, i) and a(t, j) (accelerations from the previous time step) should be cleared from arrays
       // ax and ay before calling this function.
       updatePairwiseAccelerations = function(i) {
-        var j, dx, dy, r_sq, f_over_r, aPair_over_r, aPair_x, aPair_y, mass_inv = 1/mass[i], q_i = charge[i];
+        var j, dx, dy, r_sq, f_over_r, aPair_over_r, aPair_x, aPair_y, mass_inv = 1/elements[element[i]][0], q_i = charge[i];
 
         for (j = 0; j < i; j++) {
           dx = x[j] - x[i];
@@ -493,6 +508,20 @@ exports.makeModel = function() {
       return lennardJones;
     },
 
+    /*
+      Expects an array of element properties such as
+      [
+        [ mass_of_elem_0 ],
+        [ mass_of_elem_1 ]
+      ]
+    */
+    setElements: function(elems) {
+      if (atomsHaveBeenCreated) {
+        throw new Error("md2d: setElements cannot be called after elements have been created");
+      }
+      elements = elems;
+    },
+
     // allocates 'nodes' array of arrays, sets number of atoms.
     // Must either pass in a hash that includes X and Y locations of the atoms,
     // or a single number to represent the number of atoms.
@@ -504,7 +533,8 @@ exports.makeModel = function() {
     //   num: the number of atoms to create
     createAtoms: function(options) {
       var rmin = lennardJones.coefficients().rmin,
-          arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
+          arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular';
 
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
@@ -543,14 +573,18 @@ exports.makeModel = function() {
       speed  = model.speed  = nodes[INDICES.SPEED]  = arrays.create(N, 0, arrayType);
       ax     = model.ax     = nodes[INDICES.AX]     = arrays.create(N, 0, arrayType);
       ay     = model.ay     = nodes[INDICES.AY]     = arrays.create(N, 0, arrayType);
-      mass   = model.mass   = nodes[INDICES.MASS]   = arrays.create(N, ARGON_MASS_IN_DALTON, arrayType);
       charge = model.charge = nodes[INDICES.CHARGE] = arrays.create(N, 0, arrayType);
 
-      totalMass = model.totalMass = N * ARGON_MASS_IN_DALTON;
+      // NOTE, this is a Uint8Array for now, but it's not clear if this is the best pattern
+      // because Uint8Arrays length cannot be changed. Right now we never add or remove atoms
+      // from the model without re-creating the atom arrays, but that might change in the future.
+      element = model.element = nodes[INDICES.ELEMENT] = arrays.create(N, 0, uint8ArrayType);
     },
 
-    // Sets the X, Y, VX, VY properties of the atoms
+    // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
+      var cumulativeTotalMass, i, ii;
+
       if (!(props.X && props.Y)) {
         throw new Error("md2d: initializeAtomsFromProperties must specify at minimum X and Y locations.");
       }
@@ -574,6 +608,16 @@ exports.makeModel = function() {
         }
       }
 
+      if (props.ELEMENT) {
+        for (i=0, ii=N; i<ii; i++){
+          element[i] = props.ELEMENT[i];
+          cumulativeTotalMass += elements[element[i]][0];
+        }
+      } else {
+        cumulativeTotalMass = N * elements[0][0];
+      }
+      totalMass = model.totalMass = cumulativeTotalMass;
+
       model.computeOutputState();
     },
 
@@ -583,14 +627,15 @@ exports.makeModel = function() {
 
           k_inJoulesPerKelvin = constants.BOLTZMANN_CONSTANT.as(unit.JOULES_PER_KELVIN),
 
-          mass_in_kg, v0_MKS, v0,
+          mass, mass_in_kg, v0_MKS, v0,
 
           nrows = Math.floor(Math.sqrt(N)),
           ncols = Math.ceil(N/nrows),
 
           i, r, c, rowSpacing, colSpacing,
           vMagnitude, vDirection,
-          rescalingFactor;
+          rescalingFactor,
+          cumulativeTotalMass = 0;
 
       validateTemperature(temperature);
 
@@ -621,22 +666,22 @@ exports.makeModel = function() {
 
             // Note kT = m<v^2>/2 because there are 2 degrees of freedom per atom, not 3
             // TODO: define constants to avoid unnecesssary conversions below.
-
-            mass_in_kg = constants.convert(mass[i], { from: unit.DALTON, to: unit.KILOGRAM });
+            mass = elements[element[i]][0];
+            mass_in_kg = constants.convert(mass, { from: unit.DALTON, to: unit.KILOGRAM });
             v0_MKS = Math.sqrt(2 * k_inJoulesPerKelvin * temperature / mass_in_kg);
             v0 = constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNIT });
 
             vMagnitude = math.normal(v0, v0/4);
             vDirection = 2 * Math.random() * Math.PI;
             vx[i] = vMagnitude * Math.cos(vDirection);
-            px[i] = mass[i] * vx[i];
+            px[i] = mass * vx[i];
             vy[i] = vMagnitude * Math.sin(vDirection);
-            py[i] = mass[i] * vy[i];
+            py[i] = mass * vy[i];
 
             vx[N-i-1] = -vx[i];
-            px[N-i-1] = mass[N-i-1] * vx[N-i-1];
+            px[N-i-1] = elements[element[N-i-1]][0] * vx[N-i-1];
             vy[N-i-1] = -vy[i];
-            py[N-i-1] = mass[N-i-1] * vy[N-i-1];
+            py[N-i-1] = elements[element[N-i-1]][0] * vy[N-i-1];
           }
 
           ax[i] = 0;
@@ -644,8 +689,14 @@ exports.makeModel = function() {
 
           speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
           charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
+
+          element[i] = Math.floor(Math.random() * elements.length);     // random element
+
+          cumulativeTotalMass += elements[element[i]][0];
         }
       }
+
+      totalMass = model.totalMass = cumulativeTotalMass;
 
       // Compute linear and angular velocity of CM, compute temperature, and publish output state:
       computeCMMotion();
@@ -751,7 +802,7 @@ exports.makeModel = function() {
       realKEinMWUnits= 0;
 
       for (i = 0; i < N; i++) {
-        realKEinMWUnits += 0.5 * mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+        realKEinMWUnits += 0.5 * elements[element[i]][0] * (vx[i] * vx[i] + vy[i] * vy[i]);
         for (j = i+1; j < N; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
