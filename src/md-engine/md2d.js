@@ -458,15 +458,15 @@ exports.makeModel = function() {
     outputState: outputState,
 
     useCoulombInteraction: function(v) {
-      useCoulombInteraction = v;
+      useCoulombInteraction = !!v;
     },
 
     useLennardJonesInteraction: function(v) {
-      useLennardJonesInteraction = v;
+      useLennardJonesInteraction = !!v;
     },
 
     useThermostat: function(v) {
-      useThermostat = v;
+      useThermostat = !!v;
     },
 
     setTargetTemperature: function(v) {
