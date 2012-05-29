@@ -2,7 +2,7 @@
 // Utilities
 //
 
-(function(){ 
+(function(){
 
   arrays = {};
   arrays = { version: "0.0.1" };
@@ -12,7 +12,7 @@
     var a = new Float64Array(0);
     arrays.typed = true
   } catch(e) {
-    
+
   }
 
   // regular
@@ -23,7 +23,7 @@
   // Int16Array
   // Int32Array
   // Float32Array
-  
+
   arrays.create = function(size, fill, array_type) {
     if (!array_type) {
       if (arrays.webgl || arrays.typed) {
@@ -83,14 +83,14 @@
         "  source: " + source +
         ", source.constructor: " + source.constructor +
         ", source.buffer: " + source.buffer +
-        ", source.buffer.slice: " + source.buffer.slice +
-        ", source.buffer.__proto__: " + source.buffer.__proto__ +
-        ", source.buffer.__proto__.constructor: " + source.buffer.__proto__.constructor
+        ", source.buffer.slice: " + (source.buffer ? source.buffer.slice : '') +
+        ", source.buffer.__proto__: " + (source.buffer ? source.buffer.__proto__ : '') +
+        ", source.buffer.__proto__.constructor: " + (source.buffer ? source.buffer.__proto__.constructor : '')
       )
   }
 
   arrays.copy = function(source, dest) {
-    var len = source.length; i = -1; 
+    var len = source.length; i = -1;
     while(++i < len) { dest[i] = source[i] }
     dest.length = len;
     return dest

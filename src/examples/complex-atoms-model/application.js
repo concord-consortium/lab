@@ -11,8 +11,13 @@
 (function() {
 
 var modelConfig = {
+      elements            : [ // example element. Actually the same as md2d's default
+                              {
+                                id: 0,
+                                mass: 39.95
+                              }
+                            ],
       mol_number          : 50,
-      temperature         : 3,
       temperature_control : false,
       epsilon             : -0.1,
       sigma               : 0.34,
@@ -71,7 +76,7 @@ $.when(optsLoaded, windowLoaded).done(function(results) {
       data: propsStr
     }).done(function(data) {
       var loc  = req.getResponseHeader('Location');
-      hash = '#' + /\/model-config\/(.*)$/.exec(loc)[1];
+      hash = '#' + /\/md2d_models\/(.*)$/.exec(loc)[1];
       var url = /[^#]*/.exec(document.location.href)[0] + hash;
 
       document.location.hash = hash;
