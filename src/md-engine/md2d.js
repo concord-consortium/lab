@@ -1,4 +1,4 @@
-/*globals Float32Array window */
+/*globals Float32Array window:true */
 /*jslint eqnull: true, boss: true */
 
 if (typeof window === 'undefined') window = {};
@@ -480,7 +480,7 @@ exports.makeModel = function() {
 
     setLJSigma: function(s) {
       lennardJones.setSigma(s);
-      for (i = 0; i < N; i++) {
+      for (var i = 0; i < N; i++) {
         radius[i] = s/2;
       }
     },
@@ -560,7 +560,7 @@ exports.makeModel = function() {
         throw new Error("md2d: For now, velocities must be set when locations are set.");
       }
 
-      for (var i=0, ii=N; i<ii; i++){
+      for (i=0, ii=N; i<ii; i++){
         x[i] = props.X[i];
         y[i] = props.Y[i];
         vx[i] = props.VX[i];
@@ -569,7 +569,7 @@ exports.makeModel = function() {
       }
 
       if (props.CHARGE) {
-        for (var i=0, ii=N; i<ii; i++){
+        for (i=0, ii=N; i<ii; i++){
           charge[i] = props.CHARGE[i];
         }
       }

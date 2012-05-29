@@ -136,7 +136,7 @@ modeler.model = function(initialProperties) {
         waitingToBeNotified = [],
         i, ii;
 
-    if (typeof events == "string") {
+    if (typeof events === "string") {
       evts = [events];
     } else {
       evts = events;
