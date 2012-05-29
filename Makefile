@@ -65,6 +65,9 @@ clean:
 	git submodule update --init --recursive
 	rm -f src/vendor/jquery/server/public/jquery.min.js
 
+clean-jnlp:
+	rm -rf server/public/jnlp
+
 src/vendor/d3:
 	git submodule update --init --recursive
 
