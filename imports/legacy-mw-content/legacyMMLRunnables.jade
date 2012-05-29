@@ -34,7 +34,7 @@ html
       }
       .horiz span {
         float: left;
-        width: 180px;
+        width: 190px;
       }
   body
     div(id='header')
@@ -54,7 +54,9 @@ html
                   li
                     ul(class="horiz")
                       li
-                        span #{modelName}
+                        a(href=folderName + json)
+                          span
+                            i #{modelName}
                       li
                         a(href=simpleModel + "#" + folderName + json) Simple Model
                       li
