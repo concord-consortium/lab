@@ -59,7 +59,7 @@ all: \
 	server/public/index.css
 
 clean:
-	bash -O extglob -c 'rm -rf server/public/* server/public/.!(git|.|)'
+	bash -O extglob -c 'rm -rf server/public/* server/public/!(.git|jnlp*)'
 	rm -rf lab
 	rm -rf node_modules
 	git submodule update --init --recursive
