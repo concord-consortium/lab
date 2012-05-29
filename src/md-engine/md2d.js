@@ -52,22 +52,38 @@ var arrays       = require('./arrays/arrays').arrays,
     emptyFunction = function() {},
 
     /**
+      Convert total kinetic energy in the container of N atoms to a temperature in Kelvin.
+
       Input units:
         KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
       Output units:
         T: K
     */
-    KE_to_T = function(internalKEinMWUnits, N) {
+    KE_to_T = function(totalKEinMWUnits, N) {
       // In 2 dimensions, kT = (2/N_df) * KE
 
-      // We are using "internal coordinates" from which 1 angular and 2 translational degrees of freedom have
-      // been removed
-
-      var N_df = 2 * N - 3,
-          averageKEinMWUnits = (2 / N_df) * internalKEinMWUnits,
+      var N_df = 2 * N,
+          averageKEinMWUnits = (2 / N_df) * totalKEinMWUnits,
           averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
 
       return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
+    },
+
+    /**
+      Convert a temperature in Kelvin to the total kinetic energy in the container of N atoms.
+
+      Input units:
+        T: K
+      Output units:
+        KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
+    */
+    T_to_KE = function(T, N) {
+      var N_df = 2 * N,
+          averageKEinJoules  = T * BOLTZMANN_CONSTANT_IN_JOULES,
+          averageKEinMWUnits = constants.convert(averageKEinJoules, { from: unit.JOULE, to: unit.MW_ENERGY_UNIT }),
+          totalKEinMWUnits = averageKEinMWUnits * N_df / 2;
+
+      return totalKEinMWUnits;
     },
 
     validateTemperature = function(t) {
