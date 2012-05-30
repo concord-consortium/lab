@@ -61,7 +61,13 @@ layout.speedDistributionChart = function(e, options) {
 
   function updateSpeedBins() {
     if (speedData.length > 2) {
-      bins = d3.layout.histogram().frequency(false).bins(xScale.ticks(60))(speedData);
+      // this is a hack for cases when all speeds are 0
+      try {
+        bins = d3.layout.histogram().frequency(false).bins(xScale.ticks(60))(speedData);
+      } catch(e) {
+        return;
+      }
+
       barWidth = (size.width - bins.length)/bins.length;
       lineStep = (options.xmax - options.xmin)/bins.length;
       speedMax  = d3.max(bins, function(d) { return d.y; });
@@ -259,7 +265,11 @@ layout.speedDistributionChart = function(e, options) {
       if (speedData.length > 2) {
         kde = science.stats.kde().sample(speedData);
         xScale.domain([options.xmin, options.xmax]);
-        bins = d3.layout.histogram().frequency(true).bins(xScale.ticks(60))(speedData);
+        try {
+          bins = d3.layout.histogram().frequency(true).bins(xScale.ticks(60))(speedData);
+        } catch (e) {
+          return;
+        }
 
         barWidth = (size.width - bins.length)/bins.length;
         lineStep = (options.xmax - options.xmin)/bins.length;
