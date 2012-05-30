@@ -401,9 +401,11 @@ exports.makeModel = function() {
       // where j < i. Note a(t, i) and a(t, j) (accelerations from the previous time step) should be cleared from arrays
       // ax and ay before calling this function.
       updatePairwiseAccelerations = function(i) {
-        var j, dx, dy, r_sq, f_over_r, aPair_over_r, aPair_x, aPair_y, mass_inv = 1/elements[element[i]][0], q_i = charge[i];
+        var j, dx, dy, r_sq, f_over_r, mass_inv = 1/elements[element[i]][0], mass_j_inv, q_i = charge[i];
 
         for (j = 0; j < i; j++) {
+          mass_j_inv = 1/elements[element[j]][0];
+
           dx = x[j] - x[i];
           dy = y[j] - y[i];
           r_sq = dx*dx + dy*dy;
@@ -419,14 +421,10 @@ exports.makeModel = function() {
           }
 
           if (f_over_r) {
-            aPair_over_r = f_over_r * mass_inv;
-            aPair_x = aPair_over_r * dx;
-            aPair_y = aPair_over_r * dy;
-
-            ax[i] += aPair_x;
-            ay[i] += aPair_y;
-            ax[j] -= aPair_x;
-            ay[j] -= aPair_y;
+            ax[i] += f_over_r * mass_inv * dx;
+            ay[i] += f_over_r * mass_inv * dy;
+            ax[j] -= f_over_r * mass_j_inv * dx;
+            ay[j] -= f_over_r * mass_j_inv * dy;
           }
         }
       },
