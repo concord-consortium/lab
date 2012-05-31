@@ -538,7 +538,7 @@ exports.makeModel = function() {
     */
     setElements: function(elems) {
       if (atomsHaveBeenCreated) {
-        throw new Error("md2d: setElements cannot be called after elements have been created");
+        throw new Error("md2d: setElements cannot be called after atoms have been created");
       }
       elements = elems;
       lennardJones = window.lennardJones = makeLennardJonesCalculator(elements, ljCoefficientsChanged);
