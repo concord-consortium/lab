@@ -63,7 +63,7 @@ jnlp-all: clean-jnlp \
 	script/build-and-deploy-jars.rb --maven-update
 
 clean:
-	bash -O extglob -c 'rm -rf server/public/* server/public/!(.git|jnlp*)'
+	bash -O extglob -c 'rm -rf -d server/public/!(.git|jnlp)'
 	rm -rf lab
 	rm -rf node_modules
 	git submodule update --init --recursive
