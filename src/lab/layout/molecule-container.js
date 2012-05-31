@@ -469,8 +469,6 @@ layout.moleculeContainer = function(e, options) {
             } else {
               element = get_element(i) % 4;
               grad = element_gradient_array[element];
-              console.log("element = "+element)
-              console.log("grad = "+grad)
               return "url('#"+grad+"')";
             }
           })
