@@ -23,7 +23,7 @@ suite.addBatch({
 
         assert(conversion.errors == undefined, "The file "+modelName+" failed to convert: "+conversion.errors);
 
-        convertedModel = JSON.parse(JSON.stringify(conversion.json));
+        convertedModel = conversion.json;
 
         assert(convertedModel);
 
