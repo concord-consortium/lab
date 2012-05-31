@@ -225,6 +225,19 @@ exports.makeModel = function() {
       // Callback that recalculates cutoffDistance_LJ when the Lennard-Jones sigma parameter changes.
       ljCoefficientsChanged = function(coefficients) {
         cutoffDistance_LJ_sq = coefficients.cutoffDistanceSq;
+        if (radius && element) {
+          setRadii();
+        }
+      },
+
+      setRadii = function() {
+        var sigmas = lennardJones.coefficients().sigma,
+            i,
+            len;
+
+        for (i = 0, len = radius.length; i < len; i++) {
+          radius[i] = 0.5 * sigmas[element[i]][element[i]];
+        }
       },
 
       // An object that calculates the magnitude of the Lennard-Jones force or potential at a given distance.
@@ -572,7 +585,7 @@ exports.makeModel = function() {
 
       nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
 
-      radius = model.radius = nodes[INDICES.RADIUS] = arrays.create(N, 0, arrayType );
+      radius = model.radius = nodes[INDICES.RADIUS] = arrays.create(N, 0, arrayType);
       px     = model.px     = nodes[INDICES.PX]     = arrays.create(N, 0, arrayType);
       py     = model.py     = nodes[INDICES.PY]     = arrays.create(N, 0, arrayType);
       x      = model.x      = nodes[INDICES.X]      = arrays.create(N, 0, arrayType);
@@ -593,7 +606,6 @@ exports.makeModel = function() {
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
       var cumulativeTotalMass = 0,
-          coefficients,
           i, ii;
 
       if (!(props.X && props.Y)) {
@@ -629,10 +641,7 @@ exports.makeModel = function() {
       }
       totalMass = model.totalMass = cumulativeTotalMass;
 
-      coefficients = lennardJones.coefficients();
-      for (i=0; i<N; i++) {
-        radius[i] = coefficients.rmin[element[i]][element[i]] / 2;
-      }
+      setRadii();
 
       // Publish the current state
       T = computeTemperature();
