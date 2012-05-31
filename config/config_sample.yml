@@ -2,4 +2,6 @@
 ---
 :password: abc123
 :alias: lab-sample-keystore
-:path: config/lab-sample-keystore.jks
+:keystore_path: config/lab-sample-keystore.jks
+:host: lab2.dev.concord.org
+:username: deploy
