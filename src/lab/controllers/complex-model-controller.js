@@ -33,8 +33,6 @@ controllers.complexModelController =
       elements            = modelConfig.elements,
       atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
-      epsilon             = modelConfig.epsilon,
-      sigma               = modelConfig.sigma,
       temperature         = modelConfig.temperature,
       temperature_control = modelConfig.temperature_control,
       coulomb_forces      = modelConfig.coulomb_forces,
@@ -116,8 +114,6 @@ controllers.complexModelController =
           lennard_jones_forces: true,
           coulomb_forces: coulomb_forces,
           temperature_control: temperature_control,
-          epsilon: epsilon,
-          sigma: sigma,
           width: width,
           height: height
         });
@@ -231,16 +227,18 @@ controllers.complexModelController =
       //
       // ------------------------------------------------------------
 
+      // FIXME: The potential chart needs refactoring to handle multiple
+      // elements and pairwise potentials
       potentialChart = layout.potentialChart(lj_potential_chart_id, model, {
           title   : "Lennard-Jones potential",
           xlabel  : "Radius",
           ylabel  : "Potential Energy",
           epsilon_max:     lj_epsilon_max,
           epsilon_min:     lj_epsilon_min,
-          epsilon:         epsilon,
+          epsilon:         elements[0].epsilon,
           sigma_max:       lj_sigma_max,
           sigma_min:       lj_sigma_min,
-          sigma:           sigma
+          sigma:           elements[0].sigma
         });
 
       model.addPropertiesListener(["epsilon"], potentialChart.ljUpdate);
