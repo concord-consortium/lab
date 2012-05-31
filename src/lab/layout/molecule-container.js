@@ -401,67 +401,31 @@ layout.moleculeContainer = function(e, options) {
           .attr("height", size.height)
           .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-      red_gradient = gradient_container.append("defs")
-          .append("radialGradient")
-          .attr("id", "neg-grad")
-          .attr("cx", "50%")
-          .attr("cy", "47%")
-          .attr("r", "53%")
-          .attr("fx", "35%")
-          .attr("fy", "30%");
-      red_gradient.append("stop")
-          .attr("stop-color", "#ffefff")
-          .attr("offset", "0%");
-      red_gradient.append("stop")
-          .attr("stop-color", "#fdadad")
-          .attr("offset", "40%");
-      red_gradient.append("stop")
-          .attr("stop-color", "#e95e5e")
-          .attr("offset", "80%");
-      red_gradient.append("stop")
-          .attr("stop-color", "#fdadad")
-          .attr("offset", "100%");
+      create_radial_gradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", gradient_container);
+      create_radial_gradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", gradient_container);
+      create_radial_gradient("neu-grad", "#dfffef", "#75a643", "#2a7216", gradient_container);
+    }
 
-      blue_gradient = gradient_container.append("defs")
+    function create_radial_gradient(id, lightColor, medColor, darkColor, gradient_container) {
+      gradient = gradient_container.append("defs")
           .append("radialGradient")
-          .attr("id", "pos-grad")
+          .attr("id", id)
           .attr("cx", "50%")
           .attr("cy", "47%")
           .attr("r", "53%")
           .attr("fx", "35%")
           .attr("fy", "30%");
-      blue_gradient.append("stop")
-          .attr("stop-color", "#dfffff")
+      gradient.append("stop")
+          .attr("stop-color", lightColor)
           .attr("offset", "0%");
-      blue_gradient.append("stop")
-          .attr("stop-color", "#9abeff")
+      gradient.append("stop")
+          .attr("stop-color", medColor)
           .attr("offset", "40%");
-      blue_gradient.append("stop")
-          .attr("stop-color", "#767fbf")
+      gradient.append("stop")
+          .attr("stop-color", darkColor)
           .attr("offset", "80%");
-      blue_gradient.append("stop")
-          .attr("stop-color", "#9abeff")
-          .attr("offset", "100%");
-
-      green_gradient = gradient_container.append("defs")
-          .append("radialGradient")
-          .attr("id", "neu-grad")
-          .attr("cx", "50%")
-          .attr("cy", "47%")
-          .attr("r", "53%")
-          .attr("fx", "35%")
-          .attr("fy", "30%");
-      green_gradient.append("stop")
-          .attr("stop-color", "#dfffef")
-          .attr("offset", "0%");
-      green_gradient.append("stop")
-          .attr("stop-color", "#75a643")
-          .attr("offset", "40%");
-      green_gradient.append("stop")
-          .attr("stop-color", "#2a7216")
-          .attr("offset", "80%");
-      green_gradient.append("stop")
-          .attr("stop-color", "#75a643")
+      gradient.append("stop")
+          .attr("stop-color", medColor)
           .attr("offset", "100%");
     }
 
