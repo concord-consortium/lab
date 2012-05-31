@@ -445,6 +445,89 @@ This feature of specifying versioned jar resources should NOT be used for produc
 
 When a version is specified in a jnlp form for an applet the jar WILL be cached properly.
 
+### Deploying to a remote server
+
+There are several Capistrano tasks for deploying to the remote server
+[lab2.dev.concord.org](http://lab2.dev.concord.org).
+
+    $ cap update_server
+
+Updates the source checkout on the server from themaster branch of the repository,
+builds the application and deploys the generated products to the server directory.
+
+##### Updating the Java jar resources on a remote rerver
+
+The Java resources require much less frequent updates since the main body of work
+is occuriring in the HTML5 development.
+
+    $ cap update_server_jnlps
+
+Erases the `server/public/jnlp/` directory on the remote server and
+re-generates and deploy the packed signed jars from source or from downloads:
+
+The resulting directory on the server will look something like this:
+
+    $ tree /var/www/app/server/public/jnlp/
+    server/public/jnlp/
+    ├── jdom
+    │   └── jdom
+    │       ├── jdom__V1.0.jar
+    │       └── jdom__V1.0.jar.pack.gz
+    ├── jug
+    │   └── jug
+    │       ├── jug__V1.1.2.jar
+    │       └── jug__V1.1.2.jar.pack.gz
+    └── org
+        └── concord
+            ├── data
+            │   ├── data__V0.2.0-20120531.005123-1.jar
+            │   └── data__V0.2.0-20120531.005123-1.jar.pack.gz
+            ├── energy2d
+            │   ├── energy2d__V0.1.0-20120531.005123-1.jar
+            │   └── energy2d__V0.1.0-20120531.005123-1.jar.pack.gz
+            ├── framework
+            │   ├── framework__V0.1.0-20120531.005123-1.jar
+            │   └── framework__V0.1.0-20120531.005123-1.jar.pack.gz
+            ├── frameworkview
+            │   ├── frameworkview__V0.1.0-20120531.005123-1.jar
+            │   └── frameworkview__V0.1.0-20120531.005123-1.jar.pack.gz
+            ├── modeler
+            │   ├── mw__V2.1.0-20120531.005123-1.jar
+            │   └── mw__V2.1.0-20120531.005123-1.jar.pack.gz
+            ├── otrunk
+            │   ├── otrunk__V0.3.0-20120531.005123-1.jar
+            │   └── otrunk__V0.3.0-20120531.005123-1.jar.pack.gz
+            ├── sensor
+            │   ├── sensor-applets
+            │   │   ├── sensor-applets__V0.1.0-20120531.005123-1.jar
+            │   │   └── sensor-applets__V0.1.0-20120531.005123-1.jar.pack.gz
+            │   ├── sensor__V0.2.0-20120531.005123-1.jar
+            │   ├── sensor__V0.2.0-20120531.005123-1.jar.pack.gz
+            │   └── vernier
+            │       └── vernier-goio
+            │           ├── vernier-goio-macosx-i386-nar__V1.5.0-20101012.203834-2.jar
+            │           ├── vernier-goio-macosx-ppc-nar__V1.5.0-20101012.203834-2.jar
+            │           ├── vernier-goio-macosx-x86_64-nar__V1.5.0-20101012.203835-2.jar
+            │           └── vernier-goio-win32-nar__V1.4.0.jar
+            └── sensor-native
+                ├── sensor-native__V0.1.0-20120531.005123-1.jar
+                └── sensor-native__V0.1.0-20120531.005123-1.jar.pack.gz
+
+#### Creating and deploying to a new server
+
+There is more work to do to generalize these deployment systems to work with multiple servers.
+
+Create a new Amazon EC2 instance as described in the readme in the **ruby-lab-server** branch in
+Concord Consortium's [littlechef-servers](https://github.com/concord-consortium/littlechef-servers)
+repository. Make sure the security group you choose has port 80 open.
+
+Modify the value of the `:host` key in the configuration file `config/config.yml` to reference
+the domain name of the new server.
+
+    $ cap setup_server
+
+Will do an initial deploy and build of all the project resources to the server.
+
 ### Serving the Lab server locally with Apache and Passenger
 
 #### Mac OS X
