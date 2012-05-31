@@ -63,7 +63,7 @@ clean:
 	rm -rf lab
 	rm -rf node_modules
 	git submodule update --init --recursive
-	rm -f src/vendor/jquery/server/public/jquery.min.js
+	rm -f src/vendor/jquery/jquery.min.js
 
 clean-jnlp:
 	rm -rf server/public/jnlp
@@ -180,7 +180,7 @@ server/public/vendor/d3:
 	cp src/vendor/d3/LICENSE server/public/vendor/d3/LICENSE
 	cp src/vendor/d3/README.md server/public/vendor/d3/README.md
 
-server/public/vendor/jquery: src/vendor/jquery/server/public/jquery.min.js
+server/public/vendor/jquery: src/vendor/jquery/jquery.min.js
 	mkdir -p server/public/vendor/jquery
 	cp src/vendor/jquery/dist/jquery.min.js server/public/vendor/jquery/jquery.min.js
 	cp src/vendor/jquery/MIT-LICENSE.txt server/public/vendor/jquery
@@ -227,7 +227,7 @@ server/public/vendor/fonts:
 server/public/favicon:
 	cp -f src/favicon.ico server/public/favicon.ico
 
-src/vendor/jquery/server/public/jquery.min.js: src/vendor/jquery
+src/vendor/jquery/jquery.min.js: src/vendor/jquery
 	cd src/vendor/jquery; make
 
 src/vendor/jquery:
