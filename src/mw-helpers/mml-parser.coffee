@@ -69,10 +69,15 @@ parseMML = (mmlString) ->
     for type in typesArr
       name  = type.attribs.id
       $type = cheerio(type)
-      id    = $type.find("[property=ID] int").text() || 0
-      mass  = $type.find("[property=mass] double").text()
-      sigma = $type.find("[property=sigma] double").text()
-      epsilon = $type.find("[property=epsilon] double").text()
+      id    = parseFloat $type.find("[property=ID] int").text() || 0
+      mass  = parseFloat $type.find("[property=mass] double").text()
+      sigma = parseFloat $type.find("[property=sigma] double").text() || 30
+      epsilon = parseFloat $type.find("[property=epsilon] double").text() || 0.1
+
+      # scale sigma to nm
+      sigma = sigma/100
+      # epsilon's sign appears to be flipped between MW and Lab
+      epsilon = -epsilon
 
       # scale to NextGen units
       mass *= 120         #convert to mass in Daltons
@@ -162,11 +167,8 @@ parseMML = (mmlString) ->
     id = atoms[0]?.elemId || 0
     # for now, just use the first atom's element epsilon
     epsilon = elemTypes[id].epsilon
-    # for now use first atom's element sigma; scale to nm
-    sigma   = elemTypes[id].sigma / 100
-
-    # epsilon's sign appears to be flipped between MW and Lab
-    epsilon = -epsilon
+    # for now use first atom's element sigma
+    sigma   = elemTypes[id].sigma
 
     jsonObj =
       temperature_control : false

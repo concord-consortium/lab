@@ -12,7 +12,7 @@ suite.addBatch({
 
     "converted mml files match expected output": function(testDir) {
       var mmlFiles = fs.readdirSync(testDir + "input-mml/"),
-          mml, mmlFile, modelName, conversion,
+          mml, mmlFile, modelName, conversion, expectedStr, convertedStr,
           i, ii;
       for (i=0, ii=mmlFiles.length; i<ii; i++) {
         mmlFile = mmlFiles[i];
@@ -30,7 +30,9 @@ suite.addBatch({
         expectedModelJson = fs.readFileSync(testDir + "expected-json/" + modelName + ".json").toString();
         expectedModel = JSON.parse(expectedModelJson);
 
-        assert(JSON.stringify(convertedModel) === JSON.stringify(expectedModel));
+        expectedStr = JSON.stringify(expectedModel);
+        convertedStr = JSON.stringify(convertedModel);
+        assert.equal(convertedStr, expectedStr);
       }
     }
   }

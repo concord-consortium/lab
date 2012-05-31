@@ -119,7 +119,6 @@ createCmlJsonIndex = function(outputFile) {
           convertedFolderName = convertedFolderPath + relFolderName,
           jsonFiles;
       try {
-        debugger
         jsonFiles = fs.readdirSync(convertedFolderName);
         for (var k=0, kk=jsonFiles.length; k<kk; k++) {
           cmlToJsonHash[cmlFilePath].push('converted/' + relFolderName + '/' +jsonFiles[k]);
