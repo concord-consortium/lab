@@ -345,11 +345,18 @@ The self-signed `lab-sample-keystore,jks` keystore was generated with the Java k
 
 ##### Building the Java Resources
 
-The `script/build-and-deploy-jars.rb` command will:
+Run `make jnlp-all` to erase, build, package, sign and deploy all the Java resurces.
 
-1.  Create a `java/` top-level directory and check out the required Java projects into this directory
-2.  Build each of the projects
-3.  Copy the jar resources into the `server/public/jnlp/` directory packing and signing them as needed.
+The first time this task is run it:
+
+1.  Creates a `java/` top-level directory and checks out the required Java projects into this directory.
+2.  Builds each of the projects
+3.  Copies the jar resources into the `server/public/jnlp/` directory packing and signing them as needed.
+
+Later if you have made updates in the Java source code or need to re-build and deploy for any reason you
+can run:
+
+    script/build-and-deploy-jars.rb --maven-update
 
 If one of the maven projects fails to build because a dependency could not be found try running
 the command again with the `--maven-update` argument:
