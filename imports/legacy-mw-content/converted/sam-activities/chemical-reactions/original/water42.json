@@ -6,6 +6,38 @@
   "coulomb_forces": false,
   "width": 2.6,
   "height": 2,
+  "elements": [
+    {
+      "id": 0,
+      "mass": 20,
+      "sigma": "7.0",
+      "epsilon": ""
+    },
+    {
+      "id": "1",
+      "mass": 40,
+      "sigma": "14.0",
+      "epsilon": ""
+    },
+    {
+      "id": "2",
+      "mass": 60,
+      "sigma": "21.0",
+      "epsilon": ""
+    },
+    {
+      "id": "3",
+      "mass": 80,
+      "sigma": "28.0",
+      "epsilon": ""
+    },
+    {
+      "id": "4",
+      "mass": 600,
+      "sigma": "",
+      "epsilon": "5.0"
+    }
+  ],
   "atoms": {
     "X": [
       1.4192489762637288,
@@ -76,6 +108,20 @@
       0,
       0,
       0
+    ],
+    "ELEMENT": [
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2
     ]
   }
 }

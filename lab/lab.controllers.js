@@ -38,6 +38,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       lj_epsilon_max      = playerConfig.lj_epsilon_max,
       lj_epsilon_min      = playerConfig.lj_epsilon_min,
 
+      elements            = modelConfig.elements,
       atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
       epsilon             = modelConfig.epsilon,
@@ -74,6 +75,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   // ------------------------------------------------------------
 
   model = modeler.model({
+      elements: elements,
       model_listener: model_listener,
       temperature: temperature,
       lennard_jones_forces: true,
@@ -319,6 +321,7 @@ controllers.complexModelController =
       lj_sigma_max        = 2.0,
       lj_sigma_min        = 0.1,
 
+      elements            = modelConfig.elements,
       atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
       epsilon             = modelConfig.epsilon,
@@ -398,6 +401,7 @@ controllers.complexModelController =
 
     function createModel() {
       model = modeler.model({
+          elements: elements,
           model_listener: modelListener,
           temperature: temperature,
           lennard_jones_forces: true,

@@ -1124,7 +1124,7 @@ exports.makeLennardJonesCalculator = function(params, cb) {
 });
 
 require.define("/md2d.js", function (require, module, exports, __dirname, __filename) {
-    /*globals Float32Array window */
+    /*globals Float32Array window:true */
 /*jslint eqnull: true, boss: true */
 
 if (typeof window === 'undefined') window = {};
@@ -1178,22 +1178,38 @@ var arrays       = require('./arrays/arrays').arrays,
     emptyFunction = function() {},
 
     /**
+      Convert total kinetic energy in the container of N atoms to a temperature in Kelvin.
+
       Input units:
         KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
       Output units:
         T: K
     */
-    KE_to_T = function(internalKEinMWUnits, N) {
+    KE_to_T = function(totalKEinMWUnits, N) {
       // In 2 dimensions, kT = (2/N_df) * KE
 
-      // We are using "internal coordinates" from which 1 angular and 2 translational degrees of freedom have
-      // been removed
-
-      var N_df = 2 * N - 3,
-          averageKEinMWUnits = (2 / N_df) * internalKEinMWUnits,
+      var N_df = 2 * N,
+          averageKEinMWUnits = (2 / N_df) * totalKEinMWUnits,
           averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
 
       return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
+    },
+
+    /**
+      Convert a temperature in Kelvin to the total kinetic energy in the container of N atoms.
+
+      Input units:
+        T: K
+      Output units:
+        KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
+    */
+    T_to_KE = function(T, N) {
+      var N_df = 2 * N,
+          averageKEinJoules  = T * BOLTZMANN_CONSTANT_IN_JOULES,
+          averageKEinMWUnits = constants.convert(averageKEinJoules, { from: unit.JOULE, to: unit.MW_ENERGY_UNIT }),
+          totalKEinMWUnits = averageKEinMWUnits * N_df / 2;
+
+      return totalKEinMWUnits;
     },
 
     validateTemperature = function(t) {
@@ -1229,11 +1245,11 @@ exports.INDICES = INDICES = {
   SPEED  :  7,
   AX     :  8,
   AY     :  9,
-  MASS   : 10,
-  CHARGE : 11
+  CHARGE : 10,
+  ELEMENT: 11
 };
 
-exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE"];
+exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
 
 exports.NODE_PROPERTIES_COUNT = NODE_PROPERTIES_COUNT = 12;
 
@@ -1287,8 +1303,20 @@ exports.makeModel = function() {
       // Total mass of all particles in the system, in Dalton (atomic mass units).
       totalMass,
 
+      // Element properties
+      // elements is an array of elements, each one an array of properties
+      // For now properties are just defined by index, with no additional lookup for
+      // the index (e.g. elements[0][ELEM_MASS_INDEX] for the mass of elem 0). We
+      // have few enough properties that we currently don't need this additional lookup.
+      // element definition: [ MASS_IN_DALTONS ]
+      defaultElements = [
+        [ ARGON_MASS_IN_DALTON ]
+      ],
+
+      elements = defaultElements,       // set elements to defaults immediately, set later if requested
+
       // Individual property arrays for the particles. Each is a length-N array.
-      radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
+      radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element,
 
       // An array of length NODE_PROPERTIES_COUNT which containes the above length-N arrays.
       nodes,
@@ -1352,15 +1380,13 @@ exports.makeModel = function() {
         T_windowed = math.getWindowedAverager( getWindowSize() );
       },
 
-      // Calculates & returns instantaneous temperature of the system. If we're using "internal" coordinates (i.e.,
-      // subtracting the center of mass translation and rotation from particle velocities), convert to internal coords
-      // before calling this.
-      calculateTemperature = function() {
+      // Calculates & returns instantaneous temperature of the system.
+      computeTemperature = function() {
         var twoKE = 0,
             i;
 
         for (i = 0; i < N; i++) {
-          twoKE += mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+          twoKE += elements[element[i]][0] * (vx[i] * vx[i] + vy[i] * vy[i]);
         }
         return KE_to_T( twoKE/2, N );
       },
@@ -1369,12 +1395,20 @@ exports.makeModel = function() {
       scaleVelocity = function(i, factor) {
         vx[i] *= factor;
         vy[i] *= factor;
+
+        // scale momentum too
+        px[i] *= factor;
+        py[i] *= factor;
       },
 
       // Adds the velocity vector (vx_t, vy_t) to the velocity vector of particle i
       addVelocity = function(i, vx_t, vy_t) {
         vx[i] += vx_t;
         vy[i] += vy_t;
+
+        // add momenta
+        px[i] += elements[element[i]][0]*vx_t;
+        py[i] += elements[element[i]][0]*vy_t;
       },
 
       // Adds effect of angular velocity omega, relative to (x_CM, y_CM), to the velocity vector of particle i
@@ -1431,12 +1465,14 @@ exports.makeModel = function() {
       computeSystemRotation = function() {
         var L = 0,
             I = 0,
+            mass,
             i;
 
         for (i = 0; i < N; i++) {
+          mass = elements[element[i]][0];
           // L_CM = sum over N of of mr_i x p_i (where r_i and p_i are position & momentum vectors relative to the CM)
-          L += mass[i] * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
-          I += mass[i] * sumSquare( x[i]-x_CM, y[i]-y_CM );
+          L += mass * cross( x[i]-x_CM, y[i]-y_CM, vx[i]-vx_CM, vy[i]-vy_CM);
+          I += mass * sumSquare( x[i]-x_CM, y[i]-y_CM );
         }
 
         L_CM = L;
@@ -1480,19 +1516,23 @@ exports.makeModel = function() {
       // Half of the update of v(t+dt, i) and p(t+dt, i) using a; during a single integration loop,
       // call once when a = a(t) and once when a = a(t+dt)
       halfUpdateVelocity = function(i) {
+        var mass = elements[element[i]][0];
         vx[i] += 0.5*ax[i]*dt;
-        px[i] = mass[i] * vx[i];
+        px[i] = mass * vx[i];
         vy[i] += 0.5*ay[i]*dt;
-        py[i] = mass[i] * vy[i];
+        py[i] = mass * vy[i];
       },
 
       // Accumulate accelerations into a(t+dt, i) and a(t+dt, j) for all pairwise interactions between particles i and j
       // where j < i. Note a(t, i) and a(t, j) (accelerations from the previous time step) should be cleared from arrays
       // ax and ay before calling this function.
       updatePairwiseAccelerations = function(i) {
-        var j, dx, dy, r_sq, f_over_r, aPair_over_r, aPair_x, aPair_y, mass_inv = 1/mass[i], q_i = charge[i];
+        var j, dx, dy, r_sq, f_over_r, f_over_r_dx, f_over_r_dy,
+            mass_inv = 1/elements[element[i]][0], mass_j_inv, q_i = charge[i];
 
         for (j = 0; j < i; j++) {
+          mass_j_inv = 1/elements[element[j]][0];
+
           dx = x[j] - x[i];
           dy = y[j] - y[i];
           r_sq = dx*dx + dy*dy;
@@ -1508,38 +1548,35 @@ exports.makeModel = function() {
           }
 
           if (f_over_r) {
-            aPair_over_r = f_over_r * mass_inv;
-            aPair_x = aPair_over_r * dx;
-            aPair_y = aPair_over_r * dy;
-
-            ax[i] += aPair_x;
-            ay[i] += aPair_y;
-            ax[j] -= aPair_x;
-            ay[j] -= aPair_y;
+            f_over_r_dx = f_over_r * dx;
+            f_over_r_dy = f_over_r * dy;
+            ax[i] += f_over_r_dx * mass_inv;
+            ay[i] += f_over_r_dy * mass_inv;
+            ax[j] -= f_over_r_dx * mass_j_inv;
+            ay[j] -= f_over_r_dy * mass_j_inv;
           }
         }
       },
 
-      adjustTemperature = function() {
+      adjustTemperature = function(target, forceAdjustment) {
         var rescalingFactor,
             i;
 
-        removeTranslationAndRotationFromVelocities();
-        T = calculateTemperature();
+        if (target == null) target = T_target;
 
-        if (temperatureChangeInProgress && Math.abs(T_windowed(T) - T_target) <= T_target * tempTolerance) {
+        T = computeTemperature();
+
+        if (temperatureChangeInProgress && Math.abs(T_windowed(T) - target) <= target * tempTolerance) {
           temperatureChangeInProgress = false;
         }
 
-        if (temperatureChangeInProgress || useThermostat && T > 0) {
-          rescalingFactor = Math.sqrt(T_target / T);
+        if (forceAdjustment || useThermostat || temperatureChangeInProgress && T > 0) {
+          rescalingFactor = Math.sqrt(target / T);
           for (i = 0; i < N; i++) {
             scaleVelocity(i, rescalingFactor);
           }
-          T = T_target;
+          T = target;
         }
-
-        addTranslationAndRotationToVelocities();
       };
 
 
@@ -1548,31 +1585,19 @@ exports.makeModel = function() {
     outputState: outputState,
 
     useCoulombInteraction: function(v) {
-      if (v !== useCoulombInteraction) {
-        useCoulombInteraction = v;
-        beginTransientTemperatureChange();
-      }
+      useCoulombInteraction = !!v;
     },
 
     useLennardJonesInteraction: function(v) {
-      if (v !== useLennardJonesInteraction) {
-        useLennardJonesInteraction = v;
-        if (useLennardJonesInteraction) {
-          beginTransientTemperatureChange();
-        }
-      }
+      useLennardJonesInteraction = !!v;
     },
 
     useThermostat: function(v) {
-      useThermostat = v;
+      useThermostat = !!v;
     },
 
     setTargetTemperature: function(v) {
-      if (v !== T_target) {
-        validateTemperature(v);
-        T_target = v;
-        beginTransientTemperatureChange();
-      }
+      validateTemperature(v);
       T_target = v;
     },
 
@@ -1605,6 +1630,8 @@ exports.makeModel = function() {
     },
 
     setLJSigma: function(s) {
+      var i;
+
       lennardJones.setSigma(s);
       for (i = 0; i < N; i++) {
         radius[i] = s/2;
@@ -1619,6 +1646,20 @@ exports.makeModel = function() {
       return lennardJones;
     },
 
+    /*
+      Expects an array of element properties such as
+      [
+        [ mass_of_elem_0 ],
+        [ mass_of_elem_1 ]
+      ]
+    */
+    setElements: function(elems) {
+      if (atomsHaveBeenCreated) {
+        throw new Error("md2d: setElements cannot be called after elements have been created");
+      }
+      elements = elems;
+    },
+
     // allocates 'nodes' array of arrays, sets number of atoms.
     // Must either pass in a hash that includes X and Y locations of the atoms,
     // or a single number to represent the number of atoms.
@@ -1630,7 +1671,8 @@ exports.makeModel = function() {
     //   num: the number of atoms to create
     createAtoms: function(options) {
       var rmin = lennardJones.coefficients().rmin,
-          arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
+          arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular';
 
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
@@ -1669,14 +1711,19 @@ exports.makeModel = function() {
       speed  = model.speed  = nodes[INDICES.SPEED]  = arrays.create(N, 0, arrayType);
       ax     = model.ax     = nodes[INDICES.AX]     = arrays.create(N, 0, arrayType);
       ay     = model.ay     = nodes[INDICES.AY]     = arrays.create(N, 0, arrayType);
-      mass   = model.mass   = nodes[INDICES.MASS]   = arrays.create(N, ARGON_MASS_IN_DALTON, arrayType);
       charge = model.charge = nodes[INDICES.CHARGE] = arrays.create(N, 0, arrayType);
 
-      totalMass = model.totalMass = N * ARGON_MASS_IN_DALTON;
+      // NOTE, this is a Uint8Array for now, but it's not clear if this is the best pattern
+      // because Uint8Arrays length cannot be changed. Right now we never add or remove atoms
+      // from the model without re-creating the atom arrays, but that might change in the future.
+      element = model.element = nodes[INDICES.ELEMENT] = arrays.create(N, 0, uint8ArrayType);
     },
 
-    // Sets the X, Y, VX, VY properties of the atoms
+    // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
+      var cumulativeTotalMass = 0,
+          i, ii;
+
       if (!(props.X && props.Y)) {
         throw new Error("md2d: initializeAtomsFromProperties must specify at minimum X and Y locations.");
       }
@@ -1686,7 +1733,7 @@ exports.makeModel = function() {
         throw new Error("md2d: For now, velocities must be set when locations are set.");
       }
 
-      for (var i=0, ii=N; i<ii; i++){
+      for (i=0, ii=N; i<ii; i++){
         x[i] = props.X[i];
         y[i] = props.Y[i];
         vx[i] = props.VX[i];
@@ -1695,28 +1742,34 @@ exports.makeModel = function() {
       }
 
       if (props.CHARGE) {
-        for (var i=0, ii=N; i<ii; i++){
+        for (i=0, ii=N; i<ii; i++){
           charge[i] = props.CHARGE[i];
         }
       }
 
+      if (props.ELEMENT) {
+        for (i=0, ii=N; i<ii; i++){
+          element[i] = props.ELEMENT[i];
+          cumulativeTotalMass += elements[element[i]][0];
+        }
+      } else {
+        cumulativeTotalMass = N * elements[0][0];
+      }
+      totalMass = model.totalMass = cumulativeTotalMass;
+
+      // Publish the current state
+      T = computeTemperature();
       model.computeOutputState();
     },
 
     initializeAtomsRandomly: function(options) {
 
       var temperature = options.temperature || 100,  // if not requested, just need any number
-
-          k_inJoulesPerKelvin = constants.BOLTZMANN_CONSTANT.as(unit.JOULES_PER_KELVIN),
-
-          mass_in_kg, v0_MKS, v0,
-
           nrows = Math.floor(Math.sqrt(N)),
           ncols = Math.ceil(N/nrows),
 
           i, r, c, rowSpacing, colSpacing,
-          vMagnitude, vDirection,
-          rescalingFactor;
+          vMagnitude, vDirection;
 
       validateTemperature(temperature);
 
@@ -1727,6 +1780,7 @@ exports.makeModel = function() {
       // configuration. But it works OK for now.
       i = -1;
 
+      totalMass = 0;
       for (r = 1; r <= nrows; r++) {
         for (c = 1; c <= ncols; c++) {
           i++;
@@ -1735,58 +1789,39 @@ exports.makeModel = function() {
           x[i] = c*colSpacing;
           y[i] = r*rowSpacing;
 
-          // Randomize velocities, exactly balancing the motion of the center of mass by making the second half of the
-          // set of atoms have the opposite velocities of the first half. (If the atom number is odd, the "odd atom out"
-          // should have 0 velocity).
-          //
-          // Note that although the instantaneous temperature will be 'temperature' exactly, the temperature will quickly
-          // settle to a lower value because we are initializing the atoms spaced far apart, in an artificially low-energy
-          // configuration.
-
-          if (i < Math.floor(N/2)) {      // 'middle' atom will have 0 velocity
-
-            // Note kT = m<v^2>/2 because there are 2 degrees of freedom per atom, not 3
-            // TODO: define constants to avoid unnecesssary conversions below.
-
-            mass_in_kg = constants.convert(mass[i], { from: unit.DALTON, to: unit.KILOGRAM });
-            v0_MKS = Math.sqrt(2 * k_inJoulesPerKelvin * temperature / mass_in_kg);
-            v0 = constants.convert(v0_MKS, { from: unit.METERS_PER_SECOND, to: unit.MW_VELOCITY_UNIT });
-
-            vMagnitude = math.normal(v0, v0/4);
-            vDirection = 2 * Math.random() * Math.PI;
-            vx[i] = vMagnitude * Math.cos(vDirection);
-            px[i] = mass[i] * vx[i];
-            vy[i] = vMagnitude * Math.sin(vDirection);
-            py[i] = mass[i] * vy[i];
-
-            vx[N-i-1] = -vx[i];
-            px[N-i-1] = mass[N-i-1] * vx[N-i-1];
-            vy[N-i-1] = -vy[i];
-            py[N-i-1] = mass[N-i-1] * vy[N-i-1];
-          }
+          vMagnitude = math.normal(1, 1/4);
+          vDirection = 2 * Math.random() * Math.PI;
+          vx[i] = vMagnitude * Math.cos(vDirection);
+          px[i] = elements[element[i]][0] * vx[i];
+          vy[i] = vMagnitude * Math.sin(vDirection);
+          py[i] = elements[element[i]][0] * vy[i];
 
           ax[i] = 0;
           ay[i] = 0;
 
           speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
           charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
+
+          element[i] = Math.floor(Math.random() * elements.length);     // random element
+
+          model.totalMass = totalMass += elements[element[i]][0];
         }
       }
 
-      // Compute linear and angular velocity of CM, compute temperature, and publish output state:
+      // now, remove all translation of the center of mass and rotation about the center of mass
       computeCMMotion();
-
-      // Adjust for center of mass motion
       removeTranslationAndRotationFromVelocities();
-      T = calculateTemperature();
-      rescalingFactor = Math.sqrt(temperature / T);
-      for (i = 0; i < N; i++) {
-        scaleVelocity(i, rescalingFactor);
-      }
-      T = temperature;
-      addTranslationAndRotationToVelocities();
 
-      // Pubish the current state
+      // Scale randomized velocities to match the desired initial temperature.
+      //
+      // Note that although the instantaneous temperature will be 'temperature' exactly, the temperature will quickly
+      // settle to a lower value because we are initializing the atoms spaced far apart, in an artificially low-energy
+      // configuration.
+      //
+      adjustTemperature(temperature, true);
+
+      // Publish the current state
+      T = computeTemperature();
       model.computeOutputState();
     },
 
@@ -1809,11 +1844,7 @@ exports.makeModel = function() {
         throw new Error("md2d: integrate called before atoms created.");
       }
 
-      // FIXME. Recommended timestep for accurate simulation is τ/200
-      // using rescaled t where t → τ(mσ²/ϵ)^½  (~= 1 ps for argon)
-      // This is hardcoded below for the "Argon" case by setting dt = 5 fs:
-
-      if (duration == null)  duration = 250;  // how much time to integrate over, in fs
+      if (duration == null)  duration = 100;  // how much time to integrate over, in fs
 
       dt = opt_dt || 1;
       dt_sq = dt*dt;                      // time step, squared
@@ -1855,9 +1886,6 @@ exports.makeModel = function() {
           speed[i] = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
         }
 
-        // Update CM(t+dt), p_CM(t+dt), v_CM(t+dt), omega_CM(t+dt)
-        computeCMMotion();
-
         adjustTemperature();
       } // end of integration loop
 
@@ -1868,16 +1896,16 @@ exports.makeModel = function() {
       var i, j,
           dx, dy,
           r_sq,
-          realKEinMWUnits,   // KE in "real" coordinates, in MW Units
+          KEinMWUnits,       // total kinetic energy, in MW units
           PE;                // potential energy, in eV
 
       // Calculate potentials in eV. Note that we only want to do this once per call to integrate(), not once per
       // integration loop!
       PE = 0;
-      realKEinMWUnits= 0;
+      KEinMWUnits = 0;
 
       for (i = 0; i < N; i++) {
-        realKEinMWUnits += 0.5 * mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
+        KEinMWUnits += 0.5 * elements[element[i]][0] * (vx[i] * vx[i] + vy[i] * vy[i]);
         for (j = i+1; j < N; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -1898,7 +1926,7 @@ exports.makeModel = function() {
       outputState.time     = time;
       outputState.pressure = 0;// (time - t_start > 0) ? pressure / (time - t_start) : 0;
       outputState.PE       = PE;
-      outputState.KE       = constants.convert(realKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+      outputState.KE       = constants.convert(KEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
       outputState.T        = T;
       outputState.pCM      = [px_CM, py_CM];
       outputState.CM       = [x_CM, y_CM];
@@ -1936,6 +1964,7 @@ modeler.VERSION = '0.2.0';
 
 modeler.model = function(initialProperties) {
   var model = {},
+      elements = initialProperties.elements,
       atoms = [],
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
@@ -2060,7 +2089,7 @@ modeler.model = function(initialProperties) {
         waitingToBeNotified = [],
         i, ii;
 
-    if (typeof events == "string") {
+    if (typeof events === "string") {
       evts = [events];
     } else {
       evts = events;
@@ -2228,11 +2257,22 @@ modeler.model = function(initialProperties) {
   // @config: either the number of atoms (for a random setup) or
   //          a hash specifying the x,y,vx,vy properties of the atoms
   function createNewCoreModel(config) {
-    var T;
+    var T, elemsArray, element, i, ii;
 
     // get a fresh model
     coreModel = md2d.makeModel();
     coreModel.setSize([width,height]);
+
+    if (elements) {
+      // convert from easily-readble json format to simplified array format
+      elemsArray = [];
+      for (i=0, ii=elements.length; i<ii; i++){
+        element = elements[i];
+        elemsArray[element.id] = [element.mass];
+      }
+      coreModel.setElements(elemsArray);
+    }
+
     if (typeof config === "number") {
       coreModel.createAtoms({
         num: config
@@ -2273,14 +2313,11 @@ modeler.model = function(initialProperties) {
     coreModel.useCoulombInteraction(properties.coulomb_forces);
     coreModel.useThermostat(properties.temperature_control);
 
-    if (temperature_control) {
-      T = abstract_to_real_temperature(temperature);
-      coreModel.setTargetTemperature(T);
-    }
+    T = abstract_to_real_temperature(temperature);
+    coreModel.setTargetTemperature(T);
 
     coreModel.setLJEpsilon(properties.epsilon);
     coreModel.setLJSigma(properties.sigma);
-
 
     if (config.X && config.Y) {
       coreModel.initializeAtomsFromProperties(config);
@@ -2289,6 +2326,7 @@ modeler.model = function(initialProperties) {
         temperature: T
       });
     }
+    return coreModel;
   }
 
   // ------------------------------
@@ -2563,7 +2601,7 @@ modeler.model = function(initialProperties) {
   // @config: either the number of atoms (for a random setup) or
   //          a hash specifying the x,y,vx,vy properties of the atoms
   model.createNewAtoms = function(config) {
-    createNewCoreModel(config);
+    return createNewCoreModel(config);
   };
 
   model.set = function(hash) {
@@ -2594,6 +2632,9 @@ modeler.model = function(initialProperties) {
     var propCopy = $.extend({}, properties);
     if (includeAtoms) {
       propCopy.atoms = coreModel.serialize();
+    }
+    if (elements) {
+      propCopy.elements = elements;
     }
     propCopy.width = width;
     propCopy.height = height;

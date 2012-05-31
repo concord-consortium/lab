@@ -62,6 +62,11 @@
           </li>
         </ul>
       </li>
+      <li><a href="#deploying-to-a-remote-server">Deploying to a remote server</a>        <ul>
+          <li><a href="#updating-the-java-jar-resources-on-a-remote-rerver">Updating the Java jar resources on a remote rerver</a></li>
+          <li><a href="#creating-and-deploying-to-a-new-server">Creating and deploying to a new server</a></li>
+        </ul>
+      </li>
       <li><a href="#serving-the-lab-server-locally-with-apache-and-passenger">Serving the Lab server locally with Apache and Passenger</a>        <ul>
           <li><a href="#mac-os-x">Mac OS X</a></li>
         </ul>
@@ -630,6 +635,93 @@ x-java-jnlp-version-id: 1.5.0-20101012.203835-2
 <p>This feature of specifying versioned jar resources should NOT be used for production because Java won’t properly cache the jar locally. Eveytime a request is made for a jar with a version-id query parameter the complete jar will be downloaded again.</p>
 
 <p>When a version is specified in a jnlp form for an applet the jar WILL be cached properly.</p>
+
+<h3 id="deploying-to-a-remote-server">Deploying to a remote server</h3>
+
+<p>There are several Capistrano tasks for deploying to the remote server
+<a href="http://lab2.dev.concord.org">lab2.dev.concord.org</a>.</p>
+
+<pre><code>$ cap update_server
+</code></pre>
+
+<p>Updates the source checkout on the server from themaster branch of the repository,
+builds the application and deploys the generated products to the server directory.</p>
+
+<h5 id="updating-the-java-jar-resources-on-a-remote-rerver">Updating the Java jar resources on a remote rerver</h5>
+
+<p>The Java resources require much less frequent updates since the main body of work
+is occuriring in the HTML5 development.</p>
+
+<pre><code>$ cap update_server_jnlps
+</code></pre>
+
+<p>Erases the <code>server/public/jnlp/</code> directory on the remote server and
+re-generates and deploy the packed signed jars from source or from downloads:</p>
+
+<p>The resulting directory on the server will look something like this:</p>
+
+<pre><code>$ tree /var/www/app/server/public/jnlp/
+server/public/jnlp/
+├── jdom
+│   └── jdom
+│       ├── jdom__V1.0.jar
+│       └── jdom__V1.0.jar.pack.gz
+├── jug
+│   └── jug
+│       ├── jug__V1.1.2.jar
+│       └── jug__V1.1.2.jar.pack.gz
+└── org
+    └── concord
+        ├── data
+        │   ├── data__V0.2.0-20120531.005123-1.jar
+        │   └── data__V0.2.0-20120531.005123-1.jar.pack.gz
+        ├── energy2d
+        │   ├── energy2d__V0.1.0-20120531.005123-1.jar
+        │   └── energy2d__V0.1.0-20120531.005123-1.jar.pack.gz
+        ├── framework
+        │   ├── framework__V0.1.0-20120531.005123-1.jar
+        │   └── framework__V0.1.0-20120531.005123-1.jar.pack.gz
+        ├── frameworkview
+        │   ├── frameworkview__V0.1.0-20120531.005123-1.jar
+        │   └── frameworkview__V0.1.0-20120531.005123-1.jar.pack.gz
+        ├── modeler
+        │   ├── mw__V2.1.0-20120531.005123-1.jar
+        │   └── mw__V2.1.0-20120531.005123-1.jar.pack.gz
+        ├── otrunk
+        │   ├── otrunk__V0.3.0-20120531.005123-1.jar
+        │   └── otrunk__V0.3.0-20120531.005123-1.jar.pack.gz
+        ├── sensor
+        │   ├── sensor-applets
+        │   │   ├── sensor-applets__V0.1.0-20120531.005123-1.jar
+        │   │   └── sensor-applets__V0.1.0-20120531.005123-1.jar.pack.gz
+        │   ├── sensor__V0.2.0-20120531.005123-1.jar
+        │   ├── sensor__V0.2.0-20120531.005123-1.jar.pack.gz
+        │   └── vernier
+        │       └── vernier-goio
+        │           ├── vernier-goio-macosx-i386-nar__V1.5.0-20101012.203834-2.jar
+        │           ├── vernier-goio-macosx-ppc-nar__V1.5.0-20101012.203834-2.jar
+        │           ├── vernier-goio-macosx-x86_64-nar__V1.5.0-20101012.203835-2.jar
+        │           └── vernier-goio-win32-nar__V1.4.0.jar
+        └── sensor-native
+            ├── sensor-native__V0.1.0-20120531.005123-1.jar
+            └── sensor-native__V0.1.0-20120531.005123-1.jar.pack.gz
+</code></pre>
+
+<h4 id="creating-and-deploying-to-a-new-server">Creating and deploying to a new server</h4>
+
+<p>There is more work to do to generalize these deployment systems to work with multiple servers.</p>
+
+<p>Create a new Amazon EC2 instance as described in the readme in the <strong>ruby-lab-server</strong> branch in
+Concord Consortium’s <a href="https://github.com/concord-consortium/littlechef-servers">littlechef-servers</a>
+repository. Make sure the security group you choose has port 80 open.</p>
+
+<p>Modify the value of the <code>:host</code> key in the configuration file <code>config/config.yml</code> to reference
+the domain name of the new server.</p>
+
+<pre><code>$ cap setup_server
+</code></pre>
+
+<p>Will do an initial deploy and build of all the project resources to the server.</p>
 
 <h3 id="serving-the-lab-server-locally-with-apache-and-passenger">Serving the Lab server locally with Apache and Passenger</h3>
 
