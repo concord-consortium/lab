@@ -13,16 +13,11 @@
   </head>
   <body>
     <h1>Molecular Workbench Applet</h1>
-    <p>
-    </p>
-    <div id="applet-container" style="width:90%; height:600px; margin:10px; padding:10px;border:1px solid green; background-color:#DDD ;"></div>
-    <table >
-      <tr>
-        <td></td>
-      </tr>
-    </table>
-    <p>
-    </p>
+    <div id="vis">
+      <div id="applet-container" style="float:left; width:460px; height:430px; margin:10px; padding:10px;border:1px solid green; background-color:#DDD ;"></div>
+      <iframe height="600px" width="680px" style="float:right;; margin:10px; padding:10px;" frameborder=0 src="/examples/simple-atoms-model-embeddable/simple-atoms-model.html#/imports/legacy-mw-content/converted/potential-tests/two-atoms-two-elements/two-atoms-two-elements$0.json">
+      </iframe>
+    </div>
     <script type="text/javascript">
       var applet_string =
             ['<applet id="mw-applet", codebase="/jnlp", code="org.concord.modeler.MwApplet"',
@@ -35,6 +30,10 @@
              '</applet>'].join('\n');
       document.getElementById("applet-container").innerHTML = applet_string;
       var applet = document.getElementById("mw-applet");
+      function runMWScript(script) {
+        return applet.runMwScript(script);
+      }
+
     </script>
   </body>
 </html>
