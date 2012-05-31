@@ -170,7 +170,7 @@ parseMML = (mmlString) ->
     # for now use first atom's element sigma
     sigma   = elemTypes[id].sigma
 
-    jsonObj =
+    json =
       temperature_control : false
       epsilon             : epsilon
       sigma               : sigma
@@ -186,8 +186,6 @@ parseMML = (mmlString) ->
         VY: vy
         CHARGE: charge
         ELEMENT: element
-
-    json = JSON.stringify(jsonObj, null, 2)
 
     return json: json
   catch e

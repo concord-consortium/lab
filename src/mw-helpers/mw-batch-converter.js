@@ -28,15 +28,16 @@ convertMMLFile = function(mmlFileName){
       conversion = parseMML.parseMML(mml),
 
       folders = mmlFileName.split('/'),
-      outputPath = convertedFolderPath + mmlFileName.match(/.*\//)[0];
+      outputPath = convertedFolderPath + mmlFileName.match(/.*\//)[0],
+      outputFile;
 
   if (conversion.json) {
     mkdirp.sync(outputPath);
 
     // write model out to file. Overwrites any existing file with the same name
-    var outputFile = outputPath+modelName+'.json';
-    fs.writeFileSync(outputFile, conversion.json);
-    return (outputFile);
+    outputFile = outputPath+modelName+'.json';
+    fs.writeFileSync(outputFile, JSON.stringify(conversion.json, null, 2));
+    return outputFile;
   } else {
     console.log("Error converting "+mmlFileName);
     console.log("  " + conversion.error);
