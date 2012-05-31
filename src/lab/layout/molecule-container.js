@@ -499,7 +499,7 @@ layout.moleculeContainer = function(e, options) {
           .on("mousedown", molecule_mousedown)
           .on("mouseout", molecule_mouseout);
 
-      var font_size = x(ljf.rmin * 0.5 * 1.5);
+      var font_size = x(ljf.rmin[0][0] * 0.5 * 1.5);
       if (model.get('mol_number') > 100) { font_size *= 0.9; }
 
       label = gradient_container.selectAll("g.label")

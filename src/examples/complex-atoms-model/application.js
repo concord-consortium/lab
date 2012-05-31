@@ -14,7 +14,9 @@ var modelConfig = {
       elements            : [ // example element. Actually the same as md2d's default
                               {
                                 id: 0,
-                                mass: 39.95
+                                mass: 39.95,
+                                sigma: 0.34,
+                                epsilon: -0.1
                               }
                             ],
       mol_number          : 50,

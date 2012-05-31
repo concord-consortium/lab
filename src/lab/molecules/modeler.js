@@ -12,7 +12,7 @@ modeler.VERSION = '0.2.0';
 
 modeler.model = function(initialProperties) {
   var model = {},
-      elements = initialProperties.elements,
+      elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
       atoms = [],
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
@@ -91,17 +91,11 @@ modeler.model = function(initialProperties) {
         },
 
         set_epsilon: function(e) {
-          this.epsilon = e;
-          if (coreModel) {
-            coreModel.setLJEpsilon(e);
-          }
+          console.log("set_epsilon: This method is temporarily deprecated");
         },
 
         set_sigma: function(s) {
-          this.sigma = s;
-          if (coreModel) {
-            coreModel.setLJSigma(s);
-          }
+          console.log("set_sigma: This method is temporarily deprecated");
         }
       };
 
@@ -316,7 +310,7 @@ modeler.model = function(initialProperties) {
       elemsArray = [];
       for (i=0, ii=elements.length; i<ii; i++){
         element = elements[i];
-        elemsArray[element.id] = [element.mass];
+        elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
       }
       coreModel.setElements(elemsArray);
     }
@@ -349,8 +343,8 @@ modeler.model = function(initialProperties) {
     atoms.length = nodes[0].length;
 
     // Initialize properties
-    lennard_jones_forces = properties.lennard_jones_forces;
-    coulomb_forces       = properties.coulomb_forces;
+    // lennard_jones_forces = properties.lennard_jones_forces;
+    // coulomb_forces       = properties.coulomb_forces;
     temperature_control  = properties.temperature_control;
     temperature          = properties.temperature;
 
@@ -364,8 +358,8 @@ modeler.model = function(initialProperties) {
     T = abstract_to_real_temperature(temperature);
     coreModel.setTargetTemperature(T);
 
-    coreModel.setLJEpsilon(properties.epsilon);
-    coreModel.setLJSigma(properties.sigma);
+    // coreModel.setLJEpsilon(properties.epsilon);
+    // coreModel.setLJSigma(properties.sigma);
 
     if (config.X && config.Y) {
       coreModel.initializeAtomsFromProperties(config);

@@ -59,9 +59,9 @@ layout.potentialChart = function(e, model, options) {
 
     ljCalculator = model.getLJCalculator();
     ljData.coefficients = ljCalculator.coefficients();
-    sigma   = ljData.coefficients.sigma;
-    epsilon = ljData.coefficients.epsilon;
-    rmin    = ljData.coefficients.rmin;
+    sigma   = ljData.coefficients.sigma[0][0];
+    epsilon = ljData.coefficients.epsilon[0][0];
+    rmin    = ljData.coefficients.rmin[0][0];
     ljData.xmax    = sigma * 3;
     ljData.xmin    = Math.floor(sigma/2);
     ljData.ymax    = 0.4;
@@ -75,7 +75,7 @@ layout.potentialChart = function(e, model, options) {
 
     ljPotentialGraphData.length = 0;
     for(r = sigma * 0.5; r < ljData.xmax * 3;  r += 0.001) {
-      y = -ljCalculator.potential(r);
+      y = -ljCalculator.potential(r, 0, 0);
       if (Math.abs(y) < 100) {
         ljPotentialGraphData.push([r, y]);
       }
