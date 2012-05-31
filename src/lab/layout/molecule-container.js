@@ -26,6 +26,7 @@ layout.moleculeContainer = function(e, options) {
       red_gradient,
       blue_gradient,
       green_gradient,
+      element_gradient_array,
       atom_tooltip_on,
       offset_left, offset_top,
       particle, label, labelEnter, tail,
@@ -135,6 +136,10 @@ layout.moleculeContainer = function(e, options) {
 
   function modelTimeLabel() {
     return time_prefix + model_time_formatter(model.getTime() / 1000) + time_suffix;
+  }
+
+  function get_element(i) {
+    return nodes[model.INDICES.ELEMENT][i];
   }
 
   function get_x(i) {
@@ -403,7 +408,12 @@ layout.moleculeContainer = function(e, options) {
 
       create_radial_gradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", gradient_container);
       create_radial_gradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", gradient_container);
-      create_radial_gradient("neu-grad", "#dfffef", "#75a643", "#2a7216", gradient_container);
+      create_radial_gradient("green-grad", "#dfffef", "#75a643", "#2a7216", gradient_container);
+      create_radial_gradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", gradient_container);
+      create_radial_gradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", gradient_container);
+      create_radial_gradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", gradient_container);
+
+      element_gradient_array = ["green-grad", "purple-grad", "aqua-grad", "orange-grad"];
     }
 
     function create_radial_gradient(id, lightColor, medColor, darkColor, gradient_container) {
@@ -457,7 +467,11 @@ layout.moleculeContainer = function(e, options) {
             if (model.get("coulomb_forces")) {
               return (x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')";
             } else {
-              return "url('#neu-grad')";
+              element = get_element(i) % 4;
+              grad = element_gradient_array[element];
+              console.log("element = "+element)
+              console.log("grad = "+grad)
+              return "url('#"+grad+"')";
             }
           })
           .on("mousedown", molecule_mousedown)

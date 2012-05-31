@@ -114,8 +114,8 @@ modeler.model = function(initialProperties) {
     SPEED    : md2d.INDICES.SPEED,
     AX       : md2d.INDICES.AX,
     AY       : md2d.INDICES.AY,
-    MASS     : md2d.INDICES.MASS,
-    CHARGE   : md2d.INDICES.CHARGE
+    CHARGE   : md2d.INDICES.CHARGE,
+    ELEMENT  : md2d.INDICES.ELEMENT
   };
 
   function notifyListeners(listeners) {
