@@ -216,9 +216,6 @@ exports.makeModel = function() {
       // Object containing observations of the sytem (temperature, etc)
       outputState = window.state = {},
 
-      // Cutoff distance beyond which the Lennard-Jones force is clipped to 0.
-      // cutoffDistance_LJ,
-
       // Paired square of cutoff distance; this is a convenience for updatePairwiseAccelerations
       cutoffDistance_LJ_sq = [],
 

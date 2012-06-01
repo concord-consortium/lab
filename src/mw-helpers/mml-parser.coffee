@@ -172,8 +172,6 @@ parseMML = (mmlString) ->
 
     json =
       temperature_control : false
-      epsilon             : epsilon
-      sigma               : sigma
       lennard_jones_forces: true
       coulomb_forces      : false
       width               : width
