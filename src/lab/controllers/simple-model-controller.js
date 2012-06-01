@@ -228,23 +228,23 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   model.addPropertiesListener(["temperature"], updateTherm);
   updateTherm();
 
-  epsilon_slider = new SliderComponent('#attraction_slider',
-    function (v) {
-      model.set({epsilon: v} );
-    }, lj_epsilon_max, lj_epsilon_min, epsilon);
+  // epsilon_slider = new SliderComponent('#attraction_slider',
+  //   function (v) {
+  //     model.set({epsilon: v} );
+  //   }, lj_epsilon_max, lj_epsilon_min, epsilon);
 
-  function updateEpsilon(){
-    epsilon_slider.set_scaled_value(model.get("epsilon"));
-  }
+  // function updateEpsilon(){
+  //   epsilon_slider.set_scaled_value(model.get("epsilon"));
+  // }
 
-  model.addPropertiesListener(["epsilon"], updateEpsilon);
-  updateEpsilon();
+  // model.addPropertiesListener(["epsilon"], updateEpsilon);
+  // updateEpsilon();
 
   // ------------------------------------------------------------
   // Setup heat and cool buttons
   // ------------------------------------------------------------
 
-  layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25, model, function (t) { therm.add_value(t); });
+  layout.heatCoolButtons("#heat_button", "#cool_button", 0, 3800, model, function (t) { therm.add_value(t); });
 
   // ------------------------------------------------------------
   // Add listener for coulomb_forces checkbox

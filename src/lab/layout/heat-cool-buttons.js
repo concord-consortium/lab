@@ -7,7 +7,7 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
     if (t < max) {
       $(heat_elem_id).removeClass('inactive');
       $(cool_elem_id).removeClass('inactive');
-      t = Math.floor((t * 2))/2 + 0.5;
+      t = Math.floor((t * 2))/2 + 100;
       model.set({temperature: t});
       if (typeof callback === 'function') {
         callback(t)
@@ -22,7 +22,7 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
     if (t > min) {
       $(heat_elem_id).removeClass('inactive');
       $(cool_elem_id).removeClass('inactive');
-      t = Math.floor((t * 2))/2 - 0.5;
+      t = Math.floor((t * 2))/2 - 100;
       model.set({temperature: t});
       if (typeof callback === 'function') {
         callback(t)
