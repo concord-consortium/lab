@@ -49,6 +49,7 @@ def checkout_project(project_path, project, options)
         HEREDOC
       else
         `git checkout #{options[:branch]}`
+        `git pull origin #{options[:branch]}`
         print <<-HEREDOC
 
   from:    #{options[:repository]}
