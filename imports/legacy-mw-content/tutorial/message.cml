@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a pop-up message</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a pop-up message
+
+&lt; Previous | Index | Next &gt;
+
+A pop-up message is shown in a pop-up window opened by clicking a button on a page. Such a button can be placed anywhere on the page. To insert a button for popping up a message, choose the &quot;Insert &gt; Activity Controller &gt; Activity Button&quot; menu, you will see a dialog window. Choose the &quot;Script&quot; action from the &quot;Select an action&quot; drop-down list, and then type the following scripts in the &quot;Enter scripts&quot; text area:
+
+&#10112; Display message stored in a file:
+
+script:page:0:message [file name].html;
+
+&#10113; Display inline message:
+
+script:page:0:message &lt;t&gt;This is a message formatted in HTML.&lt;/t&gt;;
+
+The &quot;script:page:0:&quot; prefix is needed to instruct the Script Dispatcher that this is a script for the current MW page. See the Script Protocol for more information. 
+
+Note that if you use the second script command, the text must start with the &quot;&lt;t&gt;&quot; tag and end with the &quot;&lt;/t&gt;&quot; tag, even if you just want to write in plain text. And it must be in a single line, i.e. no line break should be used within the HTML text.
+
+You can set other properties for the button. Once you are done, click &quot;OK&quot;. The following examples demonstrate the same pop-up message opened from two buttons, one using a script to load the message from a HTML file, the other using a script in which the HTML text is directly written:
+
+  
+
+Setting up hint buttons without using scripts
+
+Authors can show hints in pop-up windows using the above scripts. There is, however, a simplified button for inserting hints without using scripts. To insert such a hint button, choose the &quot;Insert&gt;Activity Controller&gt;Activity Button&quot; menu, you will see a dialog window. Choose the &quot;Hint&quot; action from the &quot;Select an action&quot; drop-down list, and then type the hint text in the &quot;Enter hint&quot; text box. You can use either plain text or the HTML code. If you use the HTML code, the text must start with the &quot;&lt;html&gt;&quot; tag and end with &quot;&lt;/html&gt;&quot; tage.
+
+Examples:
+
+  
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1990">
+<paragraph start="0" end="27">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="26">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="56">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="38">
+<size>11</size><href>table.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="46">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="53">
+<size>11</size><href>PeriodicTable.cml</href></content>
+
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<LeftIndent>140.0</LeftIndent>
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="473">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="473">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="473" end="474">
+<LeftIndent>140.0</LeftIndent>
+<content start="473" end="474">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="474" end="510">
+<LeftIndent>160.0</LeftIndent>
+<content start="474" end="475">
+</content>
+
+<content start="475" end="510">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="510" end="511">
+<LeftIndent>160.0</LeftIndent>
+<content start="510" end="511">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="511" end="551">
+<LeftIndent>160.0</LeftIndent>
+<content start="511" end="550">
+<size>11</size><family>Courier New</family></content>
+
+<content start="550" end="551">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="551" end="552">
+<LeftIndent>160.0</LeftIndent>
+<content start="551" end="552">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="552" end="578">
+<LeftIndent>160.0</LeftIndent>
+<content start="552" end="554">
+</content>
+
+<content start="554" end="578">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="578" end="579">
+<LeftIndent>160.0</LeftIndent>
+<content start="578" end="579">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="579" end="646">
+<LeftIndent>160.0</LeftIndent>
+<content start="579" end="645">
+<size>11</size><family>Courier New</family></content>
+
+<content start="645" end="646">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="646" end="647">
+<LeftIndent>140.0</LeftIndent>
+<content start="646" end="647">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="647" end="813">
+<LeftIndent>140.0</LeftIndent>
+<content start="647" end="652">
+<size>11</size></content>
+
+<content start="652" end="666">
+<size>11</size><family>Courier New</family></content>
+
+<content start="666" end="774">
+<size>11</size></content>
+
+<content start="774" end="789">
+<size>11</size><href>script_protocol.cml</href></content>
+
+<content start="789" end="813">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="813" end="814">
+<LeftIndent>140.0</LeftIndent>
+<content start="813" end="814">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="814" end="1065">
+<LeftIndent>140.0</LeftIndent>
+<content start="814" end="871">
+<size>11</size></content>
+
+<content start="871" end="875">
+<size>11</size><bold>true</bold></content>
+
+<content start="875" end="892">
+<size>11</size></content>
+
+<content start="892" end="895">
+<size>11</size><family>Courier New</family></content>
+
+<content start="895" end="919">
+<size>11</size></content>
+
+<content start="919" end="923">
+<size>11</size><family>Courier New</family></content>
+
+<content start="923" end="980">
+<size>11</size></content>
+
+<content start="980" end="1007">
+<size>11</size><bold>true</bold></content>
+
+<content start="1007" end="1065">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1065" end="1066">
+<LeftIndent>140.0</LeftIndent>
+<content start="1065" end="1066">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1066" end="1352">
+<LeftIndent>140.0</LeftIndent>
+<content start="1066" end="1352">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1352" end="1353">
+<LeftIndent>140.0</LeftIndent>
+<content start="1352" end="1353">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1353" end="1356">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1353" end="1354">
+<size>11</size><component><class>org.concord.modeler.ActivityButton</class>
+<title>Show a message loaded from a file</title>
+<tooltip>Show a message loaded from a file</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<script>script:page:0:message messageexample.html;</script>
+<action>Script</action></component></content>
+
+<content start="1354" end="1355">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Show a message written in the script</title>
+<tooltip>Show a message written in the script</tooltip>
+<border>Raised Bevel</border>
+<opaque>false</opaque>
+<script>script:page:0:message &lt;t&gt;&lt;body  marginwidth=&quot;10&quot; marginheight=&quot;10&quot; topmargin=&quot;10&quot; leftmargin=&quot;10&quot; bgcolor=&quot;white&quot;&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;This is a message in HTML format. You can use images, as follows.&lt;/font&gt;&lt;br&gt;&lt;img src=&quot;DottedVDWSurface.gif&quot;&gt;&lt;/body&gt;&lt;/t&gt;</script>
+<action>Script</action></component></content>
+
+<content start="1355" end="1356">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1356" end="1357">
+<LeftIndent>140.0</LeftIndent>
+<content start="1356" end="1357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1357" end="1403">
+<LeftIndent>140.0</LeftIndent>
+<content start="1357" end="1402">
+<size>11</size><bold>true</bold></content>
+
+<content start="1402" end="1403">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1403" end="1404">
+<LeftIndent>140.0</LeftIndent>
+<content start="1403" end="1404">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1404" end="1946">
+<LeftIndent>140.0</LeftIndent>
+<content start="1404" end="1884">
+<size>11</size></content>
+
+<content start="1884" end="1888">
+<size>11</size><bold>true</bold></content>
+
+<content start="1888" end="1905">
+<size>11</size></content>
+
+<content start="1905" end="1911">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1911" end="1931">
+<size>11</size></content>
+
+<content start="1931" end="1938">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1938" end="1946">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1946" end="1947">
+<LeftIndent>140.0</LeftIndent>
+<content start="1946" end="1947">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1947" end="1957">
+<LeftIndent>140.0</LeftIndent>
+<content start="1947" end="1957">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1957" end="1958">
+<LeftIndent>140.0</LeftIndent>
+<content start="1957" end="1958">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1958" end="1961">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1958" end="1959">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>A hint</title>
+<bgcolor>-333334</bgcolor>
+<hint_text>This is the hint we can give you for now :-)</hint_text>
+<action>Hint</action></component></content>
+
+<content start="1959" end="1960">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Yet another hint</title>
+<bgcolor>-333334</bgcolor>
+<hint_text>&lt;html&gt;&lt;b&gt;I am sorry&lt;/b&gt;, &lt;font color=&quot;#ff0000&quot;&gt;but I have no clue either :-)&lt;/font&gt;&lt;p&gt;&lt;i&gt;Perhaps you can ask Joe down the hall.&lt;/i&gt;&lt;/html&gt;</hint_text>
+<action>Hint</action></component></content>
+
+<content start="1960" end="1961">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1961" end="1962">
+<LeftIndent>140.0</LeftIndent>
+<content start="1961" end="1962">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1962" end="1990">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1962" end="1964">
+<size>11</size></content>
+
+<content start="1964" end="1972">
+<size>11</size><href>table.cml</href></content>
+
+<content start="1972" end="1975">
+<size>11</size></content>
+
+<content start="1975" end="1980">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1980" end="1983">
+<size>11</size></content>
+
+<content start="1983" end="1987">
+<size>11</size><href>PeriodicTable.cml</href></content>
+
+<content start="1987" end="1989">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

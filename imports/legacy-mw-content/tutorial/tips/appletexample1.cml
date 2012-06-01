@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Embedded applet: example 1</page_title>
+<bg_color><Red>255</Red><Green>255</Green><Blue>128</Blue></bg_color>
+<text>Embedded applet: example 1
+
+You can easily embed a Java applet into a Molecular Workbench page. The following is an example. For more information, see the User&apos;s Manual about how to inserting an applet.
+
+ </text>
+<section start="0" end="206">
+<paragraph start="0" end="27">
+<Alignment>1</Alignment>
+<content start="0" end="26">
+<bold>true</bold><size>15</size></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="203">
+<LeftIndent>10.0</LeftIndent>
+<content start="28" end="147">
+</content>
+
+<content start="147" end="201">
+<href>../../tutorial/applet.cml</href></content>
+
+<content start="201" end="203">
+</content>
+
+</paragraph>
+<paragraph start="203" end="204">
+<content start="203" end="204">
+</content>
+
+</paragraph>
+<paragraph start="204" end="206">
+<Alignment>1</Alignment>
+<content start="204" end="205">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>lineartransformer.jar</appletjar>
+<appletclass>LinearTransformerApplet</appletclass>
+<width>700</width><height>500</height>
+<border>Raised Bevel</border></component></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Put it togther: virtual haptics using the Rover</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Put it togther: virtual haptics using the Rover
+
+&lt; Previous | Index | Next &gt;
+
+Before the arrival of the time of haptic user interface, the combination of collision detection and interaction centers presents a possibility to implement virtual haptics.
+
+The following example demonstrates what a user might experience while navigating into a nano gear, at the center of which there is a sticky attraction center. Collision detection is enabled for all atoms.
+
+ 
+&#12304;The Rover in Drexler&apos;s differential nano gear.&#12305;
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="538">
+<paragraph start="0" end="48">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="0" end="47">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="77">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="59">
+<size>11</size><href>roversetup.cml</href></content>
+
+<content start="59" end="62">
+<size>11</size></content>
+
+<content start="62" end="67">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="67" end="76">
+<size>11</size></content>
+
+<content start="76" end="77">
+</content>
+
+</paragraph>
+<paragraph start="77" end="78">
+<content start="77" end="78">
+</content>
+
+</paragraph>
+<paragraph start="78" end="251">
+<LeftIndent>140.0</LeftIndent>
+<content start="78" end="251">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="251" end="252">
+<LeftIndent>140.0</LeftIndent>
+<content start="251" end="252">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="252" end="457">
+<LeftIndent>140.0</LeftIndent>
+<content start="252" end="457">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="457" end="458">
+<LeftIndent>140.0</LeftIndent>
+<content start="457" end="458">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="458" end="460">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="458" end="459">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<toolbar>false</toolbar><navigation>true</navigation><resource>diffGear.pdb</resource><state>haptics$0.jms</state><width>500.0</width>
+<height>300.0</height>
+</component></content>
+
+<content start="459" end="460">
+</content>
+
+</paragraph>
+<paragraph start="460" end="509">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="460" end="461">
+<size>13</size><bold>true</bold></content>
+
+<content start="461" end="507">
+<size>10</size></content>
+
+<content start="507" end="508">
+<size>13</size><bold>true</bold></content>
+
+<content start="508" end="509">
+</content>
+
+</paragraph>
+<paragraph start="509" end="510">
+<content start="509" end="510">
+</content>
+
+</paragraph>
+<paragraph start="510" end="538">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="510" end="512">
+<size>11</size></content>
+
+<content start="512" end="520">
+<size>11</size><href>roversetup.cml</href></content>
+
+<content start="520" end="523">
+<size>11</size></content>
+
+<content start="523" end="528">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="528" end="537">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

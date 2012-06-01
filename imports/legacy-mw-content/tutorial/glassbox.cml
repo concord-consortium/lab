@@ -10,7 +10,7 @@
 Unlike many other 3D environments, atoms and molecules in this 3D environment is confined within a box, which by default reflects them when they hit the faces of the box. This is necessary, because in our simulations every atom can be moving thermodynamically. Hence, it is important to prevent them from diffusing away and never coming back to our view again. Since the box must be transparent in order for us to see what is going on inside it, we call it the glass simulation box (shown below).
 
  
-[This is an embedded model.]
+&#12304;This is an embedded model container.&#12305;
 
 Showing or hiding the glass simulation box
 
@@ -20,13 +20,23 @@ Resizing the glass simulation box
 
 If you select the &quot; &quot; button, you will be able to change the size of the simulation box by extrusion (pressing on a face, hold down the mouse button and then drag). Note that the minimum size you can set is determined by the bounding box of the current objects in the model.
 
+Script support
+
+The following commands are used to change the size of the simulation box:
+
+set cell_length [value]
+set cell_width [value]
+set cell_height [value]
+
+The [value] parameter should be a number in angstroms. cell_length is the size in the x direciton, cell_width is the size in the y direciton, and cell_height is the size in the z direction, respectively.
+
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1405">
+<section start="0" end="1783">
 <paragraph start="0" end="25">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="24">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<size>15</size><italic>true</italic><bold>true</bold></content>
 
 <content start="24" end="25">
 </content>
@@ -46,19 +56,19 @@ If you select the &quot; &quot; button, you will be able to change the size of t
 <size>11</size></content>
 
 <content start="28" end="36">
-<size>11</size><href>resizecontainer3d.cml</href></content>
+<href>field3d.cml</href><size>11</size></content>
 
 <content start="36" end="39">
 <size>11</size></content>
 
 <content start="39" end="44">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="44" end="47">
 <size>11</size></content>
 
 <content start="47" end="51">
-<size>11</size><href>drop3d.cml</href></content>
+<href>drop3d.cml</href><size>11</size></content>
 
 <content start="51" end="53">
 <size>11</size></content>
@@ -86,8 +96,8 @@ If you select the &quot; &quot; button, you will be able to change the size of t
 
 </paragraph>
 <paragraph start="553" end="555">
-<Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="553" end="554">
 <component><class>org.concord.modeler.PageMd3d</class><resource>glassbox$0.mdd</resource><coordinate>glassbox$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
 </component></content>
@@ -96,110 +106,218 @@ If you select the &quot; &quot; button, you will be able to change the size of t
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="555" end="584">
-<Alignment>1</Alignment>
+<paragraph start="555" end="594">
 <LeftIndent>140.0</LeftIndent>
-<content start="555" end="583">
+<Alignment>1</Alignment>
+<content start="555" end="593">
 <size>10</size></content>
 
-<content start="583" end="584">
+<content start="593" end="594">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="584" end="585">
+<paragraph start="594" end="595">
 <LeftIndent>140.0</LeftIndent>
-<content start="584" end="585">
+<content start="594" end="595">
 </content>
 
 </paragraph>
-<paragraph start="585" end="628">
+<paragraph start="595" end="638">
 <LeftIndent>140.0</LeftIndent>
-<content start="585" end="627">
-<size>11</size><bold>true</bold></content>
+<content start="595" end="637">
+<bold>true</bold><size>11</size></content>
 
-<content start="627" end="628">
+<content start="637" end="638">
 </content>
 
 </paragraph>
-<paragraph start="628" end="629">
+<paragraph start="638" end="639">
 <LeftIndent>140.0</LeftIndent>
-<content start="628" end="629">
+<content start="638" end="639">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="629" end="1065">
+<paragraph start="639" end="1075">
 <LeftIndent>140.0</LeftIndent>
-<content start="629" end="1064">
+<content start="639" end="1074">
 <size>11</size></content>
 
-<content start="1064" end="1065">
+<content start="1074" end="1075">
 </content>
 
 </paragraph>
-<paragraph start="1065" end="1066">
+<paragraph start="1075" end="1076">
 <LeftIndent>140.0</LeftIndent>
-<content start="1065" end="1066">
+<content start="1075" end="1076">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1066" end="1100">
+<paragraph start="1076" end="1110">
 <LeftIndent>140.0</LeftIndent>
-<content start="1066" end="1099">
-<size>11</size><bold>true</bold></content>
+<content start="1076" end="1109">
+<bold>true</bold><size>11</size></content>
 
-<content start="1099" end="1100">
+<content start="1109" end="1110">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1100" end="1101">
+<paragraph start="1110" end="1111">
 <LeftIndent>140.0</LeftIndent>
-<content start="1100" end="1101">
+<content start="1110" end="1111">
 </content>
 
 </paragraph>
-<paragraph start="1101" end="1376">
+<paragraph start="1111" end="1386">
 <LeftIndent>140.0</LeftIndent>
-<content start="1101" end="1120">
+<content start="1111" end="1130">
 <size>11</size></content>
 
-<content start="1120" end="1121">
+<content start="1130" end="1131">
 <icon>ChangeBox.gif</icon><size>11</size></content>
 
-<content start="1121" end="1375">
+<content start="1131" end="1386">
 <size>11</size></content>
 
-<content start="1375" end="1376">
-</content>
-
 </paragraph>
-<paragraph start="1376" end="1377">
+<paragraph start="1386" end="1387">
 <LeftIndent>140.0</LeftIndent>
-<content start="1376" end="1377">
+<content start="1386" end="1387">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1387" end="1402">
+<LeftIndent>140.0</LeftIndent>
+<content start="1387" end="1401">
+<bold>true</bold><size>11</size></content>
+
+<content start="1401" end="1402">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1402" end="1403">
+<LeftIndent>140.0</LeftIndent>
+<content start="1402" end="1403">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1403" end="1477">
+<LeftIndent>140.0</LeftIndent>
+<content start="1403" end="1477">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1477" end="1478">
+<LeftIndent>140.0</LeftIndent>
+<content start="1477" end="1478">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1478" end="1502">
+<LeftIndent>160.0</LeftIndent>
+<content start="1478" end="1502">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1502" end="1525">
+<LeftIndent>160.0</LeftIndent>
+<content start="1502" end="1525">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1525" end="1549">
+<LeftIndent>160.0</LeftIndent>
+<content start="1525" end="1548">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1548" end="1549">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1549" end="1550">
+<LeftIndent>140.0</LeftIndent>
+<content start="1549" end="1550">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1550" end="1754">
+<LeftIndent>140.0</LeftIndent>
+<content start="1550" end="1554">
+<size>11</size></content>
+
+<content start="1554" end="1561">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1561" end="1605">
+<size>11</size></content>
+
+<content start="1605" end="1616">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1616" end="1636">
+<size>11</size></content>
+
+<content start="1636" end="1637">
+<italic>true</italic><size>11</size></content>
+
+<content start="1637" end="1649">
+<size>11</size></content>
+
+<content start="1649" end="1659">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1659" end="1679">
+<size>11</size></content>
+
+<content start="1679" end="1680">
+<italic>true</italic><size>11</size></content>
+
+<content start="1680" end="1696">
+<size>11</size></content>
+
+<content start="1696" end="1707">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1707" end="1727">
+<size>11</size></content>
+
+<content start="1727" end="1728">
+<italic>true</italic><size>11</size></content>
+
+<content start="1728" end="1753">
+<size>11</size></content>
+
+<content start="1753" end="1754">
 </content>
 
 </paragraph>
-<paragraph start="1377" end="1405">
+<paragraph start="1754" end="1755">
+<LeftIndent>140.0</LeftIndent>
+<content start="1754" end="1755">
+</content>
+
+</paragraph>
+<paragraph start="1755" end="1783">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="1377" end="1379">
+<content start="1755" end="1757">
 <size>11</size></content>
 
-<content start="1379" end="1387">
-<size>11</size><href>resizecontainer3d.cml</href></content>
+<content start="1757" end="1765">
+<href>field3d.cml</href><size>11</size></content>
 
-<content start="1387" end="1390">
+<content start="1765" end="1768">
 <size>11</size></content>
 
-<content start="1390" end="1395">
-<size>11</size><href>index4.cml</href></content>
+<content start="1768" end="1773">
+<href>index4.cml</href><size>11</size></content>
 
-<content start="1395" end="1398">
+<content start="1773" end="1776">
 <size>11</size></content>
 
-<content start="1398" end="1402">
-<size>11</size><href>drop3d.cml</href></content>
+<content start="1776" end="1780">
+<href>drop3d.cml</href><size>11</size></content>
 
-<content start="1402" end="1404">
+<content start="1780" end="1782">
 <size>11</size></content>
 
 </paragraph>

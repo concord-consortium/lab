@@ -10,17 +10,17 @@
 The first test of the virtual pressure gauge is an experiment in which two gauges with different lengths are placed into the same system. Each gauge will produce a value. Will they measure the same pressure? The following experiment shows this:
 
   
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 The pressures measured by these two independent gauges should be close to each other. Due to thermal fluctuations, they cannot be exactly equal to each other, but the statistical averages should be approximately the same, within an error tolerance. To get the statistical averages, press the third or fourth button in the tool bar above the graph.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="734">
+<section start="0" end="740">
 <paragraph start="0" end="44">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="43">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="43" end="44">
 </content>
@@ -111,59 +111,59 @@ The pressures measured by these two independent gauges should be close to each o
 </content>
 
 </paragraph>
-<paragraph start="323" end="356">
+<paragraph start="323" end="362">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="323" end="355">
+<content start="323" end="361">
 <size>10</size></content>
 
-<content start="355" end="356">
+<content start="361" end="362">
 </content>
 
 </paragraph>
-<paragraph start="356" end="357">
+<paragraph start="362" end="363">
 <LeftIndent>140.0</LeftIndent>
-<content start="356" end="357">
+<content start="362" end="363">
 </content>
 
 </paragraph>
-<paragraph start="357" end="705">
+<paragraph start="363" end="711">
 <LeftIndent>140.0</LeftIndent>
-<content start="357" end="704">
+<content start="363" end="710">
 <size>11</size></content>
 
-<content start="704" end="705">
+<content start="710" end="711">
 </content>
 
 </paragraph>
-<paragraph start="705" end="706">
+<paragraph start="711" end="712">
 <LeftIndent>140.0</LeftIndent>
-<content start="705" end="706">
+<content start="711" end="712">
 </content>
 
 </paragraph>
-<paragraph start="706" end="734">
+<paragraph start="712" end="740">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="706" end="708">
+<content start="712" end="714">
 <size>11</size></content>
 
-<content start="708" end="716">
+<content start="714" end="722">
 <href>pressureprobe.cml</href><size>11</size></content>
 
-<content start="716" end="719">
+<content start="722" end="725">
 <size>11</size></content>
 
-<content start="719" end="724">
+<content start="725" end="730">
 <href>index1.cml</href><size>11</size></content>
 
-<content start="724" end="727">
+<content start="730" end="733">
 <size>11</size></content>
 
-<content start="727" end="731">
+<content start="733" end="737">
 <href>pressurediff.cml</href><size>11</size></content>
 
-<content start="731" end="733">
+<content start="737" end="739">
 <size>11</size></content>
 
 </paragraph>

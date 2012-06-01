@@ -22,7 +22,7 @@ Practice
 You may play with the following example about adding and removing torsional bonds to finish the construction of an ethylene molecule. It would be interesting to observe how the molecule will change shape if you run this model without adding torsional bonds&#10102;.
 
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 If you have difficulty in constructing the torsional bonds, you may want to check with these two pre-made models. The first one has only two torsional bonds. The second one has four. Hence, the planarity of the molecule is better maintained in the second model than in the first one.
 
@@ -30,12 +30,12 @@ If you have difficulty in constructing the torsional bonds, you may want to chec
 &#10102; The ethylene molecule contains a C=C double bond and hence, unlike ethane, torsional bonds must be added to maintain the planarity of the conformation.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="2033">
+<section start="0" end="2039">
 <paragraph start="0" end="36">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="0" end="35">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<size>15</size><bold>true</bold><italic>true</italic></content>
 
 <content start="35" end="36">
 </content>
@@ -48,25 +48,25 @@ If you have difficulty in constructing the torsional bonds, you may want to chec
 
 </paragraph>
 <paragraph start="37" end="65">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="37" end="39">
 <size>11</size></content>
 
 <content start="39" end="47">
-<size>11</size><href>abond3d.cml</href></content>
+<href>abond3d.cml</href><size>11</size></content>
 
 <content start="47" end="50">
 <size>11</size></content>
 
 <content start="50" end="55">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="55" end="58">
 <size>11</size></content>
 
 <content start="58" end="62">
-<size>11</size><href>duplicate3d.cml</href></content>
+<href>duplicate3d.cml</href><size>11</size></content>
 
 <content start="62" end="64">
 <size>11</size></content>
@@ -87,7 +87,7 @@ If you have difficulty in constructing the torsional bonds, you may want to chec
 <size>11</size></content>
 
 <content start="79" end="94">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="94" end="157">
 <size>11</size></content>
@@ -99,7 +99,7 @@ If you have difficulty in constructing the torsional bonds, you may want to chec
 <size>11</size></content>
 
 <content start="159" end="200">
-<size>11</size><href>http://cmm.cit.nih.gov/modeling/guide_documents/molecular_mechanics_document.html</href></content>
+<href>http://cmm.cit.nih.gov/modeling/guide_documents/molecular_mechanics_document.html</href><size>11</size></content>
 
 <content start="200" end="203">
 <size>11</size></content>
@@ -130,19 +130,17 @@ If you have difficulty in constructing the torsional bonds, you may want to chec
 
 </paragraph>
 <paragraph start="746" end="748">
-<SpaceAbove>2.0</SpaceAbove>
 <LeftIndent>140.0</LeftIndent>
-<SpaceBelow>2.0</SpaceBelow>
 <content start="746" end="747">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="747" end="748">
 </content>
 
 </paragraph>
 <paragraph start="748" end="861">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="748" end="860">
 <size>11</size></content>
 
@@ -151,11 +149,9 @@ If you have difficulty in constructing the torsional bonds, you may want to chec
 
 </paragraph>
 <paragraph start="861" end="863">
-<SpaceAbove>2.0</SpaceAbove>
 <LeftIndent>140.0</LeftIndent>
-<SpaceBelow>2.0</SpaceBelow>
 <content start="861" end="862">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="862" end="863">
 <size>11</size></content>
@@ -169,13 +165,7 @@ If you have difficulty in constructing the torsional bonds, you may want to chec
 </paragraph>
 <paragraph start="864" end="1256">
 <LeftIndent>140.0</LeftIndent>
-<content start="864" end="910">
-<size>11</size></content>
-
-<content start="910" end="967">
-<size>11</size></content>
-
-<content start="967" end="1256">
+<content start="864" end="1256">
 <size>11</size></content>
 
 </paragraph>
@@ -188,7 +178,7 @@ If you have difficulty in constructing the torsional bonds, you may want to chec
 <paragraph start="1257" end="1266">
 <LeftIndent>140.0</LeftIndent>
 <content start="1257" end="1265">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="1265" end="1266">
 <size>11</size></content>
@@ -206,7 +196,7 @@ If you have difficulty in constructing the torsional bonds, you may want to chec
 <size>11</size></content>
 
 <content start="1523" end="1524">
-</content>
+<size>13</size></content>
 
 <content start="1524" end="1526">
 <size>11</size></content>
@@ -229,101 +219,101 @@ If you have difficulty in constructing the torsional bonds, you may want to chec
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1529" end="1562">
+<paragraph start="1529" end="1568">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="1529" end="1561">
+<content start="1529" end="1567">
 <size>10</size></content>
 
-<content start="1561" end="1562">
+<content start="1567" end="1568">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1562" end="1563">
+<paragraph start="1568" end="1569">
 <LeftIndent>140.0</LeftIndent>
-<content start="1562" end="1563">
+<content start="1568" end="1569">
 </content>
 
 </paragraph>
-<paragraph start="1563" end="1847">
+<paragraph start="1569" end="1853">
 <LeftIndent>140.0</LeftIndent>
-<content start="1563" end="1677">
+<content start="1569" end="1683">
 <size>11</size></content>
 
-<content start="1677" end="1690">
-<size>11</size><href>tbond3da.cml</href></content>
+<content start="1683" end="1696">
+<href>tbond3da.cml</href><size>11</size></content>
 
-<content start="1690" end="1721">
+<content start="1696" end="1727">
 <size>11</size></content>
 
-<content start="1721" end="1735">
-<size>11</size><href>tbond3db.cml</href></content>
+<content start="1727" end="1741">
+<href>tbond3db.cml</href><size>11</size></content>
 
-<content start="1735" end="1846">
+<content start="1741" end="1852">
 <size>11</size></content>
 
-<content start="1846" end="1847">
+<content start="1852" end="1853">
 </content>
 
 </paragraph>
-<paragraph start="1847" end="1848">
+<paragraph start="1853" end="1854">
 <LeftIndent>140.0</LeftIndent>
-<content start="1847" end="1848">
+<content start="1853" end="1854">
 </content>
 
 </paragraph>
-<paragraph start="1848" end="1850">
+<paragraph start="1854" end="1856">
 <LeftIndent>140.0</LeftIndent>
-<content start="1848" end="1849">
+<content start="1854" end="1855">
 <icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-1000000</bgcolor></icon></content>
 
-<content start="1849" end="1850">
+<content start="1855" end="1856">
 </content>
 
 </paragraph>
-<paragraph start="1850" end="2004">
+<paragraph start="1856" end="2010">
 <LeftIndent>140.0</LeftIndent>
-<content start="1850" end="1851">
-</content>
+<content start="1856" end="1857">
+<size>13</size></content>
 
-<content start="1851" end="1852">
+<content start="1857" end="1858">
 <size>11</size></content>
 
-<content start="1852" end="2003">
+<content start="1858" end="2009">
 <size>10</size></content>
 
-<content start="2003" end="2004">
+<content start="2009" end="2010">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2004" end="2005">
+<paragraph start="2010" end="2011">
 <LeftIndent>140.0</LeftIndent>
-<content start="2004" end="2005">
+<content start="2010" end="2011">
 </content>
 
 </paragraph>
-<paragraph start="2005" end="2033">
-<Alignment>2</Alignment>
+<paragraph start="2011" end="2039">
 <RightIndent>20.0</RightIndent>
-<content start="2005" end="2007">
+<Alignment>2</Alignment>
+<content start="2011" end="2013">
 <size>11</size></content>
 
-<content start="2007" end="2015">
-<size>11</size><href>abond3d.cml</href></content>
+<content start="2013" end="2021">
+<href>abond3d.cml</href><size>11</size></content>
 
-<content start="2015" end="2018">
+<content start="2021" end="2024">
 <size>11</size></content>
 
-<content start="2018" end="2023">
-<size>11</size><href>index4.cml</href></content>
+<content start="2024" end="2029">
+<href>index4.cml</href><size>11</size></content>
 
-<content start="2023" end="2026">
+<content start="2029" end="2032">
 <size>11</size></content>
 
-<content start="2026" end="2030">
-<size>11</size><href>duplicate3d.cml</href></content>
+<content start="2032" end="2036">
+<href>duplicate3d.cml</href><size>11</size></content>
 
-<content start="2030" end="2032">
+<content start="2036" end="2038">
 <size>11</size></content>
 
 </paragraph>

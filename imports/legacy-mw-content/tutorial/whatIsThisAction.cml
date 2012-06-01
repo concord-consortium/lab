@@ -10,7 +10,7 @@
 The Query Tool (&quot; &quot;) returns a short textual description about the selected object in the model.
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 If the clicked point is not contained within any object, this tool will just show the coordinates (in angstroms). It is noteworthy to point out that the origin of the coordinate system is at the upper-left corner of the window and the y axis points downwards. As a result, the lower-right corner has the maximum x and y coordinates. And all the coordinates are positive.
 
@@ -19,25 +19,25 @@ This tool can be used to quickly find the index of an object, which is needed to
 &lt; Previous | Index | Next &gt;</text>
 <section start="0" end="894">
 <paragraph start="0" end="15">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="14">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="14" end="15">
 </content>
 
 </paragraph>
 <paragraph start="15" end="16">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="15" end="16">
 </content>
 
 </paragraph>
 <paragraph start="16" end="44">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="16" end="18">
 <size>11</size></content>
 
@@ -88,8 +88,8 @@ This tool can be used to quickly find the index of an object, which is needed to
 
 </paragraph>
 <paragraph start="143" end="146">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="143" end="144">
 </content>
 
@@ -101,8 +101,8 @@ This tool can be used to quickly find the index of an object, which is needed to
 
 </paragraph>
 <paragraph start="146" end="170">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="146" end="169">
 <size>10</size></content>
 
@@ -122,13 +122,13 @@ This tool can be used to quickly find the index of an object, which is needed to
 <size>11</size></content>
 
 <content start="483" end="484">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="484" end="489">
 <size>11</size></content>
 
 <content start="489" end="490">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="490" end="541">
 <size>11</size></content>
@@ -149,7 +149,7 @@ This tool can be used to quickly find the index of an object, which is needed to
 <size>11</size></content>
 
 <content start="568" end="603">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="603" end="654">
 <size>11</size></content>
@@ -186,8 +186,8 @@ This tool can be used to quickly find the index of an object, which is needed to
 
 </paragraph>
 <paragraph start="866" end="894">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="866" end="868">
 <size>11</size></content>
 

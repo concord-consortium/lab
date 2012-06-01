@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Keyboard events</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Keyboard events
+
+&lt; Previous | Index | Next &gt;
+
+You can add scripts that will get executed for different keyboard events. Note that the scripts will only run when the model&apos;s window has the keyboard focus.
+
+Syntax:
+
+beginkey:pressed;
+  // do something when a key is pressed
+endkey:pressed;
+
+beginkey:released;
+  // do something when a key is released
+endkey:released;
+
+The current key code can be obtained by using the %keycode variable, which is an integer. The code of a key can be found at   Java&apos;s documentation about java.awt.KeyEvent. (Look for VK_*.)
+
+The following is an example in which the key listeners are set up in the model&apos;s initialization scripts:
+
+   
+
+   
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="701">
+<paragraph start="0" end="16">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="15">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="45">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="17" end="19">
+<size>11</size></content>
+
+<content start="19" end="27">
+<href>script_mouse.cml</href><size>11</size></content>
+
+<content start="27" end="30">
+<size>11</size></content>
+
+<content start="30" end="35">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="35" end="38">
+<size>11</size></content>
+
+<content start="38" end="42">
+<href>script_run.cml</href><size>11</size></content>
+
+<content start="42" end="44">
+<size>11</size></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<LeftIndent>100.0</LeftIndent>
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="204">
+<LeftIndent>140.0</LeftIndent>
+<content start="46" end="204">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="204" end="205">
+<LeftIndent>140.0</LeftIndent>
+<content start="204" end="205">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="205" end="213">
+<LeftIndent>140.0</LeftIndent>
+<content start="205" end="213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="213" end="214">
+<LeftIndent>140.0</LeftIndent>
+<content start="213" end="214">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="214" end="232">
+<LeftIndent>160.0</LeftIndent>
+<content start="214" end="230">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="230" end="232">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="232" end="272">
+<LeftIndent>160.0</LeftIndent>
+<content start="232" end="272">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="272" end="288">
+<LeftIndent>160.0</LeftIndent>
+<content start="272" end="286">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="286" end="287">
+<size>11</size><family>Courier New</family></content>
+
+<content start="287" end="288">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="288" end="289">
+<LeftIndent>160.0</LeftIndent>
+<content start="288" end="289">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="289" end="308">
+<LeftIndent>160.0</LeftIndent>
+<content start="289" end="306">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="306" end="308">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="308" end="349">
+<LeftIndent>160.0</LeftIndent>
+<content start="308" end="349">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="349" end="366">
+<LeftIndent>160.0</LeftIndent>
+<content start="349" end="364">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="364" end="365">
+<size>11</size><family>Courier New</family></content>
+
+<content start="365" end="366">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="366" end="367">
+<LeftIndent>160.0</LeftIndent>
+<content start="366" end="367">
+</content>
+
+</paragraph>
+<paragraph start="367" end="556">
+<LeftIndent>140.0</LeftIndent>
+<content start="367" end="417">
+<size>11</size></content>
+
+<content start="417" end="425">
+<size>11</size><family>Courier New</family></content>
+
+<content start="425" end="491">
+<size>11</size></content>
+
+<content start="491" end="492">
+<icon>htmlink.gif</icon></content>
+
+<content start="492" end="493">
+<size>11</size></content>
+
+<content start="493" end="537">
+<href>http://java.sun.com/javase/6/docs/api/java/awt/event/KeyEvent.html</href><size>11</size></content>
+
+<content start="537" end="556">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="556" end="557">
+<LeftIndent>140.0</LeftIndent>
+<content start="556" end="557">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="557" end="662">
+<LeftIndent>140.0</LeftIndent>
+<content start="557" end="638">
+<size>11</size></content>
+
+<content start="638" end="660">
+<href>modelProp.cml</href><size>11</size></content>
+
+<content start="660" end="662">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="662" end="663">
+<LeftIndent>140.0</LeftIndent>
+<content start="662" end="663">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="663" end="667">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="663" end="664">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_key$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="664" end="665">
+</content>
+
+<content start="665" end="666">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>285</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="666" end="667">
+</content>
+
+</paragraph>
+<paragraph start="667" end="668">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="667" end="668">
+</content>
+
+</paragraph>
+<paragraph start="668" end="672">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="668" end="669">
+<component><class>org.concord.modeler.PageMd3d</class><resource>script_key$0.mdd</resource><coordinate>script_key$0.xyz</coordinate><width>360</width><height>285</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Raised Bevel</border>
+<recorderless>true</recorderless>
+</component></content>
+
+<content start="669" end="670">
+</content>
+
+<content start="670" end="671">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<width>300</width><height>285</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="671" end="672">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="672" end="673">
+<LeftIndent>140.0</LeftIndent>
+<content start="672" end="673">
+</content>
+
+</paragraph>
+<paragraph start="673" end="701">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="673" end="675">
+<size>11</size></content>
+
+<content start="675" end="683">
+<href>script_mouse.cml</href><size>11</size></content>
+
+<content start="683" end="686">
+<size>11</size></content>
+
+<content start="686" end="691">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="691" end="694">
+<size>11</size></content>
+
+<content start="694" end="698">
+<href>script_run.cml</href><size>11</size></content>
+
+<content start="698" end="700">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

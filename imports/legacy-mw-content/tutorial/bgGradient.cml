@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Filling with gradient</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Filling with gradient
@@ -10,13 +10,13 @@
 With the following dialog, you can set many types of gradient background.
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
  &lt; Previous | Index | Next &gt;</text>
 <section start="0" end="184">
 <paragraph start="0" end="22">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="21">
 <bold>true</bold><italic>true</italic><size>15</size></content>
 
@@ -25,32 +25,32 @@ With the following dialog, you can set many types of gradient background.
 
 </paragraph>
 <paragraph start="22" end="23">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="22" end="23">
 </content>
 
 </paragraph>
 <paragraph start="23" end="51">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="23" end="25">
 <size>11</size></content>
 
 <content start="25" end="33">
-<href>bgColor.cml</href><size>11</size></content>
+<size>11</size><href>bgColor.cml</href></content>
 
 <content start="33" end="36">
 <size>11</size></content>
 
 <content start="36" end="41">
-<href>index2.cml</href><size>11</size></content>
+<size>11</size><href>index2.cml</href></content>
 
 <content start="41" end="44">
 <size>11</size></content>
 
 <content start="44" end="48">
-<href>bgTexture.cml</href><size>11</size></content>
+<size>11</size><href>bgTexture.cml</href></content>
 
 <content start="48" end="50">
 <size>11</size></content>
@@ -96,8 +96,14 @@ With the following dialog, you can set many types of gradient background.
 <paragraph start="130" end="154">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="130" end="153">
+<content start="130" end="131">
+<bold>true</bold><size>13</size></content>
+
+<content start="131" end="152">
 <size>10</size></content>
+
+<content start="152" end="153">
+<bold>true</bold><size>13</size></content>
 
 <content start="153" end="154">
 </content>
@@ -110,8 +116,8 @@ With the following dialog, you can set many types of gradient background.
 
 </paragraph>
 <paragraph start="155" end="184">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="155" end="156">
 </content>
 
@@ -119,19 +125,19 @@ With the following dialog, you can set many types of gradient background.
 <size>11</size></content>
 
 <content start="158" end="166">
-<href>bgColor.cml</href><size>11</size></content>
+<size>11</size><href>bgColor.cml</href></content>
 
 <content start="166" end="169">
 <size>11</size></content>
 
 <content start="169" end="174">
-<href>index2.cml</href><size>11</size></content>
+<size>11</size><href>index2.cml</href></content>
 
 <content start="174" end="177">
 <size>11</size></content>
 
 <content start="177" end="181">
-<href>bgTexture.cml</href><size>11</size></content>
+<size>11</size><href>bgTexture.cml</href></content>
 
 <content start="181" end="183">
 <size>11</size></content>

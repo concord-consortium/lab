@@ -19,15 +19,13 @@ As a result of the first constraint, it is not possible to simulate things such 
 To run a flow simulation, follow these steps:
 
    Select the menu &quot;Option&gt;Disable Recorder&quot; from the container&apos;s menu bar to disable the recorder, if the simulator is currently in the recording mode. This is because the recorder cannot record frames that have different number of atoms.
-
    Select the menu &quot;Option&gt;Enable Flow&quot; from the simulator&apos;s menu bar to enable the flow simulation.
-
    Click the &quot;Run&quot; button to start the simulation.
 
 The following is a demo model that shows a simple flow simulation.
 
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Using the flow control panel
 
@@ -35,7 +33,7 @@ To change the flow parameters, select the &quot;Option&gt;Flow Control Panel&quo
 You will see a dialog window, with which you can set up the flow.
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 The flow control panel allows you to customize the side atoms flow in and out, the types of atoms that will flow in, the types of atoms that will flow out, and the flux of the flow. There are a few things worthy of mentioning:
 
@@ -52,12 +50,12 @@ Demo: How a syringe work
 Demo: Air purifier
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="3382">
+<section start="0" end="3386">
 <paragraph start="0" end="17">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="16">
-<italic>true</italic><size>16</size><bold>true</bold></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="16" end="17">
 </content>
@@ -202,326 +200,321 @@ Demo: Air purifier
 <content start="1002" end="1004">
 </content>
 
-<content start="1004" end="1241">
+<content start="1004" end="1240">
+<size>11</size></content>
+
+<content start="1240" end="1241">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1241" end="1242">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1241" end="1342">
+<LeftIndent>160.0</LeftIndent>
 <content start="1241" end="1242">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1242" end="1343">
-<LeftIndent>160.0</LeftIndent>
-<content start="1242" end="1243">
 <icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
 
-<content start="1243" end="1245">
+<content start="1242" end="1244">
 </content>
 
-<content start="1245" end="1343">
+<content start="1244" end="1341">
+<size>11</size></content>
+
+<content start="1341" end="1342">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1343" end="1344">
-<LeftIndent>140.0</LeftIndent>
-<content start="1343" end="1344">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1344" end="1395">
+<paragraph start="1342" end="1393">
 <LeftIndent>160.0</LeftIndent>
-<content start="1344" end="1345">
+<content start="1342" end="1343">
 <icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
 
-<content start="1345" end="1347">
+<content start="1343" end="1345">
 </content>
 
-<content start="1347" end="1395">
+<content start="1345" end="1393">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1395" end="1396">
+<paragraph start="1393" end="1394">
 <LeftIndent>140.0</LeftIndent>
-<content start="1395" end="1396">
+<content start="1393" end="1394">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1396" end="1463">
+<paragraph start="1394" end="1461">
 <LeftIndent>140.0</LeftIndent>
-<content start="1396" end="1463">
+<content start="1394" end="1461">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1463" end="1464">
+<paragraph start="1461" end="1462">
 <LeftIndent>140.0</LeftIndent>
-<content start="1463" end="1464">
+<content start="1461" end="1462">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1464" end="1466">
+<paragraph start="1462" end="1464">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="1464" end="1465">
+<content start="1462" end="1463">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>flow$0.mml</resource><recorder>true</recorder></component></content>
+<resource>flow$0.mml</resource><recorderless>true</recorderless>
+</component></content>
 
-<content start="1465" end="1466">
+<content start="1463" end="1464">
 </content>
 
 </paragraph>
-<paragraph start="1466" end="1499">
+<paragraph start="1464" end="1503">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="1466" end="1498">
+<content start="1464" end="1502">
 <size>10</size></content>
 
-<content start="1498" end="1499">
+<content start="1502" end="1503">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1499" end="1500">
+<paragraph start="1503" end="1504">
 <LeftIndent>140.0</LeftIndent>
-<content start="1499" end="1500">
+<content start="1503" end="1504">
 </content>
 
 </paragraph>
-<paragraph start="1500" end="1529">
+<paragraph start="1504" end="1533">
 <LeftIndent>140.0</LeftIndent>
-<content start="1500" end="1528">
+<content start="1504" end="1532">
 <bold>true</bold><size>11</size></content>
 
-<content start="1528" end="1529">
+<content start="1532" end="1533">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1529" end="1530">
+<paragraph start="1533" end="1534">
 <LeftIndent>140.0</LeftIndent>
-<content start="1529" end="1530">
+<content start="1533" end="1534">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1530" end="1636">
+<paragraph start="1534" end="1640">
 <LeftIndent>140.0</LeftIndent>
-<content start="1530" end="1636">
+<content start="1534" end="1640">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1636" end="1702">
+<paragraph start="1640" end="1706">
 <LeftIndent>140.0</LeftIndent>
-<content start="1636" end="1701">
+<content start="1640" end="1705">
 <size>11</size></content>
-
-<content start="1701" end="1702">
-</content>
-
-</paragraph>
-<paragraph start="1702" end="1703">
-<LeftIndent>140.0</LeftIndent>
-<content start="1702" end="1703">
-</content>
-
-</paragraph>
-<paragraph start="1703" end="1706">
-<LeftIndent>140.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="1703" end="1704">
-</content>
-
-<content start="1704" end="1705">
-<icon>FlowControlPanel.gif</icon></content>
 
 <content start="1705" end="1706">
 </content>
 
 </paragraph>
-<paragraph start="1706" end="1730">
+<paragraph start="1706" end="1707">
+<LeftIndent>140.0</LeftIndent>
+<content start="1706" end="1707">
+</content>
+
+</paragraph>
+<paragraph start="1707" end="1710">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="1706" end="1729">
+<content start="1707" end="1708">
+</content>
+
+<content start="1708" end="1709">
+<icon>FlowControlPanel.gif</icon></content>
+
+<content start="1709" end="1710">
+</content>
+
+</paragraph>
+<paragraph start="1710" end="1734">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1710" end="1733">
 <size>10</size></content>
 
-<content start="1729" end="1730">
+<content start="1733" end="1734">
 </content>
 
 </paragraph>
-<paragraph start="1730" end="1731">
+<paragraph start="1734" end="1735">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1730" end="1731">
+<content start="1734" end="1735">
 </content>
 
 </paragraph>
-<paragraph start="1731" end="1958">
+<paragraph start="1735" end="1962">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1731" end="1958">
+<content start="1735" end="1962">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1958" end="1959">
+<paragraph start="1962" end="1963">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1958" end="1959">
+<content start="1962" end="1963">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1959" end="2305">
+<paragraph start="1963" end="2309">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>160.0</LeftIndent>
-<content start="1959" end="1960">
+<content start="1963" end="1964">
 <icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
 
-<content start="1960" end="1962">
+<content start="1964" end="1966">
 </content>
 
-<content start="1962" end="2305">
+<content start="1966" end="2309">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2305" end="2306">
+<paragraph start="2309" end="2310">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2305" end="2306">
+<content start="2309" end="2310">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2306" end="2742">
+<paragraph start="2310" end="2746">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>160.0</LeftIndent>
-<content start="2306" end="2307">
+<content start="2310" end="2311">
 <icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
 
-<content start="2307" end="2309">
+<content start="2311" end="2313">
 </content>
 
-<content start="2309" end="2547">
+<content start="2313" end="2551">
 <size>11</size></content>
 
-<content start="2547" end="2548">
+<content start="2551" end="2552">
 <icon>htmlink.gif</icon></content>
 
-<content start="2548" end="2549">
+<content start="2552" end="2553">
 <size>11</size></content>
 
-<content start="2549" end="2553">
+<content start="2553" end="2557">
 <size>11</size><href>http://chiuserv.ac.nctu.edu.tw/~htchiu/cvd/home.html</href></content>
 
-<content start="2553" end="2665">
+<content start="2557" end="2669">
 <size>11</size></content>
 
-<content start="2665" end="2740">
+<content start="2669" end="2744">
 <size>11</size><href>../student/stateofmatter/gaslaw1.cml</href></content>
 
-<content start="2740" end="2742">
+<content start="2744" end="2746">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2742" end="2743">
+<paragraph start="2746" end="2747">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>160.0</LeftIndent>
-<content start="2742" end="2743">
+<content start="2746" end="2747">
 </content>
 
 </paragraph>
-<paragraph start="2743" end="3191">
+<paragraph start="2747" end="3195">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2743" end="3191">
+<content start="2747" end="3195">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3191" end="3192">
+<paragraph start="3195" end="3196">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="3191" end="3192">
+<content start="3195" end="3196">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3192" end="3286">
+<paragraph start="3196" end="3290">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="3192" end="3286">
+<content start="3196" end="3290">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3286" end="3287">
+<paragraph start="3290" end="3291">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="3286" end="3287">
+<content start="3290" end="3291">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3287" end="3309">
+<paragraph start="3291" end="3313">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="3287" end="3293">
+<content start="3291" end="3297">
 <size>10</size></content>
 
-<content start="3293" end="3308">
+<content start="3297" end="3312">
 <size>10</size><href>../student/motionandforce/useobstacle.cml</href></content>
 
-<content start="3308" end="3309">
+<content start="3312" end="3313">
 <size>10</size></content>
 
 </paragraph>
-<paragraph start="3309" end="3334">
+<paragraph start="3313" end="3338">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="3309" end="3315">
+<content start="3313" end="3319">
 <size>10</size></content>
 
-<content start="3315" end="3333">
+<content start="3319" end="3337">
 <size>10</size><href>../student/gaslaws/syringe.cml</href></content>
 
-<content start="3333" end="3334">
+<content start="3337" end="3338">
 <size>10</size></content>
 
 </paragraph>
-<paragraph start="3334" end="3353">
+<paragraph start="3338" end="3357">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="3334" end="3340">
+<content start="3338" end="3344">
 <size>10</size></content>
 
-<content start="3340" end="3352">
+<content start="3344" end="3356">
 <size>10</size><href>../student/materials/airpurifier.cml</href></content>
 
-<content start="3352" end="3353">
+<content start="3356" end="3357">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3353" end="3354">
+<paragraph start="3357" end="3358">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="3353" end="3354">
+<content start="3357" end="3358">
 </content>
 
 </paragraph>
-<paragraph start="3354" end="3382">
+<paragraph start="3358" end="3386">
 <RightIndent>8.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
 <Alignment>2</Alignment>
-<content start="3354" end="3356">
+<content start="3358" end="3360">
 <size>11</size></content>
 
-<content start="3356" end="3364">
+<content start="3360" end="3368">
 <size>11</size><href>externalFields.cml</href></content>
 
-<content start="3364" end="3367">
+<content start="3368" end="3371">
 <size>11</size></content>
 
-<content start="3367" end="3372">
+<content start="3371" end="3376">
 <size>11</size><href>index1.cml</href></content>
 
-<content start="3372" end="3375">
+<content start="3376" end="3379">
 <size>11</size></content>
 
-<content start="3375" end="3379">
+<content start="3379" end="3383">
 <size>11</size><href>ContainerMenuBar.cml</href></content>
 
-<content start="3379" end="3381">
+<content start="3383" end="3385">
 <size>11</size></content>
 
 </paragraph>

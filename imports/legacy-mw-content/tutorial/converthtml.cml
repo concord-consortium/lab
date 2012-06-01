@@ -10,24 +10,24 @@
 In addition to saving a page in the ad hoc CML format &#10102;, you can also save it in the HTML format.  Choose the &quot;File&gt;Save As HTML&quot; menu. A dialog box will come up. The dialog box shows the file system of your computer. When the file dialog is ready, go to the the folder you would like to store the files, type in a name, and click the Save Button of the dialog box. After you have done these, the page will have been saved into the folder, in the HTML format.
 
  
-NOTE: The HTML conversion functionality is mostly used to convert CML pages that are composed of only text and images. If there are components embedded on the page, screenshots of the components are automatically created and embedded in the HTML text, in the original positions of the live components. If the component is a model, the screenshot will be hyperlinked to it using the Java Network Launching Protocol (JNLP). You can click the screenshot images to launch the real models, but the resulting HTML page is NOT active --- it should only be used to create a demo screen, if you know the users will not or cannot launch the Molecular Workbench via JNLP but you would want them to get some ideas about how the activity page looks like.
+NOTE: The HTML conversion functionality is mostly used to convert CML pages that are composed of only text and images. If there are components embedded on the page, screenshots of the components are automatically created and embedded in the HTML text, in the original positions of the live components. If the component is a model, the screenshot will be hyperlinked to it using the Java Network Launching Protocol (JNLP). You can click the screenshot images to launch the real models, but the resulting HTML page is NOT active --- it should only be used to create a demo screen, if you know the users will not or cannot launch MW via JNLP but you would want them to get some ideas about how the activity page looks like.
  
 
     
-See an   example
+See an   a converted HTML version of this page
 
-Ideally, we would hope to develop a facility that will allow an embedded model to be converted into a small Java applet embedded in HTML, and the controls and outputs to be connected through Javascript code. This would enable users to produce standard Web pages which do not need the Molecular Workbench software to view. (This, however, is such a difficult task that we do not currently have a realistic plan for realizing it.)
+Ideally, we would hope to develop a facility that will allow an embedded model to be converted into a small Java applet embedded in HTML, and the controls and outputs to be connected through Javascript code. This would enable users to produce standard Web pages which do not need MW to view. (This, however, is such a difficult task that we do not currently have a realistic plan for realizing it.)
 
  
-&#10102; The CML format is just a XML data format to store Molecular Workbench pages. For those who know cheminformatics, it is not the Chemical Markup Language. We apologize to the Chemical Markup Language Group and will pick up a different extension name in our next major upgrade.
+&#10102; The CML format is just an XML data format to store MW pages. For those who know cheminformatics, it is not the Chemical Markup Language. We apologize to the Chemical Markup Language Group for this confusion.
 
 &lt; Back &gt;</text>
-<section start="0" end="1994">
+<section start="0" end="1906">
 <paragraph start="0" end="33">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="32">
-<italic>true</italic><size>15</size><bold>true</bold></content>
+<bold>true</bold><size>15</size><italic>true</italic></content>
 
 <content start="32" end="33">
 <bold>true</bold></content>
@@ -39,13 +39,13 @@ Ideally, we would hope to develop a facility that will allow an embedded model t
 
 </paragraph>
 <paragraph start="34" end="43">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="34" end="36">
 <size>11</size></content>
 
 <content start="36" end="40">
-<size>11</size><href>download.cml</href></content>
+<href>download.cml</href><size>11</size></content>
 
 <content start="40" end="42">
 <size>11</size></content>
@@ -68,19 +68,19 @@ Ideally, we would hope to develop a facility that will allow an embedded model t
 <size>11</size></content>
 
 <content start="80" end="86">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="86" end="98">
 <size>11</size></content>
 
 <content start="98" end="99">
-</content>
+<size>13</size></content>
 
 <content start="99" end="484">
 <size>11</size></content>
 
 <content start="484" end="502">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="502" end="504">
 <size>11</size></content>
@@ -93,132 +93,137 @@ Ideally, we would hope to develop a facility that will allow an embedded model t
 
 </paragraph>
 <paragraph start="505" end="507">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
 <LeftIndent>140.0</LeftIndent>
 <content start="505" end="506">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="506" end="507">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="507" end="1249">
+<paragraph start="507" end="1228">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="507" end="513">
+<content start="507" end="625">
 <bold>true</bold><size>11</size></content>
 
-<content start="513" end="1249">
+<content start="625" end="1228">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1249" end="1251">
+<paragraph start="1228" end="1230">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
 <LeftIndent>140.0</LeftIndent>
-<content start="1249" end="1250">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="1228" end="1229">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="1250" end="1251">
+<content start="1229" end="1230">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1251" end="1252">
+<paragraph start="1230" end="1231">
 <LeftIndent>100.0</LeftIndent>
-<content start="1251" end="1252">
+<content start="1230" end="1231">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1252" end="1257">
-<LeftIndent>100.0</LeftIndent>
+<paragraph start="1231" end="1236">
 <Alignment>1</Alignment>
-<content start="1252" end="1253">
+<LeftIndent>100.0</LeftIndent>
+<content start="1231" end="1232">
 <size>11</size></content>
 
-<content start="1253" end="1254">
-<icon>window6.gif</icon><size>11</size></content>
+<content start="1232" end="1233">
+<size>11</size><icon>window6.gif</icon></content>
 
-<content start="1254" end="1257">
+<content start="1233" end="1236">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1257" end="1274">
-<LeftIndent>100.0</LeftIndent>
+<paragraph start="1236" end="1283">
 <Alignment>1</Alignment>
-<content start="1257" end="1264">
+<LeftIndent>100.0</LeftIndent>
+<content start="1236" end="1243">
 <size>11</size></content>
 
-<content start="1264" end="1265">
+<content start="1243" end="1244">
 <icon>htmlink.gif</icon></content>
 
-<content start="1265" end="1266">
+<content start="1244" end="1245">
 <size>11</size></content>
 
-<content start="1266" end="1273">
-<size>11</size><href>htmlexample.html</href></content>
+<content start="1245" end="1282">
+<href>htmlexample.html</href><size>11</size></content>
 
-<content start="1273" end="1274">
+<content start="1282" end="1283">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1274" end="1275">
+<paragraph start="1283" end="1284">
 <LeftIndent>100.0</LeftIndent>
-<content start="1274" end="1275">
+<content start="1283" end="1284">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1275" end="1704">
+<paragraph start="1284" end="1683">
 <LeftIndent>140.0</LeftIndent>
-<content start="1275" end="1704">
+<content start="1284" end="1683">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1704" end="1705">
+<paragraph start="1683" end="1684">
 <LeftIndent>140.0</LeftIndent>
-<content start="1704" end="1705">
+<content start="1683" end="1684">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1705" end="1707">
+<paragraph start="1684" end="1686">
+<SpaceAbove>1.0</SpaceAbove>
 <LeftIndent>140.0</LeftIndent>
-<content start="1705" end="1706">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><SpaceAbove>1</SpaceAbove><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="1684" end="1685">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
 
-<content start="1706" end="1707">
+<content start="1685" end="1686">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1707" end="1984">
+<paragraph start="1686" end="1896">
 <LeftIndent>140.0</LeftIndent>
-<content start="1707" end="1708">
-</content>
+<content start="1686" end="1687">
+<size>13</size></content>
 
-<content start="1708" end="1822">
+<content start="1687" end="1785">
 <size>10</size></content>
 
-<content start="1822" end="1860">
+<content start="1785" end="1823">
 <bold>true</bold><size>10</size></content>
 
-<content start="1860" end="1983">
+<content start="1823" end="1895">
 <size>10</size></content>
 
-<content start="1983" end="1984">
+<content start="1895" end="1896">
 </content>
 
 </paragraph>
-<paragraph start="1984" end="1985">
+<paragraph start="1896" end="1897">
 <LeftIndent>140.0</LeftIndent>
-<content start="1984" end="1985">
+<content start="1896" end="1897">
 </content>
 
 </paragraph>
-<paragraph start="1985" end="1994">
-<RightIndent>20.0</RightIndent>
+<paragraph start="1897" end="1906">
 <Alignment>2</Alignment>
-<content start="1985" end="1987">
+<RightIndent>20.0</RightIndent>
+<content start="1897" end="1899">
 <size>11</size></content>
 
-<content start="1987" end="1991">
-<size>11</size><href>download.cml</href></content>
+<content start="1899" end="1903">
+<href>download.cml</href><size>11</size></content>
 
-<content start="1991" end="1993">
+<content start="1903" end="1905">
 <size>11</size></content>
 
 </paragraph>

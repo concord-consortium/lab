@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Flow charts in MW</page_title>
+<text> Flow charts in MW
+
+The following is a flow chart made using MW&apos;s annotation tools (believe it or not).
+
+ 
+
+This is not to say you should use MW to do the job that is better done with PowerPoint. This example is shown here only to demonstrate that the tools for annotating simulations can actually be quite useful, if you master them.</text>
+<section start="0" end="335">
+<paragraph start="0" end="19">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="18">
+<bold>true</bold><size>15</size></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<LeftIndent>8.0</LeftIndent>
+<content start="19" end="20">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="20" end="104">
+<LeftIndent>8.0</LeftIndent>
+<content start="20" end="104">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="104" end="105">
+<LeftIndent>8.0</LeftIndent>
+<content start="104" end="105">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="105" end="107">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="105" end="106">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>flowchart$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorderless>true</recorderless>
+</component></content>
+
+<content start="106" end="107">
+</content>
+
+</paragraph>
+<paragraph start="107" end="108">
+<content start="107" end="108">
+</content>
+
+</paragraph>
+<paragraph start="108" end="335">
+<LeftIndent>8.0</LeftIndent>
+<content start="108" end="334">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

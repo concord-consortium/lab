@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Lat: Local Area Temperature</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Lat: Local Area Temperature
@@ -35,7 +35,7 @@ Caution: You should generally use this command once per script execution. Avoid 
 
  
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Script used in the above button: lat 3 within (12, 0, 2, %height) and 3 within (16, 0, 2, %height) and 3 within (20, 0, 2, %height) and 3 within (24, 0, 2, %height) and 3 within (28, 0, 2, %height);
 
@@ -45,7 +45,7 @@ Another interesting use of this command is to answer the following question: whe
 
  
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Script used in the above button: lat 0 within (0, 0, %width, %height) and 1 within (0, 0, %width, %height) and 2 within (0, 0, %width, %height) and 3 within (0, 0, %width, %height);
 
@@ -54,12 +54,12 @@ The above simulation should show that the temperature of a species of molecules 
 This result is also consistent with the Maxwell speed distribution law, which states that heavier atoms on average have slower speeds. To be more precise, it says that the average speed of a species is inversely proportional to the square root of its mass. In other words, the kinetic energies, and therefore the temperatures, of all species in a mixture are equal.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="3637">
+<section start="0" end="3649">
 <paragraph start="0" end="28">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="27">
-<bold>true</bold><size>16</size><italic>true</italic></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="27" end="28">
 </content>
@@ -139,19 +139,19 @@ This result is also consistent with the Maxwell speed distribution law, which st
 <paragraph start="271" end="288">
 <LeftIndent>160.0</LeftIndent>
 <content start="271" end="275">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<size>11</size><bold>true</bold><family>Courier New</family></content>
 
 <content start="275" end="287">
 <size>11</size><family>Courier New</family></content>
 
 <content start="287" end="288">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<size>11</size><bold>true</bold><family>Courier New</family></content>
 
 </paragraph>
 <paragraph start="288" end="354">
 <LeftIndent>160.0</LeftIndent>
 <content start="288" end="291">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<size>11</size><bold>true</bold><family>Courier New</family></content>
 
 <content start="291" end="353">
 <size>11</size><family>Courier New</family></content>
@@ -178,7 +178,7 @@ This result is also consistent with the Maxwell speed distribution law, which st
 <size>11</size></content>
 
 <content start="421" end="427">
-<size>11</size><family>Courier New</family><href>script_select.cml</href></content>
+<size>11</size><href>script_select.cml</href><family>Courier New</family></content>
 
 <content start="427" end="437">
 <size>11</size></content>
@@ -202,7 +202,7 @@ This result is also consistent with the Maxwell speed distribution law, which st
 <size>11</size><family>Courier New</family></content>
 
 <content start="446" end="452">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<size>11</size><bold>true</bold><family>Courier New</family></content>
 
 <content start="452" end="473">
 <size>11</size><family>Courier New</family></content>
@@ -223,7 +223,7 @@ This result is also consistent with the Maxwell speed distribution law, which st
 <size>11</size><family>Courier New</family></content>
 
 <content start="489" end="495">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<size>11</size><bold>true</bold><family>Courier New</family></content>
 
 <content start="495" end="517">
 <size>11</size><family>Courier New</family></content>
@@ -241,7 +241,7 @@ This result is also consistent with the Maxwell speed distribution law, which st
 <size>11</size><family>Courier New</family></content>
 
 <content start="545" end="551">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<size>11</size><bold>true</bold><family>Courier New</family></content>
 
 <content start="551" end="572">
 <size>11</size><family>Courier New</family></content>
@@ -301,17 +301,17 @@ This result is also consistent with the Maxwell speed distribution law, which st
 <paragraph start="1057" end="1059">
 <LeftIndent>140.0</LeftIndent>
 <content start="1057" end="1058">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1058" end="1059">
 </content>
 
 </paragraph>
 <paragraph start="1059" end="1205">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1059" end="1071">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="1071" end="1194">
 <size>11</size></content>
@@ -329,7 +329,7 @@ This result is also consistent with the Maxwell speed distribution law, which st
 <paragraph start="1205" end="1207">
 <LeftIndent>140.0</LeftIndent>
 <content start="1205" end="1206">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1206" end="1207">
 <size>11</size></content>
@@ -362,17 +362,17 @@ This result is also consistent with the Maxwell speed distribution law, which st
 <paragraph start="1403" end="1405">
 <LeftIndent>140.0</LeftIndent>
 <content start="1403" end="1404">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1404" end="1405">
 </content>
 
 </paragraph>
 <paragraph start="1405" end="1468">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1405" end="1409">
-<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold><foreground>255 0 0</foreground></content>
 
 <content start="1409" end="1418">
 <size>11</size></content>
@@ -384,14 +384,14 @@ This result is also consistent with the Maxwell speed distribution law, which st
 <size>11</size></content>
 
 <content start="1467" end="1468">
-<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold><foreground>255 0 0</foreground></content>
 
 </paragraph>
 <paragraph start="1468" end="1572">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1468" end="1475">
-<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold><foreground>255 0 0</foreground></content>
 
 <content start="1475" end="1566">
 <size>11</size></content>
@@ -409,7 +409,7 @@ This result is also consistent with the Maxwell speed distribution law, which st
 <paragraph start="1572" end="1574">
 <LeftIndent>140.0</LeftIndent>
 <content start="1572" end="1573">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1573" end="1574">
 <size>11</size></content>
@@ -451,83 +451,83 @@ This result is also consistent with the Maxwell speed distribution law, which st
 </content>
 
 </paragraph>
-<paragraph start="1579" end="1612">
+<paragraph start="1579" end="1618">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="1579" end="1611">
+<content start="1579" end="1617">
 <size>10</size></content>
 
-<content start="1611" end="1612">
+<content start="1617" end="1618">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1612" end="1613">
+<paragraph start="1618" end="1619">
 <LeftIndent>140.0</LeftIndent>
-<content start="1612" end="1613">
+<content start="1618" end="1619">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1613" end="1812">
-<LeftIndent>180.0</LeftIndent>
+<paragraph start="1619" end="1818">
 <RightIndent>40.0</RightIndent>
-<content start="1613" end="1645">
+<LeftIndent>180.0</LeftIndent>
+<content start="1619" end="1651">
 <size>11</size><italic>true</italic></content>
 
-<content start="1645" end="1646">
-<bold>true</bold><size>11</size></content>
+<content start="1651" end="1652">
+<size>11</size><bold>true</bold></content>
 
-<content start="1646" end="1811">
+<content start="1652" end="1817">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1811" end="1812">
+<content start="1817" end="1818">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1812" end="1813">
+<paragraph start="1818" end="1819">
 <LeftIndent>140.0</LeftIndent>
-<content start="1812" end="1813">
+<content start="1818" end="1819">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1813" end="2091">
+<paragraph start="1819" end="2097">
 <LeftIndent>140.0</LeftIndent>
-<content start="1813" end="2091">
+<content start="1819" end="2097">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2091" end="2092">
+<paragraph start="2097" end="2098">
 <LeftIndent>140.0</LeftIndent>
-<content start="2091" end="2092">
+<content start="2097" end="2098">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2092" end="2664">
+<paragraph start="2098" end="2670">
 <LeftIndent>140.0</LeftIndent>
-<content start="2092" end="2664">
+<content start="2098" end="2670">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2664" end="2665">
+<paragraph start="2670" end="2671">
 <LeftIndent>140.0</LeftIndent>
-<content start="2664" end="2665">
+<content start="2670" end="2671">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2665" end="2667">
+<paragraph start="2671" end="2673">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="2665" end="2666">
+<content start="2671" end="2672">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>script_lat$1.mml</resource><menubar>false</menubar></component></content>
 
-<content start="2666" end="2667">
+<content start="2672" end="2673">
 </content>
 
 </paragraph>
-<paragraph start="2667" end="2669">
+<paragraph start="2673" end="2675">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="2667" end="2668">
+<content start="2673" end="2674">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Show temperatures of different particles</title>
 <tooltip>Show temperatures of different particles</tooltip>
@@ -538,103 +538,103 @@ This result is also consistent with the Maxwell speed distribution law, which st
 <action>Execute MW script</action>
 </component></content>
 
-<content start="2668" end="2669">
+<content start="2674" end="2675">
 </content>
 
 </paragraph>
-<paragraph start="2669" end="2702">
+<paragraph start="2675" end="2714">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="2669" end="2701">
+<content start="2675" end="2713">
 <size>10</size></content>
 
-<content start="2701" end="2702">
+<content start="2713" end="2714">
 </content>
 
 </paragraph>
-<paragraph start="2702" end="2703">
+<paragraph start="2714" end="2715">
 <LeftIndent>140.0</LeftIndent>
-<content start="2702" end="2703">
+<content start="2714" end="2715">
 </content>
 
 </paragraph>
-<paragraph start="2703" end="2885">
-<LeftIndent>160.0</LeftIndent>
+<paragraph start="2715" end="2897">
 <RightIndent>40.0</RightIndent>
-<content start="2703" end="2735">
+<LeftIndent>160.0</LeftIndent>
+<content start="2715" end="2747">
 <size>11</size><italic>true</italic></content>
 
-<content start="2735" end="2736">
+<content start="2747" end="2748">
 <size>11</size></content>
 
-<content start="2736" end="2884">
+<content start="2748" end="2896">
 <size>11</size><family>Courier New</family></content>
 
-<content start="2884" end="2885">
+<content start="2896" end="2897">
 </content>
 
 </paragraph>
-<paragraph start="2885" end="2886">
+<paragraph start="2897" end="2898">
 <LeftIndent>140.0</LeftIndent>
-<content start="2885" end="2886">
+<content start="2897" end="2898">
 </content>
 
 </paragraph>
-<paragraph start="2886" end="3241">
+<paragraph start="2898" end="3253">
 <LeftIndent>140.0</LeftIndent>
-<content start="2886" end="2969">
+<content start="2898" end="2981">
 <size>11</size></content>
 
-<content start="2969" end="2982">
+<content start="2981" end="2994">
 <size>11</size><italic>true</italic></content>
 
-<content start="2982" end="3241">
+<content start="2994" end="3253">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3241" end="3242">
+<paragraph start="3253" end="3254">
 <LeftIndent>140.0</LeftIndent>
-<content start="3241" end="3242">
+<content start="3253" end="3254">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3242" end="3608">
+<paragraph start="3254" end="3620">
 <LeftIndent>140.0</LeftIndent>
-<content start="3242" end="3607">
+<content start="3254" end="3619">
 <size>11</size></content>
 
-<content start="3607" end="3608">
+<content start="3619" end="3620">
 </content>
 
 </paragraph>
-<paragraph start="3608" end="3609">
+<paragraph start="3620" end="3621">
 <LeftIndent>140.0</LeftIndent>
-<content start="3608" end="3609">
+<content start="3620" end="3621">
 </content>
 
 </paragraph>
-<paragraph start="3609" end="3637">
+<paragraph start="3621" end="3649">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="3609" end="3611">
+<content start="3621" end="3623">
 <size>11</size></content>
 
-<content start="3611" end="3619">
+<content start="3623" end="3631">
 <size>11</size><href>script_lac.cml</href></content>
 
-<content start="3619" end="3622">
+<content start="3631" end="3634">
 <size>11</size></content>
 
-<content start="3622" end="3627">
+<content start="3634" end="3639">
 <size>11</size><href>mwscripts.cml</href></content>
 
-<content start="3627" end="3630">
+<content start="3639" end="3642">
 <size>11</size></content>
 
-<content start="3630" end="3634">
+<content start="3642" end="3646">
 <size>11</size><href>script_lap.cml</href></content>
 
-<content start="3634" end="3636">
+<content start="3646" end="3648">
 <size>11</size></content>
 
 </paragraph>

@@ -155,19 +155,28 @@ The following image shows two more Morse functions plotted together (it wasn&apo
 </paragraph>
 <paragraph start="534" end="1055">
 <LeftIndent>160.0</LeftIndent>
-<content start="534" end="910">
+<content start="534" end="909">
 <size>11</size></content>
+
+<content start="909" end="910">
+<italic>true</italic><size>11</size></content>
 
 <content start="910" end="912">
-<size>11</size><superscript>true</superscript></content>
+<superscript>true</superscript><size>11</size></content>
 
-<content start="912" end="993">
+<content start="912" end="949">
 <size>11</size></content>
 
-<content start="993" end="995">
-<size>11</size><bold>true</bold></content>
+<content start="949" end="993">
+<bold>true</bold><size>11</size></content>
 
-<content start="995" end="1054">
+<content start="993" end="995">
+<bold>true</bold><size>15</size><foreground>255 0 0</foreground></content>
+
+<content start="995" end="1053">
+<bold>true</bold><size>11</size></content>
+
+<content start="1053" end="1054">
 <size>11</size></content>
 
 <content start="1054" end="1055">

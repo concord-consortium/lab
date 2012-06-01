@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_14" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="epsilon"> 
    <double>0.019999999552965164</double> 
   </void> 
   <void property="mass"> 
-   <double>0.008333333333333333</double> 
+   <double>0.08333333333333333</double> 
   </void> 
   <void property="sigma"> 
    <double>20.0</double> 
@@ -15,11 +15,11 @@
   <void property="ID"> 
    <int>1</int> 
   </void> 
-  <void property="mass"> 
-   <double>2.0</double> 
+  <void property="epsilon"> 
+   <double>0.009999999776482582</double> 
   </void> 
   <void property="sigma"> 
-   <double>14.0</double> 
+   <double>30.0</double> 
   </void> 
  </object> 
  <object id="Element2" class="org.concord.mw2d.models.Element"> 
@@ -328,27 +328,27 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1152794575493</long> 
+     <long>1251903480741</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial\viewSettings$0.mml</string> 
+    <string>C:\home\mw\public\tutorial\viewSettings$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>22849</long> 
+    <long>25084</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial</string> 
+    <string>C:\home\mw\public\tutorial</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
    <object class="org.concord.mw2d.models.QuantumRule"/> 
   </void> 
   <void property="timeStep"> 
-   <double>0.5</double> 
+   <double>0.25</double> 
   </void> 
   <void property="universe"> 
    <object class="org.concord.mw2d.models.Universe"/> 
@@ -356,6 +356,9 @@
  </object> 
  <object class="org.concord.mw2d.AtomisticView$State"> 
   <void property="elementColors"> 
+   <void index="1"> 
+    <int>-3355444</int> 
+   </void> 
    <void index="2"> 
     <int>-3355444</int> 
    </void> 
@@ -370,9 +373,6 @@
    <array class="org.concord.mw2d.models.TextBoxComponent$Delegate" length="1"> 
     <void index="0"> 
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="attachmentPosition"> 
-       <byte>12</byte> 
-      </void> 
       <void property="borderType"> 
        <int>2</int> 
       </void> 
@@ -430,36 +430,36 @@ rotating benzene</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>190.79221471583884</double> 
+   <double>241.15071870595395</double> 
   </void> 
   <void property="ry"> 
-   <double>38.073965265625134</double> 
+   <double>68.8678207034096</double> 
   </void> 
   <void property="vx"> 
-   <double>0.034593850004911976</double> 
+   <double>0.12960799517019028</double> 
   </void> 
   <void property="vy"> 
-   <double>-0.30436111777607866</double> 
+   <double>0.029015680578132867</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>2</int> 
+   <int>1</int> 
   </void> 
   <void property="radical"> 
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>195.7284039194866</double> 
+   <double>226.7063443824818</double> 
   </void> 
   <void property="ry"> 
-   <double>51.95214570111677</double> 
+   <double>73.39992378746372</double> 
   </void> 
   <void property="vx"> 
-   <double>0.004829920743724182</double> 
+   <double>-0.005885592362780172</double> 
   </void> 
   <void property="vy"> 
-   <double>0.020371151706214525</double> 
+   <double>0.046244639214602166</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
@@ -467,73 +467,36 @@ rotating benzene</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>224.91088988378533</double> 
+   <double>234.87469273102346</double> 
   </void> 
   <void property="ry"> 
-   <double>44.830755856573795</double> 
+   <double>102.67056406551427</double> 
   </void> 
   <void property="vx"> 
-   <double>0.2808813849198336</double> 
+   <double>0.03672934904073046</double> 
   </void> 
   <void property="vy"> 
-   <double>-0.12222140597187872</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.Atom"> 
-  <void property="ID"> 
-   <int>2</int> 
-  </void> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
-  </void> 
-  <void property="rx"> 
-   <double>215.3601276701595</double> 
-  </void> 
-  <void property="ry"> 
-   <double>56.044711322558825</double> 
-  </void> 
-  <void property="vx"> 
-   <double>-0.01522697451002368</double> 
-  </void> 
-  <void property="vy"> 
-   <double>0.014368409915927128</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.Atom"> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
-  </void> 
-  <void property="rx"> 
-   <double>236.118675167934</double> 
-  </void> 
-  <void property="ry"> 
-   <double>77.75679059094693</double> 
-  </void> 
-  <void property="vx"> 
-   <double>0.24628753491641642</double> 
-  </void> 
-  <void property="vy"> 
-   <double>0.1821397118011581</double> 
+   <double>0.1321862271090466</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>2</int> 
+   <int>1</int> 
   </void> 
   <void property="radical"> 
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>221.63172375067245</double> 
+   <double>223.08287712539303</double> 
   </void> 
   <void property="ry"> 
-   <double>75.09256562143932</double> 
+   <double>92.9775075509528</double> 
   </void> 
   <void property="vx"> 
-   <double>-0.020056895254684643</double> 
+   <double>-0.04011816613080266</double> 
   </void> 
   <void property="vy"> 
-   <double>-0.006002741790171474</double> 
+   <double>0.012603977664729473</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
@@ -541,73 +504,36 @@ rotating benzene</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>213.20778528415963</double> 
+   <double>201.61126360167833</double> 
   </void> 
   <void property="ry"> 
-   <double>103.92603473437356</double> 
+   <double>114.56778043492285</double> 
   </void> 
   <void property="vx"> 
-   <double>-0.03459384999678874</double> 
+   <double>-0.0894630771006815</double> 
   </void> 
   <void property="vy"> 
-   <double>0.30436111777358354</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.Atom"> 
-  <void property="ID"> 
-   <int>2</int> 
-  </void> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
-  </void> 
-  <void property="rx"> 
-   <double>208.27159608051477</double> 
-  </void> 
-  <void property="ry"> 
-   <double>90.0478542988819</double> 
-  </void> 
-  <void property="vx"> 
-   <double>-0.004829920744474931</double> 
-  </void> 
-  <void property="vy"> 
-   <double>-0.020371151707252722</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.Atom"> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
-  </void> 
-  <void property="rx"> 
-   <double>179.08911011621763</double> 
-  </void> 
-  <void property="ry"> 
-   <double>97.1692441434275</double> 
-  </void> 
-  <void property="vx"> 
-   <double>-0.28088138490876147</double> 
-  </void> 
-  <void property="vy"> 
-   <double>0.12222140597591258</double> 
+   <double>0.09110090208159925</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>2</int> 
+   <int>1</int> 
   </void> 
   <void property="radical"> 
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>188.63987232984138</double> 
+   <double>204.31610833423724</double> 
   </void> 
   <void property="ry"> 
-   <double>85.95528867744363</double> 
+   <double>99.60815938322936</double> 
   </void> 
   <void property="vx"> 
-   <double>0.015226974510367423</double> 
+   <double>-0.03824015880782057</double> 
   </void> 
   <void property="vy"> 
-   <double>-0.014368409916071788</double> 
+   <double>-0.022848314541816548</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
@@ -615,36 +541,110 @@ rotating benzene</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>167.88132483205914</double> 
+   <double>174.7808217735909</double> 
   </void> 
   <void property="ry"> 
-   <double>64.24320940905858</double> 
+   <double>91.57387642453844</double> 
   </void> 
   <void property="vx"> 
-   <double>-0.2462875349163937</double> 
+   <double>-0.13160050321205494</double> 
   </void> 
   <void property="vy"> 
-   <double>-0.18213971180262137</double> 
+   <double>-0.038621229738339674</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>2</int> 
+   <int>1</int> 
   </void> 
   <void property="radical"> 
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>182.36827624932548</double> 
+   <double>189.27459879685532</double> 
   </void> 
   <void property="ry"> 
-   <double>66.90743437855903</double> 
+   <double>86.57250124122456</double> 
   </void> 
   <void property="vx"> 
-   <double>0.020056895253202787</double> 
+   <double>0.009292633426668669</double> 
   </void> 
   <void property="vy"> 
-   <double>0.00600274179115959</double> 
+   <double>-0.043293071001492066</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>180.95264469490186</double> 
+  </void> 
+  <void property="ry"> 
+   <double>57.32795156593379</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.05296297499545632</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.138752600268719</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
+   <int>1</int> 
+  </void> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>192.69775653812067</double> 
+  </void> 
+  <void property="ry"> 
+   <double>66.91735580898347</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.038723074832367956</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.015233869969959485</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>214.0459966658525</double> 
+  </void> 
+  <void property="ry"> 
+   <double>45.30985940900258</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.08525982516378705</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.09469897292478352</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
+   <int>1</int> 
+  </void> 
+  <void property="radical"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="rx"> 
+   <double>211.56464780546276</double> 
+  </void> 
+  <void property="ry"> 
+   <double>60.48778510880925</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.03807311845913626</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.024158476733977467</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.MolecularModel$State"> 
@@ -666,7 +666,7 @@ rotating benzene</string>
    <double>15.0</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>1.0</double> 
+   <double>0.2</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
@@ -680,7 +680,7 @@ rotating benzene</string>
    <double>20.0</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>2.0</double> 
+   <double>0.4</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
@@ -694,7 +694,7 @@ rotating benzene</string>
    <double>15.0</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>1.0</double> 
+   <double>0.2</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
@@ -708,7 +708,7 @@ rotating benzene</string>
    <double>20.0</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>2.0</double> 
+   <double>0.4</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
@@ -722,7 +722,7 @@ rotating benzene</string>
    <double>15.0</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>1.0</double> 
+   <double>0.2</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
@@ -736,7 +736,7 @@ rotating benzene</string>
    <double>20.0</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>2.0</double> 
+   <double>0.4</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
@@ -750,7 +750,7 @@ rotating benzene</string>
    <double>15.0</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>1.0</double> 
+   <double>0.2</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
@@ -764,7 +764,7 @@ rotating benzene</string>
    <double>20.0</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>2.0</double> 
+   <double>0.4</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
@@ -778,7 +778,7 @@ rotating benzene</string>
    <double>15.0</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>1.0</double> 
+   <double>0.2</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
@@ -792,7 +792,7 @@ rotating benzene</string>
    <double>20.0</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>2.0</double> 
+   <double>0.4</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
@@ -806,7 +806,7 @@ rotating benzene</string>
    <double>15.0</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>1.0</double> 
+   <double>0.2</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
@@ -820,28 +820,28 @@ rotating benzene</string>
    <double>20.0</double> 
   </void> 
   <void property="bondStrength"> 
+   <double>0.4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
+  <void property="atom1"> 
+   <int>11</int> 
+  </void> 
+  <void property="atom2"> 
+   <int>3</int> 
+  </void> 
+  <void property="atom3"> 
+   <int>1</int> 
+  </void> 
+  <void property="bondAngle"> 
+   <double>2.0943951023931953</double> 
+  </void> 
+  <void property="bondStrength"> 
    <double>2.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
   <void property="atom1"> 
-   <int>11</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>3</int> 
-  </void> 
-  <void property="atom3"> 
-   <int>1</int> 
-  </void> 
-  <void property="bondAngle"> 
-   <double>2.0943951023931953</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>50.0</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
-  <void property="atom1"> 
    <int>1</int> 
   </void> 
   <void property="atom2"> 
@@ -854,7 +854,7 @@ rotating benzene</string>
    <double>2.0943951023931953</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>50.0</double> 
+   <double>2.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
@@ -871,7 +871,7 @@ rotating benzene</string>
    <double>2.0943951023931953</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>50.0</double> 
+   <double>2.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
@@ -888,7 +888,7 @@ rotating benzene</string>
    <double>2.0943951023931953</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>50.0</double> 
+   <double>2.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
@@ -905,7 +905,7 @@ rotating benzene</string>
    <double>2.0943951023931953</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>50.0</double> 
+   <double>2.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
@@ -922,7 +922,7 @@ rotating benzene</string>
    <double>2.0943951023931953</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>50.0</double> 
+   <double>2.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
@@ -936,7 +936,7 @@ rotating benzene</string>
    <double>2.0943951023931953</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>50.0</double> 
+   <double>2.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
@@ -953,7 +953,7 @@ rotating benzene</string>
    <double>2.0943951023931953</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>50.0</double> 
+   <double>2.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
@@ -970,7 +970,7 @@ rotating benzene</string>
    <double>2.0943951023931953</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>50.0</double> 
+   <double>2.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
@@ -987,7 +987,7 @@ rotating benzene</string>
    <double>2.0943951023931953</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>50.0</double> 
+   <double>2.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
@@ -1004,7 +1004,7 @@ rotating benzene</string>
    <double>2.0943951023931953</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>50.0</double> 
+   <double>2.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.AngularBond$Delegate"> 
@@ -1021,7 +1021,7 @@ rotating benzene</string>
    <double>2.0943951023931953</double> 
   </void> 
   <void property="bondStrength"> 
-   <double>50.0</double> 
+   <double>2.0</double> 
   </void> 
  </object> 
 </java> 

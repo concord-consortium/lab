@@ -19,7 +19,7 @@ In order for the user to download the entire activity, the first step you need t
 
 You can use the &quot;Compress Current Activity Folder&quot; item provided by MW under the File Menu to do this job Note that you must first open a page of the activity before using this tool. The advantage of using this tool is that it allows you to specify the first page to open.
 
-Or you can use an external compression tool such as WinZip. Note that it MUST be a ZIP file. Please do NOT use other compression format such as TAR, GZ, JAR or RAR. The disadvantage of using an external tool is that your ZIP file will contain no information about which page is the first one to open after MW downloads it. In the absence of the information about the first page, MW will just open the first CML page in alphabetical order.
+Or you can use an external compression tool such as WinZip. Note that it MUST be a ZIP file. Please do NOT use other compression format such as TAR, GZ, JAR, or RAR. The disadvantage of using an external tool is that your ZIP file will contain no information about which page is the first one to open after MW downloads it. In the absence of the information about the first page, MW will just open the first CML page in alphabetical order.
 
 Providing a link for downloading the ZIP file
 
@@ -32,17 +32,17 @@ That is all you need to do to enable your users to download an activity in a sna
 You can click the following link to see how this works:
 
  
-Click this link to download a three-pager.
+Click   this link to download a three-pager.
 This should download three files (p1.cml, p2.cml, p3.cml) into a folder you select, and open p1.cml automatically.
  
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="3165">
+<section start="0" end="3168">
 <paragraph start="0" end="33">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="32">
-<bold>true</bold><size>15</size><italic>true</italic></content>
+<italic>true</italic><bold>true</bold><size>15</size></content>
 
 <content start="32" end="33">
 </content>
@@ -50,7 +50,6 @@ This should download three files (p1.cml, p2.cml, p3.cml) into a folder you sele
 </paragraph>
 <paragraph start="33" end="34">
 <RightIndent>20.0</RightIndent>
-<Alignment>2</Alignment>
 <content start="33" end="34">
 </content>
 
@@ -62,19 +61,19 @@ This should download three files (p1.cml, p2.cml, p3.cml) into a folder you sele
 <size>11</size></content>
 
 <content start="36" end="44">
-<size>11</size><href>upload2.cml</href></content>
+<size>11</size><href>additionalresource.cml</href></content>
 
 <content start="44" end="47">
 <size>11</size></content>
 
 <content start="47" end="52">
-<size>11</size><href>index3.cml</href></content>
+<size>11</size><href>index2.cml</href></content>
 
 <content start="52" end="55">
 <size>11</size></content>
 
 <content start="55" end="59">
-<size>11</size><href>distributioncd.cml</href></content>
+<size>11</size><href>background.cml</href></content>
 
 <content start="59" end="61">
 <size>11</size></content>
@@ -111,7 +110,7 @@ This should download three files (p1.cml, p2.cml, p3.cml) into a folder you sele
 <size>11</size></content>
 
 <content start="435" end="453">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="453" end="680">
 <size>11</size></content>
@@ -142,7 +141,7 @@ This should download three files (p1.cml, p2.cml, p3.cml) into a folder you sele
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
 <content start="858" end="894">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="894" end="895">
 <size>11</size></content>
@@ -162,7 +161,7 @@ This should download three files (p1.cml, p2.cml, p3.cml) into a folder you sele
 <size>11</size></content>
 
 <content start="1072" end="1123">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="1123" end="1215">
 <size>11</size></content>
@@ -189,176 +188,182 @@ This should download three files (p1.cml, p2.cml, p3.cml) into a folder you sele
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1490" end="1929">
+<paragraph start="1490" end="1930">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1490" end="1929">
+<content start="1490" end="1930">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1929" end="1930">
+<paragraph start="1930" end="1931">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1929" end="1930">
+<content start="1930" end="1931">
 </content>
 
 </paragraph>
-<paragraph start="1930" end="1976">
+<paragraph start="1931" end="1977">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1930" end="1975">
-<bold>true</bold><size>11</size></content>
+<content start="1931" end="1976">
+<size>11</size><bold>true</bold></content>
 
-<content start="1975" end="1976">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1976" end="1977">
-<RightIndent>20.0</RightIndent>
-<LeftIndent>140.0</LeftIndent>
 <content start="1976" end="1977">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1977" end="2278">
+<paragraph start="1977" end="1978">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1977" end="2147">
+<content start="1977" end="1978">
 <size>11</size></content>
 
-<content start="2147" end="2175">
+</paragraph>
+<paragraph start="1978" end="2279">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1978" end="2148">
+<size>11</size></content>
+
+<content start="2148" end="2176">
 <size>11</size><href>hyperlink.cml</href></content>
 
-<content start="2175" end="2278">
+<content start="2176" end="2279">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2278" end="2279">
+<paragraph start="2279" end="2280">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2278" end="2279">
+<content start="2279" end="2280">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2279" end="2292">
+<paragraph start="2280" end="2293">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2279" end="2291">
-<bold>true</bold><size>11</size></content>
+<content start="2280" end="2292">
+<size>11</size><bold>true</bold></content>
 
-<content start="2291" end="2292">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="2292" end="2293">
-<RightIndent>20.0</RightIndent>
-<LeftIndent>140.0</LeftIndent>
 <content start="2292" end="2293">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2293" end="2916">
+<paragraph start="2293" end="2294">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2293" end="2916">
+<content start="2293" end="2294">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2916" end="2917">
+<paragraph start="2294" end="2917">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2916" end="2917">
+<content start="2294" end="2917">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2917" end="2973">
+<paragraph start="2917" end="2918">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2917" end="2973">
+<content start="2917" end="2918">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2973" end="2974">
+<paragraph start="2918" end="2974">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2973" end="2974">
+<content start="2918" end="2974">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2974" end="2976">
+<paragraph start="2974" end="2975">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
 <content start="2974" end="2975">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<size>11</size></content>
 
+</paragraph>
+<paragraph start="2975" end="2977">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
 <content start="2975" end="2976">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2976" end="2977">
 </content>
 
 </paragraph>
-<paragraph start="2976" end="3019">
+<paragraph start="2977" end="3022">
 <RightIndent>20.0</RightIndent>
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="2976" end="2982">
+<LeftIndent>140.0</LeftIndent>
+<content start="2977" end="2983">
 <size>11</size></content>
 
-<content start="2982" end="2991">
+<content start="2983" end="2984">
+<icon>ziplink.gif</icon></content>
+
+<content start="2984" end="2985">
+<size>11</size></content>
+
+<content start="2985" end="2994">
 <size>11</size><href>multipage.zip</href></content>
 
-<content start="2991" end="3019">
+<content start="2994" end="3022">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3019" end="3134">
+<paragraph start="3022" end="3137">
 <RightIndent>20.0</RightIndent>
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="3019" end="3133">
+<LeftIndent>140.0</LeftIndent>
+<content start="3022" end="3136">
 <size>10</size></content>
 
-<content start="3133" end="3134">
-</content>
-
-</paragraph>
-<paragraph start="3134" end="3136">
-<RightIndent>20.0</RightIndent>
-<LeftIndent>140.0</LeftIndent>
-<content start="3134" end="3135">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
-<content start="3135" end="3136">
-</content>
-
-</paragraph>
-<paragraph start="3136" end="3137">
-<RightIndent>20.0</RightIndent>
-<Alignment>2</Alignment>
 <content start="3136" end="3137">
 </content>
 
 </paragraph>
-<paragraph start="3137" end="3165">
+<paragraph start="3137" end="3139">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="3137" end="3138">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="3138" end="3139">
+</content>
+
+</paragraph>
+<paragraph start="3139" end="3140">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="3137" end="3139">
+<content start="3139" end="3140">
+</content>
+
+</paragraph>
+<paragraph start="3140" end="3168">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3140" end="3142">
 <size>11</size></content>
 
-<content start="3139" end="3147">
-<size>11</size><href>upload2.cml</href></content>
+<content start="3142" end="3150">
+<size>11</size><href>additionalresource.cml</href></content>
 
-<content start="3147" end="3150">
+<content start="3150" end="3153">
 <size>11</size></content>
 
-<content start="3150" end="3155">
-<size>11</size><href>index3.cml</href></content>
+<content start="3153" end="3158">
+<size>11</size><href>index2.cml</href></content>
 
-<content start="3155" end="3158">
+<content start="3158" end="3161">
 <size>11</size></content>
 
-<content start="3158" end="3162">
-<size>11</size><href>distributioncd.cml</href></content>
+<content start="3161" end="3165">
+<size>11</size><href>background.cml</href></content>
 
-<content start="3162" end="3164">
+<content start="3165" end="3167">
 <size>11</size></content>
 
 </paragraph>

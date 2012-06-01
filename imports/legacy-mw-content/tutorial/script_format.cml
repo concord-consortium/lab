@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Format</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Format
+
+&lt; Previous | Index | Next &gt;
+
+To format a number, use the following function:
+
+formatvar(%[total digit].[decimal digit]f, %[variable name])
+
+For example, formatvar(%3.2f, %x) formats a variable %x with a value (3.1415926) to be 3.14. The formatvar function can be used in conjunction with the print and message command. It can also be used to format the text for a text box. The following example demonstrates how this works with a text box inside a model.
+
+ 
+  
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="500">
+<paragraph start="0" end="7">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="6">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="36">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="8" end="10">
+<size>11</size></content>
+
+<content start="10" end="18">
+<href>script_comment.cml</href><size>11</size></content>
+
+<content start="18" end="21">
+<size>11</size></content>
+
+<content start="21" end="26">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="33">
+<href>script_operator.cml</href><size>11</size></content>
+
+<content start="33" end="35">
+<size>11</size></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<LeftIndent>140.0</LeftIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="85">
+<LeftIndent>140.0</LeftIndent>
+<content start="37" end="85">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="85" end="86">
+<LeftIndent>140.0</LeftIndent>
+<content start="85" end="86">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="86" end="147">
+<LeftIndent>160.0</LeftIndent>
+<content start="86" end="146">
+<size>11</size><family>Courier New</family></content>
+
+<content start="146" end="147">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="147" end="148">
+<LeftIndent>140.0</LeftIndent>
+<content start="147" end="148">
+</content>
+
+</paragraph>
+<paragraph start="148" end="464">
+<LeftIndent>140.0</LeftIndent>
+<content start="148" end="161">
+<size>11</size></content>
+
+<content start="161" end="181">
+<size>11</size><family>Courier New</family></content>
+
+<content start="181" end="201">
+<size>11</size></content>
+
+<content start="201" end="203">
+<size>11</size><family>Courier New</family></content>
+
+<content start="203" end="300">
+<size>11</size></content>
+
+<content start="300" end="305">
+<href>script_print.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="305" end="310">
+<size>11</size></content>
+
+<content start="310" end="317">
+<href>script_message.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="317" end="464">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="464" end="465">
+<LeftIndent>140.0</LeftIndent>
+<content start="464" end="465">
+</content>
+
+</paragraph>
+<paragraph start="465" end="467">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="465" end="466">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_format$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="466" end="467">
+</content>
+
+</paragraph>
+<paragraph start="467" end="470">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="467" end="468">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show my coordinate (unformatted)</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set textbox[0].text &lt;t&gt;(%atom[1].rx, %atom[1].ry)&lt;/t&gt;;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="468" end="469">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show my coordinate (formatted)</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set textbox[0].text &lt;t&gt;(formatvar(%6.3f, %atom[1].rx), formatvar(%6.3f, %atom[1].ry))&lt;/t&gt;;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="469" end="470">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="470" end="471">
+<LeftIndent>140.0</LeftIndent>
+<content start="470" end="471">
+</content>
+
+</paragraph>
+<paragraph start="471" end="472">
+<LeftIndent>140.0</LeftIndent>
+<content start="471" end="472">
+</content>
+
+</paragraph>
+<paragraph start="472" end="500">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="472" end="474">
+<size>11</size></content>
+
+<content start="474" end="482">
+<href>script_comment.cml</href><size>11</size></content>
+
+<content start="482" end="485">
+<size>11</size></content>
+
+<content start="485" end="490">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="490" end="493">
+<size>11</size></content>
+
+<content start="493" end="497">
+<href>script_operator.cml</href><size>11</size></content>
+
+<content start="497" end="499">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

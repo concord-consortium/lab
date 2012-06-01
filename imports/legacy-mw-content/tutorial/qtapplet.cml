@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Example: A movie player using a Quicktime applet</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Example: A movie player using a Quicktime applet
+
+&lt; Previous | Index | Next &gt;
+
+Note: The following applet should automatically work for Mac users. If you are using Windows, you must have installed   Quicktime from Apple in order for this applet to work. If you are using Linux, this applet will not work.
+
+
+ 
+ 
+&#12304;This is an embedded Quicktime applet that can play movies.&#12305;
+
+If you would like to use this Quicktime applet on your MW pages, you have to download this jar file: Qt.jar and place it into the folder of the MW pages, and then follow the instructions on a previous page to set it up. Note that you must select org.concord.qt.QtApplet as the applet class.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="693">
+<paragraph start="0" end="49">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="48">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="78">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="50" end="52">
+<size>11</size></content>
+
+<content start="52" end="60">
+<size>11</size><href>appleterrorhandling.cml</href></content>
+
+<content start="60" end="63">
+<size>11</size></content>
+
+<content start="63" end="68">
+<size>11</size><href>index5.cml</href></content>
+
+<content start="68" end="71">
+<size>11</size></content>
+
+<content start="71" end="75">
+<size>11</size><href>jmolapplet.cml</href></content>
+
+<content start="75" end="77">
+<size>11</size></content>
+
+<content start="77" end="78">
+</content>
+
+</paragraph>
+<paragraph start="78" end="79">
+<content start="78" end="79">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="79" end="305">
+<LeftIndent>140.0</LeftIndent>
+<content start="79" end="197">
+<size>11</size></content>
+
+<content start="197" end="198">
+<icon>htmlink.gif</icon></content>
+
+<content start="198" end="199">
+<size>11</size></content>
+
+<content start="199" end="219">
+<size>11</size><href>http://www.apple.com/quicktime/download/</href></content>
+
+<content start="219" end="305">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="305" end="306">
+<LeftIndent>140.0</LeftIndent>
+<content start="305" end="306">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="306" end="307">
+<LeftIndent>140.0</LeftIndent>
+<content start="306" end="307">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="307" end="309">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="307" end="308">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>Qt.jar</appletjar>
+<appletclass>org.concord.qt.QtApplet</appletclass>
+<resource>qtapplet$applet$0.aps</resource><parameter>{name=&quot;errorurl&quot; value=&quot;crank.mov&quot;}{name=&quot;errormessage&quot; value=&quot;Sorry, this applet needs Quicktime to be installed and properly set up.&quot;}{name=&quot;address&quot; value=&quot;crank.mov&quot;}</parameter>
+<width>240</width><height>150</height>
+<border>Lowered Etched</border></component></content>
+
+<content start="308" end="309">
+</content>
+
+</paragraph>
+<paragraph start="309" end="311">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="309" end="310">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Take a snapshot</title>
+<tooltip>Take a snapshot</tooltip>
+<script>script:applet:1:snapshot;</script>
+<action>Script</action></component></content>
+
+<content start="310" end="311">
+</content>
+
+</paragraph>
+<paragraph start="311" end="372">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="311" end="312">
+<size>13</size><bold>true</bold></content>
+
+<content start="312" end="370">
+<size>10</size></content>
+
+<content start="370" end="371">
+<size>13</size><bold>true</bold></content>
+
+<content start="371" end="372">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="372" end="373">
+<LeftIndent>140.0</LeftIndent>
+<content start="372" end="373">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="373" end="664">
+<LeftIndent>140.0</LeftIndent>
+<content start="373" end="474">
+<size>11</size></content>
+
+<content start="474" end="480">
+<size>11</size><href>Qt.jar</href></content>
+
+<content start="480" end="563">
+<size>11</size></content>
+
+<content start="563" end="578">
+<size>11</size><href>applet.cml</href></content>
+
+<content start="578" end="619">
+<size>11</size></content>
+
+<content start="619" end="642">
+<size>11</size><family>Courier New</family></content>
+
+<content start="642" end="664">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="664" end="665">
+<RightIndent>20.0</RightIndent>
+<content start="664" end="665">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="665" end="693">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="665" end="667">
+<size>11</size></content>
+
+<content start="667" end="675">
+<size>11</size><href>appleterrorhandling.cml</href></content>
+
+<content start="675" end="678">
+<size>11</size></content>
+
+<content start="678" end="683">
+<size>11</size><href>index5.cml</href></content>
+
+<content start="683" end="686">
+<size>11</size></content>
+
+<content start="686" end="690">
+<size>11</size><href>jmolapplet.cml</href></content>
+
+<content start="690" end="692">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

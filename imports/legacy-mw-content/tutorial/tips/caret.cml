@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Changing the caret color</page_title>
+<text> Changing the caret color
+
+When you use a dark background image, you will find it difficult to find the caret of the editor. (A caret is the little blinking vertical bar that indicates the current position of editing.) This is because your caret has a dark color too (by default, it is black).
+
+So how can you change it to a light color?
+
+The caret color is set to be the contrast color of the background color. If you set a black background color, the caret will be automatically white. If you set a white color, the caret will be automatically set to black. And so on. When you use a background image, the caret is not that smart to figure out what color it should use to make itself visible. Therefore, you will have to do something by yourself.
+
+If your background image is dark, specify a dark background color. If it is light, specify a light background color. Although the background color will not be seen, doing so will make the caret visible in your circumstance.
+
+There are three ways for setting the background color. The first one is to use  is to use the Background Submenu of the Option Menu. The second is to use the Properties Dialog (see Background filling in User&apos;s Manual). The third is to click the &quot;Set Background Color&quot; button &quot; &quot; on the tool bar. All these three ways lead to the Color Menu, as is shown below:
+
+  
+This is a screenshot.
+
+&lt;Index of tips&gt;</text>
+<section start="0" end="1378">
+<paragraph start="0" end="26">
+<RightIndent>20.0</RightIndent>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="25">
+<size>18</size><bold>true</bold></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="294">
+<LeftIndent>8.0</LeftIndent>
+<content start="27" end="294">
+</content>
+
+</paragraph>
+<paragraph start="294" end="295">
+<LeftIndent>8.0</LeftIndent>
+<content start="294" end="295">
+</content>
+
+</paragraph>
+<paragraph start="295" end="338">
+<LeftIndent>8.0</LeftIndent>
+<content start="295" end="338">
+</content>
+
+</paragraph>
+<paragraph start="338" end="339">
+<LeftIndent>8.0</LeftIndent>
+<content start="338" end="339">
+</content>
+
+</paragraph>
+<paragraph start="339" end="749">
+<LeftIndent>8.0</LeftIndent>
+<content start="339" end="749">
+</content>
+
+</paragraph>
+<paragraph start="749" end="750">
+<LeftIndent>8.0</LeftIndent>
+<content start="749" end="750">
+</content>
+
+</paragraph>
+<paragraph start="750" end="974">
+<LeftIndent>8.0</LeftIndent>
+<content start="750" end="974">
+</content>
+
+</paragraph>
+<paragraph start="974" end="975">
+<LeftIndent>8.0</LeftIndent>
+<content start="974" end="975">
+</content>
+
+</paragraph>
+<paragraph start="975" end="1335">
+<LeftIndent>8.0</LeftIndent>
+<content start="975" end="1156">
+</content>
+
+<content start="1156" end="1191">
+<href>../background.cml</href></content>
+
+<content start="1191" end="1251">
+</content>
+
+<content start="1251" end="1252">
+<icon>SetColor.gif</icon></content>
+
+<content start="1252" end="1335">
+</content>
+
+</paragraph>
+<paragraph start="1335" end="1336">
+<LeftIndent>8.0</LeftIndent>
+<content start="1335" end="1336">
+</content>
+
+</paragraph>
+<paragraph start="1336" end="1339">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1336" end="1337">
+</content>
+
+<content start="1337" end="1338">
+<icon>ColorMenu.gif</icon></content>
+
+<content start="1338" end="1339">
+</content>
+
+</paragraph>
+<paragraph start="1339" end="1361">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1339" end="1361">
+</content>
+
+</paragraph>
+<paragraph start="1361" end="1362">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1361" end="1362">
+</content>
+
+</paragraph>
+<paragraph start="1362" end="1378">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1362" end="1363">
+</content>
+
+<content start="1363" end="1376">
+<href>tip.cml</href></content>
+
+<content start="1376" end="1377">
+</content>
+
+</paragraph>
+</section>
+</document>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.5.0_09" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_12" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="mass"> 
    <double>0.16666666666666666</double> 
@@ -43,7 +43,7 @@
    <void method="put"> 
     <object id="Pair0" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element1"/> 
+      <object idref="Element2"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element3"/> 
@@ -57,13 +57,57 @@
       <object idref="Element0"/> 
      </void> 
      <void property="element2"> 
-      <object idref="Element2"/> 
+      <object idref="Element1"/> 
      </void> 
     </object> 
     <double>0.1</double> 
    </void> 
    <void method="put"> 
     <object id="Pair2" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair3" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element2"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair4" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element2"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair5" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair6" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
       <object idref="Element0"/> 
      </void> 
@@ -81,9 +125,9 @@
     <double>0.1</double> 
    </void> 
    <void method="put"> 
-    <object id="Pair3" class="org.concord.mw2d.models.Pair"> 
+    <object id="Pair7" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element2"/> 
+      <object idref="Element1"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element4"/> 
@@ -92,53 +136,9 @@
     <double>0.1</double> 
    </void> 
    <void method="put"> 
-    <object id="Pair4" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element2"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element3"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair5" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element0"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element1"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair6" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element1"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element2"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair7" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element0"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element3"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
     <object id="Pair8" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element3"/> 
+      <object idref="Element2"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element4"/> 
@@ -149,7 +149,7 @@
    <void method="put"> 
     <object id="Pair9" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element1"/> 
+      <object idref="Element3"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element4"/> 
@@ -245,43 +245,43 @@
   <void property="sigma"> 
    <void method="put"> 
     <object idref="Pair0"/> 
-    <double>19.79898987322333</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair1"/> 
-    <double>12.12435565298214</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair2"/> 
-    <double>9.16515138991168</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair3"/> 
-    <double>15.874507866387544</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair4"/> 
     <double>24.24871130596428</double> 
    </void> 
    <void method="put"> 
-    <object idref="Pair5"/> 
+    <object idref="Pair1"/> 
     <double>9.899494936611665</double> 
    </void> 
    <void method="put"> 
-    <object idref="Pair6"/> 
+    <object idref="Pair2"/> 
+    <double>19.79898987322333</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <double>12.12435565298214</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair4"/> 
     <double>17.146428199482248</double> 
    </void> 
    <void method="put"> 
-    <object idref="Pair7"/> 
+    <object idref="Pair5"/> 
     <double>14.0</double> 
    </void> 
    <void method="put"> 
+    <object idref="Pair6"/> 
+    <double>9.16515138991168</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair7"/> 
+    <double>12.96148139681572</double> 
+   </void> 
+   <void method="put"> 
     <object idref="Pair8"/> 
-    <double>18.33030277982336</double> 
+    <double>15.874507866387544</double> 
    </void> 
    <void method="put"> 
     <object idref="Pair9"/> 
-    <double>12.96148139681572</double> 
+    <double>18.33030277982336</double> 
    </void> 
   </void> 
  </object> 
@@ -319,26 +319,26 @@
   </void> 
   <void property="properties"> 
    <void method="put"> 
-    <string>codebase</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial</string> 
-   </void> 
-   <void method="put"> 
-    <string>url</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial\SetupSimulation$0.mml</string> 
-   </void> 
-   <void method="put"> 
-    <string>size</string> 
-    <long>20015</long> 
-   </void> 
-   <void method="put"> 
     <string>filename</string> 
     <string>SetupSimulation$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1165594356764</long> 
+     <long>1243342697742</long> 
     </object> 
+   </void> 
+   <void method="put"> 
+    <string>url</string> 
+    <string>C:\home\mw\public\tutorial\SetupSimulation$0.mml</string> 
+   </void> 
+   <void method="put"> 
+    <string>size</string> 
+    <long>21834</long> 
+   </void> 
+   <void method="put"> 
+    <string>codebase</string> 
+    <string>C:\home\mw\public\tutorial</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -369,6 +369,9 @@
    <array class="org.concord.mw2d.models.LineComponent$Delegate" length="8"> 
     <void index="0"> 
      <object class="org.concord.mw2d.models.LineComponent$Delegate"> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
       <void property="endStyle"> 
        <byte>1</byte> 
       </void> 
@@ -391,6 +394,9 @@
     </void> 
     <void index="1"> 
      <object class="org.concord.mw2d.models.LineComponent$Delegate"> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
       <void property="endStyle"> 
        <byte>1</byte> 
       </void> 
@@ -413,6 +419,9 @@
     </void> 
     <void index="2"> 
      <object class="org.concord.mw2d.models.LineComponent$Delegate"> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
       <void property="endStyle"> 
        <byte>1</byte> 
       </void> 
@@ -435,6 +444,9 @@
     </void> 
     <void index="3"> 
      <object class="org.concord.mw2d.models.LineComponent$Delegate"> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
       <void property="layer"> 
        <int>2</int> 
       </void> 
@@ -456,6 +468,9 @@
      <object class="org.concord.mw2d.models.LineComponent$Delegate"> 
       <void property="beginStyle"> 
        <byte>1</byte> 
+      </void> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
       </void> 
       <void property="layer"> 
        <int>2</int> 
@@ -479,6 +494,9 @@
     </void> 
     <void index="5"> 
      <object class="org.concord.mw2d.models.LineComponent$Delegate"> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
       <void property="layer"> 
        <int>2</int> 
       </void> 
@@ -498,6 +516,9 @@
     </void> 
     <void index="6"> 
      <object class="org.concord.mw2d.models.LineComponent$Delegate"> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
       <void property="endStyle"> 
        <byte>1</byte> 
       </void> 
@@ -520,6 +541,9 @@
     </void> 
     <void index="7"> 
      <object class="org.concord.mw2d.models.LineComponent$Delegate"> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
       <void property="layer"> 
        <int>2</int> 
       </void> 
@@ -562,6 +586,9 @@
       <void property="borderType"> 
        <int>1</int> 
       </void> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
       <void property="fillMode"> 
        <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
         <void property="color"> 
@@ -576,7 +603,7 @@
       </void> 
       <void property="font"> 
        <object class="java.awt.Font"> 
-        <string>Arial Bold</string> 
+        <string>Trebuchet MS</string> 
         <int>3</int> 
         <int>12</int> 
        </object> 
@@ -603,6 +630,9 @@
       <void property="borderType"> 
        <int>2</int> 
       </void> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
       <void property="fillMode"> 
        <object id="FillMode$ColorFill0" class="org.concord.modeler.draw.FillMode$ColorFill"> 
         <void property="color"> 
@@ -613,6 +643,13 @@
           <int>255</int> 
          </object> 
         </void> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Trebuchet MS</string> 
+        <int>0</int> 
+        <int>11</int> 
        </object> 
       </void> 
       <void property="layer"> 
@@ -641,8 +678,18 @@ Get accelerations at time t: a(t)=f(t)/m</string>
       <void property="borderType"> 
        <int>2</int> 
       </void> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
       <void property="fillMode"> 
        <object idref="FillMode$ColorFill0"/> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Trebuchet MS</string> 
+        <int>0</int> 
+        <int>11</int> 
+       </object> 
       </void> 
       <void property="layer"> 
        <int>2</int> 
@@ -671,6 +718,9 @@ v(t+dt)=v(t)+a(t)*dt</string>
       <void property="borderType"> 
        <int>1</int> 
       </void> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
       <void property="fillMode"> 
        <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
         <void property="color"> 
@@ -685,7 +735,7 @@ v(t+dt)=v(t)+a(t)*dt</string>
       </void> 
       <void property="font"> 
        <object class="java.awt.Font"> 
-        <string>Arial</string> 
+        <string>Trebuchet MS</string> 
         <int>0</int> 
         <int>11</int> 
        </object> 
@@ -713,6 +763,16 @@ Verlet&apos;s algorithm</string>
     </void> 
     <void index="4"> 
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Trebuchet MS</string> 
+        <int>2</int> 
+        <int>12</int> 
+       </object> 
+      </void> 
       <void property="layer"> 
        <int>2</int> 
       </void> 
@@ -735,8 +795,18 @@ Verlet&apos;s algorithm</string>
       <void property="borderType"> 
        <int>2</int> 
       </void> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
       <void property="fillMode"> 
        <object idref="FillMode$ColorFill0"/> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Trebuchet MS</string> 
+        <int>0</int> 
+        <int>11</int> 
+       </object> 
       </void> 
       <void property="layer"> 
        <int>2</int> 

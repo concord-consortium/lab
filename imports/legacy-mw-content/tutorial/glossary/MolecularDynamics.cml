@@ -35,24 +35,49 @@ Computer simulation techniques, including molecular dynamics, are now practical 
 
 Other fields in which molecular dynamics is applied includes mechanical engineering, chemical engineering and fluid dynamics.
 
- </text>
-<section start="0" end="3593">
+ 
+
+
+
+</text>
+<section start="0" end="3597">
 <paragraph start="0" end="2">
+<LeftIndent>140.0</LeftIndent>
 <SpaceAbove>4.0</SpaceAbove>
 <Alignment>1</Alignment>
-<LeftIndent>140.0</LeftIndent>
 <content start="0" end="1">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>600.0</width><height>50</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;&lt;center&gt;&lt;font face=&quot;Verdana&quot; size=&quot;6&quot; color=&quot;#ffffff&quot;&gt;&lt;b&gt;Molecular Dynamics Simulation&lt;/b&gt;&lt;/font&gt;&lt;/html&gt;</title><bgcolor>-999a00</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>600.0</width><height>50</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;b&gt;&lt;font color=&quot;#ffffff&quot; face=&quot;Verdana&quot; size=&quot;6&quot;&gt;Molecular Dynamics 
+      Simulation&lt;/font&gt;&lt;/b&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-999a00</bgcolor></icon></content>
 
 <content start="1" end="2">
 </content>
 
 </paragraph>
 <paragraph start="2" end="4">
-<Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="2" end="3">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>600.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;&lt;center&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Concord Consortium: Realizing the educational promise of molecular simulation&lt;/font&gt;&lt;/html&gt;</title><bgcolor>-ff0100</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>600.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Charles Xie&lt;/font&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-ff0100</bgcolor></icon></content>
 
 <content start="3" end="4">
 </content>
@@ -149,9 +174,9 @@ Other fields in which molecular dynamics is applied includes mechanical engineer
 
 </paragraph>
 <paragraph start="772" end="774">
+<LeftIndent>140.0</LeftIndent>
 <SpaceBelow>2.0</SpaceBelow>
 <SpaceAbove>2.0</SpaceAbove>
-<LeftIndent>140.0</LeftIndent>
 <content start="772" end="773">
 <icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
 
@@ -160,16 +185,16 @@ Other fields in which molecular dynamics is applied includes mechanical engineer
 
 </paragraph>
 <paragraph start="774" end="1808">
-<RightIndent>80.0</RightIndent>
 <LeftIndent>180.0</LeftIndent>
+<RightIndent>80.0</RightIndent>
 <content start="774" end="1808">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="1808" end="1810">
+<LeftIndent>140.0</LeftIndent>
 <SpaceBelow>2.0</SpaceBelow>
 <SpaceAbove>2.0</SpaceAbove>
-<LeftIndent>140.0</LeftIndent>
 <content start="1808" end="1809">
 <icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
 
@@ -196,8 +221,8 @@ Other fields in which molecular dynamics is applied includes mechanical engineer
 
 </paragraph>
 <paragraph start="2101" end="2107">
-<Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="2101" end="2102">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Run</title>
@@ -232,8 +257,8 @@ Other fields in which molecular dynamics is applied includes mechanical engineer
 <component><class>org.concord.modeler.PageComboBox</class>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
-<selectedIndex>1</selectedIndex>
 <action>Display Style</action>
+<selectedIndex>1</selectedIndex>
 </component></content>
 
 <content start="2106" end="2107">
@@ -241,8 +266,8 @@ Other fields in which molecular dynamics is applied includes mechanical engineer
 
 </paragraph>
 <paragraph start="2107" end="2109">
-<Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="2107" end="2108">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>MolecularDynamics$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
@@ -252,8 +277,8 @@ Other fields in which molecular dynamics is applied includes mechanical engineer
 
 </paragraph>
 <paragraph start="2109" end="2594">
-<RightIndent>80.0</RightIndent>
 <LeftIndent>180.0</LeftIndent>
+<RightIndent>80.0</RightIndent>
 <content start="2109" end="2451">
 <size>11</size></content>
 
@@ -289,8 +314,8 @@ Other fields in which molecular dynamics is applied includes mechanical engineer
 
 </paragraph>
 <paragraph start="2953" end="2956">
-<Alignment>1</Alignment>
 <LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="2953" end="2954">
 <size>11</size></content>
 
@@ -350,11 +375,47 @@ Other fields in which molecular dynamics is applied includes mechanical engineer
 
 </paragraph>
 <paragraph start="3591" end="3593">
-<Alignment>1</Alignment>
 <LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="3591" end="3592">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>120.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;&lt;body face=Verdana&gt;&lt;center&gt;[&lt;a href=&quot;index.cml&quot;&gt;&lt;b&gt;Index&lt;/a&gt;]&lt;/html&gt;</title><bgcolor>-333301</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>120.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;center&gt;
+      [&lt;a href=&quot;index.cml&quot;&gt;&lt;b&gt;&lt;font&gt;Index&lt;/font&gt;&lt;/b&gt;&lt;/a&gt;]
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-333301</bgcolor></icon></content>
 
+<content start="3592" end="3593">
+</content>
+
+</paragraph>
+<paragraph start="3593" end="3594">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3593" end="3594">
+</content>
+
+</paragraph>
+<paragraph start="3594" end="3595">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3594" end="3595">
+</content>
+
+</paragraph>
+<paragraph start="3595" end="3596">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3595" end="3596">
+</content>
+
+</paragraph>
+<paragraph start="3596" end="3597">
 </paragraph>
 </section>
 </document>

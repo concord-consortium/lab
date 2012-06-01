@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Remove</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Remove
@@ -19,7 +19,7 @@ select atom 1;
 remove;
 
    
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Note that the remaining atoms will be renumbered after the selected atom(s) is removed. This means that if you would like to remove, say atom 1 and 2, you cannot use scripts as follows:
 
@@ -28,10 +28,10 @@ remove;
 select atom 2;
 remove;
 
-because the atoms will be renumbered after each &quot;remove&quot; command is called.
+because the atoms will be renumbered after each remove command is called.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="741">
+<section start="0" end="745">
 <paragraph start="0" end="7">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
@@ -56,19 +56,19 @@ because the atoms will be renumbered after each &quot;remove&quot; command is ca
 <size>11</size></content>
 
 <content start="10" end="18">
-<href>script_damp.cml</href><size>11</size></content>
+<size>11</size><href>script_damp.cml</href></content>
 
 <content start="18" end="21">
 <size>11</size></content>
 
 <content start="21" end="26">
-<href>mwscripts.cml</href><size>11</size></content>
+<size>11</size><href>mwscripts.cml</href></content>
 
 <content start="26" end="29">
 <size>11</size></content>
 
 <content start="29" end="33">
-<href>script_move.cml</href><size>11</size></content>
+<size>11</size><href>script_move.cml</href></content>
 
 <content start="33" end="35">
 <size>11</size></content>
@@ -95,7 +95,7 @@ because the atoms will be renumbered after each &quot;remove&quot; command is ca
 <size>11</size></content>
 
 <content start="173" end="185">
-<href>removeAction.cml</href><size>11</size></content>
+<size>11</size><href>removeAction.cml</href></content>
 
 <content start="185" end="188">
 <size>11</size></content>
@@ -122,7 +122,7 @@ because the atoms will be renumbered after each &quot;remove&quot; command is ca
 <paragraph start="198" end="205">
 <LeftIndent>160.0</LeftIndent>
 <content start="198" end="204">
-<size>11</size><bold>true</bold><family>Courier New</family></content>
+<size>11</size><family>Courier New</family><bold>true</bold></content>
 
 <content start="204" end="205">
 <size>11</size></content>
@@ -168,8 +168,8 @@ because the atoms will be renumbered after each &quot;remove&quot; command is ca
 
 </paragraph>
 <paragraph start="364" end="368">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="364" end="365">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>script_remove$0.mml</resource><menubar>false</menubar></component></content>
@@ -188,104 +188,110 @@ because the atoms will be renumbered after each &quot;remove&quot; command is ca
 </content>
 
 </paragraph>
-<paragraph start="368" end="401">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="368" end="407">
 <Alignment>1</Alignment>
-<content start="368" end="400">
+<LeftIndent>140.0</LeftIndent>
+<content start="368" end="406">
 <size>10</size></content>
 
-<content start="400" end="401">
+<content start="406" end="407">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="401" end="402">
+<paragraph start="407" end="408">
 <LeftIndent>140.0</LeftIndent>
-<content start="401" end="402">
+<content start="407" end="408">
 </content>
 
 </paragraph>
-<paragraph start="402" end="588">
+<paragraph start="408" end="594">
 <LeftIndent>140.0</LeftIndent>
-<content start="402" end="588">
+<content start="408" end="594">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="588" end="589">
+<paragraph start="594" end="595">
 <LeftIndent>140.0</LeftIndent>
-<content start="588" end="589">
+<content start="594" end="595">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="589" end="604">
+<paragraph start="595" end="610">
 <LeftIndent>160.0</LeftIndent>
-<content start="589" end="604">
+<content start="595" end="610">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="604" end="612">
+<paragraph start="610" end="618">
 <LeftIndent>160.0</LeftIndent>
-<content start="604" end="612">
+<content start="610" end="618">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="612" end="627">
+<paragraph start="618" end="633">
 <LeftIndent>160.0</LeftIndent>
-<content start="612" end="627">
+<content start="618" end="633">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="627" end="635">
+<paragraph start="633" end="641">
 <LeftIndent>160.0</LeftIndent>
-<content start="627" end="634">
+<content start="633" end="640">
 <size>11</size><family>Courier New</family></content>
 
-<content start="634" end="635">
+<content start="640" end="641">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="635" end="636">
+<paragraph start="641" end="642">
 <LeftIndent>140.0</LeftIndent>
-<content start="635" end="636">
+<content start="641" end="642">
 </content>
 
 </paragraph>
-<paragraph start="636" end="712">
+<paragraph start="642" end="716">
 <LeftIndent>140.0</LeftIndent>
-<content start="636" end="711">
+<content start="642" end="690">
 <size>11</size></content>
 
-<content start="711" end="712">
+<content start="690" end="696">
+<size>11</size><family>Courier New</family></content>
+
+<content start="696" end="715">
+<size>11</size></content>
+
+<content start="715" end="716">
 </content>
 
 </paragraph>
-<paragraph start="712" end="713">
+<paragraph start="716" end="717">
 <LeftIndent>140.0</LeftIndent>
-<content start="712" end="713">
+<content start="716" end="717">
 </content>
 
 </paragraph>
-<paragraph start="713" end="741">
+<paragraph start="717" end="745">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="713" end="715">
+<content start="717" end="719">
 <size>11</size></content>
 
-<content start="715" end="723">
-<href>script_damp.cml</href><size>11</size></content>
+<content start="719" end="727">
+<size>11</size><href>script_damp.cml</href></content>
 
-<content start="723" end="726">
+<content start="727" end="730">
 <size>11</size></content>
 
-<content start="726" end="731">
-<href>mwscripts.cml</href><size>11</size></content>
+<content start="730" end="735">
+<size>11</size><href>mwscripts.cml</href></content>
 
-<content start="731" end="734">
+<content start="735" end="738">
 <size>11</size></content>
 
-<content start="734" end="738">
-<href>script_move.cml</href><size>11</size></content>
+<content start="738" end="742">
+<size>11</size><href>script_move.cml</href></content>
 
-<content start="738" end="740">
+<content start="742" end="744">
 <size>11</size></content>
 
 </paragraph>

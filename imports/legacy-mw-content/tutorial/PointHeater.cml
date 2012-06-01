@@ -12,14 +12,14 @@ As you probably know, you can heat or cool the whole system in a few ways, such 
 But there are times that you may want to heat and cool only one part of the system. This can be done with two buttons of the Heating and Cooling Tool, as is shown by the following model:
 
  
-[This is an embedded simulator for practicing heating and cooling, starting from absolute zero.]
+&#12304;This is an embedded simulator for practicing heating and cooling, starting from absolute zero.&#12305;
 
 These two buttons allow you to add or substract a certain amount of kinetic energy from the particles that are within a &quot;mask&quot; area movable with the mouse. Thus, you can design models with arbitrary initial spatial kinetic energy distributions, which can be useful in showing thermal equilibrium.
 
 You can change the diameter of the &quot;mask&quot; by double-clicking on the buttons and choose an image of the corresponding desired size from a dialog window, which is shown by the following screenshot:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
  
 These two actions do not work if you turn the heat bath on, which means that the system&apos;s temperature will be maintained no matter how you heat or cool the system.
@@ -32,8 +32,8 @@ The heat command can be used to add energy to or substrate energy from the selec
 &lt; Previous | Index | Next &gt;</text>
 <section start="0" end="1536">
 <paragraph start="0" end="29">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="0" end="28">
 <size>16</size><bold>true</bold><italic>true</italic></content>
 
@@ -42,32 +42,32 @@ The heat command can be used to add energy to or substrate energy from the selec
 
 </paragraph>
 <paragraph start="29" end="30">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="29" end="30">
 </content>
 
 </paragraph>
 <paragraph start="30" end="58">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="30" end="32">
 <size>11</size></content>
 
 <content start="32" end="40">
-<href>duplicateAction.cml</href><size>11</size></content>
+<size>11</size><href>duplicateAction.cml</href></content>
 
 <content start="40" end="43">
 <size>11</size></content>
 
 <content start="43" end="48">
-<href>index1.cml</href><size>11</size></content>
+<size>11</size><href>index1.cml</href></content>
 
 <content start="48" end="51">
 <size>11</size></content>
 
 <content start="51" end="55">
-<href>resizeAction.cml</href><size>11</size></content>
+<size>11</size><href>resizeAction.cml</href></content>
 
 <content start="55" end="57">
 <size>11</size></content>
@@ -88,13 +88,13 @@ The heat command can be used to add energy to or substrate energy from the selec
 <size>11</size></content>
 
 <content start="102" end="118">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="118" end="398">
 <size>11</size></content>
 
 <content start="398" end="412">
-<href>../student/stateofmatter/latentheat.cml</href><size>11</size></content>
+<size>11</size><href>../student/stateofmatter/latentheat.cml</href></content>
 
 <content start="412" end="415">
 <size>11</size></content>
@@ -112,7 +112,7 @@ The heat command can be used to add energy to or substrate energy from the selec
 <size>11</size></content>
 
 <content start="476" end="498">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="498" end="603">
 <size>11</size></content>
@@ -128,8 +128,9 @@ The heat command can be used to add energy to or substrate energy from the selec
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
 <content start="604" end="605">
-<component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>PointHeater$0.mml</resource><menubar>false</menubar><recorder>true</recorder><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Select Object</button></component><size>11</size></content>
+<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>PointHeater$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+<button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Select Object</button></component></content>
 
 <content start="605" end="606">
 <size>11</size></content>
@@ -207,23 +208,23 @@ The heat command can be used to add energy to or substrate energy from the selec
 <paragraph start="1227" end="1229">
 <LeftIndent>140.0</LeftIndent>
 <content start="1227" end="1228">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1228" end="1229">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="1229" end="1393">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1229" end="1275">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="1275" end="1284">
-<bold>true</bold><href>heatbath.cml</href><size>11</size></content>
+<size>11</size><href>heatbath.cml</href><bold>true</bold></content>
 
 <content start="1284" end="1287">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="1287" end="1393">
 <size>11</size></content>
@@ -232,7 +233,7 @@ The heat command can be used to add energy to or substrate energy from the selec
 <paragraph start="1393" end="1395">
 <LeftIndent>140.0</LeftIndent>
 <content start="1393" end="1394">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1394" end="1395">
 <size>11</size></content>
@@ -247,7 +248,7 @@ The heat command can be used to add energy to or substrate energy from the selec
 <paragraph start="1396" end="1411">
 <LeftIndent>140.0</LeftIndent>
 <content start="1396" end="1410">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="1410" end="1411">
 <size>11</size></content>
@@ -265,7 +266,7 @@ The heat command can be used to add energy to or substrate energy from the selec
 <size>11</size></content>
 
 <content start="1416" end="1420">
-<family>Courier New</family><href>script_heat.cml</href><size>11</size></content>
+<family>Courier New</family><size>11</size><href>script_heat.cml</href></content>
 
 <content start="1420" end="1506">
 <size>11</size></content>
@@ -281,25 +282,25 @@ The heat command can be used to add energy to or substrate energy from the selec
 
 </paragraph>
 <paragraph start="1508" end="1536">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="1508" end="1510">
 <size>11</size></content>
 
 <content start="1510" end="1518">
-<href>duplicateAction.cml</href><size>11</size></content>
+<size>11</size><href>duplicateAction.cml</href></content>
 
 <content start="1518" end="1521">
 <size>11</size></content>
 
 <content start="1521" end="1526">
-<href>index1.cml</href><size>11</size></content>
+<size>11</size><href>index1.cml</href></content>
 
 <content start="1526" end="1529">
 <size>11</size></content>
 
 <content start="1529" end="1533">
-<href>resizeAction.cml</href><size>11</size></content>
+<size>11</size><href>resizeAction.cml</href></content>
 
 <content start="1533" end="1535">
 <size>11</size></content>

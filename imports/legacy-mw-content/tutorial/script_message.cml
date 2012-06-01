@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Message</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Message
+
+&lt; Previous | Index | Next &gt;
+
+The message command is used to show pop-up messages.
+
+Syntax:
+
+message [address]
+message &lt;t&gt;[string]&lt;/t&gt;
+
+where [address] is the address of the file in which the message is stored and [string] is the text (HTML or plain) that can be put in line with the script.
+
+   
+
+                            
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="364">
+<paragraph start="0" end="8">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="7">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="37">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="9" end="11">
+<size>11</size></content>
+
+<content start="11" end="19">
+<href>script_print.cml</href><size>11</size></content>
+
+<content start="19" end="22">
+<size>11</size></content>
+
+<content start="22" end="27">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="27" end="30">
+<size>11</size></content>
+
+<content start="30" end="34">
+<href>script_snapshot.cml</href><size>11</size></content>
+
+<content start="34" end="36">
+<size>11</size></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<LeftIndent>100.0</LeftIndent>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="91">
+<LeftIndent>140.0</LeftIndent>
+<content start="38" end="42">
+<size>11</size></content>
+
+<content start="42" end="49">
+<family>Courier New</family><size>11</size></content>
+
+<content start="49" end="91">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="91" end="92">
+<LeftIndent>140.0</LeftIndent>
+<content start="91" end="92">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="92" end="100">
+<LeftIndent>140.0</LeftIndent>
+<content start="92" end="100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="100" end="101">
+<LeftIndent>140.0</LeftIndent>
+<content start="100" end="101">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="101" end="119">
+<LeftIndent>160.0</LeftIndent>
+<content start="101" end="108">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="108" end="119">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="119" end="143">
+<LeftIndent>160.0</LeftIndent>
+<content start="119" end="126">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="126" end="143">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="143" end="144">
+<LeftIndent>160.0</LeftIndent>
+<content start="143" end="144">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="144" end="300">
+<LeftIndent>140.0</LeftIndent>
+<content start="144" end="150">
+<size>11</size></content>
+
+<content start="150" end="159">
+<family>Courier New</family><size>11</size></content>
+
+<content start="159" end="222">
+<size>11</size></content>
+
+<content start="222" end="230">
+<family>Courier New</family><size>11</size></content>
+
+<content start="230" end="300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="300" end="301">
+<LeftIndent>140.0</LeftIndent>
+<content start="300" end="301">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="301" end="305">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="301" end="302">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_message$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="302" end="303">
+</content>
+
+<content start="303" end="304">
+<component><class>org.concord.modeler.PageMd3d</class><resource>script_message$0.mdd</resource><coordinate>script_message$0.xyz</coordinate><width>400</width><height>285</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="304" end="305">
+</content>
+
+</paragraph>
+<paragraph start="305" end="306">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="305" end="306">
+</content>
+
+</paragraph>
+<paragraph start="306" end="335">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="306" end="307">
+<component><class>org.concord.modeler.PageButton</class>
+<title>A message from a file</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>message messageexample.html;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="307" end="308">
+<component><class>org.concord.modeler.PageButton</class>
+<title>An inline message</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>message &lt;t&gt;&lt;font face=Verdana size=2&gt;This is a short &lt;b&gt;inline&lt;/b&gt; message issued by the 2D container.&lt;br&gt;Inline messages are more convenient to set up.&lt;/t&gt;;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="308" end="332">
+</content>
+
+<content start="332" end="333">
+<component><class>org.concord.modeler.PageButton</class>
+<title>A message from a file</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>message messageexample.html;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="333" end="334">
+<component><class>org.concord.modeler.PageButton</class>
+<title>An inline message</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>message &lt;t&gt;&lt;font face=Verdana size=2&gt;This is a short &lt;b&gt;inline&lt;/b&gt; message issued by the 3D container.&lt;br&gt;Inline messages are more convenient to set up.&lt;/t&gt;;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="334" end="335">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="335" end="336">
+<LeftIndent>140.0</LeftIndent>
+<content start="335" end="336">
+</content>
+
+</paragraph>
+<paragraph start="336" end="364">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="336" end="338">
+<size>11</size></content>
+
+<content start="338" end="346">
+<href>script_print.cml</href><size>11</size></content>
+
+<content start="346" end="349">
+<size>11</size></content>
+
+<content start="349" end="354">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="354" end="357">
+<size>11</size></content>
+
+<content start="357" end="361">
+<href>script_snapshot.cml</href><size>11</size></content>
+
+<content start="361" end="363">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

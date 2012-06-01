@@ -14,19 +14,19 @@ To duplicate an object, you first click the Duplicating Tool button (&quot; &quo
 You can practice duplicating a molecule with the following model:
 
  
-[This is an embedded simulator for practicing duplicating a molecule.]
+&#12304;This is an embedded simulator for practicing duplicating a molecule.&#12305;
 
 Script support
 
-There is currently no script support for this tool. For duplicating objects, operating through the graphical user interface (GUI) may be more convenient than manipulating through scripts.
+There is currently no script support for this tool. For duplicating objects, operating through the graphical user interface may be more convenient than manipulating through scripts.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1300">
+<section start="0" end="1294">
 <paragraph start="0" end="21">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="20">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="20" end="21">
 </content>
@@ -46,19 +46,19 @@ There is currently no script support for this tool. For duplicating objects, ope
 <size>11</size></content>
 
 <content start="24" end="32">
-<href>removeAction.cml</href><size>11</size></content>
+<size>11</size><href>removeAction.cml</href></content>
 
 <content start="32" end="35">
 <size>11</size></content>
 
 <content start="35" end="40">
-<href>index1.cml</href><size>11</size></content>
+<size>11</size><href>index1.cml</href></content>
 
 <content start="40" end="43">
 <size>11</size></content>
 
 <content start="43" end="47">
-<href>PointHeater.cml</href><size>11</size></content>
+<size>11</size><href>PointHeater.cml</href></content>
 
 <content start="47" end="49">
 <size>11</size></content>
@@ -91,7 +91,7 @@ There is currently no script support for this tool. For duplicating objects, ope
 <size>11</size></content>
 
 <content start="537" end="538">
-<size>11</size><icon>copy.gif</icon></content>
+<icon>copy.gif</icon><size>11</size></content>
 
 <content start="538" end="925">
 <size>11</size></content>
@@ -120,7 +120,8 @@ There is currently no script support for this tool. For duplicating objects, ope
 <Alignment>1</Alignment>
 <content start="993" end="994">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>duplicateAction$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder><button>Duplicate Object</button><button>Select Object</button></component><size>11</size></content>
+<resource>duplicateAction$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+<button>Duplicate Object</button><button>Select Object</button></component><size>11</size></content>
 
 <content start="994" end="995">
 <size>11</size></content>
@@ -129,10 +130,7 @@ There is currently no script support for this tool. For duplicating objects, ope
 <paragraph start="995" end="1066">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="995" end="1028">
-<size>10</size></content>
-
-<content start="1028" end="1065">
+<content start="995" end="1065">
 <size>10</size></content>
 
 <content start="1065" end="1066">
@@ -148,7 +146,7 @@ There is currently no script support for this tool. For duplicating objects, ope
 <paragraph start="1067" end="1082">
 <LeftIndent>140.0</LeftIndent>
 <content start="1067" end="1081">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="1081" end="1082">
 <size>11</size></content>
@@ -160,43 +158,43 @@ There is currently no script support for this tool. For duplicating objects, ope
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1083" end="1271">
+<paragraph start="1083" end="1265">
 <LeftIndent>140.0</LeftIndent>
-<content start="1083" end="1270">
+<content start="1083" end="1264">
 <size>11</size></content>
 
-<content start="1270" end="1271">
+<content start="1264" end="1265">
 </content>
 
 </paragraph>
-<paragraph start="1271" end="1272">
+<paragraph start="1265" end="1266">
 <LeftIndent>140.0</LeftIndent>
-<content start="1271" end="1272">
+<content start="1265" end="1266">
 </content>
 
 </paragraph>
-<paragraph start="1272" end="1300">
+<paragraph start="1266" end="1294">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="1272" end="1274">
+<content start="1266" end="1268">
 <size>11</size></content>
 
-<content start="1274" end="1282">
-<href>removeAction.cml</href><size>11</size></content>
+<content start="1268" end="1276">
+<size>11</size><href>removeAction.cml</href></content>
 
-<content start="1282" end="1285">
+<content start="1276" end="1279">
 <size>11</size></content>
 
-<content start="1285" end="1290">
-<href>index1.cml</href><size>11</size></content>
+<content start="1279" end="1284">
+<size>11</size><href>index1.cml</href></content>
 
-<content start="1290" end="1293">
+<content start="1284" end="1287">
 <size>11</size></content>
 
-<content start="1293" end="1297">
-<href>PointHeater.cml</href><size>11</size></content>
+<content start="1287" end="1291">
+<size>11</size><href>PointHeater.cml</href></content>
 
-<content start="1297" end="1299">
+<content start="1291" end="1293">
 <size>11</size></content>
 
 </paragraph>

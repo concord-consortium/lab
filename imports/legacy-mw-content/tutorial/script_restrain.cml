@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Restrain</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Restrain
@@ -19,15 +19,19 @@ Here is an example of using the restrain command to set the restraints on select
 
  
  
-[This is an embedded simulator.]
+&#12304;This is an embedded 2D model container.&#12305;
+
+ 
+ 
+&#12304;This is an embedded 3D model container.&#12305;
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="557">
+<section start="0" end="613">
 <paragraph start="0" end="9">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="8">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<bold>true</bold><italic>true</italic><size>16</size></content>
 
 <content start="8" end="9">
 </content>
@@ -80,7 +84,7 @@ Here is an example of using the restrain command to set the restraints on select
 <size>11</size></content>
 
 <content start="43" end="51">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="51" end="167">
 <size>11</size></content>
@@ -113,16 +117,16 @@ Here is an example of using the restrain command to set the restraints on select
 <paragraph start="267" end="268">
 <LeftIndent>140.0</LeftIndent>
 <content start="267" end="268">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="268" end="294">
 <LeftIndent>160.0</LeftIndent>
 <content start="268" end="277">
-<size>11</size><bold>true</bold><family>Courier New</family></content>
+<family>Courier New</family><bold>true</bold><size>11</size></content>
 
 <content start="277" end="293">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="293" end="294">
 <size>11</size></content>
@@ -140,7 +144,7 @@ Here is an example of using the restrain command to set the restraints on select
 <size>11</size></content>
 
 <content start="301" end="317">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="317" end="399">
 <size>11</size></content>
@@ -158,7 +162,7 @@ Here is an example of using the restrain command to set the restraints on select
 <size>11</size></content>
 
 <content start="432" end="440">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="440" end="490">
 <size>11</size></content>
@@ -195,7 +199,7 @@ restrain 1000;
 </script>
 <script2>select element 2;
 restrain 0;
-</script2>
+select element none;</script2>
 <action>Execute MW script</action>
 </component></content>
 
@@ -203,44 +207,94 @@ restrain 0;
 </content>
 
 </paragraph>
-<paragraph start="495" end="528">
+<paragraph start="495" end="537">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="495" end="527">
+<content start="495" end="537">
 <size>10</size></content>
 
-<content start="527" end="528">
-</content>
-
 </paragraph>
-<paragraph start="528" end="529">
+<paragraph start="537" end="538">
 <LeftIndent>140.0</LeftIndent>
-<content start="528" end="529">
+<Alignment>1</Alignment>
+<content start="537" end="538">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="538" end="540">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="538" end="539">
+<component><class>org.concord.modeler.PageMd3d</class><resource>script_restrain$0.mdd</resource><coordinate>script_restrain$0.xyz</coordinate><width>420</width><height>300</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="539" end="540">
 </content>
 
 </paragraph>
-<paragraph start="529" end="557">
+<paragraph start="540" end="542">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="540" end="541">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Restrain the big white particle</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>select element X1;
+restrain 1;
+</script>
+<script2>select element X1;
+restrain 0;
+select element none;
+
+</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="541" end="542">
+</content>
+
+</paragraph>
+<paragraph start="542" end="584">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="542" end="583">
+<size>10</size></content>
+
+<content start="583" end="584">
+</content>
+
+</paragraph>
+<paragraph start="584" end="585">
+<LeftIndent>140.0</LeftIndent>
+<content start="584" end="585">
+</content>
+
+</paragraph>
+<paragraph start="585" end="613">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="529" end="531">
+<content start="585" end="587">
 <size>11</size></content>
 
-<content start="531" end="539">
+<content start="587" end="595">
 <href>script_charge.cml</href><size>11</size></content>
 
-<content start="539" end="542">
+<content start="595" end="598">
 <size>11</size></content>
 
-<content start="542" end="547">
+<content start="598" end="603">
 <href>mwscripts.cml</href><size>11</size></content>
 
-<content start="547" end="550">
+<content start="603" end="606">
 <size>11</size></content>
 
-<content start="550" end="554">
+<content start="606" end="610">
 <href>script_damp.cml</href><size>11</size></content>
 
-<content start="554" end="556">
+<content start="610" end="612">
 <size>11</size></content>
 
 </paragraph>

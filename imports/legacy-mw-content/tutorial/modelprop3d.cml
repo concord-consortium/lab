@@ -10,16 +10,16 @@
 es.
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 
 &lt; Previous | Index | Next &gt;</text>
 <section start="0" end="125">
 <paragraph start="0" end="33">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="32">
-<bold>true</bold><size>15</size><italic>true</italic></content>
+<italic>true</italic><size>15</size><bold>true</bold></content>
 
 <content start="32" end="33">
 </content>
@@ -32,19 +32,19 @@ es.
 
 </paragraph>
 <paragraph start="34" end="62">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="34" end="47">
 <size>11</size></content>
 
 <content start="47" end="52">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="52" end="55">
 <size>11</size></content>
 
 <content start="55" end="59">
-<size>11</size><href>setview3d.cml</href></content>
+<href>setview3d.cml</href><size>11</size></content>
 
 <content start="59" end="61">
 <size>11</size></content>
@@ -107,19 +107,19 @@ es.
 
 </paragraph>
 <paragraph start="97" end="125">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="97" end="110">
 <size>11</size></content>
 
 <content start="110" end="115">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="115" end="118">
 <size>11</size></content>
 
 <content start="118" end="122">
-<size>11</size><href>setview3d.cml</href></content>
+<href>setview3d.cml</href><size>11</size></content>
 
 <content start="122" end="124">
 <size>11</size></content>

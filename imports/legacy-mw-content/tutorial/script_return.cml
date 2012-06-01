@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Return</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Return
+
+&lt; Previous | Index | Next &gt;
+
+The return command stops the execution of the scripts when it is called.
+
+Syntax:
+
+return 
+
+Note that this differs from the stop command that stops the simulation but not the execution of the scripts.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="267">
+<paragraph start="0" end="7">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="6">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="36">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="8" end="10">
+<size>11</size></content>
+
+<content start="10" end="18">
+<href>script_break.cml</href><size>11</size></content>
+
+<content start="18" end="21">
+<size>11</size></content>
+
+<content start="21" end="26">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="33">
+<href>script_cancel.cml</href><size>11</size></content>
+
+<content start="33" end="35">
+<size>11</size></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<LeftIndent>100.0</LeftIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="110">
+<LeftIndent>140.0</LeftIndent>
+<content start="37" end="41">
+<size>11</size></content>
+
+<content start="41" end="47">
+<size>11</size><family>Courier New</family></content>
+
+<content start="47" end="110">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="110" end="111">
+<LeftIndent>140.0</LeftIndent>
+<content start="110" end="111">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="111" end="119">
+<LeftIndent>140.0</LeftIndent>
+<content start="111" end="119">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="119" end="120">
+<LeftIndent>140.0</LeftIndent>
+<content start="119" end="120">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="120" end="128">
+<LeftIndent>160.0</LeftIndent>
+<content start="120" end="127">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="127" end="128">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="128" end="129">
+<LeftIndent>140.0</LeftIndent>
+<content start="128" end="129">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="129" end="238">
+<LeftIndent>140.0</LeftIndent>
+<content start="129" end="161">
+<size>11</size></content>
+
+<content start="161" end="165">
+<href>script_stop.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="165" end="237">
+<size>11</size></content>
+
+<content start="237" end="238">
+</content>
+
+</paragraph>
+<paragraph start="238" end="239">
+<LeftIndent>140.0</LeftIndent>
+<content start="238" end="239">
+</content>
+
+</paragraph>
+<paragraph start="239" end="267">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="239" end="241">
+<size>11</size></content>
+
+<content start="241" end="249">
+<href>script_break.cml</href><size>11</size></content>
+
+<content start="249" end="252">
+<size>11</size></content>
+
+<content start="252" end="257">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="257" end="260">
+<size>11</size></content>
+
+<content start="260" end="264">
+<href>script_cancel.cml</href><size>11</size></content>
+
+<content start="264" end="266">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

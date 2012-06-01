@@ -22,13 +22,17 @@ where [variable] can be a system variable and a defined varialbe. In addition, t
 
 The current frames mean the frames stored in the simulator&apos;s recorder. If the recorder is disabled, it will just report the mean for the selected particles in the current state.
 
+Printing the result of a math expression
+
+If a math expression is enclosed in a pair of double quotes, then it will be evaluated and the result will be printed. Otherwise, the math expression will be printed as a string without evaluation. For example, print 3*2 gives 3*2, whereas print &quot;3*2&quot; gives 6. 
+
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="800">
+<section start="0" end="1105">
 <paragraph start="0" end="6">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="5">
-<bold>true</bold><italic>true</italic><size>16</size></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="5" end="6">
 </content>
@@ -44,17 +48,23 @@ The current frames mean the frames stored in the simulator&apos;s recorder. If t
 <paragraph start="7" end="35">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="7" end="20">
+<content start="7" end="9">
+<size>11</size></content>
+
+<content start="9" end="17">
+<href>script_beep.cml</href><size>11</size></content>
+
+<content start="17" end="20">
 <size>11</size></content>
 
 <content start="20" end="25">
-<size>11</size><href>mwscripts.cml</href></content>
+<href>mwscripts.cml</href><size>11</size></content>
 
 <content start="25" end="28">
 <size>11</size></content>
 
 <content start="28" end="32">
-<size>11</size><href>script_plot.cml</href></content>
+<href>script_message.cml</href><size>11</size></content>
 
 <content start="32" end="34">
 <size>11</size></content>
@@ -75,7 +85,7 @@ The current frames mean the frames stored in the simulator&apos;s recorder. If t
 <size>11</size></content>
 
 <content start="40" end="45">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="45" end="82">
 <size>11</size></content>
@@ -96,16 +106,16 @@ The current frames mean the frames stored in the simulator&apos;s recorder. If t
 <paragraph start="91" end="92">
 <LeftIndent>140.0</LeftIndent>
 <content start="91" end="92">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 </paragraph>
 <paragraph start="92" end="109">
 <LeftIndent>160.0</LeftIndent>
 <content start="92" end="97">
-<family>Courier New</family><bold>true</bold><size>11</size></content>
+<bold>true</bold><size>11</size><family>Courier New</family></content>
 
 <content start="97" end="109">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 </paragraph>
 <paragraph start="109" end="110">
@@ -120,19 +130,19 @@ The current frames mean the frames stored in the simulator&apos;s recorder. If t
 <size>11</size></content>
 
 <content start="116" end="126">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="126" end="136">
 <size>11</size></content>
 
 <content start="136" end="151">
-<size>11</size><href>script_variable.cml</href></content>
+<href>script_variable.cml</href><size>11</size></content>
 
 <content start="151" end="158">
 <size>11</size></content>
 
 <content start="158" end="174">
-<size>11</size><href>script_defvar.cml</href></content>
+<href>script_defvar.cml</href><size>11</size></content>
 
 <content start="174" end="229">
 <size>11</size></content>
@@ -147,7 +157,7 @@ The current frames mean the frames stored in the simulator&apos;s recorder. If t
 <paragraph start="230" end="313">
 <LeftIndent>160.0</LeftIndent>
 <content start="230" end="239">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="239" end="248">
 <size>11</size></content>
@@ -162,7 +172,7 @@ The current frames mean the frames stored in the simulator&apos;s recorder. If t
 <paragraph start="313" end="396">
 <LeftIndent>160.0</LeftIndent>
 <content start="313" end="322">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="322" end="331">
 <size>11</size></content>
@@ -177,7 +187,7 @@ The current frames mean the frames stored in the simulator&apos;s recorder. If t
 <paragraph start="396" end="494">
 <LeftIndent>160.0</LeftIndent>
 <content start="396" end="405">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="405" end="414">
 <size>11</size></content>
@@ -192,7 +202,7 @@ The current frames mean the frames stored in the simulator&apos;s recorder. If t
 <paragraph start="494" end="592">
 <LeftIndent>160.0</LeftIndent>
 <content start="494" end="503">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="503" end="512">
 <size>11</size></content>
@@ -216,7 +226,7 @@ The current frames mean the frames stored in the simulator&apos;s recorder. If t
 <size>11</size></content>
 
 <content start="642" end="662">
-<size>11</size><href>recordSimulation.cml</href></content>
+<href>recordSimulation.cml</href><size>11</size></content>
 
 <content start="662" end="771">
 <size>11</size></content>
@@ -225,25 +235,70 @@ The current frames mean the frames stored in the simulator&apos;s recorder. If t
 <paragraph start="771" end="772">
 <LeftIndent>140.0</LeftIndent>
 <content start="771" end="772">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="772" end="813">
+<LeftIndent>140.0</LeftIndent>
+<content start="772" end="812">
+<bold>true</bold><size>11</size></content>
+
+<content start="812" end="813">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="813" end="814">
+<LeftIndent>140.0</LeftIndent>
+<content start="813" end="814">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="814" end="1076">
+<LeftIndent>140.0</LeftIndent>
+<content start="814" end="1025">
+<size>11</size></content>
+
+<content start="1025" end="1034">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1034" end="1054">
+<size>11</size></content>
+
+<content start="1054" end="1065">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1065" end="1076">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1076" end="1077">
+<LeftIndent>140.0</LeftIndent>
+<content start="1076" end="1077">
 </content>
 
 </paragraph>
-<paragraph start="772" end="800">
+<paragraph start="1077" end="1105">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="772" end="785">
+<content start="1077" end="1079">
 <size>11</size></content>
 
-<content start="785" end="790">
-<size>11</size><href>mwscripts.cml</href></content>
+<content start="1079" end="1087">
+<href>script_beep.cml</href><size>11</size></content>
 
-<content start="790" end="793">
+<content start="1087" end="1090">
 <size>11</size></content>
 
-<content start="793" end="797">
-<size>11</size><href>script_plot.cml</href></content>
+<content start="1090" end="1095">
+<href>mwscripts.cml</href><size>11</size></content>
 
-<content start="797" end="799">
+<content start="1095" end="1098">
+<size>11</size></content>
+
+<content start="1098" end="1102">
+<href>script_message.cml</href><size>11</size></content>
+
+<content start="1102" end="1104">
 <size>11</size></content>
 
 </paragraph>

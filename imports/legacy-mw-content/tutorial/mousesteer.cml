@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Steering particles using the mouse</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Steering particles using the mouse
+
+&lt; Back  &gt;
+
+You can test steering particles using the mouse with the following simulation.
+
+Drag the mouse in the direction in which you would like to steer to.
+ 
+   
+
+
+
+&lt; Back &gt;</text>
+<section start="0" end="214">
+<paragraph start="0" end="35">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="34">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="46">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="36" end="38">
+<size>11</size></content>
+
+<content start="38" end="42">
+<size>11</size><href>SteerParticle.cml</href></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<LeftIndent>140.0</LeftIndent>
+<content start="46" end="47">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="47" end="126">
+<LeftIndent>140.0</LeftIndent>
+<content start="47" end="126">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="126" end="127">
+<LeftIndent>140.0</LeftIndent>
+<content start="126" end="127">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="127" end="196">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="127" end="195">
+<bold>true</bold><size>11</size></content>
+
+<content start="195" end="196">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="196" end="198">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="196" end="197">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>mousesteer$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="197" end="198">
+</content>
+
+</paragraph>
+<paragraph start="198" end="202">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="198" end="199">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run;focus;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="199" end="200">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="200" end="201">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="201" end="202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="202" end="203">
+<LeftIndent>140.0</LeftIndent>
+<content start="202" end="203">
+</content>
+
+</paragraph>
+<paragraph start="203" end="204">
+<LeftIndent>140.0</LeftIndent>
+<content start="203" end="204">
+</content>
+
+</paragraph>
+<paragraph start="204" end="205">
+<LeftIndent>140.0</LeftIndent>
+<content start="204" end="205">
+</content>
+
+</paragraph>
+<paragraph start="205" end="214">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="205" end="207">
+<size>11</size></content>
+
+<content start="207" end="211">
+<size>11</size><href>mousesteer.cml</href></content>
+
+<content start="211" end="213">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

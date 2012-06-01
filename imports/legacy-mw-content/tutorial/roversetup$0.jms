@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.jmol.ModelState"> 
+  <void property="atomAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="atomInteractions"> 
+   <object class="java.util.HashMap"> 
+    <void method="put"> 
+     <int>1067</int> 
+     <object class="org.jmol.api.InteractionCenter"> 
+      <void property="host"> 
+       <int>1067</int> 
+      </void> 
+      <void property="keyRgb"> 
+       <int>-1</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="put"> 
+     <int>3342</int> 
+     <object class="org.jmol.api.InteractionCenter"> 
+      <void property="host"> 
+       <int>3342</int> 
+      </void> 
+      <void property="keyRgb"> 
+       <int>-1</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="put"> 
+     <int>2230</int> 
+     <object class="org.jmol.api.InteractionCenter"> 
+      <void property="host"> 
+       <int>2230</int> 
+      </void> 
+      <void property="keyRgb"> 
+       <int>-1</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="put"> 
+     <int>4501</int> 
+     <object class="org.jmol.api.InteractionCenter"> 
+      <void property="host"> 
+       <int>4501</int> 
+      </void> 
+      <void property="keyRgb"> 
+       <int>-1</int> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="axisStyle"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="bondAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="bondInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="roverCharge"> 
+   <float>0.0</float> 
+  </void> 
+  <void property="roverMode"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="roverTurning"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="startingScene"> 
+   <object class="org.concord.jmol.SceneState"> 
+    <void property="atomColoring"> 
+     <byte>1</byte> 
+    </void> 
+    <void property="geoData"> 
+     <string>22.76054 16.23206 46.244553 800.0 -389.0 458.0 34.9 100.0</string> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
+</java> 

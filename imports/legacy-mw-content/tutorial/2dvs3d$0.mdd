@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_11" class="java.beans.XMLDecoder"> 
  <object class="org.concord.mw3d.ModelState"> 
   <void property="axisStyle"> 
    <byte>0</byte> 
@@ -25,7 +25,7 @@
        </object> 
       </void> 
       <void property="foregroundColor"> 
-       <object class="java.awt.Color"> 
+       <object id="Color0" class="java.awt.Color"> 
         <int>255</int> 
         <int>255</int> 
         <int>255</int> 
@@ -40,6 +40,36 @@
       </void> 
       <void property="y"> 
        <float>45.0</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>60</int> 
+        <int>64</int> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Book Antiqua</string> 
+        <int>0</int> 
+        <int>12</int> 
+       </object> 
+      </void> 
+      <void property="foregroundColor"> 
+       <object idref="Color0"/> 
+      </void> 
+      <void property="text"> 
+       <string>Drag the mouse to rotate;
+hold down SHIFT to zoom.</string> 
+      </void> 
+      <void property="x"> 
+       <float>3.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>313.0</float> 
       </void> 
      </object> 
     </void> 
@@ -127,8 +157,14 @@
   <void property="showClock"> 
    <boolean>false</boolean> 
   </void> 
+  <void property="timeStep"> 
+   <float>1.0</float> 
+  </void> 
   <void property="trajectorySelection"> 
    <string>0</string> 
+  </void> 
+  <void property="xyzFileName"> 
+   <string>2dvs3d$0.xyz</string> 
   </void> 
  </object> 
 </java> 

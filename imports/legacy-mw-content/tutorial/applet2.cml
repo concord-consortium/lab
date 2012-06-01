@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Feeding parameters to applets</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Feeding parameters to applets
@@ -10,7 +10,7 @@
 You can set different parameters for the applet to do different jobs. For instance, the following two windows use the same applet to open two different 3D data sets:
 
      
-[These are embedded applets provided by Sun Microsystems as demos of the JDK.]
+&#12304;These are embedded applets provided by Sun Microsystems as demos of the JDK.&#12305;
 
 Use the text area at the bottom of the Applet Dialog to set the parameters in the format of name-value pairs. For instance, in the left applet above, the following text was set:
 
@@ -18,13 +18,15 @@ Use the text area at the bottom of the Applet Dialog to set the parameters in th
 
 Consult the applet&apos;s documentation for what parameters it offers for the user to set. Also, if the applet needs to read some data, the data files must be in the code base (i.e. the same web directory where the jar file is located). An applet cannot read from any other place than its code base. The next section demonstrates this.
 
+If an applet needs to read something from its code base, you should uncheck the &quot;Allow Caching&quot; check box. Otherwise, the applet may not work.
+
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="888">
+<section start="0" end="1032">
 <paragraph start="0" end="30">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="29">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<size>15</size><bold>true</bold><italic>true</italic></content>
 
 <content start="29" end="30">
 </content>
@@ -44,19 +46,19 @@ Consult the applet&apos;s documentation for what parameters it offers for the us
 <size>11</size></content>
 
 <content start="33" end="41">
-<href>applet1.cml</href><size>11</size></content>
+<size>11</size><href>applet1.cml</href></content>
 
 <content start="41" end="44">
 <size>11</size></content>
 
 <content start="44" end="49">
-<href>index5.cml</href><size>11</size></content>
+<size>11</size><href>index5.cml</href></content>
 
 <content start="49" end="52">
 <size>11</size></content>
 
 <content start="52" end="56">
-<href>appletsecurity.cml</href><size>11</size></content>
+<size>11</size><href>appletsecurity.cml</href></content>
 
 <content start="56" end="58">
 <size>11</size></content>
@@ -113,8 +115,14 @@ Consult the applet&apos;s documentation for what parameters it offers for the us
 <paragraph start="233" end="312">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="233" end="311">
+<content start="233" end="234">
+<size>13</size><bold>true</bold></content>
+
+<content start="234" end="310">
 <size>10</size></content>
+
+<content start="310" end="311">
+<size>13</size><bold>true</bold></content>
 
 <content start="311" end="312">
 </content>
@@ -141,7 +149,7 @@ Consult the applet&apos;s documentation for what parameters it offers for the us
 <paragraph start="492" end="527">
 <LeftIndent>160.0</LeftIndent>
 <content start="492" end="526">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="526" end="527">
 <size>11</size></content>
@@ -159,7 +167,7 @@ Consult the applet&apos;s documentation for what parameters it offers for the us
 <size>11</size></content>
 
 <content start="823" end="839">
-<href>appletsecurity.cml</href><size>11</size></content>
+<size>11</size><href>appletsecurity.cml</href></content>
 
 <content start="839" end="859">
 <size>11</size></content>
@@ -168,31 +176,46 @@ Consult the applet&apos;s documentation for what parameters it offers for the us
 <paragraph start="859" end="860">
 <LeftIndent>140.0</LeftIndent>
 <content start="859" end="860">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="860" end="1003">
+<LeftIndent>140.0</LeftIndent>
+<content start="860" end="1002">
+<size>11</size><bold>true</bold></content>
+
+<content start="1002" end="1003">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1003" end="1004">
+<LeftIndent>140.0</LeftIndent>
+<content start="1003" end="1004">
 </content>
 
 </paragraph>
-<paragraph start="860" end="888">
+<paragraph start="1004" end="1032">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="860" end="862">
+<content start="1004" end="1006">
 <size>11</size></content>
 
-<content start="862" end="870">
-<href>applet1.cml</href><size>11</size></content>
+<content start="1006" end="1014">
+<size>11</size><href>applet1.cml</href></content>
 
-<content start="870" end="873">
+<content start="1014" end="1017">
 <size>11</size></content>
 
-<content start="873" end="878">
-<href>index5.cml</href><size>11</size></content>
+<content start="1017" end="1022">
+<size>11</size><href>index5.cml</href></content>
 
-<content start="878" end="881">
+<content start="1022" end="1025">
 <size>11</size></content>
 
-<content start="881" end="885">
-<href>appletsecurity.cml</href><size>11</size></content>
+<content start="1025" end="1029">
+<size>11</size><href>appletsecurity.cml</href></content>
 
-<content start="885" end="887">
+<content start="1029" end="1031">
 <size>11</size></content>
 
 </paragraph>

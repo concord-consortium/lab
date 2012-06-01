@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_01" class="java.beans.XMLDecoder"> 
  <object class="org.concord.mw2d.models.MesoModel$State"> 
   <void property="boundary"> 
    <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
@@ -28,20 +28,20 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1152795514000</long> 
+     <long>1174090103425</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial\resizeAction$0.gbl</string> 
+    <string>C:\home\mw\public\tutorial\resizeAction$0.gbl</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>3648</long> 
+    <long>3645</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial</string> 
+    <string>C:\home\mw\public\tutorial</string> 
    </void> 
   </void> 
   <void property="timeStep"> 

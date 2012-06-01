@@ -16,7 +16,7 @@ There are three ways to open the Properties Dialog:
    Press CTRL+SHIFT+P on Windows and Linux, or &quot;APPLE+,&quot; on Mac OS X.
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 As the name implies, this window shows the properties of the current page. You can do the following things with this dialog box:
 
@@ -31,42 +31,42 @@ Remember, all the above functions are disabled if the current page is a remote o
 &lt; Previous | Index | Next &gt;</text>
 <section start="0" end="1258">
 <paragraph start="0" end="19">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="18">
-<bold>true</bold><italic>true</italic><size>15</size></content>
+<bold>true</bold><size>15</size><italic>true</italic></content>
 
 <content start="18" end="19">
 </content>
 
 </paragraph>
 <paragraph start="19" end="20">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="19" end="20">
 </content>
 
 </paragraph>
 <paragraph start="20" end="48">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="20" end="22">
 <size>11</size></content>
 
 <content start="22" end="30">
-<href>intrapage.cml</href><size>11</size></content>
+<size>11</size><href>downloadmultipage.cml</href></content>
 
 <content start="30" end="33">
 <size>11</size></content>
 
 <content start="33" end="38">
-<href>index2.cml</href><size>11</size></content>
+<size>11</size><href>index2.cml</href></content>
 
 <content start="38" end="41">
 <size>11</size></content>
 
 <content start="41" end="45">
-<href>bgColor.cml</href><size>11</size></content>
+<size>11</size><href>bgColor.cml</href></content>
 
 <content start="45" end="47">
 <size>11</size></content>
@@ -154,8 +154,14 @@ Remember, all the above functions are disabled if the current page is a remote o
 <paragraph start="570" end="594">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="570" end="593">
+<content start="570" end="571">
+<bold>true</bold><size>13</size></content>
+
+<content start="571" end="592">
 <size>10</size></content>
+
+<content start="592" end="593">
+<bold>true</bold><size>13</size></content>
 
 <content start="593" end="594">
 <size>11</size></content>
@@ -218,7 +224,7 @@ Remember, all the above functions are disabled if the current page is a remote o
 <size>11</size></content>
 
 <content start="1002" end="1006">
-<href>bgColor.cml</href><size>11</size></content>
+<size>11</size><href>bgColor.cml</href></content>
 
 <content start="1006" end="1008">
 <size>11</size></content>
@@ -243,25 +249,25 @@ Remember, all the above functions are disabled if the current page is a remote o
 
 </paragraph>
 <paragraph start="1230" end="1258">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="1230" end="1232">
 <size>11</size></content>
 
 <content start="1232" end="1240">
-<href>intrapage.cml</href><size>11</size></content>
+<size>11</size><href>downloadmultipage.cml</href></content>
 
 <content start="1240" end="1243">
 <size>11</size></content>
 
 <content start="1243" end="1248">
-<href>index2.cml</href><size>11</size></content>
+<size>11</size><href>index2.cml</href></content>
 
 <content start="1248" end="1251">
 <size>11</size></content>
 
 <content start="1251" end="1255">
-<href>bgColor.cml</href><size>11</size></content>
+<size>11</size><href>bgColor.cml</href></content>
 
 <content start="1255" end="1257">
 <size>11</size></content>

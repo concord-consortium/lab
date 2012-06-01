@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="rotation"> 
+   <string>125 -977 -172 74.8 39</string> 
+  </void> 
+  <void property="showEnergizer"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>2.0</float> 
+  </void> 
+  <void property="x1Argb"> 
+   <int>-8355712</int> 
+  </void> 
+  <void property="x1Epsilon"> 
+   <float>0.05</float> 
+  </void> 
+  <void property="x1Mass"> 
+   <float>50.0</float> 
+  </void> 
+  <void property="x2Epsilon"> 
+   <float>0.05</float> 
+  </void> 
+  <void property="x2Mass"> 
+   <float>50.0</float> 
+  </void> 
+  <void property="x2Sigma"> 
+   <float>2.0</float> 
+  </void> 
+  <void property="x3Argb"> 
+   <int>-8355712</int> 
+  </void> 
+  <void property="x3Epsilon"> 
+   <float>0.05</float> 
+  </void> 
+  <void property="x3Mass"> 
+   <float>50.0</float> 
+  </void> 
+  <void property="x3Sigma"> 
+   <float>10.0</float> 
+  </void> 
+  <void property="x4Argb"> 
+   <int>-3355393</int> 
+  </void> 
+  <void property="x4Epsilon"> 
+   <float>0.05</float> 
+  </void> 
+  <void property="x4Mass"> 
+   <float>50.0</float> 
+  </void> 
+  <void property="x4Sigma"> 
+   <float>20.0</float> 
+  </void> 
+ </object> 
+</java> 

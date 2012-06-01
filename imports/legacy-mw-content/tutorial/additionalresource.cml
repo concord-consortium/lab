@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Saving additional resource files</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Saving additional resource files
+
+&lt; Previous | Index | Next &gt;
+
+When an MW page is saved, only the embedded models, the images and sound clips that are directly associated with the page are saved, along with the main CML file. There are times that other files are indirectly linked to the page through MW scripts. For example, an additional model can be loaded into a model container through a load command set for a hyperlink on the page. These additional resource files are not automatically saved when a page is saved. As a result, when a user saves such a page, the hyperlink will be broken because of  the missing file.
+
+While this is unlikely a common thing for novice authors, it is getting increasingly important as more and more MW pages with complicated scripts and links have been created. For a naive author, incomplete saving of such pages is not desirable. When an author would like to use an existing page as the starting point to create a new page, it is better to also offer them those files that are needed to be saved for the saved MW page to work.
+
+To do this, you just need to specify the additional resource files needed for an MW page in the &quot;Additional Resource Files&quot; panel, which can be opened using &quot;Edit &gt; Additional Resource Files...&quot; from the top menu bar. You can type the file names in the text area in the panel. You just need to type the file names because it is assumed that all the files needed for an MW page must be stored in the same folder as the main CML file.
+
+An alternative place to enter the file names is from the Properties Window that can be opened using &quot;File &gt; Properties...&quot;.
+
+This page shows an example of how this works. You can save the page into your hard disk and check it out.
+
+Note that although you can, in theory, include other CML files in the the list of &quot;Additional Resource Files&quot;, it is generally not a great idea to do so. In particular, you should not try to use this functionality to let the user download the entire activity, however tempting an option it might sound.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2066">
+<paragraph start="0" end="33">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="32">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<RightIndent>20.0</RightIndent>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="62">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="34" end="36">
+<size>11</size></content>
+
+<content start="36" end="44">
+<size>11</size><href>intrapage.cml</href></content>
+
+<content start="44" end="47">
+<size>11</size></content>
+
+<content start="47" end="52">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="52" end="55">
+<size>11</size></content>
+
+<content start="55" end="59">
+<size>11</size><href>downloadmultipage.cml</href></content>
+
+<content start="59" end="61">
+<size>11</size></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="624">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="63" end="393">
+<size>11</size></content>
+
+<content start="393" end="397">
+<family>Courier New</family><size>11</size><href>script_load.cml</href></content>
+
+<content start="397" end="624">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="624" end="625">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="624" end="625">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="625" end="1067">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="625" end="1067">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1067" end="1068">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1067" end="1068">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1068" end="1501">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1068" end="1501">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1501" end="1502">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1501" end="1502">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1502" end="1626">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1502" end="1626">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1626" end="1627">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1626" end="1627">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1627" end="1733">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1627" end="1643">
+<size>11</size></content>
+
+<content start="1643" end="1653">
+<size>11</size><href>../student/fluid/archimedes.cml</href></content>
+
+<content start="1653" end="1733">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1733" end="1734">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1733" end="1734">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1734" end="2037">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1734" end="2036">
+<size>11</size></content>
+
+<content start="2036" end="2037">
+</content>
+
+</paragraph>
+<paragraph start="2037" end="2038">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2037" end="2038">
+</content>
+
+</paragraph>
+<paragraph start="2038" end="2066">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2038" end="2040">
+<size>11</size></content>
+
+<content start="2040" end="2048">
+<size>11</size><href>intrapage.cml</href></content>
+
+<content start="2048" end="2051">
+<size>11</size></content>
+
+<content start="2051" end="2056">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="2056" end="2059">
+<size>11</size></content>
+
+<content start="2059" end="2063">
+<size>11</size><href>downloadmultipage.cml</href></content>
+
+<content start="2063" end="2065">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

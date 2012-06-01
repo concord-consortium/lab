@@ -9,16 +9,16 @@
 
 es.
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 
 &lt; Previous | Index | Next &gt;</text>
 <section start="0" end="123">
 <paragraph start="0" end="32">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="31">
-<bold>true</bold><size>15</size><italic>true</italic></content>
+<italic>true</italic><size>15</size><bold>true</bold></content>
 
 <content start="31" end="32">
 </content>
@@ -31,25 +31,25 @@ es.
 
 </paragraph>
 <paragraph start="33" end="61">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="33" end="35">
 <size>11</size></content>
 
 <content start="35" end="43">
-<size>11</size><href>modelprop3d.cml</href></content>
+<href>modelprop3d.cml</href><size>11</size></content>
 
 <content start="43" end="46">
 <size>11</size></content>
 
 <content start="46" end="51">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="51" end="54">
 <size>11</size></content>
 
 <content start="54" end="58">
-<size>11</size><href>atomprop3d.cml</href></content>
+<href>atomprop3d.cml</href><size>11</size></content>
 
 <content start="58" end="60">
 <size>11</size></content>
@@ -106,25 +106,25 @@ es.
 
 </paragraph>
 <paragraph start="95" end="123">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="95" end="97">
 <size>11</size></content>
 
 <content start="97" end="105">
-<size>11</size><href>modelprop3d.cml</href></content>
+<href>modelprop3d.cml</href><size>11</size></content>
 
 <content start="105" end="108">
 <size>11</size></content>
 
 <content start="108" end="113">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="113" end="116">
 <size>11</size></content>
 
 <content start="116" end="120">
-<size>11</size><href>atomprop3d.cml</href></content>
+<href>atomprop3d.cml</href><size>11</size></content>
 
 <content start="120" end="122">
 <size>11</size></content>

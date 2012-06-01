@@ -12,17 +12,17 @@ The 3D Molecular Constructor can be used to build structures. This feature can b
 The following example shows that a nanotube joint created using the 3D Constructor (the left container) can be loaded into a Jmol Viewer (the right container):
 
   
-[The left is an embedded 3D model, which runs molecular dynamics simulations. The right is an embedded Jmol Viewer, which only displays the structure.]
+&#12304;The left is an embedded 3D model, which runs molecular dynamics simulations. The right is an embedded Jmol Viewer, which only displays the structure.&#12305;
 
 With the Constructor/Simulator, you can construct any kind of structures, limited only by your own imagination. If you need to show the structures you created on the Web, you can use the Jmol Applet Viewer to show it. 
 
 &lt; Previous | Index | Next &gt;</text>
 <section start="0" end="815">
 <paragraph start="0" end="41">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="40">
-<bold>true</bold><size>15</size><italic>true</italic></content>
+<italic>true</italic><size>15</size><bold>true</bold></content>
 
 <content start="40" end="41">
 </content>
@@ -35,8 +35,8 @@ With the Constructor/Simulator, you can construct any kind of structures, limite
 
 </paragraph>
 <paragraph start="42" end="70">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="42" end="44">
 <size>11</size></content>
 
@@ -111,8 +111,8 @@ With the Constructor/Simulator, you can construct any kind of structures, limite
 
 </paragraph>
 <paragraph start="414" end="566">
-<RightIndent>100.0</RightIndent>
 <Alignment>1</Alignment>
+<RightIndent>100.0</RightIndent>
 <LeftIndent>240.0</LeftIndent>
 <content start="414" end="565">
 <size>10</size></content>
@@ -143,8 +143,8 @@ With the Constructor/Simulator, you can construct any kind of structures, limite
 
 </paragraph>
 <paragraph start="787" end="815">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="787" end="789">
 <size>11</size></content>
 

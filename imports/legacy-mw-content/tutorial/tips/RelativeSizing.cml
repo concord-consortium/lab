@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Auto-resizing an embedded component when the parent window resizes</page_title>
+<text> Auto-resizing an embedded component when the parent window resizes
+
+When you insert an embedded component, you sometimes want it to be able to self-adjust its size as the parent window is resized (similar to a HTML table). You can do this by setting the width (or height) to be a number between 0 and 1 in the customization dialog window, for example, in the dialog window for customizing a HTML text box (as is shown below):
+
+  
+
+When the &quot;Set width&quot; and &quot;Set height&quot; fields take integers, the inputs will become the text box&apos;s actual size. Any input between 0 and 1 will be regarded as relative to the hosting window. The result of the above settings is shown below:
+
+ 
+
+You can resize the window now to see if the text box resizes as well.
+
+
+&lt;Index of tips&gt;</text>
+<section start="0" end="762">
+<paragraph start="0" end="68">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="67">
+<size>18</size><bold>true</bold></content>
+
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="69">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="68" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="427">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="69" end="427">
+</content>
+
+</paragraph>
+<paragraph start="427" end="428">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="427" end="428">
+</content>
+
+</paragraph>
+<paragraph start="428" end="431">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="428" end="429">
+</content>
+
+<content start="429" end="430">
+<icon>TextBoxDialog.gif</icon></content>
+
+<content start="430" end="431">
+</content>
+
+</paragraph>
+<paragraph start="431" end="432">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="431" end="432">
+</content>
+
+</paragraph>
+<paragraph start="432" end="670">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="432" end="670">
+</content>
+
+</paragraph>
+<paragraph start="670" end="671">
+<LeftIndent>8.0</LeftIndent>
+<content start="670" end="671">
+</content>
+
+</paragraph>
+<paragraph start="671" end="673">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="671" end="672">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>0.5</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    This is a text box that has a width 50% of that of the window.
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="672" end="673">
+</content>
+
+</paragraph>
+<paragraph start="673" end="674">
+<LeftIndent>8.0</LeftIndent>
+<content start="673" end="674">
+</content>
+
+</paragraph>
+<paragraph start="674" end="744">
+<LeftIndent>8.0</LeftIndent>
+<content start="674" end="744">
+</content>
+
+</paragraph>
+<paragraph start="744" end="745">
+<content start="744" end="745">
+</content>
+
+</paragraph>
+<paragraph start="745" end="746">
+<content start="745" end="746">
+</content>
+
+</paragraph>
+<paragraph start="746" end="762">
+<Alignment>1</Alignment>
+<content start="746" end="747">
+</content>
+
+<content start="747" end="760">
+<href>index.cml</href></content>
+
+<content start="760" end="761">
+</content>
+
+</paragraph>
+</section>
+</document>

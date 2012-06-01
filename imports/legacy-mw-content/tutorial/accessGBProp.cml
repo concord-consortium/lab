@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Accessing a Gay-Berne particle&apos;s properties</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Accessing a Gay-Berne particle&apos;s properties
@@ -10,7 +10,7 @@
 To access a Gay-Berne particle&apos;s properties, double-click it when the model container is in the selection mode (i.e. the button &quot; &quot; is chosen), and then you will see the following dialog window:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 This dialog allows you to change a set of parameters.
 
@@ -56,7 +56,7 @@ Clicking a blue underlined name in the properties window will bring up a window 
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="43">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="43" end="44">
 </content>
@@ -109,7 +109,7 @@ Clicking a blue underlined name in the properties window will bring up a window 
 <size>11</size></content>
 
 <content start="203" end="204">
-<icon>Select.gif</icon><size>11</size></content>
+<size>11</size><icon>Select.gif</icon></content>
 
 <content start="204" end="269">
 <size>11</size></content>
@@ -122,21 +122,21 @@ Clicking a blue underlined name in the properties window will bring up a window 
 
 </paragraph>
 <paragraph start="270" end="273">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="270" end="271">
 <size>11</size></content>
 
 <content start="271" end="272">
-<icon>GBProp.gif</icon><size>11</size></content>
+<size>11</size><icon>GBProp.gif</icon></content>
 
 <content start="272" end="273">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="273" end="297">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="273" end="296">
 <size>10</size></content>
 
@@ -288,7 +288,7 @@ Clicking a blue underlined name in the properties window will bring up a window 
 <size>11</size></content>
 
 <content start="977" end="1007">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="1007" end="1015">
 <size>11</size></content>
@@ -300,7 +300,7 @@ Clicking a blue underlined name in the properties window will bring up a window 
 <size>11</size></content>
 
 <content start="1050" end="1057">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="1057" end="1082">
 <size>11</size></content>
@@ -343,8 +343,8 @@ Clicking a blue underlined name in the properties window will bring up a window 
 
 </paragraph>
 <paragraph start="1328" end="1332">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="1328" end="1330">
 </content>
 
@@ -367,7 +367,7 @@ Clicking a blue underlined name in the properties window will bring up a window 
 <size>11</size></content>
 
 <content start="1390" end="1420">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="1420" end="1428">
 <size>11</size></content>
@@ -379,7 +379,7 @@ Clicking a blue underlined name in the properties window will bring up a window 
 <size>11</size></content>
 
 <content start="1463" end="1470">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="1470" end="1501">
 <size>11</size></content>
@@ -430,7 +430,7 @@ Clicking a blue underlined name in the properties window will bring up a window 
 <paragraph start="1925" end="1998">
 <LeftIndent>160.0</LeftIndent>
 <content start="1925" end="1956">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="1956" end="1998">
 <size>11</size></content>
@@ -439,7 +439,7 @@ Clicking a blue underlined name in the properties window will bring up a window 
 <paragraph start="1998" end="2071">
 <LeftIndent>160.0</LeftIndent>
 <content start="1998" end="2029">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="2029" end="2070">
 <size>11</size></content>
@@ -451,7 +451,7 @@ Clicking a blue underlined name in the properties window will bring up a window 
 <paragraph start="2071" end="2140">
 <LeftIndent>160.0</LeftIndent>
 <content start="2071" end="2102">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="2102" end="2139">
 <size>11</size></content>
@@ -487,13 +487,13 @@ Clicking a blue underlined name in the properties window will bring up a window 
 <size>11</size></content>
 
 <content start="2508" end="2512">
-<href>script_plot.cml</href><family>Courier New</family><size>11</size></content>
+<href>script_plot.cml</href><size>11</size><family>Courier New</family></content>
 
 <content start="2512" end="2639">
 <size>11</size></content>
 
 <content start="2639" end="2664">
-<family>Courier New</family><size>11</size></content>
+<size>11</size><family>Courier New</family></content>
 
 <content start="2664" end="2666">
 <size>11</size></content>

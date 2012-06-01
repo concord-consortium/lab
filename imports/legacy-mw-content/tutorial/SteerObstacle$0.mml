@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="epsilon"> 
    <double>0.004999999888241291</double> 
@@ -326,12 +326,6 @@
   <void property="fields"> 
    <void method="add"> 
     <object class="org.concord.mw2d.models.ElectricField"> 
-     <void property="bound"> 
-      <object class="java.awt.Dimension"> 
-       <int>400</int> 
-       <int>300</int> 
-      </object> 
-     </void> 
      <void property="frequency"> 
       <double>0.006283185307179587</double> 
      </void> 
@@ -379,20 +373,11 @@
      </void> 
      <void property="userField"> 
       <object class="org.concord.mw2d.models.UserField"> 
-       <void property="bound"> 
-        <object class="java.awt.Dimension"> 
-         <int>400</int> 
-         <int>300</int> 
-        </object> 
-       </void> 
        <void property="gear"> 
         <int>12</int> 
        </void> 
        <void property="intensity"> 
         <double>0.0</double> 
-       </void> 
-       <void property="orientation"> 
-        <int>3001</int> 
        </void> 
       </object> 
      </void> 
@@ -419,20 +404,20 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1159543555655</long> 
+     <long>1191193182009</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial\SteerObstacle$0.mml</string> 
+    <string>C:\home\mw\public\tutorial\SteerObstacle$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>50104</long> 
+    <long>50003</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial</string> 
+    <string>C:\home\mw\public\tutorial</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 

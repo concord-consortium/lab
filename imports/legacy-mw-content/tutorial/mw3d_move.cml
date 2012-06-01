@@ -16,48 +16,48 @@ Important: Note that in these modes you are only moving in the view space  --- t
 In addition to the above mouse operations, the following keyboard shortcuts are set up to move the view:
 
   
-[This is an embedded model.]
+&#12304;This is an embedded model container.&#12305;
 
 In the above table, CW stands for clockwise and CCW counter-clockwise.
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1421">
+<section start="0" end="1431">
 <paragraph start="0" end="62">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="61">
-<bold>true</bold><size>15</size><italic>true</italic></content>
+<size>15</size><italic>true</italic><bold>true</bold></content>
 
 <content start="61" end="62">
 </content>
 
 </paragraph>
 <paragraph start="62" end="63">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="62" end="63">
 </content>
 
 </paragraph>
 <paragraph start="63" end="91">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="63" end="65">
 <size>11</size></content>
 
 <content start="65" end="73">
-<href>basic3d.cml</href><size>11</size></content>
+<size>11</size><href>basic3d.cml</href></content>
 
 <content start="73" end="76">
 <size>11</size></content>
 
 <content start="76" end="81">
-<href>index4.cml</href><size>11</size></content>
+<size>11</size><href>index4.cml</href></content>
 
 <content start="81" end="84">
 <size>11</size></content>
 
 <content start="84" end="88">
-<href>mw3d_rove.cml</href><size>11</size></content>
+<size>11</size><href>mw3d_rove.cml</href></content>
 
 <content start="88" end="90">
 <size>11</size></content>
@@ -84,7 +84,7 @@ In the above table, CW stands for clockwise and CCW counter-clockwise.
 <size>11</size></content>
 
 <content start="167" end="187">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="187" end="325">
 <size>11</size></content>
@@ -96,7 +96,7 @@ In the above table, CW stands for clockwise and CCW counter-clockwise.
 <size>11</size></content>
 
 <content start="398" end="401">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="401" end="561">
 <size>11</size></content>
@@ -114,29 +114,29 @@ In the above table, CW stands for clockwise and CCW counter-clockwise.
 <paragraph start="563" end="565">
 <LeftIndent>140.0</LeftIndent>
 <content start="563" end="564">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="564" end="565">
 </content>
 
 </paragraph>
 <paragraph start="565" end="1180">
-<RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
 <content start="565" end="574">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="574" end="628">
 <size>11</size></content>
 
 <content start="628" end="638">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="638" end="721">
 <size>11</size></content>
 
 <content start="721" end="732">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="732" end="1180">
 <size>11</size></content>
@@ -145,7 +145,7 @@ In the above table, CW stands for clockwise and CCW counter-clockwise.
 <paragraph start="1180" end="1182">
 <LeftIndent>140.0</LeftIndent>
 <content start="1180" end="1181">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1181" end="1182">
 </content>
@@ -183,7 +183,7 @@ In the above table, CW stands for clockwise and CCW counter-clockwise.
 <border>Lowered Etched</border>
 <hline>true</hline>
 <vline>true</vline>
-<elementarray><te>Up Arrow</te><te>Translate up</te><te>Down Arrow</te><te>Translate down</te><te>Left Arrow</te><te>Translate left</te><te>Right Arrow</te><te>Translate right</te><te>&apos;S&apos;</te><te>Zoom out</te><te>&apos;A&apos;</te><te>Zoom in</te><te>&apos;X&apos;</te><te>Rotate CW around the X-axis</te><te>Shift+&apos;X&apos;</te><te>Rotate CCW around the X-axis</te><te>&apos;Y&apos;</te><te>Rotate CW around the Y-axis</te><te>Shift+&apos;Y&apos;</te><te>Rotate CCW around the Y-axis</te><te>&apos;Z&apos;</te><te>Rotate CW around the Z-axis</te><te>Shift+&apos;Z&apos;</te><te>Rotate CCW around the Z-axis</te></elementarray>
+<elementarray><te>Up Arrow</te><te>Turn up</te><te>Down Arrow</te><te>Turn down</te><te>Left Arrow</te><te>Turn left</te><te>Right Arrow</te><te>Turn right</te><te>Shift+Up Arrow</te><te>Move up</te><te>Shift+Down Arrow</te><te>Move down</te><te>Shift+Left Arrow</te><te>Move left</te><te>Shift+Right Arrow</te><te>Move right</te><te>Z</te><te>Spin CW</te><te>Shift+Z</te><te>Spin CCW</te><te>A</te><te>Zoom in</te><te>S</te><te>Zoom out</te></elementarray>
 </component></content>
 
 <content start="1290" end="1291">
@@ -194,53 +194,53 @@ In the above table, CW stands for clockwise and CCW counter-clockwise.
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1292" end="1321">
+<paragraph start="1292" end="1331">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="1292" end="1320">
+<content start="1292" end="1330">
 <size>10</size></content>
 
-<content start="1320" end="1321">
+<content start="1330" end="1331">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1321" end="1322">
+<paragraph start="1331" end="1332">
 <LeftIndent>140.0</LeftIndent>
-<content start="1321" end="1322">
+<content start="1331" end="1332">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1322" end="1393">
+<paragraph start="1332" end="1403">
 <LeftIndent>140.0</LeftIndent>
-<content start="1322" end="1392">
+<content start="1332" end="1402">
 <size>11</size></content>
 
-<content start="1392" end="1393">
+<content start="1402" end="1403">
 </content>
 
 </paragraph>
-<paragraph start="1393" end="1421">
-<RightIndent>20.0</RightIndent>
+<paragraph start="1403" end="1431">
 <Alignment>2</Alignment>
-<content start="1393" end="1395">
+<RightIndent>20.0</RightIndent>
+<content start="1403" end="1405">
 <size>11</size></content>
 
-<content start="1395" end="1403">
-<href>basic3d.cml</href><size>11</size></content>
+<content start="1405" end="1413">
+<size>11</size><href>basic3d.cml</href></content>
 
-<content start="1403" end="1406">
+<content start="1413" end="1416">
 <size>11</size></content>
 
-<content start="1406" end="1411">
-<href>index4.cml</href><size>11</size></content>
+<content start="1416" end="1421">
+<size>11</size><href>index4.cml</href></content>
 
-<content start="1411" end="1414">
+<content start="1421" end="1424">
 <size>11</size></content>
 
-<content start="1414" end="1418">
-<href>mw3d_rove.cml</href><size>11</size></content>
+<content start="1424" end="1428">
+<size>11</size><href>mw3d_rove.cml</href></content>
 
-<content start="1418" end="1420">
+<content start="1428" end="1430">
 <size>11</size></content>
 
 </paragraph>

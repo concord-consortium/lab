@@ -44,19 +44,19 @@ To give a window title to a new page, or to change the window title of an existi
 <size>11</size></content>
 
 <content start="30" end="38">
-<href>editing.cml</href><size>11</size></content>
+<size>11</size><href>editing.cml</href></content>
 
 <content start="38" end="41">
 <size>11</size></content>
 
 <content start="41" end="46">
-<href>index2.cml</href><size>11</size></content>
+<size>11</size><href>index2.cml</href></content>
 
 <content start="46" end="49">
 <size>11</size></content>
 
 <content start="49" end="53">
-<href>audioclip.cml</href><size>11</size></content>
+<size>11</size><href>audioclip.cml</href></content>
 
 <content start="53" end="55">
 <size>11</size></content>
@@ -77,7 +77,7 @@ To give a window title to a new page, or to change the window title of an existi
 <size>11</size></content>
 
 <content start="185" end="186">
-</content>
+<size>13</size></content>
 
 <content start="186" end="259">
 <size>11</size></content>
@@ -107,7 +107,7 @@ To give a window title to a new page, or to change the window title of an existi
 <size>11</size></content>
 
 <content start="616" end="643">
-<href>blankPage.cml</href><size>11</size></content>
+<size>11</size><href>blankPage.cml</href></content>
 
 <content start="643" end="706">
 <size>11</size></content>
@@ -132,9 +132,10 @@ To give a window title to a new page, or to change the window title of an existi
 
 </paragraph>
 <paragraph start="960" end="962">
+<SpaceAbove>1.0</SpaceAbove>
 <LeftIndent>140.0</LeftIndent>
 <content start="960" end="961">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><SpaceAbove>1</SpaceAbove><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
 
 <content start="961" end="962">
 <size>11</size></content>
@@ -142,7 +143,10 @@ To give a window title to a new page, or to change the window title of an existi
 </paragraph>
 <paragraph start="962" end="1358">
 <LeftIndent>140.0</LeftIndent>
-<content start="962" end="964">
+<content start="962" end="963">
+<size>13</size></content>
+
+<content start="963" end="964">
 </content>
 
 <content start="964" end="1357">
@@ -165,19 +169,19 @@ To give a window title to a new page, or to change the window title of an existi
 <size>11</size></content>
 
 <content start="1361" end="1369">
-<href>editing.cml</href><size>11</size></content>
+<size>11</size><href>editing.cml</href></content>
 
 <content start="1369" end="1372">
 <size>11</size></content>
 
 <content start="1372" end="1377">
-<href>index2.cml</href><size>11</size></content>
+<size>11</size><href>index2.cml</href></content>
 
 <content start="1377" end="1380">
 <size>11</size></content>
 
 <content start="1380" end="1384">
-<href>audioclip.cml</href><size>11</size></content>
+<size>11</size><href>audioclip.cml</href></content>
 
 <content start="1384" end="1386">
 <size>11</size></content>

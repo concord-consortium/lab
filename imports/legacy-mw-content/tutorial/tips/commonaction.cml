@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Some common actions in constructing a molecular dynamics model</page_title>
+<text> Some common actions in constructing a molecular dynamics model
+
+The tool bar in the following container shows some commonly used actions in MW for constructing a model. When you insert an &quot;Atomistic Simulation&quot; model container, you will probably have a container without a tool bar. To add actions to the tool bar, please pull down the &quot;Action&quot; menu of the container, and choose &quot;Customize&quot;. You will see a dialog window coming up in which you can select an action and insert it to or remove it from the tool bar. After you have done with selecting the actions you need in constructing a model, close the dialog window.
+    
+ 
+
+See the User&apos;s Guide for more information about how to construct a model.
+
+&lt;Index of tips&gt;
+
+</text>
+<section start="0" end="722">
+<paragraph start="0" end="64">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="63">
+<size>18</size><bold>true</bold></content>
+
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<RightIndent>20.0</RightIndent>
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="621">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<RightIndent>20.0</RightIndent>
+<content start="65" end="621">
+</content>
+
+</paragraph>
+<paragraph start="621" end="626">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<RightIndent>20.0</RightIndent>
+<content start="621" end="622">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>commonaction$0.mml</resource><recorderless>true</recorderless>
+<button>Select Object</button><button>What's This?</button><button>Mark Object</button><button>Toggle Trajectory</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Add Positive Charge</button><button>Add Negative Charge</button><button>Duplicate Object</button><button>Delete Objects</button></component></content>
+
+<content start="622" end="624">
+</content>
+
+<content start="624" end="625">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>500.0</width>
+<height>300.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;3&quot;&gt;Click a button on the tool bar of the container on the left 
+    will put the container&apos;s molecular editor into the state of action the 
+    button specifies. &lt;/font&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;3&quot;&gt;To insert a particle, click for example one of the 
+        insertion buttons (&amp;quot;&lt;img src=&quot;AddAtomC.gif&quot;&gt; &amp;quot;), you will be in 
+        the mode of adding blue particles. Try clicking in the window of the 
+        container. You should see a new particle is inserted to the location 
+        you click. If you continue to click without switching action mode, you 
+        will be able to insert as many blue particles as you want.&lt;/font&gt;&lt;br&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;3&quot;&gt;To remove a particle, right-click (Windows) or 
+        CTRL+click (Mac OS X) on it, and select &amp;quot;Cut&amp;quot; from the popup menu. 
+        There are also a set of actions you can perform on the selected 
+        particle from the popup menu.&lt;/font&gt;&lt;br&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;3&quot;&gt;If you need to delete many particles at the same time, 
+        for example, clear the container, please select the scissor button (&amp;quot;&lt;img src=&quot;BlockRemove.gif&quot;&gt; 
+        &amp;quot;), and then hold down your mouse button and drag a rectangle. 
+        Anything falling with the rectangular area will be remove all at once.&lt;br&gt;&lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;3&quot;&gt;To heat the whole system up, select the 
+        &amp;quot;Option&amp;gt;Toolbox&amp;gt;Quick Heat and Cool&amp;quot;. (Note: from the Option menu of 
+        the model container, not the main Option menu above the page window). 
+        You will see a bar with three buttons appearing on the right of the 
+        container window. When this bar appears, click the button with an &amp;quot;up&amp;quot; 
+        arrow to heat the system, and that with a &amp;quot;down&amp;quot; arrow to cool the 
+        system. Warning: Do not heat too much, or you will drive the system 
+        crazy.&lt;/font&gt;&lt;br&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;3&quot;&gt;To heat or cool only some particles, use the Heat (&amp;quot;&lt;img src=&quot;HeatHere.gif&quot;&gt; 
+        &amp;quot;) or Cool (&amp;quot;&lt;img src=&quot;CoolHere.gif&quot;&gt;&amp;quot;) Button, and then 
+        click. The particles under the cover of the circles will be heated or 
+        cooled. You will need to turn on the Kinetic Energy Shading mode (use 
+        the check box right below the model container on the left) in order to 
+        see the energy changes immediately.&lt;/font&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="625" end="626">
+</content>
+
+</paragraph>
+<paragraph start="626" end="628">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<RightIndent>20.0</RightIndent>
+<content start="626" end="627">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>K. E. Shading</title>
+<model>0</model>
+<action>K. E. Shading</action>
+</component></content>
+
+<content start="627" end="628">
+</content>
+
+</paragraph>
+<paragraph start="628" end="629">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<RightIndent>20.0</RightIndent>
+<content start="628" end="629">
+</content>
+
+</paragraph>
+<paragraph start="629" end="703">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<RightIndent>20.0</RightIndent>
+<content start="629" end="637">
+</content>
+
+<content start="637" end="649">
+<href>../index1.cml</href></content>
+
+<content start="649" end="703">
+</content>
+
+</paragraph>
+<paragraph start="703" end="704">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<RightIndent>20.0</RightIndent>
+<content start="703" end="704">
+</content>
+
+</paragraph>
+<paragraph start="704" end="720">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="704" end="705">
+</content>
+
+<content start="705" end="718">
+<href>index.cml</href></content>
+
+<content start="718" end="720">
+</content>
+
+</paragraph>
+<paragraph start="720" end="721">
+<content start="720" end="721">
+</content>
+
+</paragraph>
+<paragraph start="721" end="722">
+</paragraph>
+</section>
+</document>

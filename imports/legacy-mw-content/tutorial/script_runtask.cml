@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Runtask</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Runtask
+
+&lt; Previous | Index | Next &gt;
+
+The runtask command causes the custom task with the specified name to run.
+
+Syntax:
+
+runtask [task name]
+
+Examples:
+
+1. 2D containers
+
+   
+
+    
+
+2. 3D containers
+
+   
+
+
+    
+
+Caution:
+
+Currently, the task scripts are concatenated with the rest of the scripts to form a complete script before sent to the Script Interpreter. As a result, if you use the runtask command after using a load command to load a model, for example,
+
+load model.mml;
+......
+runtask task1;
+......
+runtask task2;
+......
+
+The Script Interpreter may complain that it doesn&apos;t find &quot;task1&quot; and &quot;task2&quot;, even though the model contains them in the Task Manager. Worse, if the previous model in the model container happens to have tasks with names identical to &quot;task1&quot; and/or &quot;task2&quot;, you may get unexpected errors or results, because the script sent to the Script Interpreter is synthesized with the task scripts from the previous model.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="974">
+<paragraph start="0" end="8">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="7">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="37">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="9" end="11">
+<size>11</size></content>
+
+<content start="11" end="19">
+<href>script_init.cml</href><size>11</size></content>
+
+<content start="19" end="22">
+<size>11</size></content>
+
+<content start="22" end="27">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="27" end="30">
+<size>11</size></content>
+
+<content start="30" end="34">
+<href>script_delay.cml</href><size>11</size></content>
+
+<content start="34" end="36">
+<size>11</size></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<LeftIndent>100.0</LeftIndent>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="113">
+<LeftIndent>140.0</LeftIndent>
+<content start="38" end="42">
+<size>11</size></content>
+
+<content start="42" end="49">
+<family>Courier New</family><size>11</size></content>
+
+<content start="49" end="65">
+<size>11</size></content>
+
+<content start="65" end="80">
+<href>CustomerTask.cml</href><size>11</size></content>
+
+<content start="80" end="113">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="113" end="114">
+<LeftIndent>140.0</LeftIndent>
+<content start="113" end="114">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="114" end="122">
+<LeftIndent>140.0</LeftIndent>
+<content start="114" end="122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="122" end="123">
+<LeftIndent>140.0</LeftIndent>
+<content start="122" end="123">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="123" end="143">
+<LeftIndent>160.0</LeftIndent>
+<content start="123" end="142">
+<bold>true</bold><family>Courier New</family><size>11</size></content>
+
+<content start="142" end="143">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="143" end="144">
+<LeftIndent>140.0</LeftIndent>
+<content start="143" end="144">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="144" end="154">
+<LeftIndent>140.0</LeftIndent>
+<content start="144" end="154">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="154" end="155">
+<LeftIndent>140.0</LeftIndent>
+<content start="154" end="155">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="155" end="172">
+<LeftIndent>140.0</LeftIndent>
+<content start="155" end="158">
+<size>11</size></content>
+
+<content start="158" end="171">
+<italic>true</italic><size>11</size></content>
+
+<content start="171" end="172">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="172" end="173">
+<LeftIndent>140.0</LeftIndent>
+<content start="172" end="173">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="173" end="177">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="173" end="174">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_runtask$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+</component></content>
+
+<content start="174" end="175">
+</content>
+
+<content start="175" end="176">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>250</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="176" end="177">
+</content>
+
+</paragraph>
+<paragraph start="177" end="178">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="177" end="178">
+</content>
+
+</paragraph>
+<paragraph start="178" end="183">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="178" end="179">
+<component><class>org.concord.modeler.PageButton</class>
+<title>run task1</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>runtask task1;
+</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="179" end="180">
+<component><class>org.concord.modeler.PageButton</class>
+<title>run task2</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>runtask task2;
+</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="180" end="181">
+<component><class>org.concord.modeler.PageButton</class>
+<title>run task1 and then task2</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>runtask task1;
+delay 1;
+runtask task2;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="181" end="182">
+<component><class>org.concord.modeler.PageButton</class>
+<title>run task2 and then task1</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>if(1==1);
+  runtask task2;
+  delay 1;
+  runtask task1;
+endif;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="182" end="183">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="183" end="184">
+<LeftIndent>140.0</LeftIndent>
+<content start="183" end="184">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="184" end="201">
+<LeftIndent>140.0</LeftIndent>
+<content start="184" end="187">
+<size>11</size></content>
+
+<content start="187" end="200">
+<italic>true</italic><size>11</size></content>
+
+<content start="200" end="201">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="201" end="202">
+<LeftIndent>140.0</LeftIndent>
+<content start="201" end="202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="202" end="206">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="202" end="203">
+<component><class>org.concord.modeler.PageMd3d</class><resource>script_runtask$0.mdd</resource><coordinate>script_runtask$0.xyz</coordinate><width>360</width><height>250</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<statusbar>false</statusbar>
+<border>Raised Bevel</border>
+<recorderless>true</recorderless>
+</component></content>
+
+<content start="203" end="204">
+</content>
+
+<content start="204" end="205">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<width>300</width><height>250</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="205" end="206">
+</content>
+
+</paragraph>
+<paragraph start="206" end="207">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="206" end="207">
+</content>
+
+</paragraph>
+<paragraph start="207" end="208">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="207" end="208">
+</content>
+
+</paragraph>
+<paragraph start="208" end="213">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="208" end="209">
+<component><class>org.concord.modeler.PageButton</class>
+<title>run task1</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>runtask task1;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="209" end="210">
+<component><class>org.concord.modeler.PageButton</class>
+<title>run task2</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>runtask task2;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="210" end="211">
+<component><class>org.concord.modeler.PageButton</class>
+<title>run task3 (non-existent)</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>runtask task3;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="211" end="212">
+<component><class>org.concord.modeler.PageButton</class>
+<title>run task1 and then task2</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>if(1&gt;0);
+  runtask task1;
+  delay 1;
+  runtask task2;
+endif;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="212" end="213">
+</content>
+
+</paragraph>
+<paragraph start="213" end="214">
+<LeftIndent>140.0</LeftIndent>
+<content start="213" end="214">
+</content>
+
+</paragraph>
+<paragraph start="214" end="223">
+<LeftIndent>140.0</LeftIndent>
+<content start="214" end="222">
+<bold>true</bold><size>11</size></content>
+
+<content start="222" end="223">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="223" end="224">
+<LeftIndent>140.0</LeftIndent>
+<content start="223" end="224">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="224" end="464">
+<LeftIndent>140.0</LeftIndent>
+<content start="224" end="391">
+<size>11</size></content>
+
+<content start="391" end="398">
+<family>Courier New</family><size>11</size></content>
+
+<content start="398" end="421">
+<size>11</size></content>
+
+<content start="421" end="425">
+<family>Courier New</family><size>11</size></content>
+
+<content start="425" end="464">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="464" end="465">
+<LeftIndent>140.0</LeftIndent>
+<content start="464" end="465">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="465" end="481">
+<LeftIndent>160.0</LeftIndent>
+<content start="465" end="481">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="481" end="488">
+<LeftIndent>160.0</LeftIndent>
+<content start="481" end="488">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="488" end="503">
+<LeftIndent>160.0</LeftIndent>
+<content start="488" end="502">
+<family>Courier New</family><size>11</size></content>
+
+<content start="502" end="503">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="503" end="510">
+<LeftIndent>160.0</LeftIndent>
+<content start="503" end="510">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="510" end="525">
+<LeftIndent>160.0</LeftIndent>
+<content start="510" end="525">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="525" end="532">
+<LeftIndent>160.0</LeftIndent>
+<content start="525" end="531">
+<family>Courier New</family><size>11</size></content>
+
+<content start="531" end="532">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="532" end="533">
+<LeftIndent>140.0</LeftIndent>
+<content start="532" end="533">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="533" end="944">
+<LeftIndent>140.0</LeftIndent>
+<content start="533" end="943">
+<size>11</size></content>
+
+<content start="943" end="944">
+</content>
+
+</paragraph>
+<paragraph start="944" end="945">
+<LeftIndent>140.0</LeftIndent>
+<content start="944" end="945">
+</content>
+
+</paragraph>
+<paragraph start="945" end="946">
+<LeftIndent>140.0</LeftIndent>
+<content start="945" end="946">
+</content>
+
+</paragraph>
+<paragraph start="946" end="974">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="946" end="948">
+<size>11</size></content>
+
+<content start="948" end="956">
+<href>script_init.cml</href><size>11</size></content>
+
+<content start="956" end="959">
+<size>11</size></content>
+
+<content start="959" end="964">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="964" end="967">
+<size>11</size></content>
+
+<content start="967" end="971">
+<href>script_delay.cml</href><size>11</size></content>
+
+<content start="971" end="973">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

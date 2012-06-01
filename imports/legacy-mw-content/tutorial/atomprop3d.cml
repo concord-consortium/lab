@@ -7,19 +7,19 @@
 
 &lt; Previous | Index | Next &gt;
 
-es.
+An atom&apos;s properties can be accessed by selecting &quot;Properties&quot; from the pop-up menu that opens when you right-click on it.
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="123">
+<section start="0" end="242">
 <paragraph start="0" end="31">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="30">
-<bold>true</bold><size>15</size><italic>true</italic></content>
+<size>15</size><italic>true</italic><bold>true</bold></content>
 
 <content start="30" end="31">
 </content>
@@ -38,19 +38,19 @@ es.
 <size>11</size></content>
 
 <content start="34" end="42">
-<size>11</size><href>setview3d.cml</href></content>
+<href>setview3d.cml</href><size>11</size></content>
 
 <content start="42" end="45">
 <size>11</size></content>
 
 <content start="45" end="50">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="50" end="53">
 <size>11</size></content>
 
 <content start="53" end="57">
-<size>11</size><href>molprop3d.cml</href></content>
+<href>molprop3d.cml</href><size>11</size></content>
 
 <content start="57" end="59">
 <size>11</size></content>
@@ -65,75 +65,75 @@ es.
 </content>
 
 </paragraph>
-<paragraph start="61" end="65">
+<paragraph start="61" end="184">
 <LeftIndent>140.0</LeftIndent>
-<content start="61" end="65">
+<content start="61" end="184">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="65" end="66">
+<paragraph start="184" end="185">
 <LeftIndent>140.0</LeftIndent>
-<content start="65" end="66">
+<content start="184" end="185">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="66" end="69">
+<paragraph start="185" end="188">
+<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<LeftIndent>140.0</LeftIndent>
-<content start="66" end="67">
+<content start="185" end="186">
 <size>11</size></content>
 
-<content start="67" end="68">
+<content start="186" end="187">
 <icon>atomprop3d.gif</icon></content>
 
-<content start="68" end="69">
+<content start="187" end="188">
 </content>
 
 </paragraph>
-<paragraph start="69" end="93">
-<Alignment>1</Alignment>
+<paragraph start="188" end="212">
 <LeftIndent>140.0</LeftIndent>
-<content start="69" end="92">
+<Alignment>1</Alignment>
+<content start="188" end="211">
 <size>10</size></content>
 
-<content start="92" end="93">
+<content start="211" end="212">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="93" end="94">
+<paragraph start="212" end="213">
 <LeftIndent>140.0</LeftIndent>
-<content start="93" end="94">
+<content start="212" end="213">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="94" end="95">
+<paragraph start="213" end="214">
 <LeftIndent>140.0</LeftIndent>
-<content start="94" end="95">
+<content start="213" end="214">
 </content>
 
 </paragraph>
-<paragraph start="95" end="123">
+<paragraph start="214" end="242">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="95" end="97">
+<content start="214" end="216">
 <size>11</size></content>
 
-<content start="97" end="105">
-<size>11</size><href>setview3d.cml</href></content>
+<content start="216" end="224">
+<href>setview3d.cml</href><size>11</size></content>
 
-<content start="105" end="108">
+<content start="224" end="227">
 <size>11</size></content>
 
-<content start="108" end="113">
-<size>11</size><href>index4.cml</href></content>
+<content start="227" end="232">
+<href>index4.cml</href><size>11</size></content>
 
-<content start="113" end="116">
+<content start="232" end="235">
 <size>11</size></content>
 
-<content start="116" end="120">
-<size>11</size><href>molprop3d.cml</href></content>
+<content start="235" end="239">
+<href>molprop3d.cml</href><size>11</size></content>
 
-<content start="120" end="122">
+<content start="239" end="241">
 <size>11</size></content>
 
 </paragraph>

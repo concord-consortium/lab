@@ -18,16 +18,16 @@ Practice
 You may play with the following simulator about deleting atoms.
 
  
-[This is an embedded model.]
+&#12304;This is an embedded model container.&#12305;
 
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1115">
+<section start="0" end="1125">
 <paragraph start="0" end="15">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="14">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<italic>true</italic><size>15</size><bold>true</bold></content>
 
 <content start="14" end="15">
 </content>
@@ -47,19 +47,19 @@ You may play with the following simulator about deleting atoms.
 <size>11</size></content>
 
 <content start="18" end="26">
-<size>11</size><href>duplicate3d.cml</href></content>
+<href>duplicate3d.cml</href><size>11</size></content>
 
 <content start="26" end="29">
 <size>11</size></content>
 
 <content start="29" end="34">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="34" end="37">
 <size>11</size></content>
 
 <content start="37" end="41">
-<size>11</size><href>fixatom3d.cml</href></content>
+<href>fixatom3d.cml</href><size>11</size></content>
 
 <content start="41" end="43">
 <size>11</size></content>
@@ -112,13 +112,7 @@ You may play with the following simulator about deleting atoms.
 </paragraph>
 <paragraph start="645" end="978">
 <LeftIndent>140.0</LeftIndent>
-<content start="645" end="722">
-<size>11</size></content>
-
-<content start="722" end="779">
-<size>11</size></content>
-
-<content start="779" end="862">
+<content start="645" end="862">
 <size>11</size></content>
 
 <content start="862" end="863">
@@ -137,7 +131,7 @@ You may play with the following simulator about deleting atoms.
 <paragraph start="979" end="988">
 <LeftIndent>140.0</LeftIndent>
 <content start="979" end="987">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="987" end="988">
 <size>11</size></content>
@@ -172,50 +166,50 @@ You may play with the following simulator about deleting atoms.
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1056" end="1085">
+<paragraph start="1056" end="1095">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="1056" end="1084">
+<content start="1056" end="1094">
 <size>10</size></content>
 
-<content start="1084" end="1085">
+<content start="1094" end="1095">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1085" end="1086">
+<paragraph start="1095" end="1096">
 <LeftIndent>140.0</LeftIndent>
-<content start="1085" end="1086">
+<content start="1095" end="1096">
 </content>
 
 </paragraph>
-<paragraph start="1086" end="1087">
+<paragraph start="1096" end="1097">
 <LeftIndent>140.0</LeftIndent>
-<content start="1086" end="1087">
+<content start="1096" end="1097">
 </content>
 
 </paragraph>
-<paragraph start="1087" end="1115">
+<paragraph start="1097" end="1125">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="1087" end="1089">
+<content start="1097" end="1099">
 <size>11</size></content>
 
-<content start="1089" end="1097">
-<size>11</size><href>duplicate3d.cml</href></content>
+<content start="1099" end="1107">
+<href>duplicate3d.cml</href><size>11</size></content>
 
-<content start="1097" end="1100">
+<content start="1107" end="1110">
 <size>11</size></content>
 
-<content start="1100" end="1105">
-<size>11</size><href>index4.cml</href></content>
+<content start="1110" end="1115">
+<href>index4.cml</href><size>11</size></content>
 
-<content start="1105" end="1108">
+<content start="1115" end="1118">
 <size>11</size></content>
 
-<content start="1108" end="1112">
-<size>11</size><href>fixatom3d.cml</href></content>
+<content start="1118" end="1122">
+<href>fixatom3d.cml</href><size>11</size></content>
 
-<content start="1112" end="1114">
+<content start="1122" end="1124">
 <size>11</size></content>
 
 </paragraph>

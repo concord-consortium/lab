@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A workaround for hyperlink bugs</page_title>
+<text> A workaround for hyperlink bugs
+
+There is currently a bug related to hyperlinked text and images: If the text or image is left-indented, centrally aligned, or right-aligned, and the hyperlink starts from the first position (the leftmost position), the space to the left of the first position will also become hot spots. For example, the following links have a problem (can you tell?):
+
+Problematic link 1 (center alignment)
+
+Problematic link 2 (indented)
+
+Problematic link 3 (right alignment)
+
+
+The trick to fix this problem is simple: just add a space before the text to be linked, and then link the text (do not include the space in the link):
+
+ Behaved link 1 (center alignment)
+
+ Behaved link 2 (indented)
+
+ Behaved link 3 (right alignment)
+
+
+The same tricks can be applied to hyperlinked images. You can also add a bullet to a list of indented hyperlinks using the &quot;Option&gt;Bullet&quot; menu, which will bring up a dialog window for selecting bullets. Appending a bullet from the left to the starting position will terminate the hot zone at the right place too.
+
+If you have already had a problematic link you want to fix, it is advised that you first clear the old hyperlink and then follow the procedure described in this tip.
+
+This bug is not likely to be fixed any time soon, as this affects only indented links, which are less common than ordinary hyperlinks in the middle of text. Please keep an eye on this problem when you do a hyperlink, if you would ever care about this problem.
+
+&lt;Index of tips&gt;
+
+
+</text>
+<section start="0" end="1510">
+<paragraph start="0" end="33">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="32">
+<size>18</size><bold>true</bold></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="386">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="34" end="386">
+</content>
+
+</paragraph>
+<paragraph start="386" end="387">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="386" end="387">
+</content>
+
+</paragraph>
+<paragraph start="387" end="425">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="387" end="424">
+<href>index.cml</href></content>
+
+<content start="424" end="425">
+</content>
+
+</paragraph>
+<paragraph start="425" end="426">
+<LeftIndent>8.0</LeftIndent>
+<content start="425" end="426">
+</content>
+
+</paragraph>
+<paragraph start="426" end="456">
+<LeftIndent>68.0</LeftIndent>
+<content start="426" end="455">
+<href>index.cml</href></content>
+
+<content start="455" end="456">
+</content>
+
+</paragraph>
+<paragraph start="456" end="457">
+<LeftIndent>8.0</LeftIndent>
+<content start="456" end="457">
+</content>
+
+</paragraph>
+<paragraph start="457" end="494">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="457" end="493">
+<href>index.cml</href></content>
+
+<content start="493" end="494">
+</content>
+
+</paragraph>
+<paragraph start="494" end="495">
+<LeftIndent>8.0</LeftIndent>
+<content start="494" end="495">
+</content>
+
+</paragraph>
+<paragraph start="495" end="496">
+<LeftIndent>8.0</LeftIndent>
+<content start="495" end="496">
+</content>
+
+</paragraph>
+<paragraph start="496" end="647">
+<LeftIndent>8.0</LeftIndent>
+<content start="496" end="647">
+</content>
+
+</paragraph>
+<paragraph start="647" end="648">
+<LeftIndent>8.0</LeftIndent>
+<content start="647" end="648">
+</content>
+
+</paragraph>
+<paragraph start="648" end="683">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="648" end="649">
+</content>
+
+<content start="649" end="682">
+<href>index.cml</href></content>
+
+<content start="682" end="683">
+</content>
+
+</paragraph>
+<paragraph start="683" end="684">
+<LeftIndent>8.0</LeftIndent>
+<content start="683" end="684">
+</content>
+
+</paragraph>
+<paragraph start="684" end="711">
+<LeftIndent>68.0</LeftIndent>
+<content start="684" end="685">
+</content>
+
+<content start="685" end="710">
+<href>index.cml</href></content>
+
+<content start="710" end="711">
+</content>
+
+</paragraph>
+<paragraph start="711" end="712">
+<LeftIndent>8.0</LeftIndent>
+<content start="711" end="712">
+</content>
+
+</paragraph>
+<paragraph start="712" end="746">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="712" end="713">
+</content>
+
+<content start="713" end="745">
+<href>index.cml</href></content>
+
+<content start="745" end="746">
+</content>
+
+</paragraph>
+<paragraph start="746" end="747">
+<LeftIndent>8.0</LeftIndent>
+<content start="746" end="747">
+</content>
+
+</paragraph>
+<paragraph start="747" end="748">
+<LeftIndent>8.0</LeftIndent>
+<content start="747" end="748">
+</content>
+
+</paragraph>
+<paragraph start="748" end="1062">
+<LeftIndent>8.0</LeftIndent>
+<content start="748" end="815">
+</content>
+
+<content start="815" end="827">
+<href>../paragraph.cml</href></content>
+
+<content start="827" end="1062">
+</content>
+
+</paragraph>
+<paragraph start="1062" end="1063">
+<LeftIndent>8.0</LeftIndent>
+<content start="1062" end="1063">
+</content>
+
+</paragraph>
+<paragraph start="1063" end="1229">
+<LeftIndent>8.0</LeftIndent>
+<content start="1063" end="1229">
+</content>
+
+</paragraph>
+<paragraph start="1229" end="1230">
+<LeftIndent>8.0</LeftIndent>
+<content start="1229" end="1230">
+</content>
+
+</paragraph>
+<paragraph start="1230" end="1490">
+<LeftIndent>8.0</LeftIndent>
+<content start="1230" end="1490">
+</content>
+
+</paragraph>
+<paragraph start="1490" end="1491">
+<LeftIndent>8.0</LeftIndent>
+<content start="1490" end="1491">
+</content>
+
+</paragraph>
+<paragraph start="1491" end="1507">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1491" end="1492">
+</content>
+
+<content start="1492" end="1505">
+<href>index.cml</href></content>
+
+<content start="1505" end="1507">
+</content>
+
+</paragraph>
+<paragraph start="1507" end="1508">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1507" end="1508">
+</content>
+
+</paragraph>
+<paragraph start="1508" end="1509">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1508" end="1509">
+</content>
+
+</paragraph>
+<paragraph start="1509" end="1510">
+</paragraph>
+</section>
+</document>

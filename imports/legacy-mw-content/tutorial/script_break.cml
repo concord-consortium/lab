@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Break</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Break
+
+&lt; Previous | Index | Next &gt;
+
+The break command is used to break a while loop.
+
+Syntax:
+
+break 
+
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="133">
+<paragraph start="0" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="5">
+<bold>true</bold><italic>true</italic><size>16</size></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="9">
+<size>11</size></content>
+
+<content start="9" end="17">
+<href>script_while.cml</href><size>11</size></content>
+
+<content start="17" end="20">
+<size>11</size></content>
+
+<content start="20" end="25">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="25" end="28">
+<size>11</size></content>
+
+<content start="28" end="32">
+<href>script_return.cml</href><size>11</size></content>
+
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="85">
+<LeftIndent>140.0</LeftIndent>
+<content start="36" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<family>Courier New</family><size>11</size></content>
+
+<content start="45" end="85">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="85" end="86">
+<LeftIndent>140.0</LeftIndent>
+<content start="85" end="86">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="86" end="94">
+<LeftIndent>140.0</LeftIndent>
+<content start="86" end="94">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="94" end="95">
+<LeftIndent>140.0</LeftIndent>
+<content start="94" end="95">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="95" end="102">
+<LeftIndent>160.0</LeftIndent>
+<content start="95" end="101">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="101" end="102">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="102" end="103">
+<LeftIndent>140.0</LeftIndent>
+<content start="102" end="103">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="103" end="104">
+<LeftIndent>140.0</LeftIndent>
+<content start="103" end="104">
+</content>
+
+</paragraph>
+<paragraph start="104" end="105">
+<LeftIndent>140.0</LeftIndent>
+<content start="104" end="105">
+</content>
+
+</paragraph>
+<paragraph start="105" end="133">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="105" end="107">
+<size>11</size></content>
+
+<content start="107" end="115">
+<href>script_while.cml</href><size>11</size></content>
+
+<content start="115" end="118">
+<size>11</size></content>
+
+<content start="118" end="123">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="123" end="126">
+<size>11</size></content>
+
+<content start="126" end="130">
+<href>script_return.cml</href><size>11</size></content>
+
+<content start="130" end="132">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

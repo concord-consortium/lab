@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Load</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Load
@@ -21,38 +21,38 @@ Here is an example of using this command to load different models from external 
 
  
    
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
  
 Note: The whole process of loading a model via the load command is executed in the script process (thread). This allows you to put the scripts that depend on the completion of the loading process after the load command.
  
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="958">
+<section start="0" end="964">
 <paragraph start="0" end="5">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="4">
-<bold>true</bold><size>16</size><italic>true</italic></content>
+<bold>true</bold><italic>true</italic><size>16</size></content>
 
 <content start="4" end="5">
 </content>
 
 </paragraph>
 <paragraph start="5" end="6">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="5" end="6">
 </content>
 
 </paragraph>
 <paragraph start="6" end="34">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="6" end="8">
 <size>11</size></content>
 
 <content start="8" end="16">
-<size>11</size><href>script_random.cml</href></content>
+<size>11</size><href>script_reset.cml</href></content>
 
 <content start="16" end="19">
 <size>11</size></content>
@@ -64,7 +64,7 @@ Note: The whole process of loading a model via the load command is executed in t
 <size>11</size></content>
 
 <content start="27" end="31">
-<size>11</size><href>script_run.cml</href></content>
+<size>11</size><href>script_init.cml</href></content>
 
 <content start="31" end="33">
 <size>11</size></content>
@@ -118,7 +118,7 @@ Note: The whole process of loading a model via the load command is executed in t
 <paragraph start="178" end="193">
 <LeftIndent>160.0</LeftIndent>
 <content start="178" end="182">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<size>11</size><family>Courier New</family><bold>true</bold></content>
 
 <content start="182" end="192">
 <size>11</size><family>Courier New</family></content>
@@ -182,8 +182,8 @@ Note: The whole process of loading a model via the load command is executed in t
 
 </paragraph>
 <paragraph start="666" end="668">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="666" end="667">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>script_load$0.mml</resource><menubar>false</menubar></component></content>
@@ -193,8 +193,8 @@ Note: The whole process of loading a model via the load command is executed in t
 
 </paragraph>
 <paragraph start="668" end="672">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="668" end="669">
 <component><class>org.concord.modeler.PageRadioButton</class>
 <title>Model A</title>
@@ -232,84 +232,90 @@ Note: The whole process of loading a model via the load command is executed in t
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="672" end="705">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="672" end="711">
 <Alignment>1</Alignment>
-<content start="672" end="704">
+<LeftIndent>140.0</LeftIndent>
+<content start="672" end="673">
+<size>13</size><bold>true</bold></content>
+
+<content start="673" end="709">
 <size>10</size></content>
 
-<content start="704" end="705">
+<content start="709" end="710">
+<size>13</size><bold>true</bold></content>
+
+<content start="710" end="711">
 </content>
 
 </paragraph>
-<paragraph start="705" end="707">
+<paragraph start="711" end="713">
 <LeftIndent>140.0</LeftIndent>
-<content start="705" end="706">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="711" end="712">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="706" end="707">
+<content start="712" end="713">
 </content>
 
 </paragraph>
-<paragraph start="707" end="927">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="713" end="933">
 <RightIndent>100.0</RightIndent>
-<content start="707" end="711">
-<bold>true</bold><size>11</size></content>
+<LeftIndent>200.0</LeftIndent>
+<content start="713" end="717">
+<size>11</size><bold>true</bold></content>
 
-<content start="711" end="758">
+<content start="717" end="764">
 <size>11</size></content>
 
-<content start="758" end="762">
+<content start="764" end="768">
 <size>11</size><family>Courier New</family></content>
 
-<content start="762" end="913">
+<content start="768" end="919">
 <size>11</size></content>
 
-<content start="913" end="917">
+<content start="919" end="923">
 <size>11</size><family>Courier New</family></content>
 
-<content start="917" end="927">
+<content start="923" end="933">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="927" end="929">
+<paragraph start="933" end="935">
 <LeftIndent>140.0</LeftIndent>
-<content start="927" end="928">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="933" end="934">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="928" end="929">
+<content start="934" end="935">
 </content>
 
 </paragraph>
-<paragraph start="929" end="930">
+<paragraph start="935" end="936">
 <LeftIndent>140.0</LeftIndent>
-<content start="929" end="930">
+<content start="935" end="936">
 </content>
 
 </paragraph>
-<paragraph start="930" end="958">
-<RightIndent>20.0</RightIndent>
+<paragraph start="936" end="964">
 <Alignment>2</Alignment>
-<content start="930" end="932">
+<RightIndent>20.0</RightIndent>
+<content start="936" end="938">
 <size>11</size></content>
 
-<content start="932" end="940">
-<size>11</size><href>script_random.cml</href></content>
+<content start="938" end="946">
+<size>11</size><href>script_reset.cml</href></content>
 
-<content start="940" end="943">
+<content start="946" end="949">
 <size>11</size></content>
 
-<content start="943" end="948">
+<content start="949" end="954">
 <size>11</size><href>mwscripts.cml</href></content>
 
-<content start="948" end="951">
+<content start="954" end="957">
 <size>11</size></content>
 
-<content start="951" end="955">
-<size>11</size><href>script_run.cml</href></content>
+<content start="957" end="961">
+<size>11</size><href>script_init.cml</href></content>
 
-<content start="955" end="957">
+<content start="961" end="963">
 <size>11</size></content>
 
 </paragraph>

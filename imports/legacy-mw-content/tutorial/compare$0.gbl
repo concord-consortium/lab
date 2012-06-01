@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.5.0_06" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_24" class="java.beans.XMLDecoder"> 
  <object class="org.concord.mw2d.models.MesoModel$State"> 
   <void property="boundary"> 
    <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
@@ -22,26 +22,26 @@
   </void> 
   <void property="properties"> 
    <void method="put"> 
-    <string>codebase</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial</string> 
-   </void> 
-   <void method="put"> 
-    <string>url</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial\compare$0.gbl</string> 
-   </void> 
-   <void method="put"> 
-    <string>size</string> 
-    <long>6345</long> 
-   </void> 
-   <void method="put"> 
     <string>filename</string> 
     <string>compare$0.gbl</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1143257516118</long> 
+     <long>1307328972010</long> 
     </object> 
+   </void> 
+   <void method="put"> 
+    <string>url</string> 
+    <string>C:\home\mw\public\tutorial\compare$0.gbl</string> 
+   </void> 
+   <void method="put"> 
+    <string>size</string> 
+    <long>6334</long> 
+   </void> 
+   <void method="put"> 
+    <string>codebase</string> 
+    <string>C:\home\mw\public\tutorial</string> 
    </void> 
   </void> 
   <void property="universe"> 
@@ -62,7 +62,7 @@
    </object> 
   </void> 
   <void property="inertia"> 
-   <double>3000.0</double> 
+   <double>6000.0</double> 
   </void> 
   <void property="length"> 
    <double>100.0</double> 
@@ -99,7 +99,7 @@
    </object> 
   </void> 
   <void property="inertia"> 
-   <double>3000.0</double> 
+   <double>6000.0</double> 
   </void> 
   <void property="length"> 
    <double>100.0</double> 
@@ -128,7 +128,7 @@
    <double>40.0</double> 
   </void> 
   <void property="inertia"> 
-   <double>1520.0</double> 
+   <double>3040.0</double> 
   </void> 
   <void property="length"> 
    <double>76.0</double> 
@@ -165,7 +165,7 @@
    </object> 
   </void> 
   <void property="inertia"> 
-   <double>780.0</double> 
+   <double>1560.0</double> 
   </void> 
   <void property="length"> 
    <double>60.0</double> 
@@ -202,7 +202,7 @@
    </object> 
   </void> 
   <void property="inertia"> 
-   <double>780.0</double> 
+   <double>1560.0</double> 
   </void> 
   <void property="length"> 
    <double>60.0</double> 
@@ -231,7 +231,7 @@
    <double>40.0</double> 
   </void> 
   <void property="inertia"> 
-   <double>1520.0</double> 
+   <double>3040.0</double> 
   </void> 
   <void property="length"> 
    <double>76.0</double> 

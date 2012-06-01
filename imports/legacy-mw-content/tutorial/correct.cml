@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Your answer is correct</page_title>
+<text>
+Congratulations! Your answer is correct.
+
+Please hit the Back Button to go back to proceed to the next question.</text>
+<section start="0" end="114">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+<size>13</size></content>
+
+</paragraph>
+<paragraph start="1" end="42">
+<Alignment>1</Alignment>
+<content start="1" end="42">
+<bold>true</bold><size>30</size><family>Comic Sans MS</family></content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<content start="42" end="43">
+<bold>true</bold><size>24</size><family>Comic Sans MS</family></content>
+
+</paragraph>
+<paragraph start="43" end="114">
+<Alignment>1</Alignment>
+<content start="43" end="113">
+<bold>true</bold><size>24</size><family>Comic Sans MS</family></content>
+
+</paragraph>
+</section>
+</document>

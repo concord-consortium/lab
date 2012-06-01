@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Mouse cursor</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Mouse cursor
+
+&lt; Previous | Index | Next &gt;
+
+The cursor commands allow you to change the mouse cursor to an image located by the specified file name or URL (the first command in the following), or to an image provided by the system (the second command in the following). The third command clears the cursor.
+
+Syntax:
+
+cursor [file name or address] ([x], [y])
+cursor [cursor constant]
+cursor null
+
+The x and y parameters specify the coordinate of the hot spot, relative to the upper-left corner of the image. The ideal size of the cursor image, by default, is 32x32 on Windows. The available cursor constants are: CROSSHAIR_CURSOR, DEFAULT_CURSOR, E_RESIZE_CURSOR, HAND_CURSOR, MOVE_CURSOR, N_RESIZE_CURSOR, NE_RESIZE_CURSOR, NW_RESIZE_CURSOR, S_RESIZE_CURSOR, SE_RESIZE_CURSOR, SW_RESIZE_CURSOR, TEXT_CURSOR, W_RESIZE_CURSOR, and WAIT_CURSOR.
+
+   
+    
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="880">
+<paragraph start="0" end="13">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="12">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="42">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="14" end="16">
+<size>11</size></content>
+
+<content start="16" end="24">
+<size>11</size><href>script_sound.cml</href></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="32">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="32" end="35">
+<size>11</size></content>
+
+<content start="35" end="39">
+<size>11</size><href>script_mouse.cml</href></content>
+
+<content start="39" end="41">
+<size>11</size></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<LeftIndent>140.0</LeftIndent>
+<content start="42" end="43">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="43" end="306">
+<LeftIndent>140.0</LeftIndent>
+<content start="43" end="47">
+<size>11</size></content>
+
+<content start="47" end="53">
+<family>Courier New</family><size>11</size></content>
+
+<content start="53" end="306">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="306" end="307">
+<LeftIndent>140.0</LeftIndent>
+<content start="306" end="307">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="307" end="315">
+<LeftIndent>140.0</LeftIndent>
+<content start="307" end="315">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="315" end="316">
+<LeftIndent>140.0</LeftIndent>
+<content start="315" end="316">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="316" end="357">
+<LeftIndent>160.0</LeftIndent>
+<content start="316" end="357">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="357" end="382">
+<LeftIndent>160.0</LeftIndent>
+<content start="357" end="382">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="382" end="394">
+<LeftIndent>160.0</LeftIndent>
+<content start="382" end="394">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="394" end="395">
+<LeftIndent>140.0</LeftIndent>
+<content start="394" end="395">
+</content>
+
+</paragraph>
+<paragraph start="395" end="841">
+<LeftIndent>140.0</LeftIndent>
+<content start="395" end="399">
+<size>11</size></content>
+
+<content start="399" end="400">
+<italic>true</italic><size>11</size></content>
+
+<content start="400" end="405">
+<size>11</size></content>
+
+<content start="405" end="406">
+<italic>true</italic><size>11</size></content>
+
+<content start="406" end="841">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="841" end="842">
+<LeftIndent>140.0</LeftIndent>
+<content start="841" end="842">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="842" end="846">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="842" end="843">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_cursor$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="843" end="844">
+</content>
+
+<content start="844" end="845">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>285</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="845" end="846">
+</content>
+
+</paragraph>
+<paragraph start="846" end="851">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="846" end="847">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Cursor image 1</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1209492158363</groupid>
+<script>cursor tip.gif (16, 16);
+print -image tip.gif loaded.</script>
+<action>Execute MW script</action></component></content>
+
+<content start="847" end="848">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Cursor image 2</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1209492158363</groupid>
+<script>cursor spark.gif (32, 32);
+print -image spark.gif loaded.</script>
+<action>Execute MW script</action></component></content>
+
+<content start="848" end="849">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Wait cursor</title>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1209492158363</groupid>
+<script>cursor WAIT_CURSOR;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="849" end="850">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>No custom cursor</title>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1209492158363</groupid>
+<script>cursor null;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="850" end="851">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="851" end="852">
+<LeftIndent>140.0</LeftIndent>
+<content start="851" end="852">
+</content>
+
+</paragraph>
+<paragraph start="852" end="880">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="852" end="854">
+<size>11</size></content>
+
+<content start="854" end="862">
+<size>11</size><href>script_sound.cml</href></content>
+
+<content start="862" end="865">
+<size>11</size></content>
+
+<content start="865" end="870">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="870" end="873">
+<size>11</size></content>
+
+<content start="873" end="877">
+<size>11</size><href>script_mouse.cml</href></content>
+
+<content start="877" end="879">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Init</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Init
+
+&lt; Previous | Index | Next &gt;
+
+The init command causes the initialization script to run immediately.
+
+Syntax:
+
+init
+
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="151">
+<paragraph start="0" end="5">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="4">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="8">
+<size>11</size></content>
+
+<content start="8" end="16">
+<size>11</size><href>script_load.cml</href></content>
+
+<content start="16" end="19">
+<size>11</size></content>
+
+<content start="19" end="24">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="31">
+<size>11</size><href>script_runtask.cml</href></content>
+
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>100.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="105">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<size>11</size><family>Courier New</family></content>
+
+<content start="43" end="63">
+<size>11</size></content>
+
+<content start="63" end="84">
+<size>11</size><href>modelProp.cml</href></content>
+
+<content start="84" end="105">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="105" end="106">
+<LeftIndent>140.0</LeftIndent>
+<content start="105" end="106">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="106" end="114">
+<LeftIndent>140.0</LeftIndent>
+<content start="106" end="114">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="114" end="115">
+<LeftIndent>140.0</LeftIndent>
+<content start="114" end="115">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="115" end="120">
+<LeftIndent>160.0</LeftIndent>
+<content start="115" end="119">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="119" end="120">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="120" end="121">
+<LeftIndent>140.0</LeftIndent>
+<content start="120" end="121">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="121" end="122">
+<LeftIndent>140.0</LeftIndent>
+<content start="121" end="122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="122" end="123">
+<LeftIndent>140.0</LeftIndent>
+<content start="122" end="123">
+</content>
+
+</paragraph>
+<paragraph start="123" end="151">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="123" end="125">
+<size>11</size></content>
+
+<content start="125" end="133">
+<size>11</size><href>script_load.cml</href></content>
+
+<content start="133" end="136">
+<size>11</size></content>
+
+<content start="136" end="141">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="141" end="144">
+<size>11</size></content>
+
+<content start="144" end="148">
+<size>11</size><href>script_runtask.cml</href></content>
+
+<content start="148" end="150">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

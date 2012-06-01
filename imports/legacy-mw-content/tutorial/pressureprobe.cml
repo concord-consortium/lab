@@ -31,7 +31,7 @@ To calculate the pressure of selected types of particles within selected areas, 
 To change the properties of an obstacle such as the density, double-click on it when the editor is in the selection mode.
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 A pressure gauge can be put on each side of the obstacle. Just select the check boxes (at the bottom of the properties dialog window) corresponding to the sides on which you would like to put a gauge. Once you have selected the gauge(s), the next step is to show the output(s) with a graph.
 
@@ -46,7 +46,7 @@ The pressure gauge can be used to measure the partial pressure of a specified ty
 An example is presented in the following to show a very simple setup.
 
   
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 In the above model, the obstacle is fixed (a big number is set for its density). A pressure gauge is installed on its western surface, which is represented by an array of open circles along the boundary line of the surface. The obstacle is filled with a gradient color effect, but you can change it to anything you would like. A graph is connected to the output of the measured pressure.
 
@@ -57,12 +57,12 @@ Note: You will see the pressures rise initially. This is due to the fact that th
 In the next sections, we will do more experiments to test if the pressure gauge works properly.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="4693">
+<section start="0" end="4699">
 <paragraph start="0" end="23">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="22">
-<bold>true</bold><size>16</size><italic>true</italic></content>
+<italic>true</italic><bold>true</bold><size>16</size></content>
 
 <content start="22" end="23">
 </content>
@@ -81,7 +81,7 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 <size>11</size></content>
 
 <content start="26" end="34">
-<size>11</size><href>LineInModel.cml</href></content>
+<size>11</size><href>simanim.cml</href></content>
 
 <content start="34" end="37">
 <size>11</size></content>
@@ -93,7 +93,7 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 <size>11</size></content>
 
 <content start="45" end="49">
-<size>11</size><href>multipressureprobe.cml</href></content>
+<href>multipressureprobe.cml</href><size>11</size></content>
 
 <content start="49" end="51">
 <size>11</size></content>
@@ -117,13 +117,13 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 <icon>apiIcon.gif</icon></content>
 
 <content start="101" end="109">
-<size>11</size><href>glossary/Pressure.cml</href></content>
+<href>glossary/Pressure.cml</href><size>11</size></content>
 
 <content start="109" end="448">
 <size>11</size></content>
 
 <content start="448" end="466">
-<size>11</size><href>dropAction.cml</href></content>
+<href>dropAction.cml</href><size>11</size></content>
 
 <content start="466" end="647">
 <size>11</size></content>
@@ -138,29 +138,29 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 <paragraph start="648" end="650">
 <LeftIndent>140.0</LeftIndent>
 <content start="648" end="649">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="649" end="650">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="650" end="841">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="650" end="841">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="841" end="842">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="841" end="842">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="842" end="845">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <Alignment>1</Alignment>
 <content start="842" end="843">
 <size>11</size></content>
@@ -173,15 +173,15 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 
 </paragraph>
 <paragraph start="845" end="846">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="845" end="846">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="846" end="1258">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="846" end="1230">
 <size>11</size></content>
 
@@ -193,15 +193,15 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 
 </paragraph>
 <paragraph start="1258" end="1259">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1258" end="1259">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="1259" end="1262">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <Alignment>1</Alignment>
 <content start="1259" end="1260">
 </content>
@@ -214,8 +214,8 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 
 </paragraph>
 <paragraph start="1262" end="1265">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1262" end="1264">
 <size>11</size></content>
 
@@ -224,8 +224,8 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 
 </paragraph>
 <paragraph start="1265" end="1269">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <Alignment>1</Alignment>
 <content start="1265" end="1267">
 </content>
@@ -238,15 +238,15 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 
 </paragraph>
 <paragraph start="1269" end="1270">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1269" end="1270">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="1270" end="1670">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1270" end="1276">
 <size>11</size></content>
 
@@ -330,15 +330,15 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 
 </paragraph>
 <paragraph start="1670" end="1671">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1670" end="1671">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="1671" end="1674">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <Alignment>1</Alignment>
 <content start="1671" end="1672">
 <size>11</size></content>
@@ -351,8 +351,8 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 
 </paragraph>
 <paragraph start="1674" end="1677">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <Alignment>1</Alignment>
 <content start="1674" end="1675">
 </content>
@@ -365,20 +365,20 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 
 </paragraph>
 <paragraph start="1677" end="1678">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1677" end="1678">
 </content>
 
 </paragraph>
 <paragraph start="1678" end="1786">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1678" end="1773">
 <size>11</size></content>
 
 <content start="1773" end="1776">
-<size>11</size><family>Courier New</family><href>script_lap.cml</href></content>
+<family>Courier New</family><size>11</size><href>script_lap.cml</href></content>
 
 <content start="1776" end="1785">
 <size>11</size></content>
@@ -390,7 +390,7 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 <paragraph start="1786" end="1788">
 <LeftIndent>140.0</LeftIndent>
 <content start="1786" end="1787">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1787" end="1788">
 <size>11</size></content>
@@ -458,15 +458,15 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 <paragraph start="2232" end="2234">
 <LeftIndent>140.0</LeftIndent>
 <content start="2232" end="2233">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="2233" end="2234">
 </content>
 
 </paragraph>
 <paragraph start="2234" end="2714">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="2234" end="2713">
 <size>11</size></content>
 
@@ -477,7 +477,7 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 <paragraph start="2714" end="2716">
 <LeftIndent>140.0</LeftIndent>
 <content start="2714" end="2715">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="2715" end="2716">
 <size>11</size></content>
@@ -562,104 +562,104 @@ In the next sections, we will do more experiments to test if the pressure gauge 
 </content>
 
 </paragraph>
-<paragraph start="3374" end="3407">
+<paragraph start="3374" end="3413">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="3374" end="3406">
+<content start="3374" end="3412">
 <size>10</size></content>
 
-<content start="3406" end="3407">
+<content start="3412" end="3413">
 </content>
 
 </paragraph>
-<paragraph start="3407" end="3408">
-<content start="3407" end="3408">
+<paragraph start="3413" end="3414">
+<content start="3413" end="3414">
 </content>
 
 </paragraph>
-<paragraph start="3408" end="3796">
+<paragraph start="3414" end="3802">
 <LeftIndent>140.0</LeftIndent>
-<content start="3408" end="3796">
+<content start="3414" end="3802">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3796" end="3797">
+<paragraph start="3802" end="3803">
 <LeftIndent>140.0</LeftIndent>
-<content start="3796" end="3797">
+<content start="3802" end="3803">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3797" end="3799">
+<paragraph start="3803" end="3805">
 <LeftIndent>140.0</LeftIndent>
-<content start="3797" end="3798">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="3803" end="3804">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="3798" end="3799">
+<content start="3804" end="3805">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3799" end="4565">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="3805" end="4571">
 <RightIndent>100.0</RightIndent>
-<content start="3799" end="3803">
+<LeftIndent>200.0</LeftIndent>
+<content start="3805" end="3809">
 <bold>true</bold><size>11</size></content>
 
-<content start="3803" end="4565">
+<content start="3809" end="4571">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4565" end="4567">
+<paragraph start="4571" end="4573">
 <LeftIndent>140.0</LeftIndent>
-<content start="4565" end="4566">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="4571" end="4572">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="4566" end="4567">
+<content start="4572" end="4573">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4567" end="4568">
+<paragraph start="4573" end="4574">
 <LeftIndent>140.0</LeftIndent>
-<content start="4567" end="4568">
+<content start="4573" end="4574">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4568" end="4664">
+<paragraph start="4574" end="4670">
 <LeftIndent>140.0</LeftIndent>
-<content start="4568" end="4663">
+<content start="4574" end="4669">
 <size>11</size></content>
 
-<content start="4663" end="4664">
+<content start="4669" end="4670">
 </content>
 
 </paragraph>
-<paragraph start="4664" end="4665">
+<paragraph start="4670" end="4671">
 <LeftIndent>140.0</LeftIndent>
-<content start="4664" end="4665">
+<content start="4670" end="4671">
 </content>
 
 </paragraph>
-<paragraph start="4665" end="4693">
+<paragraph start="4671" end="4699">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="4665" end="4667">
+<content start="4671" end="4673">
 <size>11</size></content>
 
-<content start="4667" end="4675">
-<size>11</size><href>LineInModel.cml</href></content>
+<content start="4673" end="4681">
+<size>11</size><href>simanim.cml</href></content>
 
-<content start="4675" end="4678">
+<content start="4681" end="4684">
 <size>11</size></content>
 
-<content start="4678" end="4683">
+<content start="4684" end="4689">
 <size>11</size><href>index1.cml</href></content>
 
-<content start="4683" end="4686">
+<content start="4689" end="4692">
 <size>11</size></content>
 
-<content start="4686" end="4690">
-<size>11</size><href>multipressureprobe.cml</href></content>
+<content start="4692" end="4696">
+<href>multipressureprobe.cml</href><size>11</size></content>
 
-<content start="4690" end="4692">
+<content start="4696" end="4698">
 <size>11</size></content>
 
 </paragraph>

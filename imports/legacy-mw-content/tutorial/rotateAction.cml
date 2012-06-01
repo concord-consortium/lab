@@ -20,7 +20,7 @@ You can practice rotating a molecule with the model below:
 
  
   
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Rotating a Gay-Berne particle
 
@@ -32,7 +32,7 @@ You can practice rotating a Gay-Berne particel with the model below:
 
  
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Script support
 
@@ -57,27 +57,27 @@ loop 12;
 Unlike the Rotating Tool that always rotates a molecule around its center of mass, a rotation implemented through scripts can be around any point.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="2035">
+<section start="0" end="2047">
 <paragraph start="0" end="18">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="17">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="17" end="18">
 </content>
 
 </paragraph>
 <paragraph start="18" end="19">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="18" end="19">
 </content>
 
 </paragraph>
 <paragraph start="19" end="47">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="19" end="21">
 <size>11</size></content>
 
@@ -130,7 +130,7 @@ Unlike the Rotating Tool that always rotates a molecule around its center of mas
 <paragraph start="268" end="288">
 <LeftIndent>140.0</LeftIndent>
 <content start="268" end="287">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="287" end="288">
 <size>11</size></content>
@@ -155,8 +155,8 @@ Unlike the Rotating Tool that always rotates a molecule around its center of mas
 
 </paragraph>
 <paragraph start="350" end="365">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="350" end="351">
 <size>11</size></content>
 
@@ -174,8 +174,8 @@ Unlike the Rotating Tool that always rotates a molecule around its center of mas
 
 </paragraph>
 <paragraph start="365" end="427">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="365" end="426">
 <size>10</size></content>
 
@@ -202,8 +202,8 @@ Unlike the Rotating Tool that always rotates a molecule around its center of mas
 
 </paragraph>
 <paragraph start="488" end="490">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="488" end="489">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>rotateAction$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder><button>Rotate Object</button><button>Select Object</button></component><size>11</size></content>
@@ -213,8 +213,8 @@ Unlike the Rotating Tool that always rotates a molecule around its center of mas
 
 </paragraph>
 <paragraph start="490" end="493">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="490" end="491">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Rotate molecule around the center of mass using scripts</title>
@@ -263,309 +263,309 @@ loop 12;</script>
 </content>
 
 </paragraph>
-<paragraph start="493" end="526">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="493" end="532">
 <Alignment>1</Alignment>
-<content start="493" end="525">
+<LeftIndent>140.0</LeftIndent>
+<content start="493" end="531">
 <size>10</size></content>
 
-<content start="525" end="526">
+<content start="531" end="532">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="526" end="527">
+<paragraph start="532" end="533">
 <LeftIndent>140.0</LeftIndent>
-<content start="526" end="527">
+<content start="532" end="533">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="527" end="557">
+<paragraph start="533" end="563">
 <LeftIndent>140.0</LeftIndent>
-<content start="527" end="556">
-<size>11</size><bold>true</bold></content>
+<content start="533" end="562">
+<bold>true</bold><size>11</size></content>
 
-<content start="556" end="557">
+<content start="562" end="563">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="557" end="558">
+<paragraph start="563" end="564">
 <LeftIndent>140.0</LeftIndent>
-<content start="557" end="558">
+<content start="563" end="564">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="558" end="630">
+<paragraph start="564" end="636">
 <LeftIndent>140.0</LeftIndent>
-<content start="558" end="630">
+<content start="564" end="636">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="630" end="631">
+<paragraph start="636" end="637">
 <LeftIndent>100.0</LeftIndent>
-<content start="630" end="631">
+<content start="636" end="637">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="631" end="634">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="637" end="640">
 <Alignment>1</Alignment>
-<content start="631" end="632">
+<LeftIndent>140.0</LeftIndent>
+<content start="637" end="638">
 <size>11</size></content>
 
-<content start="632" end="633">
+<content start="638" end="639">
 <size>11</size><icon>RatatingGB.gif</icon></content>
 
-<content start="633" end="634">
+<content start="639" end="640">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="634" end="635">
+<paragraph start="640" end="641">
 <LeftIndent>100.0</LeftIndent>
-<content start="634" end="635">
+<content start="640" end="641">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="635" end="704">
+<paragraph start="641" end="710">
 <LeftIndent>140.0</LeftIndent>
-<content start="635" end="704">
+<content start="641" end="710">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="704" end="705">
+<paragraph start="710" end="711">
 <LeftIndent>100.0</LeftIndent>
-<content start="704" end="705">
+<content start="710" end="711">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="705" end="707">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="711" end="713">
 <Alignment>1</Alignment>
-<content start="705" end="706">
+<LeftIndent>140.0</LeftIndent>
+<content start="711" end="712">
 <component><class>org.concord.mw2d.activity.GBContainer</class>
 <resource>rotateAction$0.gbl</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder><button>Rotate Object</button><button>Select Object</button></component><size>11</size></content>
 
-<content start="706" end="707">
+<content start="712" end="713">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="707" end="709">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="713" end="715">
 <Alignment>1</Alignment>
-<content start="707" end="708">
+<LeftIndent>140.0</LeftIndent>
+<content start="713" end="714">
 <component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MesoModel</modelclass>
+<model>2</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>360.0</maximum>
+<nstep>36</nstep>
 <title>Set the orientation through script</title>
 <tooltip>Set the orientation through MW script</tooltip>
 <width>400</width>
 <height>70</height>
 <opaque>false</opaque>
 <disabled_at_script>true</disabled_at_script>
-<modelclass>org.concord.mw2d.models.MesoModel</modelclass>
-<model>2</model>
-<value>0.0</value>
-<minimum>0.0</minimum>
-<maximum>360.0</maximum>
 <tick>true</tick>
-<nstep>36</nstep>
 <labeltable>{value=&quot;180.0&quot;, label=&quot;180&quot;}{value=&quot;360.0&quot;, label=&quot;360 (degree)&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
 <script>set particle[0].theta &quot;%val*pi/180&quot;;</script>
 <change>Execute MW script</change>
 </component></content>
 
-<content start="708" end="709">
+<content start="714" end="715">
 </content>
 
 </paragraph>
-<paragraph start="709" end="742">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="715" end="754">
 <Alignment>1</Alignment>
-<content start="709" end="741">
+<LeftIndent>140.0</LeftIndent>
+<content start="715" end="753">
 <size>10</size></content>
 
-<content start="741" end="742">
+<content start="753" end="754">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="742" end="743">
+<paragraph start="754" end="755">
 <LeftIndent>140.0</LeftIndent>
-<content start="742" end="743">
+<content start="754" end="755">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="743" end="758">
+<paragraph start="755" end="770">
 <LeftIndent>140.0</LeftIndent>
-<content start="743" end="757">
-<size>11</size><bold>true</bold></content>
+<content start="755" end="769">
+<bold>true</bold><size>11</size></content>
 
-<content start="757" end="758">
+<content start="769" end="770">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="758" end="759">
+<paragraph start="770" end="771">
 <LeftIndent>140.0</LeftIndent>
-<content start="758" end="759">
+<content start="770" end="771">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="759" end="959">
+<paragraph start="771" end="971">
 <LeftIndent>140.0</LeftIndent>
-<content start="759" end="824">
+<content start="771" end="836">
 <size>11</size></content>
 
-<content start="824" end="827">
+<content start="836" end="839">
 <href>script_set.cml</href><size>11</size><family>Courier New</family></content>
 
-<content start="827" end="853">
+<content start="839" end="865">
 <size>11</size><family>Courier New</family></content>
 
-<content start="853" end="959">
+<content start="865" end="971">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="959" end="960">
+<paragraph start="971" end="972">
 <LeftIndent>140.0</LeftIndent>
-<content start="959" end="960">
+<content start="971" end="972">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="960" end="1272">
+<paragraph start="972" end="1284">
 <LeftIndent>140.0</LeftIndent>
-<content start="960" end="1102">
+<content start="972" end="1114">
 <size>11</size></content>
 
-<content start="1102" end="1118">
+<content start="1114" end="1130">
 <href>script_expression.cml</href><size>11</size></content>
 
-<content start="1118" end="1272">
+<content start="1130" end="1284">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1272" end="1273">
+<paragraph start="1284" end="1285">
 <LeftIndent>140.0</LeftIndent>
-<content start="1272" end="1273">
+<content start="1284" end="1285">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1273" end="1358">
+<paragraph start="1285" end="1370">
 <LeftIndent>160.0</LeftIndent>
-<content start="1273" end="1358">
+<content start="1285" end="1370">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1358" end="1443">
+<paragraph start="1370" end="1455">
 <LeftIndent>160.0</LeftIndent>
-<content start="1358" end="1443">
+<content start="1370" end="1455">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1443" end="1516">
+<paragraph start="1455" end="1528">
 <LeftIndent>160.0</LeftIndent>
-<content start="1443" end="1516">
+<content start="1455" end="1528">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1516" end="1589">
+<paragraph start="1528" end="1601">
 <LeftIndent>160.0</LeftIndent>
-<content start="1516" end="1589">
+<content start="1528" end="1601">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1589" end="1620">
+<paragraph start="1601" end="1632">
 <LeftIndent>160.0</LeftIndent>
-<content start="1589" end="1620">
+<content start="1601" end="1632">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1620" end="1651">
+<paragraph start="1632" end="1663">
 <LeftIndent>160.0</LeftIndent>
-<content start="1620" end="1651">
+<content start="1632" end="1663">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1651" end="1659">
+<paragraph start="1663" end="1671">
 <LeftIndent>160.0</LeftIndent>
-<content start="1651" end="1659">
+<content start="1663" end="1671">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1659" end="1679">
+<paragraph start="1671" end="1691">
 <LeftIndent>160.0</LeftIndent>
-<content start="1659" end="1679">
+<content start="1671" end="1691">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1679" end="1701">
+<paragraph start="1691" end="1713">
 <LeftIndent>160.0</LeftIndent>
-<content start="1679" end="1701">
+<content start="1691" end="1713">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1701" end="1723">
+<paragraph start="1713" end="1735">
 <LeftIndent>160.0</LeftIndent>
-<content start="1701" end="1723">
+<content start="1713" end="1735">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1723" end="1786">
+<paragraph start="1735" end="1798">
 <LeftIndent>160.0</LeftIndent>
-<content start="1723" end="1786">
+<content start="1735" end="1798">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1786" end="1849">
+<paragraph start="1798" end="1861">
 <LeftIndent>160.0</LeftIndent>
-<content start="1786" end="1849">
+<content start="1798" end="1861">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1849" end="1858">
+<paragraph start="1861" end="1870">
 <LeftIndent>160.0</LeftIndent>
-<content start="1849" end="1857">
+<content start="1861" end="1869">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1857" end="1858">
+<content start="1869" end="1870">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1858" end="1859">
+<paragraph start="1870" end="1871">
 <LeftIndent>140.0</LeftIndent>
-<content start="1858" end="1859">
+<content start="1870" end="1871">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1859" end="2006">
+<paragraph start="1871" end="2018">
 <LeftIndent>140.0</LeftIndent>
-<content start="1859" end="2006">
+<content start="1871" end="2018">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2006" end="2007">
+<paragraph start="2018" end="2019">
 <RightIndent>20.0</RightIndent>
-<content start="2006" end="2007">
+<content start="2018" end="2019">
 </content>
 
 </paragraph>
-<paragraph start="2007" end="2035">
-<RightIndent>20.0</RightIndent>
+<paragraph start="2019" end="2047">
 <Alignment>2</Alignment>
-<content start="2007" end="2009">
+<RightIndent>20.0</RightIndent>
+<content start="2019" end="2021">
 <size>11</size></content>
 
-<content start="2009" end="2017">
+<content start="2021" end="2029">
 <href>DampingAction.cml</href><size>11</size></content>
 
-<content start="2017" end="2020">
+<content start="2029" end="2032">
 <size>11</size></content>
 
-<content start="2020" end="2025">
+<content start="2032" end="2037">
 <href>index1.cml</href><size>11</size></content>
 
-<content start="2025" end="2028">
+<content start="2037" end="2040">
 <size>11</size></content>
 
-<content start="2028" end="2032">
+<content start="2040" end="2044">
 <href>removeAction.cml</href><size>11</size></content>
 
-<content start="2032" end="2034">
+<content start="2044" end="2046">
 <size>11</size></content>
 
 </paragraph>

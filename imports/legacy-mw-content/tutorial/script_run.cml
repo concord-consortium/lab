@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
+<language>UTF-8</language>
 <page_title>Run</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Run
@@ -17,8 +18,8 @@ The model runs in a separate thread from the one that executes scripts. As a res
 &lt; Previous | Index | Next &gt;</text>
 <section start="0" end="286">
 <paragraph start="0" end="4">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="3">
 <bold>true</bold><size>16</size><italic>true</italic></content>
 
@@ -27,32 +28,32 @@ The model runs in a separate thread from the one that executes scripts. As a res
 
 </paragraph>
 <paragraph start="4" end="5">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="4" end="5">
 </content>
 
 </paragraph>
 <paragraph start="5" end="33">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="5" end="7">
 <size>11</size></content>
 
 <content start="7" end="15">
-<href>script_load.cml</href><size>11</size></content>
+<size>11</size><href>script_key.cml</href></content>
 
 <content start="15" end="18">
 <size>11</size></content>
 
 <content start="18" end="23">
-<href>mwscripts.cml</href><size>11</size></content>
+<size>11</size><href>mwscripts.cml</href></content>
 
 <content start="23" end="26">
 <size>11</size></content>
 
 <content start="26" end="30">
-<href>script_stop.cml</href><size>11</size></content>
+<size>11</size><href>script_stop.cml</href></content>
 
 <content start="30" end="32">
 <size>11</size></content>
@@ -125,25 +126,25 @@ The model runs in a separate thread from the one that executes scripts. As a res
 
 </paragraph>
 <paragraph start="258" end="286">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="258" end="260">
 <size>11</size></content>
 
 <content start="260" end="268">
-<href>script_load.cml</href><size>11</size></content>
+<size>11</size><href>script_key.cml</href></content>
 
 <content start="268" end="271">
 <size>11</size></content>
 
 <content start="271" end="276">
-<href>mwscripts.cml</href><size>11</size></content>
+<size>11</size><href>mwscripts.cml</href></content>
 
 <content start="276" end="279">
 <size>11</size></content>
 
 <content start="279" end="283">
-<href>script_stop.cml</href><size>11</size></content>
+<size>11</size><href>script_stop.cml</href></content>
 
 <content start="283" end="285">
 <size>11</size></content>

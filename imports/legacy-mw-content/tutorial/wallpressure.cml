@@ -12,19 +12,19 @@ The fourth test of the pressure gauge is an extension from the third test. A gau
 The following experiment is set up to prove this.
 
   
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 The above simulation shows that the pressures measured at four walls are approximately the same (~2 bar), with some reasonable fluctuations for a small system such as this.
 
 Related simulation: A hydraulic lever
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="965">
+<section start="0" end="971">
 <paragraph start="0" end="60">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="59">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="59" end="60">
 </content>
@@ -147,77 +147,77 @@ Related simulation: A hydraulic lever
 </content>
 
 </paragraph>
-<paragraph start="690" end="723">
+<paragraph start="690" end="729">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="690" end="722">
+<content start="690" end="728">
 <size>10</size></content>
 
-<content start="722" end="723">
+<content start="728" end="729">
 </content>
 
 </paragraph>
-<paragraph start="723" end="724">
+<paragraph start="729" end="730">
 <LeftIndent>140.0</LeftIndent>
-<content start="723" end="724">
+<content start="729" end="730">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="724" end="897">
+<paragraph start="730" end="903">
 <LeftIndent>140.0</LeftIndent>
-<content start="724" end="896">
+<content start="730" end="902">
 <size>11</size></content>
 
-<content start="896" end="897">
+<content start="902" end="903">
 </content>
 
 </paragraph>
-<paragraph start="897" end="898">
+<paragraph start="903" end="904">
 <LeftIndent>140.0</LeftIndent>
-<content start="897" end="898">
+<content start="903" end="904">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="898" end="936">
+<paragraph start="904" end="942">
 <LeftIndent>140.0</LeftIndent>
-<content start="898" end="918">
+<content start="904" end="924">
 <size>10</size></content>
 
-<content start="918" end="935">
+<content start="924" end="941">
 <href>../student/fluid/pascal.cml</href><size>10</size></content>
 
-<content start="935" end="936">
+<content start="941" end="942">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="936" end="937">
+<paragraph start="942" end="943">
 <LeftIndent>140.0</LeftIndent>
-<content start="936" end="937">
+<content start="942" end="943">
 </content>
 
 </paragraph>
-<paragraph start="937" end="965">
+<paragraph start="943" end="971">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="937" end="939">
+<content start="943" end="945">
 <size>11</size></content>
 
-<content start="939" end="947">
+<content start="945" end="953">
 <href>isopressure.cml</href><size>11</size></content>
 
-<content start="947" end="950">
+<content start="953" end="956">
 <size>11</size></content>
 
-<content start="950" end="955">
+<content start="956" end="961">
 <href>index1.cml</href><size>11</size></content>
 
-<content start="955" end="958">
+<content start="961" end="964">
 <size>11</size></content>
 
-<content start="958" end="962">
+<content start="964" end="968">
 <href>microbuoyancy.cml</href><size>11</size></content>
 
-<content start="962" end="964">
+<content start="968" end="970">
 <size>11</size></content>
 
 </paragraph>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Use a 2D container to create animations</page_title>
+<text> Use a 2D container to create animations
+
+ </text>
+<section start="0" end="44">
+<paragraph start="0" end="41">
+<RightIndent>20.0</RightIndent>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="40">
+<bold>true</bold><size>15</size></content>
+
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="42">
+<RightIndent>20.0</RightIndent>
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="44">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="42" end="43">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>chopper$0.mml</resource><recorderless>true</recorderless>
+</component></content>
+
+</paragraph>
+</section>
+</document>

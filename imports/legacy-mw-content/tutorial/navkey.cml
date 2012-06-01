@@ -10,7 +10,7 @@
 In addition to the navigation pad at the left side of the window, the user can also use the following keyboard shortcuts to navigate.
 
   
-[This is an embedded Jmol Viewer.]
+&#12304;This is an embedded Jmol Viewer.&#12305;
 
 Using only these keyboard shortcuts, you should be able to access any location inside the molecule. When you want to fly to a location, use the crosshair to aim at one of the atoms there (just like in a flight simulator!).
 
@@ -23,7 +23,7 @@ At any time, you can drag the mouse to rotate the view freely, or hold down SHIF
 <Alignment>2</Alignment>
 <RightIndent>8.0</RightIndent>
 <content start="0" end="37">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<italic>true</italic><size>15</size><bold>true</bold></content>
 
 <content start="37" end="38">
 </content>
@@ -49,7 +49,13 @@ At any time, you can drag the mouse to rotate the view freely, or hold down SHIF
 <content start="52" end="57">
 <size>11</size><href>index_jmol.cml</href></content>
 
-<content start="57" end="66">
+<content start="57" end="60">
+<size>11</size></content>
+
+<content start="60" end="64">
+<size>11</size><href>guidedtour.cml</href></content>
+
+<content start="64" end="66">
 <size>11</size></content>
 
 <content start="66" end="67">
@@ -81,21 +87,21 @@ At any time, you can drag the mouse to rotate the view freely, or hold down SHIF
 <content start="203" end="204">
 <component><class>org.concord.modeler.PageTable</class>
 <columnname>Key, Navigation</columnname>
-<row>8</row>
+<row>10</row>
 <column>2</column>
-<layout>73, 167</layout>
+<layout>117, 183</layout>
 <cellalign>10</cellalign>
-<width>240.0</width>
+<width>300.0</width>
 <height>350.0</height>
 <hline>true</hline>
 <vline>true</vline>
-<elementarray><te>&apos;A&apos;</te><te>Thrust forward</te><te>&apos;S&apos;</te><te>Thrust back</te><te>Up</te><te>Pitch up</te><te>Down</te><te>Pitch down</te><te>Left</te><te>Yaw left</te><te>Right</te><te>Yaw right</te><te>&apos;Z&apos;</te><te>Roll clockwise</te><te>Shift+&apos;Z&apos;</te><te>Roll counterclockwise</te></elementarray>
+<elementarray><te>&apos;A&apos;</te><te>Thrust forward</te><te>&apos;S&apos;</te><te>Thrust back</te><te>Shift+Arrows</te><te>Thrust left, right, up and down</te><te>Up/Down Arrow</te><te>Pitch up/down</te><te>Left/Right</te><te>Yaw left/right</te><te>&apos;Z&apos;/Shift+&apos;Z&apos;</te><te>Roll clockwise/counterclosewise</te><te>Alt+Up Arrow</te><te>Thrust up and pitch down</te><te>Alt+Down Arrow</te><te>Thrust down and pitch up</te><te>Alt+Left Arrow</te><te>Thrust left and yaw right</te><te>Alt+Right Arrow</te><te>Thrust right and yaw left</te></elementarray>
 </component></content>
 
 <content start="204" end="205">
 <component><class>org.concord.modeler.PageMolecularViewer</class>
-<axes>true</axes><toolbar>false</toolbar><navigation>true</navigation><resource>diffGear.pdb</resource><state>navkey$0.jms</state><width>400</width>
-<height>350</height>
+<axes>true</axes><toolbar>false</toolbar><navigation>true</navigation><resource>diffGear.pdb</resource><state>navkey$0.jms</state><width>360.0</width>
+<height>350.0</height>
 <border>Raised Bevel</border>
 </component></content>
 
@@ -106,7 +112,16 @@ At any time, you can drag the mouse to rotate the view freely, or hold down SHIF
 <paragraph start="206" end="241">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="206" end="241">
+<content start="206" end="207">
+<bold>true</bold><size>13</size></content>
+
+<content start="207" end="239">
+<size>10</size></content>
+
+<content start="239" end="240">
+<bold>true</bold><size>13</size></content>
+
+<content start="240" end="241">
 <size>10</size></content>
 
 </paragraph>
@@ -129,13 +144,7 @@ At any time, you can drag the mouse to rotate the view freely, or hold down SHIF
 </paragraph>
 <paragraph start="466" end="1035">
 <LeftIndent>140.0</LeftIndent>
-<content start="466" end="641">
-<size>11</size></content>
-
-<content start="641" end="698">
-<size>11</size></content>
-
-<content start="698" end="1035">
+<content start="466" end="1035">
 <size>11</size></content>
 
 </paragraph>
@@ -160,7 +169,13 @@ At any time, you can drag the mouse to rotate the view freely, or hold down SHIF
 <content start="1049" end="1054">
 <size>11</size><href>index_jmol.cml</href></content>
 
-<content start="1054" end="1063">
+<content start="1054" end="1057">
+<size>11</size></content>
+
+<content start="1057" end="1061">
+<size>11</size><href>guidedtour.cml</href></content>
+
+<content start="1061" end="1063">
 <size>11</size></content>
 
 </paragraph>

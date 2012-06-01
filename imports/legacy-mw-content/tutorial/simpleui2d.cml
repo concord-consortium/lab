@@ -7,19 +7,19 @@
 
 &lt; Previous | Index | Next &gt;
 
-The user interface (UI) for making models is mostly useful when you build a model. Once you finish the construction, the UI can be simplified for the intended end users of your model, who do not need to see the complex model-building interface. For example, the tool bar and menu bar can be removed (thus access to the options and controls, mainly designed for authors, can be blocked). As scriptability has been extensively enabled, you seldom need to keep them for the end users. Most actions in the menu bar and the tool bar can be delivered through scripts, which can be set up for most widgets and hyperlinks. The simulation controls can be hidden and replaced by inserted buttons that employ the run, stop and reset command to control the simulation. In fact, the model container can have only the molecular view (i.e. the window in which atoms are shown) with all the other components removed (see this page for an example --- the simulations are controlled through scripts set for the radio buttons). The border for the molecular view can also be hidden to create a visual effect as if the simulation were part of the page (see this page for a 2D example and this page for a 3D example).
+The user interface (UI) for making models is mostly useful when you build a model. Once you finish the construction, the UI can be simplified for the intended end users of your model, who do not need to see the complex model-building interface. For example, the tool bar and menu bar can be removed (thus access to the options and controls, mainly designed for authors, can be blocked). As scriptability has been extensively enabled, you seldom need to keep them for the end users. Most actions in the menu bar and the tool bar can be delivered through scripts, which can be set up for most widgets and hyperlinks. The simulation controls can be hidden and replaced by inserted buttons that employ the run, stop, and reset command to control the simulation. In fact, the model container can have only the molecular view (i.e. the window in which atoms are shown) with all the other components removed (see this page for an example --- the simulations are controlled through scripts set for the radio buttons). The border for the molecular view can also be hidden to create a visual effect as if the simulation were part of the page (see this page for a 2D example and this page for a 3D example).
 
 If you need to revise a model later, you can easily put the model-building UI back.
 
 Although we strongly recommend that a simplified UI be presented to the end users, you can leave the controls that you believe the end users would also benefit from using in the activity. For example, in a diffusion activity, you may want to leave the buttons for adding, moving, and deleting particles in the tool bar and ask students to use them to set up diffusion models of their own.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1761">
+<section start="0" end="1762">
 <paragraph start="0" end="31">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="30">
-<italic>true</italic><size>16</size><bold>true</bold></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="30" end="31">
 </content>
@@ -66,7 +66,7 @@ Although we strongly recommend that a simplified UI be presented to the end user
 </content>
 
 </paragraph>
-<paragraph start="61" end="1257">
+<paragraph start="61" end="1258">
 <LeftIndent>140.0</LeftIndent>
 <content start="61" end="323">
 <size>11</size></content>
@@ -104,98 +104,98 @@ Although we strongly recommend that a simplified UI be presented to the end user
 <content start="768" end="772">
 <size>11</size><href>script_stop.cml</href></content>
 
-<content start="772" end="777">
+<content start="772" end="778">
 <size>11</size></content>
 
-<content start="777" end="782">
+<content start="778" end="783">
 <size>11</size><href>script_reset.cml</href></content>
 
-<content start="782" end="966">
+<content start="783" end="967">
 <size>11</size></content>
 
-<content start="966" end="975">
+<content start="967" end="976">
 <size>11</size><href>../student/gaslaws/avogadro.cml</href></content>
 
-<content start="975" end="1054">
+<content start="976" end="1055">
 <size>11</size></content>
 
-<content start="1054" end="1067">
+<content start="1055" end="1068">
 <size>11</size><href>insertRadioButton.cml</href></content>
 
-<content start="1067" end="1197">
+<content start="1068" end="1198">
 <size>11</size></content>
 
-<content start="1197" end="1206">
+<content start="1198" end="1207">
 <size>11</size><href>../part2/ZoomIt/main.cml</href></content>
 
-<content start="1206" end="1228">
+<content start="1207" end="1229">
 <size>11</size></content>
 
-<content start="1228" end="1237">
+<content start="1229" end="1238">
 <size>11</size><href>../student/organic/threebenzene.cml</href></content>
 
-<content start="1237" end="1257">
+<content start="1238" end="1258">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1257" end="1258">
+<paragraph start="1258" end="1259">
 <LeftIndent>140.0</LeftIndent>
-<content start="1257" end="1258">
+<content start="1258" end="1259">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1258" end="1342">
+<paragraph start="1259" end="1343">
 <LeftIndent>140.0</LeftIndent>
-<content start="1258" end="1342">
+<content start="1259" end="1343">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1342" end="1343">
+<paragraph start="1343" end="1344">
 <LeftIndent>140.0</LeftIndent>
-<content start="1342" end="1343">
+<content start="1343" end="1344">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1343" end="1732">
+<paragraph start="1344" end="1733">
 <LeftIndent>140.0</LeftIndent>
-<content start="1343" end="1549">
+<content start="1344" end="1550">
 <size>11</size></content>
 
-<content start="1549" end="1567">
+<content start="1550" end="1568">
 <size>11</size><href>../part1/dan/DandOpage2.cml</href></content>
 
-<content start="1567" end="1732">
+<content start="1568" end="1733">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1732" end="1733">
+<paragraph start="1733" end="1734">
 <LeftIndent>140.0</LeftIndent>
-<content start="1732" end="1733">
+<content start="1733" end="1734">
 </content>
 
 </paragraph>
-<paragraph start="1733" end="1761">
+<paragraph start="1734" end="1762">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="1733" end="1735">
+<content start="1734" end="1736">
 <size>11</size></content>
 
-<content start="1735" end="1743">
+<content start="1736" end="1744">
 <size>11</size><href>accessGBProp.cml</href></content>
 
-<content start="1743" end="1746">
+<content start="1744" end="1747">
 <size>11</size></content>
 
-<content start="1746" end="1751">
+<content start="1747" end="1752">
 <size>11</size><href>index1.cml</href></content>
 
-<content start="1751" end="1754">
+<content start="1752" end="1755">
 <size>11</size></content>
 
-<content start="1754" end="1758">
+<content start="1755" end="1759">
 <size>11</size><href>ImageInModel.cml</href></content>
 
-<content start="1758" end="1760">
+<content start="1759" end="1761">
 <size>11</size></content>
 
 </paragraph>

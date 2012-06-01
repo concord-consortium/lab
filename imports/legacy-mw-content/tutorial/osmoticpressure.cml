@@ -14,7 +14,7 @@ Other items to test are: (a) If we remove the solutes, will all the gauges read 
   
  
   
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
  
 Important: If you care about getting more reliable results, increase the recorder length to 500 frames (set this under the &quot;Recorder&quot; tab in the Preferences dialog).
@@ -23,12 +23,12 @@ Important: If you care about getting more reliable results, increase the recorde
 The test results showed no surprise. You can verify by yourself using the above model.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1090">
+<section start="0" end="1096">
 <paragraph start="0" end="36">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="35">
-<bold>true</bold><size>16</size><italic>true</italic></content>
+<size>16</size><bold>true</bold><italic>true</italic></content>
 
 <content start="35" end="36">
 </content>
@@ -48,13 +48,13 @@ The test results showed no surprise. You can verify by yourself using the above 
 <size>11</size></content>
 
 <content start="39" end="47">
-<size>11</size><href>microbuoyancy.cml</href></content>
+<href>microbuoyancy.cml</href><size>11</size></content>
 
 <content start="47" end="50">
 <size>11</size></content>
 
 <content start="50" end="55">
-<size>11</size><href>index1.cml</href></content>
+<href>index1.cml</href><size>11</size></content>
 
 <content start="55" end="64">
 <size>11</size></content>
@@ -100,8 +100,8 @@ The test results showed no surprise. You can verify by yourself using the above 
 
 </paragraph>
 <paragraph start="761" end="764">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="761" end="762">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>osmoticpressure$0.mml</resource><menubar>false</menubar></component></content>
@@ -131,8 +131,8 @@ The test results showed no surprise. You can verify by yourself using the above 
 
 </paragraph>
 <paragraph start="764" end="766">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="764" end="765">
 <component><class>org.concord.modeler.PageSlider</class>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
@@ -155,8 +155,8 @@ The test results showed no surprise. You can verify by yourself using the above 
 
 </paragraph>
 <paragraph start="766" end="769">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="766" end="767">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Remove all solutes</title>
@@ -187,87 +187,87 @@ remove;</script>
 </content>
 
 </paragraph>
-<paragraph start="769" end="802">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="769" end="808">
 <Alignment>1</Alignment>
-<content start="769" end="801">
+<LeftIndent>140.0</LeftIndent>
+<content start="769" end="807">
 <size>10</size></content>
 
-<content start="801" end="802">
+<content start="807" end="808">
 </content>
 
 </paragraph>
-<paragraph start="802" end="803">
+<paragraph start="808" end="809">
 <LeftIndent>140.0</LeftIndent>
-<content start="802" end="803">
+<content start="808" end="809">
 </content>
 
 </paragraph>
-<paragraph start="803" end="805">
+<paragraph start="809" end="811">
 <LeftIndent>140.0</LeftIndent>
-<content start="803" end="804">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="809" end="810">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
 
-<content start="804" end="805">
+<content start="810" end="811">
 </content>
 
 </paragraph>
-<paragraph start="805" end="971">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="811" end="977">
 <RightIndent>100.0</RightIndent>
-<content start="805" end="814">
+<LeftIndent>200.0</LeftIndent>
+<content start="811" end="820">
 <bold>true</bold><size>11</size></content>
 
-<content start="814" end="970">
+<content start="820" end="976">
 <size>11</size></content>
 
-<content start="970" end="971">
+<content start="976" end="977">
 </content>
 
 </paragraph>
-<paragraph start="971" end="973">
+<paragraph start="977" end="979">
 <LeftIndent>140.0</LeftIndent>
-<content start="971" end="972">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="977" end="978">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="972" end="973">
+<content start="978" end="979">
 </content>
 
 </paragraph>
-<paragraph start="973" end="974">
+<paragraph start="979" end="980">
 <LeftIndent>140.0</LeftIndent>
-<content start="973" end="974">
+<content start="979" end="980">
 </content>
 
 </paragraph>
-<paragraph start="974" end="1061">
+<paragraph start="980" end="1067">
 <LeftIndent>140.0</LeftIndent>
-<content start="974" end="1061">
+<content start="980" end="1067">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1061" end="1062">
+<paragraph start="1067" end="1068">
 <LeftIndent>140.0</LeftIndent>
-<content start="1061" end="1062">
+<content start="1067" end="1068">
 </content>
 
 </paragraph>
-<paragraph start="1062" end="1090">
+<paragraph start="1068" end="1096">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="1062" end="1064">
+<content start="1068" end="1070">
 <size>11</size></content>
 
-<content start="1064" end="1072">
-<size>11</size><href>microbuoyancy.cml</href></content>
+<content start="1070" end="1078">
+<href>microbuoyancy.cml</href><size>11</size></content>
 
-<content start="1072" end="1075">
+<content start="1078" end="1081">
 <size>11</size></content>
 
-<content start="1075" end="1080">
-<size>11</size><href>index1.cml</href></content>
+<content start="1081" end="1086">
+<href>index1.cml</href><size>11</size></content>
 
-<content start="1080" end="1089">
+<content start="1086" end="1095">
 <size>11</size></content>
 
 </paragraph>

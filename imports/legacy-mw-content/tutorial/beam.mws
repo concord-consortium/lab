@@ -1,0 +1,80 @@
+define %i 0;
+define %j 0;
+define %k 0;
+define %l 0;
+define %n 40;
+define %xc %width/2;
+define %yc %height/2;
+define %d 0.8;
+while (%i < %n);
+  add atom 0 ("%xc - (%n/2-%i)*%d", "%yc-%d");
+  add atom 0 ("%xc - (%n/2-%i)*%d", "%yc");
+  add atom 0 ("%xc - (%n/2-%i)*%d", "%yc+%d");
+  set %j %i*3;
+  set %k %i*3+1;
+  set %l %i*3+2;
+  bond %j %k 1;
+  bond %k %l 1;
+  if(%i>0);
+
+    set %j %i*3;
+    set %k (%i-1)*3;
+    bond %j %k 1;
+    set %j %i*3+1;
+    set %k (%i-1)*3+1;
+    bond %j %k 1;
+    set %j %i*3+2;
+    set %k (%i-1)*3+2;
+    bond %j %k 1;
+
+    // 1
+    set %j 3*%i;
+    set %k 3*(%i-1);
+    set %l 3*(%i-1)+1;
+    bond %j %k %l 100;
+
+    // 2
+    set %j 3*(%i-1);
+    set %k 3*%i;
+    set %l 3*%i+1;
+    bond %j %k %l 100;
+
+    // 3  
+    set %j 3*%i;
+    set %k 3*%i+1;
+    set %l 3*(%i-1)+1;
+    bond %j %k %l 100;
+
+    // 4
+    set %j 3*(%i-1);
+    set %k 3*(%i-1)+1;
+    set %l 3*%i+1;
+    bond %j %k %l 100;
+
+    // 5
+    set %j 3*(%i-1)+1;
+    set %k 3*%i+1;
+    set %l 3*%i+2;
+    bond %j %k %l 100;
+
+    // 6
+    set %j 3*(%i-1)+2;
+    set %k 3*(%i-1)+1;
+    set %l 3*%i+1;
+    bond %j %k %l 100;
+
+    // 7
+    set %j 3*(%i-1)+1;
+    set %k 3*(%i-1)+2;
+    set %l 3*%i+2;
+    bond %j %k %l 100;
+
+    // 8
+    set %j 3*(%i-1)+2;
+    set %k 3*%i+2;
+    set %l 3*%i+1;
+    bond %j %k %l 100;
+
+  endif;
+  %i++;
+endwhile;

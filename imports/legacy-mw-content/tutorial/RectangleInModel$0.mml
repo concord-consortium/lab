@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.5.0_07" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_12" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="sigma"> 
    <double>15.0</double> 
@@ -43,7 +43,7 @@
    <void method="put"> 
     <object id="Pair0" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element1"/> 
+      <object idref="Element2"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element3"/> 
@@ -57,13 +57,57 @@
       <object idref="Element0"/> 
      </void> 
      <void property="element2"> 
-      <object idref="Element2"/> 
+      <object idref="Element1"/> 
      </void> 
     </object> 
     <double>0.1</double> 
    </void> 
    <void method="put"> 
     <object id="Pair2" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair3" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element2"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair4" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element2"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair5" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair6" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
       <object idref="Element0"/> 
      </void> 
@@ -81,9 +125,9 @@
     <double>0.1</double> 
    </void> 
    <void method="put"> 
-    <object id="Pair3" class="org.concord.mw2d.models.Pair"> 
+    <object id="Pair7" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element2"/> 
+      <object idref="Element1"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element4"/> 
@@ -92,53 +136,9 @@
     <double>0.1</double> 
    </void> 
    <void method="put"> 
-    <object id="Pair4" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element2"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element3"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair5" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element0"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element1"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair6" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element1"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element2"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair7" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element0"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element3"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
     <object id="Pair8" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element3"/> 
+      <object idref="Element2"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element4"/> 
@@ -149,7 +149,7 @@
    <void method="put"> 
     <object id="Pair9" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element1"/> 
+      <object idref="Element3"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element4"/> 
@@ -245,43 +245,43 @@
   <void property="sigma"> 
    <void method="put"> 
     <object idref="Pair0"/> 
-    <double>21.0</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair1"/> 
-    <double>14.0</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair2"/> 
-    <double>9.5</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair3"/> 
-    <double>16.5</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair4"/> 
     <double>24.5</double> 
    </void> 
    <void method="put"> 
-    <object idref="Pair5"/> 
+    <object idref="Pair1"/> 
     <double>10.5</double> 
    </void> 
    <void method="put"> 
-    <object idref="Pair6"/> 
+    <object idref="Pair2"/> 
+    <double>21.0</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <double>14.0</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair4"/> 
     <double>17.5</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair5"/> 
+    <double>17.5</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair6"/> 
+    <double>9.5</double> 
    </void> 
    <void method="put"> 
     <object idref="Pair7"/> 
-    <double>17.5</double> 
+    <double>13.0</double> 
    </void> 
    <void method="put"> 
     <object idref="Pair8"/> 
-    <double>20.0</double> 
+    <double>16.5</double> 
    </void> 
    <void method="put"> 
     <object idref="Pair9"/> 
-    <double>13.0</double> 
+    <double>20.0</double> 
    </void> 
   </void> 
  </object> 
@@ -313,26 +313,26 @@
   </void> 
   <void property="properties"> 
    <void method="put"> 
-    <string>codebase</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial</string> 
-   </void> 
-   <void method="put"> 
-    <string>url</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial\RectangleInModel$0.mml</string> 
-   </void> 
-   <void method="put"> 
-    <string>size</string> 
-    <long>21426</long> 
-   </void> 
-   <void method="put"> 
     <string>filename</string> 
     <string>RectangleInModel$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1152748885386</long> 
+     <long>1244734141306</long> 
     </object> 
+   </void> 
+   <void method="put"> 
+    <string>url</string> 
+    <string>C:\home\mw\public\tutorial\RectangleInModel$0.mml</string> 
+   </void> 
+   <void method="put"> 
+    <string>size</string> 
+    <long>23799</long> 
+   </void> 
+   <void method="put"> 
+    <string>codebase</string> 
+    <string>C:\home\mw\public\tutorial</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -351,7 +351,7 @@
    <void id="Color1" property="color"/> 
   </void> 
   <void property="rectangles"> 
-   <array class="org.concord.mw2d.models.RectangleComponent$Delegate" length="10"> 
+   <array class="org.concord.mw2d.models.RectangleComponent$Delegate" length="12"> 
     <void index="0"> 
      <object class="org.concord.mw2d.models.RectangleComponent$Delegate"> 
       <void property="fillMode"> 
@@ -707,6 +707,97 @@
       </void> 
       <void property="y"> 
        <double>201.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="10"> 
+     <object class="org.concord.mw2d.models.RectangleComponent$Delegate"> 
+      <void property="alpha"> 
+       <int>125</int> 
+      </void> 
+      <void property="angle"> 
+       <float>45.0</float> 
+      </void> 
+      <void property="fillMode"> 
+       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object class="java.awt.Color"> 
+          <int>0</int> 
+          <int>128</int> 
+          <int>128</int> 
+          <int>255</int> 
+         </object> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="height"> 
+       <float>15.0</float> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>10</byte> 
+      </void> 
+      <void property="width"> 
+       <float>141.0</float> 
+      </void> 
+      <void property="x"> 
+       <double>118.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>143.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="11"> 
+     <object class="org.concord.mw2d.models.RectangleComponent$Delegate"> 
+      <void property="alpha"> 
+       <int>125</int> 
+      </void> 
+      <void property="angle"> 
+       <float>-19.0</float> 
+      </void> 
+      <void property="fillMode"> 
+       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object class="java.awt.Color"> 
+          <int>128</int> 
+          <int>255</int> 
+          <int>128</int> 
+          <int>255</int> 
+         </object> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="height"> 
+       <float>26.0</float> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>11</byte> 
+      </void> 
+      <void property="lineColor"> 
+       <object class="java.awt.Color"> 
+        <int>0</int> 
+        <int>0</int> 
+        <int>255</int> 
+        <int>255</int> 
+       </object> 
+      </void> 
+      <void property="lineStyle"> 
+       <int>1</int> 
+      </void> 
+      <void property="width"> 
+       <float>110.0</float> 
+      </void> 
+      <void property="x"> 
+       <double>98.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>108.0</double> 
       </void> 
      </object> 
     </void> 

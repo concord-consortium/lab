@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Source</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Source
@@ -40,13 +40,13 @@ Below is an example of using the source command to do a slide show. To have some
  
  
 (Fish pictures are from Massachusetts Division of Marine Fisheries)
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="2410">
+<section start="0" end="2416">
 <paragraph start="0" end="7">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="6">
 <italic>true</italic><bold>true</bold><size>16</size></content>
 
@@ -55,15 +55,15 @@ Below is an example of using the source command to do a slide show. To have some
 
 </paragraph>
 <paragraph start="7" end="8">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="7" end="8">
 </content>
 
 </paragraph>
 <paragraph start="8" end="36">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="8" end="10">
 <size>11</size></content>
 
@@ -80,7 +80,7 @@ Below is an example of using the source command to do a slide show. To have some
 <size>11</size></content>
 
 <content start="29" end="33">
-<size>11</size><href>script_call.cml</href></content>
+<size>11</size><href>script_external.cml</href></content>
 
 <content start="33" end="35">
 <size>11</size></content>
@@ -128,7 +128,7 @@ Below is an example of using the source command to do a slide show. To have some
 <paragraph start="118" end="135">
 <LeftIndent>160.0</LeftIndent>
 <content start="118" end="124">
-<size>11</size><family>Courier New</family><bold>true</bold></content>
+<bold>true</bold><size>11</size><family>Courier New</family></content>
 
 <content start="124" end="135">
 <size>11</size><family>Courier New</family></content>
@@ -182,7 +182,7 @@ Below is an example of using the source command to do a slide show. To have some
 <size>11</size></content>
 
 <content start="683" end="690">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="690" end="723">
 <size>11</size></content>
@@ -236,7 +236,7 @@ Below is an example of using the source command to do a slide show. To have some
 <paragraph start="774" end="1211">
 <LeftIndent>140.0</LeftIndent>
 <content start="774" end="821">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="821" end="822">
 <size>11</size></content>
@@ -248,7 +248,7 @@ Below is an example of using the source command to do a slide show. To have some
 <size>11</size></content>
 
 <content start="829" end="836">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="836" end="1211">
 <size>11</size></content>
@@ -263,7 +263,7 @@ Below is an example of using the source command to do a slide show. To have some
 <paragraph start="1212" end="1221">
 <LeftIndent>140.0</LeftIndent>
 <content start="1212" end="1220">
-<size>11</size><bold>true</bold><foreground>255 0 0</foreground></content>
+<bold>true</bold><size>11</size><foreground>255 0 0</foreground></content>
 
 <content start="1220" end="1221">
 <size>11</size></content>
@@ -308,7 +308,7 @@ Below is an example of using the source command to do a slide show. To have some
 <paragraph start="1647" end="2009">
 <LeftIndent>140.0</LeftIndent>
 <content start="1647" end="1662">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="1662" end="1956">
 <size>11</size></content>
@@ -411,44 +411,50 @@ Below is an example of using the source command to do a slide show. To have some
 <size>10</size></content>
 
 </paragraph>
-<paragraph start="2348" end="2381">
+<paragraph start="2348" end="2387">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="2348" end="2380">
+<content start="2348" end="2349">
+<bold>true</bold><size>13</size></content>
+
+<content start="2349" end="2385">
 <size>10</size></content>
 
-<content start="2380" end="2381">
+<content start="2385" end="2386">
+<bold>true</bold><size>13</size></content>
+
+<content start="2386" end="2387">
 </content>
 
 </paragraph>
-<paragraph start="2381" end="2382">
+<paragraph start="2387" end="2388">
 <LeftIndent>140.0</LeftIndent>
-<content start="2381" end="2382">
+<content start="2387" end="2388">
 </content>
 
 </paragraph>
-<paragraph start="2382" end="2410">
-<RightIndent>20.0</RightIndent>
+<paragraph start="2388" end="2416">
 <Alignment>2</Alignment>
-<content start="2382" end="2384">
+<RightIndent>20.0</RightIndent>
+<content start="2388" end="2390">
 <size>11</size></content>
 
-<content start="2384" end="2392">
+<content start="2390" end="2398">
 <size>11</size><href>script_loop.cml</href></content>
 
-<content start="2392" end="2395">
+<content start="2398" end="2401">
 <size>11</size></content>
 
-<content start="2395" end="2400">
+<content start="2401" end="2406">
 <size>11</size><href>mwscripts.cml</href></content>
 
-<content start="2400" end="2403">
+<content start="2406" end="2409">
 <size>11</size></content>
 
-<content start="2403" end="2407">
-<size>11</size><href>script_call.cml</href></content>
+<content start="2409" end="2413">
+<size>11</size><href>script_external.cml</href></content>
 
-<content start="2407" end="2409">
+<content start="2413" end="2415">
 <size>11</size></content>
 
 </paragraph>

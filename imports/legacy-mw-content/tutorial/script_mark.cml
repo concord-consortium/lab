@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Mark</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Mark
@@ -14,59 +14,62 @@ Syntax:
 mark
 mark color ([red], [green], [blue])
 mark color [[red], [green], [blue]]
+mark color 0x[hex color code]
+mark color #[hex color code]
 
 where [red] is an integer between 0 and 255 that represents the red component, [green] is an integer between 0 and 255 that represents the green component, and [blue] is an integer between 0 and 255 that represents the blue component. For example, mark color [255, 0, 0] marks the selected objects with the red color, mark color (255, 255, 0) marks the selected objects with the yellow color, and so on.
 
  
 Note: The RGB color triple must be confined within a pair of square brackets, or a pair of parentheses. The triple must be separated by a comma or at lease a whitespace character.
  
+
 When the mark command is used in the absence of the color argument, the selected objects will be marked with the previously set color, or the default mark color if it has never been set.
 
 Here is an example of using the mark command to highlight different sets of atoms.
 
- 
+  
    
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1199">
+<section start="0" end="1266">
 <paragraph start="0" end="5">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="4">
-<bold>true</bold><size>16</size><italic>true</italic></content>
+<size>16</size><bold>true</bold><italic>true</italic></content>
 
 <content start="4" end="5">
 </content>
 
 </paragraph>
 <paragraph start="5" end="6">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="5" end="6">
 </content>
 
 </paragraph>
 <paragraph start="6" end="34">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="6" end="8">
 <size>11</size></content>
 
 <content start="8" end="16">
-<size>11</size><href>script_set.cml</href></content>
+<href>script_set.cml</href><size>11</size></content>
 
 <content start="16" end="19">
 <size>11</size></content>
 
 <content start="19" end="24">
-<size>11</size><href>mwscripts.cml</href></content>
+<href>mwscripts.cml</href><size>11</size></content>
 
 <content start="24" end="27">
 <size>11</size></content>
 
 <content start="27" end="31">
-<size>11</size><href>script_add.cml</href></content>
+<href>script_add.cml</href><size>11</size></content>
 
 <content start="31" end="33">
 <size>11</size></content>
@@ -87,13 +90,13 @@ Here is an example of using the mark command to highlight different sets of atom
 <size>11</size></content>
 
 <content start="39" end="43">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="43" end="167">
 <size>11</size></content>
 
 <content start="167" end="179">
-<size>11</size><href>markAction.cml</href></content>
+<href>markAction.cml</href><size>11</size></content>
 
 <content start="179" end="182">
 <size>11</size></content>
@@ -120,170 +123,200 @@ Here is an example of using the mark command to highlight different sets of atom
 <paragraph start="192" end="197">
 <LeftIndent>160.0</LeftIndent>
 <content start="192" end="196">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<bold>true</bold><family>Courier New</family><size>11</size></content>
 
 <content start="196" end="197">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="197" end="233">
 <LeftIndent>160.0</LeftIndent>
 <content start="197" end="207">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<bold>true</bold><family>Courier New</family><size>11</size></content>
 
 <content start="207" end="232">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="232" end="233">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<bold>true</bold><family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="233" end="269">
 <LeftIndent>160.0</LeftIndent>
 <content start="233" end="243">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<bold>true</bold><family>Courier New</family><size>11</size></content>
 
-<content start="243" end="268">
-<size>11</size><family>Courier New</family></content>
+<content start="243" end="269">
+<family>Courier New</family><size>11</size></content>
 
-<content start="268" end="269">
+</paragraph>
+<paragraph start="269" end="299">
+<LeftIndent>160.0</LeftIndent>
+<content start="269" end="279">
+<bold>true</bold><family>Courier New</family><size>11</size></content>
+
+<content start="279" end="299">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="299" end="328">
+<LeftIndent>160.0</LeftIndent>
+<content start="299" end="309">
+<bold>true</bold><family>Courier New</family><size>11</size></content>
+
+<content start="309" end="327">
+<family>Courier New</family><size>11</size></content>
+
+<content start="327" end="328">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="269" end="270">
+<paragraph start="328" end="329">
 <LeftIndent>140.0</LeftIndent>
-<content start="269" end="270">
+<content start="328" end="329">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="270" end="674">
+<paragraph start="329" end="733">
 <LeftIndent>140.0</LeftIndent>
-<content start="270" end="276">
+<content start="329" end="335">
 <size>11</size></content>
 
-<content start="276" end="281">
-<size>11</size><family>Courier New</family></content>
+<content start="335" end="340">
+<family>Courier New</family><size>11</size></content>
 
-<content start="281" end="349">
+<content start="340" end="408">
 <size>11</size></content>
 
-<content start="349" end="356">
-<size>11</size><family>Courier New</family></content>
+<content start="408" end="415">
+<family>Courier New</family><size>11</size></content>
 
-<content start="356" end="430">
+<content start="415" end="489">
 <size>11</size></content>
 
-<content start="430" end="436">
-<size>11</size><family>Courier New</family></content>
+<content start="489" end="495">
+<family>Courier New</family><size>11</size></content>
 
-<content start="436" end="518">
+<content start="495" end="577">
 <size>11</size></content>
 
-<content start="518" end="540">
-<size>11</size><family>Courier New</family></content>
+<content start="577" end="599">
+<family>Courier New</family><size>11</size></content>
 
-<content start="540" end="588">
+<content start="599" end="647">
 <size>11</size></content>
 
-<content start="588" end="612">
-<size>11</size><family>Courier New</family></content>
+<content start="647" end="671">
+<family>Courier New</family><size>11</size></content>
 
-<content start="612" end="674">
+<content start="671" end="733">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="674" end="675">
+<paragraph start="733" end="734">
 <LeftIndent>140.0</LeftIndent>
-<content start="674" end="675">
+<content start="733" end="734">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="675" end="677">
+<paragraph start="734" end="736">
 <LeftIndent>140.0</LeftIndent>
-<content start="675" end="676">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="734" end="735">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="676" end="677">
+<content start="735" end="736">
 </content>
 
 </paragraph>
-<paragraph start="677" end="857">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="736" end="916">
 <RightIndent>100.0</RightIndent>
-<content start="677" end="681">
+<LeftIndent>200.0</LeftIndent>
+<content start="736" end="740">
 <bold>true</bold><size>11</size></content>
 
-<content start="681" end="857">
+<content start="740" end="916">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="857" end="859">
+<paragraph start="916" end="918">
 <LeftIndent>140.0</LeftIndent>
-<RightIndent>60.0</RightIndent>
-<content start="857" end="858">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="916" end="917">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="858" end="859">
+<content start="917" end="918">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="859" end="1046">
+<paragraph start="918" end="919">
 <LeftIndent>140.0</LeftIndent>
-<content start="859" end="868">
-<size>11</size></content>
-
-<content start="868" end="872">
-<size>11</size><family>Courier New</family></content>
-
-<content start="872" end="911">
-<size>11</size></content>
-
-<content start="911" end="916">
-<size>11</size><family>Courier New</family></content>
-
-<content start="916" end="1046">
+<content start="918" end="919">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1046" end="1047">
+<paragraph start="919" end="1106">
 <LeftIndent>140.0</LeftIndent>
-<content start="1046" end="1047">
+<content start="919" end="928">
+<size>11</size></content>
+
+<content start="928" end="932">
+<family>Courier New</family><size>11</size></content>
+
+<content start="932" end="971">
+<size>11</size></content>
+
+<content start="971" end="976">
+<family>Courier New</family><size>11</size></content>
+
+<content start="976" end="1106">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1047" end="1130">
+<paragraph start="1106" end="1107">
 <LeftIndent>140.0</LeftIndent>
-<content start="1047" end="1079">
-<size>11</size></content>
-
-<content start="1079" end="1083">
-<size>11</size><family>Courier New</family></content>
-
-<content start="1083" end="1130">
+<content start="1106" end="1107">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1130" end="1131">
+<paragraph start="1107" end="1190">
 <LeftIndent>140.0</LeftIndent>
-<content start="1130" end="1131">
+<content start="1107" end="1139">
+<size>11</size></content>
+
+<content start="1139" end="1143">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1143" end="1190">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1131" end="1133">
+<paragraph start="1190" end="1191">
 <LeftIndent>140.0</LeftIndent>
+<content start="1190" end="1191">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1191" end="1194">
 <Alignment>1</Alignment>
-<content start="1131" end="1132">
+<LeftIndent>140.0</LeftIndent>
+<content start="1191" end="1192">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>script_mark$0.mml</resource><menubar>false</menubar></component></content>
 
-<content start="1132" end="1133">
+<content start="1192" end="1193">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>200</width><height>240</height>
+<border>Lowered Etched</border></component></content>
+
+<content start="1193" end="1194">
 </content>
 
 </paragraph>
-<paragraph start="1133" end="1137">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1194" end="1198">
 <Alignment>1</Alignment>
-<content start="1133" end="1134">
+<LeftIndent>140.0</LeftIndent>
+<content start="1194" end="1195">
 <component><class>org.concord.modeler.PageRadioButton</class>
 <title>mark all atoms</title>
 <tooltip>Mark all atoms</tooltip>
@@ -295,7 +328,7 @@ Here is an example of using the mark command to highlight different sets of atom
 mark color [255 200 125];</script>
 <action>Execute MW script</action></component></content>
 
-<content start="1134" end="1135">
+<content start="1195" end="1196">
 <component><class>org.concord.modeler.PageRadioButton</class>
 <title>mark some atoms with another color</title>
 <tooltip>Mark some atoms with another color</tooltip>
@@ -304,10 +337,10 @@ mark color [255 200 125];</script>
 <model>0</model>
 <groupid>1112362628405</groupid>
 <script>select atom 1-5;
-mark color [200, 100, 200];</script>
+mark color #cc55aa;</script>
 <action>Execute MW script</action></component></content>
 
-<content start="1135" end="1136">
+<content start="1196" end="1197">
 <component><class>org.concord.modeler.PageRadioButton</class>
 <title>do not mark anything</title>
 <tooltip>Mark nothing</tooltip>
@@ -320,45 +353,45 @@ mark color [200, 100, 200];</script>
 MARK;</script>
 <action>Execute MW script</action></component></content>
 
-<content start="1136" end="1137">
+<content start="1197" end="1198">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1137" end="1170">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1198" end="1237">
 <Alignment>1</Alignment>
-<content start="1137" end="1170">
+<LeftIndent>140.0</LeftIndent>
+<content start="1198" end="1237">
 <size>10</size></content>
 
 </paragraph>
-<paragraph start="1170" end="1171">
+<paragraph start="1237" end="1238">
 <LeftIndent>140.0</LeftIndent>
-<content start="1170" end="1171">
+<content start="1237" end="1238">
 </content>
 
 </paragraph>
-<paragraph start="1171" end="1199">
-<RightIndent>20.0</RightIndent>
+<paragraph start="1238" end="1266">
 <Alignment>2</Alignment>
-<content start="1171" end="1173">
+<RightIndent>20.0</RightIndent>
+<content start="1238" end="1240">
 <size>11</size></content>
 
-<content start="1173" end="1181">
-<size>11</size><href>script_set.cml</href></content>
+<content start="1240" end="1248">
+<href>script_set.cml</href><size>11</size></content>
 
-<content start="1181" end="1184">
+<content start="1248" end="1251">
 <size>11</size></content>
 
-<content start="1184" end="1189">
-<size>11</size><href>mwscripts.cml</href></content>
+<content start="1251" end="1256">
+<href>mwscripts.cml</href><size>11</size></content>
 
-<content start="1189" end="1192">
+<content start="1256" end="1259">
 <size>11</size></content>
 
-<content start="1192" end="1196">
-<size>11</size><href>script_add.cml</href></content>
+<content start="1259" end="1263">
+<href>script_add.cml</href><size>11</size></content>
 
-<content start="1196" end="1198">
+<content start="1263" end="1265">
 <size>11</size></content>
 
 </paragraph>

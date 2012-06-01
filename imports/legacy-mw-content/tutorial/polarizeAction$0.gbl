@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.5.0_07" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_01" class="java.beans.XMLDecoder"> 
  <object class="org.concord.mw2d.models.MesoModel$State"> 
   <void property="boundary"> 
    <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
@@ -22,26 +22,26 @@
   </void> 
   <void property="properties"> 
    <void method="put"> 
-    <string>codebase</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial</string> 
-   </void> 
-   <void method="put"> 
-    <string>url</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial\polarizeAction$0.gbl</string> 
-   </void> 
-   <void method="put"> 
-    <string>size</string> 
-    <long>9224</long> 
-   </void> 
-   <void method="put"> 
     <string>filename</string> 
     <string>polarizeAction$0.gbl</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1152795239568</long> 
+     <long>1179323804000</long> 
     </object> 
+   </void> 
+   <void method="put"> 
+    <string>url</string> 
+    <string>C:\home\mw\public\tutorial\polarizeAction$0.gbl</string> 
+   </void> 
+   <void method="put"> 
+    <string>size</string> 
+    <long>9202</long> 
+   </void> 
+   <void method="put"> 
+    <string>codebase</string> 
+    <string>C:\home\mw\public\tutorial</string> 
    </void> 
   </void> 
   <void property="timeStep"> 

@@ -11,7 +11,7 @@ Authoring in native code
 
 Currently, the support of authoring in a variety of languages has been tested in MW for the following languages: Arabic (ISO-8859-6), Baltic (ISO-8859-4), Central European (ISO-8859-2), Chinese Simplified (GB18030), Chinese Traditional (Big5), Cyrillic (ISO-8859-5), Greek (ISO-8859-7), Hebrew (ISO-8859-8), Japanese (EUC-JP), Korean (EUC-KR), Thai (ISO-8859-11), Turkish (ISO-8859-9), and Western (ISO-8859-1). Note that only the character encoding in the parenthesis is supported for the corresponding language. As we do not speak your language, we do not know what encoding is the most popular in your country. The current default encoding was determined from the Yahoo page in your language.
 
-When you write in your own language with the Molecular Workbench&apos;s multi-linguistic word processor, please make sure that the character encoding is properly selected. Use the Edit&gt;Character Encoding menu to find the right character encoding of your language before you save the page. For example, the users from People&apos;s Republic of China, the GB18030 encoding should be used. For the users from Taiwan and Hongkong, the Big5 encoding should be used. And so on.
+When you write in your own language with the Molecular Workbench&apos;s multi-linguistic word processor, please make sure that the character encoding is properly selected. Use the Edit&gt;Character Encoding menu to find the right character encoding of your language before you save the page. For example, the users from China, the GB18030 encoding should be used. And so on.
 
 If you copy and paste text from another program that uses a different encoding, the characters might not be recognized and saved properly (unless the current encoding method is Unicode UTF-8). Also, you cannot interconvert a page between two different native encodings.
 
@@ -26,12 +26,12 @@ Interconversion between native code and Unicode
 If a page contains characters in only one language, you can always convert it into another page encoded in Unicode, or vice versa. But you cannot convert a page written in multiple languages from Unicode to a native code.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="2496">
+<section start="0" end="2401">
 <paragraph start="0" end="33">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="32">
-<italic>true</italic><size>15</size><bold>true</bold></content>
+<size>15</size><italic>true</italic><bold>true</bold></content>
 
 <content start="32" end="33">
 </content>
@@ -194,7 +194,7 @@ If a page contains characters in only one language, you can always convert it in
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="786" end="1248">
+<paragraph start="786" end="1153">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
 <content start="786" end="953">
@@ -203,153 +203,153 @@ If a page contains characters in only one language, you can always convert it in
 <content start="953" end="1068">
 <bold>true</bold><size>11</size></content>
 
-<content start="1068" end="1248">
+<content start="1068" end="1153">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1248" end="1249">
+<paragraph start="1153" end="1154">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1248" end="1249">
+<content start="1153" end="1154">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1249" end="1519">
+<paragraph start="1154" end="1424">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1249" end="1519">
+<content start="1154" end="1424">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1519" end="1520">
+<paragraph start="1424" end="1425">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1519" end="1520">
+<content start="1424" end="1425">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1520" end="1541">
+<paragraph start="1425" end="1446">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1520" end="1540">
+<content start="1425" end="1445">
 <bold>true</bold><size>11</size></content>
 
-<content start="1540" end="1541">
+<content start="1445" end="1446">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1541" end="1542">
+<paragraph start="1446" end="1447">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1541" end="1542">
+<content start="1446" end="1447">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1542" end="2094">
+<paragraph start="1447" end="1999">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="1542" end="1734">
+<content start="1447" end="1639">
 <size>11</size></content>
 
-<content start="1734" end="1735">
+<content start="1639" end="1640">
 <icon>htmlink.gif</icon></content>
 
-<content start="1735" end="1736">
+<content start="1640" end="1641">
 <size>11</size></content>
 
-<content start="1736" end="1756">
+<content start="1641" end="1661">
 <size>11</size><href>http://www.unicode.org</href></content>
 
-<content start="1756" end="2094">
+<content start="1661" end="1999">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2094" end="2095">
+<paragraph start="1999" end="2000">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2094" end="2095">
+<content start="1999" end="2000">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2095" end="2195">
+<paragraph start="2000" end="2100">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2095" end="2117">
+<content start="2000" end="2022">
 <size>11</size></content>
 
-<content start="2117" end="2142">
+<content start="2022" end="2047">
 <size>11</size><href>unicode.cml</href></content>
 
-<content start="2142" end="2195">
+<content start="2047" end="2100">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2195" end="2196">
+<paragraph start="2100" end="2101">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2195" end="2196">
+<content start="2100" end="2101">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2196" end="2244">
+<paragraph start="2101" end="2149">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2196" end="2243">
+<content start="2101" end="2148">
 <bold>true</bold><size>11</size></content>
 
-<content start="2243" end="2244">
+<content start="2148" end="2149">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2244" end="2245">
+<paragraph start="2149" end="2150">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2244" end="2245">
+<content start="2149" end="2150">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2245" end="2467">
+<paragraph start="2150" end="2372">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2245" end="2384">
+<content start="2150" end="2289">
 <size>11</size></content>
 
-<content start="2384" end="2390">
+<content start="2289" end="2295">
 <bold>true</bold><size>11</size></content>
 
-<content start="2390" end="2467">
+<content start="2295" end="2372">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2467" end="2468">
+<paragraph start="2372" end="2373">
 <RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<content start="2467" end="2468">
+<content start="2372" end="2373">
 </content>
 
 </paragraph>
-<paragraph start="2468" end="2496">
+<paragraph start="2373" end="2401">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="2468" end="2470">
+<content start="2373" end="2375">
 <size>11</size></content>
 
-<content start="2470" end="2478">
+<content start="2375" end="2383">
 <size>11</size><href>unlock.cml</href></content>
 
-<content start="2478" end="2481">
+<content start="2383" end="2386">
 <size>11</size></content>
 
-<content start="2481" end="2486">
+<content start="2386" end="2391">
 <size>11</size><href>index2.cml</href></content>
 
-<content start="2486" end="2489">
+<content start="2391" end="2394">
 <size>11</size></content>
 
-<content start="2489" end="2493">
+<content start="2394" end="2398">
 <size>11</size><href>character.cml</href></content>
 
-<content start="2493" end="2495">
+<content start="2398" end="2400">
 <size>11</size></content>
 
 </paragraph>

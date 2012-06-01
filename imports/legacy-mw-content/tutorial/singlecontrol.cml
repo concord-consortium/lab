@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Controling multiple models with a single controller</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Controling multiple models with a single controller
@@ -11,17 +11,17 @@ In the previous section, you have learned how to use a controller to control a m
 
   
    
-[These are two embedded simulators.]
+&#12304;These are two embedded models.&#12305;
 
-To set up the above example, you have to insert a set of Activity Buttons (select &quot;Insert&gt;Activity Controller&gt;Activity Button&quot;), choose the &quot;Script&quot; item from the &quot;Action&quot; drop-down list, and then type in the scripts needed to control the models, as is illustrated in the image below:
+To set up the above example, you have to insert a set of Activity Buttons (select &quot;Insert &gt; Activity Button&quot;), choose the &quot;Script&quot; item from the &quot;Action&quot; drop-down list, and then type in the scripts needed to control the models, as is illustrated in the image below:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 Another example is that you may want to set the properties of the models with single controllers:
 
    
-[These are two embedded Jmol viewers.]
+&#12304;These are two embedded Jmol viewers.&#12305;
 
 Note that in order to use this functionality, you need to know how to use the MW/  Jmol scripts.
 
@@ -30,12 +30,12 @@ Tip: If scripts are long and you will need to write them in a more comfortable w
  
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1349">
+<section start="0" end="1327">
 <paragraph start="0" end="52">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="51">
-<bold>true</bold><italic>true</italic><size>15</size></content>
+<bold>true</bold><size>15</size><italic>true</italic></content>
 
 <content start="51" end="52">
 </content>
@@ -55,19 +55,19 @@ Tip: If scripts are long and you will need to write them in a more comfortable w
 <size>11</size></content>
 
 <content start="55" end="63">
-<href>html_layout.cml</href><size>11</size></content>
+<size>11</size><href>html_layout.cml</href></content>
 
 <content start="63" end="66">
 <size>11</size></content>
 
 <content start="66" end="71">
-<href>index2.cml</href><size>11</size></content>
+<size>11</size><href>index2.cml</href></content>
 
 <content start="71" end="74">
 <size>11</size></content>
 
 <content start="74" end="78">
-<href>intrapage.cml</href><size>11</size></content>
+<size>11</size><href>singleslider.cml</href></content>
 
 <content start="78" end="80">
 <size>11</size></content>
@@ -143,79 +143,91 @@ script:mw:2:reset;</script>
 </content>
 
 </paragraph>
-<paragraph start="475" end="512">
+<paragraph start="475" end="508">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="475" end="511">
+<content start="475" end="476">
+<size>13</size><bold>true</bold></content>
+
+<content start="476" end="506">
 <size>10</size></content>
 
-<content start="511" end="512">
+<content start="506" end="507">
+<size>13</size><bold>true</bold></content>
+
+<content start="507" end="508">
 </content>
 
 </paragraph>
-<paragraph start="512" end="513">
+<paragraph start="508" end="509">
 <LeftIndent>140.0</LeftIndent>
-<content start="512" end="513">
+<content start="508" end="509">
 </content>
 
 </paragraph>
-<paragraph start="513" end="798">
+<paragraph start="509" end="776">
 <LeftIndent>140.0</LeftIndent>
-<content start="513" end="798">
+<content start="509" end="776">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="798" end="799">
+<paragraph start="776" end="777">
 <LeftIndent>140.0</LeftIndent>
-<content start="798" end="799">
+<content start="776" end="777">
 </content>
 
 </paragraph>
-<paragraph start="799" end="802">
+<paragraph start="777" end="780">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="799" end="800">
+<content start="777" end="778">
 </content>
 
-<content start="800" end="801">
+<content start="778" end="779">
 <icon>ActivityScriptButton.gif</icon></content>
 
-<content start="801" end="802">
+<content start="779" end="780">
 </content>
 
 </paragraph>
-<paragraph start="802" end="826">
+<paragraph start="780" end="804">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="802" end="825">
+<content start="780" end="781">
+<size>13</size><bold>true</bold></content>
+
+<content start="781" end="802">
 <size>10</size></content>
 
-<content start="825" end="826">
+<content start="802" end="803">
+<size>13</size><bold>true</bold></content>
+
+<content start="803" end="804">
 </content>
 
 </paragraph>
-<paragraph start="826" end="827">
+<paragraph start="804" end="805">
 <LeftIndent>140.0</LeftIndent>
-<content start="826" end="827">
+<content start="804" end="805">
 </content>
 
 </paragraph>
-<paragraph start="827" end="925">
+<paragraph start="805" end="903">
 <LeftIndent>140.0</LeftIndent>
-<content start="827" end="925">
+<content start="805" end="903">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="925" end="926">
+<paragraph start="903" end="904">
 <LeftIndent>140.0</LeftIndent>
-<content start="925" end="926">
+<content start="903" end="904">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="926" end="930">
+<paragraph start="904" end="908">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="926" end="927">
+<content start="904" end="905">
 <component><class>org.concord.modeler.PageTextBox</class>
 <width>200.0</width>
 <height>230.0</height>
@@ -224,30 +236,30 @@ script:mw:2:reset;</script>
     
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;font face=&quot;Verdana&quot; size=&quot;3&quot;&gt;&lt;b&gt;Display style:&lt;/b&gt;&lt;/font&gt;&lt;br&gt;
+    &lt;b&gt;&lt;font size=&quot;3&quot; face=&quot;Verdana&quot;&gt;Display style:&lt;/font&gt;&lt;/b&gt;&lt;br&gt;
 
     &lt;table bgcolor=&quot;#ccccff&quot; border=&quot;2&quot;&gt;
       &lt;tr&gt;
         &lt;td&gt;
-          &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;input script=&quot;script:jmol:1:cpk 100%;script:jmol:2:cpk 100%;&quot; name=&quot;style&quot; alt=&quot;Space filling&quot; type=&quot;radio&quot;&gt;
+          &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;input type=&quot;radio&quot; alt=&quot;Space filling&quot; script=&quot;script:jmol:1:cpk 100%;script:jmol:2:cpk 100%;&quot; name=&quot;style&quot;&gt;
           Space filling;&lt;/font&gt;
         &lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;td&gt;
-          &lt;input script=&quot;script:jmol:1:cpk 0%;wireframe 0.1;script:jmol:2:cpk 0%;wireframe 0.1;&quot; name=&quot;style&quot; alt=&quot;Wireframe&quot; type=&quot;radio&quot;&gt;
+          &lt;input type=&quot;radio&quot; alt=&quot;Wireframe&quot; script=&quot;script:jmol:1:cpk 0%;wireframe 0.1;script:jmol:2:cpk 0%;wireframe 0.1;&quot; name=&quot;style&quot;&gt;
           &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Wireframe; &lt;/font&gt;
         &lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;td&gt;
-          &lt;input script=&quot;script:jmol:1:cpk off;wireframe 0.4;script:jmol:2:cpk off;wireframe 0.4&quot; name=&quot;style&quot; alt=&quot;Stick&quot; type=&quot;radio&quot;&gt;
+          &lt;input type=&quot;radio&quot; alt=&quot;Stick&quot; script=&quot;script:jmol:1:cpk off;wireframe 0.4;script:jmol:2:cpk off;wireframe 0.4&quot; name=&quot;style&quot;&gt;
           &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Stick; &lt;/font&gt;
         &lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;td&gt;
-          &lt;input script=&quot;script:jmol:1:cpk 20%;wireframe 0.15;script:jmol:2:cpk 20%;wireframe 0.15;&quot; name=&quot;style&quot; alt=&quot;Ball &amp; stick&quot; type=&quot;radio&quot;&gt;
+          &lt;input type=&quot;radio&quot; alt=&quot;Ball &amp; stick&quot; script=&quot;script:jmol:1:cpk 20%;wireframe 0.15;script:jmol:2:cpk 20%;wireframe 0.15;&quot; name=&quot;style&quot;&gt;
           &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Ball &amp;amp; stick. &lt;/font&gt;
         &lt;/td&gt;
       &lt;/tr&gt;
@@ -258,131 +270,133 @@ script:mw:2:reset;</script>
 <opaque>false</opaque>
 </component></content>
 
-<content start="927" end="928">
+<content start="905" end="906">
 <component><class>org.concord.modeler.PageMolecularViewer</class>
-<menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>alphahelix.pdb</resource><state>singlecontrol$0.jms</state><width>200</width>
-<height>200</height>
+<menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>alphahelix.pdb</resource><state>singlecontrol$0.jms</state><width>200.0</width>
+<height>200.0</height>
 </component></content>
 
-<content start="928" end="929">
+<content start="906" end="907">
 <component><class>org.concord.modeler.PageMolecularViewer</class>
-<menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>betasheet.pdb</resource><state>singlecontrol$1.jms</state><width>200</width>
-<height>200</height>
+<menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>betasheet.pdb</resource><state>singlecontrol$1.jms</state><width>200.0</width>
+<height>200.0</height>
 </component></content>
 
-<content start="929" end="930">
+<content start="907" end="908">
 </content>
 
 </paragraph>
-<paragraph start="930" end="969">
+<paragraph start="908" end="947">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="930" end="968">
+<content start="908" end="909">
+<size>13</size><bold>true</bold></content>
+
+<content start="909" end="945">
 <size>10</size></content>
 
-<content start="968" end="969">
+<content start="945" end="946">
+<size>13</size><bold>true</bold></content>
+
+<content start="946" end="947">
 </content>
 
 </paragraph>
-<paragraph start="969" end="970">
+<paragraph start="947" end="948">
 <LeftIndent>140.0</LeftIndent>
-<content start="969" end="970">
+<content start="947" end="948">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="970" end="1067">
+<paragraph start="948" end="1045">
 <LeftIndent>140.0</LeftIndent>
-<content start="970" end="1048">
+<content start="948" end="1026">
 <size>11</size></content>
 
-<content start="1048" end="1050">
-<href>mwscripts.cml</href><size>11</size></content>
+<content start="1026" end="1028">
+<size>11</size><href>mwscripts.cml</href></content>
 
-<content start="1050" end="1051">
+<content start="1028" end="1029">
 <size>11</size></content>
 
-<content start="1051" end="1052">
+<content start="1029" end="1030">
 <icon>htmlink.gif</icon></content>
 
-<content start="1052" end="1053">
+<content start="1030" end="1031">
 <size>11</size></content>
 
-<content start="1053" end="1057">
-<href>http://www.stolaf.edu/academics/chemapps/jmol/docs/</href><size>11</size></content>
+<content start="1031" end="1035">
+<size>11</size><href>http://www.stolaf.edu/academics/chemapps/jmol/docs/</href></content>
 
-<content start="1057" end="1067">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1067" end="1068">
-<LeftIndent>140.0</LeftIndent>
-<content start="1067" end="1068">
+<content start="1035" end="1045">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1068" end="1070">
-<SpaceBelow>2.0</SpaceBelow>
+<paragraph start="1045" end="1046">
 <LeftIndent>140.0</LeftIndent>
-<SpaceAbove>2.0</SpaceAbove>
-<content start="1068" end="1069">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="1045" end="1046">
+<size>11</size></content>
 
-<content start="1069" end="1070">
+</paragraph>
+<paragraph start="1046" end="1048">
+<LeftIndent>140.0</LeftIndent>
+<content start="1046" end="1047">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1047" end="1048">
 </content>
 
 </paragraph>
-<paragraph start="1070" end="1318">
-<RightIndent>100.0</RightIndent>
+<paragraph start="1048" end="1296">
 <LeftIndent>200.0</LeftIndent>
-<content start="1070" end="1073">
+<RightIndent>100.0</RightIndent>
+<content start="1048" end="1051">
 <size>11</size><bold>true</bold></content>
 
-<content start="1073" end="1317">
+<content start="1051" end="1295">
 <size>11</size></content>
 
-<content start="1317" end="1318">
+<content start="1295" end="1296">
 </content>
 
 </paragraph>
-<paragraph start="1318" end="1320">
-<SpaceBelow>2.0</SpaceBelow>
+<paragraph start="1296" end="1298">
 <LeftIndent>140.0</LeftIndent>
-<SpaceAbove>2.0</SpaceAbove>
-<content start="1318" end="1319">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="1296" end="1297">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="1319" end="1320">
+<content start="1297" end="1298">
 </content>
 
 </paragraph>
-<paragraph start="1320" end="1321">
+<paragraph start="1298" end="1299">
 <LeftIndent>140.0</LeftIndent>
-<content start="1320" end="1321">
+<content start="1298" end="1299">
 </content>
 
 </paragraph>
-<paragraph start="1321" end="1349">
+<paragraph start="1299" end="1327">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="1321" end="1323">
+<content start="1299" end="1301">
 <size>11</size></content>
 
-<content start="1323" end="1331">
-<href>html_layout.cml</href><size>11</size></content>
+<content start="1301" end="1309">
+<size>11</size><href>html_layout.cml</href></content>
 
-<content start="1331" end="1334">
+<content start="1309" end="1312">
 <size>11</size></content>
 
-<content start="1334" end="1339">
-<href>index2.cml</href><size>11</size></content>
+<content start="1312" end="1317">
+<size>11</size><href>index2.cml</href></content>
 
-<content start="1339" end="1342">
+<content start="1317" end="1320">
 <size>11</size></content>
 
-<content start="1342" end="1346">
-<href>intrapage.cml</href><size>11</size></content>
+<content start="1320" end="1324">
+<size>11</size><href>singleslider.cml</href></content>
 
-<content start="1346" end="1348">
+<content start="1324" end="1326">
 <size>11</size></content>
 
 </paragraph>

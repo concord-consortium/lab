@@ -7,14 +7,14 @@
 
 &lt; Previous | Index | Next &gt;
 
-In the Molecular Workbench, an Embedded Annotation System is built into the Jmol container, which allows you to annotate interesting sites inside a molecule. An embedded annotation is not shown directly on the 3D view. Instead, the user has to click an annotation key to open it. An annotation key, which is shown as a pin, can be attached to an object and become part of the 3D view.
+In MW, an Embedded Annotation System is built into the Jmol container, which allows you to annotate interesting sites inside a molecule. An embedded annotation is not shown directly on the 3D view. Instead, the user has to click an annotation key to open it. An annotation key, which is shown as a pin, can be attached to an object and become part of the 3D view.
 
 Because annotation keys are part of the 3D view, you can embedded a number of them in a molecule and make it a challenge for students to navigate around and find them out. This is similar to making a treasure-hunting game.
 
 The number of annotations you can insert is limited only by the number of atoms of the molecule. You can only attach an annotation to an atom.
 
  
-[An annotation key is attached to the iron atom of the myoglobin molecule.]
+&#12304;An annotation key is attached to the iron atom of the myoglobin molecule.&#12305;
 
 Inserting an annotation
 
@@ -31,13 +31,13 @@ Removing an annotation
 Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the head of a pin that represents an annotation key, and then select &quot;Remove Selected Annotation&quot;. You will be asked to confirm the removal action. If you would like to remove all annotations at once, use &quot;Clear Annotations&quot; under the View Menu of the Jmol container.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="2307">
+<section start="0" end="2286">
 <paragraph start="0" end="35">
-<SpaceAbove>8.0</SpaceAbove>
 <Alignment>2</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
 <RightIndent>8.0</RightIndent>
 <content start="0" end="34">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<bold>true</bold><size>15</size><italic>true</italic></content>
 
 <content start="34" end="35">
 </content>
@@ -51,17 +51,23 @@ Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the h
 <paragraph start="36" end="64">
 <Alignment>2</Alignment>
 <RightIndent>8.0</RightIndent>
-<content start="36" end="49">
+<content start="36" end="38">
+<size>11</size></content>
+
+<content start="38" end="46">
+<href>itinerary.cml</href><size>11</size></content>
+
+<content start="46" end="49">
 <size>11</size></content>
 
 <content start="49" end="54">
-<size>11</size><href>index_jmol.cml</href></content>
+<href>index_jmol.cml</href><size>11</size></content>
 
 <content start="54" end="57">
 <size>11</size></content>
 
 <content start="57" end="61">
-<size>11</size><href>attachbondannotation.cml</href></content>
+<href>attachbondannotation.cml</href><size>11</size></content>
 
 <content start="61" end="63">
 <size>11</size></content>
@@ -75,215 +81,212 @@ Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the h
 </content>
 
 </paragraph>
-<paragraph start="65" end="450">
+<paragraph start="65" end="429">
 <LeftIndent>140.0</LeftIndent>
-<content start="65" end="96">
+<content start="65" end="75">
 <size>11</size></content>
 
-<content start="96" end="122">
-<size>11</size><italic>true</italic></content>
+<content start="75" end="101">
+<italic>true</italic><size>11</size></content>
 
-<content start="122" end="318">
+<content start="101" end="297">
 <size>11</size></content>
 
-<content start="318" end="332">
-<size>11</size><italic>true</italic></content>
+<content start="297" end="311">
+<italic>true</italic><size>11</size></content>
 
-<content start="332" end="450">
+<content start="311" end="429">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="450" end="451">
+<paragraph start="429" end="430">
 <LeftIndent>140.0</LeftIndent>
-<content start="450" end="451">
+<content start="429" end="430">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="451" end="674">
+<paragraph start="430" end="653">
 <LeftIndent>140.0</LeftIndent>
-<content start="451" end="674">
+<content start="430" end="653">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="674" end="675">
+<paragraph start="653" end="654">
 <LeftIndent>140.0</LeftIndent>
-<content start="674" end="675">
+<content start="653" end="654">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="675" end="818">
+<paragraph start="654" end="797">
 <LeftIndent>140.0</LeftIndent>
-<content start="675" end="817">
+<content start="654" end="796">
 <size>11</size></content>
 
-<content start="817" end="818">
+<content start="796" end="797">
 </content>
 
 </paragraph>
-<paragraph start="818" end="819">
-<content start="818" end="819">
+<paragraph start="797" end="798">
+<content start="797" end="798">
 </content>
 
 </paragraph>
-<paragraph start="819" end="821">
+<paragraph start="798" end="800">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="819" end="820">
+<content start="798" end="799">
 <component><class>org.concord.modeler.PageMolecularViewer</class>
-<toolbar>false</toolbar><navigation>true</navigation><resource>1MBN.pdb</resource><state>attachannotation$0.jms</state><width>600</width>
-<height>330</height>
+<toolbar>false</toolbar><navigation>true</navigation><resource>1MBN.pdb</resource><state>attachannotation$0.jms</state><width>600.0</width>
+<height>330.0</height>
 <border>Raised Bevel</border>
 </component></content>
 
-<content start="820" end="821">
+<content start="799" end="800">
 </content>
 
 </paragraph>
-<paragraph start="821" end="897">
+<paragraph start="800" end="876">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="821" end="897">
+<content start="800" end="801">
+<bold>true</bold><size>13</size></content>
+
+<content start="801" end="874">
+<size>10</size></content>
+
+<content start="874" end="875">
+<bold>true</bold><size>13</size></content>
+
+<content start="875" end="876">
 <size>10</size></content>
 
 </paragraph>
-<paragraph start="897" end="898">
+<paragraph start="876" end="877">
 <LeftIndent>140.0</LeftIndent>
-<content start="897" end="898">
+<content start="876" end="877">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="898" end="922">
+<paragraph start="877" end="901">
 <LeftIndent>140.0</LeftIndent>
-<content start="898" end="921">
-<size>11</size><bold>true</bold></content>
+<content start="877" end="900">
+<bold>true</bold><size>11</size></content>
 
-<content start="921" end="922">
+<content start="900" end="901">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="922" end="923">
+<paragraph start="901" end="902">
 <LeftIndent>140.0</LeftIndent>
-<content start="922" end="923">
+<content start="901" end="902">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="923" end="1312">
+<paragraph start="902" end="1291">
 <LeftIndent>140.0</LeftIndent>
-<content start="923" end="936">
+<content start="902" end="1260">
 <size>11</size></content>
 
-<content start="936" end="993">
-<size>11</size></content>
+<content start="1260" end="1270">
+<href>hyperlink.cml</href><size>11</size></content>
 
-<content start="993" end="1281">
-<size>11</size></content>
-
-<content start="1281" end="1291">
-<size>11</size><href>hyperlink.cml</href></content>
-
-<content start="1291" end="1312">
+<content start="1270" end="1291">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1312" end="1313">
+<paragraph start="1291" end="1292">
 <LeftIndent>140.0</LeftIndent>
-<content start="1312" end="1313">
+<content start="1291" end="1292">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1313" end="1335">
+<paragraph start="1292" end="1314">
 <LeftIndent>140.0</LeftIndent>
-<content start="1313" end="1334">
-<size>11</size><bold>true</bold></content>
+<content start="1292" end="1313">
+<bold>true</bold><size>11</size></content>
 
-<content start="1334" end="1335">
+<content start="1313" end="1314">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1335" end="1336">
+<paragraph start="1314" end="1315">
 <LeftIndent>140.0</LeftIndent>
-<content start="1335" end="1336">
+<content start="1314" end="1315">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1336" end="1661">
+<paragraph start="1315" end="1640">
 <LeftIndent>140.0</LeftIndent>
-<content start="1336" end="1349">
-<size>11</size></content>
-
-<content start="1349" end="1406">
-<size>11</size></content>
-
-<content start="1406" end="1661">
+<content start="1315" end="1640">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1661" end="1662">
+<paragraph start="1640" end="1641">
 <LeftIndent>140.0</LeftIndent>
-<content start="1661" end="1662">
+<content start="1640" end="1641">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1662" end="1910">
+<paragraph start="1641" end="1889">
 <LeftIndent>140.0</LeftIndent>
-<content start="1662" end="1910">
+<content start="1641" end="1889">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1910" end="1911">
+<paragraph start="1889" end="1890">
 <LeftIndent>140.0</LeftIndent>
-<content start="1910" end="1911">
+<content start="1889" end="1890">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1911" end="1934">
+<paragraph start="1890" end="1913">
 <LeftIndent>140.0</LeftIndent>
-<content start="1911" end="1933">
-<size>11</size><bold>true</bold></content>
+<content start="1890" end="1912">
+<bold>true</bold><size>11</size></content>
 
-<content start="1933" end="1934">
+<content start="1912" end="1913">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1934" end="1935">
+<paragraph start="1913" end="1914">
 <LeftIndent>140.0</LeftIndent>
-<content start="1934" end="1935">
+<content start="1913" end="1914">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1935" end="2278">
+<paragraph start="1914" end="2257">
 <LeftIndent>140.0</LeftIndent>
-<content start="1935" end="1948">
-<size>11</size></content>
-
-<content start="1948" end="2005">
-<size>11</size></content>
-
-<content start="2005" end="2278">
+<content start="1914" end="2257">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2278" end="2279">
-<content start="2278" end="2279">
+<paragraph start="2257" end="2258">
+<content start="2257" end="2258">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2279" end="2307">
+<paragraph start="2258" end="2286">
 <Alignment>2</Alignment>
 <RightIndent>8.0</RightIndent>
-<content start="2279" end="2292">
+<content start="2258" end="2260">
 <size>11</size></content>
 
-<content start="2292" end="2297">
-<size>11</size><href>index_jmol.cml</href></content>
+<content start="2260" end="2268">
+<href>itinerary.cml</href><size>11</size></content>
 
-<content start="2297" end="2300">
+<content start="2268" end="2271">
 <size>11</size></content>
 
-<content start="2300" end="2304">
-<size>11</size><href>attachbondannotation.cml</href></content>
+<content start="2271" end="2276">
+<href>index_jmol.cml</href><size>11</size></content>
 
-<content start="2304" end="2306">
+<content start="2276" end="2279">
+<size>11</size></content>
+
+<content start="2279" end="2283">
+<href>attachbondannotation.cml</href><size>11</size></content>
+
+<content start="2283" end="2285">
 <size>11</size></content>
 
 </paragraph>

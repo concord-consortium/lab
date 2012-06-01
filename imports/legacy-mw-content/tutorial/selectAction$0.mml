@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.5.0_07" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_11" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="sigma"> 
    <double>7.0</double> 
@@ -43,7 +43,7 @@
    <void method="put"> 
     <object id="Pair0" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element1"/> 
+      <object idref="Element2"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element3"/> 
@@ -57,7 +57,7 @@
       <object idref="Element0"/> 
      </void> 
      <void property="element2"> 
-      <object idref="Element2"/> 
+      <object idref="Element1"/> 
      </void> 
     </object> 
     <double>0.1</double> 
@@ -65,7 +65,7 @@
    <void method="put"> 
     <object id="Pair2" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element2"/> 
+      <object idref="Element1"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element3"/> 
@@ -79,7 +79,7 @@
       <object idref="Element0"/> 
      </void> 
      <void property="element2"> 
-      <object idref="Element1"/> 
+      <object idref="Element2"/> 
      </void> 
     </object> 
     <double>0.1</double> 
@@ -105,6 +105,57 @@
      </void> 
     </object> 
     <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair6" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object id="Element4" class="org.concord.mw2d.models.Element"> 
+       <void property="ID"> 
+        <int>4</int> 
+       </void> 
+       <void property="mass"> 
+        <double>5.0</double> 
+       </void> 
+      </object> 
+     </void> 
+    </object> 
+    <null/> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair7" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element4"/> 
+     </void> 
+    </object> 
+    <null/> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair8" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element2"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element4"/> 
+     </void> 
+    </object> 
+    <null/> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair9" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element3"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element4"/> 
+     </void> 
+    </object> 
+    <null/> 
    </void> 
   </void> 
   <void property="lbMixing"> 
@@ -132,6 +183,22 @@
     <object idref="Pair5"/> 
     <boolean>true</boolean> 
    </void> 
+   <void method="put"> 
+    <object idref="Pair6"/> 
+    <null/> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair7"/> 
+    <null/> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair8"/> 
+    <null/> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair9"/> 
+    <null/> 
+   </void> 
   </void> 
   <void property="repulsive"> 
    <void method="put"> 
@@ -158,23 +225,39 @@
     <object idref="Pair5"/> 
     <boolean>false</boolean> 
    </void> 
+   <void method="put"> 
+    <object idref="Pair6"/> 
+    <null/> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair7"/> 
+    <null/> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair8"/> 
+    <null/> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair9"/> 
+    <null/> 
+   </void> 
   </void> 
   <void property="sigma"> 
    <void method="put"> 
     <object idref="Pair0"/> 
-    <double>21.0</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair1"/> 
-    <double>14.0</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair2"/> 
     <double>24.5</double> 
    </void> 
    <void method="put"> 
-    <object idref="Pair3"/> 
+    <object idref="Pair1"/> 
     <double>10.5</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair2"/> 
+    <double>21.0</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <double>14.0</double> 
    </void> 
    <void method="put"> 
     <object idref="Pair4"/> 
@@ -183,6 +266,22 @@
    <void method="put"> 
     <object idref="Pair5"/> 
     <double>17.5</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair6"/> 
+    <null/> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair7"/> 
+    <null/> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair8"/> 
+    <null/> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair9"/> 
+    <null/> 
    </void> 
   </void> 
  </object> 
@@ -194,12 +293,12 @@
     </void> 
     <void property="viewSize"> 
      <object class="java.awt.Dimension"> 
-      <int>400</int> 
+      <int>500</int> 
       <int>250</int> 
      </object> 
     </void> 
     <void property="width"> 
-     <double>400.0</double> 
+     <double>500.0</double> 
     </void> 
    </object> 
   </void> 
@@ -216,28 +315,21 @@
       <double>0.1</double> 
      </void> 
      <void property="fillMode"> 
-      <object class="org.concord.modeler.draw.FillMode$GradientFill"> 
-       <void property="color1"> 
-        <object class="java.awt.Color"> 
-         <int>255</int> 
-         <int>255</int> 
-         <int>255</int> 
-         <int>255</int> 
-        </object> 
+      <object class="org.concord.modeler.draw.FillMode$PatternFill"> 
+       <void property="background"> 
+        <int>-65536</int> 
        </void> 
-       <void property="color2"> 
-        <object class="java.awt.Color"> 
-         <int>128</int> 
-         <int>128</int> 
-         <int>128</int> 
-         <int>255</int> 
-        </object> 
+       <void property="cellHeight"> 
+        <int>10</int> 
+       </void> 
+       <void property="cellWidth"> 
+        <int>10</int> 
+       </void> 
+       <void property="foreground"> 
+        <int>-8355712</int> 
        </void> 
        <void property="style"> 
-        <int>1031</int> 
-       </void> 
-       <void property="variant"> 
-        <int>1044</int> 
+        <byte>12</byte> 
        </void> 
       </object> 
      </void> 
@@ -254,7 +346,7 @@
       <double>98.0</double> 
      </void> 
      <void property="x"> 
-      <double>228.0</double> 
+      <double>278.0</double> 
      </void> 
      <void property="y"> 
       <double>122.0</double> 
@@ -264,26 +356,26 @@
   </void> 
   <void property="properties"> 
    <void method="put"> 
-    <string>codebase</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial</string> 
-   </void> 
-   <void method="put"> 
-    <string>url</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial\selectAction$0.mml</string> 
-   </void> 
-   <void method="put"> 
-    <string>size</string> 
-    <long>56461</long> 
-   </void> 
-   <void method="put"> 
     <string>filename</string> 
     <string>selectAction$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1154648250779</long> 
+     <long>1233522932582</long> 
     </object> 
+   </void> 
+   <void method="put"> 
+    <string>url</string> 
+    <string>C:\home\mw\public\tutorial\selectAction$0.mml</string> 
+   </void> 
+   <void method="put"> 
+    <string>size</string> 
+    <long>63026</long> 
+   </void> 
+   <void method="put"> 
+    <string>codebase</string> 
+    <string>C:\home\mw\public\tutorial</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -305,6 +397,52 @@
     <int>-3355393</int> 
    </void> 
   </void> 
+  <void property="ellipses"> 
+   <array class="org.concord.mw2d.models.EllipseComponent$Delegate" length="1"> 
+    <void index="0"> 
+     <object class="org.concord.mw2d.models.EllipseComponent$Delegate"> 
+      <void property="fillMode"> 
+       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object class="java.awt.Color"> 
+          <int>192</int> 
+          <int>255</int> 
+          <int>255</int> 
+          <int>255</int> 
+         </object> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="height"> 
+       <float>34.0</float> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>13</byte> 
+      </void> 
+      <void property="lineColor"> 
+       <object id="Color0" class="java.awt.Color"> 
+        <int>128</int> 
+        <int>128</int> 
+        <int>128</int> 
+        <int>255</int> 
+       </object> 
+      </void> 
+      <void property="width"> 
+       <float>24.0</float> 
+      </void> 
+      <void property="x"> 
+       <double>238.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>10.0</double> 
+      </void> 
+     </object> 
+    </void> 
+   </array> 
+  </void> 
   <void property="images"> 
    <array class="org.concord.mw2d.models.ImageComponent$Delegate" length="1"> 
     <void index="0"> 
@@ -316,7 +454,7 @@
        <int>1</int> 
       </void> 
       <void property="x"> 
-       <double>347.0</double> 
+       <double>397.0</double> 
       </void> 
       <void property="y"> 
        <double>41.0</double> 
@@ -326,14 +464,14 @@
    </array> 
   </void> 
   <void property="accelerationFlavor"> 
-   <void id="Color0" property="color"/> 
+   <void id="Color1" property="color"/> 
   </void> 
   <void property="lines"> 
    <array class="org.concord.mw2d.models.LineComponent$Delegate" length="1"> 
     <void index="0"> 
      <object class="org.concord.mw2d.models.LineComponent$Delegate"> 
       <void property="color"> 
-       <object idref="Color0"/> 
+       <object idref="Color1"/> 
       </void> 
       <void property="layer"> 
        <int>1</int> 
@@ -345,7 +483,7 @@
        <int>2</int> 
       </void> 
       <void property="x"> 
-       <double>224.0</double> 
+       <double>274.0</double> 
       </void> 
       <void property="y"> 
        <double>119.0</double> 
@@ -372,15 +510,75 @@
   <void property="monochromatic"> 
    <boolean>false</boolean> 
   </void> 
+  <void id="Color2" property="background"/> 
+  <void property="rectangles"> 
+   <array class="org.concord.mw2d.models.RectangleComponent$Delegate" length="1"> 
+    <void index="0"> 
+     <object class="org.concord.mw2d.models.RectangleComponent$Delegate"> 
+      <void property="alpha"> 
+       <int>180</int> 
+      </void> 
+      <void property="fillMode"> 
+       <object class="org.concord.modeler.draw.FillMode$GradientFill"> 
+        <void property="color1"> 
+         <object idref="Color2"/> 
+        </void> 
+        <void property="color2"> 
+         <object class="java.awt.Color"> 
+          <int>128</int> 
+          <int>128</int> 
+          <int>128</int> 
+          <int>255</int> 
+         </object> 
+        </void> 
+        <void property="style"> 
+         <int>1036</int> 
+        </void> 
+        <void property="variant"> 
+         <int>1041</int> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="height"> 
+       <float>21.0</float> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>12</byte> 
+      </void> 
+      <void property="lineColor"> 
+       <object idref="Color0"/> 
+      </void> 
+      <void property="width"> 
+       <float>78.0</float> 
+      </void> 
+      <void property="x"> 
+       <double>144.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>10.0</double> 
+      </void> 
+     </object> 
+    </void> 
+   </array> 
+  </void> 
   <void property="showClock"> 
    <boolean>false</boolean> 
   </void> 
   <void property="textBoxes"> 
-   <array class="org.concord.mw2d.models.TextBoxComponent$Delegate" length="10"> 
+   <array class="org.concord.mw2d.models.TextBoxComponent$Delegate" length="12"> 
     <void index="0"> 
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
       <void property="borderType"> 
        <int>2</int> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>70</int> 
+        <int>20</int> 
+       </object> 
       </void> 
       <void property="fillMode"> 
        <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
@@ -407,7 +605,7 @@
        <string>A text box</string> 
       </void> 
       <void property="x"> 
-       <double>27.0</double> 
+       <double>77.0</double> 
       </void> 
       <void property="y"> 
        <double>205.0</double> 
@@ -416,9 +614,6 @@
     </void> 
     <void index="1"> 
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="attachmentPosition"> 
-       <byte>12</byte> 
-      </void> 
       <void property="borderType"> 
        <int>2</int> 
       </void> 
@@ -427,7 +622,7 @@
       </void> 
       <void property="callOutPoint"> 
        <object class="java.awt.Point"> 
-        <int>366</int> 
+        <int>416</int> 
         <int>56</int> 
        </object> 
       </void> 
@@ -456,7 +651,7 @@
        <string>An image</string> 
       </void> 
       <void property="x"> 
-       <double>314.0</double> 
+       <double>364.0</double> 
       </void> 
       <void property="y"> 
        <double>9.0</double> 
@@ -465,9 +660,6 @@
     </void> 
     <void index="2"> 
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="attachmentPosition"> 
-       <byte>12</byte> 
-      </void> 
       <void property="borderType"> 
        <int>2</int> 
       </void> 
@@ -476,7 +668,7 @@
       </void> 
       <void property="callOutPoint"> 
        <object class="java.awt.Point"> 
-        <int>224</int> 
+        <int>274</int> 
         <int>62</int> 
        </object> 
       </void> 
@@ -496,10 +688,10 @@
        <string>A line</string> 
       </void> 
       <void property="x"> 
-       <double>244.0</double> 
+       <double>291.0</double> 
       </void> 
       <void property="y"> 
-       <double>11.0</double> 
+       <double>55.0</double> 
       </void> 
      </object> 
     </void> 
@@ -508,8 +700,24 @@
       <void property="borderType"> 
        <int>2</int> 
       </void> 
+      <void property="callOut"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>193</int> 
+        <int>73</int> 
+       </object> 
+      </void> 
       <void property="fillMode"> 
        <object idref="FillMode$ColorFill0"/> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Trebuchet MS</string> 
+        <int>0</int> 
+        <int>11</int> 
+       </object> 
       </void> 
       <void property="layer"> 
        <int>1</int> 
@@ -521,22 +729,19 @@
        <int>2</int> 
       </void> 
       <void property="text"> 
-       <string>A molecular
-surface object</string> 
+       <string>An interacting object 
+of arbitrary shape</string> 
       </void> 
       <void property="x"> 
-       <double>114.0</double> 
+       <double>182.0</double> 
       </void> 
       <void property="y"> 
-       <double>71.0</double> 
+       <double>86.0</double> 
       </void> 
      </object> 
     </void> 
     <void index="4"> 
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="attachmentPosition"> 
-       <byte>12</byte> 
-      </void> 
       <void property="borderType"> 
        <int>2</int> 
       </void> 
@@ -545,7 +750,7 @@ surface object</string>
       </void> 
       <void property="callOutPoint"> 
        <object class="java.awt.Point"> 
-        <int>270</int> 
+        <int>320</int> 
         <int>135</int> 
        </object> 
       </void> 
@@ -565,18 +770,15 @@ surface object</string>
        <string>An obstacle</string> 
       </void> 
       <void property="x"> 
-       <double>256.0</double> 
+       <double>298.0</double> 
       </void> 
       <void property="y"> 
-       <double>88.0</double> 
+       <double>140.0</double> 
       </void> 
      </object> 
     </void> 
     <void index="5"> 
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="attachmentPosition"> 
-       <byte>12</byte> 
-      </void> 
       <void property="borderType"> 
        <int>2</int> 
       </void> 
@@ -585,7 +787,7 @@ surface object</string>
       </void> 
       <void property="callOutPoint"> 
        <object class="java.awt.Point"> 
-        <int>130</int> 
+        <int>180</int> 
         <int>216</int> 
        </object> 
       </void> 
@@ -611,7 +813,7 @@ surface object</string>
        <string>An atom</string> 
       </void> 
       <void property="x"> 
-       <double>126.0</double> 
+       <double>176.0</double> 
       </void> 
       <void property="y"> 
        <double>166.0</double> 
@@ -620,9 +822,6 @@ surface object</string>
     </void> 
     <void index="6"> 
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="attachmentPosition"> 
-       <byte>12</byte> 
-      </void> 
       <void property="borderType"> 
        <int>2</int> 
       </void> 
@@ -631,7 +830,7 @@ surface object</string>
       </void> 
       <void property="callOutPoint"> 
        <object class="java.awt.Point"> 
-        <int>316</int> 
+        <int>366</int> 
         <int>190</int> 
        </object> 
       </void> 
@@ -657,7 +856,7 @@ surface object</string>
        <string>A molecule</string> 
       </void> 
       <void property="x"> 
-       <double>293.0</double> 
+       <double>343.0</double> 
       </void> 
       <void property="y"> 
        <double>214.0</double> 
@@ -666,9 +865,6 @@ surface object</string>
     </void> 
     <void index="7"> 
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="attachmentPosition"> 
-       <byte>12</byte> 
-      </void> 
       <void property="borderType"> 
        <int>2</int> 
       </void> 
@@ -677,7 +873,7 @@ surface object</string>
       </void> 
       <void property="callOutPoint"> 
        <object class="java.awt.Point"> 
-        <int>58</int> 
+        <int>108</int> 
         <int>118</int> 
        </object> 
       </void> 
@@ -697,7 +893,7 @@ surface object</string>
        <string>A radial bond</string> 
       </void> 
       <void property="x"> 
-       <double>10.0</double> 
+       <double>60.0</double> 
       </void> 
       <void property="y"> 
        <double>143.0</double> 
@@ -706,9 +902,6 @@ surface object</string>
     </void> 
     <void index="8"> 
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="attachmentPosition"> 
-       <byte>12</byte> 
-      </void> 
       <void property="borderType"> 
        <int>2</int> 
       </void> 
@@ -717,7 +910,7 @@ surface object</string>
       </void> 
       <void property="callOutPoint"> 
        <object class="java.awt.Point"> 
-        <int>68</int> 
+        <int>118</int> 
         <int>111</int> 
        </object> 
       </void> 
@@ -738,18 +931,15 @@ surface object</string>
 bond</string> 
       </void> 
       <void property="x"> 
-       <double>6.0</double> 
+       <double>57.0</double> 
       </void> 
       <void property="y"> 
-       <double>39.0</double> 
+       <double>56.0</double> 
       </void> 
      </object> 
     </void> 
     <void index="9"> 
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="attachmentPosition"> 
-       <byte>12</byte> 
-      </void> 
       <void property="borderType"> 
        <int>2</int> 
       </void> 
@@ -758,7 +948,7 @@ bond</string>
       </void> 
       <void property="callOutPoint"> 
        <object class="java.awt.Point"> 
-        <int>236</int> 
+        <int>286</int> 
         <int>180</int> 
        </object> 
       </void> 
@@ -784,10 +974,84 @@ bond</string>
        <string>A restrained atom</string> 
       </void> 
       <void property="x"> 
-       <double>156.0</double> 
+       <double>206.0</double> 
       </void> 
       <void property="y"> 
        <double>214.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="10"> 
+     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
+      <void property="borderType"> 
+       <int>2</int> 
+      </void> 
+      <void property="callOut"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>178</int> 
+        <int>24</int> 
+       </object> 
+      </void> 
+      <void property="fillMode"> 
+       <object idref="FillMode$ColorFill0"/> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>14</byte> 
+      </void> 
+      <void property="shadowType"> 
+       <int>2</int> 
+      </void> 
+      <void property="text"> 
+       <string>A rectangle</string> 
+      </void> 
+      <void property="x"> 
+       <double>114.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>34.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="11"> 
+     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
+      <void property="borderType"> 
+       <int>2</int> 
+      </void> 
+      <void property="callOut"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>255</int> 
+        <int>25</int> 
+       </object> 
+      </void> 
+      <void property="fillMode"> 
+       <object idref="FillMode$ColorFill0"/> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>15</byte> 
+      </void> 
+      <void property="shadowType"> 
+       <int>2</int> 
+      </void> 
+      <void property="text"> 
+       <string>An ellipse</string> 
+      </void> 
+      <void property="x"> 
+       <double>274.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>9.0</double> 
       </void> 
      </object> 
     </void> 
@@ -799,7 +1063,7 @@ bond</string>
    <int>1</int> 
   </void> 
   <void property="rx"> 
-   <double>314.4752378026955</double> 
+   <double>364.4752378026955</double> 
   </void> 
   <void property="ry"> 
    <double>79.92645794939249</double> 
@@ -816,7 +1080,7 @@ bond</string>
    <int>1</int> 
   </void> 
   <void property="rx"> 
-   <double>343.7710677871304</double> 
+   <double>393.7710677871304</double> 
   </void> 
   <void property="ry"> 
    <double>126.83448372746156</double> 
@@ -833,7 +1097,7 @@ bond</string>
    <int>1</int> 
   </void> 
   <void property="rx"> 
-   <double>357.1787029927465</double> 
+   <double>407.1787029927465</double> 
   </void> 
   <void property="ry"> 
    <double>142.68908058239913</double> 
@@ -852,7 +1116,7 @@ bond</string>
   <void property="restraint"> 
    <object class="org.concord.mw2d.models.PointRestraint"> 
     <void property="x0"> 
-     <double>236.0</double> 
+     <double>286.0</double> 
     </void> 
     <void property="y0"> 
      <double>180.0</double> 
@@ -860,7 +1124,7 @@ bond</string>
    </object> 
   </void> 
   <void property="rx"> 
-   <double>236.0</double> 
+   <double>286.0</double> 
   </void> 
   <void property="ry"> 
    <double>180.0</double> 
@@ -877,7 +1141,7 @@ bond</string>
    <int>2</int> 
   </void> 
   <void property="rx"> 
-   <double>46.0</double> 
+   <double>96.0</double> 
   </void> 
   <void property="ry"> 
    <double>37.0</double> 
@@ -894,7 +1158,7 @@ bond</string>
    <int>2</int> 
   </void> 
   <void property="rx"> 
-   <double>130.0</double> 
+   <double>180.0</double> 
   </void> 
   <void property="ry"> 
    <double>216.0</double> 
@@ -914,7 +1178,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>296.03872177276276</double> 
+   <double>346.03872177276276</double> 
   </void> 
   <void property="ry"> 
    <double>187.6278327940896</double> 
@@ -934,7 +1198,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>328.84584903022704</double> 
+   <double>378.84584903022704</double> 
   </void> 
   <void property="ry"> 
    <double>174.4614304619234</double> 
@@ -954,7 +1218,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>316.07695279800674</double> 
+   <double>366.07695279800674</double> 
   </void> 
   <void property="ry"> 
    <double>190.27382449599128</double> 
@@ -974,7 +1238,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>209.0</double> 
+   <double>259.0</double> 
   </void> 
   <void property="ry"> 
    <double>92.68181818181817</double> 
@@ -988,7 +1252,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>206.0</double> 
+   <double>256.0</double> 
   </void> 
   <void property="ry"> 
    <double>106.68181818181822</double> 
@@ -1002,7 +1266,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>200.0</double> 
+   <double>250.0</double> 
   </void> 
   <void property="ry"> 
    <double>119.6818181818182</double> 
@@ -1016,7 +1280,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>190.0</double> 
+   <double>240.0</double> 
   </void> 
   <void property="ry"> 
    <double>129.6818181818182</double> 
@@ -1030,7 +1294,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>179.0</double> 
+   <double>229.0</double> 
   </void> 
   <void property="ry"> 
    <double>135.6818181818182</double> 
@@ -1044,7 +1308,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>165.0</double> 
+   <double>215.0</double> 
   </void> 
   <void property="ry"> 
    <double>138.6818181818182</double> 
@@ -1058,7 +1322,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>151.0</double> 
+   <double>201.0</double> 
   </void> 
   <void property="ry"> 
    <double>137.6818181818182</double> 
@@ -1072,7 +1336,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>137.0</double> 
+   <double>187.0</double> 
   </void> 
   <void property="ry"> 
    <double>132.68181818181824</double> 
@@ -1086,7 +1350,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>126.0</double> 
+   <double>176.0</double> 
   </void> 
   <void property="ry"> 
    <double>123.6818181818182</double> 
@@ -1100,7 +1364,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>118.0</double> 
+   <double>168.0</double> 
   </void> 
   <void property="ry"> 
    <double>111.6818181818182</double> 
@@ -1114,7 +1378,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>114.0</double> 
+   <double>164.0</double> 
   </void> 
   <void property="ry"> 
    <double>97.6818181818182</double> 
@@ -1128,7 +1392,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>114.0</double> 
+   <double>164.0</double> 
   </void> 
   <void property="ry"> 
    <double>83.68181818181817</double> 
@@ -1142,7 +1406,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>119.0</double> 
+   <double>169.0</double> 
   </void> 
   <void property="ry"> 
    <double>70.68181818181817</double> 
@@ -1156,7 +1420,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>126.0</double> 
+   <double>176.0</double> 
   </void> 
   <void property="ry"> 
    <double>60.68181818181817</double> 
@@ -1170,7 +1434,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>135.0</double> 
+   <double>185.0</double> 
   </void> 
   <void property="ry"> 
    <double>52.68181818181817</double> 
@@ -1184,7 +1448,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>146.0</double> 
+   <double>196.0</double> 
   </void> 
   <void property="ry"> 
    <double>47.68181818181817</double> 
@@ -1198,7 +1462,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>158.0</double> 
+   <double>208.0</double> 
   </void> 
   <void property="ry"> 
    <double>45.68181818181817</double> 
@@ -1212,7 +1476,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>170.0</double> 
+   <double>220.0</double> 
   </void> 
   <void property="ry"> 
    <double>45.68181818181817</double> 
@@ -1226,7 +1490,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>182.0</double> 
+   <double>232.0</double> 
   </void> 
   <void property="ry"> 
    <double>49.68181818181817</double> 
@@ -1240,7 +1504,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>192.0</double> 
+   <double>242.0</double> 
   </void> 
   <void property="ry"> 
    <double>56.68181818181817</double> 
@@ -1254,7 +1518,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>200.0</double> 
+   <double>250.0</double> 
   </void> 
   <void property="ry"> 
    <double>64.68181818181817</double> 
@@ -1268,7 +1532,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>205.0</double> 
+   <double>255.0</double> 
   </void> 
   <void property="ry"> 
    <double>75.68181818181817</double> 
@@ -1282,7 +1546,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>51.038721772762756</double> 
+   <double>101.03872177276276</double> 
   </void> 
   <void property="ry"> 
    <double>116.62783279408961</double> 
@@ -1302,7 +1566,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>71.07695279800677</double> 
+   <double>121.07695279800677</double> 
   </void> 
   <void property="ry"> 
    <double>119.27382449599128</double> 
@@ -1322,7 +1586,7 @@ bond</string>
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>83.84584903022707</double> 
+   <double>133.84584903022707</double> 
   </void> 
   <void property="ry"> 
    <double>103.46143046192341</double> 

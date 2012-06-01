@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Damp</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Damp
@@ -15,52 +15,52 @@ damp [friction coefficient]
 
 where [friction coefficient] is a non-negative number that will be the friction coefficient.
 
-Here is an example of using the damp command to slow down an atom:
+Here are two examples of using the damp command to slow down a particle, in 2D and 3D, respectively:
 
- 
+   
 
- 
-[This is an embedded simulator.]
+  
+&#12304;This is an embedded model container.&#12305;
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="552">
+<section start="0" end="595">
 <paragraph start="0" end="5">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="4">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<size>16</size><bold>true</bold><italic>true</italic></content>
 
 <content start="4" end="5">
 </content>
 
 </paragraph>
 <paragraph start="5" end="6">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="5" end="6">
 </content>
 
 </paragraph>
 <paragraph start="6" end="34">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="6" end="8">
 <size>11</size></content>
 
 <content start="8" end="16">
-<href>script_restrain.cml</href><size>11</size></content>
+<size>11</size><href>script_restrain.cml</href></content>
 
 <content start="16" end="19">
 <size>11</size></content>
 
 <content start="19" end="24">
-<href>mwscripts.cml</href><size>11</size></content>
+<size>11</size><href>mwscripts.cml</href></content>
 
 <content start="24" end="27">
 <size>11</size></content>
 
 <content start="27" end="31">
-<href>script_heat.cml</href><size>11</size></content>
+<size>11</size><href>script_heat.cml</href></content>
 
 <content start="31" end="33">
 <size>11</size></content>
@@ -87,7 +87,7 @@ Here is an example of using the damp command to slow down an atom:
 <size>11</size></content>
 
 <content start="269" end="281">
-<href>DampingAction.cml</href><size>11</size></content>
+<size>11</size><href>DampingAction.cml</href></content>
 
 <content start="281" end="284">
 <size>11</size></content>
@@ -147,59 +147,68 @@ Here is an example of using the damp command to slow down an atom:
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="417" end="484">
+<paragraph start="417" end="518">
 <LeftIndent>140.0</LeftIndent>
-<content start="417" end="449">
+<content start="417" end="452">
 <size>11</size></content>
 
-<content start="449" end="453">
+<content start="452" end="456">
 <size>11</size><family>Courier New</family></content>
 
-<content start="453" end="484">
+<content start="456" end="518">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="484" end="485">
+<paragraph start="518" end="519">
 <LeftIndent>140.0</LeftIndent>
-<content start="484" end="485">
+<content start="518" end="519">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="485" end="487">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="519" end="523">
 <Alignment>1</Alignment>
-<content start="485" end="486">
+<LeftIndent>140.0</LeftIndent>
+<content start="519" end="520">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>script_damp$0.mml</resource><menubar>false</menubar></component></content>
 
-<content start="486" end="487">
+<content start="520" end="521">
+</content>
+
+<content start="521" end="522">
+<component><class>org.concord.modeler.PageMd3d</class><resource>script_damp$0.mdd</resource><coordinate>script_damp$0.xyz</coordinate><width>400</width><height>250</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="522" end="523">
 </content>
 
 </paragraph>
-<paragraph start="487" end="488">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="523" end="524">
 <Alignment>1</Alignment>
-<content start="487" end="488">
+<LeftIndent>140.0</LeftIndent>
+<content start="523" end="524">
 </content>
 
 </paragraph>
-<paragraph start="488" end="490">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="524" end="527">
 <Alignment>1</Alignment>
-<content start="488" end="489">
+<LeftIndent>140.0</LeftIndent>
+<content start="524" end="525">
 <component><class>org.concord.modeler.PageSlider</class>
-<title>Friction coefficient</title>
-<tooltip>Change the friction coefficient</tooltip>
-<width>400</width>
-<height>80</height>
-<opaque>false</opaque>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
 <value>0.0</value>
 <minimum>0.0</minimum>
 <maximum>1.0</maximum>
-<tick>true</tick>
 <nstep>50</nstep>
+<title>Friction coefficient</title>
+<tooltip>Change the friction coefficient</tooltip>
+<width>400</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
 <labeltable>{value=&quot;0.2&quot;, label=&quot;0.2&quot;}{value=&quot;0.4&quot;, label=&quot;0.4&quot;}{value=&quot;0.6&quot;, label=&quot;0.6&quot;}{value=&quot;0.8&quot;, label=&quot;0.8&quot;}{value=&quot;1.0&quot;, label=&quot;1.0&quot;}{value=&quot;0.0&quot;, label=&quot;0.0&quot;}</labeltable>
 <script>select atom all;
 damp %val;
@@ -207,45 +216,65 @@ select atom none;</script>
 <change>Execute MW script</change>
 </component></content>
 
-<content start="489" end="490">
+<content start="525" end="526">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>1.0</maximum>
+<nstep>50</nstep>
+<title>Friction coefficent</title>
+<width>400</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.2&quot;, label=&quot;0.2&quot;}{value=&quot;0.4&quot;, label=&quot;0.4&quot;}{value=&quot;0.6&quot;, label=&quot;0.6&quot;}{value=&quot;0.8&quot;, label=&quot;0.8&quot;}{value=&quot;1.0&quot;, label=&quot;1.0&quot;}{value=&quot;0.0&quot;, label=&quot;0.0&quot;}</labeltable>
+<script>select atom all;
+damp %val;
+select atom none;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="526" end="527">
 </content>
 
 </paragraph>
-<paragraph start="490" end="523">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="527" end="566">
 <Alignment>1</Alignment>
-<content start="490" end="523">
+<LeftIndent>140.0</LeftIndent>
+<content start="527" end="566">
 <size>10</size></content>
 
 </paragraph>
-<paragraph start="523" end="524">
+<paragraph start="566" end="567">
 <LeftIndent>140.0</LeftIndent>
-<content start="523" end="524">
+<content start="566" end="567">
 </content>
 
 </paragraph>
-<paragraph start="524" end="552">
-<RightIndent>20.0</RightIndent>
+<paragraph start="567" end="595">
 <Alignment>2</Alignment>
-<content start="524" end="526">
+<RightIndent>20.0</RightIndent>
+<content start="567" end="569">
 <size>11</size></content>
 
-<content start="526" end="534">
-<href>script_restrain.cml</href><size>11</size></content>
+<content start="569" end="577">
+<size>11</size><href>script_restrain.cml</href></content>
 
-<content start="534" end="537">
+<content start="577" end="580">
 <size>11</size></content>
 
-<content start="537" end="542">
-<href>mwscripts.cml</href><size>11</size></content>
+<content start="580" end="585">
+<size>11</size><href>mwscripts.cml</href></content>
 
-<content start="542" end="545">
+<content start="585" end="588">
 <size>11</size></content>
 
-<content start="545" end="549">
-<href>script_heat.cml</href><size>11</size></content>
+<content start="588" end="592">
+<size>11</size><href>script_heat.cml</href></content>
 
-<content start="549" end="551">
+<content start="592" end="594">
 <size>11</size></content>
 
 </paragraph>

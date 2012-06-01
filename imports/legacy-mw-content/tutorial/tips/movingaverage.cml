@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Use running averages for your data</page_title>
+<text>Use running averages for your data
+         
+  
+
+This page demonstrates the use of different running averages to smoothen your line graphs, and the effect of setting the triangles of your bar graphs to be a variety of running averages (with different reponse time). For more information, please see the corresponding part in the User Manual:
+
+   Wikipedia: What is a running average (moving average)?
+   Bar graph in the User&apos;s Manual
+   XY graph in the User&apos;s Manual
+
+</text>
+<section start="0" end="470">
+<paragraph start="0" end="35">
+<Alignment>1</Alignment>
+<content start="0" end="34">
+<size>18</size><family>Trebuchet MS</family><bold>true</bold></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="45">
+<Alignment>1</Alignment>
+<content start="35" end="36">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>movingaverage$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="36" end="39">
+</content>
+
+<content start="39" end="40">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Kinetic Energy/Particle Nt</timeseries>
+<description>Kinetic Energy / Blue Atoms</description>
+<datatype>1</datatype>
+<samplingpoints>10</samplingpoints>
+<max_fraction_digits>0</max_fraction_digits>
+<max_integer_digits>0</max_integer_digits>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<fgcolor>-ffff01</fgcolor>
+<minimum>0.0</minimum>
+<maximum>0.05000000074505806</maximum>
+<value>3.7254465860314667E-4</value>
+</component></content>
+
+<content start="40" end="41">
+</content>
+
+<content start="41" end="42">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Kinetic Energy/Particle Pl</timeseries>
+<width>20</width>
+<height>250</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<fgcolor>-ff0100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>0.05000000074505806</maximum>
+<value>6.067310459911823E-4</value>
+</component></content>
+
+<content start="42" end="43">
+</content>
+
+<content start="43" end="44">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-ffff01" style="0" width="1.0" symbol="7" size="5" spacing="5" smoother="2">Kinetic Energy/Particle Nt</time_series_y1>
+<time_series_y2 color="-ff0100" style="0" width="1.0" symbol="7" size="5" spacing="5" smoother="2">Kinetic Energy/Particle Pl</time_series_y2>
+<time_series_y3 color="-333301" style="0" width="0.0" symbol="3" size="6" spacing="2">Kinetic Energy/Particle Nt</time_series_y3>
+<time_series_y4 color="-330034" style="0" width="0.0" symbol="4" size="6" spacing="2">Kinetic Energy/Particle Pl</time_series_y4>
+<width>360</width>
+<height>350</height>
+<axis_x_title>x</axis_x_title>
+<axis_y_title>y</axis_y_title>
+<legend_x>80</legend_x>
+<legend_y>90</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-7f7f80</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+</component></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="48">
+<Alignment>1</Alignment>
+<content start="45" end="46">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat Blue Atoms</title>
+<tooltip>Add energy to the blue atoms</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<script>select element 0;
+heat 0.01;
+select none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="46" end="47">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Freeze Green Atoms</title>
+<tooltip>Stop the green atoms</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<continuous_fire>true</continuous_fire>
+<script>select element 1;
+set vx 0;
+set vy 0;
+select none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<Alignment>1</Alignment>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="342">
+<LeftIndent>20.0</LeftIndent>
+<content start="49" end="342">
+</content>
+
+</paragraph>
+<paragraph start="342" end="343">
+<LeftIndent>20.0</LeftIndent>
+<content start="342" end="343">
+</content>
+
+</paragraph>
+<paragraph start="343" end="401">
+<LeftIndent>40.0</LeftIndent>
+<content start="343" end="344">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="344" end="357">
+</content>
+
+<content start="357" end="400">
+<href>http://en.wikipedia.org/wiki/Weighted_moving_average</href></content>
+
+<content start="400" end="401">
+</content>
+
+</paragraph>
+<paragraph start="401" end="435">
+<LeftIndent>40.0</LeftIndent>
+<content start="401" end="402">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="402" end="404">
+</content>
+
+<content start="404" end="434">
+<href>../insertBarGraph.cml</href></content>
+
+<content start="434" end="435">
+</content>
+
+</paragraph>
+<paragraph start="435" end="468">
+<LeftIndent>40.0</LeftIndent>
+<content start="435" end="436">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="436" end="438">
+</content>
+
+<content start="438" end="467">
+<href>../insertXYGraph.cml</href></content>
+
+<content start="467" end="468">
+</content>
+
+</paragraph>
+<paragraph start="468" end="469">
+<content start="468" end="469">
+</content>
+
+</paragraph>
+<paragraph start="469" end="470">
+</paragraph>
+</section>
+</document>

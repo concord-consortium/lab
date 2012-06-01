@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.5.0_07" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="epsilon"> 
    <double>0.004999999888241291</double> 
@@ -55,6 +55,28 @@
    <void method="put"> 
     <object id="Pair0" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
+      <object idref="Element2"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>0.6000000238418579</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair1" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element1"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair2" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
       <object idref="Element1"/> 
      </void> 
      <void property="element2"> 
@@ -64,7 +86,7 @@
     <double>0.1</double> 
    </void> 
    <void method="put"> 
-    <object id="Pair1" class="org.concord.mw2d.models.Pair"> 
+    <object id="Pair3" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
       <object idref="Element0"/> 
      </void> 
@@ -75,7 +97,29 @@
     <double>0.1</double> 
    </void> 
    <void method="put"> 
-    <object id="Pair2" class="org.concord.mw2d.models.Pair"> 
+    <object id="Pair4" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element2"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair5" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair6" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
       <object idref="Element0"/> 
      </void> 
@@ -93,9 +137,9 @@
     <double>0.1</double> 
    </void> 
    <void method="put"> 
-    <object id="Pair3" class="org.concord.mw2d.models.Pair"> 
+    <object id="Pair7" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element2"/> 
+      <object idref="Element1"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element4"/> 
@@ -104,53 +148,9 @@
     <double>0.1</double> 
    </void> 
    <void method="put"> 
-    <object id="Pair4" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element2"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element3"/> 
-     </void> 
-    </object> 
-    <double>0.6000000238418579</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair5" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element0"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element1"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair6" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element1"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element2"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair7" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element0"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element3"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
     <object id="Pair8" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element3"/> 
+      <object idref="Element2"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element4"/> 
@@ -161,7 +161,7 @@
    <void method="put"> 
     <object id="Pair9" class="org.concord.mw2d.models.Pair"> 
      <void property="element1"> 
-      <object idref="Element1"/> 
+      <object idref="Element3"/> 
      </void> 
      <void property="element2"> 
       <object idref="Element4"/> 
@@ -173,7 +173,7 @@
   <void property="lbMixing"> 
    <void method="put"> 
     <object idref="Pair0"/> 
-    <boolean>true</boolean> 
+    <boolean>false</boolean> 
    </void> 
    <void method="put"> 
     <object idref="Pair1"/> 
@@ -189,7 +189,7 @@
    </void> 
    <void method="put"> 
     <object idref="Pair4"/> 
-    <boolean>false</boolean> 
+    <boolean>true</boolean> 
    </void> 
    <void method="put"> 
     <object idref="Pair5"/> 
@@ -257,43 +257,43 @@
   <void property="sigma"> 
    <void method="put"> 
     <object idref="Pair0"/> 
-    <double>19.79898987322333</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair1"/> 
-    <double>14.0</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair2"/> 
-    <double>9.5</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair3"/> 
-    <double>16.5</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair4"/> 
     <double>16.729999542236328</double> 
    </void> 
    <void method="put"> 
-    <object idref="Pair5"/> 
+    <object idref="Pair1"/> 
     <double>10.5</double> 
    </void> 
    <void method="put"> 
-    <object idref="Pair6"/> 
+    <object idref="Pair2"/> 
+    <double>19.79898987322333</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <double>14.0</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair4"/> 
     <double>17.5</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair5"/> 
+    <double>17.5</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair6"/> 
+    <double>9.5</double> 
    </void> 
    <void method="put"> 
     <object idref="Pair7"/> 
-    <double>17.5</double> 
+    <double>13.0</double> 
    </void> 
    <void method="put"> 
     <object idref="Pair8"/> 
-    <double>20.0</double> 
+    <double>16.5</double> 
    </void> 
    <void method="put"> 
     <object idref="Pair9"/> 
-    <double>13.0</double> 
+    <double>20.0</double> 
    </void> 
   </void> 
  </object> 
@@ -322,21 +322,6 @@
   </void> 
   <void property="cutOff"> 
    <float>2.35</float> 
-  </void> 
-  <void property="fields"> 
-   <void method="add"> 
-    <object class="org.concord.mw2d.models.ElectricField"> 
-     <void property="bound"> 
-      <object class="java.awt.Dimension"> 
-       <int>400</int> 
-       <int>300</int> 
-      </object> 
-     </void> 
-     <void property="frequency"> 
-      <double>0.006283185307179587</double> 
-     </void> 
-    </object> 
-   </void> 
   </void> 
   <void property="frameInterval"> 
    <int>200</int> 
@@ -367,17 +352,8 @@
      </void> 
      <void property="userField"> 
       <object class="org.concord.mw2d.models.UserField"> 
-       <void property="bound"> 
-        <object class="java.awt.Dimension"> 
-         <int>400</int> 
-         <int>300</int> 
-        </object> 
-       </void> 
        <void property="intensity"> 
         <double>0.0</double> 
-       </void> 
-       <void property="orientation"> 
-        <int>3001</int> 
        </void> 
       </object> 
      </void> 
@@ -395,26 +371,26 @@
   </void> 
   <void property="properties"> 
    <void method="put"> 
-    <string>codebase</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial</string> 
-   </void> 
-   <void method="put"> 
-    <string>url</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial\SlidingObstacle$0.mml</string> 
-   </void> 
-   <void method="put"> 
-    <string>size</string> 
-    <long>11514</long> 
-   </void> 
-   <void method="put"> 
     <string>filename</string> 
     <string>SlidingObstacle$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1149390362846</long> 
+     <long>1202404913577</long> 
     </object> 
+   </void> 
+   <void method="put"> 
+    <string>url</string> 
+    <string>C:\home\mw\public\tutorial\SlidingObstacle$0.mml</string> 
+   </void> 
+   <void method="put"> 
+    <string>size</string> 
+    <long>11101</long> 
+   </void> 
+   <void method="put"> 
+    <string>codebase</string> 
+    <string>C:\home\mw\public\tutorial</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 

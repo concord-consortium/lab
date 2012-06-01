@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Saving a page as an applet</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Saving a page as an applet
+
+&lt; Previous | Index | Next &gt;
+
+An MW page can be saved as an applet that can be deployed on any Internet page, independent of MW that creates it. Use &quot;File &gt; Save As Applet ... &quot;. An HTML file will be created with instructions of where to download the needed file and how to make it work.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="344">
+<paragraph start="0" end="27">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="26">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="26" end="27">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="56">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="38">
+<size>11</size><href>download.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="46">
+<size>11</size><href>index.cml</href></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="53">
+<size>11</size><href>jnlp.cml</href></content>
+
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="315">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="315">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="315" end="316">
+<LeftIndent>140.0</LeftIndent>
+<content start="315" end="316">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="316" end="344">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="316" end="318">
+<size>11</size></content>
+
+<content start="318" end="326">
+<size>11</size><href>download.cml</href></content>
+
+<content start="326" end="329">
+<size>11</size></content>
+
+<content start="329" end="334">
+<size>11</size><href>index.cml</href></content>
+
+<content start="334" end="337">
+<size>11</size></content>
+
+<content start="337" end="341">
+<size>11</size><href>jnlp.cml</href></content>
+
+<content start="341" end="343">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

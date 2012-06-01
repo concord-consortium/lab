@@ -22,27 +22,27 @@ Removal
 To remove a bookmark, choose the &quot;Bookmarks&gt;Manage Bookmarks&quot; menu. You will see the following window:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
-Select the bookmark you would like to remove, then click the Remove Button. To select more than one bookmarks at a time, hold down the CTRL key and click them one by one. To select a range of bookmarks, hold down the SHIFT key, and click on the first and last bookmarks. All the bookmarks between them will be selected. 
+Select the bookmark you would like to remove, then click the &quot;Remove&quot; Button. To select more than one bookmarks at a time, hold down the CTRL key and click them one by one. To select a range of bookmarks, hold down the SHIFT key, and click on the first and last bookmarks. All the bookmarks between them will be selected. 
 
  
-Note: There is a preset bookmark called &quot;Molecular Workbench Home&quot;, which leads you back to the internal home page of the Molecular Workbench software. This bookmark cannot be removed. We assume that you will always need this bookmark to access the latest content.
+Note: There is a prestored bookmark called &quot;Molecular Workbench Home&quot;, which leads you back to the internal home page of the Molecular Workbench software. This bookmark cannot be removed. We assume that you will always need this bookmark to access the latest content.
  
 
 Sorting
 
 You can sort the bookmarks by dragging and dropping the items in the window of the Bookmark Manager.
 
-When you are done with removing the bookmarks, click the Close Button to close this window.
+When you are done with removing the bookmarks, click the &quot;Close&quot; Button to close this window.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="2138">
+<section start="0" end="2145">
 <paragraph start="0" end="19">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="18">
-<italic>true</italic><size>15</size><bold>true</bold></content>
+<size>15</size><bold>true</bold><italic>true</italic></content>
 
 <content start="18" end="19">
 </content>
@@ -55,25 +55,25 @@ When you are done with removing the bookmarks, click the Close Button to close t
 
 </paragraph>
 <paragraph start="20" end="48">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="20" end="22">
 <size>11</size></content>
 
 <content start="22" end="30">
-<href>pdfize.cml</href><size>11</size></content>
+<size>11</size><href>print.cml</href></content>
 
 <content start="30" end="33">
 <size>11</size></content>
 
 <content start="33" end="38">
-<href>index.cml</href><size>11</size></content>
+<size>11</size><href>index.cml</href></content>
 
 <content start="38" end="41">
 <size>11</size></content>
 
 <content start="41" end="45">
-<href>fullScreen.cml</href><size>11</size></content>
+<size>11</size><href>fullScreen.cml</href></content>
 
 <content start="45" end="47">
 <size>11</size></content>
@@ -127,26 +127,26 @@ When you are done with removing the bookmarks, click the Close Button to close t
 <paragraph start="575" end="577">
 <LeftIndent>140.0</LeftIndent>
 <content start="575" end="576">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="576" end="577">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="577" end="1170">
-<RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
 <content start="577" end="581">
-<bold>true</bold><foreground>255 0 0</foreground><size>11</size></content>
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
 
 <content start="581" end="582">
-<foreground>255 0 0</foreground><size>11</size></content>
+<size>11</size><foreground>255 0 0</foreground></content>
 
 <content start="582" end="1143">
 <size>11</size></content>
 
 <content start="1143" end="1168">
-<href>title.cml</href><size>11</size></content>
+<size>11</size><href>title.cml</href></content>
 
 <content start="1168" end="1169">
 <size>11</size></content>
@@ -158,7 +158,7 @@ When you are done with removing the bookmarks, click the Close Button to close t
 <paragraph start="1170" end="1172">
 <LeftIndent>140.0</LeftIndent>
 <content start="1170" end="1171">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1171" end="1172">
 <size>11</size></content>
@@ -173,7 +173,7 @@ When you are done with removing the bookmarks, click the Close Button to close t
 <paragraph start="1173" end="1181">
 <LeftIndent>140.0</LeftIndent>
 <content start="1173" end="1180">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="1180" end="1181">
 <size>11</size></content>
@@ -213,8 +213,14 @@ When you are done with removing the bookmarks, click the Close Button to close t
 <paragraph start="1289" end="1313">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="1289" end="1312">
+<content start="1289" end="1290">
+<size>13</size><bold>true</bold></content>
+
+<content start="1290" end="1311">
 <size>10</size></content>
+
+<content start="1311" end="1312">
+<size>13</size><bold>true</bold></content>
 
 <content start="1312" end="1313">
 <size>11</size></content>
@@ -226,122 +232,122 @@ When you are done with removing the bookmarks, click the Close Button to close t
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1314" end="1635">
+<paragraph start="1314" end="1637">
 <LeftIndent>140.0</LeftIndent>
-<content start="1314" end="1635">
+<content start="1314" end="1637">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1635" end="1636">
+<paragraph start="1637" end="1638">
 <LeftIndent>120.0</LeftIndent>
-<content start="1635" end="1636">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1636" end="1638">
-<LeftIndent>140.0</LeftIndent>
-<content start="1636" end="1637">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
 <content start="1637" end="1638">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1638" end="1903">
-<RightIndent>100.0</RightIndent>
+<paragraph start="1638" end="1640">
+<LeftIndent>140.0</LeftIndent>
+<content start="1638" end="1639">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1639" end="1640">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1640" end="1908">
 <LeftIndent>200.0</LeftIndent>
-<content start="1638" end="1642">
-<bold>true</bold><size>11</size></content>
+<RightIndent>100.0</RightIndent>
+<content start="1640" end="1644">
+<size>11</size><bold>true</bold></content>
 
-<content start="1642" end="1734">
+<content start="1644" end="1739">
 <size>11</size></content>
 
-<content start="1734" end="1788">
-<href>../index.cml</href><size>11</size></content>
+<content start="1739" end="1793">
+<size>11</size><href>../index.cml</href></content>
 
-<content start="1788" end="1903">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1903" end="1905">
-<LeftIndent>140.0</LeftIndent>
-<content start="1903" end="1904">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
-<content start="1904" end="1905">
+<content start="1793" end="1908">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1905" end="1906">
+<paragraph start="1908" end="1910">
 <LeftIndent>140.0</LeftIndent>
-<content start="1905" end="1906">
+<content start="1908" end="1909">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1909" end="1910">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1906" end="1914">
+<paragraph start="1910" end="1911">
 <LeftIndent>140.0</LeftIndent>
-<content start="1906" end="1913">
-<bold>true</bold><size>11</size></content>
-
-<content start="1913" end="1914">
+<content start="1910" end="1911">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1914" end="1915">
+<paragraph start="1911" end="1919">
 <LeftIndent>140.0</LeftIndent>
-<content start="1914" end="1915">
+<content start="1911" end="1918">
+<size>11</size><bold>true</bold></content>
+
+<content start="1918" end="1919">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1915" end="2016">
+<paragraph start="1919" end="1920">
 <LeftIndent>140.0</LeftIndent>
-<content start="1915" end="2016">
+<content start="1919" end="1920">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2016" end="2017">
+<paragraph start="1920" end="2021">
 <LeftIndent>140.0</LeftIndent>
-<content start="2016" end="2017">
+<content start="1920" end="2021">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2017" end="2109">
+<paragraph start="2021" end="2022">
 <LeftIndent>140.0</LeftIndent>
-<content start="2017" end="2108">
+<content start="2021" end="2022">
 <size>11</size></content>
 
-<content start="2108" end="2109">
+</paragraph>
+<paragraph start="2022" end="2116">
+<LeftIndent>140.0</LeftIndent>
+<content start="2022" end="2115">
+<size>11</size></content>
+
+<content start="2115" end="2116">
 </content>
 
 </paragraph>
-<paragraph start="2109" end="2110">
+<paragraph start="2116" end="2117">
 <LeftIndent>100.0</LeftIndent>
-<content start="2109" end="2110">
+<content start="2116" end="2117">
 </content>
 
 </paragraph>
-<paragraph start="2110" end="2138">
-<RightIndent>20.0</RightIndent>
+<paragraph start="2117" end="2145">
 <Alignment>2</Alignment>
-<content start="2110" end="2112">
+<RightIndent>20.0</RightIndent>
+<content start="2117" end="2119">
 <size>11</size></content>
 
-<content start="2112" end="2120">
-<href>pdfize.cml</href><size>11</size></content>
+<content start="2119" end="2127">
+<size>11</size><href>print.cml</href></content>
 
-<content start="2120" end="2123">
+<content start="2127" end="2130">
 <size>11</size></content>
 
-<content start="2123" end="2128">
-<href>index.cml</href><size>11</size></content>
+<content start="2130" end="2135">
+<size>11</size><href>index.cml</href></content>
 
-<content start="2128" end="2131">
+<content start="2135" end="2138">
 <size>11</size></content>
 
-<content start="2131" end="2135">
-<href>fullScreen.cml</href><size>11</size></content>
+<content start="2138" end="2142">
+<size>11</size><href>fullScreen.cml</href></content>
 
-<content start="2135" end="2137">
+<content start="2142" end="2144">
 <size>11</size></content>
 
 </paragraph>

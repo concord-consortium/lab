@@ -12,34 +12,34 @@ A damping force on an object is a force that is proportional to the speed of the
 You may practice using the Damping Tool with the following model:
 
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Script support
 
 The damp command can be used to apply a damping force with a specified friction coefficient to the selected particles.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="583">
+<section start="0" end="589">
 <paragraph start="0" end="17">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="16">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="16" end="17">
 </content>
 
 </paragraph>
 <paragraph start="17" end="18">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="17" end="18">
 </content>
 
 </paragraph>
 <paragraph start="18" end="46">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="18" end="20">
 <size>11</size></content>
 
@@ -99,8 +99,8 @@ The damp command can be used to apply a damping force with a specified friction 
 
 </paragraph>
 <paragraph start="383" end="385">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="383" end="384">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>DampingAction$0.mml</resource><menubar>false</menubar><recorder>true</recorder><button>Increase Damping</button><button>Decrease Damping</button><button>Change Velocity</button><button>Select Object</button></component></content>
@@ -109,80 +109,80 @@ The damp command can be used to apply a damping force with a specified friction 
 </content>
 
 </paragraph>
-<paragraph start="385" end="418">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="385" end="424">
 <Alignment>1</Alignment>
-<content start="385" end="417">
+<LeftIndent>140.0</LeftIndent>
+<content start="385" end="423">
 <size>10</size></content>
 
-<content start="417" end="418">
+<content start="423" end="424">
 </content>
 
 </paragraph>
-<paragraph start="418" end="419">
+<paragraph start="424" end="425">
 <RightIndent>20.0</RightIndent>
-<content start="418" end="419">
+<content start="424" end="425">
 </content>
 
 </paragraph>
-<paragraph start="419" end="434">
+<paragraph start="425" end="440">
 <LeftIndent>140.0</LeftIndent>
-<content start="419" end="433">
-<size>11</size><bold>true</bold></content>
+<content start="425" end="439">
+<bold>true</bold><size>11</size></content>
 
-<content start="433" end="434">
+<content start="439" end="440">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="434" end="435">
+<paragraph start="440" end="441">
 <LeftIndent>140.0</LeftIndent>
-<content start="434" end="435">
+<content start="440" end="441">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="435" end="554">
+<paragraph start="441" end="560">
 <LeftIndent>140.0</LeftIndent>
-<content start="435" end="439">
+<content start="441" end="445">
 <size>11</size></content>
 
-<content start="439" end="443">
+<content start="445" end="449">
 <href>script_damp.cml</href><size>11</size><family>Courier New</family></content>
 
-<content start="443" end="553">
+<content start="449" end="559">
 <size>11</size></content>
 
-<content start="553" end="554">
+<content start="559" end="560">
 </content>
 
 </paragraph>
-<paragraph start="554" end="555">
+<paragraph start="560" end="561">
 <RightIndent>20.0</RightIndent>
-<content start="554" end="555">
+<content start="560" end="561">
 </content>
 
 </paragraph>
-<paragraph start="555" end="583">
-<RightIndent>20.0</RightIndent>
+<paragraph start="561" end="589">
 <Alignment>2</Alignment>
-<content start="555" end="557">
+<RightIndent>20.0</RightIndent>
+<content start="561" end="563">
 <size>11</size></content>
 
-<content start="557" end="565">
+<content start="563" end="571">
 <href>restrainAction.cml</href><size>11</size></content>
 
-<content start="565" end="568">
+<content start="571" end="574">
 <size>11</size></content>
 
-<content start="568" end="573">
+<content start="574" end="579">
 <href>index1.cml</href><size>11</size></content>
 
-<content start="573" end="576">
+<content start="579" end="582">
 <size>11</size></content>
 
-<content start="576" end="580">
+<content start="582" end="586">
 <href>rotateAction.cml</href><size>11</size></content>
 
-<content start="580" end="582">
+<content start="586" end="588">
 <size>11</size></content>
 
 </paragraph>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
  <object class="org.concord.mw3d.ModelState"> 
   <void property="cameraPosition"> 
    <string>0.0 0.0 0.0</string> 
@@ -61,9 +61,6 @@ of a Cu crystal</string>
   </void> 
   <void property="showEnergizer"> 
    <boolean>true</boolean> 
-  </void> 
-  <void property="timeStep"> 
-   <float>0.5</float> 
   </void> 
   <void property="unmovableSelection"> 
    <string>5 6 7 8 9 10 11 20 21 22 23 24 25 26 32 33 37 38 40 41 45 46 60 61 62 63 66 68 69 70 71 74</string> 

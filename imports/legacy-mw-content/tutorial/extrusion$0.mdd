@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.5.0_09" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
  <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
   <void property="fillMode"> 
    <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
     <void property="color"> 
@@ -74,7 +77,7 @@
    </object> 
   </void> 
   <void property="rotation"> 
-   <string> 710 697 -102 58.5 82</string> 
+   <string>710 697 -102 58.5 82</string> 
   </void> 
   <void property="timeStep"> 
    <float>1.0</float> 

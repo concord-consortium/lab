@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Paint</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Paint
+
+&lt; Previous | Index | Next &gt;
+
+The paint command causes the view to be repainted immediately.
+
+Syntax:
+
+paint
+
+Note that calling this command causes the forces to be computed once for the current conformation of the model. If you need to manipulate the positions of the atoms and have turned on the force-vector mode or the force-line mode, you will need to call this command for the force vectors or force lines to be refreshed.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="464">
+<paragraph start="0" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="5">
+<bold>true</bold><italic>true</italic><size>16</size></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="9">
+<size>11</size></content>
+
+<content start="9" end="17">
+<href>script_background.cml</href><size>11</size></content>
+
+<content start="17" end="20">
+<size>11</size></content>
+
+<content start="20" end="25">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="25" end="28">
+<size>11</size></content>
+
+<content start="28" end="32">
+<href>script_focus.cml</href><size>11</size></content>
+
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<LeftIndent>100.0</LeftIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="99">
+<LeftIndent>140.0</LeftIndent>
+<content start="36" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<family>Courier New</family><size>11</size></content>
+
+<content start="45" end="99">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="99" end="100">
+<LeftIndent>140.0</LeftIndent>
+<content start="99" end="100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="100" end="108">
+<LeftIndent>140.0</LeftIndent>
+<content start="100" end="108">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="108" end="109">
+<LeftIndent>140.0</LeftIndent>
+<content start="108" end="109">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="109" end="115">
+<LeftIndent>160.0</LeftIndent>
+<content start="109" end="114">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="114" end="115">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="115" end="116">
+<LeftIndent>160.0</LeftIndent>
+<content start="115" end="116">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="116" end="435">
+<LeftIndent>140.0</LeftIndent>
+<content start="116" end="126">
+<size>11</size></content>
+
+<content start="126" end="226">
+<bold>true</bold><size>11</size></content>
+
+<content start="226" end="435">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="435" end="436">
+<LeftIndent>140.0</LeftIndent>
+<content start="435" end="436">
+</content>
+
+</paragraph>
+<paragraph start="436" end="464">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="436" end="438">
+<size>11</size></content>
+
+<content start="438" end="446">
+<href>script_background.cml</href><size>11</size></content>
+
+<content start="446" end="449">
+<size>11</size></content>
+
+<content start="449" end="454">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="454" end="457">
+<size>11</size></content>
+
+<content start="457" end="461">
+<href>script_focus.cml</href><size>11</size></content>
+
+<content start="461" end="463">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

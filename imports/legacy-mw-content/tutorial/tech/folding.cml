@@ -1,0 +1,960 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Modeling Protein Folding</page_title>
+<text> 
+ 
+
+Background
+
+Building a computational model capable of predicting the structure of a protein based on a genetic code is an important topic of current bioinformatics research &#10102;. Studies on protein structure prediction focus primarily on the mechanisms of protein folding. Because of the fundamental importance of the protein-folding problem, researchers have built numerous mathematical and computational models. We have examined some of these models. One type of model is called simple exact models &#10103;. In some simple exact models, proteins are represented by a string of beads that occupy the vertices of a regular lattice. Folding is described as a process of seeking for minimum energy for the string on the lattice. The most popular lattice model is perhaps the hydrophobic-polar (HP) model &#10104;, which is a two-state model in two dimensions.  
+
+Limitations of the HP model
+
+The two-state HP model may be useful for investigating folding mechanisms from basic physical principles, but one cannot talk about amino acids and therefore cannot introduce genetic codes. We need a 20-state model so that we can map each state to an amino acid, and then map the DNA codons to the 20 amino acids. Furthermore, in most lattice models, confining the protein on a lattice is just an approximation to reduce the volume of protein folding pathways so that computers could enumerate them. As enumeration is not possible for a 20-state model, the lattice approximation cannot be used.
+
+Our molecular dynamics model
+
+   How do we model amino acids?
+
+For simplicity, an amino acid is represented by a Lennard-Jones particle, which has a repulsive core to prevent it from overlapping with another. The sigma parameter defines the size of the amino acid the Lennard-Jones particle represents. When two amino acids meet at the sigma distance, they bounce off. This is consistent with the fact that amino acids are stable chemical compounds that do not easily react to form a new compound (no merger of particles).
+   &#10154;    &#10154; 
+Illustration of simplification of a 3D protein molecule to a 2D bead model: The first step simplifies the protein molecule to a chain of beads; the second step flats it to 2D.
+
+Caveat: In reality, amino acids are NOT particles at all. Amino acids are chemical compounds made of C, N, O, H and S.
+
+   Van der Waals and electrostatic interactions among amino acids
+
+Amino acids weakly attract each other with van der Waals forces (i.e. the negative part of the Lennard-Jones potential). Charged amino acids interact with each other with long-range electrostatic forces, which are greatly reduced when a protein is put in aqueous environment because of the electrostatic screening effect caused by the surrounding water molecules (this is modeled by decreasing the dielectric constant used in computing the electrostatic forces).
+
+   How do we model peptide bonds?
+
+Two adjacent amino acids are linked by a spring, which represents a peptide bond. A string of amino acids connected by springs represent a polypeptide.
+
+Caveat: In real proteins, peptide bonds are far more complicated than springs. In the spring model, the angles between two adjacent peptide bonds can change freely until the particles they connect hit others and cannot move any further, but in reality two residues of a protein connected by a peptide bond may not rotate freely in their relative direction.
+
+   How do we model inter-amino acid hydrogen bonds?
+
+Amino acids can form hydrogen bonds that stablize protein structures. Hydrogen bonds, in our model (as is also in the widely-used MMFF), are contributed by the van der Waals and electrostatic interactions. An amino acid with a positive charge and another one with a negative charge may form a hydrogen bond.
+
+Caveat: Hydrogen bonds are complicated steric interactions, which cannot be modeled accurately in 2D.
+
+   How do we model disulfide bonds?
+
+A strong cross-type Lennard-Jones potential is given to a pair of amino acids that can form a disulfide bond.
+
+Caveat: Disulfide bonds are almost covalent. The Lennard-Jones model cannot model the covalent nature.
+
+   How do we model hydrophobicity?
+
+Similar to the HP model, solvent molecules are not explicitly taken into account in our model either. An effective-field approach is used to calculate the interactions of amino acids with solvent molecules.
+
+Amino acids are either hydrophobic (water-hating/oil-loving) and hydrophilic (water-loving/oil-hating). Our goal is to devise a mathematical model that can demonstrate protein folding/unfolding without doing complicated and time-consuming calculations with solvent explicitly involved. We first introduce a parameter h to quantify how hydrophobic an amino acid is. A postive h means the amino acid is hydrophobic, whereas a negative one means the amino acid is hydrophilic. The more positive the h parameter is, the more hydrophobic the amino acid is. Conversely, the more negative the h parameter is, the more hydrophilic the amino acid is. Second, we introduce a parameter E to quantify the chemical property of the solvent environment. A positive E means oily environment, whereas a negative one means aquous environment. E=0 means the protein is in vacuum. The value of E is affected by such factors as temperature and pH. For an aqueous solution, a greater |E| represents better solutability of hydrophilic amino acids. For an oily solution, a greater |E| means better solutability of hydrophobic amino acids.
+
+Having defined these properties, we introduce a force law for the interactions between amino acids and solvent molecules:
+
+  
+where Ri is the position vector of the i-th amino acid, Rc is that of the center of mass of the protein, and Fi is the net force on the i-th amino acid from the solvent environment. This simple force law is based on the fact that a hydrophobic amino acid in water  tends to stay as far as possible away from water molecules. If the protein is surrounded by water molecules from all directions, the interactions result in a net effect as if the hydrophobic amino acids were pulled by effective forces that help them hide in the interior of the protein.  As a first-order approximation, we assume that this effective force comes from the center of mass of the protein (Fig. 1). This approximation works well for proteins that will fold into globular structures, though it needs to be improved to handle other situations.
+
+For the hydrophilic amino acids that &quot;love&quot; water, the effect of the environment is as if they were pushed away from inside the protein, in order to have a better chance to contact with water molecules (Fig. 1).
+
+The result of molecular dynamics simulation using these forces is similar to that of Monte Carlo simulation using the HP model employing a scoring function to maximize hydrophobic contacts: Hydrophobic collapse emerges from the simulation.
+
+  
+Figure 1
+
+Conversely, in an oily environment that is composed of non-polar molecules, hydrophilic amino acids, which are polar, would seek the center. This is because close-packing polar residues could significantly minimize the potential energy of the whole protein. The net effect of this can be modeled by applying effective forces that pull hydrophilic residues to the center, and effective forces that push hydrophobic residues away from the center, as is shown in Fig. 2.
+
+ 
+Figure 2
+
+Caveat: Interactions between an amino acid and water molecules do not necessarily point to or emit from the center of mass.
+
+Evaluating the model
+
+The success of a protein folding model can be based on whether or not it can produce the general structural patterns found in proteins. Our model can show the three basic patterns: Zig-zag (would be helical in 3D), parallel (would be beta sheet in 3D), and turn (same in 2D and 3D).
+
+ 
+ Want to see a running model?
+
+Future work
+
+The effective mean field approximation needs to be improved. We also hope to generalize the above model to 3D, so that more realistic structures can be produced.
+
+References
+
+&#10102; T. Jiang, Y. Xu, and M. Q. Zhang, eds., Current Topics in Computational Molecular Biology, The MIT Press, Cambridge, MA, 2002
+&#10103; H. S. Chan and E. Bornberg-Bauer, Applied Bioinformatics, 1, 121-144 (2002)
+&#10104; K. F. Lau and K. A. Dill, Macromolecules, 22, 3986-3997 (1989); Proc. Natl. Acad. Sci. USA, 87, 638-642 (1990)
+
+
+
+</text>
+<section start="0" end="8329">
+<paragraph start="0" end="2">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>600.0</width><height>50</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;b&gt;&lt;font color=&quot;#ffffff&quot; face=&quot;Verdana&quot; size=&quot;6&quot;&gt;Modeling Protein Folding&lt;/font&gt;&lt;/b&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-999a00</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>600.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;By Charles Xie, Concord Consortium&lt;/font&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-ff0100</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="16">
+<LeftIndent>8.0</LeftIndent>
+<content start="5" end="15">
+<bold>true</bold><size>11</size></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="849">
+<LeftIndent>8.0</LeftIndent>
+<content start="17" end="178">
+<size>11</size></content>
+
+<content start="178" end="179">
+<size>13</size></content>
+
+<content start="179" end="503">
+<size>11</size></content>
+
+<content start="503" end="504">
+<size>13</size></content>
+
+<content start="504" end="505">
+</content>
+
+<content start="505" end="798">
+<size>11</size></content>
+
+<content start="798" end="799">
+<size>13</size></content>
+
+<content start="799" end="849">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="849" end="850">
+<LeftIndent>8.0</LeftIndent>
+<content start="849" end="850">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="850" end="878">
+<LeftIndent>8.0</LeftIndent>
+<content start="850" end="877">
+<bold>true</bold><size>11</size></content>
+
+<content start="877" end="878">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="878" end="879">
+<LeftIndent>8.0</LeftIndent>
+<content start="878" end="879">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="879" end="1474">
+<LeftIndent>8.0</LeftIndent>
+<content start="879" end="1474">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1474" end="1475">
+<LeftIndent>8.0</LeftIndent>
+<content start="1474" end="1475">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1475" end="1504">
+<LeftIndent>8.0</LeftIndent>
+<content start="1475" end="1503">
+<bold>true</bold><size>11</size></content>
+
+<content start="1503" end="1504">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1504" end="1505">
+<content start="1504" end="1505">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1505" end="1537">
+<LeftIndent>20.0</LeftIndent>
+<content start="1505" end="1506">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1506" end="1507">
+<size>11</size></content>
+
+<content start="1507" end="1508">
+<bold>true</bold><size>11</size></content>
+
+<content start="1508" end="1536">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+<content start="1536" end="1537">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1537" end="1538">
+<content start="1537" end="1538">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1538" end="1998">
+<LeftIndent>40.0</LeftIndent>
+<content start="1538" end="1588">
+<size>11</size></content>
+
+<content start="1588" end="1601">
+<href>../glossary/LennardJones.cml</href><size>11</size></content>
+
+<content start="1601" end="1998">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1998" end="2009">
+<LeftIndent>40.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1998" end="1999">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>restrict protein;frank off;</script><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>1MBO.pdb.gz</resource><state>folding$0.jms</state><width>200.0</width>
+<height>250.0</height>
+</component></content>
+
+<content start="1999" end="2001">
+</content>
+
+<content start="2001" end="2002">
+<size>32</size></content>
+
+<content start="2002" end="2003">
+</content>
+
+<content start="2003" end="2004">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>select *;
+cartoon off; wireframe off;
+select *.CA;
+restrict selected;
+cpk 400;
+wireframe off;
+trace on;
+select polar;
+color [x00FFFF];
+select not polar;
+color [xFFAFAF];
+frank off;</script><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>1MBO.pdb.gz</resource><state>folding$1.jms</state><width>200.0</width>
+<height>250.0</height>
+</component></content>
+
+<content start="2004" end="2006">
+</content>
+
+<content start="2006" end="2007">
+<size>32</size></content>
+
+<content start="2007" end="2008">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>folding$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="2008" end="2009">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2009" end="2185">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>60.0</RightIndent>
+<content start="2009" end="2184">
+<size>10</size></content>
+
+<content start="2184" end="2185">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2185" end="2186">
+<LeftIndent>40.0</LeftIndent>
+<content start="2185" end="2186">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2186" end="2305">
+<LeftIndent>40.0</LeftIndent>
+<content start="2186" end="2192">
+<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+
+<content start="2192" end="2194">
+<foreground>255 0 0</foreground><size>11</size></content>
+
+<content start="2194" end="2305">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2305" end="2306">
+<LeftIndent>40.0</LeftIndent>
+<content start="2305" end="2306">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2306" end="2372">
+<LeftIndent>20.0</LeftIndent>
+<content start="2306" end="2307">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="2307" end="2309">
+</content>
+
+<content start="2309" end="2371">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+<content start="2371" end="2372">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2372" end="2373">
+<LeftIndent>40.0</LeftIndent>
+<content start="2372" end="2373">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2373" end="2836">
+<LeftIndent>40.0</LeftIndent>
+<content start="2373" end="2836">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2836" end="2837">
+<content start="2836" end="2837">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2837" end="2871">
+<LeftIndent>20.0</LeftIndent>
+<content start="2837" end="2838">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="2838" end="2840">
+<size>11</size></content>
+
+<content start="2840" end="2870">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+<content start="2870" end="2871">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2871" end="2872">
+<content start="2871" end="2872">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2872" end="3024">
+<LeftIndent>40.0</LeftIndent>
+<content start="2872" end="3024">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3024" end="3025">
+<LeftIndent>40.0</LeftIndent>
+<content start="3024" end="3025">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3025" end="3382">
+<LeftIndent>40.0</LeftIndent>
+<content start="3025" end="3031">
+<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+
+<content start="3031" end="3032">
+<foreground>255 0 0</foreground><size>11</size></content>
+
+<content start="3032" end="3382">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3382" end="3383">
+<LeftIndent>20.0</LeftIndent>
+<content start="3382" end="3383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3383" end="3435">
+<LeftIndent>20.0</LeftIndent>
+<content start="3383" end="3384">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="3384" end="3385">
+<size>11</size></content>
+
+<content start="3385" end="3386">
+<bold>true</bold><size>11</size></content>
+
+<content start="3386" end="3434">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+<content start="3434" end="3435">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3435" end="3436">
+<LeftIndent>20.0</LeftIndent>
+<content start="3435" end="3436">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3436" end="3744">
+<LeftIndent>40.0</LeftIndent>
+<content start="3436" end="3744">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3744" end="3745">
+<LeftIndent>40.0</LeftIndent>
+<content start="3744" end="3745">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3745" end="3847">
+<LeftIndent>40.0</LeftIndent>
+<content start="3745" end="3751">
+<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+
+<content start="3751" end="3752">
+<foreground>255 0 0</foreground><size>11</size></content>
+
+<content start="3752" end="3847">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3847" end="3848">
+<content start="3847" end="3848">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3848" end="3884">
+<LeftIndent>20.0</LeftIndent>
+<content start="3848" end="3849">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="3849" end="3851">
+</content>
+
+<content start="3851" end="3883">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+<content start="3883" end="3884">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3884" end="3885">
+<LeftIndent>8.0</LeftIndent>
+<content start="3884" end="3885">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3885" end="3995">
+<LeftIndent>40.0</LeftIndent>
+<content start="3885" end="3995">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3995" end="3996">
+<LeftIndent>20.0</LeftIndent>
+<content start="3995" end="3996">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3996" end="4099">
+<LeftIndent>40.0</LeftIndent>
+<content start="3996" end="4002">
+<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+
+<content start="4002" end="4003">
+<foreground>255 0 0</foreground><size>11</size></content>
+
+<content start="4003" end="4099">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4099" end="4100">
+<content start="4099" end="4100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4100" end="4135">
+<LeftIndent>20.0</LeftIndent>
+<content start="4100" end="4101">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="4101" end="4103">
+<size>11</size></content>
+
+<content start="4103" end="4134">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+<content start="4134" end="4135">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4135" end="4136">
+<LeftIndent>20.0</LeftIndent>
+<content start="4135" end="4136">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4136" end="4343">
+<LeftIndent>40.0</LeftIndent>
+<content start="4136" end="4343">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4343" end="4344">
+<LeftIndent>40.0</LeftIndent>
+<content start="4343" end="4344">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4344" end="5459">
+<LeftIndent>40.0</LeftIndent>
+<content start="4344" end="4661">
+<size>11</size></content>
+
+<content start="4661" end="4662">
+<italic>true</italic><size>11</size></content>
+
+<content start="4662" end="4719">
+<size>11</size></content>
+
+<content start="4719" end="4720">
+<italic>true</italic><size>11</size></content>
+
+<content start="4720" end="4840">
+<size>11</size></content>
+
+<content start="4840" end="4841">
+<italic>true</italic><size>11</size></content>
+
+<content start="4841" end="4930">
+<size>11</size></content>
+
+<content start="4930" end="4931">
+<italic>true</italic><size>11</size></content>
+
+<content start="4931" end="5019">
+<size>11</size></content>
+
+<content start="5019" end="5020">
+<italic>true</italic><size>11</size></content>
+
+<content start="5020" end="5094">
+<size>11</size></content>
+
+<content start="5094" end="5095">
+<italic>true</italic><size>11</size></content>
+
+<content start="5095" end="5169">
+<size>11</size></content>
+
+<content start="5169" end="5170">
+<italic>true</italic><size>11</size></content>
+
+<content start="5170" end="5218">
+<size>11</size></content>
+
+<content start="5218" end="5219">
+<italic>true</italic><size>11</size></content>
+
+<content start="5219" end="5307">
+<size>11</size></content>
+
+<content start="5307" end="5309">
+<italic>true</italic><size>11</size></content>
+
+<content start="5309" end="5402">
+<size>11</size></content>
+
+<content start="5402" end="5403">
+<italic>true</italic><size>11</size></content>
+
+<content start="5403" end="5459">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5459" end="5460">
+<LeftIndent>20.0</LeftIndent>
+<content start="5459" end="5460">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5460" end="5582">
+<LeftIndent>40.0</LeftIndent>
+<content start="5460" end="5582">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5582" end="5583">
+<LeftIndent>40.0</LeftIndent>
+<content start="5582" end="5583">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5583" end="5586">
+<LeftIndent>40.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="5583" end="5584">
+</content>
+
+<content start="5584" end="5585">
+<icon>hydroforcelaw.gif</icon></content>
+
+<content start="5585" end="5586">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5586" end="6405">
+<LeftIndent>40.0</LeftIndent>
+<content start="5586" end="5592">
+<size>11</size></content>
+
+<content start="5592" end="5593">
+<bold>true</bold><size>11</size></content>
+
+<content start="5593" end="5594">
+<subscript>true</subscript><italic>true</italic><size>11</size></content>
+
+<content start="5594" end="5625">
+<size>11</size></content>
+
+<content start="5625" end="5626">
+<italic>true</italic><size>11</size></content>
+
+<content start="5626" end="5642">
+<size>11</size></content>
+
+<content start="5642" end="5643">
+<bold>true</bold><size>11</size></content>
+
+<content start="5643" end="5644">
+<subscript>true</subscript><italic>true</italic><size>11</size></content>
+
+<content start="5644" end="5695">
+<size>11</size></content>
+
+<content start="5695" end="5696">
+<bold>true</bold><size>11</size></content>
+
+<content start="5696" end="5697">
+<subscript>true</subscript><italic>true</italic><size>11</size></content>
+
+<content start="5697" end="5722">
+<size>11</size></content>
+
+<content start="5722" end="5723">
+<italic>true</italic><size>11</size></content>
+
+<content start="5723" end="6388">
+<size>11</size></content>
+
+<content start="6388" end="6389">
+<italic>true</italic><size>11</size></content>
+
+<content start="6389" end="6405">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6405" end="6406">
+<LeftIndent>40.0</LeftIndent>
+<content start="6405" end="6406">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6406" end="6618">
+<LeftIndent>40.0</LeftIndent>
+<content start="6406" end="6618">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6618" end="6619">
+<LeftIndent>40.0</LeftIndent>
+<content start="6618" end="6619">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6619" end="6859">
+<LeftIndent>40.0</LeftIndent>
+<content start="6619" end="6859">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6859" end="6860">
+<LeftIndent>40.0</LeftIndent>
+<content start="6859" end="6860">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6860" end="6863">
+<LeftIndent>20.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="6860" end="6861">
+<icon>math1.gif</icon><size>11</size></content>
+
+<content start="6861" end="6863">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6863" end="6872">
+<LeftIndent>20.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="6863" end="6872">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6872" end="6873">
+<LeftIndent>20.0</LeftIndent>
+<content start="6872" end="6873">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6873" end="7341">
+<LeftIndent>40.0</LeftIndent>
+<content start="6873" end="7341">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7341" end="7342">
+<LeftIndent>20.0</LeftIndent>
+<content start="7341" end="7342">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7342" end="7344">
+<Alignment>1</Alignment>
+<content start="7342" end="7343">
+<icon>math2.gif</icon><size>11</size></content>
+
+<content start="7343" end="7344">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7344" end="7353">
+<Alignment>1</Alignment>
+<content start="7344" end="7353">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7353" end="7354">
+<Alignment>1</Alignment>
+<content start="7353" end="7354">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7354" end="7478">
+<LeftIndent>40.0</LeftIndent>
+<content start="7354" end="7360">
+<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+
+<content start="7360" end="7362">
+<foreground>255 0 0</foreground><size>11</size></content>
+
+<content start="7362" end="7478">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7478" end="7479">
+<LeftIndent>20.0</LeftIndent>
+<content start="7478" end="7479">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7479" end="7500">
+<LeftIndent>8.0</LeftIndent>
+<content start="7479" end="7499">
+<bold>true</bold><size>11</size></content>
+
+<content start="7499" end="7500">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7500" end="7501">
+<LeftIndent>8.0</LeftIndent>
+<content start="7500" end="7501">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7501" end="7784">
+<LeftIndent>8.0</LeftIndent>
+<content start="7501" end="7784">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7784" end="7785">
+<content start="7784" end="7785">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7785" end="7787">
+<Alignment>1</Alignment>
+<content start="7785" end="7786">
+<icon>window10.gif</icon></content>
+
+<content start="7786" end="7787">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7787" end="7817">
+<Alignment>1</Alignment>
+<content start="7787" end="7788">
+<size>11</size></content>
+
+<content start="7788" end="7815">
+<href>../../student/proteinfolding/long.cml</href><size>11</size></content>
+
+<content start="7815" end="7817">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7817" end="7818">
+<LeftIndent>8.0</LeftIndent>
+<content start="7817" end="7818">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="7818" end="7830">
+<LeftIndent>8.0</LeftIndent>
+<content start="7818" end="7830">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="7830" end="7831">
+<LeftIndent>8.0</LeftIndent>
+<content start="7830" end="7831">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7831" end="7993">
+<LeftIndent>8.0</LeftIndent>
+<content start="7831" end="7993">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7993" end="7994">
+<LeftIndent>8.0</LeftIndent>
+<content start="7993" end="7994">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="7994" end="8005">
+<LeftIndent>8.0</LeftIndent>
+<content start="7994" end="8004">
+<bold>true</bold><size>11</size></content>
+
+<content start="8004" end="8005">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8005" end="8006">
+<content start="8005" end="8006">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8006" end="8134">
+<LeftIndent>20.0</LeftIndent>
+<content start="8006" end="8007">
+<size>13</size></content>
+
+<content start="8007" end="8048">
+<size>10</size></content>
+
+<content start="8048" end="8097">
+<italic>true</italic><size>10</size></content>
+
+<content start="8097" end="8134">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="8134" end="8212">
+<LeftIndent>20.0</LeftIndent>
+<content start="8134" end="8135">
+<size>13</size></content>
+
+<content start="8135" end="8212">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="8212" end="8325">
+<LeftIndent>20.0</LeftIndent>
+<content start="8212" end="8213">
+<size>13</size></content>
+
+<content start="8213" end="8325">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="8325" end="8326">
+<LeftIndent>20.0</LeftIndent>
+<content start="8325" end="8326">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="8326" end="8327">
+<LeftIndent>20.0</LeftIndent>
+<content start="8326" end="8327">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="8327" end="8328">
+<LeftIndent>20.0</LeftIndent>
+<content start="8327" end="8328">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="8328" end="8329">
+<LeftIndent>20.0</LeftIndent>
+</paragraph>
+</section>
+</document>

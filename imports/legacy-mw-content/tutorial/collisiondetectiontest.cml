@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Collision detections through custom tasks and MW scripts</page_title>
+<referenced_files>click.wav</referenced_files>
+<text>Collision detections through custom tasks and MW scripts
+   
+
+Scripts:
+ 
+1) The initialization scripts set in the &quot;Script&quot; tab of the Model Properties Dialog.
+2) Two custom tasks in the Task Manager for detecting collisions with the rectangles and collisions with the triangles. (Although two different algorithms are used respectively, we can use the ptSegDistSq function in both cases.)
+3) The collision count is printed on the script console using another custom task. 
+
+Optimization:
+
+     1) Using the within built-in function to speed up?
+
+
+
+</text>
+<section start="0" end="549">
+<paragraph start="0" end="57">
+<Alignment>1</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="56">
+<size>16</size><bold>true</bold></content>
+
+<content start="56" end="57">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="57" end="61">
+<Alignment>1</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="57" end="58">
+<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>collisiondetectiontest$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="58" end="59">
+<size>11</size></content>
+
+<content start="59" end="60">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>340</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="62">
+<Alignment>1</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="71">
+<LeftIndent>40.0</LeftIndent>
+<content start="62" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="73">
+<LeftIndent>40.0</LeftIndent>
+<content start="71" end="73">
+</content>
+
+</paragraph>
+<paragraph start="73" end="159">
+<LeftIndent>60.0</LeftIndent>
+<content start="73" end="159">
+</content>
+
+</paragraph>
+<paragraph start="159" end="389">
+<LeftIndent>60.0</LeftIndent>
+<content start="159" end="352">
+</content>
+
+<content start="352" end="363">
+<bold>true</bold><family>Courier New</family></content>
+
+<content start="363" end="389">
+</content>
+
+</paragraph>
+<paragraph start="389" end="473">
+<LeftIndent>60.0</LeftIndent>
+<content start="389" end="473">
+</content>
+
+</paragraph>
+<paragraph start="473" end="474">
+<LeftIndent>60.0</LeftIndent>
+<content start="473" end="474">
+</content>
+
+</paragraph>
+<paragraph start="474" end="488">
+<LeftIndent>40.0</LeftIndent>
+<content start="474" end="488">
+</content>
+
+</paragraph>
+<paragraph start="488" end="489">
+<LeftIndent>40.0</LeftIndent>
+<content start="488" end="489">
+</content>
+
+</paragraph>
+<paragraph start="489" end="545">
+<LeftIndent>40.0</LeftIndent>
+<content start="489" end="497">
+</content>
+
+<content start="497" end="544">
+<href>collisiondetectiontest1.cml</href></content>
+
+<content start="544" end="545">
+</content>
+
+</paragraph>
+<paragraph start="545" end="546">
+<LeftIndent>40.0</LeftIndent>
+<content start="545" end="546">
+</content>
+
+</paragraph>
+<paragraph start="546" end="547">
+<LeftIndent>60.0</LeftIndent>
+<content start="546" end="547">
+</content>
+
+</paragraph>
+<paragraph start="547" end="548">
+<content start="547" end="548">
+</content>
+
+</paragraph>
+<paragraph start="548" end="549">
+</paragraph>
+</section>
+</document>

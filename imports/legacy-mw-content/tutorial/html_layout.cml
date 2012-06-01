@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Using the HTML layout</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Using the HTML layout
@@ -14,49 +14,49 @@ The following is an example of using HTML layout:
   
 To view the source, save this page to your disk, enter the authoring mode and right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the text box.
 
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Besides the layout, HTML also offers background setting for each table cell. As you can see from the above example, the second cell in the top row has a different background color than those of the others.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="880">
+<section start="0" end="886">
 <paragraph start="0" end="22">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="0" end="21">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<size>15</size><bold>true</bold><italic>true</italic></content>
 
 <content start="21" end="22">
 </content>
 
 </paragraph>
 <paragraph start="22" end="23">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="22" end="23">
 </content>
 
 </paragraph>
 <paragraph start="23" end="51">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="23" end="25">
 <size>11</size></content>
 
 <content start="25" end="33">
-<size>11</size><href>html_textarea.cml</href></content>
+<href>html_textarea.cml</href><size>11</size></content>
 
 <content start="33" end="36">
 <size>11</size></content>
 
 <content start="36" end="41">
-<size>11</size><href>index2.cml</href></content>
+<href>index2.cml</href><size>11</size></content>
 
 <content start="41" end="44">
 <size>11</size></content>
 
 <content start="44" end="48">
-<size>11</size><href>singlecontrol.cml</href></content>
+<href>singlecontrol.cml</href><size>11</size></content>
 
 <content start="48" end="50">
 <size>11</size></content>
@@ -96,8 +96,8 @@ Besides the layout, HTML also offers background setting for each table cell. As 
 
 </paragraph>
 <paragraph start="440" end="443">
-<Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="440" end="441">
 <component><class>org.concord.modeler.PageTextBox</class>
 <width>300.0</width>
@@ -106,15 +106,15 @@ Besides the layout, HTML also offers background setting for each table cell. As 
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body&gt;
+  &lt;body marginwidth=&quot;4&quot; marginheight=&quot;4&quot;&gt;
     &lt;p&gt;
-      &lt;font size=&quot;3&quot; face=&quot;Verdana&quot;&gt;This is a HTML text box, which uses a 
+      &lt;font size=&quot;3&quot; face=&quot;Verdana&quot;&gt;This is an HTML text box, which uses a 
       table to create a small control palette.&lt;/font&gt;
     &lt;/p&gt;
     &lt;p&gt;
       
     &lt;/p&gt;
-    &lt;table bgcolor=&quot;#ccccff&quot; border=&quot;2&quot;&gt;
+    &lt;table border=&quot;2&quot; bgcolor=&quot;#ccccff&quot;&gt;
       &lt;tr&gt;
         &lt;td&gt;
           &lt;select script4=&quot;script:mw:1:select atom 3;mark color [255 255 0];&quot; script3=&quot;script:mw:1:select atom 2;mark color [255 255 0];&quot; script2=&quot;script:mw:1:select atom 1;mark color [255 255 0];&quot; script1=&quot;script:mw:1:select atom none;mark;&quot; name=&quot;menu&quot; script5=&quot;script:mw:1:select atom 4;mark color [255 255 0];&quot;&gt;
@@ -133,21 +133,21 @@ Besides the layout, HTML also offers background setting for each table cell. As 
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;td&gt;
-          &lt;input value=&quot;Select All Atoms&quot; name=&quot;group&quot; script=&quot;script:mw:1:select atom all;mark;&quot; type=&quot;radio&quot;&gt;
+          &lt;input type=&quot;radio&quot; value=&quot;Select All Atoms&quot; name=&quot;group&quot; script=&quot;script:mw:1:select atom all;mark;&quot;&gt;
           &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Select all &lt;/font&gt;
         &lt;/td&gt;
         &lt;td&gt;
-          &lt;input value=&quot;Select No Atom&quot; name=&quot;group&quot; script=&quot;script:mw:1:select element 2;mark;&quot; type=&quot;radio&quot;&gt;
+          &lt;input type=&quot;radio&quot; value=&quot;Select No Atom&quot; name=&quot;group&quot; script=&quot;script:mw:1:select element 2;mark;&quot;&gt;
           &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Select element 2&lt;/font&gt;
         &lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;td&gt;
-          &lt;input value=&quot;Select within 2&quot; name=&quot;group&quot; script=&quot;script:mw:1:select element within (3.0, 2);mark;&quot; type=&quot;radio&quot;&gt;
+          &lt;input type=&quot;radio&quot; value=&quot;Select within 2&quot; name=&quot;group&quot; script=&quot;script:mw:1:select element within (3.0, 2);mark;&quot;&gt;
           &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Select some&lt;/font&gt;
         &lt;/td&gt;
         &lt;td&gt;
-          &lt;input value=&quot;Show velocity vectors&quot; script_selected=&quot;script:mw:1:show velocity on;&quot; script_deselected=&quot;script:mw:1:show velocity off;&quot; type=&quot;checkbox&quot;&gt;
+          &lt;input type=&quot;checkbox&quot; value=&quot;Show velocity vectors&quot; script_selected=&quot;script:mw:1:show velocity on;&quot; script_deselected=&quot;script:mw:1:show velocity off;&quot;&gt;
           &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Show velocities &lt;/font&gt;
         &lt;/td&gt;
       &lt;/tr&gt;
@@ -160,26 +160,22 @@ Besides the layout, HTML also offers background setting for each table cell. As 
 &lt;/html&gt;
 </title>
 <opaque>false</opaque>
+<border>Lowered Etched</border>
 </component></content>
 
 <content start="441" end="442">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>html_layout$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+<resource>html_layout$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
 
 <content start="442" end="443">
 </content>
 
 </paragraph>
 <paragraph start="443" end="610">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
-<content start="443" end="534">
-<size>10</size><italic>true</italic></content>
-
-<content start="534" end="591">
-<size>10</size><italic>true</italic></content>
-
-<content start="591" end="609">
+<LeftIndent>200.0</LeftIndent>
+<content start="443" end="609">
 <size>10</size><italic>true</italic></content>
 
 <content start="609" end="610">
@@ -187,65 +183,71 @@ Besides the layout, HTML also offers background setting for each table cell. As 
 
 </paragraph>
 <paragraph start="610" end="611">
-<Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="610" end="611">
 <size>10</size></content>
 
 </paragraph>
-<paragraph start="611" end="644">
-<Alignment>1</Alignment>
+<paragraph start="611" end="650">
 <LeftIndent>140.0</LeftIndent>
-<content start="611" end="643">
+<Alignment>1</Alignment>
+<content start="611" end="612">
+<bold>true</bold><size>13</size></content>
+
+<content start="612" end="648">
 <size>10</size></content>
 
-<content start="643" end="644">
+<content start="648" end="649">
+<bold>true</bold><size>13</size></content>
+
+<content start="649" end="650">
 </content>
 
 </paragraph>
-<paragraph start="644" end="645">
+<paragraph start="650" end="651">
 <LeftIndent>140.0</LeftIndent>
-<content start="644" end="645">
+<content start="650" end="651">
 </content>
 
 </paragraph>
-<paragraph start="645" end="851">
+<paragraph start="651" end="857">
 <LeftIndent>140.0</LeftIndent>
-<content start="645" end="850">
+<content start="651" end="856">
 <size>11</size></content>
 
-<content start="850" end="851">
+<content start="856" end="857">
 </content>
 
 </paragraph>
-<paragraph start="851" end="852">
+<paragraph start="857" end="858">
 <LeftIndent>140.0</LeftIndent>
-<content start="851" end="852">
+<content start="857" end="858">
 </content>
 
 </paragraph>
-<paragraph start="852" end="880">
-<Alignment>2</Alignment>
+<paragraph start="858" end="886">
 <RightIndent>20.0</RightIndent>
-<content start="852" end="854">
+<Alignment>2</Alignment>
+<content start="858" end="860">
 <size>11</size></content>
 
-<content start="854" end="862">
-<size>11</size><href>html_textarea.cml</href></content>
+<content start="860" end="868">
+<href>html_textarea.cml</href><size>11</size></content>
 
-<content start="862" end="865">
+<content start="868" end="871">
 <size>11</size></content>
 
-<content start="865" end="870">
-<size>11</size><href>index2.cml</href></content>
+<content start="871" end="876">
+<href>index2.cml</href><size>11</size></content>
 
-<content start="870" end="873">
+<content start="876" end="879">
 <size>11</size></content>
 
-<content start="873" end="877">
-<size>11</size><href>singlecontrol.cml</href></content>
+<content start="879" end="883">
+<href>singlecontrol.cml</href><size>11</size></content>
 
-<content start="877" end="879">
+<content start="883" end="885">
 <size>11</size></content>
 
 </paragraph>

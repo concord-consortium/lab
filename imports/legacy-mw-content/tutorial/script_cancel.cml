@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Cancel</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Cancel
+
+&lt; Previous | Index | Next &gt;
+
+The cancel command has only one use&#8722;to terminate whatever scripts are currently running and cancel whatever scripts are currently pending in the script queue. When it is used, it must be appended at the beginning of a script body, separated from the rest of the scripts by a semicolon. It does not cause the current scripts to stop and cannot be use elsewhere. If you need to stop the scripts, please use the return command.
+
+Syntax:
+
+cancel
+
+The following example shows that scripts without a cancel precursor will not be run until the current scripts complete (i.e. they will wait in the script queue before they can be processed), and scripts with a cancel precursor will cause the current scripts to stop and the pending ones to be cancelled and run the subsequent scripts immediately. Whether or not to use the cancel precursor depends on how you design your user interface. If you want the controls to be immediately responsive, it may be a good idea to use a cancel precursor. But in some cases, you do want the current scripts to complete without having to worry about leaving the model to an arbitrarily incomplete state.
+
+  
+  
+  
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1207">
+<paragraph start="0" end="7">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="6">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="36">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="8" end="10">
+<size>11</size></content>
+
+<content start="10" end="18">
+<size>11</size><href>script_return.cml</href></content>
+
+<content start="18" end="21">
+<size>11</size></content>
+
+<content start="21" end="26">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="33">
+<size>11</size><href>script_loop.cml</href></content>
+
+<content start="33" end="35">
+<size>11</size></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<LeftIndent>100.0</LeftIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="462">
+<LeftIndent>140.0</LeftIndent>
+<content start="37" end="41">
+<size>11</size></content>
+
+<content start="41" end="47">
+<size>11</size><family>Courier New</family></content>
+
+<content start="47" end="72">
+<size>11</size></content>
+
+<content start="72" end="73">
+</content>
+
+<content start="73" end="213">
+<size>11</size></content>
+
+<content start="213" end="232">
+<size>11</size><bold>true</bold></content>
+
+<content start="232" end="233">
+<size>11</size><italic>true</italic><bold>true</bold></content>
+
+<content start="233" end="266">
+<size>11</size><bold>true</bold></content>
+
+<content start="266" end="446">
+<size>11</size></content>
+
+<content start="446" end="452">
+<size>11</size><href>script_return.cml</href><family>Courier New</family></content>
+
+<content start="452" end="462">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="462" end="463">
+<LeftIndent>140.0</LeftIndent>
+<content start="462" end="463">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="463" end="471">
+<LeftIndent>140.0</LeftIndent>
+<content start="463" end="471">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="471" end="472">
+<LeftIndent>140.0</LeftIndent>
+<content start="471" end="472">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="472" end="479">
+<LeftIndent>160.0</LeftIndent>
+<content start="472" end="478">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="478" end="479">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="479" end="480">
+<LeftIndent>140.0</LeftIndent>
+<content start="479" end="480">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="480" end="1168">
+<LeftIndent>140.0</LeftIndent>
+<content start="480" end="531">
+<size>11</size></content>
+
+<content start="531" end="537">
+<size>11</size><family>Courier New</family></content>
+
+<content start="537" end="690">
+<size>11</size></content>
+
+<content start="690" end="696">
+<size>11</size><family>Courier New</family></content>
+
+<content start="696" end="853">
+<size>11</size></content>
+
+<content start="853" end="859">
+<size>11</size><family>Courier New</family></content>
+
+<content start="859" end="1003">
+<size>11</size></content>
+
+<content start="1003" end="1009">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1009" end="1168">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1168" end="1169">
+<LeftIndent>140.0</LeftIndent>
+<content start="1168" end="1169">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1169" end="1172">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1169" end="1170">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_cancel$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="1170" end="1172">
+</content>
+
+</paragraph>
+<paragraph start="1172" end="1175">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1172" end="1173">
+<component><class>org.concord.modeler.PageButton</class>
+<title>A long task submitted to queue (add some particles)</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select rectangle all;
+remove;
+select textbox all;
+remove;
+select line all;
+remove;
+define %type1 1;
+define %type2 2
+define %y %height/2;
+define %diameter 0.5*(%element[%type1].sigma+%element[%type2].sigma);
+define %x %diameter;
+define %count 0;
+define %n %number_of_atoms; // store the number of atoms before removing
+while(%n &gt; %count);
+  print %count;
+  select atom 0;
+  remove;
+  %count++;
+  delay 0.2;
+endwhile;
+set %count 0;
+while(%width - %diameter &gt; %x);
+  if(mod(%count, 2) == 0);
+    add atom %type1 (%x, %y);
+  else;
+    add atom %type2 (%x, %y);
+  endif;
+  set %x %x + 1.5 * %diameter;
+  %count++;
+  print %count;
+  delay 0.2;
+endwhile;
+print %count atoms were added.;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1173" end="1174">
+<component><class>org.concord.modeler.PageButton</class>
+<title>A short task submitted to queue (draw a rectangle)</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>add rectangle (5+rand()*(%width-10), 5+rand()*(%height-10), 8, 8);</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1174" end="1175">
+</content>
+
+</paragraph>
+<paragraph start="1175" end="1178">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1175" end="1176">
+<component><class>org.concord.modeler.PageButton</class>
+<title>A short task submitted to queue (draw a line)</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>add line (rand()*%width, rand()*%height, rand()*%width, rand()*%height);</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1176" end="1177">
+<component><class>org.concord.modeler.PageButton</class>
+<title>A task that runs immediately (write some text)</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>cancel;
+//reset;
+select line all;
+remove;
+select atom all;
+remove;
+select rectangle all;
+remove;
+add textbox &lt;t&gt;Cancel was called!&lt;/t&gt; (5+rand()*(%width-10), 5+rand()*(%height-10));</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1177" end="1178">
+</content>
+
+</paragraph>
+<paragraph start="1178" end="1179">
+<LeftIndent>140.0</LeftIndent>
+<content start="1178" end="1179">
+</content>
+
+</paragraph>
+<paragraph start="1179" end="1207">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1179" end="1181">
+<size>11</size></content>
+
+<content start="1181" end="1189">
+<size>11</size><href>script_return.cml</href></content>
+
+<content start="1189" end="1192">
+<size>11</size></content>
+
+<content start="1192" end="1197">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="1197" end="1200">
+<size>11</size></content>
+
+<content start="1200" end="1204">
+<size>11</size><href>script_loop.cml</href></content>
+
+<content start="1204" end="1206">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

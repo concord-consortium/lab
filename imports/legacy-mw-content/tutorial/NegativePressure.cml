@@ -11,21 +11,21 @@ The following model demonstrates that the internal pressure is always higher tha
 
       
 	  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 The difference between the full internal pressure of a particle due to its kinetic energy and its absolute positive pressure is termed negative pressure. This is the portion that has a negative contribution towards the absolute free kinetic pressue (wall pressure). Without attraction the pressure readings will be the same on both probes indicating that no kinetic energy is converted to potential energy.
 
 &lt;Back&gt;</text>
-<section start="0" end="725">
+<section start="0" end="731">
 <paragraph start="0" end="60">
-<SpaceAbove>10.0</SpaceAbove>
-<RightIndent>10.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>10.0</RightIndent>
+<SpaceAbove>10.0</SpaceAbove>
 <content start="0" end="59">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="59" end="60">
-<bold>true</bold><size>16</size></content>
+<size>16</size><bold>true</bold></content>
 
 </paragraph>
 <paragraph start="60" end="61">
@@ -34,8 +34,8 @@ The difference between the full internal pressure of a particle due to its kinet
 
 </paragraph>
 <paragraph start="61" end="68">
-<RightIndent>10.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>10.0</RightIndent>
 <content start="61" end="62">
 <size>11</size></content>
 
@@ -64,8 +64,8 @@ The difference between the full internal pressure of a particle due to its kinet
 
 </paragraph>
 <paragraph start="265" end="272">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="265" end="266">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>NegativePressure$0.mml</resource><menubar>false</menubar></component></content>
@@ -115,8 +115,8 @@ The difference between the full internal pressure of a particle due to its kinet
 
 </paragraph>
 <paragraph start="272" end="276">
-<LeftIndent>60.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>60.0</LeftIndent>
 <content start="272" end="273">
 </content>
 
@@ -145,45 +145,45 @@ The difference between the full internal pressure of a particle due to its kinet
 </content>
 
 </paragraph>
-<paragraph start="276" end="309">
-<LeftIndent>60.0</LeftIndent>
+<paragraph start="276" end="315">
 <Alignment>1</Alignment>
-<content start="276" end="308">
+<LeftIndent>60.0</LeftIndent>
+<content start="276" end="314">
 <size>10</size></content>
 
-<content start="308" end="309">
+<content start="314" end="315">
 </content>
 
 </paragraph>
-<paragraph start="309" end="310">
+<paragraph start="315" end="316">
 <LeftIndent>140.0</LeftIndent>
-<content start="309" end="310">
+<content start="315" end="316">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="310" end="717">
+<paragraph start="316" end="723">
 <LeftIndent>140.0</LeftIndent>
-<content start="310" end="717">
+<content start="316" end="723">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="717" end="718">
-<LeftIndent>60.0</LeftIndent>
+<paragraph start="723" end="724">
 <Alignment>1</Alignment>
-<content start="717" end="718">
+<LeftIndent>60.0</LeftIndent>
+<content start="723" end="724">
 </content>
 
 </paragraph>
-<paragraph start="718" end="725">
-<RightIndent>10.0</RightIndent>
+<paragraph start="724" end="731">
 <Alignment>2</Alignment>
-<content start="718" end="719">
+<RightIndent>10.0</RightIndent>
+<content start="724" end="725">
 <size>11</size></content>
 
-<content start="719" end="723">
+<content start="725" end="729">
 <href>script_lap.cml</href><size>11</size></content>
 
-<content start="723" end="724">
+<content start="729" end="730">
 <size>11</size></content>
 
 </paragraph>

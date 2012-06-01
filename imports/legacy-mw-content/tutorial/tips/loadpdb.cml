@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Opening molecular structures from outside the Jmol container</page_title>
+<text> Opening molecular structures from outside the Jmol container
+
+This tip introduces the methods you can use in Molecular Workbench to open molecular structure files (e.g. PDB files) without using the built-in menu and button from the Molecular Viewer Container, which you sometimes may want to hide.
+
+Using the main file chooser
+
+The main file chooser refers to as the file chooser that is invoked when you click the &quot;Open&quot; button from the top toolbars, or select the &quot;Open&quot; item from the &quot;File&quot; menu of the main menu bar. By default, the main file chooser is used to select the CML files, but you can set the file filter to &quot;PDB&quot;, and select the PDB files on your hard disk.
+
+When it is used to open the PDB files, the file chooser serves a PDB file browser.
+
+Copying and pasting a URL to the location bar
+
+To open a PDB file on the Internet, you can simply feed the URL address to the location bar of Molecular Workbench and hit the Return key.
+
+Linking PDB files
+
+You can directly hyperlink to a PDB file. For instance, these links open the corresponding amino acids: ALA.pdb, ARG.pdb, and ASN.pdb.
+
+Loading PDB files from a drop-down list
+
+You can put a set of PDB files in a drop-down list, so that the user can easily select them and load them into a Jmol container. This is demonstrated in the following:
+
+   
+
+To see how to set up the above model, save the page to your hard disk, enter the authoring mode and then right-click on the combo box.
+
+The above example introduces a general way to load PDB files when the menu bar and tool bar are hiden in order to create the visual effect that the molecules were &quot;floating&quot; on the page (therefore there is no &quot;Open&quot; menu or button for the end users to use).
+
+&lt;Index of tips&gt;
+
+
+</text>
+<section start="0" end="1731">
+<paragraph start="0" end="62">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="61">
+<size>18</size><bold>true</bold></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="299">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="63" end="299">
+</content>
+
+</paragraph>
+<paragraph start="299" end="300">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="299" end="300">
+</content>
+
+</paragraph>
+<paragraph start="300" end="328">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="300" end="327">
+<bold>true</bold></content>
+
+<content start="327" end="328">
+</content>
+
+</paragraph>
+<paragraph start="328" end="329">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="328" end="329">
+</content>
+
+</paragraph>
+<paragraph start="329" end="675">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="329" end="675">
+</content>
+
+</paragraph>
+<paragraph start="675" end="676">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="675" end="676">
+</content>
+
+</paragraph>
+<paragraph start="676" end="759">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="676" end="759">
+</content>
+
+</paragraph>
+<paragraph start="759" end="760">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="759" end="760">
+</content>
+
+</paragraph>
+<paragraph start="760" end="806">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="760" end="805">
+<bold>true</bold></content>
+
+<content start="805" end="806">
+</content>
+
+</paragraph>
+<paragraph start="806" end="807">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="806" end="807">
+</content>
+
+</paragraph>
+<paragraph start="807" end="946">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="807" end="946">
+</content>
+
+</paragraph>
+<paragraph start="946" end="947">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="946" end="947">
+</content>
+
+</paragraph>
+<paragraph start="947" end="965">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="947" end="964">
+<bold>true</bold></content>
+
+<content start="964" end="965">
+</content>
+
+</paragraph>
+<paragraph start="965" end="966">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="965" end="966">
+</content>
+
+</paragraph>
+<paragraph start="966" end="1101">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="966" end="1070">
+</content>
+
+<content start="1070" end="1077">
+<href>ALA.pdb</href></content>
+
+<content start="1077" end="1079">
+</content>
+
+<content start="1079" end="1086">
+<href>ARG.pdb</href></content>
+
+<content start="1086" end="1092">
+</content>
+
+<content start="1092" end="1099">
+<href>ASN.pdb</href></content>
+
+<content start="1099" end="1101">
+</content>
+
+</paragraph>
+<paragraph start="1101" end="1102">
+<LeftIndent>8.0</LeftIndent>
+<content start="1101" end="1102">
+</content>
+
+</paragraph>
+<paragraph start="1102" end="1142">
+<LeftIndent>8.0</LeftIndent>
+<content start="1102" end="1141">
+<bold>true</bold></content>
+
+<content start="1141" end="1142">
+</content>
+
+</paragraph>
+<paragraph start="1142" end="1143">
+<LeftIndent>8.0</LeftIndent>
+<content start="1142" end="1143">
+</content>
+
+</paragraph>
+<paragraph start="1143" end="1311">
+<LeftIndent>8.0</LeftIndent>
+<content start="1143" end="1311">
+</content>
+
+</paragraph>
+<paragraph start="1311" end="1312">
+<LeftIndent>8.0</LeftIndent>
+<content start="1311" end="1312">
+</content>
+
+</paragraph>
+<paragraph start="1312" end="1316">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1312" end="1313">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<group>ALA.pdb, ARG.pdb, ASN.pdb, ASP.pdb, CYS.pdb, GLN.pdb</group>
+<action>Import a model</action>
+</component></content>
+
+<content start="1313" end="1314">
+</content>
+
+<content start="1314" end="1315">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>reset;</script><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>ALA.pdb</resource><state>loadpdb$0.jms</state><width>300.0</width>
+<height>300.0</height>
+</component></content>
+
+<content start="1315" end="1316">
+</content>
+
+</paragraph>
+<paragraph start="1316" end="1317">
+<LeftIndent>8.0</LeftIndent>
+<content start="1316" end="1317">
+</content>
+
+</paragraph>
+<paragraph start="1317" end="1452">
+<LeftIndent>8.0</LeftIndent>
+<content start="1317" end="1452">
+</content>
+
+</paragraph>
+<paragraph start="1452" end="1453">
+<LeftIndent>8.0</LeftIndent>
+<content start="1452" end="1453">
+</content>
+
+</paragraph>
+<paragraph start="1453" end="1711">
+<LeftIndent>8.0</LeftIndent>
+<content start="1453" end="1711">
+</content>
+
+</paragraph>
+<paragraph start="1711" end="1712">
+<LeftIndent>8.0</LeftIndent>
+<content start="1711" end="1712">
+</content>
+
+</paragraph>
+<paragraph start="1712" end="1728">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1712" end="1713">
+</content>
+
+<content start="1713" end="1726">
+<href>index.cml</href></content>
+
+<content start="1726" end="1728">
+</content>
+
+</paragraph>
+<paragraph start="1728" end="1729">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1728" end="1729">
+</content>
+
+</paragraph>
+<paragraph start="1729" end="1730">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1729" end="1730">
+</content>
+
+</paragraph>
+<paragraph start="1730" end="1731">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+</paragraph>
+</section>
+</document>

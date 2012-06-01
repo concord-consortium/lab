@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Using a model container to play animated GIF files</page_title>
+<text> Using a model container to play animated GIF files
+
+Did you know that you can a 2D model container to play an animated GIF file? Any 2D model container has a built-in animated GIF player that can be used to show a multiple-frame GIF file, as demonstrated by the following example:
+
+ 
+  
+
+Note that you need to insert a particle in order to make this work, because the model container will not run if there is no particle in it.</text>
+<section start="0" end="429">
+<paragraph start="0" end="52">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="51">
+<bold>true</bold><size>15</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<LeftIndent>8.0</LeftIndent>
+<content start="52" end="53">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="53" end="282">
+<LeftIndent>8.0</LeftIndent>
+<content start="53" end="282">
+</content>
+
+</paragraph>
+<paragraph start="282" end="283">
+<LeftIndent>8.0</LeftIndent>
+<content start="282" end="283">
+</content>
+
+</paragraph>
+<paragraph start="283" end="285">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="283" end="284">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>gifplayer$0.mml</resource><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="284" end="285">
+</content>
+
+</paragraph>
+<paragraph start="285" end="288">
+<Alignment>1</Alignment>
+<content start="285" end="286">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Play</title>
+<tooltip>Play the animated GIF</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>run;focus;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="286" end="287">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop the animated GIF</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="287" end="288">
+</content>
+
+</paragraph>
+<paragraph start="288" end="289">
+<Alignment>1</Alignment>
+<content start="288" end="289">
+</content>
+
+</paragraph>
+<paragraph start="289" end="429">
+<LeftIndent>8.0</LeftIndent>
+<content start="289" end="428">
+</content>
+
+</paragraph>
+</section>
+</document>

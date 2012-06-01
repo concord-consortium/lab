@@ -5,29 +5,29 @@
 <bg_image>sidebar2.gif</bg_image>
 <text>Converting a page into a PDF file
 
-&lt; Previous | Index | Next &gt;
+&lt; Index &gt;
 
-Both Windows and Mac OS X allow you to create a PDF file for any printable document. Mac OS X provides a default PDF converter as a printing option. For Windows users, however, there is no default PDF option in the printer list, unless you have installed the Professional Version of Adobe Acrobat Reader&#8482;. If you do not have the professional version of Acrobat Reader, you can get a free PDF writer from   this web site as an alternative.
+Both Windows and Mac OS X allow you to create a PDF file for any printable document. Mac OS X provides a default PDF converter as a printing option. For Windows users, however, there is no default PDF option in the printer list, unless you have installed the Professional Version of Adobe Acrobat Reader&#8482;. If you do not have the professional version of Acrobat Reader, you can get   PDFCreator as a free alternative.
 
 The following screenshots show the Print Dialog on Windows 2000 and on Mac OS X:
 
   
-[This is a screenshot taken on Windows 2000.]
+&#12304;This is a screenshot from Windows 2000.&#12305;
 
   
-[This is a screenshot taken on Mac OS X.]
+&#12304;This is a screenshot from Mac OS X.&#12305;
 
 When the PDF option is selected and you click the OK button, a PDF file will be generated and no printing job will be sent to the printer.
 
 This link gives an example PDF file converted from the first 2 pages of the previous section.
 
-&lt; Previous | Index | Next &gt;</text>
-<section start="0" end="945">
+&lt; Index &gt;</text>
+<section start="0" end="879">
 <paragraph start="0" end="34">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="33">
-<bold>true</bold><italic>true</italic><size>15</size></content>
+<size>15</size><bold>true</bold><italic>true</italic></content>
 
 <content start="33" end="34">
 </content>
@@ -39,198 +39,186 @@ This link gives an example PDF file converted from the first 2 pages of the prev
 </content>
 
 </paragraph>
-<paragraph start="35" end="63">
-<RightIndent>20.0</RightIndent>
+<paragraph start="35" end="45">
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="35" end="37">
 <size>11</size></content>
 
-<content start="37" end="45">
-<href>print.cml</href><size>11</size></content>
+<content start="37" end="42">
+<size>11</size><href>index.cml</href></content>
 
-<content start="45" end="48">
+<content start="42" end="44">
 <size>11</size></content>
 
-<content start="48" end="53">
-<href>index.cml</href><size>11</size></content>
-
-<content start="53" end="56">
-<size>11</size></content>
-
-<content start="56" end="60">
-<href>bookmark.cml</href><size>11</size></content>
-
-<content start="60" end="62">
-<size>11</size></content>
-
-<content start="62" end="63">
+<content start="44" end="45">
 </content>
 
 </paragraph>
-<paragraph start="63" end="64">
+<paragraph start="45" end="46">
 <LeftIndent>140.0</LeftIndent>
-<content start="63" end="64">
+<content start="45" end="46">
 </content>
 
 </paragraph>
-<paragraph start="64" end="503">
+<paragraph start="46" end="463">
 <LeftIndent>140.0</LeftIndent>
-<content start="64" end="367">
+<content start="46" end="349">
 <size>11</size></content>
 
-<content start="367" end="368">
+<content start="349" end="350">
 </content>
 
-<content start="368" end="468">
+<content start="350" end="427">
 <size>11</size></content>
 
-<content start="468" end="469">
+<content start="427" end="428">
 <icon>htmlink.gif</icon></content>
 
-<content start="469" end="470">
+<content start="428" end="429">
 <size>11</size></content>
 
-<content start="470" end="483">
-<href>http://www.pdfforge.org/products/pdfcreator/download</href><size>11</size></content>
+<content start="429" end="439">
+<size>11</size><href>http://www.pdfforge.org/products/pdfcreator/download</href></content>
 
-<content start="483" end="502">
+<content start="439" end="462">
 <size>11</size></content>
 
-<content start="502" end="503">
+<content start="462" end="463">
 </content>
 
 </paragraph>
-<paragraph start="503" end="504">
+<paragraph start="463" end="464">
 <LeftIndent>140.0</LeftIndent>
-<content start="503" end="504">
+<content start="463" end="464">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="504" end="585">
+<paragraph start="464" end="545">
 <LeftIndent>140.0</LeftIndent>
-<content start="504" end="585">
+<content start="464" end="545">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="585" end="586">
+<paragraph start="545" end="546">
 <LeftIndent>140.0</LeftIndent>
-<content start="585" end="586">
+<content start="545" end="546">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="586" end="589">
+<paragraph start="546" end="549">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="586" end="587">
+<content start="546" end="547">
 <size>11</size></content>
 
-<content start="587" end="588">
+<content start="547" end="548">
 <icon>PrintToPDF.gif</icon></content>
 
-<content start="588" end="589">
+<content start="548" end="549">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="589" end="635">
+<paragraph start="549" end="591">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="589" end="634">
+<content start="549" end="550">
+<size>13</size><bold>true</bold></content>
+
+<content start="550" end="589">
 <size>10</size></content>
 
-<content start="634" end="635">
+<content start="589" end="590">
+<size>13</size><bold>true</bold></content>
+
+<content start="590" end="591">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="635" end="636">
+<paragraph start="591" end="592">
 <LeftIndent>140.0</LeftIndent>
-<content start="635" end="636">
+<content start="591" end="592">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="636" end="639">
+<paragraph start="592" end="595">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="636" end="637">
+<content start="592" end="593">
 </content>
 
-<content start="637" end="638">
+<content start="593" end="594">
 <icon>mac-pdf-print.gif</icon></content>
 
-<content start="638" end="639">
+<content start="594" end="595">
 </content>
 
 </paragraph>
-<paragraph start="639" end="681">
+<paragraph start="595" end="633">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="639" end="680">
+<content start="595" end="596">
+<size>13</size><bold>true</bold></content>
+
+<content start="596" end="631">
 <size>10</size></content>
 
-<content start="680" end="681">
+<content start="631" end="632">
+<size>13</size><bold>true</bold></content>
+
+<content start="632" end="633">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="681" end="682">
+<paragraph start="633" end="634">
 <LeftIndent>140.0</LeftIndent>
-<content start="681" end="682">
+<content start="633" end="634">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="682" end="821">
+<paragraph start="634" end="773">
 <LeftIndent>140.0</LeftIndent>
-<content start="682" end="821">
+<content start="634" end="773">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="821" end="822">
+<paragraph start="773" end="774">
 <LeftIndent>140.0</LeftIndent>
-<content start="821" end="822">
+<content start="773" end="774">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="822" end="916">
+<paragraph start="774" end="868">
 <LeftIndent>140.0</LeftIndent>
-<content start="822" end="827">
+<content start="774" end="779">
 <size>11</size></content>
 
-<content start="827" end="831">
-<href>print.pdf</href><size>11</size></content>
+<content start="779" end="783">
+<size>11</size><href>print.pdf</href></content>
 
-<content start="831" end="915">
+<content start="783" end="867">
 <size>11</size></content>
 
-<content start="915" end="916">
+<content start="867" end="868">
 </content>
 
 </paragraph>
-<paragraph start="916" end="917">
+<paragraph start="868" end="869">
 <LeftIndent>100.0</LeftIndent>
-<content start="916" end="917">
+<content start="868" end="869">
 </content>
 
 </paragraph>
-<paragraph start="917" end="945">
-<RightIndent>20.0</RightIndent>
+<paragraph start="869" end="879">
 <Alignment>2</Alignment>
-<content start="917" end="919">
+<RightIndent>20.0</RightIndent>
+<content start="869" end="871">
 <size>11</size></content>
 
-<content start="919" end="927">
-<href>print.cml</href><size>11</size></content>
+<content start="871" end="876">
+<size>11</size><href>index.cml</href></content>
 
-<content start="927" end="930">
-<size>11</size></content>
-
-<content start="930" end="935">
-<href>index.cml</href><size>11</size></content>
-
-<content start="935" end="938">
-<size>11</size></content>
-
-<content start="938" end="942">
-<href>bookmark.cml</href><size>11</size></content>
-
-<content start="942" end="944">
+<content start="876" end="878">
 <size>11</size></content>
 
 </paragraph>

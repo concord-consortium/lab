@@ -7,15 +7,16 @@
 
 &lt; Previous | Index | Next &gt;
 
-Unlike most scripting environments, there is no main script console within Molecular Workbench. Scripts in the Molecular Workbench (MW) interact with certain models. As a result, each model needs its own script console, which can be inserted from the &quot;Insert&gt;Standard Controller for Model&gt;Script Console&quot; menu.
+Unlike most scripting environments, there is no main script console within MW. Scripts in MW interact with certain models. As a result, each model needs its own script console, which can be inserted from the &quot;Insert&gt;Standard Controller for Model&gt;Script Console&quot; menu.
 
-Script consoles are very useful for activity designers to set up and tune models, but they are not supposed to be used by end users (i.e. learners). In MW, the user interfaces (UIs) that students will interact with are typically composed of hyperlinks and common widgets such as buttons, in addition to the native windows and controls of the models.
+Script consoles are very useful for activity designers to set up and tune models, but they are not supposed to be used by end users. In MW, the user interfaces (UIs) that students will interact with are typically composed of hyperlinks and common widgets such as buttons, in addition to the native windows and controls of the models.
 
 All of these widgets and hyperlinks are scriptable. Here is a full list of them:
 
    Hyperlinks
    Activity buttons
-   The script tab of a model container&apos;s properties dialog
+   The &quot;Script&quot; tab of a model container&apos;s properties dialog (the initialization scripts)
+   Custom tasks added to the Task Manager
    Buttons
    Radio buttons
    Check boxes
@@ -29,44 +30,44 @@ All of these widgets and hyperlinks are scriptable. Here is a full list of them:
 
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1122">
+<section start="0" end="1136">
 <paragraph start="0" end="22">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="21">
-<size>16</size><bold>true</bold><italic>true</italic></content>
+<bold>true</bold><size>16</size><italic>true</italic></content>
 
 <content start="21" end="22">
 </content>
 
 </paragraph>
 <paragraph start="22" end="23">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="22" end="23">
 </content>
 
 </paragraph>
 <paragraph start="23" end="51">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="23" end="25">
 <size>11</size></content>
 
 <content start="25" end="33">
-<size>11</size><href>intro_script.cml</href></content>
+<href>intro_script.cml</href><size>11</size></content>
 
 <content start="33" end="36">
 <size>11</size></content>
 
 <content start="36" end="41">
-<size>11</size><href>mwscripts.cml</href></content>
+<href>mwscripts.cml</href><size>11</size></content>
 
 <content start="41" end="44">
 <size>11</size></content>
 
 <content start="44" end="48">
-<size>11</size><href>script_protocol.cml</href></content>
+<href>script_protocol.cml</href><size>11</size></content>
 
 <content start="48" end="50">
 <size>11</size></content>
@@ -81,277 +82,292 @@ All of these widgets and hyperlinks are scriptable. Here is a full list of them:
 </content>
 
 </paragraph>
-<paragraph start="52" end="363">
+<paragraph start="52" end="320">
 <LeftIndent>140.0</LeftIndent>
-<content start="52" end="248">
+<content start="52" end="205">
 <size>11</size></content>
 
-<content start="248" end="270">
-<size>11</size><href>scriptconsole.cml</href></content>
+<content start="205" end="227">
+<href>scriptconsole.cml</href><size>11</size></content>
 
-<content start="270" end="363">
+<content start="227" end="320">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="363" end="364">
+<paragraph start="320" end="321">
 <LeftIndent>140.0</LeftIndent>
-<content start="363" end="364">
+<content start="320" end="321">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="364" end="714">
+<paragraph start="321" end="655">
 <LeftIndent>140.0</LeftIndent>
-<content start="364" end="714">
+<content start="321" end="655">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="714" end="715">
+<paragraph start="655" end="656">
 <LeftIndent>140.0</LeftIndent>
-<content start="714" end="715">
+<content start="655" end="656">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="715" end="796">
+<paragraph start="656" end="737">
 <LeftIndent>140.0</LeftIndent>
-<content start="715" end="796">
+<content start="656" end="737">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="796" end="797">
+<paragraph start="737" end="738">
 <LeftIndent>140.0</LeftIndent>
-<content start="796" end="797">
+<content start="737" end="738">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="797" end="811">
+<paragraph start="738" end="752">
 <LeftIndent>160.0</LeftIndent>
-<content start="797" end="798">
+<content start="738" end="739">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="798" end="800">
+<content start="739" end="741">
 </content>
 
-<content start="800" end="810">
-<size>11</size><href>linkscript.cml</href></content>
+<content start="741" end="751">
+<href>linkscript.cml</href><size>11</size></content>
 
-<content start="810" end="811">
+<content start="751" end="752">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="811" end="831">
+<paragraph start="752" end="772">
 <LeftIndent>160.0</LeftIndent>
-<content start="811" end="812">
+<content start="752" end="753">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="812" end="814">
+<content start="753" end="755">
 </content>
 
-<content start="814" end="830">
-<size>11</size><href>singlecontrol.cml</href></content>
+<content start="755" end="771">
+<href>singlecontrol.cml</href><size>11</size></content>
 
-<content start="830" end="831">
+<content start="771" end="772">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="831" end="890">
+<paragraph start="772" end="862">
 <LeftIndent>160.0</LeftIndent>
-<content start="831" end="832">
+<content start="772" end="773">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="832" end="834">
+<content start="773" end="775">
 </content>
 
-<content start="834" end="889">
-<size>11</size><href>modelProp.cml</href></content>
+<content start="775" end="861">
+<href>modelProp.cml</href><size>11</size></content>
 
-<content start="889" end="890">
+<content start="861" end="862">
 </content>
 
 </paragraph>
-<paragraph start="890" end="901">
+<paragraph start="862" end="904">
 <LeftIndent>160.0</LeftIndent>
-<content start="890" end="891">
+<content start="862" end="863">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="891" end="893">
+<content start="863" end="865">
 </content>
 
-<content start="893" end="900">
-<size>11</size><href>insertButton.cml</href></content>
+<content start="865" end="903">
+<href>CustomerTask.cml</href><size>11</size></content>
 
-<content start="900" end="901">
+<content start="903" end="904">
+</content>
+
+</paragraph>
+<paragraph start="904" end="915">
+<LeftIndent>160.0</LeftIndent>
+<content start="904" end="905">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="905" end="907">
+</content>
+
+<content start="907" end="914">
+<href>insertButton.cml</href><size>11</size></content>
+
+<content start="914" end="915">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="901" end="918">
+<paragraph start="915" end="932">
 <LeftIndent>160.0</LeftIndent>
-<content start="901" end="902">
+<content start="915" end="916">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="902" end="904">
+<content start="916" end="918">
 </content>
 
-<content start="904" end="917">
-<size>11</size><href>insertRadioButton.cml</href></content>
+<content start="918" end="931">
+<href>insertRadioButton.cml</href><size>11</size></content>
 
-<content start="917" end="918">
+<content start="931" end="932">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="918" end="933">
+<paragraph start="932" end="947">
 <LeftIndent>160.0</LeftIndent>
-<content start="918" end="919">
-<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
-
-<content start="919" end="921">
-</content>
-
-<content start="921" end="932">
-<size>11</size><href>insertCheckBox.cml</href></content>
-
 <content start="932" end="933">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="933" end="935">
+</content>
+
+<content start="935" end="946">
+<href>insertCheckBox.cml</href><size>11</size></content>
+
+<content start="946" end="947">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="933" end="952">
+<paragraph start="947" end="966">
 <LeftIndent>160.0</LeftIndent>
-<content start="933" end="934">
+<content start="947" end="948">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="934" end="936">
+<content start="948" end="950">
 </content>
 
-<content start="936" end="951">
-<size>11</size><href>insertSpinner.cml</href></content>
+<content start="950" end="965">
+<href>insertSpinner.cml</href><size>11</size></content>
 
-<content start="951" end="952">
+<content start="965" end="966">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="952" end="963">
+<paragraph start="966" end="977">
 <LeftIndent>160.0</LeftIndent>
-<content start="952" end="953">
+<content start="966" end="967">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="953" end="955">
+<content start="967" end="969">
 </content>
 
-<content start="955" end="962">
-<size>11</size><href>insertSlider.cml</href></content>
+<content start="969" end="976">
+<href>insertSlider.cml</href><size>11</size></content>
 
-<content start="962" end="963">
+<content start="976" end="977">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="963" end="978">
+<paragraph start="977" end="992">
 <LeftIndent>160.0</LeftIndent>
-<content start="963" end="964">
-<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
-
-<content start="964" end="966">
-</content>
-
-<content start="966" end="977">
-<size>11</size><href>insertComboBox.cml</href></content>
-
 <content start="977" end="978">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="978" end="1003">
-<LeftIndent>160.0</LeftIndent>
-<content start="978" end="979">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="979" end="981">
+<content start="978" end="980">
 </content>
 
-<content start="981" end="1002">
-<size>11</size><href>html_button.cml</href></content>
+<content start="980" end="991">
+<href>insertComboBox.cml</href><size>11</size></content>
 
-<content start="1002" end="1003">
+<content start="991" end="992">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1003" end="1034">
+<paragraph start="992" end="1017">
 <LeftIndent>160.0</LeftIndent>
-<content start="1003" end="1004">
+<content start="992" end="993">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="1004" end="1006">
+<content start="993" end="995">
 </content>
 
-<content start="1006" end="1033">
-<size>11</size><href>html_radiobutton.cml</href></content>
+<content start="995" end="1016">
+<href>html_button.cml</href><size>11</size></content>
 
-<content start="1033" end="1034">
+<content start="1016" end="1017">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1034" end="1063">
+<paragraph start="1017" end="1048">
 <LeftIndent>160.0</LeftIndent>
-<content start="1034" end="1035">
+<content start="1017" end="1018">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="1035" end="1037">
+<content start="1018" end="1020">
 </content>
 
-<content start="1037" end="1062">
-<size>11</size><href>html_checkbox.cml</href></content>
+<content start="1020" end="1047">
+<href>html_radiobutton.cml</href><size>11</size></content>
 
-<content start="1062" end="1063">
+<content start="1047" end="1048">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1063" end="1092">
+<paragraph start="1048" end="1077">
 <LeftIndent>160.0</LeftIndent>
-<content start="1063" end="1064">
+<content start="1048" end="1049">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="1064" end="1066">
+<content start="1049" end="1051">
 </content>
 
-<content start="1066" end="1091">
-<size>11</size><href>html_combobox.cml</href></content>
+<content start="1051" end="1076">
+<href>html_checkbox.cml</href><size>11</size></content>
 
-<content start="1091" end="1092">
+<content start="1076" end="1077">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1092" end="1093">
+<paragraph start="1077" end="1106">
+<LeftIndent>160.0</LeftIndent>
+<content start="1077" end="1078">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1078" end="1080">
+</content>
+
+<content start="1080" end="1105">
+<href>html_combobox.cml</href><size>11</size></content>
+
+<content start="1105" end="1106">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1106" end="1107">
 <LeftIndent>140.0</LeftIndent>
-<content start="1092" end="1093">
+<content start="1106" end="1107">
 </content>
 
 </paragraph>
-<paragraph start="1093" end="1094">
+<paragraph start="1107" end="1108">
 <LeftIndent>140.0</LeftIndent>
-<content start="1093" end="1094">
+<content start="1107" end="1108">
 </content>
 
 </paragraph>
-<paragraph start="1094" end="1122">
-<RightIndent>20.0</RightIndent>
+<paragraph start="1108" end="1136">
 <Alignment>2</Alignment>
-<content start="1094" end="1096">
+<RightIndent>20.0</RightIndent>
+<content start="1108" end="1110">
 <size>11</size></content>
 
-<content start="1096" end="1104">
-<size>11</size><href>intro_script.cml</href></content>
+<content start="1110" end="1118">
+<href>intro_script.cml</href><size>11</size></content>
 
-<content start="1104" end="1107">
+<content start="1118" end="1121">
 <size>11</size></content>
 
-<content start="1107" end="1112">
-<size>11</size><href>mwscripts.cml</href></content>
+<content start="1121" end="1126">
+<href>mwscripts.cml</href><size>11</size></content>
 
-<content start="1112" end="1115">
+<content start="1126" end="1129">
 <size>11</size></content>
 
-<content start="1115" end="1119">
-<size>11</size><href>script_protocol.cml</href></content>
+<content start="1129" end="1133">
+<href>script_protocol.cml</href><size>11</size></content>
 
-<content start="1119" end="1121">
+<content start="1133" end="1135">
 <size>11</size></content>
 
 </paragraph>

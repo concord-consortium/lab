@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Attach</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Attach
+
+&lt; Previous | Index | Next &gt;
+
+The attach command attaches a shape or image or text box to an object.
+
+Syntax:
+
+attach image [index of image] to atom/bond [index of atom or bond]
+attach textbox [index of textbox] to atom [index of atom]
+attach line [index of line] to atom/bond [index of atom or bond]
+attach rectangle [index of rectangle] to atom [index of atom]
+attach ellipse [index of ellipse] to atom [index of atom]
+
+where [index of image|line|rectangle|ellipse] is the index of the image or shape to be attached, and [index of atom or bond] is the index of the atom or bond to which the image or shape is to be attached.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="664">
+<paragraph start="0" end="7">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="6">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="36">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="8" end="10">
+<size>11</size></content>
+
+<content start="10" end="18">
+<size>11</size><href>script_minimize.cml</href></content>
+
+<content start="18" end="21">
+<size>11</size></content>
+
+<content start="21" end="26">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="33">
+<size>11</size><href>script_function.cml</href></content>
+
+<content start="33" end="35">
+<size>11</size></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<LeftIndent>100.0</LeftIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="108">
+<LeftIndent>140.0</LeftIndent>
+<content start="37" end="41">
+<size>11</size></content>
+
+<content start="41" end="47">
+<family>Courier New</family><size>11</size></content>
+
+<content start="47" end="108">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="108" end="109">
+<LeftIndent>140.0</LeftIndent>
+<content start="108" end="109">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="109" end="117">
+<LeftIndent>140.0</LeftIndent>
+<content start="109" end="117">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="117" end="118">
+<LeftIndent>140.0</LeftIndent>
+<content start="117" end="118">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="118" end="185">
+<LeftIndent>160.0</LeftIndent>
+<content start="118" end="130">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="130" end="148">
+<family>Courier New</family><size>11</size></content>
+
+<content start="148" end="160">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="160" end="185">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="185" end="243">
+<LeftIndent>160.0</LeftIndent>
+<content start="185" end="199">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="199" end="219">
+<family>Courier New</family><size>11</size></content>
+
+<content start="219" end="226">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="226" end="243">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="243" end="308">
+<LeftIndent>160.0</LeftIndent>
+<content start="243" end="254">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="254" end="271">
+<family>Courier New</family><size>11</size></content>
+
+<content start="271" end="283">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="283" end="308">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="308" end="370">
+<LeftIndent>160.0</LeftIndent>
+<content start="308" end="324">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="324" end="346">
+<family>Courier New</family><size>11</size></content>
+
+<content start="346" end="353">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="353" end="369">
+<family>Courier New</family><size>11</size></content>
+
+<content start="369" end="370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="370" end="428">
+<LeftIndent>160.0</LeftIndent>
+<content start="370" end="384">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="384" end="404">
+<family>Courier New</family><size>11</size></content>
+
+<content start="404" end="411">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="411" end="427">
+<family>Courier New</family><size>11</size></content>
+
+<content start="427" end="428">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="428" end="429">
+<LeftIndent>160.0</LeftIndent>
+<content start="428" end="429">
+</content>
+
+</paragraph>
+<paragraph start="429" end="634">
+<LeftIndent>140.0</LeftIndent>
+<content start="429" end="435">
+<size>11</size></content>
+
+<content start="435" end="474">
+<family>Courier New</family><size>11</size></content>
+
+<content start="474" end="530">
+<size>11</size></content>
+
+<content start="530" end="553">
+<family>Courier New</family><size>11</size></content>
+
+<content start="553" end="634">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="634" end="635">
+<LeftIndent>140.0</LeftIndent>
+<content start="634" end="635">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="635" end="636">
+<LeftIndent>140.0</LeftIndent>
+<content start="635" end="636">
+</content>
+
+</paragraph>
+<paragraph start="636" end="664">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="636" end="638">
+<size>11</size></content>
+
+<content start="638" end="646">
+<size>11</size><href>script_minimize.cml</href></content>
+
+<content start="646" end="649">
+<size>11</size></content>
+
+<content start="649" end="654">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="654" end="657">
+<size>11</size></content>
+
+<content start="657" end="661">
+<size>11</size><href>script_function.cml</href></content>
+
+<content start="661" end="663">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

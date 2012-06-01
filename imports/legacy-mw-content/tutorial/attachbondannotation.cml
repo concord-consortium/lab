@@ -10,7 +10,7 @@
 In addition to attaching an annotation to an atom, you can also attach one to a bond.
 
  
-[An annotation attached to a bond in a myoglobin molecule.]
+&#12304;An annotation attached to a bond in a myoglobin molecule.&#12305;
 
 Inserting an annotation
 
@@ -21,9 +21,9 @@ Once an annotation is added to a bond, you can always edit or remove using the p
 &lt; Previous | Index | Next &gt;</text>
 <section start="0" end="846">
 <paragraph start="0" end="34">
-<SpaceAbove>8.0</SpaceAbove>
-<Alignment>2</Alignment>
 <RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
 <content start="0" end="33">
 <italic>true</italic><bold>true</bold><size>15</size></content>
 
@@ -37,8 +37,8 @@ Once an annotation is added to a bond, you can always edit or remove using the p
 
 </paragraph>
 <paragraph start="35" end="63">
-<Alignment>2</Alignment>
 <RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="35" end="37">
 <size>11</size></content>
 
@@ -51,7 +51,13 @@ Once an annotation is added to a bond, you can always edit or remove using the p
 <content start="48" end="53">
 <size>11</size><href>index_jmol.cml</href></content>
 
-<content start="53" end="62">
+<content start="53" end="56">
+<size>11</size></content>
+
+<content start="56" end="60">
+<size>11</size><href>roversteer.cml</href></content>
+
+<content start="60" end="62">
 <size>11</size></content>
 
 <content start="62" end="63">
@@ -78,12 +84,12 @@ Once an annotation is added to a bond, you can always edit or remove using the p
 
 </paragraph>
 <paragraph start="151" end="153">
-<Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="151" end="152">
 <component><class>org.concord.modeler.PageMolecularViewer</class>
-<toolbar>false</toolbar><navigation>true</navigation><resource>1MBN.pdb</resource><state>attachbondannotation$0.jms</state><width>600</width>
-<height>330</height>
+<toolbar>false</toolbar><navigation>true</navigation><resource>1MBN.pdb</resource><state>attachbondannotation$0.jms</state><width>600.0</width>
+<height>330.0</height>
 <border>Raised Bevel</border>
 </component></content>
 
@@ -92,9 +98,18 @@ Once an annotation is added to a bond, you can always edit or remove using the p
 
 </paragraph>
 <paragraph start="153" end="213">
-<Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="153" end="213">
+<Alignment>1</Alignment>
+<content start="153" end="154">
+<bold>true</bold><size>13</size></content>
+
+<content start="154" end="211">
+<size>10</size></content>
+
+<content start="211" end="212">
+<bold>true</bold><size>13</size></content>
+
+<content start="212" end="213">
 <size>10</size></content>
 
 </paragraph>
@@ -107,7 +122,7 @@ Once an annotation is added to a bond, you can always edit or remove using the p
 <paragraph start="214" end="238">
 <LeftIndent>140.0</LeftIndent>
 <content start="214" end="237">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="237" end="238">
 <size>11</size></content>
@@ -121,13 +136,7 @@ Once an annotation is added to a bond, you can always edit or remove using the p
 </paragraph>
 <paragraph start="239" end="627">
 <LeftIndent>140.0</LeftIndent>
-<content start="239" end="252">
-<size>11</size></content>
-
-<content start="252" end="309">
-<size>11</size></content>
-
-<content start="309" end="597">
+<content start="239" end="597">
 <size>11</size></content>
 
 <content start="597" end="607">
@@ -145,13 +154,7 @@ Once an annotation is added to a bond, you can always edit or remove using the p
 </paragraph>
 <paragraph start="628" end="817">
 <LeftIndent>140.0</LeftIndent>
-<content start="628" end="748">
-<size>11</size></content>
-
-<content start="748" end="805">
-<size>11</size></content>
-
-<content start="805" end="817">
+<content start="628" end="817">
 <size>11</size></content>
 
 </paragraph>
@@ -161,8 +164,8 @@ Once an annotation is added to a bond, you can always edit or remove using the p
 
 </paragraph>
 <paragraph start="818" end="846">
-<Alignment>2</Alignment>
 <RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="818" end="820">
 <size>11</size></content>
 
@@ -175,7 +178,13 @@ Once an annotation is added to a bond, you can always edit or remove using the p
 <content start="831" end="836">
 <size>11</size><href>index_jmol.cml</href></content>
 
-<content start="836" end="845">
+<content start="836" end="839">
+<size>11</size></content>
+
+<content start="839" end="843">
+<size>11</size><href>roversteer.cml</href></content>
+
+<content start="843" end="845">
 <size>11</size></content>
 
 </paragraph>
