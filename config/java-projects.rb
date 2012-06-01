@@ -108,7 +108,7 @@ PROJECT_LIST = {
   'mw'             => { :build_type => :maven,
                         :build => MAVEN_STD_CLEAN_BUILD,
                         :repository => 'git://github.com/concord-consortium/mw.git',
-                        :branch => 'trunk',
+                        :branch => 'master',
                         :path => 'org/concord/modeler',
                         :has_applet_class => true,
                         :sign => false }
