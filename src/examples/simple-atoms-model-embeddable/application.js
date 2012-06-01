@@ -11,8 +11,6 @@
   var modelConfig = {
         mol_number          : 50,
         temperature         : 3,
-        epsilon             : -0.1,
-        sigma               : 0.34,
         lennard_jones_forces: true,
         coulomb_forces      : false,
         width               : 10,
