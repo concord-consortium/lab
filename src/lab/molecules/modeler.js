@@ -70,7 +70,7 @@ modeler.model = function(initialProperties) {
         set_temperature: function(t) {
           this.temperature = t;
           if (coreModel) {
-            coreModel.setTargetTemperature(abstract_to_real_temperature(t));
+            coreModel.setTargetTemperature(t);
           }
         },
 
@@ -144,14 +144,6 @@ modeler.model = function(initialProperties) {
       waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
     }
     notifyListeners(waitingToBeNotified);
-  }
-
-  //
-  // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
-  // within a range of 0..25 to the 'real' temperature (2/N_df) * <mv^2>/2 where N_df = 2N-4
-  //
-  function abstract_to_real_temperature(t) {
-    return 5 + t * (2000-5)/25;  // Translate 0..25 to 5K..2500K
   }
 
   function average_speed() {
@@ -274,7 +266,7 @@ modeler.model = function(initialProperties) {
 
   function set_temperature(t) {
     temperature = t;
-    coreModel.setTargetTemperature(abstract_to_real_temperature(t));
+    coreModel.setTargetTemperature(t);
   }
 
   function set_properties(hash) {
@@ -353,7 +345,7 @@ modeler.model = function(initialProperties) {
     coreModel.useCoulombInteraction(properties.coulomb_forces);
     coreModel.useThermostat(properties.temperature_control);
 
-    T = abstract_to_real_temperature(temperature);
+    T = temperature;
     coreModel.setTargetTemperature(T);
 
     // coreModel.setLJEpsilon(properties.epsilon);

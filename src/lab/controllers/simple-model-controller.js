@@ -218,7 +218,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
   // ------------------------------------------------------------
 
-  therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
+  therm = new Thermometer('#thermometer', model.temperature(), 200, 4000);
 
   function updateTherm(){
     therm.add_value(model.get("temperature"));
