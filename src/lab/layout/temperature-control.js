@@ -13,14 +13,14 @@ layout.setupTemperature = function(model) {
       var temp_range = document.createElement("input");
       temp_range.type = "range";
       temp_range.min = "0";
-      temp_range.max = "25";
-      temp_range.step = "0.5";
+      temp_range.max = "1000";
+      temp_range.step = "20";
       temp_range.value = model.get("temperature");
       select_temperature.parentNode.replaceChild(temp_range, select_temperature);
       temp_range.id = "select-temperature";
       select_temperature = temp_range;
       select_temperature_display.id = "select-temperature-display";
-      select_temperature_display.innerText = temp_range.value;
+      select_temperature_display.innerText = temp_range.value + "°K";
       select_temperature.parentNode.appendChild(select_temperature_display);
       select_temperature = document.getElementById("select-temperature");
     }
@@ -31,7 +31,7 @@ layout.setupTemperature = function(model) {
 function selectTemperatureChange() {
   var temperature = +select_temperature.value;
   if (select_temperature.type === "range") {
-    select_temperature_display.innerText = d3.format("4.1f")(temperature);
+    select_temperature_display.innerText = d3.format("4.1f")(temperature) + "°K";
   }
   model.set({ "temperature": temperature });
 }
