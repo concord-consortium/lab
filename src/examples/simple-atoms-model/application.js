@@ -10,6 +10,7 @@
 
   var modelConfig = {
         mol_number          : 50,
+        temperature_control : true,
         temperature         : 300,
         lennard_jones_forces: true,
         coulomb_forces      : false,
