@@ -92,7 +92,7 @@ var arrays       = require('./arrays/arrays').arrays,
       if (isNaN(temperature)) {
         throw new Error("md2d: requested temperature " + t + " could not be understood.");
       }
-      if (temperature <= 0) {
+      if (temperature < 0) {
         throw new Error("md2d: requested temperature " + temperature + " was less than zero");
       }
       if (temperature === Infinity) {
