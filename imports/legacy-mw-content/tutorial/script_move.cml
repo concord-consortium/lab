@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Move</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Move
+
+&lt; Previous | Index | Next &gt;
+
+The move command moves the selected objects. (To see how to move an object without using scripts, see this section.)
+
+Syntax:
+
+move ([dx], [dy])
+
+where [dx] and [dy] are the distances in x and y directions that the selected objects will be moved. This command can be applied to images to produce animation effects.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="379">
+<paragraph start="0" end="5">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="4">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="34">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="6" end="8">
+<size>11</size></content>
+
+<content start="8" end="16">
+<size>11</size><href>script_remove.cml</href></content>
+
+<content start="16" end="19">
+<size>11</size></content>
+
+<content start="19" end="24">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="31">
+<size>11</size><href>script_bond.cml</href></content>
+
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>100.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="152">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<family>Courier New</family><size>11</size></content>
+
+<content start="43" end="137">
+<size>11</size></content>
+
+<content start="137" end="149">
+<size>11</size><href>dragAction.cml</href></content>
+
+<content start="149" end="152">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="152" end="153">
+<LeftIndent>140.0</LeftIndent>
+<content start="152" end="153">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="153" end="161">
+<LeftIndent>140.0</LeftIndent>
+<content start="153" end="161">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="161" end="162">
+<LeftIndent>140.0</LeftIndent>
+<content start="161" end="162">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="162" end="180">
+<LeftIndent>160.0</LeftIndent>
+<content start="162" end="168">
+<bold>true</bold><family>Courier New</family><size>11</size></content>
+
+<content start="168" end="178">
+<family>Courier New</family><size>11</size></content>
+
+<content start="178" end="179">
+<bold>true</bold><family>Courier New</family><size>11</size></content>
+
+<content start="179" end="180">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="180" end="181">
+<LeftIndent>140.0</LeftIndent>
+<content start="180" end="181">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="181" end="350">
+<LeftIndent>140.0</LeftIndent>
+<content start="181" end="187">
+<size>11</size></content>
+
+<content start="187" end="191">
+<family>Courier New</family><size>11</size></content>
+
+<content start="191" end="196">
+<size>11</size></content>
+
+<content start="196" end="200">
+<family>Courier New</family><size>11</size></content>
+
+<content start="200" end="350">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="350" end="351">
+<LeftIndent>140.0</LeftIndent>
+<content start="350" end="351">
+</content>
+
+</paragraph>
+<paragraph start="351" end="379">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="351" end="353">
+<size>11</size></content>
+
+<content start="353" end="361">
+<size>11</size><href>script_remove.cml</href></content>
+
+<content start="361" end="364">
+<size>11</size></content>
+
+<content start="364" end="369">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="369" end="372">
+<size>11</size></content>
+
+<content start="372" end="376">
+<size>11</size><href>script_bond.cml</href></content>
+
+<content start="376" end="378">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

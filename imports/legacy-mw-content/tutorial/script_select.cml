@@ -1,0 +1,1097 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Select</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Select
+
+&lt; Previous | Index | Next &gt;
+
+The select command selects objects of certain type identified by an expression.
+
+Syntax:
+
+select [type] [expression]
+
+where [type] is the type of objects to be selected. It must be one of the following keywords:
+
+   element
+   atom/particle
+   rbond
+   abond
+   molecule
+   obstacle
+   image
+   textbox
+   line
+
+Here rbond means radial bonds, and abond means angular bonds. The atom keyword and the particle keyword can be used interchangably.
+
+The syntax of the expressions is as follows:
+
+   all
+   none
+   not selected
+   {not} [index]
+   {not} [i1], [i2], ......, [in]
+   {not} [start index]-[end index]
+
+where {not} means that the not keyword is optional, [index], [i1], [i2], ......, [in], [start index], and [end index] are the integer numbers that specify the indices of objects of the [type] specified in the select command. The [index] parameter specifies the index of a single object to be selected. [i1], [i2], ......, [in] specify a set of discrete indices of the n objects to be selected. The two integers, [start index] and [end index], specify a range of consecutive indices of objects to be selected (inclusive). [end index] must be no smaller than [start index]. The all keyword can also be abbreviated as * (wild card).
+
+In addition to these, a within clause is supported for selecting elements:
+
+   {not} [id] within ([x], [y], [width], [height])
+   {not} [id1]-[id2] within ([x], [y], [width], [height])
+   {not} within ([radius], [id])
+   {not} within ([radius], [id1]-[id2])
+
+The first two clauses are used to select all atoms of the element type specified by [id], or a range [id1]-[id2], that fall within the specified rectangular area. The within keyword followed by a quadruple enclosed in a pair of parentheses is used to specified a rectangular area, with the four numbers (in angstrom) representing the x coordinate and y coordinate of the upper left corner, and the width and the height of the rectangular area, respectively.
+
+The third clause is used to select all atoms that fall within the circles centered at the atoms of the type specified by [id], with a radius specified by [radius]. The fourth one is used in the case that multiple types are needed.
+
+ 
+Element IDs: In the &quot;select element id&quot; command, the ID numbers for elements are defined as follows: Nt: 0; Pl: 1; Ws: 2; Ck: 3. For IDs of the non-editable elements, see this list.
+ 
+
+The within clause for selecting atoms or particles is as follows:
+
+   {not} within ([radius], [index])
+   {not} within ([radius], [start index]-[end index])
+   {not} within ([x], [y], [width], [height])
+
+The within keyword followed by a pair is used to select atoms or particles that are within the given distance (the [radius] parameter, in angstrom) of the atoms or particles of the given index or those with indices falling into the given range. The radius parameter and the index expression that follow the within keyword must be enclosed in a pair of parentheses.
+
+The within keyword is currently not supported for any other objects than particles and elements, i.e. it cannot be applied to select radial bonds, angular bonds, molecules, obstacles, text boxes and images.
+
+The following model shows examples of using the select command. To indicate that the atoms are selected, they are highlighted using the mark command (after the select command has been executed) in the example below. This does not, however, mean that the select command will always cause the selection to be marked. You can use other scripts to do some work on the selected objects than the mark command.
+
+  
+[This is an embedded simulator.]
+
+Note that the examples in the above box on the left are linked to scripts.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3738">
+<paragraph start="0" end="7">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="6">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="36">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="8" end="21">
+<size>11</size></content>
+
+<content start="21" end="26">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="33">
+<size>11</size><href>script_logical.cml</href></content>
+
+<content start="33" end="35">
+<size>11</size></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<LeftIndent>100.0</LeftIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="117">
+<LeftIndent>140.0</LeftIndent>
+<content start="37" end="41">
+<size>11</size></content>
+
+<content start="41" end="47">
+<size>11</size><family>Courier New</family></content>
+
+<content start="47" end="117">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="117" end="118">
+<LeftIndent>140.0</LeftIndent>
+<content start="117" end="118">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="118" end="126">
+<LeftIndent>140.0</LeftIndent>
+<content start="118" end="126">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="126" end="127">
+<LeftIndent>140.0</LeftIndent>
+<content start="126" end="127">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="127" end="154">
+<LeftIndent>160.0</LeftIndent>
+<content start="127" end="133">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="133" end="153">
+<size>11</size><family>Courier New</family></content>
+
+<content start="153" end="154">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="154" end="155">
+<LeftIndent>140.0</LeftIndent>
+<content start="154" end="155">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="155" end="249">
+<LeftIndent>140.0</LeftIndent>
+<content start="155" end="161">
+<size>11</size></content>
+
+<content start="161" end="167">
+<size>11</size><family>Courier New</family></content>
+
+<content start="167" end="249">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="249" end="250">
+<LeftIndent>140.0</LeftIndent>
+<content start="249" end="250">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="250" end="261">
+<LeftIndent>160.0</LeftIndent>
+<content start="250" end="251">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="251" end="253">
+</content>
+
+<content start="253" end="261">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="261" end="278">
+<LeftIndent>160.0</LeftIndent>
+<content start="261" end="262">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="262" end="264">
+</content>
+
+<content start="264" end="278">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="278" end="287">
+<LeftIndent>160.0</LeftIndent>
+<content start="278" end="279">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="279" end="281">
+</content>
+
+<content start="281" end="287">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="287" end="296">
+<LeftIndent>160.0</LeftIndent>
+<content start="287" end="288">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="288" end="290">
+</content>
+
+<content start="290" end="295">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="295" end="296">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="296" end="308">
+<LeftIndent>160.0</LeftIndent>
+<content start="296" end="297">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="297" end="299">
+</content>
+
+<content start="299" end="307">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="307" end="308">
+</content>
+
+</paragraph>
+<paragraph start="308" end="320">
+<LeftIndent>160.0</LeftIndent>
+<content start="308" end="309">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="309" end="311">
+</content>
+
+<content start="311" end="319">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="319" end="320">
+</content>
+
+</paragraph>
+<paragraph start="320" end="329">
+<LeftIndent>160.0</LeftIndent>
+<content start="320" end="321">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="321" end="323">
+</content>
+
+<content start="323" end="328">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="328" end="329">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="329" end="340">
+<LeftIndent>160.0</LeftIndent>
+<content start="329" end="330">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="330" end="332">
+</content>
+
+<content start="332" end="340">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="340" end="348">
+<LeftIndent>160.0</LeftIndent>
+<content start="340" end="341">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="341" end="343">
+</content>
+
+<content start="343" end="347">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="347" end="348">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="348" end="349">
+<LeftIndent>140.0</LeftIndent>
+<content start="348" end="349">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="349" end="481">
+<LeftIndent>140.0</LeftIndent>
+<content start="349" end="354">
+<size>11</size></content>
+
+<content start="354" end="359">
+<size>11</size><family>Courier New</family></content>
+
+<content start="359" end="384">
+<size>11</size></content>
+
+<content start="384" end="389">
+<size>11</size><family>Courier New</family></content>
+
+<content start="389" end="415">
+<size>11</size></content>
+
+<content start="415" end="419">
+<size>11</size><family>Courier New</family></content>
+
+<content start="419" end="436">
+<size>11</size></content>
+
+<content start="436" end="444">
+<size>11</size><family>Courier New</family></content>
+
+<content start="444" end="481">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="481" end="482">
+<LeftIndent>140.0</LeftIndent>
+<content start="481" end="482">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="482" end="527">
+<LeftIndent>140.0</LeftIndent>
+<content start="482" end="527">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="527" end="528">
+<LeftIndent>140.0</LeftIndent>
+<content start="527" end="528">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="528" end="535">
+<LeftIndent>160.0</LeftIndent>
+<content start="528" end="529">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="529" end="531">
+</content>
+
+<content start="531" end="535">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="535" end="543">
+<LeftIndent>160.0</LeftIndent>
+<content start="535" end="536">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="536" end="538">
+</content>
+
+<content start="538" end="543">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="543" end="559">
+<LeftIndent>160.0</LeftIndent>
+<content start="543" end="544">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="544" end="546">
+</content>
+
+<content start="546" end="559">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="559" end="576">
+<LeftIndent>160.0</LeftIndent>
+<content start="559" end="560">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="560" end="562">
+</content>
+
+<content start="562" end="567">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="567" end="575">
+<size>11</size><family>Courier New</family></content>
+
+<content start="575" end="576">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="576" end="610">
+<LeftIndent>160.0</LeftIndent>
+<content start="576" end="577">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="577" end="579">
+</content>
+
+<content start="579" end="585">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="585" end="609">
+<size>11</size><family>Courier New</family></content>
+
+<content start="609" end="610">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="610" end="645">
+<LeftIndent>160.0</LeftIndent>
+<content start="610" end="611">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="611" end="613">
+</content>
+
+<content start="613" end="618">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="618" end="644">
+<size>11</size><family>Courier New</family></content>
+
+<content start="644" end="645">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="645" end="646">
+<LeftIndent>140.0</LeftIndent>
+<content start="645" end="646">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="646" end="1276">
+<LeftIndent>140.0</LeftIndent>
+<content start="646" end="652">
+<size>11</size></content>
+
+<content start="652" end="657">
+<size>11</size><family>Courier New</family></content>
+
+<content start="657" end="673">
+<size>11</size></content>
+
+<content start="673" end="676">
+<size>11</size><family>Courier New</family></content>
+
+<content start="676" end="698">
+<size>11</size></content>
+
+<content start="698" end="705">
+<size>11</size><family>Courier New</family></content>
+
+<content start="705" end="707">
+<size>11</size></content>
+
+<content start="707" end="711">
+<size>11</size><family>Courier New</family></content>
+
+<content start="711" end="713">
+<size>11</size></content>
+
+<content start="713" end="717">
+<size>11</size><family>Courier New</family></content>
+
+<content start="717" end="727">
+<size>11</size></content>
+
+<content start="727" end="731">
+<size>11</size><family>Courier New</family></content>
+
+<content start="731" end="733">
+<size>11</size></content>
+
+<content start="733" end="746">
+<size>11</size><family>Courier New</family></content>
+
+<content start="746" end="752">
+<size>11</size></content>
+
+<content start="752" end="763">
+<size>11</size><family>Courier New</family></content>
+
+<content start="763" end="831">
+<size>11</size></content>
+
+<content start="831" end="837">
+<size>11</size><family>Courier New</family></content>
+
+<content start="837" end="855">
+<size>11</size></content>
+
+<content start="855" end="861">
+<size>11</size><family>Courier New</family></content>
+
+<content start="861" end="875">
+<size>11</size></content>
+
+<content start="875" end="882">
+<size>11</size><family>Courier New</family></content>
+
+<content start="882" end="948">
+<size>11</size></content>
+
+<content start="948" end="952">
+<size>11</size><family>Courier New</family></content>
+
+<content start="952" end="954">
+<size>11</size></content>
+
+<content start="954" end="958">
+<size>11</size><family>Courier New</family></content>
+
+<content start="958" end="968">
+<size>11</size></content>
+
+<content start="968" end="972">
+<size>11</size><family>Courier New</family></content>
+
+<content start="972" end="1014">
+<size>11</size></content>
+
+<content start="1014" end="1015">
+<size>11</size><italic>true</italic></content>
+
+<content start="1015" end="1058">
+<size>11</size></content>
+
+<content start="1058" end="1071">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1071" end="1076">
+<size>11</size></content>
+
+<content start="1076" end="1087">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1087" end="1167">
+<size>11</size></content>
+
+<content start="1167" end="1178">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1178" end="1203">
+<size>11</size></content>
+
+<content start="1203" end="1216">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1216" end="1222">
+<size>11</size></content>
+
+<content start="1222" end="1225">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1225" end="1261">
+<size>11</size></content>
+
+<content start="1261" end="1274">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1274" end="1276">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1276" end="1277">
+<LeftIndent>140.0</LeftIndent>
+<content start="1276" end="1277">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1277" end="1352">
+<LeftIndent>140.0</LeftIndent>
+<content start="1277" end="1301">
+<size>11</size></content>
+
+<content start="1301" end="1307">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1307" end="1352">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1352" end="1353">
+<LeftIndent>140.0</LeftIndent>
+<content start="1352" end="1353">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1353" end="1404">
+<LeftIndent>160.0</LeftIndent>
+<content start="1353" end="1354">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1354" end="1356">
+</content>
+
+<content start="1356" end="1361">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="1361" end="1367">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1367" end="1373">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="1373" end="1403">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1403" end="1404">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1404" end="1462">
+<LeftIndent>160.0</LeftIndent>
+<content start="1404" end="1405">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1405" end="1407">
+</content>
+
+<content start="1407" end="1412">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="1412" end="1425">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1425" end="1431">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="1431" end="1461">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1461" end="1462">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1462" end="1495">
+<LeftIndent>160.0</LeftIndent>
+<content start="1462" end="1463">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1463" end="1465">
+</content>
+
+<content start="1465" end="1477">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="1477" end="1494">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1494" end="1495">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1495" end="1535">
+<LeftIndent>160.0</LeftIndent>
+<content start="1495" end="1496">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1496" end="1498">
+</content>
+
+<content start="1498" end="1510">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="1510" end="1534">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1534" end="1535">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1535" end="1536">
+<LeftIndent>140.0</LeftIndent>
+<content start="1535" end="1536">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1536" end="1994">
+<LeftIndent>140.0</LeftIndent>
+<content start="1536" end="1620">
+<size>11</size></content>
+
+<content start="1620" end="1624">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1624" end="1637">
+<size>11</size></content>
+
+<content start="1637" end="1648">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1648" end="1703">
+<size>11</size></content>
+
+<content start="1703" end="1709">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1709" end="1870">
+<size>11</size></content>
+
+<content start="1870" end="1871">
+<size>11</size><italic>true</italic></content>
+
+<content start="1871" end="1887">
+<size>11</size></content>
+
+<content start="1887" end="1888">
+<size>11</size><italic>true</italic></content>
+
+<content start="1888" end="1994">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1994" end="1995">
+<LeftIndent>140.0</LeftIndent>
+<content start="1994" end="1995">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1995" end="2226">
+<LeftIndent>140.0</LeftIndent>
+<content start="1995" end="2116">
+<size>11</size></content>
+
+<content start="2116" end="2120">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2120" end="2149">
+<size>11</size></content>
+
+<content start="2149" end="2157">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2157" end="2226">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2226" end="2227">
+<LeftIndent>140.0</LeftIndent>
+<content start="2226" end="2227">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2227" end="2229">
+<LeftIndent>140.0</LeftIndent>
+<content start="2227" end="2228">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2228" end="2229">
+</content>
+
+</paragraph>
+<paragraph start="2229" end="2411">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2229" end="2242">
+<bold>true</bold><size>11</size></content>
+
+<content start="2242" end="2250">
+<size>11</size></content>
+
+<content start="2250" end="2267">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2267" end="2400">
+<size>11</size></content>
+
+<content start="2400" end="2409">
+<size>11</size><href>element_id.cml</href></content>
+
+<content start="2409" end="2410">
+<size>11</size></content>
+
+<content start="2410" end="2411">
+</content>
+
+</paragraph>
+<paragraph start="2411" end="2413">
+<LeftIndent>140.0</LeftIndent>
+<content start="2411" end="2412">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2412" end="2413">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2413" end="2414">
+<LeftIndent>140.0</LeftIndent>
+<content start="2413" end="2414">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2414" end="2480">
+<LeftIndent>140.0</LeftIndent>
+<content start="2414" end="2418">
+<size>11</size></content>
+
+<content start="2418" end="2424">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2424" end="2480">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2480" end="2481">
+<LeftIndent>140.0</LeftIndent>
+<content start="2480" end="2481">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2481" end="2517">
+<LeftIndent>160.0</LeftIndent>
+<content start="2481" end="2482">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><bold>true</bold></content>
+
+<content start="2482" end="2484">
+<bold>true</bold></content>
+
+<content start="2484" end="2496">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="2496" end="2516">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2516" end="2517">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2517" end="2571">
+<LeftIndent>160.0</LeftIndent>
+<content start="2517" end="2518">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><bold>true</bold></content>
+
+<content start="2518" end="2520">
+<bold>true</bold></content>
+
+<content start="2520" end="2532">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="2532" end="2570">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2570" end="2571">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2571" end="2617">
+<LeftIndent>160.0</LeftIndent>
+<content start="2571" end="2572">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="2572" end="2574">
+</content>
+
+<content start="2574" end="2579">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="2579" end="2580">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2580" end="2586">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="2586" end="2616">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2616" end="2617">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2617" end="2618">
+<LeftIndent>140.0</LeftIndent>
+<content start="2617" end="2618">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2618" end="2983">
+<LeftIndent>140.0</LeftIndent>
+<content start="2618" end="2622">
+<size>11</size></content>
+
+<content start="2622" end="2628">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2628" end="2733">
+<size>11</size></content>
+
+<content start="2733" end="2741">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2741" end="2925">
+<size>11</size></content>
+
+<content start="2925" end="2931">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2931" end="2983">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2983" end="2984">
+<LeftIndent>140.0</LeftIndent>
+<content start="2983" end="2984">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2984" end="3191">
+<LeftIndent>140.0</LeftIndent>
+<content start="2984" end="2988">
+<size>11</size></content>
+
+<content start="2988" end="2994">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2994" end="3016">
+<size>11</size></content>
+
+<content start="3016" end="3019">
+<bold>true</bold><size>11</size></content>
+
+<content start="3019" end="3191">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3191" end="3192">
+<LeftIndent>140.0</LeftIndent>
+<content start="3191" end="3192">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3192" end="3596">
+<LeftIndent>140.0</LeftIndent>
+<content start="3192" end="3240">
+<size>11</size></content>
+
+<content start="3240" end="3246">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3246" end="3328">
+<size>11</size></content>
+
+<content start="3328" end="3332">
+<size>11</size><family>Courier New</family><href>script_mark.cml</href></content>
+
+<content start="3332" end="3352">
+<size>11</size></content>
+
+<content start="3352" end="3358">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3358" end="3446">
+<size>11</size></content>
+
+<content start="3446" end="3452">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3452" end="3582">
+<size>11</size></content>
+
+<content start="3582" end="3586">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3586" end="3596">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3596" end="3597">
+<LeftIndent>140.0</LeftIndent>
+<content start="3596" end="3597">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3597" end="3600">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3597" end="3598">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>280.0</width>
+<height>330.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Example scripts for selecting atoms:&lt;br&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element 3;mark;&quot;&gt;select 
+    element 3&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element 2 within (5, 5, 20, 10);mark;&quot;&gt;select 
+    element 2 within (5, 5, 20, 10)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element 0-2 within (5, 5, 20, 10);mark;&quot;&gt;select 
+    element 0-2 within (5, 5, 20, 10)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element within (3.5, 3);mark;&quot;&gt;select 
+    element within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom all;mark;&quot;&gt;select 
+    atom all&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom *;mark;&quot;&gt;select 
+    atom *&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom none;mark;&quot;&gt;select 
+    atom none&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:Select atom 6;Mark;&quot;&gt;select 
+    atom 6&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:Select atom 6, 8, 10;Mark;&quot;&gt;select 
+    atom 6, 8, 10&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:Select atom 2-5;Mark;&quot;&gt;select 
+    atom 2-5&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:Select atom not 10-20;Mark;&quot;&gt;select 
+    atom not 10-20&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:Select atom within (4.0, 0-2);Mark;&quot;&gt;select 
+    atom within (4.0, 0-2)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom within (0, 0, 10, 20);Mark;&quot;&gt;select 
+    atom within (0, 0, 10, 20)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom not within (10, 10, 10, 10);Mark;&quot;&gt;select 
+    atom not within (10, 10, 10, 10)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:Select atom not selected;Mark;&quot;&gt;select 
+    atom not selected&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;....... &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="3598" end="3599">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_select$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="3599" end="3600">
+</content>
+
+</paragraph>
+<paragraph start="3600" end="3633">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3600" end="3632">
+<size>10</size></content>
+
+<content start="3632" end="3633">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3633" end="3634">
+<LeftIndent>140.0</LeftIndent>
+<content start="3633" end="3634">
+</content>
+
+</paragraph>
+<paragraph start="3634" end="3709">
+<LeftIndent>140.0</LeftIndent>
+<content start="3634" end="3690">
+<size>11</size></content>
+
+<content start="3690" end="3707">
+<size>11</size><href>linkscript.cml</href></content>
+
+<content start="3707" end="3709">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3709" end="3710">
+<LeftIndent>140.0</LeftIndent>
+<content start="3709" end="3710">
+</content>
+
+</paragraph>
+<paragraph start="3710" end="3738">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3710" end="3723">
+<size>11</size></content>
+
+<content start="3723" end="3728">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="3728" end="3731">
+<size>11</size></content>
+
+<content start="3731" end="3735">
+<size>11</size><href>script_logical.cml</href></content>
+
+<content start="3735" end="3737">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Logical expressions</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Logical expressions
+
+&lt; Previous | Index | Next &gt;
+
+Logical expressions are statements connected by the following keywords:
+
+   not
+   or
+   and
+
+When the not keyword is present, the expression produces the opposite effect to what follows.
+
+Logical expressions are used in conjunction with the select command to select objects.
+
+  
+[This is an embedded simulator.]
+
+ 
+Two useful formulas of Boolean algebra:
+1. not A or not B or not C = not (A and B and C)
+2. not A and not B and not C = not (A or B or C)
+where A, B, C are conditions.
+ 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="565">
+<paragraph start="0" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="19">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="49">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="21" end="23">
+<size>11</size></content>
+
+<content start="23" end="31">
+<size>11</size><href>script_select.cml</href></content>
+
+<content start="31" end="34">
+<size>11</size></content>
+
+<content start="34" end="39">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="46">
+<size>11</size><href>script_set.cml</href></content>
+
+<content start="46" end="48">
+<size>11</size></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<LeftIndent>100.0</LeftIndent>
+<content start="49" end="50">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="50" end="122">
+<LeftIndent>140.0</LeftIndent>
+<content start="50" end="122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="122" end="123">
+<LeftIndent>140.0</LeftIndent>
+<content start="122" end="123">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="123" end="130">
+<LeftIndent>160.0</LeftIndent>
+<content start="123" end="124">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="124" end="126">
+</content>
+
+<content start="126" end="130">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="130" end="136">
+<LeftIndent>160.0</LeftIndent>
+<content start="130" end="131">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="131" end="133">
+</content>
+
+<content start="133" end="136">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="136" end="143">
+<LeftIndent>160.0</LeftIndent>
+<content start="136" end="137">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="137" end="139">
+</content>
+
+<content start="139" end="142">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="142" end="143">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="143" end="144">
+<LeftIndent>140.0</LeftIndent>
+<content start="143" end="144">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="144" end="238">
+<LeftIndent>140.0</LeftIndent>
+<content start="144" end="153">
+<size>11</size></content>
+
+<content start="153" end="156">
+<size>11</size><family>Courier New</family></content>
+
+<content start="156" end="238">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="238" end="239">
+<LeftIndent>140.0</LeftIndent>
+<content start="238" end="239">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="239" end="326">
+<LeftIndent>140.0</LeftIndent>
+<content start="239" end="292">
+<size>11</size></content>
+
+<content start="292" end="298">
+<size>11</size><family>Courier New</family><href>script_select.cml</href></content>
+
+<content start="298" end="326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="326" end="327">
+<LeftIndent>140.0</LeftIndent>
+<content start="326" end="327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="327" end="330">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="327" end="328">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>280.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Example scripts for selecting atoms using 
+    logical expressions:&lt;br&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element 1 and within (3.5, 3);mark;&quot;&gt;select 
+    element 1 and within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element 1 or within (3.5, 3);mark;&quot;&gt;select 
+    element 1 or within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element not (1 or within (3.5, 3));mark;&quot;&gt;select 
+    element not (1 or within (3.5, 3))&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element not 1 or within (3.5, 3);mark;&quot;&gt;select 
+    element not 1 or within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element not 1 and within (3.5, 3);mark;&quot;&gt;select 
+    element not 1 and within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element not 1 and not within (3.5, 3);mark;&quot;&gt;select 
+    element not 1 and not within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element not 1 or not within (3.5, 3);mark;&quot;&gt;select 
+    element not 1 or not within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element not (1 and within (3.5, 3));mark;&quot;&gt;select 
+    element not (1 and within (3.5, 3))&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom (1-7) and (5-10);mark;&quot;&gt;select 
+    atom (1-7) and (5-10)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom (1-7) or (5-10);mark;&quot;&gt;select 
+    atom (1-7) or (5-10)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom (1-7 or 5-9) and within (3, 0);mark;&quot;&gt;select 
+    atom (1-7 or 5-9) and within (3, 0)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;.......&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom none;mark;&quot;&gt;Clear 
+    selection&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;......&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="328" end="329">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_logical$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="329" end="330">
+</content>
+
+</paragraph>
+<paragraph start="330" end="363">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="330" end="362">
+<size>10</size></content>
+
+<content start="362" end="363">
+</content>
+
+</paragraph>
+<paragraph start="363" end="364">
+<LeftIndent>140.0</LeftIndent>
+<content start="363" end="364">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="364" end="366">
+<LeftIndent>140.0</LeftIndent>
+<content start="364" end="365">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="365" end="366">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="366" end="406">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="366" end="389">
+<size>11</size></content>
+
+<content start="389" end="404">
+<bold>true</bold><size>11</size></content>
+
+<content start="404" end="406">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="406" end="455">
+<LeftIndent>240.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="406" end="454">
+<size>11</size><family>Courier New</family></content>
+
+<content start="454" end="455">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="455" end="504">
+<LeftIndent>240.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="455" end="503">
+<size>11</size><family>Courier New</family></content>
+
+<content start="503" end="504">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="504" end="534">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="504" end="510">
+<size>11</size></content>
+
+<content start="510" end="517">
+<size>11</size><family>Courier New</family></content>
+
+<content start="517" end="533">
+<size>11</size></content>
+
+<content start="533" end="534">
+</content>
+
+</paragraph>
+<paragraph start="534" end="536">
+<LeftIndent>140.0</LeftIndent>
+<content start="534" end="535">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="535" end="536">
+</content>
+
+</paragraph>
+<paragraph start="536" end="537">
+<LeftIndent>140.0</LeftIndent>
+<content start="536" end="537">
+</content>
+
+</paragraph>
+<paragraph start="537" end="565">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="537" end="539">
+<size>11</size></content>
+
+<content start="539" end="547">
+<size>11</size><href>script_select.cml</href></content>
+
+<content start="547" end="550">
+<size>11</size></content>
+
+<content start="550" end="555">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="555" end="558">
+<size>11</size></content>
+
+<content start="558" end="562">
+<size>11</size><href>script_set.cml</href></content>
+
+<content start="562" end="564">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

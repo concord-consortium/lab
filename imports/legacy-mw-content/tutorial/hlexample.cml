@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Echo page</page_title>
+<info>null</info>
+<text>This page is intended to echo your action of clicking the hyperlink. Please go back to the original page.</text>
+<section start="0" end="106">
+<paragraph start="0" end="106">
+<content start="0" end="91">
+<size>11</size></content>
+
+<content start="91" end="104">
+<href>navigate.cml</href><size>11</size></content>
+
+<content start="104" end="105">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

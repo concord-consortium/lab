@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting a rectangle</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a rectangle
+
+&lt; Previous | Index | Next &gt;
+
+You can insert any number of rectangles into a model. Rectangles are not physical objects --- they do not participate in the motion, but they can be attached to a moving object.
+
+By default, a rectangle is drawn without filling, but there are many properties you can set. To change its properties, just double-click on it when the model builder is in the selection mode. You will see the following dialog:
+
+  
+[This is a screenshot of the Rectangle Properties Dialog.]
+
+The following model shows some examples of using rectangles in a model container. The border of the model container is hiden so that it appears as if the objects were just directly on the page.
+
+ 
+     
+[This is an embedded simulator showing rectangles in various styles. Double-click one to change its attributes.]
+
+Like any other components in a model container, a rectangle can be moved, cut, copied and pasted in the same manner.
+
+Script support
+
+To remove a rectangle, use the select command to select it first and then call the remove command. There are two methods for moving it. The first one is to use the select command to select it first and then call the move command. The second one is to use the set command to set the coordinates of the upper-left corner: (x, y).
+
+To know the index of a rectangle that will be used in the set command, double-click on it when the model container is in the selecting and moving mode and look up the number after &quot;Rectangle #&quot; in the Properties Panel that opens.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1561">
+<paragraph start="0" end="22">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="21">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="51">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="23" end="25">
+<size>11</size></content>
+
+<content start="25" end="33">
+<href>LineInModel.cml</href><size>11</size></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="41">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="48">
+<href>pressureprobe.cml</href><size>11</size></content>
+
+<content start="48" end="50">
+<size>11</size></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<LeftIndent>100.0</LeftIndent>
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="230">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="230">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="230" end="231">
+<LeftIndent>140.0</LeftIndent>
+<content start="230" end="231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="231" end="458">
+<LeftIndent>140.0</LeftIndent>
+<content start="231" end="458">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="458" end="459">
+<LeftIndent>140.0</LeftIndent>
+<content start="458" end="459">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="459" end="462">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="459" end="460">
+</content>
+
+<content start="460" end="461">
+<icon>RectanglePropertiesDialog.gif</icon></content>
+
+<content start="461" end="462">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="462" end="521">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="462" end="520">
+<size>10</size></content>
+
+<content start="520" end="521">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="521" end="522">
+<LeftIndent>140.0</LeftIndent>
+<content start="521" end="522">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="522" end="716">
+<LeftIndent>140.0</LeftIndent>
+<content start="522" end="716">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="716" end="717">
+<LeftIndent>140.0</LeftIndent>
+<content start="716" end="717">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="717" end="719">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="717" end="718">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>RectangleInModel$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="718" end="719">
+</content>
+
+</paragraph>
+<paragraph start="719" end="725">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="719" end="720">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Add Rectangle</title>
+<tooltip>Add Rectangle</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set action RECT_ID;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="720" end="721">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Select</title>
+<tooltip>Select</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set action SELE_ID;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="721" end="722">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="722" end="723">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="723" end="724">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="724" end="725">
+</content>
+
+</paragraph>
+<paragraph start="725" end="838">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="725" end="837">
+<size>10</size></content>
+
+<content start="837" end="838">
+</content>
+
+</paragraph>
+<paragraph start="838" end="839">
+<LeftIndent>140.0</LeftIndent>
+<content start="838" end="839">
+</content>
+
+</paragraph>
+<paragraph start="839" end="956">
+<LeftIndent>140.0</LeftIndent>
+<content start="839" end="956">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="956" end="957">
+<LeftIndent>140.0</LeftIndent>
+<content start="956" end="957">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="957" end="972">
+<LeftIndent>140.0</LeftIndent>
+<content start="957" end="971">
+<size>11</size><bold>true</bold></content>
+
+<content start="971" end="972">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="972" end="973">
+<LeftIndent>140.0</LeftIndent>
+<content start="972" end="973">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="973" end="1301">
+<LeftIndent>140.0</LeftIndent>
+<content start="973" end="1004">
+<size>11</size></content>
+
+<content start="1004" end="1010">
+<href>script_select.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1010" end="1056">
+<size>11</size></content>
+
+<content start="1056" end="1062">
+<href>script_remove.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1062" end="1137">
+<size>11</size></content>
+
+<content start="1137" end="1143">
+<href>script_select.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1143" end="1189">
+<size>11</size></content>
+
+<content start="1189" end="1193">
+<href>script_move.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1193" end="1232">
+<size>11</size></content>
+
+<content start="1232" end="1235">
+<href>script_set.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1235" end="1301">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1301" end="1302">
+<LeftIndent>140.0</LeftIndent>
+<content start="1301" end="1302">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1302" end="1532">
+<LeftIndent>140.0</LeftIndent>
+<content start="1302" end="1360">
+<size>11</size></content>
+
+<content start="1360" end="1363">
+<href>script_set.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1363" end="1423">
+<size>11</size></content>
+
+<content start="1423" end="1452">
+<href>selectAction.cml</href><size>11</size></content>
+
+<content start="1452" end="1531">
+<size>11</size></content>
+
+<content start="1531" end="1532">
+</content>
+
+</paragraph>
+<paragraph start="1532" end="1533">
+<LeftIndent>140.0</LeftIndent>
+<content start="1532" end="1533">
+</content>
+
+</paragraph>
+<paragraph start="1533" end="1561">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1533" end="1535">
+<size>11</size></content>
+
+<content start="1535" end="1543">
+<href>LineInModel.cml</href><size>11</size></content>
+
+<content start="1543" end="1546">
+<size>11</size></content>
+
+<content start="1546" end="1551">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="1551" end="1554">
+<size>11</size></content>
+
+<content start="1554" end="1558">
+<href>pressureprobe.cml</href><size>11</size></content>
+
+<content start="1558" end="1560">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

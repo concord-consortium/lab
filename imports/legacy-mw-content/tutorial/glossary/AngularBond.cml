@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Angular bond</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Angular bond
+
+
+The decomposition of chemical bond energy among three atoms into a function of the triplet&apos;s angle. Theoretically, this is a potential maintaining the angle between two covalent bonds that co-own a common atom. An angular bond has no chirality. It is a three-body interaction. In molecular mechanics, an angular bond is modeled by assigning an angle bending potential to the corresponding pair of atoms. 
+
+
+   
+ return to index</text>
+<section start="0" end="443">
+<paragraph start="0" end="13">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="12">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<LeftIndent>120.0</LeftIndent>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<LeftIndent>120.0</LeftIndent>
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="420">
+<LeftIndent>140.0</LeftIndent>
+<content start="15" end="420">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="420" end="421">
+<LeftIndent>120.0</LeftIndent>
+<content start="420" end="421">
+</content>
+
+</paragraph>
+<paragraph start="421" end="422">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="421" end="422">
+</content>
+
+</paragraph>
+<paragraph start="422" end="426">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="422" end="423">
+</content>
+
+<content start="423" end="424">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="424" end="426">
+</content>
+
+</paragraph>
+<paragraph start="426" end="443">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="426" end="427">
+</content>
+
+<content start="427" end="442">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

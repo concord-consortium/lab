@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Using combo boxes in HTML text box</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Using combo boxes in HTML text box
+
+&lt; Previous | Index | Next &gt;
+
+
+A combo box (also known as menu in HTML) can be created using the following lines of code:
+
+&lt;select name=&quot;combo box name&quot; script1=&quot;some scripts&quot;
+                              script2=&quot;some scripts&quot;
+                              ......
+                              scriptn=&quot;some scripts&quot;&gt;
+   &lt;option selected&gt; First choice in menu
+   &lt;option&gt; Second choice in menu
+   ......
+   &lt;option&gt; Last choice in menu
+&lt;/select&gt;
+
+As a combo box has multiple options, one must provide a set of scripts for each option separately. The scripts set for an option will be executed when it is selected. Note that the script attributes are set in the select element, not in the corresponding option elements. The script keyword is appended with an integer number i (i=1, 2, ..., n, where n is the number of choices in this menu), to indicate that they are the scripts that will be executed when the i-th menu is selected. If your combo box will have n choices, you will need to provide n option elements in the select context. The options you provide will appear in the combo box in the same order in which the option elements appear in the text.
+
+In the option elements, you just need to set the text for each menu item, and choose a menu item to be the default selected one. The following is an example of using an HTML combo box:
+
+  
+To view the source, save this page to your disk, enter the authoring mode and right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the text box.
+
+[This is an embedded simulator.]
+
+Like radio buttons and check boxes, the value attributes of the option elements are not used as text of menu items. You have to write the text next to an option element.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1785">
+<paragraph start="0" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="34">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="64">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="36" end="38">
+<size>11</size></content>
+
+<content start="38" end="46">
+<size>11</size><href>html_checkbox.cml</href></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="54">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="54" end="57">
+<size>11</size></content>
+
+<content start="57" end="61">
+<size>11</size><href>html_textfield.cml</href></content>
+
+<content start="61" end="63">
+<size>11</size></content>
+
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="66">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="66" end="157">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="157">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="157" end="158">
+<LeftIndent>140.0</LeftIndent>
+<content start="157" end="158">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="158" end="211">
+<LeftIndent>140.0</LeftIndent>
+<content start="158" end="211">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="211" end="264">
+<LeftIndent>140.0</LeftIndent>
+<content start="211" end="264">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="264" end="301">
+<LeftIndent>140.0</LeftIndent>
+<content start="264" end="301">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="301" end="355">
+<LeftIndent>140.0</LeftIndent>
+<content start="301" end="337">
+<size>11</size><family>Courier New</family></content>
+
+<content start="337" end="338">
+<size>11</size><italic>true</italic><family>Courier New</family></content>
+
+<content start="338" end="355">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="355" end="397">
+<LeftIndent>140.0</LeftIndent>
+<content start="355" end="397">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="397" end="431">
+<LeftIndent>140.0</LeftIndent>
+<content start="397" end="431">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="431" end="441">
+<LeftIndent>140.0</LeftIndent>
+<content start="431" end="441">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="441" end="473">
+<LeftIndent>140.0</LeftIndent>
+<content start="441" end="473">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="473" end="483">
+<LeftIndent>140.0</LeftIndent>
+<content start="473" end="482">
+<size>11</size><family>Courier New</family></content>
+
+<content start="482" end="483">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="483" end="484">
+<LeftIndent>140.0</LeftIndent>
+<content start="483" end="484">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="484" end="1194">
+<LeftIndent>140.0</LeftIndent>
+<content start="484" end="698">
+<size>11</size></content>
+
+<content start="698" end="704">
+<size>11</size><family>Courier New</family></content>
+
+<content start="704" end="739">
+<size>11</size></content>
+
+<content start="739" end="745">
+<size>11</size><family>Courier New</family></content>
+
+<content start="745" end="810">
+<size>11</size></content>
+
+<content start="810" end="811">
+<size>11</size><italic>true</italic></content>
+
+<content start="811" end="813">
+<size>11</size></content>
+
+<content start="813" end="814">
+<size>11</size><italic>true</italic></content>
+
+<content start="814" end="826">
+<size>11</size></content>
+
+<content start="826" end="827">
+<size>11</size><italic>true</italic></content>
+
+<content start="827" end="835">
+<size>11</size></content>
+
+<content start="835" end="836">
+<size>11</size><italic>true</italic></content>
+
+<content start="836" end="946">
+<size>11</size></content>
+
+<content start="946" end="947">
+<size>11</size><italic>true</italic></content>
+
+<content start="947" end="997">
+<size>11</size></content>
+
+<content start="997" end="998">
+<size>11</size><italic>true</italic></content>
+
+<content start="998" end="1033">
+<size>11</size></content>
+
+<content start="1033" end="1034">
+<size>11</size><italic>true</italic></content>
+
+<content start="1034" end="1035">
+<size>11</size></content>
+
+<content start="1035" end="1041">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1041" end="1058">
+<size>11</size></content>
+
+<content start="1058" end="1064">
+<size>11</size><italic>true</italic></content>
+
+<content start="1064" end="1158">
+<size>11</size></content>
+
+<content start="1158" end="1164">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1164" end="1194">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1194" end="1195">
+<LeftIndent>140.0</LeftIndent>
+<content start="1194" end="1195">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1195" end="1380">
+<LeftIndent>140.0</LeftIndent>
+<content start="1195" end="1380">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1380" end="1381">
+<LeftIndent>140.0</LeftIndent>
+<content start="1380" end="1381">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1381" end="1384">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1381" end="1382">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>280.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot;&gt;This is a HTML text box, which has an embedded 
+      combo box for executing &lt;/font&gt;&lt;font face=&quot;Verdana&quot;&gt;&lt;a href=&quot;mwscripts.cml&quot;&gt;MW 
+      scripts&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot;&gt;.&lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;select script4=&quot;script:mw:1:select atom 3;mark color [255 255 0];&quot; script3=&quot;script:mw:1:select atom 2;mark color [255 255 0];&quot; script2=&quot;script:mw:1:select atom 1;mark color [255 255 0];&quot; script1=&quot;script:mw:1:select atom none;mark;&quot; name=&quot;menu&quot; script5=&quot;script:mw:1:select atom 4;mark color [255 255 0];&quot;&gt;
+        &lt;option selected&gt;Select none 
+        &lt;option&gt;Select atom 1 
+        &lt;option&gt;Select atom 2 
+        &lt;option&gt;Select atom 3 
+        &lt;option&gt;Select atom 4 
+      &lt;/select&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1382" end="1383">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>html_combobox$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+
+<content start="1383" end="1384">
+</content>
+
+</paragraph>
+<paragraph start="1384" end="1551">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1384" end="1475">
+<size>10</size><italic>true</italic></content>
+
+<content start="1475" end="1532">
+<size>10</size><italic>true</italic></content>
+
+<content start="1532" end="1550">
+<size>10</size><italic>true</italic></content>
+
+<content start="1550" end="1551">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1551" end="1552">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1551" end="1552">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1552" end="1585">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1552" end="1584">
+<size>10</size></content>
+
+<content start="1584" end="1585">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1585" end="1586">
+<LeftIndent>140.0</LeftIndent>
+<content start="1585" end="1586">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1586" end="1756">
+<LeftIndent>140.0</LeftIndent>
+<content start="1586" end="1626">
+<size>11</size></content>
+
+<content start="1626" end="1631">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1631" end="1650">
+<size>11</size></content>
+
+<content start="1650" end="1656">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1656" end="1740">
+<size>11</size></content>
+
+<content start="1740" end="1746">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1746" end="1756">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1756" end="1757">
+<LeftIndent>140.0</LeftIndent>
+<content start="1756" end="1757">
+</content>
+
+</paragraph>
+<paragraph start="1757" end="1785">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1757" end="1759">
+<size>11</size></content>
+
+<content start="1759" end="1767">
+<size>11</size><href>html_checkbox.cml</href></content>
+
+<content start="1767" end="1770">
+<size>11</size></content>
+
+<content start="1770" end="1775">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1775" end="1778">
+<size>11</size></content>
+
+<content start="1778" end="1782">
+<size>11</size><href>html_textfield.cml</href></content>
+
+<content start="1782" end="1784">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

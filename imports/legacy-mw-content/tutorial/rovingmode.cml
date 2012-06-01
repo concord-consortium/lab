@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The navigation mode</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The navigation mode
+
+&lt; Previous | Index | Next &gt;
+
+Most molecular viewers display molecules in a mode quite similar to playing a toy. The molecules usually respond instantaneously to mouse dragging, giving the user a feeling of &quot;hands on it&quot;. The user can zoom in and out to look at details. This is also the default mode of the Jmol Viewer.
+
+Another mode to explore virtual 3D worlds, common in games and architecture designs, is the navigation mode&#10102;. A view in this mode can be imagined as shot by a video camera tiny enough to be placed into the molecule. This mode is rarely used in molecular visualization, but is something we would like users to explore in the Molecular Workbench.
+
+The following is the comparison of the visual effect of the same molecule displayed in the default mode (left) and the navigation mode (right), respectively. Play with them first and then read on about what we believe are the advantages of the navigation mode.
+
+A side-by-side comparison of the default mode and the navigation mode
+  
+[These are embedded Jmol Viewers.]
+
+As we can see, in the navigation mode, the atoms close to the camera are much larger than those far away from it. This creates a visual effect as if we were just standing inside a molecule and looking over atoms&apos; shoulders.
+
+Advantages of the navigation mode
+
+Compared with the default mode, the navigation mode presents additional information to the user. For example, the user can navigate into a cavity and turn around to see how the molecular structure looks like from the inside. Exploring this kind of information may be more difficult with the default mode, because the internal structure is usually obstructed and to get rid of the obstructions one will have to &quot;slab&quot; the molecule&#10103;.
+
+To younger learners, the cool effect produced by the navigation mode can help attract them to learn, as we believe that students would probably welcome learning through a gaming style.
+
+ 
+&#10102;The navigation mode of Jmol in the Molecular Workbench (MW) is specifically implemented for MW. It may be different from that of the Jmol standalone, maintained and developed by   Prof. Bob Hanson. Jmol in MW uses the perspective model of Version 10.2, whereas Hanson&apos;s implementation uses a new perspective model (Version 11.2).
+&#10103;The way the molecule is &quot;slabbed&quot; in Jmol may create some undesired effects, such as discontinuities of structures and sudden disappearance of atoms and bonds.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2461">
+<paragraph start="0" end="20">
+<Alignment>2</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
+<RightIndent>8.0</RightIndent>
+<content start="0" end="19">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="49">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="21" end="23">
+<size>11</size></content>
+
+<content start="23" end="31">
+<href>initializeJmol.cml</href><size>11</size></content>
+
+<content start="31" end="34">
+<size>11</size></content>
+
+<content start="34" end="39">
+<href>index_jmol.cml</href><size>11</size></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="46">
+<href>navkey.cml</href><size>11</size></content>
+
+<content start="46" end="48">
+<size>11</size></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="341">
+<LeftIndent>140.0</LeftIndent>
+<content start="50" end="341">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="341" end="342">
+<LeftIndent>140.0</LeftIndent>
+<content start="341" end="342">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="342" end="687">
+<LeftIndent>140.0</LeftIndent>
+<content start="342" end="449">
+<size>11</size></content>
+
+<content start="449" end="450">
+</content>
+
+<content start="450" end="687">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="687" end="688">
+<LeftIndent>140.0</LeftIndent>
+<content start="687" end="688">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="688" end="949">
+<LeftIndent>140.0</LeftIndent>
+<content start="688" end="948">
+<size>11</size></content>
+
+<content start="948" end="949">
+</content>
+
+</paragraph>
+<paragraph start="949" end="950">
+<LeftIndent>140.0</LeftIndent>
+<content start="949" end="950">
+</content>
+
+</paragraph>
+<paragraph start="950" end="1020">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="950" end="1019">
+<bold>true</bold></content>
+
+<content start="1019" end="1020">
+</content>
+
+</paragraph>
+<paragraph start="1020" end="1023">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1020" end="1021">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<toolbar>false</toolbar><resource>3CRO.pdb</resource><state>rovingmode$0.jms</state><width>350</width>
+<height>350</height>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="1021" end="1022">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<toolbar>false</toolbar><navigation>true</navigation><resource>3CRO.pdb</resource><state>rovingmode$1.jms</state><width>350</width>
+<height>350</height>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="1022" end="1023">
+</content>
+
+</paragraph>
+<paragraph start="1023" end="1058">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1023" end="1058">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1058" end="1059">
+<content start="1058" end="1059">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1059" end="1283">
+<LeftIndent>140.0</LeftIndent>
+<content start="1059" end="1283">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1283" end="1284">
+<LeftIndent>140.0</LeftIndent>
+<content start="1283" end="1284">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1284" end="1318">
+<LeftIndent>140.0</LeftIndent>
+<content start="1284" end="1317">
+<bold>true</bold><size>11</size></content>
+
+<content start="1317" end="1318">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1318" end="1319">
+<LeftIndent>140.0</LeftIndent>
+<content start="1318" end="1319">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1319" end="1751">
+<LeftIndent>140.0</LeftIndent>
+<content start="1319" end="1748">
+<size>11</size></content>
+
+<content start="1748" end="1749">
+</content>
+
+<content start="1749" end="1751">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1751" end="1752">
+<LeftIndent>140.0</LeftIndent>
+<content start="1751" end="1752">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1752" end="1937">
+<LeftIndent>140.0</LeftIndent>
+<content start="1752" end="1937">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1937" end="1938">
+<LeftIndent>140.0</LeftIndent>
+<content start="1937" end="1938">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1938" end="1940">
+<LeftIndent>140.0</LeftIndent>
+<content start="1938" end="1939">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1939" end="1940">
+</content>
+
+</paragraph>
+<paragraph start="1940" end="2271">
+<LeftIndent>140.0</LeftIndent>
+<content start="1940" end="1941">
+</content>
+
+<content start="1941" end="2119">
+<size>10</size></content>
+
+<content start="2119" end="2120">
+<icon>htmlink.gif</icon><size>10</size></content>
+
+<content start="2120" end="2121">
+<size>10</size></content>
+
+<content start="2121" end="2137">
+<href>http://www.stolaf.edu/academics/chemapps/jmol/</href><size>10</size></content>
+
+<content start="2137" end="2271">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="2271" end="2432">
+<LeftIndent>140.0</LeftIndent>
+<content start="2271" end="2272">
+</content>
+
+<content start="2272" end="2431">
+<size>10</size></content>
+
+<content start="2431" end="2432">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2432" end="2433">
+<LeftIndent>140.0</LeftIndent>
+<content start="2432" end="2433">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2433" end="2461">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="2433" end="2435">
+<size>11</size></content>
+
+<content start="2435" end="2443">
+<href>initializeJmol.cml</href><size>11</size></content>
+
+<content start="2443" end="2446">
+<size>11</size></content>
+
+<content start="2446" end="2451">
+<href>index_jmol.cml</href><size>11</size></content>
+
+<content start="2451" end="2454">
+<size>11</size></content>
+
+<content start="2454" end="2458">
+<href>navkey.cml</href><size>11</size></content>
+
+<content start="2458" end="2460">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

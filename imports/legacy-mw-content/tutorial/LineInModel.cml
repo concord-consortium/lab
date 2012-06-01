@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting a line</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a line
+
+&lt; Previous | Index | Next &gt;
+
+You can insert any number of lines into a model to annotate it. For instance, you may want to use a line to indicate the direction of the applied electric field, or a vertical line and a horizontal line to provide a reference system, or an array of lines as the tick marks of a ruler to measure the thermal expansion of a system.
+
+Remember that lines are not physical objects --- they do not participate in the motion.
+
+Lines have several properties that you can customize. For instance, they can have arrows of various styles at either end. You can type to set the positions of the two end points (X1, Y1) and (X2, Y2). To change the properties of a line, just double-click on it when the model builder is in the selection mode. You will see the following dialog:
+
+  
+[This is a screenshot of the Line Properties Dialog]
+
+The following model shows some examples of using lines in a model container. The border of the model container is hiden so that it appears as if the lines and text boxes were just directly on the page.
+
+ 
+      
+[This is an embedded simulator showing lines in various styles. Double-click a line to change its attributes.]
+
+Like any other components in a model container, a line can be moved, cut, copied and pasted in the same way.
+
+Script support
+
+To remove a line, use the select command to select it first and then call the remove command. There are two methods for moving it. The first one is to use the select command to select it first and then call the move command. The second one is to use the set command to set the coordinates of the two end points: (x1, y1) and (x2, y2). The second method can also be used to change the length of the line.
+
+The following attributes of a line can also be changed through the set command: weight, stroke.
+
+To know the index of a line that will be used in the set command, double-click on it when the model container is in the selecting and moving mode and look up the number after &quot;Line #&quot; in the Properties Panel that opens.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2071">
+<paragraph start="0" end="17">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="16">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="46">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="18" end="20">
+<size>11</size></content>
+
+<content start="20" end="28">
+<href>TextBoxInModel.cml</href><size>11</size></content>
+
+<content start="28" end="31">
+<size>11</size></content>
+
+<content start="31" end="36">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<href>RectangleInModel.cml</href><size>11</size></content>
+
+<content start="43" end="45">
+<size>11</size></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<LeftIndent>100.0</LeftIndent>
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="377">
+<LeftIndent>140.0</LeftIndent>
+<content start="47" end="377">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="377" end="378">
+<LeftIndent>140.0</LeftIndent>
+<content start="377" end="378">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="378" end="466">
+<LeftIndent>140.0</LeftIndent>
+<content start="378" end="466">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="466" end="467">
+<LeftIndent>140.0</LeftIndent>
+<content start="466" end="467">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="467" end="812">
+<LeftIndent>140.0</LeftIndent>
+<content start="467" end="647">
+<size>11</size></content>
+
+<content start="647" end="648">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="648" end="651">
+<size>11</size></content>
+
+<content start="651" end="652">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="652" end="660">
+<size>11</size></content>
+
+<content start="660" end="661">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="661" end="664">
+<size>11</size></content>
+
+<content start="664" end="665">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="665" end="812">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="812" end="813">
+<LeftIndent>140.0</LeftIndent>
+<content start="812" end="813">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="813" end="816">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="813" end="814">
+</content>
+
+<content start="814" end="815">
+<icon>LinePropertiesDialog.gif</icon></content>
+
+<content start="815" end="816">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="816" end="869">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="816" end="868">
+<size>10</size></content>
+
+<content start="868" end="869">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="869" end="870">
+<LeftIndent>140.0</LeftIndent>
+<content start="869" end="870">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="870" end="1072">
+<LeftIndent>140.0</LeftIndent>
+<content start="870" end="1072">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1072" end="1073">
+<LeftIndent>140.0</LeftIndent>
+<content start="1072" end="1073">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1073" end="1075">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1073" end="1074">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>LineInModel$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="1074" end="1075">
+</content>
+
+</paragraph>
+<paragraph start="1075" end="1082">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1075" end="1076">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Add line</title>
+<tooltip>Enter the mode of adding a line</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set action LINE_ID;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1076" end="1077">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Select</title>
+<tooltip>Enter the mode of selecting and moving</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set action SELE_ID;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1077" end="1078">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Clear</title>
+<tooltip>Erase all</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom all;
+remove;
+select line all;
+remove;
+select textbox all;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1078" end="1079">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1079" end="1080">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1080" end="1081">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1081" end="1082">
+</content>
+
+</paragraph>
+<paragraph start="1082" end="1193">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1082" end="1192">
+<size>10</size></content>
+
+<content start="1192" end="1193">
+</content>
+
+</paragraph>
+<paragraph start="1193" end="1194">
+<LeftIndent>140.0</LeftIndent>
+<content start="1193" end="1194">
+</content>
+
+</paragraph>
+<paragraph start="1194" end="1303">
+<LeftIndent>140.0</LeftIndent>
+<content start="1194" end="1303">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1303" end="1304">
+<LeftIndent>140.0</LeftIndent>
+<content start="1303" end="1304">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1304" end="1319">
+<LeftIndent>140.0</LeftIndent>
+<content start="1304" end="1318">
+<size>11</size><bold>true</bold></content>
+
+<content start="1318" end="1319">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1319" end="1320">
+<LeftIndent>140.0</LeftIndent>
+<content start="1319" end="1320">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1320" end="1724">
+<LeftIndent>140.0</LeftIndent>
+<content start="1320" end="1346">
+<size>11</size></content>
+
+<content start="1346" end="1352">
+<href>script_select.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1352" end="1398">
+<size>11</size></content>
+
+<content start="1398" end="1404">
+<href>script_remove.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1404" end="1479">
+<size>11</size></content>
+
+<content start="1479" end="1485">
+<href>script_select.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1485" end="1531">
+<size>11</size></content>
+
+<content start="1531" end="1535">
+<href>script_move.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1535" end="1574">
+<size>11</size></content>
+
+<content start="1574" end="1577">
+<href>script_set.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1577" end="1724">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1724" end="1725">
+<LeftIndent>140.0</LeftIndent>
+<content start="1724" end="1725">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1725" end="1821">
+<LeftIndent>140.0</LeftIndent>
+<content start="1725" end="1792">
+<size>11</size></content>
+
+<content start="1792" end="1795">
+<href>script_set.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1795" end="1821">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1821" end="1822">
+<LeftIndent>140.0</LeftIndent>
+<content start="1821" end="1822">
+</content>
+
+</paragraph>
+<paragraph start="1822" end="2042">
+<LeftIndent>140.0</LeftIndent>
+<content start="1822" end="1875">
+<size>11</size></content>
+
+<content start="1875" end="1878">
+<href>script_set.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1878" end="1938">
+<size>11</size></content>
+
+<content start="1938" end="1967">
+<href>selectAction.cml</href><size>11</size></content>
+
+<content start="1967" end="2041">
+<size>11</size></content>
+
+<content start="2041" end="2042">
+</content>
+
+</paragraph>
+<paragraph start="2042" end="2043">
+<LeftIndent>140.0</LeftIndent>
+<content start="2042" end="2043">
+</content>
+
+</paragraph>
+<paragraph start="2043" end="2071">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2043" end="2045">
+<size>11</size></content>
+
+<content start="2045" end="2053">
+<href>TextBoxInModel.cml</href><size>11</size></content>
+
+<content start="2053" end="2056">
+<size>11</size></content>
+
+<content start="2056" end="2061">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="2061" end="2064">
+<size>11</size></content>
+
+<content start="2064" end="2068">
+<href>RectangleInModel.cml</href><size>11</size></content>
+
+<content start="2068" end="2070">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

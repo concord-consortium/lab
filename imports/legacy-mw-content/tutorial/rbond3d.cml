@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Adding and removing radial bonds</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Adding and removing radial bonds
+
+&lt; Previous | Index | Next &gt;
+
+What we call radial bonds in MW is commonly called bond-stretching forces in molecular mechanics, a subject that studies chemical forces making up molecular structures (see   NIH&apos;s introduction to molecular mechanics).
+
+To make a radial bond, you need to select the button (&quot; &quot;) from the tool bar. When the Constructor is in this mode, click an atom and then ALT+click on another atom. A radial bond will be made between the two selected atoms.
+
+ 
+If you have constructed 2D model in MW, the process of building a radial bond in 3D is similar to that in 2D. See this page for a reference.
+ 
+
+To remove a radial bond, just right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on it and select &quot;Cut&quot; from the pop-up menu. At any time when a radial bond is selected, in which case it will be highlighted, you can always use CTRL+X (Windows/Linux) or Command+X (Mac), or DELETE and BACKSPACE key to remove it.
+
+Radial bonds are not enough to maintain molecular structures in molecular dynamics simulations, except for special cases such as diatomic molecules. The next section discusses about the force needed to maintain the angle between two radial bonds.
+
+Practice
+
+You may play with the following example about adding and removing radial bonds to construct an ethylene molecule. Note that the ball-and-stick mode is selected for the following model. The van der Waals spheres of the atoms actually overlap each other, if the spacefilling mode is selected (to change the viewing mode, use &quot;Option&gt;Show View Options&quot; and select the &quot;Molecule&quot; drop-down list).
+
+ 
+[This is an embedded simulator.]
+
+If you just run the above model without adding radial bonds, you will see a rapid shift of atoms and then they will run around randomly. This is normal --- the shift is caused by the energy minization procedure invoked before running the simulation, and the atoms run around randomly because there are no forces for holding them together to form a specific structure.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2074">
+<paragraph start="0" end="33">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="32">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<RightIndent>20.0</RightIndent>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="62">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="34" end="36">
+<size>11</size></content>
+
+<content start="36" end="44">
+<size>11</size><href>position3d.cml</href></content>
+
+<content start="44" end="47">
+<size>11</size></content>
+
+<content start="47" end="52">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="52" end="55">
+<size>11</size></content>
+
+<content start="55" end="59">
+<size>11</size><href>abond3d.cml</href></content>
+
+<content start="59" end="61">
+<size>11</size></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<LeftIndent>140.0</LeftIndent>
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="282">
+<LeftIndent>140.0</LeftIndent>
+<content start="63" end="76">
+<size>11</size></content>
+
+<content start="76" end="88">
+<size>11</size><italic>true</italic></content>
+
+<content start="88" end="236">
+<size>11</size></content>
+
+<content start="236" end="237">
+<icon>htmlink.gif</icon></content>
+
+<content start="237" end="238">
+<size>11</size></content>
+
+<content start="238" end="279">
+<size>11</size><href>http://cmm.cit.nih.gov/modeling/guide_documents/molecular_mechanics_document.html</href></content>
+
+<content start="279" end="282">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="282" end="283">
+<LeftIndent>140.0</LeftIndent>
+<content start="282" end="283">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="283" end="508">
+<LeftIndent>140.0</LeftIndent>
+<content start="283" end="338">
+<size>11</size></content>
+
+<content start="338" end="339">
+<icon>radialbond.gif</icon></content>
+
+<content start="339" end="508">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="508" end="509">
+<LeftIndent>140.0</LeftIndent>
+<content start="508" end="509">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="509" end="511">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="509" end="510">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="510" end="511">
+</content>
+
+</paragraph>
+<paragraph start="511" end="652">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="511" end="625">
+<size>11</size></content>
+
+<content start="625" end="634">
+<size>11</size><href>makeBondAction.cml</href></content>
+
+<content start="634" end="651">
+<size>11</size></content>
+
+<content start="651" end="652">
+</content>
+
+</paragraph>
+<paragraph start="652" end="654">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="652" end="653">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="653" end="654">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="654" end="655">
+<LeftIndent>140.0</LeftIndent>
+<content start="654" end="655">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="655" end="988">
+<LeftIndent>140.0</LeftIndent>
+<content start="655" end="698">
+<size>11</size></content>
+
+<content start="698" end="755">
+<size>11</size></content>
+
+<content start="755" end="988">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="988" end="989">
+<LeftIndent>140.0</LeftIndent>
+<content start="988" end="989">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="989" end="1236">
+<LeftIndent>140.0</LeftIndent>
+<content start="989" end="1142">
+<size>11</size></content>
+
+<content start="1142" end="1154">
+<size>11</size><href>abond3d.cml</href></content>
+
+<content start="1154" end="1236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1236" end="1237">
+<LeftIndent>140.0</LeftIndent>
+<content start="1236" end="1237">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1237" end="1246">
+<LeftIndent>140.0</LeftIndent>
+<content start="1237" end="1245">
+<size>11</size><bold>true</bold></content>
+
+<content start="1245" end="1246">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1246" end="1247">
+<LeftIndent>140.0</LeftIndent>
+<content start="1246" end="1247">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1247" end="1640">
+<LeftIndent>140.0</LeftIndent>
+<content start="1247" end="1640">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1640" end="1641">
+<LeftIndent>140.0</LeftIndent>
+<content start="1640" end="1641">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1641" end="1643">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1641" end="1642">
+<component><class>org.concord.modeler.PageMd3d</class><resource>rbond3d$0.mdd</resource><coordinate>rbond3d$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="1642" end="1643">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1643" end="1676">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1643" end="1675">
+<size>10</size></content>
+
+<content start="1675" end="1676">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1676" end="1677">
+<LeftIndent>140.0</LeftIndent>
+<content start="1676" end="1677">
+</content>
+
+</paragraph>
+<paragraph start="1677" end="2045">
+<LeftIndent>140.0</LeftIndent>
+<content start="1677" end="2044">
+<size>11</size></content>
+
+<content start="2044" end="2045">
+</content>
+
+</paragraph>
+<paragraph start="2045" end="2046">
+<LeftIndent>140.0</LeftIndent>
+<content start="2045" end="2046">
+</content>
+
+</paragraph>
+<paragraph start="2046" end="2074">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2046" end="2048">
+<size>11</size></content>
+
+<content start="2048" end="2056">
+<size>11</size><href>position3d.cml</href></content>
+
+<content start="2056" end="2059">
+<size>11</size></content>
+
+<content start="2059" end="2064">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="2064" end="2067">
+<size>11</size></content>
+
+<content start="2067" end="2071">
+<size>11</size><href>abond3d.cml</href></content>
+
+<content start="2071" end="2073">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

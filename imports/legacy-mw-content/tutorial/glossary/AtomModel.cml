@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>How do we model an atom</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>How do we model an atom?
+
+
+Matter is composed of atoms. Theory of modern physics describes atoms as entities composed of nuclei and electrons. The electrons of an atom &quot;rotate&quot; around the nucleus. The effect of quantum motion of electrons is depicted by the concept of electron cloud, which are in fact wave functions surrounding nucleus. Electron cloud of different atoms can overlap to generate the forces to stick them together. When the atoms get too close, the electrostatic forces between their nuclei will push them away. Such an attraction-repulsion mechanism of interatomic interactions is probably one of the most important pivots that physically make the world, according to Richard Feynman (1918-1988)&#10102;. Although the exact explanation of the mechanism is fairly complicated (the theory that explains it is called quantum mechanics, which was developed at the beginning of the 20th century), a phenomenological explanation can be easily given by classical mechanics invented by Sir Issac Newton (1642-1727) (more than two hundred years in prior to the birth of quantum mechanics). In this classical picture, atoms are simply points in space that interact with one another through potentials that generally have a repulsive core part and an attractive tail part, they move ahead according to the forces they feel from the others, like a planet moves because of the gravitational force from others, but in a style that, possibly due to frequent switching of forces from attractive to repulsive and vice versa, looks nothing like predictable orbital motion. The classical picture constitutes the theoretical foundation of the molecular dynamics models used in the Molecular Workbench software. 
+
+ 
+&#10102;Feynman wrote:&quot; If, in some cataclysm, all of scientific knowledge were to be destroyed, and only one sentence passed on to the next generations of creatures, what statement would contain the most information in the fewest words? I believe it is the atomic hypothesis (or the atomic fact, or whatever you wish to call it) that all things are made of atoms---little particles that move around in perpetual motion, attracting each other when they are a little distance apart, but repelling upon being squeezed into one another.&quot; 
+
+   
+ return to index</text>
+<section start="0" end="2257">
+<paragraph start="0" end="25">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="24">
+<size>20</size><bold>true</bold><family>Bookman Old Style</family></content>
+
+<content start="24" end="25">
+<size>16</size><family>Book Antiqua</family></content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<LeftIndent>120.0</LeftIndent>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<LeftIndent>120.0</LeftIndent>
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="1703">
+<LeftIndent>140.0</LeftIndent>
+<content start="27" end="713">
+<size>11</size></content>
+
+<content start="713" end="714">
+</content>
+
+<content start="714" end="1702">
+<size>11</size></content>
+
+<content start="1702" end="1703">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1703" end="1704">
+<LeftIndent>140.0</LeftIndent>
+<content start="1703" end="1704">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1704" end="1706">
+<LeftIndent>140.0</LeftIndent>
+<content start="1704" end="1705">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1705" end="1706">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1706" end="2235">
+<LeftIndent>140.0</LeftIndent>
+<content start="1706" end="1708">
+</content>
+
+<content start="1708" end="2234">
+<size>10</size></content>
+
+<content start="2234" end="2235">
+</content>
+
+</paragraph>
+<paragraph start="2235" end="2236">
+<LeftIndent>120.0</LeftIndent>
+<content start="2235" end="2236">
+</content>
+
+</paragraph>
+<paragraph start="2236" end="2240">
+<Alignment>1</Alignment>
+<LeftIndent>120.0</LeftIndent>
+<content start="2236" end="2237">
+</content>
+
+<content start="2237" end="2238">
+<icon>index.gif</icon><href>index.cml</href></content>
+
+<content start="2238" end="2240">
+</content>
+
+</paragraph>
+<paragraph start="2240" end="2257">
+<Alignment>1</Alignment>
+<LeftIndent>120.0</LeftIndent>
+<content start="2240" end="2241">
+</content>
+
+<content start="2241" end="2256">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

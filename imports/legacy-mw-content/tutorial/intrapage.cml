@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Intra-page communication using scripts</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Intra-page communication using scripts
+
+&lt; Previous | Index | Next &gt;
+
+Intra-page communication refers to the mechanism of interactions between any embedded components (including hyperlinks) that can send scripts to others or receive and execute scripts from others.
+
+This mechanism can be used to load different models into a model container and the HTML text that corresponds to the model into surrounding text boxes, without having to leave the current page. An activity page written using this mechanism is generally more compact, and the &quot;information-on-demand&quot; design principle can be better implemented. Here is an example:
+
+ 
+   
+ 
+[An embedded simulator with four surrounding text boxes.]
+
+For information about how to get a text box to load new content, check out the text box section about how to use the intra-textbox and inter-textbox links. For information about how to use scripts to interact with a model container, check out MW scripts or   Jmol scripts.
+
+The example below involves using scripts to add four types of atoms into a model container from four sides.
+
+ 
+   
+ 
+[An embedded simulator with four surrounding text boxes.]
+
+One could replace the textual hyperlinks with arrows pointing towards the container from four different directions to create better visual effect, and use background images to further contextualize the model.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1385">
+<paragraph start="0" end="39">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="38">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="40">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="68">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="40" end="42">
+<size>11</size></content>
+
+<content start="42" end="50">
+<size>11</size><href>singlecontrol.cml</href></content>
+
+<content start="50" end="53">
+<size>11</size></content>
+
+<content start="53" end="58">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="58" end="61">
+<size>11</size></content>
+
+<content start="61" end="65">
+<size>11</size><href>background.cml</href></content>
+
+<content start="65" end="67">
+<size>11</size></content>
+
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="69">
+<LeftIndent>140.0</LeftIndent>
+<content start="68" end="69">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="69" end="265">
+<LeftIndent>140.0</LeftIndent>
+<content start="69" end="265">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="265" end="266">
+<LeftIndent>140.0</LeftIndent>
+<content start="265" end="266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="266" end="629">
+<LeftIndent>140.0</LeftIndent>
+<content start="266" end="629">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="629" end="630">
+<LeftIndent>140.0</LeftIndent>
+<content start="629" end="630">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="630" end="632">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="630" end="631">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>500.0</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body topmargin=&quot;10&quot; face=&quot;Verdana&quot; marginwidth=&quot;10&quot; leftmargin=&quot;10&quot; marginheight=&quot;10&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Top text box&lt;br&gt;&lt;br&gt;&lt;a href=&quot;script:textbox:2:load lefttextbox1.html;script:textbox:3:load righttextbox1.html;script:textbox:4:load bottomtextbox1.html;script:mw:1:load ModelA.mml;run&quot;&gt;Action 
+    A&lt;/a&gt; | &lt;a href=&quot;script:textbox:2:load lefttextbox2.html;script:textbox:3:load righttextbox2.html;script:textbox:4:load bottomtextbox2.html;script:mw:1:load ModelB.mml;run&quot;&gt;Action 
+    B&lt;/a&gt; | &lt;a href=&quot;script:textbox:2:load lefttextbox3.html;script:textbox:3:load righttextbox3.html;script:textbox:4:load bottomtextbox3.html;script:mw:1:load ModelC.mml;run&quot;&gt;Action 
+    C&lt;/a&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-2b2f38</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="631" end="632">
+</content>
+
+</paragraph>
+<paragraph start="632" end="636">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="632" end="633">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>100.0</width>
+<height>250.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; leftmargin=&quot;10&quot; marginwidth=&quot;10&quot; topmargin=&quot;10&quot;&gt;
+    &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Left text box&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-2b2f38</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="633" end="634">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>intrapage$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="634" end="635">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>100.0</width>
+<height>250.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; leftmargin=&quot;10&quot; marginwidth=&quot;10&quot; topmargin=&quot;10&quot;&gt;
+    &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Right text box&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-2b2f38</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="635" end="636">
+</content>
+
+</paragraph>
+<paragraph start="636" end="638">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="636" end="637">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>500.0</width>
+<height>40.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body topmargin=&quot;10&quot; face=&quot;Verdana&quot; marginwidth=&quot;10&quot; leftmargin=&quot;10&quot; marginheight=&quot;10&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Bottom text box &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-2b2f38</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="637" end="638">
+</content>
+
+</paragraph>
+<paragraph start="638" end="696">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="638" end="695">
+<size>10</size></content>
+
+<content start="695" end="696">
+</content>
+
+</paragraph>
+<paragraph start="696" end="697">
+<LeftIndent>140.0</LeftIndent>
+<content start="696" end="697">
+</content>
+
+</paragraph>
+<paragraph start="697" end="970">
+<LeftIndent>140.0</LeftIndent>
+<content start="697" end="776">
+<size>11</size></content>
+
+<content start="776" end="792">
+<size>11</size><href>textbox.cml</href></content>
+
+<content start="792" end="940">
+<size>11</size></content>
+
+<content start="940" end="950">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="950" end="954">
+<size>11</size></content>
+
+<content start="954" end="955">
+<icon>htmlink.gif</icon></content>
+
+<content start="955" end="956">
+<size>11</size></content>
+
+<content start="956" end="968">
+<size>11</size><href>http://www.stolaf.edu/academics/chemapps/jmol/docs/</href></content>
+
+<content start="968" end="969">
+<size>11</size></content>
+
+<content start="969" end="970">
+</content>
+
+</paragraph>
+<paragraph start="970" end="971">
+<LeftIndent>140.0</LeftIndent>
+<content start="970" end="971">
+</content>
+
+</paragraph>
+<paragraph start="971" end="1079">
+<LeftIndent>140.0</LeftIndent>
+<content start="971" end="1079">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1079" end="1080">
+<LeftIndent>140.0</LeftIndent>
+<content start="1079" end="1080">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1080" end="1082">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1080" end="1081">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>500.0</width>
+<height>40.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;p&gt;
+        &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:2:source AddD.mws&quot;&gt;Add 
+        Atom D&lt;/a&gt;&lt;/font&gt;
+      &lt;/p&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-34</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1081" end="1082">
+</content>
+
+</paragraph>
+<paragraph start="1082" end="1086">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1082" end="1083">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>50.0</width>
+<height>265.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;p&gt;
+        
+      &lt;/p&gt;
+      &lt;p&gt;
+        
+      &lt;/p&gt;
+      &lt;p&gt;
+        
+      &lt;/p&gt;
+      &lt;p&gt;
+        &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:2:source AddA.mws&quot;&gt;Add 
+        Atom A&lt;/a&gt;&lt;/font&gt;
+      &lt;/p&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-34</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1083" end="1084">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>intrapage$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="1084" end="1085">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>50.0</width>
+<height>265.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;p&gt;
+        
+      &lt;/p&gt;
+      &lt;p&gt;
+        
+      &lt;/p&gt;
+      &lt;p&gt;
+        
+      &lt;/p&gt;
+      &lt;p&gt;
+        &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:2:source AddC.mws&quot;&gt;Add 
+        Atom C&lt;/a&gt;&lt;/font&gt;
+      &lt;/p&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-34</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1085" end="1086">
+</content>
+
+</paragraph>
+<paragraph start="1086" end="1088">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1086" end="1087">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>500.0</width>
+<height>40.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;p&gt;
+        &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:2:source AddB.mws&quot;&gt;Add 
+        Atom B&lt;/a&gt;&lt;/font&gt;
+      &lt;/p&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-34</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1087" end="1088">
+</content>
+
+</paragraph>
+<paragraph start="1088" end="1146">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1088" end="1145">
+<size>10</size></content>
+
+<content start="1145" end="1146">
+</content>
+
+</paragraph>
+<paragraph start="1146" end="1147">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1146" end="1147">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1147" end="1356">
+<LeftIndent>140.0</LeftIndent>
+<content start="1147" end="1355">
+<size>11</size></content>
+
+<content start="1355" end="1356">
+</content>
+
+</paragraph>
+<paragraph start="1356" end="1357">
+<LeftIndent>140.0</LeftIndent>
+<content start="1356" end="1357">
+</content>
+
+</paragraph>
+<paragraph start="1357" end="1385">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1357" end="1359">
+<size>11</size></content>
+
+<content start="1359" end="1367">
+<size>11</size><href>singlecontrol.cml</href></content>
+
+<content start="1367" end="1370">
+<size>11</size></content>
+
+<content start="1370" end="1375">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1375" end="1378">
+<size>11</size></content>
+
+<content start="1378" end="1382">
+<size>11</size><href>background.cml</href></content>
+
+<content start="1382" end="1384">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

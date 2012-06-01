@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting a group of radio buttons</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a group of radio buttons
+
+&lt; Previous | Index | Next &gt;
+
+You can insert a set of radio buttons into a page for the user to choose a state of an embedded model from the options you provided in the radio buttons. 
+
+When you select the &quot;Insert&gt;Standard Controller for Model&gt;A Group of Radio Buttons&quot; menu action (keyboard action: ALT+SHIFT+R), you will see the following dialog:
+
+  
+[This is a screenshot.]
+
+After selecting the number of radio buttons you would like to create in a group, you will find the radio buttons will be inserted right away into the page, as is shown in the following:
+
+    
+
+The above radio buttons are not linked to any model and are not customized. Therefore, they do not do anything useful --- they are just used to show the state of the button group right after insertion. We have to customize the radio buttons individually to make them do some work. To customize a radio button, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on it. You should see a dialog window as follows:
+
+  
+[This is a screenshot.]
+
+This dialog allows you to select a model and an action that applies to the model. If there is no model on the page, the Model and Action Combo Boxes will be blank.
+
+You can set the transparency of the radio button, change the text that will appear on it (the default text will be the name of the action you see in the &quot;Select an action&quot; combo box), set the text for the tool tip that will appear when the mouse cursor enters and pauses, and set its background color if it is not transparent. You can also set up scripts that will be executed when the button is selected.
+
+ 
+Tip: If scripts are long and you will need to write them in a more comfortable way, use your favorite  text editor to write scripts and copy back to the text area. If there exist scripts already, copy them to your editor first before editing them.
+ 
+
+By default, the size of a radio button will be automatically decided by the text string and image on it, according to the font type/size and image size. But you can disable this auto-sizing functionality, and use the width and height parameters you specify with the &quot;Width&quot; and &quot;Height&quot; text fields.
+
+Remember that you will have to customize all of the radio buttons. If you do not assign any action to a radio button, it will do nothing when it is selected.
+
+Radio button groups are useful in setting exclusive states of models. The following example shows using three radio buttons to show a DNA molecule from three different directions.
+ 
+   
+[An embedded Jmol Container and its controls.]
+
+Here is another example of using radio buttons to load different molecular dynamics models.
+
+How to remove a radio button from a group
+
+Just remove the radio button from the page. (See the last item of this section to learn how to remove a radio button.)
+
+How to add more radio buttons to an existing group
+
+This requires a bit more work than just inserting a new radio button. Every time when you insert a new group of radio buttons, they will belong to a different group. To add more radio buttons to an existing group, follow these steps:
+
+   Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on a radio button in the group.
+   Select &quot;Copy This Radio Button&quot; item from the popup menu.
+   Paste the copied radio button to the position you would like the new button to appear.
+   Customize the newly added button (otherwise, it is just replica of the original button).
+
+Changing and removing a radio button
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove and copy a radio button.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3640">
+<paragraph start="0" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="34">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="64">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="36" end="38">
+<size>11</size></content>
+
+<content start="38" end="46">
+<size>11</size><href>insertButton.cml</href></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="54">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="54" end="57">
+<size>11</size></content>
+
+<content start="57" end="61">
+<size>11</size><href>insertCheckBox.cml</href></content>
+
+<content start="61" end="63">
+<size>11</size></content>
+
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="220">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="220">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="220" end="221">
+<LeftIndent>140.0</LeftIndent>
+<content start="220" end="221">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="221" end="384">
+<LeftIndent>140.0</LeftIndent>
+<content start="221" end="384">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="384" end="385">
+<LeftIndent>140.0</LeftIndent>
+<content start="384" end="385">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="385" end="388">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="385" end="386">
+</content>
+
+<content start="386" end="387">
+<icon>RadioButtonDialog.gif</icon></content>
+
+<content start="387" end="388">
+</content>
+
+</paragraph>
+<paragraph start="388" end="412">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="388" end="411">
+<size>10</size></content>
+
+<content start="411" end="412">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="412" end="413">
+<LeftIndent>140.0</LeftIndent>
+<content start="412" end="413">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="413" end="599">
+<LeftIndent>140.0</LeftIndent>
+<content start="413" end="599">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="599" end="600">
+<LeftIndent>140.0</LeftIndent>
+<content start="599" end="600">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="600" end="605">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="600" end="601">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Button 1</title>
+<model>-1</model>
+<groupid>1112363130146</groupid>
+</component></content>
+
+<content start="601" end="602">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Button 2</title>
+<model>-1</model>
+<groupid>1112363130146</groupid>
+</component></content>
+
+<content start="602" end="603">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Button 3</title>
+<model>-1</model>
+<groupid>1112363130146</groupid>
+</component></content>
+
+<content start="603" end="604">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Button 4</title>
+<model>-1</model>
+<groupid>1112363130146</groupid>
+</component></content>
+
+<content start="604" end="605">
+</content>
+
+</paragraph>
+<paragraph start="605" end="606">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="605" end="606">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="606" end="1038">
+<LeftIndent>140.0</LeftIndent>
+<content start="606" end="1038">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1038" end="1039">
+<LeftIndent>140.0</LeftIndent>
+<content start="1038" end="1039">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1039" end="1042">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1039" end="1040">
+<size>11</size></content>
+
+<content start="1040" end="1041">
+<size>11</size><icon>RadioButtonController.gif</icon></content>
+
+<content start="1041" end="1042">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1042" end="1066">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1042" end="1065">
+<size>10</size></content>
+
+<content start="1065" end="1066">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1066" end="1067">
+<LeftIndent>100.0</LeftIndent>
+<content start="1066" end="1067">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1067" end="1231">
+<LeftIndent>140.0</LeftIndent>
+<content start="1067" end="1231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1231" end="1232">
+<LeftIndent>140.0</LeftIndent>
+<content start="1231" end="1232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1232" end="1638">
+<LeftIndent>140.0</LeftIndent>
+<content start="1232" end="1638">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1638" end="1639">
+<LeftIndent>140.0</LeftIndent>
+<content start="1638" end="1639">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1639" end="1641">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="1639" end="1640">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1640" end="1641">
+</content>
+
+</paragraph>
+<paragraph start="1641" end="1889">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1641" end="1644">
+<size>11</size><bold>true</bold></content>
+
+<content start="1644" end="1888">
+<size>11</size></content>
+
+<content start="1888" end="1889">
+</content>
+
+</paragraph>
+<paragraph start="1889" end="1891">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="1889" end="1890">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1890" end="1891">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1891" end="1892">
+<LeftIndent>140.0</LeftIndent>
+<content start="1891" end="1892">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1892" end="2192">
+<LeftIndent>140.0</LeftIndent>
+<content start="1892" end="2192">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2192" end="2193">
+<LeftIndent>140.0</LeftIndent>
+<content start="2192" end="2193">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2193" end="2351">
+<LeftIndent>140.0</LeftIndent>
+<content start="2193" end="2351">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2351" end="2352">
+<LeftIndent>140.0</LeftIndent>
+<content start="2351" end="2352">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2352" end="2532">
+<LeftIndent>140.0</LeftIndent>
+<content start="2352" end="2532">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2532" end="2534">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2532" end="2533">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>color structure;</script><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>dna.pdb</resource><state>insertRadioButton$0.jms</state><width>300</width>
+<height>300</height>
+</component></content>
+
+<content start="2533" end="2534">
+</content>
+
+</paragraph>
+<paragraph start="2534" end="2538">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2534" end="2535">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>moveto 2 1 0 0 -90</title>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1112363690552</groupid>
+<script>moveto 2 1 0 0 -90</script>
+<action>Execute Jmol script</action></component></content>
+
+<content start="2535" end="2536">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>moveto 2 0 1 0 90</title>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1112363690552</groupid>
+<script>moveto 2 0 1 0 90</script>
+<action>Execute Jmol script</action></component></content>
+
+<content start="2536" end="2537">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>moveto 2 0 0 1 90</title>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1112363690552</groupid>
+<script>moveto 2 0 0 1 90</script>
+<action>Execute Jmol script</action></component></content>
+
+<content start="2537" end="2538">
+</content>
+
+</paragraph>
+<paragraph start="2538" end="2585">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2538" end="2584">
+<size>10</size></content>
+
+<content start="2584" end="2585">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2585" end="2586">
+<LeftIndent>140.0</LeftIndent>
+<content start="2585" end="2586">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2586" end="2678">
+<LeftIndent>140.0</LeftIndent>
+<content start="2586" end="2594">
+<size>11</size></content>
+
+<content start="2594" end="2609">
+<size>11</size><href>script_load.cml</href></content>
+
+<content start="2609" end="2678">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2678" end="2679">
+<LeftIndent>140.0</LeftIndent>
+<content start="2678" end="2679">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2679" end="2721">
+<LeftIndent>140.0</LeftIndent>
+<content start="2679" end="2720">
+<size>11</size><bold>true</bold></content>
+
+<content start="2720" end="2721">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2721" end="2722">
+<LeftIndent>140.0</LeftIndent>
+<content start="2721" end="2722">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2722" end="2841">
+<LeftIndent>140.0</LeftIndent>
+<content start="2722" end="2841">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2841" end="2842">
+<LeftIndent>140.0</LeftIndent>
+<content start="2841" end="2842">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2842" end="2893">
+<LeftIndent>140.0</LeftIndent>
+<content start="2842" end="2892">
+<size>11</size><bold>true</bold></content>
+
+<content start="2892" end="2893">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2893" end="2894">
+<LeftIndent>140.0</LeftIndent>
+<content start="2893" end="2894">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2894" end="3128">
+<LeftIndent>140.0</LeftIndent>
+<content start="2894" end="3128">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3128" end="3129">
+<LeftIndent>140.0</LeftIndent>
+<content start="3128" end="3129">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3129" end="3236">
+<LeftIndent>160.0</LeftIndent>
+<content start="3129" end="3130">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="3130" end="3132">
+</content>
+
+<content start="3132" end="3236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3236" end="3297">
+<LeftIndent>160.0</LeftIndent>
+<content start="3236" end="3237">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="3237" end="3239">
+</content>
+
+<content start="3239" end="3297">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3297" end="3387">
+<LeftIndent>160.0</LeftIndent>
+<content start="3297" end="3298">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="3298" end="3300">
+</content>
+
+<content start="3300" end="3387">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3387" end="3479">
+<LeftIndent>160.0</LeftIndent>
+<content start="3387" end="3388">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="3388" end="3390">
+</content>
+
+<content start="3390" end="3479">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3479" end="3480">
+<LeftIndent>140.0</LeftIndent>
+<content start="3479" end="3480">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3480" end="3517">
+<LeftIndent>140.0</LeftIndent>
+<content start="3480" end="3516">
+<size>11</size><bold>true</bold></content>
+
+<content start="3516" end="3517">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3517" end="3518">
+<LeftIndent>140.0</LeftIndent>
+<content start="3517" end="3518">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3518" end="3611">
+<LeftIndent>140.0</LeftIndent>
+<content start="3518" end="3523">
+<size>11</size></content>
+
+<content start="3523" end="3552">
+<size>11</size><href>changeComponent.cml</href></content>
+
+<content start="3552" end="3610">
+<size>11</size></content>
+
+<content start="3610" end="3611">
+</content>
+
+</paragraph>
+<paragraph start="3611" end="3612">
+<LeftIndent>140.0</LeftIndent>
+<content start="3611" end="3612">
+</content>
+
+</paragraph>
+<paragraph start="3612" end="3640">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="3612" end="3614">
+<size>11</size></content>
+
+<content start="3614" end="3622">
+<size>11</size><href>insertButton.cml</href></content>
+
+<content start="3622" end="3625">
+<size>11</size></content>
+
+<content start="3625" end="3630">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="3630" end="3633">
+<size>11</size></content>
+
+<content start="3633" end="3637">
+<size>11</size><href>insertCheckBox.cml</href></content>
+
+<content start="3637" end="3639">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

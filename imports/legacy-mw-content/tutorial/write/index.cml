@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <text>  HOW TO WRITE A PAGE?
+
+The Concord Modeler has a page editor for you to write or edit a page of your own. 
+
+To create a new page, click the   button, or select the &quot;New&quot; item of the &quot;File&quot; menu.
+
+To edit an existing page, first check if the page editor is locked. A page editor is locked if the first button of the above tool bar has the icon  .Click that button, you should see the icon changes to  . This means that the lock has been released --- you can now edit the page.
+
+Note: You cannot modify a remote page. A remote page will be always read-only. The lock will not be released if you click the button. If you want to edit a remote page, first download the page to your computer, and then edit it locally.
+</text>
+  <background>    <red>255</red>    <green>255</green>    <blue>255</blue>  </background>
+  <section start="0" end="716">
+    <paragraph start="0" end="23">
+      <content start="0" end="1">
+        <ename>icon</ename>
+        <icon>m018_tn.gif</icon>
+      </content>
+      <content start="1" end="2">
+      </content>
+      <content start="2" end="3">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>36</size>
+      </content>
+      <content start="3" end="22">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>24</size>
+      </content>
+      <content start="22" end="23">
+        <family>Arioso</family>
+        <bold>true</bold>
+        <size>48</size>
+      </content>
+    </paragraph>
+    <paragraph start="23" end="24">
+      <content start="23" end="24">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="24" end="108">
+      <content start="24" end="108">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="108" end="109">
+      <content start="108" end="109">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="109" end="196">
+      <content start="109" end="141">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+      <content start="141" end="142">
+        <ename>icon</ename>
+        <icon>file.gif</icon>
+      </content>
+      <content start="142" end="143">
+      </content>
+      <content start="143" end="196">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="196" end="197">
+      <content start="196" end="197">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="197" end="477">
+      <content start="197" end="344">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+      <content start="344" end="345">
+        <ename>icon</ename>
+        <icon>NoEdit.gif</icon>
+      </content>
+      <content start="345" end="346">
+      </content>
+      <content start="346" end="400">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+      <content start="400" end="401">
+        <ename>icon</ename>
+        <icon>Edit.gif</icon>
+      </content>
+      <content start="401" end="477">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="477" end="478">
+      <content start="477" end="478">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="478" end="715">
+      <content start="478" end="714">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+      <content start="714" end="715">
+      </content>
+    </paragraph>
+    <paragraph start="715" end="716">
+      <content start="715" end="716">
+      </content>
+    </paragraph>
+  </section>
+</document>

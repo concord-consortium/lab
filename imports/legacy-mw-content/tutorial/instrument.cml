@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting a virtual instrument</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a virtual instrument
+
+&lt; Previous | Index | Next &gt;
+
+Virtual instruments are software versions for instruments used in laboratory to obtain data such as the X-ray and neutron diffraction patterns, infrared spectra, and so on. Researchers use these exprimental data to study the structures and functions of chemical and biological substances.
+
+Currently, the following virtual instruments are available:
+
+Diffraction device
+
+Select the &quot;Insert&gt;Instrument&gt;Diffraction Device&quot; (keyboard shortcut: ALT+SHIFT+D), you will see the following dialog:
+
+  
+[This is a screenshot.]
+
+  
+[This is an embedded instrument.]
+
+There are currently two diffraction techniques you can choose: X-ray and neutron beam. The difference is that X-rays interact with the electrons of the atoms, whereas neutrons interact primarily with the neuclei. The difference between the X-ray diffraction pattern and the neutron diffraction pattern is mainly caused by the difference of atomic scattering factors.
+
+The level of details refers to the scaling of the diffraction intensity distribution. Choosing &quot;Linear&quot; will show less details, and choosing &quot;Logrithmic&quot; will show more details.
+
+Absorption and emission spectrometers
+
+When the simulation involves light, a virtual absorption spectrometer or a virtual emission spectrometer or both can be set up to collect photons of different frequencies that are absorbed or emitted, and generate spectra accordingly. An absorption spectrum will start with a continuum spectrum and the absorption frequencies will be denoted by black lines. An emission spectrum will start with a black background and the emission frequencies will be denoted by color lines if they fall within the visible range, or white lines if otherwise. The upper bound and lower bound of the spectrum can be adjusted when setting up the spectrometer.
+
+Changing and removing a virual instrument
+
+See &quot;Editing embedded components&quot; for how to change, move, remove and duplicate a virtual instrument.
+
+ 
+Note: For a virutal instrument to work, the recorder of the model must be turned on.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2107">
+<paragraph start="0" end="31">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="30">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="60">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="42">
+<href>insertXYGraph.cml</href><size>11</size></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="50">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="50" end="53">
+<size>11</size></content>
+
+<content start="53" end="57">
+<href>choice.cml</href><size>11</size></content>
+
+<content start="57" end="59">
+<size>11</size></content>
+
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="350">
+<LeftIndent>140.0</LeftIndent>
+<content start="61" end="350">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="350" end="351">
+<LeftIndent>140.0</LeftIndent>
+<content start="350" end="351">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="351" end="411">
+<LeftIndent>140.0</LeftIndent>
+<content start="351" end="411">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="411" end="412">
+<LeftIndent>140.0</LeftIndent>
+<content start="411" end="412">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="412" end="431">
+<LeftIndent>140.0</LeftIndent>
+<content start="412" end="430">
+<size>11</size><bold>true</bold></content>
+
+<content start="430" end="431">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="431" end="432">
+<LeftIndent>140.0</LeftIndent>
+<content start="431" end="432">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="432" end="551">
+<LeftIndent>140.0</LeftIndent>
+<content start="432" end="551">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="551" end="552">
+<LeftIndent>140.0</LeftIndent>
+<content start="551" end="552">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="552" end="555">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="552" end="553">
+<size>11</size></content>
+
+<content start="553" end="554">
+<size>11</size><icon>InstrumentDialog.gif</icon></content>
+
+<content start="554" end="555">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="555" end="579">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="555" end="578">
+<size>10</size></content>
+
+<content start="578" end="579">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="579" end="580">
+<LeftIndent>140.0</LeftIndent>
+<content start="579" end="580">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="580" end="583">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="580" end="581">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>instrument$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="581" end="582">
+<component><class>org.concord.modeler.PageDiffractionInstrument</class>
+<model>0</model><scale>6</scale><border>Raised Bevel</border></component></content>
+
+<content start="582" end="583">
+</content>
+
+</paragraph>
+<paragraph start="583" end="617">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="583" end="616">
+<size>10</size></content>
+
+<content start="616" end="617">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="617" end="618">
+<LeftIndent>140.0</LeftIndent>
+<content start="617" end="618">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="618" end="985">
+<LeftIndent>140.0</LeftIndent>
+<content start="618" end="985">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="985" end="986">
+<LeftIndent>140.0</LeftIndent>
+<content start="985" end="986">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="986" end="1164">
+<LeftIndent>140.0</LeftIndent>
+<content start="986" end="1164">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1164" end="1165">
+<LeftIndent>140.0</LeftIndent>
+<content start="1164" end="1165">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1165" end="1203">
+<LeftIndent>140.0</LeftIndent>
+<content start="1165" end="1202">
+<size>11</size><bold>true</bold></content>
+
+<content start="1202" end="1203">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1203" end="1204">
+<LeftIndent>140.0</LeftIndent>
+<content start="1203" end="1204">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1204" end="1844">
+<LeftIndent>140.0</LeftIndent>
+<content start="1204" end="1844">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1844" end="1845">
+<LeftIndent>140.0</LeftIndent>
+<content start="1844" end="1845">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1845" end="1887">
+<LeftIndent>140.0</LeftIndent>
+<content start="1845" end="1886">
+<size>11</size><bold>true</bold></content>
+
+<content start="1886" end="1887">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1887" end="1888">
+<LeftIndent>140.0</LeftIndent>
+<content start="1887" end="1888">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1888" end="1990">
+<LeftIndent>140.0</LeftIndent>
+<content start="1888" end="1893">
+<size>11</size></content>
+
+<content start="1893" end="1920">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="1920" end="1990">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1990" end="1991">
+<LeftIndent>140.0</LeftIndent>
+<content start="1990" end="1991">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1991" end="1993">
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>1.0</SpaceAbove>
+<content start="1991" end="1992">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1992" end="1993">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1993" end="2078">
+<LeftIndent>140.0</LeftIndent>
+<content start="1993" end="2033">
+<size>10</size></content>
+
+<content start="2033" end="2058">
+<href>recordSimulation.cml</href><size>10</size></content>
+
+<content start="2058" end="2077">
+<size>10</size></content>
+
+<content start="2077" end="2078">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2078" end="2079">
+<LeftIndent>100.0</LeftIndent>
+<content start="2078" end="2079">
+</content>
+
+</paragraph>
+<paragraph start="2079" end="2107">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2079" end="2081">
+<size>11</size></content>
+
+<content start="2081" end="2089">
+<href>insertXYGraph.cml</href><size>11</size></content>
+
+<content start="2089" end="2092">
+<size>11</size></content>
+
+<content start="2092" end="2097">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="2097" end="2100">
+<size>11</size></content>
+
+<content start="2100" end="2104">
+<href>choice.cml</href><size>11</size></content>
+
+<content start="2104" end="2106">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

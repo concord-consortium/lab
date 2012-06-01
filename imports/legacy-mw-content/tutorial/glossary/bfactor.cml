@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Debye-Waller factor</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Debye-Waller factor
+
+Because there exists thermal motion, the atomic scattering factor in X-ray crystallography depends on the temperature. The thermal effect is described by the following equation:
+
+fB=f*exp[-B*(sin(theta)/lambda)2]
+
+where B is the Debye-Waller factor:
+
+B=8pi2&lt;u2&gt;
+
+Namely, B is proportional to the atomic mean square displacement. The Debye-Waller relation means that the atomic scattering power weakens when the temperature increases.
+
+   
+ return to index</text>
+<section start="0" end="477">
+<paragraph start="0" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="19">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<LeftIndent>120.0</LeftIndent>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="199">
+<LeftIndent>140.0</LeftIndent>
+<content start="21" end="199">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="199" end="200">
+<LeftIndent>140.0</LeftIndent>
+<content start="199" end="200">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="200" end="234">
+<LeftIndent>140.0</LeftIndent>
+<content start="200" end="201">
+<size>11</size></content>
+
+<content start="201" end="202">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="202" end="231">
+<size>11</size></content>
+
+<content start="231" end="232">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="232" end="234">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="234" end="235">
+<LeftIndent>140.0</LeftIndent>
+<content start="234" end="235">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="235" end="271">
+<LeftIndent>140.0</LeftIndent>
+<content start="235" end="271">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="271" end="272">
+<LeftIndent>140.0</LeftIndent>
+<content start="271" end="272">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="272" end="283">
+<LeftIndent>140.0</LeftIndent>
+<content start="272" end="277">
+<size>11</size></content>
+
+<content start="277" end="278">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="278" end="280">
+<size>11</size></content>
+
+<content start="280" end="281">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="281" end="283">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="283" end="284">
+<LeftIndent>140.0</LeftIndent>
+<content start="283" end="284">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="284" end="455">
+<LeftIndent>140.0</LeftIndent>
+<content start="284" end="454">
+<size>11</size></content>
+
+<content start="454" end="455">
+</content>
+
+</paragraph>
+<paragraph start="455" end="456">
+<LeftIndent>140.0</LeftIndent>
+<content start="455" end="456">
+</content>
+
+</paragraph>
+<paragraph start="456" end="460">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="456" end="457">
+</content>
+
+<content start="457" end="458">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="458" end="460">
+</content>
+
+</paragraph>
+<paragraph start="460" end="477">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="460" end="461">
+</content>
+
+<content start="461" end="476">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

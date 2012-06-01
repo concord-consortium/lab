@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Hyperlinking scripts</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Hyperlinking scripts
+
+&lt; Previous | Index | Next &gt;
+
+Scripts can be hyperlinked to text or images to deliver actions. For convenience, let&apos;s call these &quot;script links&quot;. The format of script links in the Molecular Workbench (MW) must follow the Script Protocol. For example, a script hyperlink must start with the string script: (the word &quot;script&quot; appended by a colon) at the beginning.
+
+Script links can be very useful. For example, you can conveniently link different scripts to the text for better instructions.
+
+  
+Example 1: Show just carbon atoms | Show just hydrogen atoms | Show all atoms and bonds
+[These are an embedded Jmol viewer and its controls.]
+
+Script hyperlinks can be placed into a text box, as is shown in the text box to the left the above Jmol model. You can link a script to an image using the usemap attribute of the img tag. Due to a bug, you cannot, unfortunately, directly link an image using the &lt;a href=&quot;link&quot;&gt; tag.
+
+ 
+Tip: The default layout of components on the page in MW arranges components as if they were characters. While this type of layout is very easy, it is less efficient in using space. In many cases, an author would like to stack up the controls and place them right next to the model. Without using the mechanism introduced in this section, it is currently not possible to have such a handy layout of controls as demonstrated in the above example. By using the script links and embedding them in a text box, you can arrange the controls in a more compact form.
+ 
+
+The following example demonstrates how to refer to a different model using the [index of model] parameter. The link scripts start with script:jmol:2:, where 2 is the index of the model, which is just the natural order it appears on the page (starting from 1, not 0). If you remove or insert a new model between existing models of the same type, you will have to change all the index parameters in any link scripts that refer to the existing models following the new one.
+
+  
+Example 2: Spacefill | CPK | Wireframe
+[This is an embedded Jmol viewer.]
+
+A hyperlink can contain scripts applied to multiple models. The syntax is:
+
+script:[script type 1]:[index of model 1]:[script body 1];
+script:[script type 2]:[index of model 2]:[script body 2];
+script:[script type 3]:[index of model 3]:[script body 3];
+......
+script:[script type n]:[index of model n]:[script body n];
+
+Although the syntax does not force you to put all the scripts applied to the same model in the same script statement, you generally should not separate them.
+
+This feature allows you to set up controllers that interact with multiple or all models embedded in a page. For an example of the application, see this page.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2721">
+<paragraph start="0" end="21">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="20">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="50">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="22" end="24">
+<size>11</size></content>
+
+<content start="24" end="32">
+<size>11</size><href>FeedbackArea.cml</href></content>
+
+<content start="32" end="35">
+<size>11</size></content>
+
+<content start="35" end="40">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="40" end="43">
+<size>11</size></content>
+
+<content start="43" end="47">
+<size>11</size><href>htmlform.cml</href></content>
+
+<content start="47" end="49">
+<size>11</size></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<LeftIndent>140.0</LeftIndent>
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="383">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="237">
+<size>11</size></content>
+
+<content start="237" end="256">
+<size>11</size><href>script_protocol.cml</href></content>
+
+<content start="256" end="290">
+<size>11</size></content>
+
+<content start="290" end="294">
+<size>11</size><italic>true</italic></content>
+
+<content start="294" end="317">
+<size>11</size></content>
+
+<content start="317" end="324">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="324" end="383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="383" end="384">
+<LeftIndent>140.0</LeftIndent>
+<content start="383" end="384">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="384" end="511">
+<LeftIndent>140.0</LeftIndent>
+<content start="384" end="511">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="511" end="512">
+<LeftIndent>140.0</LeftIndent>
+<content start="511" end="512">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="512" end="515">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="512" end="513">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>200.0</width>
+<height>200.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;map name=&quot;map4&quot;&gt;
+      &lt;area href=&quot;script:jmol:1:moveto 1 0 0 0 0&quot; shape=&quot;rect&quot; coords=&quot;0, 0, 16, 16&quot;&gt;&lt;/area&gt;
+    &lt;/map&gt;
+    &lt;map name=&quot;map3&quot;&gt;
+      &lt;area href=&quot;script:jmol:1:moveto 1 0 0 1 90&quot; shape=&quot;rect&quot; coords=&quot;0, 0, 16, 16&quot;&gt;&lt;/area&gt;
+    &lt;/map&gt;
+    &lt;map name=&quot;map2&quot;&gt;
+      &lt;area href=&quot;script:jmol:1:moveto 1 0 1 0 90&quot; shape=&quot;rect&quot; coords=&quot;0, 0, 16, 16&quot;&gt;&lt;/area&gt;
+    &lt;/map&gt;
+    &lt;map name=&quot;map1&quot;&gt;
+      &lt;area href=&quot;script:jmol:1:moveto 1 1 0 0 90&quot; shape=&quot;rect&quot; coords=&quot;0, 0, 16, 16&quot;&gt;&lt;/area&gt;
+    &lt;/map&gt;
+    &lt;font size=&quot;3&quot; face=&quot;Verdana&quot;&gt;Textual links: &lt;/font&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;a href=&quot;script:jmol:1:spin on;&quot;&gt;&lt;font size=&quot;3&quot; color=&quot;#0000ff&quot; face=&quot;Verdana&quot;&gt;Spin&lt;/font&gt;&lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;a href=&quot;script:jmol:1:spin off;&quot;&gt;&lt;font size=&quot;3&quot; color=&quot;#0000ff&quot; face=&quot;Verdana&quot;&gt;Stop 
+        spin&lt;/font&gt;&lt;/a&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;font size=&quot;3&quot; face=&quot;Verdana&quot;&gt;Image links (use map):&lt;/font&gt; 
+
+    &lt;table cellspacing=&quot;5&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Verdana&quot;&gt;1. &lt;img usemap=&quot;#map1&quot; src=&quot;JmolSpin.gif&quot;&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Verdana&quot;&gt;2. &lt;img usemap=&quot;#map2&quot; src=&quot;JmolSpin.gif&quot;&gt; &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Verdana&quot;&gt;3. &lt;img usemap=&quot;#map3&quot; src=&quot;JmolSpin.gif&quot;&gt; &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;font face=&quot;Verdana&quot;&gt;4. &lt;img usemap=&quot;#map4&quot; src=&quot;JmolHome.gif&quot;&gt; &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="513" end="514">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>ethane.pdb</resource><state>linkscript$0.jms</state><width>200</width>
+<height>200</height>
+</component></content>
+
+<content start="514" end="515">
+</content>
+
+</paragraph>
+<paragraph start="515" end="603">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="515" end="526">
+<size>11</size></content>
+
+<content start="526" end="548">
+<size>11</size><href>script:jmol:1:select all;cpk off;wireframe off;select elemno&gt;2;cpk 20%;</href></content>
+
+<content start="548" end="551">
+<size>11</size></content>
+
+<content start="551" end="575">
+<size>11</size><href>script:jmol:1:select all;cpk off;wireframe off;select elemno&lt;2;cpk 20%;</href></content>
+
+<content start="575" end="578">
+<size>11</size></content>
+
+<content start="578" end="602">
+<size>11</size><href>script:jmol:1:select all;cpk 20%;wireframe 0.15;</href></content>
+
+<content start="602" end="603">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="603" end="657">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="603" end="656">
+<size>10</size></content>
+
+<content start="656" end="657">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="657" end="658">
+<LeftIndent>140.0</LeftIndent>
+<content start="657" end="658">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="658" end="941">
+<LeftIndent>140.0</LeftIndent>
+<content start="658" end="697">
+<size>11</size></content>
+
+<content start="697" end="705">
+<size>11</size><href>textbox.cml</href></content>
+
+<content start="705" end="813">
+<size>11</size></content>
+
+<content start="813" end="819">
+<size>11</size><family>Courier New</family></content>
+
+<content start="819" end="837">
+<size>11</size></content>
+
+<content start="837" end="840">
+<size>11</size><family>Courier New</family></content>
+
+<content start="840" end="920">
+<size>11</size></content>
+
+<content start="920" end="935">
+<size>11</size><family>Courier New</family></content>
+
+<content start="935" end="941">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="941" end="942">
+<LeftIndent>140.0</LeftIndent>
+<content start="941" end="942">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="942" end="944">
+<LeftIndent>140.0</LeftIndent>
+<content start="942" end="943">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="943" end="944">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="944" end="1502">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="944" end="947">
+<size>11</size><bold>true</bold></content>
+
+<content start="947" end="1502">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1502" end="1504">
+<LeftIndent>140.0</LeftIndent>
+<content start="1502" end="1503">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1503" end="1504">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1504" end="1505">
+<LeftIndent>140.0</LeftIndent>
+<content start="1504" end="1505">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1505" end="1976">
+<LeftIndent>140.0</LeftIndent>
+<content start="1505" end="1584">
+<size>11</size></content>
+
+<content start="1584" end="1600">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="1600" end="1640">
+<size>11</size></content>
+
+<content start="1640" end="1654">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1654" end="1764">
+<size>11</size></content>
+
+<content start="1764" end="1767">
+<size>11</size><italic>true</italic></content>
+
+<content start="1767" end="1976">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1976" end="1977">
+<LeftIndent>140.0</LeftIndent>
+<content start="1976" end="1977">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1977" end="1980">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1977" end="1978">
+</content>
+
+<content start="1978" end="1979">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<axes>true</axes><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><navigation>true</navigation><resource>nanotube.xyz</resource><state>linkscript$1.jms</state><width>300</width>
+<height>300</height>
+</component></content>
+
+<content start="1979" end="1980">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1980" end="2019">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1980" end="1991">
+<size>11</size></content>
+
+<content start="1991" end="2000">
+<size>11</size><href>script:jmol:2:select all;cpk 80%;</href></content>
+
+<content start="2000" end="2003">
+<size>11</size></content>
+
+<content start="2003" end="2006">
+<size>11</size><href>script:jmol:2:select all;cpk 20%;</href></content>
+
+<content start="2006" end="2009">
+<size>11</size></content>
+
+<content start="2009" end="2018">
+<size>11</size><href>script:jmol:2:select all;cpk off;</href></content>
+
+<content start="2018" end="2019">
+</content>
+
+</paragraph>
+<paragraph start="2019" end="2054">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2019" end="2053">
+<size>10</size></content>
+
+<content start="2053" end="2054">
+</content>
+
+</paragraph>
+<paragraph start="2054" end="2055">
+<LeftIndent>140.0</LeftIndent>
+<content start="2054" end="2055">
+</content>
+
+</paragraph>
+<paragraph start="2055" end="2130">
+<LeftIndent>140.0</LeftIndent>
+<content start="2055" end="2130">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2130" end="2131">
+<LeftIndent>140.0</LeftIndent>
+<content start="2130" end="2131">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2131" end="2190">
+<LeftIndent>160.0</LeftIndent>
+<content start="2131" end="2189">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="2189" end="2190">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2190" end="2249">
+<LeftIndent>160.0</LeftIndent>
+<content start="2190" end="2248">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="2248" end="2249">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2249" end="2308">
+<LeftIndent>160.0</LeftIndent>
+<content start="2249" end="2308">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2308" end="2315">
+<LeftIndent>160.0</LeftIndent>
+<content start="2308" end="2315">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2315" end="2374">
+<LeftIndent>160.0</LeftIndent>
+<content start="2315" end="2335">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="2335" end="2336">
+<size>11</size><bold>true</bold><italic>true</italic><family>Courier New</family></content>
+
+<content start="2336" end="2354">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="2354" end="2355">
+<size>11</size><bold>true</bold><italic>true</italic><family>Courier New</family></content>
+
+<content start="2355" end="2370">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="2370" end="2371">
+<size>11</size><bold>true</bold><italic>true</italic><family>Courier New</family></content>
+
+<content start="2371" end="2373">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="2373" end="2374">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2374" end="2375">
+<LeftIndent>140.0</LeftIndent>
+<content start="2374" end="2375">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2375" end="2533">
+<LeftIndent>140.0</LeftIndent>
+<content start="2375" end="2475">
+<size>11</size></content>
+
+<content start="2475" end="2481">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2481" end="2533">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2533" end="2534">
+<LeftIndent>140.0</LeftIndent>
+<content start="2533" end="2534">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2534" end="2692">
+<LeftIndent>140.0</LeftIndent>
+<content start="2534" end="2681">
+<size>11</size></content>
+
+<content start="2681" end="2690">
+<size>11</size><href>singlecontrol.cml</href></content>
+
+<content start="2690" end="2692">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2692" end="2693">
+<LeftIndent>140.0</LeftIndent>
+<content start="2692" end="2693">
+</content>
+
+</paragraph>
+<paragraph start="2693" end="2721">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2693" end="2695">
+<size>11</size></content>
+
+<content start="2695" end="2703">
+<size>11</size><href>FeedbackArea.cml</href></content>
+
+<content start="2703" end="2706">
+<size>11</size></content>
+
+<content start="2706" end="2711">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="2711" end="2714">
+<size>11</size></content>
+
+<content start="2714" end="2718">
+<size>11</size><href>htmlform.cml</href></content>
+
+<content start="2718" end="2720">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>How do we model a molecule</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>How do we model a molecule?
+
+
+There are two approaches.
+
+Atomistic modeling
+
+A molecule is, from the structure point of view, a collection of atoms connected by a network of chemical bonds. This has been the cornerstone hypothesis in chemistry since the nineteenth century. According to the modern quantum theory, a chemical bond is formed by the overlap of electron cloud of the participating atoms. The directionality of atomic orbitals gives rise to that of bonds, therefore, results in the steric complexity of molecular structures. In the classical all-atom force field model of computational chemistry, a molecule is a group of atoms linked by two-center radial bonds  (A), three-center angular bonds  (B), and four-center torsional bonds  (C)(D). The first is a linear interaction, because it depends on the coordinates of two atoms. The second is a planar interaction, because it depends on the coordinates of three atoms. The third one, proper (C) or improper (D), is an out-of-plane interaction (therefore it does not exist in 2D models). With these empirical intramolecular forces, complicated molecular structures (i.e. the network of covalent bonds and in particular, the orientations), and their thermodynamical behaviors in the vicinity of equilibrium, can be modeled (but may not be predicted) without resorting to expensive quantum mechanics calculations. Because all the atoms that form the studied molecule are explicitly considered, we call this atomistic modeling. 
+
+ 
+
+Mesoscale modeling
+
+Besides explicitly modeling molecules from a purely atomistic point of view, a different kind of model based on the united atom approximation is also available. For instance, the elliptical Gay-Berne particles  can be used to simulate certain type of oligomers that are intrinsically anisotropic, and, rigid to the extent that its internal degrees of freedom would not play a role in the modeling the aggregation properties we are interested in.
+
+ 
+
+Mesoscale particles can have net charges and electric dipole moments, properties that enable them to respond to an applied external electromagnetic field. 
+
+Mesoscale models are suitable to describe intermolecular motion of nanometer-scale or larger molecules that do not break into smaller units nor drastically change their chemical properties as time changes. We call this mesoscale modeling.
+
+Comparison
+
+Generally speaking, atomistic modeling is the fine-grained approach, whereas mesoscale modeling is the coarse-grained approach. Which level you should choose depends on the specific case you have to deal with. If intramolecular motion is not important to your modeling, mesoscale modeling may sound like a reasonable choice.
+
+
+   
+ return to index</text>
+<section start="0" end="2718">
+<paragraph start="0" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="27">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<LeftIndent>120.0</LeftIndent>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<LeftIndent>120.0</LeftIndent>
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="56">
+<LeftIndent>140.0</LeftIndent>
+<content start="30" end="56">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<LeftIndent>140.0</LeftIndent>
+<content start="56" end="57">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="57" end="76">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="75">
+<bold>true</bold><size>11</size></content>
+
+<content start="75" end="76">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="76" end="77">
+<LeftIndent>140.0</LeftIndent>
+<content start="76" end="77">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="77" end="1487">
+<LeftIndent>140.0</LeftIndent>
+<content start="77" end="1487">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1487" end="1488">
+<LeftIndent>120.0</LeftIndent>
+<content start="1487" end="1488">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1488" end="1490">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1488" end="1489">
+<icon>bondTypes.gif</icon><size>11</size></content>
+
+<content start="1489" end="1490">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1490" end="1491">
+<LeftIndent>140.0</LeftIndent>
+<content start="1490" end="1491">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1491" end="1510">
+<LeftIndent>140.0</LeftIndent>
+<content start="1491" end="1509">
+<bold>true</bold><size>11</size></content>
+
+<content start="1509" end="1510">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1510" end="1511">
+<LeftIndent>140.0</LeftIndent>
+<content start="1510" end="1511">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1511" end="1957">
+<LeftIndent>140.0</LeftIndent>
+<content start="1511" end="1957">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1957" end="1958">
+<LeftIndent>120.0</LeftIndent>
+<content start="1957" end="1958">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1958" end="1960">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1958" end="1959">
+<icon>UnitedAtomModeling.gif</icon><size>11</size></content>
+
+<content start="1959" end="1960">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1960" end="1961">
+<LeftIndent>120.0</LeftIndent>
+<content start="1960" end="1961">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1961" end="2117">
+<LeftIndent>140.0</LeftIndent>
+<content start="1961" end="2117">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2117" end="2118">
+<LeftIndent>140.0</LeftIndent>
+<content start="2117" end="2118">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2118" end="2357">
+<LeftIndent>140.0</LeftIndent>
+<content start="2118" end="2357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2357" end="2358">
+<LeftIndent>140.0</LeftIndent>
+<content start="2357" end="2358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2358" end="2369">
+<LeftIndent>140.0</LeftIndent>
+<content start="2358" end="2368">
+<bold>true</bold><size>11</size></content>
+
+<content start="2368" end="2369">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2369" end="2370">
+<LeftIndent>140.0</LeftIndent>
+<content start="2369" end="2370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2370" end="2695">
+<LeftIndent>140.0</LeftIndent>
+<content start="2370" end="2694">
+<size>11</size></content>
+
+<content start="2694" end="2695">
+</content>
+
+</paragraph>
+<paragraph start="2695" end="2696">
+<LeftIndent>120.0</LeftIndent>
+<content start="2695" end="2696">
+</content>
+
+</paragraph>
+<paragraph start="2696" end="2697">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2696" end="2697">
+</content>
+
+</paragraph>
+<paragraph start="2697" end="2701">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2697" end="2698">
+</content>
+
+<content start="2698" end="2699">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="2699" end="2701">
+</content>
+
+</paragraph>
+<paragraph start="2701" end="2718">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2701" end="2702">
+</content>
+
+<content start="2702" end="2717">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

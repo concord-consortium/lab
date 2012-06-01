@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Gay-Berne potential</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Gay-Berne potential
+
+
+A generalized Lennard-Jones potential for ellipsoid objects. Primarily used in simulations for liquid crystals. 
+
+The Gay-Berne (GB) model was proposed by Gay and Berne in 1981 (J.G.Gay and B.J.Berne, Journal of Chemical Physics, 74, (1981) 3316). The GB potential has a similiar form with the Lennard-Jones potential, but is in actuality far more complicated. Because it has proven to be able to simulate nematic, discotic nematic, and biaxial nematic phases of liquid crystals, it has become rather popular for modeling mesogenic systems. The commonly used version of the GB model studies systems consisting of only one type of GB particle, which made it less useful in extending to molecules of general interest. Recently, interactions between a pair of unlike GB particles have been given by D.J.Cleaver, C.M.Care, M.P.Allen, and M.P.Neal (CCAN) ( Extension and generalization of the Gay-Berne potential, in Physical Review E54, 559-567, 1996), whose work has paved the way of applying the GB model to more structured systems. Based on their model, M.R.Wilson has constructed a more flexible model for polymer liquid crystals by combining the GB particles and the conventional Lennard-Jones ones with harmonic bonds and torsional potentials (See Molecular dynamics simulations of flexible liquid crystal molecules using a Gay-Berne/Lennard-Jones model, Journal of Chemical Physics, 107 (20), P. 8654-8663, 1997). The CCAN version of GB model assumes that all GB particles have the same energetic anistropy ratio, which is an assumption that favors the formation of a uniform liquid crystalline phase. 
+
+In Molecular Workbench, we allow the GB particles to have distinct energetic anisotropies. Thus the mesogens could have some chance to form &quot;amorphous&quot; phases other than liquid and solid. Besides this modification, we also generalize the GB model by adding some low-order terms of electrostatic interactions to the Hamiltonian, which were missing in the aforementioned work.
+
+
+   
+ return to index</text>
+<section start="0" end="2027">
+<paragraph start="0" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="19">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<LeftIndent>120.0</LeftIndent>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<LeftIndent>120.0</LeftIndent>
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="135">
+<LeftIndent>140.0</LeftIndent>
+<content start="22" end="36">
+<size>11</size></content>
+
+<content start="36" end="59">
+<href>LennardJones.cml</href><size>11</size></content>
+
+<content start="59" end="135">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="135" end="136">
+<LeftIndent>120.0</LeftIndent>
+<content start="135" end="136">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="136" end="1628">
+<LeftIndent>140.0</LeftIndent>
+<content start="136" end="1628">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1628" end="1629">
+<LeftIndent>120.0</LeftIndent>
+<content start="1628" end="1629">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1629" end="2004">
+<LeftIndent>140.0</LeftIndent>
+<content start="1629" end="1632">
+<size>11</size></content>
+
+<content start="1632" end="1651">
+<italic>true</italic><size>11</size></content>
+
+<content start="1651" end="1852">
+<size>11</size></content>
+
+<content start="1852" end="1955">
+<href>../../teacher/molsim/UAFF.cml</href><size>11</size></content>
+
+<content start="1955" end="2004">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2004" end="2005">
+<LeftIndent>120.0</LeftIndent>
+<content start="2004" end="2005">
+</content>
+
+</paragraph>
+<paragraph start="2005" end="2006">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2005" end="2006">
+</content>
+
+</paragraph>
+<paragraph start="2006" end="2010">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2006" end="2007">
+</content>
+
+<content start="2007" end="2008">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="2008" end="2010">
+</content>
+
+</paragraph>
+<paragraph start="2010" end="2027">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2010" end="2011">
+</content>
+
+<content start="2011" end="2026">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

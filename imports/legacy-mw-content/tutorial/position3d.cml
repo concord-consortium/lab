@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Selecting, translating and rotating multiple atoms</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Selecting, translating and rotating multiple atoms
+
+&lt; Previous | Index | Next &gt;
+
+In the last section, we learned that an atom can be dragged within an assisting plane or a plane parallel to it. In this section, we will learn two other ways of changing the coordinates of an atom.
+
+Using keyboard shortcuts to move an atom in a direction
+
+   To move in the &quot;+x&quot; or &quot;-x&quot; direction, hold down the &apos;x&apos; key and press the Up/Down key.
+   To move in the &quot;+y&quot; or &quot;-y&quot; direction, hold down the &apos;x&apos; key and press the Up/Down key.
+   To move in the &quot;+z&quot; or &quot;-z&quot; direction, hold down the &apos;x&apos; key and press the Up/Down key.
+
+To know the direction, look at the axes at the lower-right corner. The x-axis is represented by a red arrow, which pointing to the &quot;+x&quot; direction. The y-axis is represented by a green arrow, which pointing to the &quot;+y&quot; direction. The z-axis is represented by a blue arrow, which pointing to the &quot;+z&quot; direction.
+
+Typing the coordinates in the Properties Window
+
+Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the atom and select &quot;Properties&quot; from the pop-up menu. When the dialog window opens, type the new coordinates in the &quot;X&quot;, &quot;Y&quot;, &quot;Z&quot; text fields, respectively.
+
+Practice
+
+You may play with the following simulator about setting the position of an atom.
+
+ 
+[This is an embedded simulator.]
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1363">
+<paragraph start="0" end="51">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="50">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="80">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="52" end="54">
+<size>11</size></content>
+
+<content start="54" end="62">
+<size>11</size><href>movemol3d.cml</href></content>
+
+<content start="62" end="65">
+<size>11</size></content>
+
+<content start="65" end="70">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="70" end="73">
+<size>11</size></content>
+
+<content start="73" end="77">
+<size>11</size><href>rbond3d.cml</href></content>
+
+<content start="77" end="79">
+<size>11</size></content>
+
+<content start="79" end="80">
+</content>
+
+</paragraph>
+<paragraph start="80" end="81">
+<LeftIndent>140.0</LeftIndent>
+<content start="80" end="81">
+</content>
+
+</paragraph>
+<paragraph start="81" end="280">
+<LeftIndent>140.0</LeftIndent>
+<content start="81" end="280">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="280" end="281">
+<LeftIndent>140.0</LeftIndent>
+<content start="280" end="281">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="281" end="337">
+<LeftIndent>140.0</LeftIndent>
+<content start="281" end="336">
+<size>11</size><bold>true</bold></content>
+
+<content start="336" end="337">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="337" end="338">
+<LeftIndent>140.0</LeftIndent>
+<content start="337" end="338">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="338" end="429">
+<LeftIndent>160.0</LeftIndent>
+<content start="338" end="339">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="339" end="341">
+</content>
+
+<content start="341" end="429">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="429" end="520">
+<LeftIndent>160.0</LeftIndent>
+<content start="429" end="430">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="430" end="432">
+</content>
+
+<content start="432" end="520">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="520" end="611">
+<LeftIndent>160.0</LeftIndent>
+<content start="520" end="521">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="521" end="523">
+</content>
+
+<content start="523" end="611">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="611" end="612">
+<LeftIndent>140.0</LeftIndent>
+<content start="611" end="612">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="612" end="922">
+<LeftIndent>140.0</LeftIndent>
+<content start="612" end="683">
+<size>11</size></content>
+
+<content start="683" end="684">
+<size>11</size><italic>true</italic></content>
+
+<content start="684" end="763">
+<size>11</size></content>
+
+<content start="763" end="764">
+<size>11</size><italic>true</italic></content>
+
+<content start="764" end="845">
+<size>11</size></content>
+
+<content start="845" end="846">
+<size>11</size><italic>true</italic></content>
+
+<content start="846" end="922">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="922" end="923">
+<LeftIndent>140.0</LeftIndent>
+<content start="922" end="923">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="923" end="971">
+<LeftIndent>140.0</LeftIndent>
+<content start="923" end="970">
+<size>11</size><bold>true</bold></content>
+
+<content start="970" end="971">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="971" end="972">
+<LeftIndent>140.0</LeftIndent>
+<content start="971" end="972">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="972" end="1205">
+<LeftIndent>140.0</LeftIndent>
+<content start="972" end="985">
+<size>11</size></content>
+
+<content start="985" end="1042">
+<size>11</size></content>
+
+<content start="1042" end="1205">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1205" end="1206">
+<LeftIndent>140.0</LeftIndent>
+<content start="1205" end="1206">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1206" end="1215">
+<LeftIndent>140.0</LeftIndent>
+<content start="1206" end="1214">
+<size>11</size><bold>true</bold></content>
+
+<content start="1214" end="1215">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1215" end="1216">
+<LeftIndent>140.0</LeftIndent>
+<content start="1215" end="1216">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1216" end="1297">
+<LeftIndent>140.0</LeftIndent>
+<content start="1216" end="1297">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1297" end="1298">
+<LeftIndent>140.0</LeftIndent>
+<content start="1297" end="1298">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1298" end="1300">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1298" end="1299">
+<component><class>org.concord.modeler.PageMd3d</class><resource>position3d$0.mdd</resource><coordinate>position3d$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="1299" end="1300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1300" end="1333">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1300" end="1332">
+<size>10</size></content>
+
+<content start="1332" end="1333">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1333" end="1334">
+<LeftIndent>140.0</LeftIndent>
+<content start="1333" end="1334">
+</content>
+
+</paragraph>
+<paragraph start="1334" end="1335">
+<LeftIndent>140.0</LeftIndent>
+<content start="1334" end="1335">
+</content>
+
+</paragraph>
+<paragraph start="1335" end="1363">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1335" end="1337">
+<size>11</size></content>
+
+<content start="1337" end="1345">
+<size>11</size><href>movemol3d.cml</href></content>
+
+<content start="1345" end="1348">
+<size>11</size></content>
+
+<content start="1348" end="1353">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="1353" end="1356">
+<size>11</size></content>
+
+<content start="1356" end="1360">
+<size>11</size><href>rbond3d.cml</href></content>
+
+<content start="1360" end="1362">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

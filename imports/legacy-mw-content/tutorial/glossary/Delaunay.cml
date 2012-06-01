@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Delaunay triangulation</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Delaunay triangulation
+
+The Delaunay triangulation of a set of points is a collection of edges satisfying an &quot;empty circle&quot; property: For each edge we can find a circle containing the edge&apos;s endpoints but not containing any other points.  ----- From &quot;Geometry in Action&quot;.
+
+The geometric duals of Delaunay triangulation diagrams are Voronoi diagrams.
+
+ 
+return to index</text>
+<section start="0" end="369">
+<paragraph start="0" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="22">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<LeftIndent>120.0</LeftIndent>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="272">
+<LeftIndent>140.0</LeftIndent>
+<content start="24" end="251">
+<size>11</size></content>
+
+<content start="251" end="269">
+<href>http://www.ics.uci.edu/~eppstein/geom.html</href><size>11</size></content>
+
+<content start="269" end="272">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="272" end="273">
+<LeftIndent>140.0</LeftIndent>
+<content start="272" end="273">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="273" end="350">
+<LeftIndent>140.0</LeftIndent>
+<content start="273" end="332">
+<size>11</size></content>
+
+<content start="332" end="348">
+<href>Voronoi.cml</href><size>11</size></content>
+
+<content start="348" end="349">
+<size>11</size></content>
+
+<content start="349" end="350">
+</content>
+
+</paragraph>
+<paragraph start="350" end="351">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="350" end="351">
+</content>
+
+</paragraph>
+<paragraph start="351" end="353">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="351" end="352">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="352" end="353">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="353" end="369">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="353" end="368">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Polarizing Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Polarizing Tool
+
+&lt; Previous | Index | Next &gt;
+
+There are two buttons for the Polarizing Tool of the 2D Mesoscale Particle Simulator. One adds a positive dipole moment (5 e*nm) at each click, the other adds a negative dipole moment (-5 e*nm) at each click.
+
+To add a dipole moment to a Gay-Berne particle, first click one of the two buttons, and then click on the particle.
+
+ 
+Tip: The functionalities of these two Polarizing Tool buttons are interconvertible: If you hold down the SHIFT key, a dipole moment in the opposite direction will be added. For example, if you select the &quot;Increase Dipole Moment&quot; button but you hold down the SHIFT key, the dipole moment will be decreased in the original direction.
+ 
+
+You can practice with the Polarizing Tool in the following model:
+
+ 
+[This is an embedded simulator.]
+
+Script support
+
+The dipole moment of a Gay-Berne particle can be changed using the set command: set particle[i].dipole [value], where i is the index of the particle.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1012">
+<paragraph start="0" end="20">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="19">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="49">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="21" end="23">
+<size>11</size></content>
+
+<content start="23" end="31">
+<href>chargeAction.cml</href><size>11</size></content>
+
+<content start="31" end="34">
+<size>11</size></content>
+
+<content start="34" end="39">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="46">
+<href>restrainAction.cml</href><size>11</size></content>
+
+<content start="46" end="48">
+<size>11</size></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<LeftIndent>100.0</LeftIndent>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="259">
+<LeftIndent>140.0</LeftIndent>
+<content start="50" end="259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="259" end="260">
+<LeftIndent>140.0</LeftIndent>
+<content start="259" end="260">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="260" end="376">
+<LeftIndent>140.0</LeftIndent>
+<content start="260" end="376">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="376" end="377">
+<LeftIndent>140.0</LeftIndent>
+<content start="376" end="377">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="377" end="379">
+<LeftIndent>140.0</LeftIndent>
+<content start="377" end="378">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="378" end="379">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="379" end="711">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="379" end="382">
+<bold>true</bold><size>11</size></content>
+
+<content start="382" end="711">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="711" end="713">
+<LeftIndent>140.0</LeftIndent>
+<content start="711" end="712">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="712" end="713">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="713" end="714">
+<LeftIndent>140.0</LeftIndent>
+<content start="713" end="714">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="714" end="780">
+<LeftIndent>140.0</LeftIndent>
+<content start="714" end="779">
+<size>11</size></content>
+
+<content start="779" end="780">
+</content>
+
+</paragraph>
+<paragraph start="780" end="781">
+<LeftIndent>100.0</LeftIndent>
+<content start="780" end="781">
+</content>
+
+</paragraph>
+<paragraph start="781" end="783">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="781" end="782">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>polarizeAction$0.gbl</resource><menubar>false</menubar><recorder>true</recorder><button>Increase Dipole Moment</button><button>Decrease Dipole Moment</button><button>Select Object</button></component></content>
+
+<content start="782" end="783">
+</content>
+
+</paragraph>
+<paragraph start="783" end="816">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="783" end="815">
+<size>10</size></content>
+
+<content start="815" end="816">
+</content>
+
+</paragraph>
+<paragraph start="816" end="817">
+<RightIndent>20.0</RightIndent>
+<content start="816" end="817">
+</content>
+
+</paragraph>
+<paragraph start="817" end="832">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="817" end="831">
+<bold>true</bold><size>11</size></content>
+
+<content start="831" end="832">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="832" end="833">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="832" end="833">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="833" end="983">
+<LeftIndent>140.0</LeftIndent>
+<content start="833" end="900">
+<size>11</size></content>
+
+<content start="900" end="903">
+<family>Courier New</family><href>script_set.cml</href><size>11</size></content>
+
+<content start="903" end="913">
+<size>11</size></content>
+
+<content start="913" end="943">
+<family>Courier New</family><size>11</size></content>
+
+<content start="943" end="951">
+<size>11</size></content>
+
+<content start="951" end="952">
+<italic>true</italic><size>11</size></content>
+
+<content start="952" end="982">
+<size>11</size></content>
+
+<content start="982" end="983">
+</content>
+
+</paragraph>
+<paragraph start="983" end="984">
+<RightIndent>20.0</RightIndent>
+<content start="983" end="984">
+</content>
+
+</paragraph>
+<paragraph start="984" end="1012">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="984" end="986">
+<size>11</size></content>
+
+<content start="986" end="994">
+<href>chargeAction.cml</href><size>11</size></content>
+
+<content start="994" end="997">
+<size>11</size></content>
+
+<content start="997" end="1002">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="1002" end="1005">
+<size>11</size></content>
+
+<content start="1005" end="1009">
+<href>restrainAction.cml</href><size>11</size></content>
+
+<content start="1009" end="1011">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

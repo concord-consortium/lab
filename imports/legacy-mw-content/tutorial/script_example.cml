@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Script examples</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Script examples
+
+&lt; Previous | Index | Next &gt;
+
+This section provides some examples that you can use or modify to use. Click the links in the box on the left to view the effects of the example scripts and their sources:
+
+  
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="251">
+<paragraph start="0" end="16">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="15">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="45">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="17" end="30">
+<size>11</size></content>
+
+<content start="30" end="35">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="35" end="44">
+<size>11</size></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<LeftIndent>140.0</LeftIndent>
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="218">
+<LeftIndent>140.0</LeftIndent>
+<content start="46" end="218">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="218" end="219">
+<LeftIndent>140.0</LeftIndent>
+<content start="218" end="219">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="219" end="222">
+<LeftIndent>140.0</LeftIndent>
+<content start="219" end="220">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>240.0</width>
+<height>340.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;2&quot;&gt;Construct a ring molecule: &lt;a href=&quot;script:mw:1:source ring.mws&quot;&gt;Action&lt;/a&gt;; 
+        &lt;a href=&quot;ring.mws&quot;&gt;Source&lt;/a&gt;&lt;/font&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+</component></content>
+
+<content start="220" end="221">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_example$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="221" end="222">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="222" end="223">
+<LeftIndent>140.0</LeftIndent>
+<content start="222" end="223">
+</content>
+
+</paragraph>
+<paragraph start="223" end="251">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="223" end="236">
+<size>11</size></content>
+
+<content start="236" end="241">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="241" end="250">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

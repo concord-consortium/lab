@@ -1,0 +1,1089 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Applying external fields</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Applying external fields
+
+&lt; Previous | Index | Next &gt;
+
+Everything in the universe interacts with fields. The effects of fields on life can be attributed to the effects of fields on atoms and molecules. An interesting subject of molecular simulation is the modeling of the dynamical behaviors of molecular systems in external fields such as electrophoresis.
+
+There are three types of fields in the Molecular Workbench (MW):
+
+   Gravitational field 
+   Electric field 
+   Magnetic field
+
+To apply them, choose the corresponding items from the &quot;External Fields&quot; submenu of the Edit menu.
+
+Applying a gravitational field
+
+If you choose &quot;Gravitational&quot;, you will see the following window:
+
+  
+[This is a screenshot.]
+
+If there is a gravitational field with the model, the &quot;Apply&quot; check box will be selected, and the slider knob will point to the magnitude of the applied gravitational field. If there has not been one, the check box will be unselected, the slider will be disabled, and the slider knob will point to the default value.
+
+You can apply only one gravitational field. To apply or remove a gravitational field, select or deselect the check box. If the graviational field is applied, every particle in the simulation box will feel a downward force propotional to its mass:
+
+  
+
+In MW, the gravitational acceleration is not necessarily that of our planet (i.e. 9.8 m/s2). You can vary g in a wide range by pulling the slider.
+
+ 
+Note: The regular gravity on the Earth is not a significant effect at atomic scale. Gravitational effect on atoms is so weak that it only shows up at macroscopic scale, with billions and billions of atoms adding up their weak contributions. In our model with up to a few hundreds of atoms, we use an unrealistically strong gravitational field in order to amplify the effect.
+ 
+
+Here is an example proving at the microscopic level that gravity is responsible for buoyancy.
+
+Applying an electric field
+
+If you choose &quot;Electric&quot; from the &quot;External Fields&quot; submenu, you will see the following window:
+
+  
+[This is a screenshot.]
+
+An electric field can be either alternating current (AC) field, or direct current (DC) field. The above window provides four radio buttons for you to change the direction of the DC component, and three sliders to change the intensity of DC component, frequency of AC component, and amplitude of AC component, respectively. 
+
+If an electric field is applied, every charged particle in the simulation box will feel an electrostatic force propotional to its charge q:
+
+  
+
+and, if the particle has a rotational degree of freedom and a dipole moment, a torque propotional to its dipole moment:
+
+  
+
+where
+
+  
+
+ 
+A more familiar concept about electric field intensity is voltage. The voltage between the two opposite side walls of the simulation box is given by the product of the field intensity and the interplane distance between the two walls.
+ 
+
+If there has been an electric field with the model, the &quot;Apply&quot; check box will be selected, and the buttons and sliders will be set to the corresponding values of the existing field. If there has not been an electric field, the &quot;Apply&quot; check box will be unselected, and the buttons and sliders set to their default values. 
+
+You can apply only one electric field. To apply or remove an electric field, select or deselect the check box. 
+
+Use of electric field broadens the scope of molecular simulation. The following image shows an electric current flow simulation in a horizontal electric field using the  periodic boundary conditions:
+
+  
+Click here for the live example.
+
+The relationship between the applied voltage and the electric current can be shown using such a simulation. You can find the temperature-dependence of the resistance. (Note: We are not simulating electric current due to electron transport. What we are doing here may be regarded as a simulation for electric conductance in molten sodium chloride.)
+
+Another example is the simulation of electrolysis. When tuning the applied voltage, you can find out under what kind of intensity the ionic bonds start to break up. 
+
+  
+
+ 
+Important: Choose the right boundary conditions.
+If you are interested in simulating charge transport in electrolytes, selecting an appropriate boundary condition is the first thing you have to consider. If you would like to produce Ohm&apos;s law, the  periodic boundary conditions have to be used.  Reflecting boundary conditions cannot be used to establish a steady electric current flow, because ions will be bounced back at the borders. On the other hand, if you would like to simulating electrolytic dissociation in an electrolyzer, reflecting boundary condition must be used for at least the anode and cathode. 
+  
+
+Magnetic field
+
+If you choose &quot;Magnetic&quot; from the &quot;External Fields&quot; submenu, you will see a window as follows:
+
+  
+[This is a screenshot.]
+
+If there has been a magnetic field with the model, the &quot;Apply&quot; check box will be selected, and the buttons and slider will be set to the corresponding values of the existing field. If there has not been a magnetic field, the &quot;Apply&quot; check box will be unselected, and the buttons and slider set to their default values. 
+
+You can apply only one magnetic field to the model. To apply or remove a magnetic field, select or deselect the check box. 
+
+In two-dimensional world, you have only two choices of the field direction: either inward or outward, perpendicular to the screen. This is because the magnetic force on a charged particle is a cross product of its velocity and the field (known as the Lorentz force law)
+
+  
+
+In order to keep the force in the 2D plane, the direction of the field has to be normal to the plane.
+
+You are allowed to vary the field intensity in the range from 0 to 10 T. The upper limit of this range corresponds to a super strong magnetic field. To get some idea of how strong 10 T is, note the following two facts: The Earth&apos;s field is about 0.5x10-4 T, whereas the most powerful permanent magnets have fields of less than 0.5 T.
+
+Putting them togther
+
+Here is an example that shows the motion of a particle in the above three fields.
+
+Script support
+
+The set command can be used to change the magnitude of an external field:
+
+set gfield [value];
+set efield [value];
+set bfield [value];
+
+There is currently no directional control for the electric field through scripts.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="6388">
+<paragraph start="0" end="25">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="24">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="54">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="26" end="28">
+<size>11</size></content>
+
+<content start="28" end="36">
+<href>viewSettings.cml</href><size>11</size></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="44">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="44" end="47">
+<size>11</size></content>
+
+<content start="47" end="51">
+<href>flow.cml</href><size>11</size></content>
+
+<content start="51" end="53">
+<size>11</size></content>
+
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<LeftIndent>140.0</LeftIndent>
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="357">
+<LeftIndent>140.0</LeftIndent>
+<content start="55" end="357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="357" end="358">
+<LeftIndent>140.0</LeftIndent>
+<content start="357" end="358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="358" end="423">
+<LeftIndent>140.0</LeftIndent>
+<content start="358" end="423">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="423" end="424">
+<LeftIndent>160.0</LeftIndent>
+<content start="423" end="424">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="424" end="448">
+<LeftIndent>160.0</LeftIndent>
+<content start="424" end="425">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="425" end="448">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="448" end="467">
+<LeftIndent>160.0</LeftIndent>
+<content start="448" end="449">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="449" end="467">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="467" end="485">
+<LeftIndent>160.0</LeftIndent>
+<content start="467" end="468">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="468" end="485">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="485" end="486">
+<LeftIndent>100.0</LeftIndent>
+<content start="485" end="486">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="486" end="585">
+<LeftIndent>140.0</LeftIndent>
+<content start="486" end="585">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="585" end="586">
+<LeftIndent>100.0</LeftIndent>
+<content start="585" end="586">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="586" end="617">
+<LeftIndent>140.0</LeftIndent>
+<content start="586" end="616">
+<bold>true</bold><size>11</size></content>
+
+<content start="616" end="617">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="617" end="618">
+<LeftIndent>140.0</LeftIndent>
+<content start="617" end="618">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="618" end="684">
+<LeftIndent>140.0</LeftIndent>
+<content start="618" end="684">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="684" end="685">
+<LeftIndent>100.0</LeftIndent>
+<content start="684" end="685">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="685" end="688">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="685" end="686">
+<size>11</size></content>
+
+<content start="686" end="687">
+<icon>GField.gif</icon><size>11</size></content>
+
+<content start="687" end="688">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="688" end="712">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="688" end="711">
+<size>10</size></content>
+
+<content start="711" end="712">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="712" end="713">
+<LeftIndent>100.0</LeftIndent>
+<content start="712" end="713">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="713" end="1030">
+<LeftIndent>140.0</LeftIndent>
+<content start="713" end="1030">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1030" end="1031">
+<LeftIndent>140.0</LeftIndent>
+<content start="1030" end="1031">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1031" end="1278">
+<LeftIndent>140.0</LeftIndent>
+<content start="1031" end="1278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1278" end="1279">
+<LeftIndent>140.0</LeftIndent>
+<content start="1278" end="1279">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1279" end="1282">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1279" end="1280">
+<size>11</size></content>
+
+<content start="1280" end="1281">
+<icon>gravityFormula.gif</icon><size>11</size></content>
+
+<content start="1281" end="1282">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1282" end="1283">
+<LeftIndent>140.0</LeftIndent>
+<content start="1282" end="1283">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1283" end="1430">
+<LeftIndent>140.0</LeftIndent>
+<content start="1283" end="1372">
+<size>11</size></content>
+
+<content start="1372" end="1373">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="1373" end="1389">
+<size>11</size></content>
+
+<content start="1389" end="1390">
+<italic>true</italic><size>11</size></content>
+
+<content start="1390" end="1430">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1430" end="1431">
+<LeftIndent>140.0</LeftIndent>
+<content start="1430" end="1431">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1431" end="1433">
+<LeftIndent>140.0</LeftIndent>
+<content start="1431" end="1432">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1432" end="1433">
+</content>
+
+</paragraph>
+<paragraph start="1433" end="1808">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1433" end="1437">
+<bold>true</bold><size>11</size></content>
+
+<content start="1437" end="1807">
+<size>11</size></content>
+
+<content start="1807" end="1808">
+</content>
+
+</paragraph>
+<paragraph start="1808" end="1810">
+<LeftIndent>140.0</LeftIndent>
+<content start="1808" end="1809">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1809" end="1810">
+</content>
+
+</paragraph>
+<paragraph start="1810" end="1811">
+<LeftIndent>140.0</LeftIndent>
+<content start="1810" end="1811">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1811" end="1905">
+<LeftIndent>140.0</LeftIndent>
+<content start="1811" end="1868">
+<size>11</size></content>
+
+<content start="1868" end="1903">
+<href>microbuoyancy.cml</href><size>11</size></content>
+
+<content start="1903" end="1905">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1905" end="1906">
+<LeftIndent>140.0</LeftIndent>
+<content start="1905" end="1906">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1906" end="1933">
+<LeftIndent>140.0</LeftIndent>
+<content start="1906" end="1932">
+<bold>true</bold><size>11</size></content>
+
+<content start="1932" end="1933">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1933" end="1934">
+<LeftIndent>140.0</LeftIndent>
+<content start="1933" end="1934">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1934" end="2030">
+<LeftIndent>140.0</LeftIndent>
+<content start="1934" end="2030">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2030" end="2031">
+<LeftIndent>140.0</LeftIndent>
+<content start="2030" end="2031">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2031" end="2034">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2031" end="2032">
+<size>11</size></content>
+
+<content start="2032" end="2033">
+<icon>EField.gif</icon><size>11</size></content>
+
+<content start="2033" end="2034">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2034" end="2058">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2034" end="2057">
+<size>10</size></content>
+
+<content start="2057" end="2058">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2058" end="2059">
+<LeftIndent>140.0</LeftIndent>
+<content start="2058" end="2059">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2059" end="2383">
+<LeftIndent>140.0</LeftIndent>
+<content start="2059" end="2383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2383" end="2384">
+<LeftIndent>140.0</LeftIndent>
+<content start="2383" end="2384">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2384" end="2524">
+<LeftIndent>140.0</LeftIndent>
+<content start="2384" end="2521">
+<size>11</size></content>
+
+<content start="2521" end="2522">
+<italic>true</italic><size>11</size></content>
+
+<content start="2522" end="2524">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2524" end="2525">
+<LeftIndent>140.0</LeftIndent>
+<content start="2524" end="2525">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2525" end="2528">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2525" end="2526">
+<size>11</size></content>
+
+<content start="2526" end="2527">
+<icon>electricFormula.gif</icon><size>11</size></content>
+
+<content start="2527" end="2528">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2528" end="2529">
+<LeftIndent>140.0</LeftIndent>
+<content start="2528" end="2529">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2529" end="2649">
+<LeftIndent>140.0</LeftIndent>
+<content start="2529" end="2556">
+<size>11</size></content>
+
+<content start="2556" end="2604">
+<href>../student/motionandforce/dipole1.cml</href><size>11</size></content>
+
+<content start="2604" end="2649">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2649" end="2650">
+<LeftIndent>100.0</LeftIndent>
+<content start="2649" end="2650">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2650" end="2653">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2650" end="2651">
+<size>11</size></content>
+
+<content start="2651" end="2652">
+<icon>electricFormula2.gif</icon><size>11</size></content>
+
+<content start="2652" end="2653">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2653" end="2654">
+<LeftIndent>140.0</LeftIndent>
+<content start="2653" end="2654">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2654" end="2660">
+<LeftIndent>140.0</LeftIndent>
+<content start="2654" end="2660">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2660" end="2661">
+<LeftIndent>140.0</LeftIndent>
+<content start="2660" end="2661">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2661" end="2664">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2661" end="2662">
+<size>11</size></content>
+
+<content start="2662" end="2663">
+<icon>ACelectricFormula.gif</icon><size>11</size></content>
+
+<content start="2663" end="2664">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2664" end="2665">
+<LeftIndent>140.0</LeftIndent>
+<content start="2664" end="2665">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2665" end="2667">
+<LeftIndent>140.0</LeftIndent>
+<content start="2665" end="2666">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2666" end="2667">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2667" end="2902">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2667" end="2725">
+<size>11</size></content>
+
+<content start="2725" end="2732">
+<italic>true</italic><size>11</size></content>
+
+<content start="2732" end="2902">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2902" end="2904">
+<LeftIndent>140.0</LeftIndent>
+<content start="2902" end="2903">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2903" end="2904">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2904" end="2905">
+<LeftIndent>140.0</LeftIndent>
+<content start="2904" end="2905">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2905" end="3229">
+<LeftIndent>140.0</LeftIndent>
+<content start="2905" end="3229">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3229" end="3230">
+<LeftIndent>140.0</LeftIndent>
+<content start="3229" end="3230">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3230" end="3342">
+<LeftIndent>140.0</LeftIndent>
+<content start="3230" end="3342">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3342" end="3343">
+<LeftIndent>140.0</LeftIndent>
+<content start="3342" end="3343">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3343" end="3543">
+<LeftIndent>140.0</LeftIndent>
+<content start="3343" end="3512">
+<size>11</size></content>
+
+<content start="3512" end="3513">
+<icon>apiIcon.gif</icon><size>11</size></content>
+
+<content start="3513" end="3541">
+<link_statusbar>false</link_statusbar><link_width>400</link_width><link_height>400</link_height><size>11</size><link_left>50</link_left><link_menubar>false</link_menubar><href>glossary/PeriodicBC.cml</href><link_top>50</link_top><link_toolbar>false</link_toolbar><target>_blank</target><link_resizable>false</link_resizable></content>
+
+<content start="3541" end="3543">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3543" end="3544">
+<LeftIndent>140.0</LeftIndent>
+<content start="3543" end="3544">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3544" end="3547">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3544" end="3545">
+<size>11</size></content>
+
+<content start="3545" end="3546">
+<icon>ionTransport.gif</icon><size>11</size></content>
+
+<content start="3546" end="3547">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3547" end="3580">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3547" end="3553">
+<size>11</size></content>
+
+<content start="3553" end="3557">
+<href>../student/motionandforce/iontransport.cml</href><size>11</size></content>
+
+<content start="3557" end="3580">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3580" end="3581">
+<LeftIndent>140.0</LeftIndent>
+<content start="3580" end="3581">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3581" end="3929">
+<LeftIndent>140.0</LeftIndent>
+<content start="3581" end="3929">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3929" end="3930">
+<LeftIndent>140.0</LeftIndent>
+<content start="3929" end="3930">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3930" end="4096">
+<LeftIndent>140.0</LeftIndent>
+<content start="3930" end="4096">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4096" end="4097">
+<LeftIndent>140.0</LeftIndent>
+<content start="4096" end="4097">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4097" end="4100">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4097" end="4098">
+<size>11</size></content>
+
+<content start="4098" end="4099">
+<icon>ionTransportInCell.gif</icon><size>11</size></content>
+
+<content start="4099" end="4100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4100" end="4101">
+<LeftIndent>140.0</LeftIndent>
+<content start="4100" end="4101">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4101" end="4103">
+<LeftIndent>140.0</LeftIndent>
+<content start="4101" end="4102">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="4102" end="4103">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4103" end="4152">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="4103" end="4112">
+<bold>true</bold><size>11</size></content>
+
+<content start="4112" end="4114">
+<size>11</size></content>
+
+<content start="4114" end="4151">
+<italic>true</italic><size>11</size></content>
+
+<content start="4151" end="4152">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4152" end="4717">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="4152" end="4351">
+<size>11</size></content>
+
+<content start="4351" end="4352">
+<icon>apiIcon.gif</icon><size>11</size></content>
+
+<content start="4352" end="4380">
+<link_statusbar>false</link_statusbar><link_width>400</link_width><link_height>400</link_height><size>11</size><link_left>50</link_left><link_menubar>false</link_menubar><href>glossary/PeriodicBC.cml</href><link_top>50</link_top><link_toolbar>false</link_toolbar><target>_blank</target><link_resizable>false</link_resizable></content>
+
+<content start="4380" end="4398">
+<size>11</size></content>
+
+<content start="4398" end="4399">
+<icon>apiIcon.gif</icon><size>11</size></content>
+
+<content start="4399" end="4429">
+<link_statusbar>false</link_statusbar><link_width>400</link_width><link_height>400</link_height><size>11</size><link_left>50</link_left><link_menubar>false</link_menubar><href>glossary/ReflectingBC.cml</href><link_top>50</link_top><link_toolbar>false</link_toolbar><target>_blank</target><link_resizable>false</link_resizable></content>
+
+<content start="4429" end="4717">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4717" end="4720">
+<LeftIndent>140.0</LeftIndent>
+<content start="4717" end="4718">
+<size>11</size></content>
+
+<content start="4718" end="4719">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="4719" end="4720">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4720" end="4721">
+<LeftIndent>140.0</LeftIndent>
+<content start="4720" end="4721">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="4721" end="4736">
+<LeftIndent>140.0</LeftIndent>
+<content start="4721" end="4736">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="4736" end="4737">
+<LeftIndent>140.0</LeftIndent>
+<content start="4736" end="4737">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4737" end="4832">
+<LeftIndent>140.0</LeftIndent>
+<content start="4737" end="4832">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4832" end="4833">
+<LeftIndent>140.0</LeftIndent>
+<content start="4832" end="4833">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4833" end="4836">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4833" end="4834">
+<size>11</size></content>
+
+<content start="4834" end="4835">
+<icon>BField.gif</icon><size>11</size></content>
+
+<content start="4835" end="4836">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4836" end="4860">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4836" end="4859">
+<size>10</size></content>
+
+<content start="4859" end="4860">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4860" end="4861">
+<LeftIndent>140.0</LeftIndent>
+<content start="4860" end="4861">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4861" end="5181">
+<LeftIndent>140.0</LeftIndent>
+<content start="4861" end="5181">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5181" end="5182">
+<LeftIndent>140.0</LeftIndent>
+<content start="5181" end="5182">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5182" end="5306">
+<LeftIndent>140.0</LeftIndent>
+<content start="5182" end="5306">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5306" end="5307">
+<LeftIndent>140.0</LeftIndent>
+<content start="5306" end="5307">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5307" end="5577">
+<LeftIndent>140.0</LeftIndent>
+<content start="5307" end="5577">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5577" end="5578">
+<LeftIndent>140.0</LeftIndent>
+<content start="5577" end="5578">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5578" end="5581">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="5578" end="5579">
+<size>11</size></content>
+
+<content start="5579" end="5580">
+<icon>MagneticForceFormula.gif</icon><size>11</size></content>
+
+<content start="5580" end="5581">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5581" end="5582">
+<LeftIndent>140.0</LeftIndent>
+<content start="5581" end="5582">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5582" end="5684">
+<LeftIndent>140.0</LeftIndent>
+<content start="5582" end="5684">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5684" end="5685">
+<LeftIndent>140.0</LeftIndent>
+<content start="5684" end="5685">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5685" end="6019">
+<LeftIndent>140.0</LeftIndent>
+<content start="5685" end="5937">
+<size>11</size></content>
+
+<content start="5937" end="5939">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="5939" end="6019">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6019" end="6020">
+<LeftIndent>140.0</LeftIndent>
+<content start="6019" end="6020">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6020" end="6041">
+<LeftIndent>140.0</LeftIndent>
+<content start="6020" end="6040">
+<bold>true</bold><size>11</size></content>
+
+<content start="6040" end="6041">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6041" end="6042">
+<LeftIndent>140.0</LeftIndent>
+<content start="6041" end="6042">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6042" end="6124">
+<LeftIndent>140.0</LeftIndent>
+<content start="6042" end="6050">
+<size>11</size></content>
+
+<content start="6050" end="6060">
+<href>../student/motionandforce/magneticforce.cml</href><size>11</size></content>
+
+<content start="6060" end="6124">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6124" end="6125">
+<LeftIndent>140.0</LeftIndent>
+<content start="6124" end="6125">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6125" end="6140">
+<LeftIndent>140.0</LeftIndent>
+<content start="6125" end="6139">
+<bold>true</bold><size>11</size></content>
+
+<content start="6139" end="6140">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6140" end="6141">
+<LeftIndent>140.0</LeftIndent>
+<content start="6140" end="6141">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6141" end="6215">
+<LeftIndent>140.0</LeftIndent>
+<content start="6141" end="6145">
+<size>11</size></content>
+
+<content start="6145" end="6148">
+<href>script_set.cml</href><size>11</size></content>
+
+<content start="6148" end="6215">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6215" end="6216">
+<LeftIndent>140.0</LeftIndent>
+<content start="6215" end="6216">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6216" end="6236">
+<LeftIndent>160.0</LeftIndent>
+<content start="6216" end="6236">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="6236" end="6256">
+<LeftIndent>160.0</LeftIndent>
+<content start="6236" end="6256">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="6256" end="6276">
+<LeftIndent>160.0</LeftIndent>
+<content start="6256" end="6275">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6275" end="6276">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6276" end="6277">
+<LeftIndent>140.0</LeftIndent>
+<content start="6276" end="6277">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6277" end="6359">
+<LeftIndent>140.0</LeftIndent>
+<content start="6277" end="6358">
+<size>11</size></content>
+
+<content start="6358" end="6359">
+</content>
+
+</paragraph>
+<paragraph start="6359" end="6360">
+<RightIndent>20.0</RightIndent>
+<content start="6359" end="6360">
+</content>
+
+</paragraph>
+<paragraph start="6360" end="6388">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6360" end="6362">
+<size>11</size></content>
+
+<content start="6362" end="6370">
+<href>viewSettings.cml</href><size>11</size></content>
+
+<content start="6370" end="6373">
+<size>11</size></content>
+
+<content start="6373" end="6378">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="6378" end="6381">
+<size>11</size></content>
+
+<content start="6381" end="6385">
+<href>flow.cml</href><size>11</size></content>
+
+<content start="6385" end="6387">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

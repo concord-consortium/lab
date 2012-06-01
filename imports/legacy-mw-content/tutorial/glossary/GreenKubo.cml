@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Green-Kubo relation</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Green-Kubo relation
+
+The Green-Kubo relation states that the transport coefficent g associated with a physical property j equals to the infinite time integral of the time auto-correlation function of the time derivative of that property:
+
+ 
+
+For example, the diffusion constant can be expressed by:
+
+ 
+
+where d is the dimension of the system. The thermal conductivity can be expressed by:
+
+ 
+
+See Einstein relation.
+
+ 
+return to index</text>
+<section start="0" end="435">
+<paragraph start="0" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="19">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<LeftIndent>120.0</LeftIndent>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="238">
+<LeftIndent>140.0</LeftIndent>
+<content start="21" end="238">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="238" end="239">
+<LeftIndent>120.0</LeftIndent>
+<content start="238" end="239">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="239" end="241">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="239" end="240">
+<icon>KuboFormula.gif</icon><size>11</size></content>
+
+<content start="240" end="241">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="241" end="242">
+<LeftIndent>120.0</LeftIndent>
+<content start="241" end="242">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="242" end="299">
+<LeftIndent>140.0</LeftIndent>
+<content start="242" end="299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="299" end="300">
+<LeftIndent>120.0</LeftIndent>
+<content start="299" end="300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="300" end="302">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="300" end="301">
+<icon>KuboFormula_Diffusion.gif</icon><size>11</size></content>
+
+<content start="301" end="302">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="302" end="303">
+<LeftIndent>120.0</LeftIndent>
+<content start="302" end="303">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="303" end="389">
+<LeftIndent>140.0</LeftIndent>
+<content start="303" end="389">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="389" end="390">
+<LeftIndent>120.0</LeftIndent>
+<content start="389" end="390">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="390" end="392">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="390" end="391">
+<icon>KuboFormula_ThermalConductivity.gif</icon><size>11</size></content>
+
+<content start="391" end="392">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="392" end="393">
+<LeftIndent>120.0</LeftIndent>
+<content start="392" end="393">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="393" end="416">
+<LeftIndent>140.0</LeftIndent>
+<content start="393" end="397">
+<size>11</size></content>
+
+<content start="397" end="414">
+<href>EinsteinRelation.cml</href><size>11</size></content>
+
+<content start="414" end="415">
+<size>11</size></content>
+
+<content start="415" end="416">
+</content>
+
+</paragraph>
+<paragraph start="416" end="417">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="416" end="417">
+</content>
+
+</paragraph>
+<paragraph start="417" end="419">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="417" end="418">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="418" end="419">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="419" end="435">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="419" end="434">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

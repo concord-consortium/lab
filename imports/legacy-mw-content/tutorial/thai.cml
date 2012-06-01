@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-11"?>
+<document>
+<language>ISO-8859-11</language>
+<page_title>ราชอาณาจักรไทย</page_title>
+<text>Thai language
+
+This test page is encoded in ISO-8859-11:
+
+ราชอาณาจักรไทย
+
+ภาษาไทย</text>
+<section start="0" end="82">
+<paragraph start="0" end="14">
+<Alignment>1</Alignment>
+<content start="0" end="13">
+<bold>true</bold><size>15</size></content>
+
+<content start="13" end="14">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<content start="14" end="15">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="15" end="57">
+<content start="15" end="57">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="57" end="58">
+<content start="57" end="58">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="58" end="73">
+<content start="58" end="73">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="73" end="74">
+<content start="73" end="74">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="74" end="82">
+<content start="74" end="81">
+<size>15</size></content>
+
+</paragraph>
+</section>
+</document>

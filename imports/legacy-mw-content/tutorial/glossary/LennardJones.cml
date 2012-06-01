@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Lennard-Jones potential</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Lennard-Jones potential
+
+
+Modeling the interaction energy between a pair of particles as a function of distance between them, the Lennard-Jones potential is a classical pairwise potential with an attractive van der Waals potential tail and a stiff repulsive core. It is simply expressed as:
+
+  
+
+  
+The Lennard-Jones potential.
+
+The Lennard-Jones potential is perhaps the most widely-used potential in molecular simulation, although there are many other mathematical functions that result in similar shape (e.g. the Morse potential that uses exponential functions instead of power functions). The Lennard-Jones potential is also sometimes slightly modified by changing the powers, so that the stiffness or softness (which results in elastic modulus) can be adjusted. These variations are called the Lennard-Jones potentials in m-n form. The original Lennard-Jones potential is thus a 12-6 form.
+
+   
+ return to index</text>
+<section start="0" end="921">
+<paragraph start="0" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="27">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<LeftIndent>120.0</LeftIndent>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<LeftIndent>120.0</LeftIndent>
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="295">
+<LeftIndent>140.0</LeftIndent>
+<content start="30" end="31">
+</content>
+
+<content start="31" end="295">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="295" end="296">
+<LeftIndent>120.0</LeftIndent>
+<content start="295" end="296">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="296" end="299">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="296" end="297">
+<size>11</size></content>
+
+<content start="297" end="298">
+<icon>lj.gif</icon><size>11</size></content>
+
+<content start="298" end="299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="299" end="300">
+<LeftIndent>120.0</LeftIndent>
+<content start="299" end="300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="300" end="303">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="300" end="301">
+<size>11</size></content>
+
+<content start="301" end="302">
+<icon>LJCurve.gif</icon><size>11</size></content>
+
+<content start="302" end="303">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="303" end="332">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="303" end="331">
+<italic>true</italic><size>11</size></content>
+
+<content start="331" end="332">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="332" end="333">
+<LeftIndent>140.0</LeftIndent>
+<content start="332" end="333">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="333" end="899">
+<LeftIndent>140.0</LeftIndent>
+<content start="333" end="831">
+<size>11</size></content>
+
+<content start="831" end="834">
+<italic>true</italic><size>11</size></content>
+
+<content start="834" end="898">
+<size>11</size></content>
+
+<content start="898" end="899">
+</content>
+
+</paragraph>
+<paragraph start="899" end="900">
+<LeftIndent>140.0</LeftIndent>
+<content start="899" end="900">
+</content>
+
+</paragraph>
+<paragraph start="900" end="904">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="900" end="901">
+</content>
+
+<content start="901" end="902">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="902" end="904">
+</content>
+
+</paragraph>
+<paragraph start="904" end="921">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="904" end="905">
+</content>
+
+<content start="905" end="920">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

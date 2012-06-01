@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The automatic reminder</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The automatic reminder
+
+&lt; Previous | Index | Next &gt;
+
+Once the user pushes the &quot;Run&quot; button, the model will run until the &quot;Stop&quot; button is pressed. This is the default behavior of the simulator. Sometimes you may want to pause the simulation and give the user a reminder before interesting things elapse without being noticed.
+
+ 
+Note: If your model&apos;s initial conditions are randomly generated, the simulation will NOT be deterministic. As a result, you cannot count on the reminder to capture certain events, though it still can be used to stop the simulation after certain amount of time.
+ 
+
+To set up an automatic reminder, select the &quot;Set Up Automatic Reminder&quot; from the &quot;Option&quot; menu of the model container, you will see a dialog window as below:
+
+  
+[This is a screenshot.]
+
+This dialog window allows you to customize the automatic reminder. The reminder can be set to invoke repeatedly at a frequency that can be specified in the text field. Note that the number you type in the text field is the molecular dynamics time in femtoseconds&#10102;, not the real time you sense. You can type the reminder message in the text area below the check box and the text field. An example of automatic reminder in action is shown in the image below:
+
+  
+[This a screenshot.]
+
+If you just want the model to stop without poping up the reminder window, just do not type anything on the message text area. To disable the automatic reminder, just uncheck the &quot;Apply&quot; check box. The settings with the automatic reminder will be saved when you save the page.
+
+The following model shows an application of the automatic reminder. You can play with it to get some idea about how it works.
+
+  
+[This is an embedded simulator.]
+
+Other applications of the automatic reminder
+
+Using it as a timer
+
+If a model with carefully designed initial conditions shows interesting emergent behaviors within a certain length of time from the initial time, continuing the simulation after that may be unnecessary. The automatic reminder can be used to stop the simulation after a specified amount of simulation time. If no message is set, the model will just stop &quot;silently&quot; (without poping up a window) after the time is up. In this case, the reminder serves as a timer.
+
+Using it to conveniently make a series of snapshots
+
+You may know that you can press a &quot;Snapshot&quot; button to take a snapshot image of the model. If you were to take a series of snapshots evenly in time, it is not convenient to use the &quot;Snapshot&quot; button. The automatic reminder has a built-in button that makes this easy. If you check the &quot;Invoke reminder repeatedly&quot; check box, the reminder window will periodically pop up for the user to take a snapshot image.
+
+ 
+&#10102; The molecular dynamics time in femtoseconds is the number displayed at the lower left corner, right next to the clock icon.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2852">
+<paragraph start="0" end="23">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="22">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="52">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="24" end="26">
+<size>11</size></content>
+
+<content start="26" end="34">
+<size>11</size><href>ResizeModelContainer.cml</href></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="49">
+<size>11</size><href>modelPrinting.cml</href></content>
+
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<LeftIndent>100.0</LeftIndent>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="326">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="326" end="327">
+<LeftIndent>140.0</LeftIndent>
+<content start="326" end="327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="327" end="329">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<content start="327" end="328">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="328" end="329">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="329" end="590">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="329" end="333">
+<size>11</size><bold>true</bold></content>
+
+<content start="333" end="590">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="590" end="592">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<content start="590" end="591">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="591" end="592">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="592" end="593">
+<LeftIndent>140.0</LeftIndent>
+<content start="592" end="593">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="593" end="751">
+<LeftIndent>140.0</LeftIndent>
+<content start="593" end="751">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="751" end="752">
+<LeftIndent>140.0</LeftIndent>
+<content start="751" end="752">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="752" end="755">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="752" end="753">
+</content>
+
+<content start="753" end="754">
+<icon>AutomaticalReminder.gif</icon></content>
+
+<content start="754" end="755">
+</content>
+
+</paragraph>
+<paragraph start="755" end="779">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="755" end="778">
+<size>10</size></content>
+
+<content start="778" end="779">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="779" end="780">
+<LeftIndent>140.0</LeftIndent>
+<content start="779" end="780">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="780" end="1237">
+<LeftIndent>140.0</LeftIndent>
+<content start="780" end="1003">
+<size>11</size></content>
+
+<content start="1003" end="1021">
+<size>11</size><href>glossary/MolecularDynamics.cml</href></content>
+
+<content start="1021" end="1042">
+<size>11</size></content>
+
+<content start="1042" end="1043">
+</content>
+
+<content start="1043" end="1045">
+<size>11</size></content>
+
+<content start="1045" end="1048">
+<size>11</size><italic>true</italic></content>
+
+<content start="1048" end="1237">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1237" end="1238">
+<LeftIndent>140.0</LeftIndent>
+<content start="1237" end="1238">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1238" end="1241">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1238" end="1239">
+</content>
+
+<content start="1239" end="1240">
+<icon>AutomaticalReminder2.gif</icon></content>
+
+<content start="1240" end="1241">
+</content>
+
+</paragraph>
+<paragraph start="1241" end="1262">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1241" end="1261">
+<size>10</size></content>
+
+<content start="1261" end="1262">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1262" end="1263">
+<LeftIndent>140.0</LeftIndent>
+<content start="1262" end="1263">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1263" end="1539">
+<LeftIndent>140.0</LeftIndent>
+<content start="1263" end="1539">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1539" end="1540">
+<LeftIndent>140.0</LeftIndent>
+<content start="1539" end="1540">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1540" end="1666">
+<LeftIndent>140.0</LeftIndent>
+<content start="1540" end="1666">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1666" end="1667">
+<LeftIndent>140.0</LeftIndent>
+<content start="1666" end="1667">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1667" end="1670">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1667" end="1668">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>autostop$0.mml</resource></component></content>
+
+<content start="1668" end="1669">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="1" size="4" spacing="5">Potential Energy/Particle</time_series_y1>
+<width>250</width>
+<height>310</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Potential energy (eV)</axis_y_title>
+<legend_x>26</legend_x>
+<legend_y>11</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="1669" end="1670">
+</content>
+
+</paragraph>
+<paragraph start="1670" end="1703">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1670" end="1702">
+<size>10</size></content>
+
+<content start="1702" end="1703">
+</content>
+
+</paragraph>
+<paragraph start="1703" end="1704">
+<LeftIndent>140.0</LeftIndent>
+<content start="1703" end="1704">
+</content>
+
+</paragraph>
+<paragraph start="1704" end="1749">
+<LeftIndent>140.0</LeftIndent>
+<content start="1704" end="1748">
+<size>11</size><bold>true</bold></content>
+
+<content start="1748" end="1749">
+</content>
+
+</paragraph>
+<paragraph start="1749" end="1750">
+<LeftIndent>140.0</LeftIndent>
+<content start="1749" end="1750">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1750" end="1770">
+<LeftIndent>160.0</LeftIndent>
+<content start="1750" end="1769">
+<size>11</size><bold>true</bold></content>
+
+<content start="1769" end="1770">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1770" end="1771">
+<LeftIndent>140.0</LeftIndent>
+<content start="1770" end="1771">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1771" end="2232">
+<LeftIndent>160.0</LeftIndent>
+<content start="1771" end="2232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2232" end="2233">
+<LeftIndent>160.0</LeftIndent>
+<content start="2232" end="2233">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2233" end="2285">
+<LeftIndent>160.0</LeftIndent>
+<content start="2233" end="2284">
+<size>11</size><bold>true</bold></content>
+
+<content start="2284" end="2285">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2285" end="2286">
+<LeftIndent>160.0</LeftIndent>
+<content start="2285" end="2286">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2286" end="2694">
+<LeftIndent>160.0</LeftIndent>
+<content start="2286" end="2348">
+<size>11</size></content>
+
+<content start="2348" end="2362">
+<size>11</size><href>snapshot.cml</href></content>
+
+<content start="2362" end="2694">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2694" end="2695">
+<LeftIndent>140.0</LeftIndent>
+<content start="2694" end="2695">
+</content>
+
+</paragraph>
+<paragraph start="2695" end="2697">
+<SpaceAbove>1.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<content start="2695" end="2696">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2696" end="2697">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2697" end="2823">
+<LeftIndent>140.0</LeftIndent>
+<content start="2697" end="2699">
+</content>
+
+<content start="2699" end="2822">
+<size>10</size></content>
+
+<content start="2822" end="2823">
+</content>
+
+</paragraph>
+<paragraph start="2823" end="2824">
+<LeftIndent>140.0</LeftIndent>
+<content start="2823" end="2824">
+</content>
+
+</paragraph>
+<paragraph start="2824" end="2852">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2824" end="2826">
+<size>11</size></content>
+
+<content start="2826" end="2834">
+<size>11</size><href>ResizeModelContainer.cml</href></content>
+
+<content start="2834" end="2837">
+<size>11</size></content>
+
+<content start="2837" end="2842">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="2842" end="2845">
+<size>11</size></content>
+
+<content start="2845" end="2850">
+<size>11</size><href>modelPrinting.cml</href></content>
+
+<content start="2850" end="2851">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

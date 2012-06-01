@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Feedback to the User&apos;s Manual</page_title>
+<text> 
+Please send us your comments and suggestions so that we can make this User&apos;s Manual more useful to users like you. Your feedback is imporant to us.
+
+ </text>
+<section start="0" end="153">
+<paragraph start="0" end="2">
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<icon>mwbanner3.gif</icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="150">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>20.0</LeftIndent>
+<content start="2" end="117">
+<size>11</size></content>
+
+<content start="117" end="149">
+<size>11</size><bold>true</bold></content>
+
+<content start="149" end="150">
+<size>14</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="150" end="151">
+<content start="150" end="151">
+</content>
+
+</paragraph>
+<paragraph start="151" end="153">
+<Alignment>1</Alignment>
+<content start="151" end="152">
+<component><class>org.concord.modeler.PageFeedbackArea</class>
+<width>0.9</width>
+<height>500.0</height>
+<opaque>false</opaque>
+<border>Raised Etched</border></component></content>
+
+</paragraph>
+</section>
+</document>

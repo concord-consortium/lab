@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-9"?>
+<document>
+<language>ISO-8859-9</language>
+<page_title> Türkçe</page_title>
+<text>Turkish language
+
+This test page is encoded in ISO-8859-9:
+
+Çukurova Üniversitesi, 10 Fakültesi, 1 Devlet Konservatuvarı, 3 Yüksekokulu, 9 Meslek Yüksekokulu, 3 Enstitüsü, 29 Araştırma ve Uygulama Merkezi ile ülkemizin gelişmiş üniversiteleri arasında yer almaktadır. Öğretime ve araştırmaya verdiği önemle, kütüphaneleri ve laboratuvarlarıyla ülkemize nitelikli bireyler kazandırmayı amaç edinmiş olan Çukurova Üniversitesi, Adana şehir merkezine 10 kilometre uzaklıkta Seyhan Baraj Gölü kıyısında yeşillikler içerisindeki kampusünde eğitim-öğretim yapmaktadır.</text>
+<section start="0" end="563">
+<paragraph start="0" end="17">
+<Alignment>1</Alignment>
+<content start="0" end="17">
+<bold>true</bold><size>15</size></content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<content start="17" end="18">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="18" end="59">
+<content start="18" end="59">
+</content>
+
+</paragraph>
+<paragraph start="59" end="60">
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="563">
+<content start="60" end="562">
+</content>
+
+</paragraph>
+</section>
+</document>

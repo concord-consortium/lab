@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Using text areas in HTML text box</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Using text areas in HTML text box
+
+&lt; Previous | Index | Next &gt;
+
+
+A text area can be created using the following line of code:
+
+&lt;textarea rows=&quot;number (e.g. 10)&quot; cols=&quot;number (e.g. 10)&quot; question=&quot;question text&quot;&gt;
+
+The question attribute is used to set up a question text that will go along with the user&apos;s inputs into a report.
+
+The following is an example of using an HTML text area:
+
+ 
+To view the source, save this page to your disk, enter the authoring mode and right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the text boxes.
+
+To test, type some text in the above text area, and click the button below.
+
+ 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="664">
+<paragraph start="0" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="33">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="63">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="45">
+<size>11</size><href>html_textfield.cml</href></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="53">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="53" end="56">
+<size>11</size></content>
+
+<content start="56" end="60">
+<size>11</size><href>html_layout.cml</href></content>
+
+<content start="60" end="62">
+<size>11</size></content>
+
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="64">
+<LeftIndent>140.0</LeftIndent>
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="65">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="65" end="126">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="126">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="126" end="127">
+<LeftIndent>140.0</LeftIndent>
+<content start="126" end="127">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="127" end="211">
+<LeftIndent>140.0</LeftIndent>
+<content start="127" end="211">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="211" end="212">
+<LeftIndent>140.0</LeftIndent>
+<content start="211" end="212">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="212" end="326">
+<LeftIndent>140.0</LeftIndent>
+<content start="212" end="216">
+<size>11</size></content>
+
+<content start="216" end="224">
+<size>11</size><family>Courier New</family></content>
+
+<content start="224" end="326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="326" end="327">
+<LeftIndent>140.0</LeftIndent>
+<content start="326" end="327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="327" end="383">
+<LeftIndent>140.0</LeftIndent>
+<content start="327" end="383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="383" end="384">
+<LeftIndent>140.0</LeftIndent>
+<content start="383" end="384">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="384" end="386">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="384" end="385">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>400.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot;&gt;This is a HTML text box, which has an embedded text 
+      area for collecting student&apos;s answers.&lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;3&quot; face=&quot;Verdana&quot;&gt;How do you use the Molecular Workbench 
+      software?&lt;br&gt;&lt;br&gt;
+      &lt;textarea question=&quot;How do you use the Molecular Workbench software?&quot; rows=&quot;5&quot; cols=&quot;40&quot;&gt;
+                                              
+                                      
+                              
+                      
+              
+      &lt;/textarea&gt;
+       &lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="385" end="386">
+</content>
+
+</paragraph>
+<paragraph start="386" end="555">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="386" end="477">
+<size>10</size><italic>true</italic></content>
+
+<content start="477" end="534">
+<size>10</size><italic>true</italic></content>
+
+<content start="534" end="554">
+<size>10</size><italic>true</italic></content>
+
+<content start="554" end="555">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="555" end="556">
+<LeftIndent>140.0</LeftIndent>
+<content start="555" end="556">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="556" end="632">
+<LeftIndent>140.0</LeftIndent>
+<content start="556" end="632">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="632" end="633">
+<LeftIndent>140.0</LeftIndent>
+<content start="632" end="633">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="633" end="635">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="633" end="634">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report about this page in a new window</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+<content start="634" end="635">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="635" end="636">
+<LeftIndent>140.0</LeftIndent>
+<content start="635" end="636">
+</content>
+
+</paragraph>
+<paragraph start="636" end="664">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="636" end="638">
+<size>11</size></content>
+
+<content start="638" end="646">
+<size>11</size><href>html_textfield.cml</href></content>
+
+<content start="646" end="649">
+<size>11</size></content>
+
+<content start="649" end="654">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="654" end="657">
+<size>11</size></content>
+
+<content start="657" end="661">
+<size>11</size><href>html_layout.cml</href></content>
+
+<content start="661" end="663">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

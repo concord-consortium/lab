@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Voronoi tessellation</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Voronoi tessellation
+
+The Voronoi diagram of a collection of geometric objects is a partition of space into cells, each of which consists of the points closer to one particular object than to any others. --- From &quot;Geometry in Action&quot;.
+
+The most commonly seen Voronoi diagram is based on a set of points. Voronoi diagrams are the geometric duals of Delaunay triangulation.
+
+ 
+return to index</text>
+<section start="0" end="391">
+<paragraph start="0" end="21">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="20">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<LeftIndent>120.0</LeftIndent>
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="235">
+<LeftIndent>140.0</LeftIndent>
+<content start="22" end="214">
+<size>11</size></content>
+
+<content start="214" end="232">
+<href>http://www.ics.uci.edu/~eppstein/geom.html</href><size>11</size></content>
+
+<content start="232" end="235">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="235" end="236">
+<LeftIndent>140.0</LeftIndent>
+<content start="235" end="236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="236" end="372">
+<LeftIndent>140.0</LeftIndent>
+<content start="236" end="348">
+<size>11</size></content>
+
+<content start="348" end="370">
+<href>Delaunay.cml</href><size>11</size></content>
+
+<content start="370" end="371">
+<size>11</size></content>
+
+<content start="371" end="372">
+</content>
+
+</paragraph>
+<paragraph start="372" end="373">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="372" end="373">
+</content>
+
+</paragraph>
+<paragraph start="373" end="375">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="373" end="374">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="374" end="375">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="375" end="391">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="375" end="390">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

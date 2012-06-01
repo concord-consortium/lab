@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting a text field</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a text field
+
+&lt; Previous | Index | Next &gt;
+
+You can insert a text field to set up a question that is expected to have a short answer. Choose &quot;Insert &gt; User Input Text Field&quot;, or press ALT+SHIFT+F, and you will see the following dialog:
+
+  
+[This is a screenshot.]
+
+The HTML code is supported for formatting the title text, provided that they are placed inside a pair of &lt;html&gt; and &lt;/html&gt; tag. If you do not place the text inside the tags, it will be treated as plain text. For example, this is a text field setting up a question:
+
+ 
+[This is an embedded text field.]
+
+The question text can be set to be either on top of the text field, or to the left of it, as is shown in the following:
+
+ 
+  
+ 
+  
+[These are embedded text fields.]
+
+When the question text is set to be in the same line with the text field, its length will be counted as columns. In other words, if you set the number of columns to be 20, the actual length of the text field will be less than 20, because the question will use up some columns.
+
+ 
+Text fields are usually used for short questions that can be written in a single line. If your question text is multi-lined, please use a text area.
+ 
+
+The answers students type in a text field can be collected using the &quot;Report&quot; facility. The author can provide a reference answer to the question, which in the case that the student data are collected through the Internet can be used by a computer program to automatically analyze the results.
+
+Changing and removing a text field
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove and copy a text field.
+
+&lt; Previous  | Index | Next &gt;</text>
+<section start="0" end="1628">
+<paragraph start="0" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="22">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="52">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="24" end="26">
+<size>11</size></content>
+
+<content start="26" end="34">
+<size>11</size><href>choice.cml</href></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="49">
+<size>11</size><href>textarea.cml</href></content>
+
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="245">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="245">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="245" end="246">
+<LeftIndent>100.0</LeftIndent>
+<content start="245" end="246">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="246" end="249">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="246" end="247">
+<size>11</size></content>
+
+<content start="247" end="248">
+<size>11</size><icon>TextFieldDialog.gif</icon></content>
+
+<content start="248" end="249">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="249" end="273">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="249" end="272">
+<size>10</size></content>
+
+<content start="272" end="273">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="273" end="274">
+<LeftIndent>100.0</LeftIndent>
+<content start="273" end="274">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="274" end="540">
+<LeftIndent>140.0</LeftIndent>
+<content start="274" end="379">
+<size>11</size></content>
+
+<content start="379" end="385">
+<size>11</size><family>Courier New</family></content>
+
+<content start="385" end="390">
+<size>11</size></content>
+
+<content start="390" end="397">
+<size>11</size><family>Courier New</family></content>
+
+<content start="397" end="540">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="540" end="541">
+<LeftIndent>100.0</LeftIndent>
+<content start="540" end="541">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="541" end="543">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="541" end="542">
+<component><class>org.concord.modeler.PageTextField</class>
+<column>30</column>
+<title>What do you think?</title>
+</component><size>11</size></content>
+
+<content start="542" end="543">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="543" end="577">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="543" end="576">
+<size>10</size></content>
+
+<content start="576" end="577">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="577" end="578">
+<LeftIndent>140.0</LeftIndent>
+<content start="577" end="578">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="578" end="698">
+<LeftIndent>140.0</LeftIndent>
+<content start="578" end="698">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="698" end="699">
+<LeftIndent>140.0</LeftIndent>
+<content start="698" end="699">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="699" end="701">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="699" end="700">
+<component><class>org.concord.modeler.PageTextField</class>
+<title>Subject</title>
+</component><size>11</size></content>
+
+<content start="700" end="701">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="701" end="704">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="701" end="702">
+<component><class>org.concord.modeler.PageTextField</class>
+<layout>West</layout>
+<column>30</column>
+<title>&lt;html&gt;
+ &lt;b&gt;Name&lt;/b&gt;
+&lt;/html&gt;</title>
+</component><size>11</size></content>
+
+<content start="702" end="703">
+<component><class>org.concord.modeler.PageTextField</class>
+<layout>West</layout>
+<column>10</column>
+<title>&lt;html&gt;
+ &lt;font color=&quot;#ff0000&quot;&gt;Title&lt;/font&gt;
+&lt;/html&gt;</title>
+</component><size>11</size></content>
+
+<content start="703" end="704">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="704" end="706">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="704" end="705">
+<component><class>org.concord.modeler.PageTextField</class>
+<layout>West</layout>
+<title>&lt;html&gt;
+ Address
+&lt;/html&gt;</title>
+</component><size>11</size></content>
+
+<content start="705" end="706">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="706" end="709">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="706" end="707">
+<component><class>org.concord.modeler.PageTextField</class>
+<layout>West</layout>
+<column>20</column>
+<title>&lt;html&gt;
+ Tel.
+&lt;/html&gt;</title>
+</component><size>11</size></content>
+
+<content start="707" end="708">
+<component><class>org.concord.modeler.PageTextField</class>
+<layout>West</layout>
+<column>20</column>
+<title>&lt;html&gt;
+ Fax
+&lt;/html&gt;</title>
+</component><size>11</size></content>
+
+<content start="708" end="709">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="709" end="743">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="709" end="742">
+<size>10</size></content>
+
+<content start="742" end="743">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="743" end="744">
+<LeftIndent>140.0</LeftIndent>
+<content start="743" end="744">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="744" end="1021">
+<LeftIndent>140.0</LeftIndent>
+<content start="744" end="1021">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1021" end="1022">
+<LeftIndent>140.0</LeftIndent>
+<content start="1021" end="1022">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1022" end="1024">
+<LeftIndent>140.0</LeftIndent>
+<content start="1022" end="1023">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1023" end="1024">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1024" end="1173">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1024" end="1110">
+<italic>true</italic><size>11</size></content>
+
+<content start="1110" end="1162">
+<size>11</size></content>
+
+<content start="1162" end="1171">
+<size>11</size><href>textarea.cml</href></content>
+
+<content start="1171" end="1173">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1173" end="1175">
+<LeftIndent>140.0</LeftIndent>
+<content start="1173" end="1174">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1174" end="1175">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1175" end="1176">
+<LeftIndent>140.0</LeftIndent>
+<content start="1175" end="1176">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1176" end="1470">
+<LeftIndent>140.0</LeftIndent>
+<content start="1176" end="1241">
+<size>11</size></content>
+
+<content start="1241" end="1262">
+<size>11</size><href>report.cml</href></content>
+
+<content start="1262" end="1470">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1470" end="1471">
+<LeftIndent>140.0</LeftIndent>
+<content start="1470" end="1471">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1471" end="1506">
+<LeftIndent>140.0</LeftIndent>
+<content start="1471" end="1505">
+<size>11</size><bold>true</bold></content>
+
+<content start="1505" end="1506">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1506" end="1507">
+<LeftIndent>140.0</LeftIndent>
+<content start="1506" end="1507">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1507" end="1598">
+<LeftIndent>140.0</LeftIndent>
+<content start="1507" end="1512">
+<size>11</size></content>
+
+<content start="1512" end="1541">
+<size>11</size><href>changeComponent.cml</href></content>
+
+<content start="1541" end="1598">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1598" end="1599">
+<LeftIndent>100.0</LeftIndent>
+<content start="1598" end="1599">
+</content>
+
+</paragraph>
+<paragraph start="1599" end="1628">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1599" end="1601">
+<size>11</size></content>
+
+<content start="1601" end="1609">
+<size>11</size><href>choice.cml</href></content>
+
+<content start="1609" end="1613">
+<size>11</size></content>
+
+<content start="1613" end="1618">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1618" end="1621">
+<size>11</size></content>
+
+<content start="1621" end="1625">
+<size>11</size><href>textarea.cml</href></content>
+
+<content start="1625" end="1627">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

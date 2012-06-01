@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <text>  REMOVE A NODE IN THE PORTFOLIO
+
+A page can be removed from the portfolio. Right-click on the page you would like to remove, you will see the following pop-up menu:
+
+                               
+
+Choose &quot;Remove&quot;. The page will be removed from the tree. If the page is an intermediate node connecting two other pages, those two pages will be concatenated.
+
+</text>
+  <background>    <red>255</red>    <green>255</green>    <blue>255</blue>  </background>
+  <section start="0" end="361">
+    <paragraph start="0" end="33">
+      <content start="0" end="1">
+        <icon>lecturing.gif</icon>
+        <ename>icon</ename>
+      </content>
+      <content start="1" end="2">
+      </content>
+      <content start="2" end="3">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>36</size>
+      </content>
+      <content start="3" end="32">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>24</size>
+      </content>
+      <content start="32" end="33">
+        <family>Arioso</family>
+        <bold>true</bold>
+        <size>48</size>
+      </content>
+    </paragraph>
+    <paragraph start="33" end="34">
+      <content start="33" end="34">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="34" end="166">
+      <content start="34" end="165">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+      <content start="165" end="166">
+      </content>
+    </paragraph>
+    <paragraph start="166" end="167">
+      <content start="166" end="167">
+      </content>
+    </paragraph>
+    <paragraph start="167" end="199">
+      <content start="167" end="197">
+      </content>
+      <content start="197" end="198">
+        <ename>icon</ename>
+        <icon>RemoveNode.gif</icon>
+      </content>
+      <content start="198" end="199">
+      </content>
+    </paragraph>
+    <paragraph start="199" end="200">
+      <content start="199" end="200">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>15</size>
+      </content>
+    </paragraph>
+    <paragraph start="200" end="359">
+      <content start="200" end="208">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>15</size>
+      </content>
+      <content start="208" end="214">
+        <foreground>0 0 255</foreground>
+        <size>15</size>
+        <bold>true</bold>
+        <family>Book Antiqua</family>
+      </content>
+      <content start="214" end="359">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>15</size>
+      </content>
+    </paragraph>
+    <paragraph start="359" end="360">
+      <content start="359" end="360">
+      </content>
+    </paragraph>
+    <paragraph start="360" end="361">
+      <content start="360" end="361">
+      </content>
+    </paragraph>
+  </section>
+</document>

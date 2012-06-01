@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-2"?>
+<document>
+<language>ISO-8859-2</language>
+<page_title>Central European Languages</page_title>
+<text>Central European languages
+
+This test page is encoded in ISO-8859-2:
+
+   Hungarian: Erdély
+   Polish: język polski, polszczyzna
+   Czech: čeština
+   Slovak: slovenčina, slovenský jazyk
+   Slovenian: slovenski jezik, slovenščina
+   Bosnian: bosanski jezik
+   Croatian: Čakavian</text>
+<section start="0" end="277">
+<paragraph start="0" end="27">
+<Alignment>1</Alignment>
+<content start="0" end="26">
+<bold>true</bold></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="69">
+<content start="28" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="70">
+<content start="69" end="70">
+</content>
+
+</paragraph>
+<paragraph start="70" end="91">
+<LeftIndent>40.0</LeftIndent>
+<content start="70" end="71">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="71" end="73">
+</content>
+
+<content start="73" end="83">
+<bold>true</bold></content>
+
+<content start="83" end="91">
+</content>
+
+</paragraph>
+<paragraph start="91" end="128">
+<LeftIndent>40.0</LeftIndent>
+<content start="91" end="92">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="92" end="94">
+</content>
+
+<content start="94" end="101">
+<bold>true</bold></content>
+
+<content start="101" end="128">
+</content>
+
+</paragraph>
+<paragraph start="128" end="146">
+<LeftIndent>40.0</LeftIndent>
+<content start="128" end="129">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="129" end="131">
+</content>
+
+<content start="131" end="137">
+<bold>true</bold></content>
+
+<content start="137" end="146">
+</content>
+
+</paragraph>
+<paragraph start="146" end="185">
+<LeftIndent>40.0</LeftIndent>
+<content start="146" end="147">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="147" end="149">
+</content>
+
+<content start="149" end="156">
+<bold>true</bold></content>
+
+<content start="156" end="185">
+</content>
+
+</paragraph>
+<paragraph start="185" end="228">
+<LeftIndent>40.0</LeftIndent>
+<content start="185" end="186">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="186" end="188">
+</content>
+
+<content start="188" end="198">
+<bold>true</bold></content>
+
+<content start="198" end="228">
+</content>
+
+</paragraph>
+<paragraph start="228" end="255">
+<LeftIndent>40.0</LeftIndent>
+<content start="228" end="229">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="229" end="231">
+</content>
+
+<content start="231" end="239">
+<bold>true</bold></content>
+
+<content start="239" end="255">
+</content>
+
+</paragraph>
+<paragraph start="255" end="277">
+<LeftIndent>40.0</LeftIndent>
+<content start="255" end="256">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="256" end="258">
+</content>
+
+<content start="258" end="267">
+<bold>true</bold></content>
+
+<content start="267" end="276">
+</content>
+
+</paragraph>
+</section>
+</document>

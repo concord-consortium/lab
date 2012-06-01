@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Quasi dynamics</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Quasi dynamics
+
+Quasi-dynamics is an approximate method of very low precision but much faster for doing molecular dynamics. It uses long steplength (usually 5~10 times of that for high precision methods) to unfold the Newton&apos;s equations of motion. Such a long time steplength will normally result in large numerical error at each time step if a finite difference algorithm is applied. Propogation of these stepwise errors will produce a false dynamical trajectory which is numerically divergent and physically incorrect. The quasi-dynamics method is based on the idea of rectifying the trajectory by reducing the numerical errors associated with velocities or higher order terms frequently (The frequency may be propotional to the steplength). For instance, temperature controling method such as the velocity rescaling scheme can be used to remove the deviations of velocities. Because it is a low precision method, quasi-dynamics cannot be used to prove conservation law such as energy conservation for an isolated system. What is more, because it is a long steplength method, it may not be used to simulate systems with unbreakable harmonic constraints. However, quasi-dynamics can sometimes reproduce the essential physics for certain systems such as phase transitions of the Lennard-Jones fluid. 
+
+Note: Quasi-dynamics is a term we coin to mean the low order approximations. For those experts, it can be imagines as sort of a hybrid of velocity Monte Carlo and steepest descents method. In terms of precision and performance, it is much better than an ordinary Monte Carlo method.
+
+
+ 
+return to index</text>
+<section start="0" end="1605">
+<paragraph start="0" end="15">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="14">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<LeftIndent>120.0</LeftIndent>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="1301">
+<LeftIndent>140.0</LeftIndent>
+<content start="16" end="1301">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1301" end="1302">
+<LeftIndent>140.0</LeftIndent>
+<content start="1301" end="1302">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1302" end="1585">
+<LeftIndent>140.0</LeftIndent>
+<content start="1302" end="1584">
+<size>11</size></content>
+
+<content start="1584" end="1585">
+</content>
+
+</paragraph>
+<paragraph start="1585" end="1586">
+<LeftIndent>120.0</LeftIndent>
+<content start="1585" end="1586">
+</content>
+
+</paragraph>
+<paragraph start="1586" end="1587">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1586" end="1587">
+</content>
+
+</paragraph>
+<paragraph start="1587" end="1589">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1587" end="1588">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="1588" end="1589">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="1589" end="1605">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1589" end="1604">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

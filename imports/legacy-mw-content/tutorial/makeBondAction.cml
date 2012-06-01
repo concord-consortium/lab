@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Bonding Tool for making a radial bond</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Bonding Tool for making a radial bond
+
+&lt; Previous | Index | Next &gt;
+
+In the Molecular Workbench, a  radial bond is a harmonical constraint between a pair of atoms, which simulates the covalent bond that holds them together. You can make such a bond by using the Bonding Tool for making a radial bond (the &quot; &quot;  button).
+
+Because a bond involves two atoms, you will need to select the one to begin with. Once you have picked up one, hold down the ALT key and select the other one. After that, a radial bond will be made between the two atoms.
+
+                                     
+
+A ball-and-stick view of making a radial bond.
+
+The current distance between the two atoms will be taken as the equilibrium distance, a property known as the bond length. The distance between the two bonded atoms will fluctuate around the bond length in a molecular dynamics simulation, with a frequency that is primarily determined by the bond strength (which you may change later on) and the masses of bonded atoms.
+
+To remove a radial bond, simply select the bond and hit the DELETE or BACKSPACE or CTRL+X key, or right-click on the bond and select the &quot;Cut&quot; item from the popup menu.
+
+
+                       
+
+A ball-and-stick view of removing a radial bond.
+
+Important: The length of a covalent bond is usually shorter than the summation of the van der Waals (VDW) radii of the two atoms involved. This is because the electron cloud of the two atoms must overlap significantly to form a covalent bond. To model this important fact properly, it is highly recommended that the two atoms be placed in such positions that their VDW surfaces (represented by the balls in the space-filling mode) overlap. A question that arises from this is that the VDW surfaces will then cover the whole space between the atoms, which makes it difficult to make a bond and impossible to see it. It is therefore advised that you enter the ball-and-stick mode before making the bond. (A dropdown menu can be inserted into the page for you to easily switch between different display modes: Insert&gt;Standard Controller for Model&gt;Combo Box, and select &quot;Display Style&quot; from the &quot;Select an action&quot; list.)
+
+You can try making and removing bonds with the following model:
+
+ 
+ 
+[This is an embedded simulator.]
+
+Live example: Show me how to build a molecule!
+
+ 
+Important: You must be aware that a radial bond is an interaction but NOT a real object like an atom. Although radial bonds are often said to be &quot;springs&quot; between atoms, they are NOT real springs. If you make a radial bond that has a bond length much longer than the summation of the VDW radii of the two atoms, you will observe that other atoms can run across the bond. To avoid this, do not make a long-distance radial bond like this:
+
+   
+
+Long-distance covalent bonds like the one shown in the above image is physically improbable.
+
+There are exceptions. If you are using the simulation engine in a non-molecular context, say, the particles do not represent atoms but some elastic balls, the radial bonds will become springs or rigid sticks, and you can set any length for them (see this example for springs and this example for sticks).
+ 
+
+Script support
+
+The bond command can be used to make a radial bond with a specified bond strength between two specified atoms. To remove an existing radial bond, use the select command to select it first and then call the remove command. For example, these scripts remove two radial bonds: select rbond 4, 5; remove;. To know the index of a radial bond, open its properties window.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3576">
+<paragraph start="0" end="42">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="41">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="71">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="43" end="45">
+<size>11</size></content>
+
+<content start="45" end="53">
+<href>resizeAction.cml</href><size>11</size></content>
+
+<content start="53" end="56">
+<size>11</size></content>
+
+<content start="56" end="61">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="61" end="64">
+<size>11</size></content>
+
+<content start="64" end="68">
+<href>makeBendAction.cml</href><size>11</size></content>
+
+<content start="68" end="70">
+<size>11</size></content>
+
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="72">
+<LeftIndent>100.0</LeftIndent>
+<content start="71" end="72">
+</content>
+
+</paragraph>
+<paragraph start="72" end="322">
+<LeftIndent>140.0</LeftIndent>
+<content start="72" end="102">
+<size>11</size></content>
+
+<content start="102" end="103">
+<icon>apiIcon.gif</icon><size>11</size></content>
+
+<content start="103" end="114">
+<link_statusbar>false</link_statusbar><link_width>400</link_width><link_height>400</link_height><size>11</size><link_left>50</link_left><link_menubar>false</link_menubar><href>glossary/RadialBond.cml</href><link_top>50</link_top><link_toolbar>false</link_toolbar><target>_blank</target><link_resizable>false</link_resizable></content>
+
+<content start="114" end="309">
+<size>11</size></content>
+
+<content start="309" end="310">
+<icon>bondIcon.gif</icon><size>11</size></content>
+
+<content start="310" end="322">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="322" end="323">
+<LeftIndent>140.0</LeftIndent>
+<content start="322" end="323">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="323" end="544">
+<LeftIndent>140.0</LeftIndent>
+<content start="323" end="434">
+<size>11</size></content>
+
+<content start="434" end="455">
+<bold>true</bold><size>11</size></content>
+
+<content start="455" end="544">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="544" end="545">
+<LeftIndent>100.0</LeftIndent>
+<content start="544" end="545">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="545" end="583">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="545" end="546">
+<size>11</size></content>
+
+<content start="546" end="547">
+<icon>MakeBondScene1.gif</icon><size>11</size></content>
+
+<content start="547" end="581">
+<size>11</size></content>
+
+<content start="581" end="582">
+<icon>MakeBondScene2.gif</icon><size>11</size></content>
+
+<content start="582" end="583">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="583" end="584">
+<content start="583" end="584">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="584" end="631">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="584" end="630">
+<size>10</size></content>
+
+<content start="630" end="631">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="631" end="632">
+<LeftIndent>140.0</LeftIndent>
+<content start="631" end="632">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="632" end="1002">
+<LeftIndent>140.0</LeftIndent>
+<content start="632" end="742">
+<size>11</size></content>
+
+<content start="742" end="753">
+<bold>true</bold><size>11</size></content>
+
+<content start="753" end="1002">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1002" end="1003">
+<LeftIndent>140.0</LeftIndent>
+<content start="1002" end="1003">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1003" end="1172">
+<LeftIndent>140.0</LeftIndent>
+<content start="1003" end="1172">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1172" end="1173">
+<LeftIndent>140.0</LeftIndent>
+<content start="1172" end="1173">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1173" end="1174">
+<LeftIndent>140.0</LeftIndent>
+<content start="1173" end="1174">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1174" end="1198">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1174" end="1175">
+<size>11</size></content>
+
+<content start="1175" end="1176">
+<icon>RemoveBondScene1.gif</icon><size>11</size></content>
+
+<content start="1176" end="1196">
+<size>11</size></content>
+
+<content start="1196" end="1197">
+<icon>RemoveBondScene2.gif</icon><size>11</size></content>
+
+<content start="1197" end="1198">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1198" end="1199">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1198" end="1199">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1199" end="1248">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1199" end="1247">
+<size>10</size></content>
+
+<content start="1247" end="1248">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1248" end="1249">
+<LeftIndent>140.0</LeftIndent>
+<content start="1248" end="1249">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1249" end="2166">
+<LeftIndent>140.0</LeftIndent>
+<content start="1249" end="1258">
+<bold>true</bold><size>11</size></content>
+
+<content start="1258" end="1404">
+<size>11</size></content>
+
+<content start="1404" end="1490">
+<bold>true</bold><size>11</size></content>
+
+<content start="1490" end="2166">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2166" end="2167">
+<LeftIndent>140.0</LeftIndent>
+<content start="2166" end="2167">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2167" end="2231">
+<LeftIndent>140.0</LeftIndent>
+<content start="2167" end="2231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2231" end="2232">
+<LeftIndent>100.0</LeftIndent>
+<content start="2231" end="2232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2232" end="2234">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2232" end="2233">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>makeBondAction$0.mml</resource><menubar>false</menubar><recorder>true</recorder><button>Build Radial Bond</button><button>Select Object</button></component><size>11</size></content>
+
+<content start="2233" end="2234">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2234" end="2236">
+<LeftIndent>180.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2234" end="2235">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<selectedIndex>1</selectedIndex>
+<action>Display Style</action>
+</component></content>
+
+<content start="2235" end="2236">
+</content>
+
+</paragraph>
+<paragraph start="2236" end="2269">
+<LeftIndent>180.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2236" end="2269">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="2269" end="2270">
+<LeftIndent>180.0</LeftIndent>
+<content start="2269" end="2270">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2270" end="2317">
+<LeftIndent>180.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2270" end="2282">
+<bold>true</bold><size>11</size></content>
+
+<content start="2282" end="2284">
+<size>11</size></content>
+
+<content start="2284" end="2315">
+<href>BuildMolecule.cml</href><size>11</size></content>
+
+<content start="2315" end="2317">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2317" end="2318">
+<LeftIndent>140.0</LeftIndent>
+<content start="2317" end="2318">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2318" end="2320">
+<LeftIndent>140.0</LeftIndent>
+<content start="2318" end="2319">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2319" end="2320">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="2320" end="2757">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2320" end="2329">
+<bold>true</bold><size>11</size></content>
+
+<content start="2329" end="2706">
+<size>11</size></content>
+
+<content start="2706" end="2745">
+<bold>true</bold><size>11</size></content>
+
+<content start="2745" end="2757">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2757" end="2758">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2757" end="2758">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2758" end="2762">
+<LeftIndent>200.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>100.0</RightIndent>
+<content start="2758" end="2760">
+<size>11</size></content>
+
+<content start="2760" end="2761">
+<icon>MakeBondScene3.gif</icon><size>11</size></content>
+
+<content start="2761" end="2762">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2762" end="2763">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2762" end="2763">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2763" end="2856">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2763" end="2856">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2856" end="2857">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2856" end="2857">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2857" end="3162">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2857" end="3107">
+<size>11</size></content>
+
+<content start="3107" end="3119">
+<href>../student/classic/spring/spring1.cml</href><size>11</size></content>
+
+<content start="3119" end="3136">
+<size>11</size></content>
+
+<content start="3136" end="3148">
+<href>../student/classic/machine/machine1.cml</href><size>11</size></content>
+
+<content start="3148" end="3162">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3162" end="3164">
+<LeftIndent>140.0</LeftIndent>
+<content start="3162" end="3163">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="3163" end="3164">
+</content>
+
+</paragraph>
+<paragraph start="3164" end="3165">
+<LeftIndent>140.0</LeftIndent>
+<content start="3164" end="3165">
+</content>
+
+</paragraph>
+<paragraph start="3165" end="3180">
+<LeftIndent>140.0</LeftIndent>
+<content start="3165" end="3179">
+<bold>true</bold><size>11</size></content>
+
+<content start="3179" end="3180">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3180" end="3181">
+<LeftIndent>140.0</LeftIndent>
+<content start="3180" end="3181">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3181" end="3547">
+<LeftIndent>140.0</LeftIndent>
+<content start="3181" end="3185">
+<size>11</size></content>
+
+<content start="3185" end="3189">
+<family>Courier New</family><href>script_bond.cml</href><size>11</size></content>
+
+<content start="3189" end="3335">
+<size>11</size></content>
+
+<content start="3335" end="3341">
+<family>Courier New</family><href>script_select.cml</href><size>11</size></content>
+
+<content start="3341" end="3387">
+<size>11</size></content>
+
+<content start="3387" end="3393">
+<family>Courier New</family><href>script_remove.cml</href><size>11</size></content>
+
+<content start="3393" end="3455">
+<size>11</size></content>
+
+<content start="3455" end="3481">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3481" end="3519">
+<size>11</size></content>
+
+<content start="3519" end="3545">
+<href>accessBondProp.cml</href><size>11</size></content>
+
+<content start="3545" end="3547">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3547" end="3548">
+<LeftIndent>140.0</LeftIndent>
+<content start="3547" end="3548">
+</content>
+
+</paragraph>
+<paragraph start="3548" end="3576">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="3548" end="3550">
+<size>11</size></content>
+
+<content start="3550" end="3558">
+<href>resizeAction.cml</href><size>11</size></content>
+
+<content start="3558" end="3561">
+<size>11</size></content>
+
+<content start="3561" end="3566">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="3566" end="3569">
+<size>11</size></content>
+
+<content start="3569" end="3573">
+<href>makeBendAction.cml</href><size>11</size></content>
+
+<content start="3573" end="3575">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Pressure</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Pressure
+
+
+Pressure appears to be an intuitive concept, but in molecular simulations, it is easy to get confused with pressure.
+
+Above all, pressure is closely related to the container of the system. A container has two walls: internal wall and external wall. The internal wall is the interface between the container and the contained system, whereas the external wall is the interface between the container and the environment. A container feels the forces from both sides. A rigid container can resist the external and internal pressure, thus does not deliver the external force to the inside system, or vice versa. A flexible container yields to the external and internal pressure, thus allows dynamical balance of forces from the inside and outside. 
+
+ 
+
+According to this picture, there are three types of pressure in different context:
+
+Internal pressure: Internal pressure reflects the intrinsic ability of the system to react to exerted forces. It is a quantity independent of the container or any external source. It is usually calculated by using the virial theorem of Clausius: 
+
+ 
+
+where d is the dimensionality of the model, V the volume, T the temperature, N the number of particles, fij the interatomic force between a pair of atoms, rij the interatomic distance between a pair of atoms, and kB the Boltzmann constant. According to the above formula, internal pressure becomes negative when the difference between the contributions to the virial function from attractive forces and those from repulsive forces becomes greater than the kinetic energy contribution. A negative internal pressure invites a flexible container to shrink. 
+
+External wall pressure: External wall pressure reflects the forces from the environment acting on the external wall of the system&apos;s container. External wall pressure is usually non-positive, because it tends to compress the system. External wall pressure is typically not modelled but given as an external condition in molecular simulations. A zero external wall pressure implies that there is no particle (atoms, photons, etc.) incidence at all. 
+
+Internal wall pressure: Internal wall pressure is the actual pressure exerted on the internal wall of the container by the contained system. The equilibrium internal wall pressure is usually defined as the summation of the impulses of the force due to the collision of particles with the internal wall in a unit of time, divided by the area of the internal wall:
+
+ 
+
+where S is the surface area of the internal wall, T the observation time, delta the time of each individual impact, n the normal of the surface, pi the momentum of the i-th particle, the prime on the summation symbol means the summation runs over only the particles that collide with the wall at a given time t. The internal wall pressure is always non-negative, because it tends to expand the system. A zero internal wall pressure implies that there is no particle collision with the wall at all. In molecular simulations, this frequently happens when the system condenses into a solid and floats like an island in the middle of a rigid container, completely detached from the internal wall from all directions. 
+
+From the above clarification, one can see that if the container is rigid, the three pressures may not equal to one another. What can more easily lead to confusion is that the internal wall pressure does not necessarily equal to the internal pressure. Three pressures become indentical when and only when the container is flexible and the system has reached mechanical equilibrium with the surrounding environment. In such a situation, container is a medium for propogating pressure. 
+
+Because using a flexible container, e.g. the virtual pistons introduced in Molecular Workbench, is often difficult and error-proned, most of simulations will be carried out in a rigid container. It is therefore important to be aware of which pressure you are interested in computing, be it the internal pressure or the internal wall pressure.
+
+In Molecular Workbench, there are currently two methods for simulating a flexible container. One is the straightforward method, which employs a moving wall whose equation of motion is determined by the difference between the external wall pressure and the internal wall pressure. The other uses Andersen&apos;s extended system method (H. C. Andersen, Molecular dynamics simulations at constant pressure and/or temperature, J. Chem. Phys. 72, 2384, 1980), in which the volume of the system becomes a generalized coordinate coupled with the atoms&apos; coordinate in the equation of motion of the whole system. The former approach must be associated with a real object of wall and must compute the internal wall pressure, whereas the latter does not have to be related to a real wall and it generally computes the internal pressure (which does not require physically introducing a wall). Thus, the former approach cannot be applied to a system using periodic boundary conditions, but the latter can be used in all circumstances, regardless of the type of applied boundary conditions. 
+
+Pressure in molecular systems is more complicated because it involves the contributions from the network of covalent bonds. Tominaga and Yip proved that the angular bonds and torsion bonds (both proper and improper) do not contribute to internal pressure (T. Tominaga and S. Yip, Molecular dynamics study of pressure in molecular systems, J. Chem. Phys. 100, 3747, 1994). But still the radial bonds can sometime result in unexpected phenonmena. Atoms constrained by covalent bonds do not necessarily respond to temperature change in the same way free atoms do. If the bonds are strong enough, they could absorb and store considerable amount of heat energy pumped into the system. This means that the heat energy is turned into the internal vibrational energy without significantly changing of the volume, which is largely determined by the intermolecular distances. 
+
+ 
+return to index</text>
+<section start="0" end="5970">
+<paragraph start="0" end="9">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="8">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<LeftIndent>120.0</LeftIndent>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<LeftIndent>120.0</LeftIndent>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="128">
+<LeftIndent>140.0</LeftIndent>
+<content start="11" end="128">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="128" end="129">
+<LeftIndent>140.0</LeftIndent>
+<content start="128" end="129">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="129" end="755">
+<LeftIndent>140.0</LeftIndent>
+<content start="129" end="755">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="755" end="756">
+<LeftIndent>120.0</LeftIndent>
+<content start="755" end="756">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="756" end="758">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="756" end="757">
+<icon>Container.gif</icon><size>11</size></content>
+
+<content start="757" end="758">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="758" end="759">
+<LeftIndent>120.0</LeftIndent>
+<content start="758" end="759">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="759" end="842">
+<LeftIndent>140.0</LeftIndent>
+<content start="759" end="842">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="842" end="843">
+<LeftIndent>140.0</LeftIndent>
+<content start="842" end="843">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="843" end="1090">
+<LeftIndent>140.0</LeftIndent>
+<content start="843" end="860">
+<bold>true</bold><size>11</size></content>
+
+<content start="860" end="1090">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1090" end="1091">
+<LeftIndent>120.0</LeftIndent>
+<content start="1090" end="1091">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1091" end="1093">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1091" end="1092">
+<icon>PressureFormula.gif</icon><size>11</size></content>
+
+<content start="1092" end="1093">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1093" end="1094">
+<LeftIndent>120.0</LeftIndent>
+<content start="1093" end="1094">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1094" end="1649">
+<LeftIndent>140.0</LeftIndent>
+<content start="1094" end="1100">
+<size>11</size></content>
+
+<content start="1100" end="1101">
+<italic>true</italic><size>11</size></content>
+
+<content start="1101" end="1138">
+<size>11</size></content>
+
+<content start="1138" end="1139">
+<italic>true</italic><size>11</size></content>
+
+<content start="1139" end="1152">
+<size>11</size></content>
+
+<content start="1152" end="1153">
+<italic>true</italic><size>11</size></content>
+
+<content start="1153" end="1171">
+<size>11</size></content>
+
+<content start="1171" end="1172">
+<italic>true</italic><size>11</size></content>
+
+<content start="1172" end="1198">
+<size>11</size></content>
+
+<content start="1198" end="1199">
+<italic>true</italic><size>11</size></content>
+
+<content start="1199" end="1201">
+<subscript>true</subscript><italic>true</italic><size>11</size></content>
+
+<content start="1201" end="1249">
+<size>11</size></content>
+
+<content start="1249" end="1250">
+<italic>true</italic><size>11</size></content>
+
+<content start="1250" end="1252">
+<subscript>true</subscript><italic>true</italic><size>11</size></content>
+
+<content start="1252" end="1307">
+<size>11</size></content>
+
+<content start="1307" end="1308">
+<italic>true</italic><size>11</size></content>
+
+<content start="1308" end="1309">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1309" end="1649">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1649" end="1650">
+<LeftIndent>140.0</LeftIndent>
+<content start="1649" end="1650">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1650" end="2098">
+<LeftIndent>140.0</LeftIndent>
+<content start="1650" end="1673">
+<bold>true</bold><size>11</size></content>
+
+<content start="1673" end="2098">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2098" end="2099">
+<LeftIndent>120.0</LeftIndent>
+<content start="2098" end="2099">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2099" end="2462">
+<LeftIndent>140.0</LeftIndent>
+<content start="2099" end="2122">
+<bold>true</bold><size>11</size></content>
+
+<content start="2122" end="2462">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2462" end="2463">
+<LeftIndent>120.0</LeftIndent>
+<content start="2462" end="2463">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2463" end="2465">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2463" end="2464">
+<icon>InternalWallPressureFormula.gif</icon><size>11</size></content>
+
+<content start="2464" end="2465">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2465" end="2466">
+<LeftIndent>120.0</LeftIndent>
+<content start="2465" end="2466">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2466" end="3180">
+<LeftIndent>140.0</LeftIndent>
+<content start="2466" end="2472">
+<size>11</size></content>
+
+<content start="2472" end="2473">
+<italic>true</italic><size>11</size></content>
+
+<content start="2473" end="2516">
+<size>11</size></content>
+
+<content start="2516" end="2517">
+<italic>true</italic><size>11</size></content>
+
+<content start="2517" end="2582">
+<size>11</size></content>
+
+<content start="2582" end="2583">
+<italic>true</italic><size>11</size></content>
+
+<content start="2583" end="2611">
+<size>11</size></content>
+
+<content start="2611" end="2612">
+<bold>true</bold><size>11</size></content>
+
+<content start="2612" end="2613">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="2613" end="2634">
+<size>11</size></content>
+
+<content start="2634" end="2635">
+<italic>true</italic><size>11</size></content>
+
+<content start="2635" end="2775">
+<size>11</size></content>
+
+<content start="2775" end="2776">
+<italic>true</italic><size>11</size></content>
+
+<content start="2776" end="3180">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3180" end="3181">
+<LeftIndent>120.0</LeftIndent>
+<content start="3180" end="3181">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3181" end="3665">
+<LeftIndent>140.0</LeftIndent>
+<content start="3181" end="3665">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3665" end="3666">
+<LeftIndent>140.0</LeftIndent>
+<content start="3665" end="3666">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3666" end="4009">
+<LeftIndent>140.0</LeftIndent>
+<content start="3666" end="4009">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4009" end="4010">
+<LeftIndent>140.0</LeftIndent>
+<content start="4009" end="4010">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4010" end="5083">
+<LeftIndent>140.0</LeftIndent>
+<content start="4010" end="4013">
+<size>11</size></content>
+
+<content start="4013" end="4032">
+<italic>true</italic><size>11</size></content>
+
+<content start="4032" end="4356">
+<size>11</size></content>
+
+<content start="4356" end="4426">
+<italic>true</italic><size>11</size></content>
+
+<content start="4426" end="5083">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5083" end="5084">
+<LeftIndent>120.0</LeftIndent>
+<content start="5083" end="5084">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5084" end="5951">
+<LeftIndent>140.0</LeftIndent>
+<content start="5084" end="5364">
+<size>11</size></content>
+
+<content start="5364" end="5421">
+<italic>true</italic><size>11</size></content>
+
+<content start="5421" end="5950">
+<size>11</size></content>
+
+<content start="5950" end="5951">
+</content>
+
+</paragraph>
+<paragraph start="5951" end="5952">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="5951" end="5952">
+</content>
+
+</paragraph>
+<paragraph start="5952" end="5954">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="5952" end="5953">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="5953" end="5954">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="5954" end="5970">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="5954" end="5969">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

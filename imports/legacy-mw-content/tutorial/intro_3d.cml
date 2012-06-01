@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Introduction: 3D modeling</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Introduction: 3D modeling
+
+&lt; Index | Next &gt;
+
+Construct, simulate, navigate and have fun
+
+This Chapter presents a very powerful 3D modeling environment (still under development --- so consider it an alpha version), which will allow you to sketch up --- essentially from vacuum --- your own molecular worlds, simulate their motions, and navigate into them to have fun.
+
+Such an environment enables educators to design 3D, interactive virtual worlds that will probably do better in attracting students than the plain 2D models we showed in the Chapter about the 2D modeling environment.
+
+ 
+2D vs. 3D? While 2D models are adequate for many cases, there are many others in which 3D models do a better job, and there are situations that must be simulated in 3D. 3D simulations not only provides more accurate and realistic views of the simulated phenomena, but also offers unique attractions because of the 3D effect (e.g. perspective depth, lightening, colors and so on).
+
+Check out this page to see which &apos;D&apos; you prefer for a simple simulation.
+ 
+
+If you are a researcher, this environment may also be valuable, because you can sketch up conformations that do not exist, run molecular dynamics simulations or potential energy minimizations, and then export the structures for use elsewhere. For example, you can display the structures you designed on the web with the Jmol applet, or use the outputs from MW as the inputs of quantum chemistry programs or a more serious molecular simulation packages.
+
+&lt; Index | Next &gt;</text>
+<section start="0" end="1515">
+<paragraph start="0" end="26">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="25">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="44">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="27" end="29">
+<size>11</size></content>
+
+<content start="29" end="34">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="41">
+<href>basic3d.cml</href><size>11</size></content>
+
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<LeftIndent>140.0</LeftIndent>
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="88">
+<LeftIndent>140.0</LeftIndent>
+<content start="45" end="87">
+<bold>true</bold><size>11</size></content>
+
+<content start="87" end="88">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="88" end="89">
+<LeftIndent>140.0</LeftIndent>
+<content start="88" end="89">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="89" end="367">
+<LeftIndent>140.0</LeftIndent>
+<content start="89" end="238">
+<size>11</size></content>
+
+<content start="238" end="247">
+<bold>true</bold><size>11</size></content>
+
+<content start="247" end="307">
+<size>11</size></content>
+
+<content start="307" end="315">
+<bold>true</bold><size>11</size></content>
+
+<content start="315" end="335">
+<size>11</size></content>
+
+<content start="335" end="343">
+<bold>true</bold><size>11</size></content>
+
+<content start="343" end="367">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="367" end="368">
+<LeftIndent>140.0</LeftIndent>
+<content start="367" end="368">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="368" end="584">
+<LeftIndent>140.0</LeftIndent>
+<content start="368" end="584">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="584" end="585">
+<LeftIndent>140.0</LeftIndent>
+<content start="584" end="585">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="585" end="587">
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="585" end="586">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="586" end="587">
+</content>
+
+</paragraph>
+<paragraph start="587" end="967">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="587" end="597">
+<bold>true</bold><size>11</size></content>
+
+<content start="597" end="967">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="967" end="968">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="967" end="968">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="968" end="1041">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="968" end="978">
+<size>11</size></content>
+
+<content start="978" end="987">
+<href>2dvs3d.cml</href><size>11</size></content>
+
+<content start="987" end="1040">
+<size>11</size></content>
+
+<content start="1040" end="1041">
+</content>
+
+</paragraph>
+<paragraph start="1041" end="1043">
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="1041" end="1042">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1042" end="1043">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1043" end="1044">
+<LeftIndent>140.0</LeftIndent>
+<content start="1043" end="1044">
+</content>
+
+</paragraph>
+<paragraph start="1044" end="1497">
+<LeftIndent>140.0</LeftIndent>
+<content start="1044" end="1308">
+<size>11</size></content>
+
+<content start="1308" end="1375">
+<href>jmolcompanion.cml</href><size>11</size></content>
+
+<content start="1375" end="1497">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1497" end="1498">
+<LeftIndent>140.0</LeftIndent>
+<content start="1497" end="1498">
+</content>
+
+</paragraph>
+<paragraph start="1498" end="1515">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1498" end="1500">
+<size>11</size></content>
+
+<content start="1500" end="1505">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="1505" end="1508">
+<size>11</size></content>
+
+<content start="1508" end="1512">
+<href>basic3d.cml</href><size>11</size></content>
+
+<content start="1512" end="1514">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

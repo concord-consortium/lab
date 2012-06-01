@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Creating skins for model containers with color bars</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Creating skins for model containers with color bars
+
+&lt; Previous | Index | Next &gt;
+
+Color bars can be used to create fancy, customized skins for model containers.
+
+Borders made of color bars
+
+You can use four color bars, two horizontal and two veritcal, to create a border for a model container. The widths and heights of the color bars must match those of the model container in order to create a seamless effect. You do not have to always assemble a four-sided border. You can create a one, two, and three-sided border, if that is what you need.
+
+Controls within color bars through scripts from HTML hyperlinks
+
+A color bar can be made large enough to accomodate some text inside it. HTML text is supported so that you can format and stylize your text, as shown in the previous page. What is interesting is that we can set scripts for hyperlinks. This allows us to set up some controls inside a color bar. As demonstrated by the following example,   Jmol scripts are set for the hyperlinks at the bottom panel for the user to interact with the molecule:
+
+ 
+   
+ 
+
+Below is another example that has a two-sided border. Buttons in HTML form and some simple scripts are used to make the &quot;Run&quot;, &quot;Stop&quot; and &quot;Reset&quot; control panel at the bottom. Note that when you set up widgets through HTML form, they will not work until the page is loaded. It is advised that you save the page and reload it after setting them up.
+
+ 
+ 
+ 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1447">
+<paragraph start="0" end="52">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="51">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="81">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="63">
+<size>11</size><href>ColorBar.cml</href></content>
+
+<content start="63" end="66">
+<size>11</size></content>
+
+<content start="66" end="71">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="71" end="81">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="81" end="82">
+<LeftIndent>140.0</LeftIndent>
+<content start="81" end="82">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="82" end="161">
+<LeftIndent>140.0</LeftIndent>
+<content start="82" end="161">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="161" end="162">
+<LeftIndent>140.0</LeftIndent>
+<content start="161" end="162">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="162" end="189">
+<LeftIndent>140.0</LeftIndent>
+<content start="162" end="188">
+<size>11</size><bold>true</bold></content>
+
+<content start="188" end="189">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="189" end="190">
+<LeftIndent>140.0</LeftIndent>
+<content start="189" end="190">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="190" end="546">
+<LeftIndent>140.0</LeftIndent>
+<content start="190" end="546">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="546" end="547">
+<LeftIndent>140.0</LeftIndent>
+<content start="546" end="547">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="547" end="611">
+<LeftIndent>140.0</LeftIndent>
+<content start="547" end="610">
+<size>11</size><bold>true</bold></content>
+
+<content start="610" end="611">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="611" end="612">
+<LeftIndent>140.0</LeftIndent>
+<content start="611" end="612">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="612" end="1054">
+<LeftIndent>140.0</LeftIndent>
+<content start="612" end="765">
+<size>11</size></content>
+
+<content start="765" end="782">
+<size>11</size><href>ColorBar.cml</href></content>
+
+<content start="782" end="819">
+<size>11</size></content>
+
+<content start="819" end="845">
+<size>11</size><href>linkscript.cml</href></content>
+
+<content start="845" end="948">
+<size>11</size></content>
+
+<content start="948" end="949">
+<icon>htmlink.gif</icon></content>
+
+<content start="949" end="950">
+<size>11</size></content>
+
+<content start="950" end="962">
+<size>11</size><href>http://www.stolaf.edu/academics/chemapps/jmol/</href></content>
+
+<content start="962" end="1054">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1054" end="1055">
+<LeftIndent>140.0</LeftIndent>
+<content start="1054" end="1055">
+</content>
+
+</paragraph>
+<paragraph start="1055" end="1057">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1055" end="1056">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>420.0</width><height>50</height><arcwidth>200</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;&lt;center&gt;&lt;font face=&quot;Verdana&quot; size=&quot;5&quot; color=&quot;#ffffff&quot;&gt;DNA double-helix&lt;/font&gt;&lt;/center&gt;&lt;/html&gt;</title><bgcolor>-336700</bgcolor></icon></content>
+
+<content start="1056" end="1057">
+</content>
+
+</paragraph>
+<paragraph start="1057" end="1061">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1057" end="1058">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>200</height><bgcolor>-336700</bgcolor></icon></content>
+
+<content start="1058" end="1059">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>dna.pdb</resource><state>modelskin$0.jms</state><width>400</width>
+<height>200</height>
+</component></content>
+
+<content start="1059" end="1060">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>200</height><bgcolor>-336700</bgcolor></icon></content>
+
+<content start="1060" end="1061">
+</content>
+
+</paragraph>
+<paragraph start="1061" end="1063">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1061" end="1062">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>420.0</width><height>40</height><arcwidth>200</arcwidth><archeight>20</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;&lt;center&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot; color=&quot;#ffffff&quot;&gt;&lt;a href=&quot;script:jmol:1:select all;cpk 100%;&quot;&gt;Full VDW spheres&lt;/a&gt; | &lt;a href=&quot;script:jmol:1:select all;cpk 20%;&quot;&gt;20% VDW spheres&lt;/a&gt; | &lt;a href=&quot;script:jmol:1:select all;cpk off;&quot;&gt;No VDW spheres&lt;/a&gt;&lt;/font&gt;&lt;/center&gt;&lt;/html&gt;</title><bgcolor>-336700</bgcolor></icon></content>
+
+<content start="1062" end="1063">
+</content>
+
+</paragraph>
+<paragraph start="1063" end="1064">
+<LeftIndent>140.0</LeftIndent>
+<content start="1063" end="1064">
+</content>
+
+</paragraph>
+<paragraph start="1064" end="1411">
+<LeftIndent>140.0</LeftIndent>
+<content start="1064" end="1118">
+<size>11</size></content>
+
+<content start="1118" end="1138">
+<size>11</size><href>html_button.cml</href></content>
+
+<content start="1138" end="1281">
+<size>11</size></content>
+
+<content start="1281" end="1290">
+<size>11</size><href>htmlform.cml</href></content>
+
+<content start="1290" end="1410">
+<size>11</size></content>
+
+<content start="1410" end="1411">
+</content>
+
+</paragraph>
+<paragraph start="1411" end="1412">
+<LeftIndent>140.0</LeftIndent>
+<content start="1411" end="1412">
+</content>
+
+</paragraph>
+<paragraph start="1412" end="1414">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1412" end="1413">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>400.0</width><height>40</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;&lt;center&gt;&lt;font face=&quot;Verdana&quot; size=&quot;5&quot; color=&quot;#ffffff&quot;&gt;A roaming particle&lt;/font&gt;&lt;/center&gt;&lt;/html&gt;</title><bgcolor>-339a00</bgcolor></icon></content>
+
+<content start="1413" end="1414">
+</content>
+
+</paragraph>
+<paragraph start="1414" end="1416">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1414" end="1415">
+<component><class>org.concord.modeler.PageMd3d</class><resource>modelskin$0.mdd</resource><coordinate>modelskin$0.xyz</coordinate><width>400</width><height>300</height><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar></component></content>
+
+<content start="1415" end="1416">
+</content>
+
+</paragraph>
+<paragraph start="1416" end="1418">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1416" end="1417">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>400.0</width><height>40</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;b&gt;&lt;center&gt;
+&lt;input type=&quot;submit&quot; name=&quot;Run&quot; value=&quot;Run&quot; alt=&quot;Run&quot;
+ script=&quot;script:mw3d:1:run;&quot;&gt;
+&lt;input type=&quot;submit&quot; name=&quot;Stop&quot; value=&quot;Stop&quot; alt=&quot;Stop&quot;
+ script=&quot;script:mw3d:1:stop;&quot;&gt;
+&lt;input type=&quot;submit&quot; name=&quot;Reset&quot; value=&quot;Reset&quot; alt=&quot;Reset&quot;
+ script=&quot;script:mw3d:1:reset;&quot;&gt;
+&lt;/center&gt;&lt;/html&gt;</title><bgcolor>-339a00</bgcolor></icon></content>
+
+<content start="1417" end="1418">
+</content>
+
+</paragraph>
+<paragraph start="1418" end="1419">
+<LeftIndent>140.0</LeftIndent>
+<content start="1418" end="1419">
+</content>
+
+</paragraph>
+<paragraph start="1419" end="1447">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1419" end="1421">
+<size>11</size></content>
+
+<content start="1421" end="1429">
+<size>11</size><href>ColorBar.cml</href></content>
+
+<content start="1429" end="1432">
+<size>11</size></content>
+
+<content start="1432" end="1437">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1437" end="1446">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

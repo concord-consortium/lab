@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Total energy</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Total energy
+
+The total energy is the summation of the kinetic energy and the potential energy. For a completely isolated system, the total energy should remain constant.
+
+
+ 
+return to index</text>
+<section start="0" end="191">
+<paragraph start="0" end="13">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="12">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<LeftIndent>120.0</LeftIndent>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="171">
+<LeftIndent>140.0</LeftIndent>
+<content start="14" end="55">
+<size>11</size></content>
+
+<content start="55" end="69">
+<href>KineticEnergy.cml</href><size>11</size></content>
+
+<content start="69" end="78">
+<size>11</size></content>
+
+<content start="78" end="94">
+<href>PotentialEnergy.cml</href><size>11</size></content>
+
+<content start="94" end="170">
+<size>11</size></content>
+
+<content start="170" end="171">
+</content>
+
+</paragraph>
+<paragraph start="171" end="172">
+<LeftIndent>120.0</LeftIndent>
+<content start="171" end="172">
+</content>
+
+</paragraph>
+<paragraph start="172" end="173">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="172" end="173">
+</content>
+
+</paragraph>
+<paragraph start="173" end="175">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="173" end="174">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="174" end="175">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="175" end="191">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="175" end="190">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

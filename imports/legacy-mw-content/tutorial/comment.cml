@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Making comments on a page</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Making comments on a page
+
+&lt; Previous | Index | Next &gt;
+
+The user can make comments about a page. The comments will be stored in a database, and can be viewed by anyone using the Molecular Workbench software.
+
+ 
+&#10163; Click this link to view an example of using this functionality to invite users to make comments on your page.
+ 
+
+To make a comment, press the &quot; &quot; button or choose the &quot;Collaboration&gt;Make Comments&quot; menu, you will see the following dialog window:
+
+  
+[This is a screenshot.]
+
+Type in this dialog window the information you would like to fill in (no registration is required), and then press the Submit Button. After the comment is received by the server and put into the database, all the comments on the current page, including the one that is just submitted, will be shown in a new window.
+
+If the whole comment dialog is embedded in a page, you will receive the following message in a pop-up window if your comment has been successfully stored in the database:
+
+  
+[This is a screenshot.]
+
+In the case that there is a connection problem to the server or the database, you will receive an error message indicating the type of problem.
+
+For just viewing the comments, click the &quot; &quot; button or select the &quot;Collaboration&gt;View Discussions about Current Page&quot; menu. Discussions are sorted in the order they were inserted.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1358">
+<paragraph start="0" end="26">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="25">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<RightIndent>20.0</RightIndent>
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="55">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="27" end="29">
+<size>11</size></content>
+
+<content start="29" end="37">
+<size>11</size><href>locale.cml</href></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<size>11</size><href>index.cml</href></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="52">
+<size>11</size><href>snapshot.cml</href></content>
+
+<content start="52" end="54">
+<size>11</size></content>
+
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="56">
+<LeftIndent>140.0</LeftIndent>
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="208">
+<LeftIndent>140.0</LeftIndent>
+<content start="56" end="208">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="208" end="209">
+<LeftIndent>140.0</LeftIndent>
+<content start="208" end="209">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="209" end="211">
+<LeftIndent>140.0</LeftIndent>
+<content start="209" end="210">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="210" end="211">
+</content>
+
+</paragraph>
+<paragraph start="211" end="323">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="211" end="212">
+<size>18</size><foreground>255 0 0</foreground></content>
+
+<content start="212" end="213">
+<size>14</size></content>
+
+<content start="213" end="219">
+<size>11</size></content>
+
+<content start="219" end="228">
+<size>11</size><href>2dvs3d.cml</href></content>
+
+<content start="228" end="322">
+<size>11</size></content>
+
+<content start="322" end="323">
+</content>
+
+</paragraph>
+<paragraph start="323" end="325">
+<LeftIndent>140.0</LeftIndent>
+<content start="323" end="324">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="324" end="325">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="325" end="326">
+<LeftIndent>140.0</LeftIndent>
+<content start="325" end="326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="326" end="458">
+<LeftIndent>140.0</LeftIndent>
+<content start="326" end="356">
+<size>11</size></content>
+
+<content start="356" end="357">
+<icon>EditComment.gif</icon><size>11</size></content>
+
+<content start="357" end="458">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="458" end="459">
+<LeftIndent>100.0</LeftIndent>
+<content start="458" end="459">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="459" end="462">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="459" end="460">
+<size>11</size></content>
+
+<content start="460" end="461">
+<icon>AddComment.gif</icon><size>11</size></content>
+
+<content start="461" end="462">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="462" end="486">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="462" end="485">
+<size>10</size></content>
+
+<content start="485" end="486">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="486" end="487">
+<Alignment>1</Alignment>
+<LeftIndent>120.0</LeftIndent>
+<content start="486" end="487">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="487" end="803">
+<LeftIndent>140.0</LeftIndent>
+<content start="487" end="803">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="803" end="804">
+<LeftIndent>140.0</LeftIndent>
+<content start="803" end="804">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="804" end="975">
+<LeftIndent>140.0</LeftIndent>
+<content start="804" end="807">
+<size>11</size></content>
+
+<content start="807" end="853">
+<size>11</size><href>FeedbackArea.cml</href></content>
+
+<content start="853" end="975">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="975" end="976">
+<LeftIndent>140.0</LeftIndent>
+<content start="975" end="976">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="976" end="979">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="976" end="977">
+<size>11</size></content>
+
+<content start="977" end="978">
+<icon>CommentServerMessage.gif</icon><size>11</size></content>
+
+<content start="978" end="979">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="979" end="1003">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="979" end="1002">
+<size>10</size></content>
+
+<content start="1002" end="1003">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1003" end="1004">
+<LeftIndent>140.0</LeftIndent>
+<content start="1003" end="1004">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1004" end="1148">
+<LeftIndent>140.0</LeftIndent>
+<content start="1004" end="1148">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1148" end="1149">
+<LeftIndent>140.0</LeftIndent>
+<content start="1148" end="1149">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1149" end="1329">
+<LeftIndent>140.0</LeftIndent>
+<content start="1149" end="1191">
+<size>11</size></content>
+
+<content start="1191" end="1192">
+<icon>ViewComment.gif</icon></content>
+
+<content start="1192" end="1329">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1329" end="1330">
+<LeftIndent>140.0</LeftIndent>
+<content start="1329" end="1330">
+</content>
+
+</paragraph>
+<paragraph start="1330" end="1358">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1330" end="1332">
+<size>11</size></content>
+
+<content start="1332" end="1340">
+<size>11</size><href>locale.cml</href></content>
+
+<content start="1340" end="1343">
+<size>11</size></content>
+
+<content start="1343" end="1348">
+<size>11</size><href>index.cml</href></content>
+
+<content start="1348" end="1351">
+<size>11</size></content>
+
+<content start="1351" end="1355">
+<size>11</size><href>snapshot.cml</href></content>
+
+<content start="1355" end="1357">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

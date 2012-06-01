@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+">
+<information>
+<title>Molecular Workbench V1.3</title>
+<vendor>Concord Consortium, Inc.</vendor>
+<description>Molecular Workbench</description>
+<offline-allowed/>
+</information>
+<resources>
+<j2se version="1.4+"/>
+<jar href="http://xeon.concord.org:8080/modeler1.3/lib/workbench.jar"/>
+</resources>
+<security>
+<all-permissions/>
+</security>
+<application-desc main-class="org.concord.modeler.Modeler">
+<argument>remote</argument>
+<argument>http://localhost:8080/modeler1.3/student/motionandforce/masseffect.cml</argument>
+</application-desc>
+</jnlp>

@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>State persistence: saving and loading applet states</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>State persistence: saving and loading applet states
+
+&lt; Previous | Index | Next &gt;
+
+Due to security restrictions, an untrusted applet cannot read any data from or write any data to your computer. And this kind of protection is indeed what you need and what we must provide. But sometimes you want to store some harmless data from an applet to the user&apos;s disk, and restore them later. This kind of data are generally related to only the applet, such as colors and positions of objects displayed within it, and so on. For example, we may want the Mandelbrot World Applet demonstrated earlier to save its zoom level and clicked position, as shown below:
+
+   
+[These are embedded applets.]
+
+The above two applets are driven by exactly the same jar file. But their states are saved by MW, separately, outside the applet sandbox. If you want to see how it works, save this page onto your disk first, and then click on the fractal images and save the MW page again. The zoom levels will be saved as well when the MW page gets saved.
+
+The service the MW platform provides to allow state persistence is critically important to authoring with applets in a what-you-see-is-what-you-get (WYSIWYG) manner. Being able to adjust parameters of an applet permits the author to design better instructions. For instance, we can design a guide tour into the Mandelbrot World, using different saved states for the applet.
+
+In the following, we will show you how to make this work. You can generalize this so that your own applets can make use of this MW service.
+
+Interface
+
+MW provides a mechanism that allows your applet to save and load data through the MwService interface, which is shown below:
+
+package org.concord.modeler;
+
+import java.awt.Component;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+public interface MwService {
+
+    ......
+
+    public void loadState(InputStream is) throws IOException;
+
+    public void saveState(OutputStream os) throws IOException;
+
+    ......
+
+}
+
+The loadState(InputStream is) method reads data from an InputStream sent by MW to the applet. The saveState(OutputStream os) method saves data to an OutputStream MW passes over to it. Although the type of the input and out streams is determined by the applet client, you should avoid using binary format to store your data, in order to make them more portable and version resilient. Use XML instead. If you are defining states for your applet, using Java&apos;s XML serialization mechanism (i.e. Bean Mark Language) to serialize the state can be considered.
+
+Security
+
+At this point, you may be wondering if it would be safe to grant an untrusted applet the right to read and save data. We would say it is pretty safe. The reason are as follows. First, it is MW that determines what files are to be opened to the applet. The applet still runs within the security sandbox and cannot decide which file to access. Second, the data to be stored on the disk depends solely on the applet. It cannot contain any sensitive information --- thus your privacy can be protected. Nor can the data be used to invoke inappropriate procedures on your computer --- thus your computer will be immune to attacks.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3223">
+<paragraph start="0" end="52">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="51">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="81">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="63">
+<href>appletsecurity.cml</href><size>11</size></content>
+
+<content start="63" end="66">
+<size>11</size></content>
+
+<content start="66" end="71">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="71" end="80">
+<size>11</size></content>
+
+<content start="80" end="81">
+</content>
+
+</paragraph>
+<paragraph start="81" end="82">
+<content start="81" end="82">
+</content>
+
+</paragraph>
+<paragraph start="82" end="649">
+<LeftIndent>140.0</LeftIndent>
+<content start="82" end="89">
+<size>11</size></content>
+
+<content start="89" end="110">
+<href>appletsecurity.cml</href><size>11</size></content>
+
+<content start="110" end="649">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="649" end="650">
+<LeftIndent>140.0</LeftIndent>
+<content start="649" end="650">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="650" end="654">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="650" end="651">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>mandelbrot.jar</appletjar>
+<appletclass>com.xebec.fractal.FractalExplorer</appletclass>
+<resource>appletstate$applet$0.aps</resource><caching>true</caching><width>300</width><height>300</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="651" end="652">
+</content>
+
+<content start="652" end="653">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>mandelbrot.jar</appletjar>
+<appletclass>com.xebec.fractal.FractalExplorer</appletclass>
+<resource>appletstate$applet$1.aps</resource><caching>true</caching><width>300</width><height>300</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="653" end="654">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="654" end="684">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="654" end="683">
+<size>10</size></content>
+
+<content start="683" end="684">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="684" end="685">
+<LeftIndent>140.0</LeftIndent>
+<content start="684" end="685">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="685" end="1024">
+<LeftIndent>140.0</LeftIndent>
+<content start="685" end="1024">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1024" end="1025">
+<LeftIndent>140.0</LeftIndent>
+<content start="1024" end="1025">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1025" end="1399">
+<LeftIndent>140.0</LeftIndent>
+<content start="1025" end="1314">
+<size>11</size></content>
+
+<content start="1314" end="1352">
+<href>../seeingmath/mandelbrot.cml</href><size>11</size></content>
+
+<content start="1352" end="1399">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1399" end="1400">
+<LeftIndent>140.0</LeftIndent>
+<content start="1399" end="1400">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1400" end="1540">
+<LeftIndent>140.0</LeftIndent>
+<content start="1400" end="1540">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1540" end="1541">
+<LeftIndent>140.0</LeftIndent>
+<content start="1540" end="1541">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1541" end="1551">
+<LeftIndent>140.0</LeftIndent>
+<content start="1541" end="1550">
+<bold>true</bold><size>11</size></content>
+
+<content start="1550" end="1551">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1551" end="1552">
+<LeftIndent>140.0</LeftIndent>
+<content start="1551" end="1552">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1552" end="1677">
+<LeftIndent>140.0</LeftIndent>
+<content start="1552" end="1634">
+<size>11</size></content>
+
+<content start="1634" end="1643">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1643" end="1677">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1677" end="1678">
+<LeftIndent>140.0</LeftIndent>
+<content start="1677" end="1678">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1678" end="1707">
+<LeftIndent>180.0</LeftIndent>
+<content start="1678" end="1707">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1707" end="1708">
+<LeftIndent>180.0</LeftIndent>
+<content start="1707" end="1708">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1708" end="1735">
+<LeftIndent>180.0</LeftIndent>
+<content start="1708" end="1735">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1735" end="1763">
+<LeftIndent>180.0</LeftIndent>
+<content start="1735" end="1763">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1763" end="1791">
+<LeftIndent>180.0</LeftIndent>
+<content start="1763" end="1791">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1791" end="1820">
+<LeftIndent>180.0</LeftIndent>
+<content start="1791" end="1820">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1820" end="1821">
+<LeftIndent>180.0</LeftIndent>
+<content start="1820" end="1821">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1821" end="1850">
+<LeftIndent>180.0</LeftIndent>
+<content start="1821" end="1850">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1850" end="1851">
+<LeftIndent>180.0</LeftIndent>
+<content start="1850" end="1851">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1851" end="1862">
+<LeftIndent>180.0</LeftIndent>
+<content start="1851" end="1862">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1862" end="1863">
+<LeftIndent>180.0</LeftIndent>
+<content start="1862" end="1863">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1863" end="1925">
+<LeftIndent>180.0</LeftIndent>
+<content start="1863" end="1925">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1925" end="1926">
+<LeftIndent>180.0</LeftIndent>
+<content start="1925" end="1926">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1926" end="1989">
+<LeftIndent>180.0</LeftIndent>
+<content start="1926" end="1989">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1989" end="1990">
+<LeftIndent>180.0</LeftIndent>
+<content start="1989" end="1990">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1990" end="2001">
+<LeftIndent>180.0</LeftIndent>
+<content start="1990" end="2001">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2001" end="2002">
+<LeftIndent>180.0</LeftIndent>
+<content start="2001" end="2002">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2002" end="2004">
+<LeftIndent>180.0</LeftIndent>
+<content start="2002" end="2003">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2003" end="2004">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2004" end="2005">
+<LeftIndent>140.0</LeftIndent>
+<content start="2004" end="2005">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2005" end="2558">
+<LeftIndent>140.0</LeftIndent>
+<content start="2005" end="2009">
+<size>11</size></content>
+
+<content start="2009" end="2034">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2034" end="2061">
+<size>11</size></content>
+
+<content start="2061" end="2072">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2072" end="2103">
+<size>11</size></content>
+
+<content start="2103" end="2129">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2129" end="2154">
+<size>11</size></content>
+
+<content start="2154" end="2166">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2166" end="2272">
+<size>11</size></content>
+
+<content start="2272" end="2386">
+<bold>true</bold><size>11</size></content>
+
+<content start="2386" end="2558">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2558" end="2559">
+<LeftIndent>140.0</LeftIndent>
+<content start="2558" end="2559">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2559" end="2568">
+<LeftIndent>140.0</LeftIndent>
+<content start="2559" end="2567">
+<bold>true</bold><size>11</size></content>
+
+<content start="2567" end="2568">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2568" end="2569">
+<LeftIndent>140.0</LeftIndent>
+<content start="2568" end="2569">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2569" end="3194">
+<LeftIndent>140.0</LeftIndent>
+<content start="2569" end="2753">
+<size>11</size></content>
+
+<content start="2753" end="2821">
+<bold>true</bold><size>11</size></content>
+
+<content start="2821" end="2919">
+<size>11</size></content>
+
+<content start="2919" end="2981">
+<bold>true</bold><size>11</size></content>
+
+<content start="2981" end="3194">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3194" end="3195">
+<RightIndent>20.0</RightIndent>
+<content start="3194" end="3195">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3195" end="3223">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="3195" end="3197">
+<size>11</size></content>
+
+<content start="3197" end="3205">
+<href>appletsecurity.cml</href><size>11</size></content>
+
+<content start="3205" end="3208">
+<size>11</size></content>
+
+<content start="3208" end="3213">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="3213" end="3222">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

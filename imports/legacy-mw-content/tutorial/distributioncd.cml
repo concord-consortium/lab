@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Distribution on CD</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Distribution on CD
+
+&lt; Previous | Index | Next &gt;
+
+Many teachers prefer receiving materials on CD. The Molecular Workbench (MW) software and the materials you have created using it can be easily run from CD. The steps are as follows:
+
+(a) You must have the file &quot;workbench.jar&quot;. For those who are using Java Web Start to launch MW, this file can be downloaded right here by clicking   this link.
+
+(b) You should produce a home-page-style file in the CML format from which the end users will access your materials through a list of links. On this page, you can put your organization&apos;s logo, your signature, copyright note, background image, and so on. Let&apos;s assume this file is named &quot;index.cml&quot;.
+
+(c) Copy both &quot;workbench.jar&quot; and &quot;index.cml&quot; to the same directory that is to be written to the CD.
+
+(d) Create a system file to launch MW and load &quot;index.cml&quot;. On Windows: Open a text editor, type in the following command: &quot;java -Dmw.cd.mode=true -jar workbench.jar remote index.cml&quot;. Save the file as a &quot;.bat&quot; file. Let us assume that it is named &quot;run.bat&quot;. Make sure it is saved or copied to the same directory as &quot;workbench.jar&quot; and &quot;index.cml&quot;.
+
+(e) Congratulations! These are all the steps you need to do. Now copy all the stuff to the CD. And click &quot;run.bat&quot;, it will launch MW and load the &quot;index.cml&quot; from the CD.
+
+(f) You probably want to write a README file to explain how to use the CD.
+
+There are some pros and cons of distributing through CD:
+
+Pros: The user does not have to download anything from the Internet in order to use your materials, provided that his/her computer has Java.
+
+Cons: The CD has a fixed version of MW, which cannot self-update. In addition, you will not be able to access content written using MW on the Web (i.e. files whose addresses starting with &quot;http://&quot;).
+
+We recommend the user be instructed that he or she is meant to use only the materials included on the CD and should use the Internet version whenever there is no need to use the CD any longer.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2019">
+<paragraph start="0" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<size>11</size><href>downloadmultipage.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index3.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<size>11</size><href>CustomizeWindow.cml</href></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="232">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="232" end="233">
+<LeftIndent>140.0</LeftIndent>
+<content start="232" end="233">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="233" end="394">
+<LeftIndent>160.0</LeftIndent>
+<content start="233" end="261">
+<size>11</size></content>
+
+<content start="261" end="274">
+<family>Courier New</family><size>11</size></content>
+
+<content start="274" end="381">
+<size>11</size></content>
+
+<content start="381" end="382">
+<icon>htmlink.gif</icon></content>
+
+<content start="382" end="383">
+<size>11</size></content>
+
+<content start="383" end="392">
+<size>11</size><href>http://mw.concord.org/modeler/lib/workbench.jar</href></content>
+
+<content start="392" end="394">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="394" end="395">
+<LeftIndent>160.0</LeftIndent>
+<content start="394" end="395">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="395" end="694">
+<LeftIndent>160.0</LeftIndent>
+<content start="395" end="682">
+<size>11</size></content>
+
+<content start="682" end="691">
+<family>Courier New</family><size>11</size></content>
+
+<content start="691" end="694">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="694" end="695">
+<LeftIndent>160.0</LeftIndent>
+<content start="694" end="695">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="695" end="796">
+<LeftIndent>160.0</LeftIndent>
+<content start="695" end="710">
+<size>11</size></content>
+
+<content start="710" end="723">
+<family>Courier New</family><size>11</size></content>
+
+<content start="723" end="730">
+<size>11</size></content>
+
+<content start="730" end="739">
+<family>Courier New</family><size>11</size></content>
+
+<content start="739" end="748">
+<size>11</size></content>
+
+<content start="748" end="752">
+<bold>true</bold><size>11</size></content>
+
+<content start="752" end="796">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="796" end="797">
+<LeftIndent>160.0</LeftIndent>
+<content start="796" end="797">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="797" end="1146">
+<LeftIndent>160.0</LeftIndent>
+<content start="797" end="845">
+<size>11</size></content>
+
+<content start="845" end="854">
+<family>Courier New</family><size>11</size></content>
+
+<content start="854" end="921">
+<size>11</size></content>
+
+<content start="921" end="979">
+<family>Courier New</family><size>11</size></content>
+
+<content start="979" end="1002">
+<size>11</size></content>
+
+<content start="1002" end="1006">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1006" end="1046">
+<size>11</size></content>
+
+<content start="1046" end="1053">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1053" end="1095">
+<size>11</size></content>
+
+<content start="1095" end="1099">
+<bold>true</bold><size>11</size></content>
+
+<content start="1099" end="1114">
+<size>11</size></content>
+
+<content start="1114" end="1127">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1127" end="1134">
+<size>11</size></content>
+
+<content start="1134" end="1143">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1143" end="1145">
+<size>11</size></content>
+
+<content start="1145" end="1146">
+</content>
+
+</paragraph>
+<paragraph start="1146" end="1147">
+<LeftIndent>160.0</LeftIndent>
+<content start="1146" end="1147">
+</content>
+
+</paragraph>
+<paragraph start="1147" end="1319">
+<LeftIndent>160.0</LeftIndent>
+<content start="1147" end="1151">
+<size>11</size></content>
+
+<content start="1151" end="1168">
+<bold>true</bold><size>11</size></content>
+
+<content start="1168" end="1253">
+<size>11</size></content>
+
+<content start="1253" end="1260">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1260" end="1295">
+<size>11</size></content>
+
+<content start="1295" end="1304">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1304" end="1319">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1319" end="1320">
+<LeftIndent>160.0</LeftIndent>
+<content start="1319" end="1320">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1320" end="1395">
+<LeftIndent>160.0</LeftIndent>
+<content start="1320" end="1395">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1395" end="1396">
+<LeftIndent>140.0</LeftIndent>
+<content start="1395" end="1396">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1396" end="1453">
+<LeftIndent>140.0</LeftIndent>
+<content start="1396" end="1453">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1453" end="1454">
+<LeftIndent>140.0</LeftIndent>
+<content start="1453" end="1454">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1454" end="1595">
+<LeftIndent>160.0</LeftIndent>
+<content start="1454" end="1458">
+<bold>true</bold><size>11</size></content>
+
+<content start="1458" end="1595">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1595" end="1596">
+<LeftIndent>160.0</LeftIndent>
+<content start="1595" end="1596">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1596" end="1796">
+<LeftIndent>160.0</LeftIndent>
+<content start="1596" end="1600">
+<bold>true</bold><size>11</size></content>
+
+<content start="1600" end="1796">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1796" end="1797">
+<LeftIndent>140.0</LeftIndent>
+<content start="1796" end="1797">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1797" end="1990">
+<LeftIndent>140.0</LeftIndent>
+<content start="1797" end="1989">
+<size>11</size></content>
+
+<content start="1989" end="1990">
+</content>
+
+</paragraph>
+<paragraph start="1990" end="1991">
+<LeftIndent>140.0</LeftIndent>
+<content start="1990" end="1991">
+</content>
+
+</paragraph>
+<paragraph start="1991" end="2019">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1991" end="1993">
+<size>11</size></content>
+
+<content start="1993" end="2001">
+<size>11</size><href>downloadmultipage.cml</href></content>
+
+<content start="2001" end="2004">
+<size>11</size></content>
+
+<content start="2004" end="2009">
+<size>11</size><href>index3.cml</href></content>
+
+<content start="2009" end="2012">
+<size>11</size></content>
+
+<content start="2012" end="2016">
+<size>11</size><href>CustomizeWindow.cml</href></content>
+
+<content start="2016" end="2018">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

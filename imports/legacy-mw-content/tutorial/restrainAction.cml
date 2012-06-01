@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Restraining Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Restraining Tool
+
+&lt; Previous | Index | Next &gt;
+
+Restraining an object means tethering it at a position with a harmonic force that will drag it back when it tries to leave.
+
+There are two buttons for the Restraining Tool. One adds a restraint (10) at each click. The other substracts a restraint (10) at each click. To increase or decrease the restraint on a particle, click one of the buttons first, and then click on the particle.
+
+You may practice using the Restraining Tool with the following model:
+
+ 
+[This is an embedded simulator.]
+
+Script support
+
+The restrain command can be used to restrain the selected particle(s) with a specified strength of force. Another way of changing the restraint on a particle is through calling the set command:
+
+set particle[i].restraint [value];
+set particle[i].restraint.x [xcoordinate];
+set particle[i].restraint.y [ycoordinate];
+
+where i is the index of the particle. If the strength of the restraint is set to be zero, the particle is released.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1021">
+<paragraph start="0" end="21">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="20">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="50">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="22" end="24">
+<size>11</size></content>
+
+<content start="24" end="32">
+<href>polarizeAction.cml</href><size>11</size></content>
+
+<content start="32" end="35">
+<size>11</size></content>
+
+<content start="35" end="40">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="40" end="43">
+<size>11</size></content>
+
+<content start="43" end="47">
+<href>DampingAction.cml</href><size>11</size></content>
+
+<content start="47" end="49">
+<size>11</size></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<LeftIndent>100.0</LeftIndent>
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="175">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="175">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="175" end="176">
+<LeftIndent>140.0</LeftIndent>
+<content start="175" end="176">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="176" end="435">
+<LeftIndent>140.0</LeftIndent>
+<content start="176" end="435">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="435" end="436">
+<LeftIndent>140.0</LeftIndent>
+<content start="435" end="436">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="436" end="506">
+<LeftIndent>140.0</LeftIndent>
+<content start="436" end="505">
+<size>11</size></content>
+
+<content start="505" end="506">
+</content>
+
+</paragraph>
+<paragraph start="506" end="507">
+<LeftIndent>140.0</LeftIndent>
+<content start="506" end="507">
+</content>
+
+</paragraph>
+<paragraph start="507" end="509">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="507" end="508">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>restrainAction$0.mml</resource><menubar>false</menubar><recorder>true</recorder><button>Increase Restraint</button><button>Decrease Restraint</button><button>Select Object</button></component></content>
+
+<content start="508" end="509">
+</content>
+
+</paragraph>
+<paragraph start="509" end="542">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="509" end="541">
+<size>10</size></content>
+
+<content start="541" end="542">
+</content>
+
+</paragraph>
+<paragraph start="542" end="543">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="542" end="543">
+</content>
+
+</paragraph>
+<paragraph start="543" end="558">
+<LeftIndent>140.0</LeftIndent>
+<content start="543" end="557">
+<size>11</size><bold>true</bold></content>
+
+<content start="557" end="558">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="558" end="559">
+<LeftIndent>140.0</LeftIndent>
+<content start="558" end="559">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="559" end="753">
+<LeftIndent>140.0</LeftIndent>
+<content start="559" end="563">
+<size>11</size></content>
+
+<content start="563" end="571">
+<href>script_restrain.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="571" end="740">
+<size>11</size></content>
+
+<content start="740" end="743">
+<href>script_set.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="743" end="753">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="753" end="754">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="753" end="754">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="754" end="789">
+<LeftIndent>160.0</LeftIndent>
+<content start="754" end="789">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="789" end="832">
+<LeftIndent>160.0</LeftIndent>
+<content start="789" end="832">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="832" end="875">
+<LeftIndent>160.0</LeftIndent>
+<content start="832" end="874">
+<size>11</size><family>Courier New</family></content>
+
+<content start="874" end="875">
+</content>
+
+</paragraph>
+<paragraph start="875" end="876">
+<LeftIndent>140.0</LeftIndent>
+<content start="875" end="876">
+</content>
+
+</paragraph>
+<paragraph start="876" end="992">
+<LeftIndent>140.0</LeftIndent>
+<content start="876" end="882">
+<size>11</size></content>
+
+<content start="882" end="883">
+<size>11</size><italic>true</italic></content>
+
+<content start="883" end="991">
+<size>11</size></content>
+
+<content start="991" end="992">
+</content>
+
+</paragraph>
+<paragraph start="992" end="993">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="992" end="993">
+</content>
+
+</paragraph>
+<paragraph start="993" end="1021">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="993" end="995">
+<size>11</size></content>
+
+<content start="995" end="1003">
+<href>polarizeAction.cml</href><size>11</size></content>
+
+<content start="1003" end="1006">
+<size>11</size></content>
+
+<content start="1006" end="1011">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="1011" end="1014">
+<size>11</size></content>
+
+<content start="1014" end="1018">
+<href>DampingAction.cml</href><size>11</size></content>
+
+<content start="1018" end="1020">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

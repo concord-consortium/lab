@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Recording a simulation</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Recording a simulation
+
+&lt; Previous | Index | Next &gt;
+
+Recording a simulation will allow you to play it back and look at the elapsed events from different angles with different view settings. As 3D views are not as clear as 2D ones, this capacity becomes particularly important for understanding 3D simulations.
+
+When you run a 3D simulation, the last 200 (by default) previous frames are saved for playing back. You can always stop the model, rewind the recorded movie, and play it back to examine what has happened more clearly. A 3D simulator provides a full set of recording/playing functionalities on the recorder control panel at its bottom, as is shown below:
+
+ 
+[This is an embedded model.]
+
+ To manipulate a recorded movie:
+
+   Press the &quot; &quot; button to stop the movie (this button also stops the simulation).
+   Press the &quot; &quot; button to show the next frame.
+   Press the &quot; &quot; button to show the previous frame.
+   Press the &quot; &quot; button to rewind the movie.
+   Press the &quot; &quot; button to play the recorded movie (this button also runs the model).
+   Drag the slider on the left to play/rewind the movie freely at your finger tip.
+   Click the slider (so as to transfer the keyboard focus to it), and then press the left/right arrow keys to play the movie frame by frame, or hold these keys down to play the movie continuously. If your mouse has a wheel, you can also roll the wheel to play the recorded trajectories back and forward, when the mouse cursor is on top of the slider.
+   Press the &quot; &quot; button to reset to the saved state.
+
+The tape of the recorder has a capacity of only N frames (by default N=200). When the capacity is reached, the tape will be overwritten (to prevent the program from running out of memory). Only the latest N frames are saved. To check the capacity of the recorder, see the corresponding part about recording simulations in 2D simulators. Note that this setting applies to both 2D and 3D simulators.
+
+Disable the recorder
+
+If there is no need to record the simulation, you may choose to disable the recorder. The &quot;Option&quot; menu of a model container has a checkbox menu item called &quot;Disable Recorder&quot;. Check that menu item will immediately disable the recorder.
+
+If the recorder is disabled, the recorder toolbar will be replaced by three buttons: Run, Stop and Reset.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2328">
+<paragraph start="0" end="23">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="22">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="52">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="24" end="26">
+<size>11</size></content>
+
+<content start="26" end="34">
+<size>11</size><href>mw3d_move.cml</href></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="49">
+<size>11</size><href>io3d.cml</href></content>
+
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<LeftIndent>100.0</LeftIndent>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="310">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="310">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="310" end="311">
+<LeftIndent>140.0</LeftIndent>
+<content start="310" end="311">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="311" end="665">
+<LeftIndent>140.0</LeftIndent>
+<content start="311" end="665">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="665" end="666">
+<LeftIndent>140.0</LeftIndent>
+<content start="665" end="666">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="666" end="668">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="666" end="667">
+<component><class>org.concord.modeler.PageMd3d</class><resource>recorder3d$0.mdd</resource><coordinate>recorder3d$0.xyz</coordinate><width>600</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="667" end="668">
+</content>
+
+</paragraph>
+<paragraph start="668" end="697">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="668" end="696">
+<size>10</size></content>
+
+<content start="696" end="697">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="697" end="698">
+<LeftIndent>140.0</LeftIndent>
+<content start="697" end="698">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="698" end="731">
+<LeftIndent>140.0</LeftIndent>
+<content start="698" end="731">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="731" end="732">
+<LeftIndent>100.0</LeftIndent>
+<content start="731" end="732">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="732" end="815">
+<LeftIndent>160.0</LeftIndent>
+<content start="732" end="733">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="733" end="746">
+<size>11</size></content>
+
+<content start="746" end="747">
+<icon>Pause.gif</icon><size>11</size></content>
+
+<content start="747" end="815">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="815" end="863">
+<LeftIndent>160.0</LeftIndent>
+<content start="815" end="816">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="816" end="829">
+<size>11</size></content>
+
+<content start="829" end="830">
+<icon>StepForward.gif</icon><size>11</size></content>
+
+<content start="830" end="863">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="863" end="915">
+<LeftIndent>160.0</LeftIndent>
+<content start="863" end="864">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="864" end="877">
+<size>11</size></content>
+
+<content start="877" end="878">
+<icon>StepBack.gif</icon><size>11</size></content>
+
+<content start="878" end="915">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="915" end="960">
+<LeftIndent>160.0</LeftIndent>
+<content start="915" end="916">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="916" end="929">
+<size>11</size></content>
+
+<content start="929" end="930">
+<icon>Rewind.gif</icon><size>11</size></content>
+
+<content start="930" end="960">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="960" end="1046">
+<LeftIndent>160.0</LeftIndent>
+<content start="960" end="961">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="961" end="974">
+<size>11</size></content>
+
+<content start="974" end="975">
+<icon>Play.gif</icon><size>11</size></content>
+
+<content start="975" end="1046">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1046" end="1129">
+<LeftIndent>160.0</LeftIndent>
+<content start="1046" end="1047">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1047" end="1129">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1129" end="1480">
+<LeftIndent>160.0</LeftIndent>
+<content start="1129" end="1130">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1130" end="1480">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1480" end="1533">
+<LeftIndent>160.0</LeftIndent>
+<content start="1480" end="1481">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1481" end="1494">
+<size>11</size></content>
+
+<content start="1494" end="1495">
+<icon>Reset.gif</icon><size>11</size></content>
+
+<content start="1495" end="1533">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1533" end="1534">
+<LeftIndent>140.0</LeftIndent>
+<content start="1533" end="1534">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1534" end="1932">
+<LeftIndent>140.0</LeftIndent>
+<content start="1534" end="1582">
+<size>11</size></content>
+
+<content start="1582" end="1583">
+<size>11</size><italic>true</italic></content>
+
+<content start="1583" end="1603">
+<size>11</size></content>
+
+<content start="1603" end="1604">
+<size>11</size><italic>true</italic></content>
+
+<content start="1604" end="1739">
+<size>11</size></content>
+
+<content start="1739" end="1740">
+<size>11</size><italic>true</italic></content>
+
+<content start="1740" end="1831">
+<size>11</size></content>
+
+<content start="1831" end="1869">
+<size>11</size><href>recordSimulation.cml</href></content>
+
+<content start="1869" end="1932">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1932" end="1933">
+<LeftIndent>140.0</LeftIndent>
+<content start="1932" end="1933">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1933" end="1954">
+<LeftIndent>140.0</LeftIndent>
+<content start="1933" end="1953">
+<bold>true</bold><size>11</size></content>
+
+<content start="1953" end="1954">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1954" end="1955">
+<LeftIndent>140.0</LeftIndent>
+<content start="1954" end="1955">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1955" end="2192">
+<LeftIndent>140.0</LeftIndent>
+<content start="1955" end="2192">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2192" end="2193">
+<LeftIndent>140.0</LeftIndent>
+<content start="2192" end="2193">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2193" end="2299">
+<LeftIndent>140.0</LeftIndent>
+<content start="2193" end="2299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2299" end="2300">
+<LeftIndent>140.0</LeftIndent>
+<content start="2299" end="2300">
+</content>
+
+</paragraph>
+<paragraph start="2300" end="2328">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2300" end="2302">
+<size>11</size></content>
+
+<content start="2302" end="2310">
+<size>11</size><href>mw3d_move.cml</href></content>
+
+<content start="2310" end="2313">
+<size>11</size></content>
+
+<content start="2313" end="2318">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="2318" end="2321">
+<size>11</size></content>
+
+<content start="2321" end="2325">
+<size>11</size><href>io3d.cml</href></content>
+
+<content start="2325" end="2327">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

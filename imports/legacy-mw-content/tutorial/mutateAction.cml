@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Mutating Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Mutating Tool
+
+&lt; Previous | Index | Next &gt;
+
+Suppose you have constructed a complex molecule, and now you want to change the type of one of the atoms. You could have had to remove that atom, put in an atom of the new type, and reconstruct the radial bonds and angular bonds associated with it. But with the Mutaing Tool (&quot; &quot;), you can just change the type (i.e. element) of the atom:
+
+  &#10154; 
+
+
+Changing the type of an atom does not change the bond structure. The atom of the new type will make the same set of radial and angular bonds to the same atoms as the atom of the old type.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="612">
+<paragraph start="0" end="18">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="17">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="47">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="21">
+<size>11</size></content>
+
+<content start="21" end="29">
+<href>changeVelocityAction.cml</href><size>11</size></content>
+
+<content start="29" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<href>showTrajAction.cml</href><size>11</size></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>100.0</LeftIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="387">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="246">
+<size>11</size></content>
+
+<content start="246" end="258">
+<href>makeBondAction.cml</href><size>11</size></content>
+
+<content start="258" end="263">
+<size>11</size></content>
+
+<content start="263" end="276">
+<href>makeBendAction.cml</href><size>11</size></content>
+
+<content start="276" end="325">
+<size>11</size></content>
+
+<content start="325" end="326">
+<size>11</size><icon>mutate.gif</icon></content>
+
+<content start="326" end="387">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="387" end="388">
+<LeftIndent>100.0</LeftIndent>
+<content start="387" end="388">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="388" end="393">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="388" end="389">
+<size>11</size></content>
+
+<content start="389" end="390">
+<size>11</size><icon>MutateAtomScene1.gif</icon></content>
+
+<content start="390" end="391">
+<size>72</size><foreground>255 0 0</foreground></content>
+
+<content start="391" end="392">
+<size>11</size><icon>MutateAtomScene2.gif</icon></content>
+
+<content start="392" end="393">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="393" end="394">
+<LeftIndent>100.0</LeftIndent>
+<content start="393" end="394">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="394" end="395">
+<content start="394" end="395">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="395" end="583">
+<LeftIndent>140.0</LeftIndent>
+<content start="395" end="582">
+<size>11</size></content>
+
+<content start="582" end="583">
+</content>
+
+</paragraph>
+<paragraph start="583" end="584">
+<LeftIndent>140.0</LeftIndent>
+<content start="583" end="584">
+</content>
+
+</paragraph>
+<paragraph start="584" end="612">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="584" end="586">
+<size>11</size></content>
+
+<content start="586" end="594">
+<href>changeVelocityAction.cml</href><size>11</size></content>
+
+<content start="594" end="597">
+<size>11</size></content>
+
+<content start="597" end="602">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="602" end="605">
+<size>11</size></content>
+
+<content start="605" end="609">
+<href>showTrajAction.cml</href><size>11</size></content>
+
+<content start="609" end="611">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

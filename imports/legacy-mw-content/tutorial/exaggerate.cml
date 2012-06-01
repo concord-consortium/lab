@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Special considerations about educational models</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Special considerations about educational models
+
+&lt; Previous | Index | Next &gt;
+
+Because we go to the realm of creating models, you should be aware of a few important things.
+
+Although molecular dynamics simulations have been widely used in research and proven a useful tool in understanding how microscopic phenonmena happen, designing a model that can be used in classroom is a relatively new territory and is significantly different.
+
+One of the reasons that molecular dynamics models are useful in teaching science is because they are based on rigorous physics, which means they will likely produce sensible results. However, a result being correct does not necessarily mean that it is pedagogically useful. The educational specifications of models often require that:
+
+   Students be able to interact with the model and see emerging behaviors in a reasonable amount of time.
+   Students be able to see the differences between different phases, or under different conditions.
+
+The restriction of research-grade models is that sometimes a simulation with settings precisely tuned to a realistic situation may take a long time to produce the desired emergent behaviors, or produce them in a way that is not self-explanatory to novice users. Exaggeration often becomes necessary to pedagogicize these models.
+
+Exaggeration often refers to as giving a variable a supernatural value so that the subprocess for which it is responsible can become more significant, more apparent and faster. For example, in our protein folding model, the central forces responsible for folding and unfolding are taken so strong that the folding/unfolding processes can stand out from among all dynamical processes and become a clearly observable emergent behavior.
+
+Research-grade models demand high accuracy for predictive power. Factors that might affect the outcomes of simulations are considered in as many details as possible, in order to mimick a realistic system as closely as possible. These models often run on high-end workstations, computer clusters or supercomputers overnight or even for days. After the simulations complete, researchers carefully analyze the data produced during the simulations to check if the results agree with theoretical hypotheses or experimental observations.
+
+Education-oriented models are not supposed to make discoveries. The intended computers cannot afford to model everything in details. The mission of educational models is to help students develop better mental pictures of important concepts. As such, educational modelers need a certain level of abstraction in building models. This kind of abstraction is very common in artists&apos; work.
+
+Artists use cartoons to express their ideas, when the imaginative objects do not exist in real world, or is too expensive to bring them to existence. Although cartoons do not depict all the details, they suffice to deliver ideas to the readers and the audiences.
+
+Similarly, a model does not necessarily need to consider all the details in order to illustrate a concept in the textbook. Cartoonization of a scientific model is to customize it in a way that the most important aspects are conveyed. A cartoonized model may have missed some other points, but as long as the most important ones can be produced, it suffices to meet educational needs.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3339">
+<paragraph start="0" end="48">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="47">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="77">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="59">
+<href>report.cml</href><size>11</size></content>
+
+<content start="59" end="62">
+<size>11</size></content>
+
+<content start="62" end="67">
+<href>index.cml</href><size>11</size></content>
+
+<content start="67" end="70">
+<size>11</size></content>
+
+<content start="70" end="74">
+<href>mag.cml</href><size>11</size></content>
+
+<content start="74" end="76">
+<size>11</size></content>
+
+<content start="76" end="77">
+</content>
+
+</paragraph>
+<paragraph start="77" end="78">
+<LeftIndent>100.0</LeftIndent>
+<content start="77" end="78">
+</content>
+
+</paragraph>
+<paragraph start="78" end="172">
+<LeftIndent>140.0</LeftIndent>
+<content start="78" end="172">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="172" end="173">
+<LeftIndent>140.0</LeftIndent>
+<content start="172" end="173">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="173" end="434">
+<LeftIndent>140.0</LeftIndent>
+<content start="173" end="434">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="434" end="435">
+<LeftIndent>140.0</LeftIndent>
+<content start="434" end="435">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="435" end="770">
+<LeftIndent>140.0</LeftIndent>
+<content start="435" end="770">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="770" end="771">
+<LeftIndent>100.0</LeftIndent>
+<content start="770" end="771">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="771" end="877">
+<LeftIndent>160.0</LeftIndent>
+<content start="771" end="772">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="772" end="877">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="877" end="977">
+<LeftIndent>160.0</LeftIndent>
+<content start="877" end="878">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="878" end="977">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="977" end="978">
+<LeftIndent>140.0</LeftIndent>
+<content start="977" end="978">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="978" end="1307">
+<LeftIndent>140.0</LeftIndent>
+<content start="978" end="1280">
+<size>11</size></content>
+
+<content start="1280" end="1292">
+<italic>true</italic><size>11</size></content>
+
+<content start="1292" end="1307">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1307" end="1308">
+<LeftIndent>140.0</LeftIndent>
+<content start="1307" end="1308">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1308" end="1742">
+<LeftIndent>140.0</LeftIndent>
+<content start="1308" end="1501">
+<size>11</size></content>
+
+<content start="1501" end="1526">
+<link_statusbar>true</link_statusbar><link_fullscreen>false</link_fullscreen><link_left>0</link_left><link_menubar>false</link_menubar><link_top>0</link_top><href>../teacher/molsim/folding.cml</href><link_toolbar>false</link_toolbar><size>11</size><target>_blank</target><link_resizable>false</link_resizable></content>
+
+<content start="1526" end="1742">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1742" end="1743">
+<LeftIndent>140.0</LeftIndent>
+<content start="1742" end="1743">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1743" end="2275">
+<LeftIndent>140.0</LeftIndent>
+<content start="1743" end="2275">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2275" end="2276">
+<LeftIndent>140.0</LeftIndent>
+<content start="2275" end="2276">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2276" end="2661">
+<LeftIndent>140.0</LeftIndent>
+<content start="2276" end="2661">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2661" end="2662">
+<LeftIndent>140.0</LeftIndent>
+<content start="2661" end="2662">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2662" end="2925">
+<LeftIndent>140.0</LeftIndent>
+<content start="2662" end="2925">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2925" end="2926">
+<LeftIndent>140.0</LeftIndent>
+<content start="2925" end="2926">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2926" end="3310">
+<LeftIndent>140.0</LeftIndent>
+<content start="2926" end="3119">
+<size>11</size></content>
+
+<content start="3119" end="3158">
+<bold>true</bold><size>11</size></content>
+
+<content start="3158" end="3309">
+<size>11</size></content>
+
+<content start="3309" end="3310">
+</content>
+
+</paragraph>
+<paragraph start="3310" end="3311">
+<LeftIndent>100.0</LeftIndent>
+<content start="3310" end="3311">
+</content>
+
+</paragraph>
+<paragraph start="3311" end="3339">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3311" end="3313">
+<size>11</size></content>
+
+<content start="3313" end="3321">
+<href>report.cml</href><size>11</size></content>
+
+<content start="3321" end="3324">
+<size>11</size></content>
+
+<content start="3324" end="3329">
+<href>index.cml</href><size>11</size></content>
+
+<content start="3329" end="3332">
+<size>11</size></content>
+
+<content start="3332" end="3336">
+<href>mag.cml</href><size>11</size></content>
+
+<content start="3336" end="3338">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Damp</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Damp
+
+&lt; Previous | Index | Next &gt;
+
+The damp command slows down the currently selected particles through frictional forces propotional to their velocities but acting in the opposite directions. (To see how to add a damping force to a particle without using scripts, see this section.)
+
+Syntax:
+
+damp [friction coefficient]
+
+where [friction coefficient] is a non-negative number that will be the friction coefficient.
+
+Here is an example of using the damp command to slow down an atom:
+
+ 
+
+ 
+[This is an embedded simulator.]
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="552">
+<paragraph start="0" end="5">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="4">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="34">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="6" end="8">
+<size>11</size></content>
+
+<content start="8" end="16">
+<href>script_restrain.cml</href><size>11</size></content>
+
+<content start="16" end="19">
+<size>11</size></content>
+
+<content start="19" end="24">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="31">
+<href>script_heat.cml</href><size>11</size></content>
+
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>100.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="284">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<size>11</size><family>Courier New</family></content>
+
+<content start="43" end="269">
+<size>11</size></content>
+
+<content start="269" end="281">
+<href>DampingAction.cml</href><size>11</size></content>
+
+<content start="281" end="284">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="284" end="285">
+<LeftIndent>140.0</LeftIndent>
+<content start="284" end="285">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="285" end="293">
+<LeftIndent>140.0</LeftIndent>
+<content start="285" end="293">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="293" end="294">
+<LeftIndent>140.0</LeftIndent>
+<content start="293" end="294">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="294" end="322">
+<LeftIndent>160.0</LeftIndent>
+<content start="294" end="299">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="299" end="321">
+<size>11</size><family>Courier New</family></content>
+
+<content start="321" end="322">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="322" end="323">
+<LeftIndent>140.0</LeftIndent>
+<content start="322" end="323">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="323" end="416">
+<LeftIndent>140.0</LeftIndent>
+<content start="323" end="329">
+<size>11</size></content>
+
+<content start="329" end="351">
+<size>11</size><family>Courier New</family></content>
+
+<content start="351" end="416">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="416" end="417">
+<LeftIndent>140.0</LeftIndent>
+<content start="416" end="417">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="417" end="484">
+<LeftIndent>140.0</LeftIndent>
+<content start="417" end="449">
+<size>11</size></content>
+
+<content start="449" end="453">
+<size>11</size><family>Courier New</family></content>
+
+<content start="453" end="484">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="484" end="485">
+<LeftIndent>140.0</LeftIndent>
+<content start="484" end="485">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="485" end="487">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="485" end="486">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_damp$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="486" end="487">
+</content>
+
+</paragraph>
+<paragraph start="487" end="488">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="487" end="488">
+</content>
+
+</paragraph>
+<paragraph start="488" end="490">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="488" end="489">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Friction coefficient</title>
+<tooltip>Change the friction coefficient</tooltip>
+<width>400</width>
+<height>80</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>1.0</maximum>
+<tick>true</tick>
+<nstep>50</nstep>
+<labeltable>{value=&quot;0.2&quot;, label=&quot;0.2&quot;}{value=&quot;0.4&quot;, label=&quot;0.4&quot;}{value=&quot;0.6&quot;, label=&quot;0.6&quot;}{value=&quot;0.8&quot;, label=&quot;0.8&quot;}{value=&quot;1.0&quot;, label=&quot;1.0&quot;}{value=&quot;0.0&quot;, label=&quot;0.0&quot;}</labeltable>
+<script>select atom all;
+damp %val;
+select atom none;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="489" end="490">
+</content>
+
+</paragraph>
+<paragraph start="490" end="523">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="490" end="523">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="523" end="524">
+<LeftIndent>140.0</LeftIndent>
+<content start="523" end="524">
+</content>
+
+</paragraph>
+<paragraph start="524" end="552">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="524" end="526">
+<size>11</size></content>
+
+<content start="526" end="534">
+<href>script_restrain.cml</href><size>11</size></content>
+
+<content start="534" end="537">
+<size>11</size></content>
+
+<content start="537" end="542">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="542" end="545">
+<size>11</size></content>
+
+<content start="545" end="549">
+<href>script_heat.cml</href><size>11</size></content>
+
+<content start="549" end="551">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

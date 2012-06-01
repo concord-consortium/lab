@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a button for creating a report for multiple pages</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a button for creating a report for multiple pages
+
+&lt; Previous | Index | Next &gt;
+
+If you have a multipage activity, you will want the students to be able to create a single report for the whole activity, instead of having them do a report per page. 
+
+To insert a button that will create a report for multiple pages, open the last page of the activity (assuming that you will usually place the button on the last page). Move the caret to the position where you would like to insert the button and select the &quot;Insert&gt;Activity Controller&gt;Activity Button&quot; menu, and then you will see the following dialog:
+
+  
+[This is a screenshot.]
+
+Follow these minimum steps to create a &quot;multipage report&quot; button:
+
+&#10112; Choose the item &quot;Create a report for a page group in a new window&quot; from the &quot;Select an action&quot; pulldown menu in the popup window.
+
+&#10113; Type, in the order the pages will be viewed, the file names of the pages you want to collect data from, in the &quot;Collect data from pages&quot; text field. Separate them by a comma. You can put any number of space character between two file names, as long as they are separated by a comma. File names are case-sensitive. You do not have to type in the file name for the page where the button is to be inserted --- the software will automatically append it to the end of the string you type. (For portability reason, we suggest that all of the pages be placed into the same folder, and we assume that you have already followed this suggestion.)
+
+&#10114; Type a title for the activity in the &quot;Title on multipage report&quot; text field, if it should be different from the title of the page where the button is to be inserted. If you do not type anything in this field, the report will carry the title of the page over.
+
+&#10115; Hit the &quot;OK&quot; button.
+
+ 
+Important: If the user does not answer a question, the question will not be included into the report.
+ 
+
+In the following, we set up a multipage activity (using this page as the initial one) with embedded questions. You are invited to go through them, answer the questions, and take snapshots. When you get to the last page, you will be able to hit a button to generate a report that collects the data you have input to the questions and the snapshots you have taken for all the three pages.
+
+          
+ 
+       
+Go to the next experimental page
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2344">
+<paragraph start="0" end="60">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="59">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<RightIndent>20.0</RightIndent>
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="89">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="61" end="63">
+<size>11</size></content>
+
+<content start="63" end="71">
+<size>11</size><href>hint.cml</href></content>
+
+<content start="71" end="74">
+<size>11</size></content>
+
+<content start="74" end="79">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="79" end="82">
+<size>11</size></content>
+
+<content start="82" end="86">
+<size>11</size><href>audioplayer.cml</href></content>
+
+<content start="86" end="88">
+<size>11</size></content>
+
+<content start="88" end="89">
+</content>
+
+</paragraph>
+<paragraph start="89" end="90">
+<content start="89" end="90">
+</content>
+
+</paragraph>
+<paragraph start="90" end="258">
+<LeftIndent>140.0</LeftIndent>
+<content start="90" end="235">
+<size>11</size></content>
+
+<content start="235" end="255">
+<size>11</size><href>report.cml</href></content>
+
+<content start="255" end="258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="258" end="259">
+<LeftIndent>140.0</LeftIndent>
+<content start="258" end="259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="259" end="610">
+<LeftIndent>140.0</LeftIndent>
+<content start="259" end="333">
+<size>11</size></content>
+
+<content start="333" end="342">
+<bold>true</bold><size>11</size></content>
+
+<content start="342" end="610">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="610" end="611">
+<LeftIndent>140.0</LeftIndent>
+<content start="610" end="611">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="611" end="614">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="611" end="612">
+<size>11</size></content>
+
+<content start="612" end="613">
+<icon>MultipageReportDialog.gif</icon><size>11</size></content>
+
+<content start="613" end="614">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="614" end="638">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="614" end="637">
+<size>10</size></content>
+
+<content start="637" end="638">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="638" end="639">
+<LeftIndent>140.0</LeftIndent>
+<content start="638" end="639">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="639" end="705">
+<LeftIndent>140.0</LeftIndent>
+<content start="639" end="705">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="705" end="706">
+<LeftIndent>140.0</LeftIndent>
+<content start="705" end="706">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="706" end="838">
+<LeftIndent>140.0</LeftIndent>
+<content start="706" end="707">
+</content>
+
+<content start="707" end="838">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="838" end="839">
+<LeftIndent>140.0</LeftIndent>
+<content start="838" end="839">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="839" end="1478">
+<LeftIndent>140.0</LeftIndent>
+<content start="839" end="840">
+</content>
+
+<content start="840" end="847">
+<size>11</size></content>
+
+<content start="847" end="884">
+<bold>true</bold><size>11</size></content>
+
+<content start="884" end="990">
+<size>11</size></content>
+
+<content start="990" end="1014">
+<bold>true</bold><size>11</size></content>
+
+<content start="1014" end="1124">
+<size>11</size></content>
+
+<content start="1124" end="1153">
+<bold>true</bold><size>11</size></content>
+
+<content start="1153" end="1478">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1478" end="1479">
+<LeftIndent>140.0</LeftIndent>
+<content start="1478" end="1479">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1479" end="1740">
+<LeftIndent>140.0</LeftIndent>
+<content start="1479" end="1480">
+</content>
+
+<content start="1480" end="1740">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1740" end="1741">
+<LeftIndent>140.0</LeftIndent>
+<content start="1740" end="1741">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1741" end="1764">
+<LeftIndent>140.0</LeftIndent>
+<content start="1741" end="1742">
+</content>
+
+<content start="1742" end="1764">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1764" end="1765">
+<LeftIndent>140.0</LeftIndent>
+<content start="1764" end="1765">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1765" end="1767">
+<LeftIndent>140.0</LeftIndent>
+<content start="1765" end="1766">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1766" end="1767">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1767" end="1869">
+<RightIndent>40.0</RightIndent>
+<LeftIndent>160.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1767" end="1776">
+<bold>true</bold><size>11</size></content>
+
+<content start="1776" end="1869">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1869" end="1871">
+<LeftIndent>140.0</LeftIndent>
+<content start="1869" end="1870">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1870" end="1871">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1871" end="1872">
+<LeftIndent>140.0</LeftIndent>
+<content start="1871" end="1872">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1872" end="2259">
+<LeftIndent>140.0</LeftIndent>
+<content start="1872" end="2259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2259" end="2260">
+<LeftIndent>100.0</LeftIndent>
+<content start="2259" end="2260">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2260" end="2271">
+<LeftIndent>160.0</LeftIndent>
+<content start="2260" end="2261">
+<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>report2$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+
+<content start="2261" end="2269">
+<size>11</size></content>
+
+<content start="2269" end="2270">
+<size>11</size><component><class>org.concord.modeler.PageTextArea</class>
+<row>9</row>
+<column>25</column>
+<title>&lt;html&gt;Please write your observations, and&lt;br&gt;
+explain what you see.&lt;/html&gt;</title>
+<clear>true</clear>
+</component></content>
+
+<content start="2270" end="2271">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2271" end="2273">
+<LeftIndent>160.0</LeftIndent>
+<content start="2271" end="2272">
+<size>11</size><component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="2272" end="2273">
+<size>11</size><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="2273" end="2281">
+<LeftIndent>160.0</LeftIndent>
+<content start="2273" end="2274">
+<size>11</size><component><class>org.concord.modeler.PageTextField</class>
+<column>23</column>
+<title>What is kinetic energy?</title>
+<clear>true</clear>
+</component></content>
+
+<content start="2274" end="2279">
+<size>11</size></content>
+
+<content start="2279" end="2280">
+<size>11</size><component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>2</row>
+<width>300</width>
+<height>120</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Which of the following is correct? &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>Faster particles have brighter colors.</choice>
+<choice>Slower particles have brighter colors.</choice>
+<answer>0 </answer>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2280" end="2281">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2281" end="2314">
+<LeftIndent>140.0</LeftIndent>
+<content start="2281" end="2313">
+<size>11</size><href>report2_1.cml</href></content>
+
+<content start="2313" end="2314">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2314" end="2315">
+<LeftIndent>140.0</LeftIndent>
+<content start="2314" end="2315">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2315" end="2316">
+<LeftIndent>140.0</LeftIndent>
+<content start="2315" end="2316">
+<size>11</size><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="2316" end="2344">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2316" end="2318">
+<size>11</size></content>
+
+<content start="2318" end="2326">
+<size>11</size><href>hint.cml</href></content>
+
+<content start="2326" end="2329">
+<size>11</size></content>
+
+<content start="2329" end="2334">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="2334" end="2337">
+<size>11</size></content>
+
+<content start="2337" end="2341">
+<size>11</size><href>audioplayer.cml</href></content>
+
+<content start="2341" end="2343">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

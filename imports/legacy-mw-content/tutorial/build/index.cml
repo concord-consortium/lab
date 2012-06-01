@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <text> HOW TO BUILD A WEB SITE?
+
+With the Concord Modeler, you will be able to build cool science and math (currently mainly molecular dynamics simulation) Web sites, and deliver them to your students or classmates.
+
+The Concord Modeler allows the viewer of your page to interact with full-fledged simulations you have embedded onto the page in a sophisticated way that would not have been possible using a conventional Internet browser. With such functionality, the Concord Modeler provides a rich interactive learning environment that will greatly enhance students&apos; learning experience on difficult concepts in math, physics, chemistry and biology.
+</text>
+  <background>    <red>255</red>    <green>255</green>    <blue>255</blue>  </background>
+  <section start="0" end="646">
+    <paragraph start="0" end="26">
+      <content start="0" end="1">
+        <ename>icon</ename>
+        <icon>m018_tn.gif</icon>
+      </content>
+      <content start="1" end="2">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>36</size>
+      </content>
+      <content start="2" end="25">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>24</size>
+      </content>
+      <content start="25" end="26">
+        <family>Arioso</family>
+        <bold>true</bold>
+        <size>48</size>
+      </content>
+    </paragraph>
+    <paragraph start="26" end="27">
+      <content start="26" end="27">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="27" end="210">
+      <content start="27" end="210">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="210" end="211">
+      <content start="210" end="211">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="211" end="645">
+      <content start="211" end="644">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+      <content start="644" end="645">
+      </content>
+    </paragraph>
+    <paragraph start="645" end="646">
+      <content start="645" end="646">
+      </content>
+    </paragraph>
+  </section>
+</document>

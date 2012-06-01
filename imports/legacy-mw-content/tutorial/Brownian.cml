@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title></page_title>
+<info>null</info>
+<bg_color><Red>192</Red><Green>192</Green><Blue>255</Blue></bg_color>
+<text>Brownian motion
+ 
+
+ </text>
+<section start="0" end="21">
+<paragraph start="0" end="16">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="18">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="16" end="17">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>Brownian$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<RightIndent>20.0</RightIndent>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="21">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="20">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Close</title>
+<borderpainted>true</borderpainted><border>Raised Bevel</border>
+<action>Close this page</action></component></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Taking snapshots and using the Snapshot Gallery</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Taking snapshots and using the Snapshot Gallery
+
+&lt; Previous | Index | Next &gt;
+
+You can take snapshots of a model and the graphs associated with it. This facility is usually available at the pop-up menu when you right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on a model window, or can be found in the model container&apos;s menu systems, or through buttons embedded in the page.
+
+When you make a snapshot, it will be temporarily stored in the Snapshot Gallery. (NOTE: This is different from another similar facility which you can use to make a screenshot and save it right away on your computer.)
+
+Choosing &quot;File&gt;View Snapshots&quot; or click the &quot; &quot; button on the tool bar, you can view all the snapshots you have made since you open the Molecular Workbench (MW) software, if you have made any.
+
+  
+[This is a screenshot taken on Windows 2000.]
+
+There are a couple of things you can do with the buttons provided by the Snapshot Gallery (from left to right):
+
+   Annotate: Annotate an image and make notes (hit the ENTER key will invoke the Snapshot Annotator window for the selected image).
+   Save: Save an image in the JPEG or PNG format to a file on the hard disk.
+   Paste: Insert an image into the position on the current page where the caret is.
+   Remove: Remove an image from the Gallery (hit the DELETE or BACKSPACE key will remove the selected image too).
+   Export all images to a report: Export all images to a report that can be subsequently saved.
+
+The Snapshot Annotator allows you to insert text boxes into and draw lines on top of a snapshot image to annotate your observation about the snapshot:
+
+  
+[This is a screenshot.]
+
+To insert a text box, just click the first button on the tool bar. A dialog window will appear, with which you can type in the text, customize the text box, and so on, as is shown in the following screenshot:
+
+  
+[This is a screenshot.]
+
+Once a text box is inserted, you can drag it to change its position. To change the callout point (the tip of the arrow, if the callout mode is selected), drag the small square attached to the tip.
+
+To change the text, style and shape of an existing text box, just double-click on it. If the text boxes overlap, you can use the layer control buttons to bring them back and forth.
+
+The annotations on an image are editable components on top of the image. They can be changed after you close and re-open the Snapshot Annotator and/or the Snapshot Gallery.
+
+ 
+Note: Once a copy of the annotated image is pasted to a page (as you create a report), or saved to a file, the annotations become part of the image --- you cannot change them directly. However, if you do want to change, come back to the Snapshot Gallery, change the annotations and redo the output.
+ 
+
+The snapshot images and their annotations are temporarily stored in the Snapshot Gallery. When you close MW, you will be given a chance to export and save all the annotated snapshots at once, in case you want to keep them.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3005">
+<paragraph start="0" end="48">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="47">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<RightIndent>20.0</RightIndent>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="77">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="59">
+<size>11</size><href>comment.cml</href></content>
+
+<content start="59" end="62">
+<size>11</size></content>
+
+<content start="62" end="67">
+<size>11</size><href>index.cml</href></content>
+
+<content start="67" end="70">
+<size>11</size></content>
+
+<content start="70" end="74">
+<size>11</size><href>report.cml</href></content>
+
+<content start="74" end="76">
+<size>11</size></content>
+
+<content start="76" end="77">
+</content>
+
+</paragraph>
+<paragraph start="77" end="78">
+<content start="77" end="78">
+</content>
+
+</paragraph>
+<paragraph start="78" end="397">
+<LeftIndent>140.0</LeftIndent>
+<content start="78" end="223">
+<size>11</size></content>
+
+<content start="223" end="280">
+<size>11</size></content>
+
+<content start="280" end="397">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="397" end="398">
+<LeftIndent>140.0</LeftIndent>
+<content start="397" end="398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="398" end="615">
+<LeftIndent>140.0</LeftIndent>
+<content start="398" end="555">
+<size>11</size></content>
+
+<content start="555" end="572">
+<size>11</size><href>modelPrinting.cml</href></content>
+
+<content start="572" end="615">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="615" end="616">
+<LeftIndent>140.0</LeftIndent>
+<content start="615" end="616">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="616" end="809">
+<LeftIndent>140.0</LeftIndent>
+<content start="616" end="661">
+<size>11</size></content>
+
+<content start="661" end="662">
+<size>11</size><icon>Album.gif</icon></content>
+
+<content start="662" end="809">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="809" end="810">
+<LeftIndent>100.0</LeftIndent>
+<content start="809" end="810">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="810" end="813">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="810" end="811">
+<size>11</size></content>
+
+<content start="811" end="812">
+<size>11</size><icon>SnapshotManager.gif</icon></content>
+
+<content start="812" end="813">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="813" end="859">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="813" end="858">
+<size>10</size></content>
+
+<content start="858" end="859">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="859" end="860">
+<LeftIndent>100.0</LeftIndent>
+<content start="859" end="860">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="860" end="972">
+<LeftIndent>140.0</LeftIndent>
+<content start="860" end="972">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="972" end="973">
+<LeftIndent>140.0</LeftIndent>
+<content start="972" end="973">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="973" end="1105">
+<LeftIndent>160.0</LeftIndent>
+<content start="973" end="974">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="974" end="976">
+</content>
+
+<content start="976" end="984">
+<size>11</size><bold>true</bold></content>
+
+<content start="984" end="1104">
+<size>11</size></content>
+
+<content start="1104" end="1105">
+</content>
+
+</paragraph>
+<paragraph start="1105" end="1182">
+<LeftIndent>160.0</LeftIndent>
+<content start="1105" end="1106">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1106" end="1108">
+</content>
+
+<content start="1108" end="1112">
+<size>11</size><bold>true</bold></content>
+
+<content start="1112" end="1181">
+<size>11</size></content>
+
+<content start="1181" end="1182">
+</content>
+
+</paragraph>
+<paragraph start="1182" end="1266">
+<LeftIndent>160.0</LeftIndent>
+<content start="1182" end="1183">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1183" end="1185">
+</content>
+
+<content start="1185" end="1190">
+<size>11</size><bold>true</bold></content>
+
+<content start="1190" end="1265">
+<size>11</size></content>
+
+<content start="1265" end="1266">
+</content>
+
+</paragraph>
+<paragraph start="1266" end="1380">
+<LeftIndent>160.0</LeftIndent>
+<content start="1266" end="1267">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1267" end="1269">
+</content>
+
+<content start="1269" end="1275">
+<size>11</size><bold>true</bold></content>
+
+<content start="1275" end="1379">
+<size>11</size></content>
+
+<content start="1379" end="1380">
+</content>
+
+</paragraph>
+<paragraph start="1380" end="1476">
+<LeftIndent>160.0</LeftIndent>
+<content start="1380" end="1381">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1381" end="1383">
+</content>
+
+<content start="1383" end="1412">
+<size>11</size><bold>true</bold></content>
+
+<content start="1412" end="1476">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1476" end="1477">
+<LeftIndent>140.0</LeftIndent>
+<content start="1476" end="1477">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1477" end="1628">
+<LeftIndent>140.0</LeftIndent>
+<content start="1477" end="1628">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1628" end="1629">
+<LeftIndent>140.0</LeftIndent>
+<content start="1628" end="1629">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1629" end="1632">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1629" end="1630">
+</content>
+
+<content start="1630" end="1631">
+<icon>AnnotationSnapshotDialog.gif</icon></content>
+
+<content start="1631" end="1632">
+</content>
+
+</paragraph>
+<paragraph start="1632" end="1656">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1632" end="1655">
+<size>10</size></content>
+
+<content start="1655" end="1656">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1656" end="1657">
+<LeftIndent>140.0</LeftIndent>
+<content start="1656" end="1657">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1657" end="1866">
+<LeftIndent>140.0</LeftIndent>
+<content start="1657" end="1866">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1866" end="1867">
+<LeftIndent>140.0</LeftIndent>
+<content start="1866" end="1867">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1867" end="1870">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1867" end="1868">
+<size>11</size></content>
+
+<content start="1868" end="1869">
+<icon>modeltextdialog.gif</icon></content>
+
+<content start="1869" end="1870">
+</content>
+
+</paragraph>
+<paragraph start="1870" end="1894">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1870" end="1893">
+<size>10</size></content>
+
+<content start="1893" end="1894">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1894" end="1895">
+<LeftIndent>140.0</LeftIndent>
+<content start="1894" end="1895">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1895" end="2092">
+<LeftIndent>140.0</LeftIndent>
+<content start="1895" end="2092">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2092" end="2093">
+<LeftIndent>140.0</LeftIndent>
+<content start="2092" end="2093">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2093" end="2274">
+<LeftIndent>140.0</LeftIndent>
+<content start="2093" end="2274">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2274" end="2275">
+<LeftIndent>140.0</LeftIndent>
+<content start="2274" end="2275">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2275" end="2448">
+<LeftIndent>140.0</LeftIndent>
+<content start="2275" end="2448">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2448" end="2449">
+<LeftIndent>140.0</LeftIndent>
+<content start="2448" end="2449">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2449" end="2451">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="2449" end="2450">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2450" end="2451">
+</content>
+
+</paragraph>
+<paragraph start="2451" end="2750">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2451" end="2455">
+<size>11</size><bold>true</bold></content>
+
+<content start="2455" end="2520">
+<size>11</size></content>
+
+<content start="2520" end="2535">
+<size>11</size><href>report.cml</href></content>
+
+<content start="2535" end="2749">
+<size>11</size></content>
+
+<content start="2749" end="2750">
+</content>
+
+</paragraph>
+<paragraph start="2750" end="2752">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="2750" end="2751">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2751" end="2752">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2752" end="2753">
+<LeftIndent>140.0</LeftIndent>
+<content start="2752" end="2753">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2753" end="2976">
+<LeftIndent>140.0</LeftIndent>
+<content start="2753" end="2975">
+<size>11</size></content>
+
+<content start="2975" end="2976">
+</content>
+
+</paragraph>
+<paragraph start="2976" end="2977">
+<LeftIndent>100.0</LeftIndent>
+<content start="2976" end="2977">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="2977" end="3005">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2977" end="2979">
+<size>11</size></content>
+
+<content start="2979" end="2987">
+<size>11</size><href>comment.cml</href></content>
+
+<content start="2987" end="2990">
+<size>11</size></content>
+
+<content start="2990" end="2995">
+<size>11</size><href>index.cml</href></content>
+
+<content start="2995" end="2998">
+<size>11</size></content>
+
+<content start="2998" end="3002">
+<size>11</size><href>report.cml</href></content>
+
+<content start="3002" end="3004">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

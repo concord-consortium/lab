@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting a multiple choice question</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a multiple choice question
+
+&lt; Previous | Index | Next &gt;
+
+If you choose the &quot;Insert&gt;Multiple Choice&quot; menu (keyboard action: ALT+SHIFT+M), you will see a dialog window as follows:
+
+  
+[This is a screenshot.]
+
+This allows you to design a multiple choice question. For example, you can set the number of choices, choose to put button(s), and so on. There are two buttons you can select to provide interactions with the users. 
+
+The first one is the &quot;Check Answer&quot; button. If you place this button, the users will be able to check the answers. 
+
+The second one is the &quot;Clear Answer&quot; button, which may not be very useful except for being used as an option of not answering (e.g. students can choose not to answer the question if they are not sure). &quot;Clearing Answer&quot; is equivalent to erasing the &quot;mark&quot; a student made on the choices.
+
+In the &quot;Question&quot; tab, you can set the question using HTML code:
+
+  
+[This is a screenshot.]
+
+As HTML is supported, you can insert hyperlinks or images in the Question&apos;s text. In the &quot;Choices&quot; tab, you can set the choices and the key to the answer (note that the HTML support for the keys is limited to formatting the text with different styles --- images and hyperlinks are not supported):
+
+  
+[This is a screenshot.]
+
+When you are done, click OK. You will see, for example, the following multiple choice question with only one correct answer:
+
+ 
+[This is an embedded multiple choice question.]
+
+The correct answer is stored in the file. If you place a &quot;Check Answer&quot; button, the answer can checked by the user right away.
+
+The answer selected by the user is remembered by the software. If the user leaves the page where there is a multiple choice question and come back later, the selection (if any) will be shown.
+
+You can also set multiple choice questions with multiple selections.
+
+Changing and removing a multiple choice question
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove and copy a multiple choice question.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2011">
+<paragraph start="0" end="37">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="36">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<RightIndent>20.0</RightIndent>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="66">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="38" end="40">
+<size>11</size></content>
+
+<content start="40" end="48">
+<href>instrument.cml</href><size>11</size></content>
+
+<content start="48" end="51">
+<size>11</size></content>
+
+<content start="51" end="56">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="56" end="59">
+<size>11</size></content>
+
+<content start="59" end="63">
+<href>textfield.cml</href><size>11</size></content>
+
+<content start="63" end="65">
+<size>11</size></content>
+
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="67">
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="188">
+<LeftIndent>140.0</LeftIndent>
+<content start="67" end="188">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="188" end="189">
+<LeftIndent>100.0</LeftIndent>
+<content start="188" end="189">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="189" end="192">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="189" end="190">
+<size>11</size></content>
+
+<content start="190" end="191">
+<size>11</size><icon>MultipleChoiceDialog.gif</icon></content>
+
+<content start="191" end="192">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="192" end="216">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="192" end="215">
+<size>10</size></content>
+
+<content start="215" end="216">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="216" end="217">
+<LeftIndent>100.0</LeftIndent>
+<content start="216" end="217">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="217" end="433">
+<LeftIndent>140.0</LeftIndent>
+<content start="217" end="433">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="433" end="434">
+<LeftIndent>140.0</LeftIndent>
+<content start="433" end="434">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="434" end="550">
+<LeftIndent>140.0</LeftIndent>
+<content start="434" end="550">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="550" end="551">
+<LeftIndent>140.0</LeftIndent>
+<content start="550" end="551">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="551" end="838">
+<LeftIndent>140.0</LeftIndent>
+<content start="551" end="838">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="838" end="839">
+<LeftIndent>140.0</LeftIndent>
+<content start="838" end="839">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="839" end="904">
+<LeftIndent>140.0</LeftIndent>
+<content start="839" end="904">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="904" end="905">
+<LeftIndent>100.0</LeftIndent>
+<content start="904" end="905">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="905" end="908">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="905" end="906">
+<size>11</size></content>
+
+<content start="906" end="907">
+<size>11</size><icon>MultipleChoiceDialog1.gif</icon></content>
+
+<content start="907" end="908">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="908" end="932">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="908" end="931">
+<size>10</size></content>
+
+<content start="931" end="932">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="932" end="933">
+<LeftIndent>100.0</LeftIndent>
+<content start="932" end="933">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="933" end="1230">
+<LeftIndent>140.0</LeftIndent>
+<content start="933" end="1088">
+<size>11</size></content>
+
+<content start="1088" end="1227">
+<size>11</size><bold>true</bold></content>
+
+<content start="1227" end="1230">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1230" end="1231">
+<content start="1230" end="1231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1231" end="1234">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1231" end="1232">
+<size>11</size></content>
+
+<content start="1232" end="1233">
+<size>11</size><icon>MultipleChoiceDialog2.gif</icon></content>
+
+<content start="1233" end="1234">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1234" end="1258">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1234" end="1257">
+<size>10</size></content>
+
+<content start="1257" end="1258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1258" end="1259">
+<LeftIndent>140.0</LeftIndent>
+<content start="1258" end="1259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1259" end="1384">
+<LeftIndent>140.0</LeftIndent>
+<content start="1259" end="1384">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1384" end="1385">
+<LeftIndent>140.0</LeftIndent>
+<content start="1384" end="1385">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1385" end="1387">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1385" end="1386">
+<size>11</size><component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>4</row>
+<width>350</width>
+<height>200</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;#ffffff&quot;&gt;
+    &lt;font color=&quot;#E76F00&quot; face=&quot;Verdana&quot; size=&quot;5&quot;&gt;&lt;b&gt;Quiz&lt;/b&gt;&lt;/font&gt;&lt;b&gt;&lt;font color=&quot;#E76F00&quot; face=&quot;Verdana&quot; size=&quot;4&quot;&gt;: 
+    In which year did US astronauts first land on the Moon?&lt;/font&gt; &lt;/b&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit><clear>true</clear><choice>&lt;html&gt;&lt;font face=&quot;Arial&quot; color=&quot;#ffffff&quot;&gt;&lt;b&gt;1961&lt;/b&gt;&lt;/font&gt;&lt;html&gt;</choice>
+<choice>&lt;html&gt;&lt;font face=&quot;Arial&quot; color=&quot;#ffff00&quot;&gt;&lt;b&gt;1969&lt;/b&gt;&lt;/font&gt;&lt;html&gt;</choice>
+<choice>&lt;html&gt;&lt;font face=&quot;Arial&quot; color=&quot;#ff00ff&quot;&gt;&lt;b&gt;1971&lt;/b&gt;&lt;/font&gt;&lt;html&gt;</choice>
+<choice>&lt;html&gt;&lt;font face=&quot;Arial&quot; color=&quot;#000000&quot;&gt;&lt;b&gt;1974&lt;/b&gt;&lt;/font&gt;&lt;html&gt;</choice>
+<answer>1 </answer>
+<border>Lowered Etched</border></component></content>
+
+<content start="1386" end="1387">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1387" end="1435">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1387" end="1434">
+<size>10</size></content>
+
+<content start="1434" end="1435">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1435" end="1436">
+<LeftIndent>140.0</LeftIndent>
+<content start="1435" end="1436">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1436" end="1563">
+<LeftIndent>140.0</LeftIndent>
+<content start="1436" end="1563">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1563" end="1564">
+<LeftIndent>140.0</LeftIndent>
+<content start="1563" end="1564">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1564" end="1756">
+<LeftIndent>140.0</LeftIndent>
+<content start="1564" end="1756">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1756" end="1757">
+<LeftIndent>140.0</LeftIndent>
+<content start="1756" end="1757">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1757" end="1826">
+<LeftIndent>140.0</LeftIndent>
+<content start="1757" end="1774">
+<size>11</size></content>
+
+<content start="1774" end="1824">
+<href>choice1.cml</href><size>11</size></content>
+
+<content start="1824" end="1826">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1826" end="1827">
+<LeftIndent>140.0</LeftIndent>
+<content start="1826" end="1827">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1827" end="1876">
+<LeftIndent>140.0</LeftIndent>
+<content start="1827" end="1875">
+<size>11</size><bold>true</bold></content>
+
+<content start="1875" end="1876">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1876" end="1877">
+<LeftIndent>140.0</LeftIndent>
+<content start="1876" end="1877">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1877" end="1982">
+<LeftIndent>140.0</LeftIndent>
+<content start="1877" end="1882">
+<size>11</size></content>
+
+<content start="1882" end="1911">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="1911" end="1981">
+<size>11</size></content>
+
+<content start="1981" end="1982">
+</content>
+
+</paragraph>
+<paragraph start="1982" end="1983">
+<LeftIndent>140.0</LeftIndent>
+<content start="1982" end="1983">
+</content>
+
+</paragraph>
+<paragraph start="1983" end="2011">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1983" end="1985">
+<size>11</size></content>
+
+<content start="1985" end="1993">
+<href>instrument.cml</href><size>11</size></content>
+
+<content start="1993" end="1996">
+<size>11</size></content>
+
+<content start="1996" end="2001">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="2001" end="2004">
+<size>11</size></content>
+
+<content start="2004" end="2008">
+<href>textfield.cml</href><size>11</size></content>
+
+<content start="2008" end="2010">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

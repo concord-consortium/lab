@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a hyperlink</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a hyperlink
+
+&lt; Previous | Index | Next &gt;
+
+The Molecular Workbench (MW) allows you to insert hyperlinks to a page. To insert a hyperlink:
+
+&#10112;  Select the text or image you would like to hyperlink;
+&#10113;  When the text or image is selected, click the &quot;Insert Hyperlink&quot; button &quot; &quot; of the above tool bar, or choose the &quot;Insert Hyperlink&quot; item from the right-click (or CTRL+click on Mac OS X without a multiple-button mouse) pop-up menu, or choose the &quot;Insert&gt;Hyperlink&quot; menu, or simply press CTRL+K (Windows/Linux) or Command+K (Mac OS X). You will see the following dialog window:
+
+  
+[This is a screenshot.]
+
+&#10114;  Select an address from the list, or type/paste a new hyperlink onto the text field. Then click the &quot;OK&quot; button. If you would like to remove a hyperlink, press the &quot;Clear&quot; button, or simply delete the text in the text field.
+
+&#10115;  If you want the hyperlink to be opened in a new window, select the check box in the second row. (Note: The files that are handled using external programs will be opened in new windows in any case, regardless of whether the check box is selected or not.) You can specify the size and location of the new window, and a set of other properties.
+ 
+You can change a hyperlink following the same steps.
+
+Here are two rules for inputting a hyperlink address:
+
+&#10112;  The hyperlinked address can be relative: &quot;./&quot; stands for the current directory, &quot;../&quot; stands for the parent directory. You can go up more than one directories, for example, &quot;../../../one/two/three&quot; goes up three directories and then enters subsequently into another directory three levels deep.
+
+&#10113;  If the hyperlinked address is an absolute one and is on the Web, it must start with the &quot;http://&quot; tag. If the address points to a file that can be accessed through a relative path, favor using a relative path. 
+
+There are many types of sources you can hyperlink to:
+
+   CML: The ad hoc XML format MW uses to store a page. A hyperlinked CML page is opened by MW. For example, this hyperlink http://mw.concord.org/modeler1.3/index.cml opens the home page of MW. (NOTE: CML does not stand for the Chemical Markup Language.)
+
+   PDB: The Protein Data Bank format for molecular structures. For example, the link dna.pdb opens a DNA molecule with the   Jmol molecular viewer.
+
+   XYZ: A simple data format to store 3D coordinates of molecules. Here is an example, opened with Jmol.
+
+   Script: A hyperlink can be set to execute scripts, instead of opening another page. Here is an example.
+
+   Image: Currently images in three formats can be directly viewed in MW. These formats are: JPEG, GIF and PNG. For example, this link opens an image.
+
+   Plain text: Plain text in ASCII code is directly opened. For instance, this link opens a plain text file.
+
+   HTML: The general format used on the Web. A hyperlinked HTML page is opened by a Web browser (on Windows, it is the Internet ExplorerTM; on Mac OS X, it is the default brower you set). You can use a hyperlink to open a conventional Web site, for instance, when you would like to direct the reader to an external Web resource. As with the CML hyperlink, the HTML hyperlink must start with the &quot;http://&quot; tag if it is not a relative address. Try this hyperlink to see how it works:   http://mw.concord.org/modeler/
+
+   ZIP: MW will download and uncompress the ZIP file to a folder you select. If a ZIP file contains CML files, MW will open a CML page. If you use the &quot;Compress Current Activity Folder&quot; tool under the File Menu of MW, you can specify this page. Otherwise, MW will open the first CML page in alphabetical order. Click this link to see an example.
+
+   Vedio and Audio Files: MW uses two players,   the Real Player and   the QuickTime Player, to play linked media. For RT and MOV formats, it uses QuickTime. For RM, RAM and AVI formats, it uses Real Player. For MPEG and MP3 formats, it uses QuickTime on Mac OS X and Real Player on Windows. For example, crank.mov opens a movie clip using the QuickTime Player. If you link a vedio or audio file, please do not forget to instruct the users to install the corresponding player.
+
+   E-mail: The conventional mailto tag can be used to link an email address. Clicking a hyperlinked E-mail address will open the default E-mail client of the operating system of your computer. The format of an E-mail hyperlink is, mailto:address, for example: mailto:webmaster@concord.org. E-mail hyperlinks must start with the &quot;mailto:&quot; tag. There should not be space between the tag and the email address. You can use the E-mail hyperlink to put your E-mail address on the page you created so that people can contact you.
+
+   Java Network Launching Protocol (JNLP): A small file for launching a Java Web Start application. For example, this link opens up a demo program from Sun.
+
+   Macromedia Flash: Hyperlinked multimedia files will be opened in the default browser. For example, try this:   heatTransferZoom.swf. Hyperlinking flash animations that show a macroscopic phenomenon may be a good strategy to help students build mental pictures about micro-macro relationships.
+
+Currently, anchoring within a page is not supported.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="5149">
+<paragraph start="0" end="22">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="21">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="51">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="23" end="25">
+<size>11</size></content>
+
+<content start="25" end="33">
+<size>11</size><href>TextFile.cml</href></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="41">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="48">
+<size>11</size><href>OpenNewWindow.cml</href></content>
+
+<content start="48" end="50">
+<size>11</size></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="147">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="147">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="147" end="148">
+<LeftIndent>100.0</LeftIndent>
+<content start="147" end="148">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="148" end="205">
+<LeftIndent>160.0</LeftIndent>
+<content start="148" end="149">
+<size>14</size></content>
+
+<content start="149" end="205">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="205" end="584">
+<LeftIndent>160.0</LeftIndent>
+<content start="205" end="206">
+<size>14</size></content>
+
+<content start="206" end="281">
+<size>11</size></content>
+
+<content start="281" end="282">
+<size>11</size><icon>Hyperlink.gif</icon></content>
+
+<content start="282" end="367">
+<size>11</size></content>
+
+<content start="367" end="424">
+<size>11</size></content>
+
+<content start="424" end="584">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="584" end="585">
+<LeftIndent>120.0</LeftIndent>
+<content start="584" end="585">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="585" end="588">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="585" end="586">
+<size>11</size></content>
+
+<content start="586" end="587">
+<size>11</size><icon>InsertHyperlink.gif</icon></content>
+
+<content start="587" end="588">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="588" end="612">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="588" end="611">
+<size>10</size></content>
+
+<content start="611" end="612">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="612" end="613">
+<content start="612" end="613">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="613" end="840">
+<LeftIndent>160.0</LeftIndent>
+<content start="613" end="614">
+<size>14</size></content>
+
+<content start="614" end="840">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="840" end="841">
+<LeftIndent>160.0</LeftIndent>
+<content start="840" end="841">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="841" end="1186">
+<LeftIndent>160.0</LeftIndent>
+<content start="841" end="842">
+<size>14</size></content>
+
+<content start="842" end="1106">
+<size>11</size></content>
+
+<content start="1106" end="1184">
+<size>11</size><href>OpenNewWindow.cml</href></content>
+
+<content start="1184" end="1186">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1186" end="1188">
+<LeftIndent>140.0</LeftIndent>
+<content start="1186" end="1188">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1188" end="1241">
+<LeftIndent>140.0</LeftIndent>
+<content start="1188" end="1241">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1241" end="1242">
+<LeftIndent>140.0</LeftIndent>
+<content start="1241" end="1242">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1242" end="1296">
+<LeftIndent>140.0</LeftIndent>
+<content start="1242" end="1296">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1296" end="1297">
+<LeftIndent>140.0</LeftIndent>
+<content start="1296" end="1297">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1297" end="1595">
+<LeftIndent>160.0</LeftIndent>
+<content start="1297" end="1298">
+<size>14</size></content>
+
+<content start="1298" end="1595">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1595" end="1596">
+<LeftIndent>160.0</LeftIndent>
+<content start="1595" end="1596">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1596" end="1810">
+<LeftIndent>160.0</LeftIndent>
+<content start="1596" end="1597">
+<size>14</size></content>
+
+<content start="1597" end="1810">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1810" end="1811">
+<LeftIndent>140.0</LeftIndent>
+<content start="1810" end="1811">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1811" end="1865">
+<LeftIndent>140.0</LeftIndent>
+<content start="1811" end="1865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1865" end="1866">
+<LeftIndent>140.0</LeftIndent>
+<content start="1865" end="1866">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1866" end="2120">
+<LeftIndent>160.0</LeftIndent>
+<content start="1866" end="1867">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1867" end="1869">
+<size>11</size></content>
+
+<content start="1869" end="1872">
+<size>11</size><bold>true</bold></content>
+
+<content start="1872" end="1878">
+<size>11</size></content>
+
+<content start="1878" end="1885">
+<size>11</size><italic>true</italic></content>
+
+<content start="1885" end="1989">
+<size>11</size></content>
+
+<content start="1989" end="2031">
+<size>11</size><href>http://mw.concord.org/modeler1.3/index.cml</href></content>
+
+<content start="2031" end="2120">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2120" end="2121">
+<LeftIndent>160.0</LeftIndent>
+<content start="2120" end="2121">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2121" end="2269">
+<LeftIndent>160.0</LeftIndent>
+<content start="2121" end="2122">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="2122" end="2124">
+</content>
+
+<content start="2124" end="2127">
+<size>11</size><bold>true</bold></content>
+
+<content start="2127" end="2206">
+<size>11</size></content>
+
+<content start="2206" end="2213">
+<size>11</size><href>dna.pdb</href></content>
+
+<content start="2213" end="2244">
+<size>11</size></content>
+
+<content start="2244" end="2245">
+<icon>htmlink.gif</icon></content>
+
+<content start="2245" end="2246">
+<size>11</size></content>
+
+<content start="2246" end="2267">
+<size>11</size><href>http://jmol.sourceforge.net/</href></content>
+
+<content start="2267" end="2269">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2269" end="2270">
+<LeftIndent>160.0</LeftIndent>
+<content start="2269" end="2270">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2270" end="2375">
+<LeftIndent>160.0</LeftIndent>
+<content start="2270" end="2271">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="2271" end="2273">
+</content>
+
+<content start="2273" end="2276">
+<size>11</size><bold>true</bold></content>
+
+<content start="2276" end="2337">
+<size>11</size></content>
+
+<content start="2337" end="2341">
+<size>11</size><href>nanotube.xyz</href></content>
+
+<content start="2341" end="2375">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2375" end="2376">
+<LeftIndent>160.0</LeftIndent>
+<content start="2375" end="2376">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2376" end="2483">
+<LeftIndent>160.0</LeftIndent>
+<content start="2376" end="2377">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="2377" end="2379">
+</content>
+
+<content start="2379" end="2385">
+<size>11</size><bold>true</bold></content>
+
+<content start="2385" end="2421">
+<size>11</size></content>
+
+<content start="2421" end="2428">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="2428" end="2463">
+<size>11</size></content>
+
+<content start="2463" end="2467">
+<size>11</size><href>linkscript.cml</href></content>
+
+<content start="2467" end="2483">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2483" end="2484">
+<LeftIndent>160.0</LeftIndent>
+<content start="2483" end="2484">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2484" end="2635">
+<LeftIndent>160.0</LeftIndent>
+<content start="2484" end="2485">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="2485" end="2487">
+<size>11</size></content>
+
+<content start="2487" end="2492">
+<size>11</size><bold>true</bold></content>
+
+<content start="2492" end="2609">
+<size>11</size></content>
+
+<content start="2609" end="2618">
+<size>11</size><href>../advanced.gif</href></content>
+
+<content start="2618" end="2635">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2635" end="2636">
+<LeftIndent>120.0</LeftIndent>
+<content start="2635" end="2636">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2636" end="2745">
+<LeftIndent>160.0</LeftIndent>
+<content start="2636" end="2637">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="2637" end="2639">
+<size>11</size></content>
+
+<content start="2639" end="2649">
+<size>11</size><bold>true</bold></content>
+
+<content start="2649" end="2710">
+<size>11</size></content>
+
+<content start="2710" end="2719">
+<size>11</size><href>sample.txt</href></content>
+
+<content start="2719" end="2745">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2745" end="2746">
+<LeftIndent>160.0</LeftIndent>
+<content start="2745" end="2746">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2746" end="3261">
+<LeftIndent>160.0</LeftIndent>
+<content start="2746" end="2747">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="2747" end="2749">
+<size>11</size></content>
+
+<content start="2749" end="2753">
+<size>11</size><bold>true</bold></content>
+
+<content start="2753" end="2882">
+<size>11</size></content>
+
+<content start="2882" end="2884">
+<size>10</size><superscript>true</superscript></content>
+
+<content start="2884" end="3121">
+<size>11</size></content>
+
+<content start="3121" end="3126">
+<size>11</size><bold>true</bold></content>
+
+<content start="3126" end="3142">
+<size>11</size></content>
+
+<content start="3142" end="3149">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3149" end="3228">
+<size>11</size></content>
+
+<content start="3228" end="3229">
+<icon>htmlink.gif</icon></content>
+
+<content start="3229" end="3230">
+<size>11</size></content>
+
+<content start="3230" end="3260">
+<size>11</size><href>http://mw.concord.org/modeler/</href></content>
+
+<content start="3260" end="3261">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3261" end="3262">
+<LeftIndent>120.0</LeftIndent>
+<content start="3261" end="3262">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3262" end="3608">
+<LeftIndent>160.0</LeftIndent>
+<content start="3262" end="3263">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="3263" end="3265">
+<size>11</size></content>
+
+<content start="3265" end="3268">
+<size>11</size><bold>true</bold></content>
+
+<content start="3268" end="3579">
+<size>11</size></content>
+
+<content start="3579" end="3588">
+<size>11</size><href>multipage.zip</href></content>
+
+<content start="3588" end="3608">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3608" end="3609">
+<LeftIndent>120.0</LeftIndent>
+<content start="3608" end="3609">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3609" end="4086">
+<LeftIndent>160.0</LeftIndent>
+<content start="3609" end="3610">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="3610" end="3612">
+<size>11</size></content>
+
+<content start="3612" end="3633">
+<size>11</size><bold>true</bold></content>
+
+<content start="3633" end="3656">
+<size>11</size></content>
+
+<content start="3656" end="3657">
+<icon>htmlink.gif</icon></content>
+
+<content start="3657" end="3658">
+<size>11</size></content>
+
+<content start="3658" end="3673">
+<size>11</size><href>http://www.real.com/</href></content>
+
+<content start="3673" end="3678">
+<size>11</size></content>
+
+<content start="3678" end="3679">
+<icon>htmlink.gif</icon></content>
+
+<content start="3679" end="3680">
+<size>11</size></content>
+
+<content start="3680" end="3700">
+<size>11</size><href>http://www.apple.com/quicktime/download/standalone.html</href></content>
+
+<content start="3700" end="3914">
+<size>11</size></content>
+
+<content start="3914" end="3923">
+<size>11</size><href>crank.mov</href></content>
+
+<content start="3923" end="4086">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4086" end="4087">
+<LeftIndent>160.0</LeftIndent>
+<content start="4086" end="4087">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4087" end="4611">
+<LeftIndent>160.0</LeftIndent>
+<content start="4087" end="4088">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="4088" end="4090">
+<size>11</size></content>
+
+<content start="4090" end="4096">
+<size>11</size><bold>true</bold></content>
+
+<content start="4096" end="4115">
+<size>11</size></content>
+
+<content start="4115" end="4121">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4121" end="4347">
+<size>11</size></content>
+
+<content start="4347" end="4375">
+<size>11</size><href>mailto:webmaster@concord.org</href></content>
+
+<content start="4375" end="4394">
+<size>11</size></content>
+
+<content start="4394" end="4399">
+<size>11</size><bold>true</bold></content>
+
+<content start="4399" end="4400">
+<size>11</size><italic>true</italic></content>
+
+<content start="4400" end="4416">
+<size>11</size></content>
+
+<content start="4416" end="4423">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4423" end="4443">
+<size>11</size></content>
+
+<content start="4443" end="4446">
+<size>11</size><bold>true</bold></content>
+
+<content start="4446" end="4611">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4611" end="4612">
+<LeftIndent>120.0</LeftIndent>
+<content start="4611" end="4612">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4612" end="4769">
+<LeftIndent>160.0</LeftIndent>
+<content start="4612" end="4613">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="4613" end="4615">
+<size>11</size></content>
+
+<content start="4615" end="4653">
+<size>11</size><bold>true</bold></content>
+
+<content start="4653" end="4725">
+<size>11</size></content>
+
+<content start="4725" end="4734">
+<size>11</size><href>draw.jnlp</href></content>
+
+<content start="4734" end="4769">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4769" end="4770">
+<LeftIndent>160.0</LeftIndent>
+<content start="4769" end="4770">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4770" end="5066">
+<LeftIndent>160.0</LeftIndent>
+<content start="4770" end="4771">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="4771" end="4773">
+<size>11</size></content>
+
+<content start="4773" end="4789">
+<size>11</size><bold>true</bold></content>
+
+<content start="4789" end="4882">
+<size>11</size></content>
+
+<content start="4882" end="4883">
+<icon>htmlink.gif</icon></content>
+
+<content start="4883" end="4884">
+<size>11</size></content>
+
+<content start="4884" end="4904">
+<size>11</size><href>heatTransferZoom.swf</href></content>
+
+<content start="4904" end="5066">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5066" end="5067">
+<LeftIndent>100.0</LeftIndent>
+<content start="5066" end="5067">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5067" end="5120">
+<LeftIndent>140.0</LeftIndent>
+<content start="5067" end="5120">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5120" end="5121">
+<LeftIndent>140.0</LeftIndent>
+<content start="5120" end="5121">
+</content>
+
+</paragraph>
+<paragraph start="5121" end="5149">
+<Alignment>2</Alignment>
+<content start="5121" end="5123">
+<size>11</size></content>
+
+<content start="5123" end="5131">
+<size>11</size><href>TextFile.cml</href></content>
+
+<content start="5131" end="5134">
+<size>11</size></content>
+
+<content start="5134" end="5139">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="5139" end="5142">
+<size>11</size></content>
+
+<content start="5142" end="5146">
+<size>11</size><href>OpenNewWindow.cml</href></content>
+
+<content start="5146" end="5148">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

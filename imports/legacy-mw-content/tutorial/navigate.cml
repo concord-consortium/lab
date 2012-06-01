@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Navigating</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Navigating
+
+&lt; Previous | Index | Next &gt;
+
+Browsing with the Molecular Workbench (MW) is similar to browsing with any standard Web browsers:
+
+   Click any hyperlinked text to jump to another page, as in any browser. By default, hyperlinked text appears blue and underlined before the link is clicked. The page that a hyperlink points to can be on your computer or on the Internet. 
+
+ 
+IMPORTANT NOTE: If MW is in the authoring mode, clicking on a hyperlink will have no effect. Hyperlinks work only when MW is in the viewing mode. If you would like to test a hyperlink while authoring, save the current page, leave the authoring mode, and click the hyperlink.
+ 
+
+   Copy and paste an address into the Address Field and hit the ENTER key. The Address Field also keeps recent addresses that can be found in its associated drop-down list.
+
+   Click the Back Button &quot; &quot; in the tool bar to go back one page (the menu path: &quot;View&gt;Go To&gt;Back&quot;). You can go all the way back to the starting page. You can also press &quot;ALT+Left&quot; (on Windows and Linux) or  &quot;Command+[&quot; (on Mac OS X) key&#10102; to go back. If the previous page is longer than the height of the window, the scroll bar will be automatically brought to the position which you scrolled to when you left the page.
+
+   Click the Forward Button &quot; &quot; in the tool bar to go forward one page (&quot;View&gt;Go To&gt;Forward&quot;). This button is disabled if the current page is the latest one. You can also press &quot;ALT+Right&quot; (on Windows and Linux) or &quot;Command+]&quot; (on Mac OS X) key to go forward. If the forward page is longer than the height of the window, the scroll bar will be automatically brought to the position which you scrolled to when you left the page.
+
+   Click the Reload Button &quot; &quot; in the tool bar to reload the page (&quot;View&gt;Reload&quot;). You can also press F5/Ctrl+R (Windows and Linux) or Command+R (Mac OS X) to reload. Reloading the page can be used to reset all the simulations, their controls and their outputs on the page at once.
+
+   Click the Home Button &quot; &quot; in the tool bar to go to the home page. The default home page is the Molecular Workbench&apos;s Home Page. The home page can also be set to be the starting page that will be displayed after MW launches. To set the home page and the starting page, choose the &quot;Option&gt;Preferences&quot; menu (on Windows and Linux), or &quot;Molecular Workbench&gt;Preferences...&quot; menu (on Mac OS X). You will see the Preferences Dialog:
+
+  
+[This is a screenshot.]
+
+When MW is in the authoring mode, all the menus and buttons for navigating will be grayed out or hidden. To recover the navigating functionalities, save the page you are working on and leave the authoring mode (see this Section for how to toggle between the authoring mode and the navigating mode).
+
+ 
+&#10102; The Command key on the keyboard of an Apple computer is also known as the META key or the Apple key.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2860">
+<paragraph start="0" end="11">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="10">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<RightIndent>20.0</RightIndent>
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="40">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="12" end="14">
+<size>11</size></content>
+
+<content start="14" end="22">
+<size>11</size><href>intro_basic.cml</href></content>
+
+<content start="22" end="25">
+<size>11</size></content>
+
+<content start="25" end="30">
+<size>11</size><href>index.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="37">
+<size>11</size><href>download.cml</href></content>
+
+<content start="37" end="39">
+<size>11</size></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="139">
+<LeftIndent>140.0</LeftIndent>
+<content start="41" end="139">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="139" end="140">
+<LeftIndent>100.0</LeftIndent>
+<content start="139" end="140">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="140" end="380">
+<LeftIndent>160.0</LeftIndent>
+<content start="140" end="141">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="141" end="153">
+<size>11</size></content>
+
+<content start="153" end="164">
+<size>11</size><href>hyperlink.cml</href></content>
+
+<content start="164" end="251">
+<size>11</size></content>
+
+<content start="251" end="270">
+<size>11</size><href>hlexample.cml</href></content>
+
+<content start="270" end="380">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="380" end="381">
+<LeftIndent>160.0</LeftIndent>
+<content start="380" end="381">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="381" end="383">
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>160.0</LeftIndent>
+<content start="381" end="382">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.78</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="382" end="383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="383" end="658">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="383" end="397">
+<size>11</size><bold>true</bold></content>
+
+<content start="397" end="408">
+<size>11</size></content>
+
+<content start="408" end="429">
+<size>11</size><href>unlock.cml</href></content>
+
+<content start="429" end="658">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="658" end="660">
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>160.0</LeftIndent>
+<content start="658" end="659">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.78</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="659" end="660">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="660" end="661">
+<LeftIndent>160.0</LeftIndent>
+<content start="660" end="661">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="661" end="834">
+<LeftIndent>160.0</LeftIndent>
+<content start="661" end="662">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="662" end="664">
+</content>
+
+<content start="664" end="834">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="834" end="835">
+<LeftIndent>160.0</LeftIndent>
+<content start="834" end="835">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="835" end="1255">
+<LeftIndent>160.0</LeftIndent>
+<content start="835" end="836">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="836" end="861">
+<size>11</size></content>
+
+<content start="861" end="862">
+<icon>Back.gif</icon><size>11</size></content>
+
+<content start="862" end="1072">
+<size>11</size></content>
+
+<content start="1072" end="1073">
+</content>
+
+<content start="1073" end="1255">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1255" end="1256">
+<LeftIndent>160.0</LeftIndent>
+<content start="1255" end="1256">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1256" end="1684">
+<LeftIndent>160.0</LeftIndent>
+<content start="1256" end="1257">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1257" end="1285">
+<size>11</size></content>
+
+<content start="1285" end="1286">
+<icon>Forward.gif</icon><size>11</size></content>
+
+<content start="1286" end="1684">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1684" end="1685">
+<LeftIndent>160.0</LeftIndent>
+<content start="1684" end="1685">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1685" end="1967">
+<LeftIndent>160.0</LeftIndent>
+<content start="1685" end="1686">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1686" end="1688">
+</content>
+
+<content start="1688" end="1713">
+<size>11</size></content>
+
+<content start="1713" end="1714">
+<icon>Refresh.gif</icon></content>
+
+<content start="1714" end="1852">
+<size>11</size></content>
+
+<content start="1852" end="1965">
+<size>11</size><bold>true</bold></content>
+
+<content start="1965" end="1967">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1967" end="1968">
+<LeftIndent>140.0</LeftIndent>
+<content start="1967" end="1968">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1968" end="2397">
+<LeftIndent>160.0</LeftIndent>
+<content start="1968" end="1969">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1969" end="1971">
+</content>
+
+<content start="1971" end="1994">
+<size>11</size></content>
+
+<content start="1994" end="1995">
+<icon>Home.gif</icon></content>
+
+<content start="1995" end="2062">
+<size>11</size></content>
+
+<content start="2062" end="2097">
+<size>11</size><href>../index.cml</href></content>
+
+<content start="2097" end="2397">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2397" end="2398">
+<LeftIndent>160.0</LeftIndent>
+<content start="2397" end="2398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2398" end="2401">
+<Alignment>1</Alignment>
+<LeftIndent>160.0</LeftIndent>
+<content start="2398" end="2399">
+</content>
+
+<content start="2399" end="2400">
+<icon>Preferences.gif</icon></content>
+
+<content start="2400" end="2401">
+</content>
+
+</paragraph>
+<paragraph start="2401" end="2425">
+<Alignment>1</Alignment>
+<LeftIndent>160.0</LeftIndent>
+<content start="2401" end="2424">
+<size>10</size></content>
+
+<content start="2424" end="2425">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2425" end="2426">
+<LeftIndent>140.0</LeftIndent>
+<content start="2425" end="2426">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2426" end="2725">
+<LeftIndent>140.0</LeftIndent>
+<content start="2426" end="2530">
+<size>11</size><bold>true</bold></content>
+
+<content start="2530" end="2641">
+<size>11</size></content>
+
+<content start="2641" end="2653">
+<size>11</size><href>unlock.cml</href></content>
+
+<content start="2653" end="2725">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2725" end="2726">
+<LeftIndent>140.0</LeftIndent>
+<content start="2725" end="2726">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2726" end="2728">
+<SpaceAbove>1.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<content start="2726" end="2727">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2727" end="2728">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2728" end="2831">
+<LeftIndent>140.0</LeftIndent>
+<content start="2728" end="2730">
+</content>
+
+<content start="2730" end="2830">
+<size>10</size></content>
+
+<content start="2830" end="2831">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2831" end="2832">
+<content start="2831" end="2832">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2832" end="2860">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<content start="2832" end="2834">
+<size>11</size></content>
+
+<content start="2834" end="2842">
+<size>11</size><href>intro_basic.cml</href></content>
+
+<content start="2842" end="2845">
+<size>11</size></content>
+
+<content start="2845" end="2850">
+<size>11</size><href>index.cml</href></content>
+
+<content start="2850" end="2853">
+<size>11</size></content>
+
+<content start="2853" end="2857">
+<size>11</size><href>download.cml</href></content>
+
+<content start="2857" end="2859">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

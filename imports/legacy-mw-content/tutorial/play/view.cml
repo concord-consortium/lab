@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <text>  HOW TO OPEN A PAGE?
+
+For a page available shown on the tree, double-click the node.
+
+For a page that is not available on the tree, but has a known URL address, input or copy the URL address to the above URL bar, as is shown below:
+
+                
+
+This applies to pages that are somewhere on your hard drive.
+</text>
+  <background>    <red>255</red>    <green>255</green>    <blue>255</blue>  </background>
+  <section start="0" end="314">
+    <paragraph start="0" end="22">
+      <content start="0" end="1">
+        <icon>lecturing.gif</icon>
+        <ename>icon</ename>
+      </content>
+      <content start="1" end="2">
+      </content>
+      <content start="2" end="3">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>36</size>
+      </content>
+      <content start="3" end="21">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>24</size>
+      </content>
+      <content start="21" end="22">
+        <family>Arioso</family>
+        <bold>true</bold>
+        <size>48</size>
+      </content>
+    </paragraph>
+    <paragraph start="22" end="23">
+      <content start="22" end="23">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="23" end="86">
+      <content start="23" end="86">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="86" end="87">
+      <content start="86" end="87">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="87" end="233">
+      <content start="87" end="233">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="233" end="234">
+      <content start="233" end="234">
+      </content>
+    </paragraph>
+    <paragraph start="234" end="251">
+      <content start="234" end="249">
+      </content>
+      <content start="249" end="250">
+        <ename>icon</ename>
+        <icon>URLBar.gif</icon>
+      </content>
+      <content start="250" end="251">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+    </paragraph>
+    <paragraph start="251" end="252">
+      <content start="251" end="252">
+      </content>
+    </paragraph>
+    <paragraph start="252" end="313">
+      <content start="252" end="312">
+        <family>Book Antiqua</family>
+        <bold>true</bold>
+        <size>16</size>
+      </content>
+      <content start="312" end="313">
+        <bold>true</bold>
+      </content>
+    </paragraph>
+    <paragraph start="313" end="314">
+      <content start="313" end="314">
+      </content>
+    </paragraph>
+  </section>
+</document>

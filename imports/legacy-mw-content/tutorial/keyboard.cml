@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Keyboard Shortcuts</page_title>
+<bg_image>sidebar1.gif</bg_image>
+<text>Keyboard Shortcuts:
+
+The Molecular Workbench software shares many keyboard shortcuts with familiar software such as the Internet Explorer&#8482; and Microsoft Word&#8482;.
+
+ 
+
+There are many other ad hoc keyboard shortcuts that the Molecular Workbench software supports. Most of the keyboard shorts can be found at the corresponding menus.
+
+Also, on Mac OS X without a multiple-button mouse, Ctrl+click or Command+click is equivalent to right-click on Windows and Linux.</text>
+<section start="0" end="459">
+<paragraph start="0" end="20">
+<LeftIndent>160.0</LeftIndent>
+<content start="0" end="20">
+<size>15</size><bold>true</bold><foreground>8 24 99</foreground></content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<LeftIndent>160.0</LeftIndent>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="160">
+<LeftIndent>160.0</LeftIndent>
+<content start="21" end="137">
+<size>11</size></content>
+
+<content start="137" end="138">
+</content>
+
+<content start="138" end="157">
+<size>11</size></content>
+
+<content start="157" end="158">
+</content>
+
+<content start="158" end="160">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="160" end="161">
+<LeftIndent>160.0</LeftIndent>
+<content start="160" end="161">
+<size>9</size></content>
+
+</paragraph>
+<paragraph start="161" end="163">
+<LeftIndent>160.0</LeftIndent>
+<content start="161" end="162">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>Command, MW (Windows), IE/Word, MW (Mac OS X), Safari</columnname>
+<row>44</row>
+<column>5</column>
+<layout>186, 125, 107, 109, 109</layout>
+<width>640.0</width>
+<height>1220.0</height>
+<border>Lowered Etched</border>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>Add Bookmark</te><te>Ctrl+D</te><te>Ctrl+D</te><te>Command+D</te><te>Command+D</te><te>Back</te><te>Alt+Left Arrow</te><te>Alt+Left Arrow</te><te>Command+[</te><te>Command+[</te><te>Close Window</te><te>Ctrl+W, Alt+F4</te><te>Ctrl+W, Alt+F4</te><te>Command+W</te><te>Command+W</te><te>Copy</te><te>Ctrl+C, Ctrl+Insert</te><te>Ctrl+C</te><te>Command+C</te><te>Command+C</te><te>Cut</te><te>Ctrl+X, Shift+Delete</te><te>Ctrl+X</te><te>Command+X</te><te>Command+X</te><te>Decrease Text Size</te><te>Ctrl+Alt+[</te><te></te><te>Command+Alt+[</te><te>Command+-</te><te>Deselect</te><te>Ctrl+\</te><te></te><te></te><te></te><te>Find in This Page</te><te>Ctrl+F</te><te>Ctrl+F</te><te>Command+F</te><te>Command+F</te><te>Forward</te><te>Alt+Right Arrow</te><te>Alt+Right Arrow</te><te>Command+]</te><te>Command+]</te><te>Full Screen</te><te>F11</te><te>F11</te><te>F11</te><te></te><te>Help</te><te>F1</te><te>F1</te><te>F1</te><te>Command+?</te><te>Home</te><te>Alt+Home</te><te>Alt+Home</te><te>Command+Shift+H</te><te>Command+Shift+H</te><te>Increase Text Size</te><te>Ctrl+Alt+]</te><te></te><te>Command+Alt+]</te><te>Command++</te><te>Insert Hyperlink</te><te>Ctrl+K</te><te>Ctrl+K</te><te>Command+K</te><te></te><te>Move Caret To Begin</te><te>Ctrl+Home</te><te></te><te></te><te></te><te>Move Caret to End</te><te>Ctrl+End</te><te></te><te></te><te></te><te>Move Caret to Next Word</te><te>Ctrl+Right</te><te></te><te></te><te></te><te>Move Caret to Previous Word</te><te>Ctrl+Left</te><te></te><te></te><te></te><te>New Page</te><te>Ctrl+N</te><te>Ctrl+N (Word)</te><te>Command+N</te><te>Command+N</te><te>New Window</te><te>Ctrl+Shift+N</te><te>Ctrl+N (IE)</te><te>Command+Shift+N</te><te>Command+N</te><te>Open File</te><te>Ctrl+O</te><te>Ctrl+O</te><te>Command+O</te><te>Command+O</te><te>Page Source</te><te>Ctrl+U</te><te></te><te>Command+Alt+V</te><te>Command+Alt+V</te><te>Paste</te><te>Ctrl+V</te><te>Ctrl+V</te><te>Command+V</te><te>Command+V</te><te>Print</te><te>Ctrl+P</te><te>Ctrl+P</te><te>Command+P</te><te>Command+P</te><te>Redo</te><te>Ctrl+Y</te><te>Ctrl+Y</te><te>Command+Y</te><te>Command+Y</te><te>Reload</te><te>F5, Ctrl+R</te><te>F5, Ctrl+R</te><te>Command+R</te><te>Command+R</te><te>Restore Text Size</te><te>Ctrl+Alt+=</te><te></te><te>Command+Alt+=</te><te></te><te>Save Page</te><te>Ctrl+S</te><te>Ctrl+S</te><te>Command+S</te><te>Command+S</te><te>Select All</te><te>Ctrl+A</te><te>Ctrl+A</te><te>Command+A</te><te>Command+A</te><te>Select All After Caret</te><te>Shift+PgDn</te><te></te><te></te><te></te><te></te><te>Ctrl+Shift+End</te><te></te><te></te><te></te><te></te><te>Ctrl+Shift+PgDn</te><te></te><te></te><te></te><te>Select All Before Caret</te><te>Shift+PgUp</te><te></te><te></te><te></te><te></te><te>Ctrl+Shift+Home</te><te></te><te></te><te></te><te></te><te>Ctrl+Shift+PgUp</te><te></te><te></te><te></te><te>Select Line: Left Part</te><te>Shift+Home</te><te></te><te></te><te></te><te>Select Line: Right Part</te><te>Shift+End</te><te></te><te></te><te></te><te>Select Line Above</te><te>Shift+Up</te><te></te><te></te><te></te><te>Select Line Below</te><te>Shift+Down</te><te></te><te></te><te></te><te>Select Next Word</te><te>Shift+Ctrl+Right</te><te></te><te></te><te></te><te>Select Previous Word</te><te>Shift+Ctrl+Left</te><te></te><te></te><te></te><te>Select Backward</te><te>Shift+Left</te><te></te><te></te><te></te><te>Select Forward</te><te>Shift+Right</te><te></te><te></te><te></te><te>Undo</te><te>Ctrl+Z</te><te>Ctrl+Z</te><te>Command+Z</te><te>Command+Z</te></elementarray>
+</component></content>
+
+<content start="162" end="163">
+</content>
+
+</paragraph>
+<paragraph start="163" end="164">
+<LeftIndent>160.0</LeftIndent>
+<content start="163" end="164">
+</content>
+
+</paragraph>
+<paragraph start="164" end="328">
+<LeftIndent>160.0</LeftIndent>
+<content start="164" end="185">
+<size>11</size></content>
+
+<content start="185" end="191">
+<italic>true</italic><size>11</size></content>
+
+<content start="191" end="328">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="328" end="329">
+<LeftIndent>160.0</LeftIndent>
+<content start="328" end="329">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="329" end="459">
+<LeftIndent>160.0</LeftIndent>
+<content start="329" end="458">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

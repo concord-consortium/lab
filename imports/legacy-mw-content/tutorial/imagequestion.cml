@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting an image question</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting an image question
+
+&lt; Previous | Index | Next &gt;
+
+What is an image question?
+
+A picture worths between 999 and 1001 words. To evaluate how students learn with visual simulations, the Molecular Workbench (MW) allows the user to take snapshots of models and graphs. These snapshot images can be put into a report that can be automatically generated at the end of an activity.
+
+Image questions are a class of components that make this kind of image data mining more specific. An image question allows you to ask a question, and the user can drag an image from the Snapshot Gallery and drop it into the image question&apos;s container. This process is similar to picking up an answer of a multiple choice question, but with images the user created by himself/herself instead of some pure text set by others, or answering an open-ended question with an image created by the user from a visual simulation.  When a report is generated, the selected image will be automatically pasted under the corresponding question. Thus, a researcher can measure student learning more accurately.
+
+How to insert an image question
+
+To insert an image question, select &quot;Image Question&quot; from the Insert Menu, or press ALT+SHIFT+Q, or hit the &quot; &quot; button from the tool bar. A dialog window will appear, in which you can set the question, the size, among others. Note that you are not allowed to have an image question without question text.
+
+How an image question works
+
+When a page is loaded, an empty image question appears to be like the left screenshot below. If you follow the instruction and click the &quot;Open&quot; button, a thumbnail image panel will appear at the bottom of the empty window, as is illustrated in the right screenshot below:
+
+    
+[These are screenshots.]
+
+Now, you can follow the instruction in the middle of the window to drag a thumbnail image from the panel into the empty window above it. You can always pull the scroll bar to find an image, or simply use the left and right arrow key to move to the previous or next image. If an image is selected, it will be highlighted by a red rectangle, as is shown in the screenshot on the left below. If you are done with selecting an image, you can click the &quot;Close&quot; button at the bottom, and the thumbnail image panel will disappear, as is shown in the screenshot on the right below:
+
+    
+[These are screenshots.]
+
+By default, the selected image is rescaled so that its width or height, whichever is larger, fits that of the window. You can, however, simply drag it around (this is known as panning an image), as is shown in the screenshots below:
+
+    
+[These are screenshots.]
+
+Finally, if you want to add or edit annotations or comments on the selected image, you do not have to go back to the Snapshot Gallery. You can just double-click on the image in the window, and the Snapshot Editor will open up, as is shown in the following screenshot:
+
+  
+[This is a screenshot.]
+
+The annotations and comments you add or change will be associated with the image in the Snapshot Gallery, which means they will be included in a report, when it is automatically generated.
+
+An example
+
+An example is provided in the following for you to get some idea about how it works.
+
+   
+   
+[These are an embedded simulator and an embedded image question.]
+
+When you are done with selecting an image and dragging it into the window, try hitting the &quot;Create a report for this page&quot; button to see where the image is placed in the report.
+
+You can insert as many image questions as needed.
+
+Changing and removing an image question
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove and copy an image question.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3679">
+<paragraph start="0" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="27">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="57">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="29" end="31">
+<size>11</size></content>
+
+<content start="31" end="39">
+<size>11</size><href>textarea.cml</href></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="47">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="47" end="50">
+<size>11</size></content>
+
+<content start="50" end="54">
+<size>11</size><href>hint.cml</href></content>
+
+<content start="54" end="56">
+<size>11</size></content>
+
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="58">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="58">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="58" end="85">
+<LeftIndent>140.0</LeftIndent>
+<content start="58" end="84">
+<size>11</size><bold>true</bold></content>
+
+<content start="84" end="85">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="85" end="86">
+<LeftIndent>140.0</LeftIndent>
+<content start="85" end="86">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="86" end="382">
+<LeftIndent>140.0</LeftIndent>
+<content start="86" end="382">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="382" end="383">
+<LeftIndent>140.0</LeftIndent>
+<content start="382" end="383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="383" end="1079">
+<LeftIndent>140.0</LeftIndent>
+<content start="383" end="635">
+<size>11</size></content>
+
+<content start="635" end="901">
+<size>11</size><bold>true</bold></content>
+
+<content start="901" end="1079">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1079" end="1080">
+<LeftIndent>140.0</LeftIndent>
+<content start="1079" end="1080">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1080" end="1112">
+<LeftIndent>140.0</LeftIndent>
+<content start="1080" end="1111">
+<size>11</size><bold>true</bold></content>
+
+<content start="1111" end="1112">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1112" end="1113">
+<LeftIndent>140.0</LeftIndent>
+<content start="1112" end="1113">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1113" end="1418">
+<LeftIndent>140.0</LeftIndent>
+<content start="1113" end="1222">
+<size>11</size></content>
+
+<content start="1222" end="1223">
+<icon>ImageQuestion.gif</icon></content>
+
+<content start="1223" end="1418">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1418" end="1419">
+<LeftIndent>140.0</LeftIndent>
+<content start="1418" end="1419">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1419" end="1447">
+<LeftIndent>140.0</LeftIndent>
+<content start="1419" end="1446">
+<size>11</size><bold>true</bold></content>
+
+<content start="1446" end="1447">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1447" end="1448">
+<LeftIndent>140.0</LeftIndent>
+<content start="1447" end="1448">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1448" end="1720">
+<LeftIndent>140.0</LeftIndent>
+<content start="1448" end="1720">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1720" end="1721">
+<LeftIndent>140.0</LeftIndent>
+<content start="1720" end="1721">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1721" end="1726">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1721" end="1722">
+<size>11</size></content>
+
+<content start="1722" end="1723">
+<icon>ImageQuestion1.gif</icon></content>
+
+<content start="1723" end="1724">
+</content>
+
+<content start="1724" end="1725">
+<icon>ImageQuestion2.gif</icon></content>
+
+<content start="1725" end="1726">
+</content>
+
+</paragraph>
+<paragraph start="1726" end="1751">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1726" end="1750">
+<size>10</size></content>
+
+<content start="1750" end="1751">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1751" end="1752">
+<LeftIndent>140.0</LeftIndent>
+<content start="1751" end="1752">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1752" end="2326">
+<LeftIndent>140.0</LeftIndent>
+<content start="1752" end="2326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2326" end="2327">
+<LeftIndent>140.0</LeftIndent>
+<content start="2326" end="2327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2327" end="2332">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2327" end="2328">
+<size>11</size></content>
+
+<content start="2328" end="2329">
+<icon>ImageQuestion3.gif</icon></content>
+
+<content start="2329" end="2330">
+</content>
+
+<content start="2330" end="2331">
+<icon>ImageQuestion4.gif</icon></content>
+
+<content start="2331" end="2332">
+</content>
+
+</paragraph>
+<paragraph start="2332" end="2357">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2332" end="2356">
+<size>10</size></content>
+
+<content start="2356" end="2357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2357" end="2358">
+<LeftIndent>140.0</LeftIndent>
+<content start="2357" end="2358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2358" end="2591">
+<LeftIndent>140.0</LeftIndent>
+<content start="2358" end="2591">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2591" end="2592">
+<LeftIndent>140.0</LeftIndent>
+<content start="2591" end="2592">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2592" end="2597">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2592" end="2593">
+<size>11</size></content>
+
+<content start="2593" end="2594">
+<icon>ImageQuestion5.gif</icon></content>
+
+<content start="2594" end="2595">
+</content>
+
+<content start="2595" end="2596">
+<icon>ImageQuestion6.gif</icon></content>
+
+<content start="2596" end="2597">
+</content>
+
+</paragraph>
+<paragraph start="2597" end="2622">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2597" end="2621">
+<size>10</size></content>
+
+<content start="2621" end="2622">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2622" end="2623">
+<LeftIndent>140.0</LeftIndent>
+<content start="2622" end="2623">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2623" end="2891">
+<LeftIndent>140.0</LeftIndent>
+<content start="2623" end="2891">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2891" end="2892">
+<LeftIndent>140.0</LeftIndent>
+<content start="2891" end="2892">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2892" end="2895">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2892" end="2893">
+<size>11</size></content>
+
+<content start="2893" end="2894">
+<icon>ImageQuestion7.gif</icon></content>
+
+<content start="2894" end="2895">
+</content>
+
+</paragraph>
+<paragraph start="2895" end="2919">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2895" end="2918">
+<size>10</size></content>
+
+<content start="2918" end="2919">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2919" end="2920">
+<LeftIndent>140.0</LeftIndent>
+<content start="2919" end="2920">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2920" end="3109">
+<LeftIndent>140.0</LeftIndent>
+<content start="2920" end="3109">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3109" end="3110">
+<LeftIndent>140.0</LeftIndent>
+<content start="3109" end="3110">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3110" end="3121">
+<LeftIndent>140.0</LeftIndent>
+<content start="3110" end="3120">
+<size>11</size><bold>true</bold></content>
+
+<content start="3120" end="3121">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3121" end="3122">
+<LeftIndent>140.0</LeftIndent>
+<content start="3121" end="3122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3122" end="3207">
+<LeftIndent>140.0</LeftIndent>
+<content start="3122" end="3207">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3207" end="3208">
+<LeftIndent>140.0</LeftIndent>
+<content start="3207" end="3208">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3208" end="3212">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3208" end="3209">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>imagequestion$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="3209" end="3210">
+</content>
+
+<content start="3210" end="3211">
+<component><class>org.concord.modeler.ImageQuestion</class><width>280</width><height>300</height><border>Raised Bevel</border>
+<title>&lt;html&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Please fill in an image that shows &lt;b&gt;spatial equilibrium&lt;/b&gt;:&lt;/font&gt;&lt;/html&gt;</title></component></content>
+
+<content start="3211" end="3212">
+</content>
+
+</paragraph>
+<paragraph start="3212" end="3216">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3212" end="3213">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="3213" end="3214">
+</content>
+
+<content start="3214" end="3215">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report for this page</title>
+<group>imagequestion.cml</group>
+<border>Raised Bevel</border>
+<action>Create a report for a page group in a new window</action></component></content>
+
+<content start="3215" end="3216">
+</content>
+
+</paragraph>
+<paragraph start="3216" end="3282">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3216" end="3282">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="3282" end="3283">
+<LeftIndent>140.0</LeftIndent>
+<content start="3282" end="3283">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3283" end="3461">
+<LeftIndent>140.0</LeftIndent>
+<content start="3283" end="3461">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3461" end="3462">
+<LeftIndent>140.0</LeftIndent>
+<content start="3461" end="3462">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3462" end="3512">
+<LeftIndent>140.0</LeftIndent>
+<content start="3462" end="3512">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3512" end="3513">
+<LeftIndent>140.0</LeftIndent>
+<content start="3512" end="3513">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3513" end="3553">
+<LeftIndent>140.0</LeftIndent>
+<content start="3513" end="3552">
+<size>11</size><bold>true</bold></content>
+
+<content start="3552" end="3553">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3553" end="3554">
+<LeftIndent>140.0</LeftIndent>
+<content start="3553" end="3554">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3554" end="3650">
+<LeftIndent>140.0</LeftIndent>
+<content start="3554" end="3559">
+<size>11</size></content>
+
+<content start="3559" end="3588">
+<size>11</size><href>changeComponent.cml</href></content>
+
+<content start="3588" end="3649">
+<size>11</size></content>
+
+<content start="3649" end="3650">
+</content>
+
+</paragraph>
+<paragraph start="3650" end="3651">
+<LeftIndent>140.0</LeftIndent>
+<content start="3650" end="3651">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3651" end="3679">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3651" end="3653">
+<size>11</size></content>
+
+<content start="3653" end="3661">
+<size>11</size><href>textarea.cml</href></content>
+
+<content start="3661" end="3664">
+<size>11</size></content>
+
+<content start="3664" end="3669">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="3669" end="3672">
+<size>11</size></content>
+
+<content start="3672" end="3676">
+<size>11</size><href>hint.cml</href></content>
+
+<content start="3676" end="3678">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

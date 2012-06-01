@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-8"?>
+<document>
+<language>ISO-8859-8</language>
+<page_title>סאמחו חתפל תפתושמ הדעו</page_title>
+<text>Hebrew language
+
+This test page is encoded in ISO-8859-8:
+
+סאמחו חתפל תפתושמ הדעו
+לארשיב םיעוגיפה תייגוסב ןודת 
+ 
+תקספהל בייחתהל סאמח הבריס חתפ םע תוחישב
+תונדפקב ןיינעה ןוחבל המיכסה ךא ,םיעוגיפה
+  
+ןב ףולאו ןמלבוס לאינד ,ןייטשניבור ינד </text>
+<section start="0" end="237">
+<paragraph start="0" end="16">
+<Alignment>1</Alignment>
+<content start="0" end="15">
+<bold>true</bold><size>15</size></content>
+
+<content start="15" end="16">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<content start="16" end="17">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="17" end="58">
+<content start="17" end="58">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="58" end="59">
+<content start="58" end="59">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="59" end="82">
+<Alignment>2</Alignment>
+<content start="59" end="82">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="82" end="112">
+<Alignment>2</Alignment>
+<content start="82" end="112">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="112" end="114">
+<Alignment>2</Alignment>
+<content start="112" end="114">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="114" end="154">
+<Alignment>2</Alignment>
+<content start="114" end="154">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="154" end="195">
+<Alignment>2</Alignment>
+<content start="154" end="195">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="195" end="198">
+<Alignment>2</Alignment>
+<content start="195" end="198">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="198" end="237">
+<Alignment>2</Alignment>
+<content start="198" end="236">
+<size>15</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Mark</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Mark
+
+&lt; Previous | Index | Next &gt;
+
+The mark command marks the currently selected objects with a specific color. (To see how to mark objects without using scripts, see this section.)
+
+Syntax:
+
+mark
+mark color ([red], [green], [blue])
+mark color [[red], [green], [blue]]
+
+where [red] is an integer between 0 and 255 that represents the red component, [green] is an integer between 0 and 255 that represents the green component, and [blue] is an integer between 0 and 255 that represents the blue component. For example, mark color [255, 0, 0] marks the selected objects with the red color, mark color (255, 255, 0) marks the selected objects with the yellow color, and so on.
+
+ 
+Note: The RGB color triple must be confined within a pair of square brackets, or a pair of parentheses. The triple must be separated by a comma or at lease a whitespace character.
+ 
+When the mark command is used in the absence of the color argument, the selected objects will be marked with the previously set color, or the default mark color if it has never been set.
+
+Here is an example of using the mark command to highlight different sets of atoms.
+
+ 
+   
+[This is an embedded simulator.]
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1199">
+<paragraph start="0" end="5">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="4">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="34">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="6" end="8">
+<size>11</size></content>
+
+<content start="8" end="16">
+<size>11</size><href>script_set.cml</href></content>
+
+<content start="16" end="19">
+<size>11</size></content>
+
+<content start="19" end="24">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="31">
+<size>11</size><href>script_add.cml</href></content>
+
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>100.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="182">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<size>11</size><family>Courier New</family></content>
+
+<content start="43" end="167">
+<size>11</size></content>
+
+<content start="167" end="179">
+<size>11</size><href>markAction.cml</href></content>
+
+<content start="179" end="182">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="182" end="183">
+<LeftIndent>140.0</LeftIndent>
+<content start="182" end="183">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="183" end="191">
+<LeftIndent>140.0</LeftIndent>
+<content start="183" end="191">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="191" end="192">
+<LeftIndent>140.0</LeftIndent>
+<content start="191" end="192">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="192" end="197">
+<LeftIndent>160.0</LeftIndent>
+<content start="192" end="196">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="196" end="197">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="197" end="233">
+<LeftIndent>160.0</LeftIndent>
+<content start="197" end="207">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="207" end="232">
+<size>11</size><family>Courier New</family></content>
+
+<content start="232" end="233">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="233" end="269">
+<LeftIndent>160.0</LeftIndent>
+<content start="233" end="243">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="243" end="268">
+<size>11</size><family>Courier New</family></content>
+
+<content start="268" end="269">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="269" end="270">
+<LeftIndent>140.0</LeftIndent>
+<content start="269" end="270">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="270" end="674">
+<LeftIndent>140.0</LeftIndent>
+<content start="270" end="276">
+<size>11</size></content>
+
+<content start="276" end="281">
+<size>11</size><family>Courier New</family></content>
+
+<content start="281" end="349">
+<size>11</size></content>
+
+<content start="349" end="356">
+<size>11</size><family>Courier New</family></content>
+
+<content start="356" end="430">
+<size>11</size></content>
+
+<content start="430" end="436">
+<size>11</size><family>Courier New</family></content>
+
+<content start="436" end="518">
+<size>11</size></content>
+
+<content start="518" end="540">
+<size>11</size><family>Courier New</family></content>
+
+<content start="540" end="588">
+<size>11</size></content>
+
+<content start="588" end="612">
+<size>11</size><family>Courier New</family></content>
+
+<content start="612" end="674">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="674" end="675">
+<LeftIndent>140.0</LeftIndent>
+<content start="674" end="675">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="675" end="677">
+<LeftIndent>140.0</LeftIndent>
+<content start="675" end="676">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="676" end="677">
+</content>
+
+</paragraph>
+<paragraph start="677" end="857">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="677" end="681">
+<bold>true</bold><size>11</size></content>
+
+<content start="681" end="857">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="857" end="859">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>60.0</RightIndent>
+<content start="857" end="858">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="858" end="859">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="859" end="1046">
+<LeftIndent>140.0</LeftIndent>
+<content start="859" end="868">
+<size>11</size></content>
+
+<content start="868" end="872">
+<size>11</size><family>Courier New</family></content>
+
+<content start="872" end="911">
+<size>11</size></content>
+
+<content start="911" end="916">
+<size>11</size><family>Courier New</family></content>
+
+<content start="916" end="1046">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1046" end="1047">
+<LeftIndent>140.0</LeftIndent>
+<content start="1046" end="1047">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1047" end="1130">
+<LeftIndent>140.0</LeftIndent>
+<content start="1047" end="1079">
+<size>11</size></content>
+
+<content start="1079" end="1083">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1083" end="1130">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1130" end="1131">
+<LeftIndent>140.0</LeftIndent>
+<content start="1130" end="1131">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1131" end="1133">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1131" end="1132">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_mark$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1132" end="1133">
+</content>
+
+</paragraph>
+<paragraph start="1133" end="1137">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1133" end="1134">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>mark all atoms</title>
+<tooltip>Mark all atoms</tooltip>
+<disabled_at_run>true</disabled_at_run>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1112362628405</groupid>
+<script>select atom all;
+mark color [255 200 125];</script>
+<action>Execute MW script</action></component></content>
+
+<content start="1134" end="1135">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>mark some atoms with another color</title>
+<tooltip>Mark some atoms with another color</tooltip>
+<disabled_at_run>true</disabled_at_run>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1112362628405</groupid>
+<script>select atom 1-5;
+mark color [200, 100, 200];</script>
+<action>Execute MW script</action></component></content>
+
+<content start="1135" end="1136">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>do not mark anything</title>
+<tooltip>Mark nothing</tooltip>
+<disabled_at_run>true</disabled_at_run>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1112362628405</groupid>
+<script>Select atom none;
+MARK;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="1136" end="1137">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1137" end="1170">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1137" end="1170">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1170" end="1171">
+<LeftIndent>140.0</LeftIndent>
+<content start="1170" end="1171">
+</content>
+
+</paragraph>
+<paragraph start="1171" end="1199">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1171" end="1173">
+<size>11</size></content>
+
+<content start="1173" end="1181">
+<size>11</size><href>script_set.cml</href></content>
+
+<content start="1181" end="1184">
+<size>11</size></content>
+
+<content start="1184" end="1189">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="1189" end="1192">
+<size>11</size></content>
+
+<content start="1192" end="1196">
+<size>11</size><href>script_add.cml</href></content>
+
+<content start="1196" end="1198">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

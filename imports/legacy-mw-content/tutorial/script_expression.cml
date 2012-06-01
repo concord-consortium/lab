@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Math expressions</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Math expressions
+
+&lt; Previous | Index | Next &gt;
+
+MW&apos;s scripting engine also supports evaluation of math expressions embedded in commands. Embedded math expressions must be enclosed in a pair of double quotes. For instance, the following command positions an existing atom at the center of the container:
+
+set atom[2].rx &quot;0.5*%width&quot;;
+set atom[2].ry &quot;0.5*%height&quot;;
+
+The advantage of this, compared with using numbers, is that you do not have to change the script if the container is resized. You can use mathematical functions in the expressions. For example, the following commands construct a string of atoms in a shape defined by a sine function:
+
+add atom 2 (&quot;0.05*%width&quot;, &quot;(0.5+0.2*sin(0.05*4*pi))*%height&quot;);
+add atom 2 (&quot;0.10*%width&quot;, &quot;(0.5+0.2*sin(0.10*4*pi))*%height&quot;);
+add atom 2 (&quot;0.15*%width&quot;, &quot;(0.5+0.2*sin(0.15*4*pi))*%height&quot;);
+......
+......
+......
+add atom 2 (&quot;0.95*%width&quot;, &quot;(0.5+0.2*sin(0.95*4*pi))*%height&quot;);
+
+ 
+Math: Click here to see a list of supported mathematical functions and constants.
+ 
+
+Math expressions, however, cannot be directly used in scripts embedded in the HTML forms, because the double quote for escaping the math expressions in a script command is also used in HTML to define attributes. A workaround of this problem is to put the scripts in a file and use the source command to load it.
+
+Below is an example, which uses mathematical expression to rotate an array of atoms.
+
+ 
+ 
+[This is an embedded simulator.]
+
+The scripts in the above example contain many repetitions, which not only make the scripts hard to read but also slow down their execution. The next section will show you how to use the define command to save results and reuse them in multiple commands.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1733">
+<paragraph start="0" end="17">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="16">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="46">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="18" end="20">
+<size>11</size></content>
+
+<content start="20" end="28">
+<href>script_variable.cml</href><size>11</size></content>
+
+<content start="28" end="31">
+<size>11</size></content>
+
+<content start="31" end="36">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<href>script_defvar.cml</href><size>11</size></content>
+
+<content start="43" end="45">
+<size>11</size></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<LeftIndent>100.0</LeftIndent>
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="302">
+<LeftIndent>140.0</LeftIndent>
+<content start="47" end="136">
+<size>11</size></content>
+
+<content start="136" end="205">
+<size>11</size><bold>true</bold></content>
+
+<content start="205" end="302">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="302" end="303">
+<LeftIndent>140.0</LeftIndent>
+<content start="302" end="303">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="303" end="332">
+<LeftIndent>160.0</LeftIndent>
+<content start="303" end="332">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="332" end="362">
+<LeftIndent>160.0</LeftIndent>
+<content start="332" end="362">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="362" end="363">
+<LeftIndent>140.0</LeftIndent>
+<content start="362" end="363">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="363" end="647">
+<LeftIndent>140.0</LeftIndent>
+<content start="363" end="647">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="647" end="648">
+<LeftIndent>140.0</LeftIndent>
+<content start="647" end="648">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="648" end="712">
+<LeftIndent>160.0</LeftIndent>
+<content start="648" end="712">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="712" end="776">
+<LeftIndent>160.0</LeftIndent>
+<content start="712" end="776">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="776" end="840">
+<LeftIndent>160.0</LeftIndent>
+<content start="776" end="840">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="840" end="847">
+<LeftIndent>160.0</LeftIndent>
+<content start="840" end="847">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="847" end="854">
+<LeftIndent>160.0</LeftIndent>
+<content start="847" end="854">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="854" end="861">
+<LeftIndent>160.0</LeftIndent>
+<content start="854" end="861">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="861" end="925">
+<LeftIndent>160.0</LeftIndent>
+<content start="861" end="924">
+<size>11</size><family>Courier New</family></content>
+
+<content start="924" end="925">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="925" end="926">
+<LeftIndent>140.0</LeftIndent>
+<content start="925" end="926">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="926" end="928">
+<LeftIndent>140.0</LeftIndent>
+<content start="926" end="927">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="927" end="928">
+</content>
+
+</paragraph>
+<paragraph start="928" end="1010">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="928" end="932">
+<size>11</size><bold>true</bold></content>
+
+<content start="932" end="940">
+<size>11</size></content>
+
+<content start="940" end="944">
+<href>functions.cml</href><size>11</size></content>
+
+<content start="944" end="1009">
+<size>11</size></content>
+
+<content start="1009" end="1010">
+</content>
+
+</paragraph>
+<paragraph start="1010" end="1012">
+<LeftIndent>140.0</LeftIndent>
+<content start="1010" end="1011">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1011" end="1012">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1012" end="1013">
+<LeftIndent>140.0</LeftIndent>
+<content start="1012" end="1013">
+</content>
+
+</paragraph>
+<paragraph start="1013" end="1325">
+<LeftIndent>140.0</LeftIndent>
+<content start="1013" end="1091">
+<size>11</size></content>
+
+<content start="1091" end="1101">
+<href>htmlform.cml</href><size>11</size></content>
+
+<content start="1101" end="1298">
+<size>11</size></content>
+
+<content start="1298" end="1304">
+<href>script_source.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1304" end="1324">
+<size>11</size></content>
+
+<content start="1324" end="1325">
+</content>
+
+</paragraph>
+<paragraph start="1325" end="1326">
+<LeftIndent>140.0</LeftIndent>
+<content start="1325" end="1326">
+</content>
+
+</paragraph>
+<paragraph start="1326" end="1411">
+<LeftIndent>140.0</LeftIndent>
+<content start="1326" end="1411">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1411" end="1412">
+<LeftIndent>140.0</LeftIndent>
+<content start="1411" end="1412">
+</content>
+
+</paragraph>
+<paragraph start="1412" end="1414">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1412" end="1413">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_expression$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder></component></content>
+
+<content start="1413" end="1414">
+</content>
+
+</paragraph>
+<paragraph start="1414" end="1416">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1414" end="1415">
+<component><class>org.concord.modeler.PageSlider</class>
+<title>Rotational angle (in degrees)</title>
+<tooltip>Change the rotational angle</tooltip>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<tick>true</tick>
+<nstep>50</nstep>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;360&quot;}{value=&quot;7.6&quot;, label=&quot;270&quot;}{value=&quot;5.0&quot;, label=&quot;180&quot;}{value=&quot;2.6&quot;, label=&quot;90&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>set atom[0].rx &quot;0.5*%width&quot;;
+set atom[0].ry &quot;0.5*%height&quot;;
+set atom[1].rx &quot;0.5*%width+2.5*cos(%val/5*pi)&quot;;
+set atom[1].ry &quot;0.5*%height+2.5*sin(%val/5*pi)&quot;;
+set atom[2].rx &quot;0.5*%width+5*cos(%val/5*pi)&quot;;
+set atom[2].ry &quot;0.5*%height+5*sin(%val/5*pi)&quot;;
+set atom[3].rx &quot;0.5*%width+7.5*cos(%val/5*pi)&quot;;
+set atom[3].ry &quot;0.5*%height+7.5*sin(%val/5*pi)&quot;;
+
+set atom[4].rx &quot;0.5*%width+2.5*cos(%val/5*pi+0.5*pi)&quot;;
+set atom[4].ry &quot;0.5*%height+2.5*sin(%val/5*pi+0.5*pi)&quot;;
+set atom[5].rx &quot;0.5*%width+2.5*sqrt(2)*cos(%val/5*pi+0.25*pi)&quot;;
+set atom[5].ry &quot;0.5*%height+2.5*sqrt(2)*sin(%val/5*pi+0.25*pi)&quot;;
+set atom[6].rx &quot;0.5*%width+2.5*sqrt(5)*cos(%val/5*pi+atan(0.5))&quot;;
+set atom[6].ry &quot;0.5*%height+2.5*sqrt(5)*sin(%val/5*pi+atan(0.5))&quot;;
+set atom[7].rx &quot;0.5*%width+2.5*sqrt(10)*cos(%val/5*pi+atan(1.0/3.0))&quot;;
+set atom[7].ry &quot;0.5*%height+2.5*sqrt(10)*sin(%val/5*pi+atan(1.0/3.0))&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="1415" end="1416">
+</content>
+
+</paragraph>
+<paragraph start="1416" end="1449">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1416" end="1448">
+<size>10</size></content>
+
+<content start="1448" end="1449">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1449" end="1450">
+<LeftIndent>140.0</LeftIndent>
+<content start="1449" end="1450">
+</content>
+
+</paragraph>
+<paragraph start="1450" end="1704">
+<LeftIndent>140.0</LeftIndent>
+<content start="1450" end="1636">
+<size>11</size></content>
+
+<content start="1636" end="1642">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1642" end="1703">
+<size>11</size></content>
+
+<content start="1703" end="1704">
+</content>
+
+</paragraph>
+<paragraph start="1704" end="1705">
+<LeftIndent>140.0</LeftIndent>
+<content start="1704" end="1705">
+</content>
+
+</paragraph>
+<paragraph start="1705" end="1733">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1705" end="1707">
+<size>11</size></content>
+
+<content start="1707" end="1715">
+<href>script_variable.cml</href><size>11</size></content>
+
+<content start="1715" end="1718">
+<size>11</size></content>
+
+<content start="1718" end="1723">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="1723" end="1726">
+<size>11</size></content>
+
+<content start="1726" end="1730">
+<href>script_defvar.cml</href><size>11</size></content>
+
+<content start="1730" end="1732">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

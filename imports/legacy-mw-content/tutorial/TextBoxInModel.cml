@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting text</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting text
+
+&lt; Previous | Index | Next &gt;
+
+You can insert text (in any language), and as an image, attach it to a moving object (e.g. an atom), to annotate the model. To insert a text box, select the &quot;Input Text Box&quot; item from the File menu of a model container. You should see the following dialog window:
+
+  
+[This is a screenshot.]
+
+With this dialog, you can type the text and customize the text box. Note that styled text such as HTML is not supported --- the whole text has the same style. If you need to show different text in different styles, you can probably do it with several text boxes.
+
+Once you have inserted a text box, you can edit it by using the pop-up menu, which can be invoked when the text box is right-clicked (or CTRL+clicked on Mac OS X without a multiple-button mouse). The pop-up menu allows you to move the selected text box around, remove it, duplicate it, and attach it to an object:
+
+         
+[This is a screenshot.]
+
+If the &quot;Attach&quot; item of the pop-up menu is selected, the following things can happen:
+
+(1) If the text box is not in the &quot;callout&quot; mode and there are physical objects (particles or obstacles) that overlap with it, the center of the text box will be attached to the one that is nearest to the center of the text box. As a result, the text box will move along with the object. If there are no objects overlapping with the text box, nothing will happen.
+
+(2) If the text box is in the &quot;callout&quot; mode and the tip of the callout arrow is within an object, the tip will be attached to the object and move along with it when the simulation starts. If the tip is not within any object, nothing will happen.
+
+(3) There are situations in which a text box is in the &quot;callout&quot; mode but the center of it, not the tip of its arrow, is attached to a moving object. You can set this in the &quot;Attach to an Object&quot; dialog by choosing the way the text box will be attached to the center of the selected object. It can be set to sit right on top of an object (the &quot;Box Center&quot; mode), or have an arrow that points to the object (the &quot;Arrow Head&quot; mode).
+
+Once a text box is attached to an object, it cannot be moved --- you will have to detach it first (using the &quot;Detach&quot; item of the pop-up menu). A text box can only be attached to an object, but an object can have any number of text boxes (or images) attached to it.
+
+You can also set the order in which it will be drawn. If a text box is sent backward, it will be drawn before others (images or text boxes) that overlap with it, therefore, it will appear to be behind those. Conversely, if a text box is brought forward, it will be drawn after others that overlap with it, therefore, it will appear to be on top of those. There are also two options that allow you to set the layer position relative to the particles. A text box can be set to be on top of all particles (in front of the particle layer), or to be beneath all particles (behind the particle layer). Note that if a text box is set to be behind the particle layer, it will NOT be able to brought forward to a text box or an image that is in front of the particle layer. Conversely, if a text box is set to be in front of the particle layer, it will NOT be able to sent behind a text box or an image that is behind the particle layer.
+
+Like any other components in a model container, a text box can be moved, cut, copied and pasted in the same way.
+
+The following model shows an example. 
+
+  
+    
+[This is an embedded simulator.]
+
+Script support
+
+Text boxes can be inserted using the add command. To remove a text box, use the select command to select it first, and then call the remove command. There are two methods for moving a text box around. The first one is to select first and then call the move command. The second one is to set the coordinates of its upper-left corner by using the set command.
+
+The following properties of a text box are settable through scripts: x, y, text, font, size, color, style, border, shadow, background. The x and y variables are in angstroms (10 pixels). The text input should be enclosed within a pair of tags, i.e. &lt;t&gt;some text&lt;/t&gt;, or should be the name or absolute address of a text file to be read. The file name should have .txt postfix, e.g. &quot;set textbox[0].text sample.txt&quot;. If the text is to be read from the input script directly (enclosed in a pair of &lt;t&gt; tags), as is in the former case, it cannot be multiple lines. If you have to use multiple lines, type the text in a plain-text file first and then load it using the latter syntax.
+
+To know the index of a text box, double-click on it when the model container is in the selecting and moving mode and look up the number after the string &quot;Text Box #&quot; in the Properties Panel that opens.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4763">
+<paragraph start="0" end="15">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="14">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="44">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="16" end="18">
+<size>11</size></content>
+
+<content start="18" end="26">
+<size>11</size><href>ImageInModel.cml</href></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="34">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="41">
+<size>11</size><href>LineInModel.cml</href></content>
+
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<LeftIndent>100.0</LeftIndent>
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="309">
+<LeftIndent>140.0</LeftIndent>
+<content start="45" end="309">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="309" end="310">
+<LeftIndent>140.0</LeftIndent>
+<content start="309" end="310">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="310" end="313">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="310" end="311">
+<size>11</size></content>
+
+<content start="311" end="312">
+<icon>modeltextdialog.gif</icon></content>
+
+<content start="312" end="313">
+</content>
+
+</paragraph>
+<paragraph start="313" end="337">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="313" end="336">
+<size>10</size></content>
+
+<content start="336" end="337">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="337" end="338">
+<LeftIndent>140.0</LeftIndent>
+<content start="337" end="338">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="338" end="601">
+<LeftIndent>140.0</LeftIndent>
+<content start="338" end="601">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="601" end="602">
+<LeftIndent>140.0</LeftIndent>
+<content start="601" end="602">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="602" end="916">
+<LeftIndent>140.0</LeftIndent>
+<content start="602" end="736">
+<size>11</size></content>
+
+<content start="736" end="795">
+<size>11</size></content>
+
+<content start="795" end="916">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="916" end="917">
+<LeftIndent>140.0</LeftIndent>
+<content start="916" end="917">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="917" end="927">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="917" end="918">
+<size>11</size></content>
+
+<content start="918" end="919">
+<icon>ModelTextBoxPopupMenu.gif</icon></content>
+
+<content start="919" end="925">
+</content>
+
+<content start="925" end="926">
+<icon>AttachDialog.gif</icon></content>
+
+<content start="926" end="927">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="927" end="951">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="927" end="950">
+<size>10</size></content>
+
+<content start="950" end="951">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="951" end="952">
+<LeftIndent>140.0</LeftIndent>
+<content start="951" end="952">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="952" end="1038">
+<LeftIndent>140.0</LeftIndent>
+<content start="952" end="1038">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1038" end="1039">
+<LeftIndent>140.0</LeftIndent>
+<content start="1038" end="1039">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1039" end="1403">
+<LeftIndent>140.0</LeftIndent>
+<content start="1039" end="1244">
+<size>11</size></content>
+
+<content start="1244" end="1250">
+<size>11</size><bold>true</bold></content>
+
+<content start="1250" end="1403">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1403" end="1404">
+<LeftIndent>140.0</LeftIndent>
+<content start="1403" end="1404">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1404" end="1651">
+<LeftIndent>140.0</LeftIndent>
+<content start="1404" end="1651">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1651" end="1652">
+<LeftIndent>140.0</LeftIndent>
+<content start="1651" end="1652">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1652" end="2083">
+<LeftIndent>140.0</LeftIndent>
+<content start="1652" end="2083">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2083" end="2084">
+<LeftIndent>140.0</LeftIndent>
+<content start="2083" end="2084">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2084" end="2350">
+<LeftIndent>140.0</LeftIndent>
+<content start="2084" end="2350">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2350" end="2351">
+<LeftIndent>140.0</LeftIndent>
+<content start="2350" end="2351">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2351" end="3280">
+<LeftIndent>140.0</LeftIndent>
+<content start="2351" end="2469">
+<size>11</size></content>
+
+<content start="2469" end="2475">
+<size>11</size><href>ImageInModel.cml</href></content>
+
+<content start="2475" end="3280">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3280" end="3281">
+<LeftIndent>140.0</LeftIndent>
+<content start="3280" end="3281">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3281" end="3394">
+<LeftIndent>140.0</LeftIndent>
+<content start="3281" end="3394">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3394" end="3395">
+<LeftIndent>140.0</LeftIndent>
+<content start="3394" end="3395">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3395" end="3434">
+<LeftIndent>140.0</LeftIndent>
+<content start="3395" end="3434">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3434" end="3435">
+<LeftIndent>140.0</LeftIndent>
+<content start="3434" end="3435">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3435" end="3438">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3435" end="3436">
+</content>
+
+<content start="3436" end="3437">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>TextBoxInModel$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="3437" end="3438">
+</content>
+
+</paragraph>
+<paragraph start="3438" end="3443">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3438" end="3439">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Annotations</title>
+<tooltip>Annotating model</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>load intro4elem.mml;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="3439" end="3440">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Autoscroll text</title>
+<tooltip>Show autoscrolled text</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>show selectionhalo off;
+select textbox all;
+remove;
+select atom all;
+remove;
+add textbox newton.txt (2, 2);
+set textbox[0].font Verdana;
+set textbox[0].size 10;
+set textbox[0].color [100, 100, 200];
+set textbox[0].x 12;
+set textbox[0].y 2;
+loop 1;
+delay 0.2; set textbox[0].y &quot;-%loop_count*2&quot;;
+loop 50;
+show selectionhalo on;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="3440" end="3441">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Transparent effect</title>
+<tooltip>Transparent effect</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>load alphatext.mml;
+loop 1;
+set textbox[0].color [0, 0, 0, &quot;%loop_count*5&quot;];
+set textbox[0].background [255, 210, 100, &quot;%loop_count*5&quot;];
+set textbox[1].color [0, 0, 0, &quot;(%loop_times-%loop_count)*5&quot;];
+set textbox[1].background [212, 255, 254, &quot;(%loop_times-%loop_count)*5&quot;];
+set textbox[2].color [0, 0, 0, &quot;%loop_count*5&quot;];
+set textbox[2].background [255, 210, 100, &quot;%loop_count*5&quot;];
+set textbox[3].color [0, 0, 0, &quot;(%loop_times-%loop_count)*5&quot;];
+set textbox[3].background [212, 255, 254, &quot;(%loop_times-%loop_count)*5&quot;];
+delay 0.05;
+loop 51;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="3441" end="3442">
+<component><class>org.concord.modeler.PageButton</class>
+<title>More Annotations</title>
+<tooltip>Annotating model</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>load gas.mml;
+run;
+add textbox gas.txt (5, 2);
+set textbox[0].background [200, 200, 100];
+set textbox[0].border 2;
+set textbox[0].shadow 1;
+set textbox[0].font Verdana;
+delay 10;
+stop;
+delay 1;
+load liquid.mml;
+run;
+add textbox liquid.txt (5, 2);
+set textbox[0].background [200, 200, 100];
+set textbox[0].border 2;
+set textbox[0].shadow 1;
+set textbox[0].font Verdana;
+delay 10;
+stop;
+delay 1;
+load solid.mml;
+run;
+add textbox solid.txt (5, 2);
+set textbox[0].background [200, 200, 100];
+set textbox[0].border 2;
+set textbox[0].shadow 1;
+set textbox[0].font Verdana;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="3442" end="3443">
+</content>
+
+</paragraph>
+<paragraph start="3443" end="3476">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3443" end="3475">
+<size>10</size></content>
+
+<content start="3475" end="3476">
+</content>
+
+</paragraph>
+<paragraph start="3476" end="3477">
+<LeftIndent>140.0</LeftIndent>
+<content start="3476" end="3477">
+</content>
+
+</paragraph>
+<paragraph start="3477" end="3492">
+<LeftIndent>140.0</LeftIndent>
+<content start="3477" end="3491">
+<size>11</size><bold>true</bold></content>
+
+<content start="3491" end="3492">
+</content>
+
+</paragraph>
+<paragraph start="3492" end="3493">
+<LeftIndent>140.0</LeftIndent>
+<content start="3492" end="3493">
+</content>
+
+</paragraph>
+<paragraph start="3493" end="3851">
+<LeftIndent>140.0</LeftIndent>
+<content start="3493" end="3530">
+<size>11</size></content>
+
+<content start="3530" end="3533">
+<size>11</size><href>script_add.cml</href><family>Courier New</family></content>
+
+<content start="3533" end="3573">
+<size>11</size></content>
+
+<content start="3573" end="3579">
+<size>11</size><href>script_select.cml</href><family>Courier New</family></content>
+
+<content start="3579" end="3626">
+<size>11</size></content>
+
+<content start="3626" end="3632">
+<size>11</size><href>script_remove.cml</href><family>Courier New</family></content>
+
+<content start="3632" end="3745">
+<size>11</size></content>
+
+<content start="3745" end="3749">
+<size>11</size><href>script_move.cml</href><family>Courier New</family></content>
+
+<content start="3749" end="3838">
+<size>11</size></content>
+
+<content start="3838" end="3841">
+<size>11</size><href>script_set.cml</href><family>Courier New</family></content>
+
+<content start="3841" end="3851">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3851" end="3852">
+<LeftIndent>140.0</LeftIndent>
+<content start="3851" end="3852">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3852" end="4531">
+<LeftIndent>140.0</LeftIndent>
+<content start="3852" end="3921">
+<size>11</size></content>
+
+<content start="3921" end="3922">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3922" end="3924">
+<size>11</size></content>
+
+<content start="3924" end="3925">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3925" end="3927">
+<size>11</size></content>
+
+<content start="3927" end="3931">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3931" end="3933">
+<size>11</size></content>
+
+<content start="3933" end="3937">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3937" end="3939">
+<size>11</size></content>
+
+<content start="3939" end="3943">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3943" end="3945">
+<size>11</size></content>
+
+<content start="3945" end="3950">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3950" end="3952">
+<size>11</size></content>
+
+<content start="3952" end="3957">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3957" end="3959">
+<size>11</size></content>
+
+<content start="3959" end="3965">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3965" end="3967">
+<size>11</size></content>
+
+<content start="3967" end="3973">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3973" end="3975">
+<size>11</size></content>
+
+<content start="3975" end="3985">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3985" end="3991">
+<size>11</size></content>
+
+<content start="3991" end="3992">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3992" end="3997">
+<size>11</size></content>
+
+<content start="3997" end="3998">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3998" end="4043">
+<size>11</size></content>
+
+<content start="4043" end="4047">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4047" end="4101">
+<size>11</size></content>
+
+<content start="4101" end="4117">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4117" end="4214">
+<size>11</size></content>
+
+<content start="4214" end="4218">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4218" end="4234">
+<size>11</size></content>
+
+<content start="4234" end="4264">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4264" end="4530">
+<size>11</size></content>
+
+<content start="4530" end="4531">
+</content>
+
+</paragraph>
+<paragraph start="4531" end="4532">
+<LeftIndent>140.0</LeftIndent>
+<content start="4531" end="4532">
+</content>
+
+</paragraph>
+<paragraph start="4532" end="4734">
+<LeftIndent>140.0</LeftIndent>
+<content start="4532" end="4615">
+<size>11</size></content>
+
+<content start="4615" end="4644">
+<size>11</size><href>selectAction.cml</href></content>
+
+<content start="4644" end="4734">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4734" end="4735">
+<LeftIndent>140.0</LeftIndent>
+<content start="4734" end="4735">
+</content>
+
+</paragraph>
+<paragraph start="4735" end="4763">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="4735" end="4737">
+<size>11</size></content>
+
+<content start="4737" end="4745">
+<size>11</size><href>ImageInModel.cml</href></content>
+
+<content start="4745" end="4748">
+<size>11</size></content>
+
+<content start="4748" end="4753">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="4753" end="4756">
+<size>11</size></content>
+
+<content start="4756" end="4760">
+<size>11</size><href>LineInModel.cml</href></content>
+
+<content start="4760" end="4762">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

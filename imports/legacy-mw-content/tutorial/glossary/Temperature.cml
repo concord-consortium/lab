@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Temperature</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Temperature
+
+In molecular dynamics simulations, temperature is defined as two third of the kinetic energy in 3D, or the kinetic energy in 2D, divided by the Boltzman constant KB. 
+
+
+   
+ return to index</text>
+<section start="0" end="203">
+<paragraph start="0" end="12">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="11">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="13">
+<LeftIndent>120.0</LeftIndent>
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="180">
+<LeftIndent>140.0</LeftIndent>
+<content start="13" end="175">
+<size>11</size></content>
+
+<content start="175" end="176">
+<italic>true</italic><size>11</size></content>
+
+<content start="176" end="177">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="177" end="179">
+<size>11</size></content>
+
+<content start="179" end="180">
+</content>
+
+</paragraph>
+<paragraph start="180" end="181">
+<LeftIndent>120.0</LeftIndent>
+<content start="180" end="181">
+</content>
+
+</paragraph>
+<paragraph start="181" end="182">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="181" end="182">
+</content>
+
+</paragraph>
+<paragraph start="182" end="186">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="182" end="183">
+</content>
+
+<content start="183" end="184">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="184" end="186">
+</content>
+
+</paragraph>
+<paragraph start="186" end="203">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="186" end="187">
+</content>
+
+<content start="187" end="202">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

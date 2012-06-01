@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Potential energy</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Potential energy
+
+
+The potential energy of a molecular system is the summation of all interatomic interaction potentials over all the atoms in the system. 
+
+
+ 
+return to index</text>
+<section start="0" end="176">
+<paragraph start="0" end="17">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="16">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<LeftIndent>120.0</LeftIndent>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<LeftIndent>120.0</LeftIndent>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="156">
+<LeftIndent>140.0</LeftIndent>
+<content start="19" end="155">
+<size>11</size></content>
+
+<content start="155" end="156">
+</content>
+
+</paragraph>
+<paragraph start="156" end="157">
+<LeftIndent>120.0</LeftIndent>
+<content start="156" end="157">
+</content>
+
+</paragraph>
+<paragraph start="157" end="158">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="157" end="158">
+</content>
+
+</paragraph>
+<paragraph start="158" end="160">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="158" end="159">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="159" end="160">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="160" end="176">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="160" end="175">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

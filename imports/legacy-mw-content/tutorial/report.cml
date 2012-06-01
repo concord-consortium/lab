@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Creating a report on the current page</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Creating a report on the current page
+
+&lt; Previous | Index | Next &gt;
+
+You can ask your students to write reports on an activity they are working on. The action to create a report for the current page is &quot;File&gt;Create Report for Current Page&quot;.
+
+When creating a report, the Molecular Workbench (MW) will scan through the page, automatically collect a student&apos;s answers to the questions (such as multiple choices and essay questions), combine the questions and answers together with all the snapshot images the student has taken for the models to a new page, and invoke the authoring system so that the student can edit the answers and annotate the snapshots while reviewing the report. There will also be three buttons &quot;Submit to Concord Consortium&quot;, &quot;Print&quot; and &quot;Save as HTML&quot; inserted below the user information area and appended at the end of a report page. Clicking the &quot;Submit to Concord Consortium&quot; button will submit the report page to our database that is accessible ONLY by our researchers. Submissions will be used for research only within the Concord Consortium and its collaborators, and will not be publicized. You can print your report by clicking the &quot;Print&quot; button (which allows you to save it as a PDF file if you choose Adope PDF from the printer list --- if you are a teacher, you can ask your student to save their reports as PDF files and mail them to you later), or click the &quot;Save As HTML&quot; to save a copy of the report that you can review later on with a web browser without having to use MW.
+
+ 
+If you would like the user to create a report for multiple pages, see here for more information.
+ 
+
+The menu for the reporting action is disabled when in the authoring mode. The user is not supposed to create a report on a page under construction.
+
+In the following, we set up a model and some questions. You can answer the questions and try to create a report for this page to see how it actually works.
+
+          
+
+       
+
+ 
+
+ 
+Note: The above button can be inserted from selecting the &quot;Insert &gt; Activity Controller &gt; Activity Button&quot; menu, and then choosing the item &quot;Create a report about this page in a new window&quot; from the &quot;Select an action&quot; pulldown menu.
+ 
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2209">
+<paragraph start="0" end="38">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="37">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<RightIndent>20.0</RightIndent>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="67">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="39" end="41">
+<size>11</size></content>
+
+<content start="41" end="49">
+<href>snapshot.cml</href><size>11</size></content>
+
+<content start="49" end="52">
+<size>11</size></content>
+
+<content start="52" end="57">
+<href>index.cml</href><size>11</size></content>
+
+<content start="57" end="60">
+<size>11</size></content>
+
+<content start="60" end="64">
+<href>blankPage.cml</href><size>11</size></content>
+
+<content start="64" end="66">
+<size>11</size></content>
+
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="68">
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="240">
+<LeftIndent>140.0</LeftIndent>
+<content start="68" end="240">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="240" end="241">
+<LeftIndent>140.0</LeftIndent>
+<content start="240" end="241">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="241" end="1511">
+<LeftIndent>140.0</LeftIndent>
+<content start="241" end="390">
+<size>11</size></content>
+
+<content start="390" end="406">
+<href>choice.cml</href><size>11</size></content>
+
+<content start="406" end="411">
+<size>11</size></content>
+
+<content start="411" end="426">
+<href>textarea.cml</href><size>11</size></content>
+
+<content start="426" end="485">
+<size>11</size></content>
+
+<content start="485" end="500">
+<href>snapshot.cml</href><size>11</size></content>
+
+<content start="500" end="557">
+<size>11</size></content>
+
+<content start="557" end="584">
+<href>unlock.cml</href><size>11</size></content>
+
+<content start="584" end="1033">
+<size>11</size></content>
+
+<content start="1033" end="1037">
+<size>11</size><bold>true</bold></content>
+
+<content start="1037" end="1177">
+<size>11</size></content>
+
+<content start="1177" end="1197">
+<size>11</size><bold>true</bold></content>
+
+<content start="1197" end="1218">
+<href>pdfize.cml</href><size>11</size><bold>true</bold></content>
+
+<content start="1218" end="1377">
+<size>11</size><bold>true</bold></content>
+
+<content start="1377" end="1511">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1511" end="1512">
+<LeftIndent>140.0</LeftIndent>
+<content start="1511" end="1512">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1512" end="1514">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1512" end="1513">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1513" end="1514">
+</content>
+
+</paragraph>
+<paragraph start="1514" end="1611">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1514" end="1584">
+<size>11</size></content>
+
+<content start="1584" end="1588">
+<href>report2.cml</href><size>11</size></content>
+
+<content start="1588" end="1610">
+<size>11</size></content>
+
+<content start="1610" end="1611">
+</content>
+
+</paragraph>
+<paragraph start="1611" end="1613">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1611" end="1612">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1612" end="1613">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1613" end="1614">
+<LeftIndent>140.0</LeftIndent>
+<content start="1613" end="1614">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1614" end="1762">
+<LeftIndent>140.0</LeftIndent>
+<content start="1614" end="1762">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1762" end="1763">
+<LeftIndent>100.0</LeftIndent>
+<content start="1762" end="1763">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1763" end="1919">
+<LeftIndent>140.0</LeftIndent>
+<content start="1763" end="1919">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1919" end="1920">
+<LeftIndent>100.0</LeftIndent>
+<content start="1919" end="1920">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1920" end="1931">
+<LeftIndent>140.0</LeftIndent>
+<content start="1920" end="1921">
+<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>report$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+
+<content start="1921" end="1929">
+<size>11</size></content>
+
+<content start="1929" end="1930">
+<size>11</size><component><class>org.concord.modeler.PageTextArea</class>
+<row>9</row>
+<column>25</column>
+<title>&lt;html&gt;&lt;body bgcolor=#eeeeee&gt;Please write your observations, and
+explain what you see.&lt;/body&gt;&lt;/html&gt;</title>
+<clear>true</clear>
+</component></content>
+
+<content start="1930" end="1931">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1931" end="1932">
+<LeftIndent>100.0</LeftIndent>
+<content start="1931" end="1932">
+<size>11</size><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="1932" end="1940">
+<LeftIndent>140.0</LeftIndent>
+<content start="1932" end="1933">
+<size>11</size><component><class>org.concord.modeler.PageTextField</class>
+<column>23</column>
+<title>What is kinetic energy?</title>
+<clear>true</clear>
+</component></content>
+
+<content start="1933" end="1938">
+<size>11</size></content>
+
+<content start="1938" end="1939">
+<size>11</size><component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>true</single>
+<row>2</row>
+<width>300</width>
+<height>100</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Which of the following is correct? &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>Faster particles have redder colors.</choice>
+<choice>Slower particles have redder colors.</choice>
+<answer>0 </answer>
+<opaque>false</opaque>
+</component></content>
+
+<content start="1939" end="1940">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1940" end="1941">
+<LeftIndent>140.0</LeftIndent>
+<content start="1940" end="1941">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1941" end="1943">
+<LeftIndent>140.0</LeftIndent>
+<content start="1941" end="1942">
+<size>11</size><component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report about this page in a new window</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+<content start="1942" end="1943">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1943" end="1944">
+<LeftIndent>140.0</LeftIndent>
+<content start="1943" end="1944">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1944" end="1946">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1944" end="1945">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1945" end="1946">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1946" end="2179">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1946" end="1950">
+<size>11</size><bold>true</bold></content>
+
+<content start="1950" end="2179">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2179" end="2181">
+<SpaceBelow>2.0</SpaceBelow>
+<RightIndent>40.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="2179" end="2180">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2180" end="2181">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="2181" end="2209">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2181" end="2183">
+<size>11</size></content>
+
+<content start="2183" end="2191">
+<href>snapshot.cml</href><size>11</size></content>
+
+<content start="2191" end="2194">
+<size>11</size></content>
+
+<content start="2194" end="2199">
+<href>index.cml</href><size>11</size></content>
+
+<content start="2199" end="2202">
+<size>11</size></content>
+
+<content start="2202" end="2206">
+<href>blankPage.cml</href><size>11</size></content>
+
+<content start="2206" end="2208">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

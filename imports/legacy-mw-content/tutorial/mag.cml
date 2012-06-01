@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Models, activities, games and authoring: A definition</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Models, activities, games and authoring: A definition
+
+&lt; Previous | Index | Next &gt;
+
+There are three types of content in Molecular Workench: models, activities and games. The borders between them are not so clear-cut. In particular, models and activities are sometimes used interchangably. As this might confuse users, let&apos;s draw more clear distinctions here.
+
+Models
+
+A model is composed of objects provided by a simulation engine, such as atoms and bonds. It will produce certain emergent behaviors when the engine starts. When it unfolds, the simulation is not a pre-calculated animation, even though it may be deterministic. A model usually has a graphical display window and a comprehensive system of native user interfaces.
+
+Usually, a model is a standalone component. It doesn&apos;t have much instruction or guidance. To perform certain actions on it, users have to find the corresponding functions from its native user interface (which is often complex). Therefore, a model per se is not so useful to educators or novice users, because it is hard for users to figure out what they are supposed to look at and how it can be interacted with (although some models can be quite self-explanatory). On the other hand, some teachers may like to develop their own activities from simple, unscaffolded models that are already made.
+
+  Here is an example of model.
+
+Activities
+
+An activity is composed of at least one model and surrounding components such as instructions, controls, outputs, assessment questions, and others. It assumes that users can readily play without further readings beyond the provided instructions. The controls here do not include the native ones --- they are usually created by activity authors, and are so set up that users can operate them to observe the kind of effects on the models that the activity is designed to show. In short, an activity can be thought of as a type of rich media driven by models and controls, and capable of producing feedback on assessments.
+
+Activities are the end products of Molecular Workbench. In this form, teachers can easily adopt them in classrooms.
+
+  Here is an example of activity.
+
+Games
+
+Games are models or activities so designed that users will participate in simulations to complete challenges. In a game, users directly operate on objects of a model, either through the model&apos;s graphical display window or through its controls. In comparison, users are not always required to directly operate objects in a non-game model or activity.
+
+  Here is an example of game.
+
+Authoring
+
+All three types of content can be created using Molecular Workbench&apos;s authoring system. The process of creating a model or an activity using the authoring system is typically not defined as an activity, despite of the fact that authoring and end-user activities are sometimes indistinguishable (because they share the same set of interactions with models). Although we also encourage end users to construct a model using part of the authoring system, it should be clear that they are doing an activity but not authoring one.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3099">
+<paragraph start="0" end="54">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="53">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<LeftIndent>140.0</LeftIndent>
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="83">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="55" end="57">
+<size>11</size></content>
+
+<content start="57" end="65">
+<size>11</size><href>exaggerate.cml</href></content>
+
+<content start="65" end="68">
+<size>11</size></content>
+
+<content start="68" end="73">
+<size>11</size><href>index.cml</href></content>
+
+<content start="73" end="76">
+<size>11</size></content>
+
+<content start="76" end="80">
+<size>11</size><href>blankPage.cml</href></content>
+
+<content start="80" end="82">
+<size>11</size></content>
+
+<content start="82" end="83">
+</content>
+
+</paragraph>
+<paragraph start="83" end="84">
+<LeftIndent>140.0</LeftIndent>
+<content start="83" end="84">
+</content>
+
+</paragraph>
+<paragraph start="84" end="359">
+<LeftIndent>140.0</LeftIndent>
+<content start="84" end="359">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="359" end="360">
+<LeftIndent>160.0</LeftIndent>
+<content start="359" end="360">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="360" end="367">
+<LeftIndent>140.0</LeftIndent>
+<content start="360" end="366">
+<bold>true</bold><size>11</size></content>
+
+<content start="366" end="367">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="367" end="368">
+<LeftIndent>140.0</LeftIndent>
+<content start="367" end="368">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="368" end="729">
+<LeftIndent>140.0</LeftIndent>
+<content start="368" end="729">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="729" end="730">
+<LeftIndent>140.0</LeftIndent>
+<content start="729" end="730">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="730" end="1326">
+<LeftIndent>140.0</LeftIndent>
+<content start="730" end="1326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1326" end="1327">
+<LeftIndent>160.0</LeftIndent>
+<content start="1326" end="1327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1327" end="1358">
+<LeftIndent>140.0</LeftIndent>
+<content start="1327" end="1328">
+<icon>window10.gif</icon></content>
+
+<content start="1328" end="1329">
+</content>
+
+<content start="1329" end="1337">
+<size>11</size></content>
+
+<content start="1337" end="1356">
+<size>11</size><href>model_example.cml</href></content>
+
+<content start="1356" end="1358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1358" end="1359">
+<LeftIndent>160.0</LeftIndent>
+<content start="1358" end="1359">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1359" end="1370">
+<LeftIndent>140.0</LeftIndent>
+<content start="1359" end="1369">
+<bold>true</bold><size>11</size></content>
+
+<content start="1369" end="1370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1370" end="1371">
+<LeftIndent>160.0</LeftIndent>
+<content start="1370" end="1371">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1371" end="1991">
+<LeftIndent>140.0</LeftIndent>
+<content start="1371" end="1991">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1991" end="1992">
+<LeftIndent>160.0</LeftIndent>
+<content start="1991" end="1992">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1992" end="2108">
+<LeftIndent>140.0</LeftIndent>
+<content start="1992" end="2108">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2108" end="2109">
+<LeftIndent>160.0</LeftIndent>
+<content start="2108" end="2109">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2109" end="2143">
+<LeftIndent>140.0</LeftIndent>
+<content start="2109" end="2110">
+<icon>window10.gif</icon></content>
+
+<content start="2110" end="2111">
+</content>
+
+<content start="2111" end="2119">
+<size>11</size></content>
+
+<content start="2119" end="2141">
+<size>11</size><href>../part1/xray/intro.cml</href></content>
+
+<content start="2141" end="2143">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2143" end="2144">
+<LeftIndent>160.0</LeftIndent>
+<content start="2143" end="2144">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2144" end="2150">
+<LeftIndent>140.0</LeftIndent>
+<content start="2144" end="2149">
+<bold>true</bold><size>11</size></content>
+
+<content start="2149" end="2150">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2150" end="2151">
+<LeftIndent>140.0</LeftIndent>
+<content start="2150" end="2151">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2151" end="2501">
+<LeftIndent>140.0</LeftIndent>
+<content start="2151" end="2501">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2501" end="2502">
+<LeftIndent>160.0</LeftIndent>
+<content start="2501" end="2502">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2502" end="2532">
+<LeftIndent>140.0</LeftIndent>
+<content start="2502" end="2503">
+<icon>window10.gif</icon></content>
+
+<content start="2503" end="2504">
+</content>
+
+<content start="2504" end="2512">
+<size>11</size></content>
+
+<content start="2512" end="2530">
+<size>11</size><href>../student/game/slowdownchallenge.cml</href></content>
+
+<content start="2530" end="2532">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2532" end="2533">
+<LeftIndent>160.0</LeftIndent>
+<content start="2532" end="2533">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2533" end="2543">
+<LeftIndent>140.0</LeftIndent>
+<content start="2533" end="2542">
+<bold>true</bold><size>11</size></content>
+
+<content start="2542" end="2543">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2543" end="2544">
+<LeftIndent>160.0</LeftIndent>
+<content start="2543" end="2544">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2544" end="3069">
+<LeftIndent>140.0</LeftIndent>
+<content start="2544" end="3069">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3069" end="3070">
+<LeftIndent>160.0</LeftIndent>
+<content start="3069" end="3070">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3070" end="3071">
+<LeftIndent>160.0</LeftIndent>
+<content start="3070" end="3071">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3071" end="3099">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3071" end="3073">
+<size>11</size></content>
+
+<content start="3073" end="3081">
+<size>11</size><href>exaggerate.cml</href></content>
+
+<content start="3081" end="3084">
+<size>11</size></content>
+
+<content start="3084" end="3089">
+<size>11</size><href>index.cml</href></content>
+
+<content start="3089" end="3092">
+<size>11</size></content>
+
+<content start="3092" end="3096">
+<size>11</size><href>blankPage.cml</href></content>
+
+<content start="3096" end="3098">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

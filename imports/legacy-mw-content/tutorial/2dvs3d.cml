@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Poll: 2D Simulation vs. 3D Simulation</page_title>
+<bg_color><Red>0</Red><Green>0</Green><Blue>0</Blue></bg_color>
+<text>Poll: 2D Simulation vs. 3D Simulation
+
+This simple mechanics model shows the collision of a particle with some obstacles in a box. It can be done in both 2D and 3D, as is show below. Do you think the 3D effect would make a difference in learning?
+
+How to vote? Push the &quot;Make Comments&quot; Button above this page to comment. Press the &quot;View Discussions&quot; Button to view other people&apos;s opinions.
+
+   
+  </text>
+<section start="0" end="398">
+<paragraph start="0" end="38">
+<Alignment>1</Alignment>
+<content start="0" end="37">
+<bold>true</bold><family>Arial Black</family><size>20</size><foreground>255 255 255</foreground></content>
+
+<content start="37" end="38">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<content start="38" end="39">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="39" end="247">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="39" end="247">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="247" end="248">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="247" end="248">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="248" end="390">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="248" end="260">
+<foreground>255 255 255</foreground><bold>true</bold></content>
+
+<content start="260" end="390">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="390" end="391">
+<content start="390" end="391">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="391" end="395">
+<Alignment>1</Alignment>
+<content start="391" end="392">
+<foreground>255 255 255</foreground></content>
+
+<content start="392" end="393">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>2dvs3d$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="393" end="394">
+<foreground>255 255 255</foreground><component><class>org.concord.modeler.PageMd3d</class><resource>2dvs3d$0.mdd</resource><coordinate>2dvs3d$0.xyz</coordinate><width>360</width><height>360</height><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar></component></content>
+
+<content start="394" end="395">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="395" end="398">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="395" end="396">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<script>script:mw2d:1:run;
+script:mw3d:1:run;</script>
+<action>Script</action></component></content>
+
+<content start="396" end="397">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<script>script:mw2d:1:stop;
+script:mw3d:1:stop;</script>
+<action>Script</action></component></content>
+
+</paragraph>
+</section>
+</document>
