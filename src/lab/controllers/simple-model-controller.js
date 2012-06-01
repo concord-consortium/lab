@@ -25,8 +25,6 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       elements            = modelConfig.elements,
       atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
-      epsilon             = modelConfig.epsilon,
-      sigma               = modelConfig.sigma,
       temperature         = modelConfig.temperature,
       coulomb_forces      = modelConfig.coulomb_forces,
       width               = modelConfig.width,
@@ -65,8 +63,6 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       lennard_jones_forces: true,
       coulomb_forces: coulomb_forces,
       temperature_control: true,
-      epsilon: epsilon,
-      sigma: sigma,
       width: width,
       height: height
     });
