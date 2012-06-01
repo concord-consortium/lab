@@ -156,6 +156,13 @@ parseMML = (mmlString) ->
     width  = width / 100      # 100 pixels per nm
     height = height / 100
 
+    ###
+      heatBath settings
+    ###
+    heatBath = $mml(".org-concord-mw2d-models-HeatBath").find("[property=expectedTemperature]")
+    if heatBath.size() > 0
+      temperature = parseFloat heatBath.find("double").text()
+
     ### Put everything together into Lab's JSON format ###
     x  = (atom.x for atom in atoms)
     y  = (atom.y for atom in atoms)
@@ -171,7 +178,7 @@ parseMML = (mmlString) ->
     sigma   = elemTypes[id].sigma
 
     json =
-      temperature_control : false
+      temperature_control : !!temperature
       lennard_jones_forces: true
       coulomb_forces      : false
       width               : width
@@ -184,6 +191,8 @@ parseMML = (mmlString) ->
         VY: vy
         CHARGE: charge
         ELEMENT: element
+
+    json.temperature = temperature if temperature
 
     return json: json
   catch e
