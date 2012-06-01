@@ -30,21 +30,21 @@ You can try making and removing angular bonds with the following model:
 
  
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
-Live example: Show me how to build a molecule!
+A Self-Running Demo: Show me how to build a molecule!
 
 Script support
 
 The bond command can be used to make an angular bond with a specified bond strength between three specified atoms that are bonded together through two radial bonds. To remove an existing angular bond, use the select command to select it first and then call the remove command. For example, these scripts remove two angular bonds: select abond 4, 5; remove; . The index of an angular bond can be found from its properties window.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="2165">
+<section start="0" end="2178">
 <paragraph start="0" end="41">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="40">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<bold>true</bold><size>16</size><italic>true</italic></content>
 
 <content start="40" end="41">
 </content>
@@ -64,19 +64,19 @@ The bond command can be used to make an angular bond with a specified bond stren
 <size>11</size></content>
 
 <content start="44" end="52">
-<href>makeBondAction.cml</href><size>11</size></content>
+<size>11</size><href>makeBondAction.cml</href></content>
 
 <content start="52" end="55">
 <size>11</size></content>
 
 <content start="55" end="60">
-<href>index1.cml</href><size>11</size></content>
+<size>11</size><href>index1.cml</href></content>
 
 <content start="60" end="63">
 <size>11</size></content>
 
 <content start="63" end="67">
-<href>whatIsThisAction.cml</href><size>11</size></content>
+<size>11</size><href>whatIsThisAction.cml</href></content>
 
 <content start="67" end="69">
 <size>11</size></content>
@@ -269,7 +269,8 @@ The bond command can be used to make an angular bond with a specified bond stren
 <Alignment>1</Alignment>
 <content start="1605" end="1606">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>makeBendAction$0.mml</resource><menubar>false</menubar><recorder>true</recorder><button>Build Radial Bond</button><button>Build Angular Bond</button><button>Select Object</button><button>Rotate Object</button></component><size>11</size></content>
+<resource>makeBendAction$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+<button>Build Radial Bond</button><button>Build Angular Bond</button><button>Select Object</button><button>Rotate Object</button></component><size>11</size></content>
 
 <content start="1606" end="1607">
 <size>11</size></content>
@@ -282,132 +283,132 @@ The bond command can be used to make an angular bond with a specified bond stren
 <component><class>org.concord.modeler.PageComboBox</class>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
-<selectedIndex>1</selectedIndex>
 <action>Display Style</action>
+<selectedIndex>1</selectedIndex>
 </component></content>
 
 <content start="1608" end="1609">
 </content>
 
 </paragraph>
-<paragraph start="1609" end="1642">
+<paragraph start="1609" end="1648">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="1609" end="1641">
+<content start="1609" end="1647">
 <size>10</size></content>
 
-<content start="1641" end="1642">
+<content start="1647" end="1648">
 </content>
 
 </paragraph>
-<paragraph start="1642" end="1643">
+<paragraph start="1648" end="1649">
 <LeftIndent>140.0</LeftIndent>
-<content start="1642" end="1643">
+<content start="1648" end="1649">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1643" end="1690">
+<paragraph start="1649" end="1703">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="1643" end="1655">
+<content start="1649" end="1668">
 <size>11</size><bold>true</bold></content>
 
-<content start="1655" end="1657">
+<content start="1668" end="1670">
 <size>11</size></content>
 
-<content start="1657" end="1688">
-<href>BuildMolecule.cml</href><size>11</size></content>
+<content start="1670" end="1701">
+<size>11</size><href>BuildMolecule.cml</href></content>
 
-<content start="1688" end="1690">
+<content start="1701" end="1703">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1690" end="1691">
+<paragraph start="1703" end="1704">
 <LeftIndent>140.0</LeftIndent>
 <RightIndent>80.0</RightIndent>
-<content start="1690" end="1691">
+<content start="1703" end="1704">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1691" end="1706">
+<paragraph start="1704" end="1719">
 <LeftIndent>140.0</LeftIndent>
-<content start="1691" end="1705">
+<content start="1704" end="1718">
 <size>11</size><bold>true</bold></content>
 
-<content start="1705" end="1706">
+<content start="1718" end="1719">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1706" end="1707">
+<paragraph start="1719" end="1720">
 <LeftIndent>140.0</LeftIndent>
-<content start="1706" end="1707">
+<content start="1719" end="1720">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1707" end="2136">
+<paragraph start="1720" end="2149">
 <LeftIndent>140.0</LeftIndent>
-<content start="1707" end="1711">
+<content start="1720" end="1724">
 <size>11</size></content>
 
-<content start="1711" end="1715">
-<href>script_bond.cml</href><size>11</size><family>Courier New</family></content>
+<content start="1724" end="1728">
+<size>11</size><href>script_bond.cml</href><family>Courier New</family></content>
 
-<content start="1715" end="1916">
+<content start="1728" end="1929">
 <size>11</size></content>
 
-<content start="1916" end="1922">
-<href>script_select.cml</href><size>11</size><family>Courier New</family></content>
+<content start="1929" end="1935">
+<size>11</size><href>script_select.cml</href><family>Courier New</family></content>
 
-<content start="1922" end="1968">
+<content start="1935" end="1981">
 <size>11</size></content>
 
-<content start="1968" end="1974">
-<href>script_remove.cml</href><size>11</size><family>Courier New</family></content>
+<content start="1981" end="1987">
+<size>11</size><href>script_remove.cml</href><family>Courier New</family></content>
 
-<content start="1974" end="2037">
+<content start="1987" end="2050">
 <size>11</size></content>
 
-<content start="2037" end="2063">
+<content start="2050" end="2076">
 <size>11</size><family>Courier New</family></content>
 
-<content start="2063" end="2113">
+<content start="2076" end="2126">
 <size>11</size></content>
 
-<content start="2113" end="2134">
-<href>accessBendProp.cml</href><size>11</size></content>
+<content start="2126" end="2147">
+<size>11</size><href>accessBendProp.cml</href></content>
 
-<content start="2134" end="2136">
+<content start="2147" end="2149">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2136" end="2137">
+<paragraph start="2149" end="2150">
 <LeftIndent>140.0</LeftIndent>
-<content start="2136" end="2137">
+<content start="2149" end="2150">
 </content>
 
 </paragraph>
-<paragraph start="2137" end="2165">
+<paragraph start="2150" end="2178">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="2137" end="2139">
+<content start="2150" end="2152">
 <size>11</size></content>
 
-<content start="2139" end="2147">
-<href>makeBondAction.cml</href><size>11</size></content>
+<content start="2152" end="2160">
+<size>11</size><href>makeBondAction.cml</href></content>
 
-<content start="2147" end="2150">
+<content start="2160" end="2163">
 <size>11</size></content>
 
-<content start="2150" end="2155">
-<href>index1.cml</href><size>11</size></content>
+<content start="2163" end="2168">
+<size>11</size><href>index1.cml</href></content>
 
-<content start="2155" end="2158">
+<content start="2168" end="2171">
 <size>11</size></content>
 
-<content start="2158" end="2162">
-<href>whatIsThisAction.cml</href><size>11</size></content>
+<content start="2171" end="2175">
+<size>11</size><href>whatIsThisAction.cml</href></content>
 
-<content start="2162" end="2164">
+<content start="2175" end="2177">
 <size>11</size></content>
 
 </paragraph>

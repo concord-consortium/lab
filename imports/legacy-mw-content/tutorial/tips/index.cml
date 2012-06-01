@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Did you know......</page_title>
+<bg_image>sidebar1b.gif</bg_image>
+<text>Did you know......
+
+This section collects tips about using the Molecular Workbench software, which are supplements to the more formal User&apos;s Manual. The scope of tips covers anything including novel features, modeling, authoring, deployment, tricks and bug workarounds. The tips are listed in the order they were written.
+
+   Using MW controls for a plugin
+   Calculating and graphing anything you need from a model
+   Using running averages for your data
+   Inserting a drawing tool applet 
+   Inserting a CC prediction graph 
+   Using a 2D container to create animations
+   Use a model container to play animated GIF files 
+   Creating customized skins for models
+   Use Unicode symbols to jazz up your page
+   How to build a molecule (also an example of using scripts to build self-running demo)
+   Animated annotations: an example
+   Using the plot command to prove momentum conservation
+   Flow charts in MW
+   Intra-page communications
+   Using the fullscreen mode to view molecules: a molecular screensaver
+   Autoscrolling text in MW
+   Some common actions in constructing a molecular dynamics model
+   On the Lennard-Jones parameters
+   The resolution of measurement: estimating thermal fluctuations
+   Ergodicity: why do we care?
+   Setting up sliders for Jmol
+   Double-clicking a toolbar button to bring up a customization dialog
+   A workaround for aligning images with components in a line
+   An easier way to remove an embedded component
+   How to get a hyperlink to open a new window 
+   Auto-resizing an embedded component when the hosting window resizes 
+   Placing a &quot;Close&quot; button on a pop-up window
+   A workaround for hyperlink bugs
+   Scaling and shifting numeric outputs
+   Opening molecular structures from outside the Jmol container
+   Changing the caret color
+
+
+
+
+</text>
+<section start="0" end="1792">
+<paragraph start="0" end="19">
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<size>15</size><family>Georgia</family><bold>true</bold><italic>true</italic></content>
+
+<content start="18" end="19">
+<size>20</size><bold>true</bold><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<LeftIndent>160.0</LeftIndent>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="322">
+<LeftIndent>160.0</LeftIndent>
+<content start="20" end="134">
+<family>Trebuchet MS</family></content>
+
+<content start="134" end="147">
+<family>Trebuchet MS</family><href>../index.cml</href></content>
+
+<content start="147" end="322">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="322" end="323">
+<LeftIndent>160.0</LeftIndent>
+<content start="322" end="323">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="323" end="357">
+<LeftIndent>180.0</LeftIndent>
+<content start="323" end="324">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="324" end="326">
+</content>
+
+<content start="326" end="356">
+<family>Trebuchet MS</family><href>usemwcontrolsforplugin.cml</href></content>
+
+<content start="356" end="357">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="357" end="416">
+<LeftIndent>180.0</LeftIndent>
+<content start="357" end="358">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="358" end="360">
+</content>
+
+<content start="360" end="415">
+<family>Trebuchet MS</family><href>../anytimeseries.cml</href></content>
+
+<content start="415" end="416">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="416" end="456">
+<LeftIndent>180.0</LeftIndent>
+<content start="416" end="417">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="417" end="419">
+</content>
+
+<content start="419" end="455">
+<family>Trebuchet MS</family><href>movingaverage.cml</href></content>
+
+<content start="455" end="456">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="456" end="492">
+<LeftIndent>180.0</LeftIndent>
+<content start="456" end="457">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="457" end="459">
+<family>Trebuchet MS</family></content>
+
+<content start="459" end="490">
+<family>Trebuchet MS</family><href>drawingtool.cml</href></content>
+
+<content start="490" end="492">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="492" end="528">
+<LeftIndent>180.0</LeftIndent>
+<content start="492" end="493">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="493" end="495">
+<family>Trebuchet MS</family></content>
+
+<content start="495" end="526">
+<family>Trebuchet MS</family><href>predictiongraph.cml</href></content>
+
+<content start="526" end="528">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="528" end="573">
+<LeftIndent>180.0</LeftIndent>
+<content start="528" end="529">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="529" end="531">
+<family>Trebuchet MS</family></content>
+
+<content start="531" end="572">
+<family>Trebuchet MS</family><href>chopper.cml</href></content>
+
+<content start="572" end="573">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="573" end="626">
+<LeftIndent>180.0</LeftIndent>
+<content start="573" end="574">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="574" end="576">
+<family>Trebuchet MS</family></content>
+
+<content start="576" end="624">
+<family>Trebuchet MS</family><href>gifplayer.cml</href></content>
+
+<content start="624" end="626">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="626" end="666">
+<LeftIndent>180.0</LeftIndent>
+<content start="626" end="627">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="627" end="629">
+<family>Trebuchet MS</family></content>
+
+<content start="629" end="665">
+<family>Trebuchet MS</family><href>containerskin.cml</href></content>
+
+<content start="665" end="666">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="666" end="710">
+<LeftIndent>180.0</LeftIndent>
+<content start="666" end="667">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="667" end="669">
+<family>Trebuchet MS</family></content>
+
+<content start="669" end="709">
+<family>Trebuchet MS</family><href>unicode.cml</href></content>
+
+<content start="709" end="710">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="710" end="799">
+<LeftIndent>180.0</LeftIndent>
+<content start="710" end="711">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="711" end="713">
+<family>Trebuchet MS</family></content>
+
+<content start="713" end="798">
+<family>Trebuchet MS</family><href>../BuildMolecule.cml</href></content>
+
+<content start="798" end="799">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="799" end="835">
+<LeftIndent>180.0</LeftIndent>
+<content start="799" end="800">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="800" end="802">
+<family>Trebuchet MS</family></content>
+
+<content start="802" end="834">
+<family>Trebuchet MS</family><href>../tech/dna.cml</href></content>
+
+<content start="834" end="835">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="835" end="892">
+<LeftIndent>180.0</LeftIndent>
+<content start="835" end="836">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="836" end="838">
+<family>Trebuchet MS</family></content>
+
+<content start="838" end="891">
+<family>Trebuchet MS</family><href>../script_plot.cml</href></content>
+
+<content start="891" end="892">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="892" end="913">
+<LeftIndent>180.0</LeftIndent>
+<content start="892" end="893">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="893" end="895">
+<family>Trebuchet MS</family></content>
+
+<content start="895" end="912">
+<family>Trebuchet MS</family><href>flowchart.cml</href></content>
+
+<content start="912" end="913">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="913" end="942">
+<LeftIndent>180.0</LeftIndent>
+<content start="913" end="914">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="914" end="916">
+<family>Trebuchet MS</family></content>
+
+<content start="916" end="941">
+<family>Trebuchet MS</family><href>../intrapage.cml</href></content>
+
+<content start="941" end="942">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="942" end="1014">
+<LeftIndent>180.0</LeftIndent>
+<content start="942" end="943">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="943" end="945">
+<family>Trebuchet MS</family></content>
+
+<content start="945" end="1013">
+<family>Trebuchet MS</family><href>fullscreenjmol.cml</href></content>
+
+<content start="1013" end="1014">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1014" end="1042">
+<LeftIndent>180.0</LeftIndent>
+<content start="1014" end="1015">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1015" end="1017">
+<family>Trebuchet MS</family></content>
+
+<content start="1017" end="1041">
+<family>Trebuchet MS</family><href>../autoscrolltext.cml</href></content>
+
+<content start="1041" end="1042">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1042" end="1108">
+<LeftIndent>180.0</LeftIndent>
+<content start="1042" end="1043">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1043" end="1045">
+<family>Trebuchet MS</family></content>
+
+<content start="1045" end="1107">
+<family>Trebuchet MS</family><href>commonaction.cml</href></content>
+
+<content start="1107" end="1108">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1108" end="1143">
+<LeftIndent>180.0</LeftIndent>
+<content start="1108" end="1109">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1109" end="1111">
+<family>Trebuchet MS</family></content>
+
+<content start="1111" end="1142">
+<family>Trebuchet MS</family><href>parameter.cml</href></content>
+
+<content start="1142" end="1143">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1143" end="1209">
+<LeftIndent>180.0</LeftIndent>
+<content start="1143" end="1144">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1144" end="1146">
+<family>Trebuchet MS</family></content>
+
+<content start="1146" end="1208">
+<family>Trebuchet MS</family><href>fluctuations.cml</href></content>
+
+<content start="1208" end="1209">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1209" end="1240">
+<LeftIndent>180.0</LeftIndent>
+<content start="1209" end="1210">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1210" end="1212">
+<family>Trebuchet MS</family></content>
+
+<content start="1212" end="1239">
+<family>Trebuchet MS</family><href>ergodicity.cml</href></content>
+
+<content start="1239" end="1240">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1240" end="1271">
+<LeftIndent>180.0</LeftIndent>
+<content start="1240" end="1241">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1241" end="1243">
+<family>Trebuchet MS</family></content>
+
+<content start="1243" end="1270">
+<family>Trebuchet MS</family><href>jmolslider.cml</href></content>
+
+<content start="1270" end="1271">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1271" end="1342">
+<LeftIndent>180.0</LeftIndent>
+<content start="1271" end="1272">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1272" end="1274">
+<family>Trebuchet MS</family></content>
+
+<content start="1274" end="1341">
+<family>Trebuchet MS</family><href>doubleclicktoolbarbutton.cml</href></content>
+
+<content start="1341" end="1342">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1342" end="1404">
+<LeftIndent>180.0</LeftIndent>
+<content start="1342" end="1343">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1343" end="1345">
+<family>Trebuchet MS</family></content>
+
+<content start="1345" end="1403">
+<family>Trebuchet MS</family><href>alignimage.cml</href></content>
+
+<content start="1403" end="1404">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1404" end="1453">
+<LeftIndent>180.0</LeftIndent>
+<content start="1404" end="1405">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1405" end="1407">
+<family>Trebuchet MS</family></content>
+
+<content start="1407" end="1452">
+<family>Trebuchet MS</family><href>removecomponent.cml</href></content>
+
+<content start="1452" end="1453">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1453" end="1501">
+<LeftIndent>180.0</LeftIndent>
+<content start="1453" end="1454">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1454" end="1456">
+<family>Trebuchet MS</family></content>
+
+<content start="1456" end="1499">
+<family>Trebuchet MS</family><href>opennewwindow.cml</href></content>
+
+<content start="1499" end="1501">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1501" end="1573">
+<LeftIndent>180.0</LeftIndent>
+<content start="1501" end="1502">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1502" end="1504">
+<family>Trebuchet MS</family></content>
+
+<content start="1504" end="1571">
+<family>Trebuchet MS</family><href>RelativeSizing.cml</href></content>
+
+<content start="1571" end="1573">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1573" end="1620">
+<LeftIndent>180.0</LeftIndent>
+<content start="1573" end="1574">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1574" end="1576">
+<family>Trebuchet MS</family></content>
+
+<content start="1576" end="1619">
+<family>Trebuchet MS</family><href>CloseButton.cml</href></content>
+
+<content start="1619" end="1620">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1620" end="1655">
+<LeftIndent>180.0</LeftIndent>
+<content start="1620" end="1621">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1621" end="1623">
+<family>Trebuchet MS</family></content>
+
+<content start="1623" end="1654">
+<family>Trebuchet MS</family><href>LinkBug.cml</href></content>
+
+<content start="1654" end="1655">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1655" end="1695">
+<LeftIndent>180.0</LeftIndent>
+<content start="1655" end="1656">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1656" end="1658">
+<family>Trebuchet MS</family></content>
+
+<content start="1658" end="1694">
+<family>Trebuchet MS</family><href>scale.cml</href></content>
+
+<content start="1694" end="1695">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1695" end="1759">
+<LeftIndent>180.0</LeftIndent>
+<content start="1695" end="1696">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1696" end="1698">
+<family>Trebuchet MS</family></content>
+
+<content start="1698" end="1758">
+<family>Trebuchet MS</family><href>loadpdb.cml</href></content>
+
+<content start="1758" end="1759">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1759" end="1787">
+<LeftIndent>180.0</LeftIndent>
+<content start="1759" end="1760">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><family>Trebuchet MS</family></content>
+
+<content start="1760" end="1762">
+<family>Trebuchet MS</family></content>
+
+<content start="1762" end="1786">
+<family>Trebuchet MS</family><href>caret.cml</href></content>
+
+<content start="1786" end="1787">
+<family>Trebuchet MS</family></content>
+
+</paragraph>
+<paragraph start="1787" end="1788">
+<LeftIndent>180.0</LeftIndent>
+<content start="1787" end="1788">
+<family>Trebuchet MS</family><href>removecomponent.cml</href></content>
+
+</paragraph>
+<paragraph start="1788" end="1789">
+<LeftIndent>180.0</LeftIndent>
+<content start="1788" end="1789">
+<family>Trebuchet MS</family><href>removecomponent.cml</href></content>
+
+</paragraph>
+<paragraph start="1789" end="1790">
+<content start="1789" end="1790">
+<family>Trebuchet MS</family><href>commonaction.cml</href></content>
+
+</paragraph>
+<paragraph start="1790" end="1791">
+<content start="1790" end="1791">
+<family>Trebuchet MS</family><href>commonaction.cml</href></content>
+
+</paragraph>
+<paragraph start="1791" end="1792">
+</paragraph>
+</section>
+</document>

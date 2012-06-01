@@ -13,7 +13,7 @@ The following experiment is set up to prove the existence of buoyancy at the mic
 
   
   
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
  
 Important: If you care about getting more reliable results, increase the recorder length to at least 500 frames (set this under the &quot;Recorder&quot; tab in the Preferences dialog).
@@ -41,12 +41,12 @@ Your results do not need to be exactly identical, but should match at a qualitat
 Related simulation: Archimedes&apos; Principle of Buoyancy
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="5236">
+<section start="0" end="5242">
 <paragraph start="0" end="40">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="39">
-<italic>true</italic><size>16</size><bold>true</bold></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="39" end="40">
 </content>
@@ -99,7 +99,7 @@ Related simulation: Archimedes&apos; Principle of Buoyancy
 <size>11</size></content>
 
 <content start="304" end="356">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="356" end="358">
 <size>11</size></content>
@@ -117,7 +117,7 @@ Related simulation: Archimedes&apos; Principle of Buoyancy
 <size>11</size></content>
 
 <content start="397" end="496">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="496" end="1204">
 <size>11</size></content>
@@ -130,8 +130,8 @@ Related simulation: Archimedes&apos; Principle of Buoyancy
 
 </paragraph>
 <paragraph start="1205" end="1208">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="1205" end="1206">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>microbuoyancy$0.mml</resource><menubar>false</menubar></component></content>
@@ -164,8 +164,8 @@ Related simulation: Archimedes&apos; Principle of Buoyancy
 
 </paragraph>
 <paragraph start="1208" end="1211">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="1208" end="1209">
 <component><class>org.concord.modeler.PageCheckBox</class>
 <title>Gravity</title>
@@ -190,266 +190,266 @@ Related simulation: Archimedes&apos; Principle of Buoyancy
 </content>
 
 </paragraph>
-<paragraph start="1211" end="1244">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1211" end="1250">
 <Alignment>1</Alignment>
-<content start="1211" end="1243">
+<LeftIndent>140.0</LeftIndent>
+<content start="1211" end="1249">
 <size>10</size></content>
 
-<content start="1243" end="1244">
+<content start="1249" end="1250">
 </content>
 
 </paragraph>
-<paragraph start="1244" end="1245">
+<paragraph start="1250" end="1251">
 <LeftIndent>140.0</LeftIndent>
-<content start="1244" end="1245">
+<content start="1250" end="1251">
 </content>
 
 </paragraph>
-<paragraph start="1245" end="1247">
+<paragraph start="1251" end="1253">
 <LeftIndent>140.0</LeftIndent>
-<content start="1245" end="1246">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="1251" end="1252">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="1246" end="1247">
+<content start="1252" end="1253">
 </content>
 
 </paragraph>
-<paragraph start="1247" end="1422">
+<paragraph start="1253" end="1428">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="1247" end="1256">
-<bold>true</bold><size>11</size></content>
+<content start="1253" end="1262">
+<size>11</size><bold>true</bold></content>
 
-<content start="1256" end="1421">
+<content start="1262" end="1427">
 <size>11</size></content>
 
-<content start="1421" end="1422">
+<content start="1427" end="1428">
 </content>
 
 </paragraph>
-<paragraph start="1422" end="1424">
+<paragraph start="1428" end="1430">
 <LeftIndent>140.0</LeftIndent>
-<content start="1422" end="1423">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="1428" end="1429">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="1423" end="1424">
+<content start="1429" end="1430">
 </content>
 
 </paragraph>
-<paragraph start="1424" end="1425">
+<paragraph start="1430" end="1431">
 <LeftIndent>140.0</LeftIndent>
-<content start="1424" end="1425">
+<content start="1430" end="1431">
 </content>
 
 </paragraph>
-<paragraph start="1425" end="1698">
+<paragraph start="1431" end="1704">
 <LeftIndent>140.0</LeftIndent>
-<content start="1425" end="1446">
+<content start="1431" end="1452">
 <size>11</size></content>
 
-<content start="1446" end="1447">
-<superscript>true</superscript><size>11</size></content>
+<content start="1452" end="1453">
+<size>11</size><superscript>true</superscript></content>
 
-<content start="1447" end="1698">
+<content start="1453" end="1704">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1698" end="1699">
+<paragraph start="1704" end="1705">
 <LeftIndent>140.0</LeftIndent>
-<content start="1698" end="1699">
+<content start="1704" end="1705">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1699" end="2359">
+<paragraph start="1705" end="2365">
 <LeftIndent>140.0</LeftIndent>
-<content start="1699" end="1760">
-<bold>true</bold><size>11</size></content>
+<content start="1705" end="1766">
+<size>11</size><bold>true</bold></content>
 
-<content start="1760" end="1891">
+<content start="1766" end="1897">
 <size>11</size></content>
 
-<content start="1891" end="1892">
+<content start="1897" end="1898">
 <icon>htmlink.gif</icon></content>
 
-<content start="1892" end="1893">
+<content start="1898" end="1899">
 <size>11</size></content>
 
-<content start="1893" end="1911">
+<content start="1899" end="1917">
 <size>11</size><href>http://hyperphysics.phy-astr.gsu.edu/hbase/kinetic/barfor.html#c2</href></content>
 
-<content start="1911" end="2359">
+<content start="1917" end="2365">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2359" end="2360">
+<paragraph start="2365" end="2366">
 <LeftIndent>140.0</LeftIndent>
-<content start="2359" end="2360">
+<content start="2365" end="2366">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2360" end="3060">
+<paragraph start="2366" end="3066">
 <LeftIndent>140.0</LeftIndent>
-<content start="2360" end="3060">
+<content start="2366" end="3066">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3060" end="3061">
+<paragraph start="3066" end="3067">
 <LeftIndent>140.0</LeftIndent>
-<content start="3060" end="3061">
+<content start="3066" end="3067">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3061" end="3293">
+<paragraph start="3067" end="3299">
 <LeftIndent>140.0</LeftIndent>
-<content start="3061" end="3094">
+<content start="3067" end="3100">
 <size>11</size></content>
 
-<content start="3094" end="3171">
-<bold>true</bold><size>11</size></content>
+<content start="3100" end="3177">
+<size>11</size><bold>true</bold></content>
 
-<content start="3171" end="3293">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="3293" end="3294">
-<LeftIndent>140.0</LeftIndent>
-<content start="3293" end="3294">
+<content start="3177" end="3299">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3294" end="3316">
+<paragraph start="3299" end="3300">
 <LeftIndent>140.0</LeftIndent>
-<content start="3294" end="3315">
-<bold>true</bold><size>11</size></content>
-
-<content start="3315" end="3316">
+<content start="3299" end="3300">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3316" end="3317">
+<paragraph start="3300" end="3322">
 <LeftIndent>140.0</LeftIndent>
-<content start="3316" end="3317">
+<content start="3300" end="3321">
+<size>11</size><bold>true</bold></content>
+
+<content start="3321" end="3322">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3317" end="3520">
+<paragraph start="3322" end="3323">
 <LeftIndent>140.0</LeftIndent>
-<content start="3317" end="3520">
+<content start="3322" end="3323">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3520" end="3521">
+<paragraph start="3323" end="3526">
 <LeftIndent>140.0</LeftIndent>
-<content start="3520" end="3521">
+<content start="3323" end="3526">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3521" end="3526">
+<paragraph start="3526" end="3527">
 <LeftIndent>140.0</LeftIndent>
+<content start="3526" end="3527">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3527" end="3532">
 <Alignment>1</Alignment>
-<content start="3521" end="3522">
+<LeftIndent>140.0</LeftIndent>
+<content start="3527" end="3528">
 <size>11</size></content>
 
-<content start="3522" end="3523">
+<content start="3528" end="3529">
 <icon>buoyancy1.gif</icon></content>
 
-<content start="3523" end="3524">
+<content start="3529" end="3530">
 </content>
 
-<content start="3524" end="3525">
+<content start="3530" end="3531">
 <icon>buoyancy2.gif</icon></content>
 
-<content start="3525" end="3526">
+<content start="3531" end="3532">
 </content>
 
 </paragraph>
-<paragraph start="3526" end="4025">
+<paragraph start="3532" end="4031">
 <RightIndent>40.0</RightIndent>
 <LeftIndent>180.0</LeftIndent>
-<content start="3526" end="4024">
+<content start="3532" end="4030">
 <size>10</size></content>
 
-<content start="4024" end="4025">
+<content start="4030" end="4031">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4025" end="4026">
+<paragraph start="4031" end="4032">
 <LeftIndent>140.0</LeftIndent>
-<content start="4025" end="4026">
+<content start="4031" end="4032">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4026" end="5060">
+<paragraph start="4032" end="5066">
 <LeftIndent>140.0</LeftIndent>
-<content start="4026" end="4578">
+<content start="4032" end="4584">
 <size>11</size></content>
 
-<content start="4578" end="4656">
+<content start="4584" end="4662">
 <size>11</size><href>microbuoyancy2.cml</href></content>
 
-<content start="4656" end="5060">
+<content start="4662" end="5066">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="5060" end="5061">
+<paragraph start="5066" end="5067">
 <LeftIndent>140.0</LeftIndent>
-<content start="5060" end="5061">
+<content start="5066" end="5067">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="5061" end="5152">
+<paragraph start="5067" end="5158">
 <LeftIndent>140.0</LeftIndent>
-<content start="5061" end="5152">
+<content start="5067" end="5158">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="5152" end="5153">
+<paragraph start="5158" end="5159">
 <LeftIndent>140.0</LeftIndent>
-<content start="5152" end="5153">
+<content start="5158" end="5159">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="5153" end="5207">
+<paragraph start="5159" end="5213">
 <LeftIndent>140.0</LeftIndent>
-<content start="5153" end="5173">
+<content start="5159" end="5179">
 <size>10</size></content>
 
-<content start="5173" end="5206">
+<content start="5179" end="5212">
 <size>10</size><href>../student/fluid/archimedes.cml</href></content>
 
-<content start="5206" end="5207">
+<content start="5212" end="5213">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="5207" end="5208">
+<paragraph start="5213" end="5214">
 <LeftIndent>140.0</LeftIndent>
-<content start="5207" end="5208">
+<content start="5213" end="5214">
 </content>
 
 </paragraph>
-<paragraph start="5208" end="5236">
+<paragraph start="5214" end="5242">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="5208" end="5210">
+<content start="5214" end="5216">
 <size>11</size></content>
 
-<content start="5210" end="5218">
+<content start="5216" end="5224">
 <size>11</size><href>wallpressure.cml</href></content>
 
-<content start="5218" end="5221">
+<content start="5224" end="5227">
 <size>11</size></content>
 
-<content start="5221" end="5226">
+<content start="5227" end="5232">
 <size>11</size><href>index1.cml</href></content>
 
-<content start="5226" end="5229">
+<content start="5232" end="5235">
 <size>11</size></content>
 
-<content start="5229" end="5233">
+<content start="5235" end="5239">
 <size>11</size><href>osmoticpressure.cml</href></content>
 
-<content start="5233" end="5235">
+<content start="5239" end="5241">
 <size>11</size></content>
 
 </paragraph>

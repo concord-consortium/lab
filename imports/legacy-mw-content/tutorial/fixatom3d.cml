@@ -26,48 +26,48 @@ Practice
 You may play with the following simulator about fixing atoms and the effect.
 
  
-[This is an embedded model.]
+&#12304;This is an embedded model container.&#12305;
 
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="2360">
+<section start="0" end="2370">
 <paragraph start="0" end="13">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="0" end="12">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<size>15</size><bold>true</bold><italic>true</italic></content>
 
 <content start="12" end="13">
 </content>
 
 </paragraph>
 <paragraph start="13" end="14">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="13" end="14">
 </content>
 
 </paragraph>
 <paragraph start="14" end="42">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="14" end="16">
 <size>11</size></content>
 
 <content start="16" end="24">
-<size>11</size><href>delete3d.cml</href></content>
+<href>delete3d.cml</href><size>11</size></content>
 
 <content start="24" end="27">
 <size>11</size></content>
 
 <content start="27" end="32">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="32" end="35">
 <size>11</size></content>
 
 <content start="35" end="39">
-<size>11</size><href>changevelocity3d.cml</href></content>
+<href>changevelocity3d.cml</href><size>11</size></content>
 
 <content start="39" end="41">
 <size>11</size></content>
@@ -98,62 +98,60 @@ You may play with the following simulator about fixing atoms and the effect.
 
 </paragraph>
 <paragraph start="320" end="322">
-<SpaceAbove>2.0</SpaceAbove>
 <LeftIndent>140.0</LeftIndent>
-<SpaceBelow>2.0</SpaceBelow>
 <content start="320" end="321">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="321" end="322">
 </content>
 
 </paragraph>
 <paragraph start="322" end="794">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="322" end="360">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="360" end="731">
 <size>11</size></content>
 
 <content start="731" end="732">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="732" end="733">
-<size>11</size><superscript>true</superscript></content>
+<superscript>true</superscript><size>11</size></content>
 
 <content start="733" end="753">
 <size>11</size></content>
 
 <content start="753" end="754">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="754" end="794">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="794" end="795">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="794" end="795">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="795" end="1184">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="795" end="899">
 <size>11</size></content>
 
 <content start="899" end="904">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="904" end="1025">
 <size>11</size></content>
 
 <content start="1025" end="1026">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="1026" end="1183">
 <size>11</size></content>
@@ -163,11 +161,9 @@ You may play with the following simulator about fixing atoms and the effect.
 
 </paragraph>
 <paragraph start="1184" end="1186">
-<SpaceAbove>2.0</SpaceAbove>
 <LeftIndent>140.0</LeftIndent>
-<SpaceBelow>2.0</SpaceBelow>
 <content start="1184" end="1185">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1185" end="1186">
 </content>
@@ -199,13 +195,7 @@ You may play with the following simulator about fixing atoms and the effect.
 </paragraph>
 <paragraph start="1480" end="1916">
 <LeftIndent>140.0</LeftIndent>
-<content start="1480" end="1500">
-<size>11</size></content>
-
-<content start="1500" end="1557">
-<size>11</size></content>
-
-<content start="1557" end="1811">
+<content start="1480" end="1811">
 <size>11</size></content>
 
 <content start="1811" end="1812">
@@ -248,7 +238,7 @@ You may play with the following simulator about fixing atoms and the effect.
 <paragraph start="2211" end="2220">
 <LeftIndent>140.0</LeftIndent>
 <content start="2211" end="2219">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="2219" end="2220">
 <size>11</size></content>
@@ -283,50 +273,50 @@ You may play with the following simulator about fixing atoms and the effect.
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2301" end="2330">
+<paragraph start="2301" end="2340">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="2301" end="2329">
+<content start="2301" end="2339">
 <size>10</size></content>
 
-<content start="2329" end="2330">
+<content start="2339" end="2340">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2330" end="2331">
+<paragraph start="2340" end="2341">
 <LeftIndent>140.0</LeftIndent>
-<content start="2330" end="2331">
+<content start="2340" end="2341">
 </content>
 
 </paragraph>
-<paragraph start="2331" end="2332">
+<paragraph start="2341" end="2342">
 <LeftIndent>140.0</LeftIndent>
-<content start="2331" end="2332">
+<content start="2341" end="2342">
 </content>
 
 </paragraph>
-<paragraph start="2332" end="2360">
-<Alignment>2</Alignment>
+<paragraph start="2342" end="2370">
 <RightIndent>20.0</RightIndent>
-<content start="2332" end="2334">
+<Alignment>2</Alignment>
+<content start="2342" end="2344">
 <size>11</size></content>
 
-<content start="2334" end="2342">
-<size>11</size><href>delete3d.cml</href></content>
+<content start="2344" end="2352">
+<href>delete3d.cml</href><size>11</size></content>
 
-<content start="2342" end="2345">
+<content start="2352" end="2355">
 <size>11</size></content>
 
-<content start="2345" end="2350">
-<size>11</size><href>index4.cml</href></content>
+<content start="2355" end="2360">
+<href>index4.cml</href><size>11</size></content>
 
-<content start="2350" end="2353">
+<content start="2360" end="2363">
 <size>11</size></content>
 
-<content start="2353" end="2357">
-<size>11</size><href>changevelocity3d.cml</href></content>
+<content start="2363" end="2367">
+<href>changevelocity3d.cml</href><size>11</size></content>
 
-<content start="2357" end="2359">
+<content start="2367" end="2369">
 <size>11</size></content>
 
 </paragraph>

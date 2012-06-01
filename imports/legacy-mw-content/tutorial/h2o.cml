@@ -31,21 +31,21 @@ The first thing you may want to consider is whether you should leave the heat ba
 
 The second thing to consider is whether you should leave some buttons on the tool bar of the simulator, in particular, the two buttons for adding the green and blue particles. These buttons will allow the user to add or remove molecules (thus changing the concentrations). The &quot;duplicate&quot; button can be used to create more reactants.
 
-    
+     
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container for chemical reactions.&#12305;
 
 Setting up outputs
 
-(1) Mole fractions
+&#10112; Mole fractions
 
-The above setup uses bar graphs to display the mole fractions of H2, O2 and H2O. But you can use an X-Y graph to display them. The reaction rates can be deduced from the changes of the mole fractions versus time.
+The above setup uses bar graphs to display the mole fractions of H2, O2, and H2O. But you can use an X-Y graph to display them. The reaction rates can be deduced from the changes of the mole fractions versus time.
 
-(2) Energies
+&#10113; Energies
 
 You can output the kinetic energy or the potential energy to an X-Y graph.
 
-(3) Pressure
+&#10114; Pressure
 
 The increasing of pressure may be interesting to measure.
 
@@ -54,22 +54,22 @@ Animating the ignition
 This reaction needs to be ignited, typically by a spark from a spark-plug. The spark will create the initial free radicals. This process cannot be scientifically simulated, but can be animated using some MW scripts. This page provides such an example.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="4215">
+<section start="0" end="4240">
 <paragraph start="0" end="64">
-<SpaceAbove>8.0</SpaceAbove>
 <RightIndent>8.0</RightIndent>
 <Alignment>2</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
 <content start="0" end="52">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="52" end="53">
-<subscript>true</subscript><italic>true</italic><bold>true</bold><size>16</size></content>
+<size>16</size><subscript>true</subscript><italic>true</italic><bold>true</bold></content>
 
 <content start="53" end="63">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="63" end="64">
-<bold>true</bold><size>14</size></content>
+<size>14</size><bold>true</bold></content>
 
 </paragraph>
 <paragraph start="64" end="65">
@@ -86,13 +86,13 @@ This reaction needs to be ignited, typically by a spark from a spark-plug. The s
 <size>11</size></content>
 
 <content start="67" end="75">
-<href>prosyn2.cml</href><size>11</size></content>
+<size>11</size><href>prosyn2.cml</href></content>
 
 <content start="75" end="78">
 <size>11</size></content>
 
 <content start="78" end="83">
-<href>index1.cml</href><size>11</size></content>
+<size>11</size><href>index1.cml</href></content>
 
 <content start="83" end="92">
 <size>11</size></content>
@@ -110,7 +110,7 @@ This reaction needs to be ignited, typically by a spark from a spark-plug. The s
 <paragraph start="94" end="106">
 <LeftIndent>140.0</LeftIndent>
 <content start="94" end="105">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="105" end="106">
 <size>11</size></content>
@@ -170,7 +170,7 @@ This reaction needs to be ignited, typically by a spark from a spark-plug. The s
 <size>11</size></content>
 
 <content start="656" end="749">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="749" end="922">
 <size>11</size></content>
@@ -206,7 +206,7 @@ This reaction needs to be ignited, typically by a spark from a spark-plug. The s
 <size>11</size></content>
 
 <content start="1340" end="1370">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="1370" end="1580">
 <size>11</size></content>
@@ -272,7 +272,7 @@ This reaction needs to be ignited, typically by a spark from a spark-plug. The s
 <size>11</size></content>
 
 <content start="2300" end="2537">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="2537" end="2633">
 <size>11</size></content>
@@ -287,7 +287,7 @@ This reaction needs to be ignited, typically by a spark from a spark-plug. The s
 <paragraph start="2634" end="2654">
 <LeftIndent>140.0</LeftIndent>
 <content start="2634" end="2653">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="2653" end="2654">
 <size>11</size></content>
@@ -326,10 +326,10 @@ This reaction needs to be ignited, typically by a spark from a spark-plug. The s
 <paragraph start="3451" end="3452">
 <LeftIndent>140.0</LeftIndent>
 <content start="3451" end="3452">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 </paragraph>
-<paragraph start="3452" end="3457">
+<paragraph start="3452" end="3458">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
 <content start="3452" end="3453">
@@ -337,7 +337,12 @@ This reaction needs to be ignited, typically by a spark from a spark-plug. The s
 <resource>h2o$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Rotate Object</button><button>Duplicate Object</button><button>Add Pl</button><button>Add Ws</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Mark Object</button><button>Draw Lines</button><button>Count Objects</button><button>What's This?</button><button>Toggle Trajectory</button><button>Measure Distance</button></component></content>
 
 <content start="3453" end="3454">
+</content>
+
+<content start="3454" end="3455">
 <component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
 <timeseries>Mole Fraction H2(%)</timeseries>
 <max_fraction_digits>0</max_fraction_digits>
 <width>70</width>
@@ -347,14 +352,16 @@ This reaction needs to be ignited, typically by a spark from a spark-plug. The s
 <nstep>10</nstep>
 <label>true</label>
 <title>true</title>
-<model>4</model>
+<fgcolor>-7f7f80</fgcolor>
 <minimum>0.0</minimum>
 <maximum>100.0</maximum>
 <value>65.57376861572266</value>
 </component></content>
 
-<content start="3454" end="3455">
+<content start="3455" end="3456">
 <component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
 <timeseries>Mole Fraction O2(%)</timeseries>
 <max_fraction_digits>0</max_fraction_digits>
 <width>70</width>
@@ -364,14 +371,16 @@ This reaction needs to be ignited, typically by a spark from a spark-plug. The s
 <nstep>10</nstep>
 <label>true</label>
 <title>true</title>
-<model>4</model>
+<fgcolor>-7f7f80</fgcolor>
 <minimum>0.0</minimum>
 <maximum>100.0</maximum>
 <value>32.78688430786133</value>
 </component></content>
 
-<content start="3455" end="3456">
+<content start="3456" end="3457">
 <component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
 <timeseries>Mole Fraction H2O(%)</timeseries>
 <max_fraction_digits>0</max_fraction_digits>
 <width>70</width>
@@ -381,20 +390,20 @@ This reaction needs to be ignited, typically by a spark from a spark-plug. The s
 <nstep>10</nstep>
 <label>true</label>
 <title>true</title>
-<model>4</model>
+<fgcolor>-7f7f80</fgcolor>
 <minimum>0.0</minimum>
 <maximum>100.0</maximum>
 <value>0.0</value>
 </component></content>
 
-<content start="3456" end="3457">
+<content start="3457" end="3458">
 </content>
 
 </paragraph>
-<paragraph start="3457" end="3459">
+<paragraph start="3458" end="3460">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="3457" end="3458">
+<content start="3458" end="3459">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Clear all annotations</title>
 <tooltip>Clear all annotations</tooltip>
@@ -407,199 +416,208 @@ remove;</script>
 <action>Execute MW script</action>
 </component></content>
 
-<content start="3458" end="3459">
-<size>11</size><italic>true</italic></content>
+<content start="3459" end="3460">
+<italic>true</italic><size>11</size></content>
 
 </paragraph>
-<paragraph start="3459" end="3492">
+<paragraph start="3460" end="3522">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="3459" end="3491">
+<content start="3460" end="3521">
 <size>10</size></content>
 
-<content start="3491" end="3492">
+<content start="3521" end="3522">
 </content>
 
 </paragraph>
-<paragraph start="3492" end="3493">
+<paragraph start="3522" end="3523">
 <LeftIndent>140.0</LeftIndent>
-<content start="3492" end="3493">
+<content start="3522" end="3523">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3493" end="3512">
+<paragraph start="3523" end="3542">
 <LeftIndent>140.0</LeftIndent>
-<content start="3493" end="3511">
-<size>11</size><bold>true</bold></content>
+<content start="3523" end="3541">
+<bold>true</bold><size>11</size></content>
 
-<content start="3511" end="3512">
+<content start="3541" end="3542">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3512" end="3513">
+<paragraph start="3542" end="3543">
 <LeftIndent>140.0</LeftIndent>
-<content start="3512" end="3513">
+<content start="3542" end="3543">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3513" end="3532">
+<paragraph start="3543" end="3560">
 <LeftIndent>140.0</LeftIndent>
-<content start="3513" end="3532">
+<content start="3543" end="3544">
+<size>14</size></content>
+
+<content start="3544" end="3560">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3532" end="3533">
+<paragraph start="3560" end="3561">
 <LeftIndent>140.0</LeftIndent>
-<content start="3532" end="3533">
+<content start="3560" end="3561">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3533" end="3746">
+<paragraph start="3561" end="3775">
 <LeftIndent>140.0</LeftIndent>
-<content start="3533" end="3599">
+<content start="3561" end="3627">
 <size>11</size></content>
 
-<content start="3599" end="3600">
-<size>11</size><subscript>true</subscript></content>
+<content start="3627" end="3628">
+<size>10</size><subscript>true</subscript></content>
 
-<content start="3600" end="3603">
+<content start="3628" end="3631">
 <size>11</size></content>
 
-<content start="3603" end="3604">
-<size>11</size><subscript>true</subscript></content>
+<content start="3631" end="3632">
+<size>10</size><subscript>true</subscript></content>
 
-<content start="3604" end="3610">
+<content start="3632" end="3639">
 <size>11</size></content>
 
-<content start="3610" end="3611">
-<size>11</size><subscript>true</subscript></content>
+<content start="3639" end="3640">
+<size>10</size><subscript>true</subscript></content>
 
-<content start="3611" end="3626">
+<content start="3640" end="3655">
 <size>11</size></content>
 
-<content start="3626" end="3642">
-<href>h2o_molefraction_linegraph.cml</href><size>11</size></content>
+<content start="3655" end="3671">
+<size>11</size><href>h2o_molefraction_linegraph.cml</href></content>
 
-<content start="3642" end="3746">
+<content start="3671" end="3775">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3746" end="3747">
+<paragraph start="3775" end="3776">
 <LeftIndent>140.0</LeftIndent>
-<content start="3746" end="3747">
+<content start="3775" end="3776">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3747" end="3760">
+<paragraph start="3776" end="3787">
 <LeftIndent>140.0</LeftIndent>
-<content start="3747" end="3760">
+<content start="3776" end="3777">
+<size>14</size></content>
+
+<content start="3777" end="3787">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3760" end="3761">
+<paragraph start="3787" end="3788">
 <LeftIndent>140.0</LeftIndent>
-<content start="3760" end="3761">
+<content start="3787" end="3788">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3761" end="3836">
+<paragraph start="3788" end="3863">
 <LeftIndent>140.0</LeftIndent>
-<content start="3761" end="3776">
+<content start="3788" end="3803">
 <size>11</size></content>
 
-<content start="3776" end="3818">
-<href>h2o_energies.cml</href><size>11</size></content>
+<content start="3803" end="3845">
+<size>11</size><href>h2o_energies.cml</href></content>
 
-<content start="3818" end="3836">
+<content start="3845" end="3863">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3836" end="3837">
+<paragraph start="3863" end="3864">
 <LeftIndent>140.0</LeftIndent>
-<content start="3836" end="3837">
+<content start="3863" end="3864">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3837" end="3850">
+<paragraph start="3864" end="3875">
 <LeftIndent>140.0</LeftIndent>
-<content start="3837" end="3850">
+<content start="3864" end="3865">
+<size>14</size></content>
+
+<content start="3865" end="3875">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3850" end="3851">
+<paragraph start="3875" end="3876">
 <LeftIndent>140.0</LeftIndent>
-<content start="3850" end="3851">
+<content start="3875" end="3876">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3851" end="3909">
+<paragraph start="3876" end="3934">
 <LeftIndent>140.0</LeftIndent>
-<content start="3851" end="3855">
+<content start="3876" end="3880">
 <size>11</size></content>
 
-<content start="3855" end="3877">
-<href>h2o_pressure.cml</href><size>11</size></content>
+<content start="3880" end="3902">
+<size>11</size><href>h2o_pressure.cml</href></content>
 
-<content start="3877" end="3909">
+<content start="3902" end="3934">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3909" end="3910">
+<paragraph start="3934" end="3935">
 <LeftIndent>140.0</LeftIndent>
-<content start="3909" end="3910">
+<content start="3934" end="3935">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3910" end="3933">
+<paragraph start="3935" end="3958">
 <LeftIndent>140.0</LeftIndent>
-<content start="3910" end="3932">
-<size>11</size><bold>true</bold></content>
+<content start="3935" end="3957">
+<bold>true</bold><size>11</size></content>
 
-<content start="3932" end="3933">
+<content start="3957" end="3958">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3933" end="3934">
+<paragraph start="3958" end="3959">
 <LeftIndent>140.0</LeftIndent>
-<content start="3933" end="3934">
+<content start="3958" end="3959">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3934" end="4186">
+<paragraph start="3959" end="4211">
 <LeftIndent>140.0</LeftIndent>
-<content start="3934" end="4150">
+<content start="3959" end="4175">
 <size>11</size></content>
 
-<content start="4150" end="4159">
-<href>h2o_spark.cml</href><size>11</size></content>
+<content start="4175" end="4184">
+<size>11</size><href>h2o_spark.cml</href></content>
 
-<content start="4159" end="4186">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="4186" end="4187">
-<LeftIndent>140.0</LeftIndent>
-<content start="4186" end="4187">
+<content start="4184" end="4211">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4187" end="4215">
+<paragraph start="4211" end="4212">
 <LeftIndent>140.0</LeftIndent>
+<content start="4211" end="4212">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4212" end="4240">
 <RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
 <Alignment>2</Alignment>
-<content start="4187" end="4189">
+<content start="4212" end="4214">
 <size>11</size></content>
 
-<content start="4189" end="4197">
-<href>prosyn2.cml</href><size>11</size></content>
+<content start="4214" end="4222">
+<size>11</size><href>prosyn2.cml</href></content>
 
-<content start="4197" end="4200">
+<content start="4222" end="4225">
 <size>11</size></content>
 
-<content start="4200" end="4205">
-<href>index1.cml</href><size>11</size></content>
+<content start="4225" end="4230">
+<size>11</size><href>index1.cml</href></content>
 
-<content start="4205" end="4214">
+<content start="4230" end="4239">
 <size>11</size></content>
 
 </paragraph>

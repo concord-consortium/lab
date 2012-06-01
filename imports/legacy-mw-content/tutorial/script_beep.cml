@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Beep</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Beep
+
+&lt; Previous | Index | Next &gt;
+
+The beep command emits a beep sound.
+
+Syntax:
+
+beep
+
+The following example shows using this command to fire a sound when a particle collides with an obstacle.
+
+ 
+
+See also: sound 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="244">
+<paragraph start="0" end="5">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="4">
+<bold>true</bold><italic>true</italic><size>16</size></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="8">
+<size>11</size></content>
+
+<content start="8" end="16">
+<size>11</size><href>script_focus.cml</href></content>
+
+<content start="16" end="19">
+<size>11</size></content>
+
+<content start="19" end="24">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="31">
+<size>11</size><href>script_print.cml</href></content>
+
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>100.0</LeftIndent>
+<content start="34" end="35">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="35" end="72">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<size>11</size><family>Courier New</family></content>
+
+<content start="43" end="72">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="72" end="73">
+<LeftIndent>140.0</LeftIndent>
+<content start="72" end="73">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="73" end="81">
+<LeftIndent>140.0</LeftIndent>
+<content start="73" end="81">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="81" end="82">
+<LeftIndent>140.0</LeftIndent>
+<content start="81" end="82">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="82" end="87">
+<LeftIndent>160.0</LeftIndent>
+<content start="82" end="86">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="86" end="87">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="87" end="88">
+<LeftIndent>160.0</LeftIndent>
+<content start="87" end="88">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="88" end="194">
+<LeftIndent>140.0</LeftIndent>
+<content start="88" end="194">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="194" end="195">
+<LeftIndent>140.0</LeftIndent>
+<content start="194" end="195">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="195" end="197">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="195" end="196">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_beep$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="196" end="197">
+</content>
+
+</paragraph>
+<paragraph start="197" end="198">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="197" end="198">
+</content>
+
+</paragraph>
+<paragraph start="198" end="215">
+<LeftIndent>140.0</LeftIndent>
+<content start="198" end="208">
+<size>11</size></content>
+
+<content start="208" end="213">
+<size>11</size><href>script_sound.cml</href></content>
+
+<content start="213" end="215">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="215" end="216">
+<LeftIndent>140.0</LeftIndent>
+<content start="215" end="216">
+</content>
+
+</paragraph>
+<paragraph start="216" end="244">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="216" end="218">
+<size>11</size></content>
+
+<content start="218" end="226">
+<size>11</size><href>script_focus.cml</href></content>
+
+<content start="226" end="229">
+<size>11</size></content>
+
+<content start="229" end="234">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="234" end="237">
+<size>11</size></content>
+
+<content start="237" end="241">
+<size>11</size><href>script_print.cml</href></content>
+
+<content start="241" end="243">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

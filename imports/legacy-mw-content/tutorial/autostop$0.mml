@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="sigma"> 
    <double>7.0</double> 
@@ -323,20 +323,20 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1169679488000</long> 
+     <long>1187877282225</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial\autostop$0.mml</string> 
+    <string>C:\home\mw\public\tutorial\autostop$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>10302</long> 
+    <long>10283</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>C:\Tomcat\webapps\modeler1.3\tutorial</string> 
+    <string>C:\home\mw\public\tutorial</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -350,6 +350,7 @@
   </void> 
   <void property="reminderMessage"> 
    <string>The two particles just collided!
+
 Look at the pike in the potential
 energy graph on the right.</string> 
   </void> 

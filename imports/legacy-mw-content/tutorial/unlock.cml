@@ -7,7 +7,7 @@
 
 &lt; Previous | Index | Next &gt;
 
-The Molecular Workbench (MW) software has two modes: the viewing mode and the authoring mode. In the viewing mode, the software behaves like a browser. This is the default mode when it launches. In order to edit a MW page that has been saved on your disk, you have to enter the authoring mode.
+MW has two modes: the viewing mode and the authoring mode. In the viewing mode, the software behaves like a browser. This is the default mode when it launches. In order to edit an MW page that has been saved on your disk, you have to enter the authoring mode.
 
 You can tell whether or not MW is in the authoring mode by looking for the leftmost part of the tool bar panel, which is under the main menu bar. If there is a button in the second row with this image &quot; &quot; and the word &quot;Editor&quot; beside it, it is not in the authoring mode. If there is a button in the first row with this image &quot; &quot; and the word &quot;Editor&quot;, it is in the authoring mode. This button does not show up if the page is remote (i.e. the address of the page starts with &quot;http://&quot;), which automatically makes it non-editable. In fact, even if you do not look at this button, you should be able to figure out if MW is in the authoring mode or not, by just looking at the tool bars. When MW enters the authoring mode, the navigation tool bar vanishes, and more buttons and other components are added, which makes the interface look like that of Microsoft Word&#8482;.
 
@@ -25,12 +25,12 @@ If the page is a local one (i.e. on your disk; the address does not start with &
 You may also notice some changes in the menus when switching between the authoring mode and the viewing mode. For example, the Bookmarks menu is disabled in the authoring mode. All the menus relating to editing the document gray out in the browsing mode.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="2222">
+<section start="0" end="2188">
 <paragraph start="0" end="28">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="27">
-<bold>true</bold><italic>true</italic><size>15</size></content>
+<bold>true</bold><size>15</size><italic>true</italic></content>
 
 <content start="27" end="28">
 </content>
@@ -43,25 +43,25 @@ You may also notice some changes in the menus when switching between the authori
 
 </paragraph>
 <paragraph start="29" end="57">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="29" end="31">
 <size>11</size></content>
 
 <content start="31" end="39">
-<href>intro_authoring.cml</href><size>11</size></content>
+<size>11</size><href>intro_authoring.cml</href></content>
 
 <content start="39" end="42">
 <size>11</size></content>
 
 <content start="42" end="47">
-<href>index2.cml</href><size>11</size></content>
+<size>11</size><href>index2.cml</href></content>
 
 <content start="47" end="50">
 <size>11</size></content>
 
 <content start="50" end="54">
-<href>i18n.cml</href><size>11</size></content>
+<size>11</size><href>i18n.cml</href></content>
 
 <content start="54" end="56">
 <size>11</size></content>
@@ -75,202 +75,202 @@ You may also notice some changes in the menus when switching between the authori
 </content>
 
 </paragraph>
-<paragraph start="58" end="352">
+<paragraph start="58" end="318">
 <LeftIndent>140.0</LeftIndent>
-<content start="58" end="186">
+<content start="58" end="151">
 <size>11</size></content>
 
-<content start="186" end="208">
-<href>navigate.cml</href><size>11</size></content>
+<content start="151" end="173">
+<size>11</size><href>navigate.cml</href></content>
 
-<content start="208" end="294">
+<content start="173" end="260">
 <size>11</size></content>
 
-<content start="294" end="299">
-<href>download.cml</href><size>11</size></content>
+<content start="260" end="265">
+<size>11</size><href>download.cml</href></content>
 
-<content start="299" end="352">
+<content start="265" end="318">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="352" end="353">
+<paragraph start="318" end="319">
 <LeftIndent>140.0</LeftIndent>
-<content start="352" end="353">
+<content start="318" end="319">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="353" end="1216">
+<paragraph start="319" end="1182">
 <LeftIndent>140.0</LeftIndent>
-<content start="353" end="555">
+<content start="319" end="521">
 <size>11</size></content>
 
-<content start="555" end="556">
-<size>11</size><icon>NoEdit.gif</icon></content>
+<content start="521" end="522">
+<icon>NoEdit.gif</icon><size>11</size></content>
 
-<content start="556" end="679">
+<content start="522" end="645">
 <size>11</size></content>
 
-<content start="679" end="680">
-<size>11</size><icon>Edit.gif</icon></content>
+<content start="645" end="646">
+<icon>Edit.gif</icon><size>11</size></content>
 
-<content start="680" end="734">
+<content start="646" end="700">
 <size>11</size></content>
 
-<content start="734" end="785">
+<content start="700" end="751">
 <size>11</size><bold>true</bold></content>
 
-<content start="785" end="1213">
+<content start="751" end="1179">
 <size>11</size></content>
 
-<content start="1213" end="1214">
+<content start="1179" end="1180">
 </content>
 
-<content start="1214" end="1216">
+<content start="1180" end="1182">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1216" end="1217">
+<paragraph start="1182" end="1183">
 <LeftIndent>140.0</LeftIndent>
-<content start="1216" end="1217">
+<content start="1182" end="1183">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1217" end="1220">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1183" end="1186">
 <Alignment>1</Alignment>
-<content start="1217" end="1218">
+<LeftIndent>140.0</LeftIndent>
+<content start="1183" end="1184">
 </content>
 
-<content start="1218" end="1219">
+<content start="1184" end="1185">
 <icon>ViewingMode.gif</icon></content>
 
-<content start="1219" end="1220">
+<content start="1185" end="1186">
 </content>
 
 </paragraph>
-<paragraph start="1220" end="1282">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1186" end="1248">
 <Alignment>1</Alignment>
-<content start="1220" end="1281">
+<LeftIndent>140.0</LeftIndent>
+<content start="1186" end="1247">
 <size>10</size></content>
 
-<content start="1281" end="1282">
+<content start="1247" end="1248">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1282" end="1283">
+<paragraph start="1248" end="1249">
 <LeftIndent>140.0</LeftIndent>
-<content start="1282" end="1283">
+<content start="1248" end="1249">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1283" end="1286">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1249" end="1252">
 <Alignment>1</Alignment>
-<content start="1283" end="1284">
+<LeftIndent>140.0</LeftIndent>
+<content start="1249" end="1250">
 </content>
 
-<content start="1284" end="1285">
+<content start="1250" end="1251">
 <icon>ViewingMode2.gif</icon></content>
 
-<content start="1285" end="1286">
+<content start="1251" end="1252">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1286" end="1375">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1252" end="1341">
 <Alignment>1</Alignment>
-<content start="1286" end="1374">
+<LeftIndent>140.0</LeftIndent>
+<content start="1252" end="1340">
 <size>10</size></content>
 
-<content start="1374" end="1375">
+<content start="1340" end="1341">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1375" end="1376">
+<paragraph start="1341" end="1342">
 <LeftIndent>140.0</LeftIndent>
-<content start="1375" end="1376">
+<content start="1341" end="1342">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1376" end="1379">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1342" end="1345">
 <Alignment>1</Alignment>
-<content start="1376" end="1377">
+<LeftIndent>140.0</LeftIndent>
+<content start="1342" end="1343">
 <size>11</size></content>
 
-<content start="1377" end="1378">
+<content start="1343" end="1344">
 <icon>AuthoringMode.gif</icon></content>
 
-<content start="1378" end="1379">
+<content start="1344" end="1345">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1379" end="1487">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1345" end="1453">
 <Alignment>1</Alignment>
-<content start="1379" end="1486">
+<LeftIndent>140.0</LeftIndent>
+<content start="1345" end="1452">
 <size>10</size></content>
 
-<content start="1486" end="1487">
+<content start="1452" end="1453">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1487" end="1488">
+<paragraph start="1453" end="1454">
 <LeftIndent>140.0</LeftIndent>
-<content start="1487" end="1488">
+<content start="1453" end="1454">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1488" end="1937">
+<paragraph start="1454" end="1903">
 <LeftIndent>140.0</LeftIndent>
-<content start="1488" end="1937">
+<content start="1454" end="1903">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1937" end="1938">
+<paragraph start="1903" end="1904">
 <LeftIndent>140.0</LeftIndent>
-<content start="1937" end="1938">
+<content start="1903" end="1904">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1938" end="2193">
+<paragraph start="1904" end="2159">
 <LeftIndent>140.0</LeftIndent>
-<content start="1938" end="2192">
+<content start="1904" end="2158">
 <size>11</size></content>
 
-<content start="2192" end="2193">
+<content start="2158" end="2159">
 </content>
 
 </paragraph>
-<paragraph start="2193" end="2194">
+<paragraph start="2159" end="2160">
 <LeftIndent>100.0</LeftIndent>
-<content start="2193" end="2194">
+<content start="2159" end="2160">
 </content>
 
 </paragraph>
-<paragraph start="2194" end="2222">
-<RightIndent>20.0</RightIndent>
+<paragraph start="2160" end="2188">
 <Alignment>2</Alignment>
-<content start="2194" end="2196">
+<RightIndent>20.0</RightIndent>
+<content start="2160" end="2162">
 <size>11</size></content>
 
-<content start="2196" end="2204">
-<href>intro_authoring.cml</href><size>11</size></content>
+<content start="2162" end="2170">
+<size>11</size><href>intro_authoring.cml</href></content>
 
-<content start="2204" end="2207">
+<content start="2170" end="2173">
 <size>11</size></content>
 
-<content start="2207" end="2212">
-<href>index2.cml</href><size>11</size></content>
+<content start="2173" end="2178">
+<size>11</size><href>index2.cml</href></content>
 
-<content start="2212" end="2215">
+<content start="2178" end="2181">
 <size>11</size></content>
 
-<content start="2215" end="2219">
-<href>i18n.cml</href><size>11</size></content>
+<content start="2181" end="2185">
+<size>11</size><href>i18n.cml</href></content>
 
-<content start="2219" end="2221">
+<content start="2185" end="2187">
 <size>11</size></content>
 
 </paragraph>

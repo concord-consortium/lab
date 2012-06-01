@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Embedded applet: example 2</page_title>
+<bg_color><Red>255</Red><Green>255</Green><Blue>128</Blue></bg_color>
+<text>Embedded applet: example 2
+
+You can easily embed a Java applet into a Molecular Workbench page. The following is an example.
+
+ </text>
+<section start="0" end="128">
+<paragraph start="0" end="27">
+<Alignment>1</Alignment>
+<content start="0" end="26">
+<bold>true</bold><size>15</size></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="125">
+<LeftIndent>10.0</LeftIndent>
+<content start="28" end="125">
+</content>
+
+</paragraph>
+<paragraph start="125" end="126">
+<content start="125" end="126">
+</content>
+
+</paragraph>
+<paragraph start="126" end="128">
+<Alignment>1</Alignment>
+<content start="126" end="127">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>quadraticgrapher.jar</appletjar>
+<appletclass>QuadraticGrapherApplet</appletclass>
+<width>700</width><height>525</height>
+<border>Raised Bevel</border></component></content>
+
+</paragraph>
+</section>
+</document>

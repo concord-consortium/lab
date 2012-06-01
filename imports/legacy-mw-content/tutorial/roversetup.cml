@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Customizing the Rover</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Customizing the Rover
+
+&lt; Previous | Index | Next &gt;
+
+There are a set of properties that can be used to customize the looking and behaviors of the Rover. One trivial property is the color of the Rover. Other properties may affect the flying effect. These properties can be changed from the Rover Settings Dialog, which can be opened from &quot;Navigation Options &gt; Rover Settings&quot;.
+
+Mass
+
+The mass controls the effect of inertia when the Rover moves in the translation mode. Larger mass correponds to more significant effect of inertia.
+
+Moment of inertia
+
+The moment of inertia of the Rover controls the effect of inertia when the Rover rotates. A larger moment of inertia means that it will take the Rover more time to rotate a specific angle under a given torque.
+
+Turning direction
+
+During navigation, the Rover will seek to turn to some directions that you can specify. There are two options. The first one is to turn the Rover to the direction of the current velocity vector. The second one is to turn to that of the current net force vector. The velocity vector and the force vector do not necessarily point to the same direction, though the combination of interactions and friction tends to make that happen.
+
+Each option has some advantages and some disadvantages. The force option may be more senstive to the change of chemical environment, as the Rover will instantly response to the change of force. The velocity option may be more intuitive, as the Rover will tend to always face the direction it is moving, but it may take some inertia effect for the Rover to sense the change of chemical forces.
+
+Friction
+
+A friction force is applied to keep the Rover move steadily. Without friction. the Rover will keep accelerated when it is constantly steered.
+
+Charge
+
+The Rover can interact with an interaction center when it has a charge.
+
+Feeling the effect
+
+The following model and its controls demonstrate how these properties may affect the motion of the Rover.
+
+ 
+     
+       
+
+Script support
+
+The following command can be used to set the Rover&apos;s properties:
+
+set rover.mass [number];
+set rover.momentofinertia [number];
+set rover.charge [number];
+set rover.friction [number];
+set rover.color #[hex color code];
+set rover.color 0x[hex color code];
+set rover.visible on/off;
+
+Note that these commands will be executed separately with the regular Jmol commands. No matter where you place them in your scripts, the order in which they will be run relative to the regular Jmol commands cannot be guaranteed. It is recommended that these non-standard-Jmol commands should always be placed at the beginning of your scripts.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2652">
+<paragraph start="0" end="22">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="21">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="51">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="23" end="25">
+<size>11</size></content>
+
+<content start="25" end="33">
+<size>11</size><href>interactioncenter.cml</href></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="41">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="48">
+<size>11</size><href>haptics.cml</href></content>
+
+<content start="48" end="50">
+<size>11</size></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="375">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="375">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="375" end="376">
+<LeftIndent>140.0</LeftIndent>
+<content start="375" end="376">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="376" end="381">
+<LeftIndent>140.0</LeftIndent>
+<content start="376" end="380">
+<size>11</size><bold>true</bold></content>
+
+<content start="380" end="381">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="381" end="382">
+<LeftIndent>140.0</LeftIndent>
+<content start="381" end="382">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="382" end="530">
+<LeftIndent>140.0</LeftIndent>
+<content start="382" end="530">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="530" end="531">
+<LeftIndent>140.0</LeftIndent>
+<content start="530" end="531">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="531" end="549">
+<LeftIndent>140.0</LeftIndent>
+<content start="531" end="548">
+<size>11</size><bold>true</bold></content>
+
+<content start="548" end="549">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="549" end="550">
+<LeftIndent>140.0</LeftIndent>
+<content start="549" end="550">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="550" end="760">
+<LeftIndent>140.0</LeftIndent>
+<content start="550" end="760">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="760" end="761">
+<LeftIndent>140.0</LeftIndent>
+<content start="760" end="761">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="761" end="779">
+<LeftIndent>140.0</LeftIndent>
+<content start="761" end="778">
+<size>11</size><bold>true</bold></content>
+
+<content start="778" end="779">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="779" end="780">
+<LeftIndent>140.0</LeftIndent>
+<content start="779" end="780">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="780" end="1210">
+<LeftIndent>140.0</LeftIndent>
+<content start="780" end="1210">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1210" end="1211">
+<LeftIndent>140.0</LeftIndent>
+<content start="1210" end="1211">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1211" end="1604">
+<LeftIndent>140.0</LeftIndent>
+<content start="1211" end="1604">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1604" end="1605">
+<LeftIndent>140.0</LeftIndent>
+<content start="1604" end="1605">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1605" end="1614">
+<LeftIndent>140.0</LeftIndent>
+<content start="1605" end="1613">
+<size>11</size><bold>true</bold></content>
+
+<content start="1613" end="1614">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1614" end="1615">
+<LeftIndent>140.0</LeftIndent>
+<content start="1614" end="1615">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1615" end="1757">
+<LeftIndent>140.0</LeftIndent>
+<content start="1615" end="1757">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1757" end="1758">
+<LeftIndent>140.0</LeftIndent>
+<content start="1757" end="1758">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1758" end="1765">
+<LeftIndent>140.0</LeftIndent>
+<content start="1758" end="1764">
+<size>11</size><bold>true</bold></content>
+
+<content start="1764" end="1765">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1765" end="1766">
+<LeftIndent>140.0</LeftIndent>
+<content start="1765" end="1766">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1766" end="1838">
+<LeftIndent>140.0</LeftIndent>
+<content start="1766" end="1838">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1838" end="1839">
+<LeftIndent>140.0</LeftIndent>
+<content start="1838" end="1839">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1839" end="1858">
+<LeftIndent>140.0</LeftIndent>
+<content start="1839" end="1857">
+<size>11</size><bold>true</bold></content>
+
+<content start="1857" end="1858">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1858" end="1859">
+<LeftIndent>140.0</LeftIndent>
+<content start="1858" end="1859">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1859" end="1965">
+<LeftIndent>140.0</LeftIndent>
+<content start="1859" end="1965">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1965" end="1966">
+<LeftIndent>140.0</LeftIndent>
+<content start="1965" end="1966">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1966" end="1968">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1966" end="1967">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>select iron;
+cpk 20%;</script><toolbar>false</toolbar><navigation>true</navigation><resource>hemoglobin.pdb</resource><state>roversetup$0.jms</state><width>500.0</width>
+<height>300.0</height>
+</component></content>
+
+<content start="1967" end="1968">
+</content>
+
+</paragraph>
+<paragraph start="1968" end="1974">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1968" end="1969">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Red Rover</title>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1194966448406</groupid>
+<script>set rover.color #ff0000;</script>
+<action>Execute Jmol script</action></component></content>
+
+<content start="1969" end="1970">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Green Rover</title>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1194966448406</groupid>
+<script>set rover.color #00ff00;</script>
+<action>Execute Jmol script</action></component></content>
+
+<content start="1970" end="1971">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>White Rover</title>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1194966448406</groupid>
+<script>set rover.color #ffffff;</script>
+<action>Execute Jmol script</action></component></content>
+
+<content start="1971" end="1972">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Magenta Rover</title>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1194966448406</groupid>
+<script>set rover.color #ff00ff;</script>
+<action>Execute Jmol script</action></component></content>
+
+<content start="1972" end="1973">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Visible</title>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<script>set rover.visible on;</script>
+<script2>set rover.visible off;</script2>
+<action>Execute Jmol script</action>
+</component></content>
+
+<content start="1973" end="1974">
+<size>13</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1974" end="1982">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1974" end="1975">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<value>2.0</value>
+<minimum>1.0</minimum>
+<maximum>10.0</maximum>
+<nstep>9</nstep>
+<title>Mass</title>
+<width>150</width>
+<height>80</height>
+<bgcolor>-111112</bgcolor>
+<tick>true</tick>
+<border>Line</border>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;Large&quot;}{value=&quot;1.0&quot;, label=&quot;Small&quot;}</labeltable>
+<script>set rover.mass %val;</script>
+<change>Execute Jmol script</change>
+</component></content>
+
+<content start="1975" end="1976">
+</content>
+
+<content start="1976" end="1977">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<value>100.0</value>
+<minimum>100.0</minimum>
+<maximum>1000.0</maximum>
+<nstep>9</nstep>
+<title>Moment of inertia</title>
+<width>150</width>
+<height>80</height>
+<bgcolor>-111112</bgcolor>
+<tick>true</tick>
+<border>Line</border>
+<labeltable>{value=&quot;1000.0&quot;, label=&quot;Large&quot;}{value=&quot;100.0&quot;, label=&quot;Small&quot;}</labeltable>
+<script>set rover.momentofinertia %val;</script>
+<change>Execute Jmol script</change>
+</component></content>
+
+<content start="1977" end="1978">
+</content>
+
+<content start="1978" end="1979">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>-5.0</minimum>
+<maximum>5.0</maximum>
+<nstep>10</nstep>
+<title>Charge</title>
+<width>150</width>
+<height>80</height>
+<bgcolor>-111112</bgcolor>
+<tick>true</tick>
+<border>Line</border>
+<labeltable>{value=&quot;-5.0&quot;, label=&quot;-5&quot;}{value=&quot;5.0&quot;, label=&quot;5&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>set rover.charge %val;</script>
+<change>Execute Jmol script</change>
+</component></content>
+
+<content start="1979" end="1980">
+</content>
+
+<content start="1980" end="1981">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<value>0.49999999917215765</value>
+<minimum>0.10000000149011612</minimum>
+<maximum>1.0</maximum>
+<nstep>9</nstep>
+<title>Friction</title>
+<width>150</width>
+<height>80</height>
+<bgcolor>-111112</bgcolor>
+<tick>true</tick>
+<border>Line</border>
+<labeltable>{value=&quot;0.9999999983443153&quot;, label=&quot;Large&quot;}{value=&quot;0.09999999983443153&quot;, label=&quot;Small&quot;}</labeltable>
+<script>set rover.friction %val;</script>
+<change>Execute Jmol script</change>
+</component></content>
+
+<content start="1981" end="1982">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1982" end="1983">
+<LeftIndent>140.0</LeftIndent>
+<content start="1982" end="1983">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1983" end="1998">
+<LeftIndent>140.0</LeftIndent>
+<content start="1983" end="1997">
+<size>11</size><bold>true</bold></content>
+
+<content start="1997" end="1998">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1998" end="1999">
+<LeftIndent>140.0</LeftIndent>
+<content start="1998" end="1999">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1999" end="2064">
+<LeftIndent>140.0</LeftIndent>
+<content start="1999" end="2064">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2064" end="2065">
+<LeftIndent>140.0</LeftIndent>
+<content start="2064" end="2065">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2065" end="2090">
+<LeftIndent>160.0</LeftIndent>
+<content start="2065" end="2090">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2090" end="2126">
+<LeftIndent>160.0</LeftIndent>
+<content start="2090" end="2126">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2126" end="2153">
+<LeftIndent>160.0</LeftIndent>
+<content start="2126" end="2153">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2153" end="2182">
+<LeftIndent>160.0</LeftIndent>
+<content start="2153" end="2181">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2181" end="2182">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2182" end="2217">
+<LeftIndent>160.0</LeftIndent>
+<content start="2182" end="2217">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2217" end="2253">
+<LeftIndent>160.0</LeftIndent>
+<content start="2217" end="2253">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2253" end="2279">
+<LeftIndent>160.0</LeftIndent>
+<content start="2253" end="2279">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2279" end="2280">
+<LeftIndent>140.0</LeftIndent>
+<content start="2279" end="2280">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2280" end="2623">
+<LeftIndent>140.0</LeftIndent>
+<content start="2280" end="2509">
+<size>11</size></content>
+
+<content start="2509" end="2621">
+<size>11</size><bold>true</bold></content>
+
+<content start="2621" end="2622">
+<size>11</size></content>
+
+<content start="2622" end="2623">
+</content>
+
+</paragraph>
+<paragraph start="2623" end="2624">
+<content start="2623" end="2624">
+</content>
+
+</paragraph>
+<paragraph start="2624" end="2652">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2624" end="2626">
+<size>11</size></content>
+
+<content start="2626" end="2634">
+<size>11</size><href>interactioncenter.cml</href></content>
+
+<content start="2634" end="2637">
+<size>11</size></content>
+
+<content start="2637" end="2642">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="2642" end="2645">
+<size>11</size></content>
+
+<content start="2645" end="2649">
+<size>11</size><href>haptics.cml</href></content>
+
+<content start="2649" end="2651">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

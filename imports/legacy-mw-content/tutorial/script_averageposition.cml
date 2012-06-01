@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Averageposition</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Averageposition
@@ -22,14 +22,14 @@ Note: If the recorder is disabled, asking to show the average positions of the s
 
   
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="605">
+<section start="0" end="611">
 <paragraph start="0" end="16">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="15">
-<bold>true</bold><size>16</size><italic>true</italic></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="15" end="16">
 </content>
@@ -82,7 +82,7 @@ Note: If the recorder is disabled, asking to show the average positions of the s
 <size>11</size></content>
 
 <content start="50" end="65">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="65" end="283">
 <size>11</size></content>
@@ -109,25 +109,25 @@ Note: If the recorder is disabled, asking to show the average positions of the s
 <paragraph start="307" end="308">
 <LeftIndent>140.0</LeftIndent>
 <content start="307" end="308">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="308" end="331">
 <LeftIndent>160.0</LeftIndent>
 <content start="308" end="323">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size><bold>true</bold></content>
 
 <content start="323" end="331">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="331" end="344">
 <LeftIndent>160.0</LeftIndent>
 <content start="331" end="336">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size><bold>true</bold></content>
 
 <content start="336" end="343">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="343" end="344">
 <size>11</size></content>
@@ -154,17 +154,17 @@ Note: If the recorder is disabled, asking to show the average positions of the s
 <paragraph start="390" end="392">
 <LeftIndent>140.0</LeftIndent>
 <content start="390" end="391">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="391" end="392">
 </content>
 
 </paragraph>
 <paragraph start="392" end="536">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="392" end="396">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="396" end="405">
 <size>11</size></content>
@@ -182,7 +182,7 @@ Note: If the recorder is disabled, asking to show the average positions of the s
 <paragraph start="536" end="538">
 <LeftIndent>140.0</LeftIndent>
 <content start="536" end="537">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="537" end="538">
 <size>11</size></content>
@@ -233,38 +233,38 @@ select atom none;</script2>
 </content>
 
 </paragraph>
-<paragraph start="544" end="577">
+<paragraph start="544" end="583">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="544" end="576">
+<content start="544" end="582">
 <size>10</size></content>
 
-<content start="576" end="577">
+<content start="582" end="583">
 </content>
 
 </paragraph>
-<paragraph start="577" end="605">
+<paragraph start="583" end="611">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="577" end="579">
+<content start="583" end="585">
 <size>11</size></content>
 
-<content start="579" end="587">
+<content start="585" end="593">
 <size>11</size><href>script_traj.cml</href></content>
 
-<content start="587" end="590">
+<content start="593" end="596">
 <size>11</size></content>
 
-<content start="590" end="595">
+<content start="596" end="601">
 <size>11</size><href>mwscripts.cml</href></content>
 
-<content start="595" end="598">
+<content start="601" end="604">
 <size>11</size></content>
 
-<content start="598" end="602">
+<content start="604" end="608">
 <size>11</size><href>script_averageforce.cml</href></content>
 
-<content start="602" end="604">
+<content start="608" end="610">
 <size>11</size></content>
 
 </paragraph>

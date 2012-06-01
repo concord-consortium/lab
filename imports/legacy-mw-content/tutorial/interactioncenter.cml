@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Interaction-guided navigation</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Interaction-guided navigation
+
+&lt; Previous | Index | Next &gt;
+
+So far, the navigation is manual. You press a button or a key to move inside a molecule. While you are navigating through the molecule, there is no feedback from it to where the next step should be. Some kind of interactions between the molecule and the Rover beyond collision detection may be a desired effect that could enhance user experience in exploring the molecule.
+
+Attaching interaction centers to atoms and bonds
+
+An interation center can be attached to an atom or a bond from the pop-up menu when an atom or a bond is right-clicked (Ctrl+click for Mac OS X users without a multiple-button mouse). Once an interaction center is attached, it will blink to indicate its existence, as is shown below:
+
+ 
+  
+&#12304;An interaction center attached to an iron atom in a hemoglobin molecule.&#12305;
+
+The blinking effect can be turned on or off using &quot;Navigation Options &gt; Blink Interaction Centers&quot;.
+
+What an interaction center will do
+
+An interaction center has a set of physical properties such as charge and repulsion radius that may be different from the default van der Waals radius used to do collision detection. It will interact with a charged rover and cause it to move accordingly. In other words, a charged rover can remotely sense the interaction centers. The interaction between a center and the rover depends on the distance between them and the charges on them. The further they are apart, the weaker the interaction is.
+
+ 
+An analogy: An interaction center acts to the rover like a piece of food or a spray of insect repellent to an ant, depending on the attributes given to it.
+ 
+
+Any number of interaction centers can be added to a molecule. A web of interaction centers will form a force field, in which the Rover will be instructed to travel when the user hands off it. This kind of force field can be regarded as a reduced one, compared with the full-scale force fields in which every atom contributes forces. In theory, we could add an interaction center to every atom of the molecule. The disadvantage of this, however, is that the rover will run very slowly and most of the time may be spent on computing interactions that may not have significant effects. A combination of collision detection for all atoms and a few interaction centers to simulate reaction centers or binding sites may be adequate for most cases that need such kind of physical navigation.
+
+Script support
+
+The following commands can be used to turn the blinking of interaction centers on and off:
+
+set blinkinteractions true;
+set blinkinteractions false;
+
+The following commands can be used to set the charge and Pauli repulsion radius for an interaction center:
+
+set interaction.charge [value(integer)] foratom [index(integer)];
+set interaction.charge [value(integer)] forbond [index(integer)];
+set interaction.radius [value(float)] foratom [index(integer)];
+set interaction.radius [value(float)] forbond [index(integer)];
+
+For example:
+
+set interaction.charge 2 foratom 156;
+set interaction.charge -1 forbond 740;
+set interaction.radius 3.0 foratom 156;
+set interaction.radius 4.5 forbond 740;
+
+The index of the atom or bond to which an interaction center is attached can be found from the dialog window that can be opened by right-clicking the atom or bond and selecting &quot;Interaction &gt; Edit Selected Interaction&quot; from the pop-up menu.
+
+If there is no interaction center associated with the atom specified by the foratom clause or the bond by the forbond clause, an interaction center will be created. An interaction center can be removed by using the following commands:
+
+remove interaction foratom [index(integer)];
+remove interaction forbond [index(integer)];
+
+For example:
+
+remove interaction foratom 11;
+remove interaction forbond 4;
+
+The remove interaction command does nothing if there is no interaction center for the specified atom or bond.
+
+Note that these commands will be executed separately with the regular Jmol commands.  No matter where you place them in your scripts, the order in which they will be run relative to the regular Jmol commands cannot be guaranteed. It is recommended that these non-standard-Jmol commands should always be placed at the beginning of your scripts.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4271">
+<paragraph start="0" end="30">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="0" end="29">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="59">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="41">
+<size>11</size><href>collisiondetection.cml</href></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="49">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="49" end="52">
+<size>11</size></content>
+
+<content start="52" end="56">
+<size>11</size><href>roversetup.cml</href></content>
+
+<content start="56" end="58">
+<size>11</size></content>
+
+<content start="58" end="59">
+</content>
+
+</paragraph>
+<paragraph start="59" end="60">
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="433">
+<LeftIndent>140.0</LeftIndent>
+<content start="60" end="433">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="433" end="434">
+<LeftIndent>140.0</LeftIndent>
+<content start="433" end="434">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="434" end="483">
+<LeftIndent>140.0</LeftIndent>
+<content start="434" end="482">
+<size>11</size><bold>true</bold></content>
+
+<content start="482" end="483">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="483" end="484">
+<content start="483" end="484">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="484" end="768">
+<LeftIndent>140.0</LeftIndent>
+<content start="484" end="768">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="768" end="769">
+<LeftIndent>140.0</LeftIndent>
+<content start="768" end="769">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="769" end="771">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="769" end="770">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>select iron;
+cpk 100%;</script><toolbar>false</toolbar><navigation>true</navigation><resource>hemoglobin.pdb</resource><state>interactioncenter$0.jms</state><width>500.0</width>
+<height>300.0</height>
+</component></content>
+
+<content start="770" end="771">
+</content>
+
+</paragraph>
+<paragraph start="771" end="774">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="771" end="772">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Rover mode</title>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<script>set rovermode true;</script>
+<script2>set rovermode false;</script2>
+<action>Execute Jmol script</action>
+</component></content>
+
+<content start="772" end="773">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Blink interaction centers</title>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<script>set blinkinteractions true;</script>
+<script2>set blinkinteractions false;</script2>
+<action>Execute Jmol script</action>
+</component></content>
+
+<content start="773" end="774">
+</content>
+
+</paragraph>
+<paragraph start="774" end="849">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="774" end="775">
+<size>13</size><bold>true</bold></content>
+
+<content start="775" end="847">
+<size>10</size></content>
+
+<content start="847" end="848">
+<size>13</size><bold>true</bold></content>
+
+<content start="848" end="849">
+</content>
+
+</paragraph>
+<paragraph start="849" end="850">
+<LeftIndent>140.0</LeftIndent>
+<content start="849" end="850">
+</content>
+
+</paragraph>
+<paragraph start="850" end="950">
+<LeftIndent>140.0</LeftIndent>
+<content start="850" end="949">
+<size>11</size></content>
+
+<content start="949" end="950">
+</content>
+
+</paragraph>
+<paragraph start="950" end="951">
+<LeftIndent>140.0</LeftIndent>
+<content start="950" end="951">
+</content>
+
+</paragraph>
+<paragraph start="951" end="986">
+<LeftIndent>140.0</LeftIndent>
+<content start="951" end="985">
+<size>11</size><bold>true</bold></content>
+
+<content start="985" end="986">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="986" end="987">
+<LeftIndent>140.0</LeftIndent>
+<content start="986" end="987">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="987" end="1486">
+<LeftIndent>140.0</LeftIndent>
+<content start="987" end="1149">
+<size>11</size></content>
+
+<content start="1149" end="1168">
+<size>11</size><href>collisiondetection.cml</href></content>
+
+<content start="1168" end="1278">
+<size>11</size></content>
+
+<content start="1278" end="1292">
+<size>11</size><bold>true</bold></content>
+
+<content start="1292" end="1486">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1486" end="1487">
+<LeftIndent>140.0</LeftIndent>
+<content start="1486" end="1487">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1487" end="1489">
+<LeftIndent>140.0</LeftIndent>
+<content start="1487" end="1488">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1488" end="1489">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1489" end="1645">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1489" end="1499">
+<size>11</size><bold>true</bold></content>
+
+<content start="1499" end="1645">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1645" end="1647">
+<LeftIndent>140.0</LeftIndent>
+<content start="1645" end="1646">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1646" end="1647">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1647" end="1648">
+<LeftIndent>140.0</LeftIndent>
+<content start="1647" end="1648">
+</content>
+
+</paragraph>
+<paragraph start="1648" end="2433">
+<LeftIndent>140.0</LeftIndent>
+<content start="1648" end="2433">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2433" end="2434">
+<LeftIndent>140.0</LeftIndent>
+<content start="2433" end="2434">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2434" end="2449">
+<LeftIndent>140.0</LeftIndent>
+<content start="2434" end="2448">
+<size>11</size><bold>true</bold></content>
+
+<content start="2448" end="2449">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2449" end="2450">
+<LeftIndent>140.0</LeftIndent>
+<content start="2449" end="2450">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2450" end="2541">
+<LeftIndent>140.0</LeftIndent>
+<content start="2450" end="2541">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2541" end="2542">
+<LeftIndent>140.0</LeftIndent>
+<content start="2541" end="2542">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2542" end="2570">
+<LeftIndent>160.0</LeftIndent>
+<content start="2542" end="2570">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2570" end="2599">
+<LeftIndent>160.0</LeftIndent>
+<content start="2570" end="2598">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2598" end="2599">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2599" end="2600">
+<LeftIndent>140.0</LeftIndent>
+<content start="2599" end="2600">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2600" end="2707">
+<LeftIndent>140.0</LeftIndent>
+<content start="2600" end="2707">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2707" end="2708">
+<LeftIndent>140.0</LeftIndent>
+<content start="2707" end="2708">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2708" end="2774">
+<LeftIndent>160.0</LeftIndent>
+<content start="2708" end="2774">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2774" end="2840">
+<LeftIndent>160.0</LeftIndent>
+<content start="2774" end="2840">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2840" end="2904">
+<LeftIndent>160.0</LeftIndent>
+<content start="2840" end="2904">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2904" end="2968">
+<LeftIndent>160.0</LeftIndent>
+<content start="2904" end="2967">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2967" end="2968">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2968" end="2969">
+<LeftIndent>140.0</LeftIndent>
+<content start="2968" end="2969">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2969" end="2982">
+<LeftIndent>140.0</LeftIndent>
+<content start="2969" end="2982">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2982" end="2983">
+<LeftIndent>140.0</LeftIndent>
+<content start="2982" end="2983">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2983" end="3021">
+<LeftIndent>160.0</LeftIndent>
+<content start="2983" end="3021">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="3021" end="3060">
+<LeftIndent>160.0</LeftIndent>
+<content start="3021" end="3060">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="3060" end="3100">
+<LeftIndent>160.0</LeftIndent>
+<content start="3060" end="3100">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="3100" end="3140">
+<LeftIndent>160.0</LeftIndent>
+<content start="3100" end="3139">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3139" end="3140">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3140" end="3141">
+<LeftIndent>140.0</LeftIndent>
+<content start="3140" end="3141">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3141" end="3382">
+<LeftIndent>140.0</LeftIndent>
+<content start="3141" end="3382">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3382" end="3383">
+<LeftIndent>140.0</LeftIndent>
+<content start="3382" end="3383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3383" end="3618">
+<LeftIndent>140.0</LeftIndent>
+<content start="3383" end="3459">
+<size>11</size></content>
+
+<content start="3459" end="3466">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3466" end="3493">
+<size>11</size></content>
+
+<content start="3493" end="3500">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3500" end="3618">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3618" end="3619">
+<LeftIndent>140.0</LeftIndent>
+<content start="3618" end="3619">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3619" end="3664">
+<LeftIndent>160.0</LeftIndent>
+<content start="3619" end="3664">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="3664" end="3709">
+<LeftIndent>160.0</LeftIndent>
+<content start="3664" end="3708">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3708" end="3709">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3709" end="3710">
+<LeftIndent>140.0</LeftIndent>
+<content start="3709" end="3710">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3710" end="3723">
+<LeftIndent>140.0</LeftIndent>
+<content start="3710" end="3723">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3723" end="3724">
+<LeftIndent>140.0</LeftIndent>
+<content start="3723" end="3724">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3724" end="3755">
+<LeftIndent>160.0</LeftIndent>
+<content start="3724" end="3755">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="3755" end="3785">
+<LeftIndent>160.0</LeftIndent>
+<content start="3755" end="3784">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3784" end="3785">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3785" end="3786">
+<LeftIndent>140.0</LeftIndent>
+<content start="3785" end="3786">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3786" end="3896">
+<LeftIndent>140.0</LeftIndent>
+<content start="3786" end="3790">
+<size>11</size></content>
+
+<content start="3790" end="3808">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3808" end="3896">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3896" end="3897">
+<LeftIndent>140.0</LeftIndent>
+<content start="3896" end="3897">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3897" end="4241">
+<LeftIndent>140.0</LeftIndent>
+<content start="3897" end="4127">
+<size>11</size></content>
+
+<content start="4127" end="4239">
+<size>11</size><bold>true</bold></content>
+
+<content start="4239" end="4240">
+<size>11</size></content>
+
+<content start="4240" end="4241">
+</content>
+
+</paragraph>
+<paragraph start="4241" end="4242">
+<LeftIndent>140.0</LeftIndent>
+<content start="4241" end="4242">
+</content>
+
+</paragraph>
+<paragraph start="4242" end="4243">
+<content start="4242" end="4243">
+</content>
+
+</paragraph>
+<paragraph start="4243" end="4271">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="4243" end="4245">
+<size>11</size></content>
+
+<content start="4245" end="4253">
+<size>11</size><href>collisiondetection.cml</href></content>
+
+<content start="4253" end="4256">
+<size>11</size></content>
+
+<content start="4256" end="4261">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="4261" end="4264">
+<size>11</size></content>
+
+<content start="4264" end="4268">
+<size>11</size><href>roversetup.cml</href></content>
+
+<content start="4268" end="4270">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

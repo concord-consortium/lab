@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Modeling DNA Molecules</page_title>
+<referenced_files>hybridintro.mws,
+hybridintro.mml,
+hybridload.txt,
+hybridization.mml</referenced_files>
+<text> 
+ 
+
+DNA hybridization, which makes use of base pairing between nucleotides of short denatured DNA strands, is a mechanism in important biotechnologies such as Southern blot and DNA microarrays.
+Instructions on the example: Probes (ACTCG) are represented by the molecules with yellow backbones. Two denatured DNA single strands (TGAGC and CCTAT) are represented by the molecules with backbones in the other color. Let the simulation run for a few minutes and check if the probes bind to the targets.
+   
+ 
+ 
+
+Making sense of the model
+
+This is a much simplified model for DNA. The above model with annotations initially shows two complementary DNA strands. The yellow particles represent the deoxyribose sugar-phosphodiester complexes, whereas the white particles with characters A, C, G, T on them represent DNA bases. The yellow particles are linked with each other using springs, which represent the ester links. They are also linked to particles marked by the letters A, C, G, and T, which represents the fact that the deoxyribose sugars are covalently bonded to the DNA bases.
+
+  
+
+There are three hydrogen bonds between a C-G base pair, and two between a A-T base pair. We do not, however, show these details. In our model, each complementary base pair is assigned a strong interaction (Lennard-Jones potential) to make them bind to each other, and each non-complementary base pair is assigned a non-attractive force to keep them from sticking together.
+
+Because this is a 2D model, it does not show the typical double-helix structure of DNA molecules, which many students are already familar with. When you design an activity, care must be taken to explain that this is not reality but a convenient illustration. We suggest that, if possible, a 3D DNA molecule be shown using the Jmol Molecular Viewer before bringing students to this level of abstraction.
+
+
+</text>
+<section start="0" end="1867">
+<paragraph start="0" end="2">
+<Alignment>1</Alignment>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>600.0</width><height>50</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;b&gt;&lt;font color=&quot;#ffffff&quot; face=&quot;Verdana&quot; size=&quot;6&quot;&gt;Modeling DNA Molecules&lt;/font&gt;&lt;/b&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-999a00</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>600.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;By Charles Xie, Concord Consortium&lt;/font&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-ff0100</bgcolor></icon></content>
+
+<content start="3" end="4">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<LeftIndent>8.0</LeftIndent>
+<content start="4" end="5">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5" end="195">
+<LeftIndent>8.0</LeftIndent>
+<content start="5" end="195">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="195" end="500">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="195" end="500">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="500" end="504">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="500" end="501">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Start</title>
+<tooltip>Start</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>source hybridintro.mws;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="501" end="502">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>stop;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="502" end="503">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Resume</title>
+<tooltip>Resume</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="503" end="504">
+</content>
+
+</paragraph>
+<paragraph start="504" end="506">
+<Alignment>1</Alignment>
+<content start="504" end="505">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>dna$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+</component></content>
+
+<content start="505" end="506">
+</content>
+
+</paragraph>
+<paragraph start="506" end="508">
+<Alignment>1</Alignment>
+<content start="506" end="507">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show hydrogen bonds between base pairs</title>
+<model>0</model>
+<action>Show hydrogen bonds between base pairs</action>
+</component></content>
+
+<content start="507" end="508">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="508" end="509">
+<LeftIndent>8.0</LeftIndent>
+<content start="508" end="509">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="509" end="535">
+<LeftIndent>8.0</LeftIndent>
+<content start="509" end="534">
+<bold>true</bold><size>11</size></content>
+
+<content start="534" end="535">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="535" end="536">
+<LeftIndent>8.0</LeftIndent>
+<content start="535" end="536">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="536" end="1082">
+<LeftIndent>8.0</LeftIndent>
+<content start="536" end="1082">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1082" end="1083">
+<LeftIndent>8.0</LeftIndent>
+<content start="1082" end="1083">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1083" end="1086">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="1083" end="1084">
+</content>
+
+<content start="1084" end="1085">
+<icon>DNAModel.gif</icon></content>
+
+<content start="1085" end="1086">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1086" end="1087">
+<LeftIndent>8.0</LeftIndent>
+<content start="1086" end="1087">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1087" end="1460">
+<LeftIndent>8.0</LeftIndent>
+<content start="1087" end="1460">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1460" end="1461">
+<LeftIndent>8.0</LeftIndent>
+<content start="1460" end="1461">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1461" end="1864">
+<LeftIndent>8.0</LeftIndent>
+<content start="1461" end="1864">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1864" end="1865">
+<LeftIndent>8.0</LeftIndent>
+<content start="1864" end="1865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1865" end="1866">
+<content start="1865" end="1866">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1866" end="1867">
+</paragraph>
+</section>
+</document>

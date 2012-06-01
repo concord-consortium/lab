@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Mesogenic dynamics</page_title>
+<text>
+ 
+[This is a Meso Particle Simulator.]
+
+</text>
+<section start="0" end="42">
+<paragraph start="0" end="1">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>mesogen$0.gbl</resource><button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Add GB</button><button>Rotate Object</button><button>Resize GB</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button></component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="40">
+<Alignment>1</Alignment>
+<content start="3" end="39">
+<size>10</size></content>
+
+<content start="39" end="40">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<content start="40" end="41">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="41" end="42">
+</paragraph>
+</section>
+</document>

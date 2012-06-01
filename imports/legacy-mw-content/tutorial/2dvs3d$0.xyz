@@ -1,3 +1,3 @@
 1
-#forces [0 0 0] --- created by Molecular Workbench, http://mw.concord.org
-He  -15.36615  2.1633  11  0.001  0.002  0.001  0
+#symbol   rx   ry   rz   vx   vy   vz   charge   damp   ---  Molecular Workbench
+He  -15.3661499  2.1632996  11  0.002  0.004  0.001  0  0

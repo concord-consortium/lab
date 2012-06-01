@@ -10,7 +10,7 @@
 The &quot;Basics&quot; Part has shown how to print a page. In fact, you can print just a model, without having to printing other stuff on the page. Choosing the &quot;Print&quot; item from the File menu of a model container:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 The printer dialog window of the operating system will be invoked. The Page Setup item allows you to set up the page format for printing model (e.g. portrait or landscape). 
 
@@ -19,7 +19,7 @@ If you choose the &quot;Save a Screenshot of Model&quot; item of the File menu, 
 Choose the &quot;Save Image Stream&quot; item if you would like to create a stream of images (in the PNG format). You can specify the movie parameters in the following dialog that will appear after you select the menu item:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 The &quot;Browse&quot; button allows you to choose a directory to put the PNG images. The number of image files (frames) and the interval for taking them can be specified in the next two dropdown lists. After the image stream has been created, you can use other software tools (e.g. Adobe PhotoshopTM) to import all the frames and encode them in different video formats (such as animated GIF or QuicktimeTM).
 
@@ -49,19 +49,19 @@ The &quot;Browse&quot; button allows you to choose a directory to put the PNG im
 <size>11</size></content>
 
 <content start="68" end="76">
-<size>11</size><href>autostop.cml</href></content>
+<href>autostop.cml</href><size>11</size></content>
 
 <content start="76" end="79">
 <size>11</size></content>
 
 <content start="79" end="84">
-<size>11</size><href>index1.cml</href></content>
+<href>index1.cml</href><size>11</size></content>
 
 <content start="84" end="87">
 <size>11</size></content>
 
 <content start="87" end="91">
-<size>11</size><href>modelProp.cml</href></content>
+<href>modelProp.cml</href><size>11</size></content>
 
 <content start="91" end="93">
 <size>11</size></content>
@@ -82,7 +82,7 @@ The &quot;Browse&quot; button allows you to choose a directory to put the PNG im
 <size>11</size></content>
 
 <content start="123" end="142">
-<size>11</size><href>print.cml</href></content>
+<href>print.cml</href><size>11</size></content>
 
 <content start="142" end="300">
 <size>11</size></content>
@@ -221,19 +221,19 @@ The &quot;Browse&quot; button allows you to choose a directory to put the PNG im
 <size>11</size></content>
 
 <content start="1318" end="1326">
-<size>11</size><href>autostop.cml</href></content>
+<href>autostop.cml</href><size>11</size></content>
 
 <content start="1326" end="1329">
 <size>11</size></content>
 
 <content start="1329" end="1334">
-<size>11</size><href>index1.cml</href></content>
+<href>index1.cml</href><size>11</size></content>
 
 <content start="1334" end="1337">
 <size>11</size></content>
 
 <content start="1337" end="1342">
-<size>11</size><href>modelProp.cml</href></content>
+<href>modelProp.cml</href><size>11</size></content>
 
 <content start="1342" end="1343">
 <size>11</size></content>

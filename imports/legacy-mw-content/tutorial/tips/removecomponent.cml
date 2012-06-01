@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>An easier way to remove an embedded component</page_title>
+<info>null</info>
+<text> An easier way to remove an embedded component
+
+Removing an embedded component in the text using the DELETE and BACKSPACE keys may be difficult, because the caret is sometimes covered by the border of the component. You can use the &quot;Remove this Component&quot; item in the pop-up menu of that component, which is invoked when the embedded component is right-clicked (Apple+click or CTRL+click on Mac).
+
+A removed component can be pasted somewhere on the same page. But do not count on pasting it to a different page.</text>
+<section start="0" end="512">
+<paragraph start="0" end="47">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="46">
+<bold>true</bold><size>15</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>8.0</LeftIndent>
+<content start="47" end="48">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="48" end="397">
+<LeftIndent>8.0</LeftIndent>
+<content start="48" end="397">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="397" end="398">
+<LeftIndent>8.0</LeftIndent>
+<content start="397" end="398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="398" end="512">
+<LeftIndent>8.0</LeftIndent>
+<content start="398" end="511">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

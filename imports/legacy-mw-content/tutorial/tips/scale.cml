@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Scaling and shifting numeric outputs</page_title>
+<text> Scaling and shifting numeric outputs
+
+Some people ask if it is possible to use Celsius as the temperature unit, instead of the Kelvin unit used by the Molecular Workbench. The answer is yes, but you need to set it up.
+
+Helium
+Temperature =  Celsius
+ 
+
+All the output forms supported by the Molecular Workbench, including the numeric box, the bar graph and the X-Y graph, now allow the user to linearly scale and shift the output data that will be displayed. This provides a way of converting the output data to different units. For example, in the above helium model, we rescale the average kinetic energy and shift the result -273, then we get the Celsius result, as is displayed in a numeric box above the model window.
+
+The details of unit conversion
+
+To convert the kinetic energy (in eV) into temperature (in kelvin), we use a multiplier 1.6/1.38 x 104[1], and to convert kelvin into celsius, we substract the result by a value of 273.
+
+_____________________________
+[1] This is because 1 eV=1.6x10-19 J, and the Boltzman constant K=1.38x10-23 J/Kelvin. eV stands for electronic volt, a unit popular for physicists.
+
+&lt;Index of tips&gt;
+
+
+
+</text>
+<section start="0" end="1143">
+<paragraph start="0" end="38">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="37">
+<size>18</size><bold>true</bold></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="219">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="39" end="219">
+</content>
+
+</paragraph>
+<paragraph start="219" end="220">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="219" end="220">
+</content>
+
+</paragraph>
+<paragraph start="220" end="227">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="220" end="226">
+<bold>true</bold></content>
+
+<content start="226" end="227">
+</content>
+
+</paragraph>
+<paragraph start="227" end="250">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="227" end="240">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="240" end="241">
+</content>
+
+<content start="241" end="242">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<model>0</model>
+<datatype>1</datatype>
+<description>Kinetic Energy/Particle</description>
+<width>60</width>
+<height>24</height>
+<multiplier>11594.0</multiplier>
+<addend>-273.0</addend>
+</component></content>
+
+<content start="242" end="249">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="249" end="250">
+</content>
+
+</paragraph>
+<paragraph start="250" end="252">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="250" end="251">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>scale$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="251" end="252">
+</content>
+
+</paragraph>
+<paragraph start="252" end="253">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="252" end="253">
+</content>
+
+</paragraph>
+<paragraph start="253" end="723">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="253" end="723">
+</content>
+
+</paragraph>
+<paragraph start="723" end="724">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="723" end="724">
+</content>
+
+</paragraph>
+<paragraph start="724" end="755">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="724" end="754">
+<bold>true</bold></content>
+
+<content start="754" end="755">
+</content>
+
+</paragraph>
+<paragraph start="755" end="756">
+<LeftIndent>8.0</LeftIndent>
+<content start="755" end="756">
+</content>
+
+</paragraph>
+<paragraph start="756" end="942">
+<LeftIndent>8.0</LeftIndent>
+<content start="756" end="857">
+</content>
+
+<content start="857" end="858">
+<superscript>true</superscript></content>
+
+<content start="858" end="942">
+</content>
+
+</paragraph>
+<paragraph start="942" end="943">
+<LeftIndent>8.0</LeftIndent>
+<content start="942" end="943">
+</content>
+
+</paragraph>
+<paragraph start="943" end="973">
+<LeftIndent>8.0</LeftIndent>
+<content start="943" end="973">
+</content>
+
+</paragraph>
+<paragraph start="973" end="1122">
+<LeftIndent>8.0</LeftIndent>
+<content start="973" end="1004">
+</content>
+
+<content start="1004" end="1007">
+<superscript>true</superscript></content>
+
+<content start="1007" end="1046">
+</content>
+
+<content start="1046" end="1049">
+<superscript>true</superscript></content>
+
+<content start="1049" end="1122">
+</content>
+
+</paragraph>
+<paragraph start="1122" end="1123">
+<LeftIndent>8.0</LeftIndent>
+<content start="1122" end="1123">
+</content>
+
+</paragraph>
+<paragraph start="1123" end="1139">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1123" end="1124">
+</content>
+
+<content start="1124" end="1137">
+<href>index.cml</href></content>
+
+<content start="1137" end="1139">
+</content>
+
+</paragraph>
+<paragraph start="1139" end="1140">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1139" end="1140">
+</content>
+
+</paragraph>
+<paragraph start="1140" end="1141">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1140" end="1141">
+</content>
+
+</paragraph>
+<paragraph start="1141" end="1142">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1141" end="1142">
+</content>
+
+</paragraph>
+<paragraph start="1142" end="1143">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+</paragraph>
+</section>
+</document>

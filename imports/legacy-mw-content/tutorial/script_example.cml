@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
+<language>ISO-8859-1</language>
 <page_title>Script examples</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Script examples
 
 &lt; Previous | Index | Next &gt;
 
-This section provides some examples that you can use or modify to use. Click the links in the box on the left to view the effects of the example scripts and their sources:
+This section provides some examples that you can use or modify to use to create complex structures. Click the links in the box on the left to view the effects of the example scripts and their sources:
 
   
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="251">
+<section start="0" end="280">
 <paragraph start="0" end="16">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="15">
-<size>16</size><italic>true</italic><bold>true</bold></content>
+<italic>true</italic><bold>true</bold><size>16</size></content>
 
 <content start="15" end="16">
 </content>
@@ -51,21 +52,21 @@ This section provides some examples that you can use or modify to use. Click the
 </content>
 
 </paragraph>
-<paragraph start="46" end="218">
+<paragraph start="46" end="247">
 <LeftIndent>140.0</LeftIndent>
-<content start="46" end="218">
+<content start="46" end="247">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="218" end="219">
+<paragraph start="247" end="248">
 <LeftIndent>140.0</LeftIndent>
-<content start="218" end="219">
+<content start="247" end="248">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="219" end="222">
+<paragraph start="248" end="251">
 <LeftIndent>140.0</LeftIndent>
-<content start="219" end="220">
+<content start="248" end="249">
 <component><class>org.concord.modeler.PageTextBox</class>
 <width>240.0</width>
 <height>340.0</height>
@@ -76,39 +77,54 @@ This section provides some examples that you can use or modify to use. Click the
   &lt;body face=&quot;Verdana&quot;&gt;
     &lt;ul&gt;
       &lt;li&gt;
-        &lt;font size=&quot;2&quot;&gt;Construct a ring molecule: &lt;a href=&quot;script:mw:1:source ring.mws&quot;&gt;Action&lt;/a&gt;; 
+        &lt;font size=&quot;2&quot;&gt;Construct a ring:&lt;br&gt;&lt;a href=&quot;script:mw:1:select atom all;remove;source ring.mws&quot;&gt;Action&lt;/a&gt;; 
         &lt;a href=&quot;ring.mws&quot;&gt;Source&lt;/a&gt;&lt;/font&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;2&quot;&gt;Construct a string:&lt;br&gt;&lt;a href=&quot;script:mw:1:select atom all;remove;source string.mws&quot;&gt;Action&lt;/a&gt;; 
+        &lt;/font&gt;&lt;a href=&quot;string.mws&quot;&gt;&lt;font size=&quot;2&quot;&gt;Source&lt;/font&gt;&lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;2&quot;&gt;Construct a beam:&lt;br&gt;&lt;a href=&quot;script:mw:1:select atom all;remove;source beam.mws&quot;&gt;Action&lt;/a&gt;; 
+        &lt;/font&gt;&lt;a href=&quot;beam.mws&quot;&gt;&lt;font size=&quot;2&quot;&gt;Source&lt;/font&gt;&lt;/a&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;font size=&quot;2&quot;&gt;Construct a beam and hide particles and internal 
+        connectors:&lt;br&gt;&lt;a href=&quot;script:mw:1:select atom all;remove;source beam2.mws&quot;&gt;Action&lt;/a&gt;; 
+        &lt;a href=&quot;beam2.mws&quot;&gt;Source&lt;/a&gt;&lt;/font&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/body&gt;
 &lt;/html&gt;
 </title>
+<opaque>false</opaque>
 </component></content>
 
-<content start="220" end="221">
+<content start="249" end="250">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>script_example$0.mml</resource><menubar>false</menubar></component></content>
+<resource>script_example$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
 
-<content start="221" end="222">
+<content start="250" end="251">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="222" end="223">
+<paragraph start="251" end="252">
 <LeftIndent>140.0</LeftIndent>
-<content start="222" end="223">
+<content start="251" end="252">
 </content>
 
 </paragraph>
-<paragraph start="223" end="251">
+<paragraph start="252" end="280">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="223" end="236">
+<content start="252" end="265">
 <size>11</size></content>
 
-<content start="236" end="241">
+<content start="265" end="270">
 <href>mwscripts.cml</href><size>11</size></content>
 
-<content start="241" end="250">
+<content start="270" end="279">
 <size>11</size></content>
 
 </paragraph>

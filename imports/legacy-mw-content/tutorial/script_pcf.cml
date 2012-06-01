@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Pcf</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Pcf
@@ -42,7 +42,7 @@ The following model demonstrates the use of this command to show the pair correl
 
  
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 The three PCFs generated from the above buttons should be identical, confirming the homogeneousity of the system in thermal equilibrium. To achieve this nice result in the above analysis, we had to use a trick to exclude areas that are near the boundary. The colored rectangular areas in the above model show the areas cut out for computing the PCFs in the left and right part, respectively. In the following, we will demonstrate the boundary effect.
 
@@ -52,17 +52,17 @@ When a reflecting boundary is used, a PCF that includes areas close to the bound
 
  
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Even if a periodic boundary is used, it does not necessarily mean that localized PCFs will be immune from errors. When you select a smaller area, the border that cuts it out from the larger one may have an effect. That is why in the first model on this page, we also had to restrict PCF calculations to cut-out areas.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="3522">
+<section start="0" end="3534">
 <paragraph start="0" end="4">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="3">
-<bold>true</bold><size>16</size><italic>true</italic></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="3" end="4">
 </content>
@@ -115,7 +115,7 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 <size>11</size></content>
 
 <content start="38" end="41">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="41" end="73">
 <size>11</size></content>
@@ -142,25 +142,25 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 <paragraph start="192" end="193">
 <LeftIndent>140.0</LeftIndent>
 <content start="192" end="193">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="193" end="210">
 <LeftIndent>160.0</LeftIndent>
 <content start="193" end="196">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size><bold>true</bold></content>
 
 <content start="196" end="210">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="210" end="278">
 <LeftIndent>160.0</LeftIndent>
 <content start="210" end="213">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size><bold>true</bold></content>
 
 <content start="213" end="277">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="277" end="278">
 <size>11</size></content>
@@ -181,7 +181,7 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 <paragraph start="330" end="331">
 <LeftIndent>140.0</LeftIndent>
 <content start="330" end="331">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="331" end="383">
@@ -193,7 +193,7 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 </content>
 
 <content start="334" end="383">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="383" end="407">
@@ -205,7 +205,7 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 </content>
 
 <content start="386" end="406">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="406" end="407">
 <size>11</size></content>
@@ -223,43 +223,43 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 <size>11</size></content>
 
 <content start="414" end="417">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="417" end="422">
 <size>11</size></content>
 
 <content start="422" end="425">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="425" end="458">
 <size>11</size></content>
 
 <content start="458" end="464">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="464" end="529">
 <size>11</size></content>
 
 <content start="529" end="530">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="530" end="535">
 <size>11</size></content>
 
 <content start="535" end="536">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="536" end="619">
 <size>11</size></content>
 
 <content start="619" end="620">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="620" end="625">
 <size>11</size></content>
 
 <content start="625" end="626">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="626" end="711">
 <size>11</size></content>
@@ -274,7 +274,7 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 <paragraph start="712" end="764">
 <LeftIndent>160.0</LeftIndent>
 <content start="712" end="763">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="763" end="764">
 <size>11</size></content>
@@ -292,13 +292,13 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 <size>11</size></content>
 
 <content start="771" end="777">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="777" end="782">
 <size>11</size></content>
 
 <content start="782" end="789">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="789" end="858">
 <size>11</size></content>
@@ -322,25 +322,25 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 <size>11</size></content>
 
 <content start="961" end="965">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="965" end="994">
 <size>11</size></content>
 
 <content start="994" end="997">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="997" end="1075">
 <size>11</size></content>
 
 <content start="1075" end="1078">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1078" end="1093">
 <size>11</size></content>
 
 <content start="1093" end="1099">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1099" end="1156">
 <size>11</size></content>
@@ -358,17 +358,17 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 <paragraph start="1158" end="1160">
 <LeftIndent>140.0</LeftIndent>
 <content start="1158" end="1159">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1159" end="1160">
 </content>
 
 </paragraph>
 <paragraph start="1160" end="1306">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1160" end="1172">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="1172" end="1295">
 <size>11</size></content>
@@ -386,7 +386,7 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 <paragraph start="1306" end="1308">
 <LeftIndent>140.0</LeftIndent>
 <content start="1306" end="1307">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1307" end="1308">
 </content>
@@ -413,17 +413,17 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 <paragraph start="1511" end="1513">
 <LeftIndent>140.0</LeftIndent>
 <content start="1511" end="1512">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1512" end="1513">
 </content>
 
 </paragraph>
 <paragraph start="1513" end="1576">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1513" end="1517">
-<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
 
 <content start="1517" end="1526">
 <size>11</size></content>
@@ -436,10 +436,10 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 
 </paragraph>
 <paragraph start="1576" end="1680">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1576" end="1583">
-<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
 
 <content start="1583" end="1674">
 <size>11</size></content>
@@ -457,7 +457,7 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 <paragraph start="1680" end="1682">
 <LeftIndent>140.0</LeftIndent>
 <content start="1680" end="1681">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1681" end="1682">
 <size>11</size></content>
@@ -511,82 +511,82 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 </content>
 
 </paragraph>
-<paragraph start="1870" end="1903">
+<paragraph start="1870" end="1909">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="1870" end="1902">
+<content start="1870" end="1908">
 <size>10</size></content>
 
-<content start="1902" end="1903">
+<content start="1908" end="1909">
 </content>
 
 </paragraph>
-<paragraph start="1903" end="1904">
+<paragraph start="1909" end="1910">
 <LeftIndent>140.0</LeftIndent>
-<content start="1903" end="1904">
+<content start="1909" end="1910">
 </content>
 
 </paragraph>
-<paragraph start="1904" end="2355">
+<paragraph start="1910" end="2361">
 <LeftIndent>140.0</LeftIndent>
-<content start="1904" end="2355">
+<content start="1910" end="2361">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2355" end="2356">
+<paragraph start="2361" end="2362">
 <LeftIndent>140.0</LeftIndent>
-<content start="2355" end="2356">
+<content start="2361" end="2362">
 </content>
 
 </paragraph>
-<paragraph start="2356" end="2388">
+<paragraph start="2362" end="2394">
 <LeftIndent>140.0</LeftIndent>
-<content start="2356" end="2387">
-<bold>true</bold><size>11</size></content>
+<content start="2362" end="2393">
+<size>11</size><bold>true</bold></content>
 
-<content start="2387" end="2388">
+<content start="2393" end="2394">
 </content>
 
 </paragraph>
-<paragraph start="2388" end="2389">
+<paragraph start="2394" end="2395">
 <LeftIndent>140.0</LeftIndent>
-<content start="2388" end="2389">
+<content start="2394" end="2395">
 </content>
 
 </paragraph>
-<paragraph start="2389" end="3136">
+<paragraph start="2395" end="3142">
 <LeftIndent>140.0</LeftIndent>
-<content start="2389" end="2491">
+<content start="2395" end="2497">
 <size>11</size></content>
 
-<content start="2491" end="2597">
-<bold>true</bold><size>11</size></content>
+<content start="2497" end="2603">
+<size>11</size><bold>true</bold></content>
 
-<content start="2597" end="3136">
+<content start="2603" end="3142">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3136" end="3137">
+<paragraph start="3142" end="3143">
 <LeftIndent>140.0</LeftIndent>
-<content start="3136" end="3137">
+<content start="3142" end="3143">
 </content>
 
 </paragraph>
-<paragraph start="3137" end="3139">
+<paragraph start="3143" end="3145">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="3137" end="3138">
+<content start="3143" end="3144">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>script_pcf$1.mml</resource><menubar>false</menubar></component></content>
 
-<content start="3138" end="3139">
+<content start="3144" end="3145">
 </content>
 
 </paragraph>
-<paragraph start="3139" end="3141">
+<paragraph start="3145" end="3147">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="3139" end="3140">
+<content start="3145" end="3146">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Compare the PCFs for the cut-out area and for the whole area</title>
 <tooltip>Compare the PCFs for the cut-out area and for the whole area</tooltip>
@@ -598,63 +598,63 @@ Even if a periodic boundary is used, it does not necessarily mean that localized
 <action>Execute MW script</action>
 </component></content>
 
-<content start="3140" end="3141">
+<content start="3146" end="3147">
 </content>
 
 </paragraph>
-<paragraph start="3141" end="3174">
+<paragraph start="3147" end="3186">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="3141" end="3173">
+<content start="3147" end="3185">
 <size>10</size></content>
 
-<content start="3173" end="3174">
+<content start="3185" end="3186">
 </content>
 
 </paragraph>
-<paragraph start="3174" end="3175">
+<paragraph start="3186" end="3187">
 <LeftIndent>140.0</LeftIndent>
-<content start="3174" end="3175">
+<content start="3186" end="3187">
 </content>
 
 </paragraph>
-<paragraph start="3175" end="3493">
+<paragraph start="3187" end="3505">
 <LeftIndent>140.0</LeftIndent>
-<content start="3175" end="3492">
+<content start="3187" end="3504">
 <size>11</size></content>
 
-<content start="3492" end="3493">
+<content start="3504" end="3505">
 </content>
 
 </paragraph>
-<paragraph start="3493" end="3494">
+<paragraph start="3505" end="3506">
 <LeftIndent>140.0</LeftIndent>
-<content start="3493" end="3494">
+<content start="3505" end="3506">
 </content>
 
 </paragraph>
-<paragraph start="3494" end="3522">
+<paragraph start="3506" end="3534">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="3494" end="3496">
+<content start="3506" end="3508">
 <size>11</size></content>
 
-<content start="3496" end="3504">
+<content start="3508" end="3516">
 <size>11</size><href>script_lap.cml</href></content>
 
-<content start="3504" end="3507">
+<content start="3516" end="3519">
 <size>11</size></content>
 
-<content start="3507" end="3512">
+<content start="3519" end="3524">
 <size>11</size><href>mwscripts.cml</href></content>
 
-<content start="3512" end="3515">
+<content start="3524" end="3527">
 <size>11</size></content>
 
-<content start="3515" end="3519">
+<content start="3527" end="3531">
 <size>11</size><href>script_tcf.cml</href></content>
 
-<content start="3519" end="3521">
+<content start="3531" end="3533">
 <size>11</size></content>
 
 </paragraph>

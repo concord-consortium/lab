@@ -16,34 +16,34 @@ You can set the mark color by double-clicking on the mark button and selecting a
 You may practice with the Marking Tool in the following model:
 
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Script support
 
 The mark command can be used to mark the selected particles with a specified color. Combined with the loop and delay command, this can be used to flash the selected particles.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="828">
+<section start="0" end="834">
 <paragraph start="0" end="17">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="16">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="16" end="17">
 </content>
 
 </paragraph>
 <paragraph start="17" end="18">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="17" end="18">
 </content>
 
 </paragraph>
 <paragraph start="18" end="46">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="18" end="20">
 <size>11</size></content>
 
@@ -133,8 +133,8 @@ The mark command can be used to mark the selected particles with a specified col
 
 </paragraph>
 <paragraph start="571" end="573">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="571" end="572">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>markAction$0.mml</resource><menubar>false</menubar><recorder>true</recorder><button>Mark Object</button><button>Select Object</button></component></content>
@@ -143,95 +143,95 @@ The mark command can be used to mark the selected particles with a specified col
 </content>
 
 </paragraph>
-<paragraph start="573" end="606">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="573" end="612">
 <Alignment>1</Alignment>
-<content start="573" end="605">
+<LeftIndent>140.0</LeftIndent>
+<content start="573" end="611">
 <size>10</size></content>
 
-<content start="605" end="606">
+<content start="611" end="612">
 </content>
 
 </paragraph>
-<paragraph start="606" end="607">
+<paragraph start="612" end="613">
 <RightIndent>20.0</RightIndent>
-<content start="606" end="607">
+<content start="612" end="613">
 </content>
 
 </paragraph>
-<paragraph start="607" end="622">
+<paragraph start="613" end="628">
+<RightIndent>20.0</RightIndent>
 <LeftIndent>140.0</LeftIndent>
-<RightIndent>20.0</RightIndent>
-<content start="607" end="621">
-<size>11</size><bold>true</bold></content>
+<content start="613" end="627">
+<bold>true</bold><size>11</size></content>
 
-<content start="621" end="622">
+<content start="627" end="628">
 </content>
 
 </paragraph>
-<paragraph start="622" end="623">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="628" end="629">
 <RightIndent>20.0</RightIndent>
-<content start="622" end="623">
+<LeftIndent>140.0</LeftIndent>
+<content start="628" end="629">
 </content>
 
 </paragraph>
-<paragraph start="623" end="799">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="629" end="805">
 <RightIndent>20.0</RightIndent>
-<content start="623" end="627">
+<LeftIndent>140.0</LeftIndent>
+<content start="629" end="633">
 <size>11</size></content>
 
-<content start="627" end="631">
+<content start="633" end="637">
 <href>script_mark.cml</href><size>11</size><family>Courier New</family></content>
 
-<content start="631" end="725">
+<content start="637" end="731">
 <size>11</size></content>
 
-<content start="725" end="729">
+<content start="731" end="735">
 <href>script_loop.cml</href><size>11</size><family>Courier New</family></content>
 
-<content start="729" end="734">
+<content start="735" end="740">
 <size>11</size></content>
 
-<content start="734" end="739">
+<content start="740" end="745">
 <href>script_delay.cml</href><size>11</size><family>Courier New</family></content>
 
-<content start="739" end="798">
+<content start="745" end="804">
 <size>11</size></content>
 
-<content start="798" end="799">
+<content start="804" end="805">
 </content>
 
 </paragraph>
-<paragraph start="799" end="800">
+<paragraph start="805" end="806">
 <RightIndent>20.0</RightIndent>
-<content start="799" end="800">
+<content start="805" end="806">
 </content>
 
 </paragraph>
-<paragraph start="800" end="828">
-<RightIndent>20.0</RightIndent>
+<paragraph start="806" end="834">
 <Alignment>2</Alignment>
-<content start="800" end="802">
+<RightIndent>20.0</RightIndent>
+<content start="806" end="808">
 <size>11</size></content>
 
-<content start="802" end="810">
+<content start="808" end="816">
 <href>CountingTool.cml</href><size>11</size></content>
 
-<content start="810" end="813">
+<content start="816" end="819">
 <size>11</size></content>
 
-<content start="813" end="818">
+<content start="819" end="824">
 <href>index1.cml</href><size>11</size></content>
 
-<content start="818" end="821">
+<content start="824" end="827">
 <size>11</size></content>
 
-<content start="821" end="825">
+<content start="827" end="831">
 <href>chargeAction.cml</href><size>11</size></content>
 
-<content start="825" end="827">
+<content start="831" end="833">
 <size>11</size></content>
 
 </paragraph>

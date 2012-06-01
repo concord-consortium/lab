@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Monitoring user-controlled temperature</page_title>
+<text>Monitoring temperature
+
+  
+
+  
+
+The scripts used in the custom task
+ 
+
+if(%temperature &gt; 1000);
+  stop immediately;
+  message &lt;t&gt;Too hot: temperature = formatvar(%4.0f, %temperature) K!&lt;/t&gt;;
+else;
+  if(%temperature &lt; 200);
+    stop immediately;
+    message &lt;t&gt;Too cold: temperature = formatvar(%4.0f, %temperature) K!&lt;/t&gt;;
+  endif;
+endif;
+ 
+
+Note: The above scripts are for your reading. To access the action scripts, right-click on the model window above and select &quot;Task Manager&quot; from the pop-up menu.</text>
+<section start="0" end="504">
+<paragraph start="0" end="23">
+<Alignment>1</Alignment>
+<content start="0" end="22">
+<bold>true</bold><size>16</size></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="27">
+<Alignment>1</Alignment>
+<content start="24" end="25">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>monitortemperature$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="25" end="26">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>285</height>
+<border>Lowered Etched</border></component></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="31">
+<Alignment>1</Alignment>
+<content start="28" end="29">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Heat the system up</action>
+<step>0.0050</step>
+</component></content>
+
+<content start="29" end="30">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Cool the system down</action>
+<step>-0.0050</step>
+</component></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="68">
+<Alignment>1</Alignment>
+<content start="32" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="70">
+<Alignment>1</Alignment>
+<content start="68" end="69">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><height>1</height><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="69" end="70">
+</content>
+
+</paragraph>
+<paragraph start="70" end="71">
+<Alignment>1</Alignment>
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="96">
+<LeftIndent>180.0</LeftIndent>
+<content start="71" end="96">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="96" end="116">
+<LeftIndent>180.0</LeftIndent>
+<content start="96" end="116">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="116" end="191">
+<LeftIndent>180.0</LeftIndent>
+<content start="116" end="191">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="191" end="197">
+<LeftIndent>180.0</LeftIndent>
+<content start="191" end="197">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="197" end="223">
+<LeftIndent>180.0</LeftIndent>
+<content start="197" end="223">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="223" end="245">
+<LeftIndent>180.0</LeftIndent>
+<content start="223" end="245">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="245" end="323">
+<LeftIndent>180.0</LeftIndent>
+<content start="245" end="323">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="323" end="332">
+<LeftIndent>180.0</LeftIndent>
+<content start="323" end="332">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="332" end="339">
+<LeftIndent>180.0</LeftIndent>
+<content start="332" end="338">
+<family>Courier New</family></content>
+
+<content start="338" end="339">
+</content>
+
+</paragraph>
+<paragraph start="339" end="341">
+<Alignment>1</Alignment>
+<content start="339" end="340">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><height>1</height><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="340" end="341">
+</content>
+
+</paragraph>
+<paragraph start="341" end="342">
+<content start="341" end="342">
+</content>
+
+</paragraph>
+<paragraph start="342" end="504">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="342" end="503">
+</content>
+
+</paragraph>
+</section>
+</document>

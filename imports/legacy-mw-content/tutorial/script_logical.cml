@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Logical expressions</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Logical expressions
@@ -13,27 +13,27 @@ Logical expressions are statements connected by the following keywords:
    or
    and
 
-When the not keyword is present, the expression produces the opposite effect to what follows.
+When the unary not keyword is present, the expression produces the opposite effect to what follows. Note that when the not operator is used in conjunction with and and or, there must be a parenthesis separating the not operation from the and/or operation. For example, the following command is illegal: select atom 1 and not 2. Instead, it must be written as select atom 1 and (not 2).
 
 Logical expressions are used in conjunction with the select command to select objects.
 
   
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
  
 Two useful formulas of Boolean algebra:
-1. not A or not B or not C = not (A and B and C)
-2. not A and not B and not C = not (A or B or C)
+1. (not A) or (not B) or (not C) = not (A and B and C)
+2. (not A) and (not B) and (not C) = not (A or B or C)
 where A, B, C are conditions.
  
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="565">
+<section start="0" end="875">
 <paragraph start="0" end="20">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="19">
-<bold>true</bold><size>16</size><italic>true</italic></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="19" end="20">
 </content>
@@ -53,19 +53,19 @@ where A, B, C are conditions.
 <size>11</size></content>
 
 <content start="23" end="31">
-<size>11</size><href>script_select.cml</href></content>
+<href>script_select3d.cml</href><size>11</size></content>
 
 <content start="31" end="34">
 <size>11</size></content>
 
 <content start="34" end="39">
-<size>11</size><href>mwscripts.cml</href></content>
+<href>mwscripts.cml</href><size>11</size></content>
 
 <content start="39" end="42">
 <size>11</size></content>
 
 <content start="42" end="46">
-<size>11</size><href>script_set.cml</href></content>
+<href>script_set.cml</href><size>11</size></content>
 
 <content start="46" end="48">
 <size>11</size></content>
@@ -101,7 +101,7 @@ where A, B, C are conditions.
 </content>
 
 <content start="126" end="130">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<family>Courier New</family><bold>true</bold><size>11</size></content>
 
 </paragraph>
 <paragraph start="130" end="136">
@@ -113,7 +113,7 @@ where A, B, C are conditions.
 </content>
 
 <content start="133" end="136">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<family>Courier New</family><bold>true</bold><size>11</size></content>
 
 </paragraph>
 <paragraph start="136" end="143">
@@ -125,7 +125,7 @@ where A, B, C are conditions.
 </content>
 
 <content start="139" end="142">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<family>Courier New</family><bold>true</bold><size>11</size></content>
 
 <content start="142" end="143">
 <size>11</size></content>
@@ -137,194 +137,256 @@ where A, B, C are conditions.
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="144" end="238">
+<paragraph start="144" end="530">
 <LeftIndent>140.0</LeftIndent>
-<content start="144" end="153">
+<content start="144" end="159">
 <size>11</size></content>
 
-<content start="153" end="156">
-<size>11</size><family>Courier New</family></content>
+<content start="159" end="162">
+<family>Courier New</family><size>11</size></content>
 
-<content start="156" end="238">
+<content start="162" end="244">
+<size>11</size></content>
+
+<content start="244" end="263">
+<bold>true</bold><size>11</size></content>
+
+<content start="263" end="266">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="266" end="304">
+<bold>true</bold><size>11</size></content>
+
+<content start="304" end="307">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="307" end="312">
+<bold>true</bold><size>11</size></content>
+
+<content start="312" end="314">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="314" end="359">
+<bold>true</bold><size>11</size></content>
+
+<content start="359" end="362">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="362" end="382">
+<bold>true</bold><size>11</size></content>
+
+<content start="382" end="385">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="385" end="386">
+<bold>true</bold><size>11</size></content>
+
+<content start="386" end="388">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="388" end="398">
+<bold>true</bold><size>11</size></content>
+
+<content start="398" end="447">
+<size>11</size></content>
+
+<content start="447" end="470">
+<family>Courier New</family><size>11</size></content>
+
+<content start="470" end="503">
+<size>11</size></content>
+
+<content start="503" end="528">
+<family>Courier New</family><size>11</size></content>
+
+<content start="528" end="530">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="238" end="239">
+<paragraph start="530" end="531">
 <LeftIndent>140.0</LeftIndent>
-<content start="238" end="239">
+<content start="530" end="531">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="239" end="326">
+<paragraph start="531" end="618">
 <LeftIndent>140.0</LeftIndent>
-<content start="239" end="292">
+<content start="531" end="584">
 <size>11</size></content>
 
-<content start="292" end="298">
-<size>11</size><family>Courier New</family><href>script_select.cml</href></content>
+<content start="584" end="590">
+<family>Courier New</family><href>script_select.cml</href><size>11</size></content>
 
-<content start="298" end="326">
+<content start="590" end="618">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="326" end="327">
+<paragraph start="618" end="619">
 <LeftIndent>140.0</LeftIndent>
-<content start="326" end="327">
+<content start="618" end="619">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="327" end="330">
+<paragraph start="619" end="622">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="327" end="328">
+<content start="619" end="620">
 <component><class>org.concord.modeler.PageTextBox</class>
-<width>280.0</width>
-<height>280.0</height>
+<width>320.0</width>
+<height>300.0</height>
 <title>&lt;html&gt;
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body&gt;
+  &lt;body marginwidth=&quot;5&quot; marginheight=&quot;5&quot;&gt;
     &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Example scripts for selecting atoms using 
-    logical expressions:&lt;br&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element 1 and within (3.5, 3);mark;&quot;&gt;select 
-    element 1 and within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element 1 or within (3.5, 3);mark;&quot;&gt;select 
-    element 1 or within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element not (1 or within (3.5, 3));mark;&quot;&gt;select 
-    element not (1 or within (3.5, 3))&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element not 1 or within (3.5, 3);mark;&quot;&gt;select 
-    element not 1 or within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element not 1 and within (3.5, 3);mark;&quot;&gt;select 
-    element not 1 and within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element not 1 and not within (3.5, 3);mark;&quot;&gt;select 
-    element not 1 and not within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element not 1 or not within (3.5, 3);mark;&quot;&gt;select 
-    element not 1 or not within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select element not (1 and within (3.5, 3));mark;&quot;&gt;select 
-    element not (1 and within (3.5, 3))&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom (1-7) and (5-10);mark;&quot;&gt;select 
-    atom (1-7) and (5-10)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom (1-7) or (5-10);mark;&quot;&gt;select 
-    atom (1-7) or (5-10)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom (1-7 or 5-9) and within (3, 0);mark;&quot;&gt;select 
-    atom (1-7 or 5-9) and within (3, 0)&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;.......&lt;br&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot; color=&quot;#0000ff&quot;&gt;&lt;a href=&quot;script:mw:1:select atom none;mark;&quot;&gt;Clear 
-    selection&lt;/a&gt;&lt;/font&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;br&gt;......&lt;/font&gt;
+    logical expressions:&lt;br&gt;&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select element 1 and within (3.5, 3);mark;&quot;&gt;select 
+    element 1 and within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select element 1 or within (3.5, 3);mark;&quot;&gt;select 
+    element 1 or within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select element not (1 or within (3.5, 3));mark;&quot;&gt;select 
+    element not (1 or within (3.5, 3))&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select element not 1 or within (3.5, 3);mark;&quot;&gt;select 
+    element not 1 or within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select element not 1 and within (3.5, 3);mark;&quot;&gt;select 
+    element not 1 and within (3.5, 3)&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select element (not 1) and (not within (3.5, 3));mark;&quot;&gt;select 
+    element (not 1) and (not within (3.5, 3))&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select element (not 1) or (not within (3.5, 3));mark;&quot;&gt;select 
+    element (not 1) or (not within (3.5, 3))&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select element not (1 and within (3.5, 3));mark;&quot;&gt;select 
+    element not (1 and within (3.5, 3))&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select atom (1-7) and (5-10);mark;&quot;&gt;select 
+    atom (1-7) and (5-10)&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select atom (1-7) or (5-10);mark;&quot;&gt;select 
+    atom (1-7) or (5-10)&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select atom (not 1-7) or (not 5-10);mark;&quot;&gt;select 
+    atom (not 1-7) or (not 5-10)&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select atom (1-7 or 5-9) and within (3, 0);mark;&quot;&gt;select 
+    atom (1-7 or 5-9) and within (3, 0)&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;.......&lt;br&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select atom not selected;mark;&quot;&gt;select 
+    atom not selected&lt;/a&gt;&lt;/font&gt;&lt;br&gt;&lt;font face=&quot;Verdana&quot; color=&quot;#0000ff&quot; size=&quot;2&quot;&gt;&lt;a href=&quot;script:mw:1:select atom none;mark;&quot;&gt;Clear 
+    selection&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&lt;br&gt;......&lt;/font&gt;
   &lt;/body&gt;
 &lt;/html&gt;
 </title>
 <opaque>false</opaque>
-<border>Lowered Etched</border>
 </component></content>
 
-<content start="328" end="329">
+<content start="620" end="621">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>script_logical$0.mml</resource><menubar>false</menubar></component></content>
 
-<content start="329" end="330">
+<content start="621" end="622">
 </content>
 
 </paragraph>
-<paragraph start="330" end="363">
+<paragraph start="622" end="661">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="330" end="362">
+<content start="622" end="623">
+</content>
+
+<content start="623" end="659">
 <size>10</size></content>
 
-<content start="362" end="363">
+<content start="659" end="661">
 </content>
 
 </paragraph>
-<paragraph start="363" end="364">
+<paragraph start="661" end="662">
 <LeftIndent>140.0</LeftIndent>
-<content start="363" end="364">
+<content start="661" end="662">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="364" end="366">
+<paragraph start="662" end="664">
+<SpaceAbove>2.0</SpaceAbove>
 <LeftIndent>140.0</LeftIndent>
-<content start="364" end="365">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="662" end="663">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>20</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><bgcolor>-ff33cd</bgcolor></icon></content>
 
-<content start="365" end="366">
+<content start="663" end="664">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="366" end="406">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="664" end="704">
 <RightIndent>100.0</RightIndent>
-<content start="366" end="389">
+<LeftIndent>200.0</LeftIndent>
+<content start="664" end="687">
 <size>11</size></content>
 
-<content start="389" end="404">
+<content start="687" end="702">
 <bold>true</bold><size>11</size></content>
 
-<content start="404" end="406">
+<content start="702" end="704">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="406" end="455">
-<LeftIndent>240.0</LeftIndent>
+<paragraph start="704" end="759">
 <RightIndent>100.0</RightIndent>
-<content start="406" end="454">
-<size>11</size><family>Courier New</family></content>
-
-<content start="454" end="455">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="455" end="504">
 <LeftIndent>240.0</LeftIndent>
-<RightIndent>100.0</RightIndent>
-<content start="455" end="503">
-<size>11</size><family>Courier New</family></content>
+<content start="704" end="758">
+<family>Courier New</family><size>11</size></content>
 
-<content start="503" end="504">
+<content start="758" end="759">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="504" end="534">
+<paragraph start="759" end="814">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>240.0</LeftIndent>
+<content start="759" end="813">
+<family>Courier New</family><size>11</size></content>
+
+<content start="813" end="814">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="814" end="844">
+<RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<RightIndent>100.0</RightIndent>
-<content start="504" end="510">
+<content start="814" end="820">
 <size>11</size></content>
 
-<content start="510" end="517">
-<size>11</size><family>Courier New</family></content>
+<content start="820" end="827">
+<family>Courier New</family><size>11</size></content>
 
-<content start="517" end="533">
+<content start="827" end="843">
 <size>11</size></content>
 
-<content start="533" end="534">
+<content start="843" end="844">
 </content>
 
 </paragraph>
-<paragraph start="534" end="536">
+<paragraph start="844" end="846">
+<SpaceAbove>2.0</SpaceAbove>
 <LeftIndent>140.0</LeftIndent>
-<content start="534" end="535">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="844" end="845">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>20</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><bgcolor>-ff33cd</bgcolor></icon></content>
 
-<content start="535" end="536">
+<content start="845" end="846">
 </content>
 
 </paragraph>
-<paragraph start="536" end="537">
+<paragraph start="846" end="847">
 <LeftIndent>140.0</LeftIndent>
-<content start="536" end="537">
+<content start="846" end="847">
 </content>
 
 </paragraph>
-<paragraph start="537" end="565">
+<paragraph start="847" end="875">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="537" end="539">
+<content start="847" end="849">
 <size>11</size></content>
 
-<content start="539" end="547">
-<size>11</size><href>script_select.cml</href></content>
+<content start="849" end="857">
+<href>script_select3d.cml</href><size>11</size></content>
 
-<content start="547" end="550">
+<content start="857" end="860">
 <size>11</size></content>
 
-<content start="550" end="555">
-<size>11</size><href>mwscripts.cml</href></content>
+<content start="860" end="865">
+<href>mwscripts.cml</href><size>11</size></content>
 
-<content start="555" end="558">
+<content start="865" end="868">
 <size>11</size></content>
 
-<content start="558" end="562">
-<size>11</size><href>script_set.cml</href></content>
+<content start="868" end="872">
+<href>script_set.cml</href><size>11</size></content>
 
-<content start="562" end="564">
+<content start="872" end="874">
 <size>11</size></content>
 
 </paragraph>

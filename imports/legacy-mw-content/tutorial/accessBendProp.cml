@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Accessing an angular bond&apos;s properties</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Accessing an angular bond&apos;s properties
@@ -10,21 +10,23 @@
 To access a radial bond&apos;s properties, double-click it when the model container is in the selection mode (i.e. the button &quot; &quot; is chosen), and then you will see the following dialog window:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 This dialog box allows you to change the bond angle and strength.
 
 Script support
 
-To change an angular bond&apos;s properties, select it first and then call set strength [value] to change its strength and set bondangle [value] to change its bond angle.
+To change an angular bond&apos;s properties, use the set command. For example, set abond[0].strength 100 sets the strength of the first angular bond. Currently, only two properties of an angular bond are settable through scripts: strength and bondangle. 
+
+To change multiple angular bonds&apos; properties, select them first and then call set strength [value] to change their strengths and set bondangle [value] to change their bond angles.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="564">
+<section start="0" end="829">
 <paragraph start="0" end="39">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="38">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="38" end="39">
 </content>
@@ -44,19 +46,19 @@ To change an angular bond&apos;s properties, select it first and then call set s
 <size>11</size></content>
 
 <content start="42" end="50">
-<href>accessBondProp.cml</href><size>11</size></content>
+<size>11</size><href>accessBondProp.cml</href></content>
 
 <content start="50" end="53">
 <size>11</size></content>
 
 <content start="53" end="58">
-<href>index1.cml</href><size>11</size></content>
+<size>11</size><href>index1.cml</href></content>
 
 <content start="58" end="61">
 <size>11</size></content>
 
 <content start="61" end="65">
-<href>accessMolProp.cml</href><size>11</size></content>
+<size>11</size><href>accessMolProp.cml</href></content>
 
 <content start="65" end="67">
 <size>11</size></content>
@@ -145,57 +147,96 @@ To change an angular bond&apos;s properties, select it first and then call set s
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="369" end="535">
+<paragraph start="369" end="619">
 <LeftIndent>140.0</LeftIndent>
-<content start="369" end="409">
+<content start="369" end="417">
 <size>11</size></content>
 
-<content start="409" end="415">
-<href>script_select.cml</href><size>11</size></content>
+<content start="417" end="420">
+<size>11</size><family>Courier New</family><href>script_set.cml</href></content>
 
-<content start="415" end="439">
+<content start="420" end="443">
 <size>11</size></content>
 
-<content start="439" end="459">
+<content start="443" end="468">
 <size>11</size><family>Courier New</family></content>
 
-<content start="459" end="487">
+<content start="468" end="594">
 <size>11</size></content>
 
-<content start="487" end="508">
+<content start="594" end="602">
 <size>11</size><family>Courier New</family></content>
 
-<content start="508" end="535">
+<content start="602" end="607">
+<size>11</size></content>
+
+<content start="607" end="616">
+<size>11</size><family>Courier New</family></content>
+
+<content start="616" end="618">
+<size>11</size></content>
+
+<content start="618" end="619">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="535" end="536">
-<content start="535" end="536">
+<paragraph start="619" end="620">
+<LeftIndent>140.0</LeftIndent>
+<content start="619" end="620">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="620" end="800">
+<LeftIndent>140.0</LeftIndent>
+<content start="620" end="666">
+<size>11</size></content>
+
+<content start="666" end="672">
+<size>11</size><href>script_select.cml</href></content>
+
+<content start="672" end="698">
+<size>11</size></content>
+
+<content start="698" end="718">
+<size>11</size><family>Courier New</family></content>
+
+<content start="718" end="749">
+<size>11</size></content>
+
+<content start="749" end="770">
+<size>11</size><family>Courier New</family></content>
+
+<content start="770" end="800">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="800" end="801">
+<content start="800" end="801">
 </content>
 
 </paragraph>
-<paragraph start="536" end="564">
+<paragraph start="801" end="829">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="536" end="538">
+<content start="801" end="803">
 <size>11</size></content>
 
-<content start="538" end="546">
-<href>accessBondProp.cml</href><size>11</size></content>
+<content start="803" end="811">
+<size>11</size><href>accessBondProp.cml</href></content>
 
-<content start="546" end="549">
+<content start="811" end="814">
 <size>11</size></content>
 
-<content start="549" end="554">
-<href>index1.cml</href><size>11</size></content>
+<content start="814" end="819">
+<size>11</size><href>index1.cml</href></content>
 
-<content start="554" end="557">
+<content start="819" end="822">
 <size>11</size></content>
 
-<content start="557" end="561">
-<href>accessMolProp.cml</href><size>11</size></content>
+<content start="822" end="826">
+<size>11</size><href>accessMolProp.cml</href></content>
 
-<content start="561" end="563">
+<content start="826" end="828">
 <size>11</size></content>
 
 </paragraph>

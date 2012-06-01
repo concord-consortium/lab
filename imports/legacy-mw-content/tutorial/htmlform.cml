@@ -1,545 +1,612 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
 <language>UTF-8</language>
-<page_title>Using components in HTML forms</page_title>
+<page_title>Using components embedded in HTML</page_title>
 <bg_image>sidebar2.gif</bg_image>
-<text>Using components in HTML forms
+<text>Using components embedded in HTML
 
 &lt; Previous | Index | Next &gt;
 
-If you have learned how to insert HTML text boxes into a page, you may wonder if you can use components supported by HTML forms to control the models. The answer is yes, but you will need to spend a little time on learning how to set them up with the models.
+If you have learned how to insert HTML text boxes into a page, you may wonder if you can use components supported by HTML to control the models. The answer is yes, but you will need to spend a little time on learning how to set them up with the models.
 
-Let us briefly introduce what HTML forms are, for those who are not familar with them. A HTML form is a section of a HTML document containing text, images, markup, controls (such as check boxes, radio buttons, menus, etc.), and labels on those controls. Users can enter text, select menu items, click buttons, select check boxes, and so on, and then submit the data produced in the form to a program for processing (e.g., to a Web server, to a mail server, or to a client-side program, etc.)
+HTML allows one to set up a page with embedded components for users to enter text, select menu items, click buttons, select check boxes, and so on. The data that the user types or selects can then be sent to a server for processing.
 
-Here&apos;s a simple standard form that includes labels, radio buttons, and buttons:
+For making an embedded component to interact with a model, MW adds additional attributes to the elements. Be aware that these attributes are not defined in the Data Type Definition (DTD) of the W3C&apos;s HTML specification&#10102;, which means they work only within MW.
 
-&lt;FORM action=&quot;http://www.concord.org/mw/register&quot; method=&quot;post&quot;&gt;
-    &lt;P&gt;
-    &lt;LABEL for=&quot;account&quot;&gt;Account: &lt;/LABEL&gt;
-    &lt;INPUT type=&quot;text&quot; id=&quot;account&quot;&gt;
-    &lt;LABEL for=&quot;password&quot;&gt;Password: &lt;/LABEL&gt;
-    &lt;INPUT type=&quot;password&quot; id=&quot;password&quot;&gt;
-    &lt;BR&gt;
-    &lt;LABEL for=&quot;firstname&quot;&gt;First name: &lt;/LABEL&gt;
-    &lt;INPUT type=&quot;text&quot; id=&quot;firstname&quot;&gt;
-    &lt;LABEL for=&quot;lastname&quot;&gt;Last name: &lt;/LABEL&gt;
-    &lt;INPUT type=&quot;text&quot; id=&quot;lastname&quot;&gt;
-    &lt;BR&gt;
-    &lt;LABEL for=&quot;email&quot;&gt;E-mail (required): &lt;/LABEL&gt;
-    &lt;INPUT type=&quot;text&quot; id=&quot;email&quot;&gt;
-    &lt;BR&gt;
-    &lt;INPUT type=&quot;radio&quot; name=&quot;user&quot; value=&quot;Student&quot;&gt; Student
-    &lt;INPUT type=&quot;radio&quot; name=&quot;user&quot; value=&quot;Teacher&quot;&gt; Teacher
-    &lt;BR&gt;
-    &lt;INPUT type=&quot;submit&quot; value=&quot;Send&quot;&gt;
-    &lt;INPUT type=&quot;reset&quot;&gt;
-    &lt;/P&gt;
+ 
+Important: Do not enclose the embedded HTML components within &lt;form&gt; tags:
+
+&lt;FORM action=&quot;blah&quot; method=&quot;post&quot;&gt;
+&lt;input type=&quot;submit&quot; name=&quot;button name&quot; value=&quot;button text&quot; script=&quot;scripts&quot; alt=&quot;tooltip&quot; uid=&quot;unique identifier&quot;&gt;
 &lt;/FORM&gt;
 
-To allow a control to interact with the models and the overlay environment, the Molecular Workbench (MW) adds additional attributes to the elements. Be aware that these attributes are not defined in the Data Type Definition (DTD) of the W3C&apos;s HTML specification&#10102;, which means they work only within MW.
+If you do so, MW will try to send the data to a server, instead of a model.
+ 
 
-There are currently two types of MW-specific attributes:
+There are currently five types of MW-specific attributes:
+
+The uid attribute
+
+This is used to give the input component a unique identifier that can be used in scripts to identify an embedded component. This attribute is optional. If you do not need to access the input components in a text box, you will not need to set this.
 
 The script attribute
 
-It provides the scripts that will be executed when the user acts on the control that is given this attribute. The attribute keyword varies, depending on the type of control. If the control is a button or a radio button, the keyword is literally script. If it is a check box, a script_selected attribute is used to provide the scripts that will be executed when it is selected (note that this keyword is different from the checked keyword specified in the standard DTD). Conversely, a script_deselected attribute can be used to provide the scripts that will be executed when it is deselected. If the control is a combox box, a set of attributes (script1, script2, script3, ......, scriptn) is used to provide the scripts that will be executed when the first, second, third, ......, and last menu is selected (suppose the number of choices is n). If no script attribute is given, the control will have no effect --- you still see the component, but it does nothing.
+This provides the scripts that will be executed when the user acts on the control that is given this attribute. The attribute keyword varies, depending on the type of control. If the control is a button or a radio button, the keyword is literally script. If it is a check box, a script_selected attribute is used to provide the scripts that will be executed when it is selected. Conversely, a script_deselected attribute can be used to provide the scripts that will be executed when it is deselected. If the control is a combox box, a set of attributes (script1, script2, script3, ......, scriptn) is used to provide the scripts that will be executed when the first, second, third, ......, and last menu is selected (suppose the number of choices is n). If no script attribute is given, the control will have no effect --- you still see the component, but it does nothing. This attribute should be used to set scripts that will be processed by an external component, such as a model.
+
+The selfscript attribute
+
+This attribute is similar to the script attribute, except that the scripts will run within the text box in which the component that fires the scripts belongs to. A text box allows a limited set of commands that can be found in the page about text boxes. The advantage of using this attribute is that you do not have to maintain a literal reference to the textbox using the header specified by the script protocol.
+
+This attribute should be used to set scripts that change its own text box. If the scripts are meant to be executed outside the text box, use the script attribute.
+
+The enabled attribute
+
+By setting this attribute to false, a button, a radio button, a check box or a combo box can be disabled initially. You may use the enablecomponent command supported by a text box to enable a disabled component later.
 
 The question attribute
 
-It provides the question text that will be automatically collected, along with the user&apos;s inputs, when a report is generated. This allows you to use the input text fields and text areas in a HTML document to set up questions, as you can also do with regular text fields and text areas. Providing the question attributes to text fields and text boxes is important: If you do not provide them, the report will show only the student&apos;s answers for those that have a missing question attribute. The question attributes can, although not necessarily, just be the text copied from your questions without modification.
+This provides the question text that will be automatically collected, along with the user&apos;s inputs, when a report is generated. This allows you to use the input text fields and text areas in an HTML document to set up questions, as you can also do with regular text fields and text areas. Providing the question attributes to text fields and text boxes is important: If you do not provide them, the report will show only the student&apos;s answers for those that have a missing question attribute. The question attributes can, although not necessarily, just be the text copied from your questions without modification.
 
  
 &#10102;The &quot;Forms in HTML Document&quot; in the   HTML specification.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="3706">
-<paragraph start="0" end="31">
+<section start="0" end="4039">
+<paragraph start="0" end="34">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="0" end="30">
-<bold>true</bold><italic>true</italic><size>15</size></content>
+<content start="0" end="33">
+<bold>true</bold><size>15</size><italic>true</italic></content>
 
-<content start="30" end="31">
+<content start="33" end="34">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="31" end="32">
+<paragraph start="34" end="35">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="31" end="32">
+<content start="34" end="35">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="32" end="60">
+<paragraph start="35" end="63">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="32" end="34">
+<content start="35" end="37">
 <size>11</size></content>
 
-<content start="34" end="42">
+<content start="37" end="45">
 <size>11</size><href>linkscript.cml</href></content>
 
-<content start="42" end="45">
+<content start="45" end="48">
 <size>11</size></content>
 
-<content start="45" end="50">
+<content start="48" end="53">
 <size>11</size><href>index2.cml</href></content>
 
-<content start="50" end="53">
+<content start="53" end="56">
 <size>11</size></content>
 
-<content start="53" end="57">
+<content start="56" end="60">
 <size>11</size><href>html_button.cml</href></content>
 
-<content start="57" end="60">
+<content start="60" end="63">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="60" end="61">
+<paragraph start="63" end="64">
 <LeftIndent>140.0</LeftIndent>
-<content start="60" end="61">
+<content start="63" end="64">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="61" end="320">
+<paragraph start="64" end="317">
 <LeftIndent>140.0</LeftIndent>
-<content start="61" end="95">
+<content start="64" end="98">
 <size>11</size></content>
 
-<content start="95" end="110">
+<content start="98" end="113">
 <size>11</size><href>textbox.cml</href></content>
 
-<content start="110" end="320">
+<content start="113" end="317">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="320" end="321">
+<paragraph start="317" end="318">
 <LeftIndent>140.0</LeftIndent>
-<content start="320" end="321">
+<content start="317" end="318">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="321" end="813">
+<paragraph start="318" end="551">
 <LeftIndent>140.0</LeftIndent>
-<content start="321" end="813">
+<content start="318" end="551">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="813" end="814">
+<paragraph start="551" end="552">
 <LeftIndent>140.0</LeftIndent>
+<content start="551" end="552">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="552" end="811">
+<LeftIndent>140.0</LeftIndent>
+<content start="552" end="770">
+<size>11</size></content>
+
+<content start="770" end="771">
+<size>13</size></content>
+
+<content start="771" end="785">
+<size>11</size></content>
+
+<content start="785" end="809">
+<bold>true</bold><size>11</size></content>
+
+<content start="809" end="811">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="811" end="812">
+<LeftIndent>140.0</LeftIndent>
+<content start="811" end="812">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="812" end="814">
+<LeftIndent>140.0</LeftIndent>
+<content start="812" end="813">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
 <content start="813" end="814">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="814" end="894">
-<LeftIndent>140.0</LeftIndent>
-<content start="814" end="894">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="894" end="895">
-<LeftIndent>140.0</LeftIndent>
-<content start="894" end="895">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="895" end="960">
-<LeftIndent>140.0</LeftIndent>
-<content start="895" end="960">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="960" end="968">
-<LeftIndent>140.0</LeftIndent>
-<content start="960" end="968">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="968" end="1011">
-<LeftIndent>140.0</LeftIndent>
-<content start="968" end="1011">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1011" end="1048">
-<LeftIndent>140.0</LeftIndent>
-<content start="1011" end="1048">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1048" end="1093">
-<LeftIndent>140.0</LeftIndent>
-<content start="1048" end="1093">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1093" end="1135">
-<LeftIndent>140.0</LeftIndent>
-<content start="1093" end="1135">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1135" end="1144">
-<LeftIndent>140.0</LeftIndent>
-<content start="1135" end="1144">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1144" end="1192">
-<LeftIndent>140.0</LeftIndent>
-<content start="1144" end="1192">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1192" end="1231">
-<LeftIndent>140.0</LeftIndent>
-<content start="1192" end="1231">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1231" end="1277">
-<LeftIndent>140.0</LeftIndent>
-<content start="1231" end="1277">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1277" end="1315">
-<LeftIndent>140.0</LeftIndent>
-<content start="1277" end="1315">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1315" end="1324">
-<LeftIndent>140.0</LeftIndent>
-<content start="1315" end="1324">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1324" end="1375">
-<LeftIndent>140.0</LeftIndent>
-<content start="1324" end="1375">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1375" end="1410">
-<LeftIndent>140.0</LeftIndent>
-<content start="1375" end="1410">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1410" end="1419">
-<LeftIndent>140.0</LeftIndent>
-<content start="1410" end="1419">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1419" end="1480">
-<LeftIndent>140.0</LeftIndent>
-<content start="1419" end="1470">
-<size>11</size><family>Courier New</family></content>
-
-<content start="1470" end="1471">
-<family>Courier New</family></content>
-
-<content start="1471" end="1480">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1480" end="1541">
-<LeftIndent>140.0</LeftIndent>
-<content start="1480" end="1541">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1541" end="1550">
-<LeftIndent>140.0</LeftIndent>
-<content start="1541" end="1550">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1550" end="1589">
-<LeftIndent>140.0</LeftIndent>
-<content start="1550" end="1589">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1589" end="1614">
-<LeftIndent>140.0</LeftIndent>
-<content start="1589" end="1614">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1614" end="1623">
-<LeftIndent>140.0</LeftIndent>
-<content start="1614" end="1623">
-<size>11</size><family>Courier New</family></content>
-
-</paragraph>
-<paragraph start="1623" end="1631">
-<LeftIndent>140.0</LeftIndent>
-<content start="1623" end="1630">
-<size>11</size><family>Courier New</family></content>
-
-<content start="1630" end="1631">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1631" end="1632">
-<LeftIndent>140.0</LeftIndent>
-<content start="1631" end="1632">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1632" end="1934">
-<LeftIndent>140.0</LeftIndent>
-<content start="1632" end="1893">
-<size>11</size></content>
-
-<content start="1893" end="1894">
 </content>
 
-<content start="1894" end="1934">
+</paragraph>
+<paragraph start="814" end="889">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="814" end="823">
+<bold>true</bold><size>11</size></content>
+
+<content start="823" end="876">
+<size>11</size></content>
+
+<content start="876" end="882">
+<family>Courier New</family><size>11</size></content>
+
+<content start="882" end="889">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1934" end="1935">
-<LeftIndent>140.0</LeftIndent>
-<content start="1934" end="1935">
+<paragraph start="889" end="890">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="889" end="890">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1935" end="1992">
-<LeftIndent>140.0</LeftIndent>
-<content start="1935" end="1992">
+<paragraph start="890" end="925">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="890" end="924">
+<family>Courier New</family><bold>true</bold><strikethrough>true</strikethrough><foreground>255 0 0</foreground></content>
+
+<content start="924" end="925">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="925" end="1041">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>220.0</LeftIndent>
+<content start="925" end="1041">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1041" end="1049">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1041" end="1048">
+<family>Courier New</family><bold>true</bold><strikethrough>true</strikethrough><foreground>255 0 0</foreground></content>
+
+<content start="1048" end="1049">
+</content>
+
+</paragraph>
+<paragraph start="1049" end="1050">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1049" end="1050">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1992" end="1993">
+<paragraph start="1050" end="1126">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1050" end="1125">
+<size>11</size></content>
+
+<content start="1125" end="1126">
+</content>
+
+</paragraph>
+<paragraph start="1126" end="1128">
 <LeftIndent>140.0</LeftIndent>
-<content start="1992" end="1993">
+<content start="1126" end="1127">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1127" end="1128">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1993" end="2014">
+<paragraph start="1128" end="1129">
 <LeftIndent>140.0</LeftIndent>
-<content start="1993" end="1997">
-<size>11</size><bold>true</bold></content>
-
-<content start="1997" end="2003">
-<size>11</size><bold>true</bold><family>Courier New</family></content>
-
-<content start="2003" end="2013">
-<size>11</size><bold>true</bold></content>
-
-<content start="2013" end="2014">
+<content start="1128" end="1129">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2014" end="2015">
+<paragraph start="1129" end="1187">
 <LeftIndent>140.0</LeftIndent>
-<content start="2014" end="2015">
+<content start="1129" end="1187">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2015" end="2979">
+<paragraph start="1187" end="1188">
 <LeftIndent>140.0</LeftIndent>
-<content start="2015" end="2260">
+<content start="1187" end="1188">
 <size>11</size></content>
 
-<content start="2260" end="2266">
-<size>11</size><family>Courier New</family></content>
+</paragraph>
+<paragraph start="1188" end="1206">
+<LeftIndent>140.0</LeftIndent>
+<content start="1188" end="1192">
+<bold>true</bold><size>11</size></content>
 
-<content start="2266" end="2292">
+<content start="1192" end="1195">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="1195" end="1205">
+<bold>true</bold><size>11</size></content>
+
+<content start="1205" end="1206">
 <size>11</size></content>
 
-<content start="2292" end="2307">
-<size>11</size><family>Courier New</family></content>
-
-<content start="2307" end="2437">
+</paragraph>
+<paragraph start="1206" end="1207">
+<LeftIndent>140.0</LeftIndent>
+<content start="1206" end="1207">
 <size>11</size></content>
 
-<content start="2437" end="2444">
-<size>11</size><family>Courier New</family></content>
-
-<content start="2444" end="2499">
+</paragraph>
+<paragraph start="1207" end="1455">
+<LeftIndent>140.0</LeftIndent>
+<content start="1207" end="1455">
 <size>11</size></content>
 
-<content start="2499" end="2516">
-<size>11</size><family>Courier New</family></content>
-
-<content start="2516" end="2660">
+</paragraph>
+<paragraph start="1455" end="1456">
+<LeftIndent>140.0</LeftIndent>
+<content start="1455" end="1456">
 <size>11</size></content>
 
-<content start="2660" end="2667">
-<size>11</size><family>Courier New</family></content>
+</paragraph>
+<paragraph start="1456" end="1477">
+<LeftIndent>140.0</LeftIndent>
+<content start="1456" end="1460">
+<bold>true</bold><size>11</size></content>
 
-<content start="2667" end="2669">
+<content start="1460" end="1466">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="1466" end="1476">
+<bold>true</bold><size>11</size></content>
+
+<content start="1476" end="1477">
 <size>11</size></content>
 
-<content start="2669" end="2676">
-<size>11</size><family>Courier New</family></content>
-
-<content start="2676" end="2678">
+</paragraph>
+<paragraph start="1477" end="1478">
+<LeftIndent>140.0</LeftIndent>
+<content start="1477" end="1478">
 <size>11</size></content>
 
-<content start="2678" end="2685">
-<size>11</size><family>Courier New</family></content>
-
-<content start="2685" end="2695">
+</paragraph>
+<paragraph start="1478" end="2462">
+<LeftIndent>140.0</LeftIndent>
+<content start="1478" end="1725">
 <size>11</size></content>
 
-<content start="2695" end="2701">
-<size>11</size><family>Courier New</family></content>
+<content start="1725" end="1731">
+<family>Courier New</family><size>11</size></content>
 
-<content start="2701" end="2702">
-<size>11</size><italic>true</italic><family>Courier New</family></content>
-
-<content start="2702" end="2856">
+<content start="1731" end="1757">
 <size>11</size></content>
 
-<content start="2856" end="2857">
+<content start="1757" end="1772">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1772" end="1871">
+<size>11</size></content>
+
+<content start="1871" end="1888">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1888" end="2032">
+<size>11</size></content>
+
+<content start="2032" end="2039">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2039" end="2041">
+<size>11</size></content>
+
+<content start="2041" end="2048">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2048" end="2050">
+<size>11</size></content>
+
+<content start="2050" end="2057">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2057" end="2067">
+<size>11</size></content>
+
+<content start="2067" end="2073">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2073" end="2074">
+<family>Courier New</family><size>11</size><italic>true</italic></content>
+
+<content start="2074" end="2228">
+<size>11</size></content>
+
+<content start="2228" end="2229">
 <size>11</size><italic>true</italic></content>
 
-<content start="2857" end="2979">
+<content start="2229" end="2462">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2979" end="2980">
+<paragraph start="2462" end="2463">
 <LeftIndent>140.0</LeftIndent>
-<content start="2979" end="2980">
+<content start="2462" end="2463">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2980" end="3003">
+<paragraph start="2463" end="2488">
 <LeftIndent>140.0</LeftIndent>
-<content start="2980" end="2984">
-<size>11</size><bold>true</bold></content>
+<content start="2463" end="2467">
+<bold>true</bold><size>11</size></content>
 
-<content start="2984" end="2992">
-<size>11</size><bold>true</bold><family>Courier New</family></content>
+<content start="2467" end="2477">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
 
-<content start="2992" end="3002">
-<size>11</size><bold>true</bold></content>
+<content start="2477" end="2487">
+<bold>true</bold><size>11</size></content>
 
-<content start="3002" end="3003">
+<content start="2487" end="2488">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3003" end="3004">
+<paragraph start="2488" end="2489">
 <LeftIndent>140.0</LeftIndent>
-<content start="3003" end="3004">
+<content start="2488" end="2489">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3004" end="3615">
+<paragraph start="2489" end="2903">
 <LeftIndent>140.0</LeftIndent>
-<content start="3004" end="3107">
+<content start="2489" end="2522">
 <size>11</size></content>
 
-<content start="3107" end="3128">
+<content start="2522" end="2528">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2528" end="2716">
+<size>11</size></content>
+
+<content start="2716" end="2741">
+<size>11</size><href>textbox.cml</href></content>
+
+<content start="2741" end="2903">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2903" end="2904">
+<LeftIndent>140.0</LeftIndent>
+<content start="2903" end="2904">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2904" end="3067">
+<LeftIndent>140.0</LeftIndent>
+<content start="2904" end="3049">
+<size>11</size></content>
+
+<content start="3049" end="3055">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3055" end="3067">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3067" end="3068">
+<LeftIndent>140.0</LeftIndent>
+<content start="3067" end="3068">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3068" end="3090">
+<LeftIndent>140.0</LeftIndent>
+<content start="3068" end="3072">
+<bold>true</bold><size>11</size></content>
+
+<content start="3072" end="3079">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="3079" end="3089">
+<bold>true</bold><size>11</size></content>
+
+<content start="3089" end="3090">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3090" end="3091">
+<LeftIndent>140.0</LeftIndent>
+<content start="3090" end="3091">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3091" end="3309">
+<LeftIndent>140.0</LeftIndent>
+<content start="3091" end="3223">
+<size>11</size></content>
+
+<content start="3223" end="3238">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3238" end="3309">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3309" end="3310">
+<LeftIndent>140.0</LeftIndent>
+<content start="3309" end="3310">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3310" end="3333">
+<LeftIndent>140.0</LeftIndent>
+<content start="3310" end="3314">
+<bold>true</bold><size>11</size></content>
+
+<content start="3314" end="3322">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="3322" end="3332">
+<bold>true</bold><size>11</size></content>
+
+<content start="3332" end="3333">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3333" end="3334">
+<LeftIndent>140.0</LeftIndent>
+<content start="3333" end="3334">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3334" end="3948">
+<LeftIndent>140.0</LeftIndent>
+<content start="3334" end="3439">
+<size>11</size></content>
+
+<content start="3439" end="3460">
 <size>11</size><href>report.cml</href></content>
 
-<content start="3128" end="3262">
+<content start="3460" end="3595">
 <size>11</size></content>
 
-<content start="3262" end="3273">
+<content start="3595" end="3606">
 <size>11</size><href>textfield.cml</href></content>
 
-<content start="3273" end="3278">
+<content start="3606" end="3611">
 <size>11</size></content>
 
-<content start="3278" end="3288">
+<content start="3611" end="3621">
 <size>11</size><href>textarea.cml</href></content>
 
-<content start="3288" end="3304">
+<content start="3621" end="3637">
 <size>11</size></content>
 
-<content start="3304" end="3312">
-<size>11</size><family>Courier New</family></content>
+<content start="3637" end="3645">
+<family>Courier New</family><size>11</size></content>
 
-<content start="3312" end="3474">
+<content start="3645" end="3807">
 <size>11</size></content>
 
-<content start="3474" end="3482">
-<size>11</size><family>Courier New</family></content>
+<content start="3807" end="3815">
+<family>Courier New</family><size>11</size></content>
 
-<content start="3482" end="3498">
+<content start="3815" end="3831">
 <size>11</size></content>
 
-<content start="3498" end="3506">
-<size>11</size><family>Courier New</family></content>
+<content start="3831" end="3839">
+<family>Courier New</family><size>11</size></content>
 
-<content start="3506" end="3615">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="3615" end="3616">
-<LeftIndent>140.0</LeftIndent>
-<content start="3615" end="3616">
+<content start="3839" end="3948">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3616" end="3618">
+<paragraph start="3948" end="3949">
 <LeftIndent>140.0</LeftIndent>
-<content start="3616" end="3617">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><SpaceAbove>1</SpaceAbove><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
-<content start="3617" end="3618">
+<content start="3948" end="3949">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3618" end="3677">
+<paragraph start="3949" end="3951">
+<SpaceAbove>1.0</SpaceAbove>
 <LeftIndent>140.0</LeftIndent>
-<content start="3618" end="3619">
-</content>
+<content start="3949" end="3950">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
 
-<content start="3619" end="3655">
+<content start="3950" end="3951">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3951" end="4010">
+<LeftIndent>140.0</LeftIndent>
+<content start="3951" end="3952">
+<size>13</size></content>
+
+<content start="3952" end="3988">
 <size>10</size></content>
 
-<content start="3655" end="3656">
+<content start="3988" end="3989">
 <icon>htmlink.gif</icon></content>
 
-<content start="3656" end="3657">
+<content start="3989" end="3990">
 <size>10</size></content>
 
-<content start="3657" end="3675">
+<content start="3990" end="4008">
 <size>10</size><href>http://www.w3.org/TR/REC-html40/interact/forms.html</href></content>
 
-<content start="3675" end="3676">
+<content start="4008" end="4009">
 <size>10</size></content>
 
-<content start="3676" end="3677">
+<content start="4009" end="4010">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3677" end="3678">
+<paragraph start="4010" end="4011">
 <LeftIndent>140.0</LeftIndent>
-<content start="3677" end="3678">
+<content start="4010" end="4011">
 </content>
 
 </paragraph>
-<paragraph start="3678" end="3706">
+<paragraph start="4011" end="4039">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="3678" end="3680">
+<content start="4011" end="4013">
 <size>11</size></content>
 
-<content start="3680" end="3688">
+<content start="4013" end="4021">
 <size>11</size><href>linkscript.cml</href></content>
 
-<content start="3688" end="3691">
+<content start="4021" end="4024">
 <size>11</size></content>
 
-<content start="3691" end="3696">
+<content start="4024" end="4029">
 <size>11</size><href>index2.cml</href></content>
 
-<content start="3696" end="3699">
+<content start="4029" end="4032">
 <size>11</size></content>
 
-<content start="3699" end="3703">
+<content start="4032" end="4036">
 <size>11</size><href>html_button.cml</href></content>
 
-<content start="3703" end="3705">
+<content start="4036" end="4038">
 <size>11</size></content>
 
 </paragraph>

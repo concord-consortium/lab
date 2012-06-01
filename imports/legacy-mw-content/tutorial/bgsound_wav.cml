@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
 <language>UTF-8</language>
-<page_title>Background sound effect: An WAV example</page_title>
 <bgsound>jazz.wav</bgsound>
+<page_title>Background sound effect: An WAV example</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Background sound effect: An WAV example
 
@@ -76,7 +76,7 @@ To stop the music, just leave this page.
 <bold>true</bold><size>11</size></content>
 
 <content start="232" end="247">
-<href>audioclip.cml</href><bold>true</bold><size>11</size></content>
+<bold>true</bold><href>audioclip.cml</href><size>11</size></content>
 
 <content start="247" end="248">
 <bold>true</bold><size>11</size></content>

@@ -14,16 +14,16 @@ Practice
 Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the view, and select an item from the &quot;Run Energy Minimization&quot; sub-menu from the pop-up menu.
 
  
-[This is an embedded model.]
+&#12304;This is an embedded model container.&#12305;
 
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="602">
+<section start="0" end="612">
 <paragraph start="0" end="30">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="29">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<italic>true</italic><size>15</size><bold>true</bold></content>
 
 <content start="29" end="30">
 </content>
@@ -43,13 +43,13 @@ Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the v
 <size>11</size></content>
 
 <content start="33" end="41">
-<size>11</size><href>mergemodel3d.cml</href></content>
+<href>mergemodel3d.cml</href><size>11</size></content>
 
 <content start="41" end="44">
 <size>11</size></content>
 
 <content start="44" end="49">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="49" end="58">
 <size>11</size></content>
@@ -79,7 +79,7 @@ Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the v
 <paragraph start="360" end="369">
 <LeftIndent>140.0</LeftIndent>
 <content start="360" end="368">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="368" end="369">
 <size>11</size></content>
@@ -93,13 +93,7 @@ Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the v
 </paragraph>
 <paragraph start="370" end="540">
 <LeftIndent>140.0</LeftIndent>
-<content start="370" end="383">
-<size>11</size></content>
-
-<content start="383" end="440">
-<size>11</size></content>
-
-<content start="440" end="540">
+<content start="370" end="540">
 <size>11</size></content>
 
 </paragraph>
@@ -120,44 +114,44 @@ Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the v
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="543" end="572">
+<paragraph start="543" end="582">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="543" end="571">
+<content start="543" end="581">
 <size>10</size></content>
 
-<content start="571" end="572">
+<content start="581" end="582">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="572" end="573">
+<paragraph start="582" end="583">
 <LeftIndent>140.0</LeftIndent>
-<content start="572" end="573">
+<content start="582" end="583">
 </content>
 
 </paragraph>
-<paragraph start="573" end="574">
+<paragraph start="583" end="584">
 <LeftIndent>140.0</LeftIndent>
-<content start="573" end="574">
+<content start="583" end="584">
 </content>
 
 </paragraph>
-<paragraph start="574" end="602">
+<paragraph start="584" end="612">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="574" end="576">
+<content start="584" end="586">
 <size>11</size></content>
 
-<content start="576" end="584">
-<size>11</size><href>mergemodel3d.cml</href></content>
+<content start="586" end="594">
+<href>mergemodel3d.cml</href><size>11</size></content>
 
-<content start="584" end="587">
+<content start="594" end="597">
 <size>11</size></content>
 
-<content start="587" end="592">
-<size>11</size><href>index4.cml</href></content>
+<content start="597" end="602">
+<href>index4.cml</href><size>11</size></content>
 
-<content start="592" end="601">
+<content start="602" end="611">
 <size>11</size></content>
 
 </paragraph>

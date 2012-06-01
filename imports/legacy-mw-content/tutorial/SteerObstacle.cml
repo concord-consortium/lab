@@ -18,60 +18,63 @@ A steerable obstacle can be used to show some basic concepts in classical mechan
 The steering mechanism can be used to design virtual haptic effect, meaning visual feedback that replaces the mechanical feedback of a real haptic device. Haptic means pertaining to the sense of touch (see   haptic in Wikipedia for more information). For example, one can set up a virtual experiment in which the user can compress a gas with a piston, as is shown below:
 
   
+   
   
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
  
-Important Instruction: To steer the piston, click the model window after setting the model to run first, and then use the Up, Down, Left and Right key on the keyboard to steer it in four directions. To increase the steering force, press the &apos;a&apos; key (&apos;a&apos; comes from acceleratoin. To decrease the steering force, press the &apos;d&apos; key (&apos;d&apos; comes from deceleration).
+Important Instruction: To steer the piston, click the Run button first, and then use the Up, Down, Left and Right key on the keyboard to steer it in four directions. To increase the steering force, press the &apos;a&apos; key (&apos;a&apos; comes from acceleratoin. To decrease the steering force, press the &apos;d&apos; key (&apos;d&apos; comes from deceleration).
 
-Remember, you must click the model window before you can steer. In the computer jargon, this means the focus of the keyboard must be transfered to the model so that the key action can then be applied to it.
+If you have clicked outside the model window after hitting the Run button, you must click the model window again in order to steer. In the computer jargon, this means the focus of the keyboard must be re-transfered to the model so that the key action can then be applied to it.
+
+The Run button actually employs the focus command to automatically transfer the focus to the model window after the model starts to run when the button is pressed.
 
 If the density of the obstacle exceeds 500 kg/(mol*angstrom2), it will be considered too heavy to be movable. In that case, you will not be able to steer it at all. The recommended value for the density of a steerable obstacle is 1 kg/(mol*angstrom2).
 
 Note that the steering force is different from the horizontal and vertical force that can be set through the Properties Dialog Window of the obstacle. The difference is that the steering force requires the user&apos;s interaction --- if the user does not press one of the arrow keys, the steering force is off. In comparison, the other forces do not need the user to apply them --- they are constantly applied to the obstacle during the simulation.
  
 
-When the user compresses the gas, a pressure probe is also set up to measure the pressure of the gas during compression. When the compression reaches the limit with the current steering force, the measurement read from the probe becomes constant (with small fluctuations). If the user applies a stronger steering force, the measured pressure will be greater. The following figure summarizes a few runs with different steering force. The percentages are relative to the full strength of steering force.
+When the user compresses the gas, a pressure gauge is also set up to measure the pressure of the gas during compression. When the compression reaches the limit with the current steering force, the measurement read from the probe becomes constant (with small fluctuations). If the user applies a stronger steering force, the measured pressure will be greater. The following figure summarizes a few runs with different steering force. The percentages are relative to the full strength of steering force.
 
    
 
-To cancel the steering, stop the model, right-click (Windows and Linux) or CTRL+click (Mac OS X) on the obstacle, and select the &quot;Steering Off&quot; item from the popup menu.
+To cancel the steering, stop the model, right-click (CTRL+click for a Mac OS X without a multiple-button mouse) on the obstacle, and select the &quot;Steering Off&quot; item from the popup menu.
 
 Demo: Structural transformations of molecular crystals under compression
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="3329">
+<section start="0" end="3557">
 <paragraph start="0" end="19">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="18">
-<italic>true</italic><size>16</size><bold>true</bold></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="18" end="19">
 </content>
 
 </paragraph>
 <paragraph start="19" end="20">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="19" end="20">
 </content>
 
 </paragraph>
 <paragraph start="20" end="48">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="20" end="22">
 <size>11</size></content>
 
 <content start="22" end="30">
-<size>11</size><href>SteerParticle.cml</href></content>
+<href>SteerParticle.cml</href><size>11</size></content>
 
 <content start="30" end="33">
 <size>11</size></content>
 
 <content start="33" end="38">
-<size>11</size><href>index1.cml</href></content>
+<href>index1.cml</href><size>11</size></content>
 
 <content start="38" end="47">
 <size>11</size></content>
@@ -113,7 +116,7 @@ Demo: Structural transformations of molecular crystals under compression
 <paragraph start="665" end="667">
 <LeftIndent>140.0</LeftIndent>
 <content start="665" end="666">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="666" end="667">
 </content>
@@ -126,7 +129,7 @@ Demo: Structural transformations of molecular crystals under compression
 <size>11</size></content>
 
 <content start="783" end="809">
-<size>11</size><href>SlidingObstacle.cml</href></content>
+<href>SlidingObstacle.cml</href><size>11</size></content>
 
 <content start="809" end="861">
 <size>11</size></content>
@@ -138,7 +141,7 @@ Demo: Structural transformations of molecular crystals under compression
 <paragraph start="862" end="864">
 <LeftIndent>140.0</LeftIndent>
 <content start="862" end="863">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="863" end="864">
 <size>11</size></content>
@@ -162,7 +165,7 @@ Demo: Structural transformations of molecular crystals under compression
 <size>11</size></content>
 
 <content start="1073" end="1092">
-<size>11</size><href>http://en.wikipedia.org/wiki/Haptic</href></content>
+<href>http://en.wikipedia.org/wiki/Haptic</href><size>11</size></content>
 
 <content start="1092" end="1236">
 <size>11</size></content>
@@ -175,11 +178,11 @@ Demo: Structural transformations of molecular crystals under compression
 
 </paragraph>
 <paragraph start="1237" end="1240">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="1237" end="1238">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>SteerObstacle$0.mml</resource><menubar>false</menubar></component></content>
+<resource>SteerObstacle$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
 
 <content start="1238" end="1239">
 <component><class>org.concord.modeler.PageXYGraph</class>
@@ -190,11 +193,11 @@ Demo: Structural transformations of molecular crystals under compression
 <axis_y_min>0.0</axis_y_min>
 <axis_y_max>20.0</axis_y_max>
 <width>300</width>
-<height>314</height>
+<height>290</height>
 <axis_x_title>Time (fs)</axis_x_title>
 <axis_y_title>Pressure (bar)</axis_y_title>
 <legend_x>50</legend_x>
-<legend_y>50</legend_y>
+<legend_y>40</legend_y>
 <bgcolor>-1</bgcolor>
 <fgcolor>-1</fgcolor>
 <border>Raised Bevel</border>
@@ -204,10 +207,44 @@ Demo: Structural transformations of molecular crystals under compression
 </content>
 
 </paragraph>
-<paragraph start="1240" end="1243">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1240" end="1244">
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="1240" end="1241">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>run;focus;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1241" end="1242">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1242" end="1243">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1243" end="1244">
+</content>
+
+</paragraph>
+<paragraph start="1244" end="1247">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1244" end="1245">
 <component><class>org.concord.modeler.PageCheckBox</class>
 <title>Apply heat bath</title>
 <tooltip>Apply heat bath</tooltip>
@@ -219,7 +256,7 @@ Demo: Structural transformations of molecular crystals under compression
 <action>Execute MW script</action>
 </component></content>
 
-<content start="1241" end="1242">
+<content start="1245" end="1246">
 <component><class>org.concord.modeler.PageCheckBox</class>
 <title>Apply damping force on piston</title>
 <tooltip>Apply a damping force on the piston</tooltip>
@@ -232,212 +269,232 @@ Demo: Structural transformations of molecular crystals under compression
 <action>Execute MW script</action>
 </component></content>
 
-<content start="1242" end="1243">
+<content start="1246" end="1247">
 </content>
 
 </paragraph>
-<paragraph start="1243" end="1276">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1247" end="1286">
 <Alignment>1</Alignment>
-<content start="1243" end="1275">
+<LeftIndent>140.0</LeftIndent>
+<content start="1247" end="1285">
 <size>10</size></content>
 
-<content start="1275" end="1276">
+<content start="1285" end="1286">
 </content>
 
 </paragraph>
-<paragraph start="1276" end="1277">
+<paragraph start="1286" end="1287">
 <LeftIndent>140.0</LeftIndent>
-<content start="1276" end="1277">
+<content start="1286" end="1287">
 </content>
 
 </paragraph>
-<paragraph start="1277" end="1279">
+<paragraph start="1287" end="1289">
 <LeftIndent>140.0</LeftIndent>
-<content start="1277" end="1278">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="1287" end="1288">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="1278" end="1279">
+<content start="1288" end="1289">
 </content>
 
 </paragraph>
-<paragraph start="1279" end="1639">
+<paragraph start="1289" end="1616">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="1279" end="1301">
-<bold>true</bold><size>11</size></content>
+<content start="1289" end="1311">
+<size>11</size><bold>true</bold></content>
 
-<content start="1301" end="1639">
+<content start="1311" end="1616">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1639" end="1640">
+<paragraph start="1616" end="1617">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="1639" end="1640">
+<content start="1616" end="1617">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1640" end="1847">
+<paragraph start="1617" end="1895">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="1640" end="1654">
+<content start="1617" end="1696">
 <size>11</size></content>
 
-<content start="1654" end="1658">
-<bold>true</bold><size>11</size></content>
+<content start="1696" end="1700">
+<size>11</size><bold>true</bold></content>
 
-<content start="1658" end="1847">
+<content start="1700" end="1895">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1847" end="1848">
+<paragraph start="1895" end="1896">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="1847" end="1848">
+<content start="1895" end="1896">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1896" end="2060">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1896" end="1932">
+<size>11</size></content>
+
+<content start="1932" end="1937">
+<href>script_focus.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1937" end="2060">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2060" end="2061">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2060" end="2061">
 </content>
 
 </paragraph>
-<paragraph start="1848" end="2100">
+<paragraph start="2061" end="2313">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="1848" end="1907">
-<bold>true</bold><size>11</size></content>
+<content start="2061" end="2120">
+<size>11</size><bold>true</bold></content>
 
-<content start="1907" end="1908">
-<superscript>true</superscript><bold>true</bold><size>11</size></content>
+<content start="2120" end="2121">
+<size>11</size><bold>true</bold><superscript>true</superscript></content>
 
-<content start="1908" end="1957">
-<bold>true</bold><size>11</size></content>
+<content start="2121" end="2170">
+<size>11</size><bold>true</bold></content>
 
-<content start="1957" end="2096">
+<content start="2170" end="2309">
 <size>11</size></content>
 
-<content start="2096" end="2097">
-<superscript>true</superscript><size>11</size></content>
+<content start="2309" end="2310">
+<size>11</size><superscript>true</superscript></content>
 
-<content start="2097" end="2100">
+<content start="2310" end="2313">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2100" end="2101">
+<paragraph start="2313" end="2314">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="2100" end="2101">
+<content start="2313" end="2314">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2101" end="2545">
+<paragraph start="2314" end="2758">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="2101" end="2544">
+<content start="2314" end="2757">
 <size>11</size></content>
 
-<content start="2544" end="2545">
+<content start="2757" end="2758">
 </content>
 
 </paragraph>
-<paragraph start="2545" end="2547">
+<paragraph start="2758" end="2760">
 <LeftIndent>140.0</LeftIndent>
-<content start="2545" end="2546">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="2758" end="2759">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="2546" end="2547">
+<content start="2759" end="2760">
 </content>
 
 </paragraph>
-<paragraph start="2547" end="2548">
+<paragraph start="2760" end="2761">
 <LeftIndent>140.0</LeftIndent>
-<content start="2547" end="2548">
+<content start="2760" end="2761">
 </content>
 
 </paragraph>
-<paragraph start="2548" end="3050">
+<paragraph start="2761" end="3263">
 <LeftIndent>140.0</LeftIndent>
-<content start="2548" end="2584">
+<content start="2761" end="2797">
 <size>11</size></content>
 
-<content start="2584" end="2598">
-<size>11</size><href>pressureprobe.cml</href></content>
+<content start="2797" end="2811">
+<href>pressureprobe.cml</href><size>11</size></content>
 
-<content start="2598" end="3049">
+<content start="2811" end="3262">
 <size>11</size></content>
 
-<content start="3049" end="3050">
+<content start="3262" end="3263">
 </content>
 
 </paragraph>
-<paragraph start="3050" end="3051">
+<paragraph start="3263" end="3264">
 <LeftIndent>140.0</LeftIndent>
-<content start="3050" end="3051">
+<content start="3263" end="3264">
 </content>
 
 </paragraph>
-<paragraph start="3051" end="3055">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="3264" end="3268">
 <Alignment>1</Alignment>
-<content start="3051" end="3053">
+<LeftIndent>140.0</LeftIndent>
+<content start="3264" end="3266">
 </content>
 
-<content start="3053" end="3054">
+<content start="3266" end="3267">
 <icon>steerobs.gif</icon></content>
 
-<content start="3054" end="3055">
+<content start="3267" end="3268">
 </content>
 
 </paragraph>
-<paragraph start="3055" end="3056">
+<paragraph start="3268" end="3269">
 <LeftIndent>140.0</LeftIndent>
-<content start="3055" end="3056">
+<content start="3268" end="3269">
 </content>
 
 </paragraph>
-<paragraph start="3056" end="3226">
+<paragraph start="3269" end="3454">
 <LeftIndent>140.0</LeftIndent>
-<content start="3056" end="3226">
+<content start="3269" end="3454">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3226" end="3227">
+<paragraph start="3454" end="3455">
 <LeftIndent>140.0</LeftIndent>
-<content start="3226" end="3227">
+<content start="3454" end="3455">
 </content>
 
 </paragraph>
-<paragraph start="3227" end="3300">
+<paragraph start="3455" end="3528">
 <LeftIndent>140.0</LeftIndent>
-<content start="3227" end="3233">
+<content start="3455" end="3461">
 <size>10</size></content>
 
-<content start="3233" end="3299">
-<size>10</size><href>../student/molecularcrystal/compress.cml</href></content>
+<content start="3461" end="3527">
+<href>../student/molecularcrystal/compress.cml</href><size>10</size></content>
 
-<content start="3299" end="3300">
+<content start="3527" end="3528">
 </content>
 
 </paragraph>
-<paragraph start="3300" end="3301">
+<paragraph start="3528" end="3529">
 <LeftIndent>140.0</LeftIndent>
-<content start="3300" end="3301">
+<content start="3528" end="3529">
 </content>
 
 </paragraph>
-<paragraph start="3301" end="3329">
-<RightIndent>20.0</RightIndent>
+<paragraph start="3529" end="3557">
 <Alignment>2</Alignment>
-<content start="3301" end="3303">
+<RightIndent>20.0</RightIndent>
+<content start="3529" end="3531">
 <size>11</size></content>
 
-<content start="3303" end="3311">
-<size>11</size><href>SteerParticle.cml</href></content>
+<content start="3531" end="3539">
+<href>SteerParticle.cml</href><size>11</size></content>
 
-<content start="3311" end="3314">
+<content start="3539" end="3542">
 <size>11</size></content>
 
-<content start="3314" end="3319">
-<size>11</size><href>index1.cml</href></content>
+<content start="3542" end="3547">
+<href>index1.cml</href><size>11</size></content>
 
-<content start="3319" end="3328">
+<content start="3547" end="3556">
 <size>11</size></content>
 
 </paragraph>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Snapshot</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Snapshot
+
+&lt; Previous | Index | Next &gt;
+
+The snapshot command can be used to take a snapshot for the connected model.
+
+Syntax:
+
+snapshot
+snapshot nodescription
+
+This command will be invoked in the Event Dispatching Thread, which is out of the script thread. To make sure that the state taken in the snapshot is consistent, it is recommended that a stop immediately command be called to pause the simulation briefly and then call the snapshot command. Depending on your activity design, you may continue the simulation afterwards, or simply let it be. By default, the snapshot window has a text area for the user to input descriptions. If the nodescription argument is present, the window will not have the text area.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="745">
+<paragraph start="0" end="9">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="8">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="38">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="10" end="12">
+<size>11</size></content>
+
+<content start="12" end="20">
+<size>11</size><href>script_message.cml</href></content>
+
+<content start="20" end="23">
+<size>11</size></content>
+
+<content start="23" end="28">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="28" end="31">
+<size>11</size></content>
+
+<content start="31" end="35">
+<size>11</size><href>script_plot.cml</href></content>
+
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<LeftIndent>100.0</LeftIndent>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="116">
+<LeftIndent>140.0</LeftIndent>
+<content start="39" end="43">
+<size>11</size></content>
+
+<content start="43" end="51">
+<family>Courier New</family><size>11</size></content>
+
+<content start="51" end="116">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="116" end="117">
+<LeftIndent>140.0</LeftIndent>
+<content start="116" end="117">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="117" end="125">
+<LeftIndent>140.0</LeftIndent>
+<content start="117" end="125">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="125" end="126">
+<LeftIndent>140.0</LeftIndent>
+<content start="125" end="126">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="126" end="135">
+<LeftIndent>160.0</LeftIndent>
+<content start="126" end="134">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="134" end="135">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="135" end="158">
+<LeftIndent>160.0</LeftIndent>
+<content start="135" end="157">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="157" end="158">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="158" end="159">
+<LeftIndent>160.0</LeftIndent>
+<content start="158" end="159">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="159" end="715">
+<LeftIndent>140.0</LeftIndent>
+<content start="159" end="346">
+<size>11</size></content>
+
+<content start="346" end="362">
+<family>Courier New</family><size>11</size></content>
+
+<content start="362" end="431">
+<size>11</size></content>
+
+<content start="431" end="439">
+<family>Courier New</family><size>11</size></content>
+
+<content start="439" end="633">
+<size>11</size></content>
+
+<content start="633" end="640">
+<size>11</size></content>
+
+<content start="640" end="653">
+<family>Courier New</family><size>11</size></content>
+
+<content start="653" end="715">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="715" end="716">
+<LeftIndent>140.0</LeftIndent>
+<content start="715" end="716">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="716" end="717">
+<LeftIndent>140.0</LeftIndent>
+<content start="716" end="717">
+</content>
+
+</paragraph>
+<paragraph start="717" end="745">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="717" end="719">
+<size>11</size></content>
+
+<content start="719" end="727">
+<size>11</size><href>script_message.cml</href></content>
+
+<content start="727" end="730">
+<size>11</size></content>
+
+<content start="730" end="735">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="735" end="738">
+<size>11</size></content>
+
+<content start="738" end="742">
+<size>11</size><href>script_plot.cml</href></content>
+
+<content start="742" end="744">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

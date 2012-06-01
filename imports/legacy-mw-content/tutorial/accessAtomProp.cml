@@ -10,7 +10,7 @@
 To access an atom&apos;s properties, double-click it when the model container is in the selection mode (i.e. the button &quot; &quot; is selected). You will see the following dialog window:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 Atoms in MW are generic particles, meaning that they do not necessarily represent specific elements. In fact, they can be used to represent a real element by adjusting their parameters to appropriate values. The panel in this dialog window shows a list of properties you can change, as is described in the following.
 
@@ -50,18 +50,17 @@ While an atom forms a covalent bond with two different types of atoms, the bond 
 You can change the two parameters by manipulating the Lennard-Jones graph, which is available when you click the &quot;Change&quot; button in the corresponding row.
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 The changes you can make to the Lennard-Jones parameters are safely limited within the range of the graph. In other words, you cannot give them arbitrary values. Note that you are allowed to set the Espilon parameter to zero:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 A zero value of epsilon means that there will be no interaction between any pair of atoms of the type. Despite of the fact that there is never such a situation in reality, being able to turn off the interactions is pedagogically useful. When the students run a model with interactions deliberately switched off, the simulation will not be very interesting -- the particles will go with the same velocities as they were assigned initially, forever. No collisions, no structure formation, and no phase transition will ever take place. Such a pedagogical design would help reinforce importance of interatomic interactions, which are fundamentally important in chemistry.
 
  
- Affinities
-Molecules organize according to the intermolecular forces among them. A molecule may favor staying with certain types of molecules. For example, water can dissolve sugar and salt but cannot mix with oil. Not all metals can mix with every other kind of metals to form a stable intermetallic compound. We call the properties that determine these preferences affinities. In Molecular Workbench, the affinity between two atoms of distinct types is modeled using a Lennard-Jones potential.
+Affinities Molecules organize according to the intermolecular forces among them. A molecule may favor staying with certain types of molecules. For example, water can dissolve sugar and salt but cannot mix with oil. Not all metals can mix with every other kind of metals to form a stable intermetallic compound. We call the properties that determine these preferences affinities. In Molecular Workbench, the affinity between two atoms of distinct types is modeled using a Lennard-Jones potential.
  
 
 You may also change the interactions between different elements, such that they can be either attractive or repulsive&#10102;. By default, the interaction between two atoms of different types is given by a Lennard-Jones potential with sigma and epsilon parameters equal to the means of those of the two involved elements, respectively, according to the Lorentz-Berthelot mixing rule. A repulsive interaction can be used to keep the two elements to stay away from each other. It can be changed in the same way in which a Lennard-Jones force is changed.
@@ -69,7 +68,7 @@ You may also change the interactions between different elements, such that they 
 If you know more about molecular dynamics simulation, you may want to change the cutoff distance and the neighbor list distance for the Lennard-Jones potential. Clicking the &quot;Cutoff&quot; button on the graph window will bring up the following window:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 With the above dialog window, you can adjust the cutoff distance and Verlet neighbor list radii for calculating the Lennard-Jones forces, and choose a cut-off method. When you use a cut-off distance that is shorter than the collision diameter, the attractive part of the Lennard-Jones potential is effectively turned off, and the particles will behave almost like hard-sphere objects.
 
@@ -101,7 +100,7 @@ Script support: The position of an atom can be changed by using the following sc
 Note on the Coordinate System: The origin of the coordinate system for locating particles is at the upper-left corner of the simulator&apos;s window when the default boundary conditions are used, or at the upper-left corner of the central cell otherwise.
 
  
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
  
 
 Changing the velocity
@@ -120,12 +119,12 @@ Script support: The plot command can be used to show the history of a variable i
 &#10102; In reality a cross-element interaction may never be purely repulsive. We introduce purely repulsive interactions to model the cases in which atoms like to be with their akin species more than with a different kind. Using purely repulsive force model somehow accelerates molecular dynamics simulations of phase separation of such systems. 
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="10905">
+<section start="0" end="10904">
 <paragraph start="0" end="31">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="30">
-<italic>true</italic><size>16</size><bold>true</bold></content>
+<size>16</size><bold>true</bold><italic>true</italic></content>
 
 <content start="30" end="31">
 </content>
@@ -221,7 +220,7 @@ Script support: The plot command can be used to show the history of a variable i
 <paragraph start="265" end="582">
 <LeftIndent>140.0</LeftIndent>
 <content start="265" end="298">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="298" end="582">
 <size>11</size></content>
@@ -236,7 +235,7 @@ Script support: The plot command can be used to show the history of a variable i
 <paragraph start="583" end="610">
 <LeftIndent>140.0</LeftIndent>
 <content start="583" end="609">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="609" end="610">
 <size>11</size></content>
@@ -275,7 +274,7 @@ Script support: The plot command can be used to show the history of a variable i
 <paragraph start="1258" end="1426">
 <LeftIndent>160.0</LeftIndent>
 <content start="1258" end="1272">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="1272" end="1282">
 <size>11</size></content>
@@ -305,7 +304,7 @@ Script support: The plot command can be used to show the history of a variable i
 <paragraph start="1427" end="1454">
 <LeftIndent>140.0</LeftIndent>
 <content start="1427" end="1453">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="1453" end="1454">
 <size>11</size></content>
@@ -332,7 +331,7 @@ Script support: The plot command can be used to show the history of a variable i
 <paragraph start="1517" end="1685">
 <LeftIndent>160.0</LeftIndent>
 <content start="1517" end="1531">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="1531" end="1541">
 <size>11</size></content>
@@ -362,7 +361,7 @@ Script support: The plot command can be used to show the history of a variable i
 <paragraph start="1686" end="1704">
 <LeftIndent>140.0</LeftIndent>
 <content start="1686" end="1703">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="1703" end="1704">
 <size>11</size></content>
@@ -395,7 +394,7 @@ Script support: The plot command can be used to show the history of a variable i
 <paragraph start="2102" end="2290">
 <LeftIndent>160.0</LeftIndent>
 <content start="2102" end="2116">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="2116" end="2186">
 <size>11</size></content>
@@ -431,7 +430,7 @@ Script support: The plot command can be used to show the history of a variable i
 <paragraph start="2291" end="2329">
 <LeftIndent>140.0</LeftIndent>
 <content start="2291" end="2328">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="2328" end="2329">
 <size>11</size></content>
@@ -452,7 +451,7 @@ Script support: The plot command can be used to show the history of a variable i
 <icon>apiIcon.gif</icon><size>11</size></content>
 
 <content start="2418" end="2437">
-<link_width>400</link_width><target>_blank</target><href>glossary/DissociationEnergy.cml</href><link_height>400</link_height><link_left>50</link_left><link_menubar>false</link_menubar><link_top>50</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+<href>glossary/DissociationEnergy.cml</href><link_width>400</link_width><link_height>400</link_height><size>11</size><link_left>50</link_left><link_menubar>false</link_menubar><target>_blank</target><link_top>50</link_top><link_toolbar>false</link_toolbar><link_resizable>false</link_resizable></content>
 
 <content start="2437" end="2480">
 <size>11</size></content>
@@ -461,7 +460,7 @@ Script support: The plot command can be used to show the history of a variable i
 <icon>apiIcon.gif</icon><size>11</size></content>
 
 <content start="2481" end="2494">
-<link_width>500</link_width><target>_blank</target><href>glossary/LennardJones.cml</href><link_height>400</link_height><link_left>50</link_left><link_menubar>false</link_menubar><link_top>50</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+<href>glossary/LennardJones.cml</href><link_width>500</link_width><link_height>400</link_height><size>11</size><link_left>50</link_left><link_menubar>false</link_menubar><target>_blank</target><link_top>50</link_top><link_toolbar>false</link_toolbar><link_resizable>false</link_resizable></content>
 
 <content start="2494" end="2515">
 <size>11</size></content>
@@ -489,7 +488,7 @@ Script support: The plot command can be used to show the history of a variable i
 <paragraph start="2519" end="2521">
 <LeftIndent>140.0</LeftIndent>
 <content start="2519" end="2520">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="2520" end="2521">
 <size>11</size></content>
@@ -499,7 +498,7 @@ Script support: The plot command can be used to show the history of a variable i
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
 <content start="2521" end="2549">
-<bold>true</bold><size>11</size><italic>true</italic></content>
+<size>11</size><italic>true</italic><bold>true</bold></content>
 
 <content start="2549" end="2550">
 <size>11</size></content>
@@ -519,7 +518,7 @@ Script support: The plot command can be used to show the history of a variable i
 <size>11</size></content>
 
 <content start="3081" end="3131">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="3131" end="3291">
 <size>11</size></content>
@@ -542,7 +541,7 @@ Script support: The plot command can be used to show the history of a variable i
 <paragraph start="3675" end="3677">
 <LeftIndent>140.0</LeftIndent>
 <content start="3675" end="3676">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="3676" end="3677">
 <size>11</size></content>
@@ -631,7 +630,7 @@ Script support: The plot command can be used to show the history of a variable i
 
 </paragraph>
 <paragraph start="4116" end="4117">
-<LeftIndent>100.0</LeftIndent>
+<LeftIndent>140.0</LeftIndent>
 <content start="4116" end="4117">
 <size>11</size></content>
 
@@ -651,780 +650,772 @@ Script support: The plot command can be used to show the history of a variable i
 <paragraph start="4786" end="4788">
 <LeftIndent>140.0</LeftIndent>
 <content start="4786" end="4787">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="4787" end="4788">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4788" end="4800">
+<paragraph start="4788" end="5284">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="4788" end="4789">
-<icon>tip.gif</icon><size>11</size></content>
+<content start="4788" end="4798">
+<size>11</size><italic>true</italic><bold>true</bold></content>
 
-<content start="4789" end="4799">
-<size>11</size><italic>true</italic></content>
-
-<content start="4799" end="4800">
+<content start="4798" end="5284">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4800" end="5285">
-<RightIndent>100.0</RightIndent>
-<LeftIndent>200.0</LeftIndent>
-<content start="4800" end="5285">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="5285" end="5287">
+<paragraph start="5284" end="5286">
 <LeftIndent>140.0</LeftIndent>
-<content start="5285" end="5286">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="5284" end="5285">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
+<content start="5285" end="5286">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5286" end="5287">
+<LeftIndent>140.0</LeftIndent>
 <content start="5286" end="5287">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="5287" end="5288">
+<paragraph start="5287" end="5832">
 <LeftIndent>140.0</LeftIndent>
-<content start="5287" end="5288">
+<content start="5287" end="5404">
 <size>11</size></content>
 
-</paragraph>
-<paragraph start="5288" end="5833">
-<LeftIndent>140.0</LeftIndent>
-<content start="5288" end="5405">
+<content start="5404" end="5405">
+<size>13</size></content>
+
+<content start="5405" end="5629">
 <size>11</size></content>
 
-<content start="5405" end="5406">
-</content>
-
-<content start="5406" end="5630">
-<size>11</size></content>
-
-<content start="5630" end="5663">
+<content start="5629" end="5662">
 <size>11</size><href>glossary/LorentzBerthelot.cml</href></content>
 
-<content start="5663" end="5833">
+<content start="5662" end="5832">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="5833" end="5834">
+<paragraph start="5832" end="5833">
 <LeftIndent>140.0</LeftIndent>
-<content start="5833" end="5834">
+<content start="5832" end="5833">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="5834" end="6080">
+<paragraph start="5833" end="6079">
 <LeftIndent>140.0</LeftIndent>
-<content start="5834" end="5857">
+<content start="5833" end="5856">
 <size>11</size></content>
 
-<content start="5857" end="5886">
+<content start="5856" end="5885">
 <size>11</size><href>glossary/MolecularDynamics.cml</href></content>
 
-<content start="5886" end="5915">
+<content start="5885" end="5914">
 <size>11</size></content>
 
-<content start="5915" end="5930">
+<content start="5914" end="5929">
 <size>11</size><href>glossary/Cutoff.cml</href></content>
 
-<content start="5930" end="5939">
+<content start="5929" end="5938">
 <size>11</size></content>
 
-<content start="5939" end="5952">
+<content start="5938" end="5951">
 <size>11</size><href>glossary/NeighborList.cml</href></content>
 
-<content start="5952" end="6080">
+<content start="5951" end="6079">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="6080" end="6081">
+<paragraph start="6079" end="6080">
 <LeftIndent>140.0</LeftIndent>
+<content start="6079" end="6080">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6080" end="6083">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="6080" end="6081">
 <size>11</size></content>
 
-</paragraph>
-<paragraph start="6081" end="6084">
-<LeftIndent>140.0</LeftIndent>
-<Alignment>1</Alignment>
 <content start="6081" end="6082">
-<size>11</size></content>
-
-<content start="6082" end="6083">
 <icon>EngineSetttings.gif</icon><size>11</size></content>
 
-<content start="6083" end="6084">
+<content start="6082" end="6083">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="6084" end="6108">
+<paragraph start="6083" end="6107">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="6084" end="6107">
+<content start="6083" end="6106">
 <size>10</size></content>
 
+<content start="6106" end="6107">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6107" end="6108">
+<LeftIndent>140.0</LeftIndent>
 <content start="6107" end="6108">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="6108" end="6109">
+<paragraph start="6108" end="6493">
 <LeftIndent>140.0</LeftIndent>
-<content start="6108" end="6109">
+<content start="6108" end="6157">
 <size>11</size></content>
+
+<content start="6157" end="6172">
+<link_width>400</link_width><link_left>50</link_left><link_resizable>false</link_resizable><link_toolbar>false</link_toolbar><size>11</size><link_menubar>false</link_menubar><target>_blank</target><link_height>400</link_height><link_top>50</link_top></content>
+
+<content start="6172" end="6177">
+<size>11</size></content>
+
+<content start="6177" end="6197">
+<link_width>400</link_width><link_left>50</link_left><link_resizable>false</link_resizable><link_toolbar>false</link_toolbar><size>11</size><link_menubar>false</link_menubar><target>_blank</target><link_height>400</link_height><link_top>50</link_top></content>
+
+<content start="6197" end="6492">
+<size>11</size></content>
+
+<content start="6492" end="6493">
+<size>11</size><bold>true</bold></content>
 
 </paragraph>
-<paragraph start="6109" end="6494">
+<paragraph start="6493" end="6494">
 <LeftIndent>140.0</LeftIndent>
-<content start="6109" end="6158">
-<size>11</size></content>
-
-<content start="6158" end="6173">
-<link_width>400</link_width><target>_blank</target><link_left>50</link_left><link_resizable>false</link_resizable><link_menubar>false</link_menubar><link_toolbar>false</link_toolbar><link_height>400</link_height><size>11</size><link_top>50</link_top></content>
-
-<content start="6173" end="6178">
-<size>11</size></content>
-
-<content start="6178" end="6198">
-<link_width>400</link_width><target>_blank</target><link_left>50</link_left><link_resizable>false</link_resizable><link_menubar>false</link_menubar><link_toolbar>false</link_toolbar><link_height>400</link_height><size>11</size><link_top>50</link_top></content>
-
-<content start="6198" end="6493">
-<size>11</size></content>
-
 <content start="6493" end="6494">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 </paragraph>
-<paragraph start="6494" end="6495">
-<LeftIndent>140.0</LeftIndent>
-<content start="6494" end="6495">
-<bold>true</bold><size>11</size></content>
-
-</paragraph>
-<paragraph start="6495" end="6969">
+<paragraph start="6494" end="6968">
 <LeftIndent>160.0</LeftIndent>
-<content start="6495" end="6509">
-<bold>true</bold><size>11</size></content>
+<content start="6494" end="6508">
+<size>11</size><bold>true</bold></content>
 
-<content start="6509" end="6603">
+<content start="6508" end="6602">
 <size>11</size></content>
 
-<content start="6603" end="6631">
+<content start="6602" end="6630">
 <family>Courier New</family><size>11</size></content>
 
-<content start="6631" end="6636">
+<content start="6630" end="6635">
 <size>11</size></content>
 
-<content start="6636" end="6666">
+<content start="6635" end="6665">
 <family>Courier New</family><size>11</size></content>
 
-<content start="6666" end="6674">
+<content start="6665" end="6673">
 <size>11</size></content>
 
-<content start="6674" end="6675">
+<content start="6673" end="6674">
 <size>11</size><italic>true</italic></content>
 
-<content start="6675" end="6705">
+<content start="6674" end="6704">
 <size>11</size></content>
 
-<content start="6705" end="6712">
+<content start="6704" end="6711">
 <family>Courier New</family><size>11</size></content>
 
-<content start="6712" end="6816">
+<content start="6711" end="6815">
 <size>11</size></content>
 
-<content start="6816" end="6859">
+<content start="6815" end="6858">
 <family>Courier New</family><size>11</size></content>
 
-<content start="6859" end="6867">
+<content start="6858" end="6866">
 <size>11</size></content>
 
-<content start="6867" end="6878">
+<content start="6866" end="6877">
 <family>Courier New</family><size>11</size></content>
 
-<content start="6878" end="6883">
+<content start="6877" end="6882">
 <size>11</size></content>
 
-<content start="6883" end="6894">
+<content start="6882" end="6893">
 <family>Courier New</family><size>11</size></content>
 
-<content start="6894" end="6926">
+<content start="6893" end="6925">
 <size>11</size></content>
 
-<content start="6926" end="6933">
+<content start="6925" end="6932">
 <family>Courier New</family><size>11</size></content>
 
-<content start="6933" end="6968">
+<content start="6932" end="6967">
 <size>11</size></content>
 
+<content start="6967" end="6968">
+<size>11</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="6968" end="6969">
+<LeftIndent>140.0</LeftIndent>
 <content start="6968" end="6969">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 </paragraph>
-<paragraph start="6969" end="6970">
+<paragraph start="6969" end="6989">
 <LeftIndent>140.0</LeftIndent>
-<content start="6969" end="6970">
-<bold>true</bold><size>11</size></content>
+<content start="6969" end="6988">
+<size>11</size><bold>true</bold></content>
+
+<content start="6988" end="6989">
+<size>11</size></content>
 
 </paragraph>
-<paragraph start="6970" end="6990">
+<paragraph start="6989" end="6990">
 <LeftIndent>140.0</LeftIndent>
-<content start="6970" end="6989">
-<bold>true</bold><size>11</size></content>
-
 <content start="6989" end="6990">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="6990" end="6991">
+<paragraph start="6990" end="7364">
 <LeftIndent>140.0</LeftIndent>
-<content start="6990" end="6991">
+<content start="6990" end="7364">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="6991" end="7365">
+<paragraph start="7364" end="7365">
 <LeftIndent>140.0</LeftIndent>
-<content start="6991" end="7365">
+<content start="7364" end="7365">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="7365" end="7366">
-<LeftIndent>140.0</LeftIndent>
-<content start="7365" end="7366">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="7366" end="7554">
+<paragraph start="7365" end="7553">
 <LeftIndent>160.0</LeftIndent>
-<content start="7366" end="7380">
-<bold>true</bold><size>11</size></content>
+<content start="7365" end="7379">
+<size>11</size><bold>true</bold></content>
 
-<content start="7380" end="7449">
+<content start="7379" end="7448">
 <size>11</size></content>
 
-<content start="7449" end="7452">
+<content start="7448" end="7451">
 <family>Courier New</family><size>11</size><href>script_set.cml</href></content>
 
-<content start="7452" end="7475">
+<content start="7451" end="7474">
 <family>Courier New</family><size>11</size></content>
 
-<content start="7475" end="7483">
+<content start="7474" end="7482">
 <size>11</size></content>
 
-<content start="7483" end="7484">
+<content start="7482" end="7483">
 <size>11</size><italic>true</italic></content>
 
-<content start="7484" end="7514">
+<content start="7483" end="7513">
 <size>11</size></content>
 
-<content start="7514" end="7521">
+<content start="7513" end="7520">
 <family>Courier New</family><size>11</size></content>
 
-<content start="7521" end="7554">
+<content start="7520" end="7553">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="7554" end="7555">
+<paragraph start="7553" end="7554">
 <LeftIndent>140.0</LeftIndent>
-<content start="7554" end="7555">
+<content start="7553" end="7554">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="7555" end="7578">
+<paragraph start="7554" end="7577">
 <LeftIndent>140.0</LeftIndent>
-<content start="7555" end="7577">
-<bold>true</bold><size>11</size></content>
+<content start="7554" end="7576">
+<size>11</size><bold>true</bold></content>
 
+<content start="7576" end="7577">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7577" end="7578">
+<LeftIndent>140.0</LeftIndent>
 <content start="7577" end="7578">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="7578" end="7579">
+<paragraph start="7578" end="7751">
 <LeftIndent>140.0</LeftIndent>
-<content start="7578" end="7579">
+<content start="7578" end="7651">
 <size>11</size></content>
 
-</paragraph>
-<paragraph start="7579" end="7752">
-<LeftIndent>140.0</LeftIndent>
-<content start="7579" end="7652">
-<size>11</size></content>
+<content start="7651" end="7652">
+<size>11</size><italic>true</italic></content>
 
 <content start="7652" end="7653">
-<size>11</size><italic>true</italic></content>
+<size>11</size></content>
 
 <content start="7653" end="7654">
-<size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="7654" end="7655">
-<bold>true</bold><size>11</size></content>
+<size>11</size></content>
 
 <content start="7655" end="7656">
-<size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="7656" end="7657">
-<bold>true</bold><size>11</size></content>
-
-<content start="7657" end="7658">
 <subscript>true</subscript><size>11</size></content>
 
+<content start="7657" end="7658">
+<size>11</size></content>
+
 <content start="7658" end="7659">
-<size>11</size></content>
+<size>11</size><superscript>true</superscript></content>
 
-<content start="7659" end="7660">
-<superscript>true</superscript><size>11</size></content>
-
-<content start="7660" end="7752">
+<content start="7659" end="7751">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="7752" end="7753">
+<paragraph start="7751" end="7752">
 <LeftIndent>140.0</LeftIndent>
-<content start="7752" end="7753">
+<content start="7751" end="7752">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="7753" end="8190">
+<paragraph start="7752" end="8189">
 <LeftIndent>160.0</LeftIndent>
-<content start="7753" end="7767">
-<bold>true</bold><size>11</size></content>
+<content start="7752" end="7766">
+<size>11</size><bold>true</bold></content>
 
-<content start="7767" end="7863">
+<content start="7766" end="7862">
 <size>11</size></content>
 
-<content start="7863" end="7866">
+<content start="7862" end="7865">
 <family>Courier New</family><size>11</size><href>script_set.cml</href></content>
 
-<content start="7866" end="7895">
+<content start="7865" end="7894">
 <family>Courier New</family><size>11</size></content>
 
-<content start="7895" end="7897">
+<content start="7894" end="7896">
 <size>11</size></content>
 
-<content start="7897" end="7935">
+<content start="7896" end="7934">
 <family>Courier New</family><size>11</size></content>
 
-<content start="7935" end="7940">
+<content start="7934" end="7939">
 <size>11</size></content>
 
-<content start="7940" end="7978">
+<content start="7939" end="7977">
 <family>Courier New</family><size>11</size></content>
 
-<content start="7978" end="8000">
+<content start="7977" end="7999">
 <size>11</size></content>
 
-<content start="8000" end="8001">
+<content start="7999" end="8000">
 <size>11</size><italic>true</italic></content>
 
-<content start="8001" end="8028">
+<content start="8000" end="8027">
 <size>11</size></content>
 
-<content start="8028" end="8038">
+<content start="8027" end="8037">
 <family>Courier New</family><size>11</size></content>
 
-<content start="8038" end="8069">
+<content start="8037" end="8068">
 <size>11</size></content>
 
-<content start="8069" end="8083">
+<content start="8068" end="8082">
 <family>Courier New</family><size>11</size></content>
 
-<content start="8083" end="8131">
+<content start="8082" end="8130">
 <size>11</size></content>
 
-<content start="8131" end="8145">
+<content start="8130" end="8144">
 <family>Courier New</family><size>11</size></content>
 
-<content start="8145" end="8190">
+<content start="8144" end="8189">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="8190" end="8191">
+<paragraph start="8189" end="8190">
 <LeftIndent>140.0</LeftIndent>
-<content start="8190" end="8191">
+<content start="8189" end="8190">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="8191" end="8210">
+<paragraph start="8190" end="8209">
 <LeftIndent>140.0</LeftIndent>
-<content start="8191" end="8209">
-<bold>true</bold><size>11</size></content>
+<content start="8190" end="8208">
+<size>11</size><bold>true</bold></content>
 
+<content start="8208" end="8209">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8209" end="8210">
+<LeftIndent>140.0</LeftIndent>
 <content start="8209" end="8210">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="8210" end="8211">
+<paragraph start="8210" end="8614">
 <LeftIndent>140.0</LeftIndent>
-<content start="8210" end="8211">
+<content start="8210" end="8590">
 <size>11</size></content>
 
-</paragraph>
-<paragraph start="8211" end="8615">
-<LeftIndent>140.0</LeftIndent>
-<content start="8211" end="8591">
-<size>11</size></content>
-
-<content start="8591" end="8611">
+<content start="8590" end="8610">
 <size>11</size><href>ViewSettings.cml</href></content>
 
-<content start="8611" end="8615">
+<content start="8610" end="8614">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="8615" end="8616">
+<paragraph start="8614" end="8615">
 <LeftIndent>140.0</LeftIndent>
-<content start="8615" end="8616">
+<content start="8614" end="8615">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="8616" end="8638">
+<paragraph start="8615" end="8637">
 <LeftIndent>140.0</LeftIndent>
-<content start="8616" end="8637">
-<bold>true</bold><size>11</size></content>
+<content start="8615" end="8636">
+<size>11</size><bold>true</bold></content>
 
+<content start="8636" end="8637">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8637" end="8638">
+<LeftIndent>140.0</LeftIndent>
 <content start="8637" end="8638">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="8638" end="8639">
+<paragraph start="8638" end="8824">
 <LeftIndent>140.0</LeftIndent>
-<content start="8638" end="8639">
+<content start="8638" end="8751">
 <size>11</size></content>
 
-</paragraph>
-<paragraph start="8639" end="8825">
-<LeftIndent>140.0</LeftIndent>
-<content start="8639" end="8752">
-<size>11</size></content>
-
-<content start="8752" end="8753">
+<content start="8751" end="8752">
 <size>11</size><italic>true</italic></content>
 
-<content start="8753" end="8758">
+<content start="8752" end="8757">
 <size>11</size></content>
 
-<content start="8758" end="8759">
+<content start="8757" end="8758">
 <size>11</size><italic>true</italic></content>
 
-<content start="8759" end="8825">
+<content start="8758" end="8824">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="8825" end="8826">
+<paragraph start="8824" end="8825">
 <LeftIndent>140.0</LeftIndent>
-<content start="8825" end="8826">
+<content start="8824" end="8825">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="8826" end="9103">
+<paragraph start="8825" end="9102">
 <LeftIndent>160.0</LeftIndent>
-<content start="8826" end="8840">
-<bold>true</bold><size>11</size></content>
+<content start="8825" end="8839">
+<size>11</size><bold>true</bold></content>
 
-<content start="8840" end="8913">
+<content start="8839" end="8912">
 <size>11</size></content>
 
-<content start="8913" end="8916">
+<content start="8912" end="8915">
 <family>Courier New</family><size>11</size><href>script_set.cml</href></content>
 
-<content start="8916" end="8937">
+<content start="8915" end="8936">
 <family>Courier New</family><size>11</size></content>
 
-<content start="8937" end="8942">
+<content start="8936" end="8941">
 <size>11</size></content>
 
-<content start="8942" end="8966">
+<content start="8941" end="8965">
 <family>Courier New</family><size>11</size></content>
 
-<content start="8966" end="8974">
+<content start="8965" end="8973">
 <size>11</size></content>
 
-<content start="8974" end="8975">
+<content start="8973" end="8974">
 <size>11</size><italic>true</italic></content>
 
-<content start="8975" end="9002">
+<content start="8974" end="9001">
 <size>11</size></content>
 
-<content start="9002" end="9011">
+<content start="9001" end="9010">
 <family>Courier New</family><size>11</size></content>
 
-<content start="9011" end="9054">
+<content start="9010" end="9053">
 <size>11</size></content>
 
-<content start="9054" end="9063">
+<content start="9053" end="9062">
 <family>Courier New</family><size>11</size></content>
 
-<content start="9063" end="9103">
+<content start="9062" end="9102">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="9103" end="9104">
+<paragraph start="9102" end="9103">
+<LeftIndent>140.0</LeftIndent>
+<content start="9102" end="9103">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9103" end="9105">
 <LeftIndent>140.0</LeftIndent>
 <content start="9103" end="9104">
-<size>11</size></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-</paragraph>
-<paragraph start="9104" end="9106">
-<LeftIndent>140.0</LeftIndent>
 <content start="9104" end="9105">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
-<content start="9105" end="9106">
 </content>
 
 </paragraph>
-<paragraph start="9106" end="9356">
+<paragraph start="9105" end="9355">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="9106" end="9135">
-<bold>true</bold><size>11</size></content>
+<content start="9105" end="9134">
+<size>11</size><bold>true</bold></content>
 
-<content start="9135" end="9259">
+<content start="9134" end="9258">
 <size>11</size></content>
 
-<content start="9259" end="9286">
+<content start="9258" end="9285">
 <size>11</size><href>boundary.cml</href></content>
 
-<content start="9286" end="9356">
+<content start="9285" end="9355">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="9356" end="9357">
+<paragraph start="9355" end="9356">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="9356" end="9357">
+<content start="9355" end="9356">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="9357" end="9359">
+<paragraph start="9356" end="9358">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="9357" end="9358">
+<content start="9356" end="9357">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>accessAtomProp$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder></component></content>
+<resource>accessAtomProp$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+</component></content>
 
-<content start="9358" end="9359">
+<content start="9357" end="9358">
 </content>
 
 </paragraph>
-<paragraph start="9359" end="9383">
+<paragraph start="9358" end="9382">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="9359" end="9382">
+<content start="9358" end="9381">
 <size>10</size></content>
 
-<content start="9382" end="9383">
+<content start="9381" end="9382">
 </content>
 
 </paragraph>
-<paragraph start="9383" end="9385">
+<paragraph start="9382" end="9384">
 <LeftIndent>140.0</LeftIndent>
-<content start="9383" end="9384">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="9382" end="9383">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
+<content start="9383" end="9384">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9384" end="9385">
+<LeftIndent>140.0</LeftIndent>
 <content start="9384" end="9385">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="9385" end="9386">
+<paragraph start="9385" end="9407">
 <LeftIndent>140.0</LeftIndent>
-<content start="9385" end="9386">
+<content start="9385" end="9406">
+<size>11</size><bold>true</bold></content>
+
+<content start="9406" end="9407">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="9386" end="9408">
+<paragraph start="9407" end="9408">
 <LeftIndent>140.0</LeftIndent>
-<content start="9386" end="9407">
-<bold>true</bold><size>11</size></content>
-
 <content start="9407" end="9408">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="9408" end="9409">
+<paragraph start="9408" end="9777">
 <LeftIndent>140.0</LeftIndent>
-<content start="9408" end="9409">
+<content start="9408" end="9423">
 <size>11</size></content>
 
-</paragraph>
-<paragraph start="9409" end="9778">
-<LeftIndent>140.0</LeftIndent>
-<content start="9409" end="9424">
-<size>11</size></content>
-
-<content start="9424" end="9461">
+<content start="9423" end="9460">
 <size>11</size><href>changeVelocityAction.cml</href></content>
 
-<content start="9461" end="9778">
+<content start="9460" end="9777">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="9778" end="9779">
+<paragraph start="9777" end="9778">
 <LeftIndent>140.0</LeftIndent>
-<content start="9778" end="9779">
+<content start="9777" end="9778">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="9779" end="10086">
+<paragraph start="9778" end="10085">
 <LeftIndent>160.0</LeftIndent>
-<content start="9779" end="9793">
-<bold>true</bold><size>11</size></content>
+<content start="9778" end="9792">
+<size>11</size><bold>true</bold></content>
 
-<content start="9793" end="9866">
+<content start="9792" end="9865">
 <size>11</size></content>
 
-<content start="9866" end="9869">
+<content start="9865" end="9868">
 <family>Courier New</family><size>11</size><href>script_set.cml</href></content>
 
-<content start="9869" end="9890">
+<content start="9868" end="9889">
 <family>Courier New</family><size>11</size></content>
 
-<content start="9890" end="9895">
+<content start="9889" end="9894">
 <size>11</size></content>
 
-<content start="9895" end="9919">
+<content start="9894" end="9918">
 <family>Courier New</family><size>11</size></content>
 
-<content start="9919" end="9927">
+<content start="9918" end="9926">
 <size>11</size></content>
 
-<content start="9927" end="9928">
+<content start="9926" end="9927">
 <size>11</size><italic>true</italic></content>
 
-<content start="9928" end="9955">
+<content start="9927" end="9954">
 <size>11</size></content>
 
-<content start="9955" end="9964">
+<content start="9954" end="9963">
 <family>Courier New</family><size>11</size></content>
 
-<content start="9964" end="10022">
+<content start="9963" end="10021">
 <size>11</size></content>
 
-<content start="10022" end="10031">
+<content start="10021" end="10030">
 <family>Courier New</family><size>11</size></content>
 
-<content start="10031" end="10086">
+<content start="10030" end="10085">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="10086" end="10087">
+<paragraph start="10085" end="10086">
 <LeftIndent>140.0</LeftIndent>
-<content start="10086" end="10087">
+<content start="10085" end="10086">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="10087" end="10121">
+<paragraph start="10086" end="10120">
 <LeftIndent>140.0</LeftIndent>
-<content start="10087" end="10120">
-<bold>true</bold><size>11</size></content>
+<content start="10086" end="10119">
+<size>11</size><bold>true</bold></content>
 
+<content start="10119" end="10120">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="10120" end="10121">
+<LeftIndent>140.0</LeftIndent>
 <content start="10120" end="10121">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="10121" end="10122">
+<paragraph start="10121" end="10376">
 <LeftIndent>140.0</LeftIndent>
-<content start="10121" end="10122">
+<content start="10121" end="10376">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="10122" end="10377">
+<paragraph start="10376" end="10377">
 <LeftIndent>140.0</LeftIndent>
-<content start="10122" end="10377">
+<content start="10376" end="10377">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="10377" end="10378">
-<LeftIndent>140.0</LeftIndent>
-<content start="10377" end="10378">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="10378" end="10532">
+<paragraph start="10377" end="10531">
 <LeftIndent>160.0</LeftIndent>
-<content start="10378" end="10392">
-<bold>true</bold><size>11</size></content>
+<content start="10377" end="10391">
+<size>11</size><bold>true</bold></content>
 
-<content start="10392" end="10398">
+<content start="10391" end="10397">
 <size>11</size></content>
 
-<content start="10398" end="10402">
+<content start="10397" end="10401">
 <family>Courier New</family><size>11</size><href>script_plot.cml</href></content>
 
-<content start="10402" end="10495">
+<content start="10401" end="10494">
 <size>11</size></content>
 
-<content start="10495" end="10496">
+<content start="10494" end="10495">
 <subscript>true</subscript><size>11</size></content>
 
-<content start="10496" end="10512">
+<content start="10495" end="10511">
 <size>11</size></content>
 
-<content start="10512" end="10530">
+<content start="10511" end="10529">
 <family>Courier New</family><size>11</size></content>
 
-<content start="10530" end="10532">
+<content start="10529" end="10531">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="10532" end="10533">
+<paragraph start="10531" end="10532">
 <LeftIndent>60.0</LeftIndent>
+<content start="10531" end="10532">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="10532" end="10534">
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>1.0</SpaceAbove>
 <content start="10532" end="10533">
-<size>11</size></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
 
-</paragraph>
-<paragraph start="10533" end="10535">
-<LeftIndent>140.0</LeftIndent>
 <content start="10533" end="10534">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><SpaceAbove>1</SpaceAbove><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
-<content start="10534" end="10535">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="10535" end="10876">
+<paragraph start="10534" end="10875">
 <LeftIndent>140.0</LeftIndent>
-<content start="10535" end="10536">
-</content>
+<content start="10534" end="10535">
+<size>13</size></content>
 
-<content start="10536" end="10875">
+<content start="10535" end="10874">
 <size>10</size></content>
 
-<content start="10875" end="10876">
+<content start="10874" end="10875">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="10876" end="10877">
+<paragraph start="10875" end="10876">
 <LeftIndent>100.0</LeftIndent>
-<content start="10876" end="10877">
+<content start="10875" end="10876">
 </content>
 
 </paragraph>
-<paragraph start="10877" end="10905">
+<paragraph start="10876" end="10904">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="10877" end="10879">
+<content start="10876" end="10878">
 <size>11</size></content>
 
-<content start="10879" end="10887">
+<content start="10878" end="10886">
 <size>11</size><href>ActionNotes.cml</href></content>
 
-<content start="10887" end="10890">
+<content start="10886" end="10889">
 <size>11</size></content>
 
-<content start="10890" end="10895">
+<content start="10889" end="10894">
 <size>11</size><href>index1.cml</href></content>
 
-<content start="10895" end="10898">
+<content start="10894" end="10897">
 <size>11</size></content>
 
-<content start="10898" end="10902">
+<content start="10897" end="10901">
 <size>11</size><href>accessBondProp.cml</href></content>
 
-<content start="10902" end="10904">
+<content start="10901" end="10903">
 <size>11</size></content>
 
 </paragraph>

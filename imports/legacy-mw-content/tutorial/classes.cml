@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Students, teachers and classes</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Students, teachers and classes
+
+&lt; Previous | Index | Next &gt;
+
+A fundamental feature of the MW Space is that it supports typical class structures. There are currently three types of user accounts: student, teacher, and other. If you register as a teacher, you can create classes and select activities that you would like to use in each class. When the students register, they can select you as the teacher and the classes they enroll with. The activities you have selected for them will appear in every student&apos;s MW account, in the way you set up for them.
+
+When the students complete an activity and submit their reports, the reports will go to their own accounts and you will be copied. You will be able to access them in your own MW account to track down your students&apos; work.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="806">
+<paragraph start="0" end="31">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="30">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="60">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="42">
+<size>11</size><href>intro_mwspace.cml</href></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="50">
+<size>11</size><href>index3.cml</href></content>
+
+<content start="50" end="53">
+<size>11</size></content>
+
+<content start="53" end="57">
+<size>11</size><href>upload.cml</href></content>
+
+<content start="57" end="59">
+<size>11</size></content>
+
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="555">
+<LeftIndent>140.0</LeftIndent>
+<content start="61" end="555">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="555" end="556">
+<LeftIndent>140.0</LeftIndent>
+<content start="555" end="556">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="556" end="777">
+<LeftIndent>140.0</LeftIndent>
+<content start="556" end="776">
+<size>11</size></content>
+
+<content start="776" end="777">
+</content>
+
+</paragraph>
+<paragraph start="777" end="778">
+<LeftIndent>140.0</LeftIndent>
+<content start="777" end="778">
+</content>
+
+</paragraph>
+<paragraph start="778" end="806">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="778" end="780">
+<size>11</size></content>
+
+<content start="780" end="788">
+<size>11</size><href>intro_mwspace.cml</href></content>
+
+<content start="788" end="791">
+<size>11</size></content>
+
+<content start="791" end="796">
+<size>11</size><href>index3.cml</href></content>
+
+<content start="796" end="799">
+<size>11</size></content>
+
+<content start="799" end="804">
+<size>11</size><href>upload.cml</href></content>
+
+<content start="804" end="805">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

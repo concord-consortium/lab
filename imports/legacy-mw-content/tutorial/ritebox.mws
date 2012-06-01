@@ -1,0 +1,3 @@
+script:mw2d:1:add atom 0 (%element[0].sigma, %height/2);set %atom[0].vx 2000;run;
+script:textbox:1:load leftbox.html;
+script:textbox:2:load emptybox.html;

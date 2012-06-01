@@ -1,31 +1,31 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Inserting text</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Inserting text
 
 &lt; Previous | Index | Next &gt;
 
-You can insert text (in any language), and as an image, attach it to a moving object (e.g. an atom), to annotate the model. To insert a text box, select the &quot;Input Text Box&quot; item from the File menu of a model container. You should see the following dialog window:
+You can insert text (in any language), and as an image, attach it to a moving object (e.g. an atom), to annotate the model. To insert a text box, select the &quot;Input Text Box&quot; item from the Edit menu of a model container. You should see the following dialog window:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 With this dialog, you can type the text and customize the text box. Note that styled text such as HTML is not supported --- the whole text has the same style. If you need to show different text in different styles, you can probably do it with several text boxes.
 
 Once you have inserted a text box, you can edit it by using the pop-up menu, which can be invoked when the text box is right-clicked (or CTRL+clicked on Mac OS X without a multiple-button mouse). The pop-up menu allows you to move the selected text box around, remove it, duplicate it, and attach it to an object:
 
          
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 If the &quot;Attach&quot; item of the pop-up menu is selected, the following things can happen:
 
-(1) If the text box is not in the &quot;callout&quot; mode and there are physical objects (particles or obstacles) that overlap with it, the center of the text box will be attached to the one that is nearest to the center of the text box. As a result, the text box will move along with the object. If there are no objects overlapping with the text box, nothing will happen.
+&#10112; If the text box is not in the &quot;callout&quot; mode and there are physical objects (particles or obstacles) that overlap with it, the center of the text box will be attached to the one that is nearest to the center of the text box. As a result, the text box will move along with the object. If there are no objects overlapping with the text box, nothing will happen.
 
-(2) If the text box is in the &quot;callout&quot; mode and the tip of the callout arrow is within an object, the tip will be attached to the object and move along with it when the simulation starts. If the tip is not within any object, nothing will happen.
+&#10113; If the text box is in the &quot;callout&quot; mode and the tip of the callout arrow is within an object, the tip will be attached to the object and move along with it when the simulation starts. If the tip is not within any object, nothing will happen.
 
-(3) There are situations in which a text box is in the &quot;callout&quot; mode but the center of it, not the tip of its arrow, is attached to a moving object. You can set this in the &quot;Attach to an Object&quot; dialog by choosing the way the text box will be attached to the center of the selected object. It can be set to sit right on top of an object (the &quot;Box Center&quot; mode), or have an arrow that points to the object (the &quot;Arrow Head&quot; mode).
+&#10114; There are situations in which a text box is in the &quot;callout&quot; mode but the center of it, not the tip of its arrow, is attached to a moving object. You can set this in the &quot;Attach to an Object&quot; dialog by choosing the way the text box will be attached to the center of the selected object. It can be set to sit right on top of an object (the &quot;Box Center&quot; mode), or have an arrow that points to the object (the &quot;Arrow Head&quot; mode).
 
 Once a text box is attached to an object, it cannot be moved --- you will have to detach it first (using the &quot;Detach&quot; item of the pop-up menu). A text box can only be attached to an object, but an object can have any number of text boxes (or images) attached to it.
 
@@ -37,23 +37,23 @@ The following model shows an example.
 
   
     
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Script support
 
 Text boxes can be inserted using the add command. To remove a text box, use the select command to select it first, and then call the remove command. There are two methods for moving a text box around. The first one is to select first and then call the move command. The second one is to set the coordinates of its upper-left corner by using the set command.
 
-The following properties of a text box are settable through scripts: x, y, text, font, size, color, style, border, shadow, background. The x and y variables are in angstroms (10 pixels). The text input should be enclosed within a pair of tags, i.e. &lt;t&gt;some text&lt;/t&gt;, or should be the name or absolute address of a text file to be read. The file name should have .txt postfix, e.g. &quot;set textbox[0].text sample.txt&quot;. If the text is to be read from the input script directly (enclosed in a pair of &lt;t&gt; tags), as is in the former case, it cannot be multiple lines. If you have to use multiple lines, type the text in a plain-text file first and then load it using the latter syntax.
+The following properties of a text box are settable through scripts: x, y, angle, text, font, size, color, style, border, shadow, background. The x and y variables are in angstroms (10 pixels). The angle variable is in degrees (-180&#176; to 180&#176;). The text input should be enclosed within a pair of tags, i.e. &lt;t&gt;some text&lt;/t&gt;, or should be the name or absolute address of a text file to be read. The file name should have .txt postfix, e.g. &quot;set textbox[0].text sample.txt&quot;. If the text is to be read from the input script directly (enclosed in a pair of &lt;t&gt; tags), as is in the former case, it cannot be multiple lines. If you have to use multiple lines, type the text in a plain-text file first and then load it using the latter syntax.
 
 To know the index of a text box, double-click on it when the model container is in the selecting and moving mode and look up the number after the string &quot;Text Box #&quot; in the Properties Panel that opens.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="4763">
+<section start="0" end="4820">
 <paragraph start="0" end="15">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="14">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="14" end="15">
 </content>
@@ -155,13 +155,7 @@ To know the index of a text box, double-click on it when the model container is 
 </paragraph>
 <paragraph start="602" end="916">
 <LeftIndent>140.0</LeftIndent>
-<content start="602" end="736">
-<size>11</size></content>
-
-<content start="736" end="795">
-<size>11</size></content>
-
-<content start="795" end="916">
+<content start="602" end="916">
 <size>11</size></content>
 
 </paragraph>
@@ -218,120 +212,129 @@ To know the index of a text box, double-click on it when the model container is 
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1039" end="1403">
+<paragraph start="1039" end="1401">
 <LeftIndent>140.0</LeftIndent>
-<content start="1039" end="1244">
+<content start="1039" end="1040">
+<size>15</size></content>
+
+<content start="1040" end="1242">
 <size>11</size></content>
 
-<content start="1244" end="1250">
+<content start="1242" end="1248">
 <size>11</size><bold>true</bold></content>
 
-<content start="1250" end="1403">
+<content start="1248" end="1401">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1403" end="1404">
+<paragraph start="1401" end="1402">
 <LeftIndent>140.0</LeftIndent>
-<content start="1403" end="1404">
+<content start="1401" end="1402">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1404" end="1651">
+<paragraph start="1402" end="1647">
 <LeftIndent>140.0</LeftIndent>
-<content start="1404" end="1651">
+<content start="1402" end="1403">
+<size>15</size></content>
+
+<content start="1403" end="1647">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1651" end="1652">
+<paragraph start="1647" end="1648">
 <LeftIndent>140.0</LeftIndent>
-<content start="1651" end="1652">
+<content start="1647" end="1648">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1652" end="2083">
+<paragraph start="1648" end="2077">
 <LeftIndent>140.0</LeftIndent>
-<content start="1652" end="2083">
+<content start="1648" end="1649">
+<size>15</size></content>
+
+<content start="1649" end="2077">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2083" end="2084">
+<paragraph start="2077" end="2078">
 <LeftIndent>140.0</LeftIndent>
-<content start="2083" end="2084">
+<content start="2077" end="2078">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2084" end="2350">
+<paragraph start="2078" end="2344">
 <LeftIndent>140.0</LeftIndent>
-<content start="2084" end="2350">
+<content start="2078" end="2344">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2350" end="2351">
+<paragraph start="2344" end="2345">
 <LeftIndent>140.0</LeftIndent>
-<content start="2350" end="2351">
+<content start="2344" end="2345">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2351" end="3280">
+<paragraph start="2345" end="3274">
 <LeftIndent>140.0</LeftIndent>
-<content start="2351" end="2469">
+<content start="2345" end="2463">
 <size>11</size></content>
 
-<content start="2469" end="2475">
+<content start="2463" end="2469">
 <size>11</size><href>ImageInModel.cml</href></content>
 
-<content start="2475" end="3280">
+<content start="2469" end="3274">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3280" end="3281">
+<paragraph start="3274" end="3275">
 <LeftIndent>140.0</LeftIndent>
-<content start="3280" end="3281">
+<content start="3274" end="3275">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3281" end="3394">
+<paragraph start="3275" end="3388">
 <LeftIndent>140.0</LeftIndent>
-<content start="3281" end="3394">
+<content start="3275" end="3388">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3394" end="3395">
+<paragraph start="3388" end="3389">
 <LeftIndent>140.0</LeftIndent>
-<content start="3394" end="3395">
+<content start="3388" end="3389">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3395" end="3434">
+<paragraph start="3389" end="3428">
 <LeftIndent>140.0</LeftIndent>
-<content start="3395" end="3434">
+<content start="3389" end="3428">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3434" end="3435">
+<paragraph start="3428" end="3429">
 <LeftIndent>140.0</LeftIndent>
-<content start="3434" end="3435">
+<content start="3428" end="3429">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3435" end="3438">
+<paragraph start="3429" end="3432">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="3435" end="3436">
+<content start="3429" end="3430">
 </content>
 
-<content start="3436" end="3437">
+<content start="3430" end="3431">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>TextBoxInModel$0.mml</resource><menubar>false</menubar></component></content>
 
-<content start="3437" end="3438">
+<content start="3431" end="3432">
 </content>
 
 </paragraph>
-<paragraph start="3438" end="3443">
+<paragraph start="3432" end="3437">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="3438" end="3439">
+<content start="3432" end="3433">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Annotations</title>
 <tooltip>Annotating model</tooltip>
@@ -343,7 +346,7 @@ To know the index of a text box, double-click on it when the model container is 
 <action>Execute MW script</action>
 </component></content>
 
-<content start="3439" end="3440">
+<content start="3433" end="3434">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Autoscroll text</title>
 <tooltip>Show autoscrolled text</tooltip>
@@ -369,7 +372,7 @@ show selectionhalo on;</script>
 <action>Execute MW script</action>
 </component></content>
 
-<content start="3440" end="3441">
+<content start="3434" end="3435">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Transparent effect</title>
 <tooltip>Transparent effect</tooltip>
@@ -392,7 +395,7 @@ loop 51;</script>
 <action>Execute MW script</action>
 </component></content>
 
-<content start="3441" end="3442">
+<content start="3435" end="3436">
 <component><class>org.concord.modeler.PageButton</class>
 <title>More Annotations</title>
 <tooltip>Annotating model</tooltip>
@@ -430,14 +433,14 @@ set textbox[0].font Verdana;</script>
 <action>Execute MW script</action>
 </component></content>
 
-<content start="3442" end="3443">
+<content start="3436" end="3437">
 </content>
 
 </paragraph>
-<paragraph start="3443" end="3476">
+<paragraph start="3437" end="3476">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="3443" end="3475">
+<content start="3437" end="3475">
 <size>10</size></content>
 
 <content start="3475" end="3476">
@@ -471,31 +474,31 @@ set textbox[0].font Verdana;</script>
 <size>11</size></content>
 
 <content start="3530" end="3533">
-<size>11</size><href>script_add.cml</href><family>Courier New</family></content>
+<family>Courier New</family><size>11</size><href>script_add.cml</href></content>
 
 <content start="3533" end="3573">
 <size>11</size></content>
 
 <content start="3573" end="3579">
-<size>11</size><href>script_select.cml</href><family>Courier New</family></content>
+<family>Courier New</family><size>11</size><href>script_select.cml</href></content>
 
 <content start="3579" end="3626">
 <size>11</size></content>
 
 <content start="3626" end="3632">
-<size>11</size><href>script_remove.cml</href><family>Courier New</family></content>
+<family>Courier New</family><size>11</size><href>script_remove.cml</href></content>
 
 <content start="3632" end="3745">
 <size>11</size></content>
 
 <content start="3745" end="3749">
-<size>11</size><href>script_move.cml</href><family>Courier New</family></content>
+<family>Courier New</family><size>11</size><href>script_move.cml</href></content>
 
 <content start="3749" end="3838">
 <size>11</size></content>
 
 <content start="3838" end="3841">
-<size>11</size><href>script_set.cml</href><family>Courier New</family></content>
+<family>Courier New</family><size>11</size><href>script_set.cml</href></content>
 
 <content start="3841" end="3851">
 <size>11</size></content>
@@ -507,157 +510,187 @@ set textbox[0].font Verdana;</script>
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3852" end="4531">
+<paragraph start="3852" end="4588">
 <LeftIndent>140.0</LeftIndent>
 <content start="3852" end="3921">
 <size>11</size></content>
 
 <content start="3921" end="3922">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="3922" end="3924">
 <size>11</size></content>
 
 <content start="3924" end="3925">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="3925" end="3927">
 <size>11</size></content>
 
-<content start="3927" end="3931">
-<size>11</size><family>Courier New</family></content>
+<content start="3927" end="3932">
+<family>Courier New</family><size>11</size></content>
 
-<content start="3931" end="3933">
+<content start="3932" end="3934">
 <size>11</size></content>
 
-<content start="3933" end="3937">
-<size>11</size><family>Courier New</family></content>
+<content start="3934" end="3938">
+<family>Courier New</family><size>11</size></content>
 
-<content start="3937" end="3939">
+<content start="3938" end="3940">
 <size>11</size></content>
 
-<content start="3939" end="3943">
-<size>11</size><family>Courier New</family></content>
+<content start="3940" end="3944">
+<family>Courier New</family><size>11</size></content>
 
-<content start="3943" end="3945">
+<content start="3944" end="3946">
 <size>11</size></content>
 
-<content start="3945" end="3950">
-<size>11</size><family>Courier New</family></content>
+<content start="3946" end="3950">
+<family>Courier New</family><size>11</size></content>
 
 <content start="3950" end="3952">
 <size>11</size></content>
 
 <content start="3952" end="3957">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="3957" end="3959">
 <size>11</size></content>
 
-<content start="3959" end="3965">
-<size>11</size><family>Courier New</family></content>
+<content start="3959" end="3964">
+<family>Courier New</family><size>11</size></content>
 
-<content start="3965" end="3967">
+<content start="3964" end="3966">
 <size>11</size></content>
 
-<content start="3967" end="3973">
-<size>11</size><family>Courier New</family></content>
+<content start="3966" end="3972">
+<family>Courier New</family><size>11</size></content>
 
-<content start="3973" end="3975">
+<content start="3972" end="3974">
 <size>11</size></content>
 
-<content start="3975" end="3985">
-<size>11</size><family>Courier New</family></content>
+<content start="3974" end="3980">
+<family>Courier New</family><size>11</size></content>
 
-<content start="3985" end="3991">
+<content start="3980" end="3982">
 <size>11</size></content>
 
-<content start="3991" end="3992">
-<size>11</size><family>Courier New</family></content>
+<content start="3982" end="3992">
+<family>Courier New</family><size>11</size></content>
 
-<content start="3992" end="3997">
+<content start="3992" end="3998">
 <size>11</size></content>
 
-<content start="3997" end="3998">
-<size>11</size><family>Courier New</family></content>
+<content start="3998" end="3999">
+<family>Courier New</family><size>11</size></content>
 
-<content start="3998" end="4043">
+<content start="3999" end="4004">
 <size>11</size></content>
 
-<content start="4043" end="4047">
-<size>11</size><family>Courier New</family></content>
+<content start="4004" end="4005">
+<family>Courier New</family><size>11</size></content>
 
-<content start="4047" end="4101">
+<content start="4005" end="4050">
 <size>11</size></content>
 
-<content start="4101" end="4117">
-<size>11</size><family>Courier New</family></content>
+<content start="4050" end="4055">
+<family>Courier New</family><size>11</size></content>
 
-<content start="4117" end="4214">
+<content start="4055" end="4084">
 <size>11</size></content>
 
-<content start="4214" end="4218">
-<size>11</size><family>Courier New</family></content>
+<content start="4084" end="4085">
+</content>
 
-<content start="4218" end="4234">
+<content start="4085" end="4092">
 <size>11</size></content>
 
-<content start="4234" end="4264">
-<size>11</size><family>Courier New</family></content>
+<content start="4092" end="4094">
+</content>
 
-<content start="4264" end="4530">
+<content start="4094" end="4100">
 <size>11</size></content>
 
-<content start="4530" end="4531">
+<content start="4100" end="4104">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4104" end="4158">
+<size>11</size></content>
+
+<content start="4158" end="4174">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4174" end="4271">
+<size>11</size></content>
+
+<content start="4271" end="4275">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4275" end="4291">
+<size>11</size></content>
+
+<content start="4291" end="4321">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4321" end="4404">
+<size>11</size></content>
+
+<content start="4404" end="4407">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4407" end="4587">
+<size>11</size></content>
+
+<content start="4587" end="4588">
 </content>
 
 </paragraph>
-<paragraph start="4531" end="4532">
+<paragraph start="4588" end="4589">
 <LeftIndent>140.0</LeftIndent>
-<content start="4531" end="4532">
+<content start="4588" end="4589">
 </content>
 
 </paragraph>
-<paragraph start="4532" end="4734">
+<paragraph start="4589" end="4791">
 <LeftIndent>140.0</LeftIndent>
-<content start="4532" end="4615">
+<content start="4589" end="4672">
 <size>11</size></content>
 
-<content start="4615" end="4644">
+<content start="4672" end="4701">
 <size>11</size><href>selectAction.cml</href></content>
 
-<content start="4644" end="4734">
+<content start="4701" end="4791">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4734" end="4735">
+<paragraph start="4791" end="4792">
 <LeftIndent>140.0</LeftIndent>
-<content start="4734" end="4735">
+<content start="4791" end="4792">
 </content>
 
 </paragraph>
-<paragraph start="4735" end="4763">
+<paragraph start="4792" end="4820">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="4735" end="4737">
+<content start="4792" end="4794">
 <size>11</size></content>
 
-<content start="4737" end="4745">
+<content start="4794" end="4802">
 <size>11</size><href>ImageInModel.cml</href></content>
 
-<content start="4745" end="4748">
+<content start="4802" end="4805">
 <size>11</size></content>
 
-<content start="4748" end="4753">
+<content start="4805" end="4810">
 <size>11</size><href>index1.cml</href></content>
 
-<content start="4753" end="4756">
+<content start="4810" end="4813">
 <size>11</size></content>
 
-<content start="4756" end="4760">
+<content start="4813" end="4817">
 <size>11</size><href>LineInModel.cml</href></content>
 
-<content start="4760" end="4762">
+<content start="4817" end="4819">
 <size>11</size></content>
 
 </paragraph>

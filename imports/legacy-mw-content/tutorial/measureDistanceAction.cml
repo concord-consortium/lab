@@ -19,7 +19,7 @@ Try the Measuring Tool in the model below:
 
  
   
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Script support
 
@@ -36,10 +36,10 @@ plot &quot;sqrt((%atom[0].rx-%width/2)*(%atom[0].rx-%width/2)+(%atom[0].ry-%heig
 The example graphs can be displayed by clicking the two buttons below the model, which use the above two scripts.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="2260">
+<section start="0" end="2266">
 <paragraph start="0" end="19">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="0" end="18">
 <size>16</size><bold>true</bold><italic>true</italic></content>
 
@@ -48,32 +48,32 @@ The example graphs can be displayed by clicking the two buttons below the model,
 
 </paragraph>
 <paragraph start="19" end="20">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="19" end="20">
 </content>
 
 </paragraph>
 <paragraph start="20" end="48">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="20" end="22">
 <size>11</size></content>
 
 <content start="22" end="30">
-<href>whatIsThisAction.cml</href><size>11</size></content>
+<size>11</size><href>whatIsThisAction.cml</href></content>
 
 <content start="30" end="33">
 <size>11</size></content>
 
 <content start="33" end="38">
-<href>index1.cml</href><size>11</size></content>
+<size>11</size><href>index1.cml</href></content>
 
 <content start="38" end="41">
 <size>11</size></content>
 
 <content start="41" end="45">
-<href>changeVelocityAction.cml</href><size>11</size></content>
+<size>11</size><href>changeVelocityAction.cml</href></content>
 
 <content start="45" end="47">
 <size>11</size></content>
@@ -134,15 +134,15 @@ The example graphs can be displayed by clicking the two buttons below the model,
 <paragraph start="1006" end="1008">
 <LeftIndent>140.0</LeftIndent>
 <content start="1006" end="1007">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1007" end="1008">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="1008" end="1209">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="1008" end="1209">
 <size>11</size></content>
 
@@ -150,7 +150,7 @@ The example graphs can be displayed by clicking the two buttons below the model,
 <paragraph start="1209" end="1211">
 <LeftIndent>140.0</LeftIndent>
 <content start="1209" end="1210">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1210" end="1211">
 <size>11</size></content>
@@ -219,152 +219,152 @@ The example graphs can be displayed by clicking the two buttons below the model,
 </content>
 
 </paragraph>
-<paragraph start="1261" end="1294">
+<paragraph start="1261" end="1300">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="1261" end="1293">
+<content start="1261" end="1299">
 <size>10</size></content>
 
-<content start="1293" end="1294">
+<content start="1299" end="1300">
 </content>
 
 </paragraph>
-<paragraph start="1294" end="1295">
+<paragraph start="1300" end="1301">
 <LeftIndent>140.0</LeftIndent>
-<content start="1294" end="1295">
+<content start="1300" end="1301">
 </content>
 
 </paragraph>
-<paragraph start="1295" end="1310">
+<paragraph start="1301" end="1316">
 <LeftIndent>140.0</LeftIndent>
-<content start="1295" end="1309">
-<bold>true</bold><size>11</size></content>
+<content start="1301" end="1315">
+<size>11</size><bold>true</bold></content>
 
-<content start="1309" end="1310">
+<content start="1315" end="1316">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1310" end="1311">
+<paragraph start="1316" end="1317">
 <LeftIndent>140.0</LeftIndent>
-<content start="1310" end="1311">
+<content start="1316" end="1317">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1311" end="1543">
+<paragraph start="1317" end="1549">
 <LeftIndent>140.0</LeftIndent>
-<content start="1311" end="1457">
+<content start="1317" end="1463">
 <size>11</size></content>
 
-<content start="1457" end="1468">
-<href>timeSeries.cml</href><size>11</size></content>
+<content start="1463" end="1474">
+<size>11</size><href>timeSeries.cml</href></content>
 
-<content start="1468" end="1497">
+<content start="1474" end="1503">
 <size>11</size></content>
 
-<content start="1497" end="1501">
-<family>Courier New</family><href>script_plot.cml</href><size>11</size></content>
+<content start="1503" end="1507">
+<family>Courier New</family><size>11</size><href>script_plot.cml</href></content>
 
-<content start="1501" end="1543">
+<content start="1507" end="1549">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1543" end="1544">
+<paragraph start="1549" end="1550">
 <LeftIndent>140.0</LeftIndent>
-<content start="1543" end="1544">
+<content start="1549" end="1550">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1544" end="1622">
+<paragraph start="1550" end="1628">
 <LeftIndent>140.0</LeftIndent>
-<content start="1544" end="1622">
+<content start="1550" end="1628">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1622" end="1623">
+<paragraph start="1628" end="1629">
 <LeftIndent>140.0</LeftIndent>
-<content start="1622" end="1623">
+<content start="1628" end="1629">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1623" end="1740">
+<paragraph start="1629" end="1746">
 <LeftIndent>160.0</LeftIndent>
-<content start="1623" end="1739">
+<content start="1629" end="1745">
 <family>Courier New</family><size>11</size></content>
 
-<content start="1739" end="1740">
+<content start="1745" end="1746">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1740" end="1741">
+<paragraph start="1746" end="1747">
 <LeftIndent>140.0</LeftIndent>
-<content start="1740" end="1741">
+<content start="1746" end="1747">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1741" end="1905">
+<paragraph start="1747" end="1911">
 <LeftIndent>140.0</LeftIndent>
-<content start="1741" end="1905">
+<content start="1747" end="1911">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1905" end="1906">
+<paragraph start="1911" end="1912">
 <LeftIndent>140.0</LeftIndent>
-<content start="1905" end="1906">
+<content start="1911" end="1912">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1906" end="2116">
+<paragraph start="1912" end="2122">
 <LeftIndent>160.0</LeftIndent>
-<content start="1906" end="2115">
+<content start="1912" end="2121">
 <family>Courier New</family><size>11</size></content>
 
-<content start="2115" end="2116">
+<content start="2121" end="2122">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2116" end="2117">
+<paragraph start="2122" end="2123">
 <LeftIndent>140.0</LeftIndent>
-<content start="2116" end="2117">
+<content start="2122" end="2123">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2117" end="2231">
+<paragraph start="2123" end="2237">
 <LeftIndent>140.0</LeftIndent>
-<content start="2117" end="2230">
+<content start="2123" end="2236">
 <size>11</size></content>
 
-<content start="2230" end="2231">
+<content start="2236" end="2237">
 </content>
 
 </paragraph>
-<paragraph start="2231" end="2232">
+<paragraph start="2237" end="2238">
 <LeftIndent>140.0</LeftIndent>
-<content start="2231" end="2232">
+<content start="2237" end="2238">
 </content>
 
 </paragraph>
-<paragraph start="2232" end="2260">
-<Alignment>2</Alignment>
+<paragraph start="2238" end="2266">
 <RightIndent>20.0</RightIndent>
-<content start="2232" end="2234">
+<Alignment>2</Alignment>
+<content start="2238" end="2240">
 <size>11</size></content>
 
-<content start="2234" end="2242">
-<href>whatIsThisAction.cml</href><size>11</size></content>
+<content start="2240" end="2248">
+<size>11</size><href>whatIsThisAction.cml</href></content>
 
-<content start="2242" end="2245">
+<content start="2248" end="2251">
 <size>11</size></content>
 
-<content start="2245" end="2250">
-<href>index1.cml</href><size>11</size></content>
+<content start="2251" end="2256">
+<size>11</size><href>index1.cml</href></content>
 
-<content start="2250" end="2253">
+<content start="2256" end="2259">
 <size>11</size></content>
 
-<content start="2253" end="2257">
-<href>changeVelocityAction.cml</href><size>11</size></content>
+<content start="2259" end="2263">
+<size>11</size><href>changeVelocityAction.cml</href></content>
 
-<content start="2257" end="2259">
+<content start="2263" end="2265">
 <size>11</size></content>
 
 </paragraph>

@@ -19,13 +19,15 @@ This is a self-running demo played by MW scripts. Here is the source, which can 
 
 To save the source script, just open it and then save it. Do not change the file extension (.mws).
 
+Want to see more self-running demos?
+
 Back to: &lt; Building Radial Bonds | Building Angular Bonds &gt;</text>
-<section start="0" end="1037">
+<section start="0" end="1075">
 <paragraph start="0" end="46">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="45">
-<italic>true</italic><size>16</size><bold>true</bold></content>
+<bold>true</bold><size>16</size><italic>true</italic></content>
 
 <content start="45" end="46">
 </content>
@@ -38,8 +40,8 @@ Back to: &lt; Building Radial Bonds | Building Angular Bonds &gt;</text>
 
 </paragraph>
 <paragraph start="47" end="107">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="47" end="58">
 <size>11</size></content>
 
@@ -77,17 +79,17 @@ Back to: &lt; Building Radial Bonds | Building Angular Bonds &gt;</text>
 
 </paragraph>
 <paragraph start="556" end="614">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="556" end="614">
 <bold>true</bold></content>
 
 </paragraph>
 <paragraph start="614" end="658">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="614" end="628">
-<foreground>255 0 0</foreground><bold>true</bold></content>
+<bold>true</bold><foreground>255 0 0</foreground></content>
 
 <content start="628" end="657">
 <bold>true</bold></content>
@@ -103,19 +105,20 @@ Back to: &lt; Building Radial Bonds | Building Angular Bonds &gt;</text>
 
 </paragraph>
 <paragraph start="659" end="661">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="659" end="660">
 <size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>BuildMolecule$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder><button>Select Object</button><button>Rotate Object</button><button>Duplicate Object</button><button>Add Nt</button><button>Add Pl</button><button>Build Radial Bond</button><button>Build Angular Bond</button><button>Delete Objects</button></component></content>
+<resource>BuildMolecule$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+<button>Select Object</button><button>Rotate Object</button><button>Duplicate Object</button><button>Add Nt</button><button>Add Pl</button><button>Build Radial Bond</button><button>Build Angular Bond</button><button>Delete Objects</button></component></content>
 
 <content start="660" end="661">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="661" end="664">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="661" end="662">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Show me how to build a molecule</title>
@@ -135,8 +138,12 @@ Back to: &lt; Building Radial Bonds | Building Angular Bonds &gt;</text>
 <border>Raised Bevel</border>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
-<script>reset;
+<script>cancel;
 select textbox all;
+remove;
+select atom all;
+remove;
+select image all;
 remove;</script>
 <action>Execute MW script</action>
 </component></content>
@@ -187,22 +194,40 @@ remove;</script>
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="977" end="1037">
-<RightIndent>20.0</RightIndent>
-<Alignment>2</Alignment>
-<content start="977" end="988">
+<paragraph start="977" end="1014">
+<LeftIndent>140.0</LeftIndent>
+<content start="977" end="989">
 <size>11</size></content>
 
-<content start="988" end="1009">
+<content start="989" end="1012">
+<size>11</size><href>script_example.cml</href></content>
+
+<content start="1012" end="1014">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1014" end="1015">
+<LeftIndent>140.0</LeftIndent>
+<content start="1014" end="1015">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1015" end="1075">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1015" end="1026">
+<size>11</size></content>
+
+<content start="1026" end="1047">
 <size>11</size><href>makeBondAction.cml</href></content>
 
-<content start="1009" end="1012">
+<content start="1047" end="1050">
 <size>11</size></content>
 
-<content start="1012" end="1034">
+<content start="1050" end="1072">
 <size>11</size><href>makeBendAction.cml</href></content>
 
-<content start="1034" end="1036">
+<content start="1072" end="1074">
 <size>11</size></content>
 
 </paragraph>

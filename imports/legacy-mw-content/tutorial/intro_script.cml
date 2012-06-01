@@ -1,25 +1,27 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Introduction: the MW scripting environment</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Introduction: the MW scripting environment
 
 &lt; Index | Next &gt;
 
-MW scripts are macros that the simulation engines understand through a script interpreter. Some macros are straightforward and simple to use (such as run, stop, reset, load, and so on). However, as the MW scripting framework contains many macro commands that are increasingly sophisticated, scripting in MW can become as complex as programming with a simple procedural language. You can write as many lines of scripts as you want in a procedural style, save them in a file, and run them in a batch (see an example of using scripts to build autorun demos).
+MW scripts are macros that the 2D and 3D&#10102; simulation engines understand through a script interpreter. Some macros are straightforward and simple to use (such as run, stop, reset, load, and so on). However, as the MW scripting framework contains many macro commands that are increasingly sophisticated, scripting in MW can become as complex as programming with a simple procedural language. You can write as many lines of scripts as you want in a procedural style, save them in a file, and run them in a batch (see an example of using scripts to build autorun demos).
 
 Scripts can be written in a free style. A line can be indented in any way you like. There is no limitation for the space between any two words. Commands can be written in a separate line, or in a single line (but must be separated by a semicolon). Any number of comments can be inserted anywhere.
 
-A set of widgets that an author can put into a MW page supports interactions with the models through scripts. These widgets include script consoles, sliders, spinners, buttons, radio buttons, and check boxes. Scripts can also be invoked from hyperlinks that are directly embedded in the page or in a text box.
+A set of widgets that an author can put into an MW page supports interactions with the models through scripts. These widgets include script consoles, sliders, spinners, buttons, radio buttons, and check boxes. Scripts can also be invoked from hyperlinks that are directly embedded in the page or in a text box. In addition, custom tasks use scripts to insert custom code that will be executed during a simulation.
+
+A scripted task can take some time to run. While one task is running, another task may start. Multiple scripted tasks from different sources will be stored in a queue and scheduled to run according to the order they are stored on a first-come-first-serve basis. This may cause some latency. If you would like a scripted task to be executed without delay, append a cancel command at the beginning of the script body.
 
  
-When the model is running, scripts are executed in an independent process parallel to the molecular dynamics process (for the authors who know programming, process here means thread). Stopping molecular dynamics simulation does not automatically cause the scripts to quit; vice versa.
+When the model is running, scripts are executed in an independent process parallel to the molecular dynamics process (for the authors who know programming, process here means thread). Stopping molecular dynamics simulation does not automatically cause the scripts to quit; vice versa. There is only one exception: the scripts that run within a customer task are executed in the same molecular dynamics process. Therefore, they will stop when the simulation comes to a stop.
 
 How do we know if there are scripts running? Just take a look at the lower-right corner of the model window. If there is a hourglass image, there are scripts running. See the following screenshot image:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 The hourglass image will disappear as soon as the current scripts complete.
  
@@ -30,28 +32,31 @@ MW scripts provide finer controls on the molecular dynamics models. These simple
 
 This, however, is not to say scripts can do everything. There are certain things that are easier to do with the graphical interfaces. The ideal way is to combine the good parts from both sides while you are authoring.
 
+ 
+&#10102; Many commands that have been implemented for the 2D container, however, are not implemented for the 3D container yet, as the latter is still under development.
+
 &lt; Index | Next &gt;</text>
-<section start="0" end="2679">
+<section start="0" end="3565">
 <paragraph start="0" end="43">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="42">
-<bold>true</bold><italic>true</italic><size>15</size></content>
+<bold>true</bold><size>15</size><italic>true</italic></content>
 
 <content start="42" end="43">
 </content>
 
 </paragraph>
 <paragraph start="43" end="44">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="43" end="44">
 </content>
 
 </paragraph>
 <paragraph start="44" end="61">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="44" end="46">
 <size>11</size></content>
 
@@ -77,290 +82,359 @@ This, however, is not to say scripts can do everything. There are certain things
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="62" end="618">
+<paragraph start="62" end="629">
 <LeftIndent>140.0</LeftIndent>
-<content start="62" end="212">
+<content start="62" end="102">
 <size>11</size></content>
 
-<content start="212" end="215">
-<size>11</size><href>script_run.cml</href><family>Courier New</family></content>
+<content start="102" end="103">
+</content>
 
-<content start="215" end="217">
+<content start="103" end="223">
 <size>11</size></content>
 
-<content start="217" end="221">
-<size>11</size><href>script_stop.cml</href><family>Courier New</family></content>
+<content start="223" end="226">
+<size>11</size><family>Courier New</family><href>script_run.cml</href></content>
 
-<content start="221" end="223">
+<content start="226" end="228">
 <size>11</size></content>
 
-<content start="223" end="228">
-<size>11</size><href>script_reset.cml</href><family>Courier New</family></content>
+<content start="228" end="232">
+<size>11</size><family>Courier New</family><href>script_stop.cml</href></content>
 
-<content start="228" end="230">
+<content start="232" end="234">
 <size>11</size></content>
 
-<content start="230" end="234">
-<size>11</size><href>script_load.cml</href><family>Courier New</family></content>
+<content start="234" end="239">
+<size>11</size><family>Courier New</family><href>script_reset.cml</href></content>
 
-<content start="234" end="492">
+<content start="239" end="241">
 <size>11</size></content>
 
-<content start="492" end="513">
-<size>11</size><bold>true</bold></content>
+<content start="241" end="245">
+<size>11</size><family>Courier New</family><href>script_load.cml</href></content>
 
-<content start="513" end="579">
+<content start="245" end="503">
 <size>11</size></content>
 
-<content start="579" end="615">
+<content start="503" end="524">
+<bold>true</bold><size>11</size></content>
+
+<content start="524" end="590">
+<size>11</size></content>
+
+<content start="590" end="626">
 <size>11</size><href>BuildMolecule.cml</href></content>
 
-<content start="615" end="618">
+<content start="626" end="629">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="618" end="619">
+<paragraph start="629" end="630">
 <LeftIndent>140.0</LeftIndent>
-<content start="618" end="619">
+<content start="629" end="630">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="619" end="916">
+<paragraph start="630" end="927">
 <LeftIndent>140.0</LeftIndent>
-<content start="619" end="916">
+<content start="630" end="839">
+<size>11</size></content>
+
+<content start="839" end="875">
+<bold>true</bold><size>11</size></content>
+
+<content start="875" end="927">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="916" end="917">
+<paragraph start="927" end="928">
 <LeftIndent>140.0</LeftIndent>
-<content start="916" end="917">
+<content start="927" end="928">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="917" end="1227">
+<paragraph start="928" end="1342">
 <LeftIndent>140.0</LeftIndent>
-<content start="917" end="1049">
+<content start="928" end="1061">
 <size>11</size></content>
 
-<content start="1049" end="1064">
+<content start="1061" end="1076">
 <size>11</size><href>scriptconsole.cml</href></content>
 
-<content start="1064" end="1066">
+<content start="1076" end="1078">
 <size>11</size></content>
 
-<content start="1066" end="1073">
+<content start="1078" end="1085">
 <size>11</size><href>insertSlider.cml</href></content>
 
-<content start="1073" end="1075">
+<content start="1085" end="1087">
 <size>11</size></content>
 
-<content start="1075" end="1083">
+<content start="1087" end="1095">
 <size>11</size><href>insertSpinner.cml</href></content>
 
-<content start="1083" end="1085">
+<content start="1095" end="1097">
 <size>11</size></content>
 
-<content start="1085" end="1092">
+<content start="1097" end="1104">
 <size>11</size><href>insertButton.cml</href></content>
 
-<content start="1092" end="1094">
+<content start="1104" end="1106">
 <size>11</size></content>
 
-<content start="1094" end="1107">
+<content start="1106" end="1119">
 <size>11</size><href>insertRadioButton.cml</href></content>
 
-<content start="1107" end="1113">
+<content start="1119" end="1125">
 <size>11</size></content>
 
-<content start="1113" end="1124">
+<content start="1125" end="1136">
 <size>11</size><href>insertCheckBox.cml</href></content>
 
-<content start="1124" end="1146">
+<content start="1136" end="1158">
 <size>11</size></content>
 
-<content start="1146" end="1169">
+<content start="1158" end="1181">
 <size>11</size><href>linkscript.cml</href></content>
 
-<content start="1169" end="1179">
+<content start="1181" end="1191">
 <size>11</size></content>
 
-<content start="1179" end="1208">
+<content start="1191" end="1220">
 <size>11</size><href>hyperlink.cml</href></content>
 
-<content start="1208" end="1217">
+<content start="1220" end="1229">
 <size>11</size></content>
 
-<content start="1217" end="1225">
+<content start="1229" end="1237">
 <size>11</size><href>htmlform.cml</href></content>
 
-<content start="1225" end="1227">
+<content start="1237" end="1252">
+<size>11</size></content>
+
+<content start="1252" end="1264">
+<size>11</size><href>CustomerTask.cml</href></content>
+
+<content start="1264" end="1342">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1227" end="1228">
+<paragraph start="1342" end="1343">
 <LeftIndent>140.0</LeftIndent>
-<content start="1227" end="1228">
+<content start="1342" end="1343">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1228" end="1230">
+<paragraph start="1343" end="1759">
 <LeftIndent>140.0</LeftIndent>
-<content start="1228" end="1229">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="1343" end="1707">
+<size>11</size></content>
 
-<content start="1229" end="1230">
+<content start="1707" end="1713">
+<size>11</size><family>Courier New</family><href>script_cancel.cml</href></content>
+
+<content start="1713" end="1759">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1759" end="1760">
+<LeftIndent>140.0</LeftIndent>
+<content start="1759" end="1760">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1760" end="1762">
+<LeftIndent>140.0</LeftIndent>
+<content start="1760" end="1761">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1761" end="1762">
 </content>
 
 </paragraph>
-<paragraph start="1230" end="1515">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="1762" end="2236">
 <RightIndent>100.0</RightIndent>
-<content start="1230" end="1514">
+<LeftIndent>200.0</LeftIndent>
+<content start="1762" end="2235">
 <size>11</size></content>
 
-<content start="1514" end="1515">
+<content start="2235" end="2236">
 </content>
 
 </paragraph>
-<paragraph start="1515" end="1516">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="2236" end="2237">
 <RightIndent>100.0</RightIndent>
-<content start="1515" end="1516">
+<LeftIndent>200.0</LeftIndent>
+<content start="2236" end="2237">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1516" end="1719">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="2237" end="2440">
 <RightIndent>100.0</RightIndent>
-<content start="1516" end="1719">
+<LeftIndent>200.0</LeftIndent>
+<content start="2237" end="2440">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1719" end="1720">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="2440" end="2441">
 <RightIndent>100.0</RightIndent>
-<content start="1719" end="1720">
+<LeftIndent>200.0</LeftIndent>
+<content start="2440" end="2441">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1720" end="1723">
-<LeftIndent>200.0</LeftIndent>
-<RightIndent>100.0</RightIndent>
+<paragraph start="2441" end="2444">
 <Alignment>1</Alignment>
-<content start="1720" end="1721">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2441" end="2442">
 </content>
 
-<content start="1721" end="1722">
+<content start="2442" end="2443">
 <icon>hourglass.gif</icon></content>
 
-<content start="1722" end="1723">
+<content start="2443" end="2444">
 </content>
 
 </paragraph>
-<paragraph start="1723" end="1747">
-<LeftIndent>200.0</LeftIndent>
-<RightIndent>100.0</RightIndent>
+<paragraph start="2444" end="2468">
 <Alignment>1</Alignment>
-<content start="1723" end="1746">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2444" end="2445">
+<bold>true</bold><size>13</size></content>
+
+<content start="2445" end="2466">
 <size>10</size></content>
 
-<content start="1746" end="1747">
+<content start="2466" end="2467">
+<bold>true</bold><size>13</size></content>
+
+<content start="2467" end="2468">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1747" end="1748">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="2468" end="2469">
 <RightIndent>100.0</RightIndent>
-<content start="1747" end="1748">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1748" end="1824">
 <LeftIndent>200.0</LeftIndent>
+<content start="2468" end="2469">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2469" end="2545">
 <RightIndent>100.0</RightIndent>
-<content start="1748" end="1824">
+<LeftIndent>200.0</LeftIndent>
+<content start="2469" end="2545">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1824" end="1826">
+<paragraph start="2545" end="2547">
 <LeftIndent>140.0</LeftIndent>
-<content start="1824" end="1825">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="2545" end="2546">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="1825" end="1826">
+<content start="2546" end="2547">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1826" end="1827">
+<paragraph start="2547" end="2548">
 <LeftIndent>140.0</LeftIndent>
-<content start="1826" end="1827">
+<content start="2547" end="2548">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1827" end="2136">
+<paragraph start="2548" end="2857">
 <LeftIndent>140.0</LeftIndent>
-<content start="1827" end="1873">
+<content start="2548" end="2594">
 <size>11</size></content>
 
-<content start="1873" end="1887">
+<content start="2594" end="2608">
 <size>11</size><href>insertModel.cml</href></content>
 
-<content start="1887" end="1894">
+<content start="2608" end="2615">
 <size>11</size></content>
 
-<content start="1894" end="1908">
+<content start="2615" end="2629">
 <size>11</size><href>scriptconsole.cml</href></content>
 
-<content start="1908" end="2136">
+<content start="2629" end="2857">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2136" end="2137">
+<paragraph start="2857" end="2858">
 <LeftIndent>140.0</LeftIndent>
-<content start="2136" end="2137">
+<content start="2857" end="2858">
 </content>
 
 </paragraph>
-<paragraph start="2137" end="2442">
+<paragraph start="2858" end="3163">
 <LeftIndent>140.0</LeftIndent>
-<content start="2137" end="2442">
+<content start="2858" end="3163">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2442" end="2443">
+<paragraph start="3163" end="3164">
 <LeftIndent>140.0</LeftIndent>
-<content start="2442" end="2443">
+<content start="3163" end="3164">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2443" end="2661">
+<paragraph start="3164" end="3382">
 <LeftIndent>140.0</LeftIndent>
-<content start="2443" end="2661">
+<content start="3164" end="3382">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2661" end="2662">
+<paragraph start="3382" end="3383">
 <LeftIndent>140.0</LeftIndent>
-<content start="2661" end="2662">
+<content start="3382" end="3383">
 </content>
 
 </paragraph>
-<paragraph start="2662" end="2679">
-<RightIndent>20.0</RightIndent>
+<paragraph start="3383" end="3385">
+<LeftIndent>140.0</LeftIndent>
+<content start="3383" end="3384">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="3384" end="3385">
+</content>
+
+</paragraph>
+<paragraph start="3385" end="3547">
+<LeftIndent>140.0</LeftIndent>
+<content start="3385" end="3386">
+<size>13</size></content>
+
+<content start="3386" end="3387">
+</content>
+
+<content start="3387" end="3547">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="3547" end="3548">
+<LeftIndent>140.0</LeftIndent>
+<content start="3547" end="3548">
+</content>
+
+</paragraph>
+<paragraph start="3548" end="3565">
 <Alignment>2</Alignment>
-<content start="2662" end="2664">
+<RightIndent>20.0</RightIndent>
+<content start="3548" end="3550">
 <size>11</size></content>
 
-<content start="2664" end="2669">
+<content start="3550" end="3555">
 <size>11</size><href>mwscripts.cml</href></content>
 
-<content start="2669" end="2672">
+<content start="3555" end="3558">
 <size>11</size></content>
 
-<content start="2672" end="2676">
+<content start="3558" end="3562">
 <size>11</size><href>script_where.cml</href></content>
 
-<content start="2676" end="2678">
+<content start="3562" end="3564">
 <size>11</size></content>
 
 </paragraph>

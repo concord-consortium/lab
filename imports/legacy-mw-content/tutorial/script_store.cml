@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Store</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Store
+
+&lt; Previous | Index | Next &gt;
+
+The store command stores the value of a variable, or the result of an expression, into a channel. The data stored in a channel can be exported to a graph.
+
+Syntax:
+
+store [channel number] [variable or expression]
+
+where [variable or expression] specifies a variable or a math expression that produces the data, and [channel number] specifies the number of channel in which the data will be stored. Currently, 8 channels are supported. The channel number should be a number between 0 and 7 (inclusive).
+
+The store command can be called in a custom task to generate data streams specified by the variable or the expression. The recording interval of such a task must be set to the same as the main simulation recording interval.
+
+If you need to calculate something that cannot be written as a math expression, such as the temperature of the particles within an area, you can use some scripts to compute the result and store it in a variable, and then store the value of the variable in a channel using the store command.
+
+An example
+
+   
+
+The following scripts are used in the custom task of the above model to compute the temperature measured within the rectangle and then store the result in channel 0 (the first channel):
+
+ 
+
+In the graph, we have selected &quot;Channel 0&quot; to import the data from. Note that in the same graph, we have also selected a preprogrammed output, which is the average kinetic energy (we added a multiplier 11594 to convert the unit from eV to kelvin).
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1540">
+<paragraph start="0" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="5">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="9">
+<size>11</size></content>
+
+<content start="9" end="17">
+<href>script_function.cml</href><size>11</size></content>
+
+<content start="17" end="20">
+<size>11</size></content>
+
+<content start="20" end="25">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="25" end="28">
+<size>11</size></content>
+
+<content start="28" end="32">
+<href>script_show.cml</href><size>11</size></content>
+
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<LeftIndent>100.0</LeftIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="191">
+<LeftIndent>140.0</LeftIndent>
+<content start="36" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<size>11</size><family>Courier New</family></content>
+
+<content start="45" end="191">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="191" end="192">
+<LeftIndent>140.0</LeftIndent>
+<content start="191" end="192">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="192" end="200">
+<LeftIndent>140.0</LeftIndent>
+<content start="192" end="200">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="200" end="201">
+<LeftIndent>140.0</LeftIndent>
+<content start="200" end="201">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="201" end="249">
+<LeftIndent>160.0</LeftIndent>
+<content start="201" end="248">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="248" end="249">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="249" end="250">
+<LeftIndent>140.0</LeftIndent>
+<content start="249" end="250">
+</content>
+
+</paragraph>
+<paragraph start="250" end="538">
+<LeftIndent>140.0</LeftIndent>
+<content start="250" end="256">
+<size>11</size></content>
+
+<content start="256" end="280">
+<size>11</size><family>Courier New</family></content>
+
+<content start="280" end="351">
+<size>11</size></content>
+
+<content start="351" end="367">
+<size>11</size><family>Courier New</family></content>
+
+<content start="367" end="538">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="538" end="539">
+<LeftIndent>140.0</LeftIndent>
+<content start="538" end="539">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="539" end="763">
+<LeftIndent>140.0</LeftIndent>
+<content start="539" end="543">
+<size>11</size></content>
+
+<content start="543" end="548">
+<size>11</size><family>Courier New</family></content>
+
+<content start="548" end="576">
+<size>11</size></content>
+
+<content start="576" end="587">
+<href>CustomerTask.cml</href><size>11</size></content>
+
+<content start="587" end="763">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="763" end="764">
+<LeftIndent>140.0</LeftIndent>
+<content start="763" end="764">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="764" end="1055">
+<LeftIndent>140.0</LeftIndent>
+<content start="764" end="1040">
+<size>11</size></content>
+
+<content start="1040" end="1045">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1045" end="1055">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1055" end="1056">
+<LeftIndent>140.0</LeftIndent>
+<content start="1055" end="1056">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1056" end="1067">
+<LeftIndent>140.0</LeftIndent>
+<content start="1056" end="1066">
+<bold>true</bold><size>11</size></content>
+
+<content start="1066" end="1067">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1067" end="1068">
+<LeftIndent>140.0</LeftIndent>
+<content start="1067" end="1068">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1068" end="1072">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1068" end="1069">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_store$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1069" end="1070">
+</content>
+
+<content start="1070" end="1071">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="1" width="1.0" symbol="0" size="4" spacing="5" smoother="1">Channel 0</time_series_y1>
+<time_series_y2 color="-10000" style="0" width="1.0" symbol="0" size="4" spacing="5" multiplier="11594.0" smoother="1">Kinetic Energy/Particle</time_series_y2>
+<autofity>false</autofity>
+<axis_y_min>0.0</axis_y_min>
+<axis_y_max>600.0</axis_y_max>
+<width>300</width>
+<height>285</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Temperature (K)</axis_y_title>
+<legend_x>100</legend_x>
+<legend_y>185</legend_y>
+<bgcolor>-333334</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1071" end="1072">
+</content>
+
+</paragraph>
+<paragraph start="1072" end="1073">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1072" end="1073">
+</content>
+
+</paragraph>
+<paragraph start="1073" end="1259">
+<LeftIndent>140.0</LeftIndent>
+<content start="1073" end="1259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1259" end="1260">
+<LeftIndent>140.0</LeftIndent>
+<content start="1259" end="1260">
+</content>
+
+</paragraph>
+<paragraph start="1260" end="1262">
+<LeftIndent>140.0</LeftIndent>
+<content start="1260" end="1261">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>700.0</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;pre&gt;set %t temperature(-1, %rectangle[0].x, %rectangle[0].y, %rectangle[0].width, %rectangle[0].height);
+store 0 %t;&lt;/pre&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1261" end="1262">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1262" end="1263">
+<LeftIndent>140.0</LeftIndent>
+<content start="1262" end="1263">
+</content>
+
+</paragraph>
+<paragraph start="1263" end="1511">
+<LeftIndent>140.0</LeftIndent>
+<content start="1263" end="1510">
+<size>11</size></content>
+
+<content start="1510" end="1511">
+</content>
+
+</paragraph>
+<paragraph start="1511" end="1512">
+<LeftIndent>140.0</LeftIndent>
+<content start="1511" end="1512">
+</content>
+
+</paragraph>
+<paragraph start="1512" end="1540">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1512" end="1514">
+<size>11</size></content>
+
+<content start="1514" end="1522">
+<href>script_function.cml</href><size>11</size></content>
+
+<content start="1522" end="1525">
+<size>11</size></content>
+
+<content start="1525" end="1530">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="1530" end="1533">
+<size>11</size></content>
+
+<content start="1533" end="1537">
+<href>script_show.cml</href><size>11</size></content>
+
+<content start="1537" end="1539">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Is molecular dynamics just a method of randomizing motion?</page_title>
+<text>
+Is molecular dynamics just a method of randomizing motion?
+
+Some users think Molecular Workbench simulations are animations in which the motion of atoms and molecules are randomized according to certain rules&#10102;. This is a misconception.
+
+There is no procedure of randomization in molecular dynamics. The trajectory of every single atom is produced by numerically solving the Newtonian equations of motion, which are deterministic. In other words, given the same initial conditions, the system will reach exactly the same states after the same amount of run time on different computers run by different people at different times.
+
+So why does the motion of a many-atom system look random? It looks random because we human beings cannot predict in details with our common sense what the system&apos;s next state will be, as we can with simpler systems such as a falling object. When we cannot handle the complexity, we tend to say things are unpredictable, or &quot;random&quot;, despite of the fact that they are not truly random and can be predicted by a computer in actuality.
+
+    
+Left: Can you predict the motion of two particles? Right: Can you predict the motion of ten particles?
+
+Randomness often exhibits fluctuations. In molecular dynamics simulations, we use the Lennard-Jones potentials to model the basic interatomic interactions. Why does a system of Lennard-Jones particles fluctuate? As we know, the motion of particles is driven by the interatomic forces, which are calculated as first-order derivatives of interatomic potentials as a function of interatomic distances. In a system of 100 particles, there will therefore be 99 forces on each particle. In order for a particle to stay in a fixed position, the forces on it should sum up to zero. In other words, the 99 forces on a particle should counterbalance among themselves, and this should repeat for 100 times for every single particle in the system for the whole system to stay stable. (Even if there is only one particle that has a net force, it will move to cause a chain of changes and then destablize the whole system.)
+
+Statistics tells us that this is very unlikely to happen in reality, or we say the probability for this to happen is too low (unless the 100 atoms stay far away from one another). At any time, there will always be net forces on some of the particles, which cause them to move. The motion of these particles will subsequently change the forces on themselves and other atoms. Depending on the local coordinates, some of the changes in the forces may maintain the directions of the forces, and some may reverse the directions of the forces. Thus, the particles may have a chance to continue on their courses, or on the reverse ways. The results of these effects are fluctuations.
+
+ 
+&#10102; Some people prefer not to use the word &quot;animations&quot; to call the molecular dyanmics models presented by the Molecular Workbench. Putting it in a simple way though, one could say that these models are animations based on the rules coming from Newtonian mechanics and intermolecular interactions (which ultimately comes from quantum mechanics).</text>
+<section start="0" end="3108">
+<paragraph start="0" end="1">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="0" end="1">
+<size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1" end="60">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="1" end="59">
+<size>16</size><bold>true</bold></content>
+
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="237">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="61" end="209">
+<size>11</size></content>
+
+<content start="209" end="210">
+<size>13</size></content>
+
+<content start="210" end="237">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="237" end="238">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="237" end="238">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="238" end="629">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="238" end="629">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="629" end="630">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="629" end="630">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="630" end="1063">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="630" end="1062">
+<size>11</size></content>
+
+<content start="1062" end="1063">
+</content>
+
+</paragraph>
+<paragraph start="1063" end="1064">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="1063" end="1064">
+</content>
+
+</paragraph>
+<paragraph start="1064" end="1069">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="1064" end="1065">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>random$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1065" end="1067">
+</content>
+
+<content start="1067" end="1068">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>random$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1068" end="1069">
+</content>
+
+</paragraph>
+<paragraph start="1069" end="1172">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="1069" end="1171">
+<italic>true</italic><size>11</size></content>
+
+<content start="1171" end="1172">
+</content>
+
+</paragraph>
+<paragraph start="1172" end="1173">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="1172" end="1173">
+</content>
+
+</paragraph>
+<paragraph start="1173" end="2083">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="1173" end="2083">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2083" end="2084">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="2083" end="2084">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2084" end="2761">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="2084" end="2761">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2761" end="2762">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="2761" end="2762">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2762" end="2764">
+<LeftIndent>8.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<RightIndent>8.0</RightIndent>
+<content start="2762" end="2763">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2763" end="2764">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2764" end="3108">
+<LeftIndent>8.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="2764" end="2765">
+<size>13</size></content>
+
+<content start="2765" end="3107">
+<size>10</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -10,13 +10,13 @@
 We have shown you how to add a model to a page. When you insert a model into a page, what you do is actually inserting a model container whose window the model is displayed in. You can change the content displayed in that window by importing a different model. The model container also can output the current model. These functions can be found on its File menu, as is shown in the screenshot below:
 
   
-[This is a screenshot of the File menu of a model container.]
+&#12304;This is a screenshot of the File menu of a model container.&#12305;
 
 Loading a model
 
  
-[This is an embedded simulator.]
-Copy and paste the following URL to the text box opened by choosing &quot;Open Location...&quot; from the File menu, or simply click the linked URL: http://mw.concord.org/modeler1.3/tutorial/RotatingBenzene.mml (this hyperlink uses the load command, following the script protocol, to load a remote model file into the container).
+&#12304;This is an embedded model container.&#12305;
+Copy and paste the following URL to the text box opened by choosing &quot;Open Location...&quot; from the File menu, or simply click the linked URL: http://mw2.concord.org/public/tutorial/RotatingBenzene.mml (this hyperlink uses the load command, following the script protocol, to load a remote model file into the container).
 
 The above window shows three water molecules. But you may load a different model into the window, following these steps:
 
@@ -27,9 +27,9 @@ The above window shows three water molecules. But you may load a different model
 If this is the first time you use the software, you probably do not have any molecular dynamics model on your disk. You may try the &quot;Open Model from Location&quot; input function, available at the same File menu. When you choose that menu, you should see the following dialog:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
-Type or copy/paste in the following URL: http://mw.concord.org/modeler1.3/tutorial/RotatingBenzene.mml .
+Type or copy/paste in the following URL: http://mw2.concord.org/public/tutorial/RotatingBenzene.mml .
 Press OK. You will see that something starts loading. When it finishes, you will see a benzene-like molecule. When you run the newly loaded model, you will see the benzene-like molecule rotating.
 
 In the above procedure, you do not remove the model window. Instead, you reuse it to load a new model. This is why the simulator is called a model container. When you jump from one page to another, the model container(s) of the previous page is(are) always reused to load the new content set for the next page.
@@ -44,19 +44,19 @@ If you are playing back a recorded movie, the current frame will be output. This
 In general, you do not need to save a model separately. The current content in a model container on a page is saved whenever the whole page gets saved.
  
 
-There are times that you need to save the models separately from the page. For example, if you would like to load different models into the container from a drop-down list, or when you use the &quot;load&quot; command to load a model, you will probably have to save the models independently of the page.
+There are times that you need to save the models separately from the page. For example, if you use the &quot;load&quot; command to let the user load a model from a button or a link, you will have to save the models independently of the page.
 
 Script support
 
 The load command can be used to input a model. There is no script support for outputting a model.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="3471">
+<section start="0" end="3409">
 <paragraph start="0" end="13">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="12">
-<bold>true</bold><size>15</size><italic>true</italic></content>
+<italic>true</italic><size>15</size><bold>true</bold></content>
 
 <content start="12" end="13">
 </content>
@@ -121,21 +121,21 @@ The load command can be used to input a model. There is no script support for ou
 
 </paragraph>
 <paragraph start="444" end="447">
-<Alignment>1</Alignment>
 <LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="444" end="445">
 <size>11</size></content>
 
 <content start="445" end="446">
-<size>11</size><icon>FileMenu.gif</icon></content>
+<icon>FileMenu.gif</icon><size>11</size></content>
 
 <content start="446" end="447">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="447" end="509">
-<Alignment>1</Alignment>
 <LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="447" end="508">
 <size>10</size></content>
 
@@ -151,7 +151,7 @@ The load command can be used to input a model. There is no script support for ou
 <paragraph start="510" end="526">
 <LeftIndent>140.0</LeftIndent>
 <content start="510" end="525">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="525" end="526">
 <size>11</size></content>
@@ -164,164 +164,164 @@ The load command can be used to input a model. There is no script support for ou
 
 </paragraph>
 <paragraph start="527" end="529">
-<Alignment>1</Alignment>
 <LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="527" end="528">
-<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>modelIO$0.mml</resource></component></content>
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>modelIO$0.mml</resource></component><size>11</size></content>
 
 <content start="528" end="529">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="529" end="562">
-<Alignment>1</Alignment>
+<paragraph start="529" end="568">
 <LeftIndent>100.0</LeftIndent>
-<content start="529" end="561">
+<Alignment>1</Alignment>
+<content start="529" end="567">
 <size>10</size></content>
 
-<content start="561" end="562">
+<content start="567" end="568">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="562" end="882">
+<paragraph start="568" end="885">
 <LeftIndent>160.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="562" end="701">
+<content start="568" end="707">
 <size>10</size></content>
 
-<content start="701" end="762">
-<size>10</size><href>script:mw:1:load http://mw.concord.org/modeler1.3/tutorial/RotatingBenzene.mml</href></content>
+<content start="707" end="765">
+<size>10</size><href>script:mw:1:load http://mw2.concord.org/public/tutorial/RotatingBenzene.mml</href></content>
 
-<content start="762" end="788">
+<content start="765" end="791">
 <size>10</size></content>
 
-<content start="788" end="792">
-<size>10</size><href>script_load.cml</href><family>Courier New</family></content>
+<content start="791" end="795">
+<family>Courier New</family><size>10</size><href>script_load.cml</href></content>
 
-<content start="792" end="812">
+<content start="795" end="815">
 <size>10</size></content>
 
-<content start="812" end="831">
+<content start="815" end="834">
 <size>10</size><href>script_protocol.cml</href></content>
 
-<content start="831" end="881">
+<content start="834" end="884">
 <size>10</size></content>
 
-<content start="881" end="882">
+<content start="884" end="885">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="882" end="883">
+<paragraph start="885" end="886">
 <LeftIndent>140.0</LeftIndent>
-<content start="882" end="883">
+<content start="885" end="886">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="883" end="1004">
+<paragraph start="886" end="1007">
 <LeftIndent>140.0</LeftIndent>
-<content start="883" end="1004">
+<content start="886" end="1007">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1004" end="1005">
+<paragraph start="1007" end="1008">
 <LeftIndent>160.0</LeftIndent>
-<content start="1004" end="1005">
+<content start="1007" end="1008">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1005" end="1147">
+<paragraph start="1008" end="1150">
 <LeftIndent>160.0</LeftIndent>
-<content start="1005" end="1006">
+<content start="1008" end="1009">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="1006" end="1083">
+<content start="1009" end="1086">
 <size>11</size></content>
 
-<content start="1083" end="1086">
-<size>11</size><bold>true</bold></content>
+<content start="1086" end="1089">
+<bold>true</bold><size>11</size></content>
 
-<content start="1086" end="1147">
+<content start="1089" end="1150">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1147" end="1178">
+<paragraph start="1150" end="1181">
 <LeftIndent>160.0</LeftIndent>
-<content start="1147" end="1148">
+<content start="1150" end="1151">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="1148" end="1178">
+<content start="1151" end="1181">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1178" end="1316">
+<paragraph start="1181" end="1319">
 <LeftIndent>160.0</LeftIndent>
-<content start="1178" end="1179">
+<content start="1181" end="1182">
 <icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
 
-<content start="1179" end="1234">
+<content start="1182" end="1237">
 <size>11</size></content>
 
-<content start="1234" end="1237">
-<size>11</size><family>Courier New</family></content>
+<content start="1237" end="1240">
+<family>Courier New</family><size>11</size></content>
 
-<content start="1237" end="1316">
+<content start="1240" end="1319">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1316" end="1317">
+<paragraph start="1319" end="1320">
 <LeftIndent>100.0</LeftIndent>
-<content start="1316" end="1317">
+<content start="1319" end="1320">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1317" end="1589">
+<paragraph start="1320" end="1592">
 <LeftIndent>140.0</LeftIndent>
-<content start="1317" end="1589">
+<content start="1320" end="1592">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1589" end="1590">
+<paragraph start="1592" end="1593">
 <LeftIndent>100.0</LeftIndent>
-<content start="1589" end="1590">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1590" end="1593">
-<Alignment>1</Alignment>
-<LeftIndent>100.0</LeftIndent>
-<content start="1590" end="1591">
-<size>11</size></content>
-
-<content start="1591" end="1592">
-<size>11</size><icon>OpenLocation.gif</icon></content>
-
 <content start="1592" end="1593">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1593" end="1617">
-<Alignment>1</Alignment>
+<paragraph start="1593" end="1596">
 <LeftIndent>100.0</LeftIndent>
-<content start="1593" end="1616">
+<Alignment>1</Alignment>
+<content start="1593" end="1594">
+<size>11</size></content>
+
+<content start="1594" end="1595">
+<icon>OpenLocation.gif</icon><size>11</size></content>
+
+<content start="1595" end="1596">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1596" end="1620">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1596" end="1619">
 <size>10</size></content>
 
-<content start="1616" end="1617">
+<content start="1619" end="1620">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1617" end="1618">
+<paragraph start="1620" end="1621">
 <LeftIndent>100.0</LeftIndent>
-<content start="1617" end="1618">
+<content start="1620" end="1621">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1618" end="1723">
+<paragraph start="1621" end="1723">
 <LeftIndent>140.0</LeftIndent>
-<content start="1618" end="1659">
+<content start="1621" end="1662">
 <size>11</size></content>
 
-<content start="1659" end="1720">
+<content start="1662" end="1720">
 <size>11</size><italic>true</italic></content>
 
 <content start="1720" end="1723">
@@ -346,7 +346,7 @@ The load command can be used to input a model. There is no script support for ou
 <size>11</size></content>
 
 <content start="1993" end="1998">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="1998" end="2061">
 <size>11</size></content>
@@ -367,7 +367,7 @@ The load command can be used to input a model. There is no script support for ou
 <paragraph start="2232" end="2247">
 <LeftIndent>140.0</LeftIndent>
 <content start="2232" end="2246">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="2246" end="2247">
 <size>11</size></content>
@@ -385,13 +385,13 @@ The load command can be used to input a model. There is no script support for ou
 <size>11</size></content>
 
 <content start="2470" end="2473">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="2473" end="2585">
 <size>11</size></content>
 
 <content start="2585" end="2588">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="2588" end="2675">
 <size>11</size></content>
@@ -422,11 +422,9 @@ The load command can be used to input a model. There is no script support for ou
 
 </paragraph>
 <paragraph start="2876" end="2878">
-<SpaceAbove>2.0</SpaceAbove>
-<SpaceBelow>2.0</SpaceBelow>
 <LeftIndent>140.0</LeftIndent>
 <content start="2876" end="2877">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="2877" end="2878">
 <size>11</size></content>
@@ -436,7 +434,7 @@ The load command can be used to input a model. There is no script support for ou
 <LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
 <content start="2878" end="2932">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="2932" end="2994">
 <size>11</size></content>
@@ -449,11 +447,9 @@ The load command can be used to input a model. There is no script support for ou
 
 </paragraph>
 <paragraph start="3030" end="3032">
-<SpaceAbove>2.0</SpaceAbove>
-<SpaceBelow>2.0</SpaceBelow>
 <LeftIndent>140.0</LeftIndent>
 <content start="3030" end="3031">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="3031" end="3032">
 <size>11</size></content>
@@ -465,93 +461,87 @@ The load command can be used to input a model. There is no script support for ou
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3033" end="3327">
+<paragraph start="3033" end="3265">
 <LeftIndent>140.0</LeftIndent>
-<content start="3033" end="3142">
+<content start="3033" end="3132">
 <size>11</size></content>
 
-<content start="3142" end="3204">
-<size>11</size><href>loadmodels.cml</href></content>
-
-<content start="3204" end="3222">
-<size>11</size></content>
-
-<content start="3222" end="3227">
+<content start="3132" end="3137">
 <size>11</size><href>script_load.cml</href></content>
 
-<content start="3227" end="3231">
-<size>11</size><href>script_load.cml</href><family>Courier New</family></content>
+<content start="3137" end="3141">
+<family>Courier New</family><size>11</size><href>script_load.cml</href></content>
 
-<content start="3231" end="3240">
+<content start="3141" end="3150">
 <size>11</size><href>script_load.cml</href></content>
 
-<content start="3240" end="3327">
+<content start="3150" end="3265">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3327" end="3328">
+<paragraph start="3265" end="3266">
 <LeftIndent>140.0</LeftIndent>
-<content start="3327" end="3328">
+<content start="3265" end="3266">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3328" end="3343">
+<paragraph start="3266" end="3281">
 <LeftIndent>140.0</LeftIndent>
-<content start="3328" end="3342">
-<size>11</size><bold>true</bold></content>
+<content start="3266" end="3280">
+<bold>true</bold><size>11</size></content>
 
-<content start="3342" end="3343">
+<content start="3280" end="3281">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3343" end="3344">
+<paragraph start="3281" end="3282">
 <LeftIndent>140.0</LeftIndent>
-<content start="3343" end="3344">
+<content start="3281" end="3282">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3344" end="3442">
+<paragraph start="3282" end="3380">
 <LeftIndent>140.0</LeftIndent>
-<content start="3344" end="3348">
+<content start="3282" end="3286">
 <size>11</size></content>
 
-<content start="3348" end="3352">
-<size>11</size><href>script_load.cml</href><family>Courier New</family></content>
+<content start="3286" end="3290">
+<family>Courier New</family><size>11</size><href>script_load.cml</href></content>
 
-<content start="3352" end="3441">
+<content start="3290" end="3379">
 <size>11</size></content>
 
-<content start="3441" end="3442">
+<content start="3379" end="3380">
 </content>
 
 </paragraph>
-<paragraph start="3442" end="3443">
-<content start="3442" end="3443">
+<paragraph start="3380" end="3381">
+<content start="3380" end="3381">
 </content>
 
 </paragraph>
-<paragraph start="3443" end="3471">
+<paragraph start="3381" end="3409">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="3443" end="3445">
+<content start="3381" end="3383">
 <size>11</size></content>
 
-<content start="3445" end="3453">
+<content start="3383" end="3391">
 <size>11</size><href>recordSimulation.cml</href></content>
 
-<content start="3453" end="3456">
+<content start="3391" end="3394">
 <size>11</size></content>
 
-<content start="3456" end="3461">
+<content start="3394" end="3399">
 <size>11</size><href>index1.cml</href></content>
 
-<content start="3461" end="3464">
+<content start="3399" end="3402">
 <size>11</size></content>
 
-<content start="3464" end="3468">
+<content start="3402" end="3406">
 <size>11</size><href>ResizeModelContainer.cml</href></content>
 
-<content start="3468" end="3470">
+<content start="3406" end="3408">
 <size>11</size></content>
 
 </paragraph>

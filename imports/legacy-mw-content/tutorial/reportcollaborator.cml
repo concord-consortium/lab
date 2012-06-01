@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>When students collaborate to create reports</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>When students collaborate to create reports
+
+&lt; Previous | Index | Next &gt;
+
+It is not uncommon in classrooms that students work together to complete an activity and create a report. In this case, the report is created jointly by a group of students and the teacher would expect that everyone of them will have a copy of the joint report in the database. MW supports this. The following are the instructions for what students should do in order to make use of this functionality.
+
+ 
+Note that this functionality assumes that you must be online. If your computer is not connected to the Internet, you will not be able to pick up collaborators or submit a report.
+ 
+
+When the &quot;Submit&quot; Button on a report page is clicked, the following dialog window will show up:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This assumes that at least one student in the group has already registered with MW and logged in. The User ID field shows the ID of the student who is currently logged in. In order for everyone in the group to have the same record and access to the same report, the students must click the &quot;Look up Collaborators&quot; button, which upon clicked will bring up the following dialog window:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This dialog window allows the students to select who belong to the group from the list of their classmates. To select a collaborator, just click on the name under the classmate list and then hit the &quot;Add&quot; button in the middle. To remove a collaborator, click on the name under the collaborator list and then hit the &quot;Remove&quot; button in the middle.
+
+Once the collaborators have been selected and the OK Button is clicked, the names of the collaborators will show up in the report. For example, if Cathy Miller is the student that logs in, the report will carry the following header when the &quot;Submit&quot; Button is clicked:
+
+ 
+......
+Student name: Cathy Miller
+Teacher name: teacher1
+School: Cape Code High School
+Date: Sun Sep 02 13:28:52 EDT 2007
+......
+ 
+
+If Cathy works with Bill Gates and John Smith to create the report, the group must look up Bill and John&apos;s names by clicking the &quot;Look up Collaborators&quot; button. After their names are selected and the window is closed, the header of the report will have Bill and John&apos;s names, shown as follows: 
+
+ 
+......
+Student name: Cathy Miller, Bill Gates, John Smith
+Teacher name: teacher1
+School: Cape Code High School
+Date: Sun Sep 02 13:28:52 EDT 2007
+......
+ 
+
+When the report is submitted, everyone in the group will receive a link to the report and the teacher will have a record for each student about the report, stored in his/her account in the MW Space. When the report is opened, the reader will be able to tell that this is a report jointly created by Cathy, Bill and John.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2756">
+<paragraph start="0" end="44">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="43">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="73">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="55">
+<size>11</size><href>report.cml</href></content>
+
+<content start="55" end="58">
+<size>11</size></content>
+
+<content start="58" end="63">
+<size>11</size><href>index.cml</href></content>
+
+<content start="63" end="66">
+<size>11</size></content>
+
+<content start="66" end="70">
+<size>11</size><href>blankPage.cml</href></content>
+
+<content start="70" end="72">
+<size>11</size></content>
+
+<content start="72" end="73">
+</content>
+
+</paragraph>
+<paragraph start="73" end="74">
+<LeftIndent>140.0</LeftIndent>
+<content start="73" end="74">
+</content>
+
+</paragraph>
+<paragraph start="74" end="477">
+<LeftIndent>140.0</LeftIndent>
+<content start="74" end="477">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="477" end="478">
+<LeftIndent>140.0</LeftIndent>
+<content start="477" end="478">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="478" end="480">
+<LeftIndent>140.0</LeftIndent>
+<content start="478" end="479">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="479" end="480">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="480" end="659">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="480" end="522">
+<size>11</size></content>
+
+<content start="522" end="540">
+<size>11</size><bold>true</bold></content>
+
+<content start="540" end="659">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="659" end="661">
+<LeftIndent>140.0</LeftIndent>
+<content start="659" end="660">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="660" end="661">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="661" end="662">
+<LeftIndent>140.0</LeftIndent>
+<content start="661" end="662">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="662" end="758">
+<LeftIndent>140.0</LeftIndent>
+<content start="662" end="758">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="758" end="759">
+<LeftIndent>140.0</LeftIndent>
+<content start="758" end="759">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="759" end="762">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="759" end="760">
+</content>
+
+<content start="760" end="761">
+<icon>submitreport.gif</icon></content>
+
+<content start="761" end="762">
+</content>
+
+</paragraph>
+<paragraph start="762" end="786">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="762" end="763">
+<size>13</size><bold>true</bold></content>
+
+<content start="763" end="784">
+<size>10</size></content>
+
+<content start="784" end="785">
+<size>13</size><bold>true</bold></content>
+
+<content start="785" end="786">
+</content>
+
+</paragraph>
+<paragraph start="786" end="787">
+<LeftIndent>140.0</LeftIndent>
+<content start="786" end="787">
+</content>
+
+</paragraph>
+<paragraph start="787" end="1171">
+<LeftIndent>140.0</LeftIndent>
+<content start="787" end="1170">
+<size>11</size></content>
+
+<content start="1170" end="1171">
+</content>
+
+</paragraph>
+<paragraph start="1171" end="1172">
+<LeftIndent>140.0</LeftIndent>
+<content start="1171" end="1172">
+</content>
+
+</paragraph>
+<paragraph start="1172" end="1175">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1172" end="1173">
+</content>
+
+<content start="1173" end="1174">
+<icon>collaboratorpicker.gif</icon></content>
+
+<content start="1174" end="1175">
+</content>
+
+</paragraph>
+<paragraph start="1175" end="1199">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1175" end="1176">
+<size>13</size><bold>true</bold></content>
+
+<content start="1176" end="1197">
+<size>10</size></content>
+
+<content start="1197" end="1198">
+<size>13</size><bold>true</bold></content>
+
+<content start="1198" end="1199">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1199" end="1200">
+<LeftIndent>140.0</LeftIndent>
+<content start="1199" end="1200">
+</content>
+
+</paragraph>
+<paragraph start="1200" end="1547">
+<LeftIndent>140.0</LeftIndent>
+<content start="1200" end="1547">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1547" end="1548">
+<LeftIndent>140.0</LeftIndent>
+<content start="1547" end="1548">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1548" end="1817">
+<LeftIndent>140.0</LeftIndent>
+<content start="1548" end="1817">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1817" end="1818">
+<LeftIndent>140.0</LeftIndent>
+<content start="1817" end="1818">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1818" end="1820">
+<LeftIndent>140.0</LeftIndent>
+<content start="1818" end="1819">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1819" end="1820">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1820" end="1827">
+<LeftIndent>160.0</LeftIndent>
+<content start="1820" end="1827">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1827" end="1854">
+<LeftIndent>160.0</LeftIndent>
+<content start="1827" end="1841">
+</content>
+
+<content start="1841" end="1854">
+<foreground>255 0 0</foreground><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1854" end="1877">
+<LeftIndent>160.0</LeftIndent>
+<content start="1854" end="1868">
+</content>
+
+<content start="1868" end="1877">
+<foreground>255 0 0</foreground><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1877" end="1907">
+<LeftIndent>160.0</LeftIndent>
+<content start="1877" end="1885">
+</content>
+
+<content start="1885" end="1907">
+<foreground>255 0 0</foreground><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1907" end="1942">
+<LeftIndent>160.0</LeftIndent>
+<content start="1907" end="1941">
+</content>
+
+<content start="1941" end="1942">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1942" end="1949">
+<LeftIndent>160.0</LeftIndent>
+<content start="1942" end="1949">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1949" end="1951">
+<LeftIndent>140.0</LeftIndent>
+<content start="1949" end="1950">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1950" end="1951">
+</content>
+
+</paragraph>
+<paragraph start="1951" end="1952">
+<LeftIndent>140.0</LeftIndent>
+<content start="1951" end="1952">
+</content>
+
+</paragraph>
+<paragraph start="1952" end="2247">
+<LeftIndent>140.0</LeftIndent>
+<content start="1952" end="2247">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2247" end="2248">
+<LeftIndent>140.0</LeftIndent>
+<content start="2247" end="2248">
+</content>
+
+</paragraph>
+<paragraph start="2248" end="2250">
+<LeftIndent>140.0</LeftIndent>
+<content start="2248" end="2249">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2249" end="2250">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2250" end="2257">
+<LeftIndent>160.0</LeftIndent>
+<content start="2250" end="2257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2257" end="2308">
+<LeftIndent>160.0</LeftIndent>
+<content start="2257" end="2271">
+</content>
+
+<content start="2271" end="2308">
+<foreground>255 0 0</foreground><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="2308" end="2331">
+<LeftIndent>160.0</LeftIndent>
+<content start="2308" end="2322">
+</content>
+
+<content start="2322" end="2331">
+<foreground>255 0 0</foreground><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="2331" end="2361">
+<LeftIndent>160.0</LeftIndent>
+<content start="2331" end="2339">
+</content>
+
+<content start="2339" end="2361">
+<foreground>255 0 0</foreground><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="2361" end="2396">
+<LeftIndent>160.0</LeftIndent>
+<content start="2361" end="2396">
+</content>
+
+</paragraph>
+<paragraph start="2396" end="2403">
+<LeftIndent>160.0</LeftIndent>
+<content start="2396" end="2402">
+</content>
+
+<content start="2402" end="2403">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2403" end="2405">
+<LeftIndent>140.0</LeftIndent>
+<content start="2403" end="2404">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2404" end="2405">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2405" end="2406">
+<LeftIndent>140.0</LeftIndent>
+<content start="2405" end="2406">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2406" end="2727">
+<LeftIndent>140.0</LeftIndent>
+<content start="2406" end="2595">
+<size>11</size></content>
+
+<content start="2595" end="2603">
+<size>11</size><href>index3.cml</href></content>
+
+<content start="2603" end="2726">
+<size>11</size></content>
+
+<content start="2726" end="2727">
+</content>
+
+</paragraph>
+<paragraph start="2727" end="2728">
+<content start="2727" end="2728">
+</content>
+
+</paragraph>
+<paragraph start="2728" end="2756">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2728" end="2730">
+<size>11</size></content>
+
+<content start="2730" end="2738">
+<size>11</size><href>report.cml</href></content>
+
+<content start="2738" end="2741">
+<size>11</size></content>
+
+<content start="2741" end="2746">
+<size>11</size><href>index.cml</href></content>
+
+<content start="2746" end="2749">
+<size>11</size></content>
+
+<content start="2749" end="2754">
+<size>11</size><href>blankPage.cml</href></content>
+
+<content start="2754" end="2755">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

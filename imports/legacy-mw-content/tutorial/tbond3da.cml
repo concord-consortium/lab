@@ -10,15 +10,15 @@
 The following shows a half-done ethylene molecule, which has only two torsional bonds.
 
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 &lt; Back &gt;</text>
-<section start="0" end="202">
+<section start="0" end="208">
 <paragraph start="0" end="57">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="56">
-<size>15</size><italic>true</italic><bold>true</bold></content>
+<italic>true</italic><size>15</size><bold>true</bold></content>
 
 <content start="56" end="57">
 </content>
@@ -37,7 +37,7 @@ The following shows a half-done ethylene molecule, which has only two torsional 
 <size>11</size></content>
 
 <content start="60" end="64">
-<size>11</size><href>tbond3d.cml</href></content>
+<href>tbond3d.cml</href><size>11</size></content>
 
 <content start="64" end="67">
 <size>11</size></content>
@@ -75,32 +75,32 @@ The following shows a half-done ethylene molecule, which has only two torsional 
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="159" end="192">
+<paragraph start="159" end="198">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="159" end="191">
+<content start="159" end="197">
 <size>10</size></content>
 
-<content start="191" end="192">
+<content start="197" end="198">
 </content>
 
 </paragraph>
-<paragraph start="192" end="193">
+<paragraph start="198" end="199">
 <LeftIndent>140.0</LeftIndent>
-<content start="192" end="193">
+<content start="198" end="199">
 </content>
 
 </paragraph>
-<paragraph start="193" end="202">
+<paragraph start="199" end="208">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="193" end="195">
+<content start="199" end="201">
 <size>11</size></content>
 
-<content start="195" end="199">
-<size>11</size><href>tbond3d.cml</href></content>
+<content start="201" end="205">
+<href>tbond3d.cml</href><size>11</size></content>
 
-<content start="199" end="201">
+<content start="205" end="207">
 <size>11</size></content>
 
 </paragraph>

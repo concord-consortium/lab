@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Reversing velocity of a charged particle with magentic field</page_title>
+<text>Reversing velocity of a charged particle with magentic field
+
+  
+
+    
+
+
+</text>
+<section start="0" end="74">
+<paragraph start="0" end="61">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="60">
+<size>16</size><family>Trebuchet MS</family><bold>true</bold></content>
+
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="62">
+<RightIndent>20.0</RightIndent>
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="65">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="62" end="63">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>magneticreverse$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="63" end="64">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>magneticreverse$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<RightIndent>20.0</RightIndent>
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="71">
+<Alignment>1</Alignment>
+<content start="66" end="67">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Run</title>
+<script>script:mw2d:1:run;
+script:mw2d:2:run;</script>
+<action>Script</action></component></content>
+
+<content start="67" end="68">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Stop</title>
+<script>script:mw2d:1:stop;
+script:mw2d:2:stop;</script>
+<action>Script</action></component></content>
+
+<content start="68" end="69">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Reset</title>
+<script>script:mw2d:1:stop immediately;reset;
+script:mw2d:2:stop immediately;reset;</script>
+<action>Script</action></component></content>
+
+<content start="69" end="70">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Authoring tip</title>
+<script>script:page:0:message &lt;t&gt;&lt;font face=Verdana&gt;This simulation uses two containers, one with a magentic field and the other without,&lt;br&gt;that coordinate the motion of the particle through scripts. For more information, see&lt;br&gt;the external command in the User&apos;s Manual.&lt;/font&gt;&lt;/t&gt;;</script>
+<action>Script</action></component></content>
+
+<content start="70" end="71">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="71" end="72">
+<content start="71" end="72">
+</content>
+
+</paragraph>
+<paragraph start="72" end="73">
+<content start="72" end="73">
+</content>
+
+</paragraph>
+<paragraph start="73" end="74">
+</paragraph>
+</section>
+</document>

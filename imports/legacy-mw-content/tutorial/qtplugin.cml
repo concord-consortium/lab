@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Example: A movie player using a Quicktime plugin</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Example: A movie player using a Quicktime plugin
+
+&lt; Previous | Index | Next &gt;
+
+Note: The following plugin should automatically work for Mac users. If you are using Windows, you must have installed   Quicktime from Apple to get it work. If you are using Linux, it will not work.
+
+
+ 
+ 
+&#12304;This is a player that can play movies through a Quicktime plugin.&#12305;
+
+If you would like to use this Quicktime plugin on your MW pages, you have to download this jar file: QtPlayer.jar and place it into the folder of the MW pages, and then follow the instructions on a previous page to set it up. Note that you must select org.concord.qt.QtPlayer as the main class.
+
+As we have mentioned earlier, this Quicktime plugin can be used to open files on your disk, whereas the Quicktime applet cannot (it will give you a security error). The Quicktime plugin also does media caching, which allows the user to play the movie offline. Hence, it may be more sensible to use the plugin.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="988">
+<paragraph start="0" end="49">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="48">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="78">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="50" end="52">
+<size>11</size></content>
+
+<content start="52" end="60">
+<href>pluginparam.cml</href><size>11</size></content>
+
+<content start="60" end="63">
+<size>11</size></content>
+
+<content start="63" end="68">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="68" end="71">
+<size>11</size></content>
+
+<content start="71" end="75">
+<href>jmolplugin2.cml</href><size>11</size></content>
+
+<content start="75" end="77">
+<size>11</size></content>
+
+<content start="77" end="78">
+</content>
+
+</paragraph>
+<paragraph start="78" end="79">
+<content start="78" end="79">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="79" end="278">
+<LeftIndent>140.0</LeftIndent>
+<content start="79" end="197">
+<size>11</size></content>
+
+<content start="197" end="198">
+<icon>htmlink.gif</icon></content>
+
+<content start="198" end="199">
+<size>11</size></content>
+
+<content start="199" end="219">
+<href>http://www.apple.com/quicktime/download/</href><size>11</size></content>
+
+<content start="219" end="278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="278" end="279">
+<LeftIndent>140.0</LeftIndent>
+<content start="278" end="279">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="279" end="280">
+<LeftIndent>140.0</LeftIndent>
+<content start="279" end="280">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="280" end="282">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="280" end="281">
+<component><class>org.concord.modeler.PageJContainer</class>
+<appletjar>QtPlayer.jar</appletjar>
+<appletclass>org.concord.qt.QtPlayer</appletclass>
+<resource>qtplugin$plugin$0.aps</resource><parameter>{name=&quot;errormessage&quot; value=&quot;Sorry, this plugin needs Quicktime to be installed and properly set up.&quot;}{name=&quot;errorurl&quot; value=&quot;crank.mov&quot;}{name=&quot;address&quot; value=&quot;crank.mov&quot;}</parameter>
+<width>240</width><height>150</height>
+<border>Line</border></component></content>
+
+<content start="281" end="282">
+</content>
+
+</paragraph>
+<paragraph start="282" end="284">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="282" end="283">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Snapshot</title>
+<script>script:plugin:1:snapshot;</script>
+<action>Script</action></component></content>
+
+<content start="283" end="284">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="284" end="352">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="284" end="285">
+<bold>true</bold><size>13</size></content>
+
+<content start="285" end="350">
+<size>10</size></content>
+
+<content start="350" end="351">
+<bold>true</bold><size>13</size></content>
+
+<content start="351" end="352">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="352" end="353">
+<LeftIndent>140.0</LeftIndent>
+<content start="352" end="353">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="353" end="648">
+<LeftIndent>140.0</LeftIndent>
+<content start="353" end="454">
+<size>11</size></content>
+
+<content start="454" end="466">
+<href>QtPlayer.jar</href><size>11</size></content>
+
+<content start="466" end="549">
+<size>11</size></content>
+
+<content start="549" end="564">
+<href>plugin.cml</href><size>11</size></content>
+
+<content start="564" end="605">
+<size>11</size></content>
+
+<content start="605" end="628">
+<size>11</size><family>Courier New</family></content>
+
+<content start="628" end="648">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="648" end="649">
+<LeftIndent>140.0</LeftIndent>
+<content start="648" end="649">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="649" end="959">
+<LeftIndent>140.0</LeftIndent>
+<content start="649" end="749">
+<size>11</size></content>
+
+<content start="749" end="769">
+<href>qtapplet.cml</href><size>11</size></content>
+
+<content start="769" end="959">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="959" end="960">
+<RightIndent>20.0</RightIndent>
+<content start="959" end="960">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="960" end="988">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="960" end="962">
+<size>11</size></content>
+
+<content start="962" end="970">
+<href>pluginparam.cml</href><size>11</size></content>
+
+<content start="970" end="973">
+<size>11</size></content>
+
+<content start="973" end="978">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="978" end="981">
+<size>11</size></content>
+
+<content start="981" end="985">
+<href>jmolplugin2.cml</href><size>11</size></content>
+
+<content start="985" end="987">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

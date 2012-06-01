@@ -10,17 +10,17 @@
 The structure of the 3D modeling environment resembles that of the 2D one. The follow annotations show different visual parts of the 3D modeling environment:
 
  
-[This is an embedded model.]
+&#12304;This is an embedded model container.&#12305;
 
  The Simulation Controls will be discussed further in a following section.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="368">
+<section start="0" end="378">
 <paragraph start="0" end="43">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="42">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<bold>true</bold><italic>true</italic><size>15</size></content>
 
 <content start="42" end="43">
 </content>
@@ -40,19 +40,19 @@ The structure of the 3D modeling environment resembles that of the 2D one. The f
 <size>11</size></content>
 
 <content start="46" end="54">
-<size>11</size><href>intro_3d.cml</href></content>
+<href>intro_3d.cml</href><size>11</size></content>
 
 <content start="54" end="57">
 <size>11</size></content>
 
 <content start="57" end="62">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="62" end="65">
 <size>11</size></content>
 
 <content start="65" end="69">
-<size>11</size><href>mw3d_move.cml</href></content>
+<href>mw3d_move.cml</href><size>11</size></content>
 
 <content start="69" end="71">
 <size>11</size></content>
@@ -90,62 +90,62 @@ The structure of the 3D modeling environment resembles that of the 2D one. The f
 </content>
 
 </paragraph>
-<paragraph start="234" end="263">
+<paragraph start="234" end="273">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="234" end="262">
+<content start="234" end="272">
 <size>10</size></content>
 
-<content start="262" end="263">
+<content start="272" end="273">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="263" end="264">
+<paragraph start="273" end="274">
 <LeftIndent>140.0</LeftIndent>
-<content start="263" end="264">
+<content start="273" end="274">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="264" end="339">
+<paragraph start="274" end="349">
 <LeftIndent>140.0</LeftIndent>
-<content start="264" end="318">
+<content start="274" end="328">
 <size>11</size></content>
 
-<content start="318" end="337">
-<size>11</size><href>recorder3d.cml</href></content>
+<content start="328" end="347">
+<href>recorder3d.cml</href><size>11</size></content>
 
-<content start="337" end="339">
+<content start="347" end="349">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="339" end="340">
+<paragraph start="349" end="350">
 <LeftIndent>140.0</LeftIndent>
-<content start="339" end="340">
+<content start="349" end="350">
 </content>
 
 </paragraph>
-<paragraph start="340" end="368">
+<paragraph start="350" end="378">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="340" end="342">
+<content start="350" end="352">
 <size>11</size></content>
 
-<content start="342" end="350">
-<size>11</size><href>intro_3d.cml</href></content>
+<content start="352" end="360">
+<href>intro_3d.cml</href><size>11</size></content>
 
-<content start="350" end="353">
+<content start="360" end="363">
 <size>11</size></content>
 
-<content start="353" end="358">
-<size>11</size><href>index4.cml</href></content>
+<content start="363" end="368">
+<href>index4.cml</href><size>11</size></content>
 
-<content start="358" end="361">
+<content start="368" end="371">
 <size>11</size></content>
 
-<content start="361" end="365">
-<size>11</size><href>mw3d_move.cml</href></content>
+<content start="371" end="375">
+<href>mw3d_move.cml</href><size>11</size></content>
 
-<content start="365" end="367">
+<content start="375" end="377">
 <size>11</size></content>
 
 </paragraph>

@@ -10,15 +10,15 @@
 The following shows a completed ethylene molecule, which has four torsional bonds to maintain the planarity.
 
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 &lt; Back &gt;</text>
-<section start="0" end="224">
+<section start="0" end="230">
 <paragraph start="0" end="57">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="56">
-<size>15</size><italic>true</italic><bold>true</bold></content>
+<italic>true</italic><size>15</size><bold>true</bold></content>
 
 <content start="56" end="57">
 </content>
@@ -37,7 +37,7 @@ The following shows a completed ethylene molecule, which has four torsional bond
 <size>11</size></content>
 
 <content start="60" end="64">
-<size>11</size><href>tbond3d.cml</href></content>
+<href>tbond3d.cml</href><size>11</size></content>
 
 <content start="64" end="67">
 <size>11</size></content>
@@ -75,32 +75,32 @@ The following shows a completed ethylene molecule, which has four torsional bond
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="181" end="214">
+<paragraph start="181" end="220">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="181" end="213">
+<content start="181" end="219">
 <size>10</size></content>
 
-<content start="213" end="214">
+<content start="219" end="220">
 </content>
 
 </paragraph>
-<paragraph start="214" end="215">
+<paragraph start="220" end="221">
 <LeftIndent>140.0</LeftIndent>
-<content start="214" end="215">
+<content start="220" end="221">
 </content>
 
 </paragraph>
-<paragraph start="215" end="224">
+<paragraph start="221" end="230">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="215" end="217">
+<content start="221" end="223">
 <size>11</size></content>
 
-<content start="217" end="221">
-<size>11</size><href>tbond3d.cml</href></content>
+<content start="223" end="227">
+<href>tbond3d.cml</href><size>11</size></content>
 
-<content start="221" end="223">
+<content start="227" end="229">
 <size>11</size></content>
 
 </paragraph>

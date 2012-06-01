@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Double-clicking a toolbar button to bring up a customization dialog window</page_title>
+<text> Double-clicking a toolbar button to bring up a customization dialog window
+You can always double-click a toolbar button to bring up a dialog window for customizing the corresponding action, if there is any. This functionality has been around for a long time but no one seems to have noticed it. For example, if you are to bring up the Lennard-Jones graph for adjusting the VDW parameters, you can double-click on one of the four buttons for inserting atoms, if you have either one of them on your toolbar. You need not go through the atom property edtor or the model property editor to get to the Lennard-Jones graph.
+Double-click on the three pre-made molecules to bring up dialog box for customizing the bond length, the bond angle, and the bond strength, for the next molecule to be dropped into the box.
+ </text>
+<section start="0" end="811">
+<paragraph start="0" end="76">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="75">
+<size>15</size><bold>true</bold></content>
+
+<content start="75" end="76">
+</content>
+
+</paragraph>
+<paragraph start="76" end="619">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="76" end="619">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="619" end="809">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="619" end="809">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="809" end="811">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="809" end="810">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>doubleclicktoolbarbutton$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Rotate Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>What's This?</button><button>Draw Lines</button><button>Draw Rectangle</button><button>Mark Object</button><button>Count Objects</button><button>Measure Distance</button><button>Toggle Trajectory</button><button>Toggle Average Position</button><button>Add Diatomic Molecule</button><button>Add Triatomic Molecule</button><button>Add Benzene</button><button>Add Chain Molecule</button><button>Add Obstacle</button><button>Fill Area with Nt Atoms</button><button>Fill Area with Pl Atoms</button><button>Fill Area with Ws Atoms</button><button>Fill Area with Ck Atoms</button><button>Add Rectangular Molecular Surface</button><button>Add Rectangular Molecular Ribbon</button><button>Add Circular Molecular Surface</button><button>Add Circular Molecular Ribbon</button><button>Add Curved Molecular Surface</button><button>Add Curved Molecular Ribbon</button><button>Add Molecular Surface in Free-Form Shape</button><button>Add an Amino Acid to Polypeptide</button><button>Subtract an Amino Acid from Polypeptide</button><button>Add a Nucleotide to DNA</button><button>Subtract a Nucleotide from DNA</button><button>Add Positive Charge</button><button>Add Negative Charge</button><button>Increase Restraint</button><button>Decrease Restraint</button><button>Increase Damping</button><button>Decrease Damping</button><button>Setup Boundary</button><button>Change Type</button><button>Change Velocity</button><button>Build Radial Bond</button><button>Build Angular Bond</button></component></content>
+
+</paragraph>
+</section>
+</document>

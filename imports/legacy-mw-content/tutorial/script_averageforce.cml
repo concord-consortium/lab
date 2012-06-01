@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Averageforce</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Averageforce
@@ -24,15 +24,15 @@ The following model demonstrates the use of this command to prove that for a sys
 
  
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="860">
+<section start="0" end="866">
 <paragraph start="0" end="13">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="12">
-<bold>true</bold><size>16</size><italic>true</italic></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="12" end="13">
 </content>
@@ -85,7 +85,7 @@ The following model demonstrates the use of this command to prove that for a sys
 <size>11</size></content>
 
 <content start="47" end="59">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="59" end="171">
 <size>11</size></content>
@@ -106,25 +106,25 @@ The following model demonstrates the use of this command to prove that for a sys
 <paragraph start="180" end="181">
 <LeftIndent>140.0</LeftIndent>
 <content start="180" end="181">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="181" end="201">
 <LeftIndent>160.0</LeftIndent>
 <content start="181" end="193">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size><bold>true</bold></content>
 
 <content start="193" end="201">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="201" end="214">
 <LeftIndent>160.0</LeftIndent>
 <content start="201" end="206">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size><bold>true</bold></content>
 
 <content start="206" end="213">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="213" end="214">
 <size>11</size></content>
@@ -151,17 +151,17 @@ The following model demonstrates the use of this command to prove that for a sys
 <paragraph start="260" end="262">
 <LeftIndent>140.0</LeftIndent>
 <content start="260" end="261">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="261" end="262">
 </content>
 
 </paragraph>
 <paragraph start="262" end="403">
-<LeftIndent>200.0</LeftIndent>
 <RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
 <content start="262" end="266">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="266" end="275">
 <size>11</size></content>
@@ -179,7 +179,7 @@ The following model demonstrates the use of this command to prove that for a sys
 <paragraph start="403" end="405">
 <LeftIndent>140.0</LeftIndent>
 <content start="403" end="404">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="404" end="405">
 <size>11</size></content>
@@ -241,44 +241,44 @@ show selectionhalo on;</script2>
 </content>
 
 </paragraph>
-<paragraph start="798" end="831">
+<paragraph start="798" end="837">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="798" end="830">
+<content start="798" end="836">
 <size>10</size></content>
 
-<content start="830" end="831">
+<content start="836" end="837">
 </content>
 
 </paragraph>
-<paragraph start="831" end="832">
+<paragraph start="837" end="838">
 <LeftIndent>140.0</LeftIndent>
-<content start="831" end="832">
+<content start="837" end="838">
 </content>
 
 </paragraph>
-<paragraph start="832" end="860">
+<paragraph start="838" end="866">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="832" end="834">
+<content start="838" end="840">
 <size>11</size></content>
 
-<content start="834" end="842">
+<content start="840" end="848">
 <size>11</size><href>script_averageposition.cml</href></content>
 
-<content start="842" end="845">
+<content start="848" end="851">
 <size>11</size></content>
 
-<content start="845" end="850">
+<content start="851" end="856">
 <size>11</size><href>mwscripts.cml</href></content>
 
-<content start="850" end="853">
+<content start="856" end="859">
 <size>11</size></content>
 
-<content start="853" end="857">
+<content start="859" end="863">
 <size>11</size><href>script_lac.cml</href></content>
 
-<content start="857" end="859">
+<content start="863" end="865">
 <size>11</size></content>
 
 </paragraph>

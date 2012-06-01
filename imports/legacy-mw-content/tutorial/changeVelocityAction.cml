@@ -12,7 +12,7 @@ To change the velocity of a particle, click the Velocity Tool button (&quot; &qu
 You can practice changing a velocity vector with the model below:
 
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Similarly, you can change the velocity of the center of mass of a Gay-Berne particle in exactly the same way. 
 
@@ -25,34 +25,34 @@ Inward:   Outward:
 You may practice changing linear and angular velocities of a Gay-Berne particle with the model below:
 
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Script support
 
 The velocity of a particle can be changed by using the set command: set particle[i].vx [value] and set particle[i].vy [value].  The angular velocity can be changed using set particle[i].omega [value].
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1659">
+<section start="0" end="1671">
 <paragraph start="0" end="18">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="17">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="17" end="18">
 </content>
 
 </paragraph>
 <paragraph start="18" end="19">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="18" end="19">
 </content>
 
 </paragraph>
 <paragraph start="19" end="47">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="19" end="21">
 <size>11</size></content>
 
@@ -118,8 +118,8 @@ The velocity of a particle can be changed by using the set command: set particle
 
 </paragraph>
 <paragraph start="464" end="466">
-<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
 <content start="464" end="465">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>changeVelocityAction$0.mml</resource><menubar>false</menubar><recorder>true</recorder><button>Change Velocity</button><button>Select Object</button></component></content>
@@ -128,206 +128,206 @@ The velocity of a particle can be changed by using the set command: set particle
 </content>
 
 </paragraph>
-<paragraph start="466" end="499">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="466" end="505">
 <Alignment>1</Alignment>
-<content start="466" end="498">
+<LeftIndent>140.0</LeftIndent>
+<content start="466" end="504">
 <size>10</size></content>
 
-<content start="498" end="499">
+<content start="504" end="505">
 </content>
 
 </paragraph>
-<paragraph start="499" end="500">
+<paragraph start="505" end="506">
 <LeftIndent>100.0</LeftIndent>
-<content start="499" end="500">
+<content start="505" end="506">
 </content>
 
 </paragraph>
-<paragraph start="500" end="611">
+<paragraph start="506" end="617">
 <LeftIndent>140.0</LeftIndent>
-<content start="500" end="611">
+<content start="506" end="617">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="611" end="612">
+<paragraph start="617" end="618">
 <LeftIndent>140.0</LeftIndent>
-<content start="611" end="612">
+<content start="617" end="618">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="612" end="998">
+<paragraph start="618" end="1004">
 <LeftIndent>140.0</LeftIndent>
-<content start="612" end="789">
+<content start="618" end="795">
 <size>11</size></content>
 
-<content start="789" end="790">
+<content start="795" end="796">
 <size>11</size><icon>Omega.gif</icon></content>
 
-<content start="790" end="998">
+<content start="796" end="1004">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="998" end="999">
+<paragraph start="1004" end="1005">
 <LeftIndent>140.0</LeftIndent>
-<content start="998" end="999">
+<content start="1004" end="1005">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="999" end="1250">
+<paragraph start="1005" end="1256">
 <LeftIndent>140.0</LeftIndent>
-<content start="999" end="1250">
+<content start="1005" end="1256">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1250" end="1251">
+<paragraph start="1256" end="1257">
 <LeftIndent>100.0</LeftIndent>
-<content start="1250" end="1251">
+<content start="1256" end="1257">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1251" end="1273">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1257" end="1279">
 <Alignment>1</Alignment>
-<content start="1251" end="1259">
+<LeftIndent>140.0</LeftIndent>
+<content start="1257" end="1265">
 <size>11</size></content>
 
-<content start="1259" end="1260">
+<content start="1265" end="1266">
 <size>11</size><icon>InwardOmega.gif</icon></content>
 
-<content start="1260" end="1270">
+<content start="1266" end="1276">
 <size>11</size></content>
 
-<content start="1270" end="1271">
+<content start="1276" end="1277">
 <size>11</size><icon>OutwardOmega.gif</icon></content>
 
-<content start="1271" end="1273">
+<content start="1277" end="1279">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1273" end="1274">
+<paragraph start="1279" end="1280">
 <LeftIndent>100.0</LeftIndent>
-<content start="1273" end="1274">
+<content start="1279" end="1280">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1274" end="1376">
+<paragraph start="1280" end="1382">
 <LeftIndent>140.0</LeftIndent>
-<content start="1274" end="1375">
+<content start="1280" end="1381">
 <size>11</size></content>
 
-<content start="1375" end="1376">
+<content start="1381" end="1382">
 </content>
 
 </paragraph>
-<paragraph start="1376" end="1377">
+<paragraph start="1382" end="1383">
 <LeftIndent>100.0</LeftIndent>
-<content start="1376" end="1377">
+<content start="1382" end="1383">
 </content>
 
 </paragraph>
-<paragraph start="1377" end="1379">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1383" end="1385">
 <Alignment>1</Alignment>
-<content start="1377" end="1378">
+<LeftIndent>140.0</LeftIndent>
+<content start="1383" end="1384">
 <component><class>org.concord.mw2d.activity.GBContainer</class>
 <resource>changeVelocityAction$0.gbl</resource><menubar>false</menubar><recorder>true</recorder><button>Change Velocity</button><button>Change Angular Velocity</button><button>Select Object</button></component></content>
 
-<content start="1378" end="1379">
+<content start="1384" end="1385">
 </content>
 
 </paragraph>
-<paragraph start="1379" end="1412">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="1385" end="1424">
 <Alignment>1</Alignment>
-<content start="1379" end="1411">
+<LeftIndent>140.0</LeftIndent>
+<content start="1385" end="1423">
 <size>10</size></content>
 
-<content start="1411" end="1412">
+<content start="1423" end="1424">
 </content>
 
 </paragraph>
-<paragraph start="1412" end="1413">
-<content start="1412" end="1413">
+<paragraph start="1424" end="1425">
+<content start="1424" end="1425">
 </content>
 
 </paragraph>
-<paragraph start="1413" end="1428">
+<paragraph start="1425" end="1440">
 <LeftIndent>140.0</LeftIndent>
-<content start="1413" end="1427">
-<size>11</size><bold>true</bold></content>
+<content start="1425" end="1439">
+<bold>true</bold><size>11</size></content>
 
-<content start="1427" end="1428">
+<content start="1439" end="1440">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1428" end="1429">
+<paragraph start="1440" end="1441">
 <LeftIndent>140.0</LeftIndent>
-<content start="1428" end="1429">
+<content start="1440" end="1441">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1429" end="1630">
+<paragraph start="1441" end="1642">
 <LeftIndent>140.0</LeftIndent>
-<content start="1429" end="1484">
+<content start="1441" end="1496">
 <size>11</size></content>
 
-<content start="1484" end="1487">
+<content start="1496" end="1499">
 <href>script_set.cml</href><size>11</size><family>Courier New</family></content>
 
-<content start="1487" end="1497">
+<content start="1499" end="1509">
 <size>11</size></content>
 
-<content start="1497" end="1523">
+<content start="1509" end="1535">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1523" end="1528">
+<content start="1535" end="1540">
 <size>11</size></content>
 
-<content start="1528" end="1554">
+<content start="1540" end="1566">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1554" end="1603">
+<content start="1566" end="1615">
 <size>11</size></content>
 
-<content start="1603" end="1628">
+<content start="1615" end="1640">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1628" end="1629">
+<content start="1640" end="1641">
 <size>11</size></content>
 
-<content start="1629" end="1630">
+<content start="1641" end="1642">
 </content>
 
 </paragraph>
-<paragraph start="1630" end="1631">
+<paragraph start="1642" end="1643">
 <LeftIndent>140.0</LeftIndent>
-<content start="1630" end="1631">
+<content start="1642" end="1643">
 </content>
 
 </paragraph>
-<paragraph start="1631" end="1659">
-<RightIndent>20.0</RightIndent>
+<paragraph start="1643" end="1671">
 <Alignment>2</Alignment>
-<content start="1631" end="1633">
+<RightIndent>20.0</RightIndent>
+<content start="1643" end="1645">
 <size>11</size></content>
 
-<content start="1633" end="1641">
+<content start="1645" end="1653">
 <href>measureDistanceAction.cml</href><size>11</size></content>
 
-<content start="1641" end="1644">
+<content start="1653" end="1656">
 <size>11</size></content>
 
-<content start="1644" end="1649">
+<content start="1656" end="1661">
 <href>index1.cml</href><size>11</size></content>
 
-<content start="1649" end="1652">
+<content start="1661" end="1664">
 <size>11</size></content>
 
-<content start="1652" end="1656">
+<content start="1664" end="1668">
 <href>mutateAction.cml</href><size>11</size></content>
 
-<content start="1656" end="1658">
+<content start="1668" end="1670">
 <size>11</size></content>
 
 </paragraph>

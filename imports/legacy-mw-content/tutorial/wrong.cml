@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Your answer is wrong</page_title>
+<text>
+Sorry, your answer is wrong.
+
+Please hit the Back Button to go back to try again.</text>
+<section start="0" end="83">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+<size>13</size></content>
+
+</paragraph>
+<paragraph start="1" end="30">
+<Alignment>1</Alignment>
+<content start="1" end="30">
+<foreground>255 0 0</foreground><bold>true</bold><size>30</size><family>Comic Sans MS</family></content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<content start="30" end="31">
+<foreground>255 0 0</foreground><size>24</size><family>Comic Sans MS</family></content>
+
+</paragraph>
+<paragraph start="31" end="83">
+<Alignment>1</Alignment>
+<content start="31" end="82">
+<foreground>255 0 0</foreground><size>24</size><family>Comic Sans MS</family></content>
+
+</paragraph>
+</section>
+</document>

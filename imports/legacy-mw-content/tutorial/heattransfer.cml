@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Heat transfer test</page_title>
+<text>Heat transfer test
+
+  
+
+The scripts used in the custom task
+ 
+
+Note: The above scripts are for your reading. To access the action scripts, right-click on the model window above and select &quot;Task Manager&quot; from the pop-up menu.</text>
+<section start="0" end="225">
+<paragraph start="0" end="19">
+<Alignment>1</Alignment>
+<content start="0" end="18">
+<bold>true</bold><size>16</size></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="23">
+<Alignment>1</Alignment>
+<content start="20" end="21">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>heattransfer$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>285</height>
+<border>Lowered Etched</border></component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="60">
+<Alignment>1</Alignment>
+<content start="24" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="62">
+<Alignment>1</Alignment>
+<content start="60" end="61">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>700.0</width>
+<height>200.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;pre&gt;define %t1 0;
+define %t2 0;
+define %ti 0;
+define %i 0;
+define %n1 0;
+define %n2 0;
+if(200 &amp;gt; %model_time);
+  set %count 0; // reset the counter when the model is reset;
+  select obstacle all; // withdraw the obstacle to allow heat transfer
+  remove;
+endif;
+while(%number_of_atoms &amp;gt; %i);
+  set %ti %atom[%i].mass*(%atom[%i].vx*%atom[%i].vx+%atom[%i].vy*%atom[%i].vy);
+  if(%atom[%i].id == 2);
+    set %t1 %t1+%ti;
+    set %n1 %n1+1;
+  else;
+    set %t2 %t2+%ti;
+    set %n2 %n2+1;
+  endif;
+  set %i %i+1;
+endwhile;
+set %t1 %t1/%n1;
+set %t2 %t2/%n2;
+if(1000000 &amp;gt; abs(%t1-%t2));
+  print %count, %model_time, (%t1, %t2);
+  if(%count &amp;gt; 5); // let it equilibrate for 5 times
+    stop immediately;
+    message &lt;t&gt;Heat equilibrium is reached!&lt;/t&gt;
+    delay 2;
+    snapshot;
+  endif;
+  set %count %count+1;
+endif;&lt;/pre&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<Alignment>1</Alignment>
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="225">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="63" end="224">
+</content>
+
+</paragraph>
+</section>
+</document>

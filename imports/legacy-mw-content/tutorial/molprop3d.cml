@@ -10,16 +10,16 @@
 es.
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 
 &lt; Previous | Index | Next &gt;</text>
 <section start="0" end="126">
 <paragraph start="0" end="34">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="33">
-<bold>true</bold><size>15</size><italic>true</italic></content>
+<italic>true</italic><size>15</size><bold>true</bold></content>
 
 <content start="33" end="34">
 </content>
@@ -32,19 +32,19 @@ es.
 
 </paragraph>
 <paragraph start="35" end="63">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="35" end="37">
 <size>11</size></content>
 
 <content start="37" end="45">
-<size>11</size><href>atomprop3d.cml</href></content>
+<href>atomprop3d.cml</href><size>11</size></content>
 
 <content start="45" end="48">
 <size>11</size></content>
 
 <content start="48" end="53">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="53" end="62">
 <size>11</size></content>
@@ -107,19 +107,19 @@ es.
 
 </paragraph>
 <paragraph start="98" end="126">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="98" end="100">
 <size>11</size></content>
 
 <content start="100" end="108">
-<size>11</size><href>atomprop3d.cml</href></content>
+<href>atomprop3d.cml</href><size>11</size></content>
 
 <content start="108" end="111">
 <size>11</size></content>
 
 <content start="111" end="116">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="116" end="125">
 <size>11</size></content>

@@ -12,7 +12,7 @@ The timeouts for opening a connection and reading data from it mean the maximum 
 To open the preference dialog, choose the &quot;Option&gt;Preferences&quot; menu (on Windows and Linux) or the &quot;Molecular Workbench&gt;Preferences...&quot; menu (on Mac OS X), and select the Connection tab. You will see the following dialog: 
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 If your connection is slow, for example you are using dial-up, please set larger values for these parameters.
 
@@ -21,10 +21,10 @@ If you are behind a firewall, you need to set a proxy server. Input the proxy pa
 &lt; Previous | Index | Next &gt;</text>
 <section start="0" end="957">
 <paragraph start="0" end="21">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="0" end="20">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<bold>true</bold><italic>true</italic><size>15</size></content>
 
 <content start="20" end="21">
 </content>
@@ -37,25 +37,25 @@ If you are behind a firewall, you need to set a proxy server. Input the proxy pa
 
 </paragraph>
 <paragraph start="22" end="50">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="22" end="24">
 <size>11</size></content>
 
 <content start="24" end="32">
-<href>fullScreen.cml</href><size>11</size></content>
+<size>11</size><href>fullScreen.cml</href></content>
 
 <content start="32" end="35">
 <size>11</size></content>
 
 <content start="35" end="40">
-<href>index.cml</href><size>11</size></content>
+<size>11</size><href>index.cml</href></content>
 
 <content start="40" end="43">
 <size>11</size></content>
 
 <content start="43" end="47">
-<href>caching.cml</href><size>11</size></content>
+<size>11</size><href>caching.cml</href></content>
 
 <content start="47" end="49">
 <size>11</size></content>
@@ -109,8 +109,14 @@ If you are behind a firewall, you need to set a proxy server. Input the proxy pa
 <paragraph start="669" end="693">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="669" end="692">
+<content start="669" end="670">
+<bold>true</bold><size>13</size></content>
+
+<content start="670" end="691">
 <size>10</size></content>
+
+<content start="691" end="692">
+<bold>true</bold><size>13</size></content>
 
 <content start="692" end="693">
 <size>11</size></content>
@@ -147,25 +153,25 @@ If you are behind a firewall, you need to set a proxy server. Input the proxy pa
 
 </paragraph>
 <paragraph start="929" end="957">
-<RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
 <content start="929" end="931">
 <size>11</size></content>
 
 <content start="931" end="939">
-<href>fullScreen.cml</href><size>11</size></content>
+<size>11</size><href>fullScreen.cml</href></content>
 
 <content start="939" end="942">
 <size>11</size></content>
 
 <content start="942" end="947">
-<href>index.cml</href><size>11</size></content>
+<size>11</size><href>index.cml</href></content>
 
 <content start="947" end="950">
 <size>11</size></content>
 
 <content start="950" end="954">
-<href>caching.cml</href><size>11</size></content>
+<size>11</size><href>caching.cml</href></content>
 
 <content start="954" end="956">
 <size>11</size></content>

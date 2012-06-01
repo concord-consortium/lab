@@ -12,17 +12,17 @@ The second test of the pressure gauge is to make the osbtacle a piston, put two 
 Does this happen? Try it out with the following experiment:
 
   
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Not surprisingly, the piston stops when the pressure curves converge.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="718">
+<section start="0" end="724">
 <paragraph start="0" end="40">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="39">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="39" end="40">
 </content>
@@ -125,56 +125,56 @@ Not surprisingly, the piston stops when the pressure curves converge.
 </content>
 
 </paragraph>
-<paragraph start="585" end="618">
+<paragraph start="585" end="624">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="585" end="617">
+<content start="585" end="623">
 <size>10</size></content>
 
-<content start="617" end="618">
+<content start="623" end="624">
 </content>
 
 </paragraph>
-<paragraph start="618" end="619">
+<paragraph start="624" end="625">
 <LeftIndent>140.0</LeftIndent>
-<content start="618" end="619">
+<content start="624" end="625">
 </content>
 
 </paragraph>
-<paragraph start="619" end="689">
+<paragraph start="625" end="695">
 <LeftIndent>140.0</LeftIndent>
-<content start="619" end="689">
+<content start="625" end="695">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="689" end="690">
+<paragraph start="695" end="696">
 <LeftIndent>140.0</LeftIndent>
-<content start="689" end="690">
+<content start="695" end="696">
 </content>
 
 </paragraph>
-<paragraph start="690" end="718">
+<paragraph start="696" end="724">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="690" end="692">
+<content start="696" end="698">
 <size>11</size></content>
 
-<content start="692" end="700">
+<content start="698" end="706">
 <href>multipressureprobe.cml</href><size>11</size></content>
 
-<content start="700" end="703">
+<content start="706" end="709">
 <size>11</size></content>
 
-<content start="703" end="708">
+<content start="709" end="714">
 <href>index1.cml</href><size>11</size></content>
 
-<content start="708" end="711">
+<content start="714" end="717">
 <size>11</size></content>
 
-<content start="711" end="715">
+<content start="717" end="721">
 <href>isopressure.cml</href><size>11</size></content>
 
-<content start="715" end="717">
+<content start="721" end="723">
 <size>11</size></content>
 
 </paragraph>

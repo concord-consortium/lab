@@ -1,36 +1,34 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
 <language>ISO-8859-1</language>
-<page_title>Creating a JNLP launching file for a page</page_title>
+<page_title>Creating a JNLP launching link for a page</page_title>
 <bg_image>sidebar2.gif</bg_image>
-<text>Creating a JNLP launching file for a page
+<text>Creating a JNLP launching link for a page
 
 &lt; Previous | Index | Next &gt;
 
-A JNLP file is a tiny file that can be used to launch a Java program from anywhere: the desktop, email attachment, or a Web page.
+In addition to deploying an MW page as an applet, a JNLP launching link for launching an MW page from within a web page can be created.
+
+You can choose &quot;File&gt;Create a Launching URL in System Clipboard&quot; to create a JNLP link and paste it in your email or as a link within your web pages (i.e. paste it as a href attribute: &lt;a href=&quot;PASTE HERE&quot;&gt;text&lt;/a&gt;). When the JNLP link is clicked, it will launch MW and automatically load the MW page the JNLP link points to. This is a convenient way for directing people to an MW page.
 
  
-Google searches JNLP files. If you put JNLP files on the Internet, setting a property window title is important if you want the activity pointed by the JNLP to be found through Google.
+NOTE: If you want to create launching URLs for your MW pages, you must upload them to the Internet and opened them with MW for the JNLP links to be created. You cannot create a JNLP link or file for a page that is located on your hard disk, which no one else can access. If you do not have a web account to upload your stuff, you can register with MW to get an account from us and then use the MW Space to upload a page or multiple pages.
  
 
-The Molecular Workbench (MW) allows you to create a JNLP file for an activity on the Internet. You can choose &quot;File&gt;Create a JNLP Launcher for Current Page&quot; to create a JNLP file and send it by email or put it to your Web pages. When the JNLP file is clicked, it will launch MW and automatically load the activity page the JNLP link points to. This is a very convenient way of sharing your activities with other people.
-
- 
-NOTE: Your model or activity MUST be uploaded to the Internet and opened with MW for the JNLP to be created. You cannot create a JNLP file for a file that is located on your hard disk, which no one else can access.
- 
-The steps to create a JNLP file are:
+If you would like to create JNLP launching links for your own pages (and do not want to use the MW Space), please follow these steps:
 
 1. Make sure you have an Internet account that can host public pages.
 2. Upload everything of the model or activity to a folder in your Internet account.
 3. Write down the HTTP address of the initial CML page (the first page with extension .cml).
 4. Copy this HTTP address and paste it into the URL location bar of MW and hit ENTER.
-5. Use &quot;File&gt;Create a JNLP Launcher for Current Page&quot; to create a JNLP and save it to your disk.
-6. Deploy the JNLP file: use &lt;a href=&quot;filename.jnlp&quot;&gt;link to the model&lt;/a&gt; in the HTML page.
+5. Select &quot;File&gt;Create a Launching URL in System Clipboard&quot;.
+6. A message window will pop up to tell you that the link has been created in the system clipboard.
+7. Paste the JNLP link: use &lt;a href=&quot;[PASTE]&quot;&gt;link to the model&lt;/a&gt; in your HTML page.
 
-If you insist on creating a JNLP launcher for local files, for example, you would like to use JNLP to organize your local models in a PowerPoint presentation, you can copy the following sample JNLP file, change the address (the bold line) it will open, and save it into a JNLP file:
+If you insist on creating a JNLP launcher for local files, for example, you would like to use JNLP to organize your local models in a PowerPoint presentation, you can copy the following sample text, change the address (the bold line) it will open, and save it into a file with an extension &quot;.jnlp&quot;:
 
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;jnlp spec=&quot;1.0+&quot; codebase=&quot;http://mw.concord.org/modeler&quot;&gt;
+&lt;jnlp spec=&quot;1.0+&quot; codebase=&quot;http://mw2.concord.org/public&quot;&gt;
    &lt;information&gt;
       &lt;title&gt;Molecular Workbench&lt;/title&gt;
       &lt;vendor&gt;Concord Consortium, Inc.&lt;/vendor&gt;
@@ -57,12 +55,12 @@ If you insist on creating a JNLP launcher for local files, for example, you woul
 The above sample is for Windows. For Mac OS X and Linux, the path should be something like /user/my folder/my_model.cml.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="2883">
+<section start="0" end="3062">
 <paragraph start="0" end="42">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="41">
-<size>15</size><italic>true</italic><bold>true</bold></content>
+<size>15</size><bold>true</bold><italic>true</italic></content>
 
 <content start="41" end="42">
 </content>
@@ -82,19 +80,19 @@ The above sample is for Windows. For Mac OS X and Linux, the path should be some
 <size>11</size></content>
 
 <content start="45" end="53">
-<href>attach.cml</href><size>11</size></content>
+<size>11</size><href>saveapplet.cml</href></content>
 
 <content start="53" end="56">
 <size>11</size></content>
 
 <content start="56" end="61">
-<href>index3.cml</href><size>11</size></content>
+<size>11</size><href>index.cml</href></content>
 
 <content start="61" end="64">
 <size>11</size></content>
 
 <content start="64" end="68">
-<href>upload.cml</href><size>11</size></content>
+<size>11</size><href>whatToSend.cml</href></content>
 
 <content start="68" end="70">
 <size>11</size></content>
@@ -110,422 +108,403 @@ The above sample is for Windows. For Mac OS X and Linux, the path should be some
 </content>
 
 </paragraph>
-<paragraph start="72" end="202">
+<paragraph start="72" end="208">
 <LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="72" end="202">
+<content start="72" end="208">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="202" end="203">
+<paragraph start="208" end="209">
 <LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="202" end="203">
+<content start="208" end="209">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="203" end="205">
-<SpaceBelow>2.0</SpaceBelow>
-<LeftIndent>140.0</LeftIndent>
-<SpaceAbove>2.0</SpaceAbove>
-<RightIndent>20.0</RightIndent>
-<content start="203" end="204">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
-<content start="204" end="205">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="205" end="390">
-<LeftIndent>200.0</LeftIndent>
-<RightIndent>100.0</RightIndent>
-<content start="205" end="291">
-<size>11</size></content>
-
-<content start="291" end="303">
-<href>title.cml</href><size>11</size></content>
-
-<content start="303" end="389">
-<size>11</size></content>
-
-<content start="389" end="390">
-</content>
-
-</paragraph>
-<paragraph start="390" end="392">
-<SpaceBelow>2.0</SpaceBelow>
-<LeftIndent>140.0</LeftIndent>
-<SpaceAbove>2.0</SpaceAbove>
-<RightIndent>20.0</RightIndent>
-<content start="390" end="391">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
-<content start="391" end="392">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="392" end="393">
+<paragraph start="209" end="596">
 <LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="392" end="393">
+<content start="209" end="596">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="393" end="813">
+<paragraph start="596" end="597">
 <LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="393" end="813">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="813" end="814">
-<LeftIndent>140.0</LeftIndent>
-<RightIndent>20.0</RightIndent>
-<content start="813" end="814">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="814" end="816">
-<SpaceBelow>2.0</SpaceBelow>
-<LeftIndent>140.0</LeftIndent>
-<SpaceAbove>2.0</SpaceAbove>
-<RightIndent>20.0</RightIndent>
-<content start="814" end="815">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
-<content start="815" end="816">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="816" end="1031">
-<LeftIndent>200.0</LeftIndent>
-<RightIndent>100.0</RightIndent>
-<content start="816" end="820">
+<content start="596" end="597">
 <size>11</size><bold>true</bold></content>
 
-<content start="820" end="1031">
-<size>11</size></content>
-
 </paragraph>
-<paragraph start="1031" end="1033">
-<SpaceBelow>2.0</SpaceBelow>
-<LeftIndent>140.0</LeftIndent>
-<SpaceAbove>2.0</SpaceAbove>
-<RightIndent>80.0</RightIndent>
-<content start="1031" end="1032">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
-<content start="1032" end="1033">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1033" end="1070">
+<paragraph start="597" end="599">
 <LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1033" end="1070">
+<content start="597" end="598">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="598" end="599">
+<size>11</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="599" end="1038">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="599" end="603">
+<size>11</size><bold>true</bold></content>
+
+<content start="603" end="933">
+<size>11</size></content>
+
+<content start="933" end="949">
+<size>11</size><href>register.jsp?client=mw</href></content>
+
+<content start="949" end="1005">
+<size>11</size></content>
+
+<content start="1005" end="1018">
+<size>11</size><href>upload.cml</href></content>
+
+<content start="1018" end="1022">
+<size>11</size></content>
+
+<content start="1022" end="1036">
+<size>11</size><href>upload2.cml</href></content>
+
+<content start="1036" end="1038">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1070" end="1071">
+<paragraph start="1038" end="1040">
 <LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1070" end="1071">
+<content start="1038" end="1039">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1039" end="1040">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1071" end="1141">
-<LeftIndent>160.0</LeftIndent>
+<paragraph start="1040" end="1041">
+<LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1071" end="1141">
+<content start="1040" end="1041">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1141" end="1225">
-<LeftIndent>160.0</LeftIndent>
+<paragraph start="1041" end="1175">
+<LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1141" end="1225">
+<content start="1041" end="1175">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1225" end="1318">
-<LeftIndent>160.0</LeftIndent>
+<paragraph start="1175" end="1176">
+<LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1225" end="1311">
+<content start="1175" end="1176">
 <size>11</size></content>
 
-<content start="1311" end="1315">
+</paragraph>
+<paragraph start="1176" end="1246">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1176" end="1246">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1246" end="1330">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1246" end="1330">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1330" end="1423">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1330" end="1416">
+<size>11</size></content>
+
+<content start="1416" end="1420">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1315" end="1318">
+<content start="1420" end="1423">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1318" end="1404">
+<paragraph start="1423" end="1509">
 <LeftIndent>160.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1318" end="1404">
+<content start="1423" end="1509">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1404" end="1501">
+<paragraph start="1509" end="1570">
 <LeftIndent>160.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1404" end="1501">
+<content start="1509" end="1570">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1501" end="1594">
+<paragraph start="1570" end="1670">
 <LeftIndent>160.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1501" end="1593">
+<content start="1570" end="1670">
 <size>11</size></content>
 
-<content start="1593" end="1594">
+</paragraph>
+<paragraph start="1670" end="1757">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1670" end="1756">
+<size>11</size></content>
+
+<content start="1756" end="1757">
 </content>
 
 </paragraph>
-<paragraph start="1594" end="1595">
+<paragraph start="1757" end="1758">
 <RightIndent>20.0</RightIndent>
-<content start="1594" end="1595">
+<content start="1757" end="1758">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1595" end="1878">
+<paragraph start="1758" end="2057">
 <LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1595" end="1878">
+<content start="1758" end="2057">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1878" end="1879">
+<paragraph start="2057" end="2058">
 <LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1878" end="1879">
+<content start="2057" end="2058">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1879" end="1918">
+<paragraph start="2058" end="2097">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1879" end="1918">
+<content start="2058" end="2097">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1918" end="1978">
+<paragraph start="2097" end="2157">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1918" end="1978">
+<content start="2097" end="2157">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1978" end="1995">
+<paragraph start="2157" end="2174">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1978" end="1995">
+<content start="2157" end="2174">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="1995" end="2036">
+<paragraph start="2174" end="2215">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="1995" end="2036">
+<content start="2174" end="2215">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2036" end="2084">
+<paragraph start="2215" end="2263">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2036" end="2084">
+<content start="2215" end="2263">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2084" end="2120">
+<paragraph start="2263" end="2299">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2084" end="2120">
+<content start="2263" end="2299">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2120" end="2183">
+<paragraph start="2299" end="2362">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2120" end="2183">
+<content start="2299" end="2362">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2183" end="2220">
+<paragraph start="2362" end="2399">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2183" end="2220">
+<content start="2362" end="2399">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2220" end="2245">
+<paragraph start="2399" end="2424">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2220" end="2245">
+<content start="2399" end="2424">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2245" end="2263">
+<paragraph start="2424" end="2442">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2245" end="2263">
+<content start="2424" end="2442">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2263" end="2278">
+<paragraph start="2442" end="2457">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2263" end="2278">
+<content start="2442" end="2457">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2278" end="2307">
+<paragraph start="2457" end="2486">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2278" end="2307">
+<content start="2457" end="2486">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2307" end="2345">
+<paragraph start="2486" end="2524">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2307" end="2345">
+<content start="2486" end="2524">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2345" end="2408">
+<paragraph start="2524" end="2587">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2345" end="2408">
+<content start="2524" end="2587">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2408" end="2473">
+<paragraph start="2587" end="2652">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2408" end="2473">
+<content start="2587" end="2652">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2473" end="2489">
+<paragraph start="2652" end="2668">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2473" end="2489">
+<content start="2652" end="2668">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2489" end="2503">
+<paragraph start="2668" end="2682">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2489" end="2503">
+<content start="2668" end="2682">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2503" end="2528">
+<paragraph start="2682" end="2707">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2503" end="2528">
+<content start="2682" end="2707">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2528" end="2543">
+<paragraph start="2707" end="2722">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2528" end="2543">
+<content start="2707" end="2722">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2543" end="2614">
+<paragraph start="2722" end="2793">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2543" end="2614">
+<content start="2722" end="2793">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2614" end="2648">
+<paragraph start="2793" end="2827">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2614" end="2648">
+<content start="2793" end="2827">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2648" end="2701">
+<paragraph start="2827" end="2880">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2648" end="2700">
-<size>11</size><bold>true</bold><family>Courier New</family></content>
+<content start="2827" end="2879">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
 
-<content start="2700" end="2701">
+<content start="2879" end="2880">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2701" end="2724">
+<paragraph start="2880" end="2903">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2701" end="2724">
+<content start="2880" end="2903">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="2724" end="2732">
+<paragraph start="2903" end="2911">
 <LeftIndent>180.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2724" end="2731">
+<content start="2903" end="2910">
 <size>11</size><family>Courier New</family></content>
 
-<content start="2731" end="2732">
+<content start="2910" end="2911">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2732" end="2733">
+<paragraph start="2911" end="2912">
 <LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2732" end="2733">
+<content start="2911" end="2912">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2733" end="2854">
+<paragraph start="2912" end="3033">
 <LeftIndent>140.0</LeftIndent>
 <RightIndent>20.0</RightIndent>
-<content start="2733" end="2824">
+<content start="2912" end="3003">
 <size>11</size></content>
 
-<content start="2824" end="2852">
+<content start="3003" end="3031">
 <size>11</size><family>Courier New</family></content>
 
-<content start="2852" end="2854">
+<content start="3031" end="3033">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2854" end="2855">
+<paragraph start="3033" end="3034">
 <RightIndent>20.0</RightIndent>
-<content start="2854" end="2855">
+<content start="3033" end="3034">
 </content>
 
 </paragraph>
-<paragraph start="2855" end="2883">
+<paragraph start="3034" end="3062">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="2855" end="2857">
+<content start="3034" end="3036">
 <size>11</size></content>
 
-<content start="2857" end="2865">
-<href>attach.cml</href><size>11</size></content>
+<content start="3036" end="3044">
+<size>11</size><href>saveapplet.cml</href></content>
 
-<content start="2865" end="2868">
+<content start="3044" end="3047">
 <size>11</size></content>
 
-<content start="2868" end="2873">
-<href>index3.cml</href><size>11</size></content>
+<content start="3047" end="3052">
+<size>11</size><href>index.cml</href></content>
 
-<content start="2873" end="2876">
+<content start="3052" end="3055">
 <size>11</size></content>
 
-<content start="2876" end="2880">
-<href>upload.cml</href><size>11</size></content>
+<content start="3055" end="3059">
+<size>11</size><href>whatToSend.cml</href></content>
 
-<content start="2880" end="2882">
+<content start="3059" end="3061">
 <size>11</size></content>
 
 </paragraph>

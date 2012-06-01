@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.5.0_09" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_11" class="java.beans.XMLDecoder"> 
  <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
   <void property="drawList"> 
    <object class="java.util.ArrayList"> 
     <void method="add"> 
@@ -361,13 +364,13 @@ panel with &quot;Run&quot;, &quot;Stop&quot; and &quot;Reset&quot; buttons.</str
    <byte>1</byte> 
   </void> 
   <void property="rotation"> 
-   <string> -884 14 468 132.5 61</string> 
-  </void> 
-  <void property="timeStep"> 
-   <float>0.5</float> 
+   <string>-884 14 468 132.5 61</string> 
   </void> 
   <void property="unmovableSelection"> 
    <string>7 9 11 62</string> 
+  </void> 
+  <void property="xyzFileName"> 
+   <string>recorder3d$0.xyz</string> 
   </void> 
  </object> 
 </java> 

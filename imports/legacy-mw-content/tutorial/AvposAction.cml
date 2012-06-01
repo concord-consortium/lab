@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>The Average-Position Tool</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>The Average-Position Tool
@@ -12,7 +12,7 @@ It would be helpful to show an object&apos;s current average position in a simul
 To show or hide its current average position, choose the Trajectory Tool (&quot; &quot;), and then click on a particle. Its average position, based on the trajectory that has been recorded, will be shown. Clicking the particle again will hide its average position.
 
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
  
 Important: If the recorder is disabled, no trajectory will be shown. The more frames the recorder holds, the more accurate the average position is (i.e. the data will have less fluctuations).
@@ -23,10 +23,10 @@ Script support
 The averageposition command can be used to show or hide the current average positions of the center of mass of the selected particles. To turn this feature on/off, select the particles first and then use the averageposition command.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1165">
+<section start="0" end="1171">
 <paragraph start="0" end="26">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="0" end="25">
 <size>16</size><bold>true</bold><italic>true</italic></content>
 
@@ -41,25 +41,25 @@ The averageposition command can be used to show or hide the current average posi
 
 </paragraph>
 <paragraph start="27" end="55">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="27" end="29">
 <size>11</size></content>
 
 <content start="29" end="37">
-<href>showTrajAction.cml</href><size>11</size></content>
+<size>11</size><href>showTrajAction.cml</href></content>
 
 <content start="37" end="40">
 <size>11</size></content>
 
 <content start="40" end="45">
-<href>index1.cml</href><size>11</size></content>
+<size>11</size><href>index1.cml</href></content>
 
 <content start="45" end="48">
 <size>11</size></content>
 
 <content start="48" end="52">
-<href>boundary.cml</href><size>11</size></content>
+<size>11</size><href>boundary.cml</href></content>
 
 <content start="52" end="54">
 <size>11</size></content>
@@ -115,126 +115,126 @@ The averageposition command can be used to show or hide the current average posi
 </content>
 
 </paragraph>
-<paragraph start="656" end="689">
+<paragraph start="656" end="695">
 <LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="656" end="688">
+<content start="656" end="694">
 <size>10</size></content>
 
-<content start="688" end="689">
+<content start="694" end="695">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="689" end="690">
+<paragraph start="695" end="696">
 <LeftIndent>140.0</LeftIndent>
-<content start="689" end="690">
+<content start="695" end="696">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="690" end="692">
+<paragraph start="696" end="698">
 <LeftIndent>140.0</LeftIndent>
-<content start="690" end="691">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="696" end="697">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="691" end="692">
-<foreground>255 0 0</foreground><size>11</size></content>
+<content start="697" end="698">
+<size>11</size><foreground>255 0 0</foreground></content>
 
 </paragraph>
-<paragraph start="692" end="884">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="698" end="890">
 <RightIndent>100.0</RightIndent>
-<content start="692" end="701">
-<bold>true</bold><foreground>255 0 0</foreground><size>11</size></content>
+<LeftIndent>200.0</LeftIndent>
+<content start="698" end="707">
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
 
-<content start="701" end="884">
+<content start="707" end="890">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="884" end="886">
+<paragraph start="890" end="892">
 <LeftIndent>140.0</LeftIndent>
-<content start="884" end="885">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="890" end="891">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="885" end="886">
+<content start="891" end="892">
 </content>
 
 </paragraph>
-<paragraph start="886" end="887">
+<paragraph start="892" end="893">
 <LeftIndent>140.0</LeftIndent>
-<content start="886" end="887">
+<content start="892" end="893">
 </content>
 
 </paragraph>
-<paragraph start="887" end="902">
+<paragraph start="893" end="908">
 <LeftIndent>140.0</LeftIndent>
-<content start="887" end="901">
-<bold>true</bold><size>11</size></content>
+<content start="893" end="907">
+<size>11</size><bold>true</bold></content>
 
-<content start="901" end="902">
+<content start="907" end="908">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="902" end="903">
+<paragraph start="908" end="909">
 <LeftIndent>140.0</LeftIndent>
-<content start="902" end="903">
+<content start="908" end="909">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="903" end="1136">
+<paragraph start="909" end="1142">
 <LeftIndent>140.0</LeftIndent>
-<content start="903" end="907">
+<content start="909" end="913">
 <size>11</size></content>
 
-<content start="907" end="922">
-<family>Courier New</family><href>script_averageposition.cml</href><size>11</size></content>
+<content start="913" end="928">
+<family>Courier New</family><size>11</size><href>script_averageposition.cml</href></content>
 
-<content start="922" end="1067">
+<content start="928" end="1073">
 <size>11</size></content>
 
-<content start="1067" end="1073">
-<href>script_select.cml</href><size>11</size></content>
+<content start="1073" end="1079">
+<size>11</size><href>script_select.cml</href></content>
 
-<content start="1073" end="1111">
+<content start="1079" end="1117">
 <size>11</size></content>
 
-<content start="1111" end="1126">
-<family>Courier New</family><href>script_averageposition.cml</href><size>11</size></content>
+<content start="1117" end="1132">
+<family>Courier New</family><size>11</size><href>script_averageposition.cml</href></content>
 
-<content start="1126" end="1135">
+<content start="1132" end="1141">
 <size>11</size></content>
 
-<content start="1135" end="1136">
+<content start="1141" end="1142">
 </content>
 
 </paragraph>
-<paragraph start="1136" end="1137">
+<paragraph start="1142" end="1143">
 <LeftIndent>140.0</LeftIndent>
-<content start="1136" end="1137">
+<content start="1142" end="1143">
 </content>
 
 </paragraph>
-<paragraph start="1137" end="1165">
-<Alignment>2</Alignment>
+<paragraph start="1143" end="1171">
 <RightIndent>20.0</RightIndent>
-<content start="1137" end="1139">
+<Alignment>2</Alignment>
+<content start="1143" end="1145">
 <size>11</size></content>
 
-<content start="1139" end="1147">
-<href>showTrajAction.cml</href><size>11</size></content>
+<content start="1145" end="1153">
+<size>11</size><href>showTrajAction.cml</href></content>
 
-<content start="1147" end="1150">
+<content start="1153" end="1156">
 <size>11</size></content>
 
-<content start="1150" end="1155">
-<href>index1.cml</href><size>11</size></content>
+<content start="1156" end="1161">
+<size>11</size><href>index1.cml</href></content>
 
-<content start="1155" end="1158">
+<content start="1161" end="1164">
 <size>11</size></content>
 
-<content start="1158" end="1162">
-<href>boundary.cml</href><size>11</size></content>
+<content start="1164" end="1168">
+<size>11</size><href>boundary.cml</href></content>
 
-<content start="1162" end="1164">
+<content start="1168" end="1170">
 <size>11</size></content>
 
 </paragraph>

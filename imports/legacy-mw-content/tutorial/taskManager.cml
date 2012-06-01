@@ -47,7 +47,7 @@ Tasks: Watch dog, generating JPEG stream, automatic reminder.
 The Task Manager of a molecular dynamics model can be accessed from its container&apos;s Option Menu. The following image shows it:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 Interval and lifetime of a task
 
@@ -85,19 +85,19 @@ You can change the interval for a task (double-click on the &quot;Interval&quot;
 <size>11</size></content>
 
 <content start="30" end="38">
-<size>11</size><href>timeSeries.cml</href></content>
+<href>timeSeries.cml</href><size>11</size></content>
 
 <content start="38" end="41">
 <size>11</size></content>
 
 <content start="41" end="46">
-<size>11</size><href>index1.cml</href></content>
+<href>index1.cml</href><size>11</size></content>
 
 <content start="46" end="49">
 <size>11</size></content>
 
 <content start="49" end="53">
-<size>11</size><href>viewSettings.cml</href></content>
+<href>CustomerTask.cml</href><size>11</size></content>
 
 <content start="53" end="55">
 <size>11</size></content>
@@ -118,7 +118,7 @@ You can change the interval for a task (double-click on the &quot;Interval&quot;
 <size>11</size></content>
 
 <content start="95" end="124">
-<size>11</size><href>glossary/MolecularDynamics.cml</href></content>
+<href>glossary/MolecularDynamics.cml</href><size>11</size></content>
 
 <content start="124" end="126">
 <size>11</size></content>
@@ -157,15 +157,15 @@ You can change the interval for a task (double-click on the &quot;Interval&quot;
 <paragraph start="308" end="310">
 <LeftIndent>140.0</LeftIndent>
 <content start="308" end="309">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="309" end="310">
 <size>11</size></content>
 
 </paragraph>
 <paragraph start="310" end="593">
-<RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
 <content start="310" end="327">
 <bold>true</bold><size>11</size></content>
 
@@ -179,7 +179,7 @@ You can change the interval for a task (double-click on the &quot;Interval&quot;
 <size>11</size></content>
 
 <content start="561" end="570">
-<size>11</size><href>http://en.wikipedia.org/wiki/Thread_(computer_science)</href></content>
+<href>http://en.wikipedia.org/wiki/Thread_(computer_science)</href><size>11</size></content>
 
 <content start="570" end="593">
 <size>11</size></content>
@@ -188,7 +188,7 @@ You can change the interval for a task (double-click on the &quot;Interval&quot;
 <paragraph start="593" end="595">
 <LeftIndent>140.0</LeftIndent>
 <content start="593" end="594">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="594" end="595">
 <size>11</size></content>
@@ -206,7 +206,7 @@ You can change the interval for a task (double-click on the &quot;Interval&quot;
 <size>11</size></content>
 
 <content start="672" end="678">
-<size>11</size><href>mwscripts.cml</href></content>
+<href>mwscripts.cml</href><size>11</size></content>
 
 <content start="678" end="812">
 <size>11</size></content>
@@ -290,25 +290,25 @@ You can change the interval for a task (double-click on the &quot;Interval&quot;
 <size>11</size></content>
 
 <content start="1512" end="1521">
-<size>11</size><href>heatbath.cml</href></content>
+<href>heatbath.cml</href><size>11</size></content>
 
 <content start="1521" end="1523">
 <size>11</size></content>
 
 <content start="1523" end="1535">
-<size>11</size><href>../student/light/light1.cml</href></content>
+<href>../student/light/light1.cml</href><size>11</size></content>
 
 <content start="1535" end="1537">
 <size>11</size></content>
 
 <content start="1537" end="1567">
-<size>11</size><href>../student/light/moleculartag.cml</href></content>
+<href>../student/light/moleculartag.cml</href><size>11</size></content>
 
 <content start="1567" end="1569">
 <size>11</size></content>
 
 <content start="1569" end="1573">
-<size>11</size><href>flow.cml</href></content>
+<href>flow.cml</href><size>11</size></content>
 
 <content start="1573" end="1580">
 <size>11</size></content>
@@ -392,13 +392,13 @@ You can change the interval for a task (double-click on the &quot;Interval&quot;
 <size>11</size></content>
 
 <content start="1820" end="1844">
-<size>11</size><href>RecordSimulation.cml</href></content>
+<href>RecordSimulation.cml</href><size>11</size></content>
 
 <content start="1844" end="1877">
 <size>11</size></content>
 
 <content start="1877" end="1902">
-<size>11</size><href>glossary/msd.cml</href></content>
+<href>glossary/msd.cml</href><size>11</size></content>
 
 <content start="1902" end="1904">
 <size>11</size></content>
@@ -443,13 +443,13 @@ You can change the interval for a task (double-click on the &quot;Interval&quot;
 <size>11</size></content>
 
 <content start="2030" end="2052">
-<size>11</size><href>modelPrinting.cml</href></content>
+<href>modelPrinting.cml</href><size>11</size></content>
 
 <content start="2052" end="2054">
 <size>11</size></content>
 
 <content start="2054" end="2072">
-<size>11</size><href>autostop.cml</href></content>
+<href>autostop.cml</href><size>11</size></content>
 
 <content start="2072" end="2074">
 <size>11</size></content>
@@ -536,7 +536,7 @@ You can change the interval for a task (double-click on the &quot;Interval&quot;
 <size>11</size></content>
 
 <content start="2803" end="2813">
-<size>11</size><href>SetupSimulation.cml</href></content>
+<href>SetupSimulation.cml</href><size>11</size></content>
 
 <content start="2813" end="3023">
 <size>11</size></content>
@@ -566,7 +566,7 @@ You can change the interval for a task (double-click on the &quot;Interval&quot;
 <size>11</size></content>
 
 <content start="3758" end="3776">
-<size>11</size><href>autostop.cml</href></content>
+<href>autostop.cml</href><size>11</size></content>
 
 <content start="3776" end="3779">
 <size>11</size></content>
@@ -600,19 +600,19 @@ You can change the interval for a task (double-click on the &quot;Interval&quot;
 <size>11</size></content>
 
 <content start="3882" end="3890">
-<size>11</size><href>timeSeries.cml</href></content>
+<href>timeSeries.cml</href><size>11</size></content>
 
 <content start="3890" end="3893">
 <size>11</size></content>
 
 <content start="3893" end="3898">
-<size>11</size><href>index1.cml</href></content>
+<href>index1.cml</href><size>11</size></content>
 
 <content start="3898" end="3901">
 <size>11</size></content>
 
 <content start="3901" end="3905">
-<size>11</size><href>viewSettings.cml</href></content>
+<href>CustomerTask.cml</href><size>11</size></content>
 
 <content start="3905" end="3907">
 <size>11</size></content>

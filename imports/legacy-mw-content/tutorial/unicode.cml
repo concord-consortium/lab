@@ -4,9 +4,11 @@
 <page_title>Unicode | &#19975;&#22269;&#25991;&#23383;&#30721; | &#33836;&#22283;&#25991;&#23383;&#30908;</page_title>
 <text>Unicode | &#19975;&#22269;&#25991;&#23383;&#30721; | &#33836;&#22283;&#25991;&#23383;&#30908;
 
+This test page is encoded in Unicode UTF-8. If your language
+does not show up, then it may not be supported.
+
  
-This test page is encoded in Unicode UTF-8.
- 
+
 Alemannisch 
 &#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080; 
 B&#226;n-l&#226;m-g&#250; 
@@ -60,11 +62,11 @@ Walon
 &#20013;&#25991; 
 
 </text>
-<section start="0" end="592">
+<section start="0" end="657">
 <paragraph start="0" end="24">
 <Alignment>1</Alignment>
 <content start="0" end="24">
-<bold>true</bold><size>15</size></content>
+<size>15</size><bold>true</bold></content>
 
 </paragraph>
 <paragraph start="24" end="25">
@@ -73,282 +75,244 @@ Walon
 </content>
 
 </paragraph>
-<paragraph start="25" end="27">
+<paragraph start="25" end="86">
 <Alignment>1</Alignment>
-<content start="25" end="26">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.5</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
-<content start="26" end="27">
-<bold>true</bold><size>15</size></content>
-
-</paragraph>
-<paragraph start="27" end="71">
-<Alignment>1</Alignment>
-<content start="27" end="70">
+<content start="25" end="86">
 <italic>true</italic></content>
 
-<content start="70" end="71">
+</paragraph>
+<paragraph start="86" end="134">
+<Alignment>1</Alignment>
+<content start="86" end="134">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="134" end="135">
+<content start="134" end="135">
 </content>
 
 </paragraph>
-<paragraph start="71" end="73">
+<paragraph start="135" end="137">
 <Alignment>1</Alignment>
-<content start="71" end="72">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.5</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="135" end="136">
+<icon><class>org.concord.modeler.text.LineIcon</class><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="72" end="73">
-<bold>true</bold><size>15</size></content>
+<content start="136" end="137">
+</content>
 
 </paragraph>
-<paragraph start="73" end="86">
+<paragraph start="137" end="138">
+<content start="137" end="138">
+<size>15</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="138" end="151">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="73" end="86">
+<content start="138" end="151">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="86" end="97">
+<paragraph start="151" end="162">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="86" end="97">
+<content start="151" end="162">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="97" end="109">
+<paragraph start="162" end="174">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="97" end="109">
+<content start="162" end="174">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="109" end="116">
+<paragraph start="174" end="181">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="109" end="116">
+<content start="174" end="181">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="116" end="126">
+<paragraph start="181" end="191">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="116" end="126">
+<content start="181" end="191">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="126" end="137">
+<paragraph start="191" end="202">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="126" end="137">
+<content start="191" end="202">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="137" end="145">
+<paragraph start="202" end="210">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="137" end="145">
+<content start="202" end="210">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="145" end="150">
+<paragraph start="210" end="215">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="145" end="150">
+<content start="210" end="215">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="150" end="157">
+<paragraph start="215" end="222">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="150" end="157">
+<content start="215" end="222">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="157" end="164">
+<paragraph start="222" end="229">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="157" end="164">
+<content start="222" end="229">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="164" end="173">
+<paragraph start="229" end="238">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="164" end="173">
+<content start="229" end="238">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="173" end="180">
+<paragraph start="238" end="245">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="173" end="180">
+<content start="238" end="245">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="180" end="189">
+<paragraph start="245" end="254">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="180" end="189">
+<content start="245" end="254">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="189" end="200">
+<paragraph start="254" end="265">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="189" end="200">
+<content start="254" end="265">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="200" end="210">
+<paragraph start="265" end="275">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="200" end="210">
+<content start="265" end="275">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="210" end="218">
+<paragraph start="275" end="283">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="210" end="218">
+<content start="275" end="283">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="218" end="225">
+<paragraph start="283" end="290">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="218" end="225">
+<content start="283" end="290">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="225" end="233">
+<paragraph start="290" end="298">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="225" end="233">
+<content start="290" end="298">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="233" end="243">
+<paragraph start="298" end="308">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="233" end="243">
+<content start="298" end="308">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="243" end="248">
+<paragraph start="308" end="313">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="243" end="248">
+<content start="308" end="313">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="248" end="261">
+<paragraph start="313" end="326">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="248" end="261">
+<content start="313" end="326">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="261" end="271">
+<paragraph start="326" end="336">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="261" end="271">
+<content start="326" end="336">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="271" end="280">
+<paragraph start="336" end="345">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="271" end="280">
+<content start="336" end="345">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="280" end="287">
+<paragraph start="345" end="352">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="280" end="287">
+<content start="345" end="352">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="287" end="307">
+<paragraph start="352" end="372">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="287" end="307">
+<content start="352" end="372">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="307" end="322">
+<paragraph start="372" end="387">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="307" end="322">
+<content start="372" end="387">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="322" end="332">
+<paragraph start="387" end="397">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="322" end="332">
+<content start="387" end="397">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="332" end="342">
+<paragraph start="397" end="407">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="332" end="342">
+<content start="397" end="407">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="342" end="350">
+<paragraph start="407" end="415">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="342" end="350">
+<content start="407" end="415">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="350" end="362">
+<paragraph start="415" end="427">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="350" end="362">
-<size>14</size></content>
-
-</paragraph>
-<paragraph start="362" end="370">
-<LeftIndent>10.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="362" end="370">
-<size>14</size></content>
-
-</paragraph>
-<paragraph start="370" end="375">
-<LeftIndent>10.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="370" end="375">
-<size>14</size></content>
-
-</paragraph>
-<paragraph start="375" end="391">
-<LeftIndent>10.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="375" end="391">
-<size>14</size></content>
-
-</paragraph>
-<paragraph start="391" end="408">
-<LeftIndent>10.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="391" end="408">
-<size>14</size></content>
-
-</paragraph>
-<paragraph start="408" end="416">
-<LeftIndent>10.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="408" end="416">
-<size>14</size></content>
-
-</paragraph>
-<paragraph start="416" end="427">
-<LeftIndent>10.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="416" end="427">
+<content start="415" end="427">
 <size>14</size></content>
 
 </paragraph>
@@ -359,110 +323,152 @@ Walon
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="435" end="444">
+<paragraph start="435" end="440">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="435" end="444">
+<content start="435" end="440">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="444" end="477">
+<paragraph start="440" end="456">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="444" end="477">
+<content start="440" end="456">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="477" end="489">
+<paragraph start="456" end="473">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="477" end="489">
+<content start="456" end="473">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="489" end="502">
+<paragraph start="473" end="481">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="489" end="502">
+<content start="473" end="481">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="502" end="519">
+<paragraph start="481" end="492">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="502" end="519">
+<content start="481" end="492">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="519" end="526">
+<paragraph start="492" end="500">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="519" end="526">
+<content start="492" end="500">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="526" end="535">
+<paragraph start="500" end="509">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="526" end="535">
+<content start="500" end="509">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="535" end="542">
+<paragraph start="509" end="542">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="535" end="542">
+<content start="509" end="542">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="542" end="547">
+<paragraph start="542" end="554">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="542" end="547">
+<content start="542" end="554">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="547" end="559">
+<paragraph start="554" end="567">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="547" end="559">
+<content start="554" end="567">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="559" end="567">
+<paragraph start="567" end="584">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="559" end="567">
+<content start="567" end="584">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="567" end="579">
+<paragraph start="584" end="591">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="567" end="579">
+<content start="584" end="591">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="579" end="586">
+<paragraph start="591" end="600">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="579" end="586">
+<content start="591" end="600">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="586" end="590">
+<paragraph start="600" end="607">
 <LeftIndent>10.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="586" end="590">
+<content start="600" end="607">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="590" end="591">
-<content start="590" end="591">
+<paragraph start="607" end="612">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="607" end="612">
 <size>14</size></content>
 
 </paragraph>
-<paragraph start="591" end="592">
+<paragraph start="612" end="624">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="612" end="624">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="624" end="632">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="624" end="632">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="632" end="644">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="632" end="644">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="644" end="651">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="644" end="651">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="651" end="655">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="651" end="655">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="655" end="656">
+<content start="655" end="656">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="656" end="657">
 </paragraph>
 </section>
 </document>

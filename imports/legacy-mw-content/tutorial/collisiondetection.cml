@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Collision detection</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Collision detection
+
+&lt; Previous | Index | Next &gt;
+
+In the navigation mode we have shown so far, the navigator just runs straight through atoms. It may be more sensible if it can respect the physical existence of an atom. In other words, it should be able to detect that it is colliding with an atom and respond accordingly. This technique is typically known as collision detection in games.
+
+The collision detection option can be turned on and off from &quot;Navigation Options &gt; Collision Detection for All Atoms&quot;. By default, however, collision detection is not enabled.
+
+The following model demonstrates the effect of collision detection. You should see if the Rover cannot penetrate through the wall of the atomic tunnel.
+
+ 
+  
+&#12304;The Rover in a tunnel.&#12305;
+
+It should be pointed out that collision detection costs some computing resources. In general, if your molecule has tens of thousands of atoms, it is advised that you not enable it.
+
+Script support
+
+The following commands can be used to turn the collision detection mechanism on and off:
+
+set collisiondetection true;
+set collisiondetection false;
+
+Note that these commands will be executed separately with the regular Jmol commands.  No matter where you place them in your scripts, the order in which they will be run relative to the regular Jmol commands cannot be guaranteed. It is recommended that these non-standard-Jmol commands should always be placed at the beginning of your scripts.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1474">
+<paragraph start="0" end="20">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="0" end="19">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="49">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="21" end="23">
+<size>11</size></content>
+
+<content start="23" end="31">
+<size>11</size><href>roversteer.cml</href></content>
+
+<content start="31" end="34">
+<size>11</size></content>
+
+<content start="34" end="39">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="46">
+<size>11</size><href>interactioncenter.cml</href></content>
+
+<content start="46" end="48">
+<size>11</size></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="390">
+<LeftIndent>140.0</LeftIndent>
+<content start="50" end="390">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="390" end="391">
+<LeftIndent>140.0</LeftIndent>
+<content start="390" end="391">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="391" end="567">
+<LeftIndent>140.0</LeftIndent>
+<content start="391" end="554">
+<size>11</size></content>
+
+<content start="554" end="557">
+<size>11</size><italic>true</italic></content>
+
+<content start="557" end="567">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="567" end="568">
+<LeftIndent>140.0</LeftIndent>
+<content start="567" end="568">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="568" end="720">
+<LeftIndent>140.0</LeftIndent>
+<content start="568" end="720">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="720" end="721">
+<LeftIndent>140.0</LeftIndent>
+<content start="720" end="721">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="721" end="723">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="721" end="722">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<toolbar>false</toolbar><navigation>true</navigation><resource>tunneltest.xyz</resource><state>collisiondetection$0.jms</state><width>500.0</width>
+<height>300.0</height>
+</component></content>
+
+<content start="722" end="723">
+</content>
+
+</paragraph>
+<paragraph start="723" end="726">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="723" end="724">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>VDW surface</title>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<script>select all;
+cpk 0%;
+wireframe 0;
+isosurface delete resolution 0 solvent 1.4;</script>
+<script2>isosurface delete;
+select all;
+cpk 100%;</script2>
+<action>Execute Jmol script</action>
+</component></content>
+
+<content start="724" end="725">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Collision detection enabled</title>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<script>set collisiondetection true;</script>
+<script2>set collisiondetection false;</script2>
+<action>Execute Jmol script</action>
+</component></content>
+
+<content start="725" end="726">
+</content>
+
+</paragraph>
+<paragraph start="726" end="751">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="726" end="727">
+<size>13</size><bold>true</bold></content>
+
+<content start="727" end="749">
+<size>10</size></content>
+
+<content start="749" end="750">
+<size>13</size><bold>true</bold></content>
+
+<content start="750" end="751">
+</content>
+
+</paragraph>
+<paragraph start="751" end="752">
+<content start="751" end="752">
+</content>
+
+</paragraph>
+<paragraph start="752" end="933">
+<LeftIndent>140.0</LeftIndent>
+<content start="752" end="782">
+<size>11</size></content>
+
+<content start="782" end="832">
+<size>11</size><bold>true</bold></content>
+
+<content start="832" end="933">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="933" end="934">
+<LeftIndent>140.0</LeftIndent>
+<content start="933" end="934">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="934" end="949">
+<LeftIndent>140.0</LeftIndent>
+<content start="934" end="948">
+<size>11</size><bold>true</bold></content>
+
+<content start="948" end="949">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="949" end="950">
+<LeftIndent>140.0</LeftIndent>
+<content start="949" end="950">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="950" end="1039">
+<LeftIndent>140.0</LeftIndent>
+<content start="950" end="1039">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1039" end="1040">
+<LeftIndent>160.0</LeftIndent>
+<content start="1039" end="1040">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1040" end="1069">
+<LeftIndent>160.0</LeftIndent>
+<content start="1040" end="1069">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1069" end="1099">
+<LeftIndent>160.0</LeftIndent>
+<content start="1069" end="1098">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1098" end="1099">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1099" end="1100">
+<LeftIndent>140.0</LeftIndent>
+<content start="1099" end="1100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1100" end="1444">
+<LeftIndent>140.0</LeftIndent>
+<content start="1100" end="1330">
+<size>11</size></content>
+
+<content start="1330" end="1442">
+<size>11</size><bold>true</bold></content>
+
+<content start="1442" end="1443">
+<size>11</size></content>
+
+<content start="1443" end="1444">
+</content>
+
+</paragraph>
+<paragraph start="1444" end="1445">
+<LeftIndent>140.0</LeftIndent>
+<content start="1444" end="1445">
+</content>
+
+</paragraph>
+<paragraph start="1445" end="1446">
+<content start="1445" end="1446">
+</content>
+
+</paragraph>
+<paragraph start="1446" end="1474">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="1446" end="1448">
+<size>11</size></content>
+
+<content start="1448" end="1456">
+<size>11</size><href>roversteer.cml</href></content>
+
+<content start="1456" end="1459">
+<size>11</size></content>
+
+<content start="1459" end="1464">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="1464" end="1467">
+<size>11</size></content>
+
+<content start="1467" end="1471">
+<size>11</size><href>interactioncenter.cml</href></content>
+
+<content start="1471" end="1473">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

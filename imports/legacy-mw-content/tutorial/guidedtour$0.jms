@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.5.0_09" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
  <object class="org.concord.jmol.ModelState"> 
   <void property="ZDepthMagnification"> 
    <int>10</int> 
@@ -7,7 +7,13 @@
   <void property="atomAnnotations"> 
    <object class="java.util.HashMap"/> 
   </void> 
+  <void property="atomInteractions"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
   <void property="bondAnnotations"> 
+   <object class="java.util.HashMap"/> 
+  </void> 
+  <void property="bondInteractions"> 
    <object class="java.util.HashMap"/> 
   </void> 
   <void property="itinerary"> 
@@ -24,6 +30,9 @@
     </void> 
     <void method="add"> 
      <object class="org.concord.jmol.SceneState"> 
+      <void property="atomColoring"> 
+       <byte>2</byte> 
+      </void> 
       <void property="geoData"> 
        <string>10.280367 27.286976 2.2979422 557.0 726.0 -402.0 140.4 100.0</string> 
       </void> 
@@ -31,6 +40,9 @@
     </void> 
     <void method="add"> 
      <object class="org.concord.jmol.SceneState"> 
+      <void property="atomColoring"> 
+       <byte>3</byte> 
+      </void> 
       <void property="geoData"> 
        <string>17.129997 28.468294 5.785907 557.0 726.0 -402.0 140.4 100.0</string> 
       </void> 
@@ -51,6 +63,9 @@
      </object> 
     </void> 
    </object> 
+  </void> 
+  <void property="showAnimationControls"> 
+   <boolean>true</boolean> 
   </void> 
   <void property="startingScene"> 
    <object class="org.concord.jmol.SceneState"> 

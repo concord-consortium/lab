@@ -17,7 +17,7 @@ Select a rectangular obstacle, and then grab and drag the small rectangles that 
 
   
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Resizing a Gay-Berne particle
 
@@ -28,19 +28,19 @@ Click the button (&quot; &quot;), and then click a Gay-Berne particle. Two small
 You can practice resizing a Gay-Berne particle with the following model:
 
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Script support
 
 An atom can be resized by changing its element&apos;s sigma parameter: set element[i].sigma [value]. An obstacle can be resized by changing its width and height: set obstacle[i].width [value] and set obstacle[i].height [value].
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="932">
+<section start="0" end="944">
 <paragraph start="0" end="18">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="17">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="17" end="18">
 </content>
@@ -87,7 +87,7 @@ An atom can be resized by changing its element&apos;s sigma parameter: set eleme
 <paragraph start="48" end="65">
 <LeftIndent>140.0</LeftIndent>
 <content start="48" end="64">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="64" end="65">
 <size>11</size></content>
@@ -120,7 +120,7 @@ An atom can be resized by changing its element&apos;s sigma parameter: set eleme
 <paragraph start="161" end="182">
 <LeftIndent>140.0</LeftIndent>
 <content start="161" end="181">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="181" end="182">
 <size>11</size></content>
@@ -161,199 +161,199 @@ An atom can be resized by changing its element&apos;s sigma parameter: set eleme
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
 <content start="291" end="292">
-<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>resizeAction$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder><button>Select Object</button></component></content>
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>resizeAction$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder><button>Select Object</button></component><size>11</size></content>
 
 <content start="292" end="293">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="293" end="326">
+<paragraph start="293" end="332">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="293" end="325">
+<content start="293" end="331">
 <size>10</size></content>
 
-<content start="325" end="326">
+<content start="331" end="332">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="326" end="327">
+<paragraph start="332" end="333">
 <LeftIndent>140.0</LeftIndent>
-<content start="326" end="327">
+<content start="332" end="333">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="327" end="357">
+<paragraph start="333" end="363">
 <LeftIndent>140.0</LeftIndent>
-<content start="327" end="356">
-<size>11</size><bold>true</bold></content>
+<content start="333" end="362">
+<bold>true</bold><size>11</size></content>
 
-<content start="356" end="357">
+<content start="362" end="363">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="357" end="358">
+<paragraph start="363" end="364">
 <LeftIndent>140.0</LeftIndent>
-<content start="357" end="358">
+<content start="363" end="364">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="358" end="539">
+<paragraph start="364" end="545">
 <LeftIndent>140.0</LeftIndent>
-<content start="358" end="377">
+<content start="364" end="383">
 <size>11</size></content>
 
-<content start="377" end="378">
+<content start="383" end="384">
 <size>11</size><icon>Resize.gif</icon></content>
 
-<content start="378" end="539">
+<content start="384" end="545">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="539" end="540">
+<paragraph start="545" end="546">
 <LeftIndent>100.0</LeftIndent>
-<content start="539" end="540">
+<content start="545" end="546">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="540" end="553">
+<paragraph start="546" end="559">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="540" end="541">
+<content start="546" end="547">
 <size>11</size></content>
 
-<content start="541" end="542">
+<content start="547" end="548">
 <size>11</size><icon>ResizeGB.gif</icon></content>
 
-<content start="542" end="551">
+<content start="548" end="557">
 <size>11</size></content>
 
-<content start="551" end="552">
+<content start="557" end="558">
 <size>11</size><icon>ResizeGB2.gif</icon></content>
 
-<content start="552" end="553">
+<content start="558" end="559">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="553" end="554">
+<paragraph start="559" end="560">
 <LeftIndent>100.0</LeftIndent>
-<content start="553" end="554">
+<content start="559" end="560">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="554" end="627">
+<paragraph start="560" end="633">
 <LeftIndent>140.0</LeftIndent>
-<content start="554" end="626">
+<content start="560" end="632">
 <size>11</size></content>
 
-<content start="626" end="627">
+<content start="632" end="633">
 </content>
 
 </paragraph>
-<paragraph start="627" end="628">
+<paragraph start="633" end="634">
 <LeftIndent>100.0</LeftIndent>
-<content start="627" end="628">
+<content start="633" end="634">
 </content>
 
 </paragraph>
-<paragraph start="628" end="630">
+<paragraph start="634" end="636">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="628" end="629">
+<content start="634" end="635">
 <component><class>org.concord.mw2d.activity.GBContainer</class>
 <resource>resizeAction$0.gbl</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder><button>Resize GB</button><button>Select Object</button></component></content>
 
-<content start="629" end="630">
+<content start="635" end="636">
 </content>
 
 </paragraph>
-<paragraph start="630" end="663">
+<paragraph start="636" end="675">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="630" end="662">
+<content start="636" end="674">
 <size>10</size></content>
 
-<content start="662" end="663">
+<content start="674" end="675">
 </content>
 
 </paragraph>
-<paragraph start="663" end="664">
+<paragraph start="675" end="676">
 <LeftIndent>140.0</LeftIndent>
-<content start="663" end="664">
+<content start="675" end="676">
 </content>
 
 </paragraph>
-<paragraph start="664" end="679">
+<paragraph start="676" end="691">
 <LeftIndent>140.0</LeftIndent>
-<content start="664" end="678">
-<size>11</size><bold>true</bold></content>
+<content start="676" end="690">
+<bold>true</bold><size>11</size></content>
 
-<content start="678" end="679">
+<content start="690" end="691">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="679" end="680">
+<paragraph start="691" end="692">
 <LeftIndent>140.0</LeftIndent>
-<content start="679" end="680">
+<content start="691" end="692">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="680" end="903">
+<paragraph start="692" end="915">
 <LeftIndent>140.0</LeftIndent>
-<content start="680" end="746">
+<content start="692" end="758">
 <size>11</size></content>
 
-<content start="746" end="749">
+<content start="758" end="761">
 <href>script_set.cml</href><size>11</size><family>Courier New</family></content>
 
-<content start="749" end="774">
+<content start="761" end="786">
 <size>11</size><family>Courier New</family></content>
 
-<content start="774" end="837">
+<content start="786" end="849">
 <size>11</size></content>
 
-<content start="837" end="866">
+<content start="849" end="878">
 <size>11</size><family>Courier New</family></content>
 
-<content start="866" end="871">
+<content start="878" end="883">
 <size>11</size></content>
 
-<content start="871" end="901">
+<content start="883" end="913">
 <size>11</size><family>Courier New</family></content>
 
-<content start="901" end="903">
+<content start="913" end="915">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="903" end="904">
+<paragraph start="915" end="916">
 <LeftIndent>140.0</LeftIndent>
-<content start="903" end="904">
+<content start="915" end="916">
 </content>
 
 </paragraph>
-<paragraph start="904" end="932">
+<paragraph start="916" end="944">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="904" end="906">
+<content start="916" end="918">
 <size>11</size></content>
 
-<content start="906" end="914">
+<content start="918" end="926">
 <href>PointHeater.cml</href><size>11</size></content>
 
-<content start="914" end="917">
+<content start="926" end="929">
 <size>11</size></content>
 
-<content start="917" end="922">
+<content start="929" end="934">
 <href>index1.cml</href><size>11</size></content>
 
-<content start="922" end="925">
+<content start="934" end="937">
 <size>11</size></content>
 
-<content start="925" end="929">
+<content start="937" end="941">
 <href>makeBondAction.cml</href><size>11</size></content>
 
-<content start="929" end="931">
+<content start="941" end="943">
 <size>11</size></content>
 
 </paragraph>

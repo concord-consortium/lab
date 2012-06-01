@@ -7,35 +7,41 @@
 
 &lt; Previous | Index | Next &gt;
 
-The user can make comments about a page. The comments will be stored in a database, and can be viewed by anyone using the Molecular Workbench software.
+A registered user can make comments about a page. The comments will be stored in a database, and can be viewed by anyone using MW.
 
  
 &#10163; Click this link to view an example of using this functionality to invite users to make comments on your page.
  
 
-To make a comment, press the &quot; &quot; button or choose the &quot;Collaboration&gt;Make Comments&quot; menu, you will see the following dialog window:
+To make a comment, press the &quot; &quot; button or choose the &quot;Webspace &gt; Make Comments&quot; menu, you will see the following dialog window (if you are a registered user and have logged in):
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
-Type in this dialog window the information you would like to fill in (no registration is required), and then press the Submit Button. After the comment is received by the server and put into the database, all the comments on the current page, including the one that is just submitted, will be shown in a new window.
+Type in this dialog window your comment, and then press the Submit Button. After the comment is received by the server and put into the database, all the comments on the current page, including the one that is just submitted, will be shown in a new window.
 
 If the whole comment dialog is embedded in a page, you will receive the following message in a pop-up window if your comment has been successfully stored in the database:
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 In the case that there is a connection problem to the server or the database, you will receive an error message indicating the type of problem.
 
-For just viewing the comments, click the &quot; &quot; button or select the &quot;Collaboration&gt;View Discussions about Current Page&quot; menu. Discussions are sorted in the order they were inserted.
+For just viewing the comments, click the &quot; &quot; button or select the &quot;Webspace &gt; View Discussion about Current Page&quot; menu. Discussions are sorted in the order they were inserted.
+
+An author can also insert buttons directly into an MW page so that access to this functionality can be made easier.
+
+  
+
+The above two buttons can be inserted using the &quot;Insert &gt; Activity Button&quot; menu and selecting the corresponding actions.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1358">
+<section start="0" end="1564">
 <paragraph start="0" end="26">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="25">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<size>15</size><italic>true</italic><bold>true</bold></content>
 
 <content start="25" end="26">
 </content>
@@ -81,223 +87,288 @@ For just viewing the comments, click the &quot; &quot; button or select the &quo
 </content>
 
 </paragraph>
-<paragraph start="56" end="208">
+<paragraph start="56" end="187">
 <LeftIndent>140.0</LeftIndent>
-<content start="56" end="208">
+<content start="56" end="187">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="208" end="209">
+<paragraph start="187" end="188">
 <LeftIndent>140.0</LeftIndent>
-<content start="208" end="209">
+<content start="187" end="188">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="209" end="211">
+<paragraph start="188" end="190">
 <LeftIndent>140.0</LeftIndent>
-<content start="209" end="210">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="188" end="189">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="210" end="211">
+<content start="189" end="190">
 </content>
 
 </paragraph>
-<paragraph start="211" end="323">
-<RightIndent>100.0</RightIndent>
+<paragraph start="190" end="302">
 <LeftIndent>200.0</LeftIndent>
-<content start="211" end="212">
-<size>18</size><foreground>255 0 0</foreground></content>
+<RightIndent>100.0</RightIndent>
+<content start="190" end="191">
+<foreground>255 0 0</foreground><size>18</size></content>
 
-<content start="212" end="213">
+<content start="191" end="192">
 <size>14</size></content>
 
-<content start="213" end="219">
+<content start="192" end="198">
 <size>11</size></content>
 
-<content start="219" end="228">
+<content start="198" end="207">
 <size>11</size><href>2dvs3d.cml</href></content>
 
-<content start="228" end="322">
+<content start="207" end="301">
 <size>11</size></content>
 
-<content start="322" end="323">
+<content start="301" end="302">
 </content>
 
 </paragraph>
-<paragraph start="323" end="325">
+<paragraph start="302" end="304">
 <LeftIndent>140.0</LeftIndent>
-<content start="323" end="324">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="302" end="303">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="324" end="325">
+<content start="303" end="304">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="325" end="326">
+<paragraph start="304" end="305">
 <LeftIndent>140.0</LeftIndent>
-<content start="325" end="326">
+<content start="304" end="305">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="326" end="458">
+<paragraph start="305" end="484">
 <LeftIndent>140.0</LeftIndent>
-<content start="326" end="356">
+<content start="305" end="335">
 <size>11</size></content>
 
-<content start="356" end="357">
-<icon>EditComment.gif</icon><size>11</size></content>
+<content start="335" end="336">
+<size>11</size><icon>EditComment.gif</icon></content>
 
-<content start="357" end="458">
+<content start="336" end="484">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="458" end="459">
+<paragraph start="484" end="485">
 <LeftIndent>100.0</LeftIndent>
-<content start="458" end="459">
+<content start="484" end="485">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="459" end="462">
-<Alignment>1</Alignment>
+<paragraph start="485" end="488">
 <LeftIndent>140.0</LeftIndent>
-<content start="459" end="460">
-<size>11</size></content>
-
-<content start="460" end="461">
-<icon>AddComment.gif</icon><size>11</size></content>
-
-<content start="461" end="462">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="462" end="486">
 <Alignment>1</Alignment>
-<LeftIndent>140.0</LeftIndent>
-<content start="462" end="485">
-<size>10</size></content>
-
 <content start="485" end="486">
 <size>11</size></content>
 
-</paragraph>
-<paragraph start="486" end="487">
-<Alignment>1</Alignment>
-<LeftIndent>120.0</LeftIndent>
 <content start="486" end="487">
+<size>11</size><icon>AddComment.gif</icon></content>
+
+<content start="487" end="488">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="487" end="803">
+<paragraph start="488" end="512">
 <LeftIndent>140.0</LeftIndent>
-<content start="487" end="803">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="803" end="804">
-<LeftIndent>140.0</LeftIndent>
-<content start="803" end="804">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="804" end="975">
-<LeftIndent>140.0</LeftIndent>
-<content start="804" end="807">
-<size>11</size></content>
-
-<content start="807" end="853">
-<size>11</size><href>FeedbackArea.cml</href></content>
-
-<content start="853" end="975">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="975" end="976">
-<LeftIndent>140.0</LeftIndent>
-<content start="975" end="976">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="976" end="979">
 <Alignment>1</Alignment>
-<LeftIndent>140.0</LeftIndent>
-<content start="976" end="977">
-<size>11</size></content>
+<content start="488" end="489">
+<bold>true</bold><size>13</size></content>
 
-<content start="977" end="978">
-<icon>CommentServerMessage.gif</icon><size>11</size></content>
-
-<content start="978" end="979">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="979" end="1003">
-<Alignment>1</Alignment>
-<LeftIndent>140.0</LeftIndent>
-<content start="979" end="1002">
+<content start="489" end="510">
 <size>10</size></content>
 
-<content start="1002" end="1003">
+<content start="510" end="511">
+<bold>true</bold><size>13</size></content>
+
+<content start="511" end="512">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1003" end="1004">
-<LeftIndent>140.0</LeftIndent>
-<content start="1003" end="1004">
+<paragraph start="512" end="513">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="512" end="513">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1004" end="1148">
+<paragraph start="513" end="770">
 <LeftIndent>140.0</LeftIndent>
-<content start="1004" end="1148">
+<content start="513" end="770">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1148" end="1149">
+<paragraph start="770" end="771">
 <LeftIndent>140.0</LeftIndent>
-<content start="1148" end="1149">
+<content start="770" end="771">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1149" end="1329">
+<paragraph start="771" end="942">
 <LeftIndent>140.0</LeftIndent>
-<content start="1149" end="1191">
+<content start="771" end="774">
 <size>11</size></content>
 
-<content start="1191" end="1192">
+<content start="774" end="820">
+<size>11</size><href>FeedbackArea.cml</href></content>
+
+<content start="820" end="942">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="942" end="943">
+<LeftIndent>140.0</LeftIndent>
+<content start="942" end="943">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="943" end="946">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="943" end="944">
+<size>11</size></content>
+
+<content start="944" end="945">
+<size>11</size><icon>CommentServerMessage.gif</icon></content>
+
+<content start="945" end="946">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="946" end="970">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="946" end="947">
+<bold>true</bold><size>13</size></content>
+
+<content start="947" end="968">
+<size>10</size></content>
+
+<content start="968" end="969">
+<bold>true</bold><size>13</size></content>
+
+<content start="969" end="970">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="970" end="971">
+<LeftIndent>140.0</LeftIndent>
+<content start="970" end="971">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="971" end="1115">
+<LeftIndent>140.0</LeftIndent>
+<content start="971" end="1115">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1115" end="1116">
+<LeftIndent>140.0</LeftIndent>
+<content start="1115" end="1116">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1116" end="1292">
+<LeftIndent>140.0</LeftIndent>
+<content start="1116" end="1158">
+<size>11</size></content>
+
+<content start="1158" end="1159">
 <icon>ViewComment.gif</icon></content>
 
-<content start="1192" end="1329">
+<content start="1159" end="1292">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1329" end="1330">
+<paragraph start="1292" end="1293">
 <LeftIndent>140.0</LeftIndent>
-<content start="1329" end="1330">
+<content start="1292" end="1293">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1293" end="1409">
+<LeftIndent>140.0</LeftIndent>
+<content start="1293" end="1409">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1409" end="1410">
+<LeftIndent>140.0</LeftIndent>
+<content start="1409" end="1410">
 </content>
 
 </paragraph>
-<paragraph start="1330" end="1358">
+<paragraph start="1410" end="1413">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1410" end="1411">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Comment</title>
+<bgcolor>-ce953b</bgcolor>
+<opaque>false</opaque>
+<action>Comment</action></component></content>
+
+<content start="1411" end="1412">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>View comments</title>
+<bgcolor>-ce953b</bgcolor>
+<action>View comments</action></component></content>
+
+<content start="1412" end="1413">
+</content>
+
+</paragraph>
+<paragraph start="1413" end="1414">
+<LeftIndent>140.0</LeftIndent>
+<content start="1413" end="1414">
+</content>
+
+</paragraph>
+<paragraph start="1414" end="1535">
+<LeftIndent>140.0</LeftIndent>
+<content start="1414" end="1534">
+<size>11</size></content>
+
+<content start="1534" end="1535">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1535" end="1536">
+<LeftIndent>140.0</LeftIndent>
+<content start="1535" end="1536">
+</content>
+
+</paragraph>
+<paragraph start="1536" end="1564">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="1330" end="1332">
+<content start="1536" end="1538">
 <size>11</size></content>
 
-<content start="1332" end="1340">
+<content start="1538" end="1546">
 <size>11</size><href>locale.cml</href></content>
 
-<content start="1340" end="1343">
+<content start="1546" end="1549">
 <size>11</size></content>
 
-<content start="1343" end="1348">
+<content start="1549" end="1554">
 <size>11</size><href>index.cml</href></content>
 
-<content start="1348" end="1351">
+<content start="1554" end="1557">
 <size>11</size></content>
 
-<content start="1351" end="1355">
+<content start="1557" end="1561">
 <size>11</size><href>snapshot.cml</href></content>
 
-<content start="1355" end="1357">
+<content start="1561" end="1563">
 <size>11</size></content>
 
 </paragraph>

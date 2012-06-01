@@ -7,31 +7,31 @@
 
 &lt; Previous | Index | Next &gt;
 
-Once you have inserted a 3D Molecular Simulator, you can resize it by selecting the &quot;Edit &gt; Resize Container&quot; menu.
+Once you have inserted a 3D model container, you can resize it by selecting the &quot;Edit &gt; Resize Container&quot; menu. Note that the size of a container, which defines the screen size of the view window, is different from the size of the glass box, which contains all the particles in 3D.
 
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="199">
+<section start="0" end="365">
 <paragraph start="0" end="23">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="0" end="22">
-<bold>true</bold><size>15</size><italic>true</italic></content>
+<size>15</size><italic>true</italic><bold>true</bold></content>
 
 <content start="22" end="23">
 </content>
 
 </paragraph>
 <paragraph start="23" end="24">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="23" end="24">
 </content>
 
 </paragraph>
 <paragraph start="24" end="52">
-<Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
 <content start="24" end="26">
 <size>11</size></content>
 
@@ -48,7 +48,7 @@ Once you have inserted a 3D Molecular Simulator, you can resize it by selecting 
 <size>11</size></content>
 
 <content start="45" end="49">
-<href>glassbox.cml</href><size>11</size></content>
+<href>field3d.cml</href><size>11</size></content>
 
 <content start="49" end="51">
 <size>11</size></content>
@@ -63,46 +63,52 @@ Once you have inserted a 3D Molecular Simulator, you can resize it by selecting 
 </content>
 
 </paragraph>
-<paragraph start="53" end="169">
+<paragraph start="53" end="335">
 <LeftIndent>140.0</LeftIndent>
-<content start="53" end="169">
+<content start="53" end="280">
+<size>11</size></content>
+
+<content start="280" end="293">
+<href>glassbox.cml</href><size>11</size></content>
+
+<content start="293" end="335">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="169" end="170">
+<paragraph start="335" end="336">
 <LeftIndent>140.0</LeftIndent>
-<content start="169" end="170">
+<content start="335" end="336">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="170" end="171">
+<paragraph start="336" end="337">
 <LeftIndent>140.0</LeftIndent>
-<content start="170" end="171">
+<content start="336" end="337">
 </content>
 
 </paragraph>
-<paragraph start="171" end="199">
-<Alignment>2</Alignment>
+<paragraph start="337" end="365">
 <RightIndent>20.0</RightIndent>
-<content start="171" end="173">
+<Alignment>2</Alignment>
+<content start="337" end="339">
 <size>11</size></content>
 
-<content start="173" end="181">
+<content start="339" end="347">
 <href>jmolcompanion.cml</href><size>11</size></content>
 
-<content start="181" end="184">
+<content start="347" end="350">
 <size>11</size></content>
 
-<content start="184" end="189">
+<content start="350" end="355">
 <href>index4.cml</href><size>11</size></content>
 
-<content start="189" end="192">
+<content start="355" end="358">
 <size>11</size></content>
 
-<content start="192" end="196">
-<href>glassbox.cml</href><size>11</size></content>
+<content start="358" end="362">
+<href>field3d.cml</href><size>11</size></content>
 
-<content start="196" end="198">
+<content start="362" end="364">
 <size>11</size></content>
 
 </paragraph>

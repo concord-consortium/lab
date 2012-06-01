@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The resolution of measurement: Estimating thermal fluctuations</page_title>
+<text> The resolution of measurement: Estimating thermal fluctuations
+
+Any measurement has a resolution. In this tip, we discuss about the &quot;resolution&quot; of measuring a physical property in molecular dynamics experiments. This tip is very important to people who aim at obtaining quantitatively correct results.
+
+Data produced in a molecular dynamics simulation often exhibit huge fluctuations, which we do not or cannot experience at macroscopic level, even when the system is in equilibrium. Data that fluctuate too much can hardly be interpreted as macroscopic properties that appear to be stable in our common sense. For instance, we have never seen an ice cube that can have temperature swinging between -30C and 30C but still remains an ice cube [1]. In molecular dynamics simulations, data are often averaged on a statistical basis before they are said to be a macroscopic property such as temperature and pressure.
+
+Principle: Macroscopic properties are the averages of physical variables over an ensemble.
+
+Ensemble in physics means a collection of states under certain conditions. In molecular modeling, an ensemble usually, although not necessarily, means a collection of atoms or molecules. Ensembe normally involves lots of states --- we do not call a collection of a bunch of states an ensemble. The procedure of &quot;measuring&quot; a property in a simulation is essentially the calculation of the ensemble average of that property. For example, &quot;measuring the temperature of a system&quot; means computing the average kinetic energy, &quot;measuring the current of heat flow&quot; means computing the average velocity component of atoms in a certain direction, and so on. As a universal rule in statistics, the larger the ensemble is, the more accurately the calculated results will represent the macroscopic properties.
+
+Returning statistical averages does not mean the end of the data analysis job. To validate the averages, we must check against the standard deviations, namely, the fluctuations. 
+
+Because of the limitation of computer power, the molecular models we build in Molecular Workbench are usually limited to up to a few hundred atoms. For an isolated equilibrium system that does not exchange energy with the environment to maintain its temperature, the computed average kinetic energy for a few hundred atoms will not be the same every time, due to the frequent interexchange of potential energy and kinetic energy when the atoms move. The results can fluctuate a lot, particularly when the average kinetic energy is higher. If there is a non-equilibrium process such as heat transfer that we want to study, the net results caused by the thermal gradient (signal) will be mixed with fluctuating components (noise). As is in signal processing theory, it becomes hard to detect the signal when the noise starts to interfere the signal. The minimum signal that can be measured in the background of given noise is called the resolution of measurement.
+
+In molecular dynamics simulations, it is important to estimate the thermal fluctuations for a system of given number of atoms in order to determine the resolution of measurement. The resolution of measurement will tell us if it is possible to model a process with certain specifications. For example, we want to examine if it is possible to model the heat transfer between two slabs that have an initial temperature difference of 60C, each of which consists of about 100 atoms. To answer this question, we have to check if the ensemble average of the kinetic energy would fluctuate within a range spanning reasonably less than 60C when computed at different times.
+
+The fluctuation of a set of data is usually computed as the root mean square deviation (RMSD, aka standard deviation) of the data points. There is no easy rule to estimate the RMSD [2], but we can use Molecular Workbench software&apos;s numerical displays to compute and show the RMSDs of a large variety of variables on the fly. For example, the following model computes the average temperature and the RMSD of temperature for a system of 150 atoms.
+Instantaneous temperature =  Kelvin
+Time average temperature =  Kelvin
+Root mean square deviation  =  Kelvin
+ 
+Mass=0.2 carbon mass, sigma=2.5 angstrom, epsilon=0.1 eV, periodic boundary applied.
+
+The time average temperature and the RMSD are calculated based on the data points stored in the recorder tape (by default, there are 200 data points, but you can make it longer).[3] The temperature fluctuation of this system at around 350 K (77 C) is about 20 C. This means that this model definitely cannot be used to measure heat transfer with a temperature gradient less than 20C, and measuring a heat transfer with a temperature gradient less than 60C may be problematic.
+
+NOTE: If you heat or cool the model while running the model, you will have beginning part of the tape keeping the records before heating or cooling and later part keeping the records after. As a result, the computed RMSD cannot be used to represent the RMSD of a single equilibrium state. You will have to wait for at least 200 recording steps to pass by before the RMSD value stablizes and can represent the new equilibrium state.
+
+Tuning the mechanical properties of the atoms will not help increase the resolution at given temperature
+
+Interestingly, thermal fluctuations seem to have little correlation with the mechanical properties of the atoms. Below is a model in which the interatomic interactions are twice as stronger as the previous one, the atomic radius is slightly larger, and the mass is 20 times greater. Yet the fluctuations seem to be similar to those computed in the previous model when the average temperatures are about the same. The implication of this observation is that the thermal fluctuations may be solely determined by the temperature. The physical origin of this is not immediately clear, but it can be very profound.
+Instantaneous temperature =  Kelvin
+Time average temperature =  Kelvin
+Root mean square deviation  =  Kelvin
+ 
+Mass=4 carbon mass, sigma=3 angstrom, epsilon=0.2 eV, periodic boundary applied.
+
+____________________________________________________________________________________
+[1] We cannot rule out the probability that such a thing might actually be feasible and probably already in existence somewhere in the universe, though.
+[2] In ideal cases (e.g. ideal gas), the relative fluctuation of a property X for a system in equilibrium is inversely propotional to the square root of the size of the ensemble:
+
+ 
+
+where N is the number of states of the ensemble, and &lt;X&gt; is the ensemble average of X. This formula does not apply to systems near phase transitions. It is not immediately clear that this formula is applicable to the regime of a few hundred interacting atoms.
+[3] Because the tape only keeps the latest 200 frames, the average value will exhibit slow changes too. This is an artifact. Had we kept all the frames, the average value would be much more stable.
+
+&lt;Index of tips&gt;
+
+
+
+</text>
+<section start="0" end="6977">
+<paragraph start="0" end="64">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="63">
+<size>18</size><bold>true</bold></content>
+
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="304">
+<LeftIndent>30.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<RightIndent>30.0</RightIndent>
+<content start="65" end="303">
+<size>11</size></content>
+
+<content start="303" end="304">
+</content>
+
+</paragraph>
+<paragraph start="304" end="305">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="304" end="305">
+</content>
+
+</paragraph>
+<paragraph start="305" end="915">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="305" end="915">
+</content>
+
+</paragraph>
+<paragraph start="915" end="916">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="915" end="916">
+</content>
+
+</paragraph>
+<paragraph start="916" end="1007">
+<LeftIndent>80.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<RightIndent>80.0</RightIndent>
+<content start="916" end="1006">
+<italic>true</italic><bold>true</bold></content>
+
+<content start="1006" end="1007">
+</content>
+
+</paragraph>
+<paragraph start="1007" end="1008">
+<LeftIndent>80.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<RightIndent>80.0</RightIndent>
+<content start="1007" end="1008">
+</content>
+
+</paragraph>
+<paragraph start="1008" end="1805">
+<LeftIndent>80.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<RightIndent>80.0</RightIndent>
+<content start="1008" end="1805">
+</content>
+
+</paragraph>
+<paragraph start="1805" end="1806">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="1805" end="1806">
+</content>
+
+</paragraph>
+<paragraph start="1806" end="1985">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="1806" end="1985">
+</content>
+
+</paragraph>
+<paragraph start="1985" end="1986">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="1985" end="1986">
+</content>
+
+</paragraph>
+<paragraph start="1986" end="2948">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="1986" end="2917">
+</content>
+
+<content start="2917" end="2946">
+<italic>true</italic></content>
+
+<content start="2946" end="2948">
+</content>
+
+</paragraph>
+<paragraph start="2948" end="2949">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="2948" end="2949">
+</content>
+
+</paragraph>
+<paragraph start="2949" end="3614">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="2949" end="3614">
+</content>
+
+</paragraph>
+<paragraph start="3614" end="3615">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="3614" end="3615">
+</content>
+
+</paragraph>
+<paragraph start="3615" end="4061">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="3615" end="3847">
+</content>
+
+<content start="3847" end="3865">
+<href>../insertNumericBox.cml</href></content>
+
+<content start="3865" end="4061">
+</content>
+
+</paragraph>
+<paragraph start="4061" end="4097">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="4061" end="4088">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="4088" end="4089">
+</content>
+
+<content start="4089" end="4090">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<model>0</model>
+<description>Kinetic Energy/Particle</description>
+<width>60</width>
+<height>24</height>
+<multiplier>11594.0</multiplier>
+<max_integer_digits>4</max_integer_digits>
+</component></content>
+
+<content start="4090" end="4097">
+<subscript>true</subscript><size>14</size></content>
+
+</paragraph>
+<paragraph start="4097" end="4132">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="4097" end="4123">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="4123" end="4124">
+</content>
+
+<content start="4124" end="4125">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<model>0</model>
+<datatype>1</datatype>
+<description>Kinetic Energy/Particle</description>
+<width>60</width>
+<height>24</height>
+<multiplier>11594.0</multiplier>
+<max_integer_digits>4</max_integer_digits>
+</component></content>
+
+<content start="4125" end="4132">
+<subscript>true</subscript><size>14</size></content>
+
+</paragraph>
+<paragraph start="4132" end="4170">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="4132" end="4161">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="4161" end="4162">
+</content>
+
+<content start="4162" end="4163">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<model>0</model>
+<datatype>2</datatype>
+<description>Kinetic Energy/Particle</description>
+<width>60</width>
+<height>24</height>
+<multiplier>11594.0</multiplier>
+</component></content>
+
+<content start="4163" end="4169">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="4169" end="4170">
+</content>
+
+</paragraph>
+<paragraph start="4170" end="4172">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="4170" end="4171">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>fluctuations$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="4171" end="4172">
+</content>
+
+</paragraph>
+<paragraph start="4172" end="4257">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="4172" end="4257">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="4257" end="4258">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="4257" end="4258">
+</content>
+
+</paragraph>
+<paragraph start="4258" end="4734">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="4258" end="4412">
+</content>
+
+<content start="4412" end="4434">
+<href>../recordSimulation.cml</href></content>
+
+<content start="4434" end="4734">
+</content>
+
+</paragraph>
+<paragraph start="4734" end="4735">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="4734" end="4735">
+</content>
+
+</paragraph>
+<paragraph start="4735" end="5167">
+<LeftIndent>80.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<RightIndent>80.0</RightIndent>
+<content start="4735" end="4739">
+<bold>true</bold></content>
+
+<content start="4739" end="5167">
+</content>
+
+</paragraph>
+<paragraph start="5167" end="5168">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="5167" end="5168">
+</content>
+
+</paragraph>
+<paragraph start="5168" end="5273">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="5168" end="5272">
+<bold>true</bold></content>
+
+<content start="5272" end="5273">
+</content>
+
+</paragraph>
+<paragraph start="5273" end="5274">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="5273" end="5274">
+</content>
+
+</paragraph>
+<paragraph start="5274" end="5884">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="5274" end="5884">
+</content>
+
+</paragraph>
+<paragraph start="5884" end="5920">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="5884" end="5911">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="5911" end="5912">
+</content>
+
+<content start="5912" end="5913">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<model>1</model>
+<description>Kinetic Energy/Particle</description>
+<width>60</width>
+<height>24</height>
+<multiplier>11594.0</multiplier>
+<max_integer_digits>4</max_integer_digits>
+</component></content>
+
+<content start="5913" end="5920">
+<subscript>true</subscript><size>14</size></content>
+
+</paragraph>
+<paragraph start="5920" end="5955">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="5920" end="5946">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="5946" end="5947">
+</content>
+
+<content start="5947" end="5948">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<model>1</model>
+<datatype>1</datatype>
+<description>Kinetic Energy/Particle</description>
+<width>60</width>
+<height>24</height>
+<multiplier>11594.0</multiplier>
+<max_integer_digits>4</max_integer_digits>
+</component></content>
+
+<content start="5948" end="5955">
+<subscript>true</subscript><size>14</size></content>
+
+</paragraph>
+<paragraph start="5955" end="5993">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="5955" end="5984">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="5984" end="5985">
+</content>
+
+<content start="5985" end="5986">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<model>1</model>
+<datatype>2</datatype>
+<description>Kinetic Energy/Particle</description>
+<width>60</width>
+<height>24</height>
+<multiplier>11594.0</multiplier>
+</component></content>
+
+<content start="5986" end="5992">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="5992" end="5993">
+</content>
+
+</paragraph>
+<paragraph start="5993" end="5995">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="5993" end="5994">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>fluctuations$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="5994" end="5995">
+</content>
+
+</paragraph>
+<paragraph start="5995" end="6076">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="5995" end="6075">
+<italic>true</italic></content>
+
+<content start="6075" end="6076">
+</content>
+
+</paragraph>
+<paragraph start="6076" end="6077">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="6076" end="6077">
+</content>
+
+</paragraph>
+<paragraph start="6077" end="6162">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="6077" end="6162">
+</content>
+
+</paragraph>
+<paragraph start="6162" end="6315">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="6162" end="6314">
+<size>10</size></content>
+
+<content start="6314" end="6315">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6315" end="6494">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="6315" end="6391">
+<size>10</size></content>
+
+<content start="6391" end="6392">
+<italic>true</italic><size>10</size></content>
+
+<content start="6392" end="6494">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="6494" end="6495">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="6494" end="6495">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="6495" end="6497">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="6495" end="6496">
+<icon>fluc.gif</icon><size>10</size></content>
+
+<content start="6496" end="6497">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="6497" end="6498">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="6497" end="6498">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="6498" end="6758">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="6498" end="6504">
+<size>10</size></content>
+
+<content start="6504" end="6505">
+<italic>true</italic><size>10</size></content>
+
+<content start="6505" end="6552">
+<size>10</size></content>
+
+<content start="6552" end="6553">
+<italic>true</italic><size>10</size></content>
+
+<content start="6553" end="6582">
+<size>10</size></content>
+
+<content start="6582" end="6583">
+<italic>true</italic><size>10</size></content>
+
+<content start="6583" end="6758">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="6758" end="6956">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="6758" end="6955">
+<size>10</size></content>
+
+<content start="6955" end="6956">
+</content>
+
+</paragraph>
+<paragraph start="6956" end="6957">
+<LeftIndent>8.0</LeftIndent>
+<content start="6956" end="6957">
+</content>
+
+</paragraph>
+<paragraph start="6957" end="6973">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="6957" end="6958">
+</content>
+
+<content start="6958" end="6971">
+<href>index.cml</href></content>
+
+<content start="6971" end="6973">
+</content>
+
+</paragraph>
+<paragraph start="6973" end="6974">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="6973" end="6974">
+</content>
+
+</paragraph>
+<paragraph start="6974" end="6975">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="6974" end="6975">
+</content>
+
+</paragraph>
+<paragraph start="6975" end="6976">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="6975" end="6976">
+</content>
+
+</paragraph>
+<paragraph start="6976" end="6977">
+</paragraph>
+</section>
+</document>

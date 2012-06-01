@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Mvd</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Mvd
@@ -19,7 +19,7 @@ An expression can take one of the following forms:
    [scalar] [direction] [vmax] [id] within ([x], [y], [w], [h])
    [scalar] [direction] [vmax] [id]
 
-where scalar is a boolean flag that indicates the speed (scalar) distribution will be calculated when it is set to be true and the velocity (vector) distribution will be calculated when it is set to be false, direction is one of the following strings that specifies the direction in which the velocities of the particles will be included: x, y and all (the keyword &quot;all&quot; means both x and y component of the velocity will be included), vmax is the upper bound of the velocity to be included (the lower bound is always zero) in the unit of m/s (meter per second), id is the ID number of the selected element, x and y are the coordinate of the upper-left corner of the selected rectangular area, and w and h are its width and height. The second covers the whole area, which is equivalent to:
+where scalar is a boolean flag that indicates the speed (scalar) distribution will be calculated when it is set to be true and the velocity (vector) distribution will be calculated when it is set to be false, direction is one of the following strings that specifies the direction in which the velocities of the particles will be included: x, y, and all (the keyword &quot;all&quot; means both x and y component of the velocity will be included), vmax is the upper bound of the velocity to be included (the lower bound is always zero) in the unit of m/s (meter per second), id is the ID number of the selected element, x and y are the coordinate of the upper-left corner of the selected rectangular area, and w and h are its width and height. The second covers the whole area, which is equivalent to:
 
 [scalar] [direction] [vmax] [id] within (0, 0, %width, %height)
 
@@ -42,17 +42,17 @@ The following model demonstrates the use of this command to study the MVDs of di
  
  
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 The above button shows speed distributions of three types of atoms that have different masses: 50 g/mol (purple), 30 g/mol (green) and 15 g/mol (white). In the speed distribution graph, the speeds that the peaks correspond to should be inversely proportional to the square root of mass. In the velocity distribution graph, the curves look like normal distributions whose standard deviations are inversely proportional to the square root of mass.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="3160">
+<section start="0" end="3167">
 <paragraph start="0" end="4">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="3">
-<bold>true</bold><size>16</size><italic>true</italic></content>
+<italic>true</italic><bold>true</bold><size>16</size></content>
 
 <content start="3" end="4">
 </content>
@@ -132,7 +132,7 @@ The above button shows speed distributions of three types of atoms that have dif
 <paragraph start="174" end="191">
 <LeftIndent>160.0</LeftIndent>
 <content start="174" end="177">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<size>11</size><family>Courier New</family><bold>true</bold></content>
 
 <content start="177" end="191">
 <size>11</size><family>Courier New</family></content>
@@ -141,7 +141,7 @@ The above button shows speed distributions of three types of atoms that have dif
 <paragraph start="191" end="259">
 <LeftIndent>160.0</LeftIndent>
 <content start="191" end="194">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
+<size>11</size><family>Courier New</family><bold>true</bold></content>
 
 <content start="194" end="258">
 <size>11</size><family>Courier New</family></content>
@@ -198,7 +198,7 @@ The above button shows speed distributions of three types of atoms that have dif
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="413" end="1202">
+<paragraph start="413" end="1203">
 <LeftIndent>140.0</LeftIndent>
 <content start="413" end="419">
 <size>11</size></content>
@@ -210,7 +210,7 @@ The above button shows speed distributions of three types of atoms that have dif
 <size>11</size></content>
 
 <content start="463" end="490">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="490" end="531">
 <size>11</size></content>
@@ -222,7 +222,7 @@ The above button shows speed distributions of three types of atoms that have dif
 <size>11</size></content>
 
 <content start="544" end="574">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="574" end="615">
 <size>11</size></content>
@@ -248,305 +248,315 @@ The above button shows speed distributions of three types of atoms that have dif
 <content start="755" end="756">
 <size>11</size><family>Courier New</family></content>
 
-<content start="756" end="761">
+<content start="756" end="762">
 <size>11</size></content>
 
-<content start="761" end="764">
+<content start="762" end="765">
 <size>11</size><family>Courier New</family></content>
 
-<content start="764" end="779">
+<content start="765" end="780">
 <size>11</size></content>
 
-<content start="779" end="782">
+<content start="780" end="783">
 <size>11</size><family>Courier New</family></content>
 
-<content start="782" end="848">
+<content start="783" end="849">
 <size>11</size></content>
 
-<content start="848" end="852">
+<content start="849" end="853">
 <size>11</size><family>Courier New</family></content>
 
-<content start="852" end="975">
+<content start="853" end="976">
 <size>11</size></content>
 
-<content start="975" end="977">
+<content start="976" end="978">
 <size>11</size><family>Courier New</family></content>
 
-<content start="977" end="1020">
+<content start="978" end="1021">
 <size>11</size></content>
 
-<content start="1020" end="1021">
+<content start="1021" end="1022">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1021" end="1026">
+<content start="1022" end="1027">
 <size>11</size></content>
 
-<content start="1026" end="1027">
+<content start="1027" end="1028">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1027" end="1110">
+<content start="1028" end="1111">
 <size>11</size></content>
 
-<content start="1110" end="1111">
+<content start="1111" end="1112">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1111" end="1116">
+<content start="1112" end="1117">
 <size>11</size></content>
 
-<content start="1116" end="1117">
+<content start="1117" end="1118">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1117" end="1202">
+<content start="1118" end="1203">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1202" end="1203">
+<paragraph start="1203" end="1204">
 <LeftIndent>140.0</LeftIndent>
-<content start="1202" end="1203">
+<content start="1203" end="1204">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1203" end="1267">
+<paragraph start="1204" end="1268">
 <LeftIndent>160.0</LeftIndent>
-<content start="1203" end="1266">
+<content start="1204" end="1267">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1266" end="1267">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1267" end="1268">
-<LeftIndent>140.0</LeftIndent>
 <content start="1267" end="1268">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1268" end="1367">
+<paragraph start="1268" end="1269">
 <LeftIndent>140.0</LeftIndent>
-<content start="1268" end="1274">
+<content start="1268" end="1269">
 <size>11</size></content>
 
-<content start="1274" end="1280">
+</paragraph>
+<paragraph start="1269" end="1368">
+<LeftIndent>140.0</LeftIndent>
+<content start="1269" end="1275">
+<size>11</size></content>
+
+<content start="1275" end="1281">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1280" end="1285">
+<content start="1281" end="1286">
 <size>11</size></content>
 
-<content start="1285" end="1292">
+<content start="1286" end="1293">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1292" end="1349">
+<content start="1293" end="1350">
 <size>11</size></content>
 
-<content start="1349" end="1365">
+<content start="1350" end="1366">
 <size>11</size><href>script_variable.cml</href></content>
 
-<content start="1365" end="1367">
+<content start="1366" end="1368">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1367" end="1368">
+<paragraph start="1368" end="1369">
 <LeftIndent>140.0</LeftIndent>
-<content start="1367" end="1368">
+<content start="1368" end="1369">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1368" end="1661">
+<paragraph start="1369" end="1662">
 <LeftIndent>140.0</LeftIndent>
-<content start="1368" end="1465">
+<content start="1369" end="1466">
 <size>11</size></content>
 
-<content start="1465" end="1469">
-<bold>true</bold><size>11</size></content>
+<content start="1466" end="1470">
+<size>11</size><bold>true</bold></content>
 
-<content start="1469" end="1498">
+<content start="1470" end="1499">
 <size>11</size></content>
 
-<content start="1498" end="1501">
+<content start="1499" end="1502">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1501" end="1579">
+<content start="1502" end="1580">
 <size>11</size></content>
 
-<content start="1579" end="1582">
+<content start="1580" end="1583">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1582" end="1597">
+<content start="1583" end="1598">
 <size>11</size></content>
 
-<content start="1597" end="1603">
+<content start="1598" end="1604">
 <size>11</size><family>Courier New</family></content>
 
-<content start="1603" end="1661">
+<content start="1604" end="1662">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1661" end="1662">
-<LeftIndent>140.0</LeftIndent>
-<content start="1661" end="1662">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="1662" end="1664">
+<paragraph start="1662" end="1663">
 <LeftIndent>140.0</LeftIndent>
 <content start="1662" end="1663">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<size>11</size></content>
 
+</paragraph>
+<paragraph start="1663" end="1665">
+<LeftIndent>140.0</LeftIndent>
 <content start="1663" end="1664">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1664" end="1665">
 </content>
 
 </paragraph>
-<paragraph start="1664" end="1760">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="1665" end="1761">
 <RightIndent>100.0</RightIndent>
-<content start="1664" end="1668">
-<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+<LeftIndent>200.0</LeftIndent>
+<content start="1665" end="1669">
+<size>11</size><bold>true</bold><foreground>255 0 0</foreground></content>
 
-<content start="1668" end="1677">
+<content start="1669" end="1678">
 <size>11</size></content>
 
-<content start="1677" end="1685">
+<content start="1678" end="1686">
 <size>11</size><href>recordSimulation.cml</href></content>
 
-<content start="1685" end="1760">
+<content start="1686" end="1761">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1760" end="1864">
-<LeftIndent>200.0</LeftIndent>
+<paragraph start="1761" end="1865">
 <RightIndent>100.0</RightIndent>
-<content start="1760" end="1767">
-<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+<LeftIndent>200.0</LeftIndent>
+<content start="1761" end="1768">
+<size>11</size><bold>true</bold><foreground>255 0 0</foreground></content>
 
-<content start="1767" end="1858">
+<content start="1768" end="1859">
 <size>11</size></content>
 
-<content start="1858" end="1862">
+<content start="1859" end="1863">
 <size>11</size><href>script_loop.cml</href></content>
 
-<content start="1862" end="1863">
+<content start="1863" end="1864">
 <size>11</size></content>
 
-<content start="1863" end="1864">
+<content start="1864" end="1865">
 </content>
 
 </paragraph>
-<paragraph start="1864" end="1866">
+<paragraph start="1865" end="1867">
 <LeftIndent>140.0</LeftIndent>
-<content start="1864" end="1865">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
 <content start="1865" end="1866">
-<size>11</size></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-</paragraph>
-<paragraph start="1866" end="1867">
-<LeftIndent>140.0</LeftIndent>
 <content start="1866" end="1867">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1867" end="1894">
+<paragraph start="1867" end="1868">
 <LeftIndent>140.0</LeftIndent>
-<content start="1867" end="1879">
-<bold>true</bold><size>11</size></content>
-
-<content start="1879" end="1883">
-<bold>true</bold><size>11</size><family>Courier New</family></content>
-
-<content start="1883" end="1893">
-<bold>true</bold><size>11</size></content>
-
-<content start="1893" end="1894">
+<content start="1867" end="1868">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1894" end="1895">
+<paragraph start="1868" end="1895">
 <LeftIndent>140.0</LeftIndent>
+<content start="1868" end="1880">
+<size>11</size><bold>true</bold></content>
+
+<content start="1880" end="1884">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="1884" end="1894">
+<size>11</size><bold>true</bold></content>
+
 <content start="1894" end="1895">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="1895" end="2507">
+<paragraph start="1895" end="1896">
 <LeftIndent>140.0</LeftIndent>
-<content start="1895" end="1899">
-<size>11</size></content>
-
-<content start="1899" end="1903">
-<size>11</size><family>Courier New</family></content>
-
-<content start="1903" end="2074">
-<size>11</size></content>
-
-<content start="2074" end="2078">
-<size>11</size><family>Courier New</family></content>
-
-<content start="2078" end="2282">
-<size>11</size></content>
-
-<content start="2282" end="2286">
-<size>11</size><family>Courier New</family></content>
-
-<content start="2286" end="2482">
-<size>11</size></content>
-
-<content start="2482" end="2486">
-<size>11</size><family>Courier New</family></content>
-
-<content start="2486" end="2507">
+<content start="1895" end="1896">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2507" end="2508">
+<paragraph start="1896" end="2508">
 <LeftIndent>140.0</LeftIndent>
-<content start="2507" end="2508">
+<content start="1896" end="1900">
+<size>11</size></content>
+
+<content start="1900" end="1904">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1904" end="2075">
+<size>11</size></content>
+
+<content start="2075" end="2079">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2079" end="2283">
+<size>11</size></content>
+
+<content start="2283" end="2287">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2287" end="2483">
+<size>11</size></content>
+
+<content start="2483" end="2487">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2487" end="2508">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2508" end="2642">
+<paragraph start="2508" end="2509">
 <LeftIndent>140.0</LeftIndent>
-<content start="2508" end="2642">
+<content start="2508" end="2509">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2642" end="2643">
+<paragraph start="2509" end="2643">
 <LeftIndent>140.0</LeftIndent>
-<content start="2642" end="2643">
+<content start="2509" end="2643">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2643" end="2645">
+<paragraph start="2643" end="2644">
 <LeftIndent>140.0</LeftIndent>
-<Alignment>1</Alignment>
 <content start="2643" end="2644">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2644" end="2646">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2644" end="2645">
 <component><class>org.concord.modeler.PageComboBox</class>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
-<script>{option=&quot;Speed distrbutions&quot;, script=&quot;stop&quot;}{option=&quot;White particles&quot;, script=&quot;mvd true all 2000 0&quot;}{option=&quot;White particles in the upper area&quot;, script=&quot;mvd true all 2000 0 within (0, 0, %width, %halfheight)&quot;}{option=&quot;White particles in the lower area&quot;, script=&quot;mvd true all 2000 0 within (0, %halfheight, %width, %halfheight)&quot;}{option=&quot;Green particles&quot;, script=&quot;mvd true all 2000 1 within (0, 0, %width, %height)&quot;}{option=&quot;Green particles (x-components only)&quot;, script=&quot;mvd true x 2000 1 within (0, 0, %width, %height)&quot;}{option=&quot;Green particles (y-components only)&quot;, script=&quot;mvd true y 2000 1 within (0, 0, %width, %height)&quot;}{option=&quot;Purple particles&quot;, script=&quot;mvd true all 2000 3 within (0, 0, %width, %height)&quot;}{option=&quot;Purple particles (x-components in left area)&quot;, script=&quot;mvd true x 2000 3 within (0, 0, %halfwidth, %height)&quot;}{option=&quot;Purple particles (y-components in right area)&quot;, script=&quot;mvd true y 2000 3 within (%halfwidth, 0, %halfwidth, %height)&quot;}</script>
 <action>Execute MW script</action>
+<script>{option=&quot;Speed distrbutions&quot;, script=&quot;stop&quot;}
+{option=&quot;White particles&quot;, script=&quot;mvd true all 2000 0&quot;}
+{option=&quot;White particles in the upper area&quot;, script=&quot;mvd true all 2000 0 within (0, 0, %width, %halfheight)&quot;}
+{option=&quot;White particles in the lower area&quot;, script=&quot;mvd true all 2000 0 within (0, %halfheight, %width, %halfheight)&quot;}
+{option=&quot;Green particles&quot;, script=&quot;mvd true all 2000 1 within (0, 0, %width, %height)&quot;}
+{option=&quot;Green particles (x-components only)&quot;, script=&quot;mvd true x 2000 1 within (0, 0, %width, %height)&quot;}
+{option=&quot;Green particles (y-components only)&quot;, script=&quot;mvd true y 2000 1 within (0, 0, %width, %height)&quot;}
+{option=&quot;Purple particles&quot;, script=&quot;mvd true all 2000 3 within (0, 0, %width, %height)&quot;}
+{option=&quot;Purple particles (x-components in left area)&quot;, script=&quot;mvd true x 2000 3 within (0, 0, %halfwidth, %height)&quot;}
+{option=&quot;Purple particles (y-components in right area)&quot;, script=&quot;mvd true y 2000 3 within (%halfwidth, 0, %halfwidth, %height)&quot;}
+</script>
 <disabled_at_script>true</disabled_at_script>
 <tooltip>Speed distributions</tooltip>
 </component></content>
 
-<content start="2644" end="2645">
+<content start="2645" end="2646">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2645" end="2647">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="2646" end="2648">
 <Alignment>1</Alignment>
-<content start="2645" end="2646">
+<LeftIndent>140.0</LeftIndent>
+<content start="2646" end="2647">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>script_mvd$0.mml</resource><menubar>false</menubar></component></content>
 
-<content start="2646" end="2647">
+<content start="2647" end="2648">
 </content>
 
 </paragraph>
-<paragraph start="2647" end="2649">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="2648" end="2650">
 <Alignment>1</Alignment>
-<content start="2647" end="2648">
+<LeftIndent>140.0</LeftIndent>
+<content start="2648" end="2649">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Show Maxwell speed distributions for three types of atoms</title>
 <tooltip>Show Maxwell speed distributions for three types of atoms</tooltip>
@@ -558,14 +568,14 @@ The above button shows speed distributions of three types of atoms that have dif
 <action>Execute MW script</action>
 </component></content>
 
-<content start="2648" end="2649">
+<content start="2649" end="2650">
 </content>
 
 </paragraph>
-<paragraph start="2649" end="2651">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="2650" end="2652">
 <Alignment>1</Alignment>
-<content start="2649" end="2650">
+<LeftIndent>140.0</LeftIndent>
+<content start="2650" end="2651">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Show Maxwell velocity distributions for three types of atoms</title>
 <tooltip>Show Maxwell velocity distributions for three types of atoms</tooltip>
@@ -577,54 +587,54 @@ The above button shows speed distributions of three types of atoms that have dif
 <action>Execute MW script</action>
 </component></content>
 
-<content start="2650" end="2651">
+<content start="2651" end="2652">
 </content>
 
 </paragraph>
-<paragraph start="2651" end="2684">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="2652" end="2691">
 <Alignment>1</Alignment>
-<content start="2651" end="2683">
+<LeftIndent>140.0</LeftIndent>
+<content start="2652" end="2690">
 <size>10</size></content>
 
-<content start="2683" end="2684">
+<content start="2690" end="2691">
 </content>
 
 </paragraph>
-<paragraph start="2684" end="2685">
+<paragraph start="2691" end="2692">
 <LeftIndent>140.0</LeftIndent>
-<content start="2684" end="2685">
+<content start="2691" end="2692">
 </content>
 
 </paragraph>
-<paragraph start="2685" end="3131">
+<paragraph start="2692" end="3138">
 <LeftIndent>140.0</LeftIndent>
-<content start="2685" end="3131">
+<content start="2692" end="3138">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3131" end="3132">
+<paragraph start="3138" end="3139">
 <LeftIndent>140.0</LeftIndent>
-<content start="3131" end="3132">
+<content start="3138" end="3139">
 </content>
 
 </paragraph>
-<paragraph start="3132" end="3160">
+<paragraph start="3139" end="3167">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="3132" end="3134">
+<content start="3139" end="3141">
 <size>11</size></content>
 
-<content start="3134" end="3142">
+<content start="3141" end="3149">
 <size>11</size><href>script_tcf.cml</href></content>
 
-<content start="3142" end="3145">
+<content start="3149" end="3152">
 <size>11</size></content>
 
-<content start="3145" end="3150">
+<content start="3152" end="3157">
 <size>11</size><href>mwscripts.cml</href></content>
 
-<content start="3150" end="3159">
+<content start="3157" end="3166">
 <size>11</size></content>
 
 </paragraph>

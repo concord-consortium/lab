@@ -26,23 +26,23 @@ Selecting molecules
 When you left-click the button, a pop-up menu, in which you can select the type of a molecule to be added, will show up (see the screenshot below). The list of molecules is in alphabetical order. By default, the first one is selected.
 
   
-[This is a screenshot.]
+&#12304;This is a screenshot.&#12305;
 
 Practice
 
 You may play with the following model container to get some ideas how you can add molecules to different positions in the 3D space (if you see this button &quot; &quot; on the tool bar, right-click on it and select &quot; &quot; or similar):
 
  
-[This is an embedded model.]
+&#12304;This is an embedded model container.&#12305;
 
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="2064">
+<section start="0" end="2074">
 <paragraph start="0" end="20">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="19">
-<italic>true</italic><bold>true</bold><size>15</size></content>
+<italic>true</italic><size>15</size><bold>true</bold></content>
 
 <content start="19" end="20">
 </content>
@@ -62,19 +62,19 @@ You may play with the following model container to get some ideas how you can ad
 <size>11</size></content>
 
 <content start="23" end="31">
-<size>11</size><href>drop3d.cml</href></content>
+<href>drop3d.cml</href><size>11</size></content>
 
 <content start="31" end="34">
 <size>11</size></content>
 
 <content start="34" end="39">
-<size>11</size><href>index4.cml</href></content>
+<href>index4.cml</href><size>11</size></content>
 
 <content start="39" end="42">
 <size>11</size></content>
 
 <content start="42" end="46">
-<size>11</size><href>movemol3d.cml</href></content>
+<href>movemol3d.cml</href><size>11</size></content>
 
 <content start="46" end="48">
 <size>11</size></content>
@@ -95,7 +95,7 @@ You may play with the following model container to get some ideas how you can ad
 <size>11</size></content>
 
 <content start="255" end="277">
-<size>11</size><href>SupportedMolecules.cml</href></content>
+<href>SupportedMolecules.cml</href><size>11</size></content>
 
 <content start="277" end="319">
 <size>11</size></content>
@@ -110,7 +110,7 @@ You may play with the following model container to get some ideas how you can ad
 <paragraph start="320" end="355">
 <LeftIndent>140.0</LeftIndent>
 <content start="320" end="354">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="354" end="355">
 <size>11</size></content>
@@ -128,7 +128,7 @@ You may play with the following model container to get some ideas how you can ad
 <size>11</size></content>
 
 <content start="361" end="377">
-<size>11</size><href>drop3d.cml</href></content>
+<href>drop3d.cml</href><size>11</size></content>
 
 <content start="377" end="436">
 <size>11</size></content>
@@ -152,31 +152,31 @@ You may play with the following model container to get some ideas how you can ad
 <size>11</size></content>
 
 <content start="508" end="509">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="509" end="513">
 <size>11</size></content>
 
 <content start="513" end="514">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="514" end="518">
 <size>11</size></content>
 
 <content start="518" end="519">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="519" end="535">
 <size>11</size></content>
 
 <content start="535" end="547">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="547" end="632">
 <size>11</size></content>
 
 <content start="632" end="635">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="635" end="840">
 <size>11</size></content>
@@ -210,15 +210,9 @@ You may play with the following model container to get some ideas how you can ad
 <paragraph start="845" end="1033">
 <LeftIndent>140.0</LeftIndent>
 <content start="845" end="882">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
-<content start="882" end="897">
-<size>11</size></content>
-
-<content start="897" end="954">
-<size>11</size></content>
-
-<content start="954" end="1033">
+<content start="882" end="1033">
 <size>11</size></content>
 
 </paragraph>
@@ -231,7 +225,7 @@ You may play with the following model container to get some ideas how you can ad
 <paragraph start="1034" end="1056">
 <LeftIndent>140.0</LeftIndent>
 <content start="1034" end="1055">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="1055" end="1056">
 <size>11</size></content>
@@ -249,13 +243,13 @@ You may play with the following model container to get some ideas how you can ad
 <size>11</size></content>
 
 <content start="1265" end="1266">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="1266" end="1364">
 <size>11</size></content>
 
 <content start="1364" end="1365">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="1365" end="1484">
 <size>11</size></content>
@@ -270,7 +264,7 @@ You may play with the following model container to get some ideas how you can ad
 <paragraph start="1485" end="1505">
 <LeftIndent>140.0</LeftIndent>
 <content start="1485" end="1504">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="1504" end="1505">
 <size>11</size></content>
@@ -288,7 +282,7 @@ You may play with the following model container to get some ideas how you can ad
 <size>11</size></content>
 
 <content start="1515" end="1519">
-<size>11</size><italic>true</italic></content>
+<italic>true</italic><size>11</size></content>
 
 <content start="1519" end="1741">
 <size>11</size></content>
@@ -332,7 +326,7 @@ You may play with the following model container to get some ideas how you can ad
 <paragraph start="1770" end="1779">
 <LeftIndent>140.0</LeftIndent>
 <content start="1770" end="1778">
-<size>11</size><bold>true</bold></content>
+<bold>true</bold><size>11</size></content>
 
 <content start="1778" end="1779">
 <size>11</size></content>
@@ -379,50 +373,50 @@ You may play with the following model container to get some ideas how you can ad
 </content>
 
 </paragraph>
-<paragraph start="2005" end="2034">
+<paragraph start="2005" end="2044">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="2005" end="2033">
+<content start="2005" end="2043">
 <size>10</size></content>
 
-<content start="2033" end="2034">
+<content start="2043" end="2044">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2034" end="2035">
+<paragraph start="2044" end="2045">
 <LeftIndent>140.0</LeftIndent>
-<content start="2034" end="2035">
+<content start="2044" end="2045">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="2035" end="2036">
+<paragraph start="2045" end="2046">
 <LeftIndent>140.0</LeftIndent>
-<content start="2035" end="2036">
+<content start="2045" end="2046">
 </content>
 
 </paragraph>
-<paragraph start="2036" end="2064">
+<paragraph start="2046" end="2074">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="2036" end="2038">
+<content start="2046" end="2048">
 <size>11</size></content>
 
-<content start="2038" end="2046">
-<size>11</size><href>drop3d.cml</href></content>
+<content start="2048" end="2056">
+<href>drop3d.cml</href><size>11</size></content>
 
-<content start="2046" end="2049">
+<content start="2056" end="2059">
 <size>11</size></content>
 
-<content start="2049" end="2054">
-<size>11</size><href>index4.cml</href></content>
+<content start="2059" end="2064">
+<href>index4.cml</href><size>11</size></content>
 
-<content start="2054" end="2057">
+<content start="2064" end="2067">
 <size>11</size></content>
 
-<content start="2057" end="2061">
-<size>11</size><href>movemol3d.cml</href></content>
+<content start="2067" end="2071">
+<href>movemol3d.cml</href><size>11</size></content>
 
-<content start="2061" end="2063">
+<content start="2071" end="2073">
 <size>11</size></content>
 
 </paragraph>

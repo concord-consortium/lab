@@ -1,16 +1,17 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
+<language>UTF-8</language>
 <page_title>Periodic Boundary Conditions</page_title>
 <text>Periodic Boundary Conditions
 
   
   
 
-Periodic boundary conditions are often used in molecular modeling to eleminate the boundary effect[1]. In additional to the conventional periodic boundary, Molecular Workbench provides a composite boundary that can be periodic in one direction and reflecting in the other direction. Periodic boundaries in Molecular Workbench also allow bond crossing.
+Periodic boundary conditions are often used in molecular modeling to eleminate the boundary effect&#10102;. In additional to the conventional periodic boundary, Molecular Workbench provides a composite boundary that can be periodic in one direction and reflecting in the other direction. Periodic boundaries in Molecular Workbench also allow bond crossing.
 
 _________________________________________________________________________________________
-[1]The boundary effect occurs when we study a system that is confined in a simulation box. The boundary effect is directly seen as particles bounce back and forth within a box. This costs the conservation of the total momentum.</text>
-<section start="0" end="708">
+&#10102;The boundary effect occurs when we study a system that is confined in a simulation box. The boundary effect is directly seen as particles bounce back and forth within a box. This costs the conservation of the total momentum.</text>
+<section start="0" end="704">
 <paragraph start="0" end="29">
 <SpaceAbove>6.0</SpaceAbove>
 <LeftIndent>6.0</LeftIndent>
@@ -69,36 +70,36 @@ script:mw:2:stop;</script>
 </content>
 
 </paragraph>
-<paragraph start="37" end="389">
+<paragraph start="37" end="387">
 <LeftIndent>6.0</LeftIndent>
 <content start="37" end="135">
 <size>11</size></content>
 
-<content start="135" end="138">
-<size>11</size><foreground>0 0 255</foreground></content>
+<content start="135" end="136">
+<size>13</size></content>
 
-<content start="138" end="389">
+<content start="136" end="387">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="389" end="390">
+<paragraph start="387" end="388">
 <LeftIndent>6.0</LeftIndent>
-<content start="389" end="390">
+<content start="387" end="388">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="390" end="480">
+<paragraph start="388" end="478">
 <LeftIndent>6.0</LeftIndent>
-<content start="390" end="480">
+<content start="388" end="478">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="480" end="708">
+<paragraph start="478" end="704">
 <LeftIndent>6.0</LeftIndent>
-<content start="480" end="483">
-<size>10</size><foreground>0 0 255</foreground></content>
+<content start="478" end="479">
+<size>13</size></content>
 
-<content start="483" end="707">
+<content start="479" end="703">
 <size>10</size></content>
 
 </paragraph>

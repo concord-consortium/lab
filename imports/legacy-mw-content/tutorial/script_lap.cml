@@ -44,7 +44,7 @@ The following experiment shows a comparison of the pressure computed using the l
 
    
  
-[This is an embedded simulator.]
+?This is an embedded model container.?
 
 The following two images are screenshots of graphs produced from the above simulations. The left one shows the readings from the gauge, whereas the right one shows the results computed using the lap command. As we can tell, they seem to agree with each other qualitatively.
 
@@ -58,7 +58,7 @@ The following model shows this effect.
 
   
  
-[This is an embedded simulator.]
+?This is an embedded model container.?
 
 The following two images are screenshots from the above simulation:
 
@@ -78,12 +78,12 @@ Test case 1: Measuring internal pressures of homogeneous systems in thermal equi
 Test case 2: Measuring internal pressures of an equilibrating process
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="5460">
+<section start="0" end="5472">
 <paragraph start="0" end="25">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="24">
-<bold>true</bold><size>16</size><italic>true</italic></content>
+<size>16</size><italic>true</italic><bold>true</bold></content>
 
 <content start="24" end="25">
 </content>
@@ -103,19 +103,19 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <size>11</size></content>
 
 <content start="28" end="36">
-<href>script_lat.cml</href><size>11</size></content>
+<size>11</size><href>script_lat.cml</href></content>
 
 <content start="36" end="39">
 <size>11</size></content>
 
 <content start="39" end="44">
-<href>mwscripts.cml</href><size>11</size></content>
+<size>11</size><href>mwscripts.cml</href></content>
 
 <content start="44" end="47">
 <size>11</size></content>
 
 <content start="47" end="51">
-<href>script_pcf.cml</href><size>11</size></content>
+<size>11</size><href>script_pcf.cml</href></content>
 
 <content start="51" end="53">
 <size>11</size></content>
@@ -152,8 +152,8 @@ Test case 2: Measuring internal pressures of an equilibrating process
 
 </paragraph>
 <paragraph start="261" end="264">
-<Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="261" end="262">
 </content>
 
@@ -173,7 +173,7 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <size>11</size><italic>true</italic></content>
 
 <content start="271" end="274">
-<superscript>true</superscript><size>11</size></content>
+<size>11</size><superscript>true</superscript></content>
 
 <content start="274" end="290">
 <size>11</size></content>
@@ -242,7 +242,7 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <subscript>true</subscript><size>11</size></content>
 
 <content start="629" end="630">
-<superscript>true</superscript><size>11</size></content>
+<size>11</size><superscript>true</superscript></content>
 
 <content start="630" end="631">
 <size>11</size></content>
@@ -282,8 +282,8 @@ Test case 2: Measuring internal pressures of an equilibrating process
 
 </paragraph>
 <paragraph start="836" end="839">
-<Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="836" end="837">
 <size>11</size></content>
 
@@ -306,7 +306,7 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <size>11</size></content>
 
 <content start="844" end="847">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="847" end="1070">
 <size>11</size></content>
@@ -336,7 +336,7 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <family>Courier New</family><size>11</size><bold>true</bold></content>
 
 <content start="1084" end="1096">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1096" end="1097">
 <family>Courier New</family><size>11</size><bold>true</bold></content>
@@ -348,7 +348,7 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <family>Courier New</family><size>11</size><bold>true</bold></content>
 
 <content start="1100" end="1162">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1162" end="1163">
 <size>11</size></content>
@@ -366,13 +366,13 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <size>11</size></content>
 
 <content start="1191" end="1197">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1197" end="1230">
 <size>11</size></content>
 
 <content start="1230" end="1236">
-<href>script_select.cml</href><family>Courier New</family><size>11</size></content>
+<family>Courier New</family><size>11</size><href>script_select.cml</href></content>
 
 <content start="1236" end="1246">
 <size>11</size></content>
@@ -393,13 +393,13 @@ Test case 2: Measuring internal pressures of an equilibrating process
 </content>
 
 <content start="1250" end="1255">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1255" end="1261">
 <family>Courier New</family><size>11</size><bold>true</bold></content>
 
 <content start="1261" end="1282">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1282" end="1283">
 <size>11</size></content>
@@ -414,13 +414,13 @@ Test case 2: Measuring internal pressures of an equilibrating process
 </content>
 
 <content start="1286" end="1298">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1298" end="1304">
 <family>Courier New</family><size>11</size><bold>true</bold></content>
 
 <content start="1304" end="1326">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="1326" end="1382">
@@ -432,13 +432,13 @@ Test case 2: Measuring internal pressures of an equilibrating process
 </content>
 
 <content start="1329" end="1354">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1354" end="1360">
 <family>Courier New</family><size>11</size><bold>true</bold></content>
 
 <content start="1360" end="1381">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1381" end="1382">
 </content>
@@ -456,19 +456,19 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <size>11</size></content>
 
 <content start="1467" end="1471">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1471" end="1484">
 <size>11</size></content>
 
 <content start="1484" end="1495">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1495" end="1576">
 <size>11</size></content>
 
 <content start="1576" end="1582">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="1582" end="1741">
 <size>11</size></content>
@@ -495,7 +495,7 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <paragraph start="1866" end="1868">
 <LeftIndent>140.0</LeftIndent>
 <content start="1866" end="1867">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="1867" end="1868">
 </content>
@@ -511,7 +511,7 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <size>11</size></content>
 
 <content start="2003" end="2012">
-<href>element_id.cml</href><size>11</size></content>
+<size>11</size><href>element_id.cml</href></content>
 
 <content start="2012" end="2013">
 <size>11</size></content>
@@ -523,7 +523,7 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <paragraph start="2014" end="2016">
 <LeftIndent>140.0</LeftIndent>
 <content start="2014" end="2015">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="2015" end="2016">
 <size>11</size></content>
@@ -541,7 +541,7 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <size>11</size></content>
 
 <content start="2021" end="2024">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="2024" end="2199">
 <size>11</size></content>
@@ -556,7 +556,7 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <paragraph start="2200" end="2202">
 <LeftIndent>140.0</LeftIndent>
 <content start="2200" end="2201">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="2201" end="2202">
 </content>
@@ -566,32 +566,32 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
 <content start="2202" end="2206">
-<size>11</size><bold>true</bold><foreground>255 0 0</foreground></content>
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
 
 <content start="2206" end="2215">
 <size>11</size></content>
 
 <content start="2215" end="2223">
-<href>recordSimulation.cml</href><size>11</size></content>
+<size>11</size><href>recordSimulation.cml</href></content>
 
 <content start="2223" end="2264">
 <size>11</size></content>
 
 <content start="2264" end="2265">
-<size>11</size><bold>true</bold><foreground>255 0 0</foreground></content>
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
 
 </paragraph>
 <paragraph start="2265" end="2369">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
 <content start="2265" end="2272">
-<size>11</size><bold>true</bold><foreground>255 0 0</foreground></content>
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
 
 <content start="2272" end="2363">
 <size>11</size></content>
 
 <content start="2363" end="2367">
-<href>script_loop.cml</href><size>11</size></content>
+<size>11</size><href>script_loop.cml</href></content>
 
 <content start="2367" end="2368">
 <size>11</size></content>
@@ -603,7 +603,7 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <paragraph start="2369" end="2371">
 <LeftIndent>140.0</LeftIndent>
 <content start="2369" end="2370">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="2370" end="2371">
 <size>11</size></content>
@@ -621,13 +621,13 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <size>11</size></content>
 
 <content start="2451" end="2454">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="2454" end="2495">
 <size>11</size></content>
 
 <content start="2495" end="2509">
-<href>pressureprobe.cml</href><size>11</size></content>
+<size>11</size><href>pressureprobe.cml</href></content>
 
 <content start="2509" end="2677">
 <size>11</size></content>
@@ -643,8 +643,8 @@ Test case 2: Measuring internal pressures of an equilibrating process
 
 </paragraph>
 <paragraph start="2679" end="2683">
-<Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="2679" end="2680">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>script_lap$0.mml</resource><menubar>false</menubar></component></content>
@@ -678,8 +678,8 @@ Test case 2: Measuring internal pressures of an equilibrating process
 
 </paragraph>
 <paragraph start="2683" end="2685">
-<Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
 <content start="2683" end="2684">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Compute pressures using the LAP command</title>
@@ -695,57 +695,32 @@ Test case 2: Measuring internal pressures of an equilibrating process
 </content>
 
 </paragraph>
-<paragraph start="2685" end="2718">
-<Alignment>1</Alignment>
+<paragraph start="2685" end="2724">
 <LeftIndent>140.0</LeftIndent>
-<content start="2685" end="2717">
+<Alignment>1</Alignment>
+<content start="2685" end="2723">
 <size>10</size></content>
 
-<content start="2717" end="2718">
+<content start="2723" end="2724">
 </content>
 
 </paragraph>
-<paragraph start="2718" end="2719">
+<paragraph start="2724" end="2725">
 <LeftIndent>140.0</LeftIndent>
-<content start="2718" end="2719">
+<content start="2724" end="2725">
 </content>
 
 </paragraph>
-<paragraph start="2719" end="2993">
+<paragraph start="2725" end="2999">
 <LeftIndent>140.0</LeftIndent>
-<content start="2719" end="2914">
+<content start="2725" end="2920">
 <size>11</size></content>
 
-<content start="2914" end="2917">
-<size>11</size><family>Courier New</family></content>
+<content start="2920" end="2923">
+<family>Courier New</family><size>11</size></content>
 
-<content start="2917" end="2992">
+<content start="2923" end="2998">
 <size>11</size></content>
-
-<content start="2992" end="2993">
-</content>
-
-</paragraph>
-<paragraph start="2993" end="2994">
-<LeftIndent>140.0</LeftIndent>
-<content start="2993" end="2994">
-</content>
-
-</paragraph>
-<paragraph start="2994" end="2999">
-<Alignment>1</Alignment>
-<LeftIndent>140.0</LeftIndent>
-<content start="2994" end="2995">
-</content>
-
-<content start="2995" end="2996">
-<icon>script_lap_1.jpg</icon></content>
-
-<content start="2996" end="2997">
-</content>
-
-<content start="2997" end="2998">
-<icon>script_lap_2.jpg</icon></content>
 
 <content start="2998" end="2999">
 </content>
@@ -757,83 +732,108 @@ Test case 2: Measuring internal pressures of an equilibrating process
 </content>
 
 </paragraph>
-<paragraph start="3000" end="3049">
+<paragraph start="3000" end="3005">
 <LeftIndent>140.0</LeftIndent>
-<content start="3000" end="3048">
+<Alignment>1</Alignment>
+<content start="3000" end="3001">
+</content>
+
+<content start="3001" end="3002">
+<icon>script_lap_1.jpg</icon></content>
+
+<content start="3002" end="3003">
+</content>
+
+<content start="3003" end="3004">
+<icon>script_lap_2.jpg</icon></content>
+
+<content start="3004" end="3005">
+</content>
+
+</paragraph>
+<paragraph start="3005" end="3006">
+<LeftIndent>140.0</LeftIndent>
+<content start="3005" end="3006">
+</content>
+
+</paragraph>
+<paragraph start="3006" end="3055">
+<LeftIndent>140.0</LeftIndent>
+<content start="3006" end="3054">
 <size>11</size><bold>true</bold></content>
 
-<content start="3048" end="3049">
+<content start="3054" end="3055">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3049" end="3050">
+<paragraph start="3055" end="3056">
 <LeftIndent>140.0</LeftIndent>
-<content start="3049" end="3050">
+<content start="3055" end="3056">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="3050" end="4028">
+<paragraph start="3056" end="4034">
 <LeftIndent>140.0</LeftIndent>
-<content start="3050" end="3143">
+<content start="3056" end="3149">
 <size>11</size></content>
 
-<content start="3143" end="3146">
-<size>11</size><family>Courier New</family></content>
+<content start="3149" end="3152">
+<family>Courier New</family><size>11</size></content>
 
-<content start="3146" end="3308">
+<content start="3152" end="3314">
 <size>11</size></content>
 
-<content start="3308" end="3309">
+<content start="3314" end="3315">
 <size>11</size><italic>true</italic></content>
 
-<content start="3309" end="3310">
+<content start="3315" end="3316">
 <subscript>true</subscript><size>11</size></content>
 
-<content start="3310" end="3311">
+<content start="3316" end="3317">
 <size>11</size><italic>true</italic></content>
 
-<content start="3311" end="3376">
+<content start="3317" end="3382">
 <size>11</size></content>
 
-<content start="3376" end="3389">
+<content start="3382" end="3395">
 <size>11</size><bold>true</bold></content>
 
-<content start="3389" end="3457">
+<content start="3395" end="3463">
 <size>11</size></content>
 
-<content start="3457" end="3474">
+<content start="3463" end="3480">
 <size>11</size><bold>true</bold></content>
 
-<content start="3474" end="4028">
+<content start="3480" end="4034">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4028" end="4029">
+<paragraph start="4034" end="4035">
 <LeftIndent>140.0</LeftIndent>
-<content start="4028" end="4029">
+<content start="4034" end="4035">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4029" end="4068">
+<paragraph start="4035" end="4074">
 <LeftIndent>140.0</LeftIndent>
-<content start="4029" end="4068">
+<content start="4035" end="4074">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4068" end="4069">
+<paragraph start="4074" end="4075">
 <LeftIndent>140.0</LeftIndent>
-<content start="4068" end="4069">
+<content start="4074" end="4075">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4069" end="4072">
+<paragraph start="4075" end="4078">
+<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<LeftIndent>140.0</LeftIndent>
-<content start="4069" end="4070">
+<content start="4075" end="4076">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
 <resource>script_lap$1.mml</resource><menubar>false</menubar></component></content>
 
-<content start="4070" end="4071">
+<content start="4076" end="4077">
 <component><class>org.concord.modeler.PageXYGraph</class>
 <model>1</model>
 <time_series_x>Time (fs)</time_series_x>
@@ -854,14 +854,14 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <border>Lowered Etched</border>
 </component></content>
 
-<content start="4071" end="4072">
+<content start="4077" end="4078">
 </content>
 
 </paragraph>
-<paragraph start="4072" end="4074">
-<Alignment>1</Alignment>
+<paragraph start="4078" end="4080">
 <LeftIndent>140.0</LeftIndent>
-<content start="4072" end="4073">
+<Alignment>1</Alignment>
+<content start="4078" end="4079">
 <component><class>org.concord.modeler.PageButton</class>
 <title>Compute pressures using the LAP command</title>
 <tooltip>Compute pressures using the LAP command</tooltip>
@@ -872,131 +872,116 @@ Test case 2: Measuring internal pressures of an equilibrating process
 <action>Execute MW script</action>
 </component></content>
 
-<content start="4073" end="4074">
+<content start="4079" end="4080">
 </content>
 
 </paragraph>
-<paragraph start="4074" end="4107">
-<Alignment>1</Alignment>
+<paragraph start="4080" end="4119">
 <LeftIndent>140.0</LeftIndent>
-<content start="4074" end="4106">
+<Alignment>1</Alignment>
+<content start="4080" end="4118">
 <size>10</size></content>
 
-<content start="4106" end="4107">
+<content start="4118" end="4119">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4107" end="4108">
+<paragraph start="4119" end="4120">
 <LeftIndent>140.0</LeftIndent>
-<content start="4107" end="4108">
+<content start="4119" end="4120">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4108" end="4176">
+<paragraph start="4120" end="4188">
 <LeftIndent>140.0</LeftIndent>
-<content start="4108" end="4175">
+<content start="4120" end="4187">
 <size>11</size></content>
 
-<content start="4175" end="4176">
+<content start="4187" end="4188">
 </content>
 
 </paragraph>
-<paragraph start="4176" end="4177">
+<paragraph start="4188" end="4189">
 <LeftIndent>140.0</LeftIndent>
-<content start="4176" end="4177">
+<content start="4188" end="4189">
 </content>
 
 </paragraph>
-<paragraph start="4177" end="4182">
+<paragraph start="4189" end="4194">
+<LeftIndent>140.0</LeftIndent>
 <Alignment>1</Alignment>
-<LeftIndent>140.0</LeftIndent>
-<content start="4177" end="4178">
+<content start="4189" end="4190">
 </content>
 
-<content start="4178" end="4179">
+<content start="4190" end="4191">
 <icon>script_lap_3.jpg</icon></content>
 
-<content start="4179" end="4180">
+<content start="4191" end="4192">
 </content>
 
-<content start="4180" end="4181">
+<content start="4192" end="4193">
 <icon>script_lap_4.jpg</icon></content>
 
-<content start="4181" end="4182">
+<content start="4193" end="4194">
 </content>
 
 </paragraph>
-<paragraph start="4182" end="4183">
+<paragraph start="4194" end="4195">
 <LeftIndent>140.0</LeftIndent>
-<content start="4182" end="4183">
+<content start="4194" end="4195">
 </content>
 
 </paragraph>
-<paragraph start="4183" end="4826">
+<paragraph start="4195" end="4838">
 <LeftIndent>140.0</LeftIndent>
-<content start="4183" end="4780">
+<content start="4195" end="4792">
 <size>11</size></content>
 
-<content start="4780" end="4781">
+<content start="4792" end="4793">
 <icon>htmlink.gif</icon></content>
 
-<content start="4781" end="4782">
+<content start="4793" end="4794">
 <size>11</size></content>
 
-<content start="4782" end="4799">
-<href>http://www.discover.com/issues/mar-03/departments/featscienceof/</href><size>11</size></content>
+<content start="4794" end="4811">
+<size>11</size><href>http://www.discover.com/issues/mar-03/departments/featscienceof/</href></content>
 
-<content start="4799" end="4826">
+<content start="4811" end="4838">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4826" end="4827">
+<paragraph start="4838" end="4839">
 <LeftIndent>140.0</LeftIndent>
-<content start="4826" end="4827">
+<content start="4838" end="4839">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4827" end="4829">
+<paragraph start="4839" end="4841">
 <LeftIndent>140.0</LeftIndent>
-<content start="4827" end="4828">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+<content start="4839" end="4840">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
-<content start="4828" end="4829">
+<content start="4840" end="4841">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4829" end="4959">
+<paragraph start="4841" end="4971">
 <RightIndent>100.0</RightIndent>
 <LeftIndent>200.0</LeftIndent>
-<content start="4829" end="4862">
+<content start="4841" end="4874">
 <size>11</size></content>
 
-<content start="4862" end="4872">
-<href>NegativePressure.cml</href><size>11</size></content>
+<content start="4874" end="4884">
+<size>11</size><href>NegativePressure.cml</href></content>
 
-<content start="4872" end="4959">
+<content start="4884" end="4971">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="4959" end="4961">
+<paragraph start="4971" end="4973">
 <LeftIndent>140.0</LeftIndent>
-<content start="4959" end="4960">
-<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
-
-<content start="4960" end="4961">
-</content>
-
-</paragraph>
-<paragraph start="4961" end="4962">
-<LeftIndent>140.0</LeftIndent>
-<content start="4961" end="4962">
-</content>
-
-</paragraph>
-<paragraph start="4962" end="4973">
-<LeftIndent>140.0</LeftIndent>
-<content start="4962" end="4972">
-<size>11</size><bold>true</bold></content>
+<content start="4971" end="4972">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
 
 <content start="4972" end="4973">
 </content>
@@ -1008,70 +993,85 @@ Test case 2: Measuring internal pressures of an equilibrating process
 </content>
 
 </paragraph>
-<paragraph start="4974" end="5272">
+<paragraph start="4974" end="4985">
 <LeftIndent>140.0</LeftIndent>
-<content start="4974" end="5272">
-<size>11</size></content>
+<content start="4974" end="4984">
+<size>11</size><bold>true</bold></content>
 
-</paragraph>
-<paragraph start="5272" end="5273">
-<LeftIndent>140.0</LeftIndent>
-<content start="5272" end="5273">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="5273" end="5361">
-<LeftIndent>140.0</LeftIndent>
-<content start="5273" end="5286">
-<size>11</size></content>
-
-<content start="5286" end="5360">
-<href>laptest1.cml</href><size>11</size></content>
-
-<content start="5360" end="5361">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="5361" end="5431">
-<LeftIndent>140.0</LeftIndent>
-<content start="5361" end="5374">
-<size>11</size></content>
-
-<content start="5374" end="5430">
-<href>laptest2.cml</href><size>11</size></content>
-
-<content start="5430" end="5431">
+<content start="4984" end="4985">
 </content>
 
 </paragraph>
-<paragraph start="5431" end="5432">
+<paragraph start="4985" end="4986">
 <LeftIndent>140.0</LeftIndent>
-<content start="5431" end="5432">
+<content start="4985" end="4986">
 </content>
 
 </paragraph>
-<paragraph start="5432" end="5460">
+<paragraph start="4986" end="5284">
+<LeftIndent>140.0</LeftIndent>
+<content start="4986" end="5284">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5284" end="5285">
+<LeftIndent>140.0</LeftIndent>
+<content start="5284" end="5285">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5285" end="5373">
+<LeftIndent>140.0</LeftIndent>
+<content start="5285" end="5298">
+<size>11</size></content>
+
+<content start="5298" end="5372">
+<size>11</size><href>laptest1.cml</href></content>
+
+<content start="5372" end="5373">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5373" end="5443">
+<LeftIndent>140.0</LeftIndent>
+<content start="5373" end="5386">
+<size>11</size></content>
+
+<content start="5386" end="5442">
+<size>11</size><href>laptest2.cml</href></content>
+
+<content start="5442" end="5443">
+</content>
+
+</paragraph>
+<paragraph start="5443" end="5444">
+<LeftIndent>140.0</LeftIndent>
+<content start="5443" end="5444">
+</content>
+
+</paragraph>
+<paragraph start="5444" end="5472">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="5432" end="5434">
+<content start="5444" end="5446">
 <size>11</size></content>
 
-<content start="5434" end="5442">
-<href>script_lat.cml</href><size>11</size></content>
+<content start="5446" end="5454">
+<size>11</size><href>script_lat.cml</href></content>
 
-<content start="5442" end="5445">
+<content start="5454" end="5457">
 <size>11</size></content>
 
-<content start="5445" end="5450">
-<href>mwscripts.cml</href><size>11</size></content>
+<content start="5457" end="5462">
+<size>11</size><href>mwscripts.cml</href></content>
 
-<content start="5450" end="5453">
+<content start="5462" end="5465">
 <size>11</size></content>
 
-<content start="5453" end="5457">
-<href>script_pcf.cml</href><size>11</size></content>
+<content start="5465" end="5469">
+<size>11</size><href>script_pcf.cml</href></content>
 
-<content start="5457" end="5459">
+<content start="5469" end="5471">
 <size>11</size></content>
 
 </paragraph>

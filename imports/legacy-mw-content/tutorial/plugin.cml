@@ -1,0 +1,958 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting Java plugins</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting Java plugins
+
+&lt; Previous | Index | Next &gt;
+
+In addition to supporting Java applets, MW is capable of supporting certain types of Java applications as well. A Java application supported in MW must meet the following requirements: (1) It must have a main GUI component that derives from javax.swing.JComponent and can function without an ancestral first-class container such as javax.swing.JFrame, javax.swing.JDialog or javax.swing.JWindow; (2) It must implement org.concord.modeler.PluginService; (3) It must be signed by a trusted security certificate. We call this type of Java plugins.
+
+An advantage of using plugins in MW, compared with applets, is that the code and the external resources needed to be read can be cached for faster reloading and offline use (recall that an applet that needs to read data cannot be cached). This is because an application has no limitation in accessing hard disk and making network connections. The disadvantage resulting from this is that a plugin must be signed by a trusted security certificate. But once this is verified, the plugin can then access the user&apos;s disk or make network connections without restrictions, which makes it possible to write a plugin for creating, processing and communicating data.
+
+Inserting a plugin: using local jar files
+
+There are two ways to set up a plugin, assuming that you have got the jar files for the plugin. The first method to get it to work with MW is to place the jar files in the same folder as the CML page that will use the plugin.
+
+To insert a plugin to an MW page using this method, please follow these steps:
+
+&#10112; Copy the jar file(s) of the plugin to the directory where the page is located. It is required that all the Java classes needed by the plugin be packed in one or more jar files (to reduce the download size). If you only have a bunch of classes and do not use any IDE such as Eclipse, you can simply run the following command using   the Java Archive Tool on an X-terminal or a DOS console to build a jar file for them:
+
+jar cf something.jar blah1.class blah2.class ...... blahn.class
+
+If you have created a blank new page using the &quot;New Blank Page&quot; from the File Menu, you need to save the page first before inserting, in order for the program to be able to locate the page&apos;s directory.
+
+&#10113; Select &quot;Insert&gt;Plugin&quot; and select the &quot;Local files&quot; tab. You will see the following dialog window:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+&#10114; All the jar files under the directory where the page is will be shown in the list. Select the jar files that are needed by the plugin. And then select the main class from the class list. The main class must be a class inheriting either javax.swing.JComponent. If you do not know which class to use, consult with the documentation or source code of the application. You can also set the width, height, background color, border and parameters. For plugins that need to load resource files, you must specify them in the &quot;Cache Files&quot; field. If they are in the same folder as the CML files (as recommended), you just need to type their names in the field. Optionally, a plugin can be given a unique identifier (UID) that can be used by a scripter to find it and then do something on it. A restriction of naming a UID is that it must be a string composed of only the alphanumeric characters and at least one alphabetic character. As its name indicates, you cannot have multiple components on the same page that share the same UID. If you do not need a UID for the plugin, just leave the field blank.
+
+&#10115; Click &quot;OK&quot;, and the plugin will be inserted to where the caret is on the page, initialized and started. To deploy the plugin, just upload the hosting MW page and its associated resources to the server (or use &quot;Webspace &gt; Submit Current Page&quot; to deploy it to the free MW Space).
+
+The following shows a simple plugin:
+
+ 
+ 
+&#12304;This is a plugin.&#12305;
+
+Note that the above plugin has an Open Button that opens the file chooser, which shows files on your disk. This is something an untrusted applet cannot do.
+
+If there is anything wrong in initializing the plugin, for example, the selected class does not implement the org.concord.modeler.PluginService interface, an error message may be shown instead of the plugin&apos;s GUI. The stack traces of the error can be found in the Session Log, which can be viewed by selecting &quot;File&gt;View Session Log&quot;. The following examples show what happens when we try to add a class that does not implement the plugin interface and when we try to insert an unsigned application:
+
+   
+&#12304;These are plugins that have problems.&#12305;
+
+Inserting a plugin: using remote jar files
+
+The drawback of the first method is that you will have to copy the jar files into every folder that has a CML page using the plugin. If the plugin is large, the user will have to download it every time they visit a different directory. The second method solves this problem by allowing you to specify a remote site for downloading the needed jar files. MW will just download once for all the CML pages that use the plugin. And every CML page that has such a plugin is able to check and download updates on behalf of the other pages.
+
+To set this up, use the &quot;Insert &gt; Plugin&quot; menu. When the dialog window shows up, select the &quot;Remote site&quot; tab. There are three text fields that needs your inputs. The first is the code base, which is the remote directory where the jar files are located. The second is the list of the names of the jar files. The third is the full path of the main class of the plugin. The following screenshot shows an example.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+The above three fields can be used to set up any plugin. There is a number of known plugins that MW supports. The first one is the Jmol plugin. If you select it from the &quot;Known plugin&quot; list, the three fields will automatically populated and you need not to do anything more.
+
+Once you have set the three fields up, the rest of the procedure is the same as using the first method. For example, you can input name-value pairs in the text area at the bottom.
+
+Removing, copying and pasting a plugin
+
+To remove a plugin, just use the BACKSPACE or DELETE key. You can also right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the plugin, and select the &quot;Remove This Plugin&quot; item from the pop-up menu.
+
+You can copy a plugin and paste it into another page, if it uses remote jar files. If it uses local jar files, you must copy the jar files over first. If you do not, you may get an error. You can simply save the page where the original plugin is located into the directory (during this process the local jar files will be automatically saved into the new directory).
+
+Scripting
+
+There is currently limited support of scripting with plugins. If a plugin has implemented the PluginService interface appropriately, the following scripts will work.
+
+Taking a snapshot:
+
+script:plugin:[n]:snapshot;
+
+where n is the index of the plugin in the page (starting from 1), or 
+
+script:plugin:[uid]:snapshot;
+
+if the UID of the plugin has been set.
+
+Reloading the initial state, which can be used to reset the plugin:
+
+script:plugin:[n]:reset;
+
+or
+
+script:plugin:[uid]:reset;
+
+The two buttons below the above demo plugin show how these scripts work.
+
+If the plugin has its own scripts, you can use the nativescript header to send commands to it:
+
+nativescript:plugin:[n]:[commands understood by the plugin];
+nativescript:plugin:[uid]:[commands understood by the plugin];
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="7495">
+<paragraph start="0" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="22">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="52">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="24" end="26">
+<size>11</size></content>
+
+<content start="26" end="34">
+<href>jmolapplet.cml</href><size>11</size></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="49">
+<href>mwpluginservice.cml</href><size>11</size></content>
+
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="598">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="294">
+<size>11</size></content>
+
+<content start="294" end="316">
+<family>Courier New</family><size>11</size></content>
+
+<content start="316" end="385">
+<size>11</size></content>
+
+<content start="385" end="403">
+<family>Courier New</family><size>11</size></content>
+
+<content start="403" end="405">
+<size>11</size></content>
+
+<content start="405" end="424">
+<family>Courier New</family><size>11</size></content>
+
+<content start="424" end="428">
+<size>11</size></content>
+
+<content start="428" end="448">
+<family>Courier New</family><size>11</size></content>
+
+<content start="448" end="471">
+<size>11</size></content>
+
+<content start="471" end="504">
+<family>Courier New</family><size>11</size></content>
+
+<content start="504" end="598">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="598" end="599">
+<LeftIndent>140.0</LeftIndent>
+<content start="598" end="599">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="599" end="1257">
+<LeftIndent>140.0</LeftIndent>
+<content start="599" end="1257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1257" end="1258">
+<LeftIndent>140.0</LeftIndent>
+<content start="1257" end="1258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1258" end="1300">
+<LeftIndent>140.0</LeftIndent>
+<content start="1258" end="1299">
+<bold>true</bold><size>11</size></content>
+
+<content start="1299" end="1300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1300" end="1301">
+<LeftIndent>140.0</LeftIndent>
+<content start="1300" end="1301">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1301" end="1527">
+<LeftIndent>140.0</LeftIndent>
+<content start="1301" end="1527">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1527" end="1528">
+<LeftIndent>140.0</LeftIndent>
+<content start="1527" end="1528">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1528" end="1607">
+<LeftIndent>140.0</LeftIndent>
+<content start="1528" end="1607">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1607" end="1608">
+<LeftIndent>140.0</LeftIndent>
+<content start="1607" end="1608">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1608" end="2028">
+<LeftIndent>140.0</LeftIndent>
+<content start="1608" end="1609">
+<size>14</size></content>
+
+<content start="1609" end="1689">
+<size>11</size></content>
+
+<content start="1689" end="1785">
+<bold>true</bold><size>11</size></content>
+
+<content start="1785" end="1940">
+<size>11</size></content>
+
+<content start="1940" end="1941">
+<icon>htmlink.gif</icon></content>
+
+<content start="1941" end="1942">
+<size>11</size></content>
+
+<content start="1942" end="1963">
+<href>http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/jar.html</href><size>11</size></content>
+
+<content start="1963" end="2028">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2028" end="2029">
+<LeftIndent>140.0</LeftIndent>
+<content start="2028" end="2029">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2029" end="2093">
+<LeftIndent>160.0</LeftIndent>
+<content start="2029" end="2085">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2085" end="2086">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="2086" end="2092">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2092" end="2093">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2093" end="2094">
+<LeftIndent>140.0</LeftIndent>
+<content start="2093" end="2094">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2094" end="2296">
+<LeftIndent>140.0</LeftIndent>
+<content start="2094" end="2295">
+<bold>true</bold><size>11</size></content>
+
+<content start="2295" end="2296">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2296" end="2297">
+<LeftIndent>140.0</LeftIndent>
+<content start="2296" end="2297">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2297" end="2398">
+<LeftIndent>140.0</LeftIndent>
+<content start="2297" end="2298">
+<size>14</size></content>
+
+<content start="2298" end="2398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2398" end="2399">
+<LeftIndent>140.0</LeftIndent>
+<content start="2398" end="2399">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2399" end="2402">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2399" end="2400">
+</content>
+
+<content start="2400" end="2401">
+<icon>PluginDialog2.gif</icon></content>
+
+<content start="2401" end="2402">
+</content>
+
+</paragraph>
+<paragraph start="2402" end="2426">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2402" end="2403">
+<bold>true</bold><size>13</size></content>
+
+<content start="2403" end="2424">
+<size>10</size></content>
+
+<content start="2424" end="2425">
+<bold>true</bold><size>13</size></content>
+
+<content start="2425" end="2426">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2426" end="2427">
+<LeftIndent>140.0</LeftIndent>
+<content start="2426" end="2427">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2427" end="3524">
+<LeftIndent>140.0</LeftIndent>
+<content start="2427" end="2428">
+<size>14</size></content>
+
+<content start="2428" end="2665">
+<size>11</size></content>
+
+<content start="2665" end="2687">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2687" end="3524">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3524" end="3525">
+<LeftIndent>140.0</LeftIndent>
+<content start="3524" end="3525">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3525" end="3805">
+<LeftIndent>140.0</LeftIndent>
+<content start="3525" end="3526">
+<size>14</size></content>
+
+<content start="3526" end="3805">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3805" end="3806">
+<LeftIndent>140.0</LeftIndent>
+<content start="3805" end="3806">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3806" end="3843">
+<LeftIndent>140.0</LeftIndent>
+<content start="3806" end="3843">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3843" end="3844">
+<LeftIndent>140.0</LeftIndent>
+<content start="3843" end="3844">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3844" end="3846">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3844" end="3845">
+<component><class>org.concord.modeler.PageJContainer</class>
+<appletjar>plugindemo.jar</appletjar>
+<appletclass>org.concord.plugindemo.Demo</appletclass>
+<resource>plugin$plugin$0.aps</resource><width>400</width><height>360</height>
+<border>Lowered Etched</border></component></content>
+
+<content start="3845" end="3846">
+</content>
+
+</paragraph>
+<paragraph start="3846" end="3848">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3846" end="3847">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Take a snapshot</title>
+<tooltip>Take a snapshot</tooltip>
+<script>script:plugin:1:snapshot;</script>
+<action>Script</action></component></content>
+
+<content start="3847" end="3848">
+</content>
+
+</paragraph>
+<paragraph start="3848" end="3868">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3848" end="3849">
+<bold>true</bold><size>13</size></content>
+
+<content start="3849" end="3866">
+<size>10</size></content>
+
+<content start="3866" end="3867">
+<bold>true</bold><size>13</size></content>
+
+<content start="3867" end="3868">
+</content>
+
+</paragraph>
+<paragraph start="3868" end="3869">
+<LeftIndent>140.0</LeftIndent>
+<content start="3868" end="3869">
+</content>
+
+</paragraph>
+<paragraph start="3869" end="4025">
+<LeftIndent>140.0</LeftIndent>
+<content start="3869" end="4024">
+<size>11</size></content>
+
+<content start="4024" end="4025">
+</content>
+
+</paragraph>
+<paragraph start="4025" end="4026">
+<LeftIndent>140.0</LeftIndent>
+<content start="4025" end="4026">
+</content>
+
+</paragraph>
+<paragraph start="4026" end="4525">
+<LeftIndent>140.0</LeftIndent>
+<content start="4026" end="4136">
+<size>11</size></content>
+
+<content start="4136" end="4169">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4169" end="4525">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4525" end="4526">
+<LeftIndent>140.0</LeftIndent>
+<content start="4525" end="4526">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4526" end="4530">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4526" end="4527">
+<component><class>org.concord.modeler.PageJContainer</class>
+<appletjar>mandelbrot.jar</appletjar>
+<appletclass>com.xebec.fractal.FractalExplorer</appletclass>
+<resource>plugin$plugin$1.aps</resource><width>300</width><height>150</height>
+<border>Line</border></component></content>
+
+<content start="4527" end="4528">
+</content>
+
+<content start="4528" end="4529">
+<component><class>org.concord.modeler.PageJContainer</class>
+<appletjar>plugindemo_unsigned.jar</appletjar>
+<appletclass>org.concord.plugindemo.Demo</appletclass>
+<resource>plugin$plugin$2.aps</resource><width>300</width><height>150</height>
+<border>Line</border></component></content>
+
+<content start="4529" end="4530">
+</content>
+
+</paragraph>
+<paragraph start="4530" end="4570">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4530" end="4531">
+<bold>true</bold><size>13</size></content>
+
+<content start="4531" end="4568">
+<size>10</size></content>
+
+<content start="4568" end="4569">
+<bold>true</bold><size>13</size></content>
+
+<content start="4569" end="4570">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4570" end="4571">
+<LeftIndent>140.0</LeftIndent>
+<content start="4570" end="4571">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4571" end="4614">
+<LeftIndent>140.0</LeftIndent>
+<content start="4571" end="4613">
+<bold>true</bold><size>11</size></content>
+
+<content start="4613" end="4614">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4614" end="4615">
+<LeftIndent>140.0</LeftIndent>
+<content start="4614" end="4615">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4615" end="5148">
+<LeftIndent>140.0</LeftIndent>
+<content start="4615" end="5148">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5148" end="5149">
+<LeftIndent>140.0</LeftIndent>
+<content start="5148" end="5149">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5149" end="5560">
+<LeftIndent>140.0</LeftIndent>
+<content start="5149" end="5560">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5560" end="5561">
+<LeftIndent>140.0</LeftIndent>
+<content start="5560" end="5561">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5561" end="5564">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="5561" end="5562">
+<size>11</size></content>
+
+<content start="5562" end="5563">
+<icon>PluginDialog.gif</icon></content>
+
+<content start="5563" end="5564">
+</content>
+
+</paragraph>
+<paragraph start="5564" end="5588">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="5564" end="5565">
+<bold>true</bold><size>13</size></content>
+
+<content start="5565" end="5586">
+<size>10</size></content>
+
+<content start="5586" end="5587">
+<bold>true</bold><size>13</size></content>
+
+<content start="5587" end="5588">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5588" end="5589">
+<LeftIndent>140.0</LeftIndent>
+<content start="5588" end="5589">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5589" end="5864">
+<LeftIndent>140.0</LeftIndent>
+<content start="5589" end="5634">
+<size>11</size></content>
+
+<content start="5634" end="5637">
+<italic>true</italic><size>11</size></content>
+
+<content start="5637" end="5864">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5864" end="5865">
+<LeftIndent>140.0</LeftIndent>
+<content start="5864" end="5865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5865" end="6045">
+<LeftIndent>140.0</LeftIndent>
+<content start="5865" end="6045">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6045" end="6046">
+<LeftIndent>140.0</LeftIndent>
+<content start="6045" end="6046">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6046" end="6085">
+<LeftIndent>140.0</LeftIndent>
+<content start="6046" end="6084">
+<bold>true</bold><size>11</size></content>
+
+<content start="6084" end="6085">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6085" end="6086">
+<LeftIndent>140.0</LeftIndent>
+<content start="6085" end="6086">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6086" end="6307">
+<LeftIndent>140.0</LeftIndent>
+<content start="6086" end="6307">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6307" end="6308">
+<LeftIndent>140.0</LeftIndent>
+<content start="6307" end="6308">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6308" end="6675">
+<LeftIndent>140.0</LeftIndent>
+<content start="6308" end="6674">
+<size>11</size></content>
+
+<content start="6674" end="6675">
+</content>
+
+</paragraph>
+<paragraph start="6675" end="6676">
+<LeftIndent>140.0</LeftIndent>
+<content start="6675" end="6676">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6676" end="6686">
+<LeftIndent>140.0</LeftIndent>
+<content start="6676" end="6685">
+<bold>true</bold><size>11</size></content>
+
+<content start="6685" end="6686">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6686" end="6687">
+<LeftIndent>140.0</LeftIndent>
+<content start="6686" end="6687">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6687" end="6853">
+<LeftIndent>140.0</LeftIndent>
+<content start="6687" end="6781">
+<size>11</size></content>
+
+<content start="6781" end="6794">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6794" end="6853">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6853" end="6854">
+<LeftIndent>140.0</LeftIndent>
+<content start="6853" end="6854">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6854" end="6873">
+<LeftIndent>140.0</LeftIndent>
+<content start="6854" end="6873">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6873" end="6874">
+<LeftIndent>140.0</LeftIndent>
+<content start="6873" end="6874">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6874" end="6902">
+<LeftIndent>160.0</LeftIndent>
+<content start="6874" end="6889">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6889" end="6890">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="6890" end="6891">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6891" end="6901">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6901" end="6902">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6902" end="6903">
+<LeftIndent>140.0</LeftIndent>
+<content start="6902" end="6903">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6903" end="6973">
+<LeftIndent>140.0</LeftIndent>
+<content start="6903" end="6909">
+<size>11</size></content>
+
+<content start="6909" end="6910">
+<italic>true</italic><size>11</size></content>
+
+<content start="6910" end="6973">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6973" end="6974">
+<LeftIndent>140.0</LeftIndent>
+<content start="6973" end="6974">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6974" end="7004">
+<LeftIndent>160.0</LeftIndent>
+<content start="6974" end="7003">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7003" end="7004">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7004" end="7005">
+<LeftIndent>140.0</LeftIndent>
+<content start="7004" end="7005">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7005" end="7044">
+<LeftIndent>140.0</LeftIndent>
+<content start="7005" end="7044">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7044" end="7045">
+<LeftIndent>140.0</LeftIndent>
+<content start="7044" end="7045">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7045" end="7113">
+<LeftIndent>140.0</LeftIndent>
+<content start="7045" end="7113">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7113" end="7114">
+<LeftIndent>140.0</LeftIndent>
+<content start="7113" end="7114">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7114" end="7139">
+<LeftIndent>160.0</LeftIndent>
+<content start="7114" end="7129">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7129" end="7130">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="7130" end="7131">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7131" end="7138">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7138" end="7139">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7139" end="7140">
+<LeftIndent>140.0</LeftIndent>
+<content start="7139" end="7140">
+</content>
+
+</paragraph>
+<paragraph start="7140" end="7143">
+<LeftIndent>140.0</LeftIndent>
+<content start="7140" end="7142">
+<size>11</size></content>
+
+<content start="7142" end="7143">
+</content>
+
+</paragraph>
+<paragraph start="7143" end="7144">
+<LeftIndent>140.0</LeftIndent>
+<content start="7143" end="7144">
+</content>
+
+</paragraph>
+<paragraph start="7144" end="7171">
+<LeftIndent>160.0</LeftIndent>
+<content start="7144" end="7170">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7170" end="7171">
+</content>
+
+</paragraph>
+<paragraph start="7171" end="7172">
+<LeftIndent>140.0</LeftIndent>
+<content start="7171" end="7172">
+</content>
+
+</paragraph>
+<paragraph start="7172" end="7245">
+<LeftIndent>140.0</LeftIndent>
+<content start="7172" end="7245">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7245" end="7246">
+<LeftIndent>140.0</LeftIndent>
+<content start="7245" end="7246">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7246" end="7341">
+<LeftIndent>140.0</LeftIndent>
+<content start="7246" end="7297">
+<size>11</size></content>
+
+<content start="7297" end="7309">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7309" end="7341">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7341" end="7342">
+<LeftIndent>140.0</LeftIndent>
+<content start="7341" end="7342">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7342" end="7403">
+<LeftIndent>160.0</LeftIndent>
+<content start="7342" end="7362">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7362" end="7363">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7363" end="7364">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="7364" end="7365">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7365" end="7402">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7402" end="7403">
+</content>
+
+</paragraph>
+<paragraph start="7403" end="7466">
+<LeftIndent>160.0</LeftIndent>
+<content start="7403" end="7428">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7428" end="7465">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7465" end="7466">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7466" end="7467">
+<RightIndent>20.0</RightIndent>
+<content start="7466" end="7467">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7467" end="7495">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="7467" end="7469">
+<size>11</size></content>
+
+<content start="7469" end="7477">
+<href>jmolapplet.cml</href><size>11</size></content>
+
+<content start="7477" end="7480">
+<size>11</size></content>
+
+<content start="7480" end="7485">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="7485" end="7488">
+<size>11</size></content>
+
+<content start="7488" end="7492">
+<href>mwpluginservice.cml</href><size>11</size></content>
+
+<content start="7492" end="7494">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

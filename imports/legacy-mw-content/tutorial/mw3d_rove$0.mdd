@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
  <object class="org.concord.mw3d.ModelState"> 
   <void property="ZDepthMagnification"> 
    <int>10</int> 
   </void> 
   <void property="cameraPosition"> 
-   <string>12.175024 9.031809 -11.779257</string> 
+   <string>13.520981 10.104603 -12.7505</string> 
   </void> 
   <void property="fillMode"> 
    <object class="org.concord.modeler.draw.FillMode$GradientFill"> 
@@ -43,7 +43,7 @@
    <boolean>true</boolean> 
   </void> 
   <void property="rotation"> 
-   <string>-42 -940 -339 136.4</string> 
+   <string>-35 -934 -356 136.3</string> 
   </void> 
   <void property="showGlassSimulationBox"> 
    <boolean>false</boolean> 

@@ -14,7 +14,7 @@ There are two buttons for the Restraining Tool. One adds a restraint (10) at eac
 You may practice using the Restraining Tool with the following model:
 
  
-[This is an embedded simulator.]
+&#12304;This is an embedded model container.&#12305;
 
 Script support
 
@@ -27,12 +27,12 @@ set particle[i].restraint.y [ycoordinate];
 where i is the index of the particle. If the strength of the restraint is set to be zero, the particle is released.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="1021">
+<section start="0" end="1027">
 <paragraph start="0" end="21">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
 <content start="0" end="20">
-<italic>true</italic><bold>true</bold><size>16</size></content>
+<italic>true</italic><size>16</size><bold>true</bold></content>
 
 <content start="20" end="21">
 </content>
@@ -129,134 +129,134 @@ where i is the index of the particle. If the strength of the restraint is set to
 </content>
 
 </paragraph>
-<paragraph start="509" end="542">
+<paragraph start="509" end="548">
 <Alignment>1</Alignment>
 <LeftIndent>140.0</LeftIndent>
-<content start="509" end="541">
+<content start="509" end="547">
 <size>10</size></content>
 
-<content start="541" end="542">
+<content start="547" end="548">
 </content>
 
 </paragraph>
-<paragraph start="542" end="543">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="548" end="549">
 <RightIndent>20.0</RightIndent>
-<content start="542" end="543">
+<LeftIndent>140.0</LeftIndent>
+<content start="548" end="549">
 </content>
 
 </paragraph>
-<paragraph start="543" end="558">
+<paragraph start="549" end="564">
 <LeftIndent>140.0</LeftIndent>
-<content start="543" end="557">
-<size>11</size><bold>true</bold></content>
+<content start="549" end="563">
+<bold>true</bold><size>11</size></content>
 
-<content start="557" end="558">
+<content start="563" end="564">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="558" end="559">
+<paragraph start="564" end="565">
 <LeftIndent>140.0</LeftIndent>
-<content start="558" end="559">
+<content start="564" end="565">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="559" end="753">
+<paragraph start="565" end="759">
 <LeftIndent>140.0</LeftIndent>
-<content start="559" end="563">
+<content start="565" end="569">
 <size>11</size></content>
 
-<content start="563" end="571">
+<content start="569" end="577">
 <href>script_restrain.cml</href><size>11</size><family>Courier New</family></content>
 
-<content start="571" end="740">
+<content start="577" end="746">
 <size>11</size></content>
 
-<content start="740" end="743">
+<content start="746" end="749">
 <href>script_set.cml</href><size>11</size><family>Courier New</family></content>
 
-<content start="743" end="753">
+<content start="749" end="759">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="753" end="754">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="759" end="760">
 <RightIndent>20.0</RightIndent>
-<content start="753" end="754">
+<LeftIndent>140.0</LeftIndent>
+<content start="759" end="760">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="754" end="789">
+<paragraph start="760" end="795">
 <LeftIndent>160.0</LeftIndent>
-<content start="754" end="789">
+<content start="760" end="795">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="789" end="832">
+<paragraph start="795" end="838">
 <LeftIndent>160.0</LeftIndent>
-<content start="789" end="832">
+<content start="795" end="838">
 <size>11</size><family>Courier New</family></content>
 
 </paragraph>
-<paragraph start="832" end="875">
+<paragraph start="838" end="881">
 <LeftIndent>160.0</LeftIndent>
-<content start="832" end="874">
+<content start="838" end="880">
 <size>11</size><family>Courier New</family></content>
 
-<content start="874" end="875">
+<content start="880" end="881">
 </content>
 
 </paragraph>
-<paragraph start="875" end="876">
+<paragraph start="881" end="882">
 <LeftIndent>140.0</LeftIndent>
-<content start="875" end="876">
+<content start="881" end="882">
 </content>
 
 </paragraph>
-<paragraph start="876" end="992">
+<paragraph start="882" end="998">
 <LeftIndent>140.0</LeftIndent>
-<content start="876" end="882">
+<content start="882" end="888">
 <size>11</size></content>
 
-<content start="882" end="883">
-<size>11</size><italic>true</italic></content>
+<content start="888" end="889">
+<italic>true</italic><size>11</size></content>
 
-<content start="883" end="991">
+<content start="889" end="997">
 <size>11</size></content>
 
-<content start="991" end="992">
+<content start="997" end="998">
 </content>
 
 </paragraph>
-<paragraph start="992" end="993">
-<LeftIndent>140.0</LeftIndent>
+<paragraph start="998" end="999">
 <RightIndent>20.0</RightIndent>
-<content start="992" end="993">
+<LeftIndent>140.0</LeftIndent>
+<content start="998" end="999">
 </content>
 
 </paragraph>
-<paragraph start="993" end="1021">
+<paragraph start="999" end="1027">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="993" end="995">
+<content start="999" end="1001">
 <size>11</size></content>
 
-<content start="995" end="1003">
+<content start="1001" end="1009">
 <href>polarizeAction.cml</href><size>11</size></content>
 
-<content start="1003" end="1006">
+<content start="1009" end="1012">
 <size>11</size></content>
 
-<content start="1006" end="1011">
+<content start="1012" end="1017">
 <href>index1.cml</href><size>11</size></content>
 
-<content start="1011" end="1014">
+<content start="1017" end="1020">
 <size>11</size></content>
 
-<content start="1014" end="1018">
+<content start="1020" end="1024">
 <href>DampingAction.cml</href><size>11</size></content>
 
-<content start="1018" end="1020">
+<content start="1024" end="1026">
 <size>11</size></content>
 
 </paragraph>

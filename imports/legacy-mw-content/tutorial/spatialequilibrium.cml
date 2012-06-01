@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Spatial equilibrium test</page_title>
+<text>Spatial equilibrium test
+
+  
+
+The scripts used in the custom task
+ 
+
+Note: The above scripts are for your reading. To access the action scripts, right-click on the model window above and select &quot;Task Manager&quot; from the pop-up menu.</text>
+<section start="0" end="231">
+<paragraph start="0" end="25">
+<Alignment>1</Alignment>
+<content start="0" end="24">
+<bold>true</bold><size>16</size></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="29">
+<Alignment>1</Alignment>
+<content start="26" end="27">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>spatialequilibrium$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>285</height>
+<border>Lowered Etched</border></component></content>
+
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="66">
+<Alignment>1</Alignment>
+<content start="30" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="68">
+<Alignment>1</Alignment>
+<content start="66" end="67">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>700.0</width>
+<height>200.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;pre&gt;define %cx 0;
+define %cy 0;
+define %i 0;
+if(50 &amp;gt; %model_time);
+  set %count 0; // reset the counter when the model is reset;
+endif;
+while(%number_of_atoms &amp;gt; %i);
+  set %cx %cx+%atom[%i].rx;
+  set %cy %cy+%atom[%i].ry;
+  set %i %i+1;
+endwhile;
+set %cx %cx/%number_of_atoms;
+set %cy %cy/%number_of_atoms;
+set %cx %cx-%width/2;
+set %cy %cy-%height/2;
+if(9 &amp;gt; %cx*%cx + %cy*%cy);
+  print %count, %model_time, (%cx, %cy);
+  if(%count &amp;gt; 5); // let it equilibrate for 5 times
+    stop immediately;
+    message &lt;t&gt;Spatial equilibrium is reached!&lt;/t&gt;
+    delay 2;
+    snapshot;
+  endif;
+  set %count %count+1;
+endif;&lt;/pre&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="69">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<content start="68" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="231">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="69" end="230">
+</content>
+
+</paragraph>
+</section>
+</document>

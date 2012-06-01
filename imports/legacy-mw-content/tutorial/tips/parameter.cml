@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>On the Lennard-Jones parameters</page_title>
+<text> On the Lennard-Jones parameters
+
+This tip is for the folks who do not fully understand the parameters of the Lennard-Jones potential. People often ask questions such as &quot;I am trying to simulate helium, but the atoms remain in solid state until the temperature is increased to 1000 K.&quot; 1000 K is, of course, a ridiculous temperature for helium to be still in condensed state. In this tip, we will explain the Lennard-Jones parameters and show you how to set up a realistic model for helium.
+
+The melting and boiling temperatures of a Lennard-Jones system are governed primarily by the potential well depth (the epsilon parameter). The higher the epsilon, the higher the melting point (and boiling point). The following table lists the Lennard-Jones parameters for some elements:
+
+ 
+Source: Computer Simulation of Liquids, Allen and Tildesley; and other Web references.
+
+The sigma parameters are infered from the densities, whereas the epsilon parameters are infered from the experimental value of cohesive energies of the materials. As one can tell from the table, while the sigma parameters do not vary much (while the mass density of copper dwarfs that of hellium liquid, the number densities are not very different --- the difference is atomic mass), the epsilon parameters differ hugely! The epsilon of copper is more than 4000 times of that of helium. This makes sense, because the melting point of copper is 1357.77 K and the boiling point is 3200 K whereas the melting point of helium is 0.95 K and the boiling point is 4.22 K.
+
+The four editable &quot;elements&quot; of the Molecular Workbench are abstract elements. That is to say, they do not represent a specific element, but by setting appropriate Lennard-Jones parameters they can theoretically be cast into any kind of elements, or even macroscopic suspension particles that have an interparticle interaction caused by surface tension. A model will come with a default value 0.1 eV for the epsilons of all the four editable elements. If you are modeling a system that has van der Waals parameters different from the default settings but you do not change them to appropriate values for your problem, you are not going to see the correct temperature range you are expecting.
+
+You can adjust the Lennard-Jones parameters by opening the &quot;Model Properties&quot; dialog, which can be opened in many ways --- using the &quot;Edit&gt;Access Model Properties&quot; menu of the model container, or right-clicking on the model window and choosing &quot;Properties&quot; from the pop-up menu. When you open it, choose the &quot;Interactions&quot; tab, and then click the &quot;Change&quot; button of the &quot;Lennard-Jones&quot; row. You should see a window, as illustrated by the screenshot below:
+
+  
+
+You can either drag the small rectangle, which represents the bottom of the potential well, to change the two parameters at the same time, or use the text fields above the graph window to change the parameters separately and numerically.
+
+The following models illustrate helium gas (left) and copper cluster (right):
+
+He Temperature =  Celsius           |            Cu Temperature =  Celsius
+
+  
+
+Notice that both models use the fourth element (Ck) but they represent completely different elements (He and Cu). One can see that the left model remains gaseous while the right one remains cystalline, at about the same temperature (look at the kinetic energy bars on the right sides of both models; if one is too hot or cold, use the arrow buttons to adjust).
+
+Interestingly, when you raise the temperature of the left model, you may see they penetrate into each other. The penetration becomes more and more significant when the temperature increases. Teachers may find it hard to explain this to the students, who may think that the circular objects are something like a ball that cannot overlap.
+
+Adjusting the time step for weaker Lennard-Jones interactions
+
+You will notice that the helium atoms move so slowly. This is correct, because the temperature is so low. To make it move faster, you will need to increase the time step accordingly. Time step can be changed from the &quot;Edit&gt;Change Time Step&quot; menu of each model container.
+
+But remember, when you increase the time step, you are accelerating the speed of the mathematical problem is being solved. It does not mean that the temperature will be increased by enlarging the time step. In order to avoid student misconception, you may just want to stick to the default time step and let it be slow.
+
+&lt;Index of tips&gt;
+
+
+</text>
+<section start="0" end="4463">
+<paragraph start="0" end="33">
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="32">
+<size>18</size><bold>true</bold></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<LeftIndent>8.0</LeftIndent>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="491">
+<LeftIndent>8.0</LeftIndent>
+<content start="34" end="106">
+</content>
+
+<content start="106" end="133">
+<href>../glossary/LennardJones.cml</href></content>
+
+<content start="133" end="491">
+</content>
+
+</paragraph>
+<paragraph start="491" end="492">
+<LeftIndent>8.0</LeftIndent>
+<content start="491" end="492">
+</content>
+
+</paragraph>
+<paragraph start="492" end="779">
+<LeftIndent>8.0</LeftIndent>
+<content start="492" end="611">
+</content>
+
+<content start="611" end="618">
+<italic>true</italic></content>
+
+<content start="618" end="646">
+</content>
+
+<content start="646" end="653">
+<italic>true</italic></content>
+
+<content start="653" end="779">
+</content>
+
+</paragraph>
+<paragraph start="779" end="780">
+<LeftIndent>8.0</LeftIndent>
+<content start="779" end="780">
+</content>
+
+</paragraph>
+<paragraph start="780" end="782">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="780" end="781">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>Element, Sigma (angstrom), Epsilon (eV)</columnname>
+<row>8</row>
+<column>3</column>
+<layout>93, 152, 151</layout>
+<width>400.0</width>
+<height>240.0</height>
+<border>Lowered Etched</border>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>H</te><te>2.81</te><te>0.00074</te><te>Cu (solid)</te><te>2.3377</te><te>0.4093</te><te>He (liquid)</te><te>2.556</te><te>0.00088</te><te>Ne</te><te>2.72</te><te>0.00405</te><te>Ar (liquid)</te><te>3.405</te><te>0.01</te><te>Kr</te><te>3.83</te><te>0.014</te><te>Xe (liquid)</te><te>4.332</te><te>0.02</te><te>Br</te><te>3.54</te><te>0.022</te></elementarray>
+</component></content>
+
+<content start="781" end="782">
+</content>
+
+</paragraph>
+<paragraph start="782" end="869">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="782" end="790">
+</content>
+
+<content start="790" end="820">
+<italic>true</italic></content>
+
+<content start="820" end="869">
+</content>
+
+</paragraph>
+<paragraph start="869" end="870">
+<LeftIndent>8.0</LeftIndent>
+<content start="869" end="870">
+</content>
+
+</paragraph>
+<paragraph start="870" end="1535">
+<LeftIndent>8.0</LeftIndent>
+<content start="870" end="874">
+</content>
+
+<content start="874" end="879">
+<italic>true</italic></content>
+
+<content start="879" end="935">
+</content>
+
+<content start="935" end="942">
+<italic>true</italic></content>
+
+<content start="942" end="1075">
+</content>
+
+<content start="1075" end="1080">
+<italic>true</italic></content>
+
+<content start="1080" end="1258">
+</content>
+
+<content start="1258" end="1265">
+<italic>true</italic></content>
+
+<content start="1265" end="1296">
+</content>
+
+<content start="1296" end="1303">
+<italic>true</italic></content>
+
+<content start="1303" end="1535">
+</content>
+
+</paragraph>
+<paragraph start="1535" end="1536">
+<LeftIndent>8.0</LeftIndent>
+<content start="1535" end="1536">
+</content>
+
+</paragraph>
+<paragraph start="1536" end="2228">
+<LeftIndent>8.0</LeftIndent>
+<content start="1536" end="1596">
+</content>
+
+<content start="1596" end="1604">
+<bold>true</bold></content>
+
+<content start="1604" end="1944">
+</content>
+
+<content start="1944" end="1951">
+<italic>true</italic></content>
+
+<content start="1951" end="2228">
+</content>
+
+</paragraph>
+<paragraph start="2228" end="2229">
+<LeftIndent>8.0</LeftIndent>
+<content start="2228" end="2229">
+</content>
+
+</paragraph>
+<paragraph start="2229" end="2685">
+<LeftIndent>8.0</LeftIndent>
+<content start="2229" end="2685">
+</content>
+
+</paragraph>
+<paragraph start="2685" end="2686">
+<LeftIndent>8.0</LeftIndent>
+<content start="2685" end="2686">
+</content>
+
+</paragraph>
+<paragraph start="2686" end="2689">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2686" end="2687">
+</content>
+
+<content start="2687" end="2688">
+<icon>LJChanger.gif</icon></content>
+
+<content start="2688" end="2689">
+</content>
+
+</paragraph>
+<paragraph start="2689" end="2690">
+<LeftIndent>8.0</LeftIndent>
+<content start="2689" end="2690">
+</content>
+
+</paragraph>
+<paragraph start="2690" end="2928">
+<LeftIndent>8.0</LeftIndent>
+<content start="2690" end="2928">
+</content>
+
+</paragraph>
+<paragraph start="2928" end="2929">
+<LeftIndent>8.0</LeftIndent>
+<content start="2928" end="2929">
+</content>
+
+</paragraph>
+<paragraph start="2929" end="3007">
+<LeftIndent>8.0</LeftIndent>
+<content start="2929" end="3007">
+</content>
+
+</paragraph>
+<paragraph start="3007" end="3008">
+<LeftIndent>8.0</LeftIndent>
+<content start="3007" end="3008">
+</content>
+
+</paragraph>
+<paragraph start="3008" end="3083">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3008" end="3024">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="3024" end="3025">
+</content>
+
+<content start="3025" end="3026">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<model>0</model>
+<datatype>1</datatype>
+<description>Kinetic Energy/Particle</description>
+<width>60</width>
+<height>24</height>
+<multiplier>11594.0</multiplier>
+<addend>-273.0</addend>
+<max_integer_digits>5</max_integer_digits>
+</component></content>
+
+<content start="3026" end="3073">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="3073" end="3074">
+</content>
+
+<content start="3074" end="3075">
+<component><class>org.concord.modeler.PageNumericBox</class>
+<model>1</model>
+<datatype>1</datatype>
+<description>Kinetic Energy/Particle</description>
+<width>60</width>
+<height>24</height>
+<multiplier>11594.0</multiplier>
+<addend>-273.0</addend>
+<max_integer_digits>5</max_integer_digits>
+</component></content>
+
+<content start="3075" end="3082">
+<subscript>true</subscript><size>14</size></content>
+
+<content start="3082" end="3083">
+</content>
+
+</paragraph>
+<paragraph start="3083" end="3084">
+<LeftIndent>8.0</LeftIndent>
+<content start="3083" end="3084">
+</content>
+
+</paragraph>
+<paragraph start="3084" end="3087">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3084" end="3085">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>parameter$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button></component></content>
+
+<content start="3085" end="3086">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>parameter$1.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button></component></content>
+
+<content start="3086" end="3087">
+</content>
+
+</paragraph>
+<paragraph start="3087" end="3088">
+<LeftIndent>8.0</LeftIndent>
+<content start="3087" end="3088">
+</content>
+
+</paragraph>
+<paragraph start="3088" end="3449">
+<LeftIndent>8.0</LeftIndent>
+<content start="3088" end="3206">
+</content>
+
+<content start="3206" end="3449">
+</content>
+
+</paragraph>
+<paragraph start="3449" end="3450">
+<LeftIndent>8.0</LeftIndent>
+<content start="3449" end="3450">
+</content>
+
+</paragraph>
+<paragraph start="3450" end="3787">
+<LeftIndent>8.0</LeftIndent>
+<content start="3450" end="3787">
+</content>
+
+</paragraph>
+<paragraph start="3787" end="3788">
+<LeftIndent>8.0</LeftIndent>
+<content start="3787" end="3788">
+</content>
+
+</paragraph>
+<paragraph start="3788" end="3850">
+<LeftIndent>8.0</LeftIndent>
+<content start="3788" end="3849">
+<bold>true</bold></content>
+
+<content start="3849" end="3850">
+</content>
+
+</paragraph>
+<paragraph start="3850" end="3851">
+<LeftIndent>8.0</LeftIndent>
+<content start="3850" end="3851">
+</content>
+
+</paragraph>
+<paragraph start="3851" end="4122">
+<LeftIndent>8.0</LeftIndent>
+<content start="3851" end="4122">
+</content>
+
+</paragraph>
+<paragraph start="4122" end="4123">
+<LeftIndent>8.0</LeftIndent>
+<content start="4122" end="4123">
+</content>
+
+</paragraph>
+<paragraph start="4123" end="4443">
+<LeftIndent>8.0</LeftIndent>
+<content start="4123" end="4443">
+</content>
+
+</paragraph>
+<paragraph start="4443" end="4444">
+<LeftIndent>8.0</LeftIndent>
+<content start="4443" end="4444">
+</content>
+
+</paragraph>
+<paragraph start="4444" end="4460">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4444" end="4445">
+</content>
+
+<content start="4445" end="4458">
+<href>index.cml</href></content>
+
+<content start="4458" end="4460">
+</content>
+
+</paragraph>
+<paragraph start="4460" end="4461">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4460" end="4461">
+</content>
+
+</paragraph>
+<paragraph start="4461" end="4462">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4461" end="4462">
+</content>
+
+</paragraph>
+<paragraph start="4462" end="4463">
+</paragraph>
+</section>
+</document>

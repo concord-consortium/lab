@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Example: A quantum mechanics applet</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Example: A quantum mechanics applet
+
+&lt; Previous | Index | Next &gt;
+
+This is an applet that displays the stationary states of one dimensional quantum systems. The button and combo box below the applet use the controls that are directly linked to the applet, so there is no need to use the nativescript header. You can hover over the combo box to see the scripts used in setting it up.
+
+
+ 
+  
+
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="420">
+<paragraph start="0" end="36">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="35">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<LeftIndent>140.0</LeftIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="65">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="37" end="39">
+<size>11</size></content>
+
+<content start="39" end="47">
+<href>appleterrorhandling.cml</href><size>11</size></content>
+
+<content start="47" end="50">
+<size>11</size></content>
+
+<content start="50" end="55">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="55" end="58">
+<size>11</size></content>
+
+<content start="58" end="62">
+<href>plugin.cml</href><size>11</size></content>
+
+<content start="62" end="64">
+<size>11</size></content>
+
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="66">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="66" end="382">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="286">
+<size>11</size></content>
+
+<content start="286" end="298">
+<family>Courier New</family><size>11</size></content>
+
+<content start="298" end="382">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="382" end="383">
+<LeftIndent>140.0</LeftIndent>
+<content start="382" end="383">
+</content>
+
+</paragraph>
+<paragraph start="383" end="384">
+<LeftIndent>140.0</LeftIndent>
+<content start="383" end="384">
+</content>
+
+</paragraph>
+<paragraph start="384" end="386">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="384" end="385">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>lapack.jar</appletjar>
+<appletjar>qm.jar</appletjar>
+<appletclass>org.concord.qm1d.MainWindow</appletclass>
+<uid>qm1d</uid>
+<resource>jmolapplet$applet$0.aps</resource><parameter>{name=&quot;potential&quot; value=&quot;CRYSTAL_LATTICE&quot;}
+</parameter>
+<width>600</width><height>400</height>
+<border>Line</border><caching>true</caching></component></content>
+
+<content start="385" end="386">
+</content>
+
+</paragraph>
+<paragraph start="386" end="389">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="386" end="387">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<tooltip>Take a snapshot of the applet</tooltip>
+<bgcolor>-ce953b</bgcolor>
+<modelclass>org.concord.modeler.PageApplet</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="387" end="388">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.modeler.PageApplet</modelclass>
+<model>0</model>
+<action>Execute native script</action>
+<script>{option=&quot;Square well&quot;, script=&quot;load SQUARE_WELL&quot;}
+{option=&quot;Square barrier&quot;, script=&quot;load SQUARE_BARRIER&quot;}
+{option=&quot;Harmonic oscillator&quot;, script=&quot;load HARMONIC_OSCILLATOR&quot;}
+{option=&quot;Anharmonic oscillator&quot;, script=&quot;load ANHARMONIC_OSCILLATOR&quot;}
+{option=&quot;Quartic double well&quot;, script=&quot;load QUARTIC_DOUBLE_WELL&quot;}
+{option=&quot;Morse potential well&quot;, script=&quot;load MORSE_WELL&quot;}
+{option=&quot;Dirac comb&quot;, script=&quot;load DIRAC_COMB&quot;}
+{option=&quot;Coulomb well&quot;, script=&quot;load COULOMB_WELL&quot;}
+{option=&quot;Diatomic molecule&quot;, script=&quot;load DIATOMIC_MOLECULE&quot;}
+{option=&quot;Crystal lattice&quot;, script=&quot;load CRYSTAL_LATTICE&quot;}
+{option=&quot;Crystal lattice with a vacancy&quot;, script=&quot;load CRYSTAL_LATTICE_VACANCY&quot;}
+{option=&quot;Crystal lattice with an interstitial&quot;, script=&quot;load CRYSTAL_LATTICE_INTERSTITIAL&quot;}
+{option=&quot;Binary crystal lattice&quot;, script=&quot;load BINARY_LATTICE&quot;}
+{option=&quot;Crystal lattice in a field&quot;, script=&quot;load CRYSTAL_LATTICE_IN_FIELD&quot;}
+</script>
+<selectedIndex>9</selectedIndex>
+<disabled_at_script>true</disabled_at_script>
+<tooltip>&lt;html&gt;{option=&quot;Square well&quot;, script=&quot;load SQUARE_WELL&quot;}&lt;br&gt;{option=&quot;Harmonic oscillator&quot;, script=&quot;load HARMONIC_OSCILLATOR&quot;}&lt;br&gt;{option=&quot;Morse potential well&quot;, script=&quot;load MORSE_WELL&quot;}&lt;br&gt;{option=&quot;Dirac comb&quot;, script=&quot;load DIRAC_COMB&quot;}&lt;br&gt;{option=&quot;Coulomb well&quot;, script=&quot;load COULOMB_WELL&quot;}&lt;br&gt;{option=&quot;Diatomic molecule&quot;, script=&quot;load DIATOMIC_MOLECULE&quot;}&lt;br&gt;{option=&quot;Crystal lattice&quot;, script=&quot;load CRYSTAL_LATTICE&quot;}&lt;br&gt;{option=&quot;Crystal lattice with a vacancy&quot;, script=&quot;load CRYSTAL_LATTICE_VACANCY&quot;}&lt;br&gt;{option=&quot;Crystal lattice with an interstitial&quot;, script=&quot;load CRYSTAL_LATTICE_INTERSTITIAL&quot;}&lt;br&gt;{option=&quot;Binary crystal lattice&quot;, script=&quot;load BINARY_LATTICE&quot;}&lt;br&gt;{option=&quot;Crystal lattice in a field&quot;, script=&quot;load CRYSTAL_LATTICE_IN_FIELD&quot;}&lt;/html&gt;</tooltip>
+</component></content>
+
+<content start="388" end="389">
+</content>
+
+</paragraph>
+<paragraph start="389" end="390">
+<LeftIndent>140.0</LeftIndent>
+<content start="389" end="390">
+</content>
+
+</paragraph>
+<paragraph start="390" end="391">
+<LeftIndent>140.0</LeftIndent>
+<content start="390" end="391">
+</content>
+
+</paragraph>
+<paragraph start="391" end="392">
+<LeftIndent>140.0</LeftIndent>
+<content start="391" end="392">
+</content>
+
+</paragraph>
+<paragraph start="392" end="420">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="392" end="394">
+<size>11</size></content>
+
+<content start="394" end="402">
+<href>appleterrorhandling.cml</href><size>11</size></content>
+
+<content start="402" end="405">
+<size>11</size></content>
+
+<content start="405" end="410">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="410" end="413">
+<size>11</size></content>
+
+<content start="413" end="417">
+<href>plugin.cml</href><size>11</size></content>
+
+<content start="417" end="419">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,43 +1,40 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
-<language>ISO-8859-1</language>
+<language>UTF-8</language>
 <page_title>Inserting a multiple choice question with multiple selections</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Inserting a multiple choice question with multiple selections
 
 &lt; Back &gt;
 
-Choose the &quot;Multiple Choice&quot; item from the Insert Menu, and check &quot;Multiple selections&quot;:
+If you select the &quot;Multiple selections&quot; box in the first tab of the dialog window, you can set up a multiple choice question with multiple selections. Some of the panels are different from those for setting up a multiple choice question with a single selection.
+
+In the &quot;Choices&quot; tab, you can set the choices and the keys to the answer:
 
   
-This is a screenshot.
+&#12304;This is a screenshot.&#12305;
 
-This allows you to design a multiple choice question with multiple selections. In the &quot;Question&quot; tab, you can set the question:
-
-  
-This is a screenshot.
-
-In the &quot;Choices&quot; tab, you can set the choices and the key to the answer:
+In the &quot;Scripts&quot; tab, you will see only two text areas for typing the scripts to be run when the user answers correctly and incorrectly, respectively:
 
   
-This is a screenshot.
+&#12304;This is a screenshot.&#12305;
 
-When you are done, click OK. You will see, for example, the following multiple choice question with three correct answers:
+The following is an example that uses scripts to redirect the user to different pages when the answer is checked:
 
  
-This is an active multiple choice question.
+&#12304;This is an embedded multiple choice question.&#12305;
 
 Changing and removing a multiple choice question
 
-See &quot;Editing an embedded component&quot; for how to change, move, copy and remove a multiple choice question.
+See &quot;Editing an embedded component&quot; for how to change, move, copy, and remove a multiple choice question.
 
 &lt; Back &gt;</text>
-<section start="0" end="780">
+<section start="0" end="951">
 <paragraph start="0" end="62">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
 <content start="0" end="61">
-<bold>true</bold><italic>true</italic><size>15</size></content>
+<size>15</size><italic>true</italic><bold>true</bold></content>
 
 <content start="61" end="62">
 </content>
@@ -57,7 +54,7 @@ See &quot;Editing an embedded component&quot; for how to change, move, copy and 
 <size>11</size></content>
 
 <content start="65" end="69">
-<href>choice.cml</href><size>11</size></content>
+<size>11</size><href>choice.cml</href></content>
 
 <content start="69" end="71">
 <size>11</size></content>
@@ -71,137 +68,129 @@ See &quot;Editing an embedded component&quot; for how to change, move, copy and 
 </content>
 
 </paragraph>
-<paragraph start="73" end="162">
+<paragraph start="73" end="335">
 <LeftIndent>140.0</LeftIndent>
-<content start="73" end="162">
+<content start="73" end="335">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="162" end="163">
-<LeftIndent>100.0</LeftIndent>
-<content start="162" end="163">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="163" end="166">
-<LeftIndent>100.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="163" end="164">
-<size>11</size></content>
-
-<content start="164" end="165">
-<size>11</size><icon>MultipleChoiceDialog3.gif</icon></content>
-
-<content start="165" end="166">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="166" end="188">
-<LeftIndent>100.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="166" end="188">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="188" end="189">
-<LeftIndent>100.0</LeftIndent>
-<content start="188" end="189">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="189" end="317">
+<paragraph start="335" end="336">
 <LeftIndent>140.0</LeftIndent>
-<content start="189" end="317">
+<content start="335" end="336">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="317" end="318">
-<LeftIndent>100.0</LeftIndent>
-<content start="317" end="318">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="318" end="321">
-<LeftIndent>100.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="318" end="319">
-<size>11</size></content>
-
-<content start="319" end="320">
-<size>11</size><icon>MultipleChoiceDialog4.gif</icon></content>
-
-<content start="320" end="321">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="321" end="343">
-<LeftIndent>100.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="321" end="343">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="343" end="344">
-<LeftIndent>100.0</LeftIndent>
-<content start="343" end="344">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="344" end="417">
+<paragraph start="336" end="410">
 <LeftIndent>140.0</LeftIndent>
-<content start="344" end="417">
+<content start="336" end="410">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="417" end="418">
-<LeftIndent>100.0</LeftIndent>
-<content start="417" end="418">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="418" end="421">
-<LeftIndent>100.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="418" end="419">
-<size>11</size></content>
-
-<content start="419" end="420">
-<size>11</size><icon>MultipleChoiceDialog5.gif</icon></content>
-
-<content start="420" end="421">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="421" end="443">
-<LeftIndent>100.0</LeftIndent>
-<Alignment>1</Alignment>
-<content start="421" end="443">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="443" end="444">
-<LeftIndent>100.0</LeftIndent>
-<content start="443" end="444">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="444" end="567">
+<paragraph start="410" end="411">
 <LeftIndent>140.0</LeftIndent>
-<content start="444" end="567">
+<content start="410" end="411">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="567" end="568">
-<LeftIndent>100.0</LeftIndent>
-<content start="567" end="568">
-<size>11</size></content>
-
-</paragraph>
-<paragraph start="568" end="570">
+<paragraph start="411" end="414">
 <LeftIndent>100.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="568" end="569">
-<size>11</size><component><class>org.concord.modeler.PageMultipleChoice</class>
+<content start="411" end="412">
+<size>11</size></content>
+
+<content start="412" end="413">
+<icon>MultipleChoiceDialog4.gif</icon></content>
+
+<content start="413" end="414">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="414" end="438">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="414" end="415">
+<bold>true</bold><size>13</size></content>
+
+<content start="415" end="436">
+<size>10</size></content>
+
+<content start="436" end="437">
+<bold>true</bold><size>13</size></content>
+
+<content start="437" end="438">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="438" end="439">
+<LeftIndent>140.0</LeftIndent>
+<content start="438" end="439">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="439" end="590">
+<LeftIndent>140.0</LeftIndent>
+<content start="439" end="590">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="590" end="591">
+<LeftIndent>140.0</LeftIndent>
+<content start="590" end="591">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="591" end="594">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="591" end="592">
+<size>11</size></content>
+
+<content start="592" end="593">
+<icon>MultipleChoiceDialog5.gif</icon></content>
+
+<content start="593" end="594">
+</content>
+
+</paragraph>
+<paragraph start="594" end="618">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="594" end="595">
+<bold>true</bold><size>13</size></content>
+
+<content start="595" end="616">
+<size>10</size></content>
+
+<content start="616" end="617">
+<bold>true</bold><size>13</size></content>
+
+<content start="617" end="618">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="618" end="619">
+<LeftIndent>140.0</LeftIndent>
+<content start="618" end="619">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="619" end="733">
+<LeftIndent>140.0</LeftIndent>
+<content start="619" end="733">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="733" end="734">
+<LeftIndent>140.0</LeftIndent>
+<content start="733" end="734">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="734" end="736">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="734" end="735">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
 <single>false</single>
 <row>5</row>
 <width>400</width>
@@ -210,89 +199,106 @@ See &quot;Editing an embedded component&quot; for how to change, move, copy and 
   &lt;head&gt;
     
   &lt;/head&gt;
-  &lt;body bgcolor=&quot;#eeeeee&quot; face=&quot;Verdana&quot;&gt;
-    &lt;table border=&quot;1&quot;&gt;
+  &lt;body bgcolor=&quot;#eeeeff&quot; face=&quot;Verdana&quot;&gt;
+    &lt;table cellspacing=&quot;5&quot; cellpadding=&quot;5&quot;&gt;
       &lt;tr&gt;
         &lt;td&gt;
-          &lt;font color=&quot;#E76F00&quot; size=&quot;5&quot;&gt;&lt;b&gt;Quiz&lt;/b&gt;&lt;/font&gt;&lt;b&gt;&lt;font color=&quot;#E76F00&quot; size=&quot;4&quot;&gt;:Which 
-          of the following astronauts have walked on the Moon? &lt;/font&gt;&lt;/b&gt;
+          &lt;font color=&quot;#E76F00&quot; size=&quot;5&quot;&gt;&lt;b&gt;Quiz&lt;/b&gt;&lt;/font&gt;&lt;b&gt; &lt;/b&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font color=&quot;#E76F00&quot; size=&quot;3&quot;&gt;&lt;b&gt;Which of the following molecules 
+          are building blocks of proteins? &lt;/b&gt;&lt;/font&gt;
         &lt;/td&gt;
       &lt;/tr&gt;
     &lt;/table&gt;
   &lt;/body&gt;
 &lt;/html&gt;
 </title>
-<submit>true</submit><clear>true</clear><choice>Neil A. Armstrong</choice>
-<choice>John Young</choice>
-<choice>Richard F. Gordon</choice>
-<choice>Charles Conrad, Jr.</choice>
-<choice>James Young</choice>
-<answer>0 3 4 </answer>
-<border>Raised Bevel</border></component></content>
+<submit>true</submit>
+<clear>true</clear>
+<choice>Alanine</choice>
+<choice>Aspirin</choice>
+<choice>Methane</choice>
+<choice>Glycine</choice>
+<choice>Valine</choice>
+<answer>0 3 4</answer>
+<bgcolor>-ff3334</bgcolor>
+<border>Raised Bevel</border>
+<script>script:page:0:load correct.cml; -choiceseparator- script:page:0:load wrong.cml;</script>
+</component><size>11</size></content>
 
-<content start="569" end="570">
+<content start="735" end="736">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="570" end="614">
+<paragraph start="736" end="784">
 <LeftIndent>100.0</LeftIndent>
 <Alignment>1</Alignment>
-<content start="570" end="614">
+<content start="736" end="737">
+<bold>true</bold><size>13</size></content>
+
+<content start="737" end="782">
+<size>10</size></content>
+
+<content start="782" end="783">
+<bold>true</bold><size>13</size></content>
+
+<content start="783" end="784">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="614" end="615">
+<paragraph start="784" end="785">
 <LeftIndent>100.0</LeftIndent>
-<content start="614" end="615">
+<content start="784" end="785">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="615" end="664">
+<paragraph start="785" end="834">
 <LeftIndent>140.0</LeftIndent>
-<content start="615" end="663">
-<size>11</size><bold>true</bold></content>
+<content start="785" end="833">
+<bold>true</bold><size>11</size></content>
 
-<content start="663" end="664">
+<content start="833" end="834">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="664" end="665">
+<paragraph start="834" end="835">
 <LeftIndent>140.0</LeftIndent>
-<content start="664" end="665">
+<content start="834" end="835">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="665" end="770">
+<paragraph start="835" end="941">
 <LeftIndent>140.0</LeftIndent>
-<content start="665" end="670">
+<content start="835" end="840">
 <size>11</size></content>
 
-<content start="670" end="699">
-<href>changeComponent.cml</href><size>11</size></content>
+<content start="840" end="869">
+<size>11</size><href>changeComponent.cml</href></content>
 
-<content start="699" end="769">
+<content start="869" end="940">
 <size>11</size></content>
 
-<content start="769" end="770">
+<content start="940" end="941">
 </content>
 
 </paragraph>
-<paragraph start="770" end="771">
+<paragraph start="941" end="942">
 <LeftIndent>100.0</LeftIndent>
-<content start="770" end="771">
+<content start="941" end="942">
 </content>
 
 </paragraph>
-<paragraph start="771" end="780">
+<paragraph start="942" end="951">
 <RightIndent>20.0</RightIndent>
 <Alignment>2</Alignment>
-<content start="771" end="773">
+<content start="942" end="944">
 <size>11</size></content>
 
-<content start="773" end="777">
-<href>choice.cml</href><size>11</size></content>
+<content start="944" end="948">
+<size>11</size><href>choice.cml</href></content>
 
-<content start="777" end="779">
+<content start="948" end="950">
 <size>11</size></content>
 
 </paragraph>

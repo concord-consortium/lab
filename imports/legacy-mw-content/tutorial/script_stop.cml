@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document>
+<language>ISO-8859-1</language>
 <page_title>Stop</page_title>
 <bg_image>sidebar2.gif</bg_image>
 <text>Stop
@@ -15,10 +16,10 @@ stop immediately
 
 The stop command causes exactly the same effect as clicking the &quot;stop&quot; button of the simulator&apos;s control panel. To force the simulation to stop immediately when there is a recorder, add the immediately keyword to the command.
 
-Note that this command does not stop the scripting process.
+Note that this command does not stop the execution of the current scripts. To terminate the execution of the scripts from inside the scripts, use the return command.
 
 &lt; Previous | Index | Next &gt;</text>
-<section start="0" end="577">
+<section start="0" end="683">
 <paragraph start="0" end="5">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
@@ -76,7 +77,7 @@ Note that this command does not stop the scripting process.
 <size>11</size></content>
 
 <content start="39" end="43">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="43" end="86">
 <size>11</size></content>
@@ -103,19 +104,19 @@ Note that this command does not stop the scripting process.
 <paragraph start="237" end="238">
 <LeftIndent>140.0</LeftIndent>
 <content start="237" end="238">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 </paragraph>
 <paragraph start="238" end="243">
 <LeftIndent>160.0</LeftIndent>
 <content start="238" end="243">
-<bold>true</bold><family>Courier New</family><size>11</size></content>
+<family>Courier New</family><bold>true</bold><size>11</size></content>
 
 </paragraph>
 <paragraph start="243" end="260">
 <LeftIndent>160.0</LeftIndent>
 <content start="243" end="259">
-<bold>true</bold><family>Courier New</family><size>11</size></content>
+<family>Courier New</family><bold>true</bold><size>11</size></content>
 
 <content start="259" end="260">
 <size>11</size></content>
@@ -133,13 +134,13 @@ Note that this command does not stop the scripting process.
 <size>11</size></content>
 
 <content start="265" end="269">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="269" end="451">
 <size>11</size></content>
 
 <content start="451" end="462">
-<size>11</size><family>Courier New</family></content>
+<family>Courier New</family><size>11</size></content>
 
 <content start="462" end="487">
 <size>11</size></content>
@@ -151,40 +152,55 @@ Note that this command does not stop the scripting process.
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="488" end="548">
+<paragraph start="488" end="654">
 <LeftIndent>140.0</LeftIndent>
-<content start="488" end="548">
+<content start="488" end="561">
+<bold>true</bold><size>11</size></content>
+
+<content start="561" end="563">
+<size>11</size></content>
+
+<content start="563" end="638">
+<size>11</size></content>
+
+<content start="638" end="644">
+<family>Courier New</family><href>script_return.cml</href><size>11</size></content>
+
+<content start="644" end="653">
+<size>11</size></content>
+
+<content start="653" end="654">
 <size>11</size></content>
 
 </paragraph>
-<paragraph start="548" end="549">
+<paragraph start="654" end="655">
 <LeftIndent>140.0</LeftIndent>
-<content start="548" end="549">
+<content start="654" end="655">
 </content>
 
 </paragraph>
-<paragraph start="549" end="577">
+<paragraph start="655" end="683">
 <Alignment>2</Alignment>
 <RightIndent>20.0</RightIndent>
-<content start="549" end="551">
+<content start="655" end="657">
 <size>11</size></content>
 
-<content start="551" end="559">
+<content start="657" end="665">
 <href>script_run.cml</href><size>11</size></content>
 
-<content start="559" end="562">
+<content start="665" end="668">
 <size>11</size></content>
 
-<content start="562" end="567">
+<content start="668" end="673">
 <href>mwscripts.cml</href><size>11</size></content>
 
-<content start="567" end="570">
+<content start="673" end="676">
 <size>11</size></content>
 
-<content start="570" end="574">
+<content start="676" end="680">
 <href>script_reset.cml</href><size>11</size></content>
 
-<content start="574" end="576">
+<content start="680" end="682">
 <size>11</size></content>
 
 </paragraph>

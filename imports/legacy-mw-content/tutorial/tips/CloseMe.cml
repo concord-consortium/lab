@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>null</page_title>
+<info>null</info>
+<text>Click the following button to close this window:
+
+ </text>
+<section start="0" end="52">
+<paragraph start="0" end="49">
+<SpaceAbove>5.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
+<content start="0" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<SpaceAbove>5.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="52">
+<SpaceAbove>5.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="50" end="51">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Close me!</title>
+<borderpainted>true</borderpainted><border>Raised Bevel</border>
+<action>Close this page</action></component></content>
+
+</paragraph>
+</section>
+</document>
