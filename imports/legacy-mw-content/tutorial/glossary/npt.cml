@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>NPT</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>NPT
+
+
+NPT is a molecular simulation protocol that means to restrict the trajectory or sampling points on the hyper surface in the phase space which statisfies the condition that the number of atoms (N), pressure (P) and temperature (T) are maintained constant. This protocol mimicks natural conditions for matter, and is widely used in research.
+
+In the Molecular Workbench (MW), the condition of constant pressure is simulated using virtual pistons. Different from most barostats used in implementing NPT, virtual pistons are a unique feature of MW. They allow us to not only exert a certain amount of pressure but also measure the kinetic pressure of the system on them. For more information, see the documentation of pressure gauges.
+
+
+ 
+return to index</text>
+<section start="0" end="757">
+<paragraph start="0" end="4">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="3">
+<bold>true</bold><size>20</size><family>Bookman Old Style</family></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<LeftIndent>120.0</LeftIndent>
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<LeftIndent>120.0</LeftIndent>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="346">
+<LeftIndent>140.0</LeftIndent>
+<content start="6" end="199">
+<size>11</size></content>
+
+<content start="199" end="200">
+<size>11</size><italic>true</italic></content>
+
+<content start="200" end="213">
+<size>11</size></content>
+
+<content start="213" end="214">
+<size>11</size><italic>true</italic></content>
+
+<content start="214" end="233">
+<size>11</size></content>
+
+<content start="233" end="234">
+<size>11</size><italic>true</italic></content>
+
+<content start="234" end="346">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="346" end="347">
+<LeftIndent>140.0</LeftIndent>
+<content start="346" end="347">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="347" end="737">
+<LeftIndent>140.0</LeftIndent>
+<content start="347" end="720">
+<size>11</size></content>
+
+<content start="720" end="735">
+<href>../pressureprobe.cml</href><size>11</size></content>
+
+<content start="735" end="737">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="737" end="738">
+<LeftIndent>140.0</LeftIndent>
+<content start="737" end="738">
+</content>
+
+</paragraph>
+<paragraph start="738" end="739">
+<LeftIndent>140.0</LeftIndent>
+<content start="738" end="739">
+</content>
+
+</paragraph>
+<paragraph start="739" end="741">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="739" end="740">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="740" end="741">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="741" end="757">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="741" end="756">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

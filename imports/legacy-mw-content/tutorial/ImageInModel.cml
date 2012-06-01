@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting an image</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting an image
+
+&lt; Previous | Index | Next &gt;
+
+You can insert an image into a model, and attach it to a moving object (e.g. an atom). Images can be inserted to change the &quot;face&quot; of the object it is attached to, or stand alone to be an annotation.
+
+To insert an image, select the &quot;Input Image&quot; item from the File Menu of a model container, choose the image you want to insert using the file chooser that pops up, and press the &quot;Open&quot; button of the file chooser.
+
+Once you have inserted an image, you can change its attributes by using its pop-up menu, which can be invoked when the image is right-clicked (or CTRL+clicked on Mac OS X without a multiple-button mouse). The pop-up menu allows you to remove the image, duplicate it, change its layer position, and attach it to a moving object. If an image is sent backward, it will be drawn before other annotation components that overlap with it, therefore, it will appear to be behind those. Conversely, if an image is brought forward, it will be drawn after other annotation components that overlap with it, therefore, it will appear to be on top of those. There are also two options that allow you to set the layer position relative to the particles. An image can be set to be on top of all particles (in front of the particle layer), or to be beneath all particles (behind the particle layer). Note that if an image is set to be behind the particle layer, it will NOT be able to brought forward to an annotation component that is in front of the particle layer. Conversely, if an image is set to be in front of the particle layer, it will NOT be able to sent behind an annotation component that is behind the particle layer.
+
+Supported graphics formats
+
+Currently, the GIF, JPEG and PNG are supported. In addition to static images, animated images in the animated GIF format are also supported. The delay time for each frame in an animated GIF file is approximately respected. The delay time setting, however, is not respected by the simulator&apos;s recorder. This means rewinding the recorder does not play back a GIF animation correctly.
+
+ 
+Looping in animated GIFs: Unfortunately we cannot retrieve the looping option stored in animated GIF files. As a fix, we added our own support of looping. To set the number of loops a GIF file will be played, double-click on the image and type in the &quot;Number of Loops&quot; text field in the &quot;Animation&quot; tab.
+ 
+
+The following model shows an example. Three helicopter images (just for fun) are inserted into a model container, and attached to three particles, each moving with different speed. A couple of other images are inserted to make the view look like a game.
+
+ 
+[This is an embedded simulator.]
+
+Script support
+
+Images can be inserted using the add command. To remove an image, use the select command to select it first, and then call the remove command. There are two methods for moving an image around. The first one is to select first and then call the move command. The second one is to use set image[i].x [xvalue] and set image[i].y [yvalue], where i is the index of the image, and [xvalue] and [yvalue] are the new coordinates of the upper-left corner (not the center) of the image.
+
+To know the index of an image, double-click on it when the model container is in the selecting and moving mode and look up &quot;Index&quot; in the Properties Panel that opens.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3380">
+<paragraph start="0" end="19">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="18">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<size>11</size><href>simpleui2d.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<size>11</size><href>TextBoxInModel.cml</href></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>100.0</LeftIndent>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="249">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="249">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="249" end="250">
+<LeftIndent>140.0</LeftIndent>
+<content start="249" end="250">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="250" end="463">
+<LeftIndent>140.0</LeftIndent>
+<content start="250" end="463">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="463" end="464">
+<LeftIndent>140.0</LeftIndent>
+<content start="463" end="464">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="464" end="1678">
+<LeftIndent>140.0</LeftIndent>
+<content start="464" end="607">
+<size>11</size></content>
+
+<content start="607" end="666">
+<size>11</size></content>
+
+<content start="666" end="1347">
+<size>11</size></content>
+
+<content start="1347" end="1676">
+<size>11</size><bold>true</bold></content>
+
+<content start="1676" end="1678">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1678" end="1679">
+<LeftIndent>140.0</LeftIndent>
+<content start="1678" end="1679">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1679" end="1706">
+<LeftIndent>140.0</LeftIndent>
+<content start="1679" end="1705">
+<size>11</size><bold>true</bold></content>
+
+<content start="1705" end="1706">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1706" end="1707">
+<LeftIndent>140.0</LeftIndent>
+<content start="1706" end="1707">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1707" end="2089">
+<LeftIndent>140.0</LeftIndent>
+<content start="1707" end="2089">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2089" end="2090">
+<LeftIndent>140.0</LeftIndent>
+<content start="2089" end="2090">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2090" end="2092">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="2090" end="2091">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2091" end="2092">
+</content>
+
+</paragraph>
+<paragraph start="2092" end="2396">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2092" end="2116">
+<size>11</size><bold>true</bold></content>
+
+<content start="2116" end="2395">
+<size>11</size></content>
+
+<content start="2395" end="2396">
+</content>
+
+</paragraph>
+<paragraph start="2396" end="2398">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="2396" end="2397">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2397" end="2398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2398" end="2399">
+<LeftIndent>140.0</LeftIndent>
+<content start="2398" end="2399">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2399" end="2653">
+<LeftIndent>140.0</LeftIndent>
+<content start="2399" end="2653">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2653" end="2654">
+<LeftIndent>140.0</LeftIndent>
+<content start="2653" end="2654">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2654" end="2656">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2654" end="2655">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>ImageInModel$0.mml</resource><recorder>true</recorder></component></content>
+
+<content start="2655" end="2656">
+</content>
+
+</paragraph>
+<paragraph start="2656" end="2689">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2656" end="2688">
+<size>10</size></content>
+
+<content start="2688" end="2689">
+</content>
+
+</paragraph>
+<paragraph start="2689" end="2690">
+<LeftIndent>140.0</LeftIndent>
+<content start="2689" end="2690">
+</content>
+
+</paragraph>
+<paragraph start="2690" end="2705">
+<LeftIndent>140.0</LeftIndent>
+<content start="2690" end="2704">
+<size>11</size><bold>true</bold></content>
+
+<content start="2704" end="2705">
+</content>
+
+</paragraph>
+<paragraph start="2705" end="2706">
+<LeftIndent>140.0</LeftIndent>
+<content start="2705" end="2706">
+</content>
+
+</paragraph>
+<paragraph start="2706" end="3183">
+<LeftIndent>140.0</LeftIndent>
+<content start="2706" end="2739">
+<size>11</size></content>
+
+<content start="2739" end="2742">
+<size>11</size><href>script_add.cml</href><family>Courier New</family></content>
+
+<content start="2742" end="2780">
+<size>11</size></content>
+
+<content start="2780" end="2786">
+<size>11</size><href>script_select.cml</href><family>Courier New</family></content>
+
+<content start="2786" end="2833">
+<size>11</size></content>
+
+<content start="2833" end="2839">
+<size>11</size><href>script_remove.cml</href><family>Courier New</family></content>
+
+<content start="2839" end="2950">
+<size>11</size></content>
+
+<content start="2950" end="2954">
+<size>11</size><href>script_move.cml</href><family>Courier New</family></content>
+
+<content start="2954" end="2989">
+<size>11</size></content>
+
+<content start="2989" end="3012">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3012" end="3017">
+<size>11</size></content>
+
+<content start="3017" end="3040">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3040" end="3048">
+<size>11</size></content>
+
+<content start="3048" end="3049">
+<size>11</size><italic>true</italic></content>
+
+<content start="3049" end="3081">
+<size>11</size></content>
+
+<content start="3081" end="3089">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3089" end="3094">
+<size>11</size></content>
+
+<content start="3094" end="3102">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3102" end="3153">
+<size>11</size></content>
+
+<content start="3153" end="3156">
+<size>11</size><italic>true</italic></content>
+
+<content start="3156" end="3183">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3183" end="3184">
+<LeftIndent>140.0</LeftIndent>
+<content start="3183" end="3184">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3184" end="3351">
+<LeftIndent>140.0</LeftIndent>
+<content start="3184" end="3265">
+<size>11</size></content>
+
+<content start="3265" end="3294">
+<size>11</size><href>selectAction.cml</href></content>
+
+<content start="3294" end="3350">
+<size>11</size></content>
+
+<content start="3350" end="3351">
+</content>
+
+</paragraph>
+<paragraph start="3351" end="3352">
+<LeftIndent>140.0</LeftIndent>
+<content start="3351" end="3352">
+</content>
+
+</paragraph>
+<paragraph start="3352" end="3380">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="3352" end="3354">
+<size>11</size></content>
+
+<content start="3354" end="3362">
+<size>11</size><href>simpleui2d.cml</href></content>
+
+<content start="3362" end="3365">
+<size>11</size></content>
+
+<content start="3365" end="3370">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="3370" end="3373">
+<size>11</size></content>
+
+<content start="3373" end="3377">
+<size>11</size><href>TextBoxInModel.cml</href></content>
+
+<content start="3377" end="3379">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

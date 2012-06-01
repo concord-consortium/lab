@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Steering obstacles</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Steering obstacles
+
+&lt; Previous | Index | Next &gt;
+
+Like a particle, an obstacle can be steered in four directions: up, down, left and right. To invoke the steering mode for an obstacle, right-click (Windows and Linux) or CTRL+click on anywhere within it. From the popup menu, select the &quot;Steer&quot; item.
+
+Steering works when the model runs. When the model does not run, the obstacle will also move when you apply the Up, Down, Left or Right key. But do not confuse this with steering. This is just regular moving of object when you edit a model. When a model is running, it will not be editable and therefore you cannot move the obstacle if there is no steering force.
+
+ 
+A steerable obstacle can be used to show some basic concepts in classical mechanics. Here is an example that uses a steerable sliding obstacle (hence the motion can be reduced to one dimension).
+ 
+
+The steering mechanism can be used to design virtual haptic effect, meaning visual feedback that replaces the mechanical feedback of a real haptic device. Haptic means pertaining to the sense of touch (see   haptic in Wikipedia for more information). For example, one can set up a virtual experiment in which the user can compress a gas with a piston, as is shown below:
+
+  
+  
+[This is an embedded simulator.]
+
+ 
+Important Instruction: To steer the piston, click the model window after setting the model to run first, and then use the Up, Down, Left and Right key on the keyboard to steer it in four directions. To increase the steering force, press the &apos;a&apos; key (&apos;a&apos; comes from acceleratoin. To decrease the steering force, press the &apos;d&apos; key (&apos;d&apos; comes from deceleration).
+
+Remember, you must click the model window before you can steer. In the computer jargon, this means the focus of the keyboard must be transfered to the model so that the key action can then be applied to it.
+
+If the density of the obstacle exceeds 500 kg/(mol*angstrom2), it will be considered too heavy to be movable. In that case, you will not be able to steer it at all. The recommended value for the density of a steerable obstacle is 1 kg/(mol*angstrom2).
+
+Note that the steering force is different from the horizontal and vertical force that can be set through the Properties Dialog Window of the obstacle. The difference is that the steering force requires the user&apos;s interaction --- if the user does not press one of the arrow keys, the steering force is off. In comparison, the other forces do not need the user to apply them --- they are constantly applied to the obstacle during the simulation.
+ 
+
+When the user compresses the gas, a pressure probe is also set up to measure the pressure of the gas during compression. When the compression reaches the limit with the current steering force, the measurement read from the probe becomes constant (with small fluctuations). If the user applies a stronger steering force, the measured pressure will be greater. The following figure summarizes a few runs with different steering force. The percentages are relative to the full strength of steering force.
+
+   
+
+To cancel the steering, stop the model, right-click (Windows and Linux) or CTRL+click (Mac OS X) on the obstacle, and select the &quot;Steering Off&quot; item from the popup menu.
+
+Demo: Structural transformations of molecular crystals under compression
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3329">
+<paragraph start="0" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<size>11</size><href>SteerParticle.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="38" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="49">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="49" end="299">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="299" end="300">
+<LeftIndent>140.0</LeftIndent>
+<content start="299" end="300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="300" end="664">
+<LeftIndent>140.0</LeftIndent>
+<content start="300" end="664">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="664" end="665">
+<LeftIndent>140.0</LeftIndent>
+<content start="664" end="665">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="665" end="667">
+<LeftIndent>140.0</LeftIndent>
+<content start="665" end="666">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="666" end="667">
+</content>
+
+</paragraph>
+<paragraph start="667" end="862">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="667" end="783">
+<size>11</size></content>
+
+<content start="783" end="809">
+<size>11</size><href>SlidingObstacle.cml</href></content>
+
+<content start="809" end="861">
+<size>11</size></content>
+
+<content start="861" end="862">
+</content>
+
+</paragraph>
+<paragraph start="862" end="864">
+<LeftIndent>140.0</LeftIndent>
+<content start="862" end="863">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="863" end="864">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="864" end="865">
+<LeftIndent>140.0</LeftIndent>
+<content start="864" end="865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="865" end="1236">
+<LeftIndent>140.0</LeftIndent>
+<content start="865" end="1071">
+<size>11</size></content>
+
+<content start="1071" end="1072">
+<icon>htmlink.gif</icon></content>
+
+<content start="1072" end="1073">
+<size>11</size></content>
+
+<content start="1073" end="1092">
+<size>11</size><href>http://en.wikipedia.org/wiki/Haptic</href></content>
+
+<content start="1092" end="1236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1236" end="1237">
+<LeftIndent>140.0</LeftIndent>
+<content start="1236" end="1237">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1237" end="1240">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1237" end="1238">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>SteerObstacle$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1238" end="1239">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="0" size="4" spacing="5">North pressure:Obstacle #0</time_series_y1>
+<autofity>false</autofity>
+<axis_y_min>0.0</axis_y_min>
+<axis_y_max>20.0</axis_y_max>
+<width>300</width>
+<height>314</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Pressure (bar)</axis_y_title>
+<legend_x>50</legend_x>
+<legend_y>50</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="1239" end="1240">
+</content>
+
+</paragraph>
+<paragraph start="1240" end="1243">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1240" end="1241">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Apply heat bath</title>
+<tooltip>Apply heat bath</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set heatbath 373;</script>
+<script2>set heatbath -1;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1241" end="1242">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Apply damping force on piston</title>
+<tooltip>Apply a damping force on the piston</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set obstacle[0].friction 0.1;</script>
+<script2>set obstacle[0].friction 0;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1242" end="1243">
+</content>
+
+</paragraph>
+<paragraph start="1243" end="1276">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1243" end="1275">
+<size>10</size></content>
+
+<content start="1275" end="1276">
+</content>
+
+</paragraph>
+<paragraph start="1276" end="1277">
+<LeftIndent>140.0</LeftIndent>
+<content start="1276" end="1277">
+</content>
+
+</paragraph>
+<paragraph start="1277" end="1279">
+<LeftIndent>140.0</LeftIndent>
+<content start="1277" end="1278">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1278" end="1279">
+</content>
+
+</paragraph>
+<paragraph start="1279" end="1639">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1279" end="1301">
+<bold>true</bold><size>11</size></content>
+
+<content start="1301" end="1639">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1639" end="1640">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1639" end="1640">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1640" end="1847">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1640" end="1654">
+<size>11</size></content>
+
+<content start="1654" end="1658">
+<bold>true</bold><size>11</size></content>
+
+<content start="1658" end="1847">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1847" end="1848">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1847" end="1848">
+</content>
+
+</paragraph>
+<paragraph start="1848" end="2100">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1848" end="1907">
+<bold>true</bold><size>11</size></content>
+
+<content start="1907" end="1908">
+<superscript>true</superscript><bold>true</bold><size>11</size></content>
+
+<content start="1908" end="1957">
+<bold>true</bold><size>11</size></content>
+
+<content start="1957" end="2096">
+<size>11</size></content>
+
+<content start="2096" end="2097">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="2097" end="2100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2100" end="2101">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2100" end="2101">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2101" end="2545">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2101" end="2544">
+<size>11</size></content>
+
+<content start="2544" end="2545">
+</content>
+
+</paragraph>
+<paragraph start="2545" end="2547">
+<LeftIndent>140.0</LeftIndent>
+<content start="2545" end="2546">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2546" end="2547">
+</content>
+
+</paragraph>
+<paragraph start="2547" end="2548">
+<LeftIndent>140.0</LeftIndent>
+<content start="2547" end="2548">
+</content>
+
+</paragraph>
+<paragraph start="2548" end="3050">
+<LeftIndent>140.0</LeftIndent>
+<content start="2548" end="2584">
+<size>11</size></content>
+
+<content start="2584" end="2598">
+<size>11</size><href>pressureprobe.cml</href></content>
+
+<content start="2598" end="3049">
+<size>11</size></content>
+
+<content start="3049" end="3050">
+</content>
+
+</paragraph>
+<paragraph start="3050" end="3051">
+<LeftIndent>140.0</LeftIndent>
+<content start="3050" end="3051">
+</content>
+
+</paragraph>
+<paragraph start="3051" end="3055">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3051" end="3053">
+</content>
+
+<content start="3053" end="3054">
+<icon>steerobs.gif</icon></content>
+
+<content start="3054" end="3055">
+</content>
+
+</paragraph>
+<paragraph start="3055" end="3056">
+<LeftIndent>140.0</LeftIndent>
+<content start="3055" end="3056">
+</content>
+
+</paragraph>
+<paragraph start="3056" end="3226">
+<LeftIndent>140.0</LeftIndent>
+<content start="3056" end="3226">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3226" end="3227">
+<LeftIndent>140.0</LeftIndent>
+<content start="3226" end="3227">
+</content>
+
+</paragraph>
+<paragraph start="3227" end="3300">
+<LeftIndent>140.0</LeftIndent>
+<content start="3227" end="3233">
+<size>10</size></content>
+
+<content start="3233" end="3299">
+<size>10</size><href>../student/molecularcrystal/compress.cml</href></content>
+
+<content start="3299" end="3300">
+</content>
+
+</paragraph>
+<paragraph start="3300" end="3301">
+<LeftIndent>140.0</LeftIndent>
+<content start="3300" end="3301">
+</content>
+
+</paragraph>
+<paragraph start="3301" end="3329">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3301" end="3303">
+<size>11</size></content>
+
+<content start="3303" end="3311">
+<size>11</size><href>SteerParticle.cml</href></content>
+
+<content start="3311" end="3314">
+<size>11</size></content>
+
+<content start="3314" end="3319">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="3319" end="3328">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>The Average-Position Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Average-Position Tool
+
+&lt; Previous | Index | Next &gt;
+
+It would be helpful to show an object&apos;s current average position in a simulation. For instance, in a simulation of a membrane, the particles may vibrate significantly due to thermal fluctuations. We can only calculate its average position in order to determine whether or not there is a consistent distortion towards a particular direction.
+
+To show or hide its current average position, choose the Trajectory Tool (&quot; &quot;), and then click on a particle. Its average position, based on the trajectory that has been recorded, will be shown. Clicking the particle again will hide its average position.
+
+ 
+[This is an embedded simulator.]
+
+ 
+Important: If the recorder is disabled, no trajectory will be shown. The more frames the recorder holds, the more accurate the average position is (i.e. the data will have less fluctuations).
+ 
+
+Script support
+
+The averageposition command can be used to show or hide the current average positions of the center of mass of the selected particles. To turn this feature on/off, select the particles first and then use the averageposition command.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1165">
+<paragraph start="0" end="26">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="25">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<RightIndent>20.0</RightIndent>
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="55">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="27" end="29">
+<size>11</size></content>
+
+<content start="29" end="37">
+<href>showTrajAction.cml</href><size>11</size></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="52">
+<href>boundary.cml</href><size>11</size></content>
+
+<content start="52" end="54">
+<size>11</size></content>
+
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="56">
+<LeftIndent>100.0</LeftIndent>
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="397">
+<LeftIndent>140.0</LeftIndent>
+<content start="56" end="397">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="397" end="398">
+<LeftIndent>140.0</LeftIndent>
+<content start="397" end="398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="398" end="653">
+<LeftIndent>140.0</LeftIndent>
+<content start="398" end="473">
+<size>11</size></content>
+
+<content start="473" end="474">
+<icon>meanpos.gif</icon></content>
+
+<content start="474" end="653">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="653" end="654">
+<LeftIndent>140.0</LeftIndent>
+<content start="653" end="654">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="654" end="656">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="654" end="655">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>AvposAction$0.mml</resource><menubar>false</menubar><button>Select Object</button><button>Toggle Average Position</button></component></content>
+
+<content start="655" end="656">
+</content>
+
+</paragraph>
+<paragraph start="656" end="689">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="656" end="688">
+<size>10</size></content>
+
+<content start="688" end="689">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="689" end="690">
+<LeftIndent>140.0</LeftIndent>
+<content start="689" end="690">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="690" end="692">
+<LeftIndent>140.0</LeftIndent>
+<content start="690" end="691">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="691" end="692">
+<foreground>255 0 0</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="692" end="884">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="692" end="701">
+<bold>true</bold><foreground>255 0 0</foreground><size>11</size></content>
+
+<content start="701" end="884">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="884" end="886">
+<LeftIndent>140.0</LeftIndent>
+<content start="884" end="885">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="885" end="886">
+</content>
+
+</paragraph>
+<paragraph start="886" end="887">
+<LeftIndent>140.0</LeftIndent>
+<content start="886" end="887">
+</content>
+
+</paragraph>
+<paragraph start="887" end="902">
+<LeftIndent>140.0</LeftIndent>
+<content start="887" end="901">
+<bold>true</bold><size>11</size></content>
+
+<content start="901" end="902">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="902" end="903">
+<LeftIndent>140.0</LeftIndent>
+<content start="902" end="903">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="903" end="1136">
+<LeftIndent>140.0</LeftIndent>
+<content start="903" end="907">
+<size>11</size></content>
+
+<content start="907" end="922">
+<family>Courier New</family><href>script_averageposition.cml</href><size>11</size></content>
+
+<content start="922" end="1067">
+<size>11</size></content>
+
+<content start="1067" end="1073">
+<href>script_select.cml</href><size>11</size></content>
+
+<content start="1073" end="1111">
+<size>11</size></content>
+
+<content start="1111" end="1126">
+<family>Courier New</family><href>script_averageposition.cml</href><size>11</size></content>
+
+<content start="1126" end="1135">
+<size>11</size></content>
+
+<content start="1135" end="1136">
+</content>
+
+</paragraph>
+<paragraph start="1136" end="1137">
+<LeftIndent>140.0</LeftIndent>
+<content start="1136" end="1137">
+</content>
+
+</paragraph>
+<paragraph start="1137" end="1165">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1137" end="1139">
+<size>11</size></content>
+
+<content start="1139" end="1147">
+<href>showTrajAction.cml</href><size>11</size></content>
+
+<content start="1147" end="1150">
+<size>11</size></content>
+
+<content start="1150" end="1155">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="1155" end="1158">
+<size>11</size></content>
+
+<content start="1158" end="1162">
+<href>boundary.cml</href><size>11</size></content>
+
+<content start="1162" end="1164">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

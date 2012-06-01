@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>End-to-end arrangement</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>End-to-end arrangement
+
+
+A configuration of two Gay-Berne  particles, as shown below: 
+
+
+ 
+
+For a pair of identical Gay-Berne particles, the interaction energy corresponding to this configuration is: 
+
+ 
+
+Note that because l &gt; d, the Lennard-Jones function is shifted outwards by an amount of (l-d). That is to say, they will start to repul each other from a longer distance (21/6l) away when they come close to each other. This mechanism guarantees that the two particles will not overlap in the long axis direction. See side-by-side arrangement and T-shaped arrangement . (Note: There is no crossed arrangement in 2D.) .
+
+
+ 
+return to index</text>
+<section start="0" end="643">
+<paragraph start="0" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="22">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<LeftIndent>120.0</LeftIndent>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<LeftIndent>120.0</LeftIndent>
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="87">
+<LeftIndent>140.0</LeftIndent>
+<content start="25" end="87">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="87" end="88">
+<LeftIndent>120.0</LeftIndent>
+<content start="87" end="88">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="88" end="89">
+<LeftIndent>120.0</LeftIndent>
+<content start="88" end="89">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="89" end="91">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="89" end="90">
+<icon>EndToEnd.gif</icon><size>11</size></content>
+
+<content start="90" end="91">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="91" end="92">
+<LeftIndent>120.0</LeftIndent>
+<content start="91" end="92">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="92" end="201">
+<LeftIndent>140.0</LeftIndent>
+<content start="92" end="201">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="201" end="202">
+<LeftIndent>120.0</LeftIndent>
+<content start="201" end="202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="202" end="204">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="202" end="203">
+<icon>EndToEndEnergy.gif</icon><size>11</size></content>
+
+<content start="203" end="204">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="204" end="205">
+<LeftIndent>120.0</LeftIndent>
+<content start="204" end="205">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="205" end="623">
+<LeftIndent>140.0</LeftIndent>
+<content start="205" end="223">
+<size>11</size></content>
+
+<content start="223" end="225">
+<italic>true</italic><size>11</size></content>
+
+<content start="225" end="227">
+<size>11</size></content>
+
+<content start="227" end="228">
+<italic>true</italic><size>11</size></content>
+
+<content start="228" end="294">
+<size>11</size></content>
+
+<content start="294" end="297">
+<italic>true</italic><size>11</size></content>
+
+<content start="297" end="377">
+<size>11</size></content>
+
+<content start="377" end="380">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="380" end="381">
+<italic>true</italic><size>11</size></content>
+
+<content start="381" end="522">
+<size>11</size></content>
+
+<content start="522" end="546">
+<href>SideBySide.cml</href><size>11</size></content>
+
+<content start="546" end="551">
+<size>11</size></content>
+
+<content start="551" end="571">
+<href>TShape.cml</href><size>11</size></content>
+
+<content start="571" end="623">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="623" end="624">
+<LeftIndent>120.0</LeftIndent>
+<content start="623" end="624">
+</content>
+
+</paragraph>
+<paragraph start="624" end="625">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="624" end="625">
+</content>
+
+</paragraph>
+<paragraph start="625" end="627">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="625" end="626">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="626" end="627">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="627" end="643">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="627" end="642">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

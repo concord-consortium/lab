@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Nematic phase</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Nematic phase
+
+
+The nematic phase of a liquid crystal is a state in which the centers of mass of the molecules are disordered but the orientations of the molecules are ordered. 
+
+
+ 
+return to index</text>
+<section start="0" end="198">
+<paragraph start="0" end="14">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="13">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<LeftIndent>120.0</LeftIndent>
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<LeftIndent>120.0</LeftIndent>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="178">
+<LeftIndent>140.0</LeftIndent>
+<content start="16" end="178">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="178" end="179">
+<LeftIndent>120.0</LeftIndent>
+<content start="178" end="179">
+</content>
+
+</paragraph>
+<paragraph start="179" end="180">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="179" end="180">
+</content>
+
+</paragraph>
+<paragraph start="180" end="182">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="180" end="181">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="181" end="182">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="182" end="198">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="182" end="197">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

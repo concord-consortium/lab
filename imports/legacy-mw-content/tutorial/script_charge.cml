@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Charge</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Charge
+
+&lt; Previous | Index | Next &gt;
+
+The charge command charges the currently selected particles with a specific amount of charge. (To see how to charge particles without using scripts, see this section.)
+
+Syntax:
+
+charge [number]
+
+where [number] is the amount of charge that will be put on every of the selected particles.
+
+Here is an example of using the charge command to set the charges of atoms all at once.
+
+ 
+  
+[This is an embedded simulator.]
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="481">
+<paragraph start="0" end="7">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="6">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="36">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="8" end="10">
+<size>11</size></content>
+
+<content start="10" end="18">
+<href>script_add.cml</href><size>11</size></content>
+
+<content start="18" end="21">
+<size>11</size></content>
+
+<content start="21" end="26">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="33">
+<href>script_restrain.cml</href><size>11</size></content>
+
+<content start="33" end="35">
+<size>11</size></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<LeftIndent>100.0</LeftIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="205">
+<LeftIndent>140.0</LeftIndent>
+<content start="37" end="41">
+<size>11</size></content>
+
+<content start="41" end="47">
+<size>11</size><family>Courier New</family></content>
+
+<content start="47" end="190">
+<size>11</size></content>
+
+<content start="190" end="202">
+<href>chargeAction.cml</href><size>11</size></content>
+
+<content start="202" end="205">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="205" end="206">
+<LeftIndent>140.0</LeftIndent>
+<content start="205" end="206">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="206" end="214">
+<LeftIndent>140.0</LeftIndent>
+<content start="206" end="214">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="214" end="215">
+<LeftIndent>140.0</LeftIndent>
+<content start="214" end="215">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="215" end="231">
+<LeftIndent>160.0</LeftIndent>
+<content start="215" end="222">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="222" end="230">
+<size>11</size><family>Courier New</family></content>
+
+<content start="230" end="231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="231" end="232">
+<LeftIndent>140.0</LeftIndent>
+<content start="231" end="232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="232" end="324">
+<LeftIndent>140.0</LeftIndent>
+<content start="232" end="238">
+<size>11</size></content>
+
+<content start="238" end="246">
+<size>11</size><family>Courier New</family></content>
+
+<content start="246" end="324">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="324" end="325">
+<LeftIndent>140.0</LeftIndent>
+<content start="324" end="325">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="325" end="413">
+<LeftIndent>140.0</LeftIndent>
+<content start="325" end="357">
+<size>11</size></content>
+
+<content start="357" end="363">
+<size>11</size><family>Courier New</family></content>
+
+<content start="363" end="413">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="413" end="414">
+<LeftIndent>140.0</LeftIndent>
+<content start="413" end="414">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="414" end="416">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="414" end="415">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_charge$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="415" end="416">
+</content>
+
+</paragraph>
+<paragraph start="416" end="419">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="416" end="417">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>add charges</title>
+<tooltip>Add positive charges on some atoms and negative charges on others</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1112362628405</groupid>
+<script>select element 2;
+charge -1;
+select element 3;
+charge 1;
+select element none;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="417" end="418">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>neutralize all atoms</title>
+<tooltip>Do not charge any atom</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1112362628405</groupid>
+<script>Select atom *;
+charge 0;
+select atom none;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="418" end="419">
+</content>
+
+</paragraph>
+<paragraph start="419" end="452">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="419" end="451">
+<size>10</size></content>
+
+<content start="451" end="452">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="452" end="453">
+<LeftIndent>140.0</LeftIndent>
+<content start="452" end="453">
+</content>
+
+</paragraph>
+<paragraph start="453" end="481">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="453" end="455">
+<size>11</size></content>
+
+<content start="455" end="463">
+<href>script_add.cml</href><size>11</size></content>
+
+<content start="463" end="466">
+<size>11</size></content>
+
+<content start="466" end="471">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="471" end="474">
+<size>11</size></content>
+
+<content start="474" end="478">
+<href>script_restrain.cml</href><size>11</size></content>
+
+<content start="478" end="480">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

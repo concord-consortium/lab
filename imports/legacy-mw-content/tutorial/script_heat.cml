@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Heat</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Heat
+
+&lt; Previous | Index | Next &gt;
+
+The heat command transfers the specified amount of energy, in electronic volt (eV), to the currently selected particles in the form of kinetic energy. If the specified number is positive, the kinetic energy of the selected particles will increase, resulting in a heating effect. Otherwise, it will decrease, resulting in a cooling effect. (To see how to heat particles without using scripts, see this section.)
+
+Syntax:
+
+heat [energy]
+
+where [energy] is the amount of energy, in eV, that will be used to increase or decrease the kinetic energy of the selected particles.
+
+Here is an example of using the heat command:
+
+ 
+  
+[This is an embedded simulator.]
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="721">
+<paragraph start="0" end="5">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="4">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="8">
+<size>11</size></content>
+
+<content start="8" end="16">
+<size>11</size><href>script_damp.cml</href></content>
+
+<content start="16" end="19">
+<size>11</size></content>
+
+<content start="19" end="24">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="31">
+<size>11</size><href>script_remove.cml</href></content>
+
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>100.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="446">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<size>11</size><family>Courier New</family></content>
+
+<content start="43" end="126">
+<size>11</size></content>
+
+<content start="126" end="144">
+<bold>true</bold><size>11</size></content>
+
+<content start="144" end="431">
+<size>11</size></content>
+
+<content start="431" end="443">
+<size>11</size><href>PointHeater.cml</href></content>
+
+<content start="443" end="446">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="446" end="447">
+<LeftIndent>140.0</LeftIndent>
+<content start="446" end="447">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="447" end="455">
+<LeftIndent>140.0</LeftIndent>
+<content start="447" end="455">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="455" end="456">
+<LeftIndent>140.0</LeftIndent>
+<content start="455" end="456">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="456" end="470">
+<LeftIndent>160.0</LeftIndent>
+<content start="456" end="461">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="461" end="469">
+<size>11</size><family>Courier New</family></content>
+
+<content start="469" end="470">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="470" end="471">
+<LeftIndent>140.0</LeftIndent>
+<content start="470" end="471">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="471" end="606">
+<LeftIndent>140.0</LeftIndent>
+<content start="471" end="477">
+<size>11</size></content>
+
+<content start="477" end="485">
+<size>11</size><family>Courier New</family></content>
+
+<content start="485" end="606">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="606" end="607">
+<LeftIndent>140.0</LeftIndent>
+<content start="606" end="607">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="607" end="653">
+<LeftIndent>140.0</LeftIndent>
+<content start="607" end="639">
+<size>11</size></content>
+
+<content start="639" end="643">
+<size>11</size><family>Courier New</family></content>
+
+<content start="643" end="653">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="653" end="654">
+<LeftIndent>140.0</LeftIndent>
+<content start="653" end="654">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="654" end="656">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="654" end="655">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_heat$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+
+<content start="655" end="656">
+</content>
+
+</paragraph>
+<paragraph start="656" end="659">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="656" end="657">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Heat 10x10 Square Area at Center</title>
+<tooltip>Heat Atoms in a 10x10 Square at Center</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom within (&quot;%width/2-5&quot;, &quot;%height/2-5&quot;, 10, 10);
+heat 0.5;
+select element none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="657" end="658">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Cool 10x10 Square Area at Center</title>
+<tooltip>Cool Atoms in 10x10 Square at Center</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom within (&quot;%width/2-5&quot;, &quot;%height/2-5&quot;, 10, 10);
+heat -0.5;
+select element none;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="658" end="659">
+</content>
+
+</paragraph>
+<paragraph start="659" end="692">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="659" end="691">
+<size>10</size></content>
+
+<content start="691" end="692">
+</content>
+
+</paragraph>
+<paragraph start="692" end="693">
+<content start="692" end="693">
+</content>
+
+</paragraph>
+<paragraph start="693" end="721">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="693" end="695">
+<size>11</size></content>
+
+<content start="695" end="703">
+<size>11</size><href>script_damp.cml</href></content>
+
+<content start="703" end="706">
+<size>11</size></content>
+
+<content start="706" end="711">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="711" end="714">
+<size>11</size></content>
+
+<content start="714" end="718">
+<size>11</size><href>script_remove.cml</href></content>
+
+<content start="718" end="720">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

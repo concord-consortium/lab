@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>The script protocol</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The script protocol
+
+&lt; Previous | Index | Next &gt;
+
+The following controls are not hooked up with any particular component when they are created:
+
+   Activity Button (&quot;Insert&gt;Activity Controller&gt;Activity Button&quot;)
+   All embedded components in a text box
+   Hyperlinks
+
+All of these controls support interaction with components such as models and text boxes through scripts. To set them up, scripts must be written in the following form:
+
+script:[component type]:[index of component]:[script body]
+
+where
+
+   [component type] is the type of the component the script is to be applied. Currently, it must be mw2d (or mw for backward compatibility), mw3d, jmol or textbox.
+
+   [index of component] is the index of the component of the type the script is to be applied,  starting from 1. For example, if you have two Jmol models on the page, the index of the first one is 1, and that of the second one is 2. Different types of components have different sets of indices. For instance, if you have a 2D model and a Jmol model on the same page, both indices are 1, because their types are distinct.
+
+   [script body] is the script that is to be executed. It must be   Jmol scripts, MW scripts, or commands text boxes understand. The script body can contain multiple lines of script commands.
+
+For a control that must be set up to work with a model upon creation, you do not have to follow this protocol. You can just type the script body in the script text area. For example, you can just type scripts on a script console without having to follow this protocol.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1581">
+<paragraph start="0" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="19">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="49">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="21" end="23">
+<size>11</size></content>
+
+<content start="23" end="31">
+<href>script_where.cml</href><size>11</size></content>
+
+<content start="31" end="34">
+<size>11</size></content>
+
+<content start="34" end="39">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="46">
+<href>script_variable.cml</href><size>11</size></content>
+
+<content start="46" end="48">
+<size>11</size></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<LeftIndent>100.0</LeftIndent>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="144">
+<LeftIndent>140.0</LeftIndent>
+<content start="50" end="144">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="144" end="145">
+<LeftIndent>140.0</LeftIndent>
+<content start="144" end="145">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="145" end="211">
+<LeftIndent>160.0</LeftIndent>
+<content start="145" end="146">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="146" end="148">
+</content>
+
+<content start="148" end="211">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="211" end="252">
+<LeftIndent>160.0</LeftIndent>
+<content start="211" end="212">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="212" end="214">
+</content>
+
+<content start="214" end="251">
+<href>htmlform.cml</href><size>11</size></content>
+
+<content start="251" end="252">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="252" end="266">
+<LeftIndent>160.0</LeftIndent>
+<content start="252" end="253">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="253" end="255">
+</content>
+
+<content start="255" end="265">
+<href>linkscript.cml</href><size>11</size></content>
+
+<content start="265" end="266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="266" end="267">
+<LeftIndent>140.0</LeftIndent>
+<content start="266" end="267">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="267" end="435">
+<LeftIndent>140.0</LeftIndent>
+<content start="267" end="435">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="435" end="436">
+<LeftIndent>140.0</LeftIndent>
+<content start="435" end="436">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="436" end="495">
+<LeftIndent>160.0</LeftIndent>
+<content start="436" end="494">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="494" end="495">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="495" end="496">
+<LeftIndent>140.0</LeftIndent>
+<content start="495" end="496">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="496" end="502">
+<LeftIndent>140.0</LeftIndent>
+<content start="496" end="502">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="502" end="503">
+<LeftIndent>140.0</LeftIndent>
+<content start="502" end="503">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="503" end="667">
+<LeftIndent>160.0</LeftIndent>
+<content start="503" end="504">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="504" end="506">
+</content>
+
+<content start="506" end="522">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="522" end="603">
+<size>11</size></content>
+
+<content start="603" end="608">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="608" end="612">
+<size>11</size></content>
+
+<content start="612" end="614">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="614" end="644">
+<size>11</size></content>
+
+<content start="644" end="648">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="648" end="650">
+<size>11</size></content>
+
+<content start="650" end="654">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="654" end="658">
+<size>11</size></content>
+
+<content start="658" end="665">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="665" end="667">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="667" end="668">
+<LeftIndent>140.0</LeftIndent>
+<content start="667" end="668">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="668" end="1089">
+<LeftIndent>160.0</LeftIndent>
+<content start="668" end="669">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="669" end="671">
+</content>
+
+<content start="671" end="691">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="691" end="764">
+<size>11</size></content>
+
+<content start="764" end="779">
+<bold>true</bold><size>11</size></content>
+
+<content start="779" end="1089">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1089" end="1090">
+<LeftIndent>140.0</LeftIndent>
+<content start="1089" end="1090">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1090" end="1282">
+<LeftIndent>160.0</LeftIndent>
+<content start="1090" end="1091">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1091" end="1093">
+</content>
+
+<content start="1093" end="1106">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="1106" end="1156">
+<size>11</size></content>
+
+<content start="1156" end="1157">
+<icon>htmlink.gif</icon></content>
+
+<content start="1157" end="1158">
+<size>11</size></content>
+
+<content start="1158" end="1170">
+<href>http://www.stolaf.edu/people/hansonr/jmol/docs/</href><size>11</size></content>
+
+<content start="1170" end="1172">
+<size>11</size></content>
+
+<content start="1172" end="1182">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="1182" end="1196">
+<size>11</size></content>
+
+<content start="1196" end="1206">
+<href>textbox.cml</href><size>11</size></content>
+
+<content start="1206" end="1282">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1282" end="1283">
+<LeftIndent>140.0</LeftIndent>
+<content start="1282" end="1283">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1283" end="1552">
+<LeftIndent>140.0</LeftIndent>
+<content start="1283" end="1497">
+<size>11</size></content>
+
+<content start="1497" end="1511">
+<href>scriptconsole.cml</href><size>11</size></content>
+
+<content start="1511" end="1552">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1552" end="1553">
+<LeftIndent>140.0</LeftIndent>
+<content start="1552" end="1553">
+</content>
+
+</paragraph>
+<paragraph start="1553" end="1581">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1553" end="1555">
+<size>11</size></content>
+
+<content start="1555" end="1563">
+<href>script_where.cml</href><size>11</size></content>
+
+<content start="1563" end="1566">
+<size>11</size></content>
+
+<content start="1566" end="1571">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="1571" end="1574">
+<size>11</size></content>
+
+<content start="1574" end="1578">
+<href>script_variable.cml</href><size>11</size></content>
+
+<content start="1578" end="1580">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

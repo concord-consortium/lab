@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting a spinner button</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a spinner button
+
+&lt; Previous | Index | Next &gt;
+
+You can insert a spinner button in a page for the user to change the values of variables, for instance, charges or masses of atoms.
+
+When you select the &quot;Insert&gt;Standard Controller for Model&gt;Spinner&quot; menu action (keyboard shortcut: ALT+SHIFT+S), you will see the following dialog:
+
+  
+[This is a screenshot.]
+
+This dialog allows you to select a model and a variable control that applies to the model. If there is no model on the page, the Model and Variable Combo Boxes will be blank. For variable controls, you have to set the upper bound, the lower bound, and the step size (the increment or decrement a click on the &quot;up&quot; or &quot;down&quot; button will result in).
+
+A spinner comes with a label to its left side. The text on the label is, by default, given by the name of the variable you see in the Variable Combo Box. But you can change the text (using the text field in the fourth row).
+
+You can set scripts that will be executed when one of the spinner&apos;s buttons is clicked or when a value is entered in the spinner&apos;s text field. The current value of the spinner can be referenced in the scripts as %val. The %val parameter can also be put into a mathematical expression in a script command. For example, you can use set element[2].mass &quot;exp(%val/10)&quot; to increase mass exponentially. Note that a mathematical expression must be enclosed in a pair of double quotes.
+
+ 
+Tip: If scripts are long and you will need to write them in a more comfortable way, use your favorite  text editor to write scripts and copy back to the text area. If there exist scripts already, copy them to your editor first before editing them.
+ 
+
+The following is an example of using scripts in a spinner:
+
+  
+[This is an embedded simulator.]
+
+Changing and removing a spinner button
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove and copy a spinner button.
+
+Note: Spinner button and slider both control a variable within a certain range. Which controller to use is up to your personal choice.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2070">
+<paragraph start="0" end="27">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="26">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="56">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="38">
+<href>insertCheckBox.cml</href><size>11</size></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="46">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="53">
+<href>insertSlider.cml</href><size>11</size></content>
+
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<LeftIndent>100.0</LeftIndent>
+<content start="56" end="57">
+<foreground>255 0 0</foreground><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="57" end="189">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="189">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="189" end="190">
+<LeftIndent>140.0</LeftIndent>
+<content start="189" end="190">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="190" end="338">
+<LeftIndent>140.0</LeftIndent>
+<content start="190" end="338">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="338" end="339">
+<LeftIndent>100.0</LeftIndent>
+<content start="338" end="339">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="339" end="342">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="339" end="340">
+<size>11</size></content>
+
+<content start="340" end="341">
+<size>11</size><icon>SpinnerController.gif</icon></content>
+
+<content start="341" end="342">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="342" end="366">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="342" end="365">
+<size>10</size></content>
+
+<content start="365" end="366">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="366" end="367">
+<LeftIndent>100.0</LeftIndent>
+<content start="366" end="367">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="367" end="715">
+<LeftIndent>140.0</LeftIndent>
+<content start="367" end="715">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="715" end="716">
+<LeftIndent>140.0</LeftIndent>
+<content start="715" end="716">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="716" end="940">
+<LeftIndent>140.0</LeftIndent>
+<content start="716" end="940">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="940" end="941">
+<LeftIndent>140.0</LeftIndent>
+<content start="940" end="941">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="941" end="1419">
+<LeftIndent>140.0</LeftIndent>
+<content start="941" end="1153">
+<size>11</size></content>
+
+<content start="1153" end="1157">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1157" end="1163">
+<size>11</size></content>
+
+<content start="1163" end="1167">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1167" end="1271">
+<size>11</size></content>
+
+<content start="1271" end="1305">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1305" end="1374">
+<size>11</size></content>
+
+<content start="1374" end="1378">
+<size>11</size><bold>true</bold></content>
+
+<content start="1378" end="1419">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1419" end="1420">
+<LeftIndent>140.0</LeftIndent>
+<content start="1419" end="1420">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1420" end="1422">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1420" end="1421">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1421" end="1422">
+</content>
+
+</paragraph>
+<paragraph start="1422" end="1670">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1422" end="1425">
+<size>11</size><bold>true</bold></content>
+
+<content start="1425" end="1669">
+<size>11</size></content>
+
+<content start="1669" end="1670">
+</content>
+
+</paragraph>
+<paragraph start="1670" end="1672">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1670" end="1671">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1671" end="1672">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1672" end="1673">
+<LeftIndent>140.0</LeftIndent>
+<content start="1672" end="1673">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1673" end="1732">
+<LeftIndent>140.0</LeftIndent>
+<content start="1673" end="1732">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1732" end="1733">
+<LeftIndent>140.0</LeftIndent>
+<content start="1732" end="1733">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1733" end="1736">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1733" end="1734">
+<component><class>org.concord.modeler.PageSpinner</class>
+<title>Swap charges:</title>
+<tooltip>Swap charges between two groups of atoms</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<minimum>-2.0</minimum>
+<maximum>2.0</maximum>
+<step>0.1</step>
+<value>0.0</value>
+<script>select element 1;
+charge %val;
+select element 2;
+charge &quot;-%val&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="1734" end="1735">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>insertSpinner$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+
+<content start="1735" end="1736">
+</content>
+
+</paragraph>
+<paragraph start="1736" end="1769">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1736" end="1768">
+<size>10</size></content>
+
+<content start="1768" end="1769">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1769" end="1770">
+<LeftIndent>140.0</LeftIndent>
+<content start="1769" end="1770">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1770" end="1809">
+<LeftIndent>140.0</LeftIndent>
+<content start="1770" end="1809">
+<size>11</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1809" end="1810">
+<LeftIndent>140.0</LeftIndent>
+<content start="1809" end="1810">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1810" end="1905">
+<LeftIndent>140.0</LeftIndent>
+<content start="1810" end="1815">
+<size>11</size></content>
+
+<content start="1815" end="1844">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="1844" end="1905">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1905" end="1906">
+<LeftIndent>140.0</LeftIndent>
+<content start="1905" end="1906">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1906" end="2041">
+<LeftIndent>140.0</LeftIndent>
+<content start="1906" end="1931">
+<size>11</size></content>
+
+<content start="1931" end="1937">
+<href>insertSlider.cml</href><size>11</size></content>
+
+<content start="1937" end="2040">
+<size>11</size></content>
+
+<content start="2040" end="2041">
+</content>
+
+</paragraph>
+<paragraph start="2041" end="2042">
+<LeftIndent>100.0</LeftIndent>
+<content start="2041" end="2042">
+</content>
+
+</paragraph>
+<paragraph start="2042" end="2070">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2042" end="2044">
+<size>11</size></content>
+
+<content start="2044" end="2052">
+<href>insertCheckBox.cml</href><size>11</size></content>
+
+<content start="2052" end="2055">
+<size>11</size></content>
+
+<content start="2055" end="2060">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="2060" end="2063">
+<size>11</size></content>
+
+<content start="2063" end="2067">
+<href>insertSlider.cml</href><size>11</size></content>
+
+<content start="2067" end="2069">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

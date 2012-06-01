@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Mean square displacement</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Mean square displacement
+
+
+The mean square displacement (MSD) at a given time t measures the average distance the particles of an ensemble move from their positions when time is set to be zero. It can be written as:
+
+ 
+
+The MSD can be used to distinguish the liquid state from the solid state. In the liquid state, the MSD will grow with respect to time. In the solid state, the MSD will oscillate, but will not show a significant net increasing over time.
+
+The MSD is used to compute the diffusion constants in molecular dynamics experiments. See Einstein relation.
+
+
+ 
+return to index</text>
+<section start="0" end="587">
+<paragraph start="0" end="25">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="24">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<LeftIndent>140.0</LeftIndent>
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="216">
+<LeftIndent>140.0</LeftIndent>
+<content start="27" end="78">
+<size>11</size></content>
+
+<content start="78" end="79">
+<italic>true</italic><size>11</size></content>
+
+<content start="79" end="216">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="216" end="217">
+<LeftIndent>140.0</LeftIndent>
+<content start="216" end="217">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="217" end="219">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="217" end="218">
+<icon>msd.gif</icon><size>11</size></content>
+
+<content start="218" end="219">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="219" end="220">
+<LeftIndent>140.0</LeftIndent>
+<content start="219" end="220">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="220" end="457">
+<LeftIndent>140.0</LeftIndent>
+<content start="220" end="457">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="457" end="458">
+<LeftIndent>140.0</LeftIndent>
+<content start="457" end="458">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="458" end="567">
+<LeftIndent>140.0</LeftIndent>
+<content start="458" end="548">
+<size>11</size></content>
+
+<content start="548" end="565">
+<href>EinsteinRelation.cml</href><size>11</size></content>
+
+<content start="565" end="566">
+<size>11</size></content>
+
+<content start="566" end="567">
+</content>
+
+</paragraph>
+<paragraph start="567" end="568">
+<LeftIndent>120.0</LeftIndent>
+<content start="567" end="568">
+</content>
+
+</paragraph>
+<paragraph start="568" end="569">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="568" end="569">
+</content>
+
+</paragraph>
+<paragraph start="569" end="571">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="569" end="570">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="570" end="571">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="571" end="587">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="571" end="586">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>More microscopic buoyancy results</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>More microscopic buoyancy results
+
+&lt; Back &gt;
+
+The running average of the partial pressures measured between 0 and 1 nanosecond is shown as follows:
+
+  
+
+The energy graphs for both simulations are shown as follows:
+
+  
+(a) Gravity on
+
+  
+(b) Gravity off.
+
+As you can see from the energy graphs, the total energy was perfectly conserved in both simulation.
+
+&lt; Back &gt;</text>
+<section start="0" end="364">
+<paragraph start="0" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="33">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="44">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="41">
+<href>microbuoyancy.cml</href><size>11</size></content>
+
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<LeftIndent>140.0</LeftIndent>
+<content start="44" end="45">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="45" end="147">
+<LeftIndent>140.0</LeftIndent>
+<content start="45" end="147">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="147" end="148">
+<LeftIndent>140.0</LeftIndent>
+<content start="147" end="148">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="148" end="151">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="148" end="149">
+<size>11</size></content>
+
+<content start="149" end="150">
+<icon>buoyancy3.gif</icon></content>
+
+<content start="150" end="151">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="151" end="152">
+<LeftIndent>140.0</LeftIndent>
+<content start="151" end="152">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="152" end="213">
+<LeftIndent>140.0</LeftIndent>
+<content start="152" end="213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="213" end="214">
+<LeftIndent>140.0</LeftIndent>
+<content start="213" end="214">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="214" end="217">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="214" end="215">
+<size>11</size></content>
+
+<content start="215" end="216">
+<icon>buoyancy_energy1.gif</icon></content>
+
+<content start="216" end="217">
+</content>
+
+</paragraph>
+<paragraph start="217" end="232">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="217" end="231">
+<size>10</size></content>
+
+<content start="231" end="232">
+</content>
+
+</paragraph>
+<paragraph start="232" end="233">
+<LeftIndent>140.0</LeftIndent>
+<content start="232" end="233">
+</content>
+
+</paragraph>
+<paragraph start="233" end="236">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="233" end="234">
+</content>
+
+<content start="234" end="235">
+<icon>buoyancy_energy2.gif</icon></content>
+
+<content start="235" end="236">
+</content>
+
+</paragraph>
+<paragraph start="236" end="253">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="236" end="252">
+<size>10</size></content>
+
+<content start="252" end="253">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="253" end="254">
+<LeftIndent>140.0</LeftIndent>
+<content start="253" end="254">
+</content>
+
+</paragraph>
+<paragraph start="254" end="354">
+<LeftIndent>140.0</LeftIndent>
+<content start="254" end="353">
+<size>11</size></content>
+
+<content start="353" end="354">
+</content>
+
+</paragraph>
+<paragraph start="354" end="355">
+<LeftIndent>140.0</LeftIndent>
+<content start="354" end="355">
+</content>
+
+</paragraph>
+<paragraph start="355" end="364">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="355" end="357">
+<size>11</size></content>
+
+<content start="357" end="361">
+<href>microbuoyancy.cml</href><size>11</size></content>
+
+<content start="361" end="363">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>A &quot;raw&quot; model that doesn&apos;t have instructions</page_title>
+<text>A &quot;raw&quot; model that doesn&apos;t have instructions
+
+ </text>
+<section start="0" end="48">
+<paragraph start="0" end="45">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>6.0</SpaceAbove>
+<content start="0" end="44">
+<size>16</size><bold>true</bold></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="48">
+<Alignment>1</Alignment>
+<content start="46" end="47">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>model_example$0.mml</resource><menubar>false</menubar></component></content>
+
+</paragraph>
+</section>
+</document>

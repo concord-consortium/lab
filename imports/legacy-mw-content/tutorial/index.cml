@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>User&apos;s Manual: Basics</page_title>
+<bg_image>sidebar1.gif</bg_image>
+<text>  
+ Preface  |  Search  | Appendices |  Suggestions?
+
+This interactive User&apos;s Manual is a technical documentation of how to create simulation-based materials for research and education using the Molecular Workbench software. To get it for offline reading, open the &quot;Option&quot; menu, choose &quot;The User&apos;s Manual&quot; from the &quot;Prefetch to Cache&quot; submenu, and wait until the downloading process is complete. Please also note that this Manual is frequently updated as the software keeps improving and new features are added.
+
+   Basics     2D Modeling     3D Modeling     Authoring     Scripts     Jmol     Publishing     Extensibility 
+
+ 
+   Introduction
+   Working with pages
+   Navigating
+   Saving a page
+   Opening a page
+   Printing a page
+   Converting a page into a PDF file
+   Bookmarking a page
+   Using the full screen mode
+   Network settings
+   Managing connections
+   Prefetching to cache and working offline
+   Regional settings
+   Changing your language
+   Recording observations and making reports
+   Making comments on a page
+   Taking snapshots and using the Snapshot Gallery
+   Creating a report for the current page
+   Creating pages with embedded models
+   Creating a blank page
+   Inserting a model container
+
+ 
+  Basics     2D Modeling     3D Modeling     Authoring     Scripts     Jmol     Publishing     Extensibility  </text>
+<section start="0" end="1334">
+<paragraph start="0" end="3">
+<LeftIndent>160.0</LeftIndent>
+<content start="0" end="1">
+</content>
+
+<content start="1" end="2">
+<icon>ug_basics.gif</icon></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="53">
+<Alignment>2</Alignment>
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<content start="3" end="4">
+<size>9</size></content>
+
+<content start="4" end="11">
+<href>preface.cml</href><size>9</size></content>
+
+<content start="11" end="16">
+<size>9</size></content>
+
+<content start="16" end="22">
+<href>searchUG.cml</href><size>9</size></content>
+
+<content start="22" end="26">
+<size>9</size></content>
+
+<content start="26" end="36">
+<href>appendix.cml</href><size>9</size></content>
+
+<content start="36" end="40">
+<size>9</size></content>
+
+<content start="40" end="52">
+<href>suggestion.cml</href><size>9</size></content>
+
+<content start="52" end="53">
+<size>9</size></content>
+
+</paragraph>
+<paragraph start="53" end="54">
+<LeftIndent>160.0</LeftIndent>
+<content start="53" end="54">
+<size>9</size></content>
+
+</paragraph>
+<paragraph start="54" end="513">
+<LeftIndent>160.0</LeftIndent>
+<content start="54" end="434">
+<size>9</size></content>
+
+<content start="434" end="452">
+<size>9</size><bold>true</bold></content>
+
+<content start="452" end="513">
+<size>9</size></content>
+
+</paragraph>
+<paragraph start="513" end="514">
+<LeftIndent>160.0</LeftIndent>
+<content start="513" end="514">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="514" end="625">
+<LeftIndent>160.0</LeftIndent>
+<content start="514" end="515">
+<size>11</size><icon>OpenedFolder.gif</icon></content>
+
+<content start="515" end="525">
+<size>11</size></content>
+
+<content start="525" end="526">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="526" end="528">
+<size>11</size></content>
+
+<content start="528" end="539">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="539" end="541">
+<size>11</size></content>
+
+<content start="541" end="542">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="542" end="544">
+<size>11</size></content>
+
+<content start="544" end="555">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="555" end="557">
+<size>11</size></content>
+
+<content start="557" end="558">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="558" end="560">
+<size>11</size></content>
+
+<content start="560" end="569">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="569" end="571">
+<size>11</size></content>
+
+<content start="571" end="572">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="572" end="574">
+<size>11</size></content>
+
+<content start="574" end="581">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="581" end="583">
+<size>11</size></content>
+
+<content start="583" end="584">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="584" end="586">
+<size>11</size></content>
+
+<content start="586" end="590">
+<href>index_jmol.cml</href><size>11</size></content>
+
+<content start="590" end="592">
+<size>11</size></content>
+
+<content start="592" end="593">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="593" end="595">
+<size>11</size></content>
+
+<content start="595" end="605">
+<href>index3.cml</href><size>11</size></content>
+
+<content start="605" end="607">
+<size>11</size></content>
+
+<content start="607" end="608">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="608" end="610">
+<size>11</size></content>
+
+<content start="610" end="623">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="623" end="625">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="625" end="626">
+<LeftIndent>160.0</LeftIndent>
+<content start="625" end="626">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="626" end="628">
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>160.0</LeftIndent>
+<content start="626" end="627">
+<size>11</size><icon><class>org.concord.modeler.text.LineIcon</class><height>4</height><bgcolor>-333400</bgcolor></icon></content>
+
+<content start="627" end="628">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="628" end="644">
+<LeftIndent>160.0</LeftIndent>
+<content start="628" end="629">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="629" end="631">
+</content>
+
+<content start="631" end="643">
+<href>intro_basic.cml</href><size>11</size></content>
+
+<content start="643" end="644">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="644" end="666">
+<LeftIndent>160.0</LeftIndent>
+<content start="644" end="645">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="645" end="647">
+</content>
+
+<content start="647" end="665">
+<size>11</size><bold>true</bold></content>
+
+<content start="665" end="666">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="666" end="680">
+<LeftIndent>180.0</LeftIndent>
+<content start="666" end="667">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="667" end="669">
+<size>11</size></content>
+
+<content start="669" end="679">
+<href>navigate.cml</href><size>11</size></content>
+
+<content start="679" end="680">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="680" end="697">
+<LeftIndent>180.0</LeftIndent>
+<content start="680" end="681">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="681" end="683">
+<size>11</size></content>
+
+<content start="683" end="696">
+<href>download.cml</href><size>11</size></content>
+
+<content start="696" end="697">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="697" end="715">
+<LeftIndent>180.0</LeftIndent>
+<content start="697" end="698">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="698" end="700">
+<size>11</size></content>
+
+<content start="700" end="714">
+<href>open.cml</href><size>11</size></content>
+
+<content start="714" end="715">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="715" end="734">
+<LeftIndent>180.0</LeftIndent>
+<content start="715" end="716">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="716" end="718">
+<size>11</size></content>
+
+<content start="718" end="733">
+<href>print.cml</href><size>11</size></content>
+
+<content start="733" end="734">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="734" end="771">
+<LeftIndent>180.0</LeftIndent>
+<content start="734" end="735">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="735" end="737">
+</content>
+
+<content start="737" end="770">
+<href>pdfize.cml</href><size>11</size></content>
+
+<content start="770" end="771">
+</content>
+
+</paragraph>
+<paragraph start="771" end="793">
+<LeftIndent>180.0</LeftIndent>
+<content start="771" end="772">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="772" end="774">
+<size>11</size></content>
+
+<content start="774" end="792">
+<href>bookmark.cml</href><size>11</size></content>
+
+<content start="792" end="793">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="793" end="823">
+<LeftIndent>180.0</LeftIndent>
+<content start="793" end="794">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="794" end="796">
+</content>
+
+<content start="796" end="822">
+<href>fullScreen.cml</href><size>11</size></content>
+
+<content start="822" end="823">
+</content>
+
+</paragraph>
+<paragraph start="823" end="843">
+<LeftIndent>160.0</LeftIndent>
+<content start="823" end="824">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="824" end="826">
+</content>
+
+<content start="826" end="842">
+<size>11</size><bold>true</bold></content>
+
+<content start="842" end="843">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="843" end="867">
+<LeftIndent>180.0</LeftIndent>
+<content start="843" end="844">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="844" end="846">
+<size>11</size></content>
+
+<content start="846" end="866">
+<href>proxy.cml</href><size>11</size></content>
+
+<content start="866" end="867">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="867" end="911">
+<LeftIndent>180.0</LeftIndent>
+<content start="867" end="868">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="868" end="870">
+<size>11</size></content>
+
+<content start="870" end="910">
+<href>caching.cml</href><size>11</size></content>
+
+<content start="910" end="911">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="911" end="932">
+<LeftIndent>160.0</LeftIndent>
+<content start="911" end="912">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="912" end="914">
+</content>
+
+<content start="914" end="931">
+<size>11</size><bold>true</bold></content>
+
+<content start="931" end="932">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="932" end="958">
+<LeftIndent>180.0</LeftIndent>
+<content start="932" end="933">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="933" end="935">
+</content>
+
+<content start="935" end="957">
+<href>locale.cml</href><size>11</size></content>
+
+<content start="957" end="958">
+</content>
+
+</paragraph>
+<paragraph start="958" end="1003">
+<LeftIndent>160.0</LeftIndent>
+<content start="958" end="959">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="959" end="961">
+</content>
+
+<content start="961" end="1002">
+<size>11</size><bold>true</bold></content>
+
+<content start="1002" end="1003">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1003" end="1032">
+<LeftIndent>180.0</LeftIndent>
+<content start="1003" end="1004">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1004" end="1006">
+</content>
+
+<content start="1006" end="1031">
+<href>comment.cml</href><size>11</size></content>
+
+<content start="1031" end="1032">
+</content>
+
+</paragraph>
+<paragraph start="1032" end="1083">
+<LeftIndent>180.0</LeftIndent>
+<content start="1032" end="1033">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1033" end="1035">
+</content>
+
+<content start="1035" end="1082">
+<href>snapshot.cml</href><size>11</size></content>
+
+<content start="1082" end="1083">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1083" end="1125">
+<LeftIndent>180.0</LeftIndent>
+<content start="1083" end="1084">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1084" end="1086">
+<size>11</size></content>
+
+<content start="1086" end="1124">
+<href>report.cml</href><size>11</size></content>
+
+<content start="1124" end="1125">
+</content>
+
+</paragraph>
+<paragraph start="1125" end="1164">
+<LeftIndent>160.0</LeftIndent>
+<content start="1125" end="1126">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1126" end="1128">
+</content>
+
+<content start="1128" end="1163">
+<size>11</size><bold>true</bold></content>
+
+<content start="1163" end="1164">
+</content>
+
+</paragraph>
+<paragraph start="1164" end="1189">
+<LeftIndent>180.0</LeftIndent>
+<content start="1164" end="1165">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1165" end="1167">
+</content>
+
+<content start="1167" end="1188">
+<href>blankPage.cml</href><size>11</size></content>
+
+<content start="1188" end="1189">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1189" end="1220">
+<LeftIndent>180.0</LeftIndent>
+<content start="1189" end="1190">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1190" end="1192">
+</content>
+
+<content start="1192" end="1219">
+<href>insertModel.cml</href><size>11</size></content>
+
+<content start="1219" end="1220">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1220" end="1221">
+<LeftIndent>160.0</LeftIndent>
+<content start="1220" end="1221">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1221" end="1223">
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>160.0</LeftIndent>
+<content start="1221" end="1222">
+<size>11</size><icon><class>org.concord.modeler.text.LineIcon</class><height>4</height><bgcolor>-333400</bgcolor></icon></content>
+
+<content start="1222" end="1223">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1223" end="1334">
+<LeftIndent>160.0</LeftIndent>
+<content start="1223" end="1224">
+<size>11</size><icon>OpenedFolder.gif</icon></content>
+
+<content start="1224" end="1233">
+<size>11</size></content>
+
+<content start="1233" end="1234">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="1234" end="1236">
+<size>11</size></content>
+
+<content start="1236" end="1247">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="1247" end="1249">
+<size>11</size></content>
+
+<content start="1249" end="1250">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="1250" end="1252">
+<size>11</size></content>
+
+<content start="1252" end="1263">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="1263" end="1265">
+<size>11</size></content>
+
+<content start="1265" end="1266">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="1266" end="1268">
+<size>11</size></content>
+
+<content start="1268" end="1277">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="1277" end="1279">
+<size>11</size></content>
+
+<content start="1279" end="1280">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="1280" end="1282">
+<size>11</size></content>
+
+<content start="1282" end="1289">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="1289" end="1291">
+<size>11</size></content>
+
+<content start="1291" end="1292">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="1292" end="1294">
+<size>11</size></content>
+
+<content start="1294" end="1298">
+<href>index_jmol.cml</href><size>11</size></content>
+
+<content start="1298" end="1300">
+<size>11</size></content>
+
+<content start="1300" end="1301">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="1301" end="1303">
+<size>11</size></content>
+
+<content start="1303" end="1313">
+<href>index3.cml</href><size>11</size></content>
+
+<content start="1313" end="1315">
+<size>11</size></content>
+
+<content start="1315" end="1316">
+<size>11</size><icon>foldernew.gif</icon></content>
+
+<content start="1316" end="1318">
+<size>11</size></content>
+
+<content start="1318" end="1331">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="1331" end="1333">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Introduction to the Jmol Viewer</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Introduction to the Jmol Viewer
+
+&lt; Index | Next &gt;
+
+Jmol (  http://www.jmol.org) is a free, open source molecule viewer for students, educators, and researchers in chemistry and biochemistry, developed by   an international team of computer scientists and chemists.
+
+In the Molecular Workbench (MW), Jmol is not only used to display molecules, but also dynamically show molecular dynamics results (as introduced in the Chapter about 3D Modeling). In addition to the basic functionalities, Jmol is integrated with MW&apos;s Authoring System and, in collaboration with   Professor Bob Hanson, a lead Jmol developer, the 3D graphics engine was modified to allow navigation in addition to molecule viewing.
+
+The enhancements of Jmol in MW include, but not limited to, the following subsystems:
+
+   The Molecular Animation Studio
+   The Embedded Annotation System
+
+This Chapter will present them.
+
+
+&lt; Index | Next &gt;</text>
+<section start="0" end="905">
+<paragraph start="0" end="32">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="31">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="33">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="50">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="33" end="35">
+<size>11</size></content>
+
+<content start="35" end="40">
+<href>index_jmol.cml</href><size>11</size></content>
+
+<content start="40" end="43">
+<size>11</size></content>
+
+<content start="43" end="47">
+<href>insertjmol.cml</href><size>11</size></content>
+
+<content start="47" end="49">
+<size>11</size></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<LeftIndent>140.0</LeftIndent>
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="265">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="57">
+<size>11</size></content>
+
+<content start="57" end="58">
+<icon>htmlink.gif</icon></content>
+
+<content start="58" end="59">
+<size>11</size></content>
+
+<content start="59" end="78">
+<href>http://www.jmol.org</href><size>11</size></content>
+
+<content start="78" end="204">
+<size>11</size></content>
+
+<content start="204" end="205">
+<icon>htmlink.gif</icon></content>
+
+<content start="205" end="206">
+<size>11</size></content>
+
+<content start="206" end="263">
+<href>http://jmol.sourceforge.net/history/</href><size>11</size></content>
+
+<content start="263" end="265">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="265" end="266">
+<LeftIndent>140.0</LeftIndent>
+<content start="265" end="266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="266" end="697">
+<LeftIndent>140.0</LeftIndent>
+<content start="266" end="414">
+<size>11</size></content>
+
+<content start="414" end="443">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="443" end="561">
+<size>11</size></content>
+
+<content start="561" end="562">
+<icon>htmlink.gif</icon></content>
+
+<content start="562" end="563">
+<size>11</size></content>
+
+<content start="563" end="583">
+<href>http://www.stolaf.edu/academics/chemapps/jmol/</href><size>11</size></content>
+
+<content start="583" end="653">
+<size>11</size></content>
+
+<content start="653" end="663">
+<href>rovingmode.cml</href><size>11</size></content>
+
+<content start="663" end="697">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="697" end="698">
+<LeftIndent>140.0</LeftIndent>
+<content start="697" end="698">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="698" end="784">
+<LeftIndent>140.0</LeftIndent>
+<content start="698" end="784">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="784" end="785">
+<LeftIndent>140.0</LeftIndent>
+<content start="784" end="785">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="785" end="819">
+<LeftIndent>160.0</LeftIndent>
+<content start="785" end="786">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="786" end="788">
+</content>
+
+<content start="788" end="818">
+<href>guidedtour.cml</href><size>11</size></content>
+
+<content start="818" end="819">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="819" end="853">
+<LeftIndent>160.0</LeftIndent>
+<content start="819" end="820">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="820" end="822">
+</content>
+
+<content start="822" end="852">
+<href>attachannotation.cml</href><size>11</size></content>
+
+<content start="852" end="853">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="853" end="854">
+<LeftIndent>140.0</LeftIndent>
+<content start="853" end="854">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="854" end="886">
+<LeftIndent>140.0</LeftIndent>
+<content start="854" end="886">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="886" end="887">
+<LeftIndent>140.0</LeftIndent>
+<content start="886" end="887">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="887" end="888">
+<LeftIndent>140.0</LeftIndent>
+<content start="887" end="888">
+</content>
+
+</paragraph>
+<paragraph start="888" end="905">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="888" end="890">
+<size>11</size></content>
+
+<content start="890" end="895">
+<href>index_jmol.cml</href><size>11</size></content>
+
+<content start="895" end="898">
+<size>11</size></content>
+
+<content start="898" end="902">
+<href>insertjmol.cml</href><size>11</size></content>
+
+<content start="902" end="904">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Bookmarking a page</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Bookmarking a page
+
+&lt; Previous | Index | Next &gt;
+
+As usual, you can choose the &quot;Bookmarks&gt;Add Bookmark&quot; menu to bookmark the current page. Pressing CTRL+D (on Windows and Linux) or Command+D (on Mac OS X) will do the same thing.
+
+When you pull down the &quot;Bookmarks&quot; menu again, you will see it appended to the list of existing bookmarks shown in the menu. Clicking a bookmark in the menu will immediately bring you to that page.
+
+Bookmarks are saved when the program shuts down normally. When you open the program again, you will have the bookmarks you have added previously.
+
+ 
+Note: If you bookmark a page that happens to have the same title with one of the existing bookmarks, you will lose the old one: It will be overwritten, unless you choose not to. When you develop another page based on a template, be sure to change the title after you save the page to a different file name. Otherwise, the new page will carry the old title. As a result, you will end up with two pages with the same titles. While this is generally not a problem, it will be a problem when you want to bookmark both of them. For how to change the title of a page, see Changing the window title.
+ 
+
+Removal
+
+To remove a bookmark, choose the &quot;Bookmarks&gt;Manage Bookmarks&quot; menu. You will see the following window:
+
+  
+[This is a screenshot.]
+
+Select the bookmark you would like to remove, then click the Remove Button. To select more than one bookmarks at a time, hold down the CTRL key and click them one by one. To select a range of bookmarks, hold down the SHIFT key, and click on the first and last bookmarks. All the bookmarks between them will be selected. 
+
+ 
+Note: There is a preset bookmark called &quot;Molecular Workbench Home&quot;, which leads you back to the internal home page of the Molecular Workbench software. This bookmark cannot be removed. We assume that you will always need this bookmark to access the latest content.
+ 
+
+Sorting
+
+You can sort the bookmarks by dragging and dropping the items in the window of the Bookmark Manager.
+
+When you are done with removing the bookmarks, click the Close Button to close this window.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2138">
+<paragraph start="0" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<RightIndent>20.0</RightIndent>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<href>pdfize.cml</href><size>11</size></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<href>index.cml</href><size>11</size></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<href>fullScreen.cml</href><size>11</size></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="228">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="228">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="228" end="229">
+<LeftIndent>140.0</LeftIndent>
+<content start="228" end="229">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="229" end="427">
+<LeftIndent>140.0</LeftIndent>
+<content start="229" end="427">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="427" end="428">
+<LeftIndent>140.0</LeftIndent>
+<content start="427" end="428">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="428" end="574">
+<LeftIndent>140.0</LeftIndent>
+<content start="428" end="574">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="574" end="575">
+<LeftIndent>140.0</LeftIndent>
+<content start="574" end="575">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="575" end="577">
+<LeftIndent>140.0</LeftIndent>
+<content start="575" end="576">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="576" end="577">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="577" end="1170">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="577" end="581">
+<bold>true</bold><foreground>255 0 0</foreground><size>11</size></content>
+
+<content start="581" end="582">
+<foreground>255 0 0</foreground><size>11</size></content>
+
+<content start="582" end="1143">
+<size>11</size></content>
+
+<content start="1143" end="1168">
+<href>title.cml</href><size>11</size></content>
+
+<content start="1168" end="1169">
+<size>11</size></content>
+
+<content start="1169" end="1170">
+</content>
+
+</paragraph>
+<paragraph start="1170" end="1172">
+<LeftIndent>140.0</LeftIndent>
+<content start="1170" end="1171">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1171" end="1172">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1172" end="1173">
+<LeftIndent>140.0</LeftIndent>
+<content start="1172" end="1173">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1173" end="1181">
+<LeftIndent>140.0</LeftIndent>
+<content start="1173" end="1180">
+<bold>true</bold><size>11</size></content>
+
+<content start="1180" end="1181">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1181" end="1182">
+<LeftIndent>140.0</LeftIndent>
+<content start="1181" end="1182">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1182" end="1285">
+<LeftIndent>140.0</LeftIndent>
+<content start="1182" end="1285">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1285" end="1286">
+<LeftIndent>100.0</LeftIndent>
+<content start="1285" end="1286">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1286" end="1289">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1286" end="1287">
+<size>11</size></content>
+
+<content start="1287" end="1288">
+<icon>BookmarkManager.gif</icon></content>
+
+<content start="1288" end="1289">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1289" end="1313">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1289" end="1312">
+<size>10</size></content>
+
+<content start="1312" end="1313">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1313" end="1314">
+<LeftIndent>100.0</LeftIndent>
+<content start="1313" end="1314">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1314" end="1635">
+<LeftIndent>140.0</LeftIndent>
+<content start="1314" end="1635">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1635" end="1636">
+<LeftIndent>120.0</LeftIndent>
+<content start="1635" end="1636">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1636" end="1638">
+<LeftIndent>140.0</LeftIndent>
+<content start="1636" end="1637">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1637" end="1638">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1638" end="1903">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1638" end="1642">
+<bold>true</bold><size>11</size></content>
+
+<content start="1642" end="1734">
+<size>11</size></content>
+
+<content start="1734" end="1788">
+<href>../index.cml</href><size>11</size></content>
+
+<content start="1788" end="1903">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1903" end="1905">
+<LeftIndent>140.0</LeftIndent>
+<content start="1903" end="1904">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1904" end="1905">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1905" end="1906">
+<LeftIndent>140.0</LeftIndent>
+<content start="1905" end="1906">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1906" end="1914">
+<LeftIndent>140.0</LeftIndent>
+<content start="1906" end="1913">
+<bold>true</bold><size>11</size></content>
+
+<content start="1913" end="1914">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1914" end="1915">
+<LeftIndent>140.0</LeftIndent>
+<content start="1914" end="1915">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1915" end="2016">
+<LeftIndent>140.0</LeftIndent>
+<content start="1915" end="2016">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2016" end="2017">
+<LeftIndent>140.0</LeftIndent>
+<content start="2016" end="2017">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2017" end="2109">
+<LeftIndent>140.0</LeftIndent>
+<content start="2017" end="2108">
+<size>11</size></content>
+
+<content start="2108" end="2109">
+</content>
+
+</paragraph>
+<paragraph start="2109" end="2110">
+<LeftIndent>100.0</LeftIndent>
+<content start="2109" end="2110">
+</content>
+
+</paragraph>
+<paragraph start="2110" end="2138">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2110" end="2112">
+<size>11</size></content>
+
+<content start="2112" end="2120">
+<href>pdfize.cml</href><size>11</size></content>
+
+<content start="2120" end="2123">
+<size>11</size></content>
+
+<content start="2123" end="2128">
+<href>index.cml</href><size>11</size></content>
+
+<content start="2128" end="2131">
+<size>11</size></content>
+
+<content start="2131" end="2135">
+<href>fullScreen.cml</href><size>11</size></content>
+
+<content start="2135" end="2137">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

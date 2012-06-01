@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Customizing the view</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Customizing the view
+
+&lt; Previous | Index | Next &gt;
+
+The structure of a molecule can be complex, because it can be made of many atoms that are arranged differently in space. Hence, a molecular model usually uses different styles to visualize different aspects of molecules. To set the styles, select the &quot;Show View Options&quot; of the Option Menu of a model container, the following dialog will show up (for any simulator other than the meso-scale particle one):
+
+  
+[This is a screenshot.]
+
+The 3D effect
+
+Despite of the fact that the simulation (in a 2D simulator) is in 2D, you can turn on the 3D effect, which will give the atoms and bonds a 3D look (rendered by using the Jmol graphics engine). When you choose to show the 3D effect, you can set the display style for the molecules. The de facto standard of styles is supported. For example, you can use the space-filling, ball-and-stick, wireframe, and stick mode to show a molecule:
+
+  
+   
+[This is an embedded simulator. Select a display style from the above drop-down menu.]
+
+If you turn off the 3D effect, the atoms will be drawn as solid circles and the bonds will be drawn as solid rectangles (rotated to their orientations).
+
+The Delaunay and Voronoi mode
+
+In addition to the standard molecular graphics modes, two other display modes, the  Delaunay triangulation (left) and  Voronoi tessellation (right) that are interesting representations of molecular packing, are also presented.
+
+                         
+
+
+Visualizing the van der Waals interactions
+
+The weak van der Waals (VDW) attractions between molecules can be dynamically visualized during a simulation. For example, the following image illustrates the formation of a hydrogen bonding network in water:
+
+  
+[This is a screenshot.]
+
+The dashed lines stand for the hydrogen bonds between hydrogen and oxygen atoms, represented by the white and red balls, respectively. When the molecular display style is not VDW space-filling, you can choose to draw a VDW surface overlay on top of the centers of the atoms to indicate where a pair of non-bonded atoms will bounce off when they collide. The following image shows this:
+
+  
+[This is a screenshot.]
+
+The vector modes
+
+The vector modes can be used to display the dynamical properties of the atoms, such as velocities and forces. Vectors can be customized. Clicking an underlined link, for example, the &quot;Velocity Vector&quot;, you will see the following window:
+
+  
+[This is a screenshot.]
+
+This dialog box allows you to set the line width, color, style and length of the corresponding vector.
+
+Script support
+
+The show command can be used to change the view settings.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2659">
+<paragraph start="0" end="21">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="20">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="50">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="22" end="24">
+<size>11</size></content>
+
+<content start="24" end="32">
+<size>11</size><href>taskManager.cml</href></content>
+
+<content start="32" end="35">
+<size>11</size></content>
+
+<content start="35" end="40">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="40" end="43">
+<size>11</size></content>
+
+<content start="43" end="47">
+<size>11</size><href>externalFields.cml</href></content>
+
+<content start="47" end="49">
+<size>11</size></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="457">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="457">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="457" end="458">
+<LeftIndent>100.0</LeftIndent>
+<content start="457" end="458">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="458" end="461">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="458" end="459">
+<size>11</size></content>
+
+<content start="459" end="460">
+<icon>ViewSettings.gif</icon><size>11</size></content>
+
+<content start="460" end="461">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="461" end="485">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="461" end="484">
+<size>10</size></content>
+
+<content start="484" end="485">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="485" end="486">
+<LeftIndent>140.0</LeftIndent>
+<content start="485" end="486">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="486" end="500">
+<LeftIndent>140.0</LeftIndent>
+<content start="486" end="499">
+<bold>true</bold><size>11</size></content>
+
+<content start="499" end="500">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="500" end="501">
+<LeftIndent>140.0</LeftIndent>
+<content start="500" end="501">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="501" end="934">
+<LeftIndent>140.0</LeftIndent>
+<content start="501" end="667">
+<size>11</size></content>
+
+<content start="667" end="691">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="691" end="934">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="934" end="935">
+<LeftIndent>140.0</LeftIndent>
+<content start="934" end="935">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="935" end="938">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="935" end="936">
+<size>11</size></content>
+
+<content start="936" end="937">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>viewSettings$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="937" end="938">
+</content>
+
+</paragraph>
+<paragraph start="938" end="942">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="938" end="939">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Display Style</action>
+</component></content>
+
+<content start="939" end="940">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="940" end="941">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="941" end="942">
+</content>
+
+</paragraph>
+<paragraph start="942" end="1029">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="942" end="1028">
+<size>10</size></content>
+
+<content start="1028" end="1029">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1029" end="1030">
+<LeftIndent>140.0</LeftIndent>
+<content start="1029" end="1030">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1030" end="1183">
+<LeftIndent>140.0</LeftIndent>
+<content start="1030" end="1183">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1183" end="1184">
+<LeftIndent>140.0</LeftIndent>
+<content start="1183" end="1184">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1184" end="1214">
+<LeftIndent>140.0</LeftIndent>
+<content start="1184" end="1213">
+<bold>true</bold><size>11</size></content>
+
+<content start="1213" end="1214">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1214" end="1215">
+<LeftIndent>140.0</LeftIndent>
+<content start="1214" end="1215">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1215" end="1442">
+<LeftIndent>140.0</LeftIndent>
+<content start="1215" end="1298">
+<size>11</size></content>
+
+<content start="1298" end="1299">
+<icon>apiIcon.gif</icon></content>
+
+<content start="1299" end="1321">
+<link_statusbar>false</link_statusbar><link_width>400</link_width><target>_blank</target><href>glossary/Delaunay.cml</href><link_height>400</link_height><link_left>50</link_left><link_menubar>false</link_menubar><link_top>50</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="1321" end="1333">
+<size>11</size></content>
+
+<content start="1333" end="1334">
+<icon>apiIcon.gif</icon></content>
+
+<content start="1334" end="1354">
+<link_statusbar>false</link_statusbar><link_width>400</link_width><target>_blank</target><href>glossary/Voronoi.cml</href><link_height>400</link_height><link_left>50</link_left><link_menubar>false</link_menubar><link_top>50</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="1354" end="1442">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1442" end="1443">
+<LeftIndent>140.0</LeftIndent>
+<content start="1442" end="1443">
+</content>
+
+</paragraph>
+<paragraph start="1443" end="1469">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1443" end="1445">
+</content>
+
+<content start="1445" end="1446">
+<icon>Delaunay.gif</icon></content>
+
+<content start="1446" end="1467">
+</content>
+
+<content start="1467" end="1468">
+<icon>Voronoi.gif</icon></content>
+
+<content start="1468" end="1469">
+</content>
+
+</paragraph>
+<paragraph start="1469" end="1470">
+<LeftIndent>140.0</LeftIndent>
+<content start="1469" end="1470">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1470" end="1471">
+<LeftIndent>140.0</LeftIndent>
+<content start="1470" end="1471">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1471" end="1514">
+<LeftIndent>140.0</LeftIndent>
+<content start="1471" end="1513">
+<bold>true</bold><size>11</size></content>
+
+<content start="1513" end="1514">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1514" end="1515">
+<LeftIndent>140.0</LeftIndent>
+<content start="1514" end="1515">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1515" end="1724">
+<LeftIndent>140.0</LeftIndent>
+<content start="1515" end="1689">
+<size>11</size></content>
+
+<content start="1689" end="1722">
+<size>11</size><href>../student/solution/water.cml</href></content>
+
+<content start="1722" end="1724">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1724" end="1725">
+<LeftIndent>100.0</LeftIndent>
+<content start="1724" end="1725">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1725" end="1728">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1725" end="1726">
+<size>11</size></content>
+
+<content start="1726" end="1727">
+<icon>HBNetwork.gif</icon><size>11</size></content>
+
+<content start="1727" end="1728">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1728" end="1752">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1728" end="1751">
+<size>10</size></content>
+
+<content start="1751" end="1752">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1752" end="1753">
+<LeftIndent>140.0</LeftIndent>
+<content start="1752" end="1753">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1753" end="2139">
+<LeftIndent>140.0</LeftIndent>
+<content start="1753" end="2139">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2139" end="2140">
+<LeftIndent>140.0</LeftIndent>
+<content start="2139" end="2140">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2140" end="2143">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2140" end="2141">
+<size>11</size></content>
+
+<content start="2141" end="2142">
+<icon>DottedVDWSurface.gif</icon></content>
+
+<content start="2142" end="2143">
+</content>
+
+</paragraph>
+<paragraph start="2143" end="2167">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2143" end="2166">
+<size>10</size></content>
+
+<content start="2166" end="2167">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2167" end="2168">
+<LeftIndent>140.0</LeftIndent>
+<content start="2167" end="2168">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2168" end="2185">
+<LeftIndent>140.0</LeftIndent>
+<content start="2168" end="2184">
+<bold>true</bold><size>11</size></content>
+
+<content start="2184" end="2185">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2185" end="2186">
+<LeftIndent>140.0</LeftIndent>
+<content start="2185" end="2186">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2186" end="2423">
+<LeftIndent>140.0</LeftIndent>
+<content start="2186" end="2423">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2423" end="2424">
+<LeftIndent>100.0</LeftIndent>
+<content start="2423" end="2424">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2424" end="2427">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2424" end="2425">
+<size>11</size></content>
+
+<content start="2425" end="2426">
+<icon>CustomizeVector.gif</icon><size>11</size></content>
+
+<content start="2426" end="2427">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2427" end="2451">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2427" end="2451">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="2451" end="2452">
+<LeftIndent>140.0</LeftIndent>
+<content start="2451" end="2452">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2452" end="2555">
+<LeftIndent>140.0</LeftIndent>
+<content start="2452" end="2555">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2555" end="2556">
+<LeftIndent>140.0</LeftIndent>
+<content start="2555" end="2556">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2556" end="2571">
+<LeftIndent>140.0</LeftIndent>
+<content start="2556" end="2570">
+<bold>true</bold><size>11</size></content>
+
+<content start="2570" end="2571">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2571" end="2572">
+<LeftIndent>140.0</LeftIndent>
+<content start="2571" end="2572">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2572" end="2630">
+<LeftIndent>140.0</LeftIndent>
+<content start="2572" end="2576">
+<size>11</size></content>
+
+<content start="2576" end="2580">
+<family>Courier New</family><size>11</size><href>script_show.cml</href></content>
+
+<content start="2580" end="2629">
+<size>11</size></content>
+
+<content start="2629" end="2630">
+</content>
+
+</paragraph>
+<paragraph start="2630" end="2631">
+<LeftIndent>100.0</LeftIndent>
+<content start="2630" end="2631">
+</content>
+
+</paragraph>
+<paragraph start="2631" end="2659">
+<Alignment>2</Alignment>
+<content start="2631" end="2633">
+<size>11</size></content>
+
+<content start="2633" end="2641">
+<size>11</size><href>taskManager.cml</href></content>
+
+<content start="2641" end="2644">
+<size>11</size></content>
+
+<content start="2644" end="2649">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="2649" end="2652">
+<size>11</size></content>
+
+<content start="2652" end="2656">
+<size>11</size><href>externalFields.cml</href></content>
+
+<content start="2656" end="2658">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

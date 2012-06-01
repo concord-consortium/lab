@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Desiging itineraries</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Desiging itineraries
+
+&lt; Previous | Index | Next &gt;
+
+In the Molecular Animation Studio, an itinerary is a sequence of scenes. Once you have saved some scenes, you can select the &quot;Animation &gt; Edit Itinerary&quot; menu to open the Itinerary Editor (as shown in the screenshot below) and edit its properties.
+
+  
+[This is a screenshot.]
+
+There are four properties you can set for a scene: the transition time (in seconds), the stop time (in seconds), the information to be displayed and the scripts to be executed at departure and arrival.
+
+   The transition time is the time for &quot;flying&quot; from one scene to another. The longer the transition time is, the slower the &quot;flying&quot; animation is. So if you would like the animation to be slower (e.g. for younger users), you may want to increase this parameter.
+
+   The stop time is the time for pausing at a scene when the Jmol viewer is in non-stop &quot;flying&quot; mode.
+
+ 
+[This embedded Jmol container shows a carbon nanotube.]
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="987">
+<paragraph start="0" end="21">
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="0" end="20">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="50">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="22" end="24">
+<size>11</size></content>
+
+<content start="24" end="32">
+<size>11</size><href>guidedtour.cml</href></content>
+
+<content start="32" end="35">
+<size>11</size></content>
+
+<content start="35" end="40">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="40" end="49">
+<size>11</size></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="299">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="89">
+<size>11</size></content>
+
+<content start="89" end="98">
+<size>11</size><italic>true</italic></content>
+
+<content start="98" end="299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="299" end="300">
+<LeftIndent>140.0</LeftIndent>
+<content start="299" end="300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="300" end="303">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="300" end="301">
+</content>
+
+<content start="301" end="302">
+<icon>ItineraryEditor.gif</icon></content>
+
+<content start="302" end="303">
+</content>
+
+</paragraph>
+<paragraph start="303" end="327">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="303" end="326">
+<size>10</size></content>
+
+<content start="326" end="327">
+</content>
+
+</paragraph>
+<paragraph start="327" end="328">
+<LeftIndent>140.0</LeftIndent>
+<content start="327" end="328">
+</content>
+
+</paragraph>
+<paragraph start="328" end="530">
+<LeftIndent>140.0</LeftIndent>
+<content start="328" end="530">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="530" end="531">
+<LeftIndent>140.0</LeftIndent>
+<content start="530" end="531">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="531" end="794">
+<LeftIndent>160.0</LeftIndent>
+<content start="531" end="532">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="532" end="534">
+</content>
+
+<content start="534" end="794">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="794" end="795">
+<LeftIndent>140.0</LeftIndent>
+<content start="794" end="795">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="795" end="898">
+<LeftIndent>160.0</LeftIndent>
+<content start="795" end="796">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="796" end="798">
+</content>
+
+<content start="798" end="897">
+<size>11</size></content>
+
+<content start="897" end="898">
+</content>
+
+</paragraph>
+<paragraph start="898" end="899">
+<LeftIndent>140.0</LeftIndent>
+<content start="898" end="899">
+</content>
+
+</paragraph>
+<paragraph start="899" end="901">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="899" end="900">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<axes>true</axes><toolbar>false</toolbar><navigation>true</navigation><resource>Nanotube8x3x1.pdb</resource><state>itinerary$0.jms</state><width>600</width>
+<height>330</height>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="900" end="901">
+</content>
+
+</paragraph>
+<paragraph start="901" end="957">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="901" end="957">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="957" end="958">
+<content start="957" end="958">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="958" end="959">
+<LeftIndent>140.0</LeftIndent>
+<content start="958" end="959">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="959" end="987">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="959" end="961">
+<size>11</size></content>
+
+<content start="961" end="969">
+<size>11</size><href>guidedtour.cml</href></content>
+
+<content start="969" end="972">
+<size>11</size></content>
+
+<content start="972" end="977">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="977" end="986">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

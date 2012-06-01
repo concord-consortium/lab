@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting a DNA scroller</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a DNA scroller
+
+&lt; Previous | Index | Next &gt;
+
+In Molecular Workbench, proteins are sometimes simplified as a string of beads connected by harmonic spring forces. Each bead represents an amino acid. You can insert a DNA scroller that changes the primary structure of a protein.
+
+Select the &quot;Insert&gt;Special Controller for Model&gt;Proteins and DNA&gt;DNA Scroller&quot; menu. You will see the following dialog box:
+
+  
+[This is a screenshot.]
+
+This dialog window allows you to select a protein to control.
+
+Taking a snapshot
+
+To take a snapshot of the DNA scroller, right-click on the space above the scrollbar and below the DNA code, and choose &quot;Take a Snapshot&quot; from the popup menu.
+
+Changing and removing a DNA scroller
+
+See &quot;Editing embedded components&quot; for how to change, move and remove a DNA scroller.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="834">
+<paragraph start="0" end="25">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="24">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="54">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="26" end="28">
+<size>11</size></content>
+
+<content start="28" end="36">
+<href>activation.cml</href><size>11</size></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="44">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="44" end="47">
+<size>11</size></content>
+
+<content start="47" end="51">
+<href>insertNumericBox.cml</href><size>11</size></content>
+
+<content start="51" end="53">
+<size>11</size></content>
+
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="286">
+<LeftIndent>140.0</LeftIndent>
+<content start="55" end="286">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="286" end="287">
+<LeftIndent>140.0</LeftIndent>
+<content start="286" end="287">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="287" end="411">
+<LeftIndent>140.0</LeftIndent>
+<content start="287" end="411">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="411" end="412">
+<LeftIndent>140.0</LeftIndent>
+<content start="411" end="412">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="412" end="415">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="412" end="413">
+<size>11</size></content>
+
+<content start="413" end="414">
+<size>11</size><icon>DNAScrollerDialog.gif</icon></content>
+
+<content start="414" end="415">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="415" end="439">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="415" end="438">
+<size>10</size></content>
+
+<content start="438" end="439">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="439" end="440">
+<LeftIndent>100.0</LeftIndent>
+<content start="439" end="440">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="440" end="502">
+<LeftIndent>140.0</LeftIndent>
+<content start="440" end="502">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="502" end="503">
+<LeftIndent>140.0</LeftIndent>
+<content start="502" end="503">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="503" end="521">
+<LeftIndent>140.0</LeftIndent>
+<content start="503" end="520">
+<size>11</size><bold>true</bold></content>
+
+<content start="520" end="521">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="521" end="522">
+<LeftIndent>140.0</LeftIndent>
+<content start="521" end="522">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="522" end="681">
+<LeftIndent>140.0</LeftIndent>
+<content start="522" end="681">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="681" end="682">
+<LeftIndent>140.0</LeftIndent>
+<content start="681" end="682">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="682" end="719">
+<LeftIndent>140.0</LeftIndent>
+<content start="682" end="718">
+<size>11</size><bold>true</bold></content>
+
+<content start="718" end="719">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="719" end="720">
+<LeftIndent>140.0</LeftIndent>
+<content start="719" end="720">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="720" end="805">
+<LeftIndent>140.0</LeftIndent>
+<content start="720" end="725">
+<size>11</size></content>
+
+<content start="725" end="752">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="752" end="804">
+<size>11</size></content>
+
+<content start="804" end="805">
+</content>
+
+</paragraph>
+<paragraph start="805" end="806">
+<LeftIndent>100.0</LeftIndent>
+<content start="805" end="806">
+</content>
+
+</paragraph>
+<paragraph start="806" end="834">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="806" end="808">
+<size>11</size></content>
+
+<content start="808" end="816">
+<href>activation.cml</href><size>11</size></content>
+
+<content start="816" end="819">
+<size>11</size></content>
+
+<content start="819" end="824">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="824" end="827">
+<size>11</size></content>
+
+<content start="827" end="831">
+<href>insertNumericBox.cml</href><size>11</size></content>
+
+<content start="831" end="833">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

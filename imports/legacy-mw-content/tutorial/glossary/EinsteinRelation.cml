@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Einstein relation</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Einstein relation
+
+
+Einstein relation states, at large time t, the transport coefficent g associated with a physical property j can be written as:
+
+ 
+
+The atomic diffusion constant can be calculated using the Einstein relation: 
+
+ 
+
+where a stands for a specified group of atoms that are counted in the ensemble average, d is the dimensionality, i.e. d=2 for 2D simulation, d=3 for 3D simulation, t is time, ri is the position vector of the i-th atom. The Einstein relation is accurate on the condiction that t is large enough.
+
+See mean square displacement, Green-Kubo relation.
+
+
+ 
+return to index</text>
+<section start="0" end="600">
+<paragraph start="0" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="17">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<LeftIndent>140.0</LeftIndent>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="147">
+<LeftIndent>140.0</LeftIndent>
+<content start="20" end="147">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="147" end="148">
+<LeftIndent>140.0</LeftIndent>
+<content start="147" end="148">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="148" end="150">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="148" end="149">
+<icon>EinsteinFormula.gif</icon><size>11</size></content>
+
+<content start="149" end="150">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="150" end="151">
+<LeftIndent>140.0</LeftIndent>
+<content start="150" end="151">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="151" end="229">
+<LeftIndent>140.0</LeftIndent>
+<content start="151" end="229">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="229" end="230">
+<LeftIndent>140.0</LeftIndent>
+<content start="229" end="230">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="230" end="232">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="230" end="231">
+<icon>EinsteinRelation_Diffusion.gif</icon><size>11</size></content>
+
+<content start="231" end="232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="232" end="233">
+<LeftIndent>140.0</LeftIndent>
+<content start="232" end="233">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="233" end="528">
+<LeftIndent>140.0</LeftIndent>
+<content start="233" end="239">
+<size>11</size></content>
+
+<content start="239" end="240">
+<italic>true</italic><size>11</size></content>
+
+<content start="240" end="321">
+<size>11</size></content>
+
+<content start="321" end="322">
+<italic>true</italic><size>11</size></content>
+
+<content start="322" end="351">
+<size>11</size></content>
+
+<content start="351" end="352">
+<italic>true</italic><size>11</size></content>
+
+<content start="352" end="374">
+<size>11</size></content>
+
+<content start="374" end="375">
+<italic>true</italic><size>11</size></content>
+
+<content start="375" end="397">
+<size>11</size></content>
+
+<content start="397" end="398">
+<italic>true</italic><size>11</size></content>
+
+<content start="398" end="408">
+<size>11</size></content>
+
+<content start="408" end="409">
+<bold>true</bold><size>11</size></content>
+
+<content start="409" end="410">
+<subscript>true</subscript><italic>true</italic><size>11</size></content>
+
+<content start="410" end="441">
+<size>11</size></content>
+
+<content start="441" end="442">
+<italic>true</italic><size>11</size></content>
+
+<content start="442" end="509">
+<size>11</size></content>
+
+<content start="509" end="510">
+<italic>true</italic><size>11</size></content>
+
+<content start="510" end="528">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="528" end="529">
+<LeftIndent>140.0</LeftIndent>
+<content start="528" end="529">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="529" end="580">
+<LeftIndent>140.0</LeftIndent>
+<content start="529" end="533">
+<size>11</size></content>
+
+<content start="533" end="557">
+<href>msd.cml</href><size>11</size></content>
+
+<content start="557" end="559">
+<size>11</size></content>
+
+<content start="559" end="578">
+<href>GreenKubo.cml</href><size>11</size></content>
+
+<content start="578" end="579">
+<size>11</size></content>
+
+<content start="579" end="580">
+</content>
+
+</paragraph>
+<paragraph start="580" end="581">
+<LeftIndent>120.0</LeftIndent>
+<content start="580" end="581">
+</content>
+
+</paragraph>
+<paragraph start="581" end="582">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="581" end="582">
+</content>
+
+</paragraph>
+<paragraph start="582" end="584">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="582" end="583">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="583" end="584">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="584" end="600">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="584" end="599">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

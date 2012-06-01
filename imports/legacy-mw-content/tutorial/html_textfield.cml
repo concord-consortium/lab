@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Using text fields in HTML text box</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Using text fields in HTML text box
+
+&lt; Previous | Index | Next &gt;
+
+
+A text field can be created using the following line of code:
+
+&lt;input type=&quot;text&quot; size=&quot;a number (e.g.10)&quot; question=&quot;question text&quot;&gt;
+
+The question attribute is used to set up a question text that will go along with the user&apos;s inputs into a report.
+
+The following is an example of using HTML text fields:
+
+  
+To view the source, save this page to your disk, enter the authoring mode and right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the text boxes.
+
+To test, type in the above text fields some text, and click the button below.
+
+ 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="654">
+<paragraph start="0" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="34">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="64">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="36" end="38">
+<size>11</size></content>
+
+<content start="38" end="46">
+<size>11</size><href>html_combobox.cml</href></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="54">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="54" end="57">
+<size>11</size></content>
+
+<content start="57" end="61">
+<size>11</size><href>html_textarea.cml</href></content>
+
+<content start="61" end="63">
+<size>11</size></content>
+
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="66">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="66" end="128">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="128">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="128" end="129">
+<LeftIndent>140.0</LeftIndent>
+<content start="128" end="129">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="129" end="199">
+<LeftIndent>140.0</LeftIndent>
+<content start="129" end="199">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="199" end="200">
+<LeftIndent>140.0</LeftIndent>
+<content start="199" end="200">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="200" end="314">
+<LeftIndent>140.0</LeftIndent>
+<content start="200" end="204">
+<size>11</size></content>
+
+<content start="204" end="212">
+<size>11</size><family>Courier New</family></content>
+
+<content start="212" end="314">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="314" end="315">
+<LeftIndent>140.0</LeftIndent>
+<content start="314" end="315">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="315" end="370">
+<LeftIndent>140.0</LeftIndent>
+<content start="315" end="370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="370" end="371">
+<LeftIndent>140.0</LeftIndent>
+<content start="370" end="371">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="371" end="374">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="371" end="372">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>280.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot;&gt;This is a HTML text box, which has an embedded text 
+      field for collecting student&apos;s answers.&lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;3&quot; face=&quot;Verdana&quot;&gt;How do you use the Molecular Workbench 
+      software?&lt;br&gt;&lt;br&gt;&lt;input question=&quot;How do you use the Molecular Workbench software?&quot; type=&quot;text&quot; size=&quot;25&quot;&gt;&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="372" end="373">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>280.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot;&gt;Yet another HTML text box, which has embedded text 
+      fields for collecting student&apos;s answer.&lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;3&quot; face=&quot;Verdana&quot;&gt;Question 1:&lt;br&gt;&lt;input question=&quot;Question 1&quot; type=&quot;text&quot; size=&quot;20&quot;&gt;&lt;br&gt;Question 
+      2:&lt;br&gt;&lt;input question=&quot;Question 2&quot; type=&quot;text&quot; size=&quot;30&quot;&gt;&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="373" end="374">
+</content>
+
+</paragraph>
+<paragraph start="374" end="543">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="374" end="465">
+<size>10</size><italic>true</italic></content>
+
+<content start="465" end="522">
+<size>10</size><italic>true</italic></content>
+
+<content start="522" end="542">
+<size>10</size><italic>true</italic></content>
+
+<content start="542" end="543">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="543" end="544">
+<LeftIndent>140.0</LeftIndent>
+<content start="543" end="544">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="544" end="622">
+<LeftIndent>140.0</LeftIndent>
+<content start="544" end="622">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="622" end="623">
+<LeftIndent>140.0</LeftIndent>
+<content start="622" end="623">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="623" end="625">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="623" end="624">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report about this page in a new window</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+<content start="624" end="625">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="625" end="626">
+<LeftIndent>140.0</LeftIndent>
+<content start="625" end="626">
+</content>
+
+</paragraph>
+<paragraph start="626" end="654">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="626" end="628">
+<size>11</size></content>
+
+<content start="628" end="636">
+<size>11</size><href>html_combobox.cml</href></content>
+
+<content start="636" end="639">
+<size>11</size></content>
+
+<content start="639" end="644">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="644" end="647">
+<size>11</size></content>
+
+<content start="647" end="651">
+<size>11</size><href>html_textarea.cml</href></content>
+
+<content start="651" end="653">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

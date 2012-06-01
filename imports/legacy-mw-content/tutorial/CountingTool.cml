@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Counting Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Counting Tool
+
+&lt; Previous | Index | Next &gt;
+
+The Counting Tool can be selected by pressing the &quot; &quot; button.
+
+To count object(s), click the Counting Tool button first, then drag the mouse to select a rectangular area that covers the object(s) needed to be marked. When the mouse is released, they will be marked.
+
+You may practice with the Counting Tool in the following model:
+
+ 
+[This is an embedded simulator.]
+
+Script support
+
+The lac (local area counter) command can be used to count particles of specified types within a specified area. Unlike the Counting Tool presented here that counts based only on current distribution of particles, the count command can generate a graph of the number of particles within the selected area as a function of time.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="788">
+<paragraph start="0" end="18">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="17">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="47">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="21">
+<size>11</size></content>
+
+<content start="21" end="29">
+<size>11</size><href>dropAction.cml</href></content>
+
+<content start="29" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<size>11</size><href>markAction.cml</href></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>100.0</LeftIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="110">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="99">
+<size>11</size></content>
+
+<content start="99" end="100">
+<icon>Counter.gif</icon></content>
+
+<content start="100" end="110">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="110" end="111">
+<LeftIndent>140.0</LeftIndent>
+<content start="110" end="111">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="111" end="314">
+<LeftIndent>140.0</LeftIndent>
+<content start="111" end="314">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="314" end="315">
+<LeftIndent>140.0</LeftIndent>
+<content start="314" end="315">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="315" end="379">
+<LeftIndent>140.0</LeftIndent>
+<content start="315" end="378">
+<size>11</size></content>
+
+<content start="378" end="379">
+</content>
+
+</paragraph>
+<paragraph start="379" end="380">
+<LeftIndent>100.0</LeftIndent>
+<content start="379" end="380">
+</content>
+
+</paragraph>
+<paragraph start="380" end="382">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="380" end="381">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>CountingTool$0.mml</resource><menubar>false</menubar><recorder>true</recorder><button>Select Object</button><button>Count Objects</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button></component></content>
+
+<content start="381" end="382">
+</content>
+
+</paragraph>
+<paragraph start="382" end="415">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="382" end="415">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="415" end="416">
+<RightIndent>20.0</RightIndent>
+<content start="415" end="416">
+</content>
+
+</paragraph>
+<paragraph start="416" end="431">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="416" end="430">
+<size>11</size><bold>true</bold></content>
+
+<content start="430" end="431">
+</content>
+
+</paragraph>
+<paragraph start="431" end="432">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="431" end="432">
+</content>
+
+</paragraph>
+<paragraph start="432" end="759">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="432" end="436">
+<size>11</size></content>
+
+<content start="436" end="439">
+<size>11</size><href>script_lac.cml</href><family>Courier New</family></content>
+
+<content start="439" end="649">
+<size>11</size></content>
+
+<content start="649" end="654">
+<size>11</size><family>Courier New</family></content>
+
+<content start="654" end="759">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="759" end="760">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="759" end="760">
+</content>
+
+</paragraph>
+<paragraph start="760" end="788">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="760" end="762">
+<size>11</size></content>
+
+<content start="762" end="770">
+<size>11</size><href>dropAction.cml</href></content>
+
+<content start="770" end="773">
+<size>11</size></content>
+
+<content start="773" end="778">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="778" end="781">
+<size>11</size></content>
+
+<content start="781" end="785">
+<size>11</size><href>markAction.cml</href></content>
+
+<content start="785" end="787">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

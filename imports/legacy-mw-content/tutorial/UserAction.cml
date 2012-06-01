@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>IDs for setting model&apos;s action state</page_title>
+<text> </text>
+<section start="0" end="2">
+<paragraph start="0" end="2">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>0.99</width>
+<height>0.99</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table width=&quot;100%&quot; cellspacing=&quot;0&quot; border=&quot;1&quot; cellpadding=&quot;3&quot;&gt;
+      &lt;tr bgcolor=&quot;#ccccff&quot;&gt;
+        &lt;th align=&quot;left&quot; colspan=&quot;2&quot;&gt;
+          &lt;font size=&quot;+2&quot;&gt;&lt;b&gt;IDs for setting model&apos;s action state:&lt;/b&gt;&lt;/font&gt;
+        &lt;/th&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;AACD_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for adding an amino acid to a polypeptide
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;ADCH_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for inserting a chain molecule
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;ADDA_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for inserting an Nt atom
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;ADDB_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for inserting an Pl atom
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;ADDC_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for inserting an Ws atom
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;ADDD_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for inserting an Ck atom
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;ADDI_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for inserting a diatomic molecule
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;ADGB_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for inserting an Gay-Berne particle
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;ADOB_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for inserting an obstacle
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;ANTD_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for adding a nucleotide to a DNA strand
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;BBEN_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for building an angular bond
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;BBON_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for building a radial bond
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;BENZ_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for inserting a benzene molecule
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;CNEG_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for adding a fraction of negative charge to a particle
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;COOL_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for cooling down the selected part of the system
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;COUN_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for analyzing region
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;CPOS_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for adding a fraction of positive charge to a particle
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;DDMP_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for decreasing damping on the selected object
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;DELE_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for deleting particles
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;DPOL_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for decreasing the dipole moment of a GB molecule
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;DRES_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for decreasing the restraint on an object
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;DUPL_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for duplicating an object
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;FILA_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for filling an area with Nt atoms
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;FILB_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for filling an area with Pl atoms
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;FILC_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for filling an area with Ws atoms
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;FILD_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for filling an area with Ck atoms
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;HEAT_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for heating up the selected part of the system
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;IDMP_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for increasing damping on the selected object
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;IPOL_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for increasing the dipole moment of a GB molecule
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;IRES_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for increasing the restraint on an object
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;MARK_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for marking object(s)
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;MEAS_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for measuring a distance between two objects
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;MUTA_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for mutation
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;NONE_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &amp;#160;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;OMEG_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for changing angular velocity
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;RCIR_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for adding a circular molecular ribbon
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;RCUR_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for adding curved molecular ribbon
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;RESI_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for resizing a GB molecule
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;ROTA_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for rotating an object
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;RREC_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for adding a rectangular molecular ribbon
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;SACD_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for subtracting an amino acid from a polypeptide
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;SBOU_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for setting up boundary
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;SCIR_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for adding a circular molecular surface
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;SCUR_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for adding curved molecular surface
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;SELE_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for selecting an object
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;SFRE_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for adding a free form molecular surface
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;SNTD_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for subtracting a nucleotide from a DNA strand
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;SPIS_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for setting up piston
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;SREC_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for adding a rectangular molecular surface
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;STEE_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for steering a particle
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;TRAJ_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for showing the trajectory of an object
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;VELO_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for changing the velocity of an object
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;WATE_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for inserting a triatomic molecule
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;code&gt;&lt;b&gt;WHAT_ID&lt;/b&gt;&lt;/code&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          action ID for inquring an object
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+</component></content>
+
+</paragraph>
+</section>
+</document>

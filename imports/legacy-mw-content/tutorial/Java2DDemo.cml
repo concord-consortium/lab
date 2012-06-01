@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Java2D Demo Applet</page_title>
+<text>Java2D Demo Applet: All you can do with Java 2D in an applet .....
+(from the JDK provided by Sun Microsystem)
+ </text>
+<section start="0" end="112">
+<paragraph start="0" end="67">
+<Alignment>1</Alignment>
+<content start="0" end="66">
+<size>14</size></content>
+
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="110">
+<Alignment>1</Alignment>
+<content start="67" end="109">
+<size>10</size></content>
+
+<content start="109" end="110">
+</content>
+
+</paragraph>
+<paragraph start="110" end="112">
+<Alignment>1</Alignment>
+<content start="110" end="111">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>Java2Demo.jar</appletjar>
+<appletclass>java2d.Java2DemoApplet</appletclass>
+<caching>true</caching><width>710</width><height>540</height>
+<border>Raised Bevel</border></component></content>
+
+</paragraph>
+</section>
+</document>

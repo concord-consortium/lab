@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Maxwell velocity distribution</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Maxwell velocity distribution
+
+
+A statistic distribution of velocities of atoms. Theoretically speaking, it is a normal distribution (Gaussian function) with the peak at zero, and the variance proportional to the temperature but inversely proportional to the mass: 
+
+ 
+
+where mi is the mass of atom i, via is the a component of the velocity of atom i, T is the temperature, kB is the Boltzmann constant. 
+
+
+ 
+return to index</text>
+<section start="0" end="425">
+<paragraph start="0" end="30">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="29">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<LeftIndent>120.0</LeftIndent>
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<LeftIndent>120.0</LeftIndent>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="266">
+<LeftIndent>140.0</LeftIndent>
+<content start="32" end="266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="266" end="267">
+<LeftIndent>120.0</LeftIndent>
+<content start="266" end="267">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="267" end="269">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="267" end="268">
+<icon>maxwellFormula.gif</icon><size>11</size></content>
+
+<content start="268" end="269">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="269" end="270">
+<LeftIndent>120.0</LeftIndent>
+<content start="269" end="270">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="270" end="405">
+<LeftIndent>140.0</LeftIndent>
+<content start="270" end="276">
+<size>11</size></content>
+
+<content start="276" end="277">
+<italic>true</italic><size>11</size></content>
+
+<content start="277" end="279">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="279" end="299">
+<size>11</size></content>
+
+<content start="299" end="300">
+<italic>true</italic><size>11</size></content>
+
+<content start="300" end="302">
+<size>11</size></content>
+
+<content start="302" end="303">
+<italic>true</italic><size>11</size></content>
+
+<content start="303" end="305">
+<subscript>true</subscript><italic>true</italic><size>11</size></content>
+
+<content start="305" end="349">
+<size>11</size></content>
+
+<content start="349" end="350">
+<italic>true</italic><size>11</size></content>
+
+<content start="350" end="352">
+<size>11</size></content>
+
+<content start="352" end="353">
+<italic>true</italic><size>11</size></content>
+
+<content start="353" end="374">
+<size>11</size></content>
+
+<content start="374" end="375">
+<italic>true</italic><size>11</size></content>
+
+<content start="375" end="376">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="376" end="404">
+<size>11</size></content>
+
+<content start="404" end="405">
+</content>
+
+</paragraph>
+<paragraph start="405" end="406">
+<LeftIndent>120.0</LeftIndent>
+<content start="405" end="406">
+</content>
+
+</paragraph>
+<paragraph start="406" end="407">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="406" end="407">
+</content>
+
+</paragraph>
+<paragraph start="407" end="409">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="407" end="408">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="408" end="409">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="409" end="425">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="409" end="424">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

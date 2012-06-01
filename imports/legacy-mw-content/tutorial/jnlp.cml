@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Creating a JNLP launching file for a page</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Creating a JNLP launching file for a page
+
+&lt; Previous | Index | Next &gt;
+
+A JNLP file is a tiny file that can be used to launch a Java program from anywhere: the desktop, email attachment, or a Web page.
+
+ 
+Google searches JNLP files. If you put JNLP files on the Internet, setting a property window title is important if you want the activity pointed by the JNLP to be found through Google.
+ 
+
+The Molecular Workbench (MW) allows you to create a JNLP file for an activity on the Internet. You can choose &quot;File&gt;Create a JNLP Launcher for Current Page&quot; to create a JNLP file and send it by email or put it to your Web pages. When the JNLP file is clicked, it will launch MW and automatically load the activity page the JNLP link points to. This is a very convenient way of sharing your activities with other people.
+
+ 
+NOTE: Your model or activity MUST be uploaded to the Internet and opened with MW for the JNLP to be created. You cannot create a JNLP file for a file that is located on your hard disk, which no one else can access.
+ 
+The steps to create a JNLP file are:
+
+1. Make sure you have an Internet account that can host public pages.
+2. Upload everything of the model or activity to a folder in your Internet account.
+3. Write down the HTTP address of the initial CML page (the first page with extension .cml).
+4. Copy this HTTP address and paste it into the URL location bar of MW and hit ENTER.
+5. Use &quot;File&gt;Create a JNLP Launcher for Current Page&quot; to create a JNLP and save it to your disk.
+6. Deploy the JNLP file: use &lt;a href=&quot;filename.jnlp&quot;&gt;link to the model&lt;/a&gt; in the HTML page.
+
+If you insist on creating a JNLP launcher for local files, for example, you would like to use JNLP to organize your local models in a PowerPoint presentation, you can copy the following sample JNLP file, change the address (the bold line) it will open, and save it into a JNLP file:
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;jnlp spec=&quot;1.0+&quot; codebase=&quot;http://mw.concord.org/modeler&quot;&gt;
+   &lt;information&gt;
+      &lt;title&gt;Molecular Workbench&lt;/title&gt;
+      &lt;vendor&gt;Concord Consortium, Inc.&lt;/vendor&gt;
+      &lt;homepage href=&quot;index.html&quot;/&gt;
+      &lt;description&gt;Molecular Workbench Home Page&lt;/description&gt;
+      &lt;icon href=&quot;images/logo.gif&quot;/&gt;
+      &lt;offline-allowed/&gt;
+   &lt;/information&gt;
+   &lt;resources&gt;
+      &lt;j2se version=&quot;1.4+&quot;/&gt;
+      &lt;jar href=&quot;lib/workbench.jar&quot;/&gt;
+      &lt;property name=&quot;apple.awt.brushMetalLook&quot; value=&quot;true&quot;/&gt;
+      &lt;property name=&quot;apple.laf.useScreenMenuBar&quot; value=&quot;true&quot;/&gt;
+   &lt;/resources&gt;
+   &lt;security&gt;
+      &lt;all-permissions/&gt;
+   &lt;/security&gt;
+   &lt;application-desc main-class=&quot;org.concord.modeler.ModelerLauncher&quot;&gt;
+      &lt;argument&gt;remote&lt;/argument&gt;
+      &lt;argument&gt;c:\my folder\my_model.cml&lt;/argument&gt;
+   &lt;/application-desc&gt;
+&lt;/jnlp&gt;
+
+The above sample is for Windows. For Mac OS X and Linux, the path should be something like /user/my folder/my_model.cml.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2883">
+<paragraph start="0" end="42">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="41">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="71">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="43" end="45">
+<size>11</size></content>
+
+<content start="45" end="53">
+<href>attach.cml</href><size>11</size></content>
+
+<content start="53" end="56">
+<size>11</size></content>
+
+<content start="56" end="61">
+<href>index3.cml</href><size>11</size></content>
+
+<content start="61" end="64">
+<size>11</size></content>
+
+<content start="64" end="68">
+<href>upload.cml</href><size>11</size></content>
+
+<content start="68" end="70">
+<size>11</size></content>
+
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="72">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="71" end="72">
+</content>
+
+</paragraph>
+<paragraph start="72" end="202">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="72" end="202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="202" end="203">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="202" end="203">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="203" end="205">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<RightIndent>20.0</RightIndent>
+<content start="203" end="204">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="204" end="205">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="205" end="390">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="205" end="291">
+<size>11</size></content>
+
+<content start="291" end="303">
+<href>title.cml</href><size>11</size></content>
+
+<content start="303" end="389">
+<size>11</size></content>
+
+<content start="389" end="390">
+</content>
+
+</paragraph>
+<paragraph start="390" end="392">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<RightIndent>20.0</RightIndent>
+<content start="390" end="391">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="391" end="392">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="392" end="393">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="392" end="393">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="393" end="813">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="393" end="813">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="813" end="814">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="813" end="814">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="814" end="816">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<RightIndent>20.0</RightIndent>
+<content start="814" end="815">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="815" end="816">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="816" end="1031">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="816" end="820">
+<size>11</size><bold>true</bold></content>
+
+<content start="820" end="1031">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1031" end="1033">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<RightIndent>80.0</RightIndent>
+<content start="1031" end="1032">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1032" end="1033">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1033" end="1070">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1033" end="1070">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1070" end="1071">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1070" end="1071">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1071" end="1141">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1071" end="1141">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1141" end="1225">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1141" end="1225">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1225" end="1318">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1225" end="1311">
+<size>11</size></content>
+
+<content start="1311" end="1315">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1315" end="1318">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1318" end="1404">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1318" end="1404">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1404" end="1501">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1404" end="1501">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1501" end="1594">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1501" end="1593">
+<size>11</size></content>
+
+<content start="1593" end="1594">
+</content>
+
+</paragraph>
+<paragraph start="1594" end="1595">
+<RightIndent>20.0</RightIndent>
+<content start="1594" end="1595">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1595" end="1878">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1595" end="1878">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1878" end="1879">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1878" end="1879">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1879" end="1918">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1879" end="1918">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1918" end="1978">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1918" end="1978">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1978" end="1995">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1978" end="1995">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1995" end="2036">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1995" end="2036">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2036" end="2084">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2036" end="2084">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2084" end="2120">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2084" end="2120">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2120" end="2183">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2120" end="2183">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2183" end="2220">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2183" end="2220">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2220" end="2245">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2220" end="2245">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2245" end="2263">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2245" end="2263">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2263" end="2278">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2263" end="2278">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2278" end="2307">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2278" end="2307">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2307" end="2345">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2307" end="2345">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2345" end="2408">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2345" end="2408">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2408" end="2473">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2408" end="2473">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2473" end="2489">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2473" end="2489">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2489" end="2503">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2489" end="2503">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2503" end="2528">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2503" end="2528">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2528" end="2543">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2528" end="2543">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2543" end="2614">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2543" end="2614">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2614" end="2648">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2614" end="2648">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2648" end="2701">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2648" end="2700">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="2700" end="2701">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2701" end="2724">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2701" end="2724">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2724" end="2732">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2724" end="2731">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2731" end="2732">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2732" end="2733">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2732" end="2733">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2733" end="2854">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2733" end="2824">
+<size>11</size></content>
+
+<content start="2824" end="2852">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2852" end="2854">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2854" end="2855">
+<RightIndent>20.0</RightIndent>
+<content start="2854" end="2855">
+</content>
+
+</paragraph>
+<paragraph start="2855" end="2883">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2855" end="2857">
+<size>11</size></content>
+
+<content start="2857" end="2865">
+<href>attach.cml</href><size>11</size></content>
+
+<content start="2865" end="2868">
+<size>11</size></content>
+
+<content start="2868" end="2873">
+<href>index3.cml</href><size>11</size></content>
+
+<content start="2873" end="2876">
+<size>11</size></content>
+
+<content start="2876" end="2880">
+<href>upload.cml</href><size>11</size></content>
+
+<content start="2880" end="2882">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

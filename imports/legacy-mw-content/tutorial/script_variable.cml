@@ -1,0 +1,1781 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>System variables</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>System variables
+
+&lt; Previous | Index | Next &gt;
+
+MW&apos;s scripting engine supports a set of system variables from models that you can refer to in a command. These variables must start with a &apos;%&apos; prefix and there must be no space after it.
+
+ 
+Important: The value of a system variable is that before the current line of command is executed.
+ 
+
+%loop_count
+The counter of the current loop. It goes from 0 to %loop_times-1.
+
+%loop_times
+The times that the commands enclosed in this loop will be executed. 
+
+%width
+The width of the model container&apos;s window.
+
+%height
+The height of the model container&apos;s window.
+
+%cell_x
+The x coordinate of the upper-left corner of the model&apos;s bounding box (reflecting boundary) or cell (periodic boundary). If the default boundary condition is used, it is 0.
+
+%cell_y
+The y coordinate of the upper-left corner of the model&apos;s bounding box (reflecting boundary) or cell (periodic boundary). If the default boundary condition is used, it is 0.
+
+%cell_width
+The width of the model&apos;s bounding box (reflecting boundary) or cell (periodic boundary). If the default boundary condition is used, it is equal to %width.
+
+%cell_height
+The height of the model&apos;s bounding box (reflecting boundary) or cell (periodic boundary). If the default boundary condition is used, it is equal to %height.
+
+%number_of_particles
+If the model is an atomic one, returns the number of atoms before the current line of script is executed. If it is a meso-scale one, returns the number of Gay-Berne particles before the current line of script is executed.
+
+%number_of_atoms
+Same as %number_of_particles.
+
+%element[i].mass
+The mass of the i-th element. i must be an integer between 0 and 3 (representing the first four abstract elements): Nt - 0, Pl - 1, Ws - 2, Ck - 3. The following illustrations show the four abstract elements in MW.
+
+ 
+[This is an embedded simulator.]
+
+%element[i].sigma
+The value of the sigma parameter (the collision diameter) of the i-th element. i must be an integer between 0 and 3 (representing the first four abstract elements).
+
+%element[i].epsilon
+The value of the epsilon parameter (the depth of the van der Waals potential well) of the i-th element. i must be an integer between 0 and 3 (representing the first four abstract elements).
+
+%atom[i].rx
+The x coordinate of the i-th atom. i must be an integer number between 0 and %number_of_atoms-1. The following illustration shows how to find the index of an atom.
+
+ 
+ 
+[This is an embedded simulator.]
+Here are a link to the Query Tool, a link to the Atom Properties Panel, and a link to the View Options Dialog.
+
+%atom[i].ry
+The y coordinate of the i-th atom. i must be an integer number between 0 and %number_of_atoms-1.
+
+%atom[i].vx
+The x component of the velocity of the i-th atom. i must be an integer number between 0 and %number_of_atoms-1.
+
+%atom[i].vy
+The y component of the velocity of the i-th atom. i must be an integer number between 0 and %number_of_atoms-1.
+
+%atom[i].ax
+The x component of the acceleration of the i-th atom. i must be an integer number between 0 and %number_of_atoms-1.
+
+%atom[i].ay
+The y component of the acceleration of the i-th atom. i must be an integer number between 0 and %number_of_atoms-1.
+
+%obstacle[i].x
+The x coordinate of the upper-left corner of the i-th obstacle. i must be an integer number between 0 and the current number of obstacles minus 1 (inclusive).
+
+%obstacle[i].y
+The y coordinate of the upper-left corner of the i-th obstacle. i must be an integer number between 0 and the current number of obstacles minus 1 (inclusive).
+
+%obstacle[i].width
+The width of the i-th obstacle. i must be an integer number between 0 and the current number of obstacles minus 1 (inclusive)
+
+%obstacle[i].height
+The height of the i-th obstacle. i must be an integer number between 0 and the current number of obstacles minus 1 (inclusive)
+
+%obstacle[i].density
+The density of the i-th obstacle, in kg/mol/angstrom2. i must be an integer number between 0 and the current number of obstacles minus 1 (inclusive).
+
+%obstacle[i].externalfx
+The x component of the external force on the i-th obstacle. i must be an integer number between 0 and the current number of obstacles minus 1 (inclusive).
+
+%obstacle[i].externalfy
+The y component of the external force on the i-th obstacle. i must be an integer number between 0 and the current number of obstacles minus 1 (inclusive).
+
+%particle[i].rx
+The x coordinate of the i-th particle (atom or Gay-Berne particle). i must be an integer number between 0 and %number_of_particles-1.
+
+%particle[i].ry
+The y coordinate of the i-th particle (atom or Gay-Berne particle). i must be an integer number between 0 and %number_of_particles-1.
+
+%particle[i].vx
+The x component of the velocity of the i-th particle (atom or Gay-Berne particle). i must be an integer number between 0 and %number_of_particles-1.
+
+%particle[i].vy
+The y component of the velocity of the i-th particle  (atom or Gay-Berne particle). i must be an integer number between 0 and %number_of_particles-1.
+
+%particle[i].ax
+The x component of the acceleration of the i-th particle (atom or Gay-Berne particle). i must be an integer number between 0 and %number_of_particles-1.
+
+%particle[i].ay
+The y component of the acceleration of the i-th particle (atom or Gay-Berne particle). i must be an integer number between 0 and %number_of_particles-1.
+
+%particle[i].theta
+The angle of the i-th Gay-Berne particle. i must be an integer number between 0 and %number_of_particles-1.
+
+%particle[i].omega
+The angular velocity of the i-th Gay-Berne particle. i must be an integer number between 0 and %number_of_particles-1.
+
+%particle[i].alpha
+The angular acceleration of the i-th Gay-Berne particle. i must be an integer number between 0 and %number_of_particles-1.
+
+%molecule[i].x
+The x-coordinate of the center of mass of the i-th molecule. i must be an integer number between 0 and the current number of molecules minus 1 (inclusive).
+
+%molecule[i].y
+The y-coordinate of the center of mass of the i-th molecule. i must be an integer number between 0 and the current number of molecules minus 1 (inclusive).
+
+%molecule[i].n
+The number of atoms of the i-th molecule. i must be an integer number between 0 and the current number of molecules minus 1 (inclusive).
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="6292">
+<paragraph start="0" end="17">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="16">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="46">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="18" end="20">
+<size>11</size></content>
+
+<content start="20" end="28">
+<href>script_protocol.cml</href><size>11</size></content>
+
+<content start="28" end="31">
+<size>11</size></content>
+
+<content start="31" end="36">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<href>script_expression.cml</href><size>11</size></content>
+
+<content start="43" end="45">
+<size>11</size></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<LeftIndent>100.0</LeftIndent>
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="234">
+<LeftIndent>140.0</LeftIndent>
+<content start="47" end="168">
+<size>11</size></content>
+
+<content start="168" end="196">
+<size>11</size><bold>true</bold></content>
+
+<content start="196" end="234">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="234" end="235">
+<LeftIndent>140.0</LeftIndent>
+<content start="234" end="235">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="235" end="237">
+<LeftIndent>140.0</LeftIndent>
+<content start="235" end="236">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="236" end="237">
+</content>
+
+</paragraph>
+<paragraph start="237" end="335">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>40.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="237" end="246">
+<size>11</size><bold>true</bold></content>
+
+<content start="246" end="287">
+<size>11</size></content>
+
+<content start="287" end="293">
+<size>11</size><italic>true</italic></content>
+
+<content start="293" end="334">
+<size>11</size></content>
+
+<content start="334" end="335">
+</content>
+
+</paragraph>
+<paragraph start="335" end="337">
+<LeftIndent>140.0</LeftIndent>
+<content start="335" end="336">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="336" end="337">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="337" end="338">
+<LeftIndent>140.0</LeftIndent>
+<content start="337" end="338">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="338" end="350">
+<LeftIndent>140.0</LeftIndent>
+<content start="338" end="349">
+<size>11</size><family>Courier New</family></content>
+
+<content start="349" end="350">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="350" end="416">
+<LeftIndent>160.0</LeftIndent>
+<content start="350" end="377">
+<size>11</size></content>
+
+<content start="377" end="381">
+<href>script_loop.cml</href><size>11</size></content>
+
+<content start="381" end="401">
+<size>11</size></content>
+
+<content start="401" end="412">
+<size>11</size><family>Courier New</family></content>
+
+<content start="412" end="416">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="416" end="417">
+<LeftIndent>140.0</LeftIndent>
+<content start="416" end="417">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="417" end="429">
+<LeftIndent>140.0</LeftIndent>
+<content start="417" end="428">
+<size>11</size><family>Courier New</family></content>
+
+<content start="428" end="429">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="429" end="498">
+<LeftIndent>160.0</LeftIndent>
+<content start="429" end="498">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="498" end="499">
+<LeftIndent>140.0</LeftIndent>
+<content start="498" end="499">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="499" end="506">
+<LeftIndent>140.0</LeftIndent>
+<content start="499" end="505">
+<size>11</size><family>Courier New</family></content>
+
+<content start="505" end="506">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="506" end="549">
+<LeftIndent>160.0</LeftIndent>
+<content start="506" end="549">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="549" end="550">
+<LeftIndent>140.0</LeftIndent>
+<content start="549" end="550">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="550" end="558">
+<LeftIndent>140.0</LeftIndent>
+<content start="550" end="557">
+<size>11</size><family>Courier New</family></content>
+
+<content start="557" end="558">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="558" end="602">
+<LeftIndent>160.0</LeftIndent>
+<content start="558" end="602">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="602" end="603">
+<LeftIndent>140.0</LeftIndent>
+<content start="602" end="603">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="603" end="611">
+<LeftIndent>140.0</LeftIndent>
+<content start="603" end="610">
+<size>11</size><family>Courier New</family></content>
+
+<content start="610" end="611">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="611" end="784">
+<LeftIndent>160.0</LeftIndent>
+<content start="611" end="784">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="784" end="785">
+<LeftIndent>160.0</LeftIndent>
+<content start="784" end="785">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="785" end="793">
+<LeftIndent>140.0</LeftIndent>
+<content start="785" end="792">
+<size>11</size><family>Courier New</family></content>
+
+<content start="792" end="793">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="793" end="966">
+<LeftIndent>160.0</LeftIndent>
+<content start="793" end="966">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="966" end="967">
+<LeftIndent>160.0</LeftIndent>
+<content start="966" end="967">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="967" end="979">
+<LeftIndent>140.0</LeftIndent>
+<content start="967" end="978">
+<size>11</size><family>Courier New</family></content>
+
+<content start="978" end="979">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="979" end="1134">
+<LeftIndent>160.0</LeftIndent>
+<content start="979" end="1126">
+<size>11</size></content>
+
+<content start="1126" end="1132">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1132" end="1134">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1134" end="1135">
+<LeftIndent>160.0</LeftIndent>
+<content start="1134" end="1135">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1135" end="1148">
+<LeftIndent>140.0</LeftIndent>
+<content start="1135" end="1147">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1147" end="1148">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1148" end="1305">
+<LeftIndent>160.0</LeftIndent>
+<content start="1148" end="1296">
+<size>11</size></content>
+
+<content start="1296" end="1303">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1303" end="1305">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1305" end="1306">
+<LeftIndent>160.0</LeftIndent>
+<content start="1305" end="1306">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1306" end="1327">
+<LeftIndent>140.0</LeftIndent>
+<content start="1306" end="1326">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1326" end="1327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1327" end="1549">
+<LeftIndent>160.0</LeftIndent>
+<content start="1327" end="1386">
+<size>11</size></content>
+
+<content start="1386" end="1392">
+<size>11</size><italic>true</italic></content>
+
+<content start="1392" end="1502">
+<size>11</size></content>
+
+<content start="1502" end="1508">
+<size>11</size><italic>true</italic></content>
+
+<content start="1508" end="1549">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1549" end="1550">
+<LeftIndent>140.0</LeftIndent>
+<content start="1549" end="1550">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1550" end="1567">
+<LeftIndent>140.0</LeftIndent>
+<content start="1550" end="1566">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1566" end="1567">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1567" end="1597">
+<LeftIndent>160.0</LeftIndent>
+<content start="1567" end="1575">
+<size>11</size></content>
+
+<content start="1575" end="1595">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1595" end="1597">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1597" end="1598">
+<LeftIndent>140.0</LeftIndent>
+<content start="1597" end="1598">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1598" end="1615">
+<LeftIndent>140.0</LeftIndent>
+<content start="1598" end="1614">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1614" end="1615">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1615" end="1830">
+<LeftIndent>160.0</LeftIndent>
+<content start="1615" end="1631">
+<size>11</size></content>
+
+<content start="1631" end="1632">
+<size>11</size><italic>true</italic></content>
+
+<content start="1632" end="1645">
+<size>11</size></content>
+
+<content start="1645" end="1646">
+<size>11</size><italic>true</italic></content>
+
+<content start="1646" end="1830">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1830" end="1831">
+<LeftIndent>140.0</LeftIndent>
+<content start="1830" end="1831">
+</content>
+
+</paragraph>
+<paragraph start="1831" end="1833">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1831" end="1832">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_variable$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="1832" end="1833">
+</content>
+
+</paragraph>
+<paragraph start="1833" end="1866">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1833" end="1865">
+<size>10</size></content>
+
+<content start="1865" end="1866">
+</content>
+
+</paragraph>
+<paragraph start="1866" end="1867">
+<LeftIndent>140.0</LeftIndent>
+<content start="1866" end="1867">
+</content>
+
+</paragraph>
+<paragraph start="1867" end="1885">
+<LeftIndent>140.0</LeftIndent>
+<content start="1867" end="1884">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1884" end="1885">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1885" end="2050">
+<LeftIndent>160.0</LeftIndent>
+<content start="1885" end="1902">
+<size>11</size></content>
+
+<content start="1902" end="1907">
+<size>11</size><italic>true</italic></content>
+
+<content start="1907" end="1950">
+<size>11</size></content>
+
+<content start="1950" end="1951">
+<size>11</size><italic>true</italic></content>
+
+<content start="1951" end="1964">
+<size>11</size></content>
+
+<content start="1964" end="1965">
+<size>11</size><italic>true</italic></content>
+
+<content start="1965" end="2049">
+<size>11</size></content>
+
+<content start="2049" end="2050">
+</content>
+
+</paragraph>
+<paragraph start="2050" end="2051">
+<LeftIndent>140.0</LeftIndent>
+<content start="2050" end="2051">
+</content>
+
+</paragraph>
+<paragraph start="2051" end="2071">
+<LeftIndent>140.0</LeftIndent>
+<content start="2051" end="2070">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2070" end="2071">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2071" end="2261">
+<LeftIndent>160.0</LeftIndent>
+<content start="2071" end="2088">
+<size>11</size></content>
+
+<content start="2088" end="2095">
+<size>11</size><italic>true</italic></content>
+
+<content start="2095" end="2161">
+<size>11</size></content>
+
+<content start="2161" end="2162">
+<size>11</size><italic>true</italic></content>
+
+<content start="2162" end="2175">
+<size>11</size></content>
+
+<content start="2175" end="2176">
+<size>11</size><italic>true</italic></content>
+
+<content start="2176" end="2261">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2261" end="2262">
+<LeftIndent>140.0</LeftIndent>
+<content start="2261" end="2262">
+</content>
+
+</paragraph>
+<paragraph start="2262" end="2274">
+<LeftIndent>140.0</LeftIndent>
+<content start="2262" end="2273">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2273" end="2274">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2274" end="2438">
+<LeftIndent>160.0</LeftIndent>
+<content start="2274" end="2278">
+<size>11</size></content>
+
+<content start="2278" end="2279">
+<size>11</size><italic>true</italic></content>
+
+<content start="2279" end="2298">
+<size>11</size></content>
+
+<content start="2298" end="2299">
+<size>11</size><italic>true</italic></content>
+
+<content start="2299" end="2309">
+<size>11</size></content>
+
+<content start="2309" end="2310">
+<size>11</size><italic>true</italic></content>
+
+<content start="2310" end="2351">
+<size>11</size></content>
+
+<content start="2351" end="2369">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2369" end="2438">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2438" end="2439">
+<LeftIndent>140.0</LeftIndent>
+<content start="2438" end="2439">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2439" end="2441">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2439" end="2440">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_variable$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar><button>What's This?</button><button>Select Object</button></component></content>
+
+<content start="2440" end="2441">
+</content>
+
+</paragraph>
+<paragraph start="2441" end="2443">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2441" end="2442">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show Atom Index</title>
+<tooltip>Show Atom Index</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<action>Show Particle Index</action>
+</component></content>
+
+<content start="2442" end="2443">
+</content>
+
+</paragraph>
+<paragraph start="2443" end="2476">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2443" end="2475">
+<size>10</size></content>
+
+<content start="2475" end="2476">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2476" end="2587">
+<LeftIndent>160.0</LeftIndent>
+<content start="2476" end="2485">
+<size>11</size></content>
+
+<content start="2485" end="2509">
+<href>whatIsThisAction.cml</href><size>11</size></content>
+
+<content start="2509" end="2511">
+<size>11</size></content>
+
+<content start="2511" end="2546">
+<href>accessAtomProp.cml</href><size>11</size></content>
+
+<content start="2546" end="2552">
+<size>11</size></content>
+
+<content start="2552" end="2585">
+<href>viewSettings.cml</href><size>11</size></content>
+
+<content start="2585" end="2587">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2587" end="2588">
+<LeftIndent>140.0</LeftIndent>
+<content start="2587" end="2588">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2588" end="2600">
+<LeftIndent>140.0</LeftIndent>
+<content start="2588" end="2599">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2599" end="2600">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2600" end="2697">
+<LeftIndent>160.0</LeftIndent>
+<content start="2600" end="2604">
+<size>11</size></content>
+
+<content start="2604" end="2605">
+<size>11</size><italic>true</italic></content>
+
+<content start="2605" end="2624">
+<size>11</size></content>
+
+<content start="2624" end="2625">
+<size>11</size><italic>true</italic></content>
+
+<content start="2625" end="2635">
+<size>11</size></content>
+
+<content start="2635" end="2636">
+<size>11</size><italic>true</italic></content>
+
+<content start="2636" end="2677">
+<size>11</size></content>
+
+<content start="2677" end="2695">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2695" end="2697">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2697" end="2698">
+<LeftIndent>140.0</LeftIndent>
+<content start="2697" end="2698">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2698" end="2710">
+<LeftIndent>140.0</LeftIndent>
+<content start="2698" end="2709">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2709" end="2710">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2710" end="2822">
+<LeftIndent>160.0</LeftIndent>
+<content start="2710" end="2714">
+<size>11</size></content>
+
+<content start="2714" end="2715">
+<size>11</size><italic>true</italic></content>
+
+<content start="2715" end="2749">
+<size>11</size></content>
+
+<content start="2749" end="2750">
+<size>11</size><italic>true</italic></content>
+
+<content start="2750" end="2760">
+<size>11</size></content>
+
+<content start="2760" end="2761">
+<size>11</size><italic>true</italic></content>
+
+<content start="2761" end="2802">
+<size>11</size></content>
+
+<content start="2802" end="2820">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2820" end="2822">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2822" end="2823">
+<LeftIndent>140.0</LeftIndent>
+<content start="2822" end="2823">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2823" end="2835">
+<LeftIndent>140.0</LeftIndent>
+<content start="2823" end="2834">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2834" end="2835">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2835" end="2947">
+<LeftIndent>160.0</LeftIndent>
+<content start="2835" end="2839">
+<size>11</size></content>
+
+<content start="2839" end="2840">
+<size>11</size><italic>true</italic></content>
+
+<content start="2840" end="2874">
+<size>11</size></content>
+
+<content start="2874" end="2875">
+<size>11</size><italic>true</italic></content>
+
+<content start="2875" end="2885">
+<size>11</size></content>
+
+<content start="2885" end="2886">
+<size>11</size><italic>true</italic></content>
+
+<content start="2886" end="2927">
+<size>11</size></content>
+
+<content start="2927" end="2945">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2945" end="2947">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2947" end="2948">
+<LeftIndent>140.0</LeftIndent>
+<content start="2947" end="2948">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2948" end="2960">
+<LeftIndent>140.0</LeftIndent>
+<content start="2948" end="2959">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2959" end="2960">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2960" end="3076">
+<LeftIndent>160.0</LeftIndent>
+<content start="2960" end="2964">
+<size>11</size></content>
+
+<content start="2964" end="2965">
+<size>11</size><italic>true</italic></content>
+
+<content start="2965" end="3003">
+<size>11</size></content>
+
+<content start="3003" end="3004">
+<size>11</size><italic>true</italic></content>
+
+<content start="3004" end="3014">
+<size>11</size></content>
+
+<content start="3014" end="3015">
+<size>11</size><italic>true</italic></content>
+
+<content start="3015" end="3056">
+<size>11</size></content>
+
+<content start="3056" end="3074">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3074" end="3076">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3076" end="3077">
+<LeftIndent>140.0</LeftIndent>
+<content start="3076" end="3077">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3077" end="3089">
+<LeftIndent>140.0</LeftIndent>
+<content start="3077" end="3088">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3088" end="3089">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3089" end="3205">
+<LeftIndent>160.0</LeftIndent>
+<content start="3089" end="3093">
+<size>11</size></content>
+
+<content start="3093" end="3094">
+<size>11</size><italic>true</italic></content>
+
+<content start="3094" end="3132">
+<size>11</size></content>
+
+<content start="3132" end="3133">
+<size>11</size><italic>true</italic></content>
+
+<content start="3133" end="3143">
+<size>11</size></content>
+
+<content start="3143" end="3144">
+<size>11</size><italic>true</italic></content>
+
+<content start="3144" end="3185">
+<size>11</size></content>
+
+<content start="3185" end="3203">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3203" end="3205">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3205" end="3206">
+<LeftIndent>160.0</LeftIndent>
+<content start="3205" end="3206">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3206" end="3221">
+<LeftIndent>140.0</LeftIndent>
+<content start="3206" end="3220">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3220" end="3221">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3221" end="3380">
+<LeftIndent>160.0</LeftIndent>
+<content start="3221" end="3225">
+<size>11</size></content>
+
+<content start="3225" end="3226">
+<size>11</size><italic>true</italic></content>
+
+<content start="3226" end="3270">
+<size>11</size></content>
+
+<content start="3270" end="3271">
+<size>11</size><italic>true</italic></content>
+
+<content start="3271" end="3285">
+<size>11</size></content>
+
+<content start="3285" end="3286">
+<size>11</size><italic>true</italic></content>
+
+<content start="3286" end="3380">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3380" end="3381">
+<LeftIndent>160.0</LeftIndent>
+<content start="3380" end="3381">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3381" end="3396">
+<LeftIndent>140.0</LeftIndent>
+<content start="3381" end="3395">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3395" end="3396">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3396" end="3555">
+<LeftIndent>160.0</LeftIndent>
+<content start="3396" end="3400">
+<size>11</size></content>
+
+<content start="3400" end="3401">
+<size>11</size><italic>true</italic></content>
+
+<content start="3401" end="3445">
+<size>11</size></content>
+
+<content start="3445" end="3446">
+<size>11</size><italic>true</italic></content>
+
+<content start="3446" end="3460">
+<size>11</size></content>
+
+<content start="3460" end="3461">
+<size>11</size><italic>true</italic></content>
+
+<content start="3461" end="3555">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3555" end="3556">
+<LeftIndent>140.0</LeftIndent>
+<content start="3555" end="3556">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3556" end="3575">
+<LeftIndent>140.0</LeftIndent>
+<content start="3556" end="3574">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3574" end="3575">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3575" end="3701">
+<LeftIndent>160.0</LeftIndent>
+<content start="3575" end="3592">
+<size>11</size></content>
+
+<content start="3592" end="3593">
+<size>11</size><italic>true</italic></content>
+
+<content start="3593" end="3607">
+<size>11</size></content>
+
+<content start="3607" end="3608">
+<size>11</size><italic>true</italic></content>
+
+<content start="3608" end="3701">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3701" end="3702">
+<LeftIndent>160.0</LeftIndent>
+<content start="3701" end="3702">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3702" end="3722">
+<LeftIndent>140.0</LeftIndent>
+<content start="3702" end="3721">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3721" end="3722">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3722" end="3849">
+<LeftIndent>160.0</LeftIndent>
+<content start="3722" end="3740">
+<size>11</size></content>
+
+<content start="3740" end="3741">
+<size>11</size><italic>true</italic></content>
+
+<content start="3741" end="3755">
+<size>11</size></content>
+
+<content start="3755" end="3756">
+<size>11</size><italic>true</italic></content>
+
+<content start="3756" end="3849">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3849" end="3850">
+<LeftIndent>140.0</LeftIndent>
+<content start="3849" end="3850">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3850" end="3871">
+<LeftIndent>140.0</LeftIndent>
+<content start="3850" end="3870">
+<size>11</size><family>Courier New</family></content>
+
+<content start="3870" end="3871">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3871" end="4021">
+<LeftIndent>160.0</LeftIndent>
+<content start="3871" end="3890">
+<size>11</size></content>
+
+<content start="3890" end="3891">
+<size>11</size><italic>true</italic></content>
+
+<content start="3891" end="3923">
+<size>11</size></content>
+
+<content start="3923" end="3924">
+<size>11</size><superscript>true</superscript></content>
+
+<content start="3924" end="3926">
+<size>11</size></content>
+
+<content start="3926" end="3927">
+<size>11</size><italic>true</italic></content>
+
+<content start="3927" end="4021">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4021" end="4022">
+<LeftIndent>140.0</LeftIndent>
+<content start="4021" end="4022">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4022" end="4046">
+<LeftIndent>140.0</LeftIndent>
+<content start="4022" end="4045">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4045" end="4046">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4046" end="4201">
+<LeftIndent>160.0</LeftIndent>
+<content start="4046" end="4050">
+<size>11</size></content>
+
+<content start="4050" end="4051">
+<size>11</size><italic>true</italic></content>
+
+<content start="4051" end="4091">
+<size>11</size></content>
+
+<content start="4091" end="4092">
+<size>11</size><italic>true</italic></content>
+
+<content start="4092" end="4106">
+<size>11</size></content>
+
+<content start="4106" end="4107">
+<size>11</size><italic>true</italic></content>
+
+<content start="4107" end="4201">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4201" end="4202">
+<LeftIndent>160.0</LeftIndent>
+<content start="4201" end="4202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4202" end="4226">
+<LeftIndent>140.0</LeftIndent>
+<content start="4202" end="4225">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4225" end="4226">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4226" end="4381">
+<LeftIndent>160.0</LeftIndent>
+<content start="4226" end="4230">
+<size>11</size></content>
+
+<content start="4230" end="4231">
+<size>11</size><italic>true</italic></content>
+
+<content start="4231" end="4271">
+<size>11</size></content>
+
+<content start="4271" end="4272">
+<size>11</size><italic>true</italic></content>
+
+<content start="4272" end="4286">
+<size>11</size></content>
+
+<content start="4286" end="4287">
+<size>11</size><italic>true</italic></content>
+
+<content start="4287" end="4381">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4381" end="4382">
+<LeftIndent>160.0</LeftIndent>
+<content start="4381" end="4382">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4382" end="4398">
+<LeftIndent>140.0</LeftIndent>
+<content start="4382" end="4397">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4397" end="4398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4398" end="4532">
+<LeftIndent>160.0</LeftIndent>
+<content start="4398" end="4402">
+<size>11</size></content>
+
+<content start="4402" end="4403">
+<size>11</size><italic>true</italic></content>
+
+<content start="4403" end="4422">
+<size>11</size></content>
+
+<content start="4422" end="4423">
+<size>11</size><italic>true</italic></content>
+
+<content start="4423" end="4466">
+<size>11</size></content>
+
+<content start="4466" end="4467">
+<size>11</size><italic>true</italic></content>
+
+<content start="4467" end="4508">
+<size>11</size></content>
+
+<content start="4508" end="4530">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4530" end="4532">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4532" end="4533">
+<LeftIndent>160.0</LeftIndent>
+<content start="4532" end="4533">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4533" end="4549">
+<LeftIndent>140.0</LeftIndent>
+<content start="4533" end="4548">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4548" end="4549">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4549" end="4683">
+<LeftIndent>160.0</LeftIndent>
+<content start="4549" end="4553">
+<size>11</size></content>
+
+<content start="4553" end="4554">
+<size>11</size><italic>true</italic></content>
+
+<content start="4554" end="4573">
+<size>11</size></content>
+
+<content start="4573" end="4574">
+<size>11</size><italic>true</italic></content>
+
+<content start="4574" end="4617">
+<size>11</size></content>
+
+<content start="4617" end="4618">
+<size>11</size><italic>true</italic></content>
+
+<content start="4618" end="4659">
+<size>11</size></content>
+
+<content start="4659" end="4681">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4681" end="4683">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4683" end="4684">
+<LeftIndent>160.0</LeftIndent>
+<content start="4683" end="4684">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4684" end="4700">
+<LeftIndent>140.0</LeftIndent>
+<content start="4684" end="4699">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4699" end="4700">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4700" end="4849">
+<LeftIndent>160.0</LeftIndent>
+<content start="4700" end="4704">
+<size>11</size></content>
+
+<content start="4704" end="4705">
+<size>11</size><italic>true</italic></content>
+
+<content start="4705" end="4739">
+<size>11</size></content>
+
+<content start="4739" end="4740">
+<size>11</size><italic>true</italic></content>
+
+<content start="4740" end="4783">
+<size>11</size></content>
+
+<content start="4783" end="4784">
+<size>11</size><italic>true</italic></content>
+
+<content start="4784" end="4825">
+<size>11</size></content>
+
+<content start="4825" end="4847">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4847" end="4849">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4849" end="4850">
+<LeftIndent>160.0</LeftIndent>
+<content start="4849" end="4850">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4850" end="4866">
+<LeftIndent>140.0</LeftIndent>
+<content start="4850" end="4865">
+<size>11</size><family>Courier New</family></content>
+
+<content start="4865" end="4866">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4866" end="5016">
+<LeftIndent>160.0</LeftIndent>
+<content start="4866" end="4870">
+<size>11</size></content>
+
+<content start="4870" end="4871">
+<size>11</size><italic>true</italic></content>
+
+<content start="4871" end="4905">
+<size>11</size></content>
+
+<content start="4905" end="4906">
+<size>11</size><italic>true</italic></content>
+
+<content start="4906" end="4950">
+<size>11</size></content>
+
+<content start="4950" end="4951">
+<size>11</size><italic>true</italic></content>
+
+<content start="4951" end="4992">
+<size>11</size></content>
+
+<content start="4992" end="5014">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5014" end="5016">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5016" end="5017">
+<LeftIndent>160.0</LeftIndent>
+<content start="5016" end="5017">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5017" end="5033">
+<LeftIndent>140.0</LeftIndent>
+<content start="5017" end="5032">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5032" end="5033">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5033" end="5186">
+<LeftIndent>160.0</LeftIndent>
+<content start="5033" end="5037">
+<size>11</size></content>
+
+<content start="5037" end="5038">
+<size>11</size><italic>true</italic></content>
+
+<content start="5038" end="5076">
+<size>11</size></content>
+
+<content start="5076" end="5077">
+<size>11</size><italic>true</italic></content>
+
+<content start="5077" end="5120">
+<size>11</size></content>
+
+<content start="5120" end="5121">
+<size>11</size><italic>true</italic></content>
+
+<content start="5121" end="5162">
+<size>11</size></content>
+
+<content start="5162" end="5184">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5184" end="5186">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5186" end="5187">
+<LeftIndent>160.0</LeftIndent>
+<content start="5186" end="5187">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5187" end="5203">
+<LeftIndent>140.0</LeftIndent>
+<content start="5187" end="5202">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5202" end="5203">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5203" end="5356">
+<LeftIndent>160.0</LeftIndent>
+<content start="5203" end="5207">
+<size>11</size></content>
+
+<content start="5207" end="5208">
+<size>11</size><italic>true</italic></content>
+
+<content start="5208" end="5246">
+<size>11</size></content>
+
+<content start="5246" end="5247">
+<size>11</size><italic>true</italic></content>
+
+<content start="5247" end="5290">
+<size>11</size></content>
+
+<content start="5290" end="5291">
+<size>11</size><italic>true</italic></content>
+
+<content start="5291" end="5332">
+<size>11</size></content>
+
+<content start="5332" end="5354">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5354" end="5355">
+<size>11</size></content>
+
+<content start="5355" end="5356">
+</content>
+
+</paragraph>
+<paragraph start="5356" end="5357">
+<LeftIndent>140.0</LeftIndent>
+<content start="5356" end="5357">
+</content>
+
+</paragraph>
+<paragraph start="5357" end="5376">
+<LeftIndent>140.0</LeftIndent>
+<content start="5357" end="5375">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5375" end="5376">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5376" end="5484">
+<LeftIndent>160.0</LeftIndent>
+<content start="5376" end="5393">
+<size>11</size></content>
+
+<content start="5393" end="5394">
+<size>11</size><italic>true</italic></content>
+
+<content start="5394" end="5418">
+<size>11</size></content>
+
+<content start="5418" end="5419">
+<size>11</size><italic>true</italic></content>
+
+<content start="5419" end="5460">
+<size>11</size></content>
+
+<content start="5460" end="5482">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5482" end="5483">
+<size>11</size></content>
+
+<content start="5483" end="5484">
+</content>
+
+</paragraph>
+<paragraph start="5484" end="5485">
+<LeftIndent>140.0</LeftIndent>
+<content start="5484" end="5485">
+</content>
+
+</paragraph>
+<paragraph start="5485" end="5504">
+<LeftIndent>140.0</LeftIndent>
+<content start="5485" end="5503">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5503" end="5504">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5504" end="5623">
+<LeftIndent>160.0</LeftIndent>
+<content start="5504" end="5532">
+<size>11</size></content>
+
+<content start="5532" end="5533">
+<size>11</size><italic>true</italic></content>
+
+<content start="5533" end="5557">
+<size>11</size></content>
+
+<content start="5557" end="5558">
+<size>11</size><italic>true</italic></content>
+
+<content start="5558" end="5599">
+<size>11</size></content>
+
+<content start="5599" end="5621">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5621" end="5622">
+<size>11</size></content>
+
+<content start="5622" end="5623">
+</content>
+
+</paragraph>
+<paragraph start="5623" end="5624">
+<LeftIndent>140.0</LeftIndent>
+<content start="5623" end="5624">
+</content>
+
+</paragraph>
+<paragraph start="5624" end="5643">
+<LeftIndent>140.0</LeftIndent>
+<content start="5624" end="5642">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5642" end="5643">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5643" end="5766">
+<LeftIndent>160.0</LeftIndent>
+<content start="5643" end="5675">
+<size>11</size></content>
+
+<content start="5675" end="5676">
+<size>11</size><italic>true</italic></content>
+
+<content start="5676" end="5700">
+<size>11</size></content>
+
+<content start="5700" end="5701">
+<size>11</size><italic>true</italic></content>
+
+<content start="5701" end="5742">
+<size>11</size></content>
+
+<content start="5742" end="5764">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5764" end="5765">
+<size>11</size></content>
+
+<content start="5765" end="5766">
+</content>
+
+</paragraph>
+<paragraph start="5766" end="5767">
+<LeftIndent>140.0</LeftIndent>
+<content start="5766" end="5767">
+</content>
+
+</paragraph>
+<paragraph start="5767" end="5782">
+<LeftIndent>140.0</LeftIndent>
+<content start="5767" end="5781">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5781" end="5782">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5782" end="5938">
+<LeftIndent>160.0</LeftIndent>
+<content start="5782" end="5786">
+<size>11</size></content>
+
+<content start="5786" end="5787">
+<size>11</size><italic>true</italic></content>
+
+<content start="5787" end="5828">
+<size>11</size></content>
+
+<content start="5828" end="5829">
+<size>11</size><italic>true</italic></content>
+
+<content start="5829" end="5843">
+<size>11</size></content>
+
+<content start="5843" end="5844">
+<size>11</size><italic>true</italic></content>
+
+<content start="5844" end="5938">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5938" end="5939">
+<LeftIndent>160.0</LeftIndent>
+<content start="5938" end="5939">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5939" end="5954">
+<LeftIndent>140.0</LeftIndent>
+<content start="5939" end="5953">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5953" end="5954">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5954" end="6110">
+<LeftIndent>160.0</LeftIndent>
+<content start="5954" end="5958">
+<size>11</size></content>
+
+<content start="5958" end="5959">
+<size>11</size><italic>true</italic></content>
+
+<content start="5959" end="6000">
+<size>11</size></content>
+
+<content start="6000" end="6001">
+<size>11</size><italic>true</italic></content>
+
+<content start="6001" end="6015">
+<size>11</size></content>
+
+<content start="6015" end="6016">
+<size>11</size><italic>true</italic></content>
+
+<content start="6016" end="6110">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6110" end="6111">
+<LeftIndent>140.0</LeftIndent>
+<content start="6110" end="6111">
+</content>
+
+</paragraph>
+<paragraph start="6111" end="6126">
+<LeftIndent>140.0</LeftIndent>
+<content start="6111" end="6125">
+<size>11</size><family>Courier New</family></content>
+
+<content start="6125" end="6126">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6126" end="6263">
+<LeftIndent>160.0</LeftIndent>
+<content start="6126" end="6153">
+<size>11</size></content>
+
+<content start="6153" end="6154">
+<size>11</size><italic>true</italic></content>
+
+<content start="6154" end="6168">
+<size>11</size></content>
+
+<content start="6168" end="6169">
+<size>11</size><italic>true</italic></content>
+
+<content start="6169" end="6263">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6263" end="6264">
+<LeftIndent>160.0</LeftIndent>
+<content start="6263" end="6264">
+</content>
+
+</paragraph>
+<paragraph start="6264" end="6292">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="6264" end="6266">
+<size>11</size></content>
+
+<content start="6266" end="6274">
+<href>script_protocol.cml</href><size>11</size></content>
+
+<content start="6274" end="6277">
+<size>11</size></content>
+
+<content start="6277" end="6282">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="6282" end="6285">
+<size>11</size></content>
+
+<content start="6285" end="6289">
+<href>script_expression.cml</href><size>11</size></content>
+
+<content start="6289" end="6291">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

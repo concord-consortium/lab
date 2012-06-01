@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Root mean square deviation</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Root mean square deviation
+
+Given a sequence {a1, a2, a3, ......, an}, the root mean square deviation is given by:
+
+d={[(a1-s)2+(a2-s)2+(a3-s)2+......+(an-s)2]/n}1/2
+
+where
+
+s=(a1+a2+a3+......+an)/n
+
+is the mean.
+
+The root mean square deviation is also known as the standard deviation. Another term is the variance, which is defined as:
+
+v=[(a1-s)2+(a2-s)2+(a3-s)2+......+(an-s)2]/n
+
+(i.e. the root mean square deviation is the square root of the variance.)
+
+   
+ return to index</text>
+<section start="0" end="480">
+<paragraph start="0" end="27">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="26">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<LeftIndent>120.0</LeftIndent>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="115">
+<LeftIndent>140.0</LeftIndent>
+<content start="28" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="48" end="51">
+<size>11</size></content>
+
+<content start="51" end="52">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="52" end="55">
+<size>11</size></content>
+
+<content start="55" end="56">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="56" end="67">
+<size>11</size></content>
+
+<content start="67" end="68">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="68" end="115">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="115" end="116">
+<LeftIndent>140.0</LeftIndent>
+<content start="115" end="116">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="116" end="166">
+<LeftIndent>140.0</LeftIndent>
+<content start="116" end="122">
+<size>11</size></content>
+
+<content start="122" end="123">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="123" end="126">
+<size>11</size></content>
+
+<content start="126" end="127">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="127" end="130">
+<size>11</size></content>
+
+<content start="130" end="131">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="131" end="134">
+<size>11</size></content>
+
+<content start="134" end="135">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="135" end="138">
+<size>11</size></content>
+
+<content start="138" end="139">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="139" end="142">
+<size>11</size></content>
+
+<content start="142" end="143">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="143" end="153">
+<size>11</size></content>
+
+<content start="153" end="154">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="154" end="157">
+<size>11</size></content>
+
+<content start="157" end="158">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="158" end="162">
+<size>11</size></content>
+
+<content start="162" end="165">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="165" end="166">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="166" end="167">
+<LeftIndent>140.0</LeftIndent>
+<content start="166" end="167">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="167" end="173">
+<LeftIndent>140.0</LeftIndent>
+<content start="167" end="173">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="173" end="174">
+<LeftIndent>140.0</LeftIndent>
+<content start="173" end="174">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="174" end="199">
+<LeftIndent>140.0</LeftIndent>
+<content start="174" end="178">
+<size>11</size></content>
+
+<content start="178" end="179">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="179" end="181">
+<size>11</size></content>
+
+<content start="181" end="182">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="182" end="184">
+<size>11</size></content>
+
+<content start="184" end="185">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="185" end="194">
+<size>11</size></content>
+
+<content start="194" end="195">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="195" end="199">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="199" end="200">
+<LeftIndent>140.0</LeftIndent>
+<content start="199" end="200">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="200" end="213">
+<LeftIndent>140.0</LeftIndent>
+<content start="200" end="213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="213" end="214">
+<LeftIndent>140.0</LeftIndent>
+<content start="213" end="214">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="214" end="337">
+<LeftIndent>140.0</LeftIndent>
+<content start="214" end="337">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="337" end="338">
+<LeftIndent>140.0</LeftIndent>
+<content start="337" end="338">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="338" end="383">
+<LeftIndent>140.0</LeftIndent>
+<content start="338" end="343">
+<size>11</size></content>
+
+<content start="343" end="344">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="344" end="347">
+<size>11</size></content>
+
+<content start="347" end="348">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="348" end="351">
+<size>11</size></content>
+
+<content start="351" end="352">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="352" end="355">
+<size>11</size></content>
+
+<content start="355" end="356">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="356" end="359">
+<size>11</size></content>
+
+<content start="359" end="360">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="360" end="363">
+<size>11</size></content>
+
+<content start="363" end="364">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="364" end="374">
+<size>11</size></content>
+
+<content start="374" end="375">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="375" end="378">
+<size>11</size></content>
+
+<content start="378" end="379">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="379" end="383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="383" end="384">
+<LeftIndent>140.0</LeftIndent>
+<content start="383" end="384">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="384" end="458">
+<LeftIndent>140.0</LeftIndent>
+<content start="384" end="457">
+<size>11</size></content>
+
+<content start="457" end="458">
+</content>
+
+</paragraph>
+<paragraph start="458" end="459">
+<LeftIndent>140.0</LeftIndent>
+<content start="458" end="459">
+</content>
+
+</paragraph>
+<paragraph start="459" end="463">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="459" end="460">
+</content>
+
+<content start="460" end="461">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="461" end="463">
+</content>
+
+</paragraph>
+<paragraph start="463" end="480">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="463" end="464">
+</content>
+
+<content start="464" end="479">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

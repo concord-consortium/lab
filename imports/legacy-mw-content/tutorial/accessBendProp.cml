@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Accessing an angular bond&apos;s properties</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Accessing an angular bond&apos;s properties
+
+&lt; Previous | Index | Next &gt;
+
+To access a radial bond&apos;s properties, double-click it when the model container is in the selection mode (i.e. the button &quot; &quot; is chosen), and then you will see the following dialog window:
+
+  
+[This is a screenshot.]
+
+This dialog box allows you to change the bond angle and strength.
+
+Script support
+
+To change an angular bond&apos;s properties, select it first and then call set strength [value] to change its strength and set bondangle [value] to change its bond angle.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="564">
+<paragraph start="0" end="39">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="38">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="40">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="68">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="40" end="42">
+<size>11</size></content>
+
+<content start="42" end="50">
+<href>accessBondProp.cml</href><size>11</size></content>
+
+<content start="50" end="53">
+<size>11</size></content>
+
+<content start="53" end="58">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="58" end="61">
+<size>11</size></content>
+
+<content start="61" end="65">
+<href>accessMolProp.cml</href><size>11</size></content>
+
+<content start="65" end="67">
+<size>11</size></content>
+
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="69">
+<LeftIndent>100.0</LeftIndent>
+<content start="68" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="257">
+<LeftIndent>140.0</LeftIndent>
+<content start="69" end="191">
+<size>11</size></content>
+
+<content start="191" end="192">
+<size>11</size><icon>Select.gif</icon></content>
+
+<content start="192" end="257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="257" end="258">
+<LeftIndent>100.0</LeftIndent>
+<content start="257" end="258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="258" end="261">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="258" end="259">
+<size>11</size></content>
+
+<content start="259" end="260">
+<size>11</size><icon>BendProp.gif</icon></content>
+
+<content start="260" end="261">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="261" end="285">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="261" end="284">
+<size>10</size></content>
+
+<content start="284" end="285">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="285" end="286">
+<LeftIndent>140.0</LeftIndent>
+<content start="285" end="286">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="286" end="352">
+<LeftIndent>140.0</LeftIndent>
+<content start="286" end="352">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="352" end="353">
+<LeftIndent>140.0</LeftIndent>
+<content start="352" end="353">
+</content>
+
+</paragraph>
+<paragraph start="353" end="368">
+<LeftIndent>140.0</LeftIndent>
+<content start="353" end="367">
+<size>11</size><bold>true</bold></content>
+
+<content start="367" end="368">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="368" end="369">
+<LeftIndent>140.0</LeftIndent>
+<content start="368" end="369">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="369" end="535">
+<LeftIndent>140.0</LeftIndent>
+<content start="369" end="409">
+<size>11</size></content>
+
+<content start="409" end="415">
+<href>script_select.cml</href><size>11</size></content>
+
+<content start="415" end="439">
+<size>11</size></content>
+
+<content start="439" end="459">
+<size>11</size><family>Courier New</family></content>
+
+<content start="459" end="487">
+<size>11</size></content>
+
+<content start="487" end="508">
+<size>11</size><family>Courier New</family></content>
+
+<content start="508" end="535">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="535" end="536">
+<content start="535" end="536">
+</content>
+
+</paragraph>
+<paragraph start="536" end="564">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="536" end="538">
+<size>11</size></content>
+
+<content start="538" end="546">
+<href>accessBondProp.cml</href><size>11</size></content>
+
+<content start="546" end="549">
+<size>11</size></content>
+
+<content start="549" end="554">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="554" end="557">
+<size>11</size></content>
+
+<content start="557" end="561">
+<href>accessMolProp.cml</href><size>11</size></content>
+
+<content start="561" end="563">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

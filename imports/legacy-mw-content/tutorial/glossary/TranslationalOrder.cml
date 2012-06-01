@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Translational ordering</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Translational ordering
+
+It is well-known that the Lennard-Jones particles conform to hexagonal lattice structure when temperature becomes lower than the melting point. Because the hexagonal lattice has translational symmetry, such an ordering process is called translational ordering.
+
+
+ 
+return to index</text>
+<section start="0" end="305">
+<paragraph start="0" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="22">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<LeftIndent>120.0</LeftIndent>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="285">
+<LeftIndent>140.0</LeftIndent>
+<content start="24" end="284">
+<size>11</size></content>
+
+<content start="284" end="285">
+</content>
+
+</paragraph>
+<paragraph start="285" end="286">
+<LeftIndent>120.0</LeftIndent>
+<content start="285" end="286">
+</content>
+
+</paragraph>
+<paragraph start="286" end="287">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="286" end="287">
+</content>
+
+</paragraph>
+<paragraph start="287" end="289">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="287" end="288">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="288" end="289">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="289" end="305">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="289" end="304">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

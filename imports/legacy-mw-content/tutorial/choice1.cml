@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting a multiple choice question with multiple selections</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a multiple choice question with multiple selections
+
+&lt; Back &gt;
+
+Choose the &quot;Multiple Choice&quot; item from the Insert Menu, and check &quot;Multiple selections&quot;:
+
+  
+This is a screenshot.
+
+This allows you to design a multiple choice question with multiple selections. In the &quot;Question&quot; tab, you can set the question:
+
+  
+This is a screenshot.
+
+In the &quot;Choices&quot; tab, you can set the choices and the key to the answer:
+
+  
+This is a screenshot.
+
+When you are done, click OK. You will see, for example, the following multiple choice question with three correct answers:
+
+ 
+This is an active multiple choice question.
+
+Changing and removing a multiple choice question
+
+See &quot;Editing an embedded component&quot; for how to change, move, copy and remove a multiple choice question.
+
+&lt; Back &gt;</text>
+<section start="0" end="780">
+<paragraph start="0" end="62">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="61">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="72">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="63" end="65">
+<size>11</size></content>
+
+<content start="65" end="69">
+<href>choice.cml</href><size>11</size></content>
+
+<content start="69" end="71">
+<size>11</size></content>
+
+<content start="71" end="72">
+</content>
+
+</paragraph>
+<paragraph start="72" end="73">
+<content start="72" end="73">
+</content>
+
+</paragraph>
+<paragraph start="73" end="162">
+<LeftIndent>140.0</LeftIndent>
+<content start="73" end="162">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="162" end="163">
+<LeftIndent>100.0</LeftIndent>
+<content start="162" end="163">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="163" end="166">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="163" end="164">
+<size>11</size></content>
+
+<content start="164" end="165">
+<size>11</size><icon>MultipleChoiceDialog3.gif</icon></content>
+
+<content start="165" end="166">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="166" end="188">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="166" end="188">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="188" end="189">
+<LeftIndent>100.0</LeftIndent>
+<content start="188" end="189">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="189" end="317">
+<LeftIndent>140.0</LeftIndent>
+<content start="189" end="317">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="317" end="318">
+<LeftIndent>100.0</LeftIndent>
+<content start="317" end="318">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="318" end="321">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="318" end="319">
+<size>11</size></content>
+
+<content start="319" end="320">
+<size>11</size><icon>MultipleChoiceDialog4.gif</icon></content>
+
+<content start="320" end="321">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="321" end="343">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="321" end="343">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="343" end="344">
+<LeftIndent>100.0</LeftIndent>
+<content start="343" end="344">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="344" end="417">
+<LeftIndent>140.0</LeftIndent>
+<content start="344" end="417">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="417" end="418">
+<LeftIndent>100.0</LeftIndent>
+<content start="417" end="418">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="418" end="421">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="418" end="419">
+<size>11</size></content>
+
+<content start="419" end="420">
+<size>11</size><icon>MultipleChoiceDialog5.gif</icon></content>
+
+<content start="420" end="421">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="421" end="443">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="421" end="443">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="443" end="444">
+<LeftIndent>100.0</LeftIndent>
+<content start="443" end="444">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="444" end="567">
+<LeftIndent>140.0</LeftIndent>
+<content start="444" end="567">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="567" end="568">
+<LeftIndent>100.0</LeftIndent>
+<content start="567" end="568">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="568" end="570">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="568" end="569">
+<size>11</size><component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>false</single>
+<row>5</row>
+<width>400</width>
+<height>230</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body bgcolor=&quot;#eeeeee&quot; face=&quot;Verdana&quot;&gt;
+    &lt;table border=&quot;1&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font color=&quot;#E76F00&quot; size=&quot;5&quot;&gt;&lt;b&gt;Quiz&lt;/b&gt;&lt;/font&gt;&lt;b&gt;&lt;font color=&quot;#E76F00&quot; size=&quot;4&quot;&gt;:Which 
+          of the following astronauts have walked on the Moon? &lt;/font&gt;&lt;/b&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<submit>true</submit><clear>true</clear><choice>Neil A. Armstrong</choice>
+<choice>John Young</choice>
+<choice>Richard F. Gordon</choice>
+<choice>Charles Conrad, Jr.</choice>
+<choice>James Young</choice>
+<answer>0 3 4 </answer>
+<border>Raised Bevel</border></component></content>
+
+<content start="569" end="570">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="570" end="614">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="570" end="614">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="614" end="615">
+<LeftIndent>100.0</LeftIndent>
+<content start="614" end="615">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="615" end="664">
+<LeftIndent>140.0</LeftIndent>
+<content start="615" end="663">
+<size>11</size><bold>true</bold></content>
+
+<content start="663" end="664">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="664" end="665">
+<LeftIndent>140.0</LeftIndent>
+<content start="664" end="665">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="665" end="770">
+<LeftIndent>140.0</LeftIndent>
+<content start="665" end="670">
+<size>11</size></content>
+
+<content start="670" end="699">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="699" end="769">
+<size>11</size></content>
+
+<content start="769" end="770">
+</content>
+
+</paragraph>
+<paragraph start="770" end="771">
+<LeftIndent>100.0</LeftIndent>
+<content start="770" end="771">
+</content>
+
+</paragraph>
+<paragraph start="771" end="780">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="771" end="773">
+<size>11</size></content>
+
+<content start="773" end="777">
+<href>choice.cml</href><size>11</size></content>
+
+<content start="777" end="779">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

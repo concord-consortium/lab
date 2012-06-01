@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Choosing the time step</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Choosing the time step
+
+&lt; Previous | Index | Next &gt;
+
+Skip this section if you do not need to do high-precision simulations and quantitative analysis (most pre-college users skip this section). For those who need to, this section is very important.
+
+The term &quot;time step&quot; refers to the steplength for the procedure of numeric integration used in classical molecular dynamics simulations to solve the differential equations of motion. See the following flowchart of molecular dynamics simulation:
+
+ 
+dt is the time step
+
+The time step can be changed from the &quot;Edit&gt;Change Time Step&quot; menu of the model container, or set through the set command.
+
+Choosing a proper time step is very important. Setting the time step to be too small will cause the model to unfold too slowly, but it usually does no harm (on the contrary, the simulation is more believable). The danger usually lies in setting the time step to be too large.
+
+ 
+The recommended time step in MW is 0.5-3.0 femtoseconds, for all simulators including the Mesoscale Particle Simulator based on the Gay-Berne potential, regardless of whether or not a heat bath is applied. There are, however, exceptions. For example, in the simulation of liquid helium, we can use a time step as large as 10 femtoseconds, because the van der Waals potential between helium atoms is very weak and the temperature is as low as a few kelvin (we will talk about what factors constrain the time step shortly). Also, if you need a time step smaller than 0.5 femtosecond, you can always go for it, as long as that does not affect the usability of your model.
+
+It does not, however, mean that you can use any value within the recommended range safely. If you change the masses, adjust the Lennard-Jones parameters, add charges, apply strong external fieds, or use high bond energies, the default time step (one femtosecond) or the time step currently set for the model may not be suitable any longer. In the following, we will show you what the problems could be and how to detect them.
+
+If, however, you change none of the above conditions of a working model, then you should rest assured that there is nothing related to the time step that you need to worry about.
+ 
+
+The consequence of a time step that is too large is that the simulation will run abnormally. The typical symptom is that the system heats up continuously without an apparent source to feed it energy, and the heating usually accelerates and eventually causes the molecules to run wildly or the bonds to stretch to absurd lengths. The Molecular Workbench has a watch-dog task running in the background to stop the simulation if it detects that the energy increasing has exceeded the level of error tolerance. But you cannot take it for granted that there is no problem when the watch-dog does not complain, because the watch-dog only checks stepwise increasing of errors --- it does not detect errors accumulated over a long time (imagine a system that slowly slips away from the realm of correctness). The reality is that any simulation will have numeric errors. You are obliged to make sure that the calculations are correct to an acceptable degree when you choose a time step.
+
+Fortunately, in MW, the validity of a simulation can be verified in a very simple and easy way. That is, we can just take a look at the time series of three energies: the kinetic energy, the potential energy and their sum --- the total energy, and judge immediately whether or not the simulation has gone well. These three time series can be opened using the &quot;Option&gt;Toolbox&gt;View Time Series of Energies&quot; menu of the model container. You can also insert a button into the page that opens up them in a graph (Insert &gt; Standard Controller for Model &gt; Button, and then select  &quot;Show kinetic, potential and total energies&quot; from the Action List). For an isolated system, the total energy must conserve (Fig. 1), due to the First Law of Thermodynamics. If it does not, and you know there is no friction in your system, and you do not steering its objects, or apply torques on molecules, then you must reduce the time step. For a system immersed in a heat bath, the kinetic energy must stay approximately constant and the other two energies must fluctuate around a certain level (Fig. 2). If that does not happen, then your time step is probably too large.
+
+ 
+Note: The time series for energies are not created if the recorder is disabled.
+ 
+
+  
+Fig. 1 This is how the energy time series for an isolated system look like when the simulation runs within the tolerance of error. The purple straight line demonstrates energy conservation.
+
+  
+Fig. 2 This is how the energy time series for a system in a heat bath (300 K) look like when the simulation runs within the tolerance of error. The red straight line demonstrates the constant temperature of the system maintained by the heat bath.
+
+The rules for changing the time step
+
+Consider reducing the time step if you:
+
+(1) Decrease the mass of a particle dramatically;
+(2) Increase the strength of a Lennard-Jones potential dramatically;
+(3) Add large charges;
+(4) Apply a strong external field;
+(5) Set high bond energies for a chemical reaction;
+(6) Raise the temperature of the system dramatically;
+
+These are not empirical rules but the mathematical requirements from the integration method employed to solve the equations of motion. The rule of thumb is that whenever you expect the speeds of and/or forces on particles will increase dramatically due to a parameter change, the time step must be reduced.
+
+Script support
+
+Time step can be changed by using the set command: set timestep [value].
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="5649">
+<paragraph start="0" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="22">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="52">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="24" end="26">
+<size>11</size></content>
+
+<content start="26" end="34">
+<size>11</size><href>intro_2d.cml</href></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="49">
+<size>11</size><href>recordSimulation.cml</href></content>
+
+<content start="49" end="52">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<RightIndent>20.0</RightIndent>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="248">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="247">
+<italic>true</italic><size>11</size></content>
+
+<content start="247" end="248">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="248" end="249">
+<LeftIndent>140.0</LeftIndent>
+<content start="248" end="249">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="249" end="494">
+<LeftIndent>140.0</LeftIndent>
+<content start="249" end="344">
+<size>11</size></content>
+
+<content start="344" end="384">
+<size>11</size><href>glossary/MolecularDynamics.cml</href></content>
+
+<content start="384" end="494">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="494" end="495">
+<LeftIndent>140.0</LeftIndent>
+<content start="494" end="495">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="495" end="497">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="495" end="496">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>SetupSimulation$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorder>true</recorder></component></content>
+
+<content start="496" end="497">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="497" end="517">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="497" end="498">
+<size>11</size></content>
+
+<content start="498" end="499">
+<italic>true</italic><size>11</size></content>
+
+<content start="499" end="517">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="517" end="518">
+<LeftIndent>140.0</LeftIndent>
+<content start="517" end="518">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="518" end="641">
+<LeftIndent>140.0</LeftIndent>
+<content start="518" end="628">
+<size>11</size></content>
+
+<content start="628" end="631">
+<size>11</size><family>Courier New</family><href>script_set.cml</href></content>
+
+<content start="631" end="641">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="641" end="642">
+<LeftIndent>140.0</LeftIndent>
+<content start="641" end="642">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="642" end="918">
+<LeftIndent>140.0</LeftIndent>
+<content start="642" end="687">
+<size>11</size><bold>true</bold></content>
+
+<content start="687" end="918">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="918" end="919">
+<LeftIndent>140.0</LeftIndent>
+<content start="918" end="919">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="919" end="921">
+<LeftIndent>140.0</LeftIndent>
+<content start="919" end="920">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="920" end="921">
+</content>
+
+</paragraph>
+<paragraph start="921" end="1590">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="921" end="976">
+<size>11</size><bold>true</bold></content>
+
+<content start="976" end="1590">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1590" end="1591">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1590" end="1591">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1591" end="2017">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1591" end="1680">
+<size>11</size><bold>true</bold></content>
+
+<content start="1680" end="1719">
+<size>11</size></content>
+
+<content start="1719" end="1743">
+<size>11</size><href>glossary/LennardJones.cml</href></content>
+
+<content start="1743" end="1745">
+<size>11</size></content>
+
+<content start="1745" end="1756">
+<size>11</size><href>chargeAction.cml</href></content>
+
+<content start="1756" end="1771">
+<size>11</size></content>
+
+<content start="1771" end="1785">
+<size>11</size><href>externalFields.cml</href></content>
+
+<content start="1785" end="2017">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2017" end="2018">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2017" end="2018">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2018" end="2197">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2018" end="2196">
+<size>11</size><bold>true</bold></content>
+
+<content start="2196" end="2197">
+</content>
+
+</paragraph>
+<paragraph start="2197" end="2199">
+<LeftIndent>140.0</LeftIndent>
+<content start="2197" end="2198">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2198" end="2199">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2199" end="2200">
+<LeftIndent>140.0</LeftIndent>
+<content start="2199" end="2200">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2200" end="3178">
+<LeftIndent>140.0</LeftIndent>
+<content start="2200" end="3001">
+<size>11</size></content>
+
+<content start="3001" end="3060">
+<size>11</size><bold>true</bold></content>
+
+<content start="3060" end="3178">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3178" end="3179">
+<LeftIndent>140.0</LeftIndent>
+<content start="3178" end="3179">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3179" end="4329">
+<LeftIndent>140.0</LeftIndent>
+<content start="3179" end="3350">
+<size>11</size></content>
+
+<content start="3350" end="3364">
+<size>11</size><href>glossary/KineticEnergy.cml</href></content>
+
+<content start="3364" end="3370">
+<size>11</size></content>
+
+<content start="3370" end="3386">
+<size>11</size><href>glossary/PotentialEnergy.cml</href></content>
+
+<content start="3386" end="3409">
+<size>11</size></content>
+
+<content start="3409" end="3421">
+<size>11</size><href>glossary/TotalEnergy.cml</href></content>
+
+<content start="3421" end="3626">
+<size>11</size></content>
+
+<content start="3626" end="3655">
+<size>11</size><href>insertButton.cml</href></content>
+
+<content start="3655" end="3893">
+<size>11</size></content>
+
+<content start="3893" end="3924">
+<size>11</size><bold>true</bold></content>
+
+<content start="3924" end="3967">
+<size>11</size></content>
+
+<content start="3967" end="3975">
+<size>11</size><href>DampingAction.cml</href></content>
+
+<content start="3975" end="4007">
+<size>11</size></content>
+
+<content start="4007" end="4027">
+<size>11</size><href>SteerParticle.cml</href></content>
+
+<content start="4027" end="4329">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4329" end="4330">
+<LeftIndent>140.0</LeftIndent>
+<content start="4329" end="4330">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4330" end="4332">
+<LeftIndent>140.0</LeftIndent>
+<content start="4330" end="4331">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="4331" end="4332">
+</content>
+
+</paragraph>
+<paragraph start="4332" end="4412">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="4332" end="4411">
+<size>11</size></content>
+
+<content start="4411" end="4412">
+</content>
+
+</paragraph>
+<paragraph start="4412" end="4414">
+<LeftIndent>140.0</LeftIndent>
+<content start="4412" end="4413">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="4413" end="4414">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4414" end="4415">
+<LeftIndent>140.0</LeftIndent>
+<content start="4414" end="4415">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4415" end="4418">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="4415" end="4416">
+<size>11</size></content>
+
+<content start="4416" end="4417">
+<icon>normalenergy.gif</icon></content>
+
+<content start="4417" end="4418">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4418" end="4608">
+<RightIndent>60.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="4418" end="4607">
+<size>10</size></content>
+
+<content start="4607" end="4608">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4608" end="4609">
+<LeftIndent>140.0</LeftIndent>
+<content start="4608" end="4609">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4609" end="4612">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="4609" end="4610">
+<size>11</size></content>
+
+<content start="4610" end="4611">
+<icon>normalenergyinheatbath.gif</icon></content>
+
+<content start="4611" end="4612">
+</content>
+
+</paragraph>
+<paragraph start="4612" end="4859">
+<RightIndent>60.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="4612" end="4858">
+<size>10</size></content>
+
+<content start="4858" end="4859">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4859" end="4860">
+<LeftIndent>140.0</LeftIndent>
+<content start="4859" end="4860">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4860" end="4897">
+<LeftIndent>140.0</LeftIndent>
+<content start="4860" end="4896">
+<size>11</size><bold>true</bold></content>
+
+<content start="4896" end="4897">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4897" end="4898">
+<LeftIndent>140.0</LeftIndent>
+<content start="4897" end="4898">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4898" end="4938">
+<LeftIndent>140.0</LeftIndent>
+<content start="4898" end="4938">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4938" end="4939">
+<LeftIndent>140.0</LeftIndent>
+<content start="4938" end="4939">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4939" end="4989">
+<LeftIndent>160.0</LeftIndent>
+<content start="4939" end="4989">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4989" end="5058">
+<LeftIndent>160.0</LeftIndent>
+<content start="4989" end="5058">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5058" end="5081">
+<LeftIndent>160.0</LeftIndent>
+<content start="5058" end="5081">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5081" end="5116">
+<LeftIndent>160.0</LeftIndent>
+<content start="5081" end="5116">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5116" end="5168">
+<LeftIndent>160.0</LeftIndent>
+<content start="5116" end="5168">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5168" end="5222">
+<LeftIndent>160.0</LeftIndent>
+<content start="5168" end="5222">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5222" end="5223">
+<LeftIndent>140.0</LeftIndent>
+<content start="5222" end="5223">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5223" end="5530">
+<LeftIndent>140.0</LeftIndent>
+<content start="5223" end="5530">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5530" end="5531">
+<LeftIndent>140.0</LeftIndent>
+<content start="5530" end="5531">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5531" end="5546">
+<LeftIndent>140.0</LeftIndent>
+<content start="5531" end="5545">
+<size>11</size><bold>true</bold></content>
+
+<content start="5545" end="5546">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5546" end="5547">
+<LeftIndent>140.0</LeftIndent>
+<content start="5546" end="5547">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5547" end="5620">
+<LeftIndent>140.0</LeftIndent>
+<content start="5547" end="5585">
+<size>11</size></content>
+
+<content start="5585" end="5588">
+<size>11</size><family>Courier New</family><href>script_set.cml</href></content>
+
+<content start="5588" end="5598">
+<size>11</size></content>
+
+<content start="5598" end="5618">
+<size>11</size><family>Courier New</family></content>
+
+<content start="5618" end="5619">
+<size>11</size></content>
+
+<content start="5619" end="5620">
+</content>
+
+</paragraph>
+<paragraph start="5620" end="5621">
+<LeftIndent>100.0</LeftIndent>
+<content start="5620" end="5621">
+</content>
+
+</paragraph>
+<paragraph start="5621" end="5649">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="5621" end="5623">
+<size>11</size></content>
+
+<content start="5623" end="5631">
+<size>11</size><href>intro_2d.cml</href></content>
+
+<content start="5631" end="5634">
+<size>11</size></content>
+
+<content start="5634" end="5639">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="5639" end="5642">
+<size>11</size></content>
+
+<content start="5642" end="5647">
+<size>11</size><href>recordSimulation.cml</href></content>
+
+<content start="5647" end="5648">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

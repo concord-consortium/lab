@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Dragging an object</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Dragging an object
+
+&lt; Previous | Index | Next &gt;
+
+An object can be dragged by using mouse or pressing the left, right, up and down keys on the keyboard, if you choose the drag button &quot; &quot;.  Note that you cannot move an object out of the boundary, or move an object to a position that will result in overlap(s) with other object(s).
+
+You can practice the dragging action with the following model:
+
+ 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="426">
+<paragraph start="0" end="19">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="18">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<href>DampingAction.cml</href><size>11</size></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<href>rotateAction.cml</href><size>11</size></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>100.0</LeftIndent>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="330">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="183">
+<size>11</size></content>
+
+<content start="183" end="184">
+<icon>Move.gif</icon><size>11</size></content>
+
+<content start="184" end="330">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="330" end="331">
+<LeftIndent>140.0</LeftIndent>
+<content start="330" end="331">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="331" end="394">
+<LeftIndent>140.0</LeftIndent>
+<content start="331" end="393">
+<size>11</size></content>
+
+<content start="393" end="394">
+</content>
+
+</paragraph>
+<paragraph start="394" end="395">
+<LeftIndent>100.0</LeftIndent>
+<content start="394" end="395">
+</content>
+
+</paragraph>
+<paragraph start="395" end="397">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="395" end="396">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>dragAction$0.mml</resource><recorder>true</recorder><button>Drag Object</button><button>Select Object</button></component></content>
+
+<content start="396" end="397">
+</content>
+
+</paragraph>
+<paragraph start="397" end="398">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="397" end="398">
+</content>
+
+</paragraph>
+<paragraph start="398" end="426">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="398" end="400">
+<size>11</size></content>
+
+<content start="400" end="408">
+<href>DampingAction.cml</href><size>11</size></content>
+
+<content start="408" end="411">
+<size>11</size></content>
+
+<content start="411" end="416">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="416" end="419">
+<size>11</size></content>
+
+<content start="419" end="423">
+<href>rotateAction.cml</href><size>11</size></content>
+
+<content start="423" end="425">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

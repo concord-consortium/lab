@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>The Effect of Heat Bath</page_title>
+<text>The Effect of Heat Bath
+
+Every physical system is in an environment formed by other ones. A system can exchange energy and entropy with its environment. For example, an air-conditioned room will become hot if the air conditioner is turned off, because it will absorb heat from the outside through the interfaces: wall, floor and seiling. In this case, the environment is like a &quot;heat bath&quot; to the room --- the heat bath feeds the room heat energy until its temperature is identical to the outdoor temperature. The virtual heat bath in a molecular dynamics simulation is a computational procedure to maintain the temperature of the system.
+
+  
+   
+Molecular Workbench provides two implementations for heat bath: the velocity-rescaling method and the constraint method. By default, the velocity-rescaling method is used.</text>
+<section start="0" end="819">
+<paragraph start="0" end="24">
+<content start="0" end="23">
+<size>15</size><bold>true</bold></content>
+
+<content start="23" end="24">
+<size>18</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<content start="24" end="25">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="25" end="639">
+<LeftIndent>8.0</LeftIndent>
+<content start="25" end="510">
+<size>11</size></content>
+
+<content start="510" end="537">
+<size>11</size><bold>true</bold></content>
+
+<content start="537" end="566">
+<href>glossary/MolecularDynamics.cml</href><size>11</size><bold>true</bold></content>
+
+<content start="566" end="638">
+<size>11</size><bold>true</bold></content>
+
+<content start="638" end="639">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="639" end="640">
+<content start="639" end="640">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="640" end="643">
+<Alignment>1</Alignment>
+<content start="640" end="641">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>heatbath$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="641" end="642">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>heatbath$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="642" end="643">
+</content>
+
+</paragraph>
+<paragraph start="643" end="647">
+<Alignment>1</Alignment>
+<content start="643" end="644">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<timeseries>Kinetic Energy/Particle</timeseries>
+<description>Temperature (K)</description>
+<orientation>0</orientation>
+<multiplier>11594.0</multiplier>
+<max_fraction_digits>0</max_fraction_digits>
+<width>350</width>
+<height>80</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-10000</fgcolor>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>500.0</maximum>
+<value>301.2534042671323</value>
+</component></content>
+
+<content start="644" end="645">
+</content>
+
+<content start="645" end="646">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<timeseries>Kinetic Energy/Particle</timeseries>
+<description>Temperature (K)</description>
+<orientation>0</orientation>
+<multiplier>11594.0</multiplier>
+<max_fraction_digits>0</max_fraction_digits>
+<width>350</width>
+<height>80</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-10000</fgcolor>
+<model>1</model>
+<minimum>0.0</minimum>
+<maximum>500.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="646" end="647">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="647" end="819">
+<LeftIndent>8.0</LeftIndent>
+<content start="647" end="818">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

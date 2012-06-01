@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<folder>
+ <file title="The default portfolio folder">portfolio.cml</file>
+ <file title="Open models on the CD-ROM">import.cml</file>
+ <file title="Remove a node in the portfolio">delete.cml</file>
+ <file title="Email a page">send.cml</file>
+</folder> 

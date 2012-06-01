@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Marking Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Marking Tool
+
+&lt; Previous | Index | Next &gt;
+
+The Marking Tool can be selected by pressing the &quot; &quot; button.
+
+To mark object(s), click the Marking Tool button first, then drag the mouse to select a rectangular area that covers the object(s) needed to be marked. When the mouse is released, they will be marked.
+
+You can set the mark color by double-clicking on the mark button and selecting a color from the color palette in the pop-up window. When you save the model, the mark and the color will be saved.
+
+You may practice with the Marking Tool in the following model:
+
+ 
+[This is an embedded simulator.]
+
+Script support
+
+The mark command can be used to mark the selected particles with a specified color. Combined with the loop and delay command, this can be used to flash the selected particles.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="828">
+<paragraph start="0" end="17">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="16">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="46">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="18" end="20">
+<size>11</size></content>
+
+<content start="20" end="28">
+<href>CountingTool.cml</href><size>11</size></content>
+
+<content start="28" end="31">
+<size>11</size></content>
+
+<content start="31" end="36">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<href>chargeAction.cml</href><size>11</size></content>
+
+<content start="43" end="45">
+<size>11</size></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<LeftIndent>100.0</LeftIndent>
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="108">
+<LeftIndent>140.0</LeftIndent>
+<content start="47" end="97">
+<size>11</size></content>
+
+<content start="97" end="98">
+<size>11</size><icon>Mark.gif</icon></content>
+
+<content start="98" end="108">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="108" end="109">
+<LeftIndent>140.0</LeftIndent>
+<content start="108" end="109">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="109" end="310">
+<LeftIndent>140.0</LeftIndent>
+<content start="109" end="310">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="310" end="311">
+<LeftIndent>140.0</LeftIndent>
+<content start="310" end="311">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="311" end="506">
+<LeftIndent>140.0</LeftIndent>
+<content start="311" end="506">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="506" end="507">
+<LeftIndent>140.0</LeftIndent>
+<content start="506" end="507">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="507" end="570">
+<LeftIndent>140.0</LeftIndent>
+<content start="507" end="569">
+<size>11</size></content>
+
+<content start="569" end="570">
+</content>
+
+</paragraph>
+<paragraph start="570" end="571">
+<LeftIndent>100.0</LeftIndent>
+<content start="570" end="571">
+</content>
+
+</paragraph>
+<paragraph start="571" end="573">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="571" end="572">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>markAction$0.mml</resource><menubar>false</menubar><recorder>true</recorder><button>Mark Object</button><button>Select Object</button></component></content>
+
+<content start="572" end="573">
+</content>
+
+</paragraph>
+<paragraph start="573" end="606">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="573" end="605">
+<size>10</size></content>
+
+<content start="605" end="606">
+</content>
+
+</paragraph>
+<paragraph start="606" end="607">
+<RightIndent>20.0</RightIndent>
+<content start="606" end="607">
+</content>
+
+</paragraph>
+<paragraph start="607" end="622">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="607" end="621">
+<size>11</size><bold>true</bold></content>
+
+<content start="621" end="622">
+</content>
+
+</paragraph>
+<paragraph start="622" end="623">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="622" end="623">
+</content>
+
+</paragraph>
+<paragraph start="623" end="799">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="623" end="627">
+<size>11</size></content>
+
+<content start="627" end="631">
+<href>script_mark.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="631" end="725">
+<size>11</size></content>
+
+<content start="725" end="729">
+<href>script_loop.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="729" end="734">
+<size>11</size></content>
+
+<content start="734" end="739">
+<href>script_delay.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="739" end="798">
+<size>11</size></content>
+
+<content start="798" end="799">
+</content>
+
+</paragraph>
+<paragraph start="799" end="800">
+<RightIndent>20.0</RightIndent>
+<content start="799" end="800">
+</content>
+
+</paragraph>
+<paragraph start="800" end="828">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="800" end="802">
+<size>11</size></content>
+
+<content start="802" end="810">
+<href>CountingTool.cml</href><size>11</size></content>
+
+<content start="810" end="813">
+<size>11</size></content>
+
+<content start="813" end="818">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="818" end="821">
+<size>11</size></content>
+
+<content start="821" end="825">
+<href>chargeAction.cml</href><size>11</size></content>
+
+<content start="825" end="827">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

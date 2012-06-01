@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Input/output</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Input/output
+
+&lt; Previous | Index | Next &gt;
+
+We have shown you how to add a model to a page. When you insert a model into a page, what you do is actually inserting a model container whose window the model is displayed in. You can change the content displayed in that window by importing a different model. The model container also can output the current model. These functions can be found on its File menu, as is shown in the screenshot below:
+
+  
+[This is a screenshot of the File menu of a model container.]
+
+Loading a model
+
+ 
+[This is an embedded simulator.]
+Copy and paste the following URL to the text box opened by choosing &quot;Open Location...&quot; from the File menu, or simply click the linked URL: http://mw.concord.org/modeler1.3/tutorial/RotatingBenzene.mml (this hyperlink uses the load command, following the script protocol, to load a remote model file into the container).
+
+The above window shows three water molecules. But you may load a different model into the window, following these steps:
+
+   Choose the &quot;Open Model...&quot; item from the File menu of the model container (NOT the File menu on the upper left corner of the main window).
+   A file dialog will open up.
+   Select a model file (normally these files end with a mml extension) from the file dialog and click the &quot;OK&quot; button of the file dialog.
+
+If this is the first time you use the software, you probably do not have any molecular dynamics model on your disk. You may try the &quot;Open Model from Location&quot; input function, available at the same File menu. When you choose that menu, you should see the following dialog:
+
+  
+[This is a screenshot.]
+
+Type or copy/paste in the following URL: http://mw.concord.org/modeler1.3/tutorial/RotatingBenzene.mml .
+Press OK. You will see that something starts loading. When it finishes, you will see a benzene-like molecule. When you run the newly loaded model, you will see the benzene-like molecule rotating.
+
+In the above procedure, you do not remove the model window. Instead, you reuse it to load a new model. This is why the simulator is called a model container. When you jump from one page to another, the model container(s) of the previous page is(are) always reused to load the new content set for the next page.
+
+Saving a model
+
+You can export the model in a model container to a file. Choose the &quot;Save Model As&quot; item from the File menu, a file dialog will appear. Given a name to the file you would like to save the model to (the extension names are MML for &quot;Basic 2D Molecular Simulator&quot;, &quot;2D Chemical Reaction Simulator&quot;, and &quot;2D Protein Synthesis Simulator&quot;, or GBL for &quot;2D Mesoscale Particle Simulator&quot;). And press the Save button of the file dialog.
+
+If you are playing back a recorded movie, the current frame will be output. This feature allows you to extract a single frame from a movie and run a simulation from that frame as the starting point.
+
+ 
+In general, you do not need to save a model separately. The current content in a model container on a page is saved whenever the whole page gets saved.
+ 
+
+There are times that you need to save the models separately from the page. For example, if you would like to load different models into the container from a drop-down list, or when you use the &quot;load&quot; command to load a model, you will probably have to save the models independently of the page.
+
+Script support
+
+The load command can be used to input a model. There is no script support for outputting a model.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3471">
+<paragraph start="0" end="13">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="12">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="42">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="14" end="16">
+<size>11</size></content>
+
+<content start="16" end="24">
+<size>11</size><href>recordSimulation.cml</href></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="32">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="32" end="35">
+<size>11</size></content>
+
+<content start="35" end="39">
+<size>11</size><href>ResizeModelContainer.cml</href></content>
+
+<content start="39" end="41">
+<size>11</size></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="443">
+<LeftIndent>140.0</LeftIndent>
+<content start="43" end="68">
+<size>11</size></content>
+
+<content start="68" end="89">
+<size>11</size><href>insertModel.cml</href></content>
+
+<content start="89" end="443">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="443" end="444">
+<LeftIndent>100.0</LeftIndent>
+<content start="443" end="444">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="444" end="447">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="444" end="445">
+<size>11</size></content>
+
+<content start="445" end="446">
+<size>11</size><icon>FileMenu.gif</icon></content>
+
+<content start="446" end="447">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="447" end="509">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="447" end="508">
+<size>10</size></content>
+
+<content start="508" end="509">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="509" end="510">
+<content start="509" end="510">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="510" end="526">
+<LeftIndent>140.0</LeftIndent>
+<content start="510" end="525">
+<size>11</size><bold>true</bold></content>
+
+<content start="525" end="526">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="526" end="527">
+<LeftIndent>100.0</LeftIndent>
+<content start="526" end="527">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="527" end="529">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="527" end="528">
+<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>modelIO$0.mml</resource></component></content>
+
+<content start="528" end="529">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="529" end="562">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="529" end="561">
+<size>10</size></content>
+
+<content start="561" end="562">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="562" end="882">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="562" end="701">
+<size>10</size></content>
+
+<content start="701" end="762">
+<size>10</size><href>script:mw:1:load http://mw.concord.org/modeler1.3/tutorial/RotatingBenzene.mml</href></content>
+
+<content start="762" end="788">
+<size>10</size></content>
+
+<content start="788" end="792">
+<size>10</size><href>script_load.cml</href><family>Courier New</family></content>
+
+<content start="792" end="812">
+<size>10</size></content>
+
+<content start="812" end="831">
+<size>10</size><href>script_protocol.cml</href></content>
+
+<content start="831" end="881">
+<size>10</size></content>
+
+<content start="881" end="882">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="882" end="883">
+<LeftIndent>140.0</LeftIndent>
+<content start="882" end="883">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="883" end="1004">
+<LeftIndent>140.0</LeftIndent>
+<content start="883" end="1004">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1004" end="1005">
+<LeftIndent>160.0</LeftIndent>
+<content start="1004" end="1005">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1005" end="1147">
+<LeftIndent>160.0</LeftIndent>
+<content start="1005" end="1006">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1006" end="1083">
+<size>11</size></content>
+
+<content start="1083" end="1086">
+<size>11</size><bold>true</bold></content>
+
+<content start="1086" end="1147">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1147" end="1178">
+<LeftIndent>160.0</LeftIndent>
+<content start="1147" end="1148">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1148" end="1178">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1178" end="1316">
+<LeftIndent>160.0</LeftIndent>
+<content start="1178" end="1179">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1179" end="1234">
+<size>11</size></content>
+
+<content start="1234" end="1237">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1237" end="1316">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1316" end="1317">
+<LeftIndent>100.0</LeftIndent>
+<content start="1316" end="1317">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1317" end="1589">
+<LeftIndent>140.0</LeftIndent>
+<content start="1317" end="1589">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1589" end="1590">
+<LeftIndent>100.0</LeftIndent>
+<content start="1589" end="1590">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1590" end="1593">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="1590" end="1591">
+<size>11</size></content>
+
+<content start="1591" end="1592">
+<size>11</size><icon>OpenLocation.gif</icon></content>
+
+<content start="1592" end="1593">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1593" end="1617">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="1593" end="1616">
+<size>10</size></content>
+
+<content start="1616" end="1617">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1617" end="1618">
+<LeftIndent>100.0</LeftIndent>
+<content start="1617" end="1618">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1618" end="1723">
+<LeftIndent>140.0</LeftIndent>
+<content start="1618" end="1659">
+<size>11</size></content>
+
+<content start="1659" end="1720">
+<size>11</size><italic>true</italic></content>
+
+<content start="1720" end="1723">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1723" end="1919">
+<LeftIndent>140.0</LeftIndent>
+<content start="1723" end="1919">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1919" end="1920">
+<LeftIndent>140.0</LeftIndent>
+<content start="1919" end="1920">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1920" end="2231">
+<LeftIndent>140.0</LeftIndent>
+<content start="1920" end="1993">
+<size>11</size></content>
+
+<content start="1993" end="1998">
+<size>11</size><bold>true</bold></content>
+
+<content start="1998" end="2061">
+<size>11</size></content>
+
+<content start="2061" end="2078">
+<size>11</size><italic>true</italic></content>
+
+<content start="2078" end="2231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2231" end="2232">
+<LeftIndent>140.0</LeftIndent>
+<content start="2231" end="2232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2232" end="2247">
+<LeftIndent>140.0</LeftIndent>
+<content start="2232" end="2246">
+<size>11</size><bold>true</bold></content>
+
+<content start="2246" end="2247">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2247" end="2248">
+<LeftIndent>140.0</LeftIndent>
+<content start="2247" end="2248">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2248" end="2675">
+<LeftIndent>140.0</LeftIndent>
+<content start="2248" end="2470">
+<size>11</size></content>
+
+<content start="2470" end="2473">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2473" end="2585">
+<size>11</size></content>
+
+<content start="2585" end="2588">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2588" end="2675">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2675" end="2676">
+<LeftIndent>140.0</LeftIndent>
+<content start="2675" end="2676">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2676" end="2875">
+<LeftIndent>140.0</LeftIndent>
+<content start="2676" end="2718">
+<size>11</size></content>
+
+<content start="2718" end="2735">
+<size>11</size><italic>true</italic></content>
+
+<content start="2735" end="2875">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2875" end="2876">
+<LeftIndent>140.0</LeftIndent>
+<content start="2875" end="2876">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2876" end="2878">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<content start="2876" end="2877">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2877" end="2878">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2878" end="3030">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2878" end="2932">
+<size>11</size><bold>true</bold></content>
+
+<content start="2932" end="2994">
+<size>11</size></content>
+
+<content start="2994" end="3028">
+<size>11</size><href>download.cml</href></content>
+
+<content start="3028" end="3030">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3030" end="3032">
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<content start="3030" end="3031">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="3031" end="3032">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3032" end="3033">
+<LeftIndent>140.0</LeftIndent>
+<content start="3032" end="3033">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3033" end="3327">
+<LeftIndent>140.0</LeftIndent>
+<content start="3033" end="3142">
+<size>11</size></content>
+
+<content start="3142" end="3204">
+<size>11</size><href>loadmodels.cml</href></content>
+
+<content start="3204" end="3222">
+<size>11</size></content>
+
+<content start="3222" end="3227">
+<size>11</size><href>script_load.cml</href></content>
+
+<content start="3227" end="3231">
+<size>11</size><href>script_load.cml</href><family>Courier New</family></content>
+
+<content start="3231" end="3240">
+<size>11</size><href>script_load.cml</href></content>
+
+<content start="3240" end="3327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3327" end="3328">
+<LeftIndent>140.0</LeftIndent>
+<content start="3327" end="3328">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3328" end="3343">
+<LeftIndent>140.0</LeftIndent>
+<content start="3328" end="3342">
+<size>11</size><bold>true</bold></content>
+
+<content start="3342" end="3343">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3343" end="3344">
+<LeftIndent>140.0</LeftIndent>
+<content start="3343" end="3344">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3344" end="3442">
+<LeftIndent>140.0</LeftIndent>
+<content start="3344" end="3348">
+<size>11</size></content>
+
+<content start="3348" end="3352">
+<size>11</size><href>script_load.cml</href><family>Courier New</family></content>
+
+<content start="3352" end="3441">
+<size>11</size></content>
+
+<content start="3441" end="3442">
+</content>
+
+</paragraph>
+<paragraph start="3442" end="3443">
+<content start="3442" end="3443">
+</content>
+
+</paragraph>
+<paragraph start="3443" end="3471">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="3443" end="3445">
+<size>11</size></content>
+
+<content start="3445" end="3453">
+<size>11</size><href>recordSimulation.cml</href></content>
+
+<content start="3453" end="3456">
+<size>11</size></content>
+
+<content start="3456" end="3461">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="3461" end="3464">
+<size>11</size></content>
+
+<content start="3464" end="3468">
+<size>11</size><href>ResizeModelContainer.cml</href></content>
+
+<content start="3468" end="3470">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

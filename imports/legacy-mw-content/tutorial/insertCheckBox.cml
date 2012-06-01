@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting a check box</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a check box
+
+&lt; Previous | Index | Next &gt;
+
+You can insert a check box in a page for the user to toggle a boolean (yes or no, true or false) state of a model on the page. Check boxes are different from radio buttons in that if there is a group of check boxes, they are usually not mutually exclusive. In other words, they do not need to be grouped.
+
+When you select the &quot;Insert&gt;Standard Controllers for Model&gt;Check Box&quot; menu action (keyboard action: ALT+SHIFT+K), you will see the following dialog:
+
+  
+[This is a screenshot.]
+
+This dialog allows you to select a model and an action that applies to the model. If there is no model on the page, the Model and Action Combo Boxes will be blank.
+
+You can set the transparency of the check box, select a background color if it is not transparent, set the text for the tool tip that will appear when the mouse cursor enters and pauses, and set the text that will appear on it.
+
+By default, the size of a check box will be automatically decided by the text string and image on it, according to the font type/size and image size. But you can disable this auto-sizing functionality, and use the width and height parameters you specify with the &quot;Width&quot; and &quot;Height&quot; text fields.
+
+Setting scripts
+
+Unlike a button, for a check box, you can set two scripts associated with its states: one to be executed when it is selected, and the other to be executed when it is deselected. Note that although you are allowed to set arbitrary scripts for each state, you should generally bear in your mind that the two scripts should produce approximately opposite results for the model they interact with, as the user usually expects a check box to toggle between two opposite states.
+
+ 
+Tip: If scripts are long and you will need to write them in a more comfortable way, use your favorite  text editor to write scripts and copy back to the text area. If there exist scripts already, copy them to your editor first before editing them.
+ 
+
+Changing and removing a check box
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove and copy a check box.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2126">
+<paragraph start="0" end="22">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="21">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="51">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="23" end="25">
+<size>11</size></content>
+
+<content start="25" end="33">
+<href>insertRadioButton.cml</href><size>11</size></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="41">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="48">
+<href>insertSpinner.cml</href><size>11</size></content>
+
+<content start="48" end="50">
+<size>11</size></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="357">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="210">
+<size>11</size></content>
+
+<content start="210" end="223">
+<href>insertRadioButton.cml</href><size>11</size></content>
+
+<content start="223" end="357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="357" end="358">
+<LeftIndent>140.0</LeftIndent>
+<content start="357" end="358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="358" end="507">
+<LeftIndent>140.0</LeftIndent>
+<content start="358" end="507">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="507" end="508">
+<LeftIndent>100.0</LeftIndent>
+<content start="507" end="508">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="508" end="511">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="508" end="509">
+<size>11</size></content>
+
+<content start="509" end="510">
+<size>11</size><icon>CheckBoxController.gif</icon></content>
+
+<content start="510" end="511">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="511" end="535">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="511" end="534">
+<size>10</size></content>
+
+<content start="534" end="535">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="535" end="536">
+<LeftIndent>100.0</LeftIndent>
+<content start="535" end="536">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="536" end="700">
+<LeftIndent>140.0</LeftIndent>
+<content start="536" end="700">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="700" end="701">
+<LeftIndent>140.0</LeftIndent>
+<content start="700" end="701">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="701" end="929">
+<LeftIndent>140.0</LeftIndent>
+<content start="701" end="929">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="929" end="930">
+<LeftIndent>140.0</LeftIndent>
+<content start="929" end="930">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="930" end="1227">
+<LeftIndent>140.0</LeftIndent>
+<content start="930" end="1227">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1227" end="1228">
+<LeftIndent>140.0</LeftIndent>
+<content start="1227" end="1228">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1228" end="1244">
+<LeftIndent>140.0</LeftIndent>
+<content start="1228" end="1243">
+<size>11</size><bold>true</bold></content>
+
+<content start="1243" end="1244">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1244" end="1245">
+<LeftIndent>140.0</LeftIndent>
+<content start="1244" end="1245">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1245" end="1718">
+<LeftIndent>140.0</LeftIndent>
+<content start="1245" end="1718">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1718" end="1719">
+<LeftIndent>140.0</LeftIndent>
+<content start="1718" end="1719">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1719" end="1721">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1719" end="1720">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1720" end="1721">
+</content>
+
+</paragraph>
+<paragraph start="1721" end="1969">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1721" end="1724">
+<size>11</size><bold>true</bold></content>
+
+<content start="1724" end="1968">
+<size>11</size></content>
+
+<content start="1968" end="1969">
+</content>
+
+</paragraph>
+<paragraph start="1969" end="1971">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1969" end="1970">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1970" end="1971">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1971" end="1972">
+<LeftIndent>140.0</LeftIndent>
+<content start="1971" end="1972">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1972" end="2006">
+<LeftIndent>140.0</LeftIndent>
+<content start="1972" end="2005">
+<size>11</size><bold>true</bold></content>
+
+<content start="2005" end="2006">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2006" end="2007">
+<LeftIndent>140.0</LeftIndent>
+<content start="2006" end="2007">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2007" end="2097">
+<LeftIndent>140.0</LeftIndent>
+<content start="2007" end="2012">
+<size>11</size></content>
+
+<content start="2012" end="2041">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="2041" end="2096">
+<size>11</size></content>
+
+<content start="2096" end="2097">
+</content>
+
+</paragraph>
+<paragraph start="2097" end="2098">
+<LeftIndent>100.0</LeftIndent>
+<content start="2097" end="2098">
+</content>
+
+</paragraph>
+<paragraph start="2098" end="2126">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2098" end="2100">
+<size>11</size></content>
+
+<content start="2100" end="2108">
+<href>insertRadioButton.cml</href><size>11</size></content>
+
+<content start="2108" end="2111">
+<size>11</size></content>
+
+<content start="2111" end="2116">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="2116" end="2119">
+<size>11</size></content>
+
+<content start="2119" end="2123">
+<href>insertSpinner.cml</href><size>11</size></content>
+
+<content start="2123" end="2125">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

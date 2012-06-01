@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Composite boundary conditions</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Composite boundary conditions
+
+
+Boundary conditions are computational protocols about what to do when a particle meets a boundary. Composite boundary conditions define different types of properties at different sides of the boundary. For example, periodic boundary conditions are used in vertical direction, but reflecting boundary conditions are used in horizontal direction. Composite boundary conditions can be used in simulating, for instance, particle flow in micro pipe (in which particles can move freely in one direction but are confined in the other directions).
+
+See: periodic boundary conditions, reflectory boundary conditions.
+
+
+  
+ return to index</text>
+<section start="0" end="662">
+<paragraph start="0" end="30">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="29">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="29" end="30">
+<family>Book Antiqua</family><size>16</size></content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<LeftIndent>120.0</LeftIndent>
+<content start="30" end="31">
+<family>Book Antiqua</family><size>16</size></content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<LeftIndent>120.0</LeftIndent>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="572">
+<LeftIndent>140.0</LeftIndent>
+<content start="32" end="247">
+<size>11</size></content>
+
+<content start="247" end="275">
+<href>PeriodicBC.cml</href><size>11</size></content>
+
+<content start="275" end="572">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="572" end="573">
+<LeftIndent>140.0</LeftIndent>
+<content start="572" end="573">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="573" end="640">
+<LeftIndent>140.0</LeftIndent>
+<content start="573" end="578">
+<size>11</size></content>
+
+<content start="578" end="606">
+<href>PeriodicBC.cml</href><size>11</size></content>
+
+<content start="606" end="608">
+<size>11</size></content>
+
+<content start="608" end="638">
+<href>ReflectingBC.cml</href><size>11</size></content>
+
+<content start="638" end="639">
+<size>11</size></content>
+
+<content start="639" end="640">
+</content>
+
+</paragraph>
+<paragraph start="640" end="641">
+<LeftIndent>120.0</LeftIndent>
+<content start="640" end="641">
+</content>
+
+</paragraph>
+<paragraph start="641" end="642">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="641" end="642">
+</content>
+
+</paragraph>
+<paragraph start="642" end="645">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="642" end="643">
+</content>
+
+<content start="643" end="644">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="644" end="645">
+</content>
+
+</paragraph>
+<paragraph start="645" end="662">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="645" end="646">
+</content>
+
+<content start="646" end="661">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Experimental page 3 for multipage report</page_title>
+<text>           
+ 
+ 
+
+Go back
+
+
+</text>
+<section start="0" end="28">
+<paragraph start="0" end="12">
+<content start="0" end="1">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>report2_2$0.mml</resource><recorder>true</recorder><button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button></component></content>
+
+<content start="1" end="10">
+</content>
+
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageTextArea</class>
+<row>12</row>
+<column>36</column>
+<title>&lt;html&gt;
+   Write your observations.
+&lt;/html&gt;</title>
+</component></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="14">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="16">
+<Alignment>1</Alignment>
+<content start="14" end="15">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report for a page group in a new window</title>
+<description>Multipage report</description>
+<group>report2.cml, report2_1.cml, report2_2.cml</group>
+<border>Raised Bevel</border>
+<action>Create a report for a page group in a new window</action></component></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="25">
+<content start="17" end="24">
+<href>report2_1.cml</href></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+</paragraph>
+</section>
+</document>

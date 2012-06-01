@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Setting a background sound for a page</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Setting a background sound for a page
+
+&lt; Previous | Index | Next &gt;
+
+Similar to a web browser, in the Molecular Workbench (MW) software, a MIDI (Musical Instrument Digital Interface) sound clip can be set to play after a page is loaded.
+
+To set the background sound effect, use the &quot;Edit&gt;Background Sound&quot; menu. A window will pop up, which gives a drop-down menu that displays the file names of all the available audio clips under the directory of the current page. If you want to use an audio file, please make sure it is copied or moved to the directory.
+
+You also have the option of setting the background sound to play continunously. By default, it will just play once.
+
+ 
+Sound effect demo: Press here to enter a page with a MIDI sample. Press here to enter a page with a WAV sample. Warning: If you are in a public place, the sound effect may bother other people. Please use earphones, or do NOT enter the page.
+ 
+
+This functionality can be used to provide audio instructions to students, instead of or in addition to using text on the page.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1076">
+<paragraph start="0" end="38">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="37">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="67">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="39" end="41">
+<size>11</size></content>
+
+<content start="41" end="49">
+<size>11</size><href>title.cml</href></content>
+
+<content start="49" end="52">
+<size>11</size></content>
+
+<content start="52" end="57">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="57" end="60">
+<size>11</size></content>
+
+<content start="60" end="64">
+<size>11</size><href>TextFile.cml</href></content>
+
+<content start="64" end="66">
+<size>11</size></content>
+
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="68">
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="236">
+<LeftIndent>140.0</LeftIndent>
+<content start="68" end="236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="236" end="237">
+<LeftIndent>140.0</LeftIndent>
+<content start="236" end="237">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="237" end="556">
+<LeftIndent>140.0</LeftIndent>
+<content start="237" end="424">
+<size>11</size></content>
+
+<content start="424" end="463">
+<bold>true</bold><size>11</size></content>
+
+<content start="463" end="556">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="556" end="557">
+<LeftIndent>140.0</LeftIndent>
+<content start="556" end="557">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="557" end="673">
+<LeftIndent>140.0</LeftIndent>
+<content start="557" end="673">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="673" end="674">
+<LeftIndent>140.0</LeftIndent>
+<content start="673" end="674">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="674" end="676">
+<LeftIndent>140.0</LeftIndent>
+<content start="674" end="675">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="675" end="676">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="676" end="917">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="676" end="693">
+<bold>true</bold><size>11</size></content>
+
+<content start="693" end="701">
+<size>11</size></content>
+
+<content start="701" end="705">
+<size>11</size><href>bgsound.cml</href></content>
+
+<content start="705" end="748">
+<size>11</size></content>
+
+<content start="748" end="752">
+<size>11</size><href>bgsound_wav.cml</href></content>
+
+<content start="752" end="788">
+<size>11</size></content>
+
+<content start="788" end="795">
+<bold>true</bold><size>11</size></content>
+
+<content start="795" end="917">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="917" end="919">
+<LeftIndent>140.0</LeftIndent>
+<content start="917" end="918">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="918" end="919">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="919" end="920">
+<LeftIndent>140.0</LeftIndent>
+<content start="919" end="920">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="920" end="1047">
+<LeftIndent>140.0</LeftIndent>
+<content start="920" end="1047">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1047" end="1048">
+<LeftIndent>140.0</LeftIndent>
+<content start="1047" end="1048">
+</content>
+
+</paragraph>
+<paragraph start="1048" end="1076">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1048" end="1050">
+<size>11</size></content>
+
+<content start="1050" end="1058">
+<size>11</size><href>title.cml</href></content>
+
+<content start="1058" end="1061">
+<size>11</size></content>
+
+<content start="1061" end="1066">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1066" end="1069">
+<size>11</size></content>
+
+<content start="1069" end="1073">
+<size>11</size><href>TextFile.cml</href></content>
+
+<content start="1073" end="1075">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

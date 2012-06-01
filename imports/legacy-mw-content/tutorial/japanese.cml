@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="EUC-JP"?>
+<document>
+<language>EUC-JP</language>
+<page_title>楓橋夜泊</page_title>
+<text>Japanese language
+
+This test page is encoded in EUC-JP:
+
+「楓橋夜泊」
+
+月落ち烏啼いて霜天に満つ。
+江楓漁火愁眠に対す。
+姑蘇城外の寒山寺。
+夜半の鐘声客船に到る。</text>
+<section start="0" end="112">
+<paragraph start="0" end="18">
+<Alignment>1</Alignment>
+<content start="0" end="17">
+<bold>true</bold><size>15</size></content>
+
+<content start="17" end="18">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>1</Alignment>
+<content start="18" end="19">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="19" end="56">
+<content start="19" end="56">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<content start="56" end="57">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="57" end="64">
+<LeftIndent>60.0</LeftIndent>
+<content start="57" end="64">
+<size>20</size></content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<LeftIndent>60.0</LeftIndent>
+<content start="64" end="65">
+<size>20</size></content>
+
+</paragraph>
+<paragraph start="65" end="79">
+<LeftIndent>60.0</LeftIndent>
+<content start="65" end="79">
+<size>20</size></content>
+
+</paragraph>
+<paragraph start="79" end="90">
+<LeftIndent>60.0</LeftIndent>
+<content start="79" end="90">
+<size>20</size></content>
+
+</paragraph>
+<paragraph start="90" end="100">
+<LeftIndent>60.0</LeftIndent>
+<content start="90" end="100">
+<size>20</size></content>
+
+</paragraph>
+<paragraph start="100" end="112">
+<LeftIndent>60.0</LeftIndent>
+<content start="100" end="111">
+<size>20</size></content>
+
+</paragraph>
+</section>
+</document>

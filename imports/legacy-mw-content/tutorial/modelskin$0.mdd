@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.5.0_09" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="axisStyle"> 
+   <byte>0</byte> 
+  </void> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="obstacles"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="color"> 
+       <int>-3342592</int> 
+      </void> 
+      <void property="lx"> 
+       <float>5.918442</float> 
+      </void> 
+      <void property="ly"> 
+       <float>19.882978</float> 
+      </void> 
+      <void property="lz"> 
+       <float>11.353973</float> 
+      </void> 
+      <void property="rx"> 
+       <float>-21.998962</float> 
+      </void> 
+      <void property="ry"> 
+       <float>1.4479542</float> 
+      </void> 
+      <void property="rz"> 
+       <float>-4.34317</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="lx"> 
+       <float>4.8547335</float> 
+      </void> 
+      <void property="ly"> 
+       <float>19.204407</float> 
+      </void> 
+      <void property="lz"> 
+       <float>11.369995</float> 
+      </void> 
+      <void property="rx"> 
+       <float>30.437462</float> 
+      </void> 
+      <void property="ry"> 
+       <float>5.7955933</float> 
+      </void> 
+      <void property="rz"> 
+       <float>-2.269043</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="color"> 
+       <int>-6710785</int> 
+      </void> 
+      <void property="lx"> 
+       <float>44.518013</float> 
+      </void> 
+      <void property="ly"> 
+       <float>5.946213</float> 
+      </void> 
+      <void property="lz"> 
+       <float>18.294937</float> 
+      </void> 
+      <void property="rx"> 
+       <float>-1.4931717</float> 
+      </void> 
+      <void property="ry"> 
+       <float>-9.943863</float> 
+      </void> 
+      <void property="rz"> 
+       <float>0.3431549</float> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="rotation"> 
+   <string>-7 -963 -270 158.7 28</string> 
+  </void> 
+  <void property="showClock"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="trajectorySelection"> 
+   <string>0</string> 
+  </void> 
+ </object> 
+</java> 

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Probing phase transition by measuring pressure</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Probing phase transition by measuring pressure
+
+&lt; Previous | Index | Next &gt;
+
+A fourth test is to use the pressure probe to detect the phase transition between the gas and liquid state when the gas is being compressed into the liquid state. The phase transition may show up in the measurement of a pressure probe, because the compressivities of the two states are different.
+
+The compressivity of a system can be described by the first-order derivative of the volume versus the pressure. So let us set up such an experiment.
+
+  
+This is a live model.
+
+The kink in the V-P graph you observe in this experiment indicates that there is some sort of discontinuity in the first-order derivative. This means that the compressivity of the system has changed, an indicator of a phase transition. Try rewinding the recorder and following the crosshair of the graph. Do you think the system really changes from gas to liquid at the kink?
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="956">
+<paragraph start="0" end="47">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="46">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="76">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="48" end="50">
+<size>11</size></content>
+
+<content start="50" end="58">
+<href>isopressure.cml</href><size>11</size></content>
+
+<content start="58" end="61">
+<size>11</size></content>
+
+<content start="61" end="66">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="66" end="75">
+<size>11</size></content>
+
+<content start="75" end="76">
+</content>
+
+</paragraph>
+<paragraph start="76" end="77">
+<LeftIndent>140.0</LeftIndent>
+<content start="76" end="77">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="77" end="374">
+<LeftIndent>140.0</LeftIndent>
+<content start="77" end="374">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="374" end="375">
+<LeftIndent>140.0</LeftIndent>
+<content start="374" end="375">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="375" end="524">
+<LeftIndent>140.0</LeftIndent>
+<content start="375" end="524">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="524" end="525">
+<LeftIndent>140.0</LeftIndent>
+<content start="524" end="525">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="525" end="528">
+<LeftIndent>140.0</LeftIndent>
+<content start="525" end="526">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>probingphasetransition$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="526" end="527">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<time_series_x>West pressure:Obstacle #0</time_series_x>
+<time_series_y1 red="0" green="0" blue="0" style="0" width="0.0" symbol="1" size="4" spacing="5" multiplier="0.25">X: Obstacle #0</time_series_y1>
+<autofity>false</autofity>
+<axis_y_min>10.0</axis_y_min><axis_y_max>100.0</axis_y_max>
+<width>300</width>
+<height>285</height>
+<border>Raised Bevel</border>
+<axis_x_title>Pressure (bar)</axis_x_title>
+<axis_y_title>Volume (angstrom^2)</axis_y_title>
+<legend_x>596</legend_x>
+<legend_y>18</legend_y>
+<legend_font_name>Arial</legend_font_name>
+<legend_font_style>0</legend_font_style>
+<legend_font_size>9</legend_font_size>
+<axis_font_name>Arial</axis_font_name>
+<axis_font_size>9</axis_font_size>
+<axis_font_style>0</axis_font_style>
+<background><red>255</red><green>255</green><blue>255</blue></background>
+<foreground><Red>255</Red><Green>255</Green><Blue>255</Blue></foreground>
+<menubar>false</menubar>
+<model>0</model>
+</component></content>
+
+<content start="527" end="528">
+</content>
+
+</paragraph>
+<paragraph start="528" end="550">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="528" end="549">
+<size>11</size></content>
+
+<content start="549" end="550">
+</content>
+
+</paragraph>
+<paragraph start="550" end="551">
+<LeftIndent>140.0</LeftIndent>
+<content start="550" end="551">
+</content>
+
+</paragraph>
+<paragraph start="551" end="927">
+<LeftIndent>140.0</LeftIndent>
+<content start="551" end="927">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="927" end="928">
+<LeftIndent>140.0</LeftIndent>
+<content start="927" end="928">
+</content>
+
+</paragraph>
+<paragraph start="928" end="956">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="928" end="930">
+<size>11</size></content>
+
+<content start="930" end="938">
+<href>isopressure.cml</href><size>11</size></content>
+
+<content start="938" end="941">
+<size>11</size></content>
+
+<content start="941" end="946">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="946" end="955">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

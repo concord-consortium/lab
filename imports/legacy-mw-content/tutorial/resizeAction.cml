@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Resizing Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Resizing Tool
+
+&lt; Previous | Index | Next &gt;
+
+Resizing an atom
+
+Resizing an atom means changing its atomic radius. This will be explained in a later section.
+
+Resizing an obstacle
+
+Select a rectangular obstacle, and then grab and drag the small rectangles that appear at its boundary:
+
+  
+ 
+[This is an embedded simulator.]
+
+Resizing a Gay-Berne particle
+
+Click the button (&quot; &quot;), and then click a Gay-Berne particle. Two small rectangles will appear. You can grab and drag them to change the breadth and length of the selected particle.
+
+            
+
+You can practice resizing a Gay-Berne particle with the following model:
+
+ 
+[This is an embedded simulator.]
+
+Script support
+
+An atom can be resized by changing its element&apos;s sigma parameter: set element[i].sigma [value]. An obstacle can be resized by changing its width and height: set obstacle[i].width [value] and set obstacle[i].height [value].
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="932">
+<paragraph start="0" end="18">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="17">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="47">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="21">
+<size>11</size></content>
+
+<content start="21" end="29">
+<href>PointHeater.cml</href><size>11</size></content>
+
+<content start="29" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<href>makeBondAction.cml</href><size>11</size></content>
+
+<content start="44" end="47">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>140.0</LeftIndent>
+<content start="47" end="48">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="48" end="65">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="64">
+<size>11</size><bold>true</bold></content>
+
+<content start="64" end="65">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="66">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="66" end="160">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="145">
+<size>11</size></content>
+
+<content start="145" end="158">
+<href>accessAtomProp.cml</href><size>11</size></content>
+
+<content start="158" end="160">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="160" end="161">
+<LeftIndent>140.0</LeftIndent>
+<content start="160" end="161">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="161" end="182">
+<LeftIndent>140.0</LeftIndent>
+<content start="161" end="181">
+<size>11</size><bold>true</bold></content>
+
+<content start="181" end="182">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="182" end="183">
+<LeftIndent>140.0</LeftIndent>
+<content start="182" end="183">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="183" end="287">
+<LeftIndent>140.0</LeftIndent>
+<content start="183" end="287">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="287" end="288">
+<LeftIndent>100.0</LeftIndent>
+<content start="287" end="288">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="288" end="291">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="288" end="289">
+<size>11</size></content>
+
+<content start="289" end="290">
+<size>11</size><icon>ResizeObstacle.gif</icon></content>
+
+<content start="290" end="291">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="291" end="293">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="291" end="292">
+<size>11</size><component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>resizeAction$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder><button>Select Object</button></component></content>
+
+<content start="292" end="293">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="293" end="326">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="293" end="325">
+<size>10</size></content>
+
+<content start="325" end="326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="326" end="327">
+<LeftIndent>140.0</LeftIndent>
+<content start="326" end="327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="327" end="357">
+<LeftIndent>140.0</LeftIndent>
+<content start="327" end="356">
+<size>11</size><bold>true</bold></content>
+
+<content start="356" end="357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="357" end="358">
+<LeftIndent>140.0</LeftIndent>
+<content start="357" end="358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="358" end="539">
+<LeftIndent>140.0</LeftIndent>
+<content start="358" end="377">
+<size>11</size></content>
+
+<content start="377" end="378">
+<size>11</size><icon>Resize.gif</icon></content>
+
+<content start="378" end="539">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="539" end="540">
+<LeftIndent>100.0</LeftIndent>
+<content start="539" end="540">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="540" end="553">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="540" end="541">
+<size>11</size></content>
+
+<content start="541" end="542">
+<size>11</size><icon>ResizeGB.gif</icon></content>
+
+<content start="542" end="551">
+<size>11</size></content>
+
+<content start="551" end="552">
+<size>11</size><icon>ResizeGB2.gif</icon></content>
+
+<content start="552" end="553">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="553" end="554">
+<LeftIndent>100.0</LeftIndent>
+<content start="553" end="554">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="554" end="627">
+<LeftIndent>140.0</LeftIndent>
+<content start="554" end="626">
+<size>11</size></content>
+
+<content start="626" end="627">
+</content>
+
+</paragraph>
+<paragraph start="627" end="628">
+<LeftIndent>100.0</LeftIndent>
+<content start="627" end="628">
+</content>
+
+</paragraph>
+<paragraph start="628" end="630">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="628" end="629">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>resizeAction$0.gbl</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder><button>Resize GB</button><button>Select Object</button></component></content>
+
+<content start="629" end="630">
+</content>
+
+</paragraph>
+<paragraph start="630" end="663">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="630" end="662">
+<size>10</size></content>
+
+<content start="662" end="663">
+</content>
+
+</paragraph>
+<paragraph start="663" end="664">
+<LeftIndent>140.0</LeftIndent>
+<content start="663" end="664">
+</content>
+
+</paragraph>
+<paragraph start="664" end="679">
+<LeftIndent>140.0</LeftIndent>
+<content start="664" end="678">
+<size>11</size><bold>true</bold></content>
+
+<content start="678" end="679">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="679" end="680">
+<LeftIndent>140.0</LeftIndent>
+<content start="679" end="680">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="680" end="903">
+<LeftIndent>140.0</LeftIndent>
+<content start="680" end="746">
+<size>11</size></content>
+
+<content start="746" end="749">
+<href>script_set.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="749" end="774">
+<size>11</size><family>Courier New</family></content>
+
+<content start="774" end="837">
+<size>11</size></content>
+
+<content start="837" end="866">
+<size>11</size><family>Courier New</family></content>
+
+<content start="866" end="871">
+<size>11</size></content>
+
+<content start="871" end="901">
+<size>11</size><family>Courier New</family></content>
+
+<content start="901" end="903">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="903" end="904">
+<LeftIndent>140.0</LeftIndent>
+<content start="903" end="904">
+</content>
+
+</paragraph>
+<paragraph start="904" end="932">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="904" end="906">
+<size>11</size></content>
+
+<content start="906" end="914">
+<href>PointHeater.cml</href><size>11</size></content>
+
+<content start="914" end="917">
+<size>11</size></content>
+
+<content start="917" end="922">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="922" end="925">
+<size>11</size></content>
+
+<content start="925" end="929">
+<href>makeBondAction.cml</href><size>11</size></content>
+
+<content start="929" end="931">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

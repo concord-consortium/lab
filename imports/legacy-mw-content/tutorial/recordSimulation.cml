@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Starting and recording a simulation</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Starting and recording a simulation
+
+&lt; Previous | Index | Next &gt;
+
+Being able to record and play back a simulation is important for simulation-based analyses. When you insert a model container and run the model, the latest 200 frames are saved for playing back, by default. You can always stop the model, rewind the recorded movie, and play it back to examine what has happened more clearly. A model container provides a full set of recording/playing functionalities on the recorder control panel at its bottom, as is shown below:
+
+ 
+[This is an embedded simulator.]
+
+To manipulate a recorded simulation:
+
+   Press the &quot; &quot; button to stop at the current frame (this button also stops the model in the running mode).
+   Press the &quot; &quot; button to show the next frame.
+   Press the &quot; &quot; button to show the previous frame.
+   Press the &quot; &quot; button to rewind the recorded simulation.
+   Press the &quot; &quot; button to play the recorded simulation (this button also runs the model).
+   Drag the slider on the left to play/rewind the movie freely at your finger tip.
+   Click the slider (so as to transfer the keyboard focus to it), and then press the left/right arrow keys to play the movie frame by frame, or hold these keys down to play the movie continuously. If your mouse has a wheel, you can also roll the wheel to play the recorded trajectories back and forward, when the mouse cursor is on top of the slider.
+   Press the &quot; &quot; button to reset to the saved state.
+
+The tape of the recorder has a capacity of only N frames (by default N=200). When the capacity is reached, the tape will be overwritten (to prevent the program from running out of memory). Only the latest N frames are saved.
+
+Change the time interval between frames
+
+By default, the recorder stores the state of the model every 100 molecular dynamics steps. But this interval can be adjusted, depending on your need. The advantage of having a greater interval is that the recorder will be able to cover longer model time (in femtoseconds). The disadvantages are that the movie may become jerkier, some events may be not recorded if they happen just between two frames, and the data points available for analysis would be more coarse-grained. In general, if you use a smaller time step, you may want to increase the interval accordingly. Conversely, if you use a larger time step, you may want to decrease the interval. A value of 100 or 200 for the interval seems a good match to a time step of one femtosecond.
+
+To change the time interval between frames, open the Task Manager using the &quot;Option&gt;Task Manager&quot; menu of the model container&apos;s menu bar. Double-click on the &quot;Interval&quot; place in the row with the task name &quot;Recording the Simulation&quot;, and type in a new value. The unit is number of time steps, not femtoseconds.
+
+Right-clicking (or CTRL+clicking on Mac OS X without a multiple-button mouse) on the empty places (places not occupied by the slider and the buttons) on the recorder&apos;s control panel will bring up a menu called &quot;Change Recording Interval&quot;, which also opens the Task Manager.
+
+Change the tape length of the recorder
+
+If a segment of 200 frames is too short for you (e.g. if you are doing numerical analysis that needs reliable data sources),  you can change the number of frames(N) the recorder will store. Pull down the main Option Menu, select the Preferences item, you will see a dialog box. Select the Recorder tab. Type in the text field an integer number, and click OK. If the number you typed in is different than the original one, a dialog box will show up to remind you that the application will be shut down and it will restart in order for the new setting to come into effect. (If it does not restart automatically, you will have to restart manually.)
+
+  
+[This is a screenshot.]
+
+Once you change the tape length of the recorder, the setting will be kept. The next time you open the Molecular Workbench software, the recorder tape will have that length.
+
+ 
+Important: In general, you should not set the length to be longer than 500 frames, if the table under &quot;System Resources&quot; shows that you have no more than 64 MB of maximum memory allocated to MW. If you do need longer than 500 frames, MW has to be allocated more memory to avoid running out of memory. For more information about how to increase the memory allocation, check   this page out.
+ 
+
+Disable the recorder
+
+If there is no need to record the simulation or you would like to invoke certain mode of simulation that requires the recorder to be turned off (e.g. to do a flow simulation), you may choose to disable the recorder. The &quot;Option&quot; menu of a model container has a checkbox menu item called &quot;Disable Recorder&quot;. Check that menu item will immediately disable the recorder.
+
+ 
+Note: Sometimes the recorder cannot be disabled if there are other components on the page that depends on the recorder. For instance, if there is a line graph or a bar graph on the page, the recorder cannot be disabled before the graph is removed.
+ 
+
+If the recorder is disabled, the recorder toolbar will be replaced by three buttons: Run, Stop and Reset.
+
+Script support
+
+A simulation can be controlled using the corresponding commands: run, stop, and reset.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="5217">
+<paragraph start="0" end="36">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="35">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="65">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="37" end="39">
+<size>11</size></content>
+
+<content start="39" end="47">
+<size>11</size><href>SetupSimulation.cml</href></content>
+
+<content start="47" end="50">
+<size>11</size></content>
+
+<content start="50" end="55">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="55" end="58">
+<size>11</size></content>
+
+<content start="58" end="62">
+<size>11</size><href>modelIO.cml</href></content>
+
+<content start="62" end="64">
+<size>11</size></content>
+
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<LeftIndent>100.0</LeftIndent>
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="530">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="530">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="530" end="531">
+<LeftIndent>100.0</LeftIndent>
+<content start="530" end="531">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="531" end="533">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="531" end="532">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>recordSimulation$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="532" end="533">
+</content>
+
+</paragraph>
+<paragraph start="533" end="566">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="533" end="565">
+<size>10</size></content>
+
+<content start="565" end="566">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="566" end="567">
+<LeftIndent>140.0</LeftIndent>
+<content start="566" end="567">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="567" end="604">
+<LeftIndent>140.0</LeftIndent>
+<content start="567" end="604">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="604" end="605">
+<LeftIndent>100.0</LeftIndent>
+<content start="604" end="605">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="605" end="714">
+<LeftIndent>160.0</LeftIndent>
+<content start="605" end="606">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="606" end="619">
+<size>11</size></content>
+
+<content start="619" end="620">
+<size>11</size><icon>Pause.gif</icon></content>
+
+<content start="620" end="714">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="714" end="762">
+<LeftIndent>160.0</LeftIndent>
+<content start="714" end="715">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="715" end="728">
+<size>11</size></content>
+
+<content start="728" end="729">
+<size>11</size><icon>StepForward.gif</icon></content>
+
+<content start="729" end="762">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="762" end="814">
+<LeftIndent>160.0</LeftIndent>
+<content start="762" end="763">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="763" end="776">
+<size>11</size></content>
+
+<content start="776" end="777">
+<size>11</size><icon>StepBack.gif</icon></content>
+
+<content start="777" end="814">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="814" end="873">
+<LeftIndent>160.0</LeftIndent>
+<content start="814" end="815">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="815" end="828">
+<size>11</size></content>
+
+<content start="828" end="829">
+<size>11</size><icon>Rewind.gif</icon></content>
+
+<content start="829" end="873">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="873" end="964">
+<LeftIndent>160.0</LeftIndent>
+<content start="873" end="874">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="874" end="887">
+<size>11</size></content>
+
+<content start="887" end="888">
+<size>11</size><icon>Play.gif</icon></content>
+
+<content start="888" end="964">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="964" end="1047">
+<LeftIndent>160.0</LeftIndent>
+<content start="964" end="965">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="965" end="1047">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1047" end="1398">
+<LeftIndent>160.0</LeftIndent>
+<content start="1047" end="1048">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1048" end="1398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1398" end="1451">
+<LeftIndent>160.0</LeftIndent>
+<content start="1398" end="1399">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1399" end="1412">
+<size>11</size></content>
+
+<content start="1412" end="1413">
+<size>11</size><icon>Reset.gif</icon></content>
+
+<content start="1413" end="1451">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1451" end="1452">
+<LeftIndent>140.0</LeftIndent>
+<content start="1451" end="1452">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1452" end="1677">
+<LeftIndent>140.0</LeftIndent>
+<content start="1452" end="1500">
+<size>11</size></content>
+
+<content start="1500" end="1501">
+<size>11</size><italic>true</italic></content>
+
+<content start="1501" end="1521">
+<size>11</size></content>
+
+<content start="1521" end="1522">
+<size>11</size><italic>true</italic></content>
+
+<content start="1522" end="1657">
+<size>11</size></content>
+
+<content start="1657" end="1658">
+<size>11</size><italic>true</italic></content>
+
+<content start="1658" end="1677">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1677" end="1678">
+<LeftIndent>140.0</LeftIndent>
+<content start="1677" end="1678">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1678" end="1718">
+<LeftIndent>140.0</LeftIndent>
+<content start="1678" end="1717">
+<size>11</size><bold>true</bold></content>
+
+<content start="1717" end="1718">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1718" end="1719">
+<LeftIndent>140.0</LeftIndent>
+<content start="1718" end="1719">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1719" end="2464">
+<LeftIndent>140.0</LeftIndent>
+<content start="1719" end="2227">
+<size>11</size></content>
+
+<content start="2227" end="2236">
+<size>11</size><href>SetupSimulation.cml</href></content>
+
+<content start="2236" end="2464">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2464" end="2465">
+<LeftIndent>140.0</LeftIndent>
+<content start="2464" end="2465">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2465" end="2775">
+<LeftIndent>140.0</LeftIndent>
+<content start="2465" end="2514">
+<size>11</size></content>
+
+<content start="2514" end="2530">
+<size>11</size><href>taskManager.cml</href></content>
+
+<content start="2530" end="2757">
+<size>11</size></content>
+
+<content start="2757" end="2760">
+<size>11</size><italic>true</italic><bold>true</bold></content>
+
+<content start="2760" end="2775">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2775" end="2776">
+<LeftIndent>140.0</LeftIndent>
+<content start="2775" end="2776">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2776" end="3050">
+<LeftIndent>140.0</LeftIndent>
+<content start="2776" end="2792">
+<size>11</size></content>
+
+<content start="2792" end="2852">
+<size>11</size></content>
+
+<content start="2852" end="3050">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3050" end="3051">
+<LeftIndent>140.0</LeftIndent>
+<content start="3050" end="3051">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3051" end="3090">
+<LeftIndent>140.0</LeftIndent>
+<content start="3051" end="3089">
+<size>11</size><bold>true</bold></content>
+
+<content start="3089" end="3090">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3090" end="3091">
+<LeftIndent>140.0</LeftIndent>
+<content start="3090" end="3091">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3091" end="3737">
+<LeftIndent>140.0</LeftIndent>
+<content start="3091" end="3253">
+<size>11</size></content>
+
+<content start="3253" end="3254">
+<size>11</size><italic>true</italic></content>
+
+<content start="3254" end="3737">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3737" end="3738">
+<LeftIndent>100.0</LeftIndent>
+<content start="3737" end="3738">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3738" end="3741">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3738" end="3739">
+<size>11</size></content>
+
+<content start="3739" end="3740">
+<size>11</size><icon>RecorderPreferenceDialog.gif</icon></content>
+
+<content start="3740" end="3741">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3741" end="3765">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3741" end="3764">
+<size>10</size></content>
+
+<content start="3764" end="3765">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3765" end="3766">
+<LeftIndent>100.0</LeftIndent>
+<content start="3765" end="3766">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3766" end="3939">
+<LeftIndent>140.0</LeftIndent>
+<content start="3766" end="3939">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3939" end="3940">
+<LeftIndent>140.0</LeftIndent>
+<content start="3939" end="3940">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3940" end="3942">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="3940" end="3941">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="3941" end="3942">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3942" end="4332">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="3942" end="3952">
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
+
+<content start="3952" end="4315">
+<size>11</size></content>
+
+<content start="4315" end="4316">
+<icon>htmlink.gif</icon></content>
+
+<content start="4316" end="4317">
+<size>11</size></content>
+
+<content start="4317" end="4326">
+<size>11</size><href>../../modeler/xmx.html</href></content>
+
+<content start="4326" end="4332">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4332" end="4334">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="4332" end="4333">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="4333" end="4334">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4334" end="4335">
+<LeftIndent>140.0</LeftIndent>
+<content start="4334" end="4335">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4335" end="4356">
+<LeftIndent>140.0</LeftIndent>
+<content start="4335" end="4355">
+<size>11</size><bold>true</bold></content>
+
+<content start="4355" end="4356">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4356" end="4357">
+<LeftIndent>140.0</LeftIndent>
+<content start="4356" end="4357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4357" end="4724">
+<LeftIndent>140.0</LeftIndent>
+<content start="4357" end="4515">
+<size>11</size></content>
+
+<content start="4515" end="4530">
+<size>11</size><href>flow.cml</href></content>
+
+<content start="4530" end="4724">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4724" end="4725">
+<LeftIndent>140.0</LeftIndent>
+<content start="4724" end="4725">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4725" end="4727">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="4725" end="4726">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="4726" end="4727">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4727" end="4975">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="4727" end="4731">
+<size>11</size><bold>true</bold></content>
+
+<content start="4731" end="4875">
+<size>11</size></content>
+
+<content start="4875" end="4885">
+<size>11</size><href>insertXYGraph.cml</href></content>
+
+<content start="4885" end="4891">
+<size>11</size></content>
+
+<content start="4891" end="4900">
+<size>11</size><href>insertBarGraph.cml</href></content>
+
+<content start="4900" end="4975">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4975" end="4977">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="4975" end="4976">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="4976" end="4977">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4977" end="4978">
+<LeftIndent>140.0</LeftIndent>
+<content start="4977" end="4978">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4978" end="5084">
+<LeftIndent>140.0</LeftIndent>
+<content start="4978" end="5084">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5084" end="5085">
+<LeftIndent>140.0</LeftIndent>
+<content start="5084" end="5085">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5085" end="5100">
+<LeftIndent>140.0</LeftIndent>
+<content start="5085" end="5099">
+<size>11</size><bold>true</bold></content>
+
+<content start="5099" end="5100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5100" end="5101">
+<LeftIndent>140.0</LeftIndent>
+<content start="5100" end="5101">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5101" end="5188">
+<LeftIndent>140.0</LeftIndent>
+<content start="5101" end="5166">
+<size>11</size></content>
+
+<content start="5166" end="5169">
+<size>11</size><href>script_run.cml</href><family>Courier New</family></content>
+
+<content start="5169" end="5171">
+<size>11</size></content>
+
+<content start="5171" end="5175">
+<size>11</size><href>script_stop.cml</href><family>Courier New</family></content>
+
+<content start="5175" end="5181">
+<size>11</size></content>
+
+<content start="5181" end="5186">
+<size>11</size><href>script_reset.cml</href><family>Courier New</family></content>
+
+<content start="5186" end="5187">
+<size>11</size></content>
+
+<content start="5187" end="5188">
+</content>
+
+</paragraph>
+<paragraph start="5188" end="5189">
+<content start="5188" end="5189">
+</content>
+
+</paragraph>
+<paragraph start="5189" end="5217">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="5189" end="5191">
+<size>11</size></content>
+
+<content start="5191" end="5199">
+<size>11</size><href>SetupSimulation.cml</href></content>
+
+<content start="5199" end="5202">
+<size>11</size></content>
+
+<content start="5202" end="5207">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="5207" end="5210">
+<size>11</size></content>
+
+<content start="5210" end="5215">
+<size>11</size><href>modelIO.cml</href></content>
+
+<content start="5215" end="5216">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Background</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Background
+
+&lt; Previous | Index | Next &gt;
+
+The background command sets the background for the view of a model. To see how to change the background without using scripts, see this section for changing the view.
+
+Syntax:
+
+background color [r, g, b]
+background image [file name or address]
+
+The above commands allow you to set the background color and the background image.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="399">
+<paragraph start="0" end="11">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="10">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="40">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="12" end="14">
+<size>11</size></content>
+
+<content start="14" end="22">
+<href>script_show.cml</href><size>11</size></content>
+
+<content start="22" end="25">
+<size>11</size></content>
+
+<content start="25" end="30">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="30" end="39">
+<size>11</size></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<LeftIndent>100.0</LeftIndent>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="208">
+<LeftIndent>140.0</LeftIndent>
+<content start="41" end="45">
+<size>11</size></content>
+
+<content start="45" end="55">
+<size>11</size><family>Courier New</family></content>
+
+<content start="55" end="172">
+<size>11</size></content>
+
+<content start="172" end="184">
+<href>viewSettings.cml</href><size>11</size></content>
+
+<content start="184" end="208">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="208" end="209">
+<LeftIndent>140.0</LeftIndent>
+<content start="208" end="209">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="209" end="217">
+<LeftIndent>140.0</LeftIndent>
+<content start="209" end="217">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="217" end="218">
+<LeftIndent>140.0</LeftIndent>
+<content start="217" end="218">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="218" end="245">
+<LeftIndent>160.0</LeftIndent>
+<content start="218" end="228">
+<bold>true</bold><family>Courier New</family><size>11</size></content>
+
+<content start="228" end="244">
+<size>11</size><family>Courier New</family></content>
+
+<content start="244" end="245">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="245" end="285">
+<LeftIndent>160.0</LeftIndent>
+<content start="245" end="255">
+<bold>true</bold><family>Courier New</family><size>11</size></content>
+
+<content start="255" end="284">
+<size>11</size><family>Courier New</family></content>
+
+<content start="284" end="285">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="285" end="286">
+<LeftIndent>160.0</LeftIndent>
+<content start="285" end="286">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="286" end="369">
+<LeftIndent>140.0</LeftIndent>
+<content start="286" end="369">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="369" end="370">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="369" end="370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="370" end="371">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="370" end="371">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="371" end="399">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="371" end="373">
+<size>11</size></content>
+
+<content start="373" end="381">
+<href>script_show.cml</href><size>11</size></content>
+
+<content start="381" end="384">
+<size>11</size></content>
+
+<content start="384" end="389">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="389" end="398">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

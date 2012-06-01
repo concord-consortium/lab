@@ -1,0 +1,29 @@
+reset;
+define %xc "%width/2";
+define %yc "%height/2";
+define %n 20; // number of atoms in the ring
+define %d 6; // the radius of ring, in angstroms
+set element[0].sigma 1.5;
+loop 1;
+
+// add atoms
+set %sintheta "sin(2*pi*%loop_count/%n)";
+set %costheta "cos(2*pi*%loop_count/%n)";
+add atom 0 ("%xc+%d*%costheta", "%yc+%d*%sintheta");
+loop %n;
+delay 0.2;
+loop 1;
+
+// build the radial bonds
+bond %loop_count "%loop_count+1" 0.2;
+loop "%n-1";
+bond 0 "%n-1" 0.2;
+delay 0.2;
+loop 1;
+
+// build the angular bonds
+bond %loop_count "%loop_count+1" "%loop_count+2" 100;
+loop "%n-2";
+bond "%n-2" "%n-1" 0 100;
+bond "%n-1" 0 1 100;
+select abond none;

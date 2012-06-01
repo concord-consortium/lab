@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Heat bath</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Heat bath
+
+Heat bath can be considered as the thermal aspect of the environment in which a system is. 
+
+From Wikipedia, the free encyclopedia:
+
+&quot;A heat bath is a large system that is in thermal contact with some other system of interest.
+
+By &apos;large&apos; we mean that the heat bath is unperturbed when in thermal contact with the system of interest. Thus the heat bath is effectively an infinite reservoir of energy and accessible quantum states at a given temperature.&quot;
+
+The system that is in thermal contact with a heat bath tends to have the same temperature as that of the heat bath, because of the heat transfer between the two. The temperature of a molecular system in motion fluctuates. We can apply a heat bath with constant temperature to maintain its temperature. In molecular dynamics simulations, the simplest method to simulate the effect of a heat bath is to periodically rescale the velocities of the atoms so that the temperature is kept equal to a value, which is supposed to be that of the temperature of the heat bath.
+
+
+   
+ return to index</text>
+<section start="0" end="1056">
+<paragraph start="0" end="10">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="9">
+<bold>true</bold><size>20</size><family>Bookman Old Style</family></content>
+
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<LeftIndent>120.0</LeftIndent>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="103">
+<LeftIndent>140.0</LeftIndent>
+<content start="11" end="20">
+<size>11</size><href>../heatbath.cml</href></content>
+
+<content start="20" end="103">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="103" end="104">
+<LeftIndent>140.0</LeftIndent>
+<content start="103" end="104">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="104" end="143">
+<LeftIndent>140.0</LeftIndent>
+<content start="104" end="143">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="143" end="144">
+<LeftIndent>140.0</LeftIndent>
+<content start="143" end="144">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="144" end="238">
+<LeftIndent>140.0</LeftIndent>
+<content start="144" end="238">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="238" end="239">
+<LeftIndent>140.0</LeftIndent>
+<content start="238" end="239">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="239" end="466">
+<LeftIndent>140.0</LeftIndent>
+<content start="239" end="466">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="466" end="467">
+<LeftIndent>140.0</LeftIndent>
+<content start="466" end="467">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="467" end="1033">
+<LeftIndent>140.0</LeftIndent>
+<content start="467" end="1032">
+<size>11</size></content>
+
+<content start="1032" end="1033">
+</content>
+
+</paragraph>
+<paragraph start="1033" end="1034">
+<LeftIndent>120.0</LeftIndent>
+<content start="1033" end="1034">
+</content>
+
+</paragraph>
+<paragraph start="1034" end="1035">
+<Alignment>1</Alignment>
+<LeftIndent>120.0</LeftIndent>
+<content start="1034" end="1035">
+</content>
+
+</paragraph>
+<paragraph start="1035" end="1039">
+<Alignment>1</Alignment>
+<LeftIndent>120.0</LeftIndent>
+<content start="1035" end="1036">
+</content>
+
+<content start="1036" end="1037">
+<icon>index.gif</icon><href>index.cml</href></content>
+
+<content start="1037" end="1039">
+</content>
+
+</paragraph>
+<paragraph start="1039" end="1056">
+<Alignment>1</Alignment>
+<LeftIndent>120.0</LeftIndent>
+<content start="1039" end="1040">
+</content>
+
+<content start="1040" end="1055">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

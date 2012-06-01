@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Reversing velocities reverses simulations</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Reversing velocities reverses simulations
+
+The following experiment seeks to prove that if we reverse the velocity of every atom of a model, we can reverse the entire simulation.
+   
+ 
+
+The graph on the right above for energies shows a mirror symmetry about 1 ps, when we reverse the velocity of every atom. This is an evidence that the simulation is reversible. Because the kinetic energy depends on the velocities and the potential energy depends on the locations, if they show a striking symmetry, it is most likely that the positions are identical for a pair of symmetric points (but the velocities point to the opposite directions). The following two screenshots taken at the beginning of the above simulation and at the end show this:
+
+   </text>
+<section start="0" end="746">
+<paragraph start="0" end="42">
+<LeftIndent>140.0</LeftIndent>
+<content start="0" end="41">
+<size>16</size><bold>true</bold></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<LeftIndent>140.0</LeftIndent>
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="179">
+<LeftIndent>140.0</LeftIndent>
+<content start="43" end="178">
+<size>11</size></content>
+
+<content start="178" end="179">
+</content>
+
+</paragraph>
+<paragraph start="179" end="183">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="179" end="180">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>accuracyproof2$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="180" end="181">
+</content>
+
+<content start="181" end="182">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-10000" style="0" width="2.0" symbol="0" size="4" spacing="5">Kinetic Energy/Particle</time_series_y1>
+<time_series_y2 color="-ffff01" style="0" width="2.0" symbol="0" size="4" spacing="5">Potential Energy/Particle</time_series_y2>
+<time_series_y3 color="-ff0100" style="0" width="2.0" symbol="0" size="4" spacing="5">Total Energy/Particle</time_series_y3>
+<width>300</width>
+<height>350</height>
+<axis_x_title>Time</axis_x_title>
+<axis_y_title>Energy</axis_y_title>
+<legend_x>424</legend_x>
+<legend_y>11</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+</component></content>
+
+<content start="182" end="183">
+</content>
+
+</paragraph>
+<paragraph start="183" end="185">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="183" end="184">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run for 2 ps, reverse the velocity of every atom at 1 ps</title>
+<tooltip>Run for 2 ps, reverse the velocity of every atom at 1 ps</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run;
+delay modeltime 1000;
+stop immediately;
+loop 1;
+set atom[%loop_count].vx &quot;-%atom[%loop_count].vx&quot;;
+set atom[%loop_count].vy &quot;-%atom[%loop_count].vy&quot;;
+loop %number_of_atoms;
+run;
+delay modeltime 1000;
+stop immediately;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="184" end="185">
+</content>
+
+</paragraph>
+<paragraph start="185" end="186">
+<LeftIndent>140.0</LeftIndent>
+<content start="185" end="186">
+</content>
+
+</paragraph>
+<paragraph start="186" end="741">
+<LeftIndent>140.0</LeftIndent>
+<content start="186" end="741">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="741" end="742">
+<LeftIndent>140.0</LeftIndent>
+<content start="741" end="742">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="742" end="746">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="742" end="743">
+<size>11</size></content>
+
+<content start="743" end="744">
+<icon>accuracyproof2_200721161336.png</icon></content>
+
+<content start="744" end="745">
+<icon>accuracyproof2_200721161410.png</icon></content>
+
+</paragraph>
+</section>
+</document>

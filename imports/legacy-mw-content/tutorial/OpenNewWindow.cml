@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Opening a new window from a hyperlink</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Opening a new window from a hyperlink
+
+&lt; Previous | Index | Next &gt;
+
+Sometimes you want to have the reader open a new window when clicking a hyperlink, to show something that is best placed outside the current page. You want to be able to specify the size and the location of the pop-up window, and you hardly want the reader to go anywhere from the pop-up window if the content displayed in it is a reference to the content in the original window. 
+
+You can specify a number of properties for the pop-up window to be opened from a hyperlink, including:
+
+   left  -  Defines the distance between the left side of the window and the left border of the screen.
+   top  -  Defines the distance between the top side of the window and the top border of the screen.
+   width  -  Defines the width of the window.
+   height  -  Defines the height of the window.
+   resizable  -  Determines whether or not the popup window will be resizable.
+   toolbar  -  Determines whether or not to keep the toolbar
+   menubar  -  Determines whether or not to keep the menubar.
+   statusbar  -  Determines whether or not to keep the statusbar. 
+   fullscreen  -  Determines whether the window should be in fullscreen mode (not supported yet).
+
+These properties can be specified with the dialog window that comes up when you click the &quot;Advanced&quot; button in the Hyperlink Dialog, as is shown below: (The &quot;Advanced&quot; button is disabled if the hyperlink will not open up a new window.)
+
+  
+[This is a screenshot.]
+
+(These properties are similar to those you can specify using Javascript for a browser, if you know.)
+
+Examples: 
+
+The following link opens up a new window with the same size as this one and has toolbar and the menubar on it:
+
+&#10154; link 1
+
+The following link opens up a new window with the same size as this one without the toolbar and the menubar on it:
+
+&#10154; link 2
+
+The following link opens up a new non-resizable window with a size (400x400) without the toolbar, the menubar and the status bar on it:
+
+&#10154; link 3
+
+When you design a hyperlink that can open up a new window, you often want to also place a &quot;Close&quot; button in the new window that the user can click to close it. You can insert such a button by chosing the menu &quot;Insert&gt;Activity Controller&gt;Activity Button&quot;, and on the dialog window, choose the &quot;Close this page&quot; action.
+
+ 
+Note: Unfortunately, you cannot customize the popup window if the hyperlink is a HTML one embedded in a text box, a color bar, or a multiple choice.
+ 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2496">
+<paragraph start="0" end="38">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="37">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="67">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="39" end="41">
+<size>11</size></content>
+
+<content start="41" end="49">
+<href>hyperlink.cml</href><size>11</size></content>
+
+<content start="49" end="52">
+<size>11</size></content>
+
+<content start="52" end="57">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="57" end="60">
+<size>11</size></content>
+
+<content start="60" end="64">
+<href>symbol.cml</href><size>11</size></content>
+
+<content start="64" end="66">
+<size>11</size></content>
+
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="68">
+<LeftIndent>140.0</LeftIndent>
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="449">
+<LeftIndent>140.0</LeftIndent>
+<content start="68" end="449">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="449" end="450">
+<LeftIndent>140.0</LeftIndent>
+<content start="449" end="450">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="450" end="553">
+<LeftIndent>140.0</LeftIndent>
+<content start="450" end="553">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="553" end="554">
+<LeftIndent>140.0</LeftIndent>
+<content start="553" end="554">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="554" end="658">
+<LeftIndent>160.0</LeftIndent>
+<content start="554" end="555">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="555" end="557">
+<size>11</size></content>
+
+<content start="557" end="561">
+<size>11</size><family>Courier New</family></content>
+
+<content start="561" end="658">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="658" end="759">
+<LeftIndent>160.0</LeftIndent>
+<content start="658" end="659">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="659" end="661">
+<size>11</size></content>
+
+<content start="661" end="664">
+<size>11</size><family>Courier New</family></content>
+
+<content start="664" end="759">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="759" end="805">
+<LeftIndent>160.0</LeftIndent>
+<content start="759" end="760">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="760" end="762">
+<size>11</size></content>
+
+<content start="762" end="767">
+<size>11</size><family>Courier New</family></content>
+
+<content start="767" end="805">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="805" end="853">
+<LeftIndent>160.0</LeftIndent>
+<content start="805" end="806">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="806" end="808">
+<size>11</size></content>
+
+<content start="808" end="814">
+<size>11</size><family>Courier New</family></content>
+
+<content start="814" end="853">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="853" end="932">
+<LeftIndent>160.0</LeftIndent>
+<content start="853" end="854">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="854" end="856">
+<size>11</size></content>
+
+<content start="856" end="865">
+<size>11</size><family>Courier New</family></content>
+
+<content start="865" end="866">
+<size>11</size><italic>true</italic></content>
+
+<content start="866" end="932">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="932" end="993">
+<LeftIndent>160.0</LeftIndent>
+<content start="932" end="933">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="933" end="935">
+<size>11</size></content>
+
+<content start="935" end="942">
+<size>11</size><family>Courier New</family></content>
+
+<content start="942" end="993">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="993" end="1055">
+<LeftIndent>160.0</LeftIndent>
+<content start="993" end="994">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="994" end="996">
+<size>11</size></content>
+
+<content start="996" end="1003">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1003" end="1055">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1055" end="1122">
+<LeftIndent>160.0</LeftIndent>
+<content start="1055" end="1056">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="1056" end="1058">
+<size>11</size></content>
+
+<content start="1058" end="1067">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1067" end="1122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1122" end="1220">
+<LeftIndent>160.0</LeftIndent>
+<content start="1122" end="1123">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="1123" end="1125">
+<size>11</size></content>
+
+<content start="1125" end="1135">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1135" end="1136">
+<size>11</size><italic>true</italic></content>
+
+<content start="1136" end="1220">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1220" end="1221">
+<LeftIndent>140.0</LeftIndent>
+<content start="1220" end="1221">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1221" end="1457">
+<LeftIndent>140.0</LeftIndent>
+<content start="1221" end="1457">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1457" end="1458">
+<LeftIndent>140.0</LeftIndent>
+<content start="1457" end="1458">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1458" end="1461">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1458" end="1459">
+<size>11</size></content>
+
+<content start="1459" end="1460">
+<size>11</size><icon>AdvancedHyperlinkDialog.gif</icon></content>
+
+<content start="1460" end="1461">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1461" end="1485">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1461" end="1484">
+<size>10</size></content>
+
+<content start="1484" end="1485">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1485" end="1486">
+<LeftIndent>140.0</LeftIndent>
+<content start="1485" end="1486">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1486" end="1587">
+<LeftIndent>140.0</LeftIndent>
+<content start="1486" end="1587">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1587" end="1588">
+<LeftIndent>140.0</LeftIndent>
+<content start="1587" end="1588">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1588" end="1599">
+<LeftIndent>140.0</LeftIndent>
+<content start="1588" end="1597">
+<size>11</size><bold>true</bold></content>
+
+<content start="1597" end="1599">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1599" end="1600">
+<LeftIndent>140.0</LeftIndent>
+<content start="1599" end="1600">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1600" end="1711">
+<LeftIndent>160.0</LeftIndent>
+<content start="1600" end="1711">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1711" end="1712">
+<LeftIndent>160.0</LeftIndent>
+<content start="1711" end="1712">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1712" end="1721">
+<LeftIndent>180.0</LeftIndent>
+<content start="1712" end="1713">
+<size>14</size><foreground>255 0 0</foreground></content>
+
+<content start="1713" end="1714">
+<size>11</size></content>
+
+<content start="1714" end="1720">
+<link_statusbar>true</link_statusbar><target>_blank</target><link_fullscreen>false</link_fullscreen><link_left>0</link_left><link_menubar>true</link_menubar><size>11</size><link_top>0</link_top><link_toolbar>true</link_toolbar><href>index2.cml</href><link_resizable>true</link_resizable></content>
+
+<content start="1720" end="1721">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1721" end="1722">
+<LeftIndent>120.0</LeftIndent>
+<content start="1721" end="1722">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1722" end="1837">
+<LeftIndent>160.0</LeftIndent>
+<content start="1722" end="1837">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1837" end="1838">
+<LeftIndent>160.0</LeftIndent>
+<content start="1837" end="1838">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1838" end="1847">
+<LeftIndent>180.0</LeftIndent>
+<content start="1838" end="1839">
+<size>14</size><foreground>255 0 0</foreground></content>
+
+<content start="1839" end="1840">
+<size>11</size></content>
+
+<content start="1840" end="1846">
+<link_statusbar>true</link_statusbar><target>_blank</target><link_fullscreen>false</link_fullscreen><link_left>100</link_left><link_menubar>false</link_menubar><size>11</size><link_top>100</link_top><link_toolbar>false</link_toolbar><href>index2.cml</href><link_resizable>true</link_resizable></content>
+
+<content start="1846" end="1847">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1847" end="1848">
+<LeftIndent>120.0</LeftIndent>
+<content start="1847" end="1848">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1848" end="1984">
+<LeftIndent>160.0</LeftIndent>
+<content start="1848" end="1984">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1984" end="1985">
+<LeftIndent>160.0</LeftIndent>
+<content start="1984" end="1985">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1985" end="1994">
+<LeftIndent>180.0</LeftIndent>
+<content start="1985" end="1986">
+<size>14</size><foreground>255 0 0</foreground></content>
+
+<content start="1986" end="1987">
+<size>11</size></content>
+
+<content start="1987" end="1993">
+<link_statusbar>false</link_statusbar><target>_blank</target><link_width>400</link_width><link_fullscreen>false</link_fullscreen><link_height>400</link_height><link_left>100</link_left><link_menubar>false</link_menubar><size>11</size><link_top>100</link_top><link_toolbar>false</link_toolbar><href>nanotube.xyz</href><link_resizable>false</link_resizable></content>
+
+<content start="1993" end="1994">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1994" end="1995">
+<LeftIndent>100.0</LeftIndent>
+<content start="1994" end="1995">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1995" end="2313">
+<LeftIndent>140.0</LeftIndent>
+<content start="1995" end="2313">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2313" end="2314">
+<LeftIndent>140.0</LeftIndent>
+<content start="2313" end="2314">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2314" end="2316">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="2314" end="2315">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2315" end="2316">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2316" end="2465">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2316" end="2320">
+<size>11</size><bold>true</bold></content>
+
+<content start="2320" end="2420">
+<size>11</size></content>
+
+<content start="2420" end="2428">
+<href>textbox.cml</href><size>11</size></content>
+
+<content start="2428" end="2432">
+<size>11</size></content>
+
+<content start="2432" end="2441">
+<href>ColorBar.cml</href><size>11</size></content>
+
+<content start="2441" end="2448">
+<size>11</size></content>
+
+<content start="2448" end="2463">
+<href>choice.cml</href><size>11</size></content>
+
+<content start="2463" end="2465">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2465" end="2467">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="2465" end="2466">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2466" end="2467">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2467" end="2468">
+<LeftIndent>140.0</LeftIndent>
+<content start="2467" end="2468">
+</content>
+
+</paragraph>
+<paragraph start="2468" end="2496">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2468" end="2470">
+<size>11</size></content>
+
+<content start="2470" end="2478">
+<href>hyperlink.cml</href><size>11</size></content>
+
+<content start="2478" end="2481">
+<size>11</size></content>
+
+<content start="2481" end="2486">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="2486" end="2489">
+<size>11</size></content>
+
+<content start="2489" end="2493">
+<href>symbol.cml</href><size>11</size></content>
+
+<content start="2493" end="2495">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

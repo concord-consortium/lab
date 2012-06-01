@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Entering the authoring mode</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Entering the authoring mode
+
+&lt; Previous | Index | Next &gt;
+
+The Molecular Workbench (MW) software has two modes: the viewing mode and the authoring mode. In the viewing mode, the software behaves like a browser. This is the default mode when it launches. In order to edit a MW page that has been saved on your disk, you have to enter the authoring mode.
+
+You can tell whether or not MW is in the authoring mode by looking for the leftmost part of the tool bar panel, which is under the main menu bar. If there is a button in the second row with this image &quot; &quot; and the word &quot;Editor&quot; beside it, it is not in the authoring mode. If there is a button in the first row with this image &quot; &quot; and the word &quot;Editor&quot;, it is in the authoring mode. This button does not show up if the page is remote (i.e. the address of the page starts with &quot;http://&quot;), which automatically makes it non-editable. In fact, even if you do not look at this button, you should be able to figure out if MW is in the authoring mode or not, by just looking at the tool bars. When MW enters the authoring mode, the navigation tool bar vanishes, and more buttons and other components are added, which makes the interface look like that of Microsoft Word&#8482;.
+
+  
+The &quot;Editor&quot; button does not show up when the page is remote.
+
+  
+The &quot;Editor&quot; button shows up in the second row of tool bar when the page is on the disk.
+
+  
+When the &quot;Editor&quot; button is selected, the authoring tool bar appears and the navigator tool bar disappears.
+
+If the page is a local one (i.e. on your disk; the address does not start with &quot;http://&quot;) but the authoring mode is not shown, you can click the button mentioned above to turn it on. The button is a toggle button, meaning that clicking it once will put it into the opposite state. To leave the authoring mode, just click it again. When MW exits the authoring mode, the authoring tool bar will disappear and the navigation tool bar will be put back.
+
+You may also notice some changes in the menus when switching between the authoring mode and the viewing mode. For example, the Bookmarks menu is disabled in the authoring mode. All the menus relating to editing the document gray out in the browsing mode.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2222">
+<paragraph start="0" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="27">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<RightIndent>20.0</RightIndent>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="57">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="29" end="31">
+<size>11</size></content>
+
+<content start="31" end="39">
+<href>intro_authoring.cml</href><size>11</size></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="47">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="47" end="50">
+<size>11</size></content>
+
+<content start="50" end="54">
+<href>i18n.cml</href><size>11</size></content>
+
+<content start="54" end="56">
+<size>11</size></content>
+
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="58">
+<content start="57" end="58">
+</content>
+
+</paragraph>
+<paragraph start="58" end="352">
+<LeftIndent>140.0</LeftIndent>
+<content start="58" end="186">
+<size>11</size></content>
+
+<content start="186" end="208">
+<href>navigate.cml</href><size>11</size></content>
+
+<content start="208" end="294">
+<size>11</size></content>
+
+<content start="294" end="299">
+<href>download.cml</href><size>11</size></content>
+
+<content start="299" end="352">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="352" end="353">
+<LeftIndent>140.0</LeftIndent>
+<content start="352" end="353">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="353" end="1216">
+<LeftIndent>140.0</LeftIndent>
+<content start="353" end="555">
+<size>11</size></content>
+
+<content start="555" end="556">
+<size>11</size><icon>NoEdit.gif</icon></content>
+
+<content start="556" end="679">
+<size>11</size></content>
+
+<content start="679" end="680">
+<size>11</size><icon>Edit.gif</icon></content>
+
+<content start="680" end="734">
+<size>11</size></content>
+
+<content start="734" end="785">
+<size>11</size><bold>true</bold></content>
+
+<content start="785" end="1213">
+<size>11</size></content>
+
+<content start="1213" end="1214">
+</content>
+
+<content start="1214" end="1216">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1216" end="1217">
+<LeftIndent>140.0</LeftIndent>
+<content start="1216" end="1217">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1217" end="1220">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1217" end="1218">
+</content>
+
+<content start="1218" end="1219">
+<icon>ViewingMode.gif</icon></content>
+
+<content start="1219" end="1220">
+</content>
+
+</paragraph>
+<paragraph start="1220" end="1282">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1220" end="1281">
+<size>10</size></content>
+
+<content start="1281" end="1282">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1282" end="1283">
+<LeftIndent>140.0</LeftIndent>
+<content start="1282" end="1283">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1283" end="1286">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1283" end="1284">
+</content>
+
+<content start="1284" end="1285">
+<icon>ViewingMode2.gif</icon></content>
+
+<content start="1285" end="1286">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1286" end="1375">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1286" end="1374">
+<size>10</size></content>
+
+<content start="1374" end="1375">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1375" end="1376">
+<LeftIndent>140.0</LeftIndent>
+<content start="1375" end="1376">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1376" end="1379">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1376" end="1377">
+<size>11</size></content>
+
+<content start="1377" end="1378">
+<icon>AuthoringMode.gif</icon></content>
+
+<content start="1378" end="1379">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1379" end="1487">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1379" end="1486">
+<size>10</size></content>
+
+<content start="1486" end="1487">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1487" end="1488">
+<LeftIndent>140.0</LeftIndent>
+<content start="1487" end="1488">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1488" end="1937">
+<LeftIndent>140.0</LeftIndent>
+<content start="1488" end="1937">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1937" end="1938">
+<LeftIndent>140.0</LeftIndent>
+<content start="1937" end="1938">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1938" end="2193">
+<LeftIndent>140.0</LeftIndent>
+<content start="1938" end="2192">
+<size>11</size></content>
+
+<content start="2192" end="2193">
+</content>
+
+</paragraph>
+<paragraph start="2193" end="2194">
+<LeftIndent>100.0</LeftIndent>
+<content start="2193" end="2194">
+</content>
+
+</paragraph>
+<paragraph start="2194" end="2222">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2194" end="2196">
+<size>11</size></content>
+
+<content start="2196" end="2204">
+<href>intro_authoring.cml</href><size>11</size></content>
+
+<content start="2204" end="2207">
+<size>11</size></content>
+
+<content start="2207" end="2212">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="2212" end="2215">
+<size>11</size></content>
+
+<content start="2215" end="2219">
+<href>i18n.cml</href><size>11</size></content>
+
+<content start="2219" end="2221">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

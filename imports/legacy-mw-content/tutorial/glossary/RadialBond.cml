@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Radial bond</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Radial bond
+
+
+A decomposition of a chemical bond between two atoms into the direction of radial axis. A radial bond is a pairwise interaction. In molecular mechanics, a radial bond is often modeled using a harmonic bond stretching potential.
+
+
+   
+ return to index</text>
+<section start="0" end="265">
+<paragraph start="0" end="12">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="11">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="13">
+<LeftIndent>120.0</LeftIndent>
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<LeftIndent>120.0</LeftIndent>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="242">
+<LeftIndent>140.0</LeftIndent>
+<content start="14" end="241">
+<size>11</size></content>
+
+<content start="241" end="242">
+</content>
+
+</paragraph>
+<paragraph start="242" end="243">
+<LeftIndent>120.0</LeftIndent>
+<content start="242" end="243">
+</content>
+
+</paragraph>
+<paragraph start="243" end="244">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="243" end="244">
+</content>
+
+</paragraph>
+<paragraph start="244" end="248">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="244" end="245">
+</content>
+
+<content start="245" end="246">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="246" end="248">
+</content>
+
+</paragraph>
+<paragraph start="248" end="265">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="248" end="249">
+</content>
+
+<content start="249" end="264">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Torsional bond</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Torsional bond
+
+In molecular mechanics, torsional bond is a potential maintaining the relative orientation of two adjacent angular bonds that jointly own two atoms. Important in stereochemistry, e.g. modeling helical structures and maintaining planarity of benzene rings or peptide bonds. 
+
+
+ 
+return to index</text>
+<section start="0" end="310">
+<paragraph start="0" end="15">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="14">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<LeftIndent>120.0</LeftIndent>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="290">
+<LeftIndent>140.0</LeftIndent>
+<content start="16" end="290">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="290" end="291">
+<LeftIndent>120.0</LeftIndent>
+<content start="290" end="291">
+</content>
+
+</paragraph>
+<paragraph start="291" end="292">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="291" end="292">
+</content>
+
+</paragraph>
+<paragraph start="292" end="294">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="292" end="293">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="293" end="294">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="294" end="310">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="294" end="309">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

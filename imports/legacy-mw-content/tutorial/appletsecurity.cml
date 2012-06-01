@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Applet security</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Applet security
+
+&lt; Previous | Index | Next &gt;
+
+If you use Java Web Start to launch the Molecular Workbench software, congratulations! You are under the protection of Java&apos;s robust security system. Applets embedded in a MW page cannot read data from or write data to your computer, in order to prevent malicious code from doing funny things to your computer.
+
+ 
+For your security: Most of our users do use Java Web Start. So attentions to those who aren&apos;t, please use Java Web Start! If you are a developer of evil code, do not even try ------ we will hunt you down.
+ 
+
+Reading data from the code base
+
+The only place from which an applet can read data is its code base, which is the web directory where the jar file is originally located, as demonstrated by the following test applet:
+
+ 
+(This window should be empty if everything is normal.)
+
+Reading data from other web sites
+
+An applet cannot read data from anywhere on the web other than its code base. The following test applet shows that it cannot even read from http://google.com :
+
+ 
+(An error message will be given after a few seconds.)
+
+An applet cannot read anything from your disk
+
+If you save a page with an embedded applet to your disk, the applet will not be able to read or write anything. So you are under the protection of the security control. However, the applet may malfunction if it needs to read some information to proceed. Hence, you cannot test an applet in an offline mode. We suggest that if you test with a local server while you are setting up an applet that needs to read data from its code base.
+
+A Molecular Workbench solution
+
+The fact that applets cannot read and write data in the same way with trusted applications makes it difficult to use them in non-web environments. For example, an authoring tool often needs to save states of components. MW provides a secure pipeline that permits applets to store data without sacrificing security. The next section explains it.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1984">
+<paragraph start="0" end="16">
+<SpaceAbove>4.0</SpaceAbove>
+<RightIndent>10.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="15">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="15" end="16">
+<bold>true</bold><size>15</size></content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<LeftIndent>140.0</LeftIndent>
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="45">
+<RightIndent>10.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="17" end="19">
+<size>11</size></content>
+
+<content start="19" end="27">
+<href>applet2.cml</href><size>11</size></content>
+
+<content start="27" end="30">
+<size>11</size></content>
+
+<content start="30" end="35">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="35" end="38">
+<size>11</size></content>
+
+<content start="38" end="42">
+<href>appletstate.cml</href><size>11</size></content>
+
+<content start="42" end="44">
+<size>11</size></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<LeftIndent>140.0</LeftIndent>
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="357">
+<LeftIndent>140.0</LeftIndent>
+<content start="46" end="357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="357" end="358">
+<LeftIndent>140.0</LeftIndent>
+<content start="357" end="358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="358" end="360">
+<LeftIndent>140.0</LeftIndent>
+<content start="358" end="359">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="359" end="360">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="360" end="565">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="360" end="377">
+<size>11</size><bold>true</bold></content>
+
+<content start="377" end="565">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="565" end="567">
+<LeftIndent>140.0</LeftIndent>
+<content start="565" end="566">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="566" end="567">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="567" end="568">
+<LeftIndent>140.0</LeftIndent>
+<content start="567" end="568">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="568" end="600">
+<LeftIndent>140.0</LeftIndent>
+<content start="568" end="599">
+<size>11</size><bold>true</bold></content>
+
+<content start="599" end="600">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="600" end="601">
+<LeftIndent>140.0</LeftIndent>
+<content start="600" end="601">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="601" end="784">
+<LeftIndent>140.0</LeftIndent>
+<content start="601" end="783">
+<size>11</size></content>
+
+<content start="783" end="784">
+</content>
+
+</paragraph>
+<paragraph start="784" end="785">
+<LeftIndent>140.0</LeftIndent>
+<content start="784" end="785">
+</content>
+
+</paragraph>
+<paragraph start="785" end="787">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="785" end="786">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>IOTest.jar</appletjar>
+<appletclass>IOTest</appletclass>
+<resource>appletsecurity$applet$0.aps</resource><parameter>{name=&quot;file&quot; value=&quot;appletsecurity.cml&quot;}</parameter>
+<width>200</width><height>100</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="786" end="787">
+</content>
+
+</paragraph>
+<paragraph start="787" end="842">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="787" end="841">
+<size>10</size></content>
+
+<content start="841" end="842">
+</content>
+
+</paragraph>
+<paragraph start="842" end="843">
+<LeftIndent>140.0</LeftIndent>
+<content start="842" end="843">
+</content>
+
+</paragraph>
+<paragraph start="843" end="877">
+<LeftIndent>140.0</LeftIndent>
+<content start="843" end="876">
+<size>11</size><bold>true</bold></content>
+
+<content start="876" end="877">
+</content>
+
+</paragraph>
+<paragraph start="877" end="878">
+<LeftIndent>140.0</LeftIndent>
+<content start="877" end="878">
+</content>
+
+</paragraph>
+<paragraph start="878" end="1038">
+<LeftIndent>140.0</LeftIndent>
+<content start="878" end="1037">
+<size>11</size></content>
+
+<content start="1037" end="1038">
+</content>
+
+</paragraph>
+<paragraph start="1038" end="1039">
+<LeftIndent>140.0</LeftIndent>
+<content start="1038" end="1039">
+</content>
+
+</paragraph>
+<paragraph start="1039" end="1041">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1039" end="1040">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>IOTest.jar</appletjar>
+<appletclass>IOTest</appletclass>
+<resource>appletsecurity$applet$1.aps</resource><parameter>{name=&quot;file&quot; value=&quot;http://google.com&quot;}</parameter>
+<width>200</width><height>100</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="1040" end="1041">
+</content>
+
+</paragraph>
+<paragraph start="1041" end="1095">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1041" end="1094">
+<size>10</size></content>
+
+<content start="1094" end="1095">
+</content>
+
+</paragraph>
+<paragraph start="1095" end="1096">
+<LeftIndent>140.0</LeftIndent>
+<content start="1095" end="1096">
+</content>
+
+</paragraph>
+<paragraph start="1096" end="1142">
+<LeftIndent>140.0</LeftIndent>
+<content start="1096" end="1141">
+<size>11</size><bold>true</bold></content>
+
+<content start="1141" end="1142">
+</content>
+
+</paragraph>
+<paragraph start="1142" end="1143">
+<LeftIndent>140.0</LeftIndent>
+<content start="1142" end="1143">
+</content>
+
+</paragraph>
+<paragraph start="1143" end="1577">
+<LeftIndent>140.0</LeftIndent>
+<content start="1143" end="1577">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1577" end="1578">
+<LeftIndent>140.0</LeftIndent>
+<content start="1577" end="1578">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1578" end="1609">
+<LeftIndent>140.0</LeftIndent>
+<content start="1578" end="1608">
+<size>11</size><bold>true</bold></content>
+
+<content start="1608" end="1609">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1609" end="1610">
+<LeftIndent>140.0</LeftIndent>
+<content start="1609" end="1610">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1610" end="1955">
+<LeftIndent>140.0</LeftIndent>
+<content start="1610" end="1929">
+<size>11</size></content>
+
+<content start="1929" end="1941">
+<href>appletstate.cml</href><size>11</size></content>
+
+<content start="1941" end="1954">
+<size>11</size></content>
+
+<content start="1954" end="1955">
+</content>
+
+</paragraph>
+<paragraph start="1955" end="1956">
+<content start="1955" end="1956">
+</content>
+
+</paragraph>
+<paragraph start="1956" end="1984">
+<RightIndent>10.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1956" end="1958">
+<size>11</size></content>
+
+<content start="1958" end="1966">
+<href>applet2.cml</href><size>11</size></content>
+
+<content start="1966" end="1969">
+<size>11</size></content>
+
+<content start="1969" end="1974">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="1974" end="1977">
+<size>11</size></content>
+
+<content start="1977" end="1981">
+<href>appletstate.cml</href><size>11</size></content>
+
+<content start="1981" end="1983">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

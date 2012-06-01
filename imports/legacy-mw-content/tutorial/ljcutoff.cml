@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Experimenting with truncation of the Lennard-Jones function</page_title>
+<bg_image>sidebar1.gif</bg_image>
+<text>Experimenting with truncation of the Lennard-Jones function
+
+The Lennard-Jones function is used to model the interatomic interactions:
+
+  
+
+As a result of the fact that this function diminishes very fast (inversely proportional to r^6), in practice, we skip the calculations of forces caused by this potential for the pairs of atoms who are far away from each other. This procedure is known as potential cutoff.
+
+The determination of where to cut off the potential depends on the trade-off between accuracy and speed. If we use a long cut-off, then we are probably wasting time on calculating many negligible forces and therefore slowing the simulation down. If the cut-off distance is too short, then we are probably missing some important contributions (remember that when the distance increases, much more atoms will fall within the sphere). So what is a reasonable selection of the cut-off parameter? Let us look at the Lennard-Jones function in the following graph.
+
+ 
+The Lennard-Jones function in a reduced form: (1/r)12-(1/r)6.
+
+In the above graph, &#963;=1. As you can see, the Lennard-Jones function becomes very small when r=3&#963;. Hence, a reasonable cut-off should be around 2.5&#963;.
+
+Another consideration is that the cut-off procedure should be applied relative to each atom&apos;s van der Waals radius, for a univeral simulator in which we deal with many elements with different van der Waals radii. An absolute cut-off parameter will not be able to cover all the elements, if it is too short for bigger atoms. And it will slow down the simulation unnecessarily, if it is too long for smaller atoms.</text>
+<section start="0" end="1600">
+<paragraph start="0" end="60">
+<LeftIndent>160.0</LeftIndent>
+<content start="0" end="60">
+<foreground>8 24 99</foreground><bold>true</bold><size>15</size></content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<LeftIndent>160.0</LeftIndent>
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="135">
+<LeftIndent>160.0</LeftIndent>
+<content start="61" end="135">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="135" end="136">
+<LeftIndent>160.0</LeftIndent>
+<content start="135" end="136">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="136" end="139">
+<LeftIndent>160.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="136" end="137">
+</content>
+
+<content start="137" end="138">
+<icon>lj.gif</icon></content>
+
+<content start="138" end="139">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="139" end="140">
+<LeftIndent>160.0</LeftIndent>
+<content start="139" end="140">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="140" end="412">
+<LeftIndent>160.0</LeftIndent>
+<content start="140" end="412">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="412" end="413">
+<LeftIndent>160.0</LeftIndent>
+<content start="412" end="413">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="413" end="971">
+<LeftIndent>160.0</LeftIndent>
+<content start="413" end="971">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="971" end="972">
+<LeftIndent>160.0</LeftIndent>
+<content start="971" end="972">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="972" end="974">
+<LeftIndent>160.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="972" end="973">
+<component><class>org.concord.modeler.PageFunctionGraph</class>
+<width>600</width><height>300</height><opaque>false</opaque>
+<border>None</border>
+<function><expression>pow(1/x, 12)-pow(1/x,6)</expression>
+<color>-3b22c5</color><weight>3.0</weight><style>0</style><datapoint>100</datapoint></function><axis_x_min>0.7</axis_x_min><axis_x_max>3.8</axis_x_max><axis_y_min>-0.3</axis_y_min><axis_y_max>0.18</axis_y_max></component></content>
+
+<content start="973" end="974">
+</content>
+
+</paragraph>
+<paragraph start="974" end="1036">
+<LeftIndent>160.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="974" end="1025">
+<size>11</size></content>
+
+<content start="1025" end="1027">
+<size>11</size><superscript>true</superscript></content>
+
+<content start="1027" end="1033">
+<size>11</size></content>
+
+<content start="1033" end="1034">
+<size>11</size><superscript>true</superscript></content>
+
+<content start="1034" end="1035">
+<size>11</size></content>
+
+<content start="1035" end="1036">
+</content>
+
+</paragraph>
+<paragraph start="1036" end="1037">
+<LeftIndent>160.0</LeftIndent>
+<content start="1036" end="1037">
+</content>
+
+</paragraph>
+<paragraph start="1037" end="1186">
+<LeftIndent>160.0</LeftIndent>
+<content start="1037" end="1057">
+<size>11</size></content>
+
+<content start="1057" end="1058">
+</content>
+
+<content start="1058" end="1132">
+<size>11</size></content>
+
+<content start="1132" end="1133">
+</content>
+
+<content start="1133" end="1183">
+<size>11</size></content>
+
+<content start="1183" end="1184">
+</content>
+
+<content start="1184" end="1186">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1186" end="1187">
+<LeftIndent>160.0</LeftIndent>
+<content start="1186" end="1187">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1187" end="1600">
+<LeftIndent>160.0</LeftIndent>
+<content start="1187" end="1599">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

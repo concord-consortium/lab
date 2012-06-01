@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Mvd</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Mvd
+
+&lt; Previous | Index | Next &gt;
+
+The mvd command can be used to study the Maxwell velocity distribution (MVD) for the selected particles within the selected area.
+
+Syntax:
+
+mvd [expression]
+mvd [expression_1] and [expression_2] and ...... and [expression_n]
+
+An expression can take one of the following forms:
+
+   [scalar] [direction] [vmax] [id] within ([x], [y], [w], [h])
+   [scalar] [direction] [vmax] [id]
+
+where scalar is a boolean flag that indicates the speed (scalar) distribution will be calculated when it is set to be true and the velocity (vector) distribution will be calculated when it is set to be false, direction is one of the following strings that specifies the direction in which the velocities of the particles will be included: x, y and all (the keyword &quot;all&quot; means both x and y component of the velocity will be included), vmax is the upper bound of the velocity to be included (the lower bound is always zero) in the unit of m/s (meter per second), id is the ID number of the selected element, x and y are the coordinate of the upper-left corner of the selected rectangular area, and w and h are its width and height. The second covers the whole area, which is equivalent to:
+
+[scalar] [direction] [vmax] [id] within (0, 0, %width, %height)
+
+where %width and %height are the width and height of the model window defined as system variables.
+
+You can use multiple expressions to plot multiple distributions in the same graph. Note that you must write every thing after the mvd keyword in a single line and separate different MVD parameter sets with the &quot;and&quot; keyword. The within clause can be skipped if you select the whole container.
+
+ 
+Note: If the recorder is disabled, this command has no effect --- because no data are recorded.
+Caution: You should generally use this command once per script execution. Avoid using it within a loop.
+ 
+
+Setting the vmax parameter
+
+The vmax parameter is in the unit of m/s. At room temperature, the average speed of molecules is of the magnitude of about the speed of sound in the air at sea level (340 m/s). A vmax of about 2,000 m/s should be enough to cover most part of the speed distribution. However, if you increase the temperature, the peak in the speed distribution will move to higher speed. As a result, the vmax parameter should subsequently be increased. The general rule is that if you see a distribution graph that does not have a value near zero at the maximum of the speed range, you must increase the vmax parameter until so.
+
+The following model demonstrates the use of this command to study the MVDs of different types of atoms, sometimes in different areas.
+
+ 
+ 
+ 
+ 
+[This is an embedded simulator.]
+
+The above button shows speed distributions of three types of atoms that have different masses: 50 g/mol (purple), 30 g/mol (green) and 15 g/mol (white). In the speed distribution graph, the speeds that the peaks correspond to should be inversely proportional to the square root of mass. In the velocity distribution graph, the curves look like normal distributions whose standard deviations are inversely proportional to the square root of mass.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3160">
+<paragraph start="0" end="4">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="3">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="33">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="5" end="7">
+<size>11</size></content>
+
+<content start="7" end="15">
+<size>11</size><href>script_tcf.cml</href></content>
+
+<content start="15" end="18">
+<size>11</size></content>
+
+<content start="18" end="23">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="23" end="32">
+<size>11</size></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<LeftIndent>100.0</LeftIndent>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="164">
+<LeftIndent>140.0</LeftIndent>
+<content start="34" end="38">
+<size>11</size></content>
+
+<content start="38" end="41">
+<size>11</size><family>Courier New</family></content>
+
+<content start="41" end="75">
+<size>11</size></content>
+
+<content start="75" end="104">
+<size>11</size><href>glossary/Maxwell.cml</href></content>
+
+<content start="104" end="164">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="164" end="165">
+<LeftIndent>140.0</LeftIndent>
+<content start="164" end="165">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="165" end="173">
+<LeftIndent>140.0</LeftIndent>
+<content start="165" end="173">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="173" end="174">
+<LeftIndent>140.0</LeftIndent>
+<content start="173" end="174">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="174" end="191">
+<LeftIndent>160.0</LeftIndent>
+<content start="174" end="177">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="177" end="191">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="191" end="259">
+<LeftIndent>160.0</LeftIndent>
+<content start="191" end="194">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="194" end="258">
+<size>11</size><family>Courier New</family></content>
+
+<content start="258" end="259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="259" end="260">
+<LeftIndent>140.0</LeftIndent>
+<content start="259" end="260">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="260" end="311">
+<LeftIndent>140.0</LeftIndent>
+<content start="260" end="311">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="311" end="312">
+<LeftIndent>140.0</LeftIndent>
+<content start="311" end="312">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="312" end="376">
+<LeftIndent>160.0</LeftIndent>
+<content start="312" end="313">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="313" end="315">
+</content>
+
+<content start="315" end="376">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="376" end="412">
+<LeftIndent>160.0</LeftIndent>
+<content start="376" end="377">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="377" end="379">
+</content>
+
+<content start="379" end="412">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="412" end="413">
+<LeftIndent>140.0</LeftIndent>
+<content start="412" end="413">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="413" end="1202">
+<LeftIndent>140.0</LeftIndent>
+<content start="413" end="419">
+<size>11</size></content>
+
+<content start="419" end="425">
+<size>11</size><family>Courier New</family></content>
+
+<content start="425" end="463">
+<size>11</size></content>
+
+<content start="463" end="490">
+<bold>true</bold><size>11</size></content>
+
+<content start="490" end="531">
+<size>11</size></content>
+
+<content start="531" end="535">
+<size>11</size><family>Courier New</family></content>
+
+<content start="535" end="544">
+<size>11</size></content>
+
+<content start="544" end="574">
+<bold>true</bold><size>11</size></content>
+
+<content start="574" end="615">
+<size>11</size></content>
+
+<content start="615" end="620">
+<size>11</size><family>Courier New</family></content>
+
+<content start="620" end="622">
+<size>11</size></content>
+
+<content start="622" end="631">
+<size>11</size><family>Courier New</family></content>
+
+<content start="631" end="752">
+<size>11</size></content>
+
+<content start="752" end="753">
+<size>11</size><family>Courier New</family></content>
+
+<content start="753" end="755">
+<size>11</size></content>
+
+<content start="755" end="756">
+<size>11</size><family>Courier New</family></content>
+
+<content start="756" end="761">
+<size>11</size></content>
+
+<content start="761" end="764">
+<size>11</size><family>Courier New</family></content>
+
+<content start="764" end="779">
+<size>11</size></content>
+
+<content start="779" end="782">
+<size>11</size><family>Courier New</family></content>
+
+<content start="782" end="848">
+<size>11</size></content>
+
+<content start="848" end="852">
+<size>11</size><family>Courier New</family></content>
+
+<content start="852" end="975">
+<size>11</size></content>
+
+<content start="975" end="977">
+<size>11</size><family>Courier New</family></content>
+
+<content start="977" end="1020">
+<size>11</size></content>
+
+<content start="1020" end="1021">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1021" end="1026">
+<size>11</size></content>
+
+<content start="1026" end="1027">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1027" end="1110">
+<size>11</size></content>
+
+<content start="1110" end="1111">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1111" end="1116">
+<size>11</size></content>
+
+<content start="1116" end="1117">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1117" end="1202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1202" end="1203">
+<LeftIndent>140.0</LeftIndent>
+<content start="1202" end="1203">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1203" end="1267">
+<LeftIndent>160.0</LeftIndent>
+<content start="1203" end="1266">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1266" end="1267">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1267" end="1268">
+<LeftIndent>140.0</LeftIndent>
+<content start="1267" end="1268">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1268" end="1367">
+<LeftIndent>140.0</LeftIndent>
+<content start="1268" end="1274">
+<size>11</size></content>
+
+<content start="1274" end="1280">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1280" end="1285">
+<size>11</size></content>
+
+<content start="1285" end="1292">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1292" end="1349">
+<size>11</size></content>
+
+<content start="1349" end="1365">
+<size>11</size><href>script_variable.cml</href></content>
+
+<content start="1365" end="1367">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1367" end="1368">
+<LeftIndent>140.0</LeftIndent>
+<content start="1367" end="1368">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1368" end="1661">
+<LeftIndent>140.0</LeftIndent>
+<content start="1368" end="1465">
+<size>11</size></content>
+
+<content start="1465" end="1469">
+<bold>true</bold><size>11</size></content>
+
+<content start="1469" end="1498">
+<size>11</size></content>
+
+<content start="1498" end="1501">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1501" end="1579">
+<size>11</size></content>
+
+<content start="1579" end="1582">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1582" end="1597">
+<size>11</size></content>
+
+<content start="1597" end="1603">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1603" end="1661">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1661" end="1662">
+<LeftIndent>140.0</LeftIndent>
+<content start="1661" end="1662">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1662" end="1664">
+<LeftIndent>140.0</LeftIndent>
+<content start="1662" end="1663">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1663" end="1664">
+</content>
+
+</paragraph>
+<paragraph start="1664" end="1760">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1664" end="1668">
+<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+
+<content start="1668" end="1677">
+<size>11</size></content>
+
+<content start="1677" end="1685">
+<size>11</size><href>recordSimulation.cml</href></content>
+
+<content start="1685" end="1760">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1760" end="1864">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1760" end="1767">
+<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+
+<content start="1767" end="1858">
+<size>11</size></content>
+
+<content start="1858" end="1862">
+<size>11</size><href>script_loop.cml</href></content>
+
+<content start="1862" end="1863">
+<size>11</size></content>
+
+<content start="1863" end="1864">
+</content>
+
+</paragraph>
+<paragraph start="1864" end="1866">
+<LeftIndent>140.0</LeftIndent>
+<content start="1864" end="1865">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1865" end="1866">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1866" end="1867">
+<LeftIndent>140.0</LeftIndent>
+<content start="1866" end="1867">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1867" end="1894">
+<LeftIndent>140.0</LeftIndent>
+<content start="1867" end="1879">
+<bold>true</bold><size>11</size></content>
+
+<content start="1879" end="1883">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="1883" end="1893">
+<bold>true</bold><size>11</size></content>
+
+<content start="1893" end="1894">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1894" end="1895">
+<LeftIndent>140.0</LeftIndent>
+<content start="1894" end="1895">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1895" end="2507">
+<LeftIndent>140.0</LeftIndent>
+<content start="1895" end="1899">
+<size>11</size></content>
+
+<content start="1899" end="1903">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1903" end="2074">
+<size>11</size></content>
+
+<content start="2074" end="2078">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2078" end="2282">
+<size>11</size></content>
+
+<content start="2282" end="2286">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2286" end="2482">
+<size>11</size></content>
+
+<content start="2482" end="2486">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2486" end="2507">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2507" end="2508">
+<LeftIndent>140.0</LeftIndent>
+<content start="2507" end="2508">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2508" end="2642">
+<LeftIndent>140.0</LeftIndent>
+<content start="2508" end="2642">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2642" end="2643">
+<LeftIndent>140.0</LeftIndent>
+<content start="2642" end="2643">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2643" end="2645">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2643" end="2644">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>{option=&quot;Speed distrbutions&quot;, script=&quot;stop&quot;}{option=&quot;White particles&quot;, script=&quot;mvd true all 2000 0&quot;}{option=&quot;White particles in the upper area&quot;, script=&quot;mvd true all 2000 0 within (0, 0, %width, %halfheight)&quot;}{option=&quot;White particles in the lower area&quot;, script=&quot;mvd true all 2000 0 within (0, %halfheight, %width, %halfheight)&quot;}{option=&quot;Green particles&quot;, script=&quot;mvd true all 2000 1 within (0, 0, %width, %height)&quot;}{option=&quot;Green particles (x-components only)&quot;, script=&quot;mvd true x 2000 1 within (0, 0, %width, %height)&quot;}{option=&quot;Green particles (y-components only)&quot;, script=&quot;mvd true y 2000 1 within (0, 0, %width, %height)&quot;}{option=&quot;Purple particles&quot;, script=&quot;mvd true all 2000 3 within (0, 0, %width, %height)&quot;}{option=&quot;Purple particles (x-components in left area)&quot;, script=&quot;mvd true x 2000 3 within (0, 0, %halfwidth, %height)&quot;}{option=&quot;Purple particles (y-components in right area)&quot;, script=&quot;mvd true y 2000 3 within (%halfwidth, 0, %halfwidth, %height)&quot;}</script>
+<action>Execute MW script</action>
+<disabled_at_script>true</disabled_at_script>
+<tooltip>Speed distributions</tooltip>
+</component></content>
+
+<content start="2644" end="2645">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2645" end="2647">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2645" end="2646">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_mvd$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="2646" end="2647">
+</content>
+
+</paragraph>
+<paragraph start="2647" end="2649">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2647" end="2648">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show Maxwell speed distributions for three types of atoms</title>
+<tooltip>Show Maxwell speed distributions for three types of atoms</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>mvd true all 2000 3 and true all 2000 1 and true all 2000 0;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2648" end="2649">
+</content>
+
+</paragraph>
+<paragraph start="2649" end="2651">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2649" end="2650">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show Maxwell velocity distributions for three types of atoms</title>
+<tooltip>Show Maxwell velocity distributions for three types of atoms</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>mvd false all 1000 3 and false all 1000 1 and false all 1000 0;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2650" end="2651">
+</content>
+
+</paragraph>
+<paragraph start="2651" end="2684">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2651" end="2683">
+<size>10</size></content>
+
+<content start="2683" end="2684">
+</content>
+
+</paragraph>
+<paragraph start="2684" end="2685">
+<LeftIndent>140.0</LeftIndent>
+<content start="2684" end="2685">
+</content>
+
+</paragraph>
+<paragraph start="2685" end="3131">
+<LeftIndent>140.0</LeftIndent>
+<content start="2685" end="3131">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3131" end="3132">
+<LeftIndent>140.0</LeftIndent>
+<content start="3131" end="3132">
+</content>
+
+</paragraph>
+<paragraph start="3132" end="3160">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3132" end="3134">
+<size>11</size></content>
+
+<content start="3134" end="3142">
+<size>11</size><href>script_tcf.cml</href></content>
+
+<content start="3142" end="3145">
+<size>11</size></content>
+
+<content start="3145" end="3150">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="3150" end="3159">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

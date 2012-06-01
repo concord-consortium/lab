@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Berendsen barostat</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Berendsen barostat
+
+
+Berendsen barostat is a very simple technique for coupling a particle system to a fictitious &quot;pressure bath&quot;. During the simulation, the volume of the system is scaled by the following factor at a certain frequency: 
+
+ 
+
+This, in effect, actually amounts to rescaling the coordinates of the particles:
+
+ 
+
+In the above formulae, beta is the isothermal compressibility, delta t the steplength of time, P the instantaneous internal pressure, P0 the external wall pressure, and tp an adjustable relaxation time. Through this mechanism, the internal pressure P is driven to reach balance with the external wall pressure P0. 
+
+
+
+ 
+return to index</text>
+<section start="0" end="663">
+<paragraph start="0" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="18" end="19">
+<family>Book Antiqua</family><size>16</size></content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<LeftIndent>120.0</LeftIndent>
+<content start="19" end="20">
+<family>Book Antiqua</family><size>16</size></content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<LeftIndent>120.0</LeftIndent>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="238">
+<LeftIndent>140.0</LeftIndent>
+<content start="21" end="238">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="238" end="239">
+<LeftIndent>140.0</LeftIndent>
+<content start="238" end="239">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="239" end="241">
+<LeftIndent>140.0</LeftIndent>
+<content start="239" end="240">
+<icon>BerendsenBarostat1.gif</icon><size>11</size></content>
+
+<content start="240" end="241">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="241" end="242">
+<LeftIndent>140.0</LeftIndent>
+<content start="241" end="242">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="242" end="323">
+<LeftIndent>140.0</LeftIndent>
+<content start="242" end="323">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="323" end="324">
+<LeftIndent>140.0</LeftIndent>
+<content start="323" end="324">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="324" end="326">
+<LeftIndent>140.0</LeftIndent>
+<content start="324" end="325">
+<icon>BerendsenBarostat2.gif</icon><size>11</size></content>
+
+<content start="325" end="326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="326" end="327">
+<LeftIndent>140.0</LeftIndent>
+<content start="326" end="327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="327" end="642">
+<LeftIndent>140.0</LeftIndent>
+<content start="327" end="422">
+<size>11</size></content>
+
+<content start="422" end="423">
+<italic>true</italic><size>11</size></content>
+
+<content start="423" end="461">
+<size>11</size></content>
+
+<content start="461" end="462">
+<italic>true</italic><size>11</size></content>
+
+<content start="462" end="463">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="463" end="497">
+<size>11</size></content>
+
+<content start="497" end="498">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="498" end="576">
+<size>11</size></content>
+
+<content start="576" end="577">
+<italic>true</italic><size>11</size></content>
+
+<content start="577" end="637">
+<size>11</size></content>
+
+<content start="637" end="638">
+<italic>true</italic><size>11</size></content>
+
+<content start="638" end="639">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="639" end="641">
+<size>11</size></content>
+
+<content start="641" end="642">
+</content>
+
+</paragraph>
+<paragraph start="642" end="643">
+<LeftIndent>120.0</LeftIndent>
+<content start="642" end="643">
+</content>
+
+</paragraph>
+<paragraph start="643" end="644">
+<LeftIndent>120.0</LeftIndent>
+<content start="643" end="644">
+</content>
+
+</paragraph>
+<paragraph start="644" end="645">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="644" end="645">
+</content>
+
+</paragraph>
+<paragraph start="645" end="647">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="645" end="646">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="646" end="647">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="647" end="663">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="647" end="662">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>NVT</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>NVT
+
+
+A molecular simulation protocol that means to restrict the trajectory or sampling points on the hyper surface in the phase space which statisfies the condition that the number of atoms (N), volume (V) and temperature (T) are maintained constant. In Molecular Workbench, constant temperature can be achieved by three methods: (1) rescaling the velocities; (2) reassigning the velocities; (3) constraint the total kinetic energy. Each of the three methods generate different phase trajectories that may lead to some difference in statistical results. 
+
+
+ 
+return to index</text>
+<section start="0" end="576">
+<paragraph start="0" end="4">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="3">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<LeftIndent>120.0</LeftIndent>
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<LeftIndent>120.0</LeftIndent>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="556">
+<LeftIndent>140.0</LeftIndent>
+<content start="6" end="192">
+<size>11</size></content>
+
+<content start="192" end="193">
+<italic>true</italic><size>11</size></content>
+
+<content start="193" end="204">
+<size>11</size></content>
+
+<content start="204" end="205">
+<italic>true</italic><size>11</size></content>
+
+<content start="205" end="224">
+<size>11</size></content>
+
+<content start="224" end="225">
+<italic>true</italic><size>11</size></content>
+
+<content start="225" end="555">
+<size>11</size></content>
+
+<content start="555" end="556">
+</content>
+
+</paragraph>
+<paragraph start="556" end="557">
+<LeftIndent>120.0</LeftIndent>
+<content start="556" end="557">
+</content>
+
+</paragraph>
+<paragraph start="557" end="558">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="557" end="558">
+</content>
+
+</paragraph>
+<paragraph start="558" end="560">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="558" end="559">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="559" end="560">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="560" end="576">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="560" end="575">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

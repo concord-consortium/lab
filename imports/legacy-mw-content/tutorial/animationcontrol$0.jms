@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.jmol.ModelState"> 
+  <void property="itinerary"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="geoData"> 
+       <string>7.964019 7.94672 -0.27109337 92.0 996.0 1.0 179.8 100.0</string> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="geoData"> 
+       <string>8.063201 7.918662 10.521364 92.0 996.0 1.0 179.8 100.0</string> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="geoData"> 
+       <string>8.377068 7.838766 32.9814 92.0 996.0 1.0 179.8 100.0</string> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="geoData"> 
+       <string>41.911247 -31.614 16.262884 -203.0 -488.0 849.0 60.6 100.0</string> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="geoData"> 
+       <string>41.911247 -31.614 16.262884 -159.0 -279.0 947.0 55.8 100.0</string> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.jmol.SceneState"> 
+      <void property="geoData"> 
+       <string>39.572754 -28.14594 2.9320984 -159.0 -279.0 947.0 55.8 100.0</string> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="startingScene"> 
+   <object class="org.concord.jmol.SceneState"> 
+    <void property="geoData"> 
+     <string>0.6166892 1.0543351 -15.271601 -70.0 -998.0 -5.0 178.9 100.0</string> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
+</java> 

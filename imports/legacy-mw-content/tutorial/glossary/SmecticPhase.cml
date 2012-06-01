@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Smectic phase</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Smectic phase
+
+
+Smectic phase is a mesophase of liquid crystalline system in which the molecules show not only the orientational order of the nematic phase but also some sort of translational order associated with planarity or layer structures. As many as 12 smectic phases have been identified. 
+
+
+ 
+return to index</text>
+<section start="0" end="317">
+<paragraph start="0" end="14">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="13">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<LeftIndent>120.0</LeftIndent>
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<LeftIndent>120.0</LeftIndent>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="297">
+<LeftIndent>140.0</LeftIndent>
+<content start="16" end="142">
+<size>11</size></content>
+
+<content start="142" end="155">
+<href>NematicPhase.cml</href><size>11</size></content>
+
+<content start="155" end="296">
+<size>11</size></content>
+
+<content start="296" end="297">
+</content>
+
+</paragraph>
+<paragraph start="297" end="298">
+<LeftIndent>120.0</LeftIndent>
+<content start="297" end="298">
+</content>
+
+</paragraph>
+<paragraph start="298" end="299">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="298" end="299">
+</content>
+
+</paragraph>
+<paragraph start="299" end="301">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="299" end="300">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="300" end="301">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="301" end="317">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="301" end="316">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

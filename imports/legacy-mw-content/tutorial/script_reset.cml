@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Reset</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Reset
+
+&lt; Previous | Index | Next &gt;
+
+The reset command resets the simulation by reloading the saved model.
+
+Syntax:
+
+reset
+
+Unlike the built-in reset button at the bottom panel of a model container, this command never causes a message dialog to show up and ask for your confirmation about resetting. And unlike the built-in reset button which causes the saved model to be reloaded in an independent thread, it loads the model in the scripting thread. Therefore, the commands after this command will wait until the loading process is completed before they run. In other words, it is safe to use scripts such as this:
+
+reset;
+select element 0;
+remove;
+.....//do something else;
+
+The reset command is useful for resetting to the same initial condition and then modifying the model to create some different situations.
+
+Example: Graham&apos;s Law
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="866">
+<paragraph start="0" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="5">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="9">
+<size>11</size></content>
+
+<content start="9" end="17">
+<href>script_stop.cml</href><size>11</size></content>
+
+<content start="17" end="20">
+<size>11</size></content>
+
+<content start="20" end="25">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="25" end="28">
+<size>11</size></content>
+
+<content start="28" end="32">
+<href>script_delay.cml</href><size>11</size></content>
+
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<LeftIndent>100.0</LeftIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="106">
+<LeftIndent>140.0</LeftIndent>
+<content start="36" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<size>11</size><family>Courier New</family></content>
+
+<content start="45" end="106">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="106" end="107">
+<LeftIndent>140.0</LeftIndent>
+<content start="106" end="107">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="107" end="115">
+<LeftIndent>140.0</LeftIndent>
+<content start="107" end="115">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="115" end="116">
+<LeftIndent>140.0</LeftIndent>
+<content start="115" end="116">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="116" end="122">
+<LeftIndent>160.0</LeftIndent>
+<content start="116" end="121">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="121" end="122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="122" end="123">
+<LeftIndent>140.0</LeftIndent>
+<content start="122" end="123">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="123" end="615">
+<LeftIndent>140.0</LeftIndent>
+<content start="123" end="615">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="615" end="616">
+<LeftIndent>160.0</LeftIndent>
+<content start="615" end="616">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="616" end="623">
+<LeftIndent>160.0</LeftIndent>
+<content start="616" end="623">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="623" end="641">
+<LeftIndent>160.0</LeftIndent>
+<content start="623" end="641">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="641" end="649">
+<LeftIndent>160.0</LeftIndent>
+<content start="641" end="649">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="649" end="675">
+<LeftIndent>160.0</LeftIndent>
+<content start="649" end="674">
+<size>11</size><family>Courier New</family></content>
+
+<content start="674" end="675">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="675" end="676">
+<LeftIndent>140.0</LeftIndent>
+<content start="675" end="676">
+</content>
+
+</paragraph>
+<paragraph start="676" end="814">
+<LeftIndent>140.0</LeftIndent>
+<content start="676" end="680">
+<size>11</size></content>
+
+<content start="680" end="685">
+<size>11</size><family>Courier New</family></content>
+
+<content start="685" end="814">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="814" end="815">
+<LeftIndent>140.0</LeftIndent>
+<content start="814" end="815">
+</content>
+
+</paragraph>
+<paragraph start="815" end="837">
+<LeftIndent>140.0</LeftIndent>
+<content start="815" end="824">
+<size>10</size></content>
+
+<content start="824" end="836">
+<href>../student/gaslaws/graham.cml</href><size>10</size></content>
+
+<content start="836" end="837">
+</content>
+
+</paragraph>
+<paragraph start="837" end="838">
+<LeftIndent>140.0</LeftIndent>
+<content start="837" end="838">
+</content>
+
+</paragraph>
+<paragraph start="838" end="866">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="838" end="840">
+<size>11</size></content>
+
+<content start="840" end="848">
+<href>script_stop.cml</href><size>11</size></content>
+
+<content start="848" end="851">
+<size>11</size></content>
+
+<content start="851" end="856">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="856" end="859">
+<size>11</size></content>
+
+<content start="859" end="863">
+<href>script_delay.cml</href><size>11</size></content>
+
+<content start="863" end="865">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

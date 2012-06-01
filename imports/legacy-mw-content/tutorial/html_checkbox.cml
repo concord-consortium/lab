@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Using check boxes in HTML text box</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Using check boxes in HTML text box
+
+&lt; Previous | Index | Next &gt;
+
+
+A check box can be created using the following line of code:
+
+&lt;input type=&quot;checkbox&quot; name=&quot;checkbox name&quot; value=&quot;checkbox text&quot; alt=&quot;tooltip&quot;
+ script_selected=&quot;some scripts&quot; script_deselected=&quot;some scripts&quot;&gt;
+
+As a check box has two states, you must provide two sets of scripts that will be executed when it is selected and when it is deselected, separately. The following is an example of using HTML check boxes:
+
+  
+To view the source, save this page to your disk, enter the authoring mode and right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the text box.
+
+[This is an embedded simulator.]
+
+Unlike buttons and like radio buttons, the value attributes are not used as text of check boxes. Therefore, you have to write text next to a check box.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="866">
+<paragraph start="0" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="34">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="64">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="36" end="38">
+<size>11</size></content>
+
+<content start="38" end="46">
+<size>11</size><href>html_radiobutton.cml</href></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="54">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="54" end="57">
+<size>11</size></content>
+
+<content start="57" end="61">
+<size>11</size><href>html_combobox.cml</href></content>
+
+<content start="61" end="63">
+<size>11</size></content>
+
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="66">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="66" end="127">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="127">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="127" end="128">
+<LeftIndent>140.0</LeftIndent>
+<content start="127" end="128">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="128" end="208">
+<LeftIndent>140.0</LeftIndent>
+<content start="128" end="208">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="208" end="274">
+<LeftIndent>140.0</LeftIndent>
+<content start="208" end="273">
+<size>11</size><family>Courier New</family></content>
+
+<content start="273" end="274">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="274" end="275">
+<LeftIndent>140.0</LeftIndent>
+<content start="274" end="275">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="275" end="479">
+<LeftIndent>140.0</LeftIndent>
+<content start="275" end="479">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="479" end="480">
+<LeftIndent>140.0</LeftIndent>
+<content start="479" end="480">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="480" end="483">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="480" end="481">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>280.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot;&gt;This is a HTML text box, which has embedded check 
+      boxes for executing &lt;/font&gt;&lt;font face=&quot;Verdana&quot;&gt;&lt;a href=&quot;mwscripts.cml&quot;&gt;MW 
+      scripts&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot;&gt;.&lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;3&quot;&gt;&lt;input name=&quot;atom&quot; script_selected=&quot;script:mw:1:select atom 0-3;mark color [255 255 0];&quot; script_deselected=&quot;script:mw:1:select atom none;mark;&quot; type=&quot;checkbox&quot; alt=&quot;Select atom 0-3&quot;&gt;
+      Select atoms 0-3;&lt;br&gt;&lt;input name=&quot;atom&quot; script_selected=&quot;script:mw:1:show momentum on;&quot; script_deselected=&quot;script:mw:1:show momentum off;&quot; type=&quot;checkbox&quot; alt=&quot;Toggle momentum vectors&quot;&gt;Show 
+      momentum vectors.&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="481" end="482">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>html_checkbox$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+
+<content start="482" end="483">
+</content>
+
+</paragraph>
+<paragraph start="483" end="650">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="483" end="574">
+<size>10</size><italic>true</italic></content>
+
+<content start="574" end="631">
+<size>10</size><italic>true</italic></content>
+
+<content start="631" end="649">
+<size>10</size><italic>true</italic></content>
+
+<content start="649" end="650">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="650" end="651">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="650" end="651">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="651" end="684">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="651" end="683">
+<size>10</size></content>
+
+<content start="683" end="684">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="684" end="685">
+<LeftIndent>140.0</LeftIndent>
+<content start="684" end="685">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="685" end="837">
+<LeftIndent>140.0</LeftIndent>
+<content start="685" end="728">
+<size>11</size></content>
+
+<content start="728" end="733">
+<size>11</size><family>Courier New</family></content>
+
+<content start="733" end="837">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="837" end="838">
+<LeftIndent>140.0</LeftIndent>
+<content start="837" end="838">
+</content>
+
+</paragraph>
+<paragraph start="838" end="866">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="838" end="840">
+<size>11</size></content>
+
+<content start="840" end="848">
+<size>11</size><href>html_radiobutton.cml</href></content>
+
+<content start="848" end="851">
+<size>11</size></content>
+
+<content start="851" end="856">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="856" end="859">
+<size>11</size></content>
+
+<content start="859" end="863">
+<size>11</size><href>html_combobox.cml</href></content>
+
+<content start="863" end="865">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

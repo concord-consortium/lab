@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Introduction: extensibility of the MW platform</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Introduction: extensibility of the MW platform
+
+&lt; Index | Next &gt;
+
+The Molecular Workbench (MW) software can be more useful than just a molecular modeling program. We aim at providing an extensible, open architecture that allows developers to easily extend the program to content fields beyond molecular science. We envision that this can be achieved by developing a mechanism that enables users to plug in other Java programs and make them work together with various services the MW platform offers.
+
+The first step towards this goal has been implemented. MW now supports any Java applet (preferrably written in Swing). If you have got an applet that works well on a browser, then it will likely work as well on MW. Of course, there are always exceptions. Typically, if your applet is written in Swing, there should not be a problem.
+
+At this point, you may be wondering what you will gain from using applets in MW. The following sections explain.
+
+&lt; Index | Next &gt;</text>
+<section start="0" end="966">
+<paragraph start="0" end="47">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="46">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="65">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="48" end="50">
+<size>11</size></content>
+
+<content start="50" end="55">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="55" end="58">
+<size>11</size></content>
+
+<content start="58" end="62">
+<href>applet.cml</href><size>11</size></content>
+
+<content start="62" end="64">
+<size>11</size></content>
+
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="500">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="500">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="500" end="501">
+<LeftIndent>140.0</LeftIndent>
+<content start="500" end="501">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="501" end="834">
+<LeftIndent>140.0</LeftIndent>
+<content start="501" end="834">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="834" end="835">
+<LeftIndent>140.0</LeftIndent>
+<content start="834" end="835">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="835" end="948">
+<LeftIndent>140.0</LeftIndent>
+<content start="835" end="948">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="948" end="949">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>40.0</RightIndent>
+<content start="948" end="949">
+</content>
+
+</paragraph>
+<paragraph start="949" end="966">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="949" end="951">
+<size>11</size></content>
+
+<content start="951" end="956">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="956" end="959">
+<size>11</size></content>
+
+<content start="959" end="963">
+<href>applet.cml</href><size>11</size></content>
+
+<content start="963" end="965">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

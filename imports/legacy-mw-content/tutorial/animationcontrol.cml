@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Using the animation controls</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Using the animation controls
+
+&lt; Previous | Index | Next &gt;
+
+Jmol can animate the motion of a structure if the loaded data contain multiple frames. To show the animation, you will need to turn on the animation controls, which are not invoked by default.
+
+To turn on the animation controls, select &quot;Show Animation Controls&quot; from the &quot;Option&quot; menu of the Molecular Viewer Container.
+
+ 
+This is a live model.
+
+The first button on the left is a toggle button that will turn on and off the &quot;loop&quot; mode of the animation, i.e. when this button is selected, the animation will play repeatedly, otherwise it will just play once. The second button will immediately rewind the animation to the first frame. The third one will play the previous frame. The fourth one will stop the animation. The fifth one will play the next frame. And the last one will play the animation contineously.
+
+This option will be saved when a page is saved.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="951">
+<paragraph start="0" end="29">
+<RightIndent>8.0</RightIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>2</Alignment>
+<content start="0" end="28">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="58">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="30" end="32">
+<size>11</size></content>
+
+<content start="32" end="40">
+<href>initializeJmol.cml</href><size>11</size></content>
+
+<content start="40" end="43">
+<size>11</size></content>
+
+<content start="43" end="48">
+<href>appendix.cml</href><size>11</size></content>
+
+<content start="48" end="57">
+<size>11</size></content>
+
+<content start="57" end="58">
+</content>
+
+</paragraph>
+<paragraph start="58" end="59">
+<content start="58" end="59">
+</content>
+
+</paragraph>
+<paragraph start="59" end="252">
+<LeftIndent>140.0</LeftIndent>
+<content start="59" end="252">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="252" end="253">
+<LeftIndent>140.0</LeftIndent>
+<content start="252" end="253">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="253" end="379">
+<LeftIndent>140.0</LeftIndent>
+<content start="253" end="378">
+<size>11</size></content>
+
+<content start="378" end="379">
+</content>
+
+</paragraph>
+<paragraph start="379" end="380">
+<content start="379" end="380">
+</content>
+
+</paragraph>
+<paragraph start="380" end="382">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="380" end="381">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>set frank on;
+</script><animation>true</animation><scheme>Ball and Stick</scheme>
+<atomcolor>0</atomcolor>
+<rotation> 224 -655 -722 56.8 68</rotation>
+<resource>cyclohexane_movie.xyz</resource><width>300</width><height>230</height>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="381" end="382">
+</content>
+
+</paragraph>
+<paragraph start="382" end="404">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="382" end="403">
+<size>11</size><italic>true</italic></content>
+
+<content start="403" end="404">
+</content>
+
+</paragraph>
+<paragraph start="404" end="405">
+<Alignment>1</Alignment>
+<content start="404" end="405">
+</content>
+
+</paragraph>
+<paragraph start="405" end="873">
+<LeftIndent>140.0</LeftIndent>
+<content start="405" end="873">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="873" end="874">
+<LeftIndent>140.0</LeftIndent>
+<content start="873" end="874">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="874" end="922">
+<LeftIndent>140.0</LeftIndent>
+<content start="874" end="922">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="922" end="923">
+<LeftIndent>140.0</LeftIndent>
+<content start="922" end="923">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="923" end="951">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="923" end="925">
+<size>11</size></content>
+
+<content start="925" end="933">
+<href>initializeJmol.cml</href><size>11</size></content>
+
+<content start="933" end="936">
+<size>11</size></content>
+
+<content start="936" end="941">
+<href>appendix.cml</href><size>11</size></content>
+
+<content start="941" end="950">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

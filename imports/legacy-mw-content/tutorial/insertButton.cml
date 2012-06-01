@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a button</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a button
+
+&lt; Previous | Index | Next &gt;
+
+You can insert a button into a page for the user to click to ask a model to do something.
+
+When you select the &quot;Insert&gt;Standard Controller for Model&gt;Button&quot; menu action (keyboard action: ALT+SHIFT+N), you will see the following dialog box:
+
+  
+[This is a screenshot.]
+
+This dialog box allows you to select a model and an action applicable to the model. If there is no model on the page, the Model and Action Combo Boxes will be blank, and the &quot;OK&quot; button at the bottom will be grayed out. This prevents you from inserting a button that does not do anything.
+
+If the model is a molecular dynamics one, you can write a batch of MW scripts that will be run when the button is clicked. Before writing the scripts, make sure that &quot;Execute MW script&quot; is selected from the &quot;Select an action&quot; drop-down menu. If you do not select it, the text area for typing script will be grayed out.
+
+If the model is Jmol, you can write a batch of   Jmol scripts that will be run when the button is clicked. Please select &quot;Execute Jmol script&quot; from the &quot;Select an action&quot; drop-down menu before inputting Jmol scripts.
+
+ 
+Tip: If scripts are long and you will need to write them in a more comfortable way, use your favorite  text editor to write scripts and copy back to the text area. If there exist scripts already, copy them to your editor first before editing them.
+ 
+
+The following example demonstrates using buttons to interact with a molecule through Jmol scripts:
+ 
+  
+[An embedded Jmol molecular viewer and its controls.]
+
+You can set the transparency of the button, decide which kind of border to draw, set the color of the button when it is set to be opaque, set the text for the tool tip that will appear when the mouse cursor enters and pauses, and change the text that will appear on it.
+
+ 
+Note: some of these options are grayed out when setting them will conflict with the system&apos;s default look-and-feel. For example, on Mac OS X and Windows XP, some options are grayed out.
+ 
+
+By default, the size of a button will be automatically decided by the text string and image on it, according to the font type/size and image size. But you can disable this auto-sizing functionality, and use the width and height parameters you specify with the &quot;Width&quot; and &quot;Height&quot; text fields.
+
+By default, when you press the button and hold it down, it reacts ONLY once --- you will not see continuous actions while holding it down. But you can choose whether or not the button should continuously perform the action while being pressed.
+
+By default, a button is active regardless of the model&apos;s running status and scripts&apos; executing status. But you can choose to disable it when the model is running or the scripts are running. This is useful if the button is supposed to perform some intensive calculations that would become slow when the model is still running, or to carry out some critical tasks that require the model to come to a complete stop for data integrity&#10102;.
+
+Changing and removing a button
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove and copy a button.
+
+ 
+&#10102;If the button is clicked and a process is invoked to collect the atoms&apos; states and do some calculations based on them, but the model&apos;s main process is still running and is in the middle of traversing the atoms, the data collected may be temporally inconsistent. In other words, part of the data may be collected those before the completion of the traversal, and the rest may be collected after. Hence, the results produced based on the collected states may not be correct. To prevent this from happening, you should enable the button only when the model stops.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3707">
+<paragraph start="0" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<href>controller.cml</href><size>11</size></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<href>insertRadioButton.cml</href><size>11</size></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="139">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="139">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="139" end="140">
+<LeftIndent>140.0</LeftIndent>
+<content start="139" end="140">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="140" end="289">
+<LeftIndent>140.0</LeftIndent>
+<content start="140" end="289">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="289" end="290">
+<LeftIndent>100.0</LeftIndent>
+<content start="289" end="290">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="290" end="293">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="290" end="291">
+<size>11</size></content>
+
+<content start="291" end="292">
+<size>11</size><icon>ButtonController.gif</icon></content>
+
+<content start="292" end="293">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="293" end="317">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="293" end="316">
+<size>10</size></content>
+
+<content start="316" end="317">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="317" end="318">
+<LeftIndent>100.0</LeftIndent>
+<content start="317" end="318">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="318" end="607">
+<LeftIndent>140.0</LeftIndent>
+<content start="318" end="607">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="607" end="608">
+<LeftIndent>140.0</LeftIndent>
+<content start="607" end="608">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="608" end="927">
+<LeftIndent>140.0</LeftIndent>
+<content start="608" end="675">
+<size>11</size></content>
+
+<content start="675" end="685">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="685" end="731">
+<size>11</size></content>
+
+<content start="731" end="848">
+<size>11</size><bold>true</bold></content>
+
+<content start="848" end="927">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="927" end="928">
+<LeftIndent>140.0</LeftIndent>
+<content start="927" end="928">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="928" end="1145">
+<LeftIndent>140.0</LeftIndent>
+<content start="928" end="975">
+<size>11</size></content>
+
+<content start="975" end="976">
+<icon>htmlink.gif</icon></content>
+
+<content start="976" end="977">
+<size>11</size></content>
+
+<content start="977" end="989">
+<href>http://www.stolaf.edu/academics/chemapps/jmol/docs/</href><size>11</size></content>
+
+<content start="989" end="1035">
+<size>11</size></content>
+
+<content start="1035" end="1143">
+<size>11</size><bold>true</bold></content>
+
+<content start="1143" end="1145">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1145" end="1146">
+<LeftIndent>140.0</LeftIndent>
+<content start="1145" end="1146">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1146" end="1148">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1146" end="1147">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1147" end="1148">
+</content>
+
+</paragraph>
+<paragraph start="1148" end="1396">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1148" end="1151">
+<size>11</size><bold>true</bold></content>
+
+<content start="1151" end="1395">
+<size>11</size></content>
+
+<content start="1395" end="1396">
+</content>
+
+</paragraph>
+<paragraph start="1396" end="1398">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1396" end="1397">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1397" end="1398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1398" end="1399">
+<LeftIndent>140.0</LeftIndent>
+<content start="1398" end="1399">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1399" end="1498">
+<LeftIndent>140.0</LeftIndent>
+<content start="1399" end="1498">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1498" end="1500">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1498" end="1499">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>color structure;</script><axes>true</axes><boundbox>true</boundbox><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>1CRN.pdb</resource><state>insertButton$0.jms</state><width>400</width>
+<height>300</height>
+</component></content>
+
+<content start="1499" end="1500">
+</content>
+
+</paragraph>
+<paragraph start="1500" end="1503">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1500" end="1501">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Move to Position 1</title>
+<tooltip>Move to Position 1</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<script>cpk off;
+moveto 1 1 0 0 -90 #view from right;</script>
+<action>Execute Jmol script</action>
+</component></content>
+
+<content start="1501" end="1502">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Move to Position 2</title>
+<tooltip>Move to Position 2</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<script>cpk 100%;
+moveto 1 343 205 917 109.6;</script>
+<action>Execute Jmol script</action>
+</component></content>
+
+<content start="1502" end="1503">
+</content>
+
+</paragraph>
+<paragraph start="1503" end="1557">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1503" end="1556">
+<size>10</size></content>
+
+<content start="1556" end="1557">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1557" end="1558">
+<LeftIndent>140.0</LeftIndent>
+<content start="1557" end="1558">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1558" end="1828">
+<LeftIndent>140.0</LeftIndent>
+<content start="1558" end="1828">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1828" end="1829">
+<LeftIndent>140.0</LeftIndent>
+<content start="1828" end="1829">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1829" end="1831">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1829" end="1830">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1830" end="1831">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1831" end="2017">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1831" end="1835">
+<size>11</size><bold>true</bold></content>
+
+<content start="1835" end="2017">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2017" end="2019">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="2017" end="2018">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2018" end="2019">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2019" end="2020">
+<LeftIndent>140.0</LeftIndent>
+<content start="2019" end="2020">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2020" end="2314">
+<LeftIndent>140.0</LeftIndent>
+<content start="2020" end="2314">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2314" end="2315">
+<LeftIndent>140.0</LeftIndent>
+<content start="2314" end="2315">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2315" end="2559">
+<LeftIndent>140.0</LeftIndent>
+<content start="2315" end="2559">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2559" end="2560">
+<LeftIndent>140.0</LeftIndent>
+<content start="2559" end="2560">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2560" end="2993">
+<LeftIndent>140.0</LeftIndent>
+<content start="2560" end="2990">
+<size>11</size></content>
+
+<content start="2990" end="2991">
+</content>
+
+<content start="2991" end="2993">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2993" end="2994">
+<LeftIndent>140.0</LeftIndent>
+<content start="2993" end="2994">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2994" end="3025">
+<LeftIndent>140.0</LeftIndent>
+<content start="2994" end="3024">
+<size>11</size><bold>true</bold></content>
+
+<content start="3024" end="3025">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3025" end="3026">
+<LeftIndent>140.0</LeftIndent>
+<content start="3025" end="3026">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3026" end="3113">
+<LeftIndent>140.0</LeftIndent>
+<content start="3026" end="3031">
+<size>11</size></content>
+
+<content start="3031" end="3060">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="3060" end="3113">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3113" end="3114">
+<LeftIndent>140.0</LeftIndent>
+<content start="3113" end="3114">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3114" end="3116">
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>1.0</SpaceAbove>
+<content start="3114" end="3115">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="3115" end="3116">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3116" end="3678">
+<LeftIndent>140.0</LeftIndent>
+<content start="3116" end="3117">
+</content>
+
+<content start="3117" end="3677">
+<size>10</size></content>
+
+<content start="3677" end="3678">
+</content>
+
+</paragraph>
+<paragraph start="3678" end="3679">
+<LeftIndent>100.0</LeftIndent>
+<content start="3678" end="3679">
+</content>
+
+</paragraph>
+<paragraph start="3679" end="3707">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3679" end="3681">
+<size>11</size></content>
+
+<content start="3681" end="3689">
+<href>controller.cml</href><size>11</size></content>
+
+<content start="3689" end="3692">
+<size>11</size></content>
+
+<content start="3692" end="3697">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="3697" end="3700">
+<size>11</size></content>
+
+<content start="3700" end="3704">
+<href>insertRadioButton.cml</href><size>11</size></content>
+
+<content start="3704" end="3706">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

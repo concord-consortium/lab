@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting an activation energy barrier controller</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting an activation energy barrier controller
+
+&lt; Previous | Index | Next &gt;
+
+An activation energy barrier controller controls a type of elementary reaction that involves an energy barrier in the reaction path.
+
+Choose the &quot;Insert&gt;Special Controller for Model&gt;Chemical Reaction Kinetics&gt;Activation Barrier&quot; menu action. You will see the following dialog window:
+
+  
+[This is a screenshot.]
+
+This controller is used only for the &quot;Chemical Reaction Kinetics&quot; container. If no reaction is supported by the container (as is also the case of &quot;Atomistic Simulation&quot; container), or if there is no elementary reaction that involves an energy barrier (as is in the case of H* + H* -&gt; H2), the second combo box will be empty.
+
+Taking a snapshot
+
+To take a snapshot of this graphical controller, right-click on it and choose &quot;Take a Snapshot&quot; from the popup menu.
+
+Changing and removing an activation energy barrier controller
+
+See &quot;Editing embedded components&quot; for how to change, move, and remove an activation energy barrier controller.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1059">
+<paragraph start="0" end="50">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="49">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="79">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="51" end="53">
+<size>11</size></content>
+
+<content start="53" end="61">
+<href>bondbreaking.cml</href><size>11</size></content>
+
+<content start="61" end="64">
+<size>11</size></content>
+
+<content start="64" end="69">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="69" end="72">
+<size>11</size></content>
+
+<content start="72" end="76">
+<href>DNAScroller.cml</href><size>11</size></content>
+
+<content start="76" end="78">
+<size>11</size></content>
+
+<content start="78" end="79">
+</content>
+
+</paragraph>
+<paragraph start="79" end="80">
+<content start="79" end="80">
+</content>
+
+</paragraph>
+<paragraph start="80" end="213">
+<LeftIndent>140.0</LeftIndent>
+<content start="80" end="213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="213" end="214">
+<LeftIndent>140.0</LeftIndent>
+<content start="213" end="214">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="214" end="364">
+<LeftIndent>140.0</LeftIndent>
+<content start="214" end="364">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="364" end="365">
+<LeftIndent>100.0</LeftIndent>
+<content start="364" end="365">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="365" end="368">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="365" end="366">
+<size>11</size></content>
+
+<content start="366" end="367">
+<size>11</size><icon>ActivationBarrier.gif</icon></content>
+
+<content start="367" end="368">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="368" end="392">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="368" end="391">
+<size>10</size></content>
+
+<content start="391" end="392">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="392" end="393">
+<LeftIndent>100.0</LeftIndent>
+<content start="392" end="393">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="393" end="718">
+<LeftIndent>140.0</LeftIndent>
+<content start="393" end="678">
+<size>11</size></content>
+
+<content start="678" end="679">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="679" end="718">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="718" end="719">
+<LeftIndent>140.0</LeftIndent>
+<content start="718" end="719">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="719" end="737">
+<LeftIndent>140.0</LeftIndent>
+<content start="719" end="736">
+<size>11</size><bold>true</bold></content>
+
+<content start="736" end="737">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="737" end="738">
+<LeftIndent>140.0</LeftIndent>
+<content start="737" end="738">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="738" end="855">
+<LeftIndent>140.0</LeftIndent>
+<content start="738" end="855">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="855" end="856">
+<LeftIndent>140.0</LeftIndent>
+<content start="855" end="856">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="856" end="918">
+<LeftIndent>140.0</LeftIndent>
+<content start="856" end="917">
+<size>11</size><bold>true</bold></content>
+
+<content start="917" end="918">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="918" end="919">
+<LeftIndent>140.0</LeftIndent>
+<content start="918" end="919">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="919" end="1030">
+<LeftIndent>140.0</LeftIndent>
+<content start="919" end="924">
+<size>11</size></content>
+
+<content start="924" end="951">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="951" end="1029">
+<size>11</size></content>
+
+<content start="1029" end="1030">
+</content>
+
+</paragraph>
+<paragraph start="1030" end="1031">
+<LeftIndent>100.0</LeftIndent>
+<content start="1030" end="1031">
+</content>
+
+</paragraph>
+<paragraph start="1031" end="1059">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1031" end="1033">
+<size>11</size></content>
+
+<content start="1033" end="1041">
+<href>bondbreaking.cml</href><size>11</size></content>
+
+<content start="1041" end="1044">
+<size>11</size></content>
+
+<content start="1044" end="1049">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="1049" end="1052">
+<size>11</size></content>
+
+<content start="1052" end="1056">
+<href>DNAScroller.cml</href><size>11</size></content>
+
+<content start="1056" end="1058">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

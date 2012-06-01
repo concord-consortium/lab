@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Steering a slider</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Steering a slider
+
+Click the Run button and then click the model window below. Use the Up and Down key to steer the slider. When you start to apply the steering force, the slider will accelerate in the direction of the force. Meanwhile, you will observe the rapid rising of the energy bar on the right. Your challenge is to stop the moving of the slider and reverse it.
+
+ 
+[This is an embedded simulator.]
+
+Note that if you do not apply any steering force, the slider will move with a constant speed, or just stand still.</text>
+<section start="0" end="522">
+<paragraph start="0" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="17">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<LeftIndent>140.0</LeftIndent>
+<content start="18" end="19">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="19" end="370">
+<LeftIndent>140.0</LeftIndent>
+<content start="19" end="370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="370" end="371">
+<LeftIndent>140.0</LeftIndent>
+<content start="370" end="371">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="371" end="373">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="371" end="372">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>SlidingObstacle$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+
+<content start="372" end="373">
+</content>
+
+</paragraph>
+<paragraph start="373" end="406">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="373" end="405">
+<size>10</size></content>
+
+<content start="405" end="406">
+</content>
+
+</paragraph>
+<paragraph start="406" end="407">
+<LeftIndent>140.0</LeftIndent>
+<content start="406" end="407">
+</content>
+
+</paragraph>
+<paragraph start="407" end="522">
+<LeftIndent>140.0</LeftIndent>
+<content start="407" end="521">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

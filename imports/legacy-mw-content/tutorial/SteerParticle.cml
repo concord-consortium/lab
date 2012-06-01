@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Steering particles</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Steering particles
+
+&lt; Previous | Index | Next &gt;
+
+In molecular dynamics simulations, the forces on the particles are computed from the inter-particle interactions. In Molecular Workbench, the user is also allowed to exert forces on selected particles. This is called steering. 
+
+Steering a particle permits the user to &quot;participate&quot; a simulation by &quot;driving an atomic vehicle&quot; around in a molecular system. This can hopefully enhance the user&apos;s experience about interatomic interactions.
+
+To steer a particle, right-click (Windows and Linux) or CTRL+click (Mac OS X) on it and select &quot;Steer&quot; from the popup menu. To turn the steering off, select &quot;Steering Off&quot; from the menu.
+
+ The hot keys for steering a particle :
+   &apos;a&apos;    --- increase the steering force 
+   &apos;d&apos;    --- decrease the steering force 
+   Up     --- steer up 
+   Down   --- steer down 
+   Left   --- steer left 
+   Right  --- steer right
+   &apos;[&apos;    --- steer clockwise (for the Gay-Berne particle)
+   &apos;]&apos;    --- steer anti-clockwise (for the Gay-Berne particle)
+
+The following model demonstates the effect of &quot;Sticky and Fat Finger&quot;, an issue in a nanotechnology debate about whether or not we can ultimately assemble structures directly from individual atoms. The challenge for this model is to reshape the rectangular lattice of the green atoms into a square one using the purple manipulator. The temperature of the system is maintained at 50 K by a heat bath so that the effect of thermal motion will remain insignificant.
+
+ 
+  
+[This is an embedded simulator.]
+
+The second model demonstates an example with which a user can &quot;feel&quot; the strength of the van der Waals force between two atoms. In the model, the green atom is tethered with a harmonic restraint so that it will not be dragged away by the steered purple atom. The van der Waals bond can be broken only after the steering force increases one level up.
+
+ 
+Important Instructions: 
+
+(a) To steer the selected particle, run the model first. You can steer it only when the model is running. Always click the model window before pressing the arrow keys to steer. In the computer jargon, this means the focus of the keyboard must be transfered to the model so that the key action can then be applied to it.
+
+Only when you press the steering keys will the steering force will exerted on the selected particles. The force vanishes as soon as the key is released.
+
+(b) Please also be advised that you should generally disable the recorder for models that will use the steering function. Disabling the recorder will disable the Simulation Watchdog, which issues a warning message when it detects that the total energy per particle increases too fast (this may be the case when you steer a particle --- a lot of energy can be added to the system).
+ 
+
+Demo: Assemble monolayers
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2824">
+<paragraph start="0" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="20" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<size>11</size><href>SteerObstacle.cml</href></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="49">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="49" end="277">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="266">
+<size>11</size></content>
+
+<content start="266" end="274">
+<bold>true</bold><size>11</size></content>
+
+<content start="274" end="277">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="277" end="278">
+<LeftIndent>140.0</LeftIndent>
+<content start="277" end="278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="278" end="487">
+<LeftIndent>140.0</LeftIndent>
+<content start="278" end="487">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="487" end="488">
+<LeftIndent>140.0</LeftIndent>
+<content start="487" end="488">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="488" end="675">
+<LeftIndent>140.0</LeftIndent>
+<content start="488" end="675">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="675" end="676">
+<LeftIndent>140.0</LeftIndent>
+<content start="675" end="676">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="676" end="716">
+<LeftIndent>260.0</LeftIndent>
+<content start="676" end="677">
+<icon>tip.gif</icon></content>
+
+<content start="677" end="714">
+<size>11</size><italic>true</italic></content>
+
+<content start="714" end="716">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="716" end="759">
+<LeftIndent>280.0</LeftIndent>
+<content start="716" end="717">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="717" end="719">
+</content>
+
+<content start="719" end="729">
+<size>11</size><family>Courier New</family></content>
+
+<content start="729" end="759">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="759" end="802">
+<LeftIndent>280.0</LeftIndent>
+<content start="759" end="760">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="760" end="762">
+</content>
+
+<content start="762" end="772">
+<size>11</size><family>Courier New</family></content>
+
+<content start="772" end="802">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="802" end="826">
+<LeftIndent>280.0</LeftIndent>
+<content start="802" end="803">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="803" end="805">
+</content>
+
+<content start="805" end="815">
+<size>11</size><family>Courier New</family></content>
+
+<content start="815" end="826">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="826" end="852">
+<LeftIndent>280.0</LeftIndent>
+<content start="826" end="827">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="827" end="829">
+</content>
+
+<content start="829" end="839">
+<size>11</size><family>Courier New</family></content>
+
+<content start="839" end="852">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="852" end="878">
+<LeftIndent>280.0</LeftIndent>
+<content start="852" end="853">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="853" end="855">
+</content>
+
+<content start="855" end="865">
+<size>11</size><family>Courier New</family></content>
+
+<content start="865" end="878">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="878" end="904">
+<LeftIndent>280.0</LeftIndent>
+<content start="878" end="879">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="879" end="881">
+</content>
+
+<content start="881" end="891">
+<size>11</size><family>Courier New</family></content>
+
+<content start="891" end="904">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="904" end="963">
+<LeftIndent>280.0</LeftIndent>
+<content start="904" end="905">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="905" end="907">
+</content>
+
+<content start="907" end="917">
+<size>11</size><family>Courier New</family></content>
+
+<content start="917" end="963">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="963" end="1027">
+<LeftIndent>280.0</LeftIndent>
+<content start="963" end="964">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="964" end="966">
+</content>
+
+<content start="966" end="976">
+<size>11</size><family>Courier New</family></content>
+
+<content start="976" end="1027">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1027" end="1028">
+<LeftIndent>140.0</LeftIndent>
+<content start="1027" end="1028">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1028" end="1491">
+<LeftIndent>140.0</LeftIndent>
+<content start="1028" end="1491">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1491" end="1492">
+<LeftIndent>140.0</LeftIndent>
+<content start="1491" end="1492">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1492" end="1494">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1492" end="1493">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>SteerParticle$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+
+<content start="1493" end="1494">
+</content>
+
+</paragraph>
+<paragraph start="1494" end="1497">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1494" end="1495">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Sticky finger demo</title>
+<tooltip>Sticky finger demo</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1137026059086</groupid>
+<script>load stickyfinger.mml;
+run;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="1495" end="1496">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Tear apart a VDW bond</title>
+<tooltip>Tear apart a VDW bond</tooltip>
+<disabled_at_script>true</disabled_at_script>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1137026059086</groupid>
+<script>load tearapart.mml;
+run;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="1496" end="1497">
+</content>
+
+</paragraph>
+<paragraph start="1497" end="1530">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1497" end="1529">
+<size>10</size></content>
+
+<content start="1529" end="1530">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1530" end="1531">
+<LeftIndent>140.0</LeftIndent>
+<content start="1530" end="1531">
+</content>
+
+</paragraph>
+<paragraph start="1531" end="1881">
+<LeftIndent>140.0</LeftIndent>
+<content start="1531" end="1881">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1881" end="1882">
+<LeftIndent>140.0</LeftIndent>
+<content start="1881" end="1882">
+</content>
+
+</paragraph>
+<paragraph start="1882" end="1884">
+<LeftIndent>140.0</LeftIndent>
+<content start="1882" end="1883">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1883" end="1884">
+</content>
+
+</paragraph>
+<paragraph start="1884" end="1909">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1884" end="1908">
+<bold>true</bold><size>11</size></content>
+
+<content start="1908" end="1909">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1909" end="1910">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1909" end="1910">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1910" end="2230">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1910" end="2230">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2230" end="2231">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2230" end="2231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2231" end="2384">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2231" end="2384">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2384" end="2385">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2384" end="2385">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2385" end="2766">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2385" end="2765">
+<size>11</size></content>
+
+<content start="2765" end="2766">
+</content>
+
+</paragraph>
+<paragraph start="2766" end="2768">
+<LeftIndent>140.0</LeftIndent>
+<content start="2766" end="2767">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2767" end="2768">
+</content>
+
+</paragraph>
+<paragraph start="2768" end="2769">
+<LeftIndent>140.0</LeftIndent>
+<content start="2768" end="2769">
+</content>
+
+</paragraph>
+<paragraph start="2769" end="2795">
+<LeftIndent>140.0</LeftIndent>
+<content start="2769" end="2775">
+<size>10</size></content>
+
+<content start="2775" end="2794">
+<size>10</size><href>../part1/eric/selfassembly/self_assembly7.cml</href></content>
+
+<content start="2794" end="2795">
+</content>
+
+</paragraph>
+<paragraph start="2795" end="2796">
+<LeftIndent>140.0</LeftIndent>
+<content start="2795" end="2796">
+</content>
+
+</paragraph>
+<paragraph start="2796" end="2824">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2796" end="2809">
+<size>11</size></content>
+
+<content start="2809" end="2814">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="2814" end="2817">
+<size>11</size></content>
+
+<content start="2817" end="2821">
+<size>11</size><href>SteerObstacle.cml</href></content>
+
+<content start="2821" end="2823">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

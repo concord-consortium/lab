@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>How to link a submission?</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>How to link a submission?
+ 
+&lt; Previous | Index | Next &gt;
+
+After you have submitted a model or activity to the database, you can find it from the &quot;User Submissions&quot; page, which can also be opened by choosing the pulldown menu &quot;Collaboration&gt;View Submissions&quot;.
+
+A submisson is stored in a database. Its address is usually a regular URL address with a query string appended to the end. Once fed such an address, the Molecular Workbench (MW) software will fetch from the database a compressed file and automatically uncompress it to a local folder. After that, the URL location bar displays the local files, instead of the original database query. Therefore, you cannot copy the database address of an uploaded file from the URL location bar.
+
+MW provides two ways of getting the database address of an uploaded file. Right-click (CTRL+click on Mac OS X) on the links, you will see a popup menu, as is shown in the following:
+
+  
+This is a screenshot.
+
+This popup menu provides two options for getting to a submission. You can choose &quot;Copy Shortcut&quot; (as is in Internet Explorer), and paste as a hyperlink. This is recommended if you need to reference a submission in a MW page.
+
+You can also choose &quot;Create a JNLP Launching File for This Link&quot;. This will create a JNLP file that will directly open up the submission. This is recommended if you need to reference a submission in a HTML page.
+
+In general, it is not encouraged to use the submission functionality to deploy an activity that is expected to be widely used. Database items may take more time to load. At this current stage, the submission functionality should be used only as an informal way of sharing models and activities before they can be finally released in a stable version.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1767">
+<paragraph start="0" end="26">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>2</Alignment>
+<SpaceAbove>5.0</SpaceAbove>
+<RightIndent>9.0</RightIndent>
+<content start="0" end="25">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="28">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>2</Alignment>
+<content start="26" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="56">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="38">
+<size>11</size><href>upload2.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="46">
+<size>11</size><href>index3.cml</href></content>
+
+<content start="46" end="55">
+<size>11</size></content>
+
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>2</Alignment>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="258">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="145">
+<size>11</size></content>
+
+<content start="145" end="161">
+<size>11</size><href>../upload.cml</href></content>
+
+<content start="161" end="258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="258" end="259">
+<LeftIndent>140.0</LeftIndent>
+<content start="258" end="259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="259" end="738">
+<LeftIndent>140.0</LeftIndent>
+<content start="259" end="738">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="738" end="739">
+<LeftIndent>140.0</LeftIndent>
+<content start="738" end="739">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="739" end="921">
+<LeftIndent>140.0</LeftIndent>
+<content start="739" end="921">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="921" end="922">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="921" end="922">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="922" end="925">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="922" end="923">
+<size>11</size></content>
+
+<content start="923" end="924">
+<icon>UploadPage.gif</icon><size>11</size></content>
+
+<content start="924" end="925">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="925" end="947">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="925" end="947">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="947" end="948">
+<SpaceAbove>5.0</SpaceAbove>
+<content start="947" end="948">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="948" end="1173">
+<LeftIndent>140.0</LeftIndent>
+<content start="948" end="1173">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1173" end="1174">
+<LeftIndent>140.0</LeftIndent>
+<content start="1173" end="1174">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1174" end="1386">
+<LeftIndent>140.0</LeftIndent>
+<content start="1174" end="1386">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1386" end="1387">
+<LeftIndent>140.0</LeftIndent>
+<content start="1386" end="1387">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1387" end="1738">
+<LeftIndent>140.0</LeftIndent>
+<content start="1387" end="1737">
+<size>11</size></content>
+
+<content start="1737" end="1738">
+</content>
+
+</paragraph>
+<paragraph start="1738" end="1739">
+<content start="1738" end="1739">
+</content>
+
+</paragraph>
+<paragraph start="1739" end="1767">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="1739" end="1741">
+<size>11</size></content>
+
+<content start="1741" end="1749">
+<size>11</size><href>upload2.cml</href></content>
+
+<content start="1749" end="1752">
+<size>11</size></content>
+
+<content start="1752" end="1757">
+<size>11</size><href>index3.cml</href></content>
+
+<content start="1757" end="1766">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Prefetching to cache and working offline</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Prefetching to cache and working offline
+
+&lt; Previous | Index | Next &gt;
+
+To speed up loading, by default, pages on the remote servers are automatically cached on your disk. As a result, if you visit a page again, the loading speed will be significantly faster. If a remote resource has been updated since your last visit, the new version will be automatically cached again. This ensures that you always get the latest pages with minimal communication with the Web servers that host the pages. You will also be able to view the cached files offline in exactly the same way as you view their original files when you are online.
+
+The caching mechanism caches only the pages that you have visited while you are online. If you try, while your computer is offline, to open an activity that has never been opened before, you will be given an error message. If you want all the materials that the Concord Consortium has developed using the Molecular Workbench (MW) software, you can also prefetch them to the cache all at once.
+
+There are currently six packages that you can prefetch to the cache (we break them into packages because the total size of all the files after compression is large - more than 25 MB, and it will increase):
+
+   All models in the Library
+   All molecules in the Library
+   Activities: Part I
+   Activities: Part II
+   Author materials
+   The User&apos;s Manual
+
+They are available at the &quot;Option&gt;Prefetch to Cache&quot; menu. Once you select a package, it will be automatically put into the default cache directory (open the Preferences Window and select the Cache tab to see where the cache directory is). If you are authoring with MW, we recommend that the User&apos;s Manual be prefetched, because you may need to consult it from time to time. There is also an option of precaching everything, if you would like to.
+
+If you have cached the packages, you can choose to work offline (select &quot;File&gt;Work Offline&quot;). What this means is that MW will not check updates for cached pages --- When MW opens a URL, it will check if the resource at the URL has been cached, if so, the cached version will be opened immediately without further checking with the server the URL points to; if the resource has not been cached, MW will just open and cache it as usual.
+
+ 
+The &quot;prefetch-to-cache&quot; feature, however, works for only the resources provided by the MW Team. For materials developed by others (i.e. if the URL does not start with &quot;http://mw.concord.org&quot;), you will have to visit through all pages while you are online in order to get them cached (a page is automatically cached when it is loaded).
+
+Materials in other languages are currently not available for pre-caching.
+ 
+
+Because the &quot;work-offline&quot; mode saves the time for update checking, MW can open pages at nearly the same speed it opens local pages. The &quot;work-offline&quot; mode is not saved when you shut down MW. You will need to turn it on if you wish to work offline every time you start MW.
+
+Although working offline can speed up things and prevent MW from waiting long for data to come through when the network bandwidth narrows, we do not, however, recommend that you always select this mode when you have an excellent Internet connection. This is a solution we provide for those users who do not have good Internet connections, or do not have Internet connections all the time.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3366">
+<paragraph start="0" end="41">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="40">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="42">
+<RightIndent>20.0</RightIndent>
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="70">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="42" end="44">
+<size>11</size></content>
+
+<content start="44" end="52">
+<href>proxy.cml</href><size>11</size></content>
+
+<content start="52" end="55">
+<size>11</size></content>
+
+<content start="55" end="60">
+<href>index.cml</href><size>11</size></content>
+
+<content start="60" end="63">
+<size>11</size></content>
+
+<content start="63" end="67">
+<href>locale.cml</href><size>11</size></content>
+
+<content start="67" end="69">
+<size>11</size></content>
+
+<content start="69" end="70">
+</content>
+
+</paragraph>
+<paragraph start="70" end="71">
+<LeftIndent>140.0</LeftIndent>
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="624">
+<LeftIndent>140.0</LeftIndent>
+<content start="71" end="372">
+<size>11</size></content>
+
+<content start="372" end="622">
+<size>11</size><bold>true</bold></content>
+
+<content start="622" end="624">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="624" end="625">
+<LeftIndent>140.0</LeftIndent>
+<content start="624" end="625">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="625" end="1018">
+<LeftIndent>140.0</LeftIndent>
+<content start="625" end="1018">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1018" end="1019">
+<LeftIndent>140.0</LeftIndent>
+<content start="1018" end="1019">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1019" end="1225">
+<LeftIndent>140.0</LeftIndent>
+<content start="1019" end="1225">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1225" end="1226">
+<LeftIndent>100.0</LeftIndent>
+<content start="1225" end="1226">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1226" end="1255">
+<LeftIndent>160.0</LeftIndent>
+<content start="1226" end="1227">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1227" end="1229">
+<size>11</size></content>
+
+<content start="1229" end="1254">
+<href>../student/index.cml</href><size>11</size></content>
+
+<content start="1254" end="1255">
+</content>
+
+</paragraph>
+<paragraph start="1255" end="1287">
+<LeftIndent>160.0</LeftIndent>
+<content start="1255" end="1256">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1256" end="1258">
+</content>
+
+<content start="1258" end="1286">
+<href>../molecules/index.cml</href><size>11</size></content>
+
+<content start="1286" end="1287">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1287" end="1309">
+<LeftIndent>160.0</LeftIndent>
+<content start="1287" end="1288">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1288" end="1290">
+<size>11</size></content>
+
+<content start="1290" end="1308">
+<href>../part1/index.cml</href><size>11</size></content>
+
+<content start="1308" end="1309">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1309" end="1332">
+<LeftIndent>160.0</LeftIndent>
+<content start="1309" end="1310">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1310" end="1312">
+</content>
+
+<content start="1312" end="1331">
+<href>../part2/ZoomIt/main.cml</href><size>11</size></content>
+
+<content start="1331" end="1332">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1332" end="1352">
+<LeftIndent>160.0</LeftIndent>
+<content start="1332" end="1333">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1333" end="1335">
+<size>11</size></content>
+
+<content start="1335" end="1351">
+<href>../teacher/index.cml</href><size>11</size></content>
+
+<content start="1351" end="1352">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1352" end="1373">
+<LeftIndent>160.0</LeftIndent>
+<content start="1352" end="1353">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1353" end="1355">
+<size>11</size></content>
+
+<content start="1355" end="1372">
+<href>index.cml</href><size>11</size></content>
+
+<content start="1372" end="1373">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1373" end="1374">
+<content start="1373" end="1374">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1374" end="1821">
+<LeftIndent>140.0</LeftIndent>
+<content start="1374" end="1614">
+<size>11</size></content>
+
+<content start="1614" end="1748">
+<size>11</size><bold>true</bold></content>
+
+<content start="1748" end="1821">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1821" end="1822">
+<LeftIndent>140.0</LeftIndent>
+<content start="1821" end="1822">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1822" end="2257">
+<LeftIndent>140.0</LeftIndent>
+<content start="1822" end="1948">
+<size>11</size></content>
+
+<content start="1948" end="1951">
+<size>11</size><italic>true</italic></content>
+
+<content start="1951" end="2257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2257" end="2258">
+<LeftIndent>140.0</LeftIndent>
+<content start="2257" end="2258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2258" end="2260">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="2258" end="2259">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2259" end="2260">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2260" end="2595">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2260" end="2343">
+<size>11</size></content>
+
+<content start="2343" end="2354">
+<href>../about.cml</href><size>11</size></content>
+
+<content start="2354" end="2595">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2595" end="2596">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2595" end="2596">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2596" end="2670">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2596" end="2670">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2670" end="2672">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="2670" end="2671">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2671" end="2672">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2672" end="2673">
+<LeftIndent>140.0</LeftIndent>
+<content start="2672" end="2673">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2673" end="2947">
+<LeftIndent>140.0</LeftIndent>
+<content start="2673" end="2947">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2947" end="2948">
+<LeftIndent>140.0</LeftIndent>
+<content start="2947" end="2948">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2948" end="3337">
+<LeftIndent>140.0</LeftIndent>
+<content start="2948" end="3337">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3337" end="3338">
+<LeftIndent>140.0</LeftIndent>
+<content start="3337" end="3338">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="3338" end="3366">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="3338" end="3340">
+<size>11</size></content>
+
+<content start="3340" end="3348">
+<href>proxy.cml</href><size>11</size></content>
+
+<content start="3348" end="3351">
+<size>11</size></content>
+
+<content start="3351" end="3356">
+<href>index.cml</href><size>11</size></content>
+
+<content start="3356" end="3359">
+<size>11</size></content>
+
+<content start="3359" end="3363">
+<href>locale.cml</href><size>11</size></content>
+
+<content start="3363" end="3365">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

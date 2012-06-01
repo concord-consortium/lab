@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Search User&apos;s Manual</page_title>
+<bg_image>sidebar1.gif</bg_image>
+<text>  
+Search the User&apos;s Manual
+
+You MUST be online in order to be able to use this search functionality.
+
+
+ 
+
+
+   Return to the index page of the User&apos;s Manual.
+
+</text>
+<section start="0" end="160">
+<paragraph start="0" end="3">
+<LeftIndent>160.0</LeftIndent>
+<content start="0" end="1">
+<bold>true</bold><foreground>8 24 99</foreground></content>
+
+<content start="1" end="2">
+<icon>ug_search.gif</icon></content>
+
+<content start="2" end="3">
+<bold>true</bold><foreground>8 24 99</foreground></content>
+
+</paragraph>
+<paragraph start="3" end="28">
+<LeftIndent>160.0</LeftIndent>
+<content start="3" end="27">
+<bold>true</bold><size>18</size><italic>true</italic><foreground>128 128 128</foreground></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<LeftIndent>160.0</LeftIndent>
+<content start="28" end="29">
+<size>9</size></content>
+
+</paragraph>
+<paragraph start="29" end="102">
+<LeftIndent>160.0</LeftIndent>
+<content start="29" end="101">
+<bold>true</bold><size>11</size></content>
+
+<content start="101" end="102">
+<size>9</size></content>
+
+</paragraph>
+<paragraph start="102" end="103">
+<LeftIndent>160.0</LeftIndent>
+<content start="102" end="103">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="103" end="104">
+<LeftIndent>160.0</LeftIndent>
+<content start="103" end="104">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="104" end="106">
+<LeftIndent>160.0</LeftIndent>
+<content start="104" end="105">
+<component><class>org.concord.modeler.SearchTextField</class>
+<type>2</type>
+</component></content>
+
+<content start="105" end="106">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="106" end="107">
+<LeftIndent>160.0</LeftIndent>
+<content start="106" end="107">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="107" end="108">
+<LeftIndent>160.0</LeftIndent>
+<content start="107" end="108">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="108" end="158">
+<LeftIndent>160.0</LeftIndent>
+<content start="108" end="109">
+</content>
+
+<content start="109" end="110">
+<icon>house.gif</icon></content>
+
+<content start="110" end="112">
+</content>
+
+<content start="112" end="143">
+<size>11</size></content>
+
+<content start="143" end="156">
+<href>index.cml</href><size>11</size></content>
+
+<content start="156" end="157">
+<size>11</size></content>
+
+<content start="157" end="158">
+</content>
+
+</paragraph>
+<paragraph start="158" end="159">
+<content start="158" end="159">
+</content>
+
+</paragraph>
+<paragraph start="159" end="160">
+</paragraph>
+</section>
+</document>

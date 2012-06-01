@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Boundary Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Boundary Tool
+
+&lt; Previous | Index | Next &gt;
+
+Currently, five types of boundary conditions are supported in the Basic 2D Molecular Simulator:
+
+   Default reflectory boundary (reflecting from the container wall)
+   Periodic boundary
+   Custom reflectory boundary
+   Horizontally reflectory and vertically periodic boundary
+   Horizontally periodic and vertically reflectory boundary
+
+The difference between a default reflectory boundary and a refectory boundary is that when the default reflectory boundary is applied, a particle will bounce back when it hits the border of the window in which the model is put (i.e. the window in the model container), whereas when a reflectory boundary is applied, a particle will bounce back when it hits the border of the rectangle inside the window in the model container. The size of the rectangle can be changed without changing the size of the model container. And the size of the rectangle will not change when the container is resized.
+
+You seldom need to use the custom reflectory boundary. You should always use the default reflectory boundary. The custom reflectory boundary is used primarily in changing-volume simulation (e.g   NPT). Or it can be used to save computations that are not needed because of a special design. For example, if you place a frame image in the model to mimic a special effect, e.g. to simulate that the molecules are under a microscope or inside a cellular compartment, you can use a custom reflectory boundary that has a size just enough to cover the microscope window or the compartment. Thus, the computations that would have been spent on calculating those atoms hiden by the microscope or compartment image, if the default reflectory boundary were used, are saved, without losing the effect.
+
+Double-clicking the Boundary Tool ( ) will bring up the following dialog window:
+
+  
+[This is a screenshot of the Boundary Tool.]
+
+With this dialog window, you can change the boundary type. If you choose a boundary that is not the default reflectory boundary, there will be four small rectangles appearing at the four corners of the rectangular area in which the atoms are contained. You can drag the small rectangles to change the size of the physical bound of the model. If a periodic boundary is used, you can also specify whether or not the border lines and the mirror images in the neighboring boxes should be drawn. If the mirror images are not shown, the simulation will run slightly faster. If the central box is smaller than the window of the container, showing the mirror images will have a better visual effect. Otherwise, it should make little difference.
+
+You can experiment with the following model about adjusting the boundary conditions.
+
+ 
+[This is an embedded simulator.]
+
+Click here to see more examples of periodic boundaries.
+
+The boundary effect
+
+The reflectory boundaries introduce a finite-size effect to the system, which means the particles near the border will experience less interactions than those not. This will create some problems. For example, if one does a pair-correlation analysis, the function may not converge to unity when the distance increases. In general, applying the periodic boundary conditions should remove the finite-size effect, except for computing the electrostatic potentials, which will need to use the    Ewald Sum additionally.
+
+To remove the boundary effect on data analysis when you have to use reflectory boundaries, you probably should select the rectangular area that shrinks from the boundary and only analyze the particles within the area. See this section for examples.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3635">
+<paragraph start="0" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="17">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="47">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="21">
+<size>11</size></content>
+
+<content start="21" end="29">
+<size>11</size><href>AvposAction.cml</href></content>
+
+<content start="29" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<size>11</size><href>ActionNotes.cml</href></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>100.0</LeftIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="144">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="144">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="144" end="145">
+<LeftIndent>140.0</LeftIndent>
+<content start="144" end="145">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="145" end="213">
+<LeftIndent>160.0</LeftIndent>
+<content start="145" end="146">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="146" end="213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="213" end="234">
+<LeftIndent>160.0</LeftIndent>
+<content start="213" end="214">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="214" end="216">
+<size>11</size></content>
+
+<content start="216" end="233">
+<link_statusbar>false</link_statusbar><link_width>500</link_width><link_fullscreen>false</link_fullscreen><target>_blank</target><href>glossary/PeriodicBC.cml</href><link_height>400</link_height><link_left>200</link_left><link_menubar>false</link_menubar><link_top>200</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="233" end="234">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="234" end="264">
+<LeftIndent>160.0</LeftIndent>
+<content start="234" end="235">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="235" end="237">
+<size>11</size></content>
+
+<content start="237" end="263">
+<link_statusbar>false</link_statusbar><link_width>500</link_width><link_fullscreen>false</link_fullscreen><target>_blank</target><href>glossary/ReflectingBC.cml</href><link_height>400</link_height><link_left>200</link_left><link_menubar>false</link_menubar><link_top>200</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="263" end="264">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="264" end="324">
+<LeftIndent>160.0</LeftIndent>
+<content start="264" end="265">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="265" end="267">
+<size>11</size></content>
+
+<content start="267" end="323">
+<link_statusbar>false</link_statusbar><link_width>500</link_width><link_fullscreen>false</link_fullscreen><target>_blank</target><href>glossary/CompositeBC.cml</href><link_height>400</link_height><link_left>200</link_left><link_menubar>false</link_menubar><link_top>200</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="323" end="324">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="324" end="384">
+<LeftIndent>160.0</LeftIndent>
+<content start="324" end="325">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="325" end="327">
+<size>11</size></content>
+
+<content start="327" end="383">
+<link_statusbar>false</link_statusbar><link_width>500</link_width><link_fullscreen>false</link_fullscreen><target>_blank</target><href>glossary/CompositeBC.cml</href><link_height>400</link_height><link_left>200</link_left><link_menubar>false</link_menubar><link_top>200</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="383" end="384">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="384" end="385">
+<LeftIndent>140.0</LeftIndent>
+<content start="384" end="385">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="385" end="980">
+<LeftIndent>140.0</LeftIndent>
+<content start="385" end="980">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="980" end="981">
+<LeftIndent>140.0</LeftIndent>
+<content start="980" end="981">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="981" end="1771">
+<LeftIndent>140.0</LeftIndent>
+<content start="981" end="1175">
+<size>11</size></content>
+
+<content start="1175" end="1176">
+<icon>apiIcon.gif</icon></content>
+
+<content start="1176" end="1177">
+</content>
+
+<content start="1177" end="1180">
+<link_statusbar>false</link_statusbar><link_width>600</link_width><link_fullscreen>false</link_fullscreen><target>_blank</target><href>glossary/npt.cml</href><link_height>400</link_height><link_left>200</link_left><link_menubar>false</link_menubar><link_top>200</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="1180" end="1771">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1771" end="1772">
+<LeftIndent>140.0</LeftIndent>
+<content start="1771" end="1772">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1772" end="1853">
+<LeftIndent>140.0</LeftIndent>
+<content start="1772" end="1807">
+<size>11</size></content>
+
+<content start="1807" end="1808">
+<icon>Bound.gif</icon><size>11</size></content>
+
+<content start="1808" end="1853">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1853" end="1854">
+<LeftIndent>140.0</LeftIndent>
+<content start="1853" end="1854">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1854" end="1857">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1854" end="1855">
+<size>11</size></content>
+
+<content start="1855" end="1856">
+<icon>BoundaryDialog.gif</icon><size>11</size></content>
+
+<content start="1856" end="1857">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1857" end="1902">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1857" end="1901">
+<size>10</size></content>
+
+<content start="1901" end="1902">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1902" end="1903">
+<content start="1902" end="1903">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1903" end="2640">
+<LeftIndent>140.0</LeftIndent>
+<content start="1903" end="2640">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2640" end="2641">
+<LeftIndent>140.0</LeftIndent>
+<content start="2640" end="2641">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2641" end="2726">
+<LeftIndent>140.0</LeftIndent>
+<content start="2641" end="2725">
+<size>11</size></content>
+
+<content start="2725" end="2726">
+</content>
+
+</paragraph>
+<paragraph start="2726" end="2727">
+<LeftIndent>140.0</LeftIndent>
+<content start="2726" end="2727">
+</content>
+
+</paragraph>
+<paragraph start="2727" end="2729">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2727" end="2728">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>boundary$0.mml</resource><menubar>false</menubar><recorder>true</recorder><button>Select Object</button><button>Setup Boundary</button></component></content>
+
+<content start="2728" end="2729">
+</content>
+
+</paragraph>
+<paragraph start="2729" end="2762">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2729" end="2761">
+<size>10</size></content>
+
+<content start="2761" end="2762">
+</content>
+
+</paragraph>
+<paragraph start="2762" end="2763">
+<LeftIndent>140.0</LeftIndent>
+<content start="2762" end="2763">
+</content>
+
+</paragraph>
+<paragraph start="2763" end="2819">
+<LeftIndent>140.0</LeftIndent>
+<content start="2763" end="2769">
+<size>11</size></content>
+
+<content start="2769" end="2773">
+<size>11</size><href>periodic.cml</href></content>
+
+<content start="2773" end="2819">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2819" end="2820">
+<LeftIndent>140.0</LeftIndent>
+<content start="2819" end="2820">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2820" end="2840">
+<LeftIndent>140.0</LeftIndent>
+<content start="2820" end="2839">
+<bold>true</bold><size>11</size></content>
+
+<content start="2839" end="2840">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2840" end="2841">
+<LeftIndent>140.0</LeftIndent>
+<content start="2840" end="2841">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2841" end="3356">
+<LeftIndent>140.0</LeftIndent>
+<content start="2841" end="3064">
+<size>11</size></content>
+
+<content start="3064" end="3089">
+<size>11</size><href>glossary/pcf.cml</href></content>
+
+<content start="3089" end="3329">
+<size>11</size></content>
+
+<content start="3329" end="3330">
+<icon>htmlink.gif</icon></content>
+
+<content start="3330" end="3331">
+</content>
+
+<content start="3331" end="3332">
+<size>11</size></content>
+
+<content start="3332" end="3341">
+<size>11</size><href>http://www.earth.ox.ac.uk/~keithr/moldy-manual/node11.html</href></content>
+
+<content start="3341" end="3356">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3356" end="3357">
+<LeftIndent>140.0</LeftIndent>
+<content start="3356" end="3357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3357" end="3606">
+<LeftIndent>140.0</LeftIndent>
+<content start="3357" end="3579">
+<size>11</size></content>
+
+<content start="3579" end="3591">
+<size>11</size><href>script_pcf.cml</href></content>
+
+<content start="3591" end="3605">
+<size>11</size></content>
+
+<content start="3605" end="3606">
+</content>
+
+</paragraph>
+<paragraph start="3606" end="3607">
+<LeftIndent>140.0</LeftIndent>
+<content start="3606" end="3607">
+</content>
+
+</paragraph>
+<paragraph start="3607" end="3635">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3607" end="3609">
+<size>11</size></content>
+
+<content start="3609" end="3617">
+<size>11</size><href>AvposAction.cml</href></content>
+
+<content start="3617" end="3620">
+<size>11</size></content>
+
+<content start="3620" end="3625">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="3625" end="3628">
+<size>11</size></content>
+
+<content start="3628" end="3632">
+<size>11</size><href>ActionNotes.cml</href></content>
+
+<content start="3632" end="3634">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

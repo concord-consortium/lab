@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Show</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Show
+
+&lt; Previous | Index | Next &gt;
+
+The show command shows a specific mode of the model. To see how to change the mode without using scripts, see this section for changing the view.
+
+Syntax:
+
+show [mode] ON/OFF
+show [mode] [parameter]
+
+where [mode] is the mode to be shown for the model, which is one of the following:
+
+General
+
+   show clock ON/OFF
+This flag determines whether or not the virtual time in the simulation should be displayed, along with the clock icon.
+
+   show selectionhalo ON/OFF
+This flag determins whether or not the selected objects should be highlighted. This mode should always be on when you are operating the objects or your users are supposed to operate the objects through the GUI. It should only be turned off in the middle of executing a lengthy script (in this case, the end user may not need to see the selections and operations the script invokes).
+
+Letter mode
+
+   show index ON/OFF
+   show charge ON/OFF
+
+For all containers except the mesoscale ones:
+
+Molecular graphics mode
+
+   show style [parameter: string]
+where the parameter must be a string that is one of the following: SPACE_FILLING, BALL_AND_STICK, WIRE_FRAME and STICK.
+
+Line mode
+
+   show vdwline ON/OFF
+turns on/off the van der Waals force lines. The cut-off for the force lines can be set using the &quot;View Option&quot; dialog.
+
+Vector mode
+
+   show velocity ON/OFF
+   show momentum ON/OFF
+   show acceleration ON/OFF
+   show force ON/OFF
+
+Shading mode
+
+   show keshading ON/OFF
+   show chargeshading ON/OFF
+
+Field mode
+
+   show contour [parameter: floating number]
+The charge on the probe atom for generating a contour map can be specified in the parameter input.
+
+   show efield [parameter: integer number]
+When this mode is turned on, the window will be discretized into small squares. At the center of such a square, a vector that represents the direction of net electric force an electron would experience as a result of all electric fields, be they from atoms or from external field, will be drawn. The size of the squares can be specified by the input parameter. The default value is 10.
+
+Grid mode
+
+   show grid [parameter: integer number]
+Here is a list of parameters for grid mode:
+   0 - grid lines
+   1 - atom distribution by number
+   2 - mass distribution
+   3 - charge distribution
+   4 - temperature distribution
+   5 - velocity vector pattern
+   6 - force vector pattern
+
+For the mesoscale containers:
+
+   show dipole ON/OFF
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2463">
+<paragraph start="0" end="5">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="4">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="34">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="6" end="8">
+<size>11</size></content>
+
+<content start="8" end="16">
+<href>script_minimize.cml</href><size>11</size></content>
+
+<content start="16" end="19">
+<size>11</size></content>
+
+<content start="19" end="24">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="31">
+<href>script_background.cml</href><size>11</size></content>
+
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>100.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="181">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<size>11</size><family>Courier New</family></content>
+
+<content start="43" end="145">
+<size>11</size></content>
+
+<content start="145" end="157">
+<href>viewSettings.cml</href><size>11</size></content>
+
+<content start="157" end="181">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="181" end="182">
+<LeftIndent>140.0</LeftIndent>
+<content start="181" end="182">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="182" end="190">
+<LeftIndent>140.0</LeftIndent>
+<content start="182" end="190">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="190" end="191">
+<LeftIndent>140.0</LeftIndent>
+<content start="190" end="191">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="191" end="210">
+<LeftIndent>160.0</LeftIndent>
+<content start="191" end="196">
+<bold>true</bold><family>Courier New</family><size>11</size></content>
+
+<content start="196" end="209">
+<size>11</size><family>Courier New</family></content>
+
+<content start="209" end="210">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="210" end="234">
+<LeftIndent>160.0</LeftIndent>
+<content start="210" end="214">
+<bold>true</bold><family>Courier New</family><size>11</size></content>
+
+<content start="214" end="233">
+<size>11</size><family>Courier New</family></content>
+
+<content start="233" end="234">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="234" end="235">
+<LeftIndent>160.0</LeftIndent>
+<content start="234" end="235">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="235" end="318">
+<LeftIndent>140.0</LeftIndent>
+<content start="235" end="241">
+<size>11</size></content>
+
+<content start="241" end="247">
+<size>11</size><family>Courier New</family></content>
+
+<content start="247" end="318">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="318" end="319">
+<LeftIndent>140.0</LeftIndent>
+<content start="318" end="319">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="319" end="327">
+<LeftIndent>140.0</LeftIndent>
+<content start="319" end="326">
+<italic>true</italic><size>11</size></content>
+
+<content start="326" end="327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="327" end="328">
+<LeftIndent>160.0</LeftIndent>
+<content start="327" end="328">
+</content>
+
+</paragraph>
+<paragraph start="328" end="349">
+<LeftIndent>160.0</LeftIndent>
+<content start="328" end="329">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="329" end="331">
+</content>
+
+<content start="331" end="348">
+<size>11</size><family>Courier New</family></content>
+
+<content start="348" end="349">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="349" end="468">
+<LeftIndent>160.0</LeftIndent>
+<content start="349" end="468">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="468" end="469">
+<LeftIndent>160.0</LeftIndent>
+<content start="468" end="469">
+</content>
+
+</paragraph>
+<paragraph start="469" end="498">
+<LeftIndent>160.0</LeftIndent>
+<content start="469" end="470">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="470" end="472">
+</content>
+
+<content start="472" end="497">
+<size>11</size><family>Courier New</family></content>
+
+<content start="497" end="498">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="498" end="881">
+<LeftIndent>160.0</LeftIndent>
+<content start="498" end="881">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="881" end="882">
+<LeftIndent>140.0</LeftIndent>
+<content start="881" end="882">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="882" end="894">
+<LeftIndent>140.0</LeftIndent>
+<content start="882" end="893">
+<italic>true</italic><size>11</size></content>
+
+<content start="893" end="894">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="894" end="895">
+<LeftIndent>160.0</LeftIndent>
+<content start="894" end="895">
+</content>
+
+</paragraph>
+<paragraph start="895" end="916">
+<LeftIndent>160.0</LeftIndent>
+<content start="895" end="896">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="896" end="898">
+</content>
+
+<content start="898" end="915">
+<size>11</size><family>Courier New</family></content>
+
+<content start="915" end="916">
+</content>
+
+</paragraph>
+<paragraph start="916" end="938">
+<LeftIndent>160.0</LeftIndent>
+<content start="916" end="917">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="917" end="919">
+</content>
+
+<content start="919" end="938">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="938" end="939">
+<LeftIndent>140.0</LeftIndent>
+<content start="938" end="939">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="939" end="985">
+<LeftIndent>140.0</LeftIndent>
+<content start="939" end="984">
+<size>11</size></content>
+
+<content start="984" end="985">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="985" end="986">
+<LeftIndent>140.0</LeftIndent>
+<content start="985" end="986">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="986" end="1010">
+<LeftIndent>140.0</LeftIndent>
+<content start="986" end="1009">
+<italic>true</italic><size>11</size></content>
+
+<content start="1009" end="1010">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1010" end="1011">
+<LeftIndent>140.0</LeftIndent>
+<content start="1010" end="1011">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1011" end="1045">
+<LeftIndent>160.0</LeftIndent>
+<content start="1011" end="1012">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1012" end="1014">
+</content>
+
+<content start="1014" end="1044">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1044" end="1045">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1045" end="1165">
+<LeftIndent>160.0</LeftIndent>
+<content start="1045" end="1112">
+<size>11</size></content>
+
+<content start="1112" end="1125">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1125" end="1127">
+<size>11</size></content>
+
+<content start="1127" end="1141">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1141" end="1143">
+<size>11</size></content>
+
+<content start="1143" end="1153">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1153" end="1158">
+<size>11</size></content>
+
+<content start="1158" end="1163">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1163" end="1165">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1165" end="1166">
+<LeftIndent>140.0</LeftIndent>
+<content start="1165" end="1166">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1166" end="1176">
+<LeftIndent>140.0</LeftIndent>
+<content start="1166" end="1175">
+<italic>true</italic><size>11</size></content>
+
+<content start="1175" end="1176">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1176" end="1177">
+<LeftIndent>140.0</LeftIndent>
+<content start="1176" end="1177">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1177" end="1200">
+<LeftIndent>160.0</LeftIndent>
+<content start="1177" end="1178">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1178" end="1180">
+</content>
+
+<content start="1180" end="1199">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1199" end="1200">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1200" end="1319">
+<LeftIndent>160.0</LeftIndent>
+<content start="1200" end="1298">
+<size>11</size></content>
+
+<content start="1298" end="1309">
+<href>viewSettings.cml</href><size>11</size></content>
+
+<content start="1309" end="1319">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1319" end="1320">
+<LeftIndent>140.0</LeftIndent>
+<content start="1319" end="1320">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1320" end="1332">
+<LeftIndent>140.0</LeftIndent>
+<content start="1320" end="1331">
+<italic>true</italic><size>11</size></content>
+
+<content start="1331" end="1332">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1332" end="1333">
+<LeftIndent>160.0</LeftIndent>
+<content start="1332" end="1333">
+</content>
+
+</paragraph>
+<paragraph start="1333" end="1357">
+<LeftIndent>160.0</LeftIndent>
+<content start="1333" end="1334">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1334" end="1336">
+</content>
+
+<content start="1336" end="1357">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1357" end="1381">
+<LeftIndent>160.0</LeftIndent>
+<content start="1357" end="1358">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1358" end="1360">
+</content>
+
+<content start="1360" end="1381">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1381" end="1409">
+<LeftIndent>160.0</LeftIndent>
+<content start="1381" end="1382">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1382" end="1384">
+</content>
+
+<content start="1384" end="1409">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1409" end="1430">
+<LeftIndent>160.0</LeftIndent>
+<content start="1409" end="1410">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1410" end="1412">
+</content>
+
+<content start="1412" end="1429">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1429" end="1430">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1430" end="1431">
+<LeftIndent>140.0</LeftIndent>
+<content start="1430" end="1431">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="1431" end="1444">
+<LeftIndent>140.0</LeftIndent>
+<content start="1431" end="1443">
+<italic>true</italic><size>11</size></content>
+
+<content start="1443" end="1444">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1444" end="1445">
+<LeftIndent>160.0</LeftIndent>
+<content start="1444" end="1445">
+</content>
+
+</paragraph>
+<paragraph start="1445" end="1470">
+<LeftIndent>160.0</LeftIndent>
+<content start="1445" end="1446">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1446" end="1448">
+</content>
+
+<content start="1448" end="1470">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1470" end="1499">
+<LeftIndent>160.0</LeftIndent>
+<content start="1470" end="1471">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1471" end="1473">
+</content>
+
+<content start="1473" end="1498">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1498" end="1499">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1499" end="1500">
+<LeftIndent>160.0</LeftIndent>
+<content start="1499" end="1500">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1500" end="1511">
+<LeftIndent>140.0</LeftIndent>
+<content start="1500" end="1510">
+<italic>true</italic><size>11</size></content>
+
+<content start="1510" end="1511">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1511" end="1512">
+<LeftIndent>160.0</LeftIndent>
+<content start="1511" end="1512">
+</content>
+
+</paragraph>
+<paragraph start="1512" end="1557">
+<LeftIndent>160.0</LeftIndent>
+<content start="1512" end="1513">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1513" end="1515">
+</content>
+
+<content start="1515" end="1556">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1556" end="1557">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1557" end="1656">
+<LeftIndent>160.0</LeftIndent>
+<content start="1557" end="1656">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1656" end="1657">
+<LeftIndent>160.0</LeftIndent>
+<content start="1656" end="1657">
+</content>
+
+</paragraph>
+<paragraph start="1657" end="1700">
+<LeftIndent>160.0</LeftIndent>
+<content start="1657" end="1658">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1658" end="1660">
+</content>
+
+<content start="1660" end="1699">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1699" end="1700">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1700" end="2086">
+<LeftIndent>160.0</LeftIndent>
+<content start="1700" end="2086">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2086" end="2087">
+<content start="2086" end="2087">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2087" end="2097">
+<LeftIndent>140.0</LeftIndent>
+<content start="2087" end="2096">
+<italic>true</italic><size>11</size></content>
+
+<content start="2096" end="2097">
+</content>
+
+</paragraph>
+<paragraph start="2097" end="2098">
+<LeftIndent>160.0</LeftIndent>
+<content start="2097" end="2098">
+</content>
+
+</paragraph>
+<paragraph start="2098" end="2139">
+<LeftIndent>160.0</LeftIndent>
+<content start="2098" end="2099">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="2099" end="2101">
+</content>
+
+<content start="2101" end="2138">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2138" end="2139">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2139" end="2183">
+<LeftIndent>160.0</LeftIndent>
+<content start="2139" end="2183">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2183" end="2201">
+<LeftIndent>180.0</LeftIndent>
+<content start="2183" end="2184">
+<icon>org.concord.modeler.text.BulletIcon$DiamondBulletIcon</icon></content>
+
+<content start="2184" end="2186">
+</content>
+
+<content start="2186" end="2201">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2201" end="2236">
+<LeftIndent>180.0</LeftIndent>
+<content start="2201" end="2202">
+<icon>org.concord.modeler.text.BulletIcon$DiamondBulletIcon</icon></content>
+
+<content start="2202" end="2204">
+</content>
+
+<content start="2204" end="2236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2236" end="2261">
+<LeftIndent>180.0</LeftIndent>
+<content start="2236" end="2237">
+<icon>org.concord.modeler.text.BulletIcon$DiamondBulletIcon</icon></content>
+
+<content start="2237" end="2239">
+</content>
+
+<content start="2239" end="2261">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2261" end="2288">
+<LeftIndent>180.0</LeftIndent>
+<content start="2261" end="2262">
+<icon>org.concord.modeler.text.BulletIcon$DiamondBulletIcon</icon></content>
+
+<content start="2262" end="2264">
+</content>
+
+<content start="2264" end="2288">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2288" end="2320">
+<LeftIndent>180.0</LeftIndent>
+<content start="2288" end="2289">
+<icon>org.concord.modeler.text.BulletIcon$DiamondBulletIcon</icon></content>
+
+<content start="2289" end="2291">
+</content>
+
+<content start="2291" end="2320">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2320" end="2351">
+<LeftIndent>180.0</LeftIndent>
+<content start="2320" end="2321">
+<icon>org.concord.modeler.text.BulletIcon$DiamondBulletIcon</icon></content>
+
+<content start="2321" end="2323">
+</content>
+
+<content start="2323" end="2351">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2351" end="2379">
+<LeftIndent>180.0</LeftIndent>
+<content start="2351" end="2352">
+<icon>org.concord.modeler.text.BulletIcon$DiamondBulletIcon</icon></content>
+
+<content start="2352" end="2354">
+</content>
+
+<content start="2354" end="2379">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2379" end="2380">
+<LeftIndent>140.0</LeftIndent>
+<content start="2379" end="2380">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2380" end="2410">
+<LeftIndent>140.0</LeftIndent>
+<content start="2380" end="2410">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2410" end="2411">
+<LeftIndent>160.0</LeftIndent>
+<content start="2410" end="2411">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2411" end="2433">
+<LeftIndent>160.0</LeftIndent>
+<content start="2411" end="2412">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="2412" end="2414">
+</content>
+
+<content start="2414" end="2432">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2432" end="2433">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2433" end="2434">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2433" end="2434">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2434" end="2435">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2434" end="2435">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2435" end="2463">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2435" end="2437">
+<size>11</size></content>
+
+<content start="2437" end="2445">
+<href>script_minimize.cml</href><size>11</size></content>
+
+<content start="2445" end="2448">
+<size>11</size></content>
+
+<content start="2448" end="2453">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="2453" end="2456">
+<size>11</size></content>
+
+<content start="2456" end="2460">
+<href>script_background.cml</href><size>11</size></content>
+
+<content start="2460" end="2462">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

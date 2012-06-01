@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Steepest descents</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Steepest descents
+
+
+An algorithm for global optimization. In molecular mechanics, it is often used to perform energy minimization.
+
+
+ 
+return to index</text>
+<section start="0" end="151">
+<paragraph start="0" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="17">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<LeftIndent>120.0</LeftIndent>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<LeftIndent>120.0</LeftIndent>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="131">
+<LeftIndent>140.0</LeftIndent>
+<content start="20" end="110">
+<size>11</size></content>
+
+<content start="110" end="129">
+<href>Minimization.cml</href><size>11</size></content>
+
+<content start="129" end="130">
+<size>11</size></content>
+
+<content start="130" end="131">
+</content>
+
+</paragraph>
+<paragraph start="131" end="132">
+<LeftIndent>120.0</LeftIndent>
+<content start="131" end="132">
+</content>
+
+</paragraph>
+<paragraph start="132" end="133">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="132" end="133">
+</content>
+
+</paragraph>
+<paragraph start="133" end="135">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="133" end="134">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="134" end="135">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="135" end="151">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="135" end="150">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

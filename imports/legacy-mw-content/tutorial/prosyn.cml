@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Using the Protein Synthesis Simulator</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Using the Protein Synthesis Simulator
+
+&lt; Previous | Index | Next &gt;
+
+Protein synthesis through DNA transcription and translation is the central dogma of molecular biology. Because of its fundamental importance, there is a model container specially designed to illustrate it. The simulation is a combination of controlled animations and molecular dynamics calculations of proteins based on a simplified model.
+
+ 
+[This is an embedded simulator.]
+
+There is a control bar at the bottom of the container (under the DNA scroll bar) with which you can run and customize the model:
+
+  This button can be used to customize the codon animations. Two parameters, one specifying the speed of transcription, the other the speed of translation, can be set with the dialog window opened from clicking this button.
+
+ This button can be used to input a DNA string  (copy and paste, or just type). The DNA code is supposed to be applied to the sense strand, i.e. the 5&apos;-3&apos; stand. An ATG triplet, which signals start of translation, will be attached to the beginning of the sequence you input, if it does not start with ATG.
+
+ This button is used to reset the whole simulation. When the reset button is pressed, the model will reset to the initial setting that you set up for the protein to interact with.
+
+ This button is for pausing the simulation.
+
+ This button is for stepping through the simulation. This means one and only one transcription or translation step will be done when this button is clicked once.
+
+ This button is for starting or resuming the simulation. If you click this button from the very beginning, the simulation will run from the beginning of transcription to the end of translation.
+
+To create a protein synthesis model from scratch, follow these steps:
+
+(a) Create a new page: File&gt;New Blank Page
+
+(b) Insert a Protein Synthesis Model: Insert&gt;Model Container&gt;2D Protein Synthesis Simulator. You will be asked whether you would like to have a promoter and a terminator attached to the DNA string. A promoter region and a terminator region, attached to the coding region, can help deliver the concept that DNA is not a molecule alone but is in the context of gene. By default, the model container will come without a menu bar and a tool bar. To access the funtionalities of the model container, such as resizing the container, you can use the right-click menu to add the menu bar, and choose the tool bar buttons from the Toolbar menu. It is highly recommended that you hide the tool bar and menu bar once you are done with your model, because their functions may interfere with the protein synthesis model.
+
+(c) The newly inserted protein synthesis model comes with a default DNA segment, which consists of a promoter, a coding region with default code and a terminator. You can click the &quot; &quot; button on the bottom panel of the model container and input a DNA string. The maximum length of DNA sequence you can input is 1500 nucleotides.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2973">
+<paragraph start="0" end="38">
+<SpaceAbove>8.0</SpaceAbove>
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="37">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="37" end="38">
+<bold>true</bold><size>14</size></content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="67">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="39" end="52">
+<size>11</size></content>
+
+<content start="52" end="57">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="57" end="60">
+<size>11</size></content>
+
+<content start="60" end="64">
+<href>prosyn2.cml</href><size>11</size></content>
+
+<content start="64" end="66">
+<size>11</size></content>
+
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="68">
+<LeftIndent>140.0</LeftIndent>
+<content start="67" end="68">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="68" end="408">
+<LeftIndent>140.0</LeftIndent>
+<content start="68" end="135">
+<size>11</size></content>
+
+<content start="135" end="169">
+<size>11</size><bold>true</bold></content>
+
+<content start="169" end="388">
+<size>11</size></content>
+
+<content start="388" end="406">
+<href>../teacher/molsim/folding.cml</href><size>11</size></content>
+
+<content start="406" end="408">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="408" end="409">
+<LeftIndent>140.0</LeftIndent>
+<content start="408" end="409">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="409" end="411">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="409" end="410">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>prosyn$0.mml</resource><menubar>false</menubar><recorder>true</recorder><dna>ATGGGGGGGGGGAAGGGAGTTGGCGTAGATTTTCAAATGGCGGGGAAACCCTTTGGGGGGGGGAAAGTGCCCCCCTTTAAATCCGGGGGGGGGCCCGGGTGAAAAGGGCCCTTTGGGTAGCCCTGGCCCAAACACGAATTT</dna><dna_dt1>10</dna_dt1><dna_dt2>500</dna_dt2><dna_context>true</dna_context></component></content>
+
+<content start="410" end="411">
+</content>
+
+</paragraph>
+<paragraph start="411" end="444">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="411" end="443">
+<size>10</size></content>
+
+<content start="443" end="444">
+</content>
+
+</paragraph>
+<paragraph start="444" end="445">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="444" end="445">
+</content>
+
+</paragraph>
+<paragraph start="445" end="574">
+<LeftIndent>140.0</LeftIndent>
+<content start="445" end="574">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="574" end="575">
+<LeftIndent>140.0</LeftIndent>
+<content start="574" end="575">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="575" end="799">
+<LeftIndent>160.0</LeftIndent>
+<content start="575" end="576">
+<icon>Animation.gif</icon></content>
+
+<content start="576" end="577">
+</content>
+
+<content start="577" end="799">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="799" end="800">
+<LeftIndent>160.0</LeftIndent>
+<content start="799" end="800">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="800" end="1106">
+<LeftIndent>160.0</LeftIndent>
+<content start="800" end="801">
+<icon>DNACode.gif</icon></content>
+
+<content start="801" end="926">
+<size>11</size></content>
+
+<content start="926" end="931">
+<size>11</size><bold>true</bold></content>
+
+<content start="931" end="965">
+<size>11</size></content>
+
+<content start="965" end="968">
+<size>11</size><family>Courier New</family></content>
+
+<content start="968" end="1101">
+<size>11</size></content>
+
+<content start="1101" end="1104">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1104" end="1106">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1106" end="1107">
+<LeftIndent>160.0</LeftIndent>
+<content start="1106" end="1107">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1107" end="1287">
+<LeftIndent>160.0</LeftIndent>
+<content start="1107" end="1108">
+<icon>Reset.gif</icon></content>
+
+<content start="1108" end="1287">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1287" end="1288">
+<LeftIndent>160.0</LeftIndent>
+<content start="1287" end="1288">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1288" end="1332">
+<LeftIndent>160.0</LeftIndent>
+<content start="1288" end="1289">
+<icon>Pause.gif</icon></content>
+
+<content start="1289" end="1332">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1332" end="1333">
+<LeftIndent>160.0</LeftIndent>
+<content start="1332" end="1333">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1333" end="1495">
+<LeftIndent>160.0</LeftIndent>
+<content start="1333" end="1334">
+<icon>StepForward.gif</icon></content>
+
+<content start="1334" end="1495">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1495" end="1496">
+<LeftIndent>160.0</LeftIndent>
+<content start="1495" end="1496">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1496" end="1690">
+<LeftIndent>160.0</LeftIndent>
+<content start="1496" end="1497">
+<icon>Play.gif</icon></content>
+
+<content start="1497" end="1690">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1690" end="1691">
+<LeftIndent>140.0</LeftIndent>
+<content start="1690" end="1691">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1691" end="1761">
+<LeftIndent>140.0</LeftIndent>
+<content start="1691" end="1761">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1761" end="1762">
+<LeftIndent>140.0</LeftIndent>
+<content start="1761" end="1762">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1762" end="1805">
+<LeftIndent>140.0</LeftIndent>
+<content start="1762" end="1805">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1805" end="1806">
+<LeftIndent>140.0</LeftIndent>
+<content start="1805" end="1806">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1806" end="2614">
+<LeftIndent>140.0</LeftIndent>
+<content start="1806" end="2614">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2614" end="2615">
+<LeftIndent>140.0</LeftIndent>
+<content start="2614" end="2615">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2615" end="2944">
+<LeftIndent>140.0</LeftIndent>
+<content start="2615" end="2797">
+<size>11</size></content>
+
+<content start="2797" end="2798">
+<icon>DNACode.gif</icon></content>
+
+<content start="2798" end="2944">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2944" end="2945">
+<LeftIndent>140.0</LeftIndent>
+<content start="2944" end="2945">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2945" end="2973">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2945" end="2958">
+<size>11</size></content>
+
+<content start="2958" end="2963">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="2963" end="2966">
+<size>11</size></content>
+
+<content start="2966" end="2970">
+<href>prosyn2.cml</href><size>11</size></content>
+
+<content start="2970" end="2972">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

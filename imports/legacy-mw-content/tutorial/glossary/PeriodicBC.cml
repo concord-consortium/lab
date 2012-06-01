@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Periodic boundary conditions</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Periodic boundary conditions
+
+
+Boundary conditions are computational protocols about what to do when a particle meets a boundary. The periodic boundary conditions are a trick to extend the simulation box to infinity: an particle that leaves the box enters from the opposite side or corner, thus the effect looks like that the box were periodically reproduced in space. It is mainly used in gas, solid and liquid simulations, or used in macromolecular simulations to treat solvent molecules.
+
+See: reflectory boundary conditions, composite boundary conditions.
+
+
+  
+ return to index</text>
+<section start="0" end="582">
+<paragraph start="0" end="29">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="28">
+<bold>true</bold><family>Bookman Old Style</family><size>20</size></content>
+
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<LeftIndent>120.0</LeftIndent>
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<LeftIndent>120.0</LeftIndent>
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="491">
+<LeftIndent>140.0</LeftIndent>
+<content start="31" end="491">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="491" end="492">
+<LeftIndent>140.0</LeftIndent>
+<content start="491" end="492">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="492" end="560">
+<LeftIndent>140.0</LeftIndent>
+<content start="492" end="497">
+<size>11</size></content>
+
+<content start="497" end="527">
+<href>ReflectingBC.cml</href><size>11</size></content>
+
+<content start="527" end="529">
+<size>11</size></content>
+
+<content start="529" end="558">
+<href>CompositeBC.cml</href><size>11</size></content>
+
+<content start="558" end="560">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="560" end="561">
+<LeftIndent>140.0</LeftIndent>
+<content start="560" end="561">
+</content>
+
+</paragraph>
+<paragraph start="561" end="562">
+<Alignment>1</Alignment>
+<LeftIndent>120.0</LeftIndent>
+<content start="561" end="562">
+</content>
+
+</paragraph>
+<paragraph start="562" end="565">
+<Alignment>1</Alignment>
+<LeftIndent>120.0</LeftIndent>
+<content start="562" end="563">
+</content>
+
+<content start="563" end="564">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="564" end="565">
+</content>
+
+</paragraph>
+<paragraph start="565" end="582">
+<Alignment>1</Alignment>
+<LeftIndent>120.0</LeftIndent>
+<content start="565" end="566">
+</content>
+
+<content start="566" end="581">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

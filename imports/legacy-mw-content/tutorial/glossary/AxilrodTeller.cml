@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Axilrod-Teller potential</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Axilrod-Teller potential
+
+A three-body interaction potential, dependent on the coordinates of three atoms. It can be derived from the interactions of three dipoles. 
+
+The analytical form of the Axilrod-Teller three-body potential reads 
+
+  
+
+   
+ return to index</text>
+<section start="0" end="263">
+<paragraph start="0" end="25">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="24">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="24" end="25">
+<family>Book Antiqua</family><size>16</size></content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<LeftIndent>120.0</LeftIndent>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="166">
+<LeftIndent>140.0</LeftIndent>
+<content start="26" end="166">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="166" end="167">
+<LeftIndent>140.0</LeftIndent>
+<content start="166" end="167">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="167" end="237">
+<LeftIndent>140.0</LeftIndent>
+<content start="167" end="236">
+<size>11</size></content>
+
+<content start="236" end="237">
+</content>
+
+</paragraph>
+<paragraph start="237" end="238">
+<LeftIndent>120.0</LeftIndent>
+<content start="237" end="238">
+</content>
+
+</paragraph>
+<paragraph start="238" end="241">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="238" end="239">
+</content>
+
+<content start="239" end="240">
+<icon>AxilrodTeller.gif</icon></content>
+
+<content start="240" end="241">
+</content>
+
+</paragraph>
+<paragraph start="241" end="242">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="241" end="242">
+</content>
+
+</paragraph>
+<paragraph start="242" end="246">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="242" end="243">
+</content>
+
+<content start="243" end="244">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="244" end="246">
+</content>
+
+</paragraph>
+<paragraph start="246" end="263">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="246" end="247">
+</content>
+
+<content start="247" end="262">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

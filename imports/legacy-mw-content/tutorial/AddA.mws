@@ -1,0 +1,4 @@
+add atom 0 (1, "rand()*%height");
+set atom["%number_of_particles-1"].vx "rand()*100";
+set atom["%number_of_particles-1"].vy "(rand()-0.5)*100";
+run;

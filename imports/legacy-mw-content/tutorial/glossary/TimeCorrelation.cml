@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Time correlation functions</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Time correlation functions
+
+Time correlation function describes for how long a physical variable remains correlated to itself or another one. If it is for itself, it is called autocorrelation function. If for another one, it is called cross-correlation function. Time correlation function is defined as: 
+
+ 
+
+There are two schemes in literature for normalizing the time correlation function so that cxy(0)=1: 
+
+
+ 
+
+The two are slightly different from each other. The difference can be seen by examing an idealized case. Suppose all xn decay with respect to time exponentially: 
+
+ 
+
+The first definition gives: 
+
+ 
+
+This is an average of exponential functions weighted by the zero-time correlation of each participant. Whereas the second defintion yields: 
+
+ 
+
+This is an average of exponential functions without weights. Note that cxy(1)=cxy(2) at any time when there is only one participant in the ensemble set (N=1). While in any case of N&gt;1, the difference between the two definitions becomes noticeable---The second just loses all the references to the data set y, therefore it cannot properly (in this case) reflect the time correlation between x and y. Because of this (although this argument is based on an idealized case), we use the first normalization scheme in our models. 
+
+In the above, we have defined the time correlation functions for two time-dependent scalar functions. Sometimes you may see this definition is extended to two time-dependent vector functions, such as the most widely mentioned velocity-velocity autocorrelation function (VVACF): 
+
+ 
+
+This VVACF averages over all directions, therefore it does not reflect possible anisotropic effect (e.g. when there is an external field). Sometimes we need to break up this term into VVACF tensor: 
+
+ 
+
+See correlation functions.
+
+ 
+return to index</text>
+<section start="0" end="1818">
+<paragraph start="0" end="27">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="26">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<LeftIndent>120.0</LeftIndent>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="305">
+<LeftIndent>140.0</LeftIndent>
+<content start="28" end="305">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="305" end="306">
+<LeftIndent>120.0</LeftIndent>
+<content start="305" end="306">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="306" end="308">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="306" end="307">
+<icon>tcf_scalar.gif</icon><size>11</size></content>
+
+<content start="307" end="308">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="308" end="309">
+<LeftIndent>140.0</LeftIndent>
+<content start="308" end="309">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="309" end="410">
+<LeftIndent>140.0</LeftIndent>
+<content start="309" end="399">
+<size>11</size></content>
+
+<content start="399" end="400">
+<italic>true</italic><size>11</size></content>
+
+<content start="400" end="402">
+<subscript>true</subscript><italic>true</italic><size>11</size></content>
+
+<content start="402" end="410">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="410" end="411">
+<LeftIndent>120.0</LeftIndent>
+<content start="410" end="411">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="411" end="412">
+<LeftIndent>120.0</LeftIndent>
+<content start="411" end="412">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="412" end="414">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="412" end="413">
+<icon>tcf_scalar_normalized.gif</icon><size>11</size></content>
+
+<content start="413" end="414">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="414" end="415">
+<LeftIndent>120.0</LeftIndent>
+<content start="414" end="415">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="415" end="578">
+<LeftIndent>140.0</LeftIndent>
+<content start="415" end="532">
+<size>11</size></content>
+
+<content start="532" end="533">
+<italic>true</italic><size>11</size></content>
+
+<content start="533" end="534">
+<subscript>true</subscript><italic>true</italic><size>11</size></content>
+
+<content start="534" end="578">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="578" end="579">
+<LeftIndent>120.0</LeftIndent>
+<content start="578" end="579">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="579" end="581">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="579" end="580">
+<icon>expxn.gif</icon><size>11</size></content>
+
+<content start="580" end="581">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="581" end="582">
+<LeftIndent>120.0</LeftIndent>
+<content start="581" end="582">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="582" end="611">
+<LeftIndent>140.0</LeftIndent>
+<content start="582" end="611">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="611" end="612">
+<LeftIndent>120.0</LeftIndent>
+<content start="611" end="612">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="612" end="614">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="612" end="613">
+<icon>cxy1exp.gif</icon><size>11</size></content>
+
+<content start="613" end="614">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="614" end="615">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="614" end="615">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="615" end="756">
+<LeftIndent>140.0</LeftIndent>
+<content start="615" end="756">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="756" end="757">
+<LeftIndent>120.0</LeftIndent>
+<content start="756" end="757">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="757" end="759">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="757" end="758">
+<icon>cxy2exp.gif</icon><size>11</size></content>
+
+<content start="758" end="759">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="759" end="760">
+<LeftIndent>120.0</LeftIndent>
+<content start="759" end="760">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="760" end="1285">
+<LeftIndent>140.0</LeftIndent>
+<content start="760" end="832">
+<size>11</size></content>
+
+<content start="832" end="834">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="834" end="837">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="837" end="839">
+<size>11</size></content>
+
+<content start="839" end="841">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="841" end="844">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="844" end="913">
+<size>11</size></content>
+
+<content start="913" end="914">
+<italic>true</italic><size>11</size></content>
+
+<content start="914" end="940">
+<size>11</size></content>
+
+<content start="940" end="941">
+<italic>true</italic><size>11</size></content>
+
+<content start="941" end="1066">
+<size>11</size></content>
+
+<content start="1066" end="1067">
+<italic>true</italic><size>11</size></content>
+
+<content start="1067" end="1150">
+<size>11</size></content>
+
+<content start="1150" end="1151">
+<italic>true</italic><size>11</size></content>
+
+<content start="1151" end="1156">
+<size>11</size></content>
+
+<content start="1156" end="1157">
+<italic>true</italic><size>11</size></content>
+
+<content start="1157" end="1285">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1285" end="1286">
+<LeftIndent>120.0</LeftIndent>
+<content start="1285" end="1286">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1286" end="1565">
+<LeftIndent>140.0</LeftIndent>
+<content start="1286" end="1565">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1565" end="1566">
+<LeftIndent>120.0</LeftIndent>
+<content start="1565" end="1566">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1566" end="1568">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1566" end="1567">
+<icon>vvacf.gif</icon><size>11</size></content>
+
+<content start="1567" end="1568">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1568" end="1569">
+<LeftIndent>120.0</LeftIndent>
+<content start="1568" end="1569">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1569" end="1768">
+<LeftIndent>140.0</LeftIndent>
+<content start="1569" end="1768">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1768" end="1769">
+<LeftIndent>120.0</LeftIndent>
+<content start="1768" end="1769">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1769" end="1771">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1769" end="1770">
+<icon>vvacfTensor.gif</icon><size>11</size></content>
+
+<content start="1770" end="1771">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1771" end="1772">
+<LeftIndent>120.0</LeftIndent>
+<content start="1771" end="1772">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1772" end="1799">
+<LeftIndent>140.0</LeftIndent>
+<content start="1772" end="1776">
+<size>11</size></content>
+
+<content start="1776" end="1797">
+<href>CorrelationFunction.cml</href><size>11</size></content>
+
+<content start="1797" end="1798">
+<size>11</size></content>
+
+<content start="1798" end="1799">
+</content>
+
+</paragraph>
+<paragraph start="1799" end="1800">
+<LeftIndent>120.0</LeftIndent>
+<content start="1799" end="1800">
+</content>
+
+</paragraph>
+<paragraph start="1800" end="1802">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1800" end="1801">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="1801" end="1802">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="1802" end="1818">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1802" end="1817">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>
