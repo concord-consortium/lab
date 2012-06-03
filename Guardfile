@@ -36,8 +36,8 @@ guard 'shell' do
   watch(/(^src\/lab\/.+)|(^src\/md-engine\/.+)|(^src\/mw-helpers\/.+)/) do |match|
     puts match[0]
     puts "re-generating javascript libraries and css resources for these libraries ..."
-    command("make")
-    command("make test")
+    command("make src")
+    command("make test-src")
   end
 
   watch(/^imports\/.+/) do |match|
