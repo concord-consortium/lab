@@ -107,6 +107,14 @@ layout.setupScreen = function(viewLists) {
       setupFullScreenDescriptionRight();
       break;
 
+      // fluid layout
+      case "compare-screen":
+      var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
+      compareScreen();
+      layout.not_rendered = false;
+      break;
+
       // only fluid on page load (and when resizing on trnasition to and from full-screen)
       default:
       if (layout.not_rendered) {
@@ -163,14 +171,12 @@ layout.setupScreen = function(viewLists) {
       }
       break;
 
-      // only fluid on page load
+      // fluid layout
       case "compare-screen":
-      if (layout.not_rendered) {
-        var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
-        layout.bodycss.style.fontSize = emsize + 'em';
-        compareScreen();
-        layout.not_rendered = false;
-      }
+      var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
+      compareScreen();
+      layout.not_rendered = false;
       break;
 
       default:
