@@ -245,8 +245,7 @@ layout.setupScreen = function(viewLists) {
   function compareScreen() {
     var i, width, height, mcsize, modelAspectRatio,
         pageWidth = layout.display.page.width,
-        pageHeight = layout.display.page.height,
-        javaMWHeightCorrection = 1.1;
+        pageHeight = layout.display.page.height;
 
     mcsize = viewLists.moleculeContainers[0].scale();
     modelAspectRatio = mcsize[0] / mcsize[1];
@@ -258,7 +257,7 @@ layout.setupScreen = function(viewLists) {
       viewLists.moleculeContainers[i].resize(width, height);
     }
     i = -1;  while(++i < viewLists.appletContainers.length) {
-      viewLists.appletContainers[i].resize(width, height*javaMWHeightCorrection);
+      viewLists.appletContainers[i].resize(width, height);
     }
   }
 
