@@ -436,10 +436,12 @@ layout.getTransformProperty = function(element) {
         'OTransform'
     ];
     var p;
-    while (p = properties.shift()) {
-        if (typeof element.style[p] != 'undefined') {
-            return p;
-        }
+    if (element) {
+      while (p = properties.shift()) {
+          if (typeof element.style[p] != 'undefined') {
+              return p;
+          }
+      }
     }
     return false;
 };
