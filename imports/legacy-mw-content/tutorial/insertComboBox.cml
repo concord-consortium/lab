@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a combo box</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a combo box
+
+&lt; Previous | Index | Next &gt;
+
+A combo box controller provides multiple choices for setting a model&apos;s state. 
+
+When you choose the &quot;Insert&gt;Standard Controller for Model&gt;Combo Box&quot; menu action (keyboard action: ALT+SHIFT+C), you will see the following dialog (note that the type of model and action displaying in the dialog window may vary&#8722;only the models present on the page and only the actions that are permitted by the current state of the corresponding model will show up):
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This dialog allows you to select a model and an action that applies to the model. If there is no model on the page, the Model and Action Combo Boxes will be blank. The width and height of the combo box will be automatically set, according to the longest text string in its pull-down menu, at the time it is inserted into the page.
+
+A more flexible way to customize a combo box is to use its scriptability. If you select &quot;Execute MW script&quot; or &quot;Execute   Jmol script&quot; from the action list, the text area in the middle of the dialog window will become active. In this text area, if you type in option-script pairs in the following format:
+
+{option=&quot;text of item 1&quot; script=&quot;script for item 1&quot;}
+{option=&quot;text of item 2&quot; script=&quot;script for item 2&quot;}
+{option=&quot;text of item 3&quot; script=&quot;script for item 3&quot;}
+............
+............
+{option=&quot;text of item n&quot; script=&quot;script for item n&quot;}
+
+the &quot;text of item i&quot; attribute will become the text of the i-th menu item, and the &quot;script for item i&quot; attribute will become the script that will be executed when the i-th menu item is selected. Note that a pair of braces must be used to separate different option-script pairs, and the option and script attributes must be included in a pair of double quotes. There is no limitation of the number of options --- you can set as many pairs as you need.
+
+ 
+Tip: If scripts are long and you will need to write them in a more comfortable way, use your favorite  text editor to write scripts and copy back to the text area. If there exist scripts already, copy them to your editor first before editing them.
+ 
+
+Optionally, a combo box can be given a unique identifier (UID). It has two uses. First, it can be used by a scripter to find the combo box and then do something on it. Second, it can be used to generate a log file that reports the user&apos;s activity on the combo box. Data containing, for instance, how many times and when a combo box has been changed to what options, may provide insight to how the user learns from interacting with a model. A restriction of naming a UID is that it must be a string composed of only the alphanumeric characters and at least one alphabetic character. As its name indicates, you cannot have multiple components on the same page that share the same UID. If you do not need a UID for the combo box, just leave the field blank.
+
+The following is an example of a combo box using Jmol scripts.
+
+ 
+ 
+&#12304;This is an embedded Jmol viewer.&#12305;
+
+Changing and removing a combo box
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove, and copy a combo box.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3125">
+<paragraph start="0" end="22">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="21">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="51">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="23" end="25">
+<size>11</size></content>
+
+<content start="25" end="33">
+<href>insertSlider.cml</href><size>11</size></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="41">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="48">
+<href>scriptconsole.cml</href><size>11</size></content>
+
+<content start="48" end="51">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="131">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="131">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="131" end="132">
+<LeftIndent>140.0</LeftIndent>
+<content start="131" end="132">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="132" end="499">
+<LeftIndent>140.0</LeftIndent>
+<content start="132" end="359">
+<size>11</size></content>
+
+<content start="359" end="360">
+</content>
+
+<content start="360" end="499">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="499" end="500">
+<LeftIndent>100.0</LeftIndent>
+<content start="499" end="500">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="500" end="503">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="500" end="501">
+<size>11</size></content>
+
+<content start="501" end="502">
+<icon>ComboBoxController.gif</icon><size>11</size></content>
+
+<content start="502" end="503">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="503" end="527">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="503" end="504">
+<bold>true</bold><size>13</size></content>
+
+<content start="504" end="525">
+<size>10</size></content>
+
+<content start="525" end="526">
+<bold>true</bold><size>13</size></content>
+
+<content start="526" end="527">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="527" end="528">
+<LeftIndent>140.0</LeftIndent>
+<content start="527" end="528">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="528" end="859">
+<LeftIndent>140.0</LeftIndent>
+<content start="528" end="859">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="859" end="860">
+<LeftIndent>140.0</LeftIndent>
+<content start="859" end="860">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="860" end="1165">
+<LeftIndent>140.0</LeftIndent>
+<content start="860" end="957">
+<size>11</size></content>
+
+<content start="957" end="966">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="966" end="980">
+<size>11</size></content>
+
+<content start="980" end="981">
+<icon>htmlink.gif</icon></content>
+
+<content start="981" end="982">
+<size>11</size></content>
+
+<content start="982" end="993">
+<href>http://www.stolaf.edu/academics/chemapps/jmol/docs/</href><size>11</size></content>
+
+<content start="993" end="1165">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1165" end="1166">
+<LeftIndent>140.0</LeftIndent>
+<content start="1165" end="1166">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1166" end="1219">
+<LeftIndent>160.0</LeftIndent>
+<content start="1166" end="1219">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1219" end="1272">
+<LeftIndent>160.0</LeftIndent>
+<content start="1219" end="1272">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1272" end="1325">
+<LeftIndent>160.0</LeftIndent>
+<content start="1272" end="1325">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1325" end="1338">
+<LeftIndent>160.0</LeftIndent>
+<content start="1325" end="1338">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1338" end="1351">
+<LeftIndent>160.0</LeftIndent>
+<content start="1338" end="1351">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1351" end="1404">
+<LeftIndent>160.0</LeftIndent>
+<content start="1351" end="1403">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1403" end="1404">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1404" end="1405">
+<LeftIndent>140.0</LeftIndent>
+<content start="1404" end="1405">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1405" end="1856">
+<LeftIndent>140.0</LeftIndent>
+<content start="1405" end="1410">
+<size>11</size></content>
+
+<content start="1410" end="1423">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1423" end="1424">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="1424" end="1464">
+<size>11</size></content>
+
+<content start="1464" end="1465">
+<italic>true</italic><size>11</size></content>
+
+<content start="1465" end="1489">
+<size>11</size></content>
+
+<content start="1489" end="1505">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1505" end="1506">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="1506" end="1572">
+<size>11</size></content>
+
+<content start="1572" end="1573">
+<italic>true</italic><size>11</size></content>
+
+<content start="1573" end="1610">
+<size>11</size></content>
+
+<content start="1610" end="1639">
+<bold>true</bold><size>11</size></content>
+
+<content start="1639" end="1691">
+<size>11</size></content>
+
+<content start="1691" end="1697">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1697" end="1702">
+<size>11</size></content>
+
+<content start="1702" end="1708">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1708" end="1720">
+<size>11</size></content>
+
+<content start="1720" end="1763">
+<bold>true</bold><size>11</size></content>
+
+<content start="1763" end="1856">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1856" end="1857">
+<LeftIndent>140.0</LeftIndent>
+<content start="1856" end="1857">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1857" end="1859">
+<LeftIndent>140.0</LeftIndent>
+<content start="1857" end="1858">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1858" end="1859">
+</content>
+
+</paragraph>
+<paragraph start="1859" end="2107">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1859" end="1862">
+<bold>true</bold><size>11</size></content>
+
+<content start="1862" end="2106">
+<size>11</size></content>
+
+<content start="2106" end="2107">
+</content>
+
+</paragraph>
+<paragraph start="2107" end="2109">
+<LeftIndent>140.0</LeftIndent>
+<content start="2107" end="2108">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2108" end="2109">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2109" end="2110">
+<LeftIndent>140.0</LeftIndent>
+<content start="2109" end="2110">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2110" end="2865">
+<LeftIndent>140.0</LeftIndent>
+<content start="2110" end="2625">
+<size>11</size></content>
+
+<content start="2625" end="2690">
+<size>11</size></content>
+
+<content start="2690" end="2865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2865" end="2866">
+<LeftIndent>140.0</LeftIndent>
+<content start="2865" end="2866">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2866" end="2929">
+<LeftIndent>140.0</LeftIndent>
+<content start="2866" end="2929">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2929" end="2930">
+<LeftIndent>140.0</LeftIndent>
+<content start="2929" end="2930">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2930" end="2932">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2930" end="2931">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<action>Execute Jmol script</action>
+<script>{option=&quot;Ball &amp; Stick&quot;, script=&quot;cpk 30%; wireframe 0.2; ribbon off;&quot;}
+{option=&quot;CPK&quot;, script=&quot;cpk on;&quot;}
+{option=&quot;Wireframe&quot;, script=&quot;wireframe 0.1; cpk off&quot;}
+{option=&quot;Stick&quot;, script=&quot;wireframe 0.4; cpk off&quot;}
+{option=&quot;Ribbon&quot;, script=&quot;cpk off;wireframe off;ribbon on;&quot;}
+{option=&quot;Spin&quot;, script=&quot;spin on;&quot;}
+{option=&quot;Stop Spin&quot;, script=&quot;spin off;&quot;}
+</script>
+</component></content>
+
+<content start="2931" end="2932">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2932" end="2934">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2932" end="2933">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>alphahelix.pdb</resource><state>insertComboBox$0.jms</state><width>300.0</width>
+<height>300.0</height>
+</component></content>
+
+<content start="2933" end="2934">
+</content>
+
+</paragraph>
+<paragraph start="2934" end="2969">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2934" end="2935">
+<bold>true</bold><size>13</size></content>
+
+<content start="2935" end="2967">
+<size>10</size></content>
+
+<content start="2967" end="2968">
+<bold>true</bold><size>13</size></content>
+
+<content start="2968" end="2969">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2969" end="2970">
+<LeftIndent>140.0</LeftIndent>
+<content start="2969" end="2970">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2970" end="3004">
+<LeftIndent>140.0</LeftIndent>
+<content start="2970" end="3003">
+<bold>true</bold><size>11</size></content>
+
+<content start="3003" end="3004">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3004" end="3005">
+<LeftIndent>140.0</LeftIndent>
+<content start="3004" end="3005">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3005" end="3096">
+<LeftIndent>140.0</LeftIndent>
+<content start="3005" end="3010">
+<size>11</size></content>
+
+<content start="3010" end="3039">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="3039" end="3095">
+<size>11</size></content>
+
+<content start="3095" end="3096">
+</content>
+
+</paragraph>
+<paragraph start="3096" end="3097">
+<LeftIndent>100.0</LeftIndent>
+<content start="3096" end="3097">
+</content>
+
+</paragraph>
+<paragraph start="3097" end="3125">
+<Alignment>2</Alignment>
+<content start="3097" end="3099">
+<size>11</size></content>
+
+<content start="3099" end="3107">
+<href>insertSlider.cml</href><size>11</size></content>
+
+<content start="3107" end="3110">
+<size>11</size></content>
+
+<content start="3110" end="3115">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="3115" end="3118">
+<size>11</size></content>
+
+<content start="3118" end="3122">
+<href>scriptconsole.cml</href><size>11</size></content>
+
+<content start="3122" end="3124">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

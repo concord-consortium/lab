@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>How do we measure learning?</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>How do we measure learning?
+
+&lt; Previous | Index | Next &gt;
+
+An eternal question about using models to teach is: how do we know if students have learned anything from them? There are methods such as pre-/post-tests, follow-up interviews, and so on. In addition to these traditional research methods, computers can also provide first-hand data that are automatically collected while students are going through interactive materials. This method is called embedded assessment.
+
+
+  
+
+A schematic illustration of the MW Report System
+
+The MW system is a one-stop shop for you to carry out educational research about using interactive models to teach. The MW authoring system provides components for you to design your own embedded assessment. While the student is doing your activity, the data from the assessment components will be collected. At the end of the activity, the student can create a report that assembles the data into a document. The document can either be printed, or upload to the student&apos;s account in the MW Space. The teacher&apos;s account in the MW Space provides the service for you to access your students&apos; reports and track their learning progresses.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1192">
+<paragraph start="0" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="27">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="57">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="29" end="31">
+<size>11</size></content>
+
+<content start="31" end="39">
+<size>11</size><href>instrument.cml</href></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="47">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="47" end="50">
+<size>11</size></content>
+
+<content start="50" end="54">
+<size>11</size><href>choice.cml</href></content>
+
+<content start="54" end="56">
+<size>11</size></content>
+
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="58">
+<RightIndent>20.0</RightIndent>
+<content start="57" end="58">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="58" end="472">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="58" end="451">
+<size>11</size></content>
+
+<content start="451" end="470">
+<bold>true</bold><size>11</size></content>
+
+<content start="470" end="472">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="472" end="473">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="472" end="473">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="473" end="474">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="473" end="474">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="474" end="477">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="474" end="475">
+<size>11</size></content>
+
+<content start="475" end="476">
+<icon>reportsystem.gif</icon></content>
+
+<content start="476" end="477">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="477" end="478">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="477" end="478">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="478" end="527">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="478" end="526">
+<italic>true</italic><size>11</size></content>
+
+<content start="526" end="527">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="527" end="528">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="527" end="528">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="528" end="1163">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="528" end="1012">
+<size>11</size></content>
+
+<content start="1012" end="1024">
+<size>11</size><href>myhome.jsp?client=mw</href></content>
+
+<content start="1024" end="1163">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1163" end="1164">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1163" end="1164">
+</content>
+
+</paragraph>
+<paragraph start="1164" end="1192">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1164" end="1166">
+<size>11</size></content>
+
+<content start="1166" end="1174">
+<size>11</size><href>instrument.cml</href></content>
+
+<content start="1174" end="1177">
+<size>11</size></content>
+
+<content start="1177" end="1182">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1182" end="1185">
+<size>11</size></content>
+
+<content start="1185" end="1189">
+<size>11</size><href>choice.cml</href></content>
+
+<content start="1189" end="1191">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

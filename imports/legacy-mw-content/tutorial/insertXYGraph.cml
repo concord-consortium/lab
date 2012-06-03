@@ -1,0 +1,1509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting an X-Y graph</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting an X-Y graph
+
+&lt; Previous | Index | Next &gt;
+
+You can insert an X-Y graph to visualize the relationship between any pair of variables of a model, if their values are exported&#10102; in the simulation.
+
+Select the &quot;Insert&gt;Model Output&gt;X-Y Graph&quot; menu (keyboard shortcut: ALT+SHIFT+X). You will see the following dialog window:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This dialog window allows you to do most things you need to do to customize a graph.
+
+Choosing x and y variables for up to five curves
+
+You can select a variable from the variable list (the second row on te left from the top) to be the x variable. The x variable is not necessarily time or coordinates. It can be any variable available in the list. For example, you can plot the kinetic energy against the potential energy. In addition to a large number of preprogrammed variables, the list also provides eight channels of data streams that output user-defined time series computed using scripts and stored using the store command. Please see this section for more information.
+
+You can plug in up to five curves into the graph. All of them must be plotted against the same x variable, in other words, the curves must be y1(x), y2(x), y3(x), etc.
+
+Rescaling and offseting data
+
+You can rescale and offset a curve by applying a multiplier and an addend:
+
+a*x+b
+
+where x represents the output property, a is the multiplier, and b is the addend. This provides some simple data processing of an output.
+
+The more general and flexible way to output a mathematical function of some properties of a model is to use some MW scripts to compute it in a custom task and then use the store command to save the results in a channel. A bar graph can then choose the channel to display.
+
+Selecting a smoothing method
+
+By default, the instantaneous values are shown in a graph. But you can smoothen the data by applying a smoothing method. There are currently two methods available to use. The first one is   the simple running average, which is calculated based on the unweighted arithmetic mean of the last n points (by default, n=10). The second one is   the exponential running average, which is calculated based on a weighted mean of all the previous points, in which earlier points get less weights (by default, the weighting factor is 0.05). The weighting for each older data point decreases exponentially, giving much more importance to recent observations while still not discarding older observations entirely. The following image shows the exponential running average:
+
+  
+&#12304;This is a screenshot of a graph that shows the exponential running average.&#12305;
+
+ 
+Running average is also called   moving average. In signal processing, a running average can also be used as a generic smoothing operation, in which case the raw data may be too stochastic.
+ 
+
+Customizing curves and graph
+
+You can customize most properties of curves, such as line styles, line widths, symbols, colors, and so on. You can also customize the global properties of a graph, such as the label on the axises, the size of the graph, and the background colors.
+
+Choosing auto-update
+
+When an X-Y graph is embedded in a page to work with a model, you can choose to automatically update the curves while the model is running with the &quot;Auto update&quot; box. There is also a toggle button on the toolbar above the graph for switching the automatical update functionality on/off. When it has the &quot; &quot; image (which means the graph is connected to the running model), the graph will be automatically updated. When it has the &quot; &quot; image (which means the graph is disconnected from the model), the graph will not be automatically updated.
+
+Synchronously updating the graph will certainly slow down the model. If the slow-down is signifcant or intolerable, you can choose to let your users manually update the curves. You will then need turn the auto-update button off, and then click the &quot; &quot; button whenever you want to see the lastest graph.
+
+Your auto-update setting, as well as others, will be saved when you save the activity page. Your settings with the graph will be restored when the containing page is opened.
+
+Choosing auto-scaling
+
+You can select whether or not the graph will automatically rescale its axises to accommodate all data points whenever there is an update. You can choose to auto-scale only one axis. For example, if the graph is used to display a time evolution of a variable, you normally do not want to fix the time axis; you may just fix the other axis and let the time axis rescale itself. If you choose to disable auto-scaling of an axis, you must specify the minimum and maximum of the axis. If you forget to do so, you will see a popup dialog window as the one shown below:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This forces you to specify the range.
+
+Warning:
+
+If the data fluctuate too frequently and lines have to be used to join the data points, the graph may cost too many system resources to draw (the grapher used in MW is not very efficient). This slows down the entire simulation. The following two graphs show an example.
+
+    
+&#12304;These are screenshots.&#12305;
+
+The graph on the left will cause the MW&apos;s user interface to be less reponsive and the simulation become jerkier. To fix this problem, turn off the auto-scale feature and set a reasonable upper and lower bound that will produce less lines in the graph, as is shown in the graph on the right.
+
+Taking a snapshot
+
+The information contained in an X-Y graph may be important for analyzing a simulation. When the user is writing a report, he may need to use some graphs. Although all the simulation data will be lost when the user leaves the page, there is an option for the user to keep important data, besides saving the graph in the ad hoc binary format (.yox). The &quot;Option&quot; menu of the grapher has an item called &quot;Take a Snapshot&quot;, which allows the user to take a snapshot image and export it through the Snapshot Gallery to a report or just a file. The tool bar button (&quot; &quot;) does the same thing.
+
+Also, as is in the case of a bar graph, you can right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on an X-Y graph and choose &quot;Take a Snapshot&quot; from the popup menu to take a snapshot.
+
+The following screenshot shows some graphs stored in the Snapshot Gallery:
+
+  
+&#12304;This is a screenshot on Windows 2000.&#12305;
+
+Acessing the numerics
+
+Clicking the &quot; &quot; button will open up a window showing the minimum and maximum values of x and y of all data sets, as well as their averages, as is shown in the dialog box below:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+To get a numeric output of the data sets, just double-click on a row in the dialog box. If you need to export the data to a file, press Ctrl+A (Windows and Linux) or Command+A (Mac OS X) to select all the data in the window that opens up, and then Ctrl+V (Windows and Linux) or Command+V (Mac OS X) to paste them to an external program such as a text editor or a spreadsheet application.
+
+Show/hide the menu bar and the tool bar
+
+When in editing mode, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the graph, you will see the following popup menu:
+
+  
+&#12304;This is a screenshot on Windows 2000.&#12305;
+
+This allows you to add or remove the menu bar and the tool bar. When the menu bar and the tool bar are removed, you should instruct the students to invoke this popup menu and use it to take snapshots and compute running averages.
+
+Changing the time length
+
+The X-Y graph only holds data for a certain length of the simulation, which corresponds the full length of the recoder of the simulator. Once the capacity of the recorder is reached, the oldest frame will be discarded when a new frame is recorded. Similarly, the oldest data point of a graph will be lost when a new data point comes in. There are two ways to increase the time coverage of the recorder. First, increase the tape length of the recorder. Second, increase the interval between frames. To do so, open the Task Manager (from the &quot;Option&gt;Task Manager&quot; menu of the Simulator&apos;s menu bar). In the row of &quot;Record the simulation&quot;, double-click the Interval cell and type in a new value (the default is 100). For example, putting 200 will double the length of simulation the graph will cover.
+
+The second method may result in some jerkiness when playing back the simulation because the simulation is recorded more sparsely. The first method will cause the software to use more memory.
+
+Other operations and settings
+
+You can save the current graph, open it later, or print it. Clicking the &quot; &quot; button will bring up a separate window which shows the curves of the running averages.
+
+  
+&#12304;This is a screenshot on Windows 2000.&#12305;
+
+  
+See a gas law experiment using an X-Y graph.
+
+Optionally, an X-Y graph can be given a unique identifier (UID). It has two uses. First, it can be used by a scripter to find the X-Y graph and then do something on it. Second, it can be used to generate a log file that reports the data on the X-Y graph resulted from the user&apos;s activities. A restriction of naming a UID is that it must be a string composed of only the alphanumeric characters and at least one alphabetic character. As its name indicates, you cannot have multiple components on the same page that share the same UID. If you do not need a UID for the X-Y graph, just leave the field blank.
+
+Scripting support
+
+Currently, the following commands are supported:
+
+   snapshot
+
+Remember that you have to use some prefixes, as required by the script protocol. For example, the following script sends a command to the first X-Y graph on the page: script:xygraph:1:snapshot. Scripts for an X-Y graph be set from a hyperlink, a component such as a button inside an HTML text box, or an activity button on an MW page.
+
+Changing and removing an X-Y graph
+
+See &quot;Editing embedded components&quot; for how to change, move, and remove an X-Y graph.
+
+ 
+&#10102; For an X-Y graph to work, the recorder of the model must be turned on.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="9944">
+<paragraph start="0" end="23">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="22">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="52">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="24" end="26">
+<size>11</size></content>
+
+<content start="26" end="34">
+<href>insertGauge.cml</href><size>11</size></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="49">
+<href>anytimeseries.cml</href><size>11</size></content>
+
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="202">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="181">
+<size>11</size></content>
+
+<content start="181" end="182">
+<size>13</size></content>
+
+<content start="182" end="202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="202" end="203">
+<LeftIndent>140.0</LeftIndent>
+<content start="202" end="203">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="203" end="327">
+<LeftIndent>140.0</LeftIndent>
+<content start="203" end="327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="327" end="328">
+<LeftIndent>100.0</LeftIndent>
+<content start="327" end="328">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="328" end="331">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="328" end="329">
+<size>11</size></content>
+
+<content start="329" end="330">
+<size>11</size><icon>XYGraphDialog.gif</icon></content>
+
+<content start="330" end="331">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="331" end="355">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="331" end="332">
+<size>13</size><bold>true</bold></content>
+
+<content start="332" end="353">
+<size>10</size></content>
+
+<content start="353" end="354">
+<size>13</size><bold>true</bold></content>
+
+<content start="354" end="355">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="355" end="356">
+<LeftIndent>100.0</LeftIndent>
+<content start="355" end="356">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="356" end="441">
+<LeftIndent>140.0</LeftIndent>
+<content start="356" end="441">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="441" end="442">
+<LeftIndent>140.0</LeftIndent>
+<content start="441" end="442">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="442" end="491">
+<LeftIndent>140.0</LeftIndent>
+<content start="442" end="451">
+<size>11</size><bold>true</bold></content>
+
+<content start="451" end="452">
+<italic>true</italic><size>11</size><bold>true</bold></content>
+
+<content start="452" end="457">
+<size>11</size><bold>true</bold></content>
+
+<content start="457" end="458">
+<italic>true</italic><size>11</size><bold>true</bold></content>
+
+<content start="458" end="490">
+<size>11</size><bold>true</bold></content>
+
+<content start="490" end="491">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="491" end="492">
+<LeftIndent>100.0</LeftIndent>
+<content start="491" end="492">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="492" end="1034">
+<LeftIndent>140.0</LeftIndent>
+<content start="492" end="592">
+<size>11</size></content>
+
+<content start="592" end="593">
+<italic>true</italic><size>11</size></content>
+
+<content start="593" end="608">
+<size>11</size></content>
+
+<content start="608" end="609">
+<italic>true</italic><size>11</size></content>
+
+<content start="609" end="735">
+<size>11</size></content>
+
+<content start="735" end="778">
+<href>../student/classic/harmonic/ho61.cml</href><size>11</size><target>_blank</target></content>
+
+<content start="778" end="973">
+<size>11</size></content>
+
+<content start="973" end="978">
+<href>script_store.cml</href><family>Courier New</family><size>11</size></content>
+
+<content start="978" end="999">
+<size>11</size></content>
+
+<content start="999" end="1011">
+<href>anytimeseries.cml</href><size>11</size></content>
+
+<content start="1011" end="1034">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1034" end="1035">
+<LeftIndent>140.0</LeftIndent>
+<content start="1034" end="1035">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1035" end="1203">
+<LeftIndent>140.0</LeftIndent>
+<content start="1035" end="1130">
+<size>11</size></content>
+
+<content start="1130" end="1131">
+<italic>true</italic><size>11</size></content>
+
+<content start="1131" end="1177">
+<size>11</size></content>
+
+<content start="1177" end="1178">
+<italic>true</italic><size>11</size></content>
+
+<content start="1178" end="1179">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1179" end="1180">
+<size>11</size></content>
+
+<content start="1180" end="1181">
+<italic>true</italic><size>11</size></content>
+
+<content start="1181" end="1184">
+<size>11</size></content>
+
+<content start="1184" end="1185">
+<italic>true</italic><size>11</size></content>
+
+<content start="1185" end="1186">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1186" end="1187">
+<size>11</size></content>
+
+<content start="1187" end="1188">
+<italic>true</italic><size>11</size></content>
+
+<content start="1188" end="1191">
+<size>11</size></content>
+
+<content start="1191" end="1192">
+<italic>true</italic><size>11</size></content>
+
+<content start="1192" end="1193">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1193" end="1194">
+<size>11</size></content>
+
+<content start="1194" end="1195">
+<italic>true</italic><size>11</size></content>
+
+<content start="1195" end="1203">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1203" end="1204">
+<LeftIndent>140.0</LeftIndent>
+<content start="1203" end="1204">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1204" end="1233">
+<LeftIndent>140.0</LeftIndent>
+<content start="1204" end="1232">
+<size>11</size><bold>true</bold></content>
+
+<content start="1232" end="1233">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1233" end="1234">
+<LeftIndent>140.0</LeftIndent>
+<content start="1233" end="1234">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1234" end="1309">
+<LeftIndent>140.0</LeftIndent>
+<content start="1234" end="1309">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1309" end="1310">
+<LeftIndent>140.0</LeftIndent>
+<content start="1309" end="1310">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1310" end="1316">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1310" end="1311">
+<italic>true</italic><size>11</size></content>
+
+<content start="1311" end="1312">
+<size>11</size></content>
+
+<content start="1312" end="1313">
+<italic>true</italic><size>11</size></content>
+
+<content start="1313" end="1314">
+<size>11</size></content>
+
+<content start="1314" end="1315">
+<italic>true</italic><size>11</size></content>
+
+<content start="1315" end="1316">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1316" end="1317">
+<LeftIndent>140.0</LeftIndent>
+<content start="1316" end="1317">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1317" end="1455">
+<LeftIndent>140.0</LeftIndent>
+<content start="1317" end="1323">
+<size>11</size></content>
+
+<content start="1323" end="1324">
+<italic>true</italic><size>11</size></content>
+
+<content start="1324" end="1357">
+<size>11</size></content>
+
+<content start="1357" end="1358">
+<italic>true</italic><size>11</size></content>
+
+<content start="1358" end="1382">
+<size>11</size></content>
+
+<content start="1382" end="1383">
+<italic>true</italic><size>11</size></content>
+
+<content start="1383" end="1455">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1455" end="1456">
+<LeftIndent>140.0</LeftIndent>
+<content start="1455" end="1456">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1456" end="1728">
+<LeftIndent>140.0</LeftIndent>
+<content start="1456" end="1599">
+<size>11</size></content>
+
+<content start="1599" end="1610">
+<href>CustomerTask.cml</href><size>11</size></content>
+
+<content start="1610" end="1628">
+<size>11</size></content>
+
+<content start="1628" end="1633">
+<href>script_store.cml</href><size>11</size></content>
+
+<content start="1633" end="1728">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1728" end="1729">
+<LeftIndent>140.0</LeftIndent>
+<content start="1728" end="1729">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1729" end="1758">
+<LeftIndent>140.0</LeftIndent>
+<content start="1729" end="1757">
+<size>11</size><bold>true</bold></content>
+
+<content start="1757" end="1758">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1758" end="1759">
+<LeftIndent>140.0</LeftIndent>
+<content start="1758" end="1759">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1759" end="2520">
+<LeftIndent>140.0</LeftIndent>
+<content start="1759" end="1947">
+<size>11</size></content>
+
+<content start="1947" end="1948">
+<icon>apiIcon.gif</icon></content>
+
+<content start="1948" end="1949">
+<size>11</size></content>
+
+<content start="1949" end="1975">
+<href>glossary/NMovingAverage.cml</href><size>11</size></content>
+
+<content start="1975" end="2049">
+<size>11</size></content>
+
+<content start="2049" end="2050">
+<italic>true</italic><size>11</size></content>
+
+<content start="2050" end="2071">
+<size>11</size></content>
+
+<content start="2071" end="2072">
+<italic>true</italic><size>11</size></content>
+
+<content start="2072" end="2096">
+<size>11</size></content>
+
+<content start="2096" end="2097">
+<icon>apiIcon.gif</icon></content>
+
+<content start="2097" end="2098">
+<size>11</size></content>
+
+<content start="2098" end="2129">
+<href>glossary/ema.cml</href><size>11</size></content>
+
+<content start="2129" end="2520">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2520" end="2521">
+<LeftIndent>140.0</LeftIndent>
+<content start="2520" end="2521">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2521" end="2524">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2521" end="2522">
+<size>11</size></content>
+
+<content start="2522" end="2523">
+<icon>exponentialrunningaverage.gif</icon></content>
+
+<content start="2523" end="2524">
+</content>
+
+</paragraph>
+<paragraph start="2524" end="2602">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2524" end="2525">
+<size>13</size><bold>true</bold></content>
+
+<content start="2525" end="2600">
+<size>10</size></content>
+
+<content start="2600" end="2601">
+<size>13</size><bold>true</bold></content>
+
+<content start="2601" end="2602">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2602" end="2603">
+<LeftIndent>140.0</LeftIndent>
+<content start="2602" end="2603">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2603" end="2605">
+<LeftIndent>140.0</LeftIndent>
+<content start="2603" end="2604">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2604" end="2605">
+</content>
+
+</paragraph>
+<paragraph start="2605" end="2795">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2605" end="2636">
+<size>11</size></content>
+
+<content start="2636" end="2637">
+<icon>htmlink.gif</icon></content>
+
+<content start="2637" end="2638">
+<size>11</size></content>
+
+<content start="2638" end="2652">
+<href>http://en.wikipedia.org/wiki/Weighted_moving_average</href><size>11</size></content>
+
+<content start="2652" end="2794">
+<size>11</size></content>
+
+<content start="2794" end="2795">
+</content>
+
+</paragraph>
+<paragraph start="2795" end="2797">
+<LeftIndent>140.0</LeftIndent>
+<content start="2795" end="2796">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2796" end="2797">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2797" end="2798">
+<LeftIndent>160.0</LeftIndent>
+<content start="2797" end="2798">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2798" end="2827">
+<LeftIndent>140.0</LeftIndent>
+<content start="2798" end="2826">
+<size>11</size><bold>true</bold></content>
+
+<content start="2826" end="2827">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2827" end="2828">
+<LeftIndent>160.0</LeftIndent>
+<content start="2827" end="2828">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2828" end="3075">
+<LeftIndent>140.0</LeftIndent>
+<content start="2828" end="3075">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3075" end="3076">
+<LeftIndent>140.0</LeftIndent>
+<content start="3075" end="3076">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3076" end="3097">
+<LeftIndent>140.0</LeftIndent>
+<content start="3076" end="3096">
+<size>11</size><bold>true</bold></content>
+
+<content start="3096" end="3097">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3097" end="3098">
+<LeftIndent>160.0</LeftIndent>
+<content start="3097" end="3098">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3098" end="3638">
+<LeftIndent>140.0</LeftIndent>
+<content start="3098" end="3402">
+<size>11</size></content>
+
+<content start="3402" end="3403">
+<size>11</size><icon>Sync.gif</icon></content>
+
+<content start="3403" end="3528">
+<size>11</size></content>
+
+<content start="3528" end="3529">
+<size>11</size><icon>Desync.gif</icon></content>
+
+<content start="3529" end="3638">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3638" end="3639">
+<LeftIndent>140.0</LeftIndent>
+<content start="3638" end="3639">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3639" end="3942">
+<LeftIndent>140.0</LeftIndent>
+<content start="3639" end="3888">
+<size>11</size></content>
+
+<content start="3888" end="3889">
+<size>11</size><icon>update.gif</icon></content>
+
+<content start="3889" end="3942">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3942" end="3943">
+<LeftIndent>140.0</LeftIndent>
+<content start="3942" end="3943">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3943" end="4117">
+<LeftIndent>140.0</LeftIndent>
+<content start="3943" end="4117">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4117" end="4118">
+<LeftIndent>140.0</LeftIndent>
+<content start="4117" end="4118">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4118" end="4140">
+<LeftIndent>140.0</LeftIndent>
+<content start="4118" end="4139">
+<size>11</size><bold>true</bold></content>
+
+<content start="4139" end="4140">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4140" end="4141">
+<LeftIndent>140.0</LeftIndent>
+<content start="4140" end="4141">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4141" end="4704">
+<LeftIndent>140.0</LeftIndent>
+<content start="4141" end="4704">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4704" end="4705">
+<LeftIndent>140.0</LeftIndent>
+<content start="4704" end="4705">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4705" end="4708">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="4705" end="4706">
+<size>11</size></content>
+
+<content start="4706" end="4707">
+<size>11</size><icon>NoAutoScaleWarningDialog.gif</icon></content>
+
+<content start="4707" end="4708">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4708" end="4732">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="4708" end="4709">
+<size>13</size><bold>true</bold></content>
+
+<content start="4709" end="4730">
+<size>10</size></content>
+
+<content start="4730" end="4731">
+<size>13</size><bold>true</bold></content>
+
+<content start="4731" end="4732">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4732" end="4733">
+<LeftIndent>140.0</LeftIndent>
+<content start="4732" end="4733">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4733" end="4771">
+<LeftIndent>140.0</LeftIndent>
+<content start="4733" end="4771">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4771" end="4772">
+<LeftIndent>140.0</LeftIndent>
+<content start="4771" end="4772">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4772" end="4781">
+<LeftIndent>180.0</LeftIndent>
+<content start="4772" end="4780">
+<size>11</size><bold>true</bold></content>
+
+<content start="4780" end="4781">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4781" end="4782">
+<LeftIndent>180.0</LeftIndent>
+<content start="4781" end="4782">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4782" end="5052">
+<LeftIndent>180.0</LeftIndent>
+<content start="4782" end="5052">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5052" end="5053">
+<LeftIndent>180.0</LeftIndent>
+<content start="5052" end="5053">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5053" end="5058">
+<Alignment>1</Alignment>
+<LeftIndent>180.0</LeftIndent>
+<content start="5053" end="5054">
+<size>11</size></content>
+
+<content start="5054" end="5055">
+<icon>fluctuatinggraph1.gif</icon></content>
+
+<content start="5055" end="5056">
+</content>
+
+<content start="5056" end="5057">
+<icon>fluctuatinggraph2.gif</icon></content>
+
+<content start="5057" end="5058">
+</content>
+
+</paragraph>
+<paragraph start="5058" end="5083">
+<LeftIndent>180.0</LeftIndent>
+<content start="5058" end="5059">
+<size>13</size><bold>true</bold></content>
+
+<content start="5059" end="5081">
+<size>10</size></content>
+
+<content start="5081" end="5082">
+<size>13</size><bold>true</bold></content>
+
+<content start="5082" end="5083">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5083" end="5084">
+<LeftIndent>180.0</LeftIndent>
+<content start="5083" end="5084">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5084" end="5375">
+<LeftIndent>180.0</LeftIndent>
+<content start="5084" end="5375">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5375" end="5376">
+<LeftIndent>140.0</LeftIndent>
+<content start="5375" end="5376">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5376" end="5394">
+<LeftIndent>140.0</LeftIndent>
+<content start="5376" end="5393">
+<size>11</size><bold>true</bold></content>
+
+<content start="5393" end="5394">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5394" end="5395">
+<LeftIndent>140.0</LeftIndent>
+<content start="5394" end="5395">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5395" end="5979">
+<LeftIndent>140.0</LeftIndent>
+<content start="5395" end="5499">
+<size>11</size></content>
+
+<content start="5499" end="5515">
+<href>report.cml</href><size>11</size></content>
+
+<content start="5515" end="5714">
+<size>11</size></content>
+
+<content start="5714" end="5720">
+<italic>true</italic><size>11</size></content>
+
+<content start="5720" end="5875">
+<size>11</size></content>
+
+<content start="5875" end="5903">
+<href>snapshot.cml</href><size>11</size></content>
+
+<content start="5903" end="5954">
+<size>11</size></content>
+
+<content start="5954" end="5955">
+<size>11</size><icon>camera.gif</icon></content>
+
+<content start="5955" end="5979">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5979" end="5980">
+<LeftIndent>140.0</LeftIndent>
+<content start="5979" end="5980">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5980" end="6185">
+<LeftIndent>140.0</LeftIndent>
+<content start="5980" end="6185">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6185" end="6186">
+<LeftIndent>140.0</LeftIndent>
+<content start="6185" end="6186">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6186" end="6261">
+<LeftIndent>140.0</LeftIndent>
+<content start="6186" end="6261">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6261" end="6262">
+<LeftIndent>140.0</LeftIndent>
+<content start="6261" end="6262">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6262" end="6265">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="6262" end="6263">
+<size>11</size></content>
+
+<content start="6263" end="6264">
+<size>11</size><icon>SnapshotManager2.gif</icon></content>
+
+<content start="6264" end="6265">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6265" end="6305">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="6265" end="6266">
+<size>13</size><bold>true</bold></content>
+
+<content start="6266" end="6303">
+<size>10</size></content>
+
+<content start="6303" end="6304">
+<size>13</size><bold>true</bold></content>
+
+<content start="6304" end="6305">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6305" end="6306">
+<LeftIndent>140.0</LeftIndent>
+<content start="6305" end="6306">
+<size>11</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="6306" end="6328">
+<LeftIndent>140.0</LeftIndent>
+<content start="6306" end="6328">
+<size>11</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="6328" end="6329">
+<LeftIndent>140.0</LeftIndent>
+<content start="6328" end="6329">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6329" end="6507">
+<LeftIndent>140.0</LeftIndent>
+<content start="6329" end="6343">
+<size>11</size></content>
+
+<content start="6343" end="6344">
+<size>11</size><icon>List.gif</icon></content>
+
+<content start="6344" end="6417">
+<size>11</size></content>
+
+<content start="6417" end="6418">
+<italic>true</italic><size>11</size></content>
+
+<content start="6418" end="6423">
+<size>11</size></content>
+
+<content start="6423" end="6424">
+<italic>true</italic><size>11</size></content>
+
+<content start="6424" end="6507">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6507" end="6508">
+<LeftIndent>140.0</LeftIndent>
+<content start="6507" end="6508">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6508" end="6511">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="6508" end="6509">
+<size>11</size></content>
+
+<content start="6509" end="6510">
+<size>11</size><icon>NumericsDialog.gif</icon></content>
+
+<content start="6510" end="6511">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6511" end="6535">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="6511" end="6512">
+<size>13</size><bold>true</bold></content>
+
+<content start="6512" end="6533">
+<size>10</size></content>
+
+<content start="6533" end="6534">
+<size>13</size><bold>true</bold></content>
+
+<content start="6534" end="6535">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6535" end="6536">
+<LeftIndent>140.0</LeftIndent>
+<content start="6535" end="6536">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6536" end="6924">
+<LeftIndent>140.0</LeftIndent>
+<content start="6536" end="6924">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6924" end="6925">
+<LeftIndent>140.0</LeftIndent>
+<content start="6924" end="6925">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6925" end="6965">
+<LeftIndent>140.0</LeftIndent>
+<content start="6925" end="6964">
+<size>11</size><bold>true</bold></content>
+
+<content start="6964" end="6965">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6965" end="6966">
+<LeftIndent>140.0</LeftIndent>
+<content start="6965" end="6966">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6966" end="7113">
+<LeftIndent>140.0</LeftIndent>
+<content start="6966" end="7113">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7113" end="7114">
+<LeftIndent>140.0</LeftIndent>
+<content start="7113" end="7114">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7114" end="7117">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="7114" end="7115">
+<size>11</size></content>
+
+<content start="7115" end="7116">
+<size>11</size><icon>CustomizeGraphMenuBar.gif</icon></content>
+
+<content start="7116" end="7117">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7117" end="7157">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="7117" end="7118">
+<size>13</size><bold>true</bold></content>
+
+<content start="7118" end="7155">
+<size>10</size></content>
+
+<content start="7155" end="7156">
+<size>13</size><bold>true</bold></content>
+
+<content start="7156" end="7157">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7157" end="7158">
+<LeftIndent>140.0</LeftIndent>
+<content start="7157" end="7158">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7158" end="7388">
+<LeftIndent>140.0</LeftIndent>
+<content start="7158" end="7388">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7388" end="7389">
+<LeftIndent>140.0</LeftIndent>
+<content start="7388" end="7389">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7389" end="7414">
+<LeftIndent>140.0</LeftIndent>
+<content start="7389" end="7413">
+<size>11</size><bold>true</bold></content>
+
+<content start="7413" end="7414">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7414" end="7415">
+<LeftIndent>140.0</LeftIndent>
+<content start="7414" end="7415">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7415" end="8212">
+<LeftIndent>140.0</LeftIndent>
+<content start="7415" end="7522">
+<size>11</size></content>
+
+<content start="7522" end="7550">
+<href>recordSimulation.cml</href><size>11</size></content>
+
+<content start="7550" end="7834">
+<size>11</size></content>
+
+<content start="7834" end="7865">
+<href>recordSimulation.cml</href><size>11</size></content>
+
+<content start="7865" end="7932">
+<size>11</size></content>
+
+<content start="7932" end="7944">
+<href>taskManager.cml</href><size>11</size></content>
+
+<content start="7944" end="8212">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8212" end="8213">
+<LeftIndent>140.0</LeftIndent>
+<content start="8212" end="8213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8213" end="8404">
+<LeftIndent>140.0</LeftIndent>
+<content start="8213" end="8404">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8404" end="8405">
+<LeftIndent>140.0</LeftIndent>
+<content start="8404" end="8405">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8405" end="8435">
+<LeftIndent>140.0</LeftIndent>
+<content start="8405" end="8434">
+<size>11</size><bold>true</bold></content>
+
+<content start="8434" end="8435">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8435" end="8436">
+<LeftIndent>100.0</LeftIndent>
+<content start="8435" end="8436">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8436" end="8600">
+<LeftIndent>140.0</LeftIndent>
+<content start="8436" end="8510">
+<size>11</size></content>
+
+<content start="8510" end="8511">
+<size>11</size><icon>Average.gif</icon></content>
+
+<content start="8511" end="8600">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8600" end="8601">
+<LeftIndent>140.0</LeftIndent>
+<content start="8600" end="8601">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8601" end="8604">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="8601" end="8602">
+<size>11</size></content>
+
+<content start="8602" end="8603">
+<size>11</size><icon>XYGraph.gif</icon></content>
+
+<content start="8603" end="8604">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8604" end="8644">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="8604" end="8605">
+<size>13</size><bold>true</bold></content>
+
+<content start="8605" end="8642">
+<size>10</size></content>
+
+<content start="8642" end="8643">
+<size>13</size><bold>true</bold></content>
+
+<content start="8643" end="8644">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8644" end="8645">
+<LeftIndent>100.0</LeftIndent>
+<content start="8644" end="8645">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8645" end="8648">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="8645" end="8646">
+<size>11</size></content>
+
+<content start="8646" end="8647">
+<size>11</size><icon>window6.gif</icon></content>
+
+<content start="8647" end="8648">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8648" end="8693">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="8648" end="8654">
+<size>11</size></content>
+
+<content start="8654" end="8672">
+<href>../student/gaslaws/pt.cml</href><size>11</size></content>
+
+<content start="8672" end="8693">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8693" end="8694">
+<LeftIndent>140.0</LeftIndent>
+<content start="8693" end="8694">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="8694" end="9300">
+<LeftIndent>140.0</LeftIndent>
+<content start="8694" end="9300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9300" end="9301">
+<LeftIndent>140.0</LeftIndent>
+<content start="9300" end="9301">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9301" end="9319">
+<LeftIndent>140.0</LeftIndent>
+<content start="9301" end="9318">
+<size>11</size><bold>true</bold></content>
+
+<content start="9318" end="9319">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9319" end="9320">
+<LeftIndent>140.0</LeftIndent>
+<content start="9319" end="9320">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9320" end="9369">
+<LeftIndent>140.0</LeftIndent>
+<content start="9320" end="9369">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9369" end="9370">
+<LeftIndent>140.0</LeftIndent>
+<content start="9369" end="9370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9370" end="9382">
+<LeftIndent>160.0</LeftIndent>
+<content start="9370" end="9371">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="9371" end="9373">
+</content>
+
+<content start="9373" end="9381">
+<family>Courier New</family><size>11</size></content>
+
+<content start="9381" end="9382">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9382" end="9383">
+<LeftIndent>160.0</LeftIndent>
+<content start="9382" end="9383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9383" end="9718">
+<LeftIndent>140.0</LeftIndent>
+<content start="9383" end="9443">
+<size>11</size></content>
+
+<content start="9443" end="9462">
+<href>script_protocol.cml</href><size>11</size></content>
+
+<content start="9462" end="9550">
+<size>11</size></content>
+
+<content start="9550" end="9575">
+<family>Courier New</family><size>11</size></content>
+
+<content start="9575" end="9718">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9718" end="9719">
+<LeftIndent>140.0</LeftIndent>
+<content start="9718" end="9719">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9719" end="9754">
+<LeftIndent>140.0</LeftIndent>
+<content start="9719" end="9753">
+<size>11</size><bold>true</bold></content>
+
+<content start="9753" end="9754">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9754" end="9755">
+<LeftIndent>140.0</LeftIndent>
+<content start="9754" end="9755">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9755" end="9839">
+<LeftIndent>140.0</LeftIndent>
+<content start="9755" end="9760">
+<size>11</size></content>
+
+<content start="9760" end="9787">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="9787" end="9839">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9839" end="9840">
+<LeftIndent>140.0</LeftIndent>
+<content start="9839" end="9840">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9840" end="9842">
+<SpaceAbove>1.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<content start="9840" end="9841">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="9841" end="9842">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="9842" end="9915">
+<LeftIndent>140.0</LeftIndent>
+<content start="9842" end="9843">
+<size>13</size></content>
+
+<content start="9843" end="9870">
+<size>10</size></content>
+
+<content start="9870" end="9895">
+<href>recordSimulation.cml</href><size>10</size></content>
+
+<content start="9895" end="9914">
+<size>10</size></content>
+
+<content start="9914" end="9915">
+</content>
+
+</paragraph>
+<paragraph start="9915" end="9916">
+<RightIndent>20.0</RightIndent>
+<content start="9915" end="9916">
+</content>
+
+</paragraph>
+<paragraph start="9916" end="9944">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="9916" end="9918">
+<size>11</size></content>
+
+<content start="9918" end="9926">
+<href>insertGauge.cml</href><size>11</size></content>
+
+<content start="9926" end="9929">
+<size>11</size></content>
+
+<content start="9929" end="9934">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="9934" end="9937">
+<size>11</size></content>
+
+<content start="9937" end="9941">
+<href>anytimeseries.cml</href><size>11</size></content>
+
+<content start="9941" end="9943">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

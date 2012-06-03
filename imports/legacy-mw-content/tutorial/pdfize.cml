@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Converting a page into a PDF file</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Converting a page into a PDF file
+
+&lt; Index &gt;
+
+Both Windows and Mac OS X allow you to create a PDF file for any printable document. Mac OS X provides a default PDF converter as a printing option. For Windows users, however, there is no default PDF option in the printer list, unless you have installed the Professional Version of Adobe Acrobat Reader&#8482;. If you do not have the professional version of Acrobat Reader, you can get   PDFCreator as a free alternative.
+
+The following screenshots show the Print Dialog on Windows 2000 and on Mac OS X:
+
+  
+&#12304;This is a screenshot from Windows 2000.&#12305;
+
+  
+&#12304;This is a screenshot from Mac OS X.&#12305;
+
+When the PDF option is selected and you click the OK button, a PDF file will be generated and no printing job will be sent to the printer.
+
+This link gives an example PDF file converted from the first 2 pages of the previous section.
+
+&lt; Index &gt;</text>
+<section start="0" end="879">
+<paragraph start="0" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="33">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<RightIndent>20.0</RightIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="45">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<size>11</size><href>index.cml</href></content>
+
+<content start="42" end="44">
+<size>11</size></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<LeftIndent>140.0</LeftIndent>
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="463">
+<LeftIndent>140.0</LeftIndent>
+<content start="46" end="349">
+<size>11</size></content>
+
+<content start="349" end="350">
+</content>
+
+<content start="350" end="427">
+<size>11</size></content>
+
+<content start="427" end="428">
+<icon>htmlink.gif</icon></content>
+
+<content start="428" end="429">
+<size>11</size></content>
+
+<content start="429" end="439">
+<size>11</size><href>http://www.pdfforge.org/products/pdfcreator/download</href></content>
+
+<content start="439" end="462">
+<size>11</size></content>
+
+<content start="462" end="463">
+</content>
+
+</paragraph>
+<paragraph start="463" end="464">
+<LeftIndent>140.0</LeftIndent>
+<content start="463" end="464">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="464" end="545">
+<LeftIndent>140.0</LeftIndent>
+<content start="464" end="545">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="545" end="546">
+<LeftIndent>140.0</LeftIndent>
+<content start="545" end="546">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="546" end="549">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="546" end="547">
+<size>11</size></content>
+
+<content start="547" end="548">
+<icon>PrintToPDF.gif</icon></content>
+
+<content start="548" end="549">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="549" end="591">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="549" end="550">
+<size>13</size><bold>true</bold></content>
+
+<content start="550" end="589">
+<size>10</size></content>
+
+<content start="589" end="590">
+<size>13</size><bold>true</bold></content>
+
+<content start="590" end="591">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="591" end="592">
+<LeftIndent>140.0</LeftIndent>
+<content start="591" end="592">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="592" end="595">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="592" end="593">
+</content>
+
+<content start="593" end="594">
+<icon>mac-pdf-print.gif</icon></content>
+
+<content start="594" end="595">
+</content>
+
+</paragraph>
+<paragraph start="595" end="633">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="595" end="596">
+<size>13</size><bold>true</bold></content>
+
+<content start="596" end="631">
+<size>10</size></content>
+
+<content start="631" end="632">
+<size>13</size><bold>true</bold></content>
+
+<content start="632" end="633">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="633" end="634">
+<LeftIndent>140.0</LeftIndent>
+<content start="633" end="634">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="634" end="773">
+<LeftIndent>140.0</LeftIndent>
+<content start="634" end="773">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="773" end="774">
+<LeftIndent>140.0</LeftIndent>
+<content start="773" end="774">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="774" end="868">
+<LeftIndent>140.0</LeftIndent>
+<content start="774" end="779">
+<size>11</size></content>
+
+<content start="779" end="783">
+<size>11</size><href>print.pdf</href></content>
+
+<content start="783" end="867">
+<size>11</size></content>
+
+<content start="867" end="868">
+</content>
+
+</paragraph>
+<paragraph start="868" end="869">
+<LeftIndent>100.0</LeftIndent>
+<content start="868" end="869">
+</content>
+
+</paragraph>
+<paragraph start="869" end="879">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="869" end="871">
+<size>11</size></content>
+
+<content start="871" end="876">
+<size>11</size><href>index.cml</href></content>
+
+<content start="876" end="878">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

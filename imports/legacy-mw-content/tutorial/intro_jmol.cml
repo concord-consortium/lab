@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Introduction</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Introduction
+
+&lt; Index | Next &gt;
+
+Jmol (  http://www.jmol.org) is a free, open source molecule viewer for students, educators, and researchers in chemistry and biochemistry, developed by   an international team of computer scientists and chemists.
+
+In MW, a built-in Jmol is used to display molecules and dynamically show molecular dynamics results (as introduced in the Chapter about 3D Modeling). It also has some additional functionalities we added to meet our special needs, which will be presented in this Chapter. This built-in viewer, however, is based on an older version of Jmol. If you need to use the latest version, you should use the Jmol plugin.
+
+
+&lt; Index | Next &gt;</text>
+<section start="0" end="677">
+<paragraph start="0" end="13">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="12">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="31">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="14" end="16">
+<size>11</size></content>
+
+<content start="16" end="21">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="21" end="24">
+<size>11</size></content>
+
+<content start="24" end="28">
+<size>11</size><href>insertjmol.cml</href></content>
+
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<LeftIndent>140.0</LeftIndent>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="246">
+<LeftIndent>140.0</LeftIndent>
+<content start="32" end="38">
+<size>11</size></content>
+
+<content start="38" end="39">
+<icon>htmlink.gif</icon></content>
+
+<content start="39" end="40">
+<size>11</size></content>
+
+<content start="40" end="59">
+<size>11</size><href>http://www.jmol.org</href></content>
+
+<content start="59" end="185">
+<size>11</size></content>
+
+<content start="185" end="186">
+<icon>htmlink.gif</icon></content>
+
+<content start="186" end="187">
+<size>11</size></content>
+
+<content start="187" end="244">
+<size>11</size><href>http://jmol.sourceforge.net/history/</href></content>
+
+<content start="244" end="246">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="246" end="247">
+<LeftIndent>140.0</LeftIndent>
+<content start="246" end="247">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="247" end="658">
+<LeftIndent>140.0</LeftIndent>
+<content start="247" end="365">
+<size>11</size></content>
+
+<content start="365" end="394">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="394" end="518">
+<size>11</size></content>
+
+<content start="518" end="641">
+<size>11</size><bold>true</bold></content>
+
+<content start="641" end="656">
+<size>11</size><bold>true</bold><href>jmolplugin2.cml</href></content>
+
+<content start="656" end="657">
+<size>11</size><bold>true</bold></content>
+
+<content start="657" end="658">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="658" end="659">
+<LeftIndent>140.0</LeftIndent>
+<content start="658" end="659">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="659" end="660">
+<LeftIndent>140.0</LeftIndent>
+<content start="659" end="660">
+</content>
+
+</paragraph>
+<paragraph start="660" end="677">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="660" end="662">
+<size>11</size></content>
+
+<content start="662" end="667">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="667" end="670">
+<size>11</size></content>
+
+<content start="670" end="674">
+<size>11</size><href>insertjmol.cml</href></content>
+
+<content start="674" end="676">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

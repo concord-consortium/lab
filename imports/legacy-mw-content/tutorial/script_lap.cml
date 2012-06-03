@@ -1,0 +1,1079 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Lap: Local Area Pressure</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Lap: Local Area Pressure
+
+&lt; Previous | Index | Next &gt;
+
+Suppose we have a binary system that is composed of two types of particles, A and B. According to the virial theorem of Clausius, the partial pressures of A and B in a selected volume S can be written as:
+
+  
+where V(S) is the volume, mi is the mass, vi is the speed, ri is the position vector, and Fi is the force vector of the i-th particle. The angle brackets &lt;...&gt; represent ensemble averages or time averages. The above equations show that pressure is computationally an additive property. In other words, to get the pressure of N+1 particles, we just need to add (mivi2+riFi) term of the (N+1)-th particle to the sum of those of the N particles. That is also to say, the total pressure of the binary system is the sum of the partial pressures of the two types of particles:
+
+  
+
+The lap command computes the instantaneous pressure of the atoms of the specified types in a specified rectangular area, based on the above equations. The data are shown as a function of time, based on the frames in the recorder.
+
+Syntax:
+
+lap [expression]
+lap [expression1] and [expression2] and ...... and [expression_n]
+
+The expression can use the within clause that is also used in the select command:
+
+   [id] within ([x], [y], [w], [h])
+   [id1]-[id2] within ([x], [y], [w], [h])
+   [id1] [id2] ...... [idn] within ([x], [y], [w], [h])
+
+These three clauses can be used to count all atoms of the element type specified by [id], or a range [id1]-[id2], or several element types, that fall within the specified rectangular area. The within keyword followed by a quadruple enclosed in a pair of parentheses is used to specify a rectangular area, with the four numbers (in angstrom) representing the x coordinate and y coordinate of the upper left corner, and the width and the height of the rectangular area, respectively.
+
+ 
+Element IDs: The ID numbers for elements are defined as follows: Nt: 0; Pl: 1; Ws: 2; Ck: 3. For IDs of the non-editable elements, see this list.
+ 
+
+The lap command can be used to analyze pressure distributions and their time evolution. For example, one can use it to measure the pressure difference in order to estimate the flow.
+
+ 
+Note: If the recorder is disabled, this command has no effect.
+Caution: You should generally use this command once per script execution. Avoid using it within a loop.
+ 
+
+The following experiment shows a comparison of the pressure computed using the lap command and the pressures measured by a pressure gauge. In this model, the attractions are turned off, which means that the particles move like hard spheres and the virial terms due to intermolecular forces are very small.
+
+   
+ 
+?This is an embedded model container.?
+
+The following two images are screenshots of graphs produced from the above simulations. The left one shows the readings from the gauge, whereas the right one shows the results computed using the lap command. As we can tell, they seem to agree with each other qualitatively.
+
+    
+
+Pressure gauges cannot measure internal pressure
+
+The readings from a pressure gauge will not necessarily be equal to those computed using the lap command for systems in which molecules do not behave like hard spheres. When the intermolecular attractions among molecules become stronger than thermal energy (kBT), the gauge will start to show a smaller reading (which we call wall pressure) than the results computed using the virial theorem (which we call internal pressure). This is perhaps an artifact because our gauge does not provide any attraction force for the molecules. As a result, the attractions among the molecules serve as a force that reduces both their frequencies of collisions with the surface of the gauge and the impulses of such collisions. Overall, the more attractive the intermolecular interactions are, the less pressure the gauge will measure. An extreme case is that when the whole system crystallizes, the gauge may measure zero pressure, if the resulting crystal does not touch its surface at all.
+
+The following model shows this effect.
+
+  
+ 
+?This is an embedded model container.?
+
+The following two images are screenshots from the above simulation:
+
+    
+
+The left image is the reading from the pressure gauge. The right one is the results computed using the virial theorem. The comparison of the results shows the pressure measured by the gauge is only 50% or so of the internal pressure computed by using the virial theorem. This result suggests that the internal pressure defined by the virial theorem may not be the pressure we can measure using a gauge, be it be real or virtual. Based on this, we may further contest whether or not such a definition physically makes sense, as this definition can, under some circumstances, lead to the notion of   &quot;negative pressure&quot;, which is controversial.
+
+ 
+The above idea is also proven by this model, in which two gauges are used to measure the internal pressure and the wall pressure.
+ 
+
+Test cases
+
+Despite of the fact that the internal pressure and the wall pressure may not be equal, the internal pressure may still be used as a measurement of the potentiality of a molecular system to do mechanical work to the environment or an external object. The following links provide several test cases.
+
+Test case 1: Measuring internal pressures of homogeneous systems in thermal equilibrium
+Test case 2: Measuring internal pressures of an equilibrating process
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="5472">
+<paragraph start="0" end="25">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="24">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="54">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="26" end="28">
+<size>11</size></content>
+
+<content start="28" end="36">
+<size>11</size><href>script_lat.cml</href></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="44">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="44" end="47">
+<size>11</size></content>
+
+<content start="47" end="51">
+<size>11</size><href>script_pcf.cml</href></content>
+
+<content start="51" end="53">
+<size>11</size></content>
+
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<LeftIndent>140.0</LeftIndent>
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="260">
+<LeftIndent>140.0</LeftIndent>
+<content start="55" end="239">
+<size>11</size></content>
+
+<content start="239" end="240">
+<size>11</size><italic>true</italic></content>
+
+<content start="240" end="259">
+<size>11</size></content>
+
+<content start="259" end="260">
+</content>
+
+</paragraph>
+<paragraph start="260" end="261">
+<LeftIndent>140.0</LeftIndent>
+<content start="260" end="261">
+</content>
+
+</paragraph>
+<paragraph start="261" end="264">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="261" end="262">
+</content>
+
+<content start="262" end="263">
+<icon>LapFormula.gif</icon></content>
+
+<content start="263" end="264">
+</content>
+
+</paragraph>
+<paragraph start="264" end="835">
+<LeftIndent>140.0</LeftIndent>
+<content start="264" end="270">
+<size>11</size></content>
+
+<content start="270" end="271">
+<size>11</size><italic>true</italic></content>
+
+<content start="271" end="274">
+<size>11</size><superscript>true</superscript></content>
+
+<content start="274" end="290">
+<size>11</size></content>
+
+<content start="290" end="291">
+<size>11</size><italic>true</italic></content>
+
+<content start="291" end="292">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="292" end="306">
+<size>11</size></content>
+
+<content start="306" end="307">
+<size>11</size><italic>true</italic></content>
+
+<content start="307" end="308">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="308" end="323">
+<size>11</size></content>
+
+<content start="323" end="324">
+<size>11</size><bold>true</bold></content>
+
+<content start="324" end="325">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="325" end="354">
+<size>11</size></content>
+
+<content start="354" end="355">
+<size>11</size><bold>true</bold></content>
+
+<content start="355" end="356">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="356" end="384">
+<size>11</size></content>
+
+<content start="384" end="385">
+<size>11</size><italic>true</italic></content>
+
+<content start="385" end="512">
+<size>11</size></content>
+
+<content start="512" end="527">
+<size>11</size><italic>true</italic></content>
+
+<content start="527" end="589">
+<size>11</size></content>
+
+<content start="589" end="590">
+<size>11</size><italic>true</italic></content>
+
+<content start="590" end="626">
+<size>11</size></content>
+
+<content start="626" end="627">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="627" end="628">
+<size>11</size></content>
+
+<content start="628" end="629">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="629" end="630">
+<size>11</size><superscript>true</superscript></content>
+
+<content start="630" end="631">
+<size>11</size></content>
+
+<content start="631" end="632">
+<size>11</size><bold>true</bold></content>
+
+<content start="632" end="633">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="633" end="634">
+<size>11</size><bold>true</bold></content>
+
+<content start="634" end="635">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="635" end="650">
+<size>11</size></content>
+
+<content start="650" end="651">
+<size>11</size><italic>true</italic></content>
+
+<content start="651" end="694">
+<size>11</size></content>
+
+<content start="694" end="695">
+<size>11</size><italic>true</italic></content>
+
+<content start="695" end="835">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="835" end="836">
+<LeftIndent>140.0</LeftIndent>
+<content start="835" end="836">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="836" end="839">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="836" end="837">
+<size>11</size></content>
+
+<content start="837" end="838">
+<icon>LapFormula2.gif</icon></content>
+
+<content start="838" end="839">
+</content>
+
+</paragraph>
+<paragraph start="839" end="840">
+<LeftIndent>140.0</LeftIndent>
+<content start="839" end="840">
+</content>
+
+</paragraph>
+<paragraph start="840" end="1070">
+<LeftIndent>140.0</LeftIndent>
+<content start="840" end="844">
+<size>11</size></content>
+
+<content start="844" end="847">
+<family>Courier New</family><size>11</size></content>
+
+<content start="847" end="1070">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1070" end="1071">
+<LeftIndent>140.0</LeftIndent>
+<content start="1070" end="1071">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1071" end="1079">
+<LeftIndent>140.0</LeftIndent>
+<content start="1071" end="1079">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1079" end="1080">
+<LeftIndent>140.0</LeftIndent>
+<content start="1079" end="1080">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1080" end="1097">
+<LeftIndent>160.0</LeftIndent>
+<content start="1080" end="1084">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="1084" end="1096">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1096" end="1097">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1097" end="1163">
+<LeftIndent>160.0</LeftIndent>
+<content start="1097" end="1100">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="1100" end="1162">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1162" end="1163">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1163" end="1164">
+<LeftIndent>140.0</LeftIndent>
+<content start="1163" end="1164">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1164" end="1246">
+<LeftIndent>140.0</LeftIndent>
+<content start="1164" end="1191">
+<size>11</size></content>
+
+<content start="1191" end="1197">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1197" end="1230">
+<size>11</size></content>
+
+<content start="1230" end="1236">
+<family>Courier New</family><size>11</size><href>script_select.cml</href></content>
+
+<content start="1236" end="1246">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1246" end="1247">
+<LeftIndent>140.0</LeftIndent>
+<content start="1246" end="1247">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1247" end="1283">
+<LeftIndent>160.0</LeftIndent>
+<content start="1247" end="1248">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1248" end="1250">
+</content>
+
+<content start="1250" end="1255">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1255" end="1261">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="1261" end="1282">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1282" end="1283">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1283" end="1326">
+<LeftIndent>160.0</LeftIndent>
+<content start="1283" end="1284">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1284" end="1286">
+</content>
+
+<content start="1286" end="1298">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1298" end="1304">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="1304" end="1326">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1326" end="1382">
+<LeftIndent>160.0</LeftIndent>
+<content start="1326" end="1327">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1327" end="1329">
+</content>
+
+<content start="1329" end="1354">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1354" end="1360">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="1360" end="1381">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1381" end="1382">
+</content>
+
+</paragraph>
+<paragraph start="1382" end="1383">
+<LeftIndent>140.0</LeftIndent>
+<content start="1382" end="1383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1383" end="1865">
+<LeftIndent>140.0</LeftIndent>
+<content start="1383" end="1467">
+<size>11</size></content>
+
+<content start="1467" end="1471">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1471" end="1484">
+<size>11</size></content>
+
+<content start="1484" end="1495">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1495" end="1576">
+<size>11</size></content>
+
+<content start="1576" end="1582">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1582" end="1741">
+<size>11</size></content>
+
+<content start="1741" end="1742">
+<size>11</size><italic>true</italic></content>
+
+<content start="1742" end="1758">
+<size>11</size></content>
+
+<content start="1758" end="1759">
+<size>11</size><italic>true</italic></content>
+
+<content start="1759" end="1865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1865" end="1866">
+<LeftIndent>140.0</LeftIndent>
+<content start="1865" end="1866">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1866" end="1868">
+<LeftIndent>140.0</LeftIndent>
+<content start="1866" end="1867">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1867" end="1868">
+</content>
+
+</paragraph>
+<paragraph start="1868" end="2014">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1868" end="1880">
+<size>11</size><bold>true</bold></content>
+
+<content start="1880" end="2003">
+<size>11</size></content>
+
+<content start="2003" end="2012">
+<size>11</size><href>element_id.cml</href></content>
+
+<content start="2012" end="2013">
+<size>11</size></content>
+
+<content start="2013" end="2014">
+</content>
+
+</paragraph>
+<paragraph start="2014" end="2016">
+<LeftIndent>140.0</LeftIndent>
+<content start="2014" end="2015">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2015" end="2016">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2016" end="2017">
+<LeftIndent>140.0</LeftIndent>
+<content start="2016" end="2017">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2017" end="2199">
+<LeftIndent>140.0</LeftIndent>
+<content start="2017" end="2021">
+<size>11</size></content>
+
+<content start="2021" end="2024">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2024" end="2199">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2199" end="2200">
+<LeftIndent>140.0</LeftIndent>
+<content start="2199" end="2200">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2200" end="2202">
+<LeftIndent>140.0</LeftIndent>
+<content start="2200" end="2201">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2201" end="2202">
+</content>
+
+</paragraph>
+<paragraph start="2202" end="2265">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2202" end="2206">
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
+
+<content start="2206" end="2215">
+<size>11</size></content>
+
+<content start="2215" end="2223">
+<size>11</size><href>recordSimulation.cml</href></content>
+
+<content start="2223" end="2264">
+<size>11</size></content>
+
+<content start="2264" end="2265">
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="2265" end="2369">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2265" end="2272">
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
+
+<content start="2272" end="2363">
+<size>11</size></content>
+
+<content start="2363" end="2367">
+<size>11</size><href>script_loop.cml</href></content>
+
+<content start="2367" end="2368">
+<size>11</size></content>
+
+<content start="2368" end="2369">
+</content>
+
+</paragraph>
+<paragraph start="2369" end="2371">
+<LeftIndent>140.0</LeftIndent>
+<content start="2369" end="2370">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2370" end="2371">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2371" end="2372">
+<LeftIndent>140.0</LeftIndent>
+<content start="2371" end="2372">
+</content>
+
+</paragraph>
+<paragraph start="2372" end="2678">
+<LeftIndent>140.0</LeftIndent>
+<content start="2372" end="2451">
+<size>11</size></content>
+
+<content start="2451" end="2454">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2454" end="2495">
+<size>11</size></content>
+
+<content start="2495" end="2509">
+<size>11</size><href>pressureprobe.cml</href></content>
+
+<content start="2509" end="2677">
+<size>11</size></content>
+
+<content start="2677" end="2678">
+</content>
+
+</paragraph>
+<paragraph start="2678" end="2679">
+<LeftIndent>140.0</LeftIndent>
+<content start="2678" end="2679">
+</content>
+
+</paragraph>
+<paragraph start="2679" end="2683">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2679" end="2680">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_lap$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="2680" end="2681">
+</content>
+
+<content start="2681" end="2682">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="1" size="4" spacing="5">West pressure:Obstacle #0</time_series_y1>
+<time_series_y2 color="-7f7f80" style="1" width="1.0" symbol="0" size="4" spacing="5">Nt west pressure:Obstacle #0</time_series_y2>
+<time_series_y3 color="-ffff01" style="2" width="1.0" symbol="0" size="4" spacing="5">Pl west pressure:Obstacle #0</time_series_y3>
+<time_series_y4 color="-10000" style="3" width="1.0" symbol="0" size="4" spacing="5">Ws west pressure:Obstacle #0</time_series_y4>
+<time_series_y5 color="-ff0100" style="4" width="1.0" symbol="0" size="4" spacing="5">Ck west pressure:Obstacle #0</time_series_y5>
+<width>240</width>
+<height>285</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Pressures (bar)</axis_y_title>
+<legend_x>50</legend_x>
+<legend_y>50</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="2682" end="2683">
+</content>
+
+</paragraph>
+<paragraph start="2683" end="2685">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2683" end="2684">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Compute pressures using the LAP command</title>
+<tooltip>Compute pressures using LAP</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>lap 0-3 within (0, 0, %obstacle[0].x, %height) and 0 within (0, 0, %obstacle[0].x, %height) and 1 within (0, 0, %obstacle[0].x, %height) and 2 within (0, 0, %obstacle[0].x, %height) and 3 within (0, 0, %obstacle[0].x, %height);</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2684" end="2685">
+</content>
+
+</paragraph>
+<paragraph start="2685" end="2724">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2685" end="2723">
+<size>10</size></content>
+
+<content start="2723" end="2724">
+</content>
+
+</paragraph>
+<paragraph start="2724" end="2725">
+<LeftIndent>140.0</LeftIndent>
+<content start="2724" end="2725">
+</content>
+
+</paragraph>
+<paragraph start="2725" end="2999">
+<LeftIndent>140.0</LeftIndent>
+<content start="2725" end="2920">
+<size>11</size></content>
+
+<content start="2920" end="2923">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2923" end="2998">
+<size>11</size></content>
+
+<content start="2998" end="2999">
+</content>
+
+</paragraph>
+<paragraph start="2999" end="3000">
+<LeftIndent>140.0</LeftIndent>
+<content start="2999" end="3000">
+</content>
+
+</paragraph>
+<paragraph start="3000" end="3005">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3000" end="3001">
+</content>
+
+<content start="3001" end="3002">
+<icon>script_lap_1.jpg</icon></content>
+
+<content start="3002" end="3003">
+</content>
+
+<content start="3003" end="3004">
+<icon>script_lap_2.jpg</icon></content>
+
+<content start="3004" end="3005">
+</content>
+
+</paragraph>
+<paragraph start="3005" end="3006">
+<LeftIndent>140.0</LeftIndent>
+<content start="3005" end="3006">
+</content>
+
+</paragraph>
+<paragraph start="3006" end="3055">
+<LeftIndent>140.0</LeftIndent>
+<content start="3006" end="3054">
+<size>11</size><bold>true</bold></content>
+
+<content start="3054" end="3055">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3055" end="3056">
+<LeftIndent>140.0</LeftIndent>
+<content start="3055" end="3056">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3056" end="4034">
+<LeftIndent>140.0</LeftIndent>
+<content start="3056" end="3149">
+<size>11</size></content>
+
+<content start="3149" end="3152">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3152" end="3314">
+<size>11</size></content>
+
+<content start="3314" end="3315">
+<size>11</size><italic>true</italic></content>
+
+<content start="3315" end="3316">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="3316" end="3317">
+<size>11</size><italic>true</italic></content>
+
+<content start="3317" end="3382">
+<size>11</size></content>
+
+<content start="3382" end="3395">
+<size>11</size><bold>true</bold></content>
+
+<content start="3395" end="3463">
+<size>11</size></content>
+
+<content start="3463" end="3480">
+<size>11</size><bold>true</bold></content>
+
+<content start="3480" end="4034">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4034" end="4035">
+<LeftIndent>140.0</LeftIndent>
+<content start="4034" end="4035">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4035" end="4074">
+<LeftIndent>140.0</LeftIndent>
+<content start="4035" end="4074">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4074" end="4075">
+<LeftIndent>140.0</LeftIndent>
+<content start="4074" end="4075">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4075" end="4078">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4075" end="4076">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_lap$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="4076" end="4077">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>1</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="1" size="4" spacing="5">West pressure:Obstacle #0</time_series_y1>
+<time_series_y2 color="-7f7f80" style="1" width="1.0" symbol="0" size="4" spacing="5">Nt west pressure:Obstacle #0</time_series_y2>
+<time_series_y3 color="-ffff01" style="2" width="1.0" symbol="0" size="4" spacing="5">Pl west pressure:Obstacle #0</time_series_y3>
+<time_series_y4 color="-10000" style="3" width="1.0" symbol="0" size="4" spacing="5">Ws west pressure:Obstacle #0</time_series_y4>
+<time_series_y5 color="-ff0100" style="4" width="1.0" symbol="0" size="4" spacing="5">Ck west pressure:Obstacle #0</time_series_y5>
+<width>240</width>
+<height>285</height>
+<axis_x_title>x</axis_x_title>
+<axis_y_title>y</axis_y_title>
+<legend_x>50</legend_x>
+<legend_y>50</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="4077" end="4078">
+</content>
+
+</paragraph>
+<paragraph start="4078" end="4080">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4078" end="4079">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Compute pressures using the LAP command</title>
+<tooltip>Compute pressures using the LAP command</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<script>lap 0-3 within (0, 0, %obstacle[0].x, %height) and 0 within (0, 0, %obstacle[0].x, %height) and 1 within (0, 0, %obstacle[0].x, %height) and 2 within (0, 0, %obstacle[0].x, %height) and 3 within (0, 0, %obstacle[0].x, %height);</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="4079" end="4080">
+</content>
+
+</paragraph>
+<paragraph start="4080" end="4119">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4080" end="4118">
+<size>10</size></content>
+
+<content start="4118" end="4119">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4119" end="4120">
+<LeftIndent>140.0</LeftIndent>
+<content start="4119" end="4120">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4120" end="4188">
+<LeftIndent>140.0</LeftIndent>
+<content start="4120" end="4187">
+<size>11</size></content>
+
+<content start="4187" end="4188">
+</content>
+
+</paragraph>
+<paragraph start="4188" end="4189">
+<LeftIndent>140.0</LeftIndent>
+<content start="4188" end="4189">
+</content>
+
+</paragraph>
+<paragraph start="4189" end="4194">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4189" end="4190">
+</content>
+
+<content start="4190" end="4191">
+<icon>script_lap_3.jpg</icon></content>
+
+<content start="4191" end="4192">
+</content>
+
+<content start="4192" end="4193">
+<icon>script_lap_4.jpg</icon></content>
+
+<content start="4193" end="4194">
+</content>
+
+</paragraph>
+<paragraph start="4194" end="4195">
+<LeftIndent>140.0</LeftIndent>
+<content start="4194" end="4195">
+</content>
+
+</paragraph>
+<paragraph start="4195" end="4838">
+<LeftIndent>140.0</LeftIndent>
+<content start="4195" end="4792">
+<size>11</size></content>
+
+<content start="4792" end="4793">
+<icon>htmlink.gif</icon></content>
+
+<content start="4793" end="4794">
+<size>11</size></content>
+
+<content start="4794" end="4811">
+<size>11</size><href>http://www.discover.com/issues/mar-03/departments/featscienceof/</href></content>
+
+<content start="4811" end="4838">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4838" end="4839">
+<LeftIndent>140.0</LeftIndent>
+<content start="4838" end="4839">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4839" end="4841">
+<LeftIndent>140.0</LeftIndent>
+<content start="4839" end="4840">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="4840" end="4841">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4841" end="4971">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="4841" end="4874">
+<size>11</size></content>
+
+<content start="4874" end="4884">
+<size>11</size><href>NegativePressure.cml</href></content>
+
+<content start="4884" end="4971">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4971" end="4973">
+<LeftIndent>140.0</LeftIndent>
+<content start="4971" end="4972">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="4972" end="4973">
+</content>
+
+</paragraph>
+<paragraph start="4973" end="4974">
+<LeftIndent>140.0</LeftIndent>
+<content start="4973" end="4974">
+</content>
+
+</paragraph>
+<paragraph start="4974" end="4985">
+<LeftIndent>140.0</LeftIndent>
+<content start="4974" end="4984">
+<size>11</size><bold>true</bold></content>
+
+<content start="4984" end="4985">
+</content>
+
+</paragraph>
+<paragraph start="4985" end="4986">
+<LeftIndent>140.0</LeftIndent>
+<content start="4985" end="4986">
+</content>
+
+</paragraph>
+<paragraph start="4986" end="5284">
+<LeftIndent>140.0</LeftIndent>
+<content start="4986" end="5284">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5284" end="5285">
+<LeftIndent>140.0</LeftIndent>
+<content start="5284" end="5285">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5285" end="5373">
+<LeftIndent>140.0</LeftIndent>
+<content start="5285" end="5298">
+<size>11</size></content>
+
+<content start="5298" end="5372">
+<size>11</size><href>laptest1.cml</href></content>
+
+<content start="5372" end="5373">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5373" end="5443">
+<LeftIndent>140.0</LeftIndent>
+<content start="5373" end="5386">
+<size>11</size></content>
+
+<content start="5386" end="5442">
+<size>11</size><href>laptest2.cml</href></content>
+
+<content start="5442" end="5443">
+</content>
+
+</paragraph>
+<paragraph start="5443" end="5444">
+<LeftIndent>140.0</LeftIndent>
+<content start="5443" end="5444">
+</content>
+
+</paragraph>
+<paragraph start="5444" end="5472">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="5444" end="5446">
+<size>11</size></content>
+
+<content start="5446" end="5454">
+<size>11</size><href>script_lat.cml</href></content>
+
+<content start="5454" end="5457">
+<size>11</size></content>
+
+<content start="5457" end="5462">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="5462" end="5465">
+<size>11</size></content>
+
+<content start="5465" end="5469">
+<size>11</size><href>script_pcf.cml</href></content>
+
+<content start="5469" end="5471">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a periodic table</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a periodic table
+
+&lt; Previous | Index | Next &gt;
+
+MW provides a built-in periodic table that you can insert into anywhere in a page. To insert it, select the &quot;Insert&gt;Miscellaneous Components&gt;Periodic Table&quot; menu.
+
+ 
+&#12304;This is an embedded periodic table.&#12305;
+
+By default, the elements are colored by the types of their bulk materials. This table is also musical --- when the button for an element is pressed, it may play a note, if the &quot;Mute&quot; check box in the Dialog Window for customizing it is unselected. You may press the elements in the above table to try it &#10102;.
+
+Changing and removing a periodic table
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove, and copy a periodic table.
+
+ 
+&#10102; The synthetic music mode of this periodic table is based on the work of Dr. D. Markman.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="828">
+<paragraph start="0" end="27">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="26">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="56">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="38">
+<size>11</size><href>message.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="46">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="53">
+<size>11</size><href>FunctionGraph.cml</href></content>
+
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="220">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="220">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="220" end="221">
+<LeftIndent>140.0</LeftIndent>
+<content start="220" end="221">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="221" end="223">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="221" end="222">
+<component><class>org.concord.modeler.PagePeriodicTable</class>
+<mute>false</mute>
+<opaque>false</opaque>
+<border>None</border>
+</component></content>
+
+<content start="222" end="223">
+</content>
+
+</paragraph>
+<paragraph start="223" end="261">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="223" end="224">
+<size>13</size><bold>true</bold></content>
+
+<content start="224" end="259">
+<size>10</size></content>
+
+<content start="259" end="260">
+<size>13</size><bold>true</bold></content>
+
+<content start="260" end="261">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="261" end="262">
+<LeftIndent>140.0</LeftIndent>
+<content start="261" end="262">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="262" end="569">
+<LeftIndent>140.0</LeftIndent>
+<content start="262" end="321">
+<size>11</size></content>
+
+<content start="321" end="325">
+<size>11</size><italic>true</italic></content>
+
+<content start="325" end="566">
+<size>11</size></content>
+
+<content start="566" end="567">
+<size>13</size></content>
+
+<content start="567" end="569">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="569" end="570">
+<LeftIndent>140.0</LeftIndent>
+<content start="569" end="570">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="570" end="609">
+<LeftIndent>140.0</LeftIndent>
+<content start="570" end="608">
+<size>11</size><bold>true</bold></content>
+
+<content start="608" end="609">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="609" end="610">
+<LeftIndent>140.0</LeftIndent>
+<content start="609" end="610">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="610" end="706">
+<LeftIndent>140.0</LeftIndent>
+<content start="610" end="615">
+<size>11</size></content>
+
+<content start="615" end="644">
+<size>11</size><href>changeComponent.cml</href></content>
+
+<content start="644" end="706">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="706" end="707">
+<LeftIndent>140.0</LeftIndent>
+<content start="706" end="707">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="707" end="709">
+<LeftIndent>140.0</LeftIndent>
+<content start="707" end="708">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="708" end="709">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="709" end="799">
+<LeftIndent>140.0</LeftIndent>
+<content start="709" end="710">
+<size>13</size></content>
+
+<content start="710" end="799">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="799" end="800">
+<LeftIndent>140.0</LeftIndent>
+<content start="799" end="800">
+</content>
+
+</paragraph>
+<paragraph start="800" end="828">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="800" end="802">
+<size>11</size></content>
+
+<content start="802" end="810">
+<size>11</size><href>message.cml</href></content>
+
+<content start="810" end="813">
+<size>11</size></content>
+
+<content start="813" end="818">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="818" end="821">
+<size>11</size></content>
+
+<content start="821" end="825">
+<size>11</size><href>FunctionGraph.cml</href></content>
+
+<content start="825" end="827">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

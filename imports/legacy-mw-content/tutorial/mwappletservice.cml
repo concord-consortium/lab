@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Implementing MW&apos;s applet services</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Implementing MW&apos;s applet services
+
+&lt; Previous | Index | Next &gt;
+
+If you want your applet to take advantages of the basic services provided by MW, such as the snapshot functionality, the user interface builder, saving and loading states, customization dialog, cut, copy and paste, etc., it must implement an interface called MwService. Currently, the MwService interface has just five methods:
+
+public interface MwService {
+
+    public Component getSnapshotComponent();
+
+    public JPopupMenu getPopupMenu();
+	
+    public String runNativeScript(String script);
+
+    public void loadState(InputStream is) throws IOException;
+
+    public void saveState(OutputStream os) throws IOException;
+
+    public boolean needExecutorService();
+
+    public void setExecutorService(ExecutorService service);
+
+}
+
+The getSnapshotComponent() returns the container that you want to be taken a snapshot by the user. Such a container usually does not include the components such as menus and buttons. For example, in the above example about the Mandelbrot Set, we usually will want to take a snapshot for only the window that shows the fractal image, instead of the whole applet that includes the buttons on the left panel and the title bar on the top panel. So we implemented the MwService interface to return only the component that shows the fractal image.
+
+The getPopupMenu() returns the default pop-up menu, if provided. The returned pop-up menu will be integrated into MW&apos;s generic pop-up menu for embedded applets.
+
+The runNativeScript() is used to send the native scripts supported by the applet, if any, from other MW components to the applet. In your implementation, the scripts passed by this method should be redirected to the script parser of the applet. The method returns a string that may be the result of the script execution, or the error message if there is anything wrong in calling the method.
+
+An untrusted applet will not be able to shutdown its thread service when it is not needed any more and ought to be destroyed. A workaround is to &quot;borrow&quot; a thread service from MW. An applet that needs to do this should return true through needExecutorService(). When it is initiated, MW will create an ExecutorService and pass it to the applet. When it is destroyed, MW will shutdown the &quot;lent&quot; ExecutorService immediately. Hence, memory leak is prevented.
+
+ 
+More about the plug-in architecture: The design pattern we use to support plugins is sometimes called   &quot;Dependency Injection&quot;, or   &quot;Inversion of Control&quot;. MW knows nothing about a specific plugin until after it is embedded into MW and its implementation &quot;injected&quot; into MW&apos;s applet container. In other words, the control of the plugin is &quot;inverted&quot; from MW to the plugin&apos;s internal implementation, which, again, MW knows nothing about.
+ 
+
+We will discuss more about the MW service for saving and loading states for an embedded applet in a later section.
+
+You can download the source code using the link below and check how it works.
+
+ 
+Download the   source code of the Mandelbrot Explorer
+ 
+
+This interface will be enhanced in the future. Implementing this interface does no harm to your applet when it runs on a standard web browser. However, when it runs on MW, your applet can then talk to MW through this interface.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3306">
+<paragraph start="0" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="33">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="63">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="45">
+<href>applet.cml</href><size>11</size></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="53">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="53" end="56">
+<size>11</size></content>
+
+<content start="56" end="60">
+<href>applet1.cml</href><size>11</size></content>
+
+<content start="60" end="62">
+<size>11</size></content>
+
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="64">
+<content start="63" end="64">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="64" end="392">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="323">
+<size>11</size></content>
+
+<content start="323" end="332">
+<size>11</size><family>Courier New</family></content>
+
+<content start="332" end="349">
+<size>11</size></content>
+
+<content start="349" end="358">
+<size>11</size><family>Courier New</family></content>
+
+<content start="358" end="392">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="392" end="393">
+<LeftIndent>140.0</LeftIndent>
+<content start="392" end="393">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="393" end="422">
+<LeftIndent>180.0</LeftIndent>
+<content start="393" end="422">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="422" end="423">
+<LeftIndent>180.0</LeftIndent>
+<content start="422" end="423">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="423" end="468">
+<LeftIndent>180.0</LeftIndent>
+<content start="423" end="468">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="468" end="469">
+<LeftIndent>180.0</LeftIndent>
+<content start="468" end="469">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="469" end="507">
+<LeftIndent>180.0</LeftIndent>
+<content start="469" end="507">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="507" end="509">
+<LeftIndent>140.0</LeftIndent>
+<content start="507" end="509">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="509" end="559">
+<LeftIndent>180.0</LeftIndent>
+<content start="509" end="559">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="559" end="560">
+<LeftIndent>180.0</LeftIndent>
+<content start="559" end="560">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="560" end="622">
+<LeftIndent>180.0</LeftIndent>
+<content start="560" end="622">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="622" end="623">
+<LeftIndent>180.0</LeftIndent>
+<content start="622" end="623">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="623" end="686">
+<LeftIndent>180.0</LeftIndent>
+<content start="623" end="686">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="686" end="687">
+<LeftIndent>180.0</LeftIndent>
+<content start="686" end="687">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="687" end="729">
+<LeftIndent>180.0</LeftIndent>
+<content start="687" end="729">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="729" end="730">
+<LeftIndent>180.0</LeftIndent>
+<content start="729" end="730">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="730" end="791">
+<LeftIndent>180.0</LeftIndent>
+<content start="730" end="791">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="791" end="792">
+<LeftIndent>180.0</LeftIndent>
+<content start="791" end="792">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="792" end="794">
+<LeftIndent>180.0</LeftIndent>
+<content start="792" end="793">
+<size>11</size><family>Courier New</family></content>
+
+<content start="793" end="794">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="794" end="795">
+<LeftIndent>140.0</LeftIndent>
+<content start="794" end="795">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="795" end="1337">
+<LeftIndent>140.0</LeftIndent>
+<content start="795" end="799">
+<size>11</size></content>
+
+<content start="799" end="821">
+<size>11</size><family>Courier New</family></content>
+
+<content start="821" end="1258">
+<size>11</size></content>
+
+<content start="1258" end="1267">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1267" end="1337">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1337" end="1338">
+<LeftIndent>140.0</LeftIndent>
+<content start="1337" end="1338">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1338" end="1499">
+<LeftIndent>140.0</LeftIndent>
+<content start="1338" end="1342">
+<size>11</size></content>
+
+<content start="1342" end="1356">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1356" end="1499">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1499" end="1500">
+<LeftIndent>140.0</LeftIndent>
+<content start="1499" end="1500">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1500" end="1892">
+<LeftIndent>140.0</LeftIndent>
+<content start="1500" end="1504">
+<size>11</size></content>
+
+<content start="1504" end="1521">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1521" end="1892">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1892" end="1893">
+<LeftIndent>140.0</LeftIndent>
+<content start="1892" end="1893">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1893" end="2350">
+<LeftIndent>140.0</LeftIndent>
+<content start="1893" end="2132">
+<size>11</size></content>
+
+<content start="2132" end="2153">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2153" end="2195">
+<size>11</size></content>
+
+<content start="2195" end="2210">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2210" end="2288">
+<size>11</size></content>
+
+<content start="2288" end="2303">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2303" end="2350">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2350" end="2351">
+<LeftIndent>140.0</LeftIndent>
+<content start="2350" end="2351">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2351" end="2353">
+<LeftIndent>140.0</LeftIndent>
+<content start="2351" end="2352">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2352" end="2353">
+</content>
+
+</paragraph>
+<paragraph start="2353" end="2791">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2353" end="2455">
+<size>11</size></content>
+
+<content start="2455" end="2456">
+<icon>htmlink.gif</icon></content>
+
+<content start="2456" end="2457">
+</content>
+
+<content start="2457" end="2458">
+<size>11</size></content>
+
+<content start="2458" end="2478">
+<href>http://en.wikipedia.org/wiki/Dependency_injection</href><size>11</size></content>
+
+<content start="2478" end="2484">
+<size>11</size></content>
+
+<content start="2484" end="2485">
+<icon>htmlink.gif</icon></content>
+
+<content start="2485" end="2486">
+</content>
+
+<content start="2486" end="2487">
+<size>11</size></content>
+
+<content start="2487" end="2507">
+<href>http://en.wikipedia.org/wiki/Inversion_of_control</href><size>11</size></content>
+
+<content start="2507" end="2790">
+<size>11</size></content>
+
+<content start="2790" end="2791">
+</content>
+
+</paragraph>
+<paragraph start="2791" end="2793">
+<LeftIndent>140.0</LeftIndent>
+<content start="2791" end="2792">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2792" end="2793">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2793" end="2794">
+<LeftIndent>140.0</LeftIndent>
+<content start="2793" end="2794">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2794" end="2909">
+<LeftIndent>140.0</LeftIndent>
+<content start="2794" end="2894">
+<size>11</size></content>
+
+<content start="2894" end="2907">
+<href>appletstate.cml</href><size>11</size></content>
+
+<content start="2907" end="2909">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2909" end="2910">
+<LeftIndent>140.0</LeftIndent>
+<content start="2909" end="2910">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2910" end="2988">
+<LeftIndent>140.0</LeftIndent>
+<content start="2910" end="2988">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2988" end="2989">
+<LeftIndent>140.0</LeftIndent>
+<content start="2988" end="2989">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2989" end="2991">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="2989" end="2990">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2990" end="2991">
+</content>
+
+</paragraph>
+<paragraph start="2991" end="3045">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2991" end="3004">
+<size>11</size></content>
+
+<content start="3004" end="3005">
+<icon>ziplink.gif</icon></content>
+
+<content start="3005" end="3006">
+<size>11</size></content>
+
+<content start="3006" end="3017">
+<href>fractal.zip</href><size>11</size></content>
+
+<content start="3017" end="3044">
+<size>11</size></content>
+
+<content start="3044" end="3045">
+</content>
+
+</paragraph>
+<paragraph start="3045" end="3047">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="3045" end="3046">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="3046" end="3047">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3047" end="3048">
+<LeftIndent>140.0</LeftIndent>
+<content start="3047" end="3048">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3048" end="3276">
+<LeftIndent>140.0</LeftIndent>
+<content start="3048" end="3276">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3276" end="3277">
+<LeftIndent>140.0</LeftIndent>
+<content start="3276" end="3277">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3277" end="3278">
+<RightIndent>20.0</RightIndent>
+<content start="3277" end="3278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3278" end="3306">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="3278" end="3280">
+<size>11</size></content>
+
+<content start="3280" end="3288">
+<href>applet.cml</href><size>11</size></content>
+
+<content start="3288" end="3291">
+<size>11</size></content>
+
+<content start="3291" end="3296">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="3296" end="3299">
+<size>11</size></content>
+
+<content start="3299" end="3303">
+<href>applet1.cml</href><size>11</size></content>
+
+<content start="3303" end="3305">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

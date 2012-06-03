@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a symbol</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a symbol
+
+&lt; Previous | Index | Next &gt;
+
+If you choose Unicode (UTF-8) to encode your page, you can insert a variety of symbols, including mathematical operators, arrows, shapes and special characters.
+
+To insert a symbol, use the &quot;Insert&gt;Symbol&quot; menu --- this menu is grayed out if the current encoding method is not Unicode UTF-8 (see this section for more information). When the menu is selected, the following dialog window will appear:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This dialog window allows you to insert all the mathematical operators supported by Unicode (range: 2200-22FF), all Greek characters, most arrows, many dingbats, and more. You can just double-click on a symbol, or use the &quot;Insert&quot; button at the bottom of the window. The selected symbol will appear at where the caret is.
+
+The following are some examples (you may not see all of them if your operating system does not support all of them):
+
+Math operators:
+
+&#8706;&#934;/&#8706;x&#8752;&#8793;&#8776;&#8745;&#8733;&#8711;&#8721;
+
+Arrows:
+
+&#8620;&#8628;&#8656;&#8657;&#8669;&#8647;&#8634;&#8635;&#8633;&#8648;
+
+Shapes:
+
+&#9993;&#9990;&#9986;&#9997;&#9998;&#10025;&#10017;&#10050;&#10044;&#10049;&#10014;&#10026;&#9992;&#9996;&#10041;
+
+Special characters:
+
+&#182;&#167;&#188;&#169;&#174;&#945;&#946;&#947;&#10102;&#10113;&#10124;&#8451;&#8457;&#8491;&#8482;&#165;&#163;&#8463;&#8486;&#8475;&#8466;&#230;
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1070">
+<paragraph start="0" end="19">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="18">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<size>11</size><href>OpenNewWindow.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<size>11</size><href>image.cml</href></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="210">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="210">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="210" end="211">
+<LeftIndent>140.0</LeftIndent>
+<content start="210" end="211">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="211" end="449">
+<LeftIndent>140.0</LeftIndent>
+<content start="211" end="345">
+<size>11</size></content>
+
+<content start="345" end="357">
+<size>11</size><href>i18n.cml</href></content>
+
+<content start="357" end="449">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="449" end="450">
+<LeftIndent>140.0</LeftIndent>
+<content start="449" end="450">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="450" end="453">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="450" end="451">
+<size>11</size></content>
+
+<content start="451" end="452">
+<icon>SymbolDialog.gif</icon></content>
+
+<content start="452" end="453">
+</content>
+
+</paragraph>
+<paragraph start="453" end="477">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="453" end="454">
+<bold>true</bold><size>13</size></content>
+
+<content start="454" end="475">
+<size>10</size></content>
+
+<content start="475" end="476">
+<bold>true</bold><size>13</size></content>
+
+<content start="476" end="477">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="477" end="478">
+<LeftIndent>140.0</LeftIndent>
+<content start="477" end="478">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="478" end="800">
+<LeftIndent>140.0</LeftIndent>
+<content start="478" end="800">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="800" end="801">
+<LeftIndent>140.0</LeftIndent>
+<content start="800" end="801">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="801" end="918">
+<LeftIndent>140.0</LeftIndent>
+<content start="801" end="918">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="918" end="919">
+<LeftIndent>140.0</LeftIndent>
+<content start="918" end="919">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="919" end="935">
+<LeftIndent>140.0</LeftIndent>
+<content start="919" end="934">
+<size>11</size><italic>true</italic></content>
+
+<content start="934" end="935">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="935" end="936">
+<LeftIndent>140.0</LeftIndent>
+<content start="935" end="936">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="936" end="949">
+<LeftIndent>140.0</LeftIndent>
+<content start="936" end="941">
+<size>24</size><foreground>255 0 255</foreground></content>
+
+<content start="941" end="948">
+<size>24</size></content>
+
+<content start="948" end="949">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="949" end="950">
+<LeftIndent>140.0</LeftIndent>
+<content start="949" end="950">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="950" end="958">
+<LeftIndent>140.0</LeftIndent>
+<content start="950" end="957">
+<size>11</size><italic>true</italic></content>
+
+<content start="957" end="958">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="958" end="959">
+<LeftIndent>140.0</LeftIndent>
+<content start="958" end="959">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="959" end="970">
+<LeftIndent>140.0</LeftIndent>
+<content start="959" end="961">
+<size>24</size></content>
+
+<content start="961" end="964">
+<size>24</size><foreground>153 153 0</foreground></content>
+
+<content start="964" end="965">
+<size>24</size></content>
+
+<content start="965" end="967">
+<size>24</size><foreground>204 0 51</foreground></content>
+
+<content start="967" end="969">
+<size>24</size></content>
+
+<content start="969" end="970">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="970" end="971">
+<LeftIndent>140.0</LeftIndent>
+<content start="970" end="971">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="971" end="979">
+<LeftIndent>140.0</LeftIndent>
+<content start="971" end="978">
+<size>11</size><italic>true</italic></content>
+
+<content start="978" end="979">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="979" end="980">
+<LeftIndent>140.0</LeftIndent>
+<content start="979" end="980">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="980" end="996">
+<LeftIndent>140.0</LeftIndent>
+<content start="980" end="981">
+<size>24</size><foreground>255 0 0</foreground></content>
+
+<content start="981" end="984">
+<size>24</size><foreground>128 128 128</foreground></content>
+
+<content start="984" end="987">
+<size>24</size><foreground>255 0 0</foreground></content>
+
+<content start="987" end="990">
+<size>24</size><foreground>0 0 255</foreground></content>
+
+<content start="990" end="993">
+<size>24</size><foreground>0 153 0</foreground></content>
+
+<content start="993" end="995">
+<size>24</size><foreground>255 102 51</foreground></content>
+
+<content start="995" end="996">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="996" end="997">
+<LeftIndent>140.0</LeftIndent>
+<content start="996" end="997">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="997" end="1017">
+<LeftIndent>140.0</LeftIndent>
+<content start="997" end="1016">
+<size>11</size><italic>true</italic></content>
+
+<content start="1016" end="1017">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1017" end="1018">
+<LeftIndent>140.0</LeftIndent>
+<content start="1017" end="1018">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1018" end="1041">
+<LeftIndent>140.0</LeftIndent>
+<content start="1018" end="1026">
+<size>24</size></content>
+
+<content start="1026" end="1029">
+<size>24</size><foreground>255 0 0</foreground></content>
+
+<content start="1029" end="1040">
+<size>24</size></content>
+
+<content start="1040" end="1041">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1041" end="1042">
+<LeftIndent>140.0</LeftIndent>
+<content start="1041" end="1042">
+</content>
+
+</paragraph>
+<paragraph start="1042" end="1070">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1042" end="1044">
+<size>11</size></content>
+
+<content start="1044" end="1052">
+<size>11</size><href>OpenNewWindow.cml</href></content>
+
+<content start="1052" end="1055">
+<size>11</size></content>
+
+<content start="1055" end="1060">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1060" end="1063">
+<size>11</size></content>
+
+<content start="1063" end="1067">
+<size>11</size><href>image.cml</href></content>
+
+<content start="1067" end="1069">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

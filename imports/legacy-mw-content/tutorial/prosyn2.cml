@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Customizing a protein synthesis simulation</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Customizing a protein synthesis simulation
+
+&lt; Previous | Index | Next &gt;
+
+Protein synthesis is a complicated process. So is an animation that illustrates it. In order to make the whole process easier to understand, you can break down the simulation into two stages, one just showing transcription, and the other just showing translation, in addition to running a non-stopping simulation from transcription to translation, as is shown in the previous page.
+
+To begin with, you must first remove the tool bar at the bottom of the container (if you do not remove it, the user can click the Run Button on it and run the whole simulation without stopping after transcription). Right-click (or Ctrl-click on Mac OS X without a two-button mouse) on the model window and deselect &quot;Show Bottom Bar&quot; from the popup menu (make sure that the software is in the authoring mode, or the menu will gray out). After this, you should see a container without the bottom tool bar. You can put it back at any time if you need the functionality associated with the buttons on it, by selecting the menu, but do not forget to remove it when you are done.
+
+Now you can insert buttons to control transcription. Select &quot;Insert &gt; Standard Controller for Model &gt; Button&quot;, and look for these actions:
+
+   Transcribe DNA to mRNA
+   Transcribe step by step
+   Translate mRNA to protein
+   Translate step by step
+   Stop DNA transcription or translation
+   Reset protein synthesis simulation
+
+The following is a protein synthesis model with the buttons inserted to control transcription and translation.
+
+ 
+   
+    
+&#12304;This is an embedded model container.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1651">
+<paragraph start="0" end="43">
+<RightIndent>8.0</RightIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>2</Alignment>
+<content start="0" end="42">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="42" end="43">
+<bold>true</bold><size>14</size></content>
+
+</paragraph>
+<paragraph start="43" end="44">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="72">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="54">
+<href>prosyn.cml</href><size>11</size></content>
+
+<content start="54" end="57">
+<size>11</size></content>
+
+<content start="57" end="62">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="62" end="65">
+<size>11</size></content>
+
+<content start="65" end="69">
+<href>h2o.cml</href><size>11</size></content>
+
+<content start="69" end="71">
+<size>11</size></content>
+
+<content start="71" end="72">
+</content>
+
+</paragraph>
+<paragraph start="72" end="73">
+<LeftIndent>140.0</LeftIndent>
+<content start="72" end="73">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="73" end="455">
+<LeftIndent>140.0</LeftIndent>
+<content start="73" end="455">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="455" end="456">
+<LeftIndent>140.0</LeftIndent>
+<content start="455" end="456">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="456" end="1130">
+<LeftIndent>140.0</LeftIndent>
+<content start="456" end="1130">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1130" end="1131">
+<LeftIndent>140.0</LeftIndent>
+<content start="1130" end="1131">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1131" end="1270">
+<LeftIndent>140.0</LeftIndent>
+<content start="1131" end="1270">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1270" end="1271">
+<LeftIndent>140.0</LeftIndent>
+<content start="1270" end="1271">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1271" end="1297">
+<LeftIndent>160.0</LeftIndent>
+<content start="1271" end="1272">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1272" end="1274">
+</content>
+
+<content start="1274" end="1297">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1297" end="1324">
+<LeftIndent>160.0</LeftIndent>
+<content start="1297" end="1298">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1298" end="1300">
+</content>
+
+<content start="1300" end="1324">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1324" end="1353">
+<LeftIndent>160.0</LeftIndent>
+<content start="1324" end="1325">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1325" end="1327">
+</content>
+
+<content start="1327" end="1353">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1353" end="1379">
+<LeftIndent>160.0</LeftIndent>
+<content start="1353" end="1354">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1354" end="1356">
+</content>
+
+<content start="1356" end="1379">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1379" end="1420">
+<LeftIndent>160.0</LeftIndent>
+<content start="1379" end="1380">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1380" end="1382">
+</content>
+
+<content start="1382" end="1420">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1420" end="1458">
+<LeftIndent>160.0</LeftIndent>
+<content start="1420" end="1421">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1421" end="1423">
+</content>
+
+<content start="1423" end="1458">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1458" end="1459">
+<LeftIndent>140.0</LeftIndent>
+<content start="1458" end="1459">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1459" end="1570">
+<LeftIndent>140.0</LeftIndent>
+<content start="1459" end="1570">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1570" end="1571">
+<LeftIndent>140.0</LeftIndent>
+<content start="1570" end="1571">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1571" end="1573">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1571" end="1572">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>prosyn2$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+<dna>ATGGGGGGGGGGAAGGGAGTTGGCGTAGATTTTCAAATGGCGGGGAAACCCTTTGGGGGGGGGAAAGTGCCCCCCTTTAAATCCGGGGGGGGGCCCGGGTGAAAAGGGCCCTTTGGGTAGCCCTGGCCCAAACACGAATTT</dna><dna_dt1>20</dna_dt1><dna_dt2>500</dna_dt2><dna_context>false</dna_context></component></content>
+
+<content start="1572" end="1573">
+</content>
+
+</paragraph>
+<paragraph start="1573" end="1577">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1573" end="1574">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Stop DNA transcription or translation</action>
+</component></content>
+
+<content start="1574" end="1575">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<action>Reset protein synthesis simulation</action>
+</component></content>
+
+<content start="1575" end="1576">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Input DNA string</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Input DNA string</action>
+</component></content>
+
+<content start="1576" end="1577">
+</content>
+
+</paragraph>
+<paragraph start="1577" end="1582">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1577" end="1578">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Transcribe DNA to mRNA</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Transcribe DNA to mRNA</action>
+</component></content>
+
+<content start="1578" end="1579">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Transcribe step by step</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Transcribe step by step</action>
+</component></content>
+
+<content start="1579" end="1580">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Translate mRNA to protein</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Translate mRNA to protein</action>
+</component></content>
+
+<content start="1580" end="1581">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Translate step by step</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Translate step by step</action>
+</component></content>
+
+<content start="1581" end="1582">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="1582" end="1621">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1582" end="1620">
+<size>10</size></content>
+
+<content start="1620" end="1621">
+</content>
+
+</paragraph>
+<paragraph start="1621" end="1622">
+<LeftIndent>140.0</LeftIndent>
+<content start="1621" end="1622">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1622" end="1623">
+<LeftIndent>140.0</LeftIndent>
+<content start="1622" end="1623">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1623" end="1651">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<Alignment>2</Alignment>
+<content start="1623" end="1625">
+<size>11</size></content>
+
+<content start="1625" end="1633">
+<href>prosyn.cml</href><size>11</size></content>
+
+<content start="1633" end="1636">
+<size>11</size></content>
+
+<content start="1636" end="1641">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="1641" end="1644">
+<size>11</size></content>
+
+<content start="1644" end="1648">
+<href>h2o.cml</href><size>11</size></content>
+
+<content start="1648" end="1650">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

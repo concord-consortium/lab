@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Accessing the view&apos;s properties</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Accessing the view&apos;s properties
+
+&lt; Previous | Index | Next &gt;
+
+es.
+  
+&#12304;This is a screenshot.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="123">
+<paragraph start="0" end="32">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="31">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="33">
+<RightIndent>20.0</RightIndent>
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="61">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="33" end="35">
+<size>11</size></content>
+
+<content start="35" end="43">
+<href>modelprop3d.cml</href><size>11</size></content>
+
+<content start="43" end="46">
+<size>11</size></content>
+
+<content start="46" end="51">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="51" end="54">
+<size>11</size></content>
+
+<content start="54" end="58">
+<href>atomprop3d.cml</href><size>11</size></content>
+
+<content start="58" end="60">
+<size>11</size></content>
+
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="62">
+<LeftIndent>140.0</LeftIndent>
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="66">
+<LeftIndent>140.0</LeftIndent>
+<content start="62" end="66">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="66" end="69">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="67">
+</content>
+
+<content start="67" end="68">
+<icon>viewprop3d.gif</icon></content>
+
+<content start="68" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="93">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="69" end="92">
+<size>10</size></content>
+
+<content start="92" end="93">
+</content>
+
+</paragraph>
+<paragraph start="93" end="94">
+<LeftIndent>140.0</LeftIndent>
+<content start="93" end="94">
+</content>
+
+</paragraph>
+<paragraph start="94" end="95">
+<LeftIndent>140.0</LeftIndent>
+<content start="94" end="95">
+</content>
+
+</paragraph>
+<paragraph start="95" end="123">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="95" end="97">
+<size>11</size></content>
+
+<content start="97" end="105">
+<href>modelprop3d.cml</href><size>11</size></content>
+
+<content start="105" end="108">
+<size>11</size></content>
+
+<content start="108" end="113">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="113" end="116">
+<size>11</size></content>
+
+<content start="116" end="120">
+<href>atomprop3d.cml</href><size>11</size></content>
+
+<content start="120" end="122">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

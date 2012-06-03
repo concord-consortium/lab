@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Modeling Thermal Excitations and Radiationless Transitions</page_title>
+<text> 
+ 
+
+This article presents the classic method used in the Molecular Workbench to model two important processes in light-matter interactions: thermal excitations and radiationless transitions. The method is called classic because it is based purely on classic mechanics &#10102;.
+
+Modeling thermal excitations
+
+An atom cannot spontaneously excite its electrons without collisions with other atoms, because such a process will violate the Law of Momentum Conservation. If an electron is excited, the energy needed for the excitation must come from the kinetic energy of the atom, which will cause the momentum of the atom to decrease (because the kinetic energy is proportional to the square of momentum). The momentum of an electron relative to the atom is always zero, regardless of its state, because it is bound to it.
+
+For an electron to be excited, the atom must collide with another. Let&apos;s assume that we have two atoms: atom A and atom B, which collide with each other. During the collision, an electron of atom A is excited from state i to state f. This process must satisfy both the Law of Momentum Conservation and the Law of Energy Conservation, which yields two equations: 
+
+  
+
+where
+
+  
+
+is the difference between the energy of the initial state and that of the final state. uA and uB are the velocity components of atom A and atom B along the collision direction before the collision (the tangential components do not change). vA and vB are the velocity components of atom A and atom B along the collision direction after the collision. MA and MB are the masses of atom A and atom B, respectively. The solution is:
+
+  
+where
+
+  
+
+The solution exists only when the following condition is satisfied:
+
+  
+
+where &#956;AB is the reduced mass. This result means that in order for the excitation to happen, there must be sufficient relative kinetic energy from the two atoms. The critical condition depends on the angle of collision. If the collision is not a head-on one, then the electron may not be able to be excited. 
+
+Modeling radiationless transitions
+
+An excited atom can fall to a lower energy state by emitting a photon or by transfering the energy to atoms. The latter is called the radiationless transition. Like the case of thermal excitation presented above, a radiationless transition cannot take place without involving another atom, because the conservation of momentum and energy cannot be both satisfied at the same time. Radiationless transitions are possible only when atoms collide. The constraints of momentum conservation and energy conser-vation give the same equations and solutions as above, but with the following difference:
+
+   
+
+This means that the solution always exists. There is no mathematical limitation for an electron to fall to a lower energy state and convert the excess energy into the kinetic energy of a colliding pair of atoms.
+
+The results
+
+The following model shows a simulation of thermal excitations and radiationless transitions. You will notice from the output graphs below the model that the total energy and the total momentum are strictly conserved. For simplicity, we assume that the green atoms have only two states, and the atoms will not emit any photon (i.e., the de-excitation happens entirely through radiationless transitions).
+
+    
+  
+(Note: the total energy does not include the electron excitation energy. Therefore, you will see some steps triggered by excitation and de-excitation.)
+__________________________________________________________________
+&#10102; In theory, any light-matter interactions should be treated using quantum field theory. We have started building a new computational engine that is based on quantum mechanics, for simulating these phenomena more accurately.
+
+
+</text>
+<section start="0" end="3741">
+<paragraph start="0" end="2">
+<SpaceAbove>10.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>700.0</width><height>50</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;b&gt;&lt;font color=&quot;#ffffff&quot; face=&quot;Verdana&quot; size=&quot;5&quot;&gt;Modeling Thermal 
+      Excitations and Radiationless Transitions&lt;/font&gt;&lt;/b&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-999a00</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>700.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Charles Xie, Concord Consortium&lt;/font&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-ff0100</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="272">
+<LeftIndent>20.0</LeftIndent>
+<content start="5" end="58">
+<size>11</size></content>
+
+<content start="58" end="77">
+<italic>true</italic><size>11</size></content>
+
+<content start="77" end="272">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="272" end="273">
+<LeftIndent>20.0</LeftIndent>
+<content start="272" end="273">
+</content>
+
+</paragraph>
+<paragraph start="273" end="302">
+<LeftIndent>20.0</LeftIndent>
+<content start="273" end="301">
+<bold>true</bold></content>
+
+<content start="301" end="302">
+</content>
+
+</paragraph>
+<paragraph start="302" end="303">
+<content start="302" end="303">
+</content>
+
+</paragraph>
+<paragraph start="303" end="814">
+<LeftIndent>20.0</LeftIndent>
+<content start="303" end="814">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="814" end="815">
+<LeftIndent>20.0</LeftIndent>
+<content start="814" end="815">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="815" end="1178">
+<LeftIndent>20.0</LeftIndent>
+<content start="815" end="1035">
+<size>11</size></content>
+
+<content start="1035" end="1036">
+<italic>true</italic><size>11</size></content>
+
+<content start="1036" end="1046">
+<size>11</size></content>
+
+<content start="1046" end="1047">
+<italic>true</italic><size>11</size></content>
+
+<content start="1047" end="1177">
+<size>11</size></content>
+
+<content start="1177" end="1178">
+</content>
+
+</paragraph>
+<paragraph start="1178" end="1179">
+<LeftIndent>20.0</LeftIndent>
+<content start="1178" end="1179">
+</content>
+
+</paragraph>
+<paragraph start="1179" end="1182">
+<LeftIndent>20.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1179" end="1180">
+</content>
+
+<content start="1180" end="1181">
+<icon>thermal_excitation_1.gif</icon></content>
+
+<content start="1181" end="1182">
+</content>
+
+</paragraph>
+<paragraph start="1182" end="1183">
+<LeftIndent>20.0</LeftIndent>
+<content start="1182" end="1183">
+</content>
+
+</paragraph>
+<paragraph start="1183" end="1189">
+<LeftIndent>20.0</LeftIndent>
+<content start="1183" end="1188">
+<size>11</size></content>
+
+<content start="1188" end="1189">
+</content>
+
+</paragraph>
+<paragraph start="1189" end="1190">
+<LeftIndent>20.0</LeftIndent>
+<content start="1189" end="1190">
+</content>
+
+</paragraph>
+<paragraph start="1190" end="1193">
+<LeftIndent>20.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1190" end="1191">
+</content>
+
+<content start="1191" end="1192">
+<icon>thermal_excitation_2.gif</icon></content>
+
+<content start="1192" end="1193">
+</content>
+
+</paragraph>
+<paragraph start="1193" end="1194">
+<LeftIndent>20.0</LeftIndent>
+<content start="1193" end="1194">
+</content>
+
+</paragraph>
+<paragraph start="1194" end="1622">
+<LeftIndent>20.0</LeftIndent>
+<content start="1194" end="1281">
+<size>11</size></content>
+
+<content start="1281" end="1282">
+<italic>true</italic><size>11</size></content>
+
+<content start="1282" end="1283">
+<subscript>true</subscript><size>10</size></content>
+
+<content start="1283" end="1288">
+<size>11</size></content>
+
+<content start="1288" end="1289">
+<italic>true</italic><size>11</size></content>
+
+<content start="1289" end="1290">
+<subscript>true</subscript><size>10</size></content>
+
+<content start="1290" end="1340">
+<size>11</size></content>
+
+<content start="1340" end="1369">
+<italic>true</italic><size>11</size></content>
+
+<content start="1369" end="1434">
+<size>11</size></content>
+
+<content start="1434" end="1435">
+<italic>true</italic><size>11</size></content>
+
+<content start="1435" end="1436">
+<subscript>true</subscript><size>10</size></content>
+
+<content start="1436" end="1441">
+<size>11</size></content>
+
+<content start="1441" end="1442">
+<italic>true</italic><size>11</size></content>
+
+<content start="1442" end="1443">
+<subscript>true</subscript><size>10</size></content>
+
+<content start="1443" end="1544">
+<size>11</size></content>
+
+<content start="1544" end="1545">
+<italic>true</italic><size>11</size></content>
+
+<content start="1545" end="1546">
+<subscript>true</subscript><size>10</size></content>
+
+<content start="1546" end="1551">
+<size>11</size></content>
+
+<content start="1551" end="1552">
+<italic>true</italic><size>11</size></content>
+
+<content start="1552" end="1553">
+<subscript>true</subscript><size>10</size></content>
+
+<content start="1553" end="1622">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1622" end="1623">
+<LeftIndent>20.0</LeftIndent>
+<content start="1622" end="1623">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1623" end="1626">
+<LeftIndent>20.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1623" end="1624">
+<size>11</size></content>
+
+<content start="1624" end="1625">
+<icon>thermal_excitation_3.gif</icon></content>
+
+<content start="1625" end="1626">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1626" end="1632">
+<LeftIndent>20.0</LeftIndent>
+<content start="1626" end="1632">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1632" end="1633">
+<LeftIndent>20.0</LeftIndent>
+<content start="1632" end="1633">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1633" end="1636">
+<LeftIndent>20.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1633" end="1634">
+<size>11</size></content>
+
+<content start="1634" end="1635">
+<icon>thermal_excitation_4.gif</icon></content>
+
+<content start="1635" end="1636">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1636" end="1637">
+<LeftIndent>20.0</LeftIndent>
+<content start="1636" end="1637">
+</content>
+
+</paragraph>
+<paragraph start="1637" end="1705">
+<LeftIndent>20.0</LeftIndent>
+<content start="1637" end="1704">
+<size>11</size></content>
+
+<content start="1704" end="1705">
+</content>
+
+</paragraph>
+<paragraph start="1705" end="1706">
+<LeftIndent>20.0</LeftIndent>
+<content start="1705" end="1706">
+</content>
+
+</paragraph>
+<paragraph start="1706" end="1709">
+<LeftIndent>20.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1706" end="1707">
+</content>
+
+<content start="1707" end="1708">
+<icon>thermal_excitation_5.gif</icon></content>
+
+<content start="1708" end="1709">
+</content>
+
+</paragraph>
+<paragraph start="1709" end="1710">
+<LeftIndent>20.0</LeftIndent>
+<content start="1709" end="1710">
+</content>
+
+</paragraph>
+<paragraph start="1710" end="2019">
+<LeftIndent>20.0</LeftIndent>
+<content start="1710" end="1716">
+<size>11</size></content>
+
+<content start="1716" end="1717">
+<italic>true</italic><size>11</size></content>
+
+<content start="1717" end="1719">
+<subscript>true</subscript><size>10</size></content>
+
+<content start="1719" end="2019">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2019" end="2020">
+<LeftIndent>20.0</LeftIndent>
+<content start="2019" end="2020">
+</content>
+
+</paragraph>
+<paragraph start="2020" end="2055">
+<LeftIndent>20.0</LeftIndent>
+<content start="2020" end="2054">
+<bold>true</bold></content>
+
+<content start="2054" end="2055">
+</content>
+
+</paragraph>
+<paragraph start="2055" end="2056">
+<LeftIndent>20.0</LeftIndent>
+<content start="2055" end="2056">
+</content>
+
+</paragraph>
+<paragraph start="2056" end="2650">
+<LeftIndent>20.0</LeftIndent>
+<content start="2056" end="2650">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2650" end="2651">
+<LeftIndent>20.0</LeftIndent>
+<content start="2650" end="2651">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2651" end="2655">
+<LeftIndent>20.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2651" end="2653">
+<size>11</size></content>
+
+<content start="2653" end="2654">
+<icon>radiationless_transition_1.gif</icon></content>
+
+<content start="2654" end="2655">
+</content>
+
+</paragraph>
+<paragraph start="2655" end="2656">
+<LeftIndent>20.0</LeftIndent>
+<content start="2655" end="2656">
+</content>
+
+</paragraph>
+<paragraph start="2656" end="2868">
+<LeftIndent>20.0</LeftIndent>
+<content start="2656" end="2867">
+<size>11</size></content>
+
+<content start="2867" end="2868">
+</content>
+
+</paragraph>
+<paragraph start="2868" end="2869">
+<LeftIndent>20.0</LeftIndent>
+<content start="2868" end="2869">
+</content>
+
+</paragraph>
+<paragraph start="2869" end="2881">
+<LeftIndent>20.0</LeftIndent>
+<content start="2869" end="2880">
+<bold>true</bold></content>
+
+<content start="2880" end="2881">
+</content>
+
+</paragraph>
+<paragraph start="2881" end="2882">
+<LeftIndent>20.0</LeftIndent>
+<content start="2881" end="2882">
+</content>
+
+</paragraph>
+<paragraph start="2882" end="3285">
+<LeftIndent>20.0</LeftIndent>
+<content start="2882" end="3284">
+<size>11</size></content>
+
+<content start="3284" end="3285">
+</content>
+
+</paragraph>
+<paragraph start="3285" end="3286">
+<Alignment>1</Alignment>
+<content start="3285" end="3286">
+</content>
+
+</paragraph>
+<paragraph start="3286" end="3291">
+<Alignment>1</Alignment>
+<content start="3286" end="3287">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>lmi$0.mml</resource></component></content>
+
+<content start="3287" end="3289">
+</content>
+
+<content start="3289" end="3290">
+<component><class>org.concord.modeler.PageElectronicStructureViewer</class>
+<model>0</model>
+<type>2</type>
+<title>Energy levels</title>
+<minimum>-0.2</minimum>
+<maximum>0.0</maximum>
+<nstep>20</nstep>
+<width>180</width>
+<height>195</height>
+<border>Line</border>
+<bgcolor>-ff0034</bgcolor></component></content>
+
+<content start="3290" end="3291">
+</content>
+
+</paragraph>
+<paragraph start="3291" end="3294">
+<Alignment>1</Alignment>
+<content start="3291" end="3292">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-7f7f80" style="0" width="2.0" symbol="0" size="4" spacing="5">Channel 0</time_series_y1>
+<time_series_y2 color="-ff999a" style="0" width="2.0" symbol="0" size="4" spacing="5">Channel 1</time_series_y2>
+<autofity>false</autofity>
+<axis_y_min>40000.0</axis_y_min>
+<axis_y_max>120000.0</axis_y_max>
+<width>300</width>
+<height>250</height>
+<axis_x_title>Time</axis_x_title>
+<axis_y_title>Momentum (x, y), in internal units.</axis_y_title>
+<legend_x>0</legend_x>
+<legend_y>600</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+</component></content>
+
+<content start="3292" end="3293">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="0" size="4" spacing="5">Total Energy/Particle</time_series_y1>
+<autofity>false</autofity>
+<axis_y_min>0.1</axis_y_min>
+<axis_y_max>0.3</axis_y_max>
+<width>300</width>
+<height>250</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Total energy (eV)</axis_y_title>
+<legend_x>0</legend_x>
+<legend_y>600</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+</component></content>
+
+<content start="3293" end="3294">
+</content>
+
+</paragraph>
+<paragraph start="3294" end="3446">
+<Alignment>1</Alignment>
+<content start="3294" end="3445">
+<size>10</size></content>
+
+<content start="3445" end="3446">
+</content>
+
+</paragraph>
+<paragraph start="3446" end="3513">
+<LeftIndent>20.0</LeftIndent>
+<content start="3446" end="3513">
+</content>
+
+</paragraph>
+<paragraph start="3513" end="3738">
+<LeftIndent>20.0</LeftIndent>
+<content start="3513" end="3515">
+</content>
+
+<content start="3515" end="3737">
+<size>10</size></content>
+
+<content start="3737" end="3738">
+</content>
+
+</paragraph>
+<paragraph start="3738" end="3739">
+<content start="3738" end="3739">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="3739" end="3740">
+<content start="3739" end="3740">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="3740" end="3741">
+</paragraph>
+</section>
+</document>

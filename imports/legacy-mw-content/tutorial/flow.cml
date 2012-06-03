@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Simulating flows</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Simulating flows
+
+&lt; Previous | Index | Next &gt;
+
+The flow of substance is a common phenomenon. At the atomic level, flow is the directional motion of molecules. Flow is usually driven by pressure (created by force through a piston or gravity). For molecules, pressure is conducted through chains of intermolecular interactions.
+
+Although we can use periodic boundaries to simulate continuous flow of atoms, there are a few disadvantages of using that method. These disadvantages are:
+
+   Atoms do not get added and removed: the number of atoms remains constant throughout the simulation.
+   The artifact of the periodic boundary conditions: atoms leaving one side of the box actually re-enter from the opposite side.
+
+As a result of the first constraint, it is not possible to simulate things such as purification, in which impurities must be removed. The flow simulator built in the Basic 2D Molecular Simulator is designed to simulate these situations.
+
+To run a flow simulation, follow these steps:
+
+   Select the menu &quot;Option&gt;Disable Recorder&quot; from the container&apos;s menu bar to disable the recorder, if the simulator is currently in the recording mode. This is because the recorder cannot record frames that have different number of atoms.
+   Select the menu &quot;Option&gt;Enable Flow&quot; from the simulator&apos;s menu bar to enable the flow simulation.
+   Click the &quot;Run&quot; button to start the simulation.
+
+The following is a demo model that shows a simple flow simulation.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+Using the flow control panel
+
+To change the flow parameters, select the &quot;Option&gt;Flow Control Panel&quot; menu from the container&apos;s menu bar.
+You will see a dialog window, with which you can set up the flow.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+The flow control panel allows you to customize the side atoms flow in and out, the types of atoms that will flow in, the types of atoms that will flow out, and the flux of the flow. There are a few things worthy of mentioning:
+
+   If you select &quot;None&quot; for the side atoms flow out, there will be no atom that will leave the simulation box. As a result, more and more atoms will be added to the box until the capacity is reached, or the box becomes too crowded to be added new atoms. This kind of simulation can be used to study the relationship between pressure and density.
+
+   You can set the sides of flowing in and out to be the same, which can be used to model an interface between a solid or a liquid and a vapor. This can be used to model, for example, the mechanism of chemical vapor deposition (CVD). (Click   here to see a good schematic illustration about the CVD technique.) Another application is to use this mechanism to simulate gases under the condition of constant pressure and constant volume.
+
+Because the system contained in the box when you do a flow simulation is not an isolated system, the total energy, which is the summation of the energy of all the atoms that are currently in the box, will not be conserved. We recommend that the heat bath be turned on in order to control the temperature, particularly when your model seems to be running abnormally (e.g. everything moves faster and faster, and the temperature bar goes up and up).
+
+Note that the menus related to flow are disabled when the container is in the recording mode.
+
+Demo: Molecular sieve
+Demo: How a syringe work
+Demo: Air purifier
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3386">
+<paragraph start="0" end="17">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="16">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="46">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="18" end="20">
+<size>11</size></content>
+
+<content start="20" end="28">
+<size>11</size><href>externalFields.cml</href></content>
+
+<content start="28" end="31">
+<size>11</size></content>
+
+<content start="31" end="36">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<size>11</size><href>ContainerMenuBar.cml</href></content>
+
+<content start="43" end="45">
+<size>11</size></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<LeftIndent>100.0</LeftIndent>
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="326">
+<LeftIndent>140.0</LeftIndent>
+<content start="47" end="326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="326" end="327">
+<LeftIndent>140.0</LeftIndent>
+<content start="326" end="327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="327" end="482">
+<LeftIndent>140.0</LeftIndent>
+<content start="327" end="347">
+<size>11</size></content>
+
+<content start="347" end="366">
+<size>11</size><href>boundary.cml</href></content>
+
+<content start="366" end="370">
+<size>11</size></content>
+
+<content start="370" end="394">
+<size>11</size><href>../student/motionandforce/iontransport.cml</href></content>
+
+<content start="394" end="482">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="482" end="483">
+<LeftIndent>140.0</LeftIndent>
+<content start="482" end="483">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="483" end="586">
+<LeftIndent>160.0</LeftIndent>
+<content start="483" end="484">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="484" end="486">
+</content>
+
+<content start="486" end="586">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="586" end="715">
+<LeftIndent>160.0</LeftIndent>
+<content start="586" end="587">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="587" end="589">
+</content>
+
+<content start="589" end="715">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="715" end="716">
+<LeftIndent>140.0</LeftIndent>
+<content start="715" end="716">
+</content>
+
+</paragraph>
+<paragraph start="716" end="953">
+<LeftIndent>140.0</LeftIndent>
+<content start="716" end="953">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="953" end="954">
+<LeftIndent>140.0</LeftIndent>
+<content start="953" end="954">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="954" end="1000">
+<LeftIndent>140.0</LeftIndent>
+<content start="954" end="1000">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1000" end="1001">
+<LeftIndent>140.0</LeftIndent>
+<content start="1000" end="1001">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1001" end="1241">
+<LeftIndent>160.0</LeftIndent>
+<content start="1001" end="1002">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1002" end="1004">
+</content>
+
+<content start="1004" end="1240">
+<size>11</size></content>
+
+<content start="1240" end="1241">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1241" end="1342">
+<LeftIndent>160.0</LeftIndent>
+<content start="1241" end="1242">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1242" end="1244">
+</content>
+
+<content start="1244" end="1341">
+<size>11</size></content>
+
+<content start="1341" end="1342">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1342" end="1393">
+<LeftIndent>160.0</LeftIndent>
+<content start="1342" end="1343">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1343" end="1345">
+</content>
+
+<content start="1345" end="1393">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1393" end="1394">
+<LeftIndent>140.0</LeftIndent>
+<content start="1393" end="1394">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1394" end="1461">
+<LeftIndent>140.0</LeftIndent>
+<content start="1394" end="1461">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1461" end="1462">
+<LeftIndent>140.0</LeftIndent>
+<content start="1461" end="1462">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1462" end="1464">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1462" end="1463">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>flow$0.mml</resource><recorderless>true</recorderless>
+</component></content>
+
+<content start="1463" end="1464">
+</content>
+
+</paragraph>
+<paragraph start="1464" end="1503">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1464" end="1502">
+<size>10</size></content>
+
+<content start="1502" end="1503">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1503" end="1504">
+<LeftIndent>140.0</LeftIndent>
+<content start="1503" end="1504">
+</content>
+
+</paragraph>
+<paragraph start="1504" end="1533">
+<LeftIndent>140.0</LeftIndent>
+<content start="1504" end="1532">
+<bold>true</bold><size>11</size></content>
+
+<content start="1532" end="1533">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1533" end="1534">
+<LeftIndent>140.0</LeftIndent>
+<content start="1533" end="1534">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1534" end="1640">
+<LeftIndent>140.0</LeftIndent>
+<content start="1534" end="1640">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1640" end="1706">
+<LeftIndent>140.0</LeftIndent>
+<content start="1640" end="1705">
+<size>11</size></content>
+
+<content start="1705" end="1706">
+</content>
+
+</paragraph>
+<paragraph start="1706" end="1707">
+<LeftIndent>140.0</LeftIndent>
+<content start="1706" end="1707">
+</content>
+
+</paragraph>
+<paragraph start="1707" end="1710">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1707" end="1708">
+</content>
+
+<content start="1708" end="1709">
+<icon>FlowControlPanel.gif</icon></content>
+
+<content start="1709" end="1710">
+</content>
+
+</paragraph>
+<paragraph start="1710" end="1734">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1710" end="1733">
+<size>10</size></content>
+
+<content start="1733" end="1734">
+</content>
+
+</paragraph>
+<paragraph start="1734" end="1735">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1734" end="1735">
+</content>
+
+</paragraph>
+<paragraph start="1735" end="1962">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1735" end="1962">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1962" end="1963">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1962" end="1963">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1963" end="2309">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>160.0</LeftIndent>
+<content start="1963" end="1964">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1964" end="1966">
+</content>
+
+<content start="1966" end="2309">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2309" end="2310">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2309" end="2310">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2310" end="2746">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>160.0</LeftIndent>
+<content start="2310" end="2311">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="2311" end="2313">
+</content>
+
+<content start="2313" end="2551">
+<size>11</size></content>
+
+<content start="2551" end="2552">
+<icon>htmlink.gif</icon></content>
+
+<content start="2552" end="2553">
+<size>11</size></content>
+
+<content start="2553" end="2557">
+<size>11</size><href>http://chiuserv.ac.nctu.edu.tw/~htchiu/cvd/home.html</href></content>
+
+<content start="2557" end="2669">
+<size>11</size></content>
+
+<content start="2669" end="2744">
+<size>11</size><href>../student/stateofmatter/gaslaw1.cml</href></content>
+
+<content start="2744" end="2746">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2746" end="2747">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>160.0</LeftIndent>
+<content start="2746" end="2747">
+</content>
+
+</paragraph>
+<paragraph start="2747" end="3195">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2747" end="3195">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3195" end="3196">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="3195" end="3196">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3196" end="3290">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="3196" end="3290">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3290" end="3291">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="3290" end="3291">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3291" end="3313">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="3291" end="3297">
+<size>10</size></content>
+
+<content start="3297" end="3312">
+<size>10</size><href>../student/motionandforce/useobstacle.cml</href></content>
+
+<content start="3312" end="3313">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="3313" end="3338">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="3313" end="3319">
+<size>10</size></content>
+
+<content start="3319" end="3337">
+<size>10</size><href>../student/gaslaws/syringe.cml</href></content>
+
+<content start="3337" end="3338">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="3338" end="3357">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="3338" end="3344">
+<size>10</size></content>
+
+<content start="3344" end="3356">
+<size>10</size><href>../student/materials/airpurifier.cml</href></content>
+
+<content start="3356" end="3357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3357" end="3358">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="3357" end="3358">
+</content>
+
+</paragraph>
+<paragraph start="3358" end="3386">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<Alignment>2</Alignment>
+<content start="3358" end="3360">
+<size>11</size></content>
+
+<content start="3360" end="3368">
+<size>11</size><href>externalFields.cml</href></content>
+
+<content start="3368" end="3371">
+<size>11</size></content>
+
+<content start="3371" end="3376">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="3376" end="3379">
+<size>11</size></content>
+
+<content start="3379" end="3383">
+<size>11</size><href>ContainerMenuBar.cml</href></content>
+
+<content start="3383" end="3385">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

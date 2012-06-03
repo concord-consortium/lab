@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>User&apos;s Manual: Preface</page_title>
+<bg_image>sidebar1.gif</bg_image>
+<text>  
+This interactive User&apos;s Manual is primarily written for users who are interested in learning how to create models and activities using the Molecular Workbench (MW) software. In this Preface, we will briefly introduce what MW is, and then you can start from the first Chapter.
+
+A Virtual Microscope to View the Dynamic Molecular World
+
+Atoms and molecules are too small and move too fast to be seen directly by human eyes. It is hard to imagine how an ensemble of atoms interacts to form a certain structure and concertedly performs a certain function. Yet the knowledge about them is fundamentally important to students interested in pursuing a technical career in biotechnology and nanotechnology. Through interactive models and simulations, MW provides a virtual microscope that brings the living world of atoms and molecules to a computer screen.
+
+A Virtual Lab for Experimenting with Atoms and Molecules
+
+Molecular dynamics simulations are virtual experiments carried out at the atomic scale. MW provides you with an environment for creating molecular simulations, and setting up controls which the user can interact with to observe cause-effect relationships and structure-function relationships.
+
+An Extensible Framework beyond Molecular Modeling
+
+MW supports Java applets and provides a secure persistence service for applets to read and write their states. Developers can use their applets without modification in the MW learning system through this mechanism.
+
+Word for Molecules: A GUI Builder for Interactive Activities
+
+In MW, molecular models are embedded in an interactive environment, which we called the MW pages. MW provides you with a WYSIWYG authoring system that can be used to create MW pages, which involves writing styled text, inserting images, importing molecular models and simulations, creating/editing models, setting up controls and graphs, linking other Web resources, writing scripts to enhance interactivity, designing embedded assessments, and so on. All the models and activities you have seen or will see throughout MW were created using this authoring system, without an exception.
+
+A One-Stop Shop for Research Tools for Educators
+
+We know a picture is worth a thousand words. By analogy, we can probably assume that an interactive simulation is worth a thousand static pictures. When it comes to education, the question is: how do we know students learn better with the assistance of visual, interactive computer simulations? Embedding assessment in materials seems to be a critical key to answering this question. Embedded assessment allows us to track the learning progress of a student while he or she is interacting with models. Therefore, it may lead us to a better understanding of the relationship between human-computer interactions and learning. MW provides userful facilities for you to design your own experimental procedures to investigate this critically important question, in addition to the tools for creating models and simulations. You can collect student data and analyze them. With everything seamlessly integrated in a single piece of software, your research would be made orders of magnitude easier.
+
+A Sketch Pad for Scientists and Engineers
+
+The easy-to-use interface of MW makes it possible for scientists and engineers to rapidly sketch up scientific models and run molecular dynamics calculations to to analyze physical and chemical processes. Immediately seeing the results unfolding on the screen, the user can make sense of a model or play around how an idea might work at the molecular level, before commiting to higher grade of simulations or laboratory work. The software&apos;s authoring system also makes it easy for researchers to document their thoughts, designs and findings, just like using Word.
+
+An Internet Application
+
+In addition to everything it offers to empower you to create, MW is also a special browser for viewing MW pages. It can open any MW page anywhere on the Internet. Once you have downloaded it, you can start designing your own models and activities. If you have your own Web space, you can upload your creations, generate a launching link and email it as an attachment to anyone you wish to view your cool creations. If you do not have a web account, we also provide you with the MW Space in which you can register to obtain one that specifically works with MW.
+
+This interactive Manual will walk you through how to use MW to design and deliver your own model-based activities. Whenever it is possible, active examples are presented so that you can see how it actually works immediately. Otherwise, screenshots are used. The screenshot images were made on a Windows computer. The actual look of the software on your computer is different if your operating system is Mac OS X, Windows Vista, or Linux.
+
+
+Charles Xie, Ph.D.
+The Concord Consortium
+Concord, Massachusetts, USA
+
+
+</text>
+<section start="0" end="4872">
+<paragraph start="0" end="3">
+<Alignment>2</Alignment>
+<content start="0" end="1">
+</content>
+
+<content start="1" end="2">
+<icon>ug_preface.gif</icon></content>
+
+<content start="2" end="3">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3" end="279">
+<LeftIndent>160.0</LeftIndent>
+<content start="3" end="260">
+<size>11</size></content>
+
+<content start="260" end="277">
+<href>index.cml</href><size>11</size></content>
+
+<content start="277" end="279">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="279" end="280">
+<LeftIndent>160.0</LeftIndent>
+<content start="279" end="280">
+<family>Book Antiqua</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="280" end="337">
+<LeftIndent>160.0</LeftIndent>
+<content start="280" end="336">
+<size>11</size><bold>true</bold></content>
+
+<content start="336" end="337">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="337" end="338">
+<LeftIndent>160.0</LeftIndent>
+<content start="337" end="338">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="338" end="853">
+<LeftIndent>160.0</LeftIndent>
+<content start="338" end="853">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="853" end="854">
+<LeftIndent>160.0</LeftIndent>
+<content start="853" end="854">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="854" end="911">
+<LeftIndent>160.0</LeftIndent>
+<content start="854" end="910">
+<size>11</size><bold>true</bold></content>
+
+<content start="910" end="911">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="911" end="912">
+<LeftIndent>160.0</LeftIndent>
+<content start="911" end="912">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="912" end="1205">
+<LeftIndent>160.0</LeftIndent>
+<content start="912" end="1021">
+<size>11</size></content>
+
+<content start="1021" end="1070">
+<href>intro_2d.cml</href><size>11</size></content>
+
+<content start="1070" end="1076">
+<size>11</size></content>
+
+<content start="1076" end="1095">
+<href>controller.cml</href><size>11</size></content>
+
+<content start="1095" end="1205">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1205" end="1206">
+<LeftIndent>160.0</LeftIndent>
+<content start="1205" end="1206">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1206" end="1256">
+<LeftIndent>160.0</LeftIndent>
+<content start="1206" end="1255">
+<size>11</size><bold>true</bold></content>
+
+<content start="1255" end="1256">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1256" end="1257">
+<LeftIndent>160.0</LeftIndent>
+<content start="1256" end="1257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1257" end="1472">
+<LeftIndent>160.0</LeftIndent>
+<content start="1257" end="1269">
+<size>11</size></content>
+
+<content start="1269" end="1281">
+<href>applet.cml</href><size>11</size></content>
+
+<content start="1281" end="1297">
+<size>11</size></content>
+
+<content start="1297" end="1335">
+<href>appletstate.cml</href><size>11</size></content>
+
+<content start="1335" end="1472">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1472" end="1473">
+<LeftIndent>160.0</LeftIndent>
+<content start="1472" end="1473">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1473" end="1534">
+<LeftIndent>160.0</LeftIndent>
+<content start="1473" end="1477">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+<content start="1477" end="1533">
+<size>11</size><bold>true</bold></content>
+
+<content start="1533" end="1534">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1534" end="1535">
+<LeftIndent>160.0</LeftIndent>
+<content start="1534" end="1535">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1535" end="2121">
+<LeftIndent>160.0</LeftIndent>
+<content start="1535" end="1654">
+<size>11</size></content>
+
+<content start="1654" end="1680">
+<href>intro_authoring.cml</href><size>11</size></content>
+
+<content start="1680" end="1792">
+<size>11</size></content>
+
+<content start="1792" end="1814">
+<link_width>600</link_width><link_left>50</link_left><link_menubar>false</link_menubar><link_toolbar>false</link_toolbar><target>_blank</target><link_height>400</link_height><size>11</size><link_top>50</link_top></content>
+
+<content start="1814" end="2121">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2121" end="2122">
+<LeftIndent>160.0</LeftIndent>
+<content start="2121" end="2122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2122" end="2171">
+<LeftIndent>160.0</LeftIndent>
+<content start="2122" end="2170">
+<size>11</size><bold>true</bold></content>
+
+<content start="2170" end="2171">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2171" end="2172">
+<LeftIndent>160.0</LeftIndent>
+<content start="2171" end="2172">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2172" end="3163">
+<LeftIndent>160.0</LeftIndent>
+<content start="2172" end="3163">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3163" end="3164">
+<LeftIndent>160.0</LeftIndent>
+<content start="3163" end="3164">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3164" end="3206">
+<LeftIndent>160.0</LeftIndent>
+<content start="3164" end="3205">
+<size>11</size><bold>true</bold></content>
+
+<content start="3205" end="3206">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3206" end="3207">
+<LeftIndent>160.0</LeftIndent>
+<content start="3206" end="3207">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3207" end="3772">
+<LeftIndent>160.0</LeftIndent>
+<content start="3207" end="3772">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3772" end="3773">
+<LeftIndent>160.0</LeftIndent>
+<content start="3772" end="3773">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3773" end="3797">
+<LeftIndent>160.0</LeftIndent>
+<content start="3773" end="3796">
+<size>11</size><bold>true</bold></content>
+
+<content start="3796" end="3797">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3797" end="3798">
+<LeftIndent>160.0</LeftIndent>
+<content start="3797" end="3798">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3798" end="4358">
+<LeftIndent>160.0</LeftIndent>
+<content start="3798" end="3871">
+<size>11</size></content>
+
+<content start="3871" end="3888">
+<href>navigate.cml</href><size>11</size></content>
+
+<content start="3888" end="3923">
+<size>11</size></content>
+
+<content start="3923" end="3943">
+<italic>true</italic><size>11</size></content>
+
+<content start="3943" end="4109">
+<size>11</size></content>
+
+<content start="4109" end="4134">
+<href>jnlp.cml</href><size>11</size></content>
+
+<content start="4134" end="4272">
+<size>11</size></content>
+
+<content start="4272" end="4284">
+<href>myhome.jsp?client=mw</href><size>11</size></content>
+
+<content start="4284" end="4358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4358" end="4359">
+<LeftIndent>160.0</LeftIndent>
+<content start="4358" end="4359">
+<size>11</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="4359" end="4797">
+<LeftIndent>160.0</LeftIndent>
+<content start="4359" end="4797">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4797" end="4798">
+<LeftIndent>160.0</LeftIndent>
+<content start="4797" end="4798">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4798" end="4799">
+<LeftIndent>160.0</LeftIndent>
+<Alignment>2</Alignment>
+<content start="4798" end="4799">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4799" end="4818">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="4799" end="4818">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="4818" end="4841">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="4818" end="4841">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="4841" end="4869">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="4841" end="4869">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="4869" end="4870">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="4869" end="4870">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="4870" end="4871">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="4870" end="4871">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="4871" end="4872">
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Deleting atoms</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Deleting atoms
+
+&lt; Previous | Index | Next &gt;
+
+There are several methods to remove atoms. The first one is to press the &quot; &quot; button on the tool bar, and then drag the mouse to draw a rectangular area. All the atoms that are visually within it will be removed when the mouse is released. This tool allows you to quickly remove many atoms at a time.
+
+If you right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the button, you will see a pop-up menu, from which you can select the tool for removing atoms in an oval area. You will see that the image on the button changes to &quot; &quot;, indicating that an oval area will be selected.
+
+If you just need to remove a few atoms from different location, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on an atom, and then select &quot;Cut&quot; from the pop-up menu. You can also select the &quot; &quot; button, click on an atom, and then hit CTRL+X (Windows) or Command+X (Mac OS X), or the Backspace or Delete key.
+
+Practice
+
+You may play with the following simulator about deleting atoms.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1125">
+<paragraph start="0" end="15">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="14">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="44">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="16" end="18">
+<size>11</size></content>
+
+<content start="18" end="26">
+<href>duplicate3d.cml</href><size>11</size></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="34">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="41">
+<href>fixatom3d.cml</href><size>11</size></content>
+
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<LeftIndent>140.0</LeftIndent>
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="345">
+<LeftIndent>140.0</LeftIndent>
+<content start="45" end="119">
+<size>11</size></content>
+
+<content start="119" end="120">
+<icon>removerect.gif</icon></content>
+
+<content start="120" end="345">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="345" end="346">
+<LeftIndent>140.0</LeftIndent>
+<content start="345" end="346">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="346" end="644">
+<LeftIndent>140.0</LeftIndent>
+<content start="346" end="593">
+<size>11</size></content>
+
+<content start="593" end="594">
+<icon>removeoval.gif</icon></content>
+
+<content start="594" end="644">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="644" end="645">
+<LeftIndent>140.0</LeftIndent>
+<content start="644" end="645">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="645" end="978">
+<LeftIndent>140.0</LeftIndent>
+<content start="645" end="862">
+<size>11</size></content>
+
+<content start="862" end="863">
+<icon>DefaultMode.gif</icon></content>
+
+<content start="863" end="978">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="978" end="979">
+<LeftIndent>140.0</LeftIndent>
+<content start="978" end="979">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="979" end="988">
+<LeftIndent>140.0</LeftIndent>
+<content start="979" end="987">
+<bold>true</bold><size>11</size></content>
+
+<content start="987" end="988">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="988" end="989">
+<LeftIndent>140.0</LeftIndent>
+<content start="988" end="989">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="989" end="1053">
+<LeftIndent>140.0</LeftIndent>
+<content start="989" end="1053">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1053" end="1054">
+<LeftIndent>140.0</LeftIndent>
+<content start="1053" end="1054">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1054" end="1056">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1054" end="1055">
+<component><class>org.concord.modeler.PageMd3d</class><resource>delete3d$0.mdd</resource><coordinate>delete3d$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="1055" end="1056">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1056" end="1095">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1056" end="1094">
+<size>10</size></content>
+
+<content start="1094" end="1095">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1095" end="1096">
+<LeftIndent>140.0</LeftIndent>
+<content start="1095" end="1096">
+</content>
+
+</paragraph>
+<paragraph start="1096" end="1097">
+<LeftIndent>140.0</LeftIndent>
+<content start="1096" end="1097">
+</content>
+
+</paragraph>
+<paragraph start="1097" end="1125">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1097" end="1099">
+<size>11</size></content>
+
+<content start="1099" end="1107">
+<href>duplicate3d.cml</href><size>11</size></content>
+
+<content start="1107" end="1110">
+<size>11</size></content>
+
+<content start="1110" end="1115">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="1115" end="1118">
+<size>11</size></content>
+
+<content start="1118" end="1122">
+<href>fixatom3d.cml</href><size>11</size></content>
+
+<content start="1122" end="1124">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

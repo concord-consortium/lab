@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Rotate</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Rotate
+
+&lt; Previous | Index | Next &gt;
+
+The rotate command rotates the selected atoms around their geometric center. (To see how to rotate a molecule without using scripts, see this section.)
+
+Syntax:
+
+rotate [angle]
+
+where [angle], in degrees (between -180&#176; and 180&#176;), is the angle that the selected atoms will be rotated around their center. You can use math expressions in place of [angle].
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="420">
+<paragraph start="0" end="7">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="6">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="36">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="8" end="10">
+<size>11</size></content>
+
+<content start="10" end="18">
+<href>script_move.cml</href><size>11</size></content>
+
+<content start="18" end="21">
+<size>11</size></content>
+
+<content start="21" end="26">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="33">
+<href>script_bond.cml</href><size>11</size></content>
+
+<content start="33" end="35">
+<size>11</size></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<LeftIndent>100.0</LeftIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="189">
+<LeftIndent>140.0</LeftIndent>
+<content start="37" end="41">
+<size>11</size></content>
+
+<content start="41" end="47">
+<family>Courier New</family><size>11</size></content>
+
+<content start="47" end="174">
+<size>11</size></content>
+
+<content start="174" end="186">
+<href>rotateAction.cml</href><size>11</size></content>
+
+<content start="186" end="189">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="189" end="190">
+<LeftIndent>140.0</LeftIndent>
+<content start="189" end="190">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="190" end="198">
+<LeftIndent>140.0</LeftIndent>
+<content start="190" end="198">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="198" end="199">
+<LeftIndent>140.0</LeftIndent>
+<content start="198" end="199">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="199" end="214">
+<LeftIndent>160.0</LeftIndent>
+<content start="199" end="206">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="206" end="213">
+<family>Courier New</family><size>11</size></content>
+
+<content start="213" end="214">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="214" end="215">
+<LeftIndent>140.0</LeftIndent>
+<content start="214" end="215">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="215" end="391">
+<LeftIndent>140.0</LeftIndent>
+<content start="215" end="221">
+<size>11</size></content>
+
+<content start="221" end="228">
+<family>Courier New</family><size>11</size></content>
+
+<content start="228" end="230">
+<size>11</size></content>
+
+<content start="230" end="254">
+<size>11</size></content>
+
+<content start="254" end="255">
+</content>
+
+<content start="255" end="263">
+<size>11</size></content>
+
+<content start="263" end="264">
+</content>
+
+<content start="264" end="382">
+<size>11</size></content>
+
+<content start="382" end="389">
+<family>Courier New</family><size>11</size></content>
+
+<content start="389" end="391">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="391" end="392">
+<LeftIndent>140.0</LeftIndent>
+<content start="391" end="392">
+</content>
+
+</paragraph>
+<paragraph start="392" end="420">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="392" end="394">
+<size>11</size></content>
+
+<content start="394" end="402">
+<href>script_move.cml</href><size>11</size></content>
+
+<content start="402" end="405">
+<size>11</size></content>
+
+<content start="405" end="410">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="410" end="413">
+<size>11</size></content>
+
+<content start="413" end="417">
+<href>script_bond.cml</href><size>11</size></content>
+
+<content start="417" end="419">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

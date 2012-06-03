@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Accessing the model&apos;s properties</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Accessing the model&apos;s properties
+
+&lt; Previous | Index | Next &gt;
+
+es.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="125">
+<paragraph start="0" end="33">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="32">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<RightIndent>20.0</RightIndent>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="62">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="34" end="47">
+<size>11</size></content>
+
+<content start="47" end="52">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="52" end="55">
+<size>11</size></content>
+
+<content start="55" end="59">
+<href>setview3d.cml</href><size>11</size></content>
+
+<content start="59" end="61">
+<size>11</size></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<LeftIndent>140.0</LeftIndent>
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="67">
+<LeftIndent>140.0</LeftIndent>
+<content start="63" end="67">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="67" end="68">
+<LeftIndent>140.0</LeftIndent>
+<content start="67" end="68">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="68" end="71">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="68" end="69">
+</content>
+
+<content start="69" end="70">
+<icon>modelprop3d.gif</icon></content>
+
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="95">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="71" end="94">
+<size>10</size></content>
+
+<content start="94" end="95">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="95" end="96">
+<LeftIndent>140.0</LeftIndent>
+<content start="95" end="96">
+</content>
+
+</paragraph>
+<paragraph start="96" end="97">
+<LeftIndent>140.0</LeftIndent>
+<content start="96" end="97">
+</content>
+
+</paragraph>
+<paragraph start="97" end="125">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="97" end="110">
+<size>11</size></content>
+
+<content start="110" end="115">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="115" end="118">
+<size>11</size></content>
+
+<content start="118" end="122">
+<href>setview3d.cml</href><size>11</size></content>
+
+<content start="122" end="124">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

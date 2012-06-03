@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Saving a page</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Saving a page
+
+&lt; Previous | Index | Next &gt;
+
+Before you save an MW page, we suggest that a folder be created on your computer to store the saved files. You may also want to save different activities into different subfolders (sometimes it is convenient to consider such folders as project folders).
+
+There are three ways to save a page: 
+
+   Click the Save button &quot; &quot; on one of the above tool bars. 
+   Choose the &quot;File&gt;Save&quot; or &quot;File&gt;Save As&quot; menu.
+   Press CTRL+S (on Windows or Linux), or Command+S (on Mac OS X).
+
+A file dialog window will come up. The dialog window shows the file system of your computer. For example, the following image shows the file dialog window on Windows XP (on Windows Vista, Linux and Mac OS X, the file dialog will look different):
+
+  
+&#12304;This is a screenshot.&#12305;
+
+When the file dialog is ready, open the folder you made to store the downloaded files, type in a name if you wish to change its current file name, and press the Save Button of the dialog box. After you have done these steps, the page will have been downloaded into the folder, including the sources of the embedded components (such as images). You need not worry about losing embedded components on the page.
+
+ 
+An advantage of the MW System is that you can always save an MW page with embedded models on the Internet to your disk, without losing the models. A conventional web browser also allows you to save HTML pages, but you usually do not get the embedded components such as a Java applet or a Flash animation.
+ 
+
+If you want to save multiple pages that are linked, there is currently no other method than saving page by page. It is suggested that the original file names of the pages be kept. If you change them, the hyperlinks that reference them will not work.
+
+You can also export a page in the HTML format.
+
+Saving pages with linked models (for advanced authors)
+
+Some pages have links to models (through the load command) that do not automatically get saved when the page is saved. Such a link can be associated with any component or hyperlink on the page (see here for a full list of them). The original author of the page can add the file names of the linked models in the &quot;Additional Resources File&quot; panel (which can be opened using &quot;Edit &gt; Additional Resource Files...&quot;) to allow them to be saved along with the page and the default models on it, when the &quot;Save&quot; button is pressed (more information).
+
+If the original author forgets to include a linked model in the &quot;Additional Resource Files&quot; list, you have to save it manually. First, click the link or button to load the model into the container it is associated with. Second, right-click on the container&apos;s view window and select &quot;Save Model As&quot; from the pop-up menu. Note that you have to make sure that all these linked models are also saved in their original file names (case-sensitive).
+
+For all the 2D models: To know the original name of a model, open the Properties Panel, and look up the file name at the bottom of the window in the first tabbed panel. To save it, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the model container, and select the &quot;Save Model As&quot; item from the pop-up menu.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3218">
+<paragraph start="0" end="14">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="13">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="13" end="14">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="43">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="15" end="17">
+<size>11</size></content>
+
+<content start="17" end="25">
+<size>11</size><href>navigate.cml</href></content>
+
+<content start="25" end="28">
+<size>11</size></content>
+
+<content start="28" end="33">
+<size>11</size><href>index.cml</href></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="40">
+<size>11</size><href>saveapplet.cml</href></content>
+
+<content start="40" end="42">
+<size>11</size></content>
+
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="44">
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="298">
+<LeftIndent>140.0</LeftIndent>
+<content start="44" end="298">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="298" end="299">
+<LeftIndent>100.0</LeftIndent>
+<content start="298" end="299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="299" end="337">
+<LeftIndent>140.0</LeftIndent>
+<content start="299" end="337">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="337" end="338">
+<LeftIndent>100.0</LeftIndent>
+<content start="337" end="338">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="338" end="399">
+<LeftIndent>160.0</LeftIndent>
+<content start="338" end="339">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="339" end="364">
+<size>11</size></content>
+
+<content start="364" end="365">
+<icon>save.gif</icon><size>11</size></content>
+
+<content start="365" end="399">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="399" end="449">
+<LeftIndent>160.0</LeftIndent>
+<content start="399" end="400">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="400" end="449">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="449" end="516">
+<LeftIndent>160.0</LeftIndent>
+<content start="449" end="450">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="450" end="516">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="516" end="517">
+<LeftIndent>100.0</LeftIndent>
+<content start="516" end="517">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="517" end="763">
+<LeftIndent>140.0</LeftIndent>
+<content start="517" end="763">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="763" end="764">
+<LeftIndent>120.0</LeftIndent>
+<content start="763" end="764">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="764" end="767">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="764" end="765">
+<size>11</size></content>
+
+<content start="765" end="766">
+<icon>JavaFileChooser.gif</icon><size>11</size></content>
+
+<content start="766" end="767">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="767" end="791">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="767" end="768">
+<size>13</size><bold>true</bold></content>
+
+<content start="768" end="789">
+<size>10</size></content>
+
+<content start="789" end="790">
+<size>13</size><bold>true</bold></content>
+
+<content start="790" end="791">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="791" end="792">
+<LeftIndent>140.0</LeftIndent>
+<content start="791" end="792">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="792" end="1201">
+<LeftIndent>140.0</LeftIndent>
+<content start="792" end="1201">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1201" end="1202">
+<LeftIndent>140.0</LeftIndent>
+<content start="1201" end="1202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1202" end="1204">
+<LeftIndent>140.0</LeftIndent>
+<content start="1202" end="1203">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1203" end="1204">
+</content>
+
+</paragraph>
+<paragraph start="1204" end="1509">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1204" end="1509">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1509" end="1511">
+<LeftIndent>140.0</LeftIndent>
+<content start="1509" end="1510">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1510" end="1511">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1511" end="1512">
+<LeftIndent>140.0</LeftIndent>
+<content start="1511" end="1512">
+<size>11</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="1512" end="1762">
+<LeftIndent>140.0</LeftIndent>
+<content start="1512" end="1762">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1762" end="1763">
+<LeftIndent>140.0</LeftIndent>
+<content start="1762" end="1763">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1763" end="1810">
+<LeftIndent>140.0</LeftIndent>
+<content start="1763" end="1776">
+<size>11</size></content>
+
+<content start="1776" end="1808">
+<size>11</size><href>converthtml.cml</href></content>
+
+<content start="1808" end="1810">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1810" end="1811">
+<LeftIndent>140.0</LeftIndent>
+<content start="1810" end="1811">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1811" end="1866">
+<LeftIndent>140.0</LeftIndent>
+<content start="1811" end="1865">
+<size>11</size><bold>true</bold></content>
+
+<content start="1865" end="1866">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1866" end="1867">
+<LeftIndent>140.0</LeftIndent>
+<content start="1866" end="1867">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1867" end="2409">
+<LeftIndent>140.0</LeftIndent>
+<content start="1867" end="1912">
+<size>11</size></content>
+
+<content start="1912" end="1916">
+<size>11</size><href>script_load.cml</href><family>Courier New</family></content>
+
+<content start="1916" end="2065">
+<size>11</size></content>
+
+<content start="2065" end="2069">
+<size>11</size><href>script_where.cml</href></content>
+
+<content start="2069" end="2390">
+<size>11</size></content>
+
+<content start="2390" end="2406">
+<size>11</size><href>additionalresource.cml</href></content>
+
+<content start="2406" end="2409">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2409" end="2410">
+<LeftIndent>140.0</LeftIndent>
+<content start="2409" end="2410">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2410" end="2853">
+<LeftIndent>140.0</LeftIndent>
+<content start="2410" end="2806">
+<size>11</size></content>
+
+<content start="2806" end="2851">
+<size>11</size><bold>true</bold></content>
+
+<content start="2851" end="2853">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2853" end="2854">
+<LeftIndent>140.0</LeftIndent>
+<content start="2853" end="2854">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2854" end="3189">
+<LeftIndent>140.0</LeftIndent>
+<content start="2854" end="2875">
+<size>11</size><italic>true</italic></content>
+
+<content start="2875" end="2924">
+<size>11</size></content>
+
+<content start="2924" end="2940">
+<size>11</size><href>modelProp.cml</href></content>
+
+<content start="2940" end="3114">
+<size>11</size></content>
+
+<content start="3114" end="3129">
+<size>11</size><href>insertModel.cml</href></content>
+
+<content start="3129" end="3189">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3189" end="3190">
+<LeftIndent>140.0</LeftIndent>
+<content start="3189" end="3190">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3190" end="3218">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="3190" end="3192">
+<size>11</size></content>
+
+<content start="3192" end="3200">
+<size>11</size><href>navigate.cml</href></content>
+
+<content start="3200" end="3203">
+<size>11</size></content>
+
+<content start="3203" end="3208">
+<size>11</size><href>index.cml</href></content>
+
+<content start="3208" end="3211">
+<size>11</size></content>
+
+<content start="3211" end="3215">
+<size>11</size><href>saveapplet.cml</href></content>
+
+<content start="3215" end="3217">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

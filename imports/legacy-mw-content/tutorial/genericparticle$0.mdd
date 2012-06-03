@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_12" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="fillMode"> 
+   <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+    <void property="color"> 
+     <object class="java.awt.Color"> 
+      <int>0</int> 
+      <int>0</int> 
+      <int>0</int> 
+      <int>255</int> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="fullSizeUnbondedAtoms"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="heatBath"> 
+   <object class="org.concord.mw3d.models.HeatBath"/> 
+  </void> 
+  <void property="rotation"> 
+   <string>69 -868 491 174.6 65</string> 
+  </void> 
+  <void property="showEnergizer"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>2.0</float> 
+  </void> 
+  <void property="unmovableSelection"> 
+   <string>1 15</string> 
+  </void> 
+  <void property="x2Argb"> 
+   <int>-3342388</int> 
+  </void> 
+  <void property="x4Sigma"> 
+   <float>20.0</float> 
+  </void> 
+  <void property="xyzFileName"> 
+   <string>genericparticle$0.xyz</string> 
+  </void> 
+ </object> 
+</java> 

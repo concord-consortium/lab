@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Why does wall pressure read smaller than internal pressure?</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Why does wall pressure read smaller than internal pressure?
+
+&lt;Back&gt;
+
+The following model demonstrates that the internal pressure is always higher than the wall pressure for strongly attracting molecular systems. When there is no attraction, they will be the same.
+
+      
+	  
+&#12304;This is an embedded model container.&#12305;
+
+The difference between the full internal pressure of a particle due to its kinetic energy and its absolute positive pressure is termed negative pressure. This is the portion that has a negative contribution towards the absolute free kinetic pressue (wall pressure). Without attraction the pressure readings will be the same on both probes indicating that no kinetic energy is converted to potential energy.
+
+&lt;Back&gt;</text>
+<section start="0" end="731">
+<paragraph start="0" end="60">
+<Alignment>2</Alignment>
+<RightIndent>10.0</RightIndent>
+<SpaceAbove>10.0</SpaceAbove>
+<content start="0" end="59">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="59" end="60">
+<size>16</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<content start="60" end="61">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="61" end="68">
+<Alignment>2</Alignment>
+<RightIndent>10.0</RightIndent>
+<content start="61" end="62">
+<size>11</size></content>
+
+<content start="62" end="66">
+<href>script_lap.cml</href><size>11</size></content>
+
+<content start="66" end="68">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="68" end="69">
+<content start="68" end="69">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="69" end="264">
+<LeftIndent>140.0</LeftIndent>
+<content start="69" end="264">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="264" end="265">
+<LeftIndent>140.0</LeftIndent>
+<content start="264" end="265">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="265" end="272">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="265" end="266">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>NegativePressure$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="266" end="269">
+</content>
+
+<content start="269" end="270">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<timeseries>East pressure:Obstacle #5</timeseries>
+<description>Internal total pressure</description>
+<max_fraction_digits>0</max_fraction_digits>
+<width>80</width>
+<height>280</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-ffff01</fgcolor>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>5.0</maximum>
+<value>2.868983268737793</value>
+</component></content>
+
+<content start="270" end="271">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<timeseries>West pressure:Obstacle #4</timeseries>
+<description>Absolute positive pressure</description>
+<max_fraction_digits>0</max_fraction_digits>
+<width>80</width>
+<height>280</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<model>0</model>
+<minimum>0.0</minimum>
+<maximum>5.0</maximum>
+<value>0.7657313942909241</value>
+</component></content>
+
+<content start="271" end="272">
+</content>
+
+</paragraph>
+<paragraph start="272" end="276">
+<Alignment>1</Alignment>
+<LeftIndent>60.0</LeftIndent>
+<content start="272" end="273">
+</content>
+
+<content start="273" end="274">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Attraction</title>
+<tooltip>Attraction</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1149195472909</groupid>
+<script>load NegativePressure_attraction.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="274" end="275">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Hard-sphere</title>
+<tooltip>Hard-sphere</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1149195472909</groupid>
+<script>load NegativePressure_hardsphere.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="275" end="276">
+</content>
+
+</paragraph>
+<paragraph start="276" end="315">
+<Alignment>1</Alignment>
+<LeftIndent>60.0</LeftIndent>
+<content start="276" end="314">
+<size>10</size></content>
+
+<content start="314" end="315">
+</content>
+
+</paragraph>
+<paragraph start="315" end="316">
+<LeftIndent>140.0</LeftIndent>
+<content start="315" end="316">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="316" end="723">
+<LeftIndent>140.0</LeftIndent>
+<content start="316" end="723">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="723" end="724">
+<Alignment>1</Alignment>
+<LeftIndent>60.0</LeftIndent>
+<content start="723" end="724">
+</content>
+
+</paragraph>
+<paragraph start="724" end="731">
+<Alignment>2</Alignment>
+<RightIndent>10.0</RightIndent>
+<content start="724" end="725">
+<size>11</size></content>
+
+<content start="725" end="729">
+<href>script_lap.cml</href><size>11</size></content>
+
+<content start="729" end="730">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

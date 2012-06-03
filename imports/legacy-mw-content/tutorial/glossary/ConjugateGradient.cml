@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Conjugate gradient</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Conjugate gradient
+
+
+An algorithm for global optimization. In molecular simulation, it is usually used to perform energy minimization.
+
+
+ 
+return to index</text>
+<section start="0" end="155">
+<paragraph start="0" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="18" end="19">
+<family>Book Antiqua</family><size>16</size></content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<LeftIndent>120.0</LeftIndent>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<LeftIndent>120.0</LeftIndent>
+<content start="20" end="21">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="21" end="135">
+<LeftIndent>140.0</LeftIndent>
+<content start="21" end="114">
+<size>11</size></content>
+
+<content start="114" end="133">
+<href>Minimization.cml</href><size>11</size></content>
+
+<content start="133" end="134">
+<size>11</size></content>
+
+<content start="134" end="135">
+</content>
+
+</paragraph>
+<paragraph start="135" end="136">
+<LeftIndent>120.0</LeftIndent>
+<content start="135" end="136">
+</content>
+
+</paragraph>
+<paragraph start="136" end="137">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="136" end="137">
+</content>
+
+</paragraph>
+<paragraph start="137" end="139">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="137" end="138">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="138" end="139">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="139" end="155">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="139" end="154">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

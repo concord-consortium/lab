@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The H2O reaction: Use an X-Y graph to display energies</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The H2O reaction: Use an X-Y graph to display energies
+
+&lt; Back &gt;
+
+When an explosive reaction happens, a lot of the potential energy will be converted into kinetic energy, thus we see a dramatical increase of temperature.
+
+The X-Y graph only holds data for a certain length of the simulation. To increase the coverage, open the Task Manager (from the &quot;Option&gt;Task Manager&quot; menu of the Simulator&apos;s menu bar). In the row of &quot;Record the simulation&quot;, double-click the Interval cell and type in a new value (the default is 100). For example, putting 300 will triple the length of simulation the graph will cover.
+
+  
+&#12304;This is an embedded model container for chemical reactions.&#12305;
+
+The energy curves stablize after the reaction completes, because all chemical energy has been released.
+
+You can copy this page and use it as a starting point. Or learn how to use an X-Y graph from this section.
+
+&lt; Back &gt;</text>
+<section start="0" end="896">
+<paragraph start="0" end="55">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="5">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="5" end="6">
+<italic>true</italic><subscript>true</subscript><size>16</size><bold>true</bold></content>
+
+<content start="6" end="54">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="54" end="55">
+<size>14</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="55" end="56">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="65">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="56" end="58">
+<size>11</size></content>
+
+<content start="58" end="62">
+<href>h2o.cml</href><size>11</size></content>
+
+<content start="62" end="64">
+<size>11</size></content>
+
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="66">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="66" end="221">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="221">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="221" end="222">
+<LeftIndent>140.0</LeftIndent>
+<content start="221" end="222">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="222" end="607">
+<LeftIndent>140.0</LeftIndent>
+<content start="222" end="327">
+<size>11</size></content>
+
+<content start="327" end="339">
+<href>taskManager.cml</href><size>11</size></content>
+
+<content start="339" end="607">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="607" end="608">
+<LeftIndent>140.0</LeftIndent>
+<content start="607" end="608">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="608" end="611">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="608" end="609">
+<component><class>org.concord.mw2d.activity.ChemContainer</class>
+<resource>h2o_energies$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Rotate Object</button><button>Duplicate Object</button><button>Add Pl</button><button>Add Ws</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Mark Object</button><button>Draw Lines</button><button>Count Objects</button><button>What's This?</button><button>Toggle Trajectory</button><button>Measure Distance</button></component></content>
+
+<content start="609" end="610">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>4</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-ffff01" style="0" width="1.0" symbol="0" size="4" spacing="5" multiplier="23.0">Potential Energy/Particle</time_series_y1>
+<time_series_y2 color="-10000" style="0" width="1.0" symbol="0" size="4" spacing="5" multiplier="23.0">Kinetic Energy/Particle Ws</time_series_y2>
+<time_series_y3 color="-1000000" style="1" width="1.0" symbol="0" size="4" spacing="5" multiplier="23.0">Total Energy/Particle</time_series_y3>
+<autofity>false</autofity>
+<axis_y_min>-100.0</axis_y_min>
+<axis_y_max>100.0</axis_y_max>
+<width>250</width>
+<height>330</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Energy (kcal/mol)</axis_y_title>
+<legend_x>50</legend_x>
+<legend_y>50</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="610" end="611">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="611" end="673">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="611" end="672">
+<size>10</size></content>
+
+<content start="672" end="673">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="673" end="674">
+<LeftIndent>140.0</LeftIndent>
+<content start="673" end="674">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="674" end="778">
+<LeftIndent>140.0</LeftIndent>
+<content start="674" end="778">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="778" end="779">
+<LeftIndent>140.0</LeftIndent>
+<content start="778" end="779">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="779" end="886">
+<LeftIndent>140.0</LeftIndent>
+<content start="779" end="872">
+<size>11</size></content>
+
+<content start="872" end="884">
+<href>insertXYGraph.cml</href><size>11</size></content>
+
+<content start="884" end="886">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="886" end="887">
+<LeftIndent>140.0</LeftIndent>
+<content start="886" end="887">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="887" end="896">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="887" end="889">
+<size>11</size></content>
+
+<content start="889" end="893">
+<href>h2o.cml</href><size>11</size></content>
+
+<content start="893" end="895">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

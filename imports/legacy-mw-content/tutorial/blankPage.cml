@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Creating a blank page</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Creating a blank page
+
+&lt; Previous | Index | Next &gt;
+
+MW offers not only a browser for you to view existing model and simulation-based pages, but also an authoring system for you to edit an existing page or create a new one. The authoring system consists of several parts, including a set of tools for building 2D and 3D models, a GUI builder, a word processor, and scripting environments. These parts will be presented in details in other Chapters. In this Chapter, we will just briefly give the very basic information to get you started.
+
+The very first step to start creating your own MW simulations is to create a blank page, just like that creating a blank page in Microsoft Word&#8482; was probably the first thing you have done to start using the program.
+
+To create a blank page, pull down the File Menu and select the &quot;New Blank Page&quot; item, or simply hold down the CTRL key and press &apos;N&apos;, if you use Windows or Linux, or Command+N if you use Mac OS X.
+
+After a blank page has been created, you can type text and insert images (using the &quot;Insert&gt;Picture&quot; menu) on the page --- MW behaves just like a word processor until you insert components of interactive simulations. The next page shows how to insert a model container &#10102;, which is mainly composed of the display of the model&apos;s states and the interface through which the user makes or alters a model.
+
+ 
+&#10102; The term &quot;model&quot; will be used interchangably with &quot;simulation&quot; throughout this Manual. So are &quot;model container&quot; and &quot;simulator&quot;. See the next page for a description of the subtle difference.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1579">
+<paragraph start="0" end="22">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="21">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="51">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="23" end="25">
+<size>11</size></content>
+
+<content start="25" end="33">
+<href>reportcollaborator.cml</href><size>11</size></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="41">
+<href>index.cml</href><size>11</size></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="48">
+<href>insertModel.cml</href><size>11</size></content>
+
+<content start="48" end="50">
+<size>11</size></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="538">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="152">
+<size>11</size></content>
+
+<content start="152" end="168">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="168" end="309">
+<size>11</size></content>
+
+<content start="309" end="311">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="311" end="316">
+<size>11</size></content>
+
+<content start="316" end="318">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="318" end="327">
+<size>11</size></content>
+
+<content start="327" end="340">
+<href>controller.cml</href><size>11</size></content>
+
+<content start="340" end="364">
+<size>11</size></content>
+
+<content start="364" end="386">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="386" end="537">
+<size>11</size></content>
+
+<content start="537" end="538">
+</content>
+
+</paragraph>
+<paragraph start="538" end="539">
+<LeftIndent>140.0</LeftIndent>
+<content start="538" end="539">
+</content>
+
+</paragraph>
+<paragraph start="539" end="755">
+<LeftIndent>140.0</LeftIndent>
+<content start="539" end="682">
+<size>11</size></content>
+
+<content start="682" end="683">
+</content>
+
+<content start="683" end="755">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="755" end="756">
+<LeftIndent>140.0</LeftIndent>
+<content start="755" end="756">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="756" end="953">
+<LeftIndent>140.0</LeftIndent>
+<content start="756" end="953">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="953" end="954">
+<LeftIndent>140.0</LeftIndent>
+<content start="953" end="954">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="954" end="1354">
+<LeftIndent>140.0</LeftIndent>
+<content start="954" end="1223">
+<size>11</size></content>
+
+<content start="1223" end="1224">
+<size>13</size></content>
+
+<content start="1224" end="1354">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1354" end="1355">
+<LeftIndent>140.0</LeftIndent>
+<content start="1354" end="1355">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1355" end="1357">
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>1.0</SpaceAbove>
+<content start="1355" end="1356">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1356" end="1357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1357" end="1550">
+<LeftIndent>140.0</LeftIndent>
+<content start="1357" end="1358">
+<size>13</size></content>
+
+<content start="1358" end="1550">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1550" end="1551">
+<content start="1550" end="1551">
+</content>
+
+</paragraph>
+<paragraph start="1551" end="1579">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1551" end="1553">
+<size>11</size></content>
+
+<content start="1553" end="1561">
+<href>reportcollaborator.cml</href><size>11</size></content>
+
+<content start="1561" end="1564">
+<size>11</size></content>
+
+<content start="1564" end="1569">
+<href>index.cml</href><size>11</size></content>
+
+<content start="1569" end="1572">
+<size>11</size></content>
+
+<content start="1572" end="1577">
+<href>insertModel.cml</href><size>11</size></content>
+
+<content start="1577" end="1578">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

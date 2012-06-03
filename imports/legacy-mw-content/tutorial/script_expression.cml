@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Math expressions</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Math expressions
+
+&lt; Previous | Index | Next &gt;
+
+MW&apos;s scripting engine supports evaluation of math expressions embedded in commands. Embedded math expressions can be enclosed in a pair of double quotes for clarity. For instance, the following command positions an existing atom at the center of the container:
+
+set atom[2].rx 0.5*%width;
+set atom[2].ry 0.5*%height;
+
+The advantage of this, compared with using numbers, is that you do not have to change the script if the container is resized. You can use mathematical functions in the expressions. For example, the following commands construct a string of atoms in a shape defined by a sine function:
+
+add atom 2 (0.05*%width, (0.5+0.2*sin(0.05*4*pi))*%height);
+add atom 2 (0.10*%width, (0.5+0.2*sin(0.10*4*pi))*%height);
+add atom 2 (0.15*%width, (0.5+0.2*sin(0.15*4*pi))*%height);
+......
+......
+......
+add atom 2 (0.95*%width, (0.5+0.2*sin(0.95*4*pi))*%height);
+
+ 
+Math: Click here to see a list of supported mathematical functions and constants.
+ 
+
+Below is an example, which uses mathematical expressions to construct scripts for rotating an array of atoms.
+
+ 
+ 
+&#12304;This is an embedded model container.&#12305;
+
+The scripts for the slider
+ 
+
+The scripts in the above example contain many repetitions, which not only make the scripts hard to read but also slow down their execution. The next section will show you how to use the define command to save results and reuse them in multiple commands.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1467">
+<paragraph start="0" end="17">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="16">
+<bold>true</bold><italic>true</italic><size>16</size></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="46">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="18" end="20">
+<size>11</size></content>
+
+<content start="20" end="28">
+<href>script_variable.cml</href><size>11</size></content>
+
+<content start="28" end="31">
+<size>11</size></content>
+
+<content start="31" end="36">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<href>script_defvar.cml</href><size>11</size></content>
+
+<content start="43" end="45">
+<size>11</size></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<LeftIndent>100.0</LeftIndent>
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="308">
+<LeftIndent>140.0</LeftIndent>
+<content start="47" end="308">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="308" end="309">
+<LeftIndent>140.0</LeftIndent>
+<content start="308" end="309">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="309" end="336">
+<LeftIndent>160.0</LeftIndent>
+<content start="309" end="336">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="336" end="364">
+<LeftIndent>160.0</LeftIndent>
+<content start="336" end="364">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="364" end="365">
+<LeftIndent>140.0</LeftIndent>
+<content start="364" end="365">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="365" end="649">
+<LeftIndent>140.0</LeftIndent>
+<content start="365" end="649">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="649" end="650">
+<LeftIndent>140.0</LeftIndent>
+<content start="649" end="650">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="650" end="710">
+<LeftIndent>160.0</LeftIndent>
+<content start="650" end="710">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="710" end="770">
+<LeftIndent>160.0</LeftIndent>
+<content start="710" end="770">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="770" end="830">
+<LeftIndent>160.0</LeftIndent>
+<content start="770" end="830">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="830" end="837">
+<LeftIndent>160.0</LeftIndent>
+<content start="830" end="837">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="837" end="844">
+<LeftIndent>160.0</LeftIndent>
+<content start="837" end="844">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="844" end="851">
+<LeftIndent>160.0</LeftIndent>
+<content start="844" end="851">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="851" end="911">
+<LeftIndent>160.0</LeftIndent>
+<content start="851" end="910">
+<family>Courier New</family><size>11</size></content>
+
+<content start="910" end="911">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="911" end="912">
+<LeftIndent>140.0</LeftIndent>
+<content start="911" end="912">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="912" end="914">
+<LeftIndent>140.0</LeftIndent>
+<content start="912" end="913">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="913" end="914">
+</content>
+
+</paragraph>
+<paragraph start="914" end="996">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="914" end="918">
+<bold>true</bold><size>11</size></content>
+
+<content start="918" end="926">
+<size>11</size></content>
+
+<content start="926" end="930">
+<href>functions.cml</href><size>11</size></content>
+
+<content start="930" end="995">
+<size>11</size></content>
+
+<content start="995" end="996">
+</content>
+
+</paragraph>
+<paragraph start="996" end="998">
+<LeftIndent>140.0</LeftIndent>
+<content start="996" end="997">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="997" end="998">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="998" end="999">
+<LeftIndent>140.0</LeftIndent>
+<content start="998" end="999">
+</content>
+
+</paragraph>
+<paragraph start="999" end="1109">
+<LeftIndent>140.0</LeftIndent>
+<content start="999" end="1109">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1109" end="1110">
+<LeftIndent>140.0</LeftIndent>
+<content start="1109" end="1110">
+</content>
+
+</paragraph>
+<paragraph start="1110" end="1112">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1110" end="1111">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_expression$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+</component></content>
+
+<content start="1111" end="1112">
+</content>
+
+</paragraph>
+<paragraph start="1112" end="1114">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1112" end="1113">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>36.0</maximum>
+<nstep>36</nstep>
+<title>Rotational angle (in degrees)</title>
+<tooltip>Change the rotational angle</tooltip>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;9.0&quot;, label=&quot;90&quot;}{value=&quot;18.0&quot;, label=&quot;180&quot;}{value=&quot;27.0&quot;, label=&quot;270&quot;}{value=&quot;36.0&quot;, label=&quot;360&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>set atom[0].rx 0.5*%width;
+set atom[0].ry 0.5*%height;
+set atom[1].rx 0.5*%width+2.5*cos(%val/18*pi);
+set atom[1].ry 0.5*%height+2.5*sin(%val/18*pi);
+set atom[2].rx 0.5*%width+5*cos(%val/18*pi);
+set atom[2].ry 0.5*%height+5*sin(%val/18*pi);
+set atom[3].rx 0.5*%width+7.5*cos(%val/18*pi);
+set atom[3].ry 0.5*%height+7.5*sin(%val/18*pi);
+
+set atom[4].rx 0.5*%width+2.5*cos(%val/18*pi+0.5*pi);
+set atom[4].ry 0.5*%height+2.5*sin(%val/18*pi+0.5*pi);
+set atom[5].rx 0.5*%width+2.5*sqrt(2)*cos(%val/18*pi+0.25*pi);
+set atom[5].ry 0.5*%height+2.5*sqrt(2)*sin(%val/18*pi+0.25*pi);
+set atom[6].rx 0.5*%width+2.5*sqrt(5)*cos(%val/18*pi+atan(0.5));
+set atom[6].ry 0.5*%height+2.5*sqrt(5)*sin(%val/18*pi+atan(0.5));
+set atom[7].rx 0.5*%width+2.5*sqrt(10)*cos(%val/18*pi+atan(1.0/3.0));
+set atom[7].ry 0.5*%height+2.5*sqrt(10)*sin(%val/18*pi+atan(1.0/3.0));</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="1113" end="1114">
+</content>
+
+</paragraph>
+<paragraph start="1114" end="1153">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1114" end="1115">
+<bold>true</bold><size>13</size></content>
+
+<content start="1115" end="1151">
+<size>10</size></content>
+
+<content start="1151" end="1152">
+<bold>true</bold><size>13</size></content>
+
+<content start="1152" end="1153">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1153" end="1154">
+<LeftIndent>140.0</LeftIndent>
+<content start="1153" end="1154">
+</content>
+
+</paragraph>
+<paragraph start="1154" end="1181">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1154" end="1180">
+<size>11</size></content>
+
+<content start="1180" end="1181">
+</content>
+
+</paragraph>
+<paragraph start="1181" end="1183">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1181" end="1182">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>600.0</width>
+<height>100.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;pre&gt;&lt;font size=&quot;3&quot;&gt;set atom[0].rx 0.5*%width;
+set atom[0].ry 0.5*%height;
+set atom[1].rx 0.5*%width+2.5*cos(%val/18*pi);
+set atom[1].ry 0.5*%height+2.5*sin(%val/18*pi);
+set atom[2].rx 0.5*%width+5*cos(%val/18*pi);
+set atom[2].ry 0.5*%height+5*sin(%val/18*pi);
+set atom[3].rx 0.5*%width+7.5*cos(%val/18*pi);
+set atom[3].ry 0.5*%height+7.5*sin(%val/18*pi);
+
+set atom[4].rx 0.5*%width+2.5*cos(%val/18*pi+0.5*pi);
+set atom[4].ry 0.5*%height+2.5*sin(%val/18*pi+0.5*pi);
+set atom[5].rx 0.5*%width+2.5*sqrt(2)*cos(%val/18*pi+0.25*pi);
+set atom[5].ry 0.5*%height+2.5*sqrt(2)*sin(%val/18*pi+0.25*pi);
+set atom[6].rx 0.5*%width+2.5*sqrt(5)*cos(%val/18*pi+atan(0.5));
+set atom[6].ry 0.5*%height+2.5*sqrt(5)*sin(%val/18*pi+atan(0.5));
+set atom[7].rx 0.5*%width+2.5*sqrt(10)*cos(%val/18*pi+atan(1.0/3.0));
+set atom[7].ry 0.5*%height+2.5*sqrt(10)*sin(%val/18*pi+atan(1.0/3.0));&lt;/font&gt;&lt;/pre&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1182" end="1183">
+</content>
+
+</paragraph>
+<paragraph start="1183" end="1184">
+<LeftIndent>140.0</LeftIndent>
+<content start="1183" end="1184">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1184" end="1438">
+<LeftIndent>140.0</LeftIndent>
+<content start="1184" end="1370">
+<size>11</size></content>
+
+<content start="1370" end="1376">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1376" end="1437">
+<size>11</size></content>
+
+<content start="1437" end="1438">
+</content>
+
+</paragraph>
+<paragraph start="1438" end="1439">
+<LeftIndent>140.0</LeftIndent>
+<content start="1438" end="1439">
+</content>
+
+</paragraph>
+<paragraph start="1439" end="1467">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1439" end="1441">
+<size>11</size></content>
+
+<content start="1441" end="1449">
+<href>script_variable.cml</href><size>11</size></content>
+
+<content start="1449" end="1452">
+<size>11</size></content>
+
+<content start="1452" end="1457">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="1457" end="1460">
+<size>11</size></content>
+
+<content start="1460" end="1464">
+<href>script_defvar.cml</href><size>11</size></content>
+
+<content start="1464" end="1466">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

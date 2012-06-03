@@ -1,0 +1,662 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Pcf</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Pcf
+
+&lt; Previous | Index | Next &gt;
+
+The pcf command computes and shows the pair correlation function (PCF) between the specified pair of elements within the specified rectangular area.
+
+Syntax:
+
+pcf [expression]
+pcf [expression_1] and [expression_2] and ...... and [expression_n]
+
+An expression can have one of the following forms:
+
+   [id1] [id2] [length] within ([x], [y], [w], [h])
+   [id1] [id2] [length]
+
+where id1 and id2 are the ID numbers of elements, length is the length in angstroms for which the PCF will be generated, x and y are the coordinate of the upper-left corner of the selected rectangular area, and w and h are its width and height. The second covers the whole area, which is equivalent to:
+
+[id1] [id2] [length] within (0, 0, %width, %height)
+
+where %width and %height are the width and height of the model container&apos;s window defined as system variables.
+
+You use multiple expressions to plot multiple PCFs in the same graph. Note that you must write every thing after the pcf keyword in a single line and separate different PCF parameter sets with the &quot;and&quot; keyword. The within clause can be skipped if you select the whole container.
+
+ 
+Element IDs: The ID numbers for elements are defined as follows: Nt: 0; Pl: 1; Ws: 2; Ck: 3. For IDs of the non-editable elements, see this list.
+ 
+
+PCFs are useful in analyzing structures. Localized PCF analysis can be used to identify the state of atoms in a certain area. This allows us to compute the PCF for each phase in a multi-phase system. 
+
+ 
+Note: If the recorder is disabled, this command has no effect.
+Caution: You should generally use this command once per script execution. Avoid using it within a loop.
+ 
+
+The following model demonstrates the use of this command to show the pair correlation functions in different areas of the same homogeneous system under periodic boundary conditions.
+
+ 
+ 
+&#12304;This is an embedded model container.&#12305;
+
+The three PCFs generated from the above buttons should be identical, confirming the homogeneousity of the system in thermal equilibrium. To achieve this nice result in the above analysis, we had to use a trick to exclude areas that are near the boundary. The colored rectangular areas in the above model show the areas cut out for computing the PCFs in the left and right part, respectively. In the following, we will demonstrate the boundary effect.
+
+Eliminating the boundary effect
+
+When a reflecting boundary is used, a PCF that includes areas close to the boundary will be affected. A typical effect we observe is that the PCF for a fluid will converge to a number that is lower than unity. Although this is reasonable --- the particles near the border see no particle beyond it and therefore the distribution function must on average reduce as a result of this side effect, you may sometimes want to avoid this problem. The following model shows that you can compute the PCF based on a rectangular cut-out that retreats from the reflecting boundary, which converges to unity because the particles near the boundary are not counted. You can compare the cut-out PCF with the one based on counting all particles in the container.
+
+ 
+ 
+&#12304;This is an embedded model container.&#12305;
+
+Even if a periodic boundary is used, it does not necessarily mean that localized PCFs will be immune from errors. When you select a smaller area, the border that cuts it out from the larger one may have an effect. That is why in the first model on this page, we also had to restrict PCF calculations to cut-out areas.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3534">
+<paragraph start="0" end="4">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="3">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="33">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="5" end="7">
+<size>11</size></content>
+
+<content start="7" end="15">
+<size>11</size><href>script_lap.cml</href></content>
+
+<content start="15" end="18">
+<size>11</size></content>
+
+<content start="18" end="23">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="23" end="26">
+<size>11</size></content>
+
+<content start="26" end="30">
+<size>11</size><href>script_tcf.cml</href></content>
+
+<content start="30" end="32">
+<size>11</size></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<LeftIndent>100.0</LeftIndent>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="183">
+<LeftIndent>140.0</LeftIndent>
+<content start="34" end="38">
+<size>11</size></content>
+
+<content start="38" end="41">
+<family>Courier New</family><size>11</size></content>
+
+<content start="41" end="73">
+<size>11</size></content>
+
+<content start="73" end="98">
+<size>11</size><href>glossary/pcf.cml</href></content>
+
+<content start="98" end="183">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="183" end="184">
+<LeftIndent>140.0</LeftIndent>
+<content start="183" end="184">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="184" end="192">
+<LeftIndent>140.0</LeftIndent>
+<content start="184" end="192">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="192" end="193">
+<LeftIndent>140.0</LeftIndent>
+<content start="192" end="193">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="193" end="210">
+<LeftIndent>160.0</LeftIndent>
+<content start="193" end="196">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="196" end="210">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="210" end="278">
+<LeftIndent>160.0</LeftIndent>
+<content start="210" end="213">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="213" end="277">
+<family>Courier New</family><size>11</size></content>
+
+<content start="277" end="278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="278" end="279">
+<LeftIndent>140.0</LeftIndent>
+<content start="278" end="279">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="279" end="330">
+<LeftIndent>140.0</LeftIndent>
+<content start="279" end="330">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="330" end="331">
+<LeftIndent>140.0</LeftIndent>
+<content start="330" end="331">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="331" end="383">
+<LeftIndent>160.0</LeftIndent>
+<content start="331" end="332">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="332" end="334">
+</content>
+
+<content start="334" end="383">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="383" end="407">
+<LeftIndent>160.0</LeftIndent>
+<content start="383" end="384">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="384" end="386">
+</content>
+
+<content start="386" end="406">
+<family>Courier New</family><size>11</size></content>
+
+<content start="406" end="407">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="407" end="408">
+<LeftIndent>140.0</LeftIndent>
+<content start="407" end="408">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="408" end="711">
+<LeftIndent>140.0</LeftIndent>
+<content start="408" end="414">
+<size>11</size></content>
+
+<content start="414" end="417">
+<family>Courier New</family><size>11</size></content>
+
+<content start="417" end="422">
+<size>11</size></content>
+
+<content start="422" end="425">
+<family>Courier New</family><size>11</size></content>
+
+<content start="425" end="458">
+<size>11</size></content>
+
+<content start="458" end="464">
+<family>Courier New</family><size>11</size></content>
+
+<content start="464" end="529">
+<size>11</size></content>
+
+<content start="529" end="530">
+<family>Courier New</family><size>11</size></content>
+
+<content start="530" end="535">
+<size>11</size></content>
+
+<content start="535" end="536">
+<family>Courier New</family><size>11</size></content>
+
+<content start="536" end="619">
+<size>11</size></content>
+
+<content start="619" end="620">
+<family>Courier New</family><size>11</size></content>
+
+<content start="620" end="625">
+<size>11</size></content>
+
+<content start="625" end="626">
+<family>Courier New</family><size>11</size></content>
+
+<content start="626" end="711">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="711" end="712">
+<LeftIndent>140.0</LeftIndent>
+<content start="711" end="712">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="712" end="764">
+<LeftIndent>160.0</LeftIndent>
+<content start="712" end="763">
+<family>Courier New</family><size>11</size></content>
+
+<content start="763" end="764">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="764" end="765">
+<LeftIndent>140.0</LeftIndent>
+<content start="764" end="765">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="765" end="876">
+<LeftIndent>140.0</LeftIndent>
+<content start="765" end="771">
+<size>11</size></content>
+
+<content start="771" end="777">
+<family>Courier New</family><size>11</size></content>
+
+<content start="777" end="782">
+<size>11</size></content>
+
+<content start="782" end="789">
+<family>Courier New</family><size>11</size></content>
+
+<content start="789" end="858">
+<size>11</size></content>
+
+<content start="858" end="874">
+<size>11</size><href>script_variable.cml</href></content>
+
+<content start="874" end="876">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="876" end="877">
+<LeftIndent>140.0</LeftIndent>
+<content start="876" end="877">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="877" end="1157">
+<LeftIndent>140.0</LeftIndent>
+<content start="877" end="961">
+<size>11</size></content>
+
+<content start="961" end="965">
+<size>11</size><bold>true</bold></content>
+
+<content start="965" end="994">
+<size>11</size></content>
+
+<content start="994" end="997">
+<family>Courier New</family><size>11</size></content>
+
+<content start="997" end="1075">
+<size>11</size></content>
+
+<content start="1075" end="1078">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1078" end="1093">
+<size>11</size></content>
+
+<content start="1093" end="1099">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1099" end="1156">
+<size>11</size></content>
+
+<content start="1156" end="1157">
+</content>
+
+</paragraph>
+<paragraph start="1157" end="1158">
+<LeftIndent>140.0</LeftIndent>
+<content start="1157" end="1158">
+</content>
+
+</paragraph>
+<paragraph start="1158" end="1160">
+<LeftIndent>140.0</LeftIndent>
+<content start="1158" end="1159">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1159" end="1160">
+</content>
+
+</paragraph>
+<paragraph start="1160" end="1306">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1160" end="1172">
+<size>11</size><bold>true</bold></content>
+
+<content start="1172" end="1295">
+<size>11</size></content>
+
+<content start="1295" end="1304">
+<size>11</size><href>element_id.cml</href></content>
+
+<content start="1304" end="1305">
+<size>11</size></content>
+
+<content start="1305" end="1306">
+</content>
+
+</paragraph>
+<paragraph start="1306" end="1308">
+<LeftIndent>140.0</LeftIndent>
+<content start="1306" end="1307">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1307" end="1308">
+</content>
+
+</paragraph>
+<paragraph start="1308" end="1309">
+<LeftIndent>140.0</LeftIndent>
+<content start="1308" end="1309">
+</content>
+
+</paragraph>
+<paragraph start="1309" end="1510">
+<LeftIndent>140.0</LeftIndent>
+<content start="1309" end="1510">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1510" end="1511">
+<LeftIndent>140.0</LeftIndent>
+<content start="1510" end="1511">
+</content>
+
+</paragraph>
+<paragraph start="1511" end="1513">
+<LeftIndent>140.0</LeftIndent>
+<content start="1511" end="1512">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1512" end="1513">
+</content>
+
+</paragraph>
+<paragraph start="1513" end="1576">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1513" end="1517">
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
+
+<content start="1517" end="1526">
+<size>11</size></content>
+
+<content start="1526" end="1534">
+<size>11</size><href>recordSimulation.cml</href></content>
+
+<content start="1534" end="1576">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1576" end="1680">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1576" end="1583">
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
+
+<content start="1583" end="1674">
+<size>11</size></content>
+
+<content start="1674" end="1678">
+<size>11</size><href>script_loop.cml</href></content>
+
+<content start="1678" end="1679">
+<size>11</size></content>
+
+<content start="1679" end="1680">
+</content>
+
+</paragraph>
+<paragraph start="1680" end="1682">
+<LeftIndent>140.0</LeftIndent>
+<content start="1680" end="1681">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1681" end="1682">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1682" end="1683">
+<LeftIndent>140.0</LeftIndent>
+<content start="1682" end="1683">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1683" end="1865">
+<LeftIndent>140.0</LeftIndent>
+<content start="1683" end="1865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1865" end="1866">
+<LeftIndent>140.0</LeftIndent>
+<content start="1865" end="1866">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1866" end="1868">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1866" end="1867">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_pcf$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1867" end="1868">
+</content>
+
+</paragraph>
+<paragraph start="1868" end="1870">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1868" end="1869">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show Nt-Nt PCFs in the left part, the right part and the whole container</title>
+<tooltip>Show Nt-Nt PCFs in the left part, the right part and the whole container</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>pcf 0 0 6 within (1, 1, &quot;0.5*%width-2&quot;, &quot;%height-2&quot;) and 0 0 6 within (&quot;0.5*%width+1&quot;, 1, &quot;0.5*%width-2&quot;, &quot;%height-2&quot;) and 0 0 6;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1869" end="1870">
+</content>
+
+</paragraph>
+<paragraph start="1870" end="1909">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1870" end="1908">
+<size>10</size></content>
+
+<content start="1908" end="1909">
+</content>
+
+</paragraph>
+<paragraph start="1909" end="1910">
+<LeftIndent>140.0</LeftIndent>
+<content start="1909" end="1910">
+</content>
+
+</paragraph>
+<paragraph start="1910" end="2361">
+<LeftIndent>140.0</LeftIndent>
+<content start="1910" end="2361">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2361" end="2362">
+<LeftIndent>140.0</LeftIndent>
+<content start="2361" end="2362">
+</content>
+
+</paragraph>
+<paragraph start="2362" end="2394">
+<LeftIndent>140.0</LeftIndent>
+<content start="2362" end="2393">
+<size>11</size><bold>true</bold></content>
+
+<content start="2393" end="2394">
+</content>
+
+</paragraph>
+<paragraph start="2394" end="2395">
+<LeftIndent>140.0</LeftIndent>
+<content start="2394" end="2395">
+</content>
+
+</paragraph>
+<paragraph start="2395" end="3142">
+<LeftIndent>140.0</LeftIndent>
+<content start="2395" end="2497">
+<size>11</size></content>
+
+<content start="2497" end="2603">
+<size>11</size><bold>true</bold></content>
+
+<content start="2603" end="3142">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3142" end="3143">
+<LeftIndent>140.0</LeftIndent>
+<content start="3142" end="3143">
+</content>
+
+</paragraph>
+<paragraph start="3143" end="3145">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3143" end="3144">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_pcf$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="3144" end="3145">
+</content>
+
+</paragraph>
+<paragraph start="3145" end="3147">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3145" end="3146">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Compare the PCFs for the cut-out area and for the whole area</title>
+<tooltip>Compare the PCFs for the cut-out area and for the whole area</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<disabled_at_script>true</disabled_at_script>
+<script>pcf 1 1 6 within (6, 5, &quot;%width-12&quot;, &quot;%height-10&quot;) and 1 1 6;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="3146" end="3147">
+</content>
+
+</paragraph>
+<paragraph start="3147" end="3186">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3147" end="3185">
+<size>10</size></content>
+
+<content start="3185" end="3186">
+</content>
+
+</paragraph>
+<paragraph start="3186" end="3187">
+<LeftIndent>140.0</LeftIndent>
+<content start="3186" end="3187">
+</content>
+
+</paragraph>
+<paragraph start="3187" end="3505">
+<LeftIndent>140.0</LeftIndent>
+<content start="3187" end="3504">
+<size>11</size></content>
+
+<content start="3504" end="3505">
+</content>
+
+</paragraph>
+<paragraph start="3505" end="3506">
+<LeftIndent>140.0</LeftIndent>
+<content start="3505" end="3506">
+</content>
+
+</paragraph>
+<paragraph start="3506" end="3534">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3506" end="3508">
+<size>11</size></content>
+
+<content start="3508" end="3516">
+<size>11</size><href>script_lap.cml</href></content>
+
+<content start="3516" end="3519">
+<size>11</size></content>
+
+<content start="3519" end="3524">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="3524" end="3527">
+<size>11</size></content>
+
+<content start="3527" end="3531">
+<size>11</size><href>script_tcf.cml</href></content>
+
+<content start="3531" end="3533">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

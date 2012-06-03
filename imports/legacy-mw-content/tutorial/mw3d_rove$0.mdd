@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="ZDepthMagnification"> 
+   <int>10</int> 
+  </void> 
+  <void property="cameraPosition"> 
+   <string>13.520981 10.104603 -12.7505</string> 
+  </void> 
+  <void property="fillMode"> 
+   <object class="org.concord.modeler.draw.FillMode$GradientFill"> 
+    <void property="color1"> 
+     <object class="java.awt.Color"> 
+      <int>255</int> 
+      <int>255</int> 
+      <int>255</int> 
+      <int>255</int> 
+     </object> 
+    </void> 
+    <void property="color2"> 
+     <object class="java.awt.Color"> 
+      <int>20</int> 
+      <int>100</int> 
+      <int>200</int> 
+      <int>255</int> 
+     </object> 
+    </void> 
+    <void property="style"> 
+     <int>1034</int> 
+    </void> 
+    <void property="variant"> 
+     <int>1042</int> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="fullSizeUnbondedAtoms"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="moleculeStyle"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="navigationMode"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="rotation"> 
+   <string>-35 -934 -356 136.3</string> 
+  </void> 
+  <void property="showGlassSimulationBox"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="timeStep"> 
+   <float>1.0</float> 
+  </void> 
+  <void property="unmovableSelection"> 
+   <string>3 4 5 6 7 8 9 10 11 14 15 16 17 18 19 20 21 22 23 24 25 31 32 34 35 36 37 39 40 41 42 44 45 58 59 60 61 64 66 67 68 69 72 104 107 108 112 115 119 121 123 158 159 163 164</string> 
+  </void> 
+ </object> 
+</java> 

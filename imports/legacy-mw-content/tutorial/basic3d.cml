@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Basic parts of the 3D modeling environment</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Basic parts of the 3D modeling environment
+
+&lt; Previous | Index | Next &gt;
+
+The structure of the 3D modeling environment resembles that of the 2D one. The follow annotations show different visual parts of the 3D modeling environment:
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+ The Simulation Controls will be discussed further in a following section.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="378">
+<paragraph start="0" end="43">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="42">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="44">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="72">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="54">
+<href>intro_3d.cml</href><size>11</size></content>
+
+<content start="54" end="57">
+<size>11</size></content>
+
+<content start="57" end="62">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="62" end="65">
+<size>11</size></content>
+
+<content start="65" end="69">
+<href>mw3d_move.cml</href><size>11</size></content>
+
+<content start="69" end="71">
+<size>11</size></content>
+
+<content start="71" end="72">
+</content>
+
+</paragraph>
+<paragraph start="72" end="73">
+<LeftIndent>140.0</LeftIndent>
+<content start="72" end="73">
+</content>
+
+</paragraph>
+<paragraph start="73" end="231">
+<LeftIndent>140.0</LeftIndent>
+<content start="73" end="231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="231" end="232">
+<LeftIndent>140.0</LeftIndent>
+<content start="231" end="232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="232" end="234">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="232" end="233">
+<component><class>org.concord.modeler.PageMd3d</class><resource>basic3d$0.mdd</resource><coordinate>basic3d$0.xyz</coordinate><width>500</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="233" end="234">
+</content>
+
+</paragraph>
+<paragraph start="234" end="273">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="234" end="272">
+<size>10</size></content>
+
+<content start="272" end="273">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="273" end="274">
+<LeftIndent>140.0</LeftIndent>
+<content start="273" end="274">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="274" end="349">
+<LeftIndent>140.0</LeftIndent>
+<content start="274" end="328">
+<size>11</size></content>
+
+<content start="328" end="347">
+<href>recorder3d.cml</href><size>11</size></content>
+
+<content start="347" end="349">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="349" end="350">
+<LeftIndent>140.0</LeftIndent>
+<content start="349" end="350">
+</content>
+
+</paragraph>
+<paragraph start="350" end="378">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="350" end="352">
+<size>11</size></content>
+
+<content start="352" end="360">
+<href>intro_3d.cml</href><size>11</size></content>
+
+<content start="360" end="363">
+<size>11</size></content>
+
+<content start="363" end="368">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="368" end="371">
+<size>11</size></content>
+
+<content start="371" end="375">
+<href>mw3d_move.cml</href><size>11</size></content>
+
+<content start="375" end="377">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Unicode | &#19975;&#22269;&#25991;&#23383;&#30721; | &#33836;&#22283;&#25991;&#23383;&#30908;</page_title>
+<text>Unicode | &#19975;&#22269;&#25991;&#23383;&#30721; | &#33836;&#22283;&#25991;&#23383;&#30908;
+
+This test page is encoded in Unicode UTF-8. If your language
+does not show up, then it may not be supported.
+
+ 
+
+Alemannisch 
+&#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080; 
+B&#226;n-l&#226;m-g&#250; 
+&#2476;&#2494;&#2434;&#2482;&#2494; 
+Bosanski 
+Brezhoneg 
+Catal&#224; 
+&#5091;&#5043;&#5033; 
+&#268;esky 
+Dansk 
+Deutsch 
+Eesti 
+Espa&#241;ol 
+Esperanto 
+Fran&#231;ais 
+Galego 
+&#1506;&#1489;&#1512;&#1497;&#1514; 
+&#2361;&#2367;&#2344;&#2381;&#2342;&#2368; 
+Hrvatski 
+&#54620;&#44397;&#50612; 
+Interlingua 
+Italiano 
+&#4325;&#4304;&#4320;&#4311;&#4323;&#4314;&#4312; 
+&#3221;&#3240;&#3277;&#3240;&#3233; 
+&#2325;&#2358;&#2381;&#2350;&#2368;&#2352;&#2368; - (&#1603;&#1588;&#1605;&#1610;&#1585;&#1610;) 
+Kurd&#238; / &#1603;&#1608;&#1585;&#1583;&#1610; 
+Latvie&#353;u 
+Lietuvi&#371; 
+Magyar 
+Nederlands 
+&#2344;&#2375;&#2346;&#2366;&#2354;&#2368; 
+&#26085;&#26412;&#35486; 
+Norsk (bokm&#229;l) 
+Norsk (nynorsk) 
+Polski 
+Portugu&#234;s 
+Rom&#226;n&#259; 
+&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; 
+Srpskohrvatski / &#1057;&#1088;&#1087;&#1089;&#1082;&#1086;&#1093;&#1088;&#1074;&#1072;&#1090;&#1089;&#1082;&#1080; 
+Sloven&#269;ina 
+Sloven&#353;&#269;ina 
+&#1057;&#1088;&#1087;&#1089;&#1082;&#1080; / Srpski 
+Suomi 
+Svenska 
+&#2980;&#2990;&#3007;&#2996;&#3021; 
+&#3652;&#3607;&#3618; 
+Ti&#7871;ng Vi&#7879;t 
+T&#252;rk&#231;e 
+&#1059;&#1082;&#1088;&#1072;&#1111;&#1085;&#1089;&#1100;&#1082;&#1072; 
+Walon 
+&#20013;&#25991; 
+
+</text>
+<section start="0" end="657">
+<paragraph start="0" end="24">
+<Alignment>1</Alignment>
+<content start="0" end="24">
+<size>15</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<Alignment>1</Alignment>
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="86">
+<Alignment>1</Alignment>
+<content start="25" end="86">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="86" end="134">
+<Alignment>1</Alignment>
+<content start="86" end="134">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="134" end="135">
+<content start="134" end="135">
+</content>
+
+</paragraph>
+<paragraph start="135" end="137">
+<Alignment>1</Alignment>
+<content start="135" end="136">
+<icon><class>org.concord.modeler.text.LineIcon</class><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="136" end="137">
+</content>
+
+</paragraph>
+<paragraph start="137" end="138">
+<content start="137" end="138">
+<size>15</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="138" end="151">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="138" end="151">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="151" end="162">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="151" end="162">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="162" end="174">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="162" end="174">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="174" end="181">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="174" end="181">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="181" end="191">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="181" end="191">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="191" end="202">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="191" end="202">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="202" end="210">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="202" end="210">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="210" end="215">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="210" end="215">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="215" end="222">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="215" end="222">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="222" end="229">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="222" end="229">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="229" end="238">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="229" end="238">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="238" end="245">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="238" end="245">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="245" end="254">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="245" end="254">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="254" end="265">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="254" end="265">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="265" end="275">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="265" end="275">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="275" end="283">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="275" end="283">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="283" end="290">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="283" end="290">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="290" end="298">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="290" end="298">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="298" end="308">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="298" end="308">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="308" end="313">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="308" end="313">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="313" end="326">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="313" end="326">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="326" end="336">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="326" end="336">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="336" end="345">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="336" end="345">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="345" end="352">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="345" end="352">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="352" end="372">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="352" end="372">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="372" end="387">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="372" end="387">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="387" end="397">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="387" end="397">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="397" end="407">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="397" end="407">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="407" end="415">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="407" end="415">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="415" end="427">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="415" end="427">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="427" end="435">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="427" end="435">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="435" end="440">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="435" end="440">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="440" end="456">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="440" end="456">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="456" end="473">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="456" end="473">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="473" end="481">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="473" end="481">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="481" end="492">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="481" end="492">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="492" end="500">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="492" end="500">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="500" end="509">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="500" end="509">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="509" end="542">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="509" end="542">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="542" end="554">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="542" end="554">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="554" end="567">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="554" end="567">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="567" end="584">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="567" end="584">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="584" end="591">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="584" end="591">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="591" end="600">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="591" end="600">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="600" end="607">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="600" end="607">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="607" end="612">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="607" end="612">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="612" end="624">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="612" end="624">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="624" end="632">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="624" end="632">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="632" end="644">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="632" end="644">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="644" end="651">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="644" end="651">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="651" end="655">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="651" end="655">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="655" end="656">
+<content start="655" end="656">
+<size>14</size></content>
+
+</paragraph>
+<paragraph start="656" end="657">
+</paragraph>
+</section>
+</document>

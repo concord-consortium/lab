@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Filling with color</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Filling with color
+
+&lt; Previous | Index | Next &gt;
+
+The background of some components, e.g., embedded models and the page containing them, or shapes in a model, can be filled with color, texture, and image. This is generally done through the following pop-up menu:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This menu is often deployed at the menu bar or tool bar for the component with changable background.
+
+To fill the background with a single color, just select from the above menu a color from the color list. If none of the listed colors satisfies you, click the &quot;More Colors&quot;, and choose from the following dialog box:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+In the next sections, you will see that background can be filled with more than just a color.
+
+ &lt; Previous | Index |  Next &gt;</text>
+<section start="0" end="763">
+<paragraph start="0" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<size>11</size><href>background.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<size>11</size><href>bgGradient.cml</href></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="262">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="262">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="262" end="263">
+<LeftIndent>100.0</LeftIndent>
+<content start="262" end="263">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="263" end="266">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="263" end="264">
+<size>11</size></content>
+
+<content start="264" end="265">
+<size>11</size><icon>ColorMenu.gif</icon></content>
+
+<content start="265" end="266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="266" end="290">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="266" end="267">
+<size>13</size><bold>true</bold></content>
+
+<content start="267" end="288">
+<size>10</size></content>
+
+<content start="288" end="289">
+<size>13</size><bold>true</bold></content>
+
+<content start="289" end="290">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="290" end="291">
+<LeftIndent>100.0</LeftIndent>
+<content start="290" end="291">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="291" end="392">
+<LeftIndent>140.0</LeftIndent>
+<content start="291" end="392">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="392" end="393">
+<LeftIndent>140.0</LeftIndent>
+<content start="392" end="393">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="393" end="609">
+<LeftIndent>140.0</LeftIndent>
+<content start="393" end="609">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="609" end="610">
+<LeftIndent>100.0</LeftIndent>
+<content start="609" end="610">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="610" end="613">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="610" end="611">
+<size>11</size></content>
+
+<content start="611" end="612">
+<size>11</size><icon>JavaColorChooser.gif</icon></content>
+
+<content start="612" end="613">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="613" end="637">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="613" end="614">
+<size>13</size><bold>true</bold></content>
+
+<content start="614" end="635">
+<size>10</size></content>
+
+<content start="635" end="636">
+<size>13</size><bold>true</bold></content>
+
+<content start="636" end="637">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="637" end="638">
+<LeftIndent>140.0</LeftIndent>
+<content start="637" end="638">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="638" end="732">
+<LeftIndent>140.0</LeftIndent>
+<content start="638" end="731">
+<size>11</size></content>
+
+<content start="731" end="732">
+</content>
+
+</paragraph>
+<paragraph start="732" end="733">
+<LeftIndent>100.0</LeftIndent>
+<content start="732" end="733">
+</content>
+
+</paragraph>
+<paragraph start="733" end="763">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="733" end="734">
+</content>
+
+<content start="734" end="736">
+<size>11</size></content>
+
+<content start="736" end="744">
+<size>11</size><href>background.cml</href></content>
+
+<content start="744" end="747">
+<size>11</size></content>
+
+<content start="747" end="752">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="752" end="756">
+<size>11</size></content>
+
+<content start="756" end="760">
+<size>11</size><href>bgGradient.cml</href></content>
+
+<content start="760" end="762">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

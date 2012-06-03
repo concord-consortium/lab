@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Restrain</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Restrain
+
+&lt; Previous | Index | Next &gt;
+
+The restrain command restrains the currently selected particles with a harmonic spring with a specific force constant, at their current positions. (To see how to restrain atoms without using scripts, see this section.)
+
+Syntax:
+
+restrain [force constant]
+
+where [force constant] is a non-negative number that will be the force constant of the harmonic spring.
+
+Here is an example of using the restrain command to set the restraints on selected atoms.
+
+ 
+ 
+&#12304;This is an embedded 2D model container.&#12305;
+
+ 
+ 
+&#12304;This is an embedded 3D model container.&#12305;
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="613">
+<paragraph start="0" end="9">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="8">
+<bold>true</bold><italic>true</italic><size>16</size></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="38">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="10" end="12">
+<size>11</size></content>
+
+<content start="12" end="20">
+<href>script_charge.cml</href><size>11</size></content>
+
+<content start="20" end="23">
+<size>11</size></content>
+
+<content start="23" end="28">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="28" end="31">
+<size>11</size></content>
+
+<content start="31" end="35">
+<href>script_damp.cml</href><size>11</size></content>
+
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<LeftIndent>100.0</LeftIndent>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="258">
+<LeftIndent>140.0</LeftIndent>
+<content start="39" end="43">
+<size>11</size></content>
+
+<content start="43" end="51">
+<family>Courier New</family><size>11</size></content>
+
+<content start="51" end="167">
+<size>11</size></content>
+
+<content start="167" end="174">
+<size>11</size><italic>true</italic></content>
+
+<content start="174" end="239">
+<size>11</size></content>
+
+<content start="239" end="255">
+<href>restrainAction.cml</href><size>11</size></content>
+
+<content start="255" end="258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="258" end="259">
+<LeftIndent>140.0</LeftIndent>
+<content start="258" end="259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="259" end="267">
+<LeftIndent>140.0</LeftIndent>
+<content start="259" end="267">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="267" end="268">
+<LeftIndent>140.0</LeftIndent>
+<content start="267" end="268">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="268" end="294">
+<LeftIndent>160.0</LeftIndent>
+<content start="268" end="277">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="277" end="293">
+<family>Courier New</family><size>11</size></content>
+
+<content start="293" end="294">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="294" end="295">
+<LeftIndent>140.0</LeftIndent>
+<content start="294" end="295">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="295" end="399">
+<LeftIndent>140.0</LeftIndent>
+<content start="295" end="301">
+<size>11</size></content>
+
+<content start="301" end="317">
+<family>Courier New</family><size>11</size></content>
+
+<content start="317" end="399">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="399" end="400">
+<LeftIndent>140.0</LeftIndent>
+<content start="399" end="400">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="400" end="490">
+<LeftIndent>140.0</LeftIndent>
+<content start="400" end="432">
+<size>11</size></content>
+
+<content start="432" end="440">
+<family>Courier New</family><size>11</size></content>
+
+<content start="440" end="490">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="490" end="491">
+<LeftIndent>140.0</LeftIndent>
+<content start="490" end="491">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="491" end="493">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="491" end="492">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_restrain$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="492" end="493">
+</content>
+
+</paragraph>
+<paragraph start="493" end="495">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="493" end="494">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Restrain blue atoms</title>
+<tooltip>Tether blue atoms at their current positions</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select element 2;
+restrain 1000;
+</script>
+<script2>select element 2;
+restrain 0;
+select element none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="494" end="495">
+</content>
+
+</paragraph>
+<paragraph start="495" end="537">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="495" end="537">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="537" end="538">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="537" end="538">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="538" end="540">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="538" end="539">
+<component><class>org.concord.modeler.PageMd3d</class><resource>script_restrain$0.mdd</resource><coordinate>script_restrain$0.xyz</coordinate><width>420</width><height>300</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="539" end="540">
+</content>
+
+</paragraph>
+<paragraph start="540" end="542">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="540" end="541">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Restrain the big white particle</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>select element X1;
+restrain 1;
+</script>
+<script2>select element X1;
+restrain 0;
+select element none;
+
+</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="541" end="542">
+</content>
+
+</paragraph>
+<paragraph start="542" end="584">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="542" end="583">
+<size>10</size></content>
+
+<content start="583" end="584">
+</content>
+
+</paragraph>
+<paragraph start="584" end="585">
+<LeftIndent>140.0</LeftIndent>
+<content start="584" end="585">
+</content>
+
+</paragraph>
+<paragraph start="585" end="613">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="585" end="587">
+<size>11</size></content>
+
+<content start="587" end="595">
+<href>script_charge.cml</href><size>11</size></content>
+
+<content start="595" end="598">
+<size>11</size></content>
+
+<content start="598" end="603">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="603" end="606">
+<size>11</size></content>
+
+<content start="606" end="610">
+<href>script_damp.cml</href><size>11</size></content>
+
+<content start="610" end="612">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

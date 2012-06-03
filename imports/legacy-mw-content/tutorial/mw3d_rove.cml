@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Moving camera in the navigation mode</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Moving camera in the navigation mode
+
+&lt; Previous | Index | Next &gt;
+
+When the simulator is put into the navigation mode, there will be a navigation pad near the left edge of the window.
+
+In addition to operating through the navigation pad and dragging the mouse, the following keyboard shortcuts are supported:
+
+  
+&#12304;This is an embedded 3D model container.&#12305;
+
+In the above table, CW stands for clockwise and CCW counter-clockwise.
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="455">
+<paragraph start="0" end="37">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="36">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="66">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="38" end="40">
+<size>11</size></content>
+
+<content start="40" end="48">
+<size>11</size><href>mw3d_move.cml</href></content>
+
+<content start="48" end="51">
+<size>11</size></content>
+
+<content start="51" end="56">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="56" end="59">
+<size>11</size></content>
+
+<content start="59" end="63">
+<size>11</size><href>recorder3d.cml</href></content>
+
+<content start="63" end="65">
+<size>11</size></content>
+
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="67">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="184">
+<LeftIndent>140.0</LeftIndent>
+<content start="67" end="183">
+<size>11</size></content>
+
+<content start="183" end="184">
+</content>
+
+</paragraph>
+<paragraph start="184" end="185">
+<LeftIndent>140.0</LeftIndent>
+<content start="184" end="185">
+</content>
+
+</paragraph>
+<paragraph start="185" end="309">
+<LeftIndent>140.0</LeftIndent>
+<content start="185" end="309">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="309" end="310">
+<LeftIndent>140.0</LeftIndent>
+<content start="309" end="310">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="310" end="313">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="310" end="311">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>Key, Action</columnname>
+<row>12</row>
+<column>2</column>
+<layout>108, 238</layout>
+<width>350.0</width>
+<height>360.0</height>
+<border>Lowered Etched</border>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>Up Arrow</te><te>Pitch up</te><te>Down Arrow</te><te>Pitch down</te><te>Left Arrow</te><te>Yaw left</te><te>Right Arrow</te><te>Yaw right</te><te>Shift+Arrows</te><te>Thrust up, down, left and right</te><te>&apos;S&apos;</te><te>Thrust back</te><te>&apos;A&apos;</te><te>Thrust forward</te><te>&apos;Z&apos;/Shift+&apos;Z&apos;</te><te>Roll CW / CCW</te><te>Alt+Up Arrow</te><te>Thrust up and pitch down</te><te>Alt+Down Arrow</te><te>Thrust down and pitch up</te><te>Alt+Left Arrow</te><te>Thrust left and yaw right</te><te>Alt+Right Arrow</te><te>Thrust right and yaw left</te></elementarray>
+</component></content>
+
+<content start="311" end="312">
+<component><class>org.concord.modeler.PageMd3d</class><resource>mw3d_rove$0.mdd</resource><coordinate>mw3d_rove$0.xyz</coordinate><width>340</width><height>360</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="312" end="313">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="313" end="355">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="313" end="354">
+<size>10</size></content>
+
+<content start="354" end="355">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="355" end="356">
+<LeftIndent>140.0</LeftIndent>
+<content start="355" end="356">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="356" end="427">
+<LeftIndent>140.0</LeftIndent>
+<content start="356" end="426">
+<size>11</size></content>
+
+<content start="426" end="427">
+</content>
+
+</paragraph>
+<paragraph start="427" end="455">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="427" end="429">
+<size>11</size></content>
+
+<content start="429" end="437">
+<size>11</size><href>mw3d_move.cml</href></content>
+
+<content start="437" end="440">
+<size>11</size></content>
+
+<content start="440" end="445">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="445" end="448">
+<size>11</size></content>
+
+<content start="448" end="452">
+<size>11</size><href>recorder3d.cml</href></content>
+
+<content start="452" end="454">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

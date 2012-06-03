@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Adding and removing torsional bonds</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Adding and removing torsional bonds
+
+&lt; Previous | Index | Next &gt;
+
+What we call torsional bonds in MW is commonly called torsions in molecular mechanics (see   NIH&apos;s introduction to molecular mechanics).
+
+To make a torsional bond, you need to select the button (&quot; &quot;) from the tool bar. When the Constructor is in this mode, click an angular bond and then ALT+click on another angular bond. A torsional bond will be made between the two selected angular bonds. Note that you cannot make a torsional bond between two angular bonds that do not join together. For those angular bonds that join, you can make a torsional bond between two angular bonds that have such sequences: A-B-C and B-C-D. You cannot make a torsion bond between A-B-C and D-B-C.
+
+ 
+Torsional bonds are not needed for 2D models. So if you have constructed 2D models in MW, this is something new.
+ 
+
+To remove a torsional bond, just right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the polygonal area formed between the two angular bonds and select &quot;Cut&quot; from the pop-up menu. At any time when a torsional bond is selected, in which case it will be highlighted, you can always use CTRL+X (Windows/Linux) or Command+X (Mac), or DELETE and BACKSPACE key to remove it.
+
+Practice
+
+You may play with the following example about adding and removing torsional bonds to finish the construction of an ethylene molecule. It would be interesting to observe how the molecule will change shape if you run this model without adding torsional bonds&#10102;.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+If you have difficulty in constructing the torsional bonds, you may want to check with these two pre-made models. The first one has only two torsional bonds. The second one has four. Hence, the planarity of the molecule is better maintained in the second model than in the first one.
+
+ 
+&#10102; The ethylene molecule contains a C=C double bond and hence, unlike ethane, torsional bonds must be added to maintain the planarity of the conformation.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2039">
+<paragraph start="0" end="36">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="35">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<RightIndent>20.0</RightIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="65">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="37" end="39">
+<size>11</size></content>
+
+<content start="39" end="47">
+<href>abond3d.cml</href><size>11</size></content>
+
+<content start="47" end="50">
+<size>11</size></content>
+
+<content start="50" end="55">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="55" end="58">
+<size>11</size></content>
+
+<content start="58" end="62">
+<href>duplicate3d.cml</href><size>11</size></content>
+
+<content start="62" end="64">
+<size>11</size></content>
+
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="203">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="79">
+<size>11</size></content>
+
+<content start="79" end="94">
+<italic>true</italic><size>11</size></content>
+
+<content start="94" end="157">
+<size>11</size></content>
+
+<content start="157" end="158">
+<icon>htmlink.gif</icon></content>
+
+<content start="158" end="159">
+<size>11</size></content>
+
+<content start="159" end="200">
+<href>http://cmm.cit.nih.gov/modeling/guide_documents/molecular_mechanics_document.html</href><size>11</size></content>
+
+<content start="200" end="203">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="203" end="204">
+<LeftIndent>140.0</LeftIndent>
+<content start="203" end="204">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="204" end="745">
+<LeftIndent>140.0</LeftIndent>
+<content start="204" end="262">
+<size>11</size></content>
+
+<content start="262" end="263">
+<icon>torsionbond.gif</icon></content>
+
+<content start="263" end="745">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="745" end="746">
+<LeftIndent>140.0</LeftIndent>
+<content start="745" end="746">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="746" end="748">
+<LeftIndent>140.0</LeftIndent>
+<content start="746" end="747">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="747" end="748">
+</content>
+
+</paragraph>
+<paragraph start="748" end="861">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="748" end="860">
+<size>11</size></content>
+
+<content start="860" end="861">
+</content>
+
+</paragraph>
+<paragraph start="861" end="863">
+<LeftIndent>140.0</LeftIndent>
+<content start="861" end="862">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="862" end="863">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="863" end="864">
+<LeftIndent>140.0</LeftIndent>
+<content start="863" end="864">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="864" end="1256">
+<LeftIndent>140.0</LeftIndent>
+<content start="864" end="1256">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1256" end="1257">
+<LeftIndent>140.0</LeftIndent>
+<content start="1256" end="1257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1257" end="1266">
+<LeftIndent>140.0</LeftIndent>
+<content start="1257" end="1265">
+<bold>true</bold><size>11</size></content>
+
+<content start="1265" end="1266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1266" end="1267">
+<LeftIndent>140.0</LeftIndent>
+<content start="1266" end="1267">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1267" end="1526">
+<LeftIndent>140.0</LeftIndent>
+<content start="1267" end="1523">
+<size>11</size></content>
+
+<content start="1523" end="1524">
+<size>13</size></content>
+
+<content start="1524" end="1526">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1526" end="1527">
+<LeftIndent>140.0</LeftIndent>
+<content start="1526" end="1527">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1527" end="1529">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1527" end="1528">
+<component><class>org.concord.modeler.PageMd3d</class><resource>tbond3d$0.mdd</resource><coordinate>tbond3d$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="1528" end="1529">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1529" end="1568">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1529" end="1567">
+<size>10</size></content>
+
+<content start="1567" end="1568">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1568" end="1569">
+<LeftIndent>140.0</LeftIndent>
+<content start="1568" end="1569">
+</content>
+
+</paragraph>
+<paragraph start="1569" end="1853">
+<LeftIndent>140.0</LeftIndent>
+<content start="1569" end="1683">
+<size>11</size></content>
+
+<content start="1683" end="1696">
+<href>tbond3da.cml</href><size>11</size></content>
+
+<content start="1696" end="1727">
+<size>11</size></content>
+
+<content start="1727" end="1741">
+<href>tbond3db.cml</href><size>11</size></content>
+
+<content start="1741" end="1852">
+<size>11</size></content>
+
+<content start="1852" end="1853">
+</content>
+
+</paragraph>
+<paragraph start="1853" end="1854">
+<LeftIndent>140.0</LeftIndent>
+<content start="1853" end="1854">
+</content>
+
+</paragraph>
+<paragraph start="1854" end="1856">
+<LeftIndent>140.0</LeftIndent>
+<content start="1854" end="1855">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1855" end="1856">
+</content>
+
+</paragraph>
+<paragraph start="1856" end="2010">
+<LeftIndent>140.0</LeftIndent>
+<content start="1856" end="1857">
+<size>13</size></content>
+
+<content start="1857" end="1858">
+<size>11</size></content>
+
+<content start="1858" end="2009">
+<size>10</size></content>
+
+<content start="2009" end="2010">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2010" end="2011">
+<LeftIndent>140.0</LeftIndent>
+<content start="2010" end="2011">
+</content>
+
+</paragraph>
+<paragraph start="2011" end="2039">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2011" end="2013">
+<size>11</size></content>
+
+<content start="2013" end="2021">
+<href>abond3d.cml</href><size>11</size></content>
+
+<content start="2021" end="2024">
+<size>11</size></content>
+
+<content start="2024" end="2029">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="2029" end="2032">
+<size>11</size></content>
+
+<content start="2032" end="2036">
+<href>duplicate3d.cml</href><size>11</size></content>
+
+<content start="2036" end="2038">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

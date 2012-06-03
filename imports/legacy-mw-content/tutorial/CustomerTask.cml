@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Adding custom tasks</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Adding custom tasks
+
+&lt; Previous | Index | Next &gt;
+
+In addition to the non-editable tasks provided by the system, you can also add your own tasks to perform customized calculations, such as detecting collisions of certain atoms and checking if a particle is moving into a certain area. A custom task is run through scripts. Therefore, you can create as complicated tasks as permitted by the scripts.
+
+Adding a task
+
+You can add a task by clicking the &quot;Add Task&quot; button at the bottom panel of the Task Manager. The following dialog window will show up:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+With this dialog window, you can type in the name of the task and a short description about what it does, and set the priority level (which determines which task will run first --- a task with a higher priority level will run before one with a lower priority level), the number of molecular dynamics steps between two adjacent executions (which is known as the Interval) and the life time of the task (i.e. for how many molecular dynamics steps the task will live up to). Of the most importance, you have to set the scripts that will do the desired work.
+
+The following model demonstrates the use of a custom task to detect if a soccer ball with a given velocity hits a target.
+
+   
+ 
+&#12304;This is an embedded model container.&#12305;
+
+&quot;Hit Detection&quot; task scripts
+ 
+
+Editing a custom task
+
+A custom task can be edited by clicking the &quot;Edit Task&quot; button on the bottom panel of the Task Manager Window, or just simply double-clicking on the selected task. Note that a system task cannot be edited (the &quot;Edit Task&quot; button will gray out), except for its Interval parameter.
+
+Removing a custom task
+
+A custom task can be removed by clicking the &quot;Remove Task&quot; button on the bottom panel of the Task Manager Window. Note that a system task cannot be removed (the &quot;Remove Task&quot; button will be grayed out).
+
+Using the runtask command
+
+The runtask command provides a convenient way for you to re-use a task script. Sometimes, you can uncheck the &quot;Run&quot; check box of a task in the list of the Task Manager so that it will not run unless called by a runtask command.
+
+Applications
+
+Timer. A task that does something dramatical after the simulation runs for a certain amount of time can be used as a timer. For example, we can use a task to stop the simulation at some point if we know beforehand that certain critical behaviors will emerge before that point.
+
+Collision detection. If we are interested in monitoring whether, when and where a particle collides with another one or another object, we can use some simple math expressions in a task to detect this kind of critical conditions. Note that we can also use a variable as a counter to store the number of times the condition is detected.
+
+Temperature sensor. A task can be used to monitor the temperature periodically and determine what to do based on the measured temperature.
+
+Interactive tutoring. We can set up a task that detects a set of different conditions and then give different instructions to the user when he or she is interacting with the model. Instructions can be shown as pop-up messages using the message command. Aslo, we can use the snapshot command to produce a screenshot of the current state of the model and ask the user to annotate it.
+
+Demo examples:
+
+   Collision detection
+   Spatial equilibrium test
+   Heat transfer test
+   Phase detection test
+   Monitoring user-controlled temperature
+
+The above cases are just some examples. There are much more things that you can do in a custom task using scripts.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3576">
+<paragraph start="0" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="19">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="49">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="21" end="23">
+<size>11</size></content>
+
+<content start="23" end="31">
+<href>taskManager.cml</href><size>11</size></content>
+
+<content start="31" end="34">
+<size>11</size></content>
+
+<content start="34" end="39">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="46">
+<href>viewSettings.cml</href><size>11</size></content>
+
+<content start="46" end="48">
+<size>11</size></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<LeftIndent>100.0</LeftIndent>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="398">
+<LeftIndent>140.0</LeftIndent>
+<content start="50" end="313">
+<size>11</size></content>
+
+<content start="313" end="320">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="320" end="398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="398" end="399">
+<LeftIndent>140.0</LeftIndent>
+<content start="398" end="399">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="399" end="413">
+<LeftIndent>140.0</LeftIndent>
+<content start="399" end="412">
+<bold>true</bold><size>11</size></content>
+
+<content start="412" end="413">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="413" end="414">
+<LeftIndent>140.0</LeftIndent>
+<content start="413" end="414">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="414" end="550">
+<LeftIndent>140.0</LeftIndent>
+<content start="414" end="494">
+<size>11</size></content>
+
+<content start="494" end="506">
+<href>taskManager.cml</href><size>11</size></content>
+
+<content start="506" end="550">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="550" end="551">
+<LeftIndent>140.0</LeftIndent>
+<content start="550" end="551">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="551" end="554">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="551" end="552">
+<size>11</size></content>
+
+<content start="552" end="553">
+<icon>TaskCreator.gif</icon></content>
+
+<content start="553" end="554">
+</content>
+
+</paragraph>
+<paragraph start="554" end="578">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="554" end="577">
+<size>10</size></content>
+
+<content start="577" end="578">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="578" end="579">
+<LeftIndent>140.0</LeftIndent>
+<content start="578" end="579">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="579" end="1134">
+<LeftIndent>140.0</LeftIndent>
+<content start="579" end="940">
+<size>11</size></content>
+
+<content start="940" end="948">
+<bold>true</bold><size>11</size></content>
+
+<content start="948" end="1134">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1134" end="1135">
+<LeftIndent>140.0</LeftIndent>
+<content start="1134" end="1135">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1135" end="1257">
+<LeftIndent>140.0</LeftIndent>
+<content start="1135" end="1257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1257" end="1258">
+<LeftIndent>140.0</LeftIndent>
+<content start="1257" end="1258">
+</content>
+
+</paragraph>
+<paragraph start="1258" end="1262">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1258" end="1259">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>CustomerTask$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1259" end="1260">
+</content>
+
+<content start="1260" end="1261">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>250</width><height>314</height>
+<border>Lowered Etched</border></component></content>
+
+<content start="1261" end="1262">
+</content>
+
+</paragraph>
+<paragraph start="1262" end="1264">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1262" end="1263">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>4.8</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>50</nstep>
+<title>Change the speed</title>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;10 m/s&quot;}{value=&quot;5.0&quot;, label=&quot;5 m/s&quot;}{value=&quot;0.0&quot;, label=&quot;0 m/s&quot;}</labeltable>
+<script>set atom[0].vx 100*%val;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="1263" end="1264">
+</content>
+
+</paragraph>
+<paragraph start="1264" end="1303">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1264" end="1302">
+<size>10</size></content>
+
+<content start="1302" end="1303">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1303" end="1304">
+<LeftIndent>140.0</LeftIndent>
+<content start="1303" end="1304">
+</content>
+
+</paragraph>
+<paragraph start="1304" end="1333">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1304" end="1332">
+<size>11</size></content>
+
+<content start="1332" end="1333">
+</content>
+
+</paragraph>
+<paragraph start="1333" end="1335">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1333" end="1334">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>600.0</width>
+<height>100.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;pre&gt;&lt;font size=&quot;2&quot;&gt;set %dx %width/2-%atom[0].rx;
+set %dy %height-%atom[0].ry;
+if(100 &amp;gt; %model_time);
+  set %hit_time 0; // reset %hit_time when the model resets
+endif;
+if(%diameter * %diameter &amp;gt; %dx * %dx + %dy * %dy and %model_time - %hit_time &amp;gt; 500); // use 500 fs to present multiple detections
+  set %hit_time %model_time;
+  print The target was hit at %hit_time.
+endif;&lt;/font&gt;&lt;/pre&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1334" end="1335">
+</content>
+
+</paragraph>
+<paragraph start="1335" end="1336">
+<LeftIndent>140.0</LeftIndent>
+<content start="1335" end="1336">
+</content>
+
+</paragraph>
+<paragraph start="1336" end="1358">
+<LeftIndent>140.0</LeftIndent>
+<content start="1336" end="1357">
+<bold>true</bold><size>11</size></content>
+
+<content start="1357" end="1358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1358" end="1359">
+<LeftIndent>140.0</LeftIndent>
+<content start="1358" end="1359">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1359" end="1639">
+<LeftIndent>140.0</LeftIndent>
+<content start="1359" end="1639">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1639" end="1640">
+<LeftIndent>140.0</LeftIndent>
+<content start="1639" end="1640">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1640" end="1663">
+<LeftIndent>140.0</LeftIndent>
+<content start="1640" end="1662">
+<bold>true</bold><size>11</size></content>
+
+<content start="1662" end="1663">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1663" end="1664">
+<LeftIndent>140.0</LeftIndent>
+<content start="1663" end="1664">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1664" end="1867">
+<LeftIndent>140.0</LeftIndent>
+<content start="1664" end="1867">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1867" end="1868">
+<LeftIndent>140.0</LeftIndent>
+<content start="1867" end="1868">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1868" end="1894">
+<LeftIndent>140.0</LeftIndent>
+<content start="1868" end="1878">
+<bold>true</bold><size>11</size></content>
+
+<content start="1878" end="1885">
+<bold>true</bold><family>Courier New</family><size>11</size></content>
+
+<content start="1885" end="1893">
+<bold>true</bold><size>11</size></content>
+
+<content start="1893" end="1894">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1894" end="1895">
+<LeftIndent>140.0</LeftIndent>
+<content start="1894" end="1895">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1895" end="2123">
+<LeftIndent>140.0</LeftIndent>
+<content start="1895" end="1899">
+<size>11</size></content>
+
+<content start="1899" end="1906">
+<family>Courier New</family><href>script_runtask.cml</href><size>11</size></content>
+
+<content start="1906" end="2106">
+<size>11</size></content>
+
+<content start="2106" end="2113">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2113" end="2123">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2123" end="2124">
+<LeftIndent>140.0</LeftIndent>
+<content start="2123" end="2124">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2124" end="2137">
+<LeftIndent>140.0</LeftIndent>
+<content start="2124" end="2136">
+<bold>true</bold><size>11</size></content>
+
+<content start="2136" end="2137">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2137" end="2138">
+<LeftIndent>140.0</LeftIndent>
+<content start="2137" end="2138">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2138" end="2415">
+<LeftIndent>160.0</LeftIndent>
+<content start="2138" end="2143">
+<italic>true</italic><size>11</size></content>
+
+<content start="2143" end="2415">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2415" end="2416">
+<LeftIndent>160.0</LeftIndent>
+<content start="2415" end="2416">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2416" end="2752">
+<LeftIndent>160.0</LeftIndent>
+<content start="2416" end="2435">
+<italic>true</italic><size>11</size></content>
+
+<content start="2435" end="2752">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2752" end="2753">
+<LeftIndent>160.0</LeftIndent>
+<content start="2752" end="2753">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2753" end="2892">
+<LeftIndent>160.0</LeftIndent>
+<content start="2753" end="2771">
+<italic>true</italic><size>11</size></content>
+
+<content start="2771" end="2892">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2892" end="2893">
+<LeftIndent>160.0</LeftIndent>
+<content start="2892" end="2893">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2893" end="3275">
+<LeftIndent>160.0</LeftIndent>
+<content start="2893" end="2913">
+<italic>true</italic><size>11</size></content>
+
+<content start="2913" end="3129">
+<size>11</size></content>
+
+<content start="3129" end="3136">
+<family>Courier New</family><href>script_message.cml</href><size>11</size></content>
+
+<content start="3136" end="3167">
+<size>11</size></content>
+
+<content start="3167" end="3175">
+<family>Courier New</family><href>script_snapshot.cml</href><size>11</size></content>
+
+<content start="3175" end="3275">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3275" end="3276">
+<LeftIndent>160.0</LeftIndent>
+<content start="3275" end="3276">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3276" end="3291">
+<LeftIndent>160.0</LeftIndent>
+<content start="3276" end="3289">
+<italic>true</italic><size>11</size></content>
+
+<content start="3289" end="3291">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3291" end="3292">
+<LeftIndent>180.0</LeftIndent>
+<content start="3291" end="3292">
+</content>
+
+</paragraph>
+<paragraph start="3292" end="3315">
+<LeftIndent>180.0</LeftIndent>
+<content start="3292" end="3293">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="3293" end="3295">
+</content>
+
+<content start="3295" end="3314">
+<href>collisiondetectiontest.cml</href><size>11</size></content>
+
+<content start="3314" end="3315">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3315" end="3343">
+<LeftIndent>180.0</LeftIndent>
+<content start="3315" end="3316">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="3316" end="3318">
+</content>
+
+<content start="3318" end="3342">
+<href>spatialequilibrium.cml</href><size>11</size></content>
+
+<content start="3342" end="3343">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3343" end="3365">
+<LeftIndent>180.0</LeftIndent>
+<content start="3343" end="3344">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="3344" end="3346">
+</content>
+
+<content start="3346" end="3364">
+<href>heattransfer.cml</href><size>11</size></content>
+
+<content start="3364" end="3365">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3365" end="3389">
+<LeftIndent>180.0</LeftIndent>
+<content start="3365" end="3366">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="3366" end="3368">
+</content>
+
+<content start="3368" end="3388">
+<href>phasedetection.cml</href><size>11</size></content>
+
+<content start="3388" end="3389">
+</content>
+
+</paragraph>
+<paragraph start="3389" end="3431">
+<LeftIndent>180.0</LeftIndent>
+<content start="3389" end="3390">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="3390" end="3392">
+</content>
+
+<content start="3392" end="3430">
+<href>monitortemperature.cml</href><size>11</size></content>
+
+<content start="3430" end="3431">
+</content>
+
+</paragraph>
+<paragraph start="3431" end="3432">
+<LeftIndent>140.0</LeftIndent>
+<content start="3431" end="3432">
+</content>
+
+</paragraph>
+<paragraph start="3432" end="3547">
+<LeftIndent>140.0</LeftIndent>
+<content start="3432" end="3546">
+<size>11</size></content>
+
+<content start="3546" end="3547">
+</content>
+
+</paragraph>
+<paragraph start="3547" end="3548">
+<LeftIndent>140.0</LeftIndent>
+<content start="3547" end="3548">
+</content>
+
+</paragraph>
+<paragraph start="3548" end="3576">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3548" end="3550">
+<size>11</size></content>
+
+<content start="3550" end="3558">
+<href>taskManager.cml</href><size>11</size></content>
+
+<content start="3558" end="3561">
+<size>11</size></content>
+
+<content start="3561" end="3566">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="3566" end="3569">
+<size>11</size></content>
+
+<content start="3569" end="3573">
+<href>viewSettings.cml</href><size>11</size></content>
+
+<content start="3573" end="3575">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

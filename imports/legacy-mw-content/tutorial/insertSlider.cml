@@ -1,0 +1,916 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a slider</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a slider
+
+&lt; Previous | Index | Next &gt;
+
+You can insert a slider in a page for the user to change the value of a variable, for instance, temperature or external pressure, of a model on the page.
+
+When you select the &quot;Insert &gt; Standard Controller for Model &gt; Slider&quot; menu action (keyboard shortcut: ALT+SHIFT+L), you will see the following dialog (note that the type of model and action displaying in the dialog window may vary&#8722;only the models present on the page and only the actions that are permitted by the current state of the corresponding model will show up):
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This dialog allows you to select a model and an action that applies to the model. If there is no model on the page, the Model and Action Combo Boxes will be blank.
+
+To control a variable, you have to set the upper bound, the lower bound, and the number of steps. The step size, which is the smallest change when a user pulls the slider, is determined by the difference between the two bounds divided by the number of steps. 
+
+ 
+ATTENTION: A slider provides ONLY a finite number of steps of changes. The variable it controls will be set to ONLY one of these values. If the variable holds an initial value that does not resolve exactly to one of the values, the knob will snap to the closest tick mark. In this case, the value on the slider that is supposed to represent the variable will NOT be exactly identical to the initial value of the variable. Although in most cases the difference might not be crucial, you should be aware of it.
+ 
+
+A slider can be either vertical or horizontal. You can set its size, border, transparency, or background color if it is not transparent, decide whether or not tick marks should be drawn, and set whether or not the slider should be disabled while the model is running.
+
+Optionally, a slider can be given a unique identifier (UID). It has two uses. First, it can be used by a scripter to find the slider and then do something on it. Second, it can be used to generate a log file that reports the user&apos;s activity on the slider. Data containing, for instance, how many times and when a slider has been pulled to what values, may provide insight to how the user learns from interacting with a model. A restriction of naming a UID is that it must be a string composed of only the alphanumeric characters and at least one alphabetic character. As its name indicates, you cannot have multiple components on the same page that share the same UID. If you do not need a UID for the slider, just leave the field blank.
+
+Setting labels
+
+To set the labels, you will need to enter the value-label pairs in the first text area, in the following format:
+
+{value=&quot;value1&quot; label=&quot;label1&quot;}
+{value=&quot;value2&quot; label=&quot;label2&quot;}
+{value=&quot;value3&quot; label=&quot;label3&quot;}
+............
+{value=&quot;valuen&quot; label=&quot;labeln&quot;}
+
+The value attributes must be numbers, and the label attributes can be any short strings including numbers.
+
+ 
+IMPORTANT NOTE: The values set in the value attributes must be exactly on the ticks of the slider. Namely, the value of the slider can be exactly set by pulling the slider. Otherwise, they would automatically snap to the nearest tick marks. For example, if the upper and lower bounds of the slider are set to 10 and 0, respectively, and the number of steps is set to 50, the value 2.5 cannot be reached by using the slider. Because the step size is 0.2, you can set the slider&apos;s value to 2.4 and 2.6, but not 2.5. If you have set the value to be 2.5 in a value-label pair, it will be rounded up to 2.6. If you want to correct the problem in this case, set the number of steps is to 20 or 40.
+ 
+
+If you do not want labels on the slider, just keep the text area empty.
+
+Setting scripts
+
+In the second text area, you can enter scripts that will be executed when the knob is released. In the scripts, you can reference the slider&apos;s parameters, following this protocol:
+
+   maximum - %max
+   minimum - %min
+   current value - %val
+
+For example, you can use the following script command to set the epsilon parameter of an element: set element[1].epsilon %val. The parameters can also be put into mathematical expressions in a script command. For example, you can use set element[2].mass exp(%val/10) to increase mass exponentially.
+
+ 
+Tip: If scripts are long and you will need to write them in a more comfortable way, use your favorite  text editor to write scripts and copy back to the text area. If there exist scripts already, copy them to your editor first before editing them.
+ 
+
+The scriptability of a slider enables you to design very flexible controls. The following is an example of using scripts to control the temperature.
+
+  
+ 
+&#12304;This is an embedded model container.&#12305;
+
+Controlling multiple variables from a slider
+
+In conjunction with some mathematical expressions, you can use one slider to control multiple variables through scripts. There is simply no limitation on the number of variables that can be controlled. The following is an example:
+
+ 
+ 
+&#12304;This is an embedded model container.&#12305;
+
+If you are wondering how that happens, take a look at the scripts set for the above slider:
+
+select element 2;
+set vx -200*%val;
+set vy -200*(%max-%val);
+select element 3;
+set vx 200*%val;
+set vy 200*(%max-%val);
+
+Changing and removing a slider
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove, and copy a slider. When you copy a slider, the labels and scripts will be copied as well.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="5464">
+<paragraph start="0" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<href>insertSpinner.cml</href><size>11</size></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<href>insertComboBox.cml</href><size>11</size></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="203">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="203">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="203" end="204">
+<LeftIndent>140.0</LeftIndent>
+<content start="203" end="204">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="204" end="574">
+<LeftIndent>140.0</LeftIndent>
+<content start="204" end="434">
+<size>11</size></content>
+
+<content start="434" end="435">
+</content>
+
+<content start="435" end="574">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="574" end="575">
+<LeftIndent>100.0</LeftIndent>
+<content start="574" end="575">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="575" end="578">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="575" end="576">
+<size>11</size></content>
+
+<content start="576" end="577">
+<icon>SliderController.gif</icon><size>11</size></content>
+
+<content start="577" end="578">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="578" end="602">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="578" end="579">
+<bold>true</bold><size>13</size></content>
+
+<content start="579" end="600">
+<size>10</size></content>
+
+<content start="600" end="601">
+<bold>true</bold><size>13</size></content>
+
+<content start="601" end="602">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="602" end="603">
+<LeftIndent>100.0</LeftIndent>
+<content start="602" end="603">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="603" end="767">
+<LeftIndent>140.0</LeftIndent>
+<content start="603" end="767">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="767" end="768">
+<LeftIndent>140.0</LeftIndent>
+<content start="767" end="768">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="768" end="1028">
+<LeftIndent>140.0</LeftIndent>
+<content start="768" end="1028">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1028" end="1029">
+<LeftIndent>140.0</LeftIndent>
+<content start="1028" end="1029">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1029" end="1031">
+<LeftIndent>140.0</LeftIndent>
+<content start="1029" end="1030">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1030" end="1031">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1031" end="1540">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1031" end="1040">
+<bold>true</bold><size>11</size></content>
+
+<content start="1040" end="1540">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1540" end="1542">
+<LeftIndent>140.0</LeftIndent>
+<content start="1540" end="1541">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1541" end="1542">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1542" end="1543">
+<LeftIndent>140.0</LeftIndent>
+<content start="1542" end="1543">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1543" end="1811">
+<LeftIndent>140.0</LeftIndent>
+<content start="1543" end="1811">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1811" end="1812">
+<LeftIndent>140.0</LeftIndent>
+<content start="1811" end="1812">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1812" end="2550">
+<LeftIndent>140.0</LeftIndent>
+<content start="1812" end="2313">
+<size>11</size></content>
+
+<content start="2313" end="2378">
+<size>11</size></content>
+
+<content start="2378" end="2550">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2550" end="2551">
+<LeftIndent>140.0</LeftIndent>
+<content start="2550" end="2551">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2551" end="2566">
+<LeftIndent>140.0</LeftIndent>
+<content start="2551" end="2565">
+<bold>true</bold><size>11</size></content>
+
+<content start="2565" end="2566">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2566" end="2567">
+<LeftIndent>140.0</LeftIndent>
+<content start="2566" end="2567">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2567" end="2680">
+<LeftIndent>140.0</LeftIndent>
+<content start="2567" end="2680">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2680" end="2681">
+<LeftIndent>140.0</LeftIndent>
+<content start="2680" end="2681">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2681" end="2713">
+<LeftIndent>160.0</LeftIndent>
+<content start="2681" end="2713">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2713" end="2745">
+<LeftIndent>160.0</LeftIndent>
+<content start="2713" end="2745">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2745" end="2777">
+<LeftIndent>160.0</LeftIndent>
+<content start="2745" end="2777">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2777" end="2790">
+<LeftIndent>160.0</LeftIndent>
+<content start="2777" end="2790">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2790" end="2822">
+<LeftIndent>160.0</LeftIndent>
+<content start="2790" end="2803">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2803" end="2804">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="2804" end="2818">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2818" end="2819">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="2819" end="2821">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2821" end="2822">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2822" end="2823">
+<LeftIndent>140.0</LeftIndent>
+<content start="2822" end="2823">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2823" end="2930">
+<LeftIndent>140.0</LeftIndent>
+<content start="2823" end="2827">
+<size>11</size></content>
+
+<content start="2827" end="2832">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2832" end="2844">
+<size>11</size></content>
+
+<content start="2844" end="2848">
+<bold>true</bold><size>11</size></content>
+
+<content start="2848" end="2869">
+<size>11</size></content>
+
+<content start="2869" end="2874">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2874" end="2930">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2930" end="2931">
+<LeftIndent>140.0</LeftIndent>
+<content start="2930" end="2931">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2931" end="2933">
+<LeftIndent>140.0</LeftIndent>
+<content start="2931" end="2932">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2932" end="2933">
+</content>
+
+</paragraph>
+<paragraph start="2933" end="3625">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2933" end="2947">
+<bold>true</bold><size>11</size></content>
+
+<content start="2947" end="2971">
+<size>11</size></content>
+
+<content start="2971" end="2976">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2976" end="3625">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3625" end="3627">
+<LeftIndent>140.0</LeftIndent>
+<content start="3625" end="3626">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="3626" end="3627">
+</content>
+
+</paragraph>
+<paragraph start="3627" end="3628">
+<LeftIndent>140.0</LeftIndent>
+<content start="3627" end="3628">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3628" end="3700">
+<LeftIndent>140.0</LeftIndent>
+<content start="3628" end="3700">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3700" end="3701">
+<LeftIndent>140.0</LeftIndent>
+<content start="3700" end="3701">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3701" end="3717">
+<LeftIndent>140.0</LeftIndent>
+<content start="3701" end="3716">
+<bold>true</bold><size>11</size></content>
+
+<content start="3716" end="3717">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3717" end="3718">
+<LeftIndent>140.0</LeftIndent>
+<content start="3717" end="3718">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3718" end="3898">
+<LeftIndent>140.0</LeftIndent>
+<content start="3718" end="3898">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3898" end="3899">
+<LeftIndent>140.0</LeftIndent>
+<content start="3898" end="3899">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3899" end="3917">
+<LeftIndent>160.0</LeftIndent>
+<content start="3899" end="3900">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="3900" end="3902">
+</content>
+
+<content start="3902" end="3912">
+<size>11</size></content>
+
+<content start="3912" end="3916">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3916" end="3917">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3917" end="3935">
+<LeftIndent>160.0</LeftIndent>
+<content start="3917" end="3918">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="3918" end="3920">
+</content>
+
+<content start="3920" end="3930">
+<size>11</size></content>
+
+<content start="3930" end="3934">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3934" end="3935">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3935" end="3959">
+<LeftIndent>160.0</LeftIndent>
+<content start="3935" end="3936">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="3936" end="3938">
+</content>
+
+<content start="3938" end="3954">
+<size>11</size></content>
+
+<content start="3954" end="3958">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3958" end="3959">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3959" end="3960">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>60.0</RightIndent>
+<content start="3959" end="3960">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3960" end="4259">
+<LeftIndent>140.0</LeftIndent>
+<content start="3960" end="4058">
+<size>11</size></content>
+
+<content start="4058" end="4085">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4085" end="4123">
+<size>11</size></content>
+
+<content start="4123" end="4147">
+<href>script_expression.cml</href><size>11</size></content>
+
+<content start="4147" end="4194">
+<size>11</size></content>
+
+<content start="4194" end="4226">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4226" end="4259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4259" end="4260">
+<LeftIndent>140.0</LeftIndent>
+<content start="4259" end="4260">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4260" end="4262">
+<LeftIndent>140.0</LeftIndent>
+<content start="4260" end="4261">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="4261" end="4262">
+</content>
+
+</paragraph>
+<paragraph start="4262" end="4510">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="4262" end="4265">
+<bold>true</bold><size>11</size></content>
+
+<content start="4265" end="4509">
+<size>11</size></content>
+
+<content start="4509" end="4510">
+</content>
+
+</paragraph>
+<paragraph start="4510" end="4512">
+<LeftIndent>140.0</LeftIndent>
+<content start="4510" end="4511">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="4511" end="4512">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4512" end="4513">
+<LeftIndent>140.0</LeftIndent>
+<content start="4512" end="4513">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4513" end="4662">
+<LeftIndent>140.0</LeftIndent>
+<content start="4513" end="4662">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4662" end="4663">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>60.0</RightIndent>
+<content start="4662" end="4663">
+</content>
+
+</paragraph>
+<paragraph start="4663" end="4666">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4663" end="4664">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>1000.0</maximum>
+<nstep>20</nstep>
+<title>Linear control of temperature</title>
+<width>250</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;500.0&quot;, label=&quot;500K&quot;}{value=&quot;1000.0&quot;, label=&quot;1000K&quot;}{value=&quot;250.0&quot;, label=&quot;250K&quot;}{value=&quot;750.0&quot;, label=&quot;750K&quot;}{value=&quot;0.0&quot;, label=&quot;0K&quot;}</labeltable>
+<script>set temperature %val
+</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="4664" end="4665">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>5.0</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>20</nstep>
+<title>Sinusoidal control of temperature</title>
+<width>250</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;5.0&quot;, label=&quot;0K&quot;}{value=&quot;10.0&quot;, label=&quot;0K&quot;}{value=&quot;2.5&quot;, label=&quot;1000K&quot;}{value=&quot;7.5&quot;, label=&quot;1000K&quot;}{value=&quot;0.0&quot;, label=&quot;0K&quot;}</labeltable>
+<script>set temperature sin(%val/5*pi)^2*1000</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="4665" end="4666">
+</content>
+
+</paragraph>
+<paragraph start="4666" end="4668">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4666" end="4667">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>insertSlider$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="4667" end="4668">
+</content>
+
+</paragraph>
+<paragraph start="4668" end="4707">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4668" end="4669">
+<bold>true</bold><size>13</size></content>
+
+<content start="4669" end="4705">
+<size>10</size></content>
+
+<content start="4705" end="4706">
+<bold>true</bold><size>13</size></content>
+
+<content start="4706" end="4707">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4707" end="4708">
+<LeftIndent>140.0</LeftIndent>
+<content start="4707" end="4708">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4708" end="4753">
+<LeftIndent>140.0</LeftIndent>
+<content start="4708" end="4752">
+<bold>true</bold><size>11</size></content>
+
+<content start="4752" end="4753">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4753" end="4754">
+<LeftIndent>140.0</LeftIndent>
+<content start="4753" end="4754">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4754" end="4985">
+<LeftIndent>140.0</LeftIndent>
+<content start="4754" end="4779">
+<size>11</size></content>
+
+<content start="4779" end="4803">
+<href>script_expression.cml</href><size>11</size></content>
+
+<content start="4803" end="4985">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4985" end="4986">
+<LeftIndent>140.0</LeftIndent>
+<content start="4985" end="4986">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4986" end="4988">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4986" end="4987">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>insertSlider$1.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="4987" end="4988">
+</content>
+
+</paragraph>
+<paragraph start="4988" end="4990">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4988" end="4989">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<value>4.5</value>
+<minimum>0.0</minimum>
+<maximum>10.0</maximum>
+<nstep>20</nstep>
+<title>Controlling velocity vectors of two types of atoms</title>
+<width>400</width>
+<height>80</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;10.0&quot;, label=&quot;horizontal&quot;}{value=&quot;0.0&quot;, label=&quot;vertical&quot;}</labeltable>
+<script>select element 2;
+set vx -200*%val;
+set vy -200*(%max-%val);
+select element 3;
+set vx 200*%val;
+set vy 200*(%max-%val);</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="4989" end="4990">
+</content>
+
+</paragraph>
+<paragraph start="4990" end="5029">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4990" end="4991">
+<bold>true</bold><size>13</size></content>
+
+<content start="4991" end="5027">
+<size>10</size></content>
+
+<content start="5027" end="5028">
+<bold>true</bold><size>13</size></content>
+
+<content start="5028" end="5029">
+</content>
+
+</paragraph>
+<paragraph start="5029" end="5030">
+<LeftIndent>140.0</LeftIndent>
+<content start="5029" end="5030">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5030" end="5122">
+<LeftIndent>140.0</LeftIndent>
+<content start="5030" end="5122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5122" end="5123">
+<LeftIndent>140.0</LeftIndent>
+<content start="5122" end="5123">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5123" end="5141">
+<LeftIndent>160.0</LeftIndent>
+<content start="5123" end="5141">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="5141" end="5159">
+<LeftIndent>160.0</LeftIndent>
+<content start="5141" end="5159">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="5159" end="5184">
+<LeftIndent>160.0</LeftIndent>
+<content start="5159" end="5184">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="5184" end="5202">
+<LeftIndent>160.0</LeftIndent>
+<content start="5184" end="5202">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="5202" end="5219">
+<LeftIndent>160.0</LeftIndent>
+<content start="5202" end="5219">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="5219" end="5243">
+<LeftIndent>160.0</LeftIndent>
+<content start="5219" end="5242">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5242" end="5243">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5243" end="5244">
+<LeftIndent>140.0</LeftIndent>
+<content start="5243" end="5244">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5244" end="5275">
+<LeftIndent>140.0</LeftIndent>
+<content start="5244" end="5274">
+<bold>true</bold><size>11</size></content>
+
+<content start="5274" end="5275">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5275" end="5276">
+<LeftIndent>140.0</LeftIndent>
+<content start="5275" end="5276">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5276" end="5435">
+<LeftIndent>140.0</LeftIndent>
+<content start="5276" end="5281">
+<size>11</size></content>
+
+<content start="5281" end="5310">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="5310" end="5434">
+<size>11</size></content>
+
+<content start="5434" end="5435">
+</content>
+
+</paragraph>
+<paragraph start="5435" end="5436">
+<LeftIndent>100.0</LeftIndent>
+<content start="5435" end="5436">
+</content>
+
+</paragraph>
+<paragraph start="5436" end="5464">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="5436" end="5438">
+<size>11</size></content>
+
+<content start="5438" end="5446">
+<href>insertSpinner.cml</href><size>11</size></content>
+
+<content start="5446" end="5449">
+<size>11</size></content>
+
+<content start="5449" end="5454">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="5454" end="5457">
+<size>11</size></content>
+
+<content start="5457" end="5461">
+<href>insertComboBox.cml</href><size>11</size></content>
+
+<content start="5461" end="5463">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

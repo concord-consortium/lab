@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Steering the Rover</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Steering the Rover
+
+&lt; Previous | Index | Next &gt;
+
+To support better virtual reality for exploring molecules, we built the Rover System. It consists of a steerable rover, a built-in support of collision detection for atoms, and a mechanism that allows a designer to add a set of interaction centers embedded into a molecule for interacting with the Rover by physical forces such as Pauli repulsions and Coulomb forces (including charge-charge and charge-dipole interactions).
+
+This section introduces the steerable Rover.
+
+The Rover can be turned on by choosing the &quot;Autonomous mode&quot; for navigation. Once this mode is set, a spaceship will be shown in a chase-plane view, meaning that the camera will always be some distance behind the Rover (in contrast to the previousnavigation mode in which the camera&apos;s position is always at the navigator&apos;s position). When you press the &quot;Move forward&quot; or &quot;Reverse&quot; buttons (or &apos;A&apos; or &apos;S&apos; keys), a forward or backward force will be applied to the Rover, causing it to move forward or backward. When you press the arrow buttons on the navigation pad, the Rover will move left, right, up and down. When you press the turning buttons, a steering torque will be applied to the Rover, causing it to turn in the corresponding direction.
+
+
+ 
+&#12304;Steering the Rover in hemoglobin.&#12305;
+
+The Rover always moves in the direction of the net force computed from the steering force and all the forces from the interaction centers. Its orientation will seek to be in line with the direction of the velocity or the net force (which way to go is customizable, see the section for customizing the Rover). When the steering force is off, it drifts in the direction only determined by the interaction centers, even if the user does not interact with it. This is why this particular mode is also called autonomous navigation. If it is close to a center that is attractive, it will be pulled towards the center and then stop. Only when a steering force strong enough to counteract the attraction is applied can it leave the site. Note that no matter how hard you try to turn the Rover using a steering torque, it cannot leave an attraction site, because the torque just acts to make the Rover rotate around its own principal axes.
+
+The strength of the steering force or torque increases as you hold down a steering key. The longer you hold it down, the stronger the steering force or torque will be. When it reaches the maximum, it will not increase any stronger. The increasing of the steering force or torque is shown by a red growing bar at the lower-right corner of the window.
+
+Script support
+
+The following commands can be used to turn the Rover Mode on and off:
+
+set rovermode true;
+set rovermode false;
+
+Note that these commands will be executed separately with the regular Jmol commands.  No matter where you place them in your scripts, the order in which they will be run relative to the regular Jmol commands cannot be guaranteed. It is recommended that these non-standard-Jmol commands should always be placed at the beginning of your scripts.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3094">
+<paragraph start="0" end="19">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="0" end="18">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<size>11</size><href>attachbondannotation.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<size>11</size><href>collisiondetection.cml</href></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<content start="48" end="49">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="49" end="474">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="474">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="474" end="475">
+<LeftIndent>140.0</LeftIndent>
+<content start="474" end="475">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="475" end="520">
+<LeftIndent>140.0</LeftIndent>
+<content start="475" end="520">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="520" end="521">
+<LeftIndent>140.0</LeftIndent>
+<content start="520" end="521">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="521" end="1267">
+<LeftIndent>140.0</LeftIndent>
+<content start="521" end="652">
+<size>11</size></content>
+
+<content start="652" end="668">
+<size>11</size><bold>true</bold></content>
+
+<content start="668" end="1267">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1267" end="1268">
+<LeftIndent>140.0</LeftIndent>
+<content start="1267" end="1268">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1268" end="1269">
+<LeftIndent>140.0</LeftIndent>
+<content start="1268" end="1269">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1269" end="1271">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1269" end="1270">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>select iron;
+cpk 100%;</script><toolbar>false</toolbar><navigation>true</navigation><resource>hemoglobin.pdb</resource><state>roversteer$0.jms</state><width>500.0</width>
+<height>300.0</height>
+</component></content>
+
+<content start="1270" end="1271">
+</content>
+
+</paragraph>
+<paragraph start="1271" end="1307">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1271" end="1272">
+<size>13</size><bold>true</bold></content>
+
+<content start="1272" end="1305">
+<size>10</size></content>
+
+<content start="1305" end="1306">
+<size>13</size><bold>true</bold></content>
+
+<content start="1306" end="1307">
+</content>
+
+</paragraph>
+<paragraph start="1307" end="1308">
+<content start="1307" end="1308">
+</content>
+
+</paragraph>
+<paragraph start="1308" end="2239">
+<LeftIndent>140.0</LeftIndent>
+<content start="1308" end="1577">
+<size>11</size></content>
+
+<content start="1577" end="1614">
+<size>11</size><href>roversetup.cml</href></content>
+
+<content start="1614" end="1812">
+<size>11</size></content>
+
+<content start="1812" end="1833">
+<size>11</size><bold>true</bold></content>
+
+<content start="1833" end="2239">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2239" end="2240">
+<LeftIndent>140.0</LeftIndent>
+<content start="2239" end="2240">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2240" end="2590">
+<LeftIndent>140.0</LeftIndent>
+<content start="2240" end="2590">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2590" end="2591">
+<LeftIndent>140.0</LeftIndent>
+<content start="2590" end="2591">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2591" end="2606">
+<LeftIndent>140.0</LeftIndent>
+<content start="2591" end="2605">
+<size>11</size><bold>true</bold></content>
+
+<content start="2605" end="2606">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2606" end="2607">
+<LeftIndent>140.0</LeftIndent>
+<content start="2606" end="2607">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2607" end="2677">
+<LeftIndent>140.0</LeftIndent>
+<content start="2607" end="2677">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2677" end="2678">
+<LeftIndent>140.0</LeftIndent>
+<content start="2677" end="2678">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2678" end="2698">
+<LeftIndent>160.0</LeftIndent>
+<content start="2678" end="2698">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2698" end="2719">
+<LeftIndent>160.0</LeftIndent>
+<content start="2698" end="2718">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2718" end="2719">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2719" end="2720">
+<LeftIndent>140.0</LeftIndent>
+<content start="2719" end="2720">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2720" end="3064">
+<LeftIndent>140.0</LeftIndent>
+<content start="2720" end="2950">
+<size>11</size></content>
+
+<content start="2950" end="3062">
+<size>11</size><bold>true</bold></content>
+
+<content start="3062" end="3063">
+<size>11</size></content>
+
+<content start="3063" end="3064">
+</content>
+
+</paragraph>
+<paragraph start="3064" end="3065">
+<LeftIndent>140.0</LeftIndent>
+<content start="3064" end="3065">
+</content>
+
+</paragraph>
+<paragraph start="3065" end="3066">
+<content start="3065" end="3066">
+</content>
+
+</paragraph>
+<paragraph start="3066" end="3094">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="3066" end="3068">
+<size>11</size></content>
+
+<content start="3068" end="3076">
+<size>11</size><href>attachbondannotation.cml</href></content>
+
+<content start="3076" end="3079">
+<size>11</size></content>
+
+<content start="3079" end="3084">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="3084" end="3087">
+<size>11</size></content>
+
+<content start="3087" end="3091">
+<size>11</size><href>collisiondetection.cml</href></content>
+
+<content start="3091" end="3093">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

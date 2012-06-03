@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A note about the tools</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>A note about the tools
+
+&lt; Previous | Index | Next &gt;
+
+   An action performed through most tools can be cancelled using the &quot;Edit&gt;Undo&quot; menu. Unfortunately, we currently support only the undo/redoing of the current action. Actions that occur in prior to the current one cannot be cancelled. We suggest that the model be saved as diligently as possible, so that you do not regret losing a specific setting of your model.
+
+   A common problem of designing a dynamical model like these is that when you are constructing a model, you would normally want to see how it runs before continuing to build more pieces; but as soon as you run the model, the coordinates and velocities of the objects are changed; if you do not like the unfolding of the model, you will want to go back to the state before the model is run. This can be done through using the &quot;Edit&gt;Revert to the State Before Running&quot; menu. Choosing this menu will bring your model back to the state exactly prior to the time the model is run, namely, the last time you click the &quot;Run&quot; button.
+
+   Typically, an action fired by a toolbar button is also available on the pop-up menu that appears when an object is right-clicked (or CTRL+clicked on Mac OS X without a multiple-button mouse), if the action is applicable to the clicked object. For example, to remove an atom, you can right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on it, and choose the &quot;Cut&quot; menu from the pop-up menu that follows.
+ 
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1503">
+<paragraph start="0" end="23">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="22">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="52">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="24" end="26">
+<size>11</size></content>
+
+<content start="26" end="34">
+<size>11</size><href>boundary.cml</href></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="49">
+<size>11</size><href>accessAtomProp.cml</href></content>
+
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<LeftIndent>100.0</LeftIndent>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="418">
+<LeftIndent>160.0</LeftIndent>
+<content start="53" end="54">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="54" end="418">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="418" end="419">
+<LeftIndent>140.0</LeftIndent>
+<content start="418" end="419">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="419" end="1046">
+<LeftIndent>160.0</LeftIndent>
+<content start="419" end="420">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="420" end="846">
+<size>11</size></content>
+
+<content start="846" end="885">
+<size>11</size><bold>true</bold></content>
+
+<content start="885" end="1046">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1046" end="1047">
+<LeftIndent>140.0</LeftIndent>
+<content start="1046" end="1047">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1047" end="1473">
+<LeftIndent>160.0</LeftIndent>
+<content start="1047" end="1048">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1048" end="1180">
+<size>11</size></content>
+
+<content start="1180" end="1239">
+<size>11</size></content>
+
+<content start="1239" end="1346">
+<size>11</size></content>
+
+<content start="1346" end="1403">
+<size>11</size></content>
+
+<content start="1403" end="1472">
+<size>11</size></content>
+
+<content start="1472" end="1473">
+</content>
+
+</paragraph>
+<paragraph start="1473" end="1475">
+<LeftIndent>140.0</LeftIndent>
+<content start="1473" end="1475">
+</content>
+
+</paragraph>
+<paragraph start="1475" end="1503">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1475" end="1477">
+<size>11</size></content>
+
+<content start="1477" end="1485">
+<size>11</size><href>boundary.cml</href></content>
+
+<content start="1485" end="1488">
+<size>11</size></content>
+
+<content start="1488" end="1493">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="1493" end="1496">
+<size>11</size></content>
+
+<content start="1496" end="1500">
+<size>11</size><href>accessAtomProp.cml</href></content>
+
+<content start="1500" end="1502">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

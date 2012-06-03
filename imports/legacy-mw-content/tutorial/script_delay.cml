@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Delay</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Delay
+
+&lt; Previous | Index | Next &gt;
+
+The delay command delays the execution of the script for the specified amount of time.
+
+Syntax:
+
+delay [seconds]
+delay modeltime [model time]
+
+In the first command, the parameter [seconds] is the amount of time in seconds that will be delayed. Note that the counted time is the real time (the clock&apos;s time, in seconds) --- not the model&apos;s time (by default, in femtoseconds). In the second command, the parameter [model time] is the amount of the model&apos;s time (by default, in femtoseconds) that will be delayed. If the model is not running, the execution of the next script will be always delayed until the model starts to run and reach the specified time. The actual clock time that will be delayed depends on the speed the model runs on the computer.
+
+The delay command can be used to create animation effect, as is shown in the following example:
+
+ 
+ 
+ 
+&#12304;This is an embedded model container.&#12305;
+
+When you click the first button, the atom will start to flash right away, regardless of the model&apos;s running status. Whereas when you click the second button, the atom will not start flashing if the model is not already running. And if you stop the simulation before the flashing process ends, the flashing will also stop until you resume the simulation.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1315">
+<paragraph start="0" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="5">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="9">
+<size>11</size></content>
+
+<content start="9" end="17">
+<size>11</size><href>script_runtask.cml</href></content>
+
+<content start="17" end="20">
+<size>11</size></content>
+
+<content start="20" end="25">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="25" end="28">
+<size>11</size></content>
+
+<content start="28" end="32">
+<size>11</size><href>script_select.cml</href></content>
+
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<LeftIndent>100.0</LeftIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="123">
+<LeftIndent>140.0</LeftIndent>
+<content start="36" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<size>11</size><family>Courier New</family></content>
+
+<content start="45" end="123">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="123" end="124">
+<LeftIndent>140.0</LeftIndent>
+<content start="123" end="124">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="124" end="132">
+<LeftIndent>140.0</LeftIndent>
+<content start="124" end="132">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="132" end="133">
+<LeftIndent>140.0</LeftIndent>
+<content start="132" end="133">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="133" end="149">
+<LeftIndent>160.0</LeftIndent>
+<content start="133" end="139">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="139" end="148">
+<size>11</size><family>Courier New</family></content>
+
+<content start="148" end="149">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="149" end="178">
+<LeftIndent>160.0</LeftIndent>
+<content start="149" end="154">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="154" end="155">
+<size>11</size><family>Courier New</family></content>
+
+<content start="155" end="164">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="164" end="177">
+<size>11</size><family>Courier New</family></content>
+
+<content start="177" end="178">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="178" end="179">
+<LeftIndent>140.0</LeftIndent>
+<content start="178" end="179">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="179" end="788">
+<LeftIndent>140.0</LeftIndent>
+<content start="179" end="215">
+<size>11</size></content>
+
+<content start="215" end="224">
+<size>11</size><family>Courier New</family></content>
+
+<content start="224" end="448">
+<size>11</size></content>
+
+<content start="448" end="460">
+<size>11</size><family>Courier New</family></content>
+
+<content start="460" end="788">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="788" end="789">
+<LeftIndent>140.0</LeftIndent>
+<content start="788" end="789">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="789" end="885">
+<LeftIndent>140.0</LeftIndent>
+<content start="789" end="793">
+<size>11</size></content>
+
+<content start="793" end="798">
+<size>11</size><family>Courier New</family></content>
+
+<content start="798" end="885">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="885" end="886">
+<LeftIndent>140.0</LeftIndent>
+<content start="885" end="886">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="886" end="888">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="886" end="887">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_delay$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="887" end="888">
+</content>
+
+</paragraph>
+<paragraph start="888" end="890">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="888" end="889">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Flash (delay 0.5 sec, real time, between colors)</title>
+<tooltip>Flash the selected atom</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select atom 0;
+mark color [255 255 0];
+delay 0.5;
+select atom none;
+mark;
+delay 0.5;
+loop 10;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="889" end="890">
+</content>
+
+</paragraph>
+<paragraph start="890" end="892">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="890" end="891">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Flash (delay 1000 fs, model time, between colors)</title>
+<tooltip>Flash the selected atom</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>run;
+loop 1;
+select atom 0;
+mark color [255 0 0];
+delay modeltime 1000;
+select atom none;
+mark;
+delay modeltime 1000;
+loop 10;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="891" end="892">
+</content>
+
+</paragraph>
+<paragraph start="892" end="931">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="892" end="893">
+<size>13</size><bold>true</bold></content>
+
+<content start="893" end="929">
+<size>10</size></content>
+
+<content start="929" end="930">
+<size>13</size><bold>true</bold></content>
+
+<content start="930" end="931">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="931" end="932">
+<LeftIndent>140.0</LeftIndent>
+<content start="931" end="932">
+</content>
+
+</paragraph>
+<paragraph start="932" end="1286">
+<LeftIndent>140.0</LeftIndent>
+<content start="932" end="1285">
+<size>11</size></content>
+
+<content start="1285" end="1286">
+</content>
+
+</paragraph>
+<paragraph start="1286" end="1287">
+<LeftIndent>140.0</LeftIndent>
+<content start="1286" end="1287">
+</content>
+
+</paragraph>
+<paragraph start="1287" end="1315">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1287" end="1289">
+<size>11</size></content>
+
+<content start="1289" end="1297">
+<size>11</size><href>script_runtask.cml</href></content>
+
+<content start="1297" end="1300">
+<size>11</size></content>
+
+<content start="1300" end="1305">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="1305" end="1308">
+<size>11</size></content>
+
+<content start="1308" end="1312">
+<size>11</size><href>script_select.cml</href></content>
+
+<content start="1312" end="1314">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

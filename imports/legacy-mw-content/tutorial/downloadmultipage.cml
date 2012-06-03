@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Downloading a multipage activity</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Downloading a multipage activity
+
+&lt; Previous | Index | Next &gt;
+
+If an activity contains one and only one page, you can download it to your disk by clicking the &quot;Save&quot; button on the tool bar, or using the &quot;Save&quot; item under the File Menu, or simply pressing CTRL+S.
+
+If an activity involves more than one pages, or resources that will be loaded into a simulator when the user presses a button or clicks a link on the page, it is called a multipage activity. A multipage activity cannot be easily saved by using the &quot;Save&quot; button and the equivalent menu or keyboard shortcut. In general, you will have to save page by page and resource by resource, in order to save such an activity.
+
+If you would like the users of your activity to download the whole activity at once, you need to proceed to read the remaining part of this page. Otherwise, you can skip them.
+
+Packing up an activity in a ZIP file
+
+In order for the user to download the entire activity, the first step you need to do is to pack everything up into a single file. Earlier in this Chapter, we have advised that you create separate folders for separate activities. If you have followed that advice, you can just compress the whole folder into a ZIP file.
+
+You can use the &quot;Compress Current Activity Folder&quot; item provided by MW under the File Menu to do this job Note that you must first open a page of the activity before using this tool. The advantage of using this tool is that it allows you to specify the first page to open.
+
+Or you can use an external compression tool such as WinZip. Note that it MUST be a ZIP file. Please do NOT use other compression format such as TAR, GZ, JAR, or RAR. The disadvantage of using an external tool is that your ZIP file will contain no information about which page is the first one to open after MW downloads it. In the absence of the information about the first page, MW will just open the first CML page in alphabetical order.
+
+Providing a link for downloading the ZIP file
+
+The next step is to provide a hyperlink in your activity for the user to download the ZIP file. This is exactly the same as hyperlinking any other type of resources (see the section about hyperlinks). Note that you must check the validity of the link after you upload your activity to your web space.
+
+How it works
+
+That is all you need to do to enable your users to download an activity in a snap. MW takes care of the rest of the job. When the user clicks your download link, a window will pop up for the user to select a folder where the activity will be downloaded to. After the user selects the folder, the activity will be downloaded and automatically uncompressed into the folder. The users will not need to decompress the ZIP file. In fact, they do not even know that there is a ZIP file involved. MW will automatically open the first CML page of the downloaded activity at the end, if it finds such information from the ZIP file.
+
+You can click the following link to see how this works:
+
+ 
+Click   this link to download a three-pager.
+This should download three files (p1.cml, p2.cml, p3.cml) into a folder you select, and open p1.cml automatically.
+ 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3168">
+<paragraph start="0" end="33">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="32">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<RightIndent>20.0</RightIndent>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="62">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="34" end="36">
+<size>11</size></content>
+
+<content start="36" end="44">
+<size>11</size><href>additionalresource.cml</href></content>
+
+<content start="44" end="47">
+<size>11</size></content>
+
+<content start="47" end="52">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="52" end="55">
+<size>11</size></content>
+
+<content start="55" end="59">
+<size>11</size><href>background.cml</href></content>
+
+<content start="59" end="61">
+<size>11</size></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="263">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="63" end="263">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="263" end="264">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="263" end="264">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="264" end="680">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="264" end="435">
+<size>11</size></content>
+
+<content start="435" end="453">
+<size>11</size><bold>true</bold></content>
+
+<content start="453" end="680">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="680" end="681">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="680" end="681">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="681" end="857">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="681" end="857">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="857" end="858">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="857" end="858">
+</content>
+
+</paragraph>
+<paragraph start="858" end="895">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="858" end="894">
+<size>11</size><bold>true</bold></content>
+
+<content start="894" end="895">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="895" end="896">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="895" end="896">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="896" end="1215">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="896" end="1072">
+<size>11</size></content>
+
+<content start="1072" end="1123">
+<size>11</size><bold>true</bold></content>
+
+<content start="1123" end="1215">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1215" end="1216">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1215" end="1216">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1216" end="1489">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1216" end="1489">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1489" end="1490">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1489" end="1490">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1490" end="1930">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1490" end="1930">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1930" end="1931">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1930" end="1931">
+</content>
+
+</paragraph>
+<paragraph start="1931" end="1977">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1931" end="1976">
+<size>11</size><bold>true</bold></content>
+
+<content start="1976" end="1977">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1977" end="1978">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1977" end="1978">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1978" end="2279">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1978" end="2148">
+<size>11</size></content>
+
+<content start="2148" end="2176">
+<size>11</size><href>hyperlink.cml</href></content>
+
+<content start="2176" end="2279">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2279" end="2280">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2279" end="2280">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2280" end="2293">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2280" end="2292">
+<size>11</size><bold>true</bold></content>
+
+<content start="2292" end="2293">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2293" end="2294">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2293" end="2294">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2294" end="2917">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2294" end="2917">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2917" end="2918">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2917" end="2918">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2918" end="2974">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2918" end="2974">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2974" end="2975">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2974" end="2975">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2975" end="2977">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2975" end="2976">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2976" end="2977">
+</content>
+
+</paragraph>
+<paragraph start="2977" end="3022">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2977" end="2983">
+<size>11</size></content>
+
+<content start="2983" end="2984">
+<icon>ziplink.gif</icon></content>
+
+<content start="2984" end="2985">
+<size>11</size></content>
+
+<content start="2985" end="2994">
+<size>11</size><href>multipage.zip</href></content>
+
+<content start="2994" end="3022">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3022" end="3137">
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3022" end="3136">
+<size>10</size></content>
+
+<content start="3136" end="3137">
+</content>
+
+</paragraph>
+<paragraph start="3137" end="3139">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="3137" end="3138">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="3138" end="3139">
+</content>
+
+</paragraph>
+<paragraph start="3139" end="3140">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3139" end="3140">
+</content>
+
+</paragraph>
+<paragraph start="3140" end="3168">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3140" end="3142">
+<size>11</size></content>
+
+<content start="3142" end="3150">
+<size>11</size><href>additionalresource.cml</href></content>
+
+<content start="3150" end="3153">
+<size>11</size></content>
+
+<content start="3153" end="3158">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="3158" end="3161">
+<size>11</size></content>
+
+<content start="3161" end="3165">
+<size>11</size><href>background.cml</href></content>
+
+<content start="3165" end="3167">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

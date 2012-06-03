@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Example: Linear functions</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Example: Linear functions
+
+&lt; Back  &gt;
+
+The following shows a graph with a few linear functions:
+
+ 
+Use arrow keys to move around or just drag or rotate mouse wheel. Right-click or CTRL-click to see more options.
+[This is an embedded function graph.]
+
+Go to quadratic functions.
+&lt;  Back &gt;</text>
+<section start="0" end="287">
+<paragraph start="0" end="26">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="25">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="37">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="27" end="29">
+<size>11</size></content>
+
+<content start="29" end="33">
+<size>11</size><href>FunctionGraph.cml</href></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="95">
+<LeftIndent>140.0</LeftIndent>
+<content start="38" end="95">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="95" end="96">
+<LeftIndent>140.0</LeftIndent>
+<content start="95" end="96">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="96" end="98">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="96" end="97">
+<component><class>org.concord.modeler.PageFunctionGraph</class>
+<width>500</width><height>400</height><bgcolor>-990034</bgcolor>
+<border>Lowered Etched</border>
+<function><expression>x</expression>
+<color>-301a8b</color><weight>3.0</weight><style>0</style></function><function><expression>-x</expression>
+<color>-164da8</color><weight>3.0</weight><style>2</style></function><function><expression>x+2</expression>
+<color>-1f6f0a</color><weight>3.0</weight><style>0</style></function><function><expression>x-2</expression>
+<color>-762e9b</color><weight>3.0</weight><style>0</style></function><function><expression>-x-2</expression>
+<color>-ffff01</color><weight>3.0</weight><style>2</style></function><function><expression>-x+2</expression>
+<color>-ea6c8</color><weight>3.0</weight><style>2</style></function><axis_x_min>-3.6399999</axis_x_min><axis_x_max>6.36</axis_x_max><axis_y_min>-5.2452316</axis_y_min><axis_y_max>4.7547684</axis_y_max></component></content>
+
+<content start="97" end="98">
+</content>
+
+</paragraph>
+<paragraph start="98" end="211">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="98" end="211">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="211" end="249">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="211" end="248">
+<size>10</size></content>
+
+<content start="248" end="249">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="249" end="250">
+<LeftIndent>140.0</LeftIndent>
+<content start="249" end="250">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="250" end="277">
+<LeftIndent>140.0</LeftIndent>
+<content start="250" end="256">
+</content>
+
+<content start="256" end="275">
+<href>QuadraticFunction.cml</href></content>
+
+<content start="275" end="277">
+</content>
+
+</paragraph>
+<paragraph start="277" end="287">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="277" end="280">
+<size>11</size></content>
+
+<content start="280" end="284">
+<size>11</size><href>FunctionGraph.cml</href></content>
+
+<content start="284" end="286">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,1268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a text box</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a text box
+
+&lt; Previous | Index | Next &gt;
+
+You can insert a text box that has its layout independent of the text lines of the word processor. The text box accepts inputs in the HTML format. If you choose the &quot;Insert&gt;Text Box&quot; menu (keyboard action: ALT+SHIFT+B), you will see a dialog window similar to the following one:
+
+   
+&#12304;This is a screenshot.&#12305;
+
+You can type HTML code for styled text and paragraphs (or copy and paste from an external program for creating HTML pages). When you click the OK button of the above dialog box, the following text box is created where the caret is:
+
+ 
+&#12304;This is an embedded text box showing multiple language support.&#12305;
+
+The dialog window also allows you to set the background color, the transparency, and the border of the text box. To change an existing text box, make sure you have entered the authoring mode, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the text box, and then select the &quot;Customize This Text Box&quot; menu item from the pop-up menu. For those text boxes without a border, a temporary border will be drawn for the author to identify them, when entering the authoring mode. The temporary border will go off when the author exits the authoring mode.
+
+If you input a number between 0 and 1 to the &quot;Width&quot; text field, the width of the text box will be set to that number times the width of the page.
+
+ 
+Note: If some text in the text box is selected, for example, you are copying text from it, right-clicking (or CTRL+clicking on Mac OS X without a multiple-button mouse) on it will invoke a popup menu, instead of the above text box. In this case, you will have to deselect the text first.
+ 
+
+Optionally, a text box can be given a unique identifier (UID), which can be used by a scripter to find it and then do something on it. A restriction of naming a UID is that it must be a string composed of only the alphanumeric characters (case-sensitive). At least one alphabetic character must be used. As its name indicates, you cannot have multiple components on the same page that shares the same UID. If you do not need a UID for the text box, just leave the field blank.
+
+Adding hyperlinks
+
+You can add a hyperlink to the text in a text box using the &lt;a href=&quot;hyperlinked file&quot;&gt;text or image&lt;/a&gt; code. You can also add hyperlinks to images using the more advanced and complex MAP and AREA tags. 
+
+If you hyperlink a CML file, the hyperlinked file will be opened in the current window. If you hyperlink an HTML or SWF(Shockwave Flash) or E-mail address, it will be opened with the corresponding software installed on your computer (see this section for details).
+
+URLs contained in the hyperlinks can be relative or absolute.
+
+Scripting support
+
+The following commands are currently supported for scripting with a text box:
+
+load &lt;filename.html&gt;;
+set &lt;t&gt;text&lt;/t&gt;;
+delay [seconds];
+enablecomponent [index] true|false;
+selectcomponent [index] true|false;
+selectcomponent [index] true|false execute;
+selectcombobox [index] [index of selected item];
+selectcombobox [index] [index of selected item] execute;
+snapshot [name of image file];
+
+A component embedded in a text box can be given a unique identifier through the uid tag set in an HTML input. If a uid is present, then you can use it to find the component in the enablecomponent and selectcomponent commands:
+
+enablecomponent [uid] true|false;
+selectcomponent [uid] true|false;
+selectcomponent [uid] true|false execute;
+selectcombobox [uid] [index of selected item];
+selectcombobox [uid] [index of selected item] execute;
+
+Note that you generally need to add a header based on the script protocol before a command. If just given a file name to the load command, the text box will look for a file with the specific name in the current directory. When using the set command, it is advised that you should not include &lt;html&gt; and &lt;/html&gt; in the hypertext. Because scripts are often used in conjunction with HTML code, adding &lt;html&gt; tags may break other HTML text. The enablecomponent command allows you to enable or disable an embedded component, such as a button. The [index] parameter starts from 0. The selectcomponent command can be used to select or deselect a radio button or a check box. When the execute flag is set to true, the command not only sets the selection state of the radio button or the check box but also causes the action associated with it to be taken. The selectcombobox command can be used to select an item from a combo box&apos;s drop-down list. When the execute flag is set to true, the command not only sets the selected index of the combo box but also causes the action associated with it to be taken.
+
+Adding intra- and inter-textbox hyperlinks using the load command
+
+An intra-textbox hyperlink in a text box is a link that will load a new HTML page into it, without affecting other components on the page. An inter-textbox hyperlink is a link that will load a new HTML page into another text box on the page, without affecting other components on the page. Both types of hyperlink must observe the following convention:
+
+&lt;a href=&quot;script:textbox:[index of textbox]:load [address of HTML file]&quot;&gt;text&lt;/a&gt;
+
+The address of the HTML file to be loaded can be either relative or absolute. The index of a text box starts from 1. Script, textbox, and load are keywords that must be written as they are. If the specified index of a text box is the same as that of the current text box, the link is an intra-textbox link. Otherwise, it is an inter-textbox link.
+
+  
+&#12304;These are embedded text boxes.&#12305;
+
+Intra-textbox links can be used to show multi-page content within a single text box. Inter-textbox links can be used to show content in different places on a page. The target files that intra- or inter-textbox links point to will also be cached once they are visited.
+
+Creating animation effect using the delay command
+
+Another command supported by text boxes is the delay command, which specifies how many seconds a text box should wait before executing the next command. Together with the load command, the delay command can be used to create animation effects by loading different content sequentially with breaks inbetween. The length of a break can be controlled by a delay command.
+
+For example, the following scripts create an animation effect using n HTML files.
+
+script:textbox:1:load content1.html;
+                    delay 1;
+                    load content2.html;
+                    delay 1;
+                    ......
+                    load contentn.html;
+
+The following text box is an example of using 5 HTML files to create an animation effect:
+
+ 
+&#12304;This is an embedded text box.&#12305;
+
+Inserting images 
+
+You can insert images to a text box using the &lt;img src=&quot;image source file&quot;&gt; tag. URLs to images can be relative or absolute. The size of an image inside a text box can be set by setting the width and height attributes of the IMG tag. The size of a text box can be set relative to that of the page by setting a percentage for the width or height attribute.
+
+Using textboxes, you can design pages that have more flexible and compact layout. For example, the home page of the Molecular Workbench uses textboxes. Here is another example that uses a model container and two text boxes that communicate with it.
+
+Changing and removing a text box
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove, and copy a text box.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="7425">
+<paragraph start="0" end="21">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>20.0</LeftIndent>
+<Alignment>2</Alignment>
+<content start="0" end="20">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="50">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="22" end="24">
+<size>11</size></content>
+
+<content start="24" end="32">
+<href>audioplayer.cml</href><size>11</size></content>
+
+<content start="32" end="35">
+<size>11</size></content>
+
+<content start="35" end="40">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="40" end="43">
+<size>11</size></content>
+
+<content start="43" end="47">
+<href>table.cml</href><size>11</size></content>
+
+<content start="47" end="49">
+<size>11</size></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="330">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="330">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="330" end="331">
+<LeftIndent>100.0</LeftIndent>
+<content start="330" end="331">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="331" end="335">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="331" end="333">
+<size>11</size></content>
+
+<content start="333" end="334">
+<icon>TextBoxDialog.gif</icon><size>11</size></content>
+
+<content start="334" end="335">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="335" end="359">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="335" end="336">
+<bold>true</bold><size>13</size></content>
+
+<content start="336" end="357">
+<size>10</size></content>
+
+<content start="357" end="358">
+<bold>true</bold><size>13</size></content>
+
+<content start="358" end="359">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="359" end="360">
+<LeftIndent>100.0</LeftIndent>
+<content start="359" end="360">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="360" end="592">
+<LeftIndent>140.0</LeftIndent>
+<content start="360" end="592">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="592" end="593">
+<LeftIndent>100.0</LeftIndent>
+<content start="592" end="593">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="593" end="595">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="593" end="594">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>0.5</width>
+<height>200.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;20&quot; marginwidth=&quot;20&quot;&gt;
+    &lt;font face=&quot;Book Antiqua&quot; color=&quot;#ff00ff&quot; size=&quot;4&quot;&gt;This is a 
+    non-transparent text box with a width 50% of that of the page, and a 
+    height of 200 pixels. It has a raised bevel border.&lt;/font&gt;
+
+    &lt;p&gt;
+      &amp;#36825;&amp;#26159;&amp;#19968;&amp;#20010;&amp;#38271;&amp;#20026;&amp;#39029;&amp;#38754;&amp;#23485;&amp;#24230;50%&amp;#65292;&amp;#39640;&amp;#20026;200&amp;#20687;&amp;#32032;&amp;#65292;&amp;#19981;&amp;#36879;&amp;#26126;&amp;#30340;&amp;#25991;&amp;#23383;&amp;#26694;&amp;#12290;&amp;#23427;&amp;#26377;&amp;#19968;&amp;#20010;&amp;#31361;&amp;#36215;&amp;#30340;&amp;#36793;&amp;#26694;&amp;#12290;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-ff3334</bgcolor>
+<border>Raised Bevel</border>
+</component><size>11</size></content>
+
+<content start="594" end="595">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="595" end="661">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="595" end="596">
+<bold>true</bold><size>13</size></content>
+
+<content start="596" end="659">
+<size>10</size></content>
+
+<content start="659" end="660">
+<bold>true</bold><size>13</size></content>
+
+<content start="660" end="661">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="661" end="662">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="661" end="662">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="662" end="1235">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="662" end="826">
+<size>11</size></content>
+
+<content start="826" end="852">
+<href>Unlock.cml</href><size>11</size></content>
+
+<content start="852" end="1235">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1235" end="1236">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1235" end="1236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1236" end="1383">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1236" end="1383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1383" end="1384">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1383" end="1384">
+</content>
+
+</paragraph>
+<paragraph start="1384" end="1386">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1384" end="1385">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1385" end="1386">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1386" end="1674">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1386" end="1390">
+<bold>true</bold><foreground>255 0 0</foreground><size>11</size></content>
+
+<content start="1390" end="1674">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1674" end="1676">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1674" end="1675">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1675" end="1676">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1676" end="1677">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1676" end="1677">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1677" end="2154">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1677" end="1882">
+<size>11</size></content>
+
+<content start="1882" end="1981">
+<size>11</size></content>
+
+<content start="1981" end="2154">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2154" end="2155">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2154" end="2155">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2155" end="2173">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2155" end="2172">
+<bold>true</bold><size>11</size></content>
+
+<content start="2172" end="2173">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2173" end="2174">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2173" end="2174">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2174" end="2379">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2174" end="2379">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2379" end="2380">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2379" end="2380">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2380" end="2645">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2380" end="2618">
+<size>11</size></content>
+
+<content start="2618" end="2630">
+<href>hyperlink.cml</href><size>11</size></content>
+
+<content start="2630" end="2645">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2645" end="2646">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2645" end="2646">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2646" end="2708">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2646" end="2708">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2708" end="2709">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2708" end="2709">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2709" end="2727">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2709" end="2726">
+<bold>true</bold><size>11</size></content>
+
+<content start="2726" end="2727">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2727" end="2728">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2727" end="2728">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2728" end="2806">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2728" end="2806">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2806" end="2807">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2806" end="2807">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2807" end="2829">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2807" end="2829">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2829" end="2846">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2829" end="2846">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2846" end="2863">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2846" end="2863">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2863" end="2899">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2863" end="2899">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2899" end="2935">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2899" end="2935">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2935" end="2979">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2935" end="2979">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2979" end="3028">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2979" end="3027">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3027" end="3028">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3028" end="3085">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="3028" end="3085">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="3085" end="3116">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="3085" end="3115">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3115" end="3116">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3116" end="3117">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="3116" end="3117">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3117" end="3343">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="3117" end="3197">
+<size>11</size></content>
+
+<content start="3197" end="3200">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3200" end="3232">
+<size>11</size></content>
+
+<content start="3232" end="3235">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3235" end="3297">
+<size>11</size></content>
+
+<content start="3297" end="3312">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3312" end="3317">
+<size>11</size></content>
+
+<content start="3317" end="3332">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3332" end="3343">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3343" end="3344">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="3343" end="3344">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3344" end="3378">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="3344" end="3378">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="3378" end="3412">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="3378" end="3412">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="3412" end="3454">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="3412" end="3454">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="3454" end="3501">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="3454" end="3500">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3500" end="3501">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3501" end="3556">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="3501" end="3555">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3555" end="3556">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3556" end="3557">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="3556" end="3557">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3557" end="4656">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="3557" end="3615">
+<size>11</size></content>
+
+<content start="3615" end="3630">
+<href>script_protocol.cml</href><size>11</size></content>
+
+<content start="3630" end="3682">
+<size>11</size></content>
+
+<content start="3682" end="3686">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3686" end="3794">
+<size>11</size></content>
+
+<content start="3794" end="3797">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3797" end="3849">
+<size>11</size></content>
+
+<content start="3849" end="3855">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3855" end="3860">
+<size>11</size></content>
+
+<content start="3860" end="3867">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3867" end="3955">
+<size>11</size></content>
+
+<content start="3955" end="3961">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3961" end="3998">
+<size>11</size></content>
+
+<content start="3998" end="4013">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4013" end="4099">
+<size>11</size></content>
+
+<content start="4099" end="4106">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4106" end="4136">
+<size>11</size></content>
+
+<content start="4136" end="4151">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4151" end="4234">
+<size>11</size></content>
+
+<content start="4234" end="4241">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4241" end="4409">
+<size>11</size></content>
+
+<content start="4409" end="4423">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4423" end="4506">
+<size>11</size></content>
+
+<content start="4506" end="4513">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4513" end="4656">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4656" end="4657">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="4656" end="4657">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4657" end="4723">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="4657" end="4710">
+<bold>true</bold><size>11</size></content>
+
+<content start="4710" end="4714">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="4714" end="4722">
+<bold>true</bold><size>11</size></content>
+
+<content start="4722" end="4723">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4723" end="4724">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="4723" end="4724">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4724" end="5077">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="4724" end="5077">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5077" end="5078">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5077" end="5078">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5078" end="5159">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5078" end="5087">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5087" end="5093">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="5093" end="5094">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5094" end="5101">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="5101" end="5121">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5121" end="5125">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="5125" end="5158">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5158" end="5159">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5159" end="5160">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5159" end="5160">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5160" end="5507">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5160" end="5277">
+<size>11</size></content>
+
+<content start="5277" end="5283">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5283" end="5285">
+<size>11</size></content>
+
+<content start="5285" end="5292">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5292" end="5298">
+<size>11</size></content>
+
+<content start="5298" end="5302">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5302" end="5507">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5507" end="5508">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5507" end="5508">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5508" end="5511">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="5508" end="5509">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;b&gt;&lt;font size=&quot;2&quot;&gt;Text box 2&lt;/font&gt;&lt;/b&gt;&lt;font size=&quot;2&quot;&gt;: &lt;/font&gt;
+
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;Intra-texbox links: &lt;a href=&quot;script:textbox:2:load textbox1.html&quot;&gt;Page 
+      A&lt;/a&gt; | &lt;a href=&quot;script:textbox:2:load textbox2.html&quot;&gt;Page B&lt;/a&gt; &lt;/font&gt;&lt;br&gt;&lt;font size=&quot;2&quot;&gt;Inter-textbox 
+      links: &lt;a href=&quot;script:textbox:3:load textbox3.html&quot;&gt;Page C&lt;/a&gt; | &lt;a href=&quot;script:textbox:3:load textbox4.html&quot;&gt;Page 
+      D&lt;/a&gt;&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5509" end="5510">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;b&gt;&lt;font size=&quot;2&quot;&gt;Text box 3&lt;/font&gt;&lt;/b&gt;&lt;font size=&quot;2&quot;&gt;: &lt;/font&gt;
+
+    &lt;p&gt;
+      &lt;font size=&quot;2&quot;&gt;Intra-textbox links: &lt;a href=&quot;script:textbox:3:load textbox3.html&quot;&gt;Page 
+      C&lt;/a&gt; | &lt;a href=&quot;script:textbox:3:load textbox4.html&quot;&gt;Page D&lt;/a&gt; &lt;/font&gt;&lt;br&gt;&lt;font size=&quot;2&quot;&gt;Inter-textbox 
+      links: &lt;a href=&quot;script:textbox:2:load textbox1.html&quot;&gt;Page A&lt;/a&gt; | &lt;a href=&quot;script:textbox:2:load textbox2.html&quot;&gt;Page 
+      B&lt;/a&gt;&lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5510" end="5511">
+</content>
+
+</paragraph>
+<paragraph start="5511" end="5544">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="5511" end="5512">
+<bold>true</bold><size>13</size></content>
+
+<content start="5512" end="5542">
+<size>10</size></content>
+
+<content start="5542" end="5543">
+<bold>true</bold><size>13</size></content>
+
+<content start="5543" end="5544">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5544" end="5545">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5544" end="5545">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5545" end="5813">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5545" end="5813">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5813" end="5814">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5813" end="5814">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5814" end="5864">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5814" end="5850">
+<bold>true</bold><size>11</size></content>
+
+<content start="5850" end="5855">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="5855" end="5863">
+<bold>true</bold><size>11</size></content>
+
+<content start="5863" end="5864">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5864" end="5865">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5864" end="5865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5865" end="6233">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5865" end="5912">
+<size>11</size></content>
+
+<content start="5912" end="5917">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5917" end="6036">
+<size>11</size></content>
+
+<content start="6036" end="6040">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6040" end="6054">
+<size>11</size></content>
+
+<content start="6054" end="6059">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6059" end="6218">
+<size>11</size></content>
+
+<content start="6218" end="6223">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6223" end="6233">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6233" end="6234">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6233" end="6234">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6234" end="6316">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6234" end="6302">
+<size>11</size></content>
+
+<content start="6302" end="6303">
+<italic>true</italic><size>11</size></content>
+
+<content start="6303" end="6316">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6316" end="6317">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6316" end="6317">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6317" end="6354">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6317" end="6354">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="6354" end="6383">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6354" end="6383">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="6383" end="6423">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6383" end="6423">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="6423" end="6452">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6423" end="6452">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="6452" end="6479">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6452" end="6479">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="6479" end="6519">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6479" end="6511">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6511" end="6512">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="6512" end="6518">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6518" end="6519">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6519" end="6520">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6519" end="6520">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6520" end="6610">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6520" end="6610">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6610" end="6611">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6610" end="6611">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6611" end="6613">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="6611" end="6612">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Text box 4: &lt;/font&gt;
+
+    &lt;center&gt;
+      &lt;font size=&quot;2&quot;&gt;&lt;br&gt;
+      &lt;a href=&quot;script:textbox:4:load textbox1.html;delay 1;load textbox2.html;delay 1;load textbox3.html;delay 1;load textbox4.html;delay 2;load animateme.html;&quot;&gt;Animate 
+      me!&lt;/a&gt;&lt;/font&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-3367</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="6612" end="6613">
+</content>
+
+</paragraph>
+<paragraph start="6613" end="6645">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="6613" end="6614">
+<bold>true</bold><size>13</size></content>
+
+<content start="6614" end="6643">
+<size>10</size></content>
+
+<content start="6643" end="6644">
+<bold>true</bold><size>13</size></content>
+
+<content start="6644" end="6645">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6645" end="6646">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6645" end="6646">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6646" end="6664">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6646" end="6662">
+<bold>true</bold><size>11</size></content>
+
+<content start="6662" end="6664">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6664" end="6665">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6664" end="6665">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="6665" end="7021">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="6665" end="6711">
+<size>11</size></content>
+
+<content start="6711" end="6740">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6740" end="6855">
+<size>11</size></content>
+
+<content start="6855" end="6860">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6860" end="6865">
+<size>11</size></content>
+
+<content start="6865" end="6871">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6871" end="6890">
+<size>11</size></content>
+
+<content start="6890" end="6893">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6893" end="6994">
+<size>11</size></content>
+
+<content start="6994" end="6999">
+<family>Courier New</family><size>11</size></content>
+
+<content start="6999" end="7003">
+<size>11</size></content>
+
+<content start="7003" end="7009">
+<family>Courier New</family><size>11</size></content>
+
+<content start="7009" end="7021">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7021" end="7022">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="7021" end="7022">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7022" end="7271">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="7022" end="7121">
+<size>11</size></content>
+
+<content start="7121" end="7157">
+<href>../index.cml</href><size>11</size></content>
+
+<content start="7157" end="7182">
+<size>11</size></content>
+
+<content start="7182" end="7197">
+<href>../part2/ZoomIt/main.cml</href><size>11</size></content>
+
+<content start="7197" end="7271">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7271" end="7272">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="7271" end="7272">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7272" end="7305">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="7272" end="7304">
+<bold>true</bold><size>11</size></content>
+
+<content start="7304" end="7305">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7305" end="7306">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="7305" end="7306">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="7306" end="7396">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="7306" end="7311">
+<size>11</size></content>
+
+<content start="7311" end="7340">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="7340" end="7395">
+<size>11</size></content>
+
+<content start="7395" end="7396">
+</content>
+
+</paragraph>
+<paragraph start="7396" end="7397">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="7396" end="7397">
+</content>
+
+</paragraph>
+<paragraph start="7397" end="7425">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="7397" end="7399">
+<size>11</size></content>
+
+<content start="7399" end="7407">
+<href>audioplayer.cml</href><size>11</size></content>
+
+<content start="7407" end="7410">
+<size>11</size></content>
+
+<content start="7410" end="7415">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="7415" end="7418">
+<size>11</size></content>
+
+<content start="7418" end="7422">
+<href>table.cml</href><size>11</size></content>
+
+<content start="7422" end="7424">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

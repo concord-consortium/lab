@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Reversing velocities reverses simulations</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Reversing velocities reverses simulations
+
+The following experiment seeks to prove that if we reverse the velocity of every atom of an isolated system, we can reverse the entire simulation.
+   
+ 
+
+The graph on the right above for energies shows a mirror symmetry about 1 ps, when we reverse the velocity of every atom. This is an evidence that the simulation is reversible. Because the kinetic energy depends on the velocities and the potential energy depends on the locations, if they show a striking symmetry, it is most likely that the positions are identical for a pair of symmetric points (but the velocities point to the opposite directions). The following two screenshots taken at the beginning of the above simulation and at the end show this:
+
+   
+
+IMPORTANT: Now, what happens if a simulation starts with an ordered state and end with a disordered state, and then the velocities get reversed? Please go on to the next page.
+
+
+</text>
+<section start="0" end="937">
+<paragraph start="0" end="42">
+<LeftIndent>140.0</LeftIndent>
+<content start="0" end="41">
+<size>16</size><bold>true</bold></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<LeftIndent>140.0</LeftIndent>
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="190">
+<LeftIndent>140.0</LeftIndent>
+<content start="43" end="189">
+<size>11</size></content>
+
+<content start="189" end="190">
+</content>
+
+</paragraph>
+<paragraph start="190" end="194">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="190" end="191">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>accuracyproof2$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="191" end="192">
+</content>
+
+<content start="192" end="193">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-10000" style="0" width="2.0" symbol="0" size="4" spacing="5">Kinetic Energy/Particle</time_series_y1>
+<time_series_y2 color="-ffff01" style="0" width="2.0" symbol="0" size="4" spacing="5">Potential Energy/Particle</time_series_y2>
+<time_series_y3 color="-ff0100" style="0" width="2.0" symbol="0" size="4" spacing="5">Total Energy/Particle</time_series_y3>
+<width>300</width>
+<height>350</height>
+<axis_x_title>Time</axis_x_title>
+<axis_y_title>Energy</axis_y_title>
+<legend_x>424</legend_x>
+<legend_y>11</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+</component></content>
+
+<content start="193" end="194">
+</content>
+
+</paragraph>
+<paragraph start="194" end="196">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="194" end="195">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run for 2 ps, reverse the velocity of every atom at 1 ps</title>
+<tooltip>Run for 2 ps, reverse the velocity of every atom at 1 ps</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run;
+delay modeltime 1000;
+stop immediately;
+loop 1;
+set atom[%loop_count].vx &quot;-%atom[%loop_count].vx&quot;;
+set atom[%loop_count].vy &quot;-%atom[%loop_count].vy&quot;;
+loop %number_of_atoms;
+run;
+delay modeltime 1000;
+stop immediately;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="195" end="196">
+</content>
+
+</paragraph>
+<paragraph start="196" end="197">
+<LeftIndent>140.0</LeftIndent>
+<content start="196" end="197">
+</content>
+
+</paragraph>
+<paragraph start="197" end="752">
+<LeftIndent>140.0</LeftIndent>
+<content start="197" end="752">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="752" end="753">
+<LeftIndent>140.0</LeftIndent>
+<content start="752" end="753">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="753" end="757">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="753" end="754">
+<size>11</size></content>
+
+<content start="754" end="755">
+<icon>accuracyproof2_200721161336.png</icon></content>
+
+<content start="755" end="756">
+<icon>accuracyproof2_200721161410.png</icon></content>
+
+<content start="756" end="757">
+</content>
+
+</paragraph>
+<paragraph start="757" end="758">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="757" end="758">
+</content>
+
+</paragraph>
+<paragraph start="758" end="934">
+<LeftIndent>140.0</LeftIndent>
+<content start="758" end="767">
+<bold>true</bold><size>11</size></content>
+
+<content start="767" end="923">
+<size>11</size></content>
+
+<content start="923" end="932">
+<href>accuracyproof1.cml</href><size>11</size></content>
+
+<content start="932" end="933">
+<size>11</size></content>
+
+<content start="933" end="934">
+</content>
+
+</paragraph>
+<paragraph start="934" end="935">
+<LeftIndent>140.0</LeftIndent>
+<content start="934" end="935">
+</content>
+
+</paragraph>
+<paragraph start="935" end="936">
+<LeftIndent>140.0</LeftIndent>
+<content start="935" end="936">
+</content>
+
+</paragraph>
+<paragraph start="936" end="937">
+</paragraph>
+</section>
+</document>

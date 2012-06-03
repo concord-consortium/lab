@@ -1,0 +1,932 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting Java applets</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting Java applets
+
+&lt; Previous | Index | Next &gt;
+
+MW is a Java system. It naturally supports Java applets (small Java programs running within a browser). You can embed an applet into an MW page and it will run as if it were in a web browser. As a matter of fact, MW is a web browser too. It is just a very special kind of browser.
+
+An advantage of using applets in MW is that they can be cached for faster reloading and offline use, if they do not need to read any data from their code bases&#10122;. Also, when you save a page, the jar files associated with the applets on it will be saved as well. This feature allows you to save applets in their context, as if they were just images embedded in text.
+
+ 
+Applets, along with plugins that will be introduced later, provide a gateway for one to use Java to do things that are otherwise very hard or impossible to do in MW&apos;s current modeling system. Through the applet or plugin bridge, one can now insert animation applets that are as powerful as this one, into MW.
+ 
+
+Inserting an applet
+
+To insert an applet to an MW page, please follow these steps:
+
+&#10112; Copy the jar file(s) of the applet to the directory where the page is located. It is required that all the Java classes needed by the applet be packed in one or more jar files (to reduce the download size). If you only have a bunch of classes and do not use any IDE such as Eclipse, you can simply run the following command using   the Java Archive Tool on an X-terminal or a DOS console to build a jar file for them:
+
+jar cf something.jar blah1.class blah2.class ...... blahn.class
+
+If you have created a blank new page using the &quot;New Blank Page&quot; from the File Menu, you need to save the page first before inserting, in order for the program to know the page&apos;s directory.
+
+&#10113; Select &quot;Insert&gt;Applet&quot;. You will see the following dialog window:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+&#10114; All the jar files under the directory where the page is will be shown in the list. Select the jar files that are needed by the applet. And then select the applet class from the class list. The applet class must be a class inheriting either java.applet.Applet or javax.swing.JApplet. If you do not know which class to use, consult with the documentation or source code of the applet. You can also set the width, height, background color, border and parameters. Optionally, an applet can be given a unique identifier (UID) that can be used by a scripter to find it and then do something on it. A restriction of naming a UID is that it must be a string composed of only the alphanumeric characters and at least one alphabetic character. As its name indicates, you cannot have multiple components on the same page that share the same UID. If you do not need a UID for the applet, just leave the field blank.
+
+&#10115; Click &quot;OK&quot;, and the applet will be inserted to where the caret is on the page, initialized and started. To deploy the applet, just upload the hosting MW page and its associated resources to the server (or use &quot;Webspace &gt; Submit Current Page&quot; to deploy it on the free MW Space).
+
+The following shows an embedded applet:
+
+ 
+  
+Click the edge of the Mandelbrot Set to zoom in.
+&#12304;This is an embedded applet. You can also   view it with a browser.&#12305;
+
+If there is anything wrong in initializing the applet, for example, the selected class is not an applet, an error message may be shown instead of the applet. The details (stack trace) of the error can be found in the Session Log, which can be viewed by selecting &quot;File&gt;View Session Log&quot;.
+
+Removing, copying and pasting an applet
+
+To remove an applet, just use the BACKSPACE or DELETE key. You can also right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the applet, and select the &quot;Remove This Applet&quot; item from the pop-up menu.
+
+You can copy an applet and paste it into another page, provided that the other page is in the same directory. If you copy and paste an applet into a different different directory, you may get an error. For example, this is the error that shows up when we try to copy and paste the above applet to a different directory:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+The workaround for the above problem is to copy the jar file(s) needed into the directory of the page to which you want to paste the applet, or simply save the page where the original applet is located into the directory (during this process the jar files will be automatically saved into the new directory).
+
+Scripting
+
+There is currently limited support of scripting with applets. If an applet has implemented the MwService interface appropriately, the following scripts will work.
+
+Taking a snapshot:
+
+script:applet:[n]:snapshot;
+
+where n is the index of the applet in the page (starting from 1), or
+
+script:applet:[uid]:snapshot;
+
+if the UID is defined for the applet.
+
+Reloading the initial state, which can be used to reset the applet:
+
+script:applet:[n]:reset;
+
+or
+
+script:applet:[uid]:reset;
+
+The two buttons below the above demo applet show how these scripts work.
+
+If the plugin has its own scripts, you can use the nativescript header to send commands to it:
+
+nativescript:applet:[n]:[commands understood by the applet];
+nativescript:applet:[uid]:[commands understood by the applet];
+
+More examples of embedded applets
+
+   Concord Consortium&apos;s Seeing Math Interactives
+
+ 
+&#10122; If an applet needs to read data from its code base, then caching it will cause the data to be blocked. This is because if the applet&apos;s code is cached locally, its code base becomes the same local folder with where the code is located (i.e. the cache folder). However, since the applet is not trusted, it is not permitted to read anything from the hard disk. If you know that your applet needs to read data, such as a movie player in which case it needs to read media data, you must deselect the &quot;Allow Caching&quot; check box in the Customization Dialog when you insert it.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="5910">
+<paragraph start="0" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="22">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="52">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="24" end="26">
+<size>11</size></content>
+
+<content start="26" end="34">
+<href>intro_extensible.cml</href><size>11</size></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="49">
+<href>mwappletservice.cml</href><size>11</size></content>
+
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<content start="52" end="53">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="53" end="334">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="334">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="334" end="335">
+<LeftIndent>140.0</LeftIndent>
+<content start="334" end="335">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="335" end="700">
+<LeftIndent>140.0</LeftIndent>
+<content start="335" end="494">
+<size>11</size></content>
+
+<content start="494" end="495">
+</content>
+
+<content start="495" end="700">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="700" end="701">
+<LeftIndent>140.0</LeftIndent>
+<content start="700" end="701">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="701" end="703">
+<LeftIndent>140.0</LeftIndent>
+<content start="701" end="702">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="702" end="703">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="703" end="1012">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="703" end="993">
+<size>11</size></content>
+
+<content start="993" end="1001">
+<href>Java2DDemo.cml</href><size>11</size></content>
+
+<content start="1001" end="1012">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1012" end="1014">
+<LeftIndent>140.0</LeftIndent>
+<content start="1012" end="1013">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1013" end="1014">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1014" end="1015">
+<LeftIndent>140.0</LeftIndent>
+<content start="1014" end="1015">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1015" end="1035">
+<LeftIndent>140.0</LeftIndent>
+<content start="1015" end="1034">
+<bold>true</bold><size>11</size></content>
+
+<content start="1034" end="1035">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1035" end="1036">
+<LeftIndent>140.0</LeftIndent>
+<content start="1035" end="1036">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1036" end="1098">
+<LeftIndent>140.0</LeftIndent>
+<content start="1036" end="1098">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1098" end="1099">
+<LeftIndent>140.0</LeftIndent>
+<content start="1098" end="1099">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1099" end="1519">
+<LeftIndent>140.0</LeftIndent>
+<content start="1099" end="1100">
+<size>14</size></content>
+
+<content start="1100" end="1180">
+<size>11</size></content>
+
+<content start="1180" end="1276">
+<bold>true</bold><size>11</size></content>
+
+<content start="1276" end="1431">
+<size>11</size></content>
+
+<content start="1431" end="1432">
+<icon>htmlink.gif</icon></content>
+
+<content start="1432" end="1433">
+<size>11</size></content>
+
+<content start="1433" end="1454">
+<href>http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/jar.html</href><size>11</size></content>
+
+<content start="1454" end="1519">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1519" end="1520">
+<LeftIndent>140.0</LeftIndent>
+<content start="1519" end="1520">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1520" end="1584">
+<LeftIndent>160.0</LeftIndent>
+<content start="1520" end="1576">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1576" end="1577">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="1577" end="1583">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1583" end="1584">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1584" end="1585">
+<LeftIndent>140.0</LeftIndent>
+<content start="1584" end="1585">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1585" end="1774">
+<LeftIndent>140.0</LeftIndent>
+<content start="1585" end="1773">
+<bold>true</bold><size>11</size></content>
+
+<content start="1773" end="1774">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1774" end="1775">
+<LeftIndent>140.0</LeftIndent>
+<content start="1774" end="1775">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1775" end="1843">
+<LeftIndent>140.0</LeftIndent>
+<content start="1775" end="1776">
+<size>14</size></content>
+
+<content start="1776" end="1843">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1843" end="1844">
+<LeftIndent>140.0</LeftIndent>
+<content start="1843" end="1844">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1844" end="1847">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1844" end="1845">
+</content>
+
+<content start="1845" end="1846">
+<icon>AppletDialog.gif</icon></content>
+
+<content start="1846" end="1847">
+</content>
+
+</paragraph>
+<paragraph start="1847" end="1871">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1847" end="1848">
+<bold>true</bold><size>13</size></content>
+
+<content start="1848" end="1869">
+<size>10</size></content>
+
+<content start="1869" end="1870">
+<bold>true</bold><size>13</size></content>
+
+<content start="1870" end="1871">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1871" end="1872">
+<LeftIndent>140.0</LeftIndent>
+<content start="1871" end="1872">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1872" end="2778">
+<LeftIndent>140.0</LeftIndent>
+<content start="1872" end="1873">
+<size>14</size></content>
+
+<content start="1873" end="2114">
+<size>11</size></content>
+
+<content start="2114" end="2132">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2132" end="2136">
+<size>11</size></content>
+
+<content start="2136" end="2155">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2155" end="2778">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2778" end="2779">
+<LeftIndent>140.0</LeftIndent>
+<content start="2778" end="2779">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2779" end="3059">
+<LeftIndent>140.0</LeftIndent>
+<content start="2779" end="2780">
+<size>14</size></content>
+
+<content start="2780" end="3059">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3059" end="3060">
+<LeftIndent>140.0</LeftIndent>
+<content start="3059" end="3060">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3060" end="3100">
+<LeftIndent>140.0</LeftIndent>
+<content start="3060" end="3100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3100" end="3101">
+<LeftIndent>140.0</LeftIndent>
+<content start="3100" end="3101">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3101" end="3103">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3101" end="3102">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>mandelbrot.jar</appletjar>
+<appletclass>com.xebec.fractal.FractalExplorer</appletclass>
+<uid>fractal</uid>
+<resource>applet$applet$0.aps</resource><width>360</width><height>360</height>
+<border>Raised Bevel</border><caching>true</caching></component></content>
+
+<content start="3102" end="3103">
+</content>
+
+</paragraph>
+<paragraph start="3103" end="3106">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3103" end="3104">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Take a snapshot</title>
+<tooltip>Take a snapshot</tooltip>
+<script>script:applet:fractal:snapshot;</script>
+<action>Script</action></component></content>
+
+<content start="3104" end="3105">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Reload the initial state</title>
+<tooltip>Reload the initial state</tooltip>
+<script>script:applet:fractal:reset;</script>
+<action>Script</action></component></content>
+
+<content start="3105" end="3106">
+</content>
+
+</paragraph>
+<paragraph start="3106" end="3155">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3106" end="3154">
+<bold>true</bold><size>11</size></content>
+
+<content start="3154" end="3155">
+</content>
+
+</paragraph>
+<paragraph start="3155" end="3224">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3155" end="3156">
+<bold>true</bold><size>13</size></content>
+
+<content start="3156" end="3197">
+<size>10</size></content>
+
+<content start="3197" end="3198">
+<icon>htmlink.gif</icon></content>
+
+<content start="3198" end="3199">
+<size>10</size></content>
+
+<content start="3199" end="3221">
+<href>mandelbrotapplet.html</href><size>10</size></content>
+
+<content start="3221" end="3222">
+<size>10</size></content>
+
+<content start="3222" end="3223">
+<bold>true</bold><size>13</size></content>
+
+<content start="3223" end="3224">
+</content>
+
+</paragraph>
+<paragraph start="3224" end="3225">
+<LeftIndent>140.0</LeftIndent>
+<content start="3224" end="3225">
+</content>
+
+</paragraph>
+<paragraph start="3225" end="3513">
+<LeftIndent>140.0</LeftIndent>
+<content start="3225" end="3513">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3513" end="3514">
+<LeftIndent>140.0</LeftIndent>
+<content start="3513" end="3514">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3514" end="3554">
+<LeftIndent>140.0</LeftIndent>
+<content start="3514" end="3553">
+<bold>true</bold><size>11</size></content>
+
+<content start="3553" end="3554">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3554" end="3555">
+<LeftIndent>140.0</LeftIndent>
+<content start="3554" end="3555">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3555" end="3777">
+<LeftIndent>140.0</LeftIndent>
+<content start="3555" end="3777">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3777" end="3778">
+<LeftIndent>140.0</LeftIndent>
+<content start="3777" end="3778">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3778" end="4098">
+<LeftIndent>140.0</LeftIndent>
+<content start="3778" end="3833">
+<size>11</size></content>
+
+<content start="3833" end="3886">
+<bold>true</bold><size>11</size></content>
+
+<content start="3886" end="4098">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4098" end="4099">
+<LeftIndent>140.0</LeftIndent>
+<content start="4098" end="4099">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4099" end="4102">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4099" end="4100">
+<size>11</size></content>
+
+<content start="4100" end="4101">
+<icon>AppletClassNotFoundError.gif</icon></content>
+
+<content start="4101" end="4102">
+</content>
+
+</paragraph>
+<paragraph start="4102" end="4126">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4102" end="4103">
+<bold>true</bold><size>13</size></content>
+
+<content start="4103" end="4124">
+<size>10</size></content>
+
+<content start="4124" end="4125">
+<bold>true</bold><size>13</size></content>
+
+<content start="4125" end="4126">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4126" end="4127">
+<LeftIndent>140.0</LeftIndent>
+<content start="4126" end="4127">
+</content>
+
+</paragraph>
+<paragraph start="4127" end="4436">
+<LeftIndent>140.0</LeftIndent>
+<content start="4127" end="4435">
+<size>11</size></content>
+
+<content start="4435" end="4436">
+</content>
+
+</paragraph>
+<paragraph start="4436" end="4437">
+<LeftIndent>140.0</LeftIndent>
+<content start="4436" end="4437">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4437" end="4447">
+<LeftIndent>140.0</LeftIndent>
+<content start="4437" end="4446">
+<bold>true</bold><size>11</size></content>
+
+<content start="4446" end="4447">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4447" end="4448">
+<LeftIndent>140.0</LeftIndent>
+<content start="4447" end="4448">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4448" end="4611">
+<LeftIndent>140.0</LeftIndent>
+<content start="4448" end="4543">
+<size>11</size></content>
+
+<content start="4543" end="4552">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4552" end="4611">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4611" end="4612">
+<LeftIndent>140.0</LeftIndent>
+<content start="4611" end="4612">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4612" end="4631">
+<LeftIndent>140.0</LeftIndent>
+<content start="4612" end="4631">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4631" end="4632">
+<LeftIndent>140.0</LeftIndent>
+<content start="4631" end="4632">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4632" end="4660">
+<LeftIndent>160.0</LeftIndent>
+<content start="4632" end="4647">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4647" end="4648">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="4648" end="4660">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="4660" end="4661">
+<LeftIndent>160.0</LeftIndent>
+<content start="4660" end="4661">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4661" end="4730">
+<LeftIndent>140.0</LeftIndent>
+<content start="4661" end="4667">
+<size>11</size></content>
+
+<content start="4667" end="4668">
+<italic>true</italic><size>11</size></content>
+
+<content start="4668" end="4730">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4730" end="4731">
+<LeftIndent>160.0</LeftIndent>
+<content start="4730" end="4731">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="4731" end="4761">
+<LeftIndent>160.0</LeftIndent>
+<content start="4731" end="4760">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4760" end="4761">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4761" end="4762">
+<LeftIndent>160.0</LeftIndent>
+<content start="4761" end="4762">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4762" end="4800">
+<LeftIndent>140.0</LeftIndent>
+<content start="4762" end="4800">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4800" end="4801">
+<LeftIndent>140.0</LeftIndent>
+<content start="4800" end="4801">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4801" end="4869">
+<LeftIndent>140.0</LeftIndent>
+<content start="4801" end="4869">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4869" end="4870">
+<LeftIndent>140.0</LeftIndent>
+<content start="4869" end="4870">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4870" end="4895">
+<LeftIndent>160.0</LeftIndent>
+<content start="4870" end="4885">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4885" end="4886">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="4886" end="4894">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4894" end="4895">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4895" end="4896">
+<LeftIndent>140.0</LeftIndent>
+<content start="4895" end="4896">
+</content>
+
+</paragraph>
+<paragraph start="4896" end="4899">
+<LeftIndent>140.0</LeftIndent>
+<content start="4896" end="4898">
+<size>11</size></content>
+
+<content start="4898" end="4899">
+</content>
+
+</paragraph>
+<paragraph start="4899" end="4900">
+<LeftIndent>140.0</LeftIndent>
+<content start="4899" end="4900">
+</content>
+
+</paragraph>
+<paragraph start="4900" end="4927">
+<LeftIndent>160.0</LeftIndent>
+<content start="4900" end="4926">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4926" end="4927">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4927" end="4928">
+<LeftIndent>140.0</LeftIndent>
+<content start="4927" end="4928">
+</content>
+
+</paragraph>
+<paragraph start="4928" end="5001">
+<LeftIndent>140.0</LeftIndent>
+<content start="4928" end="5001">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5001" end="5002">
+<LeftIndent>140.0</LeftIndent>
+<content start="5001" end="5002">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5002" end="5097">
+<LeftIndent>140.0</LeftIndent>
+<content start="5002" end="5053">
+<size>11</size></content>
+
+<content start="5053" end="5065">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5065" end="5097">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5097" end="5098">
+<LeftIndent>140.0</LeftIndent>
+<content start="5097" end="5098">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5098" end="5159">
+<LeftIndent>160.0</LeftIndent>
+<content start="5098" end="5119">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5119" end="5120">
+<family>Courier New</family><italic>true</italic><size>11</size></content>
+
+<content start="5120" end="5158">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5158" end="5159">
+</content>
+
+</paragraph>
+<paragraph start="5159" end="5222">
+<LeftIndent>160.0</LeftIndent>
+<content start="5159" end="5221">
+<family>Courier New</family><size>11</size></content>
+
+<content start="5221" end="5222">
+</content>
+
+</paragraph>
+<paragraph start="5222" end="5223">
+<LeftIndent>140.0</LeftIndent>
+<content start="5222" end="5223">
+</content>
+
+</paragraph>
+<paragraph start="5223" end="5257">
+<LeftIndent>140.0</LeftIndent>
+<content start="5223" end="5256">
+<bold>true</bold><size>11</size></content>
+
+<content start="5256" end="5257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5257" end="5258">
+<LeftIndent>140.0</LeftIndent>
+<content start="5257" end="5258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5258" end="5307">
+<LeftIndent>160.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5258" end="5259">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="5259" end="5261">
+</content>
+
+<content start="5261" end="5306">
+<href>../seeingmath/index.cml</href><size>11</size></content>
+
+<content start="5306" end="5307">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5307" end="5308">
+<RightIndent>20.0</RightIndent>
+<content start="5307" end="5308">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5308" end="5310">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5308" end="5309">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="5309" end="5310">
+</content>
+
+</paragraph>
+<paragraph start="5310" end="5881">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5310" end="5311">
+<size>13</size></content>
+
+<content start="5311" end="5312">
+</content>
+
+<content start="5312" end="5789">
+<size>10</size></content>
+
+<content start="5789" end="5793">
+<bold>true</bold><size>10</size></content>
+
+<content start="5793" end="5880">
+<size>10</size></content>
+
+<content start="5880" end="5881">
+</content>
+
+</paragraph>
+<paragraph start="5881" end="5882">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="5881" end="5882">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5882" end="5910">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="5882" end="5884">
+<size>11</size></content>
+
+<content start="5884" end="5892">
+<href>intro_extensible.cml</href><size>11</size></content>
+
+<content start="5892" end="5895">
+<size>11</size></content>
+
+<content start="5895" end="5900">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="5900" end="5903">
+<size>11</size></content>
+
+<content start="5903" end="5907">
+<href>mwappletservice.cml</href><size>11</size></content>
+
+<content start="5907" end="5909">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

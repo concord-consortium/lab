@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Customizing the Molecular Workbench at launching</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Customizing the Molecular Workbench at launching
+
+&lt; Previous | Index | Next &gt;
+
+MW consists of an authoring system for creating simulation-based materials and a viewer for viewing them, among others. When MW starts, it displays, by default, an interface that users can use to go to other pages as can they with a standard web browser, as well as buttons and menus that allow them to invoke the authoring system.
+
+While this is fine and sometimes necessary in most cases, authors who need to distribute their materials through CD often wish to have a simplified mode of MW in which, when it launches, certain parts of the user interface are not shown. For example, the user will not be able to access other MW pages than those linked within the provided activities, if the menu bar and the tool bar are not shown. Sometimes, you also want to show a window with a fixed size so that your pages can be displayed properly. For international users, you may want to force MW to launch in a certain language without having to worry about whether or not the user&apos;s computer has appropriate regional settings.
+
+MW provides a set of properties that you can set to launch it with different settings, as discussed in the following.
+
+Launching MW from the command line
+
+If you do not use Java Web Start to launch MW, i.e. you use the Java executable &quot;  mw.jar&quot;, you have to provide a batch file that contains the settings. The batch file (a file with the extension name &quot;.bat&quot;) must contain a line in the following syntax:
+
+java -Dproperty=value -jar mw.jar remote [URL]
+
+In the above line, the bold characters must be typed literally as they are. The [URL] is an argument that specifies the first page you want MW to open upon launching. The italic words, property and value have to be one of the following:
+
+ 
+
+For example, the following line forces MW to launch in the Traditional Chinese interface:
+
+java -Dmw.locale=zh_TW -jar mw.jar
+
+The following line forces MW to launch in a window that does not have the menu bar and the tool bar, occupies a screen area starting from 100 pixels and 50 pixels and spanning 800 pixels in width and 600 pixels in hight, and opens a page named MyPage.cml in the current directory:
+
+java -Dmw.window.toolbar=false -Dmw.window.menubar=false -Dmw.window.top=50 -Dmw.window.left=100 -Dmw.window.width=800 -Dmw.window.height=600 -jar mw.jar remote MyPage.cml
+
+You can just copy and paste the above line into a text editor, adjust the position and size if needed, change the address of the initial page to be opened (i.e. change MyPage.cml to the name of your first page), and save the file in the name with an extension &quot;.bat&quot;. Then click this link:   http://mw2.concord.org/public/lib/mw.jar to download the latest &quot;mw.jar&quot; file to the directory where your first page is. (If clicking the link does not start the download process, copy and paste it into a web browser&apos;s location bar and hit ENTER.) After these steps, click the &quot;bat&quot; file and you should see the effect.
+
+Launching MW using Java Web Start
+
+If you would like to use Java Web Start to launch MW in different modes, you have to customize the JNLP file when you create it. When you select the &quot;File&gt;Customize a JNLP Launching File&quot; menu to create a customized JNLP launcher, you will see the following dialog window:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This dialog allows you to set all the properties listed in the above table except mw.cd.mode, which should not be set because JNLP launchers are supposed to be used on the Internet, not on a CD. If you select &quot;No, thanks.&quot;, a JNLP launcher will be created with none of the listed settings, and it will launch MW in the regular, fully-functioning mode.
+
+The last thing we need to point out is that removing parts of the user interface may effectively disarm MW&apos;s power. For example, the user will find it impossible to save a page if the menu bar and the tool bar are removed. We recommend that these options be set only when you distribute your simulations through CD. If you deliver your models through the Internet, it is generally a good idea to allow the user to be able to browse, save and print.
+
+ 
+If the user uses a customized JNLP to launch MW, the Desktop Launcher (i.e. the Desktop Icon that can be double-clicked to launch MW) will remember the customer settings. To reset to the default MW settings, you can use the &quot;Reset Desktop Launcher&quot; item under the Help menu.
+ 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4441">
+<paragraph start="0" end="49">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="48">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="78">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="50" end="52">
+<size>11</size></content>
+
+<content start="52" end="60">
+<href>distributioncd.cml</href><size>11</size></content>
+
+<content start="60" end="63">
+<size>11</size></content>
+
+<content start="63" end="68">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="68" end="77">
+<size>11</size></content>
+
+<content start="77" end="78">
+</content>
+
+</paragraph>
+<paragraph start="78" end="79">
+<LeftIndent>140.0</LeftIndent>
+<content start="78" end="79">
+</content>
+
+</paragraph>
+<paragraph start="79" end="411">
+<LeftIndent>140.0</LeftIndent>
+<content start="79" end="411">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="411" end="412">
+<LeftIndent>140.0</LeftIndent>
+<content start="411" end="412">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="412" end="1100">
+<LeftIndent>140.0</LeftIndent>
+<content start="412" end="1100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1100" end="1101">
+<LeftIndent>140.0</LeftIndent>
+<content start="1100" end="1101">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1101" end="1219">
+<LeftIndent>140.0</LeftIndent>
+<content start="1101" end="1219">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1219" end="1220">
+<LeftIndent>140.0</LeftIndent>
+<content start="1219" end="1220">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1220" end="1255">
+<LeftIndent>140.0</LeftIndent>
+<content start="1220" end="1254">
+<bold>true</bold><size>11</size></content>
+
+<content start="1254" end="1255">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1255" end="1256">
+<LeftIndent>140.0</LeftIndent>
+<content start="1255" end="1256">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1256" end="1509">
+<LeftIndent>140.0</LeftIndent>
+<content start="1256" end="1337">
+<size>11</size></content>
+
+<content start="1337" end="1338">
+<icon>htmlink.gif</icon></content>
+
+<content start="1338" end="1339">
+</content>
+
+<content start="1339" end="1345">
+<href>http://mw2.concord.org/public/lib/mw.jar</href><size>11</size></content>
+
+<content start="1345" end="1509">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1509" end="1510">
+<LeftIndent>140.0</LeftIndent>
+<content start="1509" end="1510">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1510" end="1557">
+<LeftIndent>160.0</LeftIndent>
+<content start="1510" end="1514">
+<family>Courier New</family><bold>true</bold></content>
+
+<content start="1514" end="1515">
+<family>Courier New</family></content>
+
+<content start="1515" end="1517">
+<family>Courier New</family><bold>true</bold></content>
+
+<content start="1517" end="1525">
+<family>Courier New</family><italic>true</italic></content>
+
+<content start="1525" end="1526">
+<family>Courier New</family><bold>true</bold></content>
+
+<content start="1526" end="1531">
+<family>Courier New</family><italic>true</italic></content>
+
+<content start="1531" end="1532">
+<family>Courier New</family></content>
+
+<content start="1532" end="1536">
+<family>Courier New</family><bold>true</bold></content>
+
+<content start="1536" end="1538">
+<family>Courier New</family></content>
+
+<content start="1538" end="1543">
+<family>Courier New</family><bold>true</bold></content>
+
+<content start="1543" end="1544">
+<family>Courier New</family></content>
+
+<content start="1544" end="1550">
+<family>Courier New</family><bold>true</bold></content>
+
+<content start="1550" end="1556">
+<family>Courier New</family></content>
+
+<content start="1556" end="1557">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1557" end="1558">
+<LeftIndent>140.0</LeftIndent>
+<content start="1557" end="1558">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1558" end="1795">
+<LeftIndent>140.0</LeftIndent>
+<content start="1558" end="1638">
+<size>11</size></content>
+
+<content start="1638" end="1643">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1643" end="1743">
+<size>11</size></content>
+
+<content start="1743" end="1751">
+<family>Courier New</family><size>11</size><italic>true</italic></content>
+
+<content start="1751" end="1756">
+<size>11</size></content>
+
+<content start="1756" end="1761">
+<family>Courier New</family><size>11</size><italic>true</italic></content>
+
+<content start="1761" end="1795">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1795" end="1796">
+<LeftIndent>140.0</LeftIndent>
+<content start="1795" end="1796">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1796" end="1798">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1796" end="1797">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>Propery, Description, Value, Default</columnname>
+<row>11</row>
+<column>4</column>
+<layout>128, 306, 154, 60</layout>
+<width>650.0</width>
+<height>320.0</height>
+<border>Line</border>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>mw.locale</te><te>Locale setting</te><te>en_US, ru, zh_CN, zh_TW</te><te>en_US</te><te>mw.cd.mode</te><te>CD mode</te><te>true, false</te><te>false</te><te>mw.homepage</te><te>Home page (open by the House Icon)</te><te>String</te><te>None</te><te>mw.window.left</te><te>The left coordinate of the window</te><te>Positive integer</te><te>System</te><te>mw.window.top</te><te>The top coordinate of the window</te><te>Postive integer</te><te>System</te><te>mw.window.width</te><te>The width of the window</te><te>Postive integer</te><te>System</te><te>mw.window.height</te><te>The height of the window</te><te>Positve integer</te><te>System</te><te>mw.window.resizable</te><te>Is the window resizable</te><te>true, false</te><te>true</te><te>mw.window.menubar</te><te>Display the menu bar</te><te>true, false</te><te>true</te><te>mw.window.toolbar</te><te>Display the tool bars</te><te>true, false</te><te>true</te><te>mw.window.statusbar</te><te>Display the status bar</te><te>true, false</te><te>true</te></elementarray>
+</component></content>
+
+<content start="1797" end="1798">
+</content>
+
+</paragraph>
+<paragraph start="1798" end="1799">
+<LeftIndent>140.0</LeftIndent>
+<content start="1798" end="1799">
+</content>
+
+</paragraph>
+<paragraph start="1799" end="1889">
+<LeftIndent>140.0</LeftIndent>
+<content start="1799" end="1889">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1889" end="1890">
+<LeftIndent>140.0</LeftIndent>
+<content start="1889" end="1890">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1890" end="1925">
+<LeftIndent>160.0</LeftIndent>
+<content start="1890" end="1924">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1924" end="1925">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1925" end="1926">
+<LeftIndent>140.0</LeftIndent>
+<content start="1925" end="1926">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1926" end="2207">
+<LeftIndent>140.0</LeftIndent>
+<content start="1926" end="2170">
+<size>11</size></content>
+
+<content start="2170" end="2180">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2180" end="2207">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2207" end="2208">
+<LeftIndent>140.0</LeftIndent>
+<content start="2207" end="2208">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2208" end="2380">
+<LeftIndent>160.0</LeftIndent>
+<content start="2208" end="2379">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2379" end="2380">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2380" end="2381">
+<LeftIndent>140.0</LeftIndent>
+<content start="2380" end="2381">
+</content>
+
+</paragraph>
+<paragraph start="2381" end="2992">
+<LeftIndent>140.0</LeftIndent>
+<content start="2381" end="2549">
+<size>11</size></content>
+
+<content start="2549" end="2559">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2559" end="2671">
+<size>11</size></content>
+
+<content start="2671" end="2672">
+<icon>htmlink.gif</icon></content>
+
+<content start="2672" end="2673">
+<size>11</size></content>
+
+<content start="2673" end="2713">
+<href>http://mw2.concord.org/public/lib/mw.jar</href><size>11</size></content>
+
+<content start="2713" end="2991">
+<size>11</size></content>
+
+<content start="2991" end="2992">
+</content>
+
+</paragraph>
+<paragraph start="2992" end="2993">
+<LeftIndent>140.0</LeftIndent>
+<content start="2992" end="2993">
+</content>
+
+</paragraph>
+<paragraph start="2993" end="3027">
+<LeftIndent>140.0</LeftIndent>
+<content start="2993" end="3026">
+<bold>true</bold><size>11</size></content>
+
+<content start="3026" end="3027">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3027" end="3028">
+<LeftIndent>140.0</LeftIndent>
+<content start="3027" end="3028">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3028" end="3301">
+<LeftIndent>140.0</LeftIndent>
+<content start="3028" end="3301">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3301" end="3302">
+<LeftIndent>140.0</LeftIndent>
+<content start="3301" end="3302">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3302" end="3305">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3302" end="3303">
+<size>11</size></content>
+
+<content start="3303" end="3304">
+<icon>JnlpLauncherSettingDialog.gif</icon></content>
+
+<content start="3304" end="3305">
+</content>
+
+</paragraph>
+<paragraph start="3305" end="3329">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3305" end="3306">
+<bold>true</bold><size>13</size></content>
+
+<content start="3306" end="3327">
+<size>10</size></content>
+
+<content start="3327" end="3328">
+<bold>true</bold><size>13</size></content>
+
+<content start="3328" end="3329">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3329" end="3330">
+<LeftIndent>140.0</LeftIndent>
+<content start="3329" end="3330">
+</content>
+
+</paragraph>
+<paragraph start="3330" end="3682">
+<LeftIndent>140.0</LeftIndent>
+<content start="3330" end="3412">
+<size>11</size></content>
+
+<content start="3412" end="3422">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3422" end="3682">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3682" end="3683">
+<LeftIndent>140.0</LeftIndent>
+<content start="3682" end="3683">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3683" end="4132">
+<LeftIndent>140.0</LeftIndent>
+<content start="3683" end="3906">
+<size>11</size></content>
+
+<content start="3906" end="3997">
+<bold>true</bold><size>11</size></content>
+
+<content start="3997" end="4132">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4132" end="4133">
+<LeftIndent>140.0</LeftIndent>
+<content start="4132" end="4133">
+</content>
+
+</paragraph>
+<paragraph start="4133" end="4135">
+<LeftIndent>140.0</LeftIndent>
+<content start="4133" end="4134">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="4134" end="4135">
+</content>
+
+</paragraph>
+<paragraph start="4135" end="4410">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="4135" end="4409">
+<size>11</size></content>
+
+<content start="4409" end="4410">
+</content>
+
+</paragraph>
+<paragraph start="4410" end="4412">
+<LeftIndent>140.0</LeftIndent>
+<content start="4410" end="4411">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="4411" end="4412">
+</content>
+
+</paragraph>
+<paragraph start="4412" end="4413">
+<LeftIndent>140.0</LeftIndent>
+<content start="4412" end="4413">
+</content>
+
+</paragraph>
+<paragraph start="4413" end="4441">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="4413" end="4415">
+<size>11</size></content>
+
+<content start="4415" end="4423">
+<href>distributioncd.cml</href><size>11</size></content>
+
+<content start="4423" end="4426">
+<size>11</size></content>
+
+<content start="4426" end="4431">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="4431" end="4440">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

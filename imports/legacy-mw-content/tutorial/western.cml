@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Western languages</page_title>
+<text>Western languages
+This test page is encoded in Western ISO-8859-1:
+
+   Danish extra characters: Æ, Ø, Å, æ, ø, å
+   Estonian extra characters: Õ, Ä, Ö, Ü
+   Finnish extra characters: Å, Ä, Ö 
+   French diacritics and ligature characters: à, è, ù, é, â, ê, î, ô, û, ë, ï, ü, ç, æ
+   German diacritics and ligature characters: ä, ö, ü, Ä, Ö, Ü, ß 
+   Norweigian extra characters: ø, æ, å, Æ, Ø, Å 
+   Spanish extra characters: ñ, Ñ
+   Swedish extra characters: Å, å, Ä, ä, Ö, ö 
+
+All supported modified Latin characters and alphabet extensions:
+
+Àà | Áá | Ââ | Ää | Ãã | Çç | Èè | Éé | Êê | Ëë | Ìì | Íí | Îî | Ïï | Òò | Óó | Ôô | Öö | Õõ | Ùù | Úú | Ûû | Üü | Ýý | ÿ | Ææ | Åå | Ðð |  LLll | Ññ | Øø | ß | Þþ
+
+
+
+</text>
+<section start="0" end="712">
+<paragraph start="0" end="18">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>10.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="17">
+<bold>true</bold><size>15</size></content>
+
+<content start="17" end="18">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="18" end="67">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>10.0</SpaceAbove>
+<content start="18" end="66">
+</content>
+
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="68">
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="113">
+<LeftIndent>40.0</LeftIndent>
+<content start="68" end="69">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="69" end="113">
+</content>
+
+</paragraph>
+<paragraph start="113" end="154">
+<LeftIndent>40.0</LeftIndent>
+<content start="113" end="114">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="114" end="154">
+</content>
+
+</paragraph>
+<paragraph start="154" end="192">
+<LeftIndent>40.0</LeftIndent>
+<content start="154" end="155">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="155" end="192">
+</content>
+
+</paragraph>
+<paragraph start="192" end="279">
+<LeftIndent>40.0</LeftIndent>
+<content start="192" end="193">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="193" end="279">
+</content>
+
+</paragraph>
+<paragraph start="279" end="346">
+<LeftIndent>40.0</LeftIndent>
+<content start="279" end="280">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="280" end="346">
+</content>
+
+</paragraph>
+<paragraph start="346" end="396">
+<LeftIndent>40.0</LeftIndent>
+<content start="346" end="347">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="347" end="396">
+</content>
+
+</paragraph>
+<paragraph start="396" end="430">
+<LeftIndent>40.0</LeftIndent>
+<content start="396" end="397">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="397" end="430">
+</content>
+
+</paragraph>
+<paragraph start="430" end="477">
+<LeftIndent>40.0</LeftIndent>
+<content start="430" end="431">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="431" end="477">
+</content>
+
+</paragraph>
+<paragraph start="477" end="478">
+<LeftIndent>40.0</LeftIndent>
+<content start="477" end="478">
+</content>
+
+</paragraph>
+<paragraph start="478" end="543">
+<LeftIndent>20.0</LeftIndent>
+<content start="478" end="542">
+<bold>true</bold></content>
+
+<content start="542" end="543">
+</content>
+
+</paragraph>
+<paragraph start="543" end="544">
+<LeftIndent>20.0</LeftIndent>
+<content start="543" end="544">
+</content>
+
+</paragraph>
+<paragraph start="544" end="708">
+<LeftIndent>20.0</LeftIndent>
+<content start="544" end="708">
+</content>
+
+</paragraph>
+<paragraph start="708" end="709">
+<content start="708" end="709">
+</content>
+
+</paragraph>
+<paragraph start="709" end="710">
+<content start="709" end="710">
+</content>
+
+</paragraph>
+<paragraph start="710" end="711">
+<content start="710" end="711">
+</content>
+
+</paragraph>
+<paragraph start="711" end="712">
+</paragraph>
+</section>
+</document>

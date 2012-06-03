@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<bgsound loop="true">beet27m2.mid</bgsound>
+<page_title>Background sound effect: A MIDI example</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Background sound effect: A MIDI example
+
+&lt;  Index  &gt;
+
+This is a page with a background sound, which is played continuously when the page is loaded. The Beethoven music, in the MIDI format, is available for free from MidiWorld.com. Click here for a page using a WAV sample.
+
+To stop the music, just leave this page.
+
+&lt; Index  &gt;</text>
+<section start="0" end="327">
+<paragraph start="0" end="40">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="39">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="53">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="49">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="49" end="52">
+<size>11</size></content>
+
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="54">
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="273">
+<LeftIndent>140.0</LeftIndent>
+<content start="54" end="216">
+<size>11</size></content>
+
+<content start="216" end="220">
+<href>http://midiworld.com/beethoven.htm</href><size>11</size></content>
+
+<content start="220" end="225">
+<href>http://www.midicenter.com/midi/view.php?id=4198</href><size>11</size></content>
+
+<content start="225" end="229">
+<href>http://midiworld.com/beethoven.htm</href><size>11</size></content>
+
+<content start="229" end="237">
+<size>11</size></content>
+
+<content start="237" end="241">
+<href>bgsound_wav.cml</href><size>11</size></content>
+
+<content start="241" end="273">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="273" end="274">
+<LeftIndent>140.0</LeftIndent>
+<content start="273" end="274">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="274" end="315">
+<LeftIndent>140.0</LeftIndent>
+<content start="274" end="298">
+<bold>true</bold><size>11</size></content>
+
+<content start="298" end="313">
+<href>audioclip.cml</href><bold>true</bold><size>11</size></content>
+
+<content start="313" end="314">
+<bold>true</bold><size>11</size></content>
+
+<content start="314" end="315">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="315" end="316">
+<LeftIndent>140.0</LeftIndent>
+<content start="315" end="316">
+</content>
+
+</paragraph>
+<paragraph start="316" end="327">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="316" end="318">
+<size>11</size></content>
+
+<content start="318" end="323">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="323" end="326">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

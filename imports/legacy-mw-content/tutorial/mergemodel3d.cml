@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Merging models</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Merging models
+
+&lt; Previous | Index | Next &gt;
+
+Sometimes we want to combine what we have built in two separate models into one model. For instance, we would like to see how the objects from different models will interact with each other when brought into contact.
+
+The three buttons (&quot; &quot;, &quot; &quot; and &quot; &quot;) can be used to load a model from the disk and placed it into the current model space, with the center of the imported model at the clicked point on the selected plane percendicular to the corresponding axis.
+
+The merging tool is very useful, because it allows us to break a big model into several smaller ones, work on each pieces in a separate model container, and merge them eventually. The advantages of this is less atoms will be present while building each pieces. It not only provides a clearer view, but also speeds up the building process (because less atoms need to be rendered). This is a very useful feature of our 3D environment.
+
+Practice
+
+You may play with the following model container about merging models. If you do not see any of the following icons: &quot; &quot;, &quot; &quot; and &quot; &quot;, then right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the buttons on the tool bar to find them. To practice merging models, select  &quot;Save Model As&quot; from the File Menu below to save the current model into a file on your disk. And then switch to the mode of merging models by selecting the tool. When the mode is selected, simply double-click somewhere on the helper plane --- the model stored in the same file will be loaded back to the current model.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1636">
+<paragraph start="0" end="15">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="14">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="44">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="16" end="18">
+<size>11</size></content>
+
+<content start="18" end="26">
+<href>changevelocity3d.cml</href><size>11</size></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="34">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="41">
+<href>minimize3d.cml</href><size>11</size></content>
+
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<LeftIndent>140.0</LeftIndent>
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="262">
+<LeftIndent>140.0</LeftIndent>
+<content start="45" end="262">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="262" end="263">
+<LeftIndent>140.0</LeftIndent>
+<content start="262" end="263">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="263" end="508">
+<LeftIndent>140.0</LeftIndent>
+<content start="263" end="283">
+<size>11</size></content>
+
+<content start="283" end="284">
+<icon>AddModelOnXPlane.gif</icon></content>
+
+<content start="284" end="288">
+<size>11</size></content>
+
+<content start="288" end="289">
+<icon>AddModelOnYPlane.gif</icon></content>
+
+<content start="289" end="296">
+<size>11</size></content>
+
+<content start="296" end="297">
+<icon>AddModelOnZPlane.gif</icon></content>
+
+<content start="297" end="508">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="508" end="509">
+<LeftIndent>140.0</LeftIndent>
+<content start="508" end="509">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="509" end="942">
+<LeftIndent>140.0</LeftIndent>
+<content start="509" end="889">
+<size>11</size></content>
+
+<content start="889" end="940">
+<bold>true</bold><size>11</size></content>
+
+<content start="940" end="942">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="942" end="943">
+<LeftIndent>140.0</LeftIndent>
+<content start="942" end="943">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="943" end="952">
+<LeftIndent>140.0</LeftIndent>
+<content start="943" end="951">
+<bold>true</bold><size>11</size></content>
+
+<content start="951" end="952">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="952" end="953">
+<LeftIndent>140.0</LeftIndent>
+<content start="952" end="953">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="953" end="1564">
+<LeftIndent>140.0</LeftIndent>
+<content start="953" end="1070">
+<size>11</size></content>
+
+<content start="1070" end="1071">
+<icon>AddModelOnXPlane.gif</icon></content>
+
+<content start="1071" end="1075">
+<size>11</size></content>
+
+<content start="1075" end="1076">
+<icon>AddModelOnYPlane.gif</icon></content>
+
+<content start="1076" end="1083">
+<size>11</size></content>
+
+<content start="1083" end="1084">
+<icon>AddModelOnZPlane.gif</icon></content>
+
+<content start="1084" end="1564">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1564" end="1565">
+<LeftIndent>140.0</LeftIndent>
+<content start="1564" end="1565">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1565" end="1567">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1565" end="1566">
+<component><class>org.concord.modeler.PageMd3d</class><resource>mergemodel3d$0.mdd</resource><coordinate>mergemodel3d$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="1566" end="1567">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1567" end="1606">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1567" end="1605">
+<size>10</size></content>
+
+<content start="1605" end="1606">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1606" end="1607">
+<LeftIndent>140.0</LeftIndent>
+<content start="1606" end="1607">
+</content>
+
+</paragraph>
+<paragraph start="1607" end="1608">
+<LeftIndent>140.0</LeftIndent>
+<content start="1607" end="1608">
+</content>
+
+</paragraph>
+<paragraph start="1608" end="1636">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1608" end="1610">
+<size>11</size></content>
+
+<content start="1610" end="1618">
+<href>changevelocity3d.cml</href><size>11</size></content>
+
+<content start="1618" end="1621">
+<size>11</size></content>
+
+<content start="1621" end="1626">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="1626" end="1629">
+<size>11</size></content>
+
+<content start="1629" end="1633">
+<href>minimize3d.cml</href><size>11</size></content>
+
+<content start="1633" end="1635">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

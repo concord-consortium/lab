@@ -1,0 +1,2031 @@
+HEADER    GENE REGULATING PROTEIN                 26-JUL-90   3CRO      3CRO   2
+COMPND    434 CRO PROTEIN COMPLEX WITH 20 BASE PAIR PIECE OF /DNA$      3CRO   3
+COMPND   2 CONTAINING OPERATOR /OR1$                                    3CRO   4
+SOURCE    PHAGE 434                                                     3CRO   5
+AUTHOR    A.MONDRAGON,S.C.HARRISON                                      3CRO   6
+REVDAT   1   15-OCT-91 3CRO    0                                        3CRO   7
+JRNL        AUTH   A.MONDRAGON,S.C.HARRISON                             3CRO   8
+JRNL        TITL   THE PHAGE 434 CRO(SLASH)/O=R=1$ COMPLEX AT 2.5       3CRO   9
+JRNL        TITL 2 ANGSTROMS RESOLUTION                                 3CRO  10
+JRNL        REF    J.MOL.BIOL.                   V. 219   321 1991      3CRO  11
+JRNL        REFN   ASTM JMOBAK  UK ISSN 0022-2836                  070  3CRO  12
+REMARK   1                                                              3CRO  13
+REMARK   1 REFERENCE 1                                                  3CRO  14
+REMARK   1  AUTH   A.MONDRAGON,C.WOLBERGER,S.C.HARRISON                 3CRO  15
+REMARK   1  TITL   STRUCTURE OF PHAGE 434 CRO PROTEIN AT 2.35           3CRO  16
+REMARK   1  TITL 2 ANGSTROMS RESOLUTION                                 3CRO  17
+REMARK   1  REF    J.MOL.BIOL.                   V. 205   179 1989      3CRO  18
+REMARK   1  REFN   ASTM JMOBAK  UK ISSN 0022-2836                  070  3CRO  19
+REMARK   1 REFERENCE 2                                                  3CRO  20
+REMARK   1  AUTH   A.K.AGGARWAL,D.W.RODGERS,M.DROTTAR,M.PTASHNE,        3CRO  21
+REMARK   1  AUTH 2 S.C.HARRISON                                         3CRO  22
+REMARK   1  TITL   RECOGNITION OF A /DNA$ OPERATOR BY THE REPRESSOR OF  3CRO  23
+REMARK   1  TITL 2 PHAGE 434. A VIEW AT HIGH RESOLUTION                 3CRO  24
+REMARK   1  REF    SCIENCE                       V. 242   899 1988      3CRO  25
+REMARK   1  REFN   ASTM SCIEAS  US ISSN 0036-8075                  038  3CRO  26
+REMARK   1 REFERENCE 3                                                  3CRO  27
+REMARK   1  AUTH   J.E.ANDERSON,M.PTASHNE,S.C.HARRISON                  3CRO  28
+REMARK   1  TITL   STRUCTURE OF THE REPRESSOR-OPERATOR COMPLEX OF       3CRO  29
+REMARK   1  TITL 2 BACTERIOPHAGE 434                                    3CRO  30
+REMARK   1  REF    NATURE                        V. 326   846 1987      3CRO  31
+REMARK   1  REFN   ASTM NATUAS  UK ISSN 0028-0836                  006  3CRO  32
+REMARK   2                                                              3CRO  33
+REMARK   2 RESOLUTION. 2.5 ANGSTROMS.                                   3CRO  34
+REMARK   3                                                              3CRO  35
+REMARK   3 REFINEMENT. BY THE CONSTRAINED-RESTRAINED LEAST-SQUARES      3CRO  36
+REMARK   3  PROCEDURE OF J. SUSSMAN (PROGRAM *CORELS*).  THIS WAS       3CRO  37
+REMARK   3  FOLLOWED BY BY USE OF THE RESTRAINED LEAST-SQUARES PACKAGE  3CRO  38
+REMARK   3  (*TNT*) OF L. F. TEN EYCK AND D. E. TRONRUD.  THE R VALUE   3CRO  39
+REMARK   3  IS 0.22 FOR DATA IN THE RESOLUTION RANGE 10.0 TO 2.5        3CRO  40
+REMARK   3  ANGSTROMS.  THE RMS DEVIATION FROM IDEALITY OF THE BOND     3CRO  41
+REMARK   3  LENGTHS IS 0.01 ANGSTROMS.  THE RMS DEVIATION FROM          3CRO  42
+REMARK   3  IDEALITY OF THE BOND ANGLES IS 2.3 DEGREES.  THE RMS        3CRO  43
+REMARK   3  DEVIATION FROM IDEALITY OF THE PLANAR GROUPS IS 0.01        3CRO  44
+REMARK   3  ANGSTROMS.                                                  3CRO  45
+REMARK   4                                                              3CRO  46
+REMARK   4 THE PROTEIN RESIDUE NUMBERING IS THE SAME AS THAT USED FOR   3CRO  47
+REMARK   4 R1-69, WITH THE FIRST TWO RESIDUES NUMBERED -1 AND 0.  THE   3CRO  48
+REMARK   4 NUMBERING OF THE FIVE ALPHA HELICES COINCIDES WITH THAT      3CRO  49
+REMARK   4 USED FOR SIMILAR REPRESSORS.                                 3CRO  50
+REMARK   5                                                              3CRO  51
+REMARK   5 THE TWO PROTEIN DOMAINS HAVE BEEN ASSIGNED CHAIN INDICATORS  3CRO  52
+REMARK   5 *L* AND *R*.  THE TWO DNA CHAINS HAVE BEEN ASSIGNED CHAIN    3CRO  53
+REMARK   5 INDICATORS *A* AND *B*.  THE UNIT CELL CONTAINS TWO          3CRO  54
+REMARK   5 COMPLEXES EACH OF WHICH CONSISTS OF A PROTEIN DIMER AND      3CRO  55
+REMARK   5 TWO DIFFERENT STRANDS OF DNA.                                3CRO  56
+REMARK   6                                                              3CRO  57
+REMARK   6 THE DNA CHAINS ARE ALIGNED AS FOLLOWS                        3CRO  58
+REMARK   6                                                              3CRO  59
+REMARK   6 *B* 5(PRIME)  T-A-T-A-C-A-A-G-A-A-A-G-T-T-T-G-T-A-C-T        3CRO  60
+REMARK   6 *A* 3(PRIME)    T-A-T-G-T-T-C-T-T-T-C-A-A-A-C-A-T-G-A-A      3CRO  61
+REMARK   6                                                              3CRO  62
+REMARK   6 THE DNA CHAINS ARE NUMBERED SEQUENTIALLY.  THE FOLLOWING     3CRO  63
+REMARK   6 TABLE PRESENTS THE RELATIONSHIP BETWEEN THE SEQUENTIAL       3CRO  64
+REMARK   6 DNA NUMBERING AND THAT USED IN THE PAPER CITED ON THE        3CRO  65
+REMARK   6 *JRNL* RECORDS ABOVE:                                        3CRO  66
+REMARK   6                                                              3CRO  67
+REMARK   6    PDB ENTRY     PUBLISHED                                   3CRO  68
+REMARK   6    ---------     ---------                                   3CRO  69
+REMARK   6     A A  1         -4R                                       3CRO  70
+REMARK   6     A A  2         -3R                                       3CRO  71
+REMARK   6     G A  3         -2R                                       3CRO  72
+REMARK   6     T A  4         -1R                                       3CRO  73
+REMARK   6     A A  5          1R                                       3CRO  74
+REMARK   6     C A  6          2R                                       3CRO  75
+REMARK   6     A A  7          3R                                       3CRO  76
+REMARK   6     A A  8          4R                                       3CRO  77
+REMARK   6     A A  9          5R                                       3CRO  78
+REMARK   6     C A 10          6R                                       3CRO  79
+REMARK   6     T A 11          7R                                       3CRO  80
+REMARK   6     T A 12         7'L                                       3CRO  81
+REMARK   6     T A 13         6'L                                       3CRO  82
+REMARK   6     C A 14         5'L                                       3CRO  83
+REMARK   6     T A 15         4'L                                       3CRO  84
+REMARK   6     T A 16         3'L                                       3CRO  85
+REMARK   6     G A 17         2'L                                       3CRO  86
+REMARK   6     T A 18         1'L                                       3CRO  87
+REMARK   6     A A 19        -1'L                                       3CRO  88
+REMARK   6     T A 20        -2'L                                       3CRO  89
+REMARK   6     T B  1         -3L                                       3CRO  90
+REMARK   6     A B  2         -2L                                       3CRO  91
+REMARK   6     T B  3         -1L                                       3CRO  92
+REMARK   6     A B  4          1L                                       3CRO  93
+REMARK   6     C B  5          2L                                       3CRO  94
+REMARK   6     A B  6          3L                                       3CRO  95
+REMARK   6     A B  7          4L                                       3CRO  96
+REMARK   6     G B  8          5L                                       3CRO  97
+REMARK   6     A B  9          6L                                       3CRO  98
+REMARK   6     A B 10          7L                                       3CRO  99
+REMARK   6     A B 11         7'R                                       3CRO 100
+REMARK   6     G B 12         6'R                                       3CRO 101
+REMARK   6     T B 13         5'R                                       3CRO 102
+REMARK   6     T B 14         4'R                                       3CRO 103
+REMARK   6     T B 15         3'R                                       3CRO 104
+REMARK   6     G B 16         2'R                                       3CRO 105
+REMARK   6     T B 17         1'R                                       3CRO 106
+REMARK   6     A B 18        -1'R                                       3CRO 107
+REMARK   6     C B 19        -2'R                                       3CRO 108
+REMARK   6     T B 20        -3'R                                       3CRO 109
+REMARK   7                                                              3CRO 110
+REMARK   7 DENSITY FOR THE LAST SIX CARBOXY TERMINAL RESIDUES (64 -     3CRO 111
+REMARK   7 70) WAS NOT OBSERVED IN THE MAP AT ANY STAGE OF THE          3CRO 112
+REMARK   7 REFINEMENT AND THESE RESIDUES ARE PROBABLY DISORDERED.       3CRO 113
+SEQRES   1 A   20    A   A   G   T   A   C   A   A   A   C   T   T   T  3CRO 114
+SEQRES   2 A   20    C   T   T   G   T   A   T                          3CRO 115
+SEQRES   1 B   20    T   A   T   A   C   A   A   G   A   A   A   G   T  3CRO 116
+SEQRES   2 B   20    T   T   G   T   A   C   T                          3CRO 117
+SEQRES   1 L   71  MET GLN THR LEU SER GLU ARG LEU LYS LYS ARG ARG ILE  3CRO 118
+SEQRES   2 L   71  ALA LEU LYS MET THR GLN THR GLU LEU ALA THR LYS ALA  3CRO 119
+SEQRES   3 L   71  GLY VAL LYS GLN GLN SER ILE GLN LEU ILE GLU ALA GLY  3CRO 120
+SEQRES   4 L   71  VAL THR LYS ARG PRO ARG PHE LEU PHE GLU ILE ALA MET  3CRO 121
+SEQRES   5 L   71  ALA LEU ASN CYS ASP PRO VAL TRP LEU GLN TYR GLY THR  3CRO 122
+SEQRES   6 L   71  LYS ARG GLY LYS ALA ALA                              3CRO 123
+SEQRES   1 R   71  MET GLN THR LEU SER GLU ARG LEU LYS LYS ARG ARG ILE  3CRO 124
+SEQRES   2 R   71  ALA LEU LYS MET THR GLN THR GLU LEU ALA THR LYS ALA  3CRO 125
+SEQRES   3 R   71  GLY VAL LYS GLN GLN SER ILE GLN LEU ILE GLU ALA GLY  3CRO 126
+SEQRES   4 R   71  VAL THR LYS ARG PRO ARG PHE LEU PHE GLU ILE ALA MET  3CRO 127
+SEQRES   5 R   71  ALA LEU ASN CYS ASP PRO VAL TRP LEU GLN TYR GLY THR  3CRO 128
+SEQRES   6 R   71  LYS ARG GLY LYS ALA ALA                              3CRO 129
+FORMUL   5  HOH   *25(H2 O1)                                            3CRO 130
+HELIX    1 H1L THR L    1  ALA L   12  1                                3CRO 131
+HELIX    2 H2L THR L   16  THR L   22  1                                3CRO 132
+HELIX    3 H3L GLN L   28  ALA L   36  1                                3CRO 133
+HELIX    4 H4L LEU L   45  ALA L   51  1                                3CRO 134
+HELIX    5 H5L PRO L   56  TYR L   61  1                                3CRO 135
+HELIX    6 H1R THR R    1  ALA R   12  1                                3CRO 136
+HELIX    7 H2R THR R   16  THR R   22  1                                3CRO 137
+HELIX    8 H3R GLN R   28  ALA R   36  1                                3CRO 138
+HELIX    9 H4R LEU R   45  ALA R   51  1                                3CRO 139
+HELIX   10 H5R PRO R   56  TYR R   61  1                                3CRO 140
+CRYST1   49.200   47.600   61.700  90.00 109.50  90.00 P 21          2  3CRO 141
+ORIGX1      1.000000  0.000000  0.000000        0.00000                 3CRO 142
+ORIGX2      0.000000  1.000000  0.000000        0.00000                 3CRO 143
+ORIGX3      0.000000  0.000000  1.000000        0.00000                 3CRO 144
+SCALE1      0.020325  0.000000  0.007198        0.00000                 3CRO 145
+SCALE2      0.000000  0.021008  0.000000        0.00000                 3CRO 146
+SCALE3      0.000000  0.000000  0.017194        0.00000                 3CRO 147
+ATOM      5  O5*   A A   1     -16.851  -5.543  74.981  1.00 55.62      3CRO 148
+ATOM      6  C5*   A A   1     -18.254  -5.683  75.238  1.00 51.97      3CRO 149
+ATOM      7  C4*   A A   1     -18.600  -7.125  75.571  1.00 37.32      3CRO 150
+ATOM      8  O4*   A A   1     -19.740  -7.166  76.456  1.00 26.97      3CRO 151
+ATOM      9  C3*   A A   1     -18.978  -8.004  74.382  1.00 34.63      3CRO 152
+ATOM     10  O3*   A A   1     -18.314  -9.224  74.465  1.00 30.96      3CRO 153
+ATOM     11  C2*   A A   1     -20.466  -8.236  74.564  1.00 54.40      3CRO 154
+ATOM     12  C1*   A A   1     -20.537  -8.253  76.076  1.00 31.85      3CRO 155
+ATOM     13  N9    A A   1     -21.868  -7.978  76.551  1.00 18.79      3CRO 156
+ATOM     14  C8    A A   1     -22.501  -6.770  76.700  1.00 20.51      3CRO 157
+ATOM     15  N7    A A   1     -23.737  -6.871  77.141  1.00  6.86      3CRO 158
+ATOM     16  C5    A A   1     -23.910  -8.231  77.267  1.00  2.00      3CRO 159
+ATOM     17  C6    A A   1     -24.991  -8.982  77.706  1.00  4.41      3CRO 160
+ATOM     18  N6    A A   1     -26.139  -8.426  78.089  1.00 25.46      3CRO 161
+ATOM     19  N1    A A   1     -24.843 -10.320  77.721  1.00 17.48      3CRO 162
+ATOM     20  C2    A A   1     -23.670 -10.850  77.325  1.00 23.15      3CRO 163
+ATOM     21  N3    A A   1     -22.565 -10.234  76.906  1.00 10.26      3CRO 164
+ATOM     22  C4    A A   1     -22.765  -8.921  76.906  1.00  2.00      3CRO 165
+ATOM     23  P     A A   2     -17.690  -9.753  73.096  1.00 52.33      3CRO 166
+ATOM     24  O1P   A A   2     -17.749  -8.630  72.143  1.00 54.51      3CRO 167
+ATOM     25  O2P   A A   2     -16.391 -10.393  73.416  1.00 57.35      3CRO 168
+ATOM     26  O5*   A A   2     -18.732 -10.876  72.617  1.00 34.49      3CRO 169
+ATOM     27  C5*   A A   2     -18.900 -12.035  73.415  1.00 33.78      3CRO 170
+ATOM     28  C4*   A A   2     -20.136 -12.815  73.019  1.00 17.78      3CRO 171
+ATOM     29  O4*   A A   2     -21.297 -12.294  73.703  1.00 25.15      3CRO 172
+ATOM     30  C3*   A A   2     -20.475 -12.785  71.536  1.00 32.81      3CRO 173
+ATOM     31  O3*   A A   2     -20.991 -14.036  71.181  1.00 32.22      3CRO 174
+ATOM     32  C2*   A A   2     -21.576 -11.739  71.487  1.00 39.90      3CRO 175
+ATOM     33  C1*   A A   2     -22.317 -12.100  72.759  1.00 24.44      3CRO 176
+ATOM     34  N9    A A   2     -23.183 -11.044  73.239  1.00 15.26      3CRO 177
+ATOM     35  C8    A A   2     -22.983  -9.686  73.202  1.00  6.04      3CRO 178
+ATOM     36  N7    A A   2     -23.976  -9.001  73.717  1.00  4.04      3CRO 179
+ATOM     37  C5    A A   2     -24.861  -9.974  74.123  1.00  2.00      3CRO 180
+ATOM     38  C6    A A   2     -26.086  -9.876  74.753  1.00 10.21      3CRO 181
+ATOM     39  N6    A A   2     -26.604  -8.685  75.048  1.00 24.32      3CRO 182
+ATOM     40  N1    A A   2     -26.745 -11.030  75.042  1.00 19.96      3CRO 183
+ATOM     41  C2    A A   2     -26.179 -12.205  74.697  1.00 11.76      3CRO 184
+ATOM     42  N3    A A   2     -25.007 -12.417  74.089  1.00 10.18      3CRO 185
+ATOM     43  C4    A A   2     -24.400 -11.239  73.832  1.00  4.06      3CRO 186
+ATOM     44  P     G A   3     -20.731 -14.702  69.760  1.00 42.58      3CRO 187
+ATOM     45  O1P   G A   3     -20.819 -13.671  68.695  1.00 48.52      3CRO 188
+ATOM     46  O2P   G A   3     -19.527 -15.559  69.867  1.00 39.54      3CRO 189
+ATOM     47  O5*   G A   3     -22.021 -15.630  69.695  1.00 31.98      3CRO 190
+ATOM     48  C5*   G A   3     -22.752 -15.772  70.892  1.00 22.35      3CRO 191
+ATOM     49  C4*   G A   3     -24.247 -15.708  70.647  1.00 38.60      3CRO 192
+ATOM     50  O4*   G A   3     -24.796 -14.517  71.261  1.00 40.62      3CRO 193
+ATOM     51  C3*   G A   3     -24.720 -15.697  69.185  1.00 35.40      3CRO 194
+ATOM     52  O3*   G A   3     -25.779 -16.642  69.040  1.00 29.52      3CRO 195
+ATOM     53  C2*   G A   3     -25.248 -14.276  69.010  1.00 25.28      3CRO 196
+ATOM     54  C1*   G A   3     -25.789 -14.020  70.404  1.00 16.94      3CRO 197
+ATOM     55  N9    G A   3     -25.956 -12.616  70.675  1.00  8.23      3CRO 198
+ATOM     56  C8    G A   3     -25.120 -11.574  70.338  1.00  3.94      3CRO 199
+ATOM     57  N7    G A   3     -25.593 -10.403  70.696  1.00 15.95      3CRO 200
+ATOM     58  C5    G A   3     -26.812 -10.697  71.316  1.00  7.98      3CRO 201
+ATOM     59  C6    G A   3     -27.770  -9.831  71.904  1.00 15.83      3CRO 202
+ATOM     60  O6    G A   3     -27.730  -8.598  72.016  1.00 16.57      3CRO 203
+ATOM     61  N1    G A   3     -28.854 -10.531  72.420  1.00  7.35      3CRO 204
+ATOM     62  C2    G A   3     -29.009 -11.890  72.362  1.00  9.48      3CRO 205
+ATOM     63  N2    G A   3     -30.138 -12.349  72.915  1.00 17.09      3CRO 206
+ATOM     64  N3    G A   3     -28.122 -12.728  71.811  1.00  2.00      3CRO 207
+ATOM     65  C4    G A   3     -27.047 -12.059  71.315  1.00  2.92      3CRO 208
+ATOM     66  P     T A   4     -26.334 -17.073  67.612  1.00 10.11      3CRO 209
+ATOM     67  O1P   T A   4     -25.720 -16.171  66.616  1.00  2.00      3CRO 210
+ATOM     68  O2P   T A   4     -26.201 -18.530  67.446  1.00  5.29      3CRO 211
+ATOM     69  O5*   T A   4     -27.893 -16.772  67.776  1.00  2.00      3CRO 212
+ATOM     70  C5*   T A   4     -28.551 -17.125  68.962  1.00 12.75      3CRO 213
+ATOM     71  C4*   T A   4     -29.793 -16.282  69.163  1.00 19.72      3CRO 214
+ATOM     72  O4*   T A   4     -29.450 -14.881  69.327  1.00 21.32      3CRO 215
+ATOM     73  C3*   T A   4     -30.810 -16.320  68.030  1.00 13.19      3CRO 216
+ATOM     74  O3*   T A   4     -32.075 -16.597  68.566  1.00 22.67      3CRO 217
+ATOM     75  C2*   T A   4     -30.780 -14.889  67.488  1.00 20.76      3CRO 218
+ATOM     76  C1*   T A   4     -30.506 -14.125  68.772  1.00 13.05      3CRO 219
+ATOM     77  N1    T A   4     -29.979 -12.743  68.592  1.00 13.76      3CRO 220
+ATOM     78  C2    T A   4     -30.662 -11.670  69.141  1.00 16.83      3CRO 221
+ATOM     79  O2    T A   4     -31.720 -11.766  69.732  1.00 22.62      3CRO 222
+ATOM     80  N3    T A   4     -30.049 -10.456  68.956  1.00 17.24      3CRO 223
+ATOM     81  C4    T A   4     -28.850 -10.222  68.294  1.00 17.81      3CRO 224
+ATOM     82  O4    T A   4     -28.416  -9.081  68.181  1.00 19.02      3CRO 225
+ATOM     83  C5    T A   4     -28.201 -11.387  67.765  1.00  2.00      3CRO 226
+ATOM     84  C5M   T A   4     -26.905 -11.256  67.027  1.00  6.89      3CRO 227
+ATOM     85  C6    T A   4     -28.780 -12.569  67.948  1.00  2.00      3CRO 228
+ATOM     86  P     A A   5     -33.292 -16.704  67.554  1.00 41.45      3CRO 229
+ATOM     87  O1P   A A   5     -32.746 -16.582  66.171  1.00 26.88      3CRO 230
+ATOM     88  O2P   A A   5     -34.084 -17.898  67.926  1.00 35.68      3CRO 231
+ATOM     89  O5*   A A   5     -34.132 -15.386  67.926  1.00 42.19      3CRO 232
+ATOM     90  C5*   A A   5     -35.047 -15.352  69.021  1.00 13.92      3CRO 233
+ATOM     91  C4*   A A   5     -35.678 -13.975  69.162  1.00  2.79      3CRO 234
+ATOM     92  O4*   A A   5     -34.657 -12.969  68.963  1.00 12.21      3CRO 235
+ATOM     93  C3*   A A   5     -36.775 -13.645  68.151  1.00 25.68      3CRO 236
+ATOM     94  O3*   A A   5     -37.846 -13.023  68.803  1.00 35.20      3CRO 237
+ATOM     95  C2*   A A   5     -36.104 -12.668  67.186  1.00 29.88      3CRO 238
+ATOM     96  C1*   A A   5     -35.166 -11.958  68.135  1.00  3.80      3CRO 239
+ATOM     97  N9    A A   5     -34.042 -11.331  67.481  1.00  3.61      3CRO 240
+ATOM     98  C8    A A   5     -33.111 -11.889  66.659  1.00  7.46      3CRO 241
+ATOM     99  N7    A A   5     -32.203 -11.028  66.243  1.00 26.63      3CRO 242
+ATOM    100  C5    A A   5     -32.564  -9.834  66.855  1.00  2.00      3CRO 243
+ATOM    101  C6    A A   5     -32.016  -8.538  66.824  1.00  7.28      3CRO 244
+ATOM    102  N6    A A   5     -30.929  -8.209  66.126  1.00  8.53      3CRO 245
+ATOM    103  N1    A A   5     -32.638  -7.579  67.535  1.00 32.48      3CRO 246
+ATOM    104  C2    A A   5     -33.727  -7.906  68.240  1.00 35.40      3CRO 247
+ATOM    105  N3    A A   5     -34.327  -9.086  68.350  1.00 11.06      3CRO 248
+ATOM    106  C4    A A   5     -33.689 -10.011  67.624  1.00  6.05      3CRO 249
+ATOM    107  P     C A   6     -39.244 -12.997  68.045  1.00 43.32      3CRO 250
+ATOM    108  O1P   C A   6     -38.993 -12.591  66.648  1.00 53.17      3CRO 251
+ATOM    109  O2P   C A   6     -39.927 -14.279  68.333  1.00 44.16      3CRO 252
+ATOM    110  O5*   C A   6     -40.021 -11.812  68.792  1.00 46.52      3CRO 253
+ATOM    111  C5*   C A   6     -39.297 -10.772  69.420  1.00 49.76      3CRO 254
+ATOM    112  C4*   C A   6     -39.526  -9.451  68.718  1.00 54.58      3CRO 255
+ATOM    113  O4*   C A   6     -38.295  -9.045  68.077  1.00 55.37      3CRO 256
+ATOM    114  C3*   C A   6     -40.600  -9.453  67.625  1.00 61.63      3CRO 257
+ATOM    115  O3*   C A   6     -41.437  -8.276  67.749  1.00 85.78      3CRO 258
+ATOM    116  C2*   C A   6     -39.765  -9.425  66.345  1.00 38.79      3CRO 259
+ATOM    117  C1*   C A   6     -38.610  -8.560  66.800  1.00 29.60      3CRO 260
+ATOM    118  N1    C A   6     -37.421  -8.677  65.964  1.00 13.15      3CRO 261
+ATOM    119  C2    C A   6     -36.627  -7.537  65.823  1.00 18.84      3CRO 262
+ATOM    120  O2    C A   6     -36.975  -6.498  66.402  1.00 21.73      3CRO 263
+ATOM    121  N3    C A   6     -35.509  -7.602  65.053  1.00  9.37      3CRO 264
+ATOM    122  C4    C A   6     -35.188  -8.750  64.456  1.00 16.63      3CRO 265
+ATOM    123  N4    C A   6     -34.082  -8.777  63.704  1.00 39.30      3CRO 266
+ATOM    124  C5    C A   6     -35.983  -9.926  64.606  1.00 15.67      3CRO 267
+ATOM    125  C6    C A   6     -37.082  -9.850  65.368  1.00  6.39      3CRO 268
+ATOM    126  P     A A   7     -42.914  -8.169  67.108  1.00 65.26      3CRO 269
+ATOM    127  O1P   A A   7     -43.017  -9.203  66.059  1.00 74.17      3CRO 270
+ATOM    128  O2P   A A   7     -43.923  -8.137  68.197  1.00 47.80      3CRO 271
+ATOM    129  O5*   A A   7     -42.886  -6.716  66.422  1.00 55.97      3CRO 272
+ATOM    130  C5*   A A   7     -41.974  -5.718  66.902  1.00 52.71      3CRO 273
+ATOM    131  C4*   A A   7     -41.752  -4.610  65.882  1.00 49.49      3CRO 274
+ATOM    132  O4*   A A   7     -40.396  -4.658  65.355  1.00 48.78      3CRO 275
+ATOM    133  C3*   A A   7     -42.667  -4.644  64.660  1.00 38.38      3CRO 276
+ATOM    134  O3*   A A   7     -42.939  -3.336  64.257  1.00 53.58      3CRO 277
+ATOM    135  C2*   A A   7     -41.796  -5.291  63.610  1.00 11.51      3CRO 278
+ATOM    136  C1*   A A   7     -40.471  -4.634  63.945  1.00 22.15      3CRO 279
+ATOM    137  N9    A A   7     -39.338  -5.342  63.366  1.00 15.01      3CRO 280
+ATOM    138  C8    A A   7     -39.244  -6.664  63.026  1.00  2.00      3CRO 281
+ATOM    139  N7    A A   7     -38.091  -6.983  62.477  1.00 20.72      3CRO 282
+ATOM    140  C5    A A   7     -37.395  -5.790  62.462  1.00 10.26      3CRO 283
+ATOM    141  C6    A A   7     -36.105  -5.458  62.017  1.00 27.40      3CRO 284
+ATOM    142  N6    A A   7     -35.277  -6.365  61.485  1.00  7.99      3CRO 285
+ATOM    143  N1    A A   7     -35.709  -4.161  62.140  1.00 35.83      3CRO 286
+ATOM    144  C2    A A   7     -36.557  -3.273  62.688  1.00 28.86      3CRO 287
+ATOM    145  N3    A A   7     -37.794  -3.475  63.149  1.00 32.15      3CRO 288
+ATOM    146  C4    A A   7     -38.150  -4.766  63.003  1.00 22.38      3CRO 289
+ATOM    147  P     A A   8     -44.451  -2.870  64.196  1.00 49.42      3CRO 290
+ATOM    148  O1P   A A   8     -45.075  -3.472  62.994  1.00 32.22      3CRO 291
+ATOM    149  O2P   A A   8     -45.046  -3.069  65.539  1.00 55.98      3CRO 292
+ATOM    150  O5*   A A   8     -44.266  -1.323  63.967  1.00 30.15      3CRO 293
+ATOM    151  C5*   A A   8     -44.399  -0.877  62.661  1.00 50.23      3CRO 294
+ATOM    152  C4*   A A   8     -43.095  -0.270  62.228  1.00 55.47      3CRO 295
+ATOM    153  O4*   A A   8     -42.091  -1.306  62.081  1.00 61.17      3CRO 296
+ATOM    154  C3*   A A   8     -43.156   0.453  60.902  1.00 48.62      3CRO 297
+ATOM    155  O3*   A A   8     -42.388   1.626  61.006  1.00 44.79      3CRO 298
+ATOM    156  C2*   A A   8     -42.530  -0.556  59.943  1.00 49.67      3CRO 299
+ATOM    157  C1*   A A   8     -41.448  -1.132  60.836  1.00 31.11      3CRO 300
+ATOM    158  N9    A A   8     -40.879  -2.408  60.379  1.00 30.41      3CRO 301
+ATOM    159  C8    A A   8     -41.494  -3.628  60.213  1.00 37.03      3CRO 302
+ATOM    160  N7    A A   8     -40.685  -4.587  59.792  1.00 15.09      3CRO 303
+ATOM    161  C5    A A   8     -39.455  -3.950  59.677  1.00  8.31      3CRO 304
+ATOM    162  C6    A A   8     -38.178  -4.399  59.278  1.00  8.36      3CRO 305
+ATOM    163  N6    A A   8     -37.922  -5.651  58.898  1.00 19.70      3CRO 306
+ATOM    164  N1    A A   8     -37.164  -3.506  59.278  1.00 19.85      3CRO 307
+ATOM    165  C2    A A   8     -37.413  -2.243  59.648  1.00 21.62      3CRO 308
+ATOM    166  N3    A A   8     -38.565  -1.701  60.040  1.00 29.96      3CRO 309
+ATOM    167  C4    A A   8     -39.557  -2.612  60.034  1.00 31.00      3CRO 310
+ATOM    168  P     A A   9     -42.641   2.712  59.885  1.00 45.48      3CRO 311
+ATOM    169  O1P   A A   9     -43.898   2.327  59.200  1.00 34.52      3CRO 312
+ATOM    170  O2P   A A   9     -42.490   4.058  60.487  1.00 63.50      3CRO 313
+ATOM    171  O5*   A A   9     -41.402   2.463  58.916  1.00 26.15      3CRO 314
+ATOM    172  C5*   A A   9     -40.444   3.485  58.739  1.00 36.81      3CRO 315
+ATOM    173  C4*   A A   9     -39.361   3.007  57.802  1.00 40.47      3CRO 316
+ATOM    174  O4*   A A   9     -39.236   1.566  57.917  1.00 52.67      3CRO 317
+ATOM    175  C3*   A A   9     -39.597   3.298  56.324  1.00 50.30      3CRO 318
+ATOM    176  O3*   A A   9     -38.357   3.690  55.761  1.00 59.90      3CRO 319
+ATOM    177  C2*   A A   9     -40.050   1.938  55.786  1.00 56.87      3CRO 320
+ATOM    178  C1*   A A   9     -39.176   1.016  56.624  1.00 48.30      3CRO 321
+ATOM    179  N9    A A   9     -39.623  -0.372  56.674  1.00 28.05      3CRO 322
+ATOM    180  C8    A A   9     -40.851  -0.852  57.026  1.00  9.84      3CRO 323
+ATOM    181  N7    A A   9     -40.935  -2.160  56.973  1.00 18.32      3CRO 324
+ATOM    182  C5    A A   9     -39.676  -2.562  56.544  1.00  2.00      3CRO 325
+ATOM    183  C6    A A   9     -39.127  -3.829  56.279  1.00 16.51      3CRO 326
+ATOM    184  N6    A A   9     -39.816  -4.963  56.427  1.00 49.13      3CRO 327
+ATOM    185  N1    A A   9     -37.845  -3.890  55.862  1.00  9.65      3CRO 328
+ATOM    186  C2    A A   9     -37.166  -2.747  55.737  1.00 22.22      3CRO 329
+ATOM    187  N3    A A   9     -37.578  -1.498  55.958  1.00 23.00      3CRO 330
+ATOM    188  C4    A A   9     -38.858  -1.477  56.357  1.00 11.46      3CRO 331
+ATOM    189  P     C A  10     -38.277   4.741  54.570  1.00 69.17      3CRO 332
+ATOM    190  O1P   C A  10     -39.667   5.051  54.161  1.00 67.94      3CRO 333
+ATOM    191  O2P   C A  10     -37.351   5.829  54.973  1.00 53.37      3CRO 334
+ATOM    192  O5*   C A  10     -37.565   3.884  53.420  1.00 85.02      3CRO 335
+ATOM    193  C5*   C A  10     -36.360   3.175  53.692  1.00 66.31      3CRO 336
+ATOM    194  C4*   C A  10     -36.133   2.060  52.687  1.00 51.98      3CRO 337
+ATOM    195  O4*   C A  10     -36.792   0.857  53.145  1.00 41.45      3CRO 338
+ATOM    196  C3*   C A  10     -36.615   2.302  51.250  1.00 48.34      3CRO 339
+ATOM    197  O3*   C A  10     -35.619   1.813  50.362  1.00 50.71      3CRO 340
+ATOM    198  C2*   C A  10     -37.867   1.438  51.173  1.00 31.24      3CRO 341
+ATOM    199  C1*   C A  10     -37.421   0.275  52.042  1.00 25.41      3CRO 342
+ATOM    200  N1    C A  10     -38.512  -0.593  52.496  1.00  2.89      3CRO 343
+ATOM    201  C2    C A  10     -38.194  -1.915  52.694  1.00  2.00      3CRO 344
+ATOM    202  O2    C A  10     -37.016  -2.255  52.509  1.00 13.78      3CRO 345
+ATOM    203  N3    C A  10     -39.172  -2.771  53.072  1.00  2.00      3CRO 346
+ATOM    204  C4    C A  10     -40.413  -2.315  53.252  1.00  2.00      3CRO 347
+ATOM    205  N4    C A  10     -41.357  -3.182  53.627  1.00 15.30      3CRO 348
+ATOM    206  C5    C A  10     -40.750  -0.952  53.057  1.00  2.18      3CRO 349
+ATOM    207  C6    C A  10     -39.775  -0.133  52.677  1.00  6.52      3CRO 350
+ATOM    208  P     T A  11     -35.449   2.325  48.859  1.00 50.07      3CRO 351
+ATOM    209  O1P   T A  11     -36.779   2.739  48.350  1.00 51.67      3CRO 352
+ATOM    210  O2P   T A  11     -34.288   3.237  48.804  1.00 52.52      3CRO 353
+ATOM    211  O5*   T A  11     -34.998   0.990  48.140  1.00 47.40      3CRO 354
+ATOM    212  C5*   T A  11     -34.567  -0.046  48.986  1.00 39.18      3CRO 355
+ATOM    213  C4*   T A  11     -34.808  -1.408  48.369  1.00 29.86      3CRO 356
+ATOM    214  O4*   T A  11     -35.914  -2.041  49.047  1.00 26.61      3CRO 357
+ATOM    215  C3*   T A  11     -35.135  -1.440  46.867  1.00 34.60      3CRO 358
+ATOM    216  O3*   T A  11     -34.351  -2.482  46.261  1.00  6.68      3CRO 359
+ATOM    217  C2*   T A  11     -36.633  -1.765  46.860  1.00 18.68      3CRO 360
+ATOM    218  C1*   T A  11     -36.710  -2.667  48.085  1.00  7.19      3CRO 361
+ATOM    219  N1    T A  11     -38.065  -2.848  48.623  1.00  2.00      3CRO 362
+ATOM    220  C2    T A  11     -38.460  -4.132  48.887  1.00  9.34      3CRO 363
+ATOM    221  O2    T A  11     -37.727  -5.099  48.722  1.00 18.16      3CRO 364
+ATOM    222  N3    T A  11     -39.744  -4.240  49.355  1.00 21.01      3CRO 365
+ATOM    223  C4    T A  11     -40.642  -3.203  49.570  1.00  8.34      3CRO 366
+ATOM    224  O4    T A  11     -41.764  -3.441  50.003  1.00 29.59      3CRO 367
+ATOM    225  C5    T A  11     -40.151  -1.892  49.277  1.00  3.92      3CRO 368
+ATOM    226  C5M   T A  11     -41.033  -0.695  49.475  1.00 17.34      3CRO 369
+ATOM    227  C6    T A  11     -38.902  -1.777  48.816  1.00  6.16      3CRO 370
+ATOM    228  P     T A  12     -33.823  -2.442  44.758  1.00 18.75      3CRO 371
+ATOM    229  O1P   T A  12     -34.493  -1.336  44.037  1.00 20.22      3CRO 372
+ATOM    230  O2P   T A  12     -32.353  -2.554  44.746  1.00  6.72      3CRO 373
+ATOM    231  O5*   T A  12     -34.379  -3.837  44.247  1.00 21.43      3CRO 374
+ATOM    232  C5*   T A  12     -33.964  -4.942  44.972  1.00  2.35      3CRO 375
+ATOM    233  C4*   T A  12     -34.911  -6.087  44.753  1.00  2.00      3CRO 376
+ATOM    234  O4*   T A  12     -36.155  -5.827  45.430  1.00  2.00      3CRO 377
+ATOM    235  C3*   T A  12     -35.260  -6.344  43.303  1.00  7.83      3CRO 378
+ATOM    236  O3*   T A  12     -35.283  -7.725  43.104  1.00 12.95      3CRO 379
+ATOM    237  C2*   T A  12     -36.656  -5.765  43.219  1.00 11.52      3CRO 380
+ATOM    238  C1*   T A  12     -37.190  -6.179  44.576  1.00  2.76      3CRO 381
+ATOM    239  N1    T A  12     -38.384  -5.407  44.951  1.00  4.96      3CRO 382
+ATOM    240  C2    T A  12     -39.482  -6.094  45.394  1.00  7.99      3CRO 383
+ATOM    241  O2    T A  12     -39.506  -7.300  45.537  1.00 18.80      3CRO 384
+ATOM    242  N3    T A  12     -40.554  -5.307  45.690  1.00  2.00      3CRO 385
+ATOM    243  C4    T A  12     -40.636  -3.929  45.566  1.00 26.27      3CRO 386
+ATOM    244  O4    T A  12     -41.672  -3.342  45.866  1.00 38.65      3CRO 387
+ATOM    245  C5    T A  12     -39.453  -3.280  45.082  1.00 20.57      3CRO 388
+ATOM    246  C5M   T A  12     -39.431  -1.787  44.923  1.00  9.88      3CRO 389
+ATOM    247  C6    T A  12     -38.397  -4.041  44.793  1.00 25.27      3CRO 390
+ATOM    248  P     T A  13     -35.504  -8.359  41.661  1.00 15.06      3CRO 391
+ATOM    249  O1P   T A  13     -35.683  -7.277  40.655  1.00 17.56      3CRO 392
+ATOM    250  O2P   T A  13     -34.456  -9.379  41.452  1.00 10.22      3CRO 393
+ATOM    251  O5*   T A  13     -36.893  -9.082  41.960  1.00  2.00      3CRO 394
+ATOM    252  C5*   T A  13     -36.880 -10.297  42.674  1.00  2.00      3CRO 395
+ATOM    253  C4*   T A  13     -38.293 -10.779  42.846  1.00  2.00      3CRO 396
+ATOM    254  O4*   T A  13     -39.091  -9.653  43.267  1.00 12.15      3CRO 397
+ATOM    255  C3*   T A  13     -38.942 -11.253  41.555  1.00 15.83      3CRO 398
+ATOM    256  O3*   T A  13     -39.809 -12.301  41.851  1.00 22.83      3CRO 399
+ATOM    257  C2*   T A  13     -39.751 -10.042  41.137  1.00 14.23      3CRO 400
+ATOM    258  C1*   T A  13     -40.257  -9.639  42.497  1.00 15.65      3CRO 401
+ATOM    259  N1    T A  13     -40.869  -8.297  42.519  1.00 20.93      3CRO 402
+ATOM    260  C2    T A  13     -42.099  -8.219  43.080  1.00 20.12      3CRO 403
+ATOM    261  O2    T A  13     -42.631  -9.210  43.541  1.00 19.14      3CRO 404
+ATOM    262  N3    T A  13     -42.669  -6.960  43.065  1.00 22.38      3CRO 405
+ATOM    263  C4    T A  13     -42.103  -5.804  42.536  1.00 20.93      3CRO 406
+ATOM    264  O4    T A  13     -42.706  -4.734  42.592  1.00  7.44      3CRO 407
+ATOM    265  C5    T A  13     -40.791  -5.972  41.963  1.00  4.26      3CRO 408
+ATOM    266  C5M   T A  13     -40.078  -4.797  41.365  1.00  3.89      3CRO 409
+ATOM    267  C6    T A  13     -40.246  -7.196  41.974  1.00 21.00      3CRO 410
+ATOM    268  P     C A  14     -40.095 -13.388  40.746  1.00  7.83      3CRO 411
+ATOM    269  O1P   C A  14     -39.737 -12.834  39.427  1.00 12.55      3CRO 412
+ATOM    270  O2P   C A  14     -39.479 -14.647  41.204  1.00 16.75      3CRO 413
+ATOM    271  O5*   C A  14     -41.662 -13.483  40.903  1.00  2.00      3CRO 414
+ATOM    272  C5*   C A  14     -42.122 -13.424  42.214  1.00  5.34      3CRO 415
+ATOM    273  C4*   C A  14     -43.617 -13.271  42.228  1.00  3.08      3CRO 416
+ATOM    274  O4*   C A  14     -43.929 -11.864  42.303  1.00  9.65      3CRO 417
+ATOM    275  C3*   C A  14     -44.316 -13.789  40.977  1.00 10.48      3CRO 418
+ATOM    276  O3*   C A  14     -45.606 -14.244  41.340  1.00  8.57      3CRO 419
+ATOM    277  C2*   C A  14     -44.415 -12.534  40.127  1.00 22.27      3CRO 420
+ATOM    278  C1*   C A  14     -44.742 -11.514  41.207  1.00 14.93      3CRO 421
+ATOM    279  N1    C A  14     -44.484 -10.088  40.794  1.00  3.53      3CRO 422
+ATOM    280  C2    C A  14     -45.475  -9.150  41.073  1.00  4.05      3CRO 423
+ATOM    281  O2    C A  14     -46.498  -9.528  41.655  1.00 37.64      3CRO 424
+ATOM    282  N3    C A  14     -45.287  -7.860  40.702  1.00  2.00      3CRO 425
+ATOM    283  C4    C A  14     -44.164  -7.506  40.062  1.00  6.86      3CRO 426
+ATOM    284  N4    C A  14     -44.010  -6.225  39.693  1.00 15.98      3CRO 427
+ATOM    285  C5    C A  14     -43.145  -8.451  39.768  1.00  8.66      3CRO 428
+ATOM    286  C6    C A  14     -43.346  -9.718  40.143  1.00  2.00      3CRO 429
+ATOM    287  P     T A  15     -46.482 -14.882  40.186  1.00 15.21      3CRO 430
+ATOM    288  O1P   T A  15     -45.659 -14.838  38.971  1.00  6.82      3CRO 431
+ATOM    289  O2P   T A  15     -47.062 -16.154  40.658  1.00  8.53      3CRO 432
+ATOM    290  O5*   T A  15     -47.680 -13.840  40.077  1.00 10.12      3CRO 433
+ATOM    291  C5*   T A  15     -48.758 -14.066  40.956  1.00  2.00      3CRO 434
+ATOM    292  C4*   T A  15     -49.523 -12.796  41.199  1.00  2.00      3CRO 435
+ATOM    293  O4*   T A  15     -48.699 -11.632  40.912  1.00  7.91      3CRO 436
+ATOM    294  C3*   T A  15     -50.694 -12.684  40.280  1.00 15.58      3CRO 437
+ATOM    295  O3*   T A  15     -51.733 -12.181  40.977  1.00 28.30      3CRO 438
+ATOM    296  C2*   T A  15     -50.236 -11.710  39.221  1.00 35.28      3CRO 439
+ATOM    297  C1*   T A  15     -49.431 -10.764  40.087  1.00  8.18      3CRO 440
+ATOM    298  N1    T A  15     -48.524  -9.924  39.262  1.00  2.00      3CRO 441
+ATOM    299  C2    T A  15     -48.885  -8.618  39.074  1.00 12.77      3CRO 442
+ATOM    300  O2    T A  15     -49.869  -8.133  39.601  1.00 33.77      3CRO 443
+ATOM    301  N3    T A  15     -48.046  -7.896  38.258  1.00  9.71      3CRO 444
+ATOM    302  C4    T A  15     -46.923  -8.374  37.602  1.00  4.54      3CRO 445
+ATOM    303  O4    T A  15     -46.242  -7.634  36.897  1.00 15.24      3CRO 446
+ATOM    304  C5    T A  15     -46.621  -9.750  37.832  1.00  2.00      3CRO 447
+ATOM    305  C5M   T A  15     -45.410 -10.352  37.178  1.00 29.11      3CRO 448
+ATOM    306  C6    T A  15     -47.427 -10.454  38.631  1.00  2.00      3CRO 449
+ATOM    307  P     T A  16     -53.014 -13.035  40.648  1.00 26.55      3CRO 450
+ATOM    308  O1P   T A  16     -53.490 -13.606  41.925  1.00 31.35      3CRO 451
+ATOM    309  O2P   T A  16     -52.630 -13.898  39.507  1.00 28.43      3CRO 452
+ATOM    310  O5*   T A  16     -54.017 -11.916  40.129  1.00 50.14      3CRO 453
+ATOM    311  C5*   T A  16     -54.667 -11.130  41.106  1.00 66.23      3CRO 454
+ATOM    312  C4*   T A  16     -54.989  -9.758  40.563  1.00 61.48      3CRO 455
+ATOM    313  O4*   T A  16     -53.799  -9.187  39.962  1.00 41.49      3CRO 456
+ATOM    314  C3*   T A  16     -56.068  -9.744  39.479  1.00 55.61      3CRO 457
+ATOM    315  O3*   T A  16     -56.958  -8.678  39.706  1.00 73.10      3CRO 458
+ATOM    316  C2*   T A  16     -55.272  -9.500  38.212  1.00 33.86      3CRO 459
+ATOM    317  C1*   T A  16     -54.196  -8.578  38.767  1.00 35.13      3CRO 460
+ATOM    318  N1    T A  16     -53.041  -8.465  37.886  1.00 14.24      3CRO 461
+ATOM    319  C2    T A  16     -52.565  -7.208  37.609  1.00 20.33      3CRO 462
+ATOM    320  O2    T A  16     -53.045  -6.182  38.076  1.00 47.60      3CRO 463
+ATOM    321  N3    T A  16     -51.498  -7.191  36.755  1.00 15.03      3CRO 464
+ATOM    322  C4    T A  16     -50.879  -8.284  36.164  1.00 18.96      3CRO 465
+ATOM    323  O4    T A  16     -49.919  -8.115  35.410  1.00 11.56      3CRO 466
+ATOM    324  C5    T A  16     -51.436  -9.569  36.512  1.00  2.19      3CRO 467
+ATOM    325  C5M   T A  16     -50.842 -10.829  35.962  1.00  2.00      3CRO 468
+ATOM    326  C6    T A  16     -52.482  -9.592  37.339  1.00 16.65      3CRO 469
+ATOM    327  P     G A  17     -58.264  -8.567  38.803  1.00 64.97      3CRO 470
+ATOM    328  O1P   G A  17     -58.277  -9.712  37.857  1.00 22.33      3CRO 471
+ATOM    329  O2P   G A  17     -59.410  -8.290  39.715  1.00 77.61      3CRO 472
+ATOM    330  O5*   G A  17     -57.966  -7.263  37.953  1.00 49.38      3CRO 473
+ATOM    331  C5*   G A  17     -57.837  -7.459  36.574  1.00 30.72      3CRO 474
+ATOM    332  C4*   G A  17     -57.382  -6.188  35.896  1.00 14.76      3CRO 475
+ATOM    333  O4*   G A  17     -55.934  -6.196  35.748  1.00 22.14      3CRO 476
+ATOM    334  C3*   G A  17     -57.946  -6.034  34.495  1.00 30.53      3CRO 477
+ATOM    335  O3*   G A  17     -58.217  -4.680  34.275  1.00 48.22      3CRO 478
+ATOM    336  C2*   G A  17     -56.804  -6.535  33.616  1.00 32.45      3CRO 479
+ATOM    337  C1*   G A  17     -55.608  -6.007  34.386  1.00 19.03      3CRO 480
+ATOM    338  N9    G A  17     -54.360  -6.684  34.054  1.00 10.71      3CRO 481
+ATOM    339  C8    G A  17     -54.021  -8.004  34.171  1.00 15.91      3CRO 482
+ATOM    340  N7    G A  17     -52.815  -8.272  33.736  1.00 13.00      3CRO 483
+ATOM    341  C5    G A  17     -52.325  -7.061  33.318  1.00  2.00      3CRO 484
+ATOM    342  C6    G A  17     -51.071  -6.742  32.764  1.00 27.42      3CRO 485
+ATOM    343  O6    G A  17     -50.112  -7.497  32.527  1.00 39.64      3CRO 486
+ATOM    344  N1    G A  17     -50.989  -5.387  32.459  1.00 32.45      3CRO 487
+ATOM    345  C2    G A  17     -51.995  -4.473  32.666  1.00 35.17      3CRO 488
+ATOM    346  N2    G A  17     -51.723  -3.211  32.312  1.00 45.98      3CRO 489
+ATOM    347  N3    G A  17     -53.179  -4.767  33.193  1.00 29.72      3CRO 490
+ATOM    348  C4    G A  17     -53.268  -6.075  33.494  1.00  9.54      3CRO 491
+ATOM    349  P     T A  18     -59.236  -4.242  33.136  1.00 38.75      3CRO 492
+ATOM    350  O1P   T A  18     -60.604  -4.392  33.665  1.00 42.08      3CRO 493
+ATOM    351  O2P   T A  18     -58.772  -2.936  32.623  1.00 46.27      3CRO 494
+ATOM    352  O5*   T A  18     -58.996  -5.332  32.000  1.00 24.19      3CRO 495
+ATOM    353  C5*   T A  18     -58.893  -4.919  30.620  1.00 45.89      3CRO 496
+ATOM    354  C4*   T A  18     -57.670  -4.049  30.326  1.00 31.88      3CRO 497
+ATOM    355  O4*   T A  18     -56.437  -4.682  30.769  1.00 34.82      3CRO 498
+ATOM    356  C3*   T A  18     -57.458  -3.751  28.853  1.00 44.03      3CRO 499
+ATOM    357  O3*   T A  18     -56.961  -2.444  28.720  1.00 51.07      3CRO 500
+ATOM    358  C2*   T A  18     -56.402  -4.771  28.456  1.00 31.42      3CRO 501
+ATOM    359  C1*   T A  18     -55.525  -4.737  29.693  1.00 11.76      3CRO 502
+ATOM    360  N1    T A  18     -54.651  -5.955  29.803  1.00 14.61      3CRO 503
+ATOM    361  C2    T A  18     -53.331  -5.785  29.477  1.00 12.81      3CRO 504
+ATOM    362  O2    T A  18     -52.876  -4.712  29.143  1.00 33.05      3CRO 505
+ATOM    363  N3    T A  18     -52.562  -6.921  29.549  1.00 11.39      3CRO 506
+ATOM    364  C4    T A  18     -52.986  -8.190  29.902  1.00 10.03      3CRO 507
+ATOM    365  O4    T A  18     -52.188  -9.113  29.936  1.00 15.10      3CRO 508
+ATOM    366  C5    T A  18     -54.375  -8.310  30.230  1.00  7.85      3CRO 509
+ATOM    367  C5M   T A  18     -54.902  -9.650  30.652  1.00 22.80      3CRO 510
+ATOM    368  C6    T A  18     -55.147  -7.207  30.155  1.00  6.42      3CRO 511
+ATOM    369  P     A A  19     -57.466  -1.595  27.474  1.00 40.18      3CRO 512
+ATOM    370  O1P   A A  19     -58.403  -2.451  26.698  1.00 34.40      3CRO 513
+ATOM    371  O2P   A A  19     -57.892  -0.280  27.989  1.00 51.52      3CRO 514
+ATOM    372  O5*   A A  19     -56.136  -1.392  26.621  1.00 22.34      3CRO 515
+ATOM    373  C5*   A A  19     -55.040  -0.714  27.170  1.00  5.79      3CRO 516
+ATOM    374  C4*   A A  19     -53.791  -1.012  26.364  1.00 10.76      3CRO 517
+ATOM    375  O4*   A A  19     -53.310  -2.338  26.689  1.00 33.21      3CRO 518
+ATOM    376  C3*   A A  19     -53.945  -0.986  24.841  1.00 21.88      3CRO 519
+ATOM    377  O3*   A A  19     -52.790  -0.406  24.264  1.00 18.64      3CRO 520
+ATOM    378  C2*   A A  19     -54.011  -2.465  24.486  1.00 29.82      3CRO 521
+ATOM    379  C1*   A A  19     -53.010  -3.016  25.488  1.00 34.41      3CRO 522
+ATOM    380  N9    A A  19     -53.105  -4.462  25.705  1.00  3.20      3CRO 523
+ATOM    381  C8    A A  19     -54.166  -5.180  26.178  1.00  2.00      3CRO 524
+ATOM    382  N7    A A  19     -53.933  -6.460  26.260  1.00 18.50      3CRO 525
+ATOM    383  C5    A A  19     -52.632  -6.587  25.803  1.00  2.35      3CRO 526
+ATOM    384  C6    A A  19     -51.798  -7.705  25.648  1.00 11.61      3CRO 527
+ATOM    385  N6    A A  19     -52.184  -8.950  25.950  1.00 21.10      3CRO 528
+ATOM    386  N1    A A  19     -50.553  -7.491  25.170  1.00 16.32      3CRO 529
+ATOM    387  C2    A A  19     -50.182  -6.236  24.870  1.00 20.05      3CRO 530
+ATOM    388  N3    A A  19     -50.876  -5.107  24.987  1.00 11.58      3CRO 531
+ATOM    389  C4    A A  19     -52.109  -5.365  25.456  1.00  2.00      3CRO 532
+ATOM    390  P     T A  20     -52.873   0.373  22.872  1.00 44.90      3CRO 533
+ATOM    391  O1P   T A  20     -54.088  -0.079  22.156  1.00 60.36      3CRO 534
+ATOM    392  O2P   T A  20     -52.637   1.812  23.114  1.00 37.91      3CRO 535
+ATOM    393  O5*   T A  20     -51.594  -0.176  22.112  1.00 41.98      3CRO 536
+ATOM    394  C5*   T A  20     -50.580  -0.819  22.847  1.00 42.15      3CRO 537
+ATOM    395  C4*   T A  20     -49.877  -1.821  21.963  1.00 51.41      3CRO 538
+ATOM    396  O4*   T A  20     -50.222  -3.161  22.393  1.00 62.47      3CRO 539
+ATOM    397  C3*   T A  20     -50.260  -1.745  20.488  1.00 51.10      3CRO 540
+ATOM    398  O3*   T A  20     -49.095  -1.921  19.698  1.00 53.27      3CRO 541
+ATOM    399  C2*   T A  20     -51.235  -2.913  20.328  1.00 51.78      3CRO 542
+ATOM    400  C1*   T A  20     -50.588  -3.919  21.264  1.00 29.83      3CRO 543
+ATOM    401  N1    T A  20     -51.464  -5.049  21.703  1.00  3.91      3CRO 544
+ATOM    402  C2    T A  20     -50.858  -6.258  21.939  1.00  3.48      3CRO 545
+ATOM    403  O2    T A  20     -49.655  -6.438  21.796  1.00 15.08      3CRO 546
+ATOM    404  N3    T A  20     -51.717  -7.254  22.347  1.00  4.93      3CRO 547
+ATOM    405  C4    T A  20     -53.093  -7.162  22.536  1.00 19.09      3CRO 548
+ATOM    406  O4    T A  20     -53.751  -8.150  22.907  1.00 14.52      3CRO 549
+ATOM    407  C5    T A  20     -53.644  -5.864  22.267  1.00  5.26      3CRO 550
+ATOM    408  C5M   T A  20     -55.113  -5.626  22.429  1.00 35.68      3CRO 551
+ATOM    409  C6    T A  20     -52.817  -4.887  21.878  1.00  2.00      3CRO 552
+TER     410        T A  20                                              3CRO 553
+ATOM    415  O5*   T B   1     -55.231 -19.025  20.750  1.00 49.50      3CRO 554
+ATOM    416  C5*   T B   1     -54.322 -19.784  19.967  1.00 56.94      3CRO 555
+ATOM    417  C4*   T B   1     -53.045 -19.016  19.679  1.00 41.16      3CRO 556
+ATOM    418  O4*   T B   1     -53.322 -17.632  19.347  1.00 48.36      3CRO 557
+ATOM    419  C3*   T B   1     -52.026 -18.975  20.808  1.00 21.52      3CRO 558
+ATOM    420  O3*   T B   1     -50.766 -19.071  20.232  1.00 20.09      3CRO 559
+ATOM    421  C2*   T B   1     -52.217 -17.583  21.396  1.00 18.78      3CRO 560
+ATOM    422  C1*   T B   1     -52.477 -16.797  20.119  1.00 33.61      3CRO 561
+ATOM    423  N1    T B   1     -53.166 -15.475  20.296  1.00 13.16      3CRO 562
+ATOM    424  C2    T B   1     -52.537 -14.362  19.799  1.00 14.33      3CRO 563
+ATOM    425  O2    T B   1     -51.445 -14.399  19.252  1.00 28.79      3CRO 564
+ATOM    426  N3    T B   1     -53.240 -13.197  19.971  1.00  7.02      3CRO 565
+ATOM    427  C4    T B   1     -54.489 -13.041  20.560  1.00 20.02      3CRO 566
+ATOM    428  O4    T B   1     -55.013 -11.930  20.634  1.00 27.71      3CRO 567
+ATOM    429  C5    T B   1     -55.084 -14.247  21.051  1.00 23.60      3CRO 568
+ATOM    430  C5M   T B   1     -56.430 -14.195  21.713  1.00 43.92      3CRO 569
+ATOM    431  C6    T B   1     -54.405 -15.390  20.897  1.00  4.29      3CRO 570
+ATOM    432  P     A B   2     -49.512 -19.393  21.144  1.00 30.07      3CRO 571
+ATOM    433  O1P   A B   2     -49.993 -19.907  22.442  1.00 45.90      3CRO 572
+ATOM    434  O2P   A B   2     -48.578 -20.176  20.307  1.00 31.60      3CRO 573
+ATOM    435  O5*   A B   2     -48.864 -17.960  21.382  1.00 35.24      3CRO 574
+ATOM    436  C5*   A B   2     -47.721 -17.671  20.623  1.00 38.01      3CRO 575
+ATOM    437  C4*   A B   2     -47.169 -16.321  20.991  1.00 19.92      3CRO 576
+ATOM    438  O4*   A B   2     -48.243 -15.359  21.048  1.00  4.88      3CRO 577
+ATOM    439  C3*   A B   2     -46.458 -16.260  22.338  1.00  7.57      3CRO 578
+ATOM    440  O3*   A B   2     -45.244 -15.590  22.109  1.00 15.72      3CRO 579
+ATOM    441  C2*   A B   2     -47.421 -15.432  23.188  1.00 11.15      3CRO 580
+ATOM    442  C1*   A B   2     -47.994 -14.505  22.127  1.00  2.51      3CRO 581
+ATOM    443  N9    A B   2     -49.247 -13.849  22.482  1.00  2.00      3CRO 582
+ATOM    444  C8    A B   2     -50.324 -14.374  23.114  1.00  2.00      3CRO 583
+ATOM    445  N7    A B   2     -51.305 -13.514  23.292  1.00  3.47      3CRO 584
+ATOM    446  C5    A B   2     -50.843 -12.346  22.719  1.00  2.00      3CRO 585
+ATOM    447  C6    A B   2     -51.401 -11.043  22.578  1.00  3.67      3CRO 586
+ATOM    448  N6    A B   2     -52.613 -10.667  23.008  1.00 10.89      3CRO 587
+ATOM    449  N1    A B   2     -50.646 -10.113  21.984  1.00  2.00      3CRO 588
+ATOM    450  C2    A B   2     -49.430 -10.451  21.536  1.00 10.59      3CRO 589
+ATOM    451  N3    A B   2     -48.797 -11.619  21.617  1.00 14.02      3CRO 590
+ATOM    452  C4    A B   2     -49.567 -12.536  22.226  1.00  2.00      3CRO 591
+ATOM    453  P     T B   3     -44.008 -15.649  23.097  1.00 21.94      3CRO 592
+ATOM    454  O1P   T B   3     -44.474 -16.337  24.321  1.00 20.34      3CRO 593
+ATOM    455  O2P   T B   3     -42.813 -16.103  22.354  1.00  2.97      3CRO 594
+ATOM    456  O5*   T B   3     -43.769 -14.099  23.405  1.00 53.63      3CRO 595
+ATOM    457  C5*   T B   3     -43.943 -13.137  22.370  1.00 28.72      3CRO 596
+ATOM    458  C4*   T B   3     -44.291 -11.763  22.928  1.00 23.76      3CRO 597
+ATOM    459  O4*   T B   3     -45.719 -11.647  23.183  1.00 15.06      3CRO 598
+ATOM    460  C3*   T B   3     -43.582 -11.315  24.222  1.00 10.67      3CRO 599
+ATOM    461  O3*   T B   3     -43.107  -9.977  24.042  1.00 25.04      3CRO 600
+ATOM    462  C2*   T B   3     -44.730 -11.319  25.224  1.00  2.00      3CRO 601
+ATOM    463  C1*   T B   3     -45.857 -10.839  24.327  1.00  2.00      3CRO 602
+ATOM    464  N1    T B   3     -47.189 -11.046  24.878  1.00  2.00      3CRO 603
+ATOM    465  C2    T B   3     -48.042  -9.972  24.919  1.00  2.25      3CRO 604
+ATOM    466  O2    T B   3     -47.717  -8.862  24.521  1.00  7.97      3CRO 605
+ATOM    467  N3    T B   3     -49.286 -10.247  25.448  1.00  2.00      3CRO 606
+ATOM    468  C4    T B   3     -49.732 -11.481  25.908  1.00  2.00      3CRO 607
+ATOM    469  O4    T B   3     -50.874 -11.600  26.361  1.00  3.95      3CRO 608
+ATOM    470  C5    T B   3     -48.774 -12.548  25.830  1.00  2.00      3CRO 609
+ATOM    471  C5M   T B   3     -49.132 -13.920  26.309  1.00 25.39      3CRO 610
+ATOM    472  C6    T B   3     -47.570 -12.285  25.324  1.00  2.00      3CRO 611
+ATOM    473  P     A B   4     -41.899  -9.285  24.828  1.00 15.62      3CRO 612
+ATOM    474  O1P   A B   4     -41.724 -10.016  26.097  1.00 38.26      3CRO 613
+ATOM    475  O2P   A B   4     -40.746  -9.102  23.920  1.00  2.00      3CRO 614
+ATOM    476  O5*   A B   4     -42.477  -7.825  25.125  1.00 20.81      3CRO 615
+ATOM    477  C5*   A B   4     -43.307  -7.114  24.198  1.00  2.00      3CRO 616
+ATOM    478  C4*   A B   4     -44.148  -6.070  24.917  1.00  2.00      3CRO 617
+ATOM    479  O4*   A B   4     -45.409  -6.677  25.321  1.00  2.05      3CRO 618
+ATOM    480  C3*   A B   4     -43.505  -5.523  26.196  1.00 20.25      3CRO 619
+ATOM    481  O3*   A B   4     -43.695  -4.102  26.323  1.00 13.77      3CRO 620
+ATOM    482  C2*   A B   4     -44.242  -6.290  27.285  1.00 28.67      3CRO 621
+ATOM    483  C1*   A B   4     -45.630  -6.376  26.674  1.00  2.00      3CRO 622
+ATOM    484  N9    A B   4     -46.420  -7.414  27.287  1.00  2.00      3CRO 623
+ATOM    485  C8    A B   4     -46.086  -8.717  27.524  1.00  2.00      3CRO 624
+ATOM    486  N7    A B   4     -47.028  -9.387  28.147  1.00  2.00      3CRO 625
+ATOM    487  C5    A B   4     -48.019  -8.451  28.341  1.00  2.00      3CRO 626
+ATOM    488  C6    A B   4     -49.265  -8.537  28.944  1.00  2.00      3CRO 627
+ATOM    489  N6    A B   4     -49.714  -9.666  29.472  1.00  8.89      3CRO 628
+ATOM    490  N1    A B   4     -50.027  -7.429  28.986  1.00  8.78      3CRO 629
+ATOM    491  C2    A B   4     -49.546  -6.312  28.429  1.00  6.03      3CRO 630
+ATOM    492  N3    A B   4     -48.373  -6.119  27.826  1.00  9.17      3CRO 631
+ATOM    493  C4    A B   4     -47.661  -7.239  27.815  1.00  2.00      3CRO 632
+ATOM    494  P     C B   5     -42.574  -3.207  27.045  1.00 19.59      3CRO 633
+ATOM    495  O1P   C B   5     -41.755  -4.099  27.911  1.00 24.64      3CRO 634
+ATOM    496  O2P   C B   5     -41.887  -2.388  26.032  1.00  2.00      3CRO 635
+ATOM    497  O5*   C B   5     -43.485  -2.249  27.932  1.00 10.66      3CRO 636
+ATOM    498  C5*   C B   5     -44.578  -1.591  27.314  1.00 21.28      3CRO 637
+ATOM    499  C4*   C B   5     -45.626  -1.157  28.330  1.00  6.82      3CRO 638
+ATOM    500  O4*   C B   5     -46.483  -2.278  28.682  1.00 27.85      3CRO 639
+ATOM    501  C3*   C B   5     -45.098  -0.594  29.641  1.00 11.71      3CRO 640
+ATOM    502  O3*   C B   5     -45.990   0.424  30.103  1.00 20.10      3CRO 641
+ATOM    503  C2*   C B   5     -45.171  -1.823  30.530  1.00  8.36      3CRO 642
+ATOM    504  C1*   C B   5     -46.497  -2.420  30.083  1.00  9.68      3CRO 643
+ATOM    505  N1    C B   5     -46.688  -3.877  30.487  1.00 15.78      3CRO 644
+ATOM    506  C2    C B   5     -47.944  -4.282  30.933  1.00 26.99      3CRO 645
+ATOM    507  O2    C B   5     -48.861  -3.451  30.954  1.00 43.97      3CRO 646
+ATOM    508  N3    C B   5     -48.119  -5.574  31.328  1.00  2.00      3CRO 647
+ATOM    509  C4    C B   5     -47.097  -6.432  31.286  1.00  9.08      3CRO 648
+ATOM    510  N4    C B   5     -47.301  -7.697  31.679  1.00 36.16      3CRO 649
+ATOM    511  C5    C B   5     -45.816  -6.036  30.842  1.00  2.00      3CRO 650
+ATOM    512  C6    C B   5     -45.656  -4.764  30.471  1.00  2.56      3CRO 651
+ATOM    513  P     A B   6     -45.521   1.750  30.879  1.00 10.82      3CRO 652
+ATOM    514  O1P   A B   6     -44.229   1.502  31.555  1.00 10.92      3CRO 653
+ATOM    515  O2P   A B   6     -45.641   2.907  29.970  1.00 31.31      3CRO 654
+ATOM    516  O5*   A B   6     -46.691   1.834  31.947  1.00  2.60      3CRO 655
+ATOM    517  C5*   A B   6     -48.032   1.505  31.611  1.00 14.59      3CRO 656
+ATOM    518  C4*   A B   6     -48.852   1.324  32.875  1.00 16.09      3CRO 657
+ATOM    519  O4*   A B   6     -49.040  -0.095  33.112  1.00 33.14      3CRO 658
+ATOM    520  C3*   A B   6     -48.184   1.872  34.139  1.00 35.30      3CRO 659
+ATOM    521  O3*   A B   6     -49.167   2.397  35.044  1.00 63.50      3CRO 660
+ATOM    522  C2*   A B   6     -47.532   0.622  34.710  1.00 24.99      3CRO 661
+ATOM    523  C1*   A B   6     -48.622  -0.396  34.421  1.00 11.79      3CRO 662
+ATOM    524  N9    A B   6     -48.129  -1.760  34.448  1.00 13.84      3CRO 663
+ATOM    525  C8    A B   6     -46.865  -2.210  34.192  1.00  8.64      3CRO 664
+ATOM    526  N7    A B   6     -46.737  -3.507  34.323  1.00 32.16      3CRO 665
+ATOM    527  C5    A B   6     -48.000  -3.932  34.690  1.00  2.00      3CRO 666
+ATOM    528  C6    A B   6     -48.518  -5.203  34.977  1.00  3.53      3CRO 667
+ATOM    529  N6    A B   6     -47.781  -6.318  34.936  1.00 31.28      3CRO 668
+ATOM    530  N1    A B   6     -49.816  -5.282  35.319  1.00  4.73      3CRO 669
+ATOM    531  C2    A B   6     -50.536  -4.153  35.364  1.00 15.10      3CRO 670
+ATOM    532  N3    A B   6     -50.157  -2.900  35.111  1.00 18.53      3CRO 671
+ATOM    533  C4    A B   6     -48.865  -2.865  34.777  1.00 14.08      3CRO 672
+ATOM    534  P     A B   7     -49.050   3.818  35.802  1.00 34.95      3CRO 673
+ATOM    535  O1P   A B   7     -47.770   3.878  36.532  1.00 31.55      3CRO 674
+ATOM    536  O2P   A B   7     -49.409   4.899  34.863  1.00 74.69      3CRO 675
+ATOM    537  O5*   A B   7     -50.221   3.682  36.860  1.00  6.11      3CRO 676
+ATOM    538  C5*   A B   7     -49.766   3.309  38.148  1.00 51.89      3CRO 677
+ATOM    539  C4*   A B   7     -50.578   2.201  38.808  1.00 37.57      3CRO 678
+ATOM    540  O4*   A B   7     -50.270   0.883  38.260  1.00 18.90      3CRO 679
+ATOM    541  C3*   A B   7     -50.288   2.093  40.296  1.00 43.28      3CRO 680
+ATOM    542  O3*   A B   7     -51.462   1.729  40.969  1.00 30.64      3CRO 681
+ATOM    543  C2*   A B   7     -49.236   0.998  40.357  1.00 49.08      3CRO 682
+ATOM    544  C1*   A B   7     -49.799   0.051  39.310  1.00 29.35      3CRO 683
+ATOM    545  N9    A B   7     -48.826  -0.942  38.839  1.00 14.44      3CRO 684
+ATOM    546  C8    A B   7     -47.498  -0.773  38.522  1.00  6.90      3CRO 685
+ATOM    547  N7    A B   7     -46.892  -1.878  38.167  1.00  9.29      3CRO 686
+ATOM    548  C5    A B   7     -47.883  -2.844  38.287  1.00  2.00      3CRO 687
+ATOM    549  C6    A B   7     -47.877  -4.228  38.066  1.00  2.44      3CRO 688
+ATOM    550  N6    A B   7     -46.785  -4.882  37.669  1.00  3.13      3CRO 689
+ATOM    551  N1    A B   7     -49.023  -4.911  38.292  1.00  2.86      3CRO 690
+ATOM    552  C2    A B   7     -50.097  -4.230  38.710  1.00 12.20      3CRO 691
+ATOM    553  N3    A B   7     -50.225  -2.920  38.938  1.00 19.68      3CRO 692
+ATOM    554  C4    A B   7     -49.071  -2.284  38.709  1.00  2.00      3CRO 693
+ATOM    555  P     G B   8     -51.621   2.317  42.430  1.00 46.99      3CRO 694
+ATOM    556  O1P   G B   8     -50.366   3.053  42.743  1.00 40.38      3CRO 695
+ATOM    557  O2P   G B   8     -52.941   2.983  42.490  1.00 60.58      3CRO 696
+ATOM    558  O5*   G B   8     -51.694   0.993  43.308  1.00 46.89      3CRO 697
+ATOM    559  C5*   G B   8     -52.600  -0.004  42.891  1.00 41.62      3CRO 698
+ATOM    560  C4*   G B   8     -52.166  -1.360  43.397  1.00 28.18      3CRO 699
+ATOM    561  O4*   G B   8     -51.171  -1.938  42.515  1.00 33.69      3CRO 700
+ATOM    562  C3*   G B   8     -51.547  -1.368  44.787  1.00 40.25      3CRO 701
+ATOM    563  O3*   G B   8     -52.052  -2.483  45.475  1.00 47.44      3CRO 702
+ATOM    564  C2*   G B   8     -50.065  -1.547  44.491  1.00 35.61      3CRO 703
+ATOM    565  C1*   G B   8     -50.167  -2.496  43.314  1.00 27.16      3CRO 704
+ATOM    566  N9    G B   8     -48.940  -2.599  42.549  1.00 17.64      3CRO 705
+ATOM    567  C8    G B   8     -48.037  -1.613  42.243  1.00 28.22      3CRO 706
+ATOM    568  N7    G B   8     -47.010  -2.049  41.565  1.00 37.97      3CRO 707
+ATOM    569  C5    G B   8     -47.247  -3.416  41.426  1.00 11.62      3CRO 708
+ATOM    570  C6    G B   8     -46.469  -4.408  40.788  1.00 19.22      3CRO 709
+ATOM    571  O6    G B   8     -45.393  -4.268  40.181  1.00 26.76      3CRO 710
+ATOM    572  N1    G B   8     -47.065  -5.663  40.883  1.00 19.00      3CRO 711
+ATOM    573  C2    G B   8     -48.256  -5.919  41.514  1.00 20.79      3CRO 712
+ATOM    574  N2    G B   8     -48.665  -7.189  41.491  1.00 29.70      3CRO 713
+ATOM    575  N3    G B   8     -48.997  -5.000  42.119  1.00 18.53      3CRO 714
+ATOM    576  C4    G B   8     -48.431  -3.771  42.029  1.00 10.53      3CRO 715
+ATOM    577  P     A B   9     -52.165  -2.457  47.058  1.00 51.65      3CRO 716
+ATOM    578  O1P   A B   9     -50.797  -2.213  47.580  1.00 47.99      3CRO 717
+ATOM    579  O2P   A B   9     -53.274  -1.562  47.445  1.00 61.40      3CRO 718
+ATOM    580  O5*   A B   9     -52.631  -3.959  47.353  1.00 56.45      3CRO 719
+ATOM    581  C5*   A B   9     -52.924  -4.819  46.253  1.00 32.12      3CRO 720
+ATOM    582  C4*   A B   9     -52.064  -6.077  46.268  1.00 19.63      3CRO 721
+ATOM    583  O4*   A B   9     -50.806  -5.851  45.573  1.00 28.91      3CRO 722
+ATOM    584  C3*   A B   9     -51.684  -6.636  47.640  1.00 20.46      3CRO 723
+ATOM    585  O3*   A B   9     -51.810  -8.068  47.612  1.00 46.35      3CRO 724
+ATOM    586  C2*   A B   9     -50.216  -6.234  47.751  1.00 13.86      3CRO 725
+ATOM    587  C1*   A B   9     -49.782  -6.468  46.313  1.00  3.26      3CRO 726
+ATOM    588  N9    A B   9     -48.531  -5.824  45.969  1.00  2.00      3CRO 727
+ATOM    589  C8    A B   9     -48.112  -4.559  46.272  1.00 10.50      3CRO 728
+ATOM    590  N7    A B   9     -46.916  -4.267  45.801  1.00  9.67      3CRO 729
+ATOM    591  C5    A B   9     -46.530  -5.420  45.150  1.00  2.00      3CRO 730
+ATOM    592  C6    A B   9     -45.365  -5.761  44.446  1.00 18.63      3CRO 731
+ATOM    593  N6    A B   9     -44.329  -4.931  44.267  1.00 10.34      3CRO 732
+ATOM    594  N1    A B   9     -45.309  -6.996  43.917  1.00 29.80      3CRO 733
+ATOM    595  C2    A B   9     -46.346  -7.830  44.087  1.00 16.17      3CRO 734
+ATOM    596  N3    A B   9     -47.493  -7.624  44.727  1.00 10.89      3CRO 735
+ATOM    597  C4    A B   9     -47.517  -6.389  45.244  1.00  9.49      3CRO 736
+ATOM    598  P     A B  10     -51.662  -8.961  48.937  1.00 39.21      3CRO 737
+ATOM    599  O1P   A B  10     -51.673  -8.051  50.107  1.00 57.92      3CRO 738
+ATOM    600  O2P   A B  10     -52.649 -10.048  48.849  1.00 23.72      3CRO 739
+ATOM    601  O5*   A B  10     -50.210  -9.608  48.774  1.00 19.70      3CRO 740
+ATOM    602  C5*   A B  10     -50.103 -10.988  48.473  1.00 29.45      3CRO 741
+ATOM    603  C4*   A B  10     -48.673 -11.381  48.145  1.00 25.34      3CRO 742
+ATOM    604  O4*   A B  10     -47.946 -10.266  47.561  1.00  2.00      3CRO 743
+ATOM    605  C3*   A B  10     -47.838 -11.841  49.341  1.00 20.94      3CRO 744
+ATOM    606  O3*   A B  10     -47.017 -12.939  48.969  1.00 18.26      3CRO 745
+ATOM    607  C2*   A B  10     -46.980 -10.622  49.623  1.00 37.57      3CRO 746
+ATOM    608  C1*   A B  10     -46.681 -10.212  48.192  1.00 24.18      3CRO 747
+ATOM    609  N9    A B  10     -46.129  -8.868  48.090  1.00 11.55      3CRO 748
+ATOM    610  C8    A B  10     -46.606  -7.717  48.663  1.00  6.94      3CRO 749
+ATOM    611  N7    A B  10     -45.875  -6.662  48.396  1.00 13.61      3CRO 750
+ATOM    612  C5    A B  10     -44.854  -7.159  47.595  1.00  6.92      3CRO 751
+ATOM    613  C6    A B  10     -43.758  -6.536  46.981  1.00 25.08      3CRO 752
+ATOM    614  N6    A B  10     -43.533  -5.228  47.102  1.00 29.68      3CRO 753
+ATOM    615  N1    A B  10     -42.909  -7.304  46.247  1.00 12.16      3CRO 754
+ATOM    616  C2    A B  10     -43.168  -8.611  46.171  1.00 14.40      3CRO 755
+ATOM    617  N3    A B  10     -44.180  -9.308  46.693  1.00 17.06      3CRO 756
+ATOM    618  C4    A B  10     -44.989  -8.515  47.408  1.00  2.00      3CRO 757
+ATOM    619  P     A B  11     -46.710 -14.035  50.088  1.00 52.09      3CRO 758
+ATOM    620  O1P   A B  11     -47.198 -13.512  51.392  1.00 45.20      3CRO 759
+ATOM    621  O2P   A B  11     -47.187 -15.348  49.591  1.00 67.33      3CRO 760
+ATOM    622  O5*   A B  11     -45.118 -14.063  50.083  1.00 54.79      3CRO 761
+ATOM    623  C5*   A B  11     -44.463 -14.364  48.862  1.00 49.97      3CRO 762
+ATOM    624  C4*   A B  11     -43.029 -13.872  48.874  1.00 47.24      3CRO 763
+ATOM    625  O4*   A B  11     -42.961 -12.440  48.661  1.00 28.88      3CRO 764
+ATOM    626  C3*   A B  11     -42.248 -14.119  50.160  1.00 34.81      3CRO 765
+ATOM    627  O3*   A B  11     -40.930 -14.357  49.792  1.00 27.13      3CRO 766
+ATOM    628  C2*   A B  11     -42.326 -12.765  50.835  1.00 13.24      3CRO 767
+ATOM    629  C1*   A B  11     -42.095 -11.890  49.620  1.00  2.00      3CRO 768
+ATOM    630  N9    A B  11     -42.481 -10.510  49.857  1.00  3.99      3CRO 769
+ATOM    631  C8    A B  11     -43.561 -10.044  50.573  1.00  6.94      3CRO 770
+ATOM    632  N7    A B  11     -43.627  -8.731  50.613  1.00 13.01      3CRO 771
+ATOM    633  C5    A B  11     -42.512  -8.313  49.877  1.00  4.23      3CRO 772
+ATOM    634  C6    A B  11     -41.991  -7.035  49.556  1.00 24.86      3CRO 773
+ATOM    635  N6    A B  11     -42.561  -5.879  49.932  1.00 14.91      3CRO 774
+ATOM    636  N1    A B  11     -40.853  -6.987  48.823  1.00 26.67      3CRO 775
+ATOM    637  C2    A B  11     -40.278  -8.131  48.439  1.00 11.97      3CRO 776
+ATOM    638  N3    A B  11     -40.666  -9.380  48.692  1.00 19.89      3CRO 777
+ATOM    639  C4    A B  11     -41.797  -9.401  49.416  1.00  2.00      3CRO 778
+ATOM    640  P     G B  12     -39.934 -14.954  50.857  1.00  7.83      3CRO 779
+ATOM    641  O1P   G B  12     -40.705 -15.243  52.084  1.00  8.30      3CRO 780
+ATOM    642  O2P   G B  12     -39.119 -15.984  50.210  1.00 10.64      3CRO 781
+ATOM    643  O5*   G B  12     -38.829 -13.836  51.022  1.00 22.60      3CRO 782
+ATOM    644  C5*   G B  12     -37.976 -13.682  49.880  1.00 32.14      3CRO 783
+ATOM    645  C4*   G B  12     -37.114 -12.439  49.991  1.00 23.61      3CRO 784
+ATOM    646  O4*   G B  12     -37.973 -11.283  50.166  1.00 30.24      3CRO 785
+ATOM    647  C3*   G B  12     -36.133 -12.425  51.162  1.00 16.45      3CRO 786
+ATOM    648  O3*   G B  12     -34.901 -11.892  50.726  1.00 20.82      3CRO 787
+ATOM    649  C2*   G B  12     -36.827 -11.495  52.153  1.00 27.73      3CRO 788
+ATOM    650  C1*   G B  12     -37.431 -10.495  51.183  1.00 11.44      3CRO 789
+ATOM    651  N9    G B  12     -38.472  -9.669  51.759  1.00 11.97      3CRO 790
+ATOM    652  C8    G B  12     -39.621 -10.056  52.407  1.00 11.53      3CRO 791
+ATOM    653  N7    G B  12     -40.323  -9.034  52.843  1.00 30.33      3CRO 792
+ATOM    654  C5    G B  12     -39.583  -7.904  52.472  1.00 26.80      3CRO 793
+ATOM    655  C6    G B  12     -39.838  -6.514  52.675  1.00 29.90      3CRO 794
+ATOM    656  O6    G B  12     -40.807  -5.984  53.247  1.00 22.81      3CRO 795
+ATOM    657  N1    G B  12     -38.828  -5.704  52.131  1.00 17.81      3CRO 796
+ATOM    658  C2    G B  12     -37.712  -6.181  51.481  1.00 22.70      3CRO 797
+ATOM    659  N2    G B  12     -36.845  -5.264  51.028  1.00 29.94      3CRO 798
+ATOM    660  N3    G B  12     -37.460  -7.475  51.293  1.00 23.89      3CRO 799
+ATOM    661  C4    G B  12     -38.437  -8.279  51.805  1.00 20.95      3CRO 800
+ATOM    662  P     T B  13     -33.542 -12.203  51.505  1.00 27.26      3CRO 801
+ATOM    663  O1P   T B  13     -33.896 -12.772  52.812  1.00 23.97      3CRO 802
+ATOM    664  O2P   T B  13     -32.612 -12.944  50.628  1.00 23.79      3CRO 803
+ATOM    665  O5*   T B  13     -32.947 -10.736  51.706  1.00 25.49      3CRO 804
+ATOM    666  C5*   T B  13     -33.038  -9.730  50.705  1.00 21.04      3CRO 805
+ATOM    667  C4*   T B  13     -32.749  -8.362  51.311  1.00 27.15      3CRO 806
+ATOM    668  O4*   T B  13     -33.968  -7.783  51.865  1.00 18.70      3CRO 807
+ATOM    669  C3*   T B  13     -31.742  -8.386  52.461  1.00 28.34      3CRO 808
+ATOM    670  O3*   T B  13     -30.876  -7.259  52.393  1.00 33.80      3CRO 809
+ATOM    671  C2*   T B  13     -32.640  -8.327  53.691  1.00 29.79      3CRO 810
+ATOM    672  C1*   T B  13     -33.719  -7.381  53.198  1.00 16.73      3CRO 811
+ATOM    673  N1    T B  13     -34.988  -7.450  53.982  1.00  3.80      3CRO 812
+ATOM    674  C2    T B  13     -35.583  -6.265  54.342  1.00  8.63      3CRO 813
+ATOM    675  O2    T B  13     -35.119  -5.183  54.058  1.00 36.71      3CRO 814
+ATOM    676  N3    T B  13     -36.747  -6.387  55.048  1.00  2.00      3CRO 815
+ATOM    677  C4    T B  13     -37.367  -7.563  55.414  1.00  3.14      3CRO 816
+ATOM    678  O4    T B  13     -38.416  -7.539  56.047  1.00 15.41      3CRO 817
+ATOM    679  C5    T B  13     -36.691  -8.761  55.016  1.00  4.77      3CRO 818
+ATOM    680  C5M   T B  13     -37.284 -10.080  55.370  1.00  6.22      3CRO 819
+ATOM    681  C6    T B  13     -35.550  -8.658  54.326  1.00 15.34      3CRO 820
+ATOM    682  P     T B  14     -29.562  -7.178  53.309  1.00 24.22      3CRO 821
+ATOM    683  O1P   T B  14     -29.626  -8.282  54.285  1.00 27.49      3CRO 822
+ATOM    684  O2P   T B  14     -28.377  -7.053  52.437  1.00  3.95      3CRO 823
+ATOM    685  O5*   T B  14     -29.765  -5.784  54.065  1.00 33.24      3CRO 824
+ATOM    686  C5*   T B  14     -29.957  -4.562  53.328  1.00 21.10      3CRO 825
+ATOM    687  C4*   T B  14     -30.650  -3.494  54.171  1.00  3.07      3CRO 826
+ATOM    688  O4*   T B  14     -31.949  -3.970  54.624  1.00 10.48      3CRO 827
+ATOM    689  C3*   T B  14     -29.911  -3.056  55.437  1.00  8.91      3CRO 828
+ATOM    690  O3*   T B  14     -30.005  -1.683  55.605  1.00 24.24      3CRO 829
+ATOM    691  C2*   T B  14     -30.698  -3.720  56.552  1.00 30.13      3CRO 830
+ATOM    692  C1*   T B  14     -32.099  -3.623  55.979  1.00 10.81      3CRO 831
+ATOM    693  N1    T B  14     -33.032  -4.566  56.623  1.00 22.19      3CRO 832
+ATOM    694  C2    T B  14     -34.192  -4.038  57.133  1.00 34.28      3CRO 833
+ATOM    695  O2    T B  14     -34.465  -2.854  57.045  1.00 33.07      3CRO 834
+ATOM    696  N3    T B  14     -35.021  -4.957  57.741  1.00 36.53      3CRO 835
+ATOM    697  C4    T B  14     -34.783  -6.323  57.888  1.00 17.78      3CRO 836
+ATOM    698  O4    T B  14     -35.594  -7.051  58.451  1.00 12.43      3CRO 837
+ATOM    699  C5    T B  14     -33.546  -6.793  57.346  1.00 10.86      3CRO 838
+ATOM    700  C5M   T B  14     -33.214  -8.243  57.460  1.00 11.73      3CRO 839
+ATOM    701  C6    T B  14     -32.730  -5.909  56.750  1.00 18.98      3CRO 840
+ATOM    702  P     T B  15     -28.761  -0.922  56.229  1.00 39.06      3CRO 841
+ATOM    703  O1P   T B  15     -28.208  -1.759  57.313  1.00 46.32      3CRO 842
+ATOM    704  O2P   T B  15     -27.896  -0.482  55.101  1.00 36.72      3CRO 843
+ATOM    705  O5*   T B  15     -29.477   0.349  56.880  1.00 40.74      3CRO 844
+ATOM    706  C5*   T B  15     -30.874   0.469  56.671  1.00 34.31      3CRO 845
+ATOM    707  C4*   T B  15     -31.593   0.885  57.937  1.00 26.30      3CRO 846
+ATOM    708  O4*   T B  15     -32.479  -0.178  58.381  1.00 12.49      3CRO 847
+ATOM    709  C3*   T B  15     -30.682   1.207  59.117  1.00 33.55      3CRO 848
+ATOM    710  O3*   T B  15     -31.258   2.239  59.921  1.00 45.23      3CRO 849
+ATOM    711  C2*   T B  15     -30.683  -0.113  59.856  1.00 41.65      3CRO 850
+ATOM    712  C1*   T B  15     -32.144  -0.496  59.709  1.00 16.35      3CRO 851
+ATOM    713  N1    T B  15     -32.369  -1.934  59.964  1.00  3.68      3CRO 852
+ATOM    714  C2    T B  15     -33.502  -2.255  60.635  1.00  6.11      3CRO 853
+ATOM    715  O2    T B  15     -34.304  -1.415  60.977  1.00 21.39      3CRO 854
+ATOM    716  N3    T B  15     -33.672  -3.594  60.878  1.00 11.60      3CRO 855
+ATOM    717  C4    T B  15     -32.815  -4.619  60.504  1.00 12.52      3CRO 856
+ATOM    718  O4    T B  15     -33.097  -5.781  60.782  1.00 30.99      3CRO 857
+ATOM    719  C5    T B  15     -31.633  -4.206  59.792  1.00  3.08      3CRO 858
+ATOM    720  C5M   T B  15     -30.630  -5.223  59.342  1.00  5.64      3CRO 859
+ATOM    721  C6    T B  15     -31.456  -2.896  59.570  1.00 17.80      3CRO 860
+ATOM    722  P     G B  16     -30.462   2.969  61.115  1.00 46.73      3CRO 861
+ATOM    723  O1P   G B  16     -29.014   2.639  61.057  1.00 26.37      3CRO 862
+ATOM    724  O2P   G B  16     -30.898   4.381  61.138  1.00 60.82      3CRO 863
+ATOM    725  O5*   G B  16     -31.110   2.267  62.373  1.00 43.88      3CRO 864
+ATOM    726  C5*   G B  16     -32.513   2.337  62.447  1.00 39.85      3CRO 865
+ATOM    727  C4*   G B  16     -32.937   1.900  63.822  1.00 43.77      3CRO 866
+ATOM    728  O4*   G B  16     -33.304   0.493  63.811  1.00 42.10      3CRO 867
+ATOM    729  C3*   G B  16     -31.825   2.045  64.854  1.00 48.35      3CRO 868
+ATOM    730  O3*   G B  16     -32.405   2.488  66.069  1.00 75.92      3CRO 869
+ATOM    731  C2*   G B  16     -31.292   0.627  64.950  1.00 25.76      3CRO 870
+ATOM    732  C1*   G B  16     -32.593  -0.149  64.841  1.00 36.32      3CRO 871
+ATOM    733  N9    G B  16     -32.406  -1.571  64.552  1.00 26.81      3CRO 872
+ATOM    734  C8    G B  16     -31.311  -2.209  64.012  1.00 17.30      3CRO 873
+ATOM    735  N7    G B  16     -31.445  -3.501  63.925  1.00 19.35      3CRO 874
+ATOM    736  C5    G B  16     -32.703  -3.739  64.463  1.00 11.68      3CRO 875
+ATOM    737  C6    G B  16     -33.393  -4.958  64.647  1.00 35.29      3CRO 876
+ATOM    738  O6    G B  16     -33.014  -6.106  64.362  1.00 40.42      3CRO 877
+ATOM    739  N1    G B  16     -34.645  -4.751  65.226  1.00 35.63      3CRO 878
+ATOM    740  C2    G B  16     -35.156  -3.523  65.583  1.00 21.25      3CRO 879
+ATOM    741  N2    G B  16     -36.374  -3.527  66.131  1.00 43.37      3CRO 880
+ATOM    742  N3    G B  16     -34.521  -2.374  65.419  1.00 17.58      3CRO 881
+ATOM    743  C4    G B  16     -33.304  -2.560  64.856  1.00 14.35      3CRO 882
+ATOM    744  P     T B  17     -31.608   2.681  67.439  1.00 60.88      3CRO 883
+ATOM    745  O1P   T B  17     -30.173   2.360  67.229  1.00 38.64      3CRO 884
+ATOM    746  O2P   T B  17     -32.003   4.005  67.959  1.00 58.81      3CRO 885
+ATOM    747  O5*   T B  17     -32.288   1.551  68.357  1.00 59.88      3CRO 886
+ATOM    748  C5*   T B  17     -33.623   1.141  68.047  1.00 49.66      3CRO 887
+ATOM    749  C4*   T B  17     -34.034  -0.108  68.806  1.00 43.01      3CRO 888
+ATOM    750  O4*   T B  17     -33.627  -1.304  68.090  1.00 54.60      3CRO 889
+ATOM    751  C3*   T B  17     -33.454  -0.250  70.206  1.00 38.56      3CRO 890
+ATOM    752  O3*   T B  17     -34.465  -0.785  71.042  1.00 58.87      3CRO 891
+ATOM    753  C2*   T B  17     -32.326  -1.259  69.996  1.00 25.03      3CRO 892
+ATOM    754  C1*   T B  17     -33.014  -2.186  69.008  1.00 36.86      3CRO 893
+ATOM    755  N1    T B  17     -32.098  -3.100  68.266  1.00 12.53      3CRO 894
+ATOM    756  C2    T B  17     -32.511  -4.396  68.064  1.00 14.94      3CRO 895
+ATOM    757  O2    T B  17     -33.571  -4.822  68.480  1.00 22.71      3CRO 896
+ATOM    758  N3    T B  17     -31.626  -5.180  67.361  1.00  3.49      3CRO 897
+ATOM    759  C4    T B  17     -30.394  -4.787  66.858  1.00 14.96      3CRO 898
+ATOM    760  O4    T B  17     -29.687  -5.590  66.251  1.00 20.65      3CRO 899
+ATOM    761  C5    T B  17     -30.041  -3.413  67.104  1.00  9.46      3CRO 900
+ATOM    762  C5M   T B  17     -28.737  -2.875  66.598  1.00 17.73      3CRO 901
+ATOM    763  C6    T B  17     -30.894  -2.649  67.789  1.00  7.08      3CRO 902
+ATOM    764  P     A B  18     -34.240  -0.804  72.617  1.00 62.31      3CRO 903
+ATOM    765  O1P   A B  18     -33.252  -1.870  72.918  1.00 71.74      3CRO 904
+ATOM    766  O2P   A B  18     -33.973   0.594  73.022  1.00 47.43      3CRO 905
+ATOM    767  O5*   A B  18     -35.669  -1.252  73.184  1.00 34.40      3CRO 906
+ATOM    768  C5*   A B  18     -36.430  -2.196  72.420  1.00 51.97      3CRO 907
+ATOM    769  C4*   A B  18     -36.283  -3.636  72.914  1.00 52.93      3CRO 908
+ATOM    770  O4*   A B  18     -35.249  -4.356  72.188  1.00 54.92      3CRO 909
+ATOM    771  C3*   A B  18     -35.956  -3.834  74.392  1.00 59.36      3CRO 910
+ATOM    772  O3*   A B  18     -36.749  -4.916  74.891  1.00 65.39      3CRO 911
+ATOM    773  C2*   A B  18     -34.471  -4.204  74.356  1.00 37.65      3CRO 912
+ATOM    774  C1*   A B  18     -34.461  -5.082  73.116  1.00 22.47      3CRO 913
+ATOM    775  N9    A B  18     -33.148  -5.286  72.515  1.00  7.98      3CRO 914
+ATOM    776  C8    A B  18     -32.138  -4.375  72.343  1.00  6.56      3CRO 915
+ATOM    777  N7    A B  18     -31.093  -4.857  71.708  1.00  7.90      3CRO 916
+ATOM    778  C5    A B  18     -31.447  -6.169  71.432  1.00  2.00      3CRO 917
+ATOM    779  C6    A B  18     -30.770  -7.205  70.771  1.00 16.12      3CRO 918
+ATOM    780  N6    A B  18     -29.537  -7.053  70.271  1.00 20.92      3CRO 919
+ATOM    781  N1    A B  18     -31.399  -8.400  70.659  1.00 14.78      3CRO 920
+ATOM    782  C2    A B  18     -32.630  -8.524  71.172  1.00 12.75      3CRO 921
+ATOM    783  N3    A B  18     -33.370  -7.615  71.811  1.00 20.64      3CRO 922
+ATOM    784  C4    A B  18     -32.711  -6.449  71.913  1.00 12.22      3CRO 923
+ATOM    785  P     C B  19     -36.942  -5.128  76.465  1.00 45.67      3CRO 924
+ATOM    786  O1P   C B  19     -35.887  -4.329  77.134  1.00 43.69      3CRO 925
+ATOM    787  O2P   C B  19     -38.370  -4.923  76.800  1.00 46.97      3CRO 926
+ATOM    788  O5*   C B  19     -36.644  -6.691  76.647  1.00 56.93      3CRO 927
+ATOM    789  C5*   C B  19     -36.827  -7.567  75.531  1.00 58.73      3CRO 928
+ATOM    790  C4*   C B  19     -36.074  -8.879  75.708  1.00 54.56      3CRO 929
+ATOM    791  O4*   C B  19     -34.852  -8.872  74.929  1.00 41.38      3CRO 930
+ATOM    792  C3*   C B  19     -35.650  -9.229  77.134  1.00 46.21      3CRO 931
+ATOM    793  O3*   C B  19     -35.918 -10.596  77.378  1.00 51.59      3CRO 932
+ATOM    794  C2*   C B  19     -34.146  -8.981  77.113  1.00 35.87      3CRO 933
+ATOM    795  C1*   C B  19     -33.827  -9.441  75.706  1.00 15.32      3CRO 934
+ATOM    796  N1    C B  19     -32.540  -8.929  75.194  1.00  6.61      3CRO 935
+ATOM    797  C2    C B  19     -31.702  -9.821  74.509  1.00 26.73      3CRO 936
+ATOM    798  O2    C B  19     -32.045 -11.000  74.367  1.00 40.53      3CRO 937
+ATOM    799  N3    C B  19     -30.523  -9.373  74.027  1.00 28.83      3CRO 938
+ATOM    800  C4    C B  19     -30.178  -8.097  74.204  1.00 25.26      3CRO 939
+ATOM    801  N4    C B  19     -28.997  -7.705  73.715  1.00 30.46      3CRO 940
+ATOM    802  C5    C B  19     -31.026  -7.169  74.884  1.00  6.12      3CRO 941
+ATOM    803  C6    C B  19     -32.185  -7.624  75.363  1.00  2.00      3CRO 942
+ATOM    804  P     T B  20     -36.086 -11.104  78.886  1.00 62.91      3CRO 943
+ATOM    805  O1P   T B  20     -35.357 -10.168  79.784  1.00 29.59      3CRO 944
+ATOM    806  O2P   T B  20     -37.522 -11.377  79.118  1.00 54.31      3CRO 945
+ATOM    807  O5*   T B  20     -35.316 -12.503  78.818  1.00 59.41      3CRO 946
+ATOM    808  C5*   T B  20     -34.924 -12.961  77.532  1.00 52.59      3CRO 947
+ATOM    809  C4*   T B  20     -33.696 -13.843  77.618  1.00 48.39      3CRO 948
+ATOM    810  O4*   T B  20     -32.577 -13.198  76.957  1.00 45.23      3CRO 949
+ATOM    811  C3*   T B  20     -33.226 -14.164  79.028  1.00 43.81      3CRO 950
+ATOM    812  O3*   T B  20     -32.786 -15.516  79.062  1.00 49.08      3CRO 951
+ATOM    813  C2*   T B  20     -32.062 -13.194  79.204  1.00 37.41      3CRO 952
+ATOM    814  C1*   T B  20     -31.461 -13.254  77.810  1.00 31.60      3CRO 953
+ATOM    815  N1    T B  20     -30.528 -12.120  77.496  1.00 29.00      3CRO 954
+ATOM    816  C2    T B  20     -29.429 -12.378  76.701  1.00 15.33      3CRO 955
+ATOM    817  O2    T B  20     -29.183 -13.473  76.223  1.00 31.66      3CRO 956
+ATOM    818  N3    T B  20     -28.615 -11.296  76.494  1.00 19.89      3CRO 957
+ATOM    819  C4    T B  20     -28.808 -10.011  76.983  1.00 11.18      3CRO 958
+ATOM    820  O4    T B  20     -28.029  -9.111  76.724  1.00  9.30      3CRO 959
+ATOM    821  C5    T B  20     -29.961  -9.814  77.782  1.00  2.00      3CRO 960
+ATOM    822  C5M   T B  20     -30.220  -8.448  78.327  1.00 15.83      3CRO 961
+ATOM    823  C6    T B  20     -30.757 -10.858  78.015  1.00 27.27      3CRO 962
+TER     824        T B  20                                              3CRO 963
+ATOM    825  N   MET L  -1     -20.948 -13.418  28.320  1.00 46.93      3CRO 964
+ATOM    826  CA  MET L  -1     -21.093 -12.112  28.939  1.00 52.50      3CRO 965
+ATOM    827  C   MET L  -1     -22.482 -11.566  28.846  1.00 52.55      3CRO 966
+ATOM    828  O   MET L  -1     -22.816 -10.393  28.618  1.00 52.75      3CRO 967
+ATOM    829  CB  MET L  -1     -19.916 -11.178  28.789  1.00 59.92      3CRO 968
+ATOM    830  CG  MET L  -1     -18.839 -11.701  29.713  1.00 80.88      3CRO 969
+ATOM    831  SD  MET L  -1     -17.178 -11.517  29.038  1.00 95.94      3CRO 970
+ATOM    832  CE  MET L  -1     -16.527 -13.173  29.365  1.00 90.58      3CRO 971
+ATOM    833  N   GLN L   0     -23.243 -12.593  29.074  1.00 51.78      3CRO 972
+ATOM    834  CA  GLN L   0     -24.639 -12.681  29.076  1.00 52.49      3CRO 973
+ATOM    835  C   GLN L   0     -25.268 -12.252  30.349  1.00 42.74      3CRO 974
+ATOM    836  O   GLN L   0     -24.688 -12.207  31.435  1.00 47.12      3CRO 975
+ATOM    837  CB  GLN L   0     -24.971 -14.147  28.858  1.00 45.95      3CRO 976
+ATOM    838  CG  GLN L   0     -24.141 -14.712  27.710  1.00 53.26      3CRO 977
+ATOM    839  CD  GLN L   0     -24.923 -15.776  27.001  1.00 68.74      3CRO 978
+ATOM    840  OE1 GLN L   0     -25.159 -16.851  27.563  1.00 82.61      3CRO 979
+ATOM    841  NE2 GLN L   0     -25.382 -15.458  25.797  1.00 76.83      3CRO 980
+ATOM    842  N   THR L   1     -26.513 -11.973  30.116  1.00 21.94      3CRO 981
+ATOM    843  CA  THR L   1     -27.440 -11.567  31.088  1.00 15.55      3CRO 982
+ATOM    844  C   THR L   1     -28.200 -12.824  31.459  1.00  5.55      3CRO 983
+ATOM    845  O   THR L   1     -27.960 -13.910  30.947  1.00 13.48      3CRO 984
+ATOM    846  CB  THR L   1     -28.318 -10.497  30.412  1.00 14.60      3CRO 985
+ATOM    847  OG1 THR L   1     -27.550  -9.329  30.158  1.00  7.60      3CRO 986
+ATOM    848  CG2 THR L   1     -29.542 -10.173  31.249  1.00 14.52      3CRO 987
+ATOM    849  N   LEU L   2     -29.107 -12.704  32.360  1.00  2.00      3CRO 988
+ATOM    850  CA  LEU L   2     -29.866 -13.850  32.734  1.00  2.00      3CRO 989
+ATOM    851  C   LEU L   2     -31.054 -13.904  31.795  1.00 23.22      3CRO 990
+ATOM    852  O   LEU L   2     -31.605 -14.952  31.468  1.00 22.54      3CRO 991
+ATOM    853  CB  LEU L   2     -30.361 -13.645  34.167  1.00  2.00      3CRO 992
+ATOM    854  CG  LEU L   2     -31.598 -14.458  34.413  1.00  2.00      3CRO 993
+ATOM    855  CD1 LEU L   2     -31.138 -15.884  34.580  1.00 10.70      3CRO 994
+ATOM    856  CD2 LEU L   2     -32.285 -13.993  35.678  1.00  2.00      3CRO 995
+ATOM    857  N   SER L   3     -31.437 -12.706  31.371  1.00 39.20      3CRO 996
+ATOM    858  CA  SER L   3     -32.548 -12.498  30.475  1.00 25.50      3CRO 997
+ATOM    859  C   SER L   3     -32.266 -13.097  29.107  1.00 15.60      3CRO 998
+ATOM    860  O   SER L   3     -33.178 -13.521  28.403  1.00 15.91      3CRO 999
+ATOM    861  CB  SER L   3     -32.960 -11.029  30.435  1.00 35.13      3CRO1000
+ATOM    862  OG  SER L   3     -32.562 -10.410  29.231  1.00 31.86      3CRO1001
+ATOM    863  N   GLU L   4     -30.979 -13.136  28.752  1.00  2.00      3CRO1002
+ATOM    864  CA  GLU L   4     -30.532 -13.724  27.515  1.00  2.00      3CRO1003
+ATOM    865  C   GLU L   4     -30.559 -15.250  27.646  1.00 23.18      3CRO1004
+ATOM    866  O   GLU L   4     -30.898 -15.950  26.702  1.00 23.86      3CRO1005
+ATOM    867  CB  GLU L   4     -29.127 -13.228  27.119  1.00 23.84      3CRO1006
+ATOM    868  CG  GLU L   4     -29.001 -11.692  27.170  1.00 61.67      3CRO1007
+ATOM    869  CD  GLU L   4     -27.895 -11.137  26.313  1.00 71.16      3CRO1008
+ATOM    870  OE1 GLU L   4     -27.856 -11.268  25.101  1.00 72.52      3CRO1009
+ATOM    871  OE2 GLU L   4     -26.991 -10.487  27.006  1.00 68.59      3CRO1010
+ATOM    872  N   ARG L   5     -30.213 -15.783  28.830  1.00 19.86      3CRO1011
+ATOM    873  CA  ARG L   5     -30.249 -17.221  28.990  1.00  6.22      3CRO1012
+ATOM    874  C   ARG L   5     -31.664 -17.726  29.041  1.00  2.00      3CRO1013
+ATOM    875  O   ARG L   5     -31.972 -18.750  28.464  1.00  6.85      3CRO1014
+ATOM    876  CB  ARG L   5     -29.418 -17.785  30.119  1.00  2.00      3CRO1015
+ATOM    877  CG  ARG L   5     -27.928 -17.574  29.915  1.00 16.37      3CRO1016
+ATOM    878  CD  ARG L   5     -27.117 -18.016  31.127  1.00 32.59      3CRO1017
+ATOM    879  NE  ARG L   5     -27.192 -17.059  32.224  1.00 21.31      3CRO1018
+ATOM    880  CZ  ARG L   5     -26.236 -16.181  32.434  1.00  7.31      3CRO1019
+ATOM    881  NH1 ARG L   5     -25.174 -16.166  31.641  1.00 14.97      3CRO1020
+ATOM    882  NH2 ARG L   5     -26.335 -15.312  33.449  1.00 12.40      3CRO1021
+ATOM    883  N   LEU L   6     -32.538 -17.005  29.703  1.00  2.00      3CRO1022
+ATOM    884  CA  LEU L   6     -33.914 -17.453  29.739  1.00  2.00      3CRO1023
+ATOM    885  C   LEU L   6     -34.508 -17.647  28.329  1.00 23.34      3CRO1024
+ATOM    886  O   LEU L   6     -35.117 -18.696  28.073  1.00 12.37      3CRO1025
+ATOM    887  CB  LEU L   6     -34.817 -16.586  30.647  1.00  2.00      3CRO1026
+ATOM    888  CG  LEU L   6     -36.204 -17.175  30.827  1.00  2.00      3CRO1027
+ATOM    889  CD1 LEU L   6     -36.066 -18.623  31.245  1.00 19.19      3CRO1028
+ATOM    890  CD2 LEU L   6     -36.988 -16.425  31.886  1.00  2.00      3CRO1029
+ATOM    891  N   LYS L   7     -34.294 -16.650  27.416  1.00 24.09      3CRO1030
+ATOM    892  CA  LYS L   7     -34.817 -16.647  26.032  1.00  8.90      3CRO1031
+ATOM    893  C   LYS L   7     -34.350 -17.771  25.147  1.00  3.19      3CRO1032
+ATOM    894  O   LYS L   7     -35.155 -18.507  24.568  1.00  3.96      3CRO1033
+ATOM    895  CB  LYS L   7     -34.798 -15.313  25.291  1.00 18.41      3CRO1034
+ATOM    896  CG  LYS L   7     -36.196 -14.888  24.830  1.00 40.56      3CRO1035
+ATOM    897  CD  LYS L   7     -36.210 -13.971  23.606  1.00 28.31      3CRO1036
+ATOM    898  CE  LYS L   7     -37.441 -13.074  23.528  1.00 38.25      3CRO1037
+ATOM    899  NZ  LYS L   7     -37.670 -12.272  24.741  1.00 26.68      3CRO1038
+ATOM    900  N   LYS L   8     -33.040 -17.860  25.055  1.00  8.89      3CRO1039
+ATOM    901  CA  LYS L   8     -32.348 -18.865  24.287  1.00  4.04      3CRO1040
+ATOM    902  C   LYS L   8     -32.805 -20.256  24.705  1.00 21.73      3CRO1041
+ATOM    903  O   LYS L   8     -33.053 -21.141  23.888  1.00 31.50      3CRO1042
+ATOM    904  CB  LYS L   8     -30.860 -18.693  24.528  1.00  2.00      3CRO1043
+ATOM    905  CG  LYS L   8     -30.033 -18.696  23.259  1.00 41.40      3CRO1044
+ATOM    906  CD  LYS L   8     -28.598 -18.266  23.504  1.00 57.21      3CRO1045
+ATOM    907  CE  LYS L   8     -27.701 -19.419  23.927  1.00 55.49      3CRO1046
+ATOM    908  NZ  LYS L   8     -26.560 -18.994  24.747  1.00 63.17      3CRO1047
+ATOM    909  N   ARG L   9     -32.910 -20.428  26.010  1.00 17.59      3CRO1048
+ATOM    910  CA  ARG L   9     -33.335 -21.674  26.580  1.00  5.68      3CRO1049
+ATOM    911  C   ARG L   9     -34.809 -21.915  26.293  1.00  2.00      3CRO1050
+ATOM    912  O   ARG L   9     -35.178 -22.899  25.675  1.00 17.01      3CRO1051
+ATOM    913  CB  ARG L   9     -33.076 -21.636  28.070  1.00 22.38      3CRO1052
+ATOM    914  CG  ARG L   9     -32.931 -23.008  28.677  1.00 10.57      3CRO1053
+ATOM    915  CD  ARG L   9     -31.993 -23.889  27.872  1.00  3.13      3CRO1054
+ATOM    916  NE  ARG L   9     -32.021 -25.259  28.355  1.00  2.91      3CRO1055
+ATOM    917  CZ  ARG L   9     -30.931 -25.956  28.626  1.00  7.53      3CRO1056
+ATOM    918  NH1 ARG L   9     -29.721 -25.435  28.465  1.00  3.63      3CRO1057
+ATOM    919  NH2 ARG L   9     -31.050 -27.202  29.069  1.00 17.71      3CRO1058
+ATOM    920  N   ARG L  10     -35.664 -20.999  26.743  1.00  9.37      3CRO1059
+ATOM    921  CA  ARG L  10     -37.105 -21.122  26.516  1.00 12.54      3CRO1060
+ATOM    922  C   ARG L  10     -37.449 -21.196  25.029  1.00 17.00      3CRO1061
+ATOM    923  O   ARG L  10     -38.467 -21.750  24.640  1.00 10.77      3CRO1062
+ATOM    924  CB  ARG L  10     -37.908 -19.989  27.157  1.00 14.98      3CRO1063
+ATOM    925  CG  ARG L  10     -39.100 -19.560  26.286  1.00 30.67      3CRO1064
+ATOM    926  CD  ARG L  10     -40.047 -18.518  26.905  1.00 43.12      3CRO1065
+ATOM    927  NE  ARG L  10     -39.891 -17.141  26.391  1.00 42.52      3CRO1066
+ATOM    928  CZ  ARG L  10     -40.059 -16.735  25.125  1.00 24.29      3CRO1067
+ATOM    929  NH1 ARG L  10     -40.390 -17.577  24.161  1.00 42.22      3CRO1068
+ATOM    930  NH2 ARG L  10     -39.881 -15.446  24.804  1.00 33.66      3CRO1069
+ATOM    931  N   ILE L  11     -36.605 -20.597  24.191  1.00 19.90      3CRO1070
+ATOM    932  CA  ILE L  11     -36.825 -20.591  22.753  1.00 11.71      3CRO1071
+ATOM    933  C   ILE L  11     -36.379 -21.916  22.172  1.00 10.72      3CRO1072
+ATOM    934  O   ILE L  11     -37.009 -22.479  21.292  1.00 23.33      3CRO1073
+ATOM    935  CB  ILE L  11     -36.111 -19.429  22.056  1.00 15.06      3CRO1074
+ATOM    936  CG1 ILE L  11     -36.805 -18.102  22.318  1.00  8.96      3CRO1075
+ATOM    937  CG2 ILE L  11     -36.035 -19.660  20.558  1.00 41.50      3CRO1076
+ATOM    938  CD1 ILE L  11     -38.309 -18.144  22.084  1.00 21.70      3CRO1077
+ATOM    939  N   ALA L  12     -35.280 -22.422  22.698  1.00 15.35      3CRO1078
+ATOM    940  CA  ALA L  12     -34.749 -23.695  22.263  1.00  6.65      3CRO1079
+ATOM    941  C   ALA L  12     -35.601 -24.888  22.712  1.00 16.35      3CRO1080
+ATOM    942  O   ALA L  12     -35.619 -25.930  22.073  1.00 26.42      3CRO1081
+ATOM    943  CB  ALA L  12     -33.285 -23.859  22.625  1.00  2.00      3CRO1082
+ATOM    944  N   LEU L  13     -36.322 -24.764  23.810  1.00 16.22      3CRO1083
+ATOM    945  CA  LEU L  13     -37.158 -25.874  24.194  1.00 10.38      3CRO1084
+ATOM    946  C   LEU L  13     -38.473 -25.626  23.500  1.00 15.47      3CRO1085
+ATOM    947  O   LEU L  13     -39.495 -26.196  23.861  1.00 36.10      3CRO1086
+ATOM    948  CB  LEU L  13     -37.395 -25.974  25.719  1.00 14.34      3CRO1087
+ATOM    949  CG  LEU L  13     -36.134 -25.994  26.581  1.00 12.33      3CRO1088
+ATOM    950  CD1 LEU L  13     -36.442 -26.686  27.896  1.00 13.49      3CRO1089
+ATOM    951  CD2 LEU L  13     -35.009 -26.733  25.880  1.00  8.68      3CRO1090
+ATOM    952  N   LYS L  14     -38.404 -24.731  22.505  1.00 11.57      3CRO1091
+ATOM    953  CA  LYS L  14     -39.552 -24.296  21.714  1.00 13.81      3CRO1092
+ATOM    954  C   LYS L  14     -40.738 -24.070  22.610  1.00 10.99      3CRO1093
+ATOM    955  O   LYS L  14     -41.767 -24.708  22.444  1.00 34.13      3CRO1094
+ATOM    956  CB  LYS L  14     -39.980 -25.219  20.572  1.00  7.91      3CRO1095
+ATOM    957  CG  LYS L  14     -38.878 -25.674  19.626  1.00  2.00      3CRO1096
+ATOM    958  CD  LYS L  14     -39.055 -25.148  18.213  1.00  9.24      3CRO1097
+ATOM    959  CE  LYS L  14     -37.832 -25.373  17.337  1.00 17.26      3CRO1098
+ATOM    960  NZ  LYS L  14     -36.748 -24.412  17.602  1.00 22.31      3CRO1099
+ATOM    961  N   MET L  15     -40.574 -23.184  23.573  1.00 14.24      3CRO1100
+ATOM    962  CA  MET L  15     -41.627 -22.902  24.509  1.00 13.57      3CRO1101
+ATOM    963  C   MET L  15     -42.033 -21.450  24.485  1.00 20.28      3CRO1102
+ATOM    964  O   MET L  15     -41.214 -20.540  24.407  1.00 24.47      3CRO1103
+ATOM    965  CB  MET L  15     -41.202 -23.235  25.947  1.00  8.53      3CRO1104
+ATOM    966  CG  MET L  15     -41.688 -24.557  26.502  1.00 15.40      3CRO1105
+ATOM    967  SD  MET L  15     -41.043 -24.866  28.177  1.00 22.53      3CRO1106
+ATOM    968  CE  MET L  15     -39.264 -25.052  27.890  1.00  2.26      3CRO1107
+ATOM    969  N   THR L  16     -43.332 -21.278  24.582  1.00 16.86      3CRO1108
+ATOM    970  CA  THR L  16     -43.984 -20.007  24.636  1.00  9.21      3CRO1109
+ATOM    971  C   THR L  16     -43.613 -19.480  26.011  1.00 17.49      3CRO1110
+ATOM    972  O   THR L  16     -42.991 -20.191  26.794  1.00 37.41      3CRO1111
+ATOM    973  CB  THR L  16     -45.524 -20.265  24.512  1.00 14.17      3CRO1112
+ATOM    974  OG1 THR L  16     -46.236 -19.193  23.973  1.00 27.80      3CRO1113
+ATOM    975  CG2 THR L  16     -46.143 -20.425  25.860  1.00 16.05      3CRO1114
+ATOM    976  N   GLN L  17     -43.983 -18.256  26.322  1.00  7.17      3CRO1115
+ATOM    977  CA  GLN L  17     -43.696 -17.711  27.632  1.00  8.99      3CRO1116
+ATOM    978  C   GLN L  17     -44.760 -18.170  28.610  1.00  2.00      3CRO1117
+ATOM    979  O   GLN L  17     -44.633 -17.992  29.803  1.00 18.72      3CRO1118
+ATOM    980  CB  GLN L  17     -43.710 -16.167  27.614  1.00  8.73      3CRO1119
+ATOM    981  CG  GLN L  17     -42.501 -15.502  26.943  1.00  2.00      3CRO1120
+ATOM    982  CD  GLN L  17     -42.550 -13.998  27.104  1.00  8.78      3CRO1121
+ATOM    983  OE1 GLN L  17     -43.637 -13.405  27.272  1.00  2.00      3CRO1122
+ATOM    984  NE2 GLN L  17     -41.369 -13.381  27.069  1.00  3.79      3CRO1123
+ATOM    985  N   THR L  18     -45.839 -18.736  28.084  1.00 27.13      3CRO1124
+ATOM    986  CA  THR L  18     -46.947 -19.208  28.894  1.00 10.84      3CRO1125
+ATOM    987  C   THR L  18     -46.868 -20.714  29.158  1.00 13.94      3CRO1126
+ATOM    988  O   THR L  18     -47.448 -21.249  30.093  1.00 21.58      3CRO1127
+ATOM    989  CB  THR L  18     -48.272 -18.720  28.300  1.00 14.03      3CRO1128
+ATOM    990  OG1 THR L  18     -48.038 -17.435  27.740  1.00 12.72      3CRO1129
+ATOM    991  CG2 THR L  18     -49.327 -18.632  29.392  1.00  2.00      3CRO1130
+ATOM    992  N   GLU L  19     -46.129 -21.421  28.322  1.00 13.98      3CRO1131
+ATOM    993  CA  GLU L  19     -45.961 -22.800  28.592  1.00 16.27      3CRO1132
+ATOM    994  C   GLU L  19     -44.909 -22.718  29.643  1.00 14.38      3CRO1133
+ATOM    995  O   GLU L  19     -45.239 -23.065  30.748  1.00 13.90      3CRO1134
+ATOM    996  CB  GLU L  19     -45.683 -23.843  27.469  1.00  9.75      3CRO1135
+ATOM    997  CG  GLU L  19     -45.510 -23.291  26.048  1.00 45.49      3CRO1136
+ATOM    998  CD  GLU L  19     -45.927 -24.210  24.927  1.00 59.43      3CRO1137
+ATOM    999  OE1 GLU L  19     -45.122 -24.859  24.282  1.00 60.65      3CRO1138
+ATOM   1000  OE2 GLU L  19     -47.220 -24.175  24.671  1.00 51.93      3CRO1139
+ATOM   1001  N   LEU L  20     -43.714 -22.159  29.348  1.00 16.83      3CRO1140
+ATOM   1002  CA  LEU L  20     -42.734 -22.034  30.414  1.00 17.19      3CRO1141
+ATOM   1003  C   LEU L  20     -43.327 -21.413  31.666  1.00 33.45      3CRO1142
+ATOM   1004  O   LEU L  20     -43.227 -22.054  32.694  1.00 54.78      3CRO1143
+ATOM   1005  CB  LEU L  20     -41.308 -21.519  30.062  1.00 19.59      3CRO1144
+ATOM   1006  CG  LEU L  20     -40.321 -21.244  31.233  1.00  5.64      3CRO1145
+ATOM   1007  CD1 LEU L  20     -39.085 -20.576  30.667  1.00  2.00      3CRO1146
+ATOM   1008  CD2 LEU L  20     -40.806 -20.193  32.214  1.00 17.12      3CRO1147
+ATOM   1009  N   ALA L  21     -43.918 -20.207  31.602  1.00 25.12      3CRO1148
+ATOM   1010  CA  ALA L  21     -44.500 -19.563  32.785  1.00  2.00      3CRO1149
+ATOM   1011  C   ALA L  21     -45.298 -20.526  33.612  1.00  9.72      3CRO1150
+ATOM   1012  O   ALA L  21     -45.395 -20.405  34.832  1.00 17.41      3CRO1151
+ATOM   1013  CB  ALA L  21     -45.469 -18.458  32.405  1.00 28.14      3CRO1152
+ATOM   1014  N   THR L  22     -45.873 -21.488  32.911  1.00 16.54      3CRO1153
+ATOM   1015  CA  THR L  22     -46.693 -22.470  33.564  1.00  8.94      3CRO1154
+ATOM   1016  C   THR L  22     -46.152 -23.860  33.784  1.00  3.71      3CRO1155
+ATOM   1017  O   THR L  22     -46.756 -24.613  34.539  1.00 12.09      3CRO1156
+ATOM   1018  CB  THR L  22     -48.174 -22.419  33.263  1.00 22.32      3CRO1157
+ATOM   1019  OG1 THR L  22     -48.858 -22.608  34.480  1.00 29.43      3CRO1158
+ATOM   1020  CG2 THR L  22     -48.493 -23.546  32.299  1.00 36.08      3CRO1159
+ATOM   1021  N   LYS L  23     -45.037 -24.202  33.139  1.00  2.00      3CRO1160
+ATOM   1022  CA  LYS L  23     -44.437 -25.477  33.394  1.00  2.00      3CRO1161
+ATOM   1023  C   LYS L  23     -44.043 -25.228  34.821  1.00  4.55      3CRO1162
+ATOM   1024  O   LYS L  23     -44.258 -26.018  35.722  1.00 36.89      3CRO1163
+ATOM   1025  CB  LYS L  23     -43.159 -25.692  32.568  1.00 11.14      3CRO1164
+ATOM   1026  CG  LYS L  23     -42.842 -27.139  32.150  1.00 47.01      3CRO1165
+ATOM   1027  CD  LYS L  23     -41.361 -27.502  32.319  1.00 60.43      3CRO1166
+ATOM   1028  CE  LYS L  23     -40.896 -28.794  31.645  1.00 52.42      3CRO1167
+ATOM   1029  NZ  LYS L  23     -39.501 -29.152  31.976  1.00 61.98      3CRO1168
+ATOM   1030  N   ALA L  24     -43.524 -24.020  35.011  1.00 15.18      3CRO1169
+ATOM   1031  CA  ALA L  24     -43.041 -23.541  36.295  1.00 22.44      3CRO1170
+ATOM   1032  C   ALA L  24     -44.021 -22.881  37.260  1.00 16.84      3CRO1171
+ATOM   1033  O   ALA L  24     -43.570 -22.260  38.220  1.00 15.92      3CRO1172
+ATOM   1034  CB  ALA L  24     -41.813 -22.662  36.123  1.00 33.21      3CRO1173
+ATOM   1035  N   GLY L  25     -45.329 -22.991  37.052  1.00 17.71      3CRO1174
+ATOM   1036  CA  GLY L  25     -46.267 -22.379  37.994  1.00 10.27      3CRO1175
+ATOM   1037  C   GLY L  25     -46.152 -20.863  38.165  1.00 26.66      3CRO1176
+ATOM   1038  O   GLY L  25     -46.500 -20.306  39.206  1.00 41.72      3CRO1177
+ATOM   1039  N   VAL L  26     -45.670 -20.165  37.157  1.00 26.95      3CRO1178
+ATOM   1040  CA  VAL L  26     -45.623 -18.739  37.317  1.00  9.42      3CRO1179
+ATOM   1041  C   VAL L  26     -46.738 -18.100  36.506  1.00 20.08      3CRO1180
+ATOM   1042  O   VAL L  26     -47.630 -18.811  36.029  1.00 27.31      3CRO1181
+ATOM   1043  CB  VAL L  26     -44.234 -18.066  37.415  1.00 12.37      3CRO1182
+ATOM   1044  CG1 VAL L  26     -43.439 -18.749  38.526  1.00 17.59      3CRO1183
+ATOM   1045  CG2 VAL L  26     -43.406 -18.078  36.128  1.00  2.00      3CRO1184
+ATOM   1046  N   LYS L  27     -46.736 -16.787  36.407  1.00  9.29      3CRO1185
+ATOM   1047  CA  LYS L  27     -47.706 -16.081  35.618  1.00  2.00      3CRO1186
+ATOM   1048  C   LYS L  27     -46.859 -15.746  34.419  1.00 16.10      3CRO1187
+ATOM   1049  O   LYS L  27     -45.646 -15.678  34.551  1.00 29.76      3CRO1188
+ATOM   1050  CB  LYS L  27     -48.213 -14.806  36.281  1.00  8.18      3CRO1189
+ATOM   1051  CG  LYS L  27     -49.225 -15.007  37.400  1.00 16.63      3CRO1190
+ATOM   1052  CD  LYS L  27     -50.202 -16.144  37.161  1.00 10.74      3CRO1191
+ATOM   1053  CE  LYS L  27     -51.599 -15.666  36.796  1.00 26.22      3CRO1192
+ATOM   1054  NZ  LYS L  27     -52.625 -16.042  37.778  1.00 28.23      3CRO1193
+ATOM   1055  N   GLN L  28     -47.412 -15.584  33.253  1.00  7.21      3CRO1194
+ATOM   1056  CA  GLN L  28     -46.524 -15.296  32.161  1.00  2.15      3CRO1195
+ATOM   1057  C   GLN L  28     -45.779 -13.985  32.347  1.00 17.35      3CRO1196
+ATOM   1058  O   GLN L  28     -44.661 -13.808  31.844  1.00 11.32      3CRO1197
+ATOM   1059  CB  GLN L  28     -47.329 -15.186  30.876  1.00  8.47      3CRO1198
+ATOM   1060  CG  GLN L  28     -46.491 -14.516  29.792  1.00 22.15      3CRO1199
+ATOM   1061  CD  GLN L  28     -47.104 -13.264  29.250  1.00  6.11      3CRO1200
+ATOM   1062  OE1 GLN L  28     -48.332 -13.041  29.329  1.00 24.31      3CRO1201
+ATOM   1063  NE2 GLN L  28     -46.217 -12.459  28.693  1.00  7.42      3CRO1202
+ATOM   1064  N   GLN L  29     -46.432 -13.060  33.060  1.00  7.86      3CRO1203
+ATOM   1065  CA  GLN L  29     -45.899 -11.723  33.283  1.00  2.00      3CRO1204
+ATOM   1066  C   GLN L  29     -44.593 -11.573  34.050  1.00 17.92      3CRO1205
+ATOM   1067  O   GLN L  29     -43.936 -10.528  33.969  1.00 15.40      3CRO1206
+ATOM   1068  CB  GLN L  29     -46.964 -10.685  33.614  1.00  8.36      3CRO1207
+ATOM   1069  CG  GLN L  29     -48.044 -10.627  32.521  1.00  7.47      3CRO1208
+ATOM   1070  CD  GLN L  29     -49.152 -11.617  32.786  1.00 14.39      3CRO1209
+ATOM   1071  OE1 GLN L  29     -48.931 -12.645  33.435  1.00 26.10      3CRO1210
+ATOM   1072  NE2 GLN L  29     -50.347 -11.303  32.304  1.00 11.70      3CRO1211
+ATOM   1073  N   SER L  30     -44.263 -12.664  34.746  1.00 29.31      3CRO1212
+ATOM   1074  CA  SER L  30     -43.112 -12.896  35.599  1.00  2.29      3CRO1213
+ATOM   1075  C   SER L  30     -41.912 -13.395  34.833  1.00  2.00      3CRO1214
+ATOM   1076  O   SER L  30     -40.763 -13.219  35.249  1.00  3.42      3CRO1215
+ATOM   1077  CB  SER L  30     -43.482 -13.960  36.610  1.00 13.74      3CRO1216
+ATOM   1078  OG  SER L  30     -44.540 -13.487  37.418  1.00 36.28      3CRO1217
+ATOM   1079  N   ILE L  31     -42.200 -14.051  33.721  1.00 21.21      3CRO1218
+ATOM   1080  CA  ILE L  31     -41.164 -14.579  32.869  1.00  7.78      3CRO1219
+ATOM   1081  C   ILE L  31     -40.760 -13.515  31.945  1.00  2.00      3CRO1220
+ATOM   1082  O   ILE L  31     -39.632 -13.430  31.465  1.00  5.11      3CRO1221
+ATOM   1083  CB  ILE L  31     -41.672 -15.682  32.002  1.00  2.00      3CRO1222
+ATOM   1084  CG1 ILE L  31     -42.378 -16.620  32.920  1.00  2.00      3CRO1223
+ATOM   1085  CG2 ILE L  31     -40.453 -16.404  31.462  1.00  2.00      3CRO1224
+ATOM   1086  CD1 ILE L  31     -41.347 -17.563  33.507  1.00  2.00      3CRO1225
+ATOM   1087  N   GLN L  32     -41.746 -12.710  31.679  1.00  7.48      3CRO1226
+ATOM   1088  CA  GLN L  32     -41.509 -11.639  30.782  1.00 13.42      3CRO1227
+ATOM   1089  C   GLN L  32     -40.438 -10.712  31.348  1.00 24.47      3CRO1228
+ATOM   1090  O   GLN L  32     -39.406 -10.493  30.703  1.00 29.65      3CRO1229
+ATOM   1091  CB  GLN L  32     -42.837 -10.986  30.362  1.00 26.50      3CRO1230
+ATOM   1092  CG  GLN L  32     -42.706 -10.068  29.150  1.00  5.63      3CRO1231
+ATOM   1093  CD  GLN L  32     -42.912  -8.653  29.580  1.00  9.77      3CRO1232
+ATOM   1094  OE1 GLN L  32     -43.858  -8.353  30.349  1.00 14.42      3CRO1233
+ATOM   1095  NE2 GLN L  32     -41.994  -7.803  29.135  1.00 22.11      3CRO1234
+ATOM   1096  N   LEU L  33     -40.692 -10.231  32.582  1.00 11.77      3CRO1235
+ATOM   1097  CA  LEU L  33     -39.834  -9.336  33.345  1.00  2.00      3CRO1236
+ATOM   1098  C   LEU L  33     -38.382  -9.802  33.413  1.00  2.44      3CRO1237
+ATOM   1099  O   LEU L  33     -37.447  -9.053  33.147  1.00  7.97      3CRO1238
+ATOM   1100  CB  LEU L  33     -40.473  -9.080  34.705  1.00  2.00      3CRO1239
+ATOM   1101  CG  LEU L  33     -41.695  -8.198  34.558  1.00  2.00      3CRO1240
+ATOM   1102  CD1 LEU L  33     -42.688  -8.419  35.688  1.00 14.31      3CRO1241
+ATOM   1103  CD2 LEU L  33     -41.274  -6.738  34.526  1.00 10.72      3CRO1242
+ATOM   1104  N   ILE L  34     -38.184 -11.068  33.739  1.00 16.28      3CRO1243
+ATOM   1105  CA  ILE L  34     -36.848 -11.636  33.780  1.00  9.80      3CRO1244
+ATOM   1106  C   ILE L  34     -36.210 -11.479  32.424  1.00  8.58      3CRO1245
+ATOM   1107  O   ILE L  34     -35.035 -11.188  32.278  1.00 29.81      3CRO1246
+ATOM   1108  CB  ILE L  34     -36.935 -13.131  34.010  1.00  2.00      3CRO1247
+ATOM   1109  CG1 ILE L  34     -37.985 -13.461  35.034  1.00  2.00      3CRO1248
+ATOM   1110  CG2 ILE L  34     -35.601 -13.724  34.419  1.00  2.00      3CRO1249
+ATOM   1111  CD1 ILE L  34     -37.897 -14.915  35.450  1.00 15.65      3CRO1250
+ATOM   1112  N   GLU L  35     -37.018 -11.724  31.417  1.00 25.67      3CRO1251
+ATOM   1113  CA  GLU L  35     -36.587 -11.658  30.047  1.00  9.32      3CRO1252
+ATOM   1114  C   GLU L  35     -36.328 -10.230  29.594  1.00 14.05      3CRO1253
+ATOM   1115  O   GLU L  35     -35.496  -9.973  28.731  1.00 22.23      3CRO1254
+ATOM   1116  CB  GLU L  35     -37.665 -12.314  29.189  1.00  6.03      3CRO1255
+ATOM   1117  CG  GLU L  35     -37.124 -13.516  28.415  1.00 14.79      3CRO1256
+ATOM   1118  CD  GLU L  35     -38.179 -14.299  27.692  1.00 16.17      3CRO1257
+ATOM   1119  OE1 GLU L  35     -39.088 -13.803  27.032  1.00  8.86      3CRO1258
+ATOM   1120  OE2 GLU L  35     -37.977 -15.578  27.826  1.00 21.92      3CRO1259
+ATOM   1121  N   ALA L  36     -37.065  -9.312  30.204  1.00 28.79      3CRO1260
+ATOM   1122  CA  ALA L  36     -37.005  -7.883  29.923  1.00 10.60      3CRO1261
+ATOM   1123  C   ALA L  36     -35.746  -7.215  30.404  1.00  5.57      3CRO1262
+ATOM   1124  O   ALA L  36     -35.455  -6.099  29.998  1.00 18.14      3CRO1263
+ATOM   1125  CB  ALA L  36     -38.150  -7.201  30.644  1.00  2.00      3CRO1264
+ATOM   1126  N   GLY L  37     -35.036  -7.907  31.289  1.00 27.72      3CRO1265
+ATOM   1127  CA  GLY L  37     -33.833  -7.407  31.918  1.00  2.44      3CRO1266
+ATOM   1128  C   GLY L  37     -34.326  -6.745  33.181  1.00  4.97      3CRO1267
+ATOM   1129  O   GLY L  37     -33.601  -6.188  33.995  1.00  8.25      3CRO1268
+ATOM   1130  N   VAL L  38     -35.629  -6.813  33.327  1.00  6.71      3CRO1269
+ATOM   1131  CA  VAL L  38     -36.231  -6.192  34.471  1.00 18.24      3CRO1270
+ATOM   1132  C   VAL L  38     -35.992  -6.817  35.842  1.00 30.09      3CRO1271
+ATOM   1133  O   VAL L  38     -35.519  -6.133  36.743  1.00 31.43      3CRO1272
+ATOM   1134  CB  VAL L  38     -37.550  -5.492  34.216  1.00 22.21      3CRO1273
+ATOM   1135  CG1 VAL L  38     -38.226  -5.184  35.539  1.00 12.64      3CRO1274
+ATOM   1136  CG2 VAL L  38     -37.271  -4.199  33.450  1.00 31.15      3CRO1275
+ATOM   1137  N   THR L  39     -36.308  -8.109  35.984  1.00 39.75      3CRO1276
+ATOM   1138  CA  THR L  39     -36.119  -8.885  37.208  1.00 11.80      3CRO1277
+ATOM   1139  C   THR L  39     -34.711  -9.488  37.188  1.00 12.26      3CRO1278
+ATOM   1140  O   THR L  39     -34.340 -10.125  36.195  1.00  6.01      3CRO1279
+ATOM   1141  CB  THR L  39     -37.110 -10.063  37.228  1.00  2.00      3CRO1280
+ATOM   1142  OG1 THR L  39     -38.382  -9.714  37.726  1.00  2.00      3CRO1281
+ATOM   1143  CG2 THR L  39     -36.521 -11.194  38.040  1.00 10.12      3CRO1282
+ATOM   1144  N   LYS L  40     -33.918  -9.311  38.257  1.00  3.39      3CRO1283
+ATOM   1145  CA  LYS L  40     -32.562  -9.868  38.253  1.00  3.42      3CRO1284
+ATOM   1146  C   LYS L  40     -32.216 -11.055  39.170  1.00  4.95      3CRO1285
+ATOM   1147  O   LYS L  40     -31.181 -11.685  38.993  1.00 21.06      3CRO1286
+ATOM   1148  CB  LYS L  40     -31.454  -8.845  38.153  1.00  2.00      3CRO1287
+ATOM   1149  CG  LYS L  40     -31.914  -7.545  37.525  1.00  8.32      3CRO1288
+ATOM   1150  CD  LYS L  40     -30.846  -6.795  36.715  1.00  2.00      3CRO1289
+ATOM   1151  CE  LYS L  40     -29.863  -7.705  36.007  1.00  2.11      3CRO1290
+ATOM   1152  NZ  LYS L  40     -28.894  -6.983  35.173  1.00 29.53      3CRO1291
+ATOM   1153  N   ARG L  41     -33.056 -11.361  40.148  1.00  8.87      3CRO1292
+ATOM   1154  CA  ARG L  41     -32.852 -12.467  41.072  1.00  2.00      3CRO1293
+ATOM   1155  C   ARG L  41     -34.225 -13.010  41.341  1.00 14.28      3CRO1294
+ATOM   1156  O   ARG L  41     -34.804 -12.795  42.416  1.00  6.52      3CRO1295
+ATOM   1157  CB  ARG L  41     -32.167 -12.071  42.383  1.00  2.00      3CRO1296
+ATOM   1158  CG  ARG L  41     -30.889 -11.267  42.171  1.00 11.22      3CRO1297
+ATOM   1159  CD  ARG L  41     -29.610 -12.093  42.274  1.00  2.00      3CRO1298
+ATOM   1160  NE  ARG L  41     -29.479 -12.796  43.550  1.00 17.89      3CRO1299
+ATOM   1161  CZ  ARG L  41     -28.332 -13.310  44.005  1.00 11.66      3CRO1300
+ATOM   1162  NH1 ARG L  41     -27.215 -13.210  43.311  1.00 17.52      3CRO1301
+ATOM   1163  NH2 ARG L  41     -28.297 -13.944  45.181  1.00  3.19      3CRO1302
+ATOM   1164  N   PRO L  42     -34.754 -13.645  40.297  1.00  4.95      3CRO1303
+ATOM   1165  CA  PRO L  42     -36.064 -14.226  40.361  1.00  7.32      3CRO1304
+ATOM   1166  C   PRO L  42     -36.034 -15.121  41.554  1.00 16.49      3CRO1305
+ATOM   1167  O   PRO L  42     -34.992 -15.678  41.901  1.00 32.98      3CRO1306
+ATOM   1168  CB  PRO L  42     -36.254 -15.039  39.084  1.00  2.00      3CRO1307
+ATOM   1169  CG  PRO L  42     -34.960 -14.919  38.287  1.00  2.31      3CRO1308
+ATOM   1170  CD  PRO L  42     -34.009 -14.034  39.077  1.00  9.92      3CRO1309
+ATOM   1171  N   ARG L  43     -37.144 -15.192  42.223  1.00  4.86      3CRO1310
+ATOM   1172  CA  ARG L  43     -37.181 -16.003  43.388  1.00  7.40      3CRO1311
+ATOM   1173  C   ARG L  43     -37.640 -17.397  43.019  1.00 25.16      3CRO1312
+ATOM   1174  O   ARG L  43     -37.514 -18.355  43.786  1.00 33.04      3CRO1313
+ATOM   1175  CB  ARG L  43     -38.034 -15.335  44.444  1.00  2.00      3CRO1314
+ATOM   1176  CG  ARG L  43     -38.603 -16.314  45.445  1.00  5.82      3CRO1315
+ATOM   1177  CD  ARG L  43     -40.039 -15.997  45.825  1.00  2.00      3CRO1316
+ATOM   1178  NE  ARG L  43     -40.397 -14.589  45.730  1.00  2.00      3CRO1317
+ATOM   1179  CZ  ARG L  43     -41.655 -14.167  45.870  1.00  2.00      3CRO1318
+ATOM   1180  NH1 ARG L  43     -42.641 -15.033  46.098  1.00  2.00      3CRO1319
+ATOM   1181  NH2 ARG L  43     -41.943 -12.862  45.769  1.00  2.00      3CRO1320
+ATOM   1182  N   PHE L  44     -38.169 -17.501  41.807  1.00  7.64      3CRO1321
+ATOM   1183  CA  PHE L  44     -38.586 -18.782  41.304  1.00  2.00      3CRO1322
+ATOM   1184  C   PHE L  44     -37.524 -19.329  40.363  1.00  2.42      3CRO1323
+ATOM   1185  O   PHE L  44     -37.817 -20.128  39.487  1.00 33.86      3CRO1324
+ATOM   1186  CB  PHE L  44     -39.977 -18.792  40.667  1.00  8.19      3CRO1325
+ATOM   1187  CG  PHE L  44     -41.080 -18.489  41.651  1.00  4.10      3CRO1326
+ATOM   1188  CD1 PHE L  44     -41.744 -19.500  42.346  1.00  2.00      3CRO1327
+ATOM   1189  CD2 PHE L  44     -41.471 -17.173  41.871  1.00  2.87      3CRO1328
+ATOM   1190  CE1 PHE L  44     -42.770 -19.197  43.240  1.00  9.73      3CRO1329
+ATOM   1191  CE2 PHE L  44     -42.495 -16.852  42.762  1.00  2.00      3CRO1330
+ATOM   1192  CZ  PHE L  44     -43.147 -17.869  43.446  1.00  2.00      3CRO1331
+ATOM   1193  N   LEU L  45     -36.274 -18.887  40.561  1.00  2.00      3CRO1332
+ATOM   1194  CA  LEU L  45     -35.116 -19.318  39.786  1.00  2.00      3CRO1333
+ATOM   1195  C   LEU L  45     -34.896 -20.823  39.852  1.00 11.78      3CRO1334
+ATOM   1196  O   LEU L  45     -34.121 -21.382  39.090  1.00 21.68      3CRO1335
+ATOM   1197  CB  LEU L  45     -33.832 -18.674  40.316  1.00  2.00      3CRO1336
+ATOM   1198  CG  LEU L  45     -32.604 -19.103  39.531  1.00  7.36      3CRO1337
+ATOM   1199  CD1 LEU L  45     -32.429 -18.164  38.348  1.00 14.99      3CRO1338
+ATOM   1200  CD2 LEU L  45     -31.343 -19.118  40.397  1.00  2.00      3CRO1339
+ATOM   1201  N   PHE L  46     -35.504 -21.514  40.801  1.00  5.25      3CRO1340
+ATOM   1202  CA  PHE L  46     -35.250 -22.939  40.812  1.00  2.00      3CRO1341
+ATOM   1203  C   PHE L  46     -36.466 -23.604  40.228  1.00  7.40      3CRO1342
+ATOM   1204  O   PHE L  46     -36.376 -24.518  39.420  1.00 15.61      3CRO1343
+ATOM   1205  CB  PHE L  46     -34.746 -23.607  42.143  1.00 12.18      3CRO1344
+ATOM   1206  CG  PHE L  46     -33.459 -23.052  42.755  1.00  5.71      3CRO1345
+ATOM   1207  CD1 PHE L  46     -32.191 -23.398  42.264  1.00 10.76      3CRO1346
+ATOM   1208  CD2 PHE L  46     -33.509 -22.180  43.832  1.00 14.88      3CRO1347
+ATOM   1209  CE1 PHE L  46     -31.028 -22.871  42.810  1.00 13.97      3CRO1348
+ATOM   1210  CE2 PHE L  46     -32.347 -21.640  44.403  1.00  5.94      3CRO1349
+ATOM   1211  CZ  PHE L  46     -31.106 -21.985  43.892  1.00  2.00      3CRO1350
+ATOM   1212  N   GLU L  47     -37.622 -23.102  40.603  1.00  2.86      3CRO1351
+ATOM   1213  CA  GLU L  47     -38.821 -23.688  40.079  1.00  8.42      3CRO1352
+ATOM   1214  C   GLU L  47     -38.896 -23.643  38.539  1.00 19.46      3CRO1353
+ATOM   1215  O   GLU L  47     -39.387 -24.586  37.935  1.00 38.64      3CRO1354
+ATOM   1216  CB  GLU L  47     -40.025 -23.215  40.899  1.00  9.04      3CRO1355
+ATOM   1217  CG  GLU L  47     -39.482 -22.581  42.202  1.00  8.58      3CRO1356
+ATOM   1218  CD  GLU L  47     -39.619 -23.431  43.442  1.00 41.26      3CRO1357
+ATOM   1219  OE1 GLU L  47     -39.215 -24.570  43.571  1.00 32.45      3CRO1358
+ATOM   1220  OE2 GLU L  47     -40.222 -22.795  44.391  1.00 52.60      3CRO1359
+ATOM   1221  N   ILE L  48     -38.336 -22.570  37.925  1.00 17.02      3CRO1360
+ATOM   1222  CA  ILE L  48     -38.241 -22.296  36.475  1.00  2.00      3CRO1361
+ATOM   1223  C   ILE L  48     -37.099 -23.048  35.794  1.00 14.55      3CRO1362
+ATOM   1224  O   ILE L  48     -37.134 -23.312  34.596  1.00 29.77      3CRO1363
+ATOM   1225  CB  ILE L  48     -37.857 -20.838  36.240  1.00 12.82      3CRO1364
+ATOM   1226  CG1 ILE L  48     -38.885 -19.820  36.611  1.00  2.05      3CRO1365
+ATOM   1227  CG2 ILE L  48     -37.400 -20.553  34.813  1.00  2.00      3CRO1366
+ATOM   1228  CD1 ILE L  48     -38.319 -18.485  36.154  1.00 17.02      3CRO1367
+ATOM   1229  N   ALA L  49     -36.027 -23.338  36.518  1.00 12.87      3CRO1368
+ATOM   1230  CA  ALA L  49     -34.944 -24.048  35.882  1.00  2.00      3CRO1369
+ATOM   1231  C   ALA L  49     -35.376 -25.486  35.640  1.00 12.84      3CRO1370
+ATOM   1232  O   ALA L  49     -34.987 -26.157  34.677  1.00  8.91      3CRO1371
+ATOM   1233  CB  ALA L  49     -33.653 -23.938  36.664  1.00  3.00      3CRO1372
+ATOM   1234  N   MET L  50     -36.230 -25.942  36.543  1.00 20.23      3CRO1373
+ATOM   1235  CA  MET L  50     -36.791 -27.262  36.450  1.00  2.00      3CRO1374
+ATOM   1236  C   MET L  50     -37.511 -27.293  35.139  1.00 12.86      3CRO1375
+ATOM   1237  O   MET L  50     -37.304 -28.171  34.309  1.00 16.35      3CRO1376
+ATOM   1238  CB  MET L  50     -37.809 -27.482  37.581  1.00 25.87      3CRO1377
+ATOM   1239  CG  MET L  50     -37.239 -27.123  38.942  1.00 66.21      3CRO1378
+ATOM   1240  SD  MET L  50     -37.470 -28.408  40.198  1.00 74.46      3CRO1379
+ATOM   1241  CE  MET L  50     -37.074 -27.502  41.715  1.00 63.73      3CRO1380
+ATOM   1242  N   ALA L  51     -38.360 -26.283  34.965  1.00 17.66      3CRO1381
+ATOM   1243  CA  ALA L  51     -39.103 -26.182  33.744  1.00  2.41      3CRO1382
+ATOM   1244  C   ALA L  51     -38.173 -26.127  32.561  1.00  4.90      3CRO1383
+ATOM   1245  O   ALA L  51     -38.361 -26.862  31.608  1.00 19.93      3CRO1384
+ATOM   1246  CB  ALA L  51     -40.185 -25.118  33.746  1.00  2.00      3CRO1385
+ATOM   1247  N   LEU L  52     -37.141 -25.295  32.602  1.00 11.09      3CRO1386
+ATOM   1248  CA  LEU L  52     -36.231 -25.285  31.455  1.00  4.04      3CRO1387
+ATOM   1249  C   LEU L  52     -35.308 -26.479  31.501  1.00 14.77      3CRO1388
+ATOM   1250  O   LEU L  52     -34.496 -26.665  30.600  1.00 28.22      3CRO1389
+ATOM   1251  CB  LEU L  52     -35.289 -24.075  31.396  1.00  2.00      3CRO1390
+ATOM   1252  CG  LEU L  52     -35.915 -22.857  30.792  1.00  2.00      3CRO1391
+ATOM   1253  CD1 LEU L  52     -37.273 -22.763  31.423  1.00  5.59      3CRO1392
+ATOM   1254  CD2 LEU L  52     -35.090 -21.645  31.189  1.00  2.00      3CRO1393
+ATOM   1255  N   ASN L  53     -35.404 -27.272  32.565  1.00 15.36      3CRO1394
+ATOM   1256  CA  ASN L  53     -34.511 -28.411  32.740  1.00 16.12      3CRO1395
+ATOM   1257  C   ASN L  53     -33.063 -27.944  32.642  1.00 18.05      3CRO1396
+ATOM   1258  O   ASN L  53     -32.307 -28.530  31.874  1.00 23.48      3CRO1397
+ATOM   1259  CB  ASN L  53     -34.587 -29.594  31.716  1.00 10.68      3CRO1398
+ATOM   1260  CG  ASN L  53     -35.899 -30.133  31.156  1.00 12.45      3CRO1399
+ATOM   1261  OD1 ASN L  53     -36.671 -30.837  31.827  1.00 10.92      3CRO1400
+ATOM   1262  ND2 ASN L  53     -36.072 -29.943  29.852  1.00  7.96      3CRO1401
+ATOM   1263  N   CYS L  54     -32.638 -26.907  33.359  1.00  2.38      3CRO1402
+ATOM   1264  CA  CYS L  54     -31.232 -26.504  33.228  1.00  2.00      3CRO1403
+ATOM   1265  C   CYS L  54     -30.618 -26.314  34.585  1.00 13.74      3CRO1404
+ATOM   1266  O   CYS L  54     -31.327 -26.264  35.582  1.00 22.06      3CRO1405
+ATOM   1267  CB  CYS L  54     -31.036 -25.203  32.431  1.00 10.95      3CRO1406
+ATOM   1268  SG  CYS L  54     -31.820 -23.794  33.255  1.00 29.55      3CRO1407
+ATOM   1269  N   ASP L  55     -29.305 -26.183  34.648  1.00  5.03      3CRO1408
+ATOM   1270  CA  ASP L  55     -28.736 -25.968  35.962  1.00 10.51      3CRO1409
+ATOM   1271  C   ASP L  55     -29.135 -24.577  36.469  1.00  9.71      3CRO1410
+ATOM   1272  O   ASP L  55     -28.874 -23.572  35.811  1.00  8.99      3CRO1411
+ATOM   1273  CB  ASP L  55     -27.214 -26.243  35.966  1.00 20.02      3CRO1412
+ATOM   1274  CG  ASP L  55     -26.427 -25.662  37.111  1.00 36.07      3CRO1413
+ATOM   1275  OD1 ASP L  55     -26.749 -24.681  37.735  1.00 36.61      3CRO1414
+ATOM   1276  OD2 ASP L  55     -25.316 -26.310  37.344  1.00 53.64      3CRO1415
+ATOM   1277  N   PRO L  56     -29.726 -24.518  37.666  1.00 15.24      3CRO1416
+ATOM   1278  CA  PRO L  56     -30.154 -23.258  38.230  1.00  2.00      3CRO1417
+ATOM   1279  C   PRO L  56     -29.009 -22.267  38.269  1.00  6.77      3CRO1418
+ATOM   1280  O   PRO L  56     -29.127 -21.113  37.898  1.00 19.60      3CRO1419
+ATOM   1281  CB  PRO L  56     -30.654 -23.581  39.642  1.00  5.81      3CRO1420
+ATOM   1282  CG  PRO L  56     -30.442 -25.069  39.869  1.00  2.00      3CRO1421
+ATOM   1283  CD  PRO L  56     -29.516 -25.511  38.757  1.00 11.83      3CRO1422
+ATOM   1284  N   VAL L  57     -27.872 -22.741  38.686  1.00  7.82      3CRO1423
+ATOM   1285  CA  VAL L  57     -26.694 -21.927  38.765  1.00  2.00      3CRO1424
+ATOM   1286  C   VAL L  57     -26.260 -21.356  37.401  1.00 14.54      3CRO1425
+ATOM   1287  O   VAL L  57     -25.688 -20.271  37.321  1.00 27.28      3CRO1426
+ATOM   1288  CB  VAL L  57     -25.651 -22.816  39.423  1.00  6.61      3CRO1427
+ATOM   1289  CG1 VAL L  57     -24.226 -22.314  39.301  1.00  6.26      3CRO1428
+ATOM   1290  CG2 VAL L  57     -26.060 -23.142  40.855  1.00 13.64      3CRO1429
+ATOM   1291  N   TRP L  58     -26.531 -22.066  36.305  1.00 14.07      3CRO1430
+ATOM   1292  CA  TRP L  58     -26.146 -21.567  34.982  1.00  3.19      3CRO1431
+ATOM   1293  C   TRP L  58     -27.065 -20.437  34.509  1.00 27.31      3CRO1432
+ATOM   1294  O   TRP L  58     -26.627 -19.427  33.962  1.00 27.13      3CRO1433
+ATOM   1295  CB  TRP L  58     -26.034 -22.683  33.904  1.00 10.26      3CRO1434
+ATOM   1296  CG  TRP L  58     -26.083 -22.137  32.507  1.00 14.55      3CRO1435
+ATOM   1297  CD1 TRP L  58     -25.034 -21.665  31.785  1.00 13.58      3CRO1436
+ATOM   1298  CD2 TRP L  58     -27.242 -21.971  31.683  1.00  6.84      3CRO1437
+ATOM   1299  NE1 TRP L  58     -25.456 -21.213  30.564  1.00 15.38      3CRO1438
+ATOM   1300  CE2 TRP L  58     -26.812 -21.386  30.476  1.00 15.20      3CRO1439
+ATOM   1301  CE3 TRP L  58     -28.595 -22.253  31.859  1.00 11.09      3CRO1440
+ATOM   1302  CZ2 TRP L  58     -27.706 -21.089  29.451  1.00 18.42      3CRO1441
+ATOM   1303  CZ3 TRP L  58     -29.476 -21.955  30.848  1.00 21.38      3CRO1442
+ATOM   1304  CH2 TRP L  58     -29.034 -21.379  29.657  1.00 15.96      3CRO1443
+ATOM   1305  N   LEU L  59     -28.362 -20.644  34.695  1.00 17.66      3CRO1444
+ATOM   1306  CA  LEU L  59     -29.342 -19.666  34.323  1.00  2.00      3CRO1445
+ATOM   1307  C   LEU L  59     -28.923 -18.409  35.052  1.00  5.89      3CRO1446
+ATOM   1308  O   LEU L  59     -28.475 -17.408  34.501  1.00 15.68      3CRO1447
+ATOM   1309  CB  LEU L  59     -30.732 -20.166  34.809  1.00  2.00      3CRO1448
+ATOM   1310  CG  LEU L  59     -31.968 -19.481  34.235  1.00  2.00      3CRO1449
+ATOM   1311  CD1 LEU L  59     -32.123 -19.800  32.760  1.00  4.51      3CRO1450
+ATOM   1312  CD2 LEU L  59     -33.200 -20.000  34.956  1.00  2.00      3CRO1451
+ATOM   1313  N   GLN L  60     -28.987 -18.522  36.337  1.00  9.13      3CRO1452
+ATOM   1314  CA  GLN L  60     -28.650 -17.440  37.218  1.00 22.19      3CRO1453
+ATOM   1315  C   GLN L  60     -27.323 -16.705  36.993  1.00 22.59      3CRO1454
+ATOM   1316  O   GLN L  60     -27.309 -15.485  36.949  1.00 28.91      3CRO1455
+ATOM   1317  CB  GLN L  60     -28.839 -17.892  38.668  1.00 38.19      3CRO1456
+ATOM   1318  CG  GLN L  60     -28.529 -16.783  39.673  1.00 30.88      3CRO1457
+ATOM   1319  CD  GLN L  60     -29.414 -15.574  39.490  1.00  5.47      3CRO1458
+ATOM   1320  OE1 GLN L  60     -30.561 -15.555  39.953  1.00 20.16      3CRO1459
+ATOM   1321  NE2 GLN L  60     -28.879 -14.558  38.822  1.00  3.34      3CRO1460
+ATOM   1322  N   TYR L  61     -26.225 -17.444  36.883  1.00 18.27      3CRO1461
+ATOM   1323  CA  TYR L  61     -24.861 -16.951  36.727  1.00 11.83      3CRO1462
+ATOM   1324  C   TYR L  61     -24.326 -17.482  35.381  1.00 17.68      3CRO1463
+ATOM   1325  O   TYR L  61     -24.879 -18.415  34.884  1.00 40.49      3CRO1464
+ATOM   1326  CB  TYR L  61     -24.143 -17.622  37.922  1.00 23.95      3CRO1465
+ATOM   1327  CG  TYR L  61     -24.653 -17.216  39.311  1.00 12.20      3CRO1466
+ATOM   1328  CD1 TYR L  61     -25.672 -17.857  39.998  1.00 18.80      3CRO1467
+ATOM   1329  CD2 TYR L  61     -24.009 -16.151  39.962  1.00 11.86      3CRO1468
+ATOM   1330  CE1 TYR L  61     -26.068 -17.443  41.288  1.00 31.48      3CRO1469
+ATOM   1331  CE2 TYR L  61     -24.381 -15.724  41.222  1.00 13.36      3CRO1470
+ATOM   1332  CZ  TYR L  61     -25.426 -16.378  41.896  1.00 25.74      3CRO1471
+ATOM   1333  OH  TYR L  61     -25.776 -15.933  43.148  1.00 34.72      3CRO1472
+ATOM   1334  N   GLY L  62     -23.298 -17.006  34.709  1.00 16.87      3CRO1473
+ATOM   1335  CA  GLY L  62     -23.062 -17.714  33.425  1.00 21.70      3CRO1474
+ATOM   1336  C   GLY L  62     -22.056 -18.878  33.414  1.00 29.14      3CRO1475
+ATOM   1337  O   GLY L  62     -21.908 -19.624  34.380  1.00 40.97      3CRO1476
+ATOM   1338  N   THR L  63     -21.368 -19.048  32.282  1.00  8.57      3CRO1477
+ATOM   1339  CA  THR L  63     -20.358 -20.086  32.169  1.00 16.85      3CRO1478
+ATOM   1340  C   THR L  63     -18.986 -19.444  32.371  1.00 32.83      3CRO1479
+ATOM   1341  O   THR L  63     -18.934 -18.267  32.729  1.00 43.04      3CRO1480
+ATOM   1342  CB  THR L  63     -20.532 -20.976  30.907  1.00 39.18      3CRO1481
+ATOM   1343  OG1 THR L  63     -21.707 -21.746  31.067  1.00 41.15      3CRO1482
+ATOM   1344  CG2 THR L  63     -19.363 -21.935  30.669  1.00 38.03      3CRO1483
+ATOM   1345  N   LYS L  64     -17.885 -20.186  32.193  1.00 26.82      3CRO1484
+ATOM   1346  CA  LYS L  64     -16.546 -19.636  32.378  1.00 43.15      3CRO1485
+ATOM   1347  C   LYS L  64     -15.577 -20.252  31.382  1.00 55.12      3CRO1486
+ATOM   1348  O   LYS L  64     -15.772 -21.369  30.903  1.00 49.11      3CRO1487
+ATOM   1349  CB  LYS L  64     -16.041 -19.760  33.815  1.00 60.72      3CRO1488
+ATOM   1350  CG  LYS L  64     -14.555 -20.073  33.946  1.00 60.12      3CRO1489
+ATOM   1351  CD  LYS L  64     -13.879 -19.295  35.070  1.00 48.89      3CRO1490
+ATOM   1352  CE  LYS L  64     -14.839 -18.425  35.871  1.00 28.59      3CRO1491
+ATOM   1353  NZ  LYS L  64     -15.381 -19.092  37.069  1.00 46.87      3CRO1492
+ATOM   1390  N   MET R  -1     -35.240 -33.557  59.042  1.00 58.85      3CRO1493
+ATOM   1391  CA  MET R  -1     -34.917 -32.207  58.638  1.00 65.97      3CRO1494
+ATOM   1392  C   MET R  -1     -36.152 -31.360  58.413  1.00 74.55      3CRO1495
+ATOM   1393  O   MET R  -1     -36.646 -30.813  59.393  1.00 91.91      3CRO1496
+ATOM   1394  CB  MET R  -1     -33.738 -32.057  57.636  1.00 65.15      3CRO1497
+ATOM   1395  CG  MET R  -1     -34.105 -31.676  56.209  1.00 66.17      3CRO1498
+ATOM   1396  SD  MET R  -1     -33.110 -32.512  54.950  1.00 72.83      3CRO1499
+ATOM   1397  CE  MET R  -1     -31.459 -31.995  55.470  1.00 59.36      3CRO1500
+ATOM   1398  N   GLN R   0     -36.648 -31.317  57.166  1.00 56.30      3CRO1501
+ATOM   1399  CA  GLN R   0     -37.813 -30.570  56.717  1.00 48.81      3CRO1502
+ATOM   1400  C   GLN R   0     -37.398 -29.325  56.024  1.00 37.80      3CRO1503
+ATOM   1401  O   GLN R   0     -36.538 -29.254  55.147  1.00 44.08      3CRO1504
+ATOM   1402  CB  GLN R   0     -38.735 -30.024  57.835  1.00 53.34      3CRO1505
+ATOM   1403  CG  GLN R   0     -39.603 -31.073  58.523  1.00 56.03      3CRO1506
+ATOM   1404  CD  GLN R   0     -40.280 -31.977  57.519  1.00 65.22      3CRO1507
+ATOM   1405  OE1 GLN R   0     -39.626 -32.655  56.711  1.00 71.61      3CRO1508
+ATOM   1406  NE2 GLN R   0     -41.604 -32.001  57.569  1.00 64.07      3CRO1509
+ATOM   1407  N   THR R   1     -38.092 -28.346  56.538  1.00 11.92      3CRO1510
+ATOM   1408  CA  THR R   1     -38.003 -26.982  56.204  1.00 12.85      3CRO1511
+ATOM   1409  C   THR R   1     -36.558 -26.554  56.006  1.00 31.41      3CRO1512
+ATOM   1410  O   THR R   1     -35.610 -27.224  56.435  1.00 27.10      3CRO1513
+ATOM   1411  CB  THR R   1     -38.674 -26.228  57.363  1.00 26.06      3CRO1514
+ATOM   1412  OG1 THR R   1     -37.808 -26.247  58.472  1.00 56.42      3CRO1515
+ATOM   1413  CG2 THR R   1     -39.955 -26.962  57.755  1.00 21.64      3CRO1516
+ATOM   1414  N   LEU R   2     -36.436 -25.421  55.316  1.00 37.97      3CRO1517
+ATOM   1415  CA  LEU R   2     -35.190 -24.759  54.992  1.00 24.74      3CRO1518
+ATOM   1416  C   LEU R   2     -34.510 -24.369  56.281  1.00 25.69      3CRO1519
+ATOM   1417  O   LEU R   2     -33.286 -24.384  56.435  1.00 15.17      3CRO1520
+ATOM   1418  CB  LEU R   2     -35.525 -23.461  54.239  1.00 19.21      3CRO1521
+ATOM   1419  CG  LEU R   2     -34.314 -22.788  53.612  1.00 20.80      3CRO1522
+ATOM   1420  CD1 LEU R   2     -33.347 -23.854  53.129  1.00 18.72      3CRO1523
+ATOM   1421  CD2 LEU R   2     -34.771 -21.943  52.429  1.00 27.73      3CRO1524
+ATOM   1422  N   SER R   3     -35.364 -23.998  57.215  1.00 28.42      3CRO1525
+ATOM   1423  CA  SER R   3     -34.919 -23.598  58.512  1.00 29.16      3CRO1526
+ATOM   1424  C   SER R   3     -34.145 -24.729  59.172  1.00 44.69      3CRO1527
+ATOM   1425  O   SER R   3     -32.958 -24.574  59.452  1.00 57.40      3CRO1528
+ATOM   1426  CB  SER R   3     -36.074 -23.067  59.340  1.00 28.58      3CRO1529
+ATOM   1427  OG  SER R   3     -36.157 -23.751  60.567  1.00 17.13      3CRO1530
+ATOM   1428  N   GLU R   4     -34.811 -25.873  59.378  1.00 43.20      3CRO1531
+ATOM   1429  CA  GLU R   4     -34.185 -27.040  59.983  1.00 15.13      3CRO1532
+ATOM   1430  C   GLU R   4     -32.838 -27.333  59.351  1.00 17.64      3CRO1533
+ATOM   1431  O   GLU R   4     -31.845 -27.511  60.042  1.00 26.27      3CRO1534
+ATOM   1432  CB  GLU R   4     -35.096 -28.290  59.996  1.00 28.46      3CRO1535
+ATOM   1433  CG  GLU R   4     -34.745 -29.287  61.125  1.00 74.87      3CRO1536
+ATOM   1434  CD  GLU R   4     -33.782 -30.379  60.722  1.00 91.08      3CRO1537
+ATOM   1435  OE1 GLU R   4     -32.941 -30.254  59.852  1.00 90.88      3CRO1538
+ATOM   1436  OE2 GLU R   4     -33.953 -31.486  61.403  1.00100.00      3CRO1539
+ATOM   1437  N   ARG R   5     -32.802 -27.334  58.024  1.00 23.28      3CRO1540
+ATOM   1438  CA  ARG R   5     -31.581 -27.597  57.289  1.00 17.18      3CRO1541
+ATOM   1439  C   ARG R   5     -30.495 -26.530  57.492  1.00 24.46      3CRO1542
+ATOM   1440  O   ARG R   5     -29.311 -26.855  57.526  1.00 24.25      3CRO1543
+ATOM   1441  CB  ARG R   5     -31.885 -27.867  55.814  1.00 25.68      3CRO1544
+ATOM   1442  CG  ARG R   5     -30.904 -28.812  55.112  1.00 21.18      3CRO1545
+ATOM   1443  CD  ARG R   5     -31.234 -29.086  53.638  1.00 14.99      3CRO1546
+ATOM   1444  NE  ARG R   5     -32.378 -28.332  53.116  1.00 22.65      3CRO1547
+ATOM   1445  CZ  ARG R   5     -33.650 -28.642  53.369  1.00 20.56      3CRO1548
+ATOM   1446  NH1 ARG R   5     -33.975 -29.675  54.129  1.00 20.42      3CRO1549
+ATOM   1447  NH2 ARG R   5     -34.626 -27.901  52.859  1.00 22.48      3CRO1550
+ATOM   1448  N   LEU R   6     -30.900 -25.258  57.638  1.00 34.91      3CRO1551
+ATOM   1449  CA  LEU R   6     -29.980 -24.127  57.820  1.00 30.31      3CRO1552
+ATOM   1450  C   LEU R   6     -29.298 -24.067  59.171  1.00 14.10      3CRO1553
+ATOM   1451  O   LEU R   6     -28.103 -23.761  59.265  1.00  8.18      3CRO1554
+ATOM   1452  CB  LEU R   6     -30.636 -22.767  57.541  1.00 16.15      3CRO1555
+ATOM   1453  CG  LEU R   6     -29.603 -21.660  57.376  1.00  7.80      3CRO1556
+ATOM   1454  CD1 LEU R   6     -28.560 -22.085  56.359  1.00  2.00      3CRO1557
+ATOM   1455  CD2 LEU R   6     -30.265 -20.377  56.903  1.00  2.00      3CRO1558
+ATOM   1456  N   LYS R   7     -30.081 -24.306  60.215  1.00  9.59      3CRO1559
+ATOM   1457  CA  LYS R   7     -29.507 -24.281  61.527  1.00  2.30      3CRO1560
+ATOM   1458  C   LYS R   7     -28.465 -25.327  61.536  1.00 16.21      3CRO1561
+ATOM   1459  O   LYS R   7     -27.317 -24.976  61.296  1.00 28.15      3CRO1562
+ATOM   1460  CB  LYS R   7     -30.463 -24.599  62.644  1.00  2.00      3CRO1563
+ATOM   1461  CG  LYS R   7     -31.758 -23.839  62.559  1.00  9.59      3CRO1564
+ATOM   1462  CD  LYS R   7     -32.475 -23.806  63.892  1.00 20.33      3CRO1565
+ATOM   1463  CE  LYS R   7     -31.507 -23.733  65.070  1.00 34.68      3CRO1566
+ATOM   1464  NZ  LYS R   7     -32.133 -23.255  66.319  1.00 30.47      3CRO1567
+ATOM   1465  N   LYS R   8     -28.944 -26.574  61.784  1.00 27.78      3CRO1568
+ATOM   1466  CA  LYS R   8     -28.177 -27.814  61.868  1.00 17.07      3CRO1569
+ATOM   1467  C   LYS R   8     -26.810 -27.623  61.300  1.00 10.92      3CRO1570
+ATOM   1468  O   LYS R   8     -25.804 -27.649  61.985  1.00 41.18      3CRO1571
+ATOM   1469  CB  LYS R   8     -28.835 -28.980  61.146  1.00 32.26      3CRO1572
+ATOM   1470  CG  LYS R   8     -30.243 -29.270  61.620  1.00 39.75      3CRO1573
+ATOM   1471  CD  LYS R   8     -30.295 -30.136  62.859  1.00 38.46      3CRO1574
+ATOM   1472  CE  LYS R   8     -31.665 -30.761  63.040  1.00 55.44      3CRO1575
+ATOM   1473  NZ  LYS R   8     -32.626 -29.865  63.701  1.00 59.20      3CRO1576
+ATOM   1474  N   ARG R   9     -26.798 -27.330  60.035  1.00 12.40      3CRO1577
+ATOM   1475  CA  ARG R   9     -25.550 -27.111  59.375  1.00 13.63      3CRO1578
+ATOM   1476  C   ARG R   9     -24.707 -25.883  59.796  1.00 27.88      3CRO1579
+ATOM   1477  O   ARG R   9     -23.494 -25.925  59.701  1.00 32.02      3CRO1580
+ATOM   1478  CB  ARG R   9     -25.679 -27.305  57.888  1.00  9.38      3CRO1581
+ATOM   1479  CG  ARG R   9     -24.410 -26.896  57.188  1.00 24.02      3CRO1582
+ATOM   1480  CD  ARG R   9     -24.155 -27.676  55.915  1.00 35.02      3CRO1583
+ATOM   1481  NE  ARG R   9     -22.734 -27.863  55.652  1.00 28.32      3CRO1584
+ATOM   1482  CZ  ARG R   9     -22.034 -28.882  56.133  1.00 29.49      3CRO1585
+ATOM   1483  NH1 ARG R   9     -22.591 -29.813  56.908  1.00 19.81      3CRO1586
+ATOM   1484  NH2 ARG R   9     -20.740 -28.968  55.832  1.00 33.72      3CRO1587
+ATOM   1485  N   ARG R  10     -25.303 -24.784  60.256  1.00 33.95      3CRO1588
+ATOM   1486  CA  ARG R  10     -24.544 -23.596  60.679  1.00 22.69      3CRO1589
+ATOM   1487  C   ARG R  10     -23.579 -23.973  61.755  1.00  8.89      3CRO1590
+ATOM   1488  O   ARG R  10     -22.368 -23.920  61.653  1.00 16.61      3CRO1591
+ATOM   1489  CB  ARG R  10     -25.511 -22.683  61.417  1.00 20.55      3CRO1592
+ATOM   1490  CG  ARG R  10     -25.128 -21.220  61.454  1.00  5.45      3CRO1593
+ATOM   1491  CD  ARG R  10     -25.438 -20.635  62.810  1.00  6.55      3CRO1594
+ATOM   1492  NE  ARG R  10     -26.855 -20.648  63.121  1.00  2.00      3CRO1595
+ATOM   1493  CZ  ARG R  10     -27.298 -20.564  64.370  1.00 11.35      3CRO1596
+ATOM   1494  NH1 ARG R  10     -26.477 -20.476  65.405  1.00 28.92      3CRO1597
+ATOM   1495  NH2 ARG R  10     -28.597 -20.565  64.607  1.00 18.54      3CRO1598
+ATOM   1496  N   ILE R  11     -24.269 -24.311  62.813  1.00  9.48      3CRO1599
+ATOM   1497  CA  ILE R  11     -23.843 -24.770  64.102  1.00 26.84      3CRO1600
+ATOM   1498  C   ILE R  11     -22.871 -25.894  64.054  1.00 25.15      3CRO1601
+ATOM   1499  O   ILE R  11     -21.848 -25.947  64.740  1.00 26.70      3CRO1602
+ATOM   1500  CB  ILE R  11     -25.073 -25.455  64.560  1.00  2.00      3CRO1603
+ATOM   1501  CG1 ILE R  11     -26.132 -24.381  64.698  1.00  8.15      3CRO1604
+ATOM   1502  CG2 ILE R  11     -24.748 -26.175  65.844  1.00 15.39      3CRO1605
+ATOM   1503  CD1 ILE R  11     -27.169 -24.675  65.763  1.00  4.14      3CRO1606
+ATOM   1504  N   ALA R  12     -23.314 -26.842  63.273  1.00  5.60      3CRO1607
+ATOM   1505  CA  ALA R  12     -22.569 -28.021  63.037  1.00  6.15      3CRO1608
+ATOM   1506  C   ALA R  12     -21.334 -27.605  62.300  1.00  2.00      3CRO1609
+ATOM   1507  O   ALA R  12     -20.346 -28.310  62.260  1.00 19.27      3CRO1610
+ATOM   1508  CB  ALA R  12     -23.390 -28.992  62.204  1.00 28.29      3CRO1611
+ATOM   1509  N   LEU R  13     -21.404 -26.438  61.693  1.00 21.99      3CRO1612
+ATOM   1510  CA  LEU R  13     -20.267 -25.923  60.965  1.00 21.04      3CRO1613
+ATOM   1511  C   LEU R  13     -19.534 -25.094  62.003  1.00 35.60      3CRO1614
+ATOM   1512  O   LEU R  13     -18.353 -24.768  61.880  1.00 39.27      3CRO1615
+ATOM   1513  CB  LEU R  13     -20.726 -25.042  59.759  1.00 23.31      3CRO1616
+ATOM   1514  CG  LEU R  13     -20.622 -25.620  58.335  1.00 37.64      3CRO1617
+ATOM   1515  CD1 LEU R  13     -21.895 -25.341  57.549  1.00 25.20      3CRO1618
+ATOM   1516  CD2 LEU R  13     -19.510 -24.910  57.574  1.00 36.17      3CRO1619
+ATOM   1517  N   LYS R  14     -20.313 -24.801  63.054  1.00 42.89      3CRO1620
+ATOM   1518  CA  LYS R  14     -19.947 -23.992  64.206  1.00 35.06      3CRO1621
+ATOM   1519  C   LYS R  14     -19.630 -22.543  63.931  1.00 28.97      3CRO1622
+ATOM   1520  O   LYS R  14     -18.474 -22.128  63.903  1.00 23.79      3CRO1623
+ATOM   1521  CB  LYS R  14     -19.233 -24.631  65.379  1.00 29.85      3CRO1624
+ATOM   1522  CG  LYS R  14     -18.891 -26.083  65.150  1.00 33.26      3CRO1625
+ATOM   1523  CD  LYS R  14     -17.459 -26.383  65.536  1.00 40.19      3CRO1626
+ATOM   1524  CE  LYS R  14     -17.355 -27.043  66.897  1.00 63.40      3CRO1627
+ATOM   1525  NZ  LYS R  14     -17.415 -28.509  66.822  1.00 66.95      3CRO1628
+ATOM   1526  N   MET R  15     -20.730 -21.827  63.697  1.00 18.77      3CRO1629
+ATOM   1527  CA  MET R  15     -20.826 -20.411  63.427  1.00 16.83      3CRO1630
+ATOM   1528  C   MET R  15     -22.096 -19.965  64.078  1.00 15.94      3CRO1631
+ATOM   1529  O   MET R  15     -22.848 -20.778  64.612  1.00 26.06      3CRO1632
+ATOM   1530  CB  MET R  15     -20.917 -19.978  61.942  1.00 34.47      3CRO1633
+ATOM   1531  CG  MET R  15     -20.537 -21.012  60.903  1.00 20.06      3CRO1634
+ATOM   1532  SD  MET R  15     -20.028 -20.195  59.384  1.00 27.62      3CRO1635
+ATOM   1533  CE  MET R  15     -18.237 -20.474  59.449  1.00 14.44      3CRO1636
+ATOM   1534  N   THR R  16     -22.295 -18.673  63.983  1.00 11.19      3CRO1637
+ATOM   1535  CA  THR R  16     -23.395 -17.950  64.538  1.00  2.00      3CRO1638
+ATOM   1536  C   THR R  16     -24.008 -17.183  63.406  1.00 20.22      3CRO1639
+ATOM   1537  O   THR R  16     -23.309 -17.029  62.388  1.00 15.87      3CRO1640
+ATOM   1538  CB  THR R  16     -22.719 -16.968  65.510  1.00 13.80      3CRO1641
+ATOM   1539  OG1 THR R  16     -23.474 -15.796  65.705  1.00 46.35      3CRO1642
+ATOM   1540  CG2 THR R  16     -21.345 -16.595  64.962  1.00 10.43      3CRO1643
+ATOM   1541  N   GLN R  17     -25.278 -16.761  63.611  1.00  8.82      3CRO1644
+ATOM   1542  CA  GLN R  17     -26.024 -15.970  62.668  1.00  2.00      3CRO1645
+ATOM   1543  C   GLN R  17     -25.019 -14.956  62.213  1.00  5.63      3CRO1646
+ATOM   1544  O   GLN R  17     -24.392 -15.220  61.207  1.00 21.08      3CRO1647
+ATOM   1545  CB  GLN R  17     -27.308 -15.381  63.293  1.00  2.00      3CRO1648
+ATOM   1546  CG  GLN R  17     -28.280 -16.511  63.706  1.00  2.00      3CRO1649
+ATOM   1547  CD  GLN R  17     -29.558 -16.013  64.314  1.00  4.36      3CRO1650
+ATOM   1548  OE1 GLN R  17     -29.690 -14.807  64.544  1.00 36.25      3CRO1651
+ATOM   1549  NE2 GLN R  17     -30.502 -16.927  64.566  1.00  2.53      3CRO1652
+ATOM   1550  N   THR R  18     -24.730 -13.925  63.012  1.00 22.61      3CRO1653
+ATOM   1551  CA  THR R  18     -23.707 -12.944  62.653  1.00  2.35      3CRO1654
+ATOM   1552  C   THR R  18     -22.421 -13.512  62.051  1.00  2.00      3CRO1655
+ATOM   1553  O   THR R  18     -21.669 -12.818  61.371  1.00 11.93      3CRO1656
+ATOM   1554  CB  THR R  18     -23.316 -12.002  63.798  1.00  2.00      3CRO1657
+ATOM   1555  OG1 THR R  18     -24.439 -11.503  64.501  1.00  2.00      3CRO1658
+ATOM   1556  CG2 THR R  18     -22.498 -10.859  63.226  1.00  2.00      3CRO1659
+ATOM   1557  N   GLU R  19     -22.100 -14.763  62.258  1.00  2.00      3CRO1660
+ATOM   1558  CA  GLU R  19     -20.859 -15.139  61.618  1.00  2.00      3CRO1661
+ATOM   1559  C   GLU R  19     -21.010 -15.573  60.211  1.00 19.01      3CRO1662
+ATOM   1560  O   GLU R  19     -20.161 -15.316  59.357  1.00 29.17      3CRO1663
+ATOM   1561  CB  GLU R  19     -20.057 -16.152  62.345  1.00  2.00      3CRO1664
+ATOM   1562  CG  GLU R  19     -18.989 -15.389  63.081  1.00 15.28      3CRO1665
+ATOM   1563  CD  GLU R  19     -17.959 -16.325  63.535  1.00 20.04      3CRO1666
+ATOM   1564  OE1 GLU R  19     -16.787 -16.231  63.208  1.00 26.12      3CRO1667
+ATOM   1565  OE2 GLU R  19     -18.491 -17.278  64.260  1.00 16.01      3CRO1668
+ATOM   1566  N   LEU R  20     -22.101 -16.274  60.032  1.00 30.92      3CRO1669
+ATOM   1567  CA  LEU R  20     -22.519 -16.783  58.766  1.00 27.11      3CRO1670
+ATOM   1568  C   LEU R  20     -22.764 -15.576  57.914  1.00 17.05      3CRO1671
+ATOM   1569  O   LEU R  20     -21.967 -15.232  57.050  1.00 15.78      3CRO1672
+ATOM   1570  CB  LEU R  20     -23.869 -17.471  58.993  1.00 25.62      3CRO1673
+ATOM   1571  CG  LEU R  20     -24.443 -18.094  57.746  1.00 10.93      3CRO1674
+ATOM   1572  CD1 LEU R  20     -23.324 -18.807  56.998  1.00  2.00      3CRO1675
+ATOM   1573  CD2 LEU R  20     -25.524 -19.075  58.174  1.00  2.00      3CRO1676
+ATOM   1574  N   ALA R  21     -23.889 -14.942  58.252  1.00 15.06      3CRO1677
+ATOM   1575  CA  ALA R  21     -24.400 -13.733  57.651  1.00 10.34      3CRO1678
+ATOM   1576  C   ALA R  21     -23.296 -12.795  57.251  1.00 11.81      3CRO1679
+ATOM   1577  O   ALA R  21     -23.432 -12.049  56.301  1.00 25.25      3CRO1680
+ATOM   1578  CB  ALA R  21     -25.281 -13.005  58.650  1.00 11.71      3CRO1681
+ATOM   1579  N   THR R  22     -22.209 -12.798  57.995  1.00 12.56      3CRO1682
+ATOM   1580  CA  THR R  22     -21.151 -11.899  57.631  1.00 10.46      3CRO1683
+ATOM   1581  C   THR R  22     -20.323 -12.441  56.480  1.00  2.00      3CRO1684
+ATOM   1582  O   THR R  22     -19.709 -11.675  55.748  1.00 33.22      3CRO1685
+ATOM   1583  CB  THR R  22     -20.363 -11.305  58.828  1.00 26.39      3CRO1686
+ATOM   1584  OG1 THR R  22     -21.189 -10.423  59.581  1.00 29.33      3CRO1687
+ATOM   1585  CG2 THR R  22     -19.138 -10.548  58.335  1.00 18.62      3CRO1688
+ATOM   1586  N   LYS R  23     -20.330 -13.776  56.309  1.00 17.82      3CRO1689
+ATOM   1587  CA  LYS R  23     -19.617 -14.458  55.222  1.00  8.11      3CRO1690
+ATOM   1588  C   LYS R  23     -20.547 -14.657  54.039  1.00 26.22      3CRO1691
+ATOM   1589  O   LYS R  23     -20.175 -14.393  52.894  1.00 37.31      3CRO1692
+ATOM   1590  CB  LYS R  23     -18.946 -15.757  55.601  1.00 38.89      3CRO1693
+ATOM   1591  CG  LYS R  23     -18.487 -16.482  54.351  1.00 64.67      3CRO1694
+ATOM   1592  CD  LYS R  23     -17.426 -15.711  53.585  1.00 79.79      3CRO1695
+ATOM   1593  CE  LYS R  23     -16.043 -16.323  53.744  1.00 97.01      3CRO1696
+ATOM   1594  NZ  LYS R  23     -15.347 -15.889  54.965  1.00 85.01      3CRO1697
+ATOM   1595  N   ALA R  24     -21.805 -15.052  54.345  1.00 36.43      3CRO1698
+ATOM   1596  CA  ALA R  24     -22.809 -15.122  53.319  1.00 18.51      3CRO1699
+ATOM   1597  C   ALA R  24     -22.816 -13.639  52.990  1.00 35.65      3CRO1700
+ATOM   1598  O   ALA R  24     -22.970 -13.204  51.866  1.00 46.03      3CRO1701
+ATOM   1599  CB  ALA R  24     -24.163 -15.658  53.811  1.00  9.86      3CRO1702
+ATOM   1600  N   GLY R  25     -22.494 -12.844  54.012  1.00 49.79      3CRO1703
+ATOM   1601  CA  GLY R  25     -22.324 -11.427  53.841  1.00 40.58      3CRO1704
+ATOM   1602  C   GLY R  25     -23.612 -10.734  53.545  1.00 35.22      3CRO1705
+ATOM   1603  O   GLY R  25     -23.671  -9.931  52.630  1.00 31.35      3CRO1706
+ATOM   1604  N   VAL R  26     -24.615 -11.098  54.338  1.00 32.29      3CRO1707
+ATOM   1605  CA  VAL R  26     -25.954 -10.561  54.312  1.00 18.37      3CRO1708
+ATOM   1606  C   VAL R  26     -26.179 -10.032  55.724  1.00 26.82      3CRO1709
+ATOM   1607  O   VAL R  26     -25.194  -9.750  56.413  1.00 15.64      3CRO1710
+ATOM   1608  CB  VAL R  26     -27.009 -11.548  53.789  1.00 18.95      3CRO1711
+ATOM   1609  CG1 VAL R  26     -26.493 -12.246  52.536  1.00 31.04      3CRO1712
+ATOM   1610  CG2 VAL R  26     -27.359 -12.610  54.817  1.00 15.35      3CRO1713
+ATOM   1611  N   LYS R  27     -27.402  -9.864  56.192  1.00 15.40      3CRO1714
+ATOM   1612  CA  LYS R  27     -27.536  -9.343  57.542  1.00 15.64      3CRO1715
+ATOM   1613  C   LYS R  27     -27.892 -10.448  58.477  1.00 20.44      3CRO1716
+ATOM   1614  O   LYS R  27     -28.793 -11.187  58.113  1.00 25.18      3CRO1717
+ATOM   1615  CB  LYS R  27     -28.582  -8.240  57.688  1.00 22.51      3CRO1718
+ATOM   1616  CG  LYS R  27     -28.273  -6.932  56.965  1.00 37.99      3CRO1719
+ATOM   1617  CD  LYS R  27     -27.071  -6.158  57.503  1.00 51.72      3CRO1720
+ATOM   1618  CE  LYS R  27     -25.785  -6.979  57.560  1.00 64.30      3CRO1721
+ATOM   1619  NZ  LYS R  27     -24.547  -6.226  57.311  1.00 62.76      3CRO1722
+ATOM   1620  N   GLN R  28     -27.216 -10.511  59.650  1.00 16.10      3CRO1723
+ATOM   1621  CA  GLN R  28     -27.467 -11.499  60.689  1.00 16.44      3CRO1724
+ATOM   1622  C   GLN R  28     -28.939 -11.787  60.715  1.00 21.19      3CRO1725
+ATOM   1623  O   GLN R  28     -29.387 -12.929  60.803  1.00 25.25      3CRO1726
+ATOM   1624  CB  GLN R  28     -27.136 -10.938  62.081  1.00 17.18      3CRO1727
+ATOM   1625  CG  GLN R  28     -27.732 -11.835  63.184  1.00  2.00      3CRO1728
+ATOM   1626  CD  GLN R  28     -28.936 -11.239  63.872  1.00  8.92      3CRO1729
+ATOM   1627  OE1 GLN R  28     -29.074 -10.007  63.938  1.00  9.50      3CRO1730
+ATOM   1628  NE2 GLN R  28     -29.806 -12.113  64.398  1.00  4.81      3CRO1731
+ATOM   1629  N   GLN R  29     -29.655 -10.666  60.567  1.00 33.29      3CRO1732
+ATOM   1630  CA  GLN R  29     -31.097 -10.564  60.523  1.00 28.68      3CRO1733
+ATOM   1631  C   GLN R  29     -31.747 -11.312  59.359  1.00 19.77      3CRO1734
+ATOM   1632  O   GLN R  29     -32.774 -11.944  59.555  1.00 23.33      3CRO1735
+ATOM   1633  CB  GLN R  29     -31.568  -9.100  60.611  1.00 21.37      3CRO1736
+ATOM   1634  CG  GLN R  29     -31.546  -8.531  62.037  1.00  2.00      3CRO1737
+ATOM   1635  CD  GLN R  29     -30.435  -7.526  62.264  1.00 20.90      3CRO1738
+ATOM   1636  OE1 GLN R  29     -29.693  -7.173  61.337  1.00 28.18      3CRO1739
+ATOM   1637  NE2 GLN R  29     -30.306  -7.063  63.506  1.00 33.50      3CRO1740
+ATOM   1638  N   SER R  30     -31.174 -11.257  58.149  1.00 23.63      3CRO1741
+ATOM   1639  CA  SER R  30     -31.777 -11.974  57.029  1.00 14.53      3CRO1742
+ATOM   1640  C   SER R  30     -31.919 -13.447  57.360  1.00 18.21      3CRO1743
+ATOM   1641  O   SER R  30     -32.939 -14.067  57.053  1.00 24.05      3CRO1744
+ATOM   1642  CB  SER R  30     -31.032 -11.812  55.712  1.00 13.49      3CRO1745
+ATOM   1643  OG  SER R  30     -30.271 -10.628  55.702  1.00 20.83      3CRO1746
+ATOM   1644  N   ILE R  31     -30.851 -13.952  58.004  1.00 37.43      3CRO1747
+ATOM   1645  CA  ILE R  31     -30.657 -15.322  58.477  1.00 13.46      3CRO1748
+ATOM   1646  C   ILE R  31     -31.524 -15.661  59.674  1.00  2.00      3CRO1749
+ATOM   1647  O   ILE R  31     -31.963 -16.786  59.838  1.00  9.66      3CRO1750
+ATOM   1648  CB  ILE R  31     -29.201 -15.572  58.825  1.00 15.78      3CRO1751
+ATOM   1649  CG1 ILE R  31     -28.422 -15.920  57.559  1.00  5.99      3CRO1752
+ATOM   1650  CG2 ILE R  31     -29.130 -16.728  59.816  1.00 14.31      3CRO1753
+ATOM   1651  CD1 ILE R  31     -27.233 -15.002  57.303  1.00  2.00      3CRO1754
+ATOM   1652  N   GLN R  32     -31.772 -14.677  60.523  1.00  8.95      3CRO1755
+ATOM   1653  CA  GLN R  32     -32.630 -14.938  61.633  1.00  3.95      3CRO1756
+ATOM   1654  C   GLN R  32     -33.974 -15.326  61.025  1.00 12.20      3CRO1757
+ATOM   1655  O   GLN R  32     -34.428 -16.446  61.191  1.00 28.08      3CRO1758
+ATOM   1656  CB  GLN R  32     -32.680 -13.727  62.598  1.00 13.75      3CRO1759
+ATOM   1657  CG  GLN R  32     -33.338 -14.022  63.955  1.00  2.00      3CRO1760
+ATOM   1658  CD  GLN R  32     -34.835 -14.180  63.826  1.00  8.50      3CRO1761
+ATOM   1659  OE1 GLN R  32     -35.535 -13.268  63.379  1.00 19.75      3CRO1762
+ATOM   1660  NE2 GLN R  32     -35.337 -15.342  64.203  1.00 24.63      3CRO1763
+ATOM   1661  N   LEU R  33     -34.553 -14.430  60.222  1.00 14.09      3CRO1764
+ATOM   1662  CA  LEU R  33     -35.817 -14.679  59.546  1.00  2.00      3CRO1765
+ATOM   1663  C   LEU R  33     -35.863 -16.024  58.833  1.00  6.46      3CRO1766
+ATOM   1664  O   LEU R  33     -36.908 -16.672  58.795  1.00 13.71      3CRO1767
+ATOM   1665  CB  LEU R  33     -36.120 -13.585  58.516  1.00 14.69      3CRO1768
+ATOM   1666  CG  LEU R  33     -36.643 -12.288  59.104  1.00  6.53      3CRO1769
+ATOM   1667  CD1 LEU R  33     -36.596 -11.230  58.022  1.00 25.38      3CRO1770
+ATOM   1668  CD2 LEU R  33     -38.082 -12.450  59.581  1.00  2.00      3CRO1771
+ATOM   1669  N   ILE R  34     -34.751 -16.461  58.235  1.00  9.04      3CRO1772
+ATOM   1670  CA  ILE R  34     -34.829 -17.747  57.563  1.00 13.25      3CRO1773
+ATOM   1671  C   ILE R  34     -35.006 -18.892  58.534  1.00 16.36      3CRO1774
+ATOM   1672  O   ILE R  34     -36.021 -19.572  58.494  1.00 35.30      3CRO1775
+ATOM   1673  CB  ILE R  34     -33.799 -18.062  56.487  1.00 11.40      3CRO1776
+ATOM   1674  CG1 ILE R  34     -34.063 -17.244  55.237  1.00  6.74      3CRO1777
+ATOM   1675  CG2 ILE R  34     -33.923 -19.537  56.122  1.00 17.34      3CRO1778
+ATOM   1676  CD1 ILE R  34     -32.788 -17.014  54.435  1.00  6.00      3CRO1779
+ATOM   1677  N   GLU R  35     -34.018 -19.100  59.402  1.00 18.84      3CRO1780
+ATOM   1678  CA  GLU R  35     -34.088 -20.164  60.387  1.00 14.74      3CRO1781
+ATOM   1679  C   GLU R  35     -35.384 -20.037  61.168  1.00 10.36      3CRO1782
+ATOM   1680  O   GLU R  35     -35.985 -20.993  61.636  1.00 23.81      3CRO1783
+ATOM   1681  CB  GLU R  35     -32.923 -20.074  61.388  1.00  2.00      3CRO1784
+ATOM   1682  CG  GLU R  35     -31.519 -20.210  60.780  1.00  2.00      3CRO1785
+ATOM   1683  CD  GLU R  35     -30.443 -19.905  61.794  1.00  7.04      3CRO1786
+ATOM   1684  OE1 GLU R  35     -29.243 -19.954  61.555  1.00  3.08      3CRO1787
+ATOM   1685  OE2 GLU R  35     -30.940 -19.586  62.967  1.00 13.23      3CRO1788
+ATOM   1686  N   ALA R  36     -35.820 -18.817  61.316  1.00  7.88      3CRO1789
+ATOM   1687  CA  ALA R  36     -37.026 -18.552  62.063  1.00 11.64      3CRO1790
+ATOM   1688  C   ALA R  36     -38.246 -19.060  61.373  1.00  7.29      3CRO1791
+ATOM   1689  O   ALA R  36     -39.338 -18.992  61.931  1.00  6.84      3CRO1792
+ATOM   1690  CB  ALA R  36     -37.188 -17.055  62.193  1.00 27.51      3CRO1793
+ATOM   1691  N   GLY R  37     -38.009 -19.504  60.137  1.00 38.40      3CRO1794
+ATOM   1692  CA  GLY R  37     -39.018 -19.993  59.232  1.00 17.88      3CRO1795
+ATOM   1693  C   GLY R  37     -39.889 -18.834  58.768  1.00 23.97      3CRO1796
+ATOM   1694  O   GLY R  37     -41.093 -18.852  58.961  1.00 34.11      3CRO1797
+ATOM   1695  N   VAL R  38     -39.304 -17.789  58.190  1.00 28.11      3CRO1798
+ATOM   1696  CA  VAL R  38     -40.129 -16.672  57.728  1.00 30.95      3CRO1799
+ATOM   1697  C   VAL R  38     -39.719 -16.286  56.352  1.00 40.60      3CRO1800
+ATOM   1698  O   VAL R  38     -40.370 -15.535  55.634  1.00 47.27      3CRO1801
+ATOM   1699  CB  VAL R  38     -40.083 -15.418  58.576  1.00 25.96      3CRO1802
+ATOM   1700  CG1 VAL R  38     -41.211 -14.498  58.127  1.00 24.50      3CRO1803
+ATOM   1701  CG2 VAL R  38     -40.260 -15.771  60.035  1.00 41.83      3CRO1804
+ATOM   1702  N   THR R  39     -38.586 -16.783  56.004  1.00 26.44      3CRO1805
+ATOM   1703  CA  THR R  39     -38.144 -16.491  54.717  1.00 18.29      3CRO1806
+ATOM   1704  C   THR R  39     -38.092 -17.804  54.052  1.00 26.02      3CRO1807
+ATOM   1705  O   THR R  39     -37.281 -18.666  54.398  1.00 38.39      3CRO1808
+ATOM   1706  CB  THR R  39     -36.909 -15.616  54.724  1.00 25.06      3CRO1809
+ATOM   1707  OG1 THR R  39     -37.403 -14.285  54.799  1.00 23.18      3CRO1810
+ATOM   1708  CG2 THR R  39     -36.096 -15.856  53.459  1.00 13.45      3CRO1811
+ATOM   1709  N   LYS R  40     -39.087 -17.957  53.193  1.00 15.99      3CRO1812
+ATOM   1710  CA  LYS R  40     -39.303 -19.182  52.489  1.00 10.66      3CRO1813
+ATOM   1711  C   LYS R  40     -38.504 -19.345  51.248  1.00  2.00      3CRO1814
+ATOM   1712  O   LYS R  40     -38.470 -20.434  50.707  1.00 26.43      3CRO1815
+ATOM   1713  CB  LYS R  40     -40.769 -19.471  52.255  1.00  9.85      3CRO1816
+ATOM   1714  CG  LYS R  40     -41.345 -20.256  53.423  1.00 15.19      3CRO1817
+ATOM   1715  CD  LYS R  40     -42.859 -20.237  53.509  1.00 41.44      3CRO1818
+ATOM   1716  CE  LYS R  40     -43.435 -21.612  53.822  1.00 61.97      3CRO1819
+ATOM   1717  NZ  LYS R  40     -43.744 -22.408  52.622  1.00 58.43      3CRO1820
+ATOM   1718  N   ARG R  41     -37.854 -18.280  50.809  1.00 20.00      3CRO1821
+ATOM   1719  CA  ARG R  41     -37.108 -18.378  49.580  1.00 15.90      3CRO1822
+ATOM   1720  C   ARG R  41     -36.044 -17.286  49.390  1.00 31.55      3CRO1823
+ATOM   1721  O   ARG R  41     -36.170 -16.476  48.474  1.00 39.79      3CRO1824
+ATOM   1722  CB  ARG R  41     -38.146 -18.269  48.471  1.00  6.70      3CRO1825
+ATOM   1723  CG  ARG R  41     -38.167 -19.416  47.467  1.00 36.83      3CRO1826
+ATOM   1724  CD  ARG R  41     -39.510 -19.545  46.740  1.00 36.27      3CRO1827
+ATOM   1725  NE  ARG R  41     -39.913 -20.934  46.519  1.00 32.89      3CRO1828
+ATOM   1726  CZ  ARG R  41     -41.169 -21.370  46.550  1.00 22.63      3CRO1829
+ATOM   1727  NH1 ARG R  41     -42.196 -20.558  46.767  1.00 13.60      3CRO1830
+ATOM   1728  NH2 ARG R  41     -41.399 -22.665  46.337  1.00 23.51      3CRO1831
+ATOM   1729  N   PRO R  42     -35.011 -17.281  50.246  1.00 28.02      3CRO1832
+ATOM   1730  CA  PRO R  42     -33.884 -16.353  50.210  1.00 22.89      3CRO1833
+ATOM   1731  C   PRO R  42     -33.485 -15.944  48.816  1.00 20.60      3CRO1834
+ATOM   1732  O   PRO R  42     -33.759 -16.667  47.869  1.00 54.80      3CRO1835
+ATOM   1733  CB  PRO R  42     -32.694 -17.149  50.756  1.00 16.46      3CRO1836
+ATOM   1734  CG  PRO R  42     -33.241 -18.445  51.335  1.00 26.69      3CRO1837
+ATOM   1735  CD  PRO R  42     -34.753 -18.396  51.185  1.00 29.09      3CRO1838
+ATOM   1736  N   ARG R  43     -32.830 -14.789  48.721  1.00 11.04      3CRO1839
+ATOM   1737  CA  ARG R  43     -32.327 -14.229  47.486  1.00  2.00      3CRO1840
+ATOM   1738  C   ARG R  43     -30.824 -14.444  47.493  1.00  2.00      3CRO1841
+ATOM   1739  O   ARG R  43     -30.192 -14.602  46.437  1.00  9.66      3CRO1842
+ATOM   1740  CB  ARG R  43     -32.792 -12.773  47.331  1.00  3.80      3CRO1843
+ATOM   1741  CG  ARG R  43     -32.106 -11.933  46.258  1.00 18.23      3CRO1844
+ATOM   1742  CD  ARG R  43     -32.857 -10.626  45.994  1.00 27.95      3CRO1845
+ATOM   1743  NE  ARG R  43     -34.270 -10.674  46.377  1.00 25.37      3CRO1846
+ATOM   1744  CZ  ARG R  43     -34.872  -9.697  47.063  1.00 28.40      3CRO1847
+ATOM   1745  NH1 ARG R  43     -34.207  -8.612  47.448  1.00 28.33      3CRO1848
+ATOM   1746  NH2 ARG R  43     -36.163  -9.801  47.385  1.00  4.99      3CRO1849
+ATOM   1747  N   PHE R  44     -30.274 -14.516  48.736  1.00 28.50      3CRO1850
+ATOM   1748  CA  PHE R  44     -28.848 -14.780  49.002  1.00 18.15      3CRO1851
+ATOM   1749  C   PHE R  44     -28.433 -16.220  49.198  1.00 22.34      3CRO1852
+ATOM   1750  O   PHE R  44     -27.282 -16.528  49.514  1.00 17.34      3CRO1853
+ATOM   1751  CB  PHE R  44     -27.933 -13.702  49.596  1.00 24.94      3CRO1854
+ATOM   1752  CG  PHE R  44     -28.391 -12.372  49.112  1.00  6.81      3CRO1855
+ATOM   1753  CD1 PHE R  44     -29.619 -11.891  49.561  1.00  4.75      3CRO1856
+ATOM   1754  CD2 PHE R  44     -27.662 -11.636  48.188  1.00  2.00      3CRO1857
+ATOM   1755  CE1 PHE R  44     -30.113 -10.672  49.112  1.00 22.27      3CRO1858
+ATOM   1756  CE2 PHE R  44     -28.144 -10.414  47.720  1.00  2.00      3CRO1859
+ATOM   1757  CZ  PHE R  44     -29.368  -9.943  48.184  1.00  7.92      3CRO1860
+ATOM   1758  N   LEU R  45     -29.405 -17.085  48.949  1.00 14.40      3CRO1861
+ATOM   1759  CA  LEU R  45     -29.266 -18.519  49.013  1.00 11.60      3CRO1862
+ATOM   1760  C   LEU R  45     -28.036 -19.085  48.322  1.00  6.55      3CRO1863
+ATOM   1761  O   LEU R  45     -27.515 -20.087  48.766  1.00 29.26      3CRO1864
+ATOM   1762  CB  LEU R  45     -30.484 -19.187  48.404  1.00 18.10      3CRO1865
+ATOM   1763  CG  LEU R  45     -30.463 -20.677  48.607  1.00  7.34      3CRO1866
+ATOM   1764  CD1 LEU R  45     -31.274 -20.970  49.850  1.00  2.00      3CRO1867
+ATOM   1765  CD2 LEU R  45     -31.122 -21.332  47.406  1.00 33.56      3CRO1868
+ATOM   1766  N   PHE R  46     -27.558 -18.538  47.215  1.00 14.40      3CRO1869
+ATOM   1767  CA  PHE R  46     -26.370 -19.189  46.679  1.00 15.43      3CRO1870
+ATOM   1768  C   PHE R  46     -25.227 -18.730  47.518  1.00 26.93      3CRO1871
+ATOM   1769  O   PHE R  46     -24.200 -19.357  47.579  1.00 25.80      3CRO1872
+ATOM   1770  CB  PHE R  46     -25.990 -18.817  45.236  1.00 30.93      3CRO1873
+ATOM   1771  CG  PHE R  46     -26.918 -19.362  44.201  1.00 33.12      3CRO1874
+ATOM   1772  CD1 PHE R  46     -28.158 -18.762  44.003  1.00 35.05      3CRO1875
+ATOM   1773  CD2 PHE R  46     -26.565 -20.458  43.414  1.00 31.21      3CRO1876
+ATOM   1774  CE1 PHE R  46     -29.042 -19.248  43.041  1.00 42.14      3CRO1877
+ATOM   1775  CE2 PHE R  46     -27.436 -20.954  42.446  1.00 30.25      3CRO1878
+ATOM   1776  CZ  PHE R  46     -28.679 -20.347  42.267  1.00 23.02      3CRO1879
+ATOM   1777  N   GLU R  47     -25.445 -17.579  48.114  1.00 21.53      3CRO1880
+ATOM   1778  CA  GLU R  47     -24.495 -16.914  48.934  1.00  2.00      3CRO1881
+ATOM   1779  C   GLU R  47     -24.508 -17.493  50.364  1.00 22.31      3CRO1882
+ATOM   1780  O   GLU R  47     -23.440 -17.850  50.867  1.00 31.88      3CRO1883
+ATOM   1781  CB  GLU R  47     -24.743 -15.401  48.770  1.00  4.26      3CRO1884
+ATOM   1782  CG  GLU R  47     -24.364 -14.881  47.354  1.00  7.42      3CRO1885
+ATOM   1783  CD  GLU R  47     -25.476 -14.264  46.524  1.00 28.95      3CRO1886
+ATOM   1784  OE1 GLU R  47     -26.601 -14.714  46.480  1.00 31.26      3CRO1887
+ATOM   1785  OE2 GLU R  47     -25.086 -13.231  45.806  1.00 20.65      3CRO1888
+ATOM   1786  N   ILE R  48     -25.704 -17.620  50.999  1.00  6.15      3CRO1889
+ATOM   1787  CA  ILE R  48     -25.825 -18.222  52.315  1.00  2.00      3CRO1890
+ATOM   1788  C   ILE R  48     -25.146 -19.569  52.151  1.00 11.52      3CRO1891
+ATOM   1789  O   ILE R  48     -23.952 -19.700  52.381  1.00 21.39      3CRO1892
+ATOM   1790  CB  ILE R  48     -27.286 -18.409  52.707  1.00  2.53      3CRO1893
+ATOM   1791  CG1 ILE R  48     -28.027 -17.079  52.715  1.00  2.00      3CRO1894
+ATOM   1792  CG2 ILE R  48     -27.388 -19.071  54.075  1.00  9.83      3CRO1895
+ATOM   1793  CD1 ILE R  48     -27.077 -15.911  52.880  1.00  2.34      3CRO1896
+ATOM   1794  N   ALA R  49     -25.895 -20.523  51.635  1.00 10.67      3CRO1897
+ATOM   1795  CA  ALA R  49     -25.454 -21.866  51.281  1.00 12.50      3CRO1898
+ATOM   1796  C   ALA R  49     -24.022 -21.986  50.819  1.00 23.06      3CRO1899
+ATOM   1797  O   ALA R  49     -23.454 -23.072  50.765  1.00 37.96      3CRO1900
+ATOM   1798  CB  ALA R  49     -26.151 -22.170  49.984  1.00 11.02      3CRO1901
+ATOM   1799  N   MET R  50     -23.451 -20.897  50.374  1.00 34.66      3CRO1902
+ATOM   1800  CA  MET R  50     -22.099 -21.009  49.891  1.00 36.73      3CRO1903
+ATOM   1801  C   MET R  50     -21.075 -20.677  50.942  1.00 26.55      3CRO1904
+ATOM   1802  O   MET R  50     -19.878 -20.886  50.768  1.00 25.70      3CRO1905
+ATOM   1803  CB  MET R  50     -21.876 -20.371  48.524  1.00 45.58      3CRO1906
+ATOM   1804  CG  MET R  50     -20.631 -19.547  48.368  1.00 68.86      3CRO1907
+ATOM   1805  SD  MET R  50     -19.986 -19.796  46.707  1.00 91.68      3CRO1908
+ATOM   1806  CE  MET R  50     -18.272 -20.187  47.124  1.00 94.47      3CRO1909
+ATOM   1807  N   ALA R  51     -21.589 -20.164  52.045  1.00 27.98      3CRO1910
+ATOM   1808  CA  ALA R  51     -20.791 -19.855  53.198  1.00 17.72      3CRO1911
+ATOM   1809  C   ALA R  51     -20.767 -21.164  53.966  1.00 21.57      3CRO1912
+ATOM   1810  O   ALA R  51     -19.717 -21.696  54.312  1.00 21.60      3CRO1913
+ATOM   1811  CB  ALA R  51     -21.466 -18.758  54.005  1.00  2.12      3CRO1914
+ATOM   1812  N   LEU R  52     -21.984 -21.692  54.176  1.00 29.70      3CRO1915
+ATOM   1813  CA  LEU R  52     -22.188 -22.964  54.834  1.00 15.16      3CRO1916
+ATOM   1814  C   LEU R  52     -21.454 -24.006  54.020  1.00 10.02      3CRO1917
+ATOM   1815  O   LEU R  52     -21.084 -25.053  54.526  1.00 36.73      3CRO1918
+ATOM   1816  CB  LEU R  52     -23.676 -23.339  54.997  1.00  5.26      3CRO1919
+ATOM   1817  CG  LEU R  52     -24.408 -22.442  55.982  1.00 11.51      3CRO1920
+ATOM   1818  CD1 LEU R  52     -25.745 -23.059  56.372  1.00  2.00      3CRO1921
+ATOM   1819  CD2 LEU R  52     -23.542 -22.243  57.218  1.00  6.23      3CRO1922
+ATOM   1820  N   ASN R  53     -21.243 -23.694  52.743  1.00 28.69      3CRO1923
+ATOM   1821  CA  ASN R  53     -20.486 -24.566  51.862  1.00 40.62      3CRO1924
+ATOM   1822  C   ASN R  53     -21.164 -25.857  51.429  1.00 48.57      3CRO1925
+ATOM   1823  O   ASN R  53     -20.689 -26.943  51.764  1.00 34.80      3CRO1926
+ATOM   1824  CB  ASN R  53     -19.153 -24.894  52.547  1.00 47.23      3CRO1927
+ATOM   1825  CG  ASN R  53     -17.965 -24.994  51.624  1.00 85.43      3CRO1928
+ATOM   1826  OD1 ASN R  53     -16.866 -24.518  51.957  1.00 92.97      3CRO1929
+ATOM   1827  ND2 ASN R  53     -18.168 -25.650  50.486  1.00 98.95      3CRO1930
+ATOM   1828  N   CYS R  54     -22.236 -25.727  50.649  1.00 61.24      3CRO1931
+ATOM   1829  CA  CYS R  54     -22.964 -26.871  50.147  1.00 53.39      3CRO1932
+ATOM   1830  C   CYS R  54     -23.657 -26.592  48.851  1.00 41.23      3CRO1933
+ATOM   1831  O   CYS R  54     -23.222 -25.836  47.972  1.00 36.95      3CRO1934
+ATOM   1832  CB  CYS R  54     -24.078 -27.291  51.104  1.00 43.43      3CRO1935
+ATOM   1833  SG  CYS R  54     -24.652 -25.868  52.039  1.00 35.95      3CRO1936
+ATOM   1834  N   ASP R  55     -24.793 -27.244  48.783  1.00 27.43      3CRO1937
+ATOM   1835  CA  ASP R  55     -25.595 -27.118  47.628  1.00 25.64      3CRO1938
+ATOM   1836  C   ASP R  55     -26.966 -26.533  47.719  1.00 27.51      3CRO1939
+ATOM   1837  O   ASP R  55     -27.853 -27.081  48.346  1.00 40.03      3CRO1940
+ATOM   1838  CB  ASP R  55     -25.169 -27.842  46.355  1.00 39.37      3CRO1941
+ATOM   1839  CG  ASP R  55     -26.308 -28.496  45.638  1.00 50.58      3CRO1942
+ATOM   1840  OD1 ASP R  55     -27.373 -28.786  46.159  1.00 44.78      3CRO1943
+ATOM   1841  OD2 ASP R  55     -26.014 -28.742  44.390  1.00 55.95      3CRO1944
+ATOM   1842  N   PRO R  56     -27.067 -25.411  47.042  1.00  7.52      3CRO1945
+ATOM   1843  CA  PRO R  56     -28.228 -24.587  46.884  1.00  2.00      3CRO1946
+ATOM   1844  C   PRO R  56     -29.472 -25.418  46.712  1.00  8.26      3CRO1947
+ATOM   1845  O   PRO R  56     -30.468 -25.188  47.412  1.00 14.59      3CRO1948
+ATOM   1846  CB  PRO R  56     -27.918 -23.744  45.652  1.00 21.24      3CRO1949
+ATOM   1847  CG  PRO R  56     -26.400 -23.797  45.460  1.00 13.36      3CRO1950
+ATOM   1848  CD  PRO R  56     -25.864 -24.856  46.403  1.00  2.00      3CRO1951
+ATOM   1849  N   VAL R  57     -29.406 -26.390  45.790  1.00 27.16      3CRO1952
+ATOM   1850  CA  VAL R  57     -30.552 -27.257  45.620  1.00 30.54      3CRO1953
+ATOM   1851  C   VAL R  57     -30.696 -27.916  46.959  1.00 30.48      3CRO1954
+ATOM   1852  O   VAL R  57     -31.720 -27.798  47.629  1.00 42.28      3CRO1955
+ATOM   1853  CB  VAL R  57     -30.451 -28.359  44.548  1.00 11.20      3CRO1956
+ATOM   1854  CG1 VAL R  57     -31.822 -28.609  43.933  1.00  2.83      3CRO1957
+ATOM   1855  CG2 VAL R  57     -29.450 -28.045  43.450  1.00 13.15      3CRO1958
+ATOM   1856  N   TRP R  58     -29.607 -28.569  47.358  1.00 26.12      3CRO1959
+ATOM   1857  CA  TRP R  58     -29.594 -29.247  48.632  1.00 49.35      3CRO1960
+ATOM   1858  C   TRP R  58     -30.034 -28.362  49.788  1.00 52.10      3CRO1961
+ATOM   1859  O   TRP R  58     -30.738 -28.772  50.696  1.00 64.05      3CRO1962
+ATOM   1860  CB  TRP R  58     -28.285 -29.946  49.007  1.00 47.25      3CRO1963
+ATOM   1861  CG  TRP R  58     -28.501 -30.423  50.396  1.00 64.69      3CRO1964
+ATOM   1862  CD1 TRP R  58     -29.191 -31.532  50.754  1.00 68.89      3CRO1965
+ATOM   1863  CD2 TRP R  58     -28.160 -29.741  51.602  1.00 74.13      3CRO1966
+ATOM   1864  NE1 TRP R  58     -29.266 -31.617  52.115  1.00 73.77      3CRO1967
+ATOM   1865  CE2 TRP R  58     -28.647 -30.522  52.664  1.00 77.42      3CRO1968
+ATOM   1866  CE3 TRP R  58     -27.499 -28.548  51.868  1.00 66.14      3CRO1969
+ATOM   1867  CZ2 TRP R  58     -28.453 -30.147  53.990  1.00 65.97      3CRO1970
+ATOM   1868  CZ3 TRP R  58     -27.307 -28.181  53.175  1.00 66.14      3CRO1971
+ATOM   1869  CH2 TRP R  58     -27.782 -28.970  54.222  1.00 54.18      3CRO1972
+ATOM   1870  N   LEU R  59     -29.556 -27.150  49.798  1.00 32.19      3CRO1973
+ATOM   1871  CA  LEU R  59     -29.902 -26.242  50.837  1.00 11.97      3CRO1974
+ATOM   1872  C   LEU R  59     -31.379 -25.886  50.701  1.00 15.46      3CRO1975
+ATOM   1873  O   LEU R  59     -32.148 -26.056  51.636  1.00 17.20      3CRO1976
+ATOM   1874  CB  LEU R  59     -28.968 -25.028  50.755  1.00  5.52      3CRO1977
+ATOM   1875  CG  LEU R  59     -28.746 -24.333  52.082  1.00 11.28      3CRO1978
+ATOM   1876  CD1 LEU R  59     -28.362 -22.888  51.817  1.00  5.14      3CRO1979
+ATOM   1877  CD2 LEU R  59     -30.036 -24.362  52.881  1.00  2.00      3CRO1980
+ATOM   1878  N   GLN R  60     -31.781 -25.422  49.516  1.00 19.21      3CRO1981
+ATOM   1879  CA  GLN R  60     -33.172 -25.043  49.240  1.00 14.80      3CRO1982
+ATOM   1880  C   GLN R  60     -34.125 -26.172  49.583  1.00 29.45      3CRO1983
+ATOM   1881  O   GLN R  60     -35.009 -26.035  50.428  1.00 28.17      3CRO1984
+ATOM   1882  CB  GLN R  60     -33.339 -24.637  47.749  1.00 27.71      3CRO1985
+ATOM   1883  CG  GLN R  60     -34.492 -23.664  47.355  1.00 18.67      3CRO1986
+ATOM   1884  CD  GLN R  60     -35.580 -23.387  48.382  1.00 28.75      3CRO1987
+ATOM   1885  OE1 GLN R  60     -36.515 -24.187  48.588  1.00 34.23      3CRO1988
+ATOM   1886  NE2 GLN R  60     -35.502 -22.200  48.977  1.00 11.91      3CRO1989
+ATOM   1887  N   TYR R  61     -33.918 -27.287  48.883  1.00 50.18      3CRO1990
+ATOM   1888  CA  TYR R  61     -34.679 -28.512  49.019  1.00 52.17      3CRO1991
+ATOM   1889  C   TYR R  61     -33.694 -29.612  49.387  1.00 54.89      3CRO1992
+ATOM   1890  O   TYR R  61     -32.837 -29.401  50.219  1.00 64.09      3CRO1993
+ATOM   1891  CB  TYR R  61     -35.412 -28.859  47.706  1.00 53.94      3CRO1994
+ATOM   1892  CG  TYR R  61     -35.833 -27.669  46.856  1.00 45.29      3CRO1995
+ATOM   1893  CD1 TYR R  61     -34.960 -27.084  45.939  1.00 38.81      3CRO1996
+ATOM   1894  CD2 TYR R  61     -37.127 -27.154  46.948  1.00 30.12      3CRO1997
+ATOM   1895  CE1 TYR R  61     -35.355 -26.006  45.146  1.00 32.80      3CRO1998
+ATOM   1896  CE2 TYR R  61     -37.542 -26.079  46.166  1.00 32.52      3CRO1999
+ATOM   1897  CZ  TYR R  61     -36.649 -25.501  45.262  1.00 40.86      3CRO2000
+ATOM   1898  OH  TYR R  61     -37.050 -24.436  44.488  1.00 41.96      3CRO2001
+ATOM   1899  N   GLY R  62     -33.786 -30.772  48.762  1.00 52.65      3CRO2002
+ATOM   1900  CA  GLY R  62     -32.859 -31.855  49.043  1.00 46.23      3CRO2003
+ATOM   1901  C   GLY R  62     -32.913 -32.857  47.898  1.00 48.78      3CRO2004
+ATOM   1902  O   GLY R  62     -32.180 -32.765  46.907  1.00 38.84      3CRO2005
+HETATM 1955  O   HOH     1     -26.069 -22.429  17.059  1.00 53.88      3CRO2006
+HETATM 1956  O   HOH     2     -29.807 -24.105  20.748  1.00 60.93      3CRO2007
+HETATM 1957  O   HOH     3     -28.599 -27.647  20.798  1.00 62.53      3CRO2008
+HETATM 1958  O   HOH     4     -28.775 -25.178  16.892  1.00 34.17      3CRO2009
+HETATM 1959  O   HOH     5     -49.320 -20.707  24.531  1.00 26.13      3CRO2010
+HETATM 1960  O   HOH     6     -51.591 -13.694  33.776  1.00 31.10      3CRO2011
+HETATM 1961  O   HOH     7     -33.115 -10.425  34.216  1.00  2.44      3CRO2012
+HETATM 1962  O   HOH     8     -25.941 -12.089  40.850  1.00 30.15      3CRO2013
+HETATM 1963  O   HOH     9     -34.523 -27.429  64.322  1.00 30.08      3CRO2014
+HETATM 1964  O   HOH    10     -17.622 -28.182  62.851  1.00 52.78      3CRO2015
+HETATM 1965  O   HOH    11     -17.450 -19.020  66.342  1.00 57.80      3CRO2016
+HETATM 1966  O   HOH    12     -38.245 -12.616  63.261  1.00 45.35      3CRO2017
+HETATM 1967  O   HOH    13     -43.696 -19.863  49.949  1.00 39.45      3CRO2018
+HETATM 1968  O   HOH    14     -42.519 -26.728  50.638  1.00  2.09      3CRO2019
+HETATM 1969  O   HOH    15     -38.676 -10.054  47.196  1.00  9.06      3CRO2020
+HETATM 1970  O   HOH    16     -21.119 -15.230  43.952  1.00 68.99      3CRO2021
+HETATM 1971  O   HOH    17     -25.999 -27.796  41.843  1.00 56.38      3CRO2022
+HETATM 1972  O   HOH    18     -22.979 -24.940  42.923  1.00 25.75      3CRO2023
+HETATM 1973  O   HOH    19     -34.318  -1.404  53.147  1.00 12.22      3CRO2024
+HETATM 1974  O   HOH    20     -40.464   2.709  46.680  1.00 20.64      3CRO2025
+HETATM 1975  O   HOH    21     -51.410  -6.922  42.011  1.00 39.86      3CRO2026
+HETATM 1976  O   HOH    22     -61.960  -1.974  27.278  1.00 42.33      3CRO2027
+HETATM 1977  O   HOH    23     -27.737  -5.752  64.976  1.00 58.67      3CRO2028
+HETATM 1978  O   HOH    24     -31.670   0.433  75.235  1.00 49.33      3CRO2029
+HETATM 1979  O   HOH    25     -46.528 -16.295  26.080  1.00 10.18      3CRO2030
+MASTER      101    0    0   10    0    0    0    6 1881    2    0   16  3CRO2031
+END                                                                     3CRO2032

@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Ergodic hypothesis: why do we care?</page_title>
+<text> Ergodic hypothesis: why do we care?
+
+In this tip, we explain what the ergodic hypothesis is and set up a computer experiment to visualize it. We also discuss about how to make use of the ergodicity of our molecular dynamics systems, and when time averaging is not appropriate.
+Statistical mechanics says that macroscopic properties are the averages of physical variables over an ensemble. In Molecular Workbench, the size of ensemble is limited to a few hundred particles. This means the properties we compute based on averaging over the particles at a time will fluctuate considerably. To get more credible data, molecular simulators often use a weapon from statistical mechanics to enlarge the data set. This powerful weapon is the ergodic hypothesis.
+
+The ergodic hypothesis simply says that given enough time, all the states in the phase space with the same energy are equally accessible. In other words, given enough time, a dynamical system will be able to vist all the states allowed by its energy constraint with equal probability. The implication of this is that, for an equilibrium system, the ensemble average of a physical property is equal to its time average.
+
+The following computer experiment demonstrates, approximately, the ergodicity of a helium liquid. The first three bar graphs to the right of the atom window represent the temperature of the white, green and blue helium atom, respectively [1]. The last one represents the temperature of the whole system (103 atoms). The little triangles on the bar graphs (which will show up when the calculation starts) represent the time averages of the instantaneous temperatures. The temperature unit is kelvin. One should observe that the first three bar graphs will go up and down violently. Compared with them, the last one will move much less. But the triangles of all four graphs are not very different from each other, once the simulation has run for a while (at least 200 frames). Ideally, these four averages should be identical, if we could take millions of steps to do the time averages. The differences are caused by the fact that only the last 200 frames are taken into account.
+
+      
+Helium
+The results of the above experiment illustrate, within the tolerance of statistical error, that the time average of the kinetic energy of a single particle equals the ensemble average of the kinetic energy of many particles. This is what the ergodic hypothesis says.
+
+The ergodicity of a dynamical system permits us to use the time average to calculate a property with a macroscopic meaning for an equilibrium system. The calculations based on the time average are effectively based on a much larger ensemble (see Appendix). In the default case when 200 frames are recorded and used to compute the time averages, the enlarged data set (occasionally called time ensemble) will be 200 times larger than the original particle ensemble. This greatly reduces the computed fluctuations to only a few percents of those computed for a particle ensemble based on a single frame.
+
+The ergodic hypothesis is very important in computing things like the latent heat. After we inject some energy into the system, or subtract some energy from the system, we should wait for a while until the system equilibrates at the new energy condition, and then we will collect as many data points as possible (use the full length of the tape), and then do the time average of the temperature based on the collected data points. If we do not follow this procedure carefully, the data will be either too stochastic or errorenous.
+
+Caution with time averaging for non-equilibrium processes
+
+If the system is undergoing a non-equilibrium process, such is in the case of heat transfer, the states at different times before reaching equilibrium will be physically different. It is no longer appropriate to concatenate the states at different times to form a greater ensemble. The time average on these different states can even out the effect we are looking for.
+
+Time averaging for simulating processes such as thermal convection and fluid dynamics is much trickier. These systems can reach a dynamical equilibrium when the boundary conditions remain constant. The patterns show a steady spatial flow, which would require averaging over a fixed grid in the space, but not over the particles.
+
+Appendix: A note about ergodicity
+
+Suppose we want to measure a property x on an ensemble {1, 2, ..., n}. At time t1, the ensemble average is:
+
+&lt;x1&gt;=(x1,1+x2,1+......+xn,1)/n
+
+At time t2, it is:
+
+&lt;x2&gt;=(x1,2+x2,2+......+xn,2)/n
+
+........
+
+At time tm, it is:
+
+&lt;xm&gt;=(x1,m+x2,m+......+xn,m)/n
+
+The average of &lt;x1&gt;, &lt;x2&gt;, ......, &lt;xm&gt; (the time average of the ensemble average) is:
+
+&lt;x&gt;=(&lt;x1&gt;+&lt;x2&gt;+......+&lt;xm&gt;)/m=sumi,j(xi,j)/(nm)
+
+According to the ergodic hypothesis, the state of the entity i at time tj is equivalent to an independent entity. This means that the time average of the ensemble average is equivalent to the ensemble average over an &quot;ensemble&quot; that is m times greater than the original one (n). That is to say, there is theoretically no difference in computing the ensemble average of 20000 atoms and computing the time average of 100 atoms over 200 (uncorrelated) frames.
+
+__________________________________________________________________________________
+[1] The trick here is to set all the four editable elements of MW (i.e. Nt, Pl, Ws and Ck) to be helium, and MW will automatically compute the kinetic energies of the four subsets separately.
+
+&lt;Index of tips&gt;
+
+
+
+</text>
+<section start="0" end="5512">
+<paragraph start="0" end="37">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="36">
+<size>14</size><bold>true</bold></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="278">
+<LeftIndent>50.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<RightIndent>50.0</RightIndent>
+<content start="38" end="276">
+<italic>true</italic><size>11</size></content>
+
+<content start="276" end="277">
+<size>11</size></content>
+
+<content start="277" end="278">
+</content>
+
+</paragraph>
+<paragraph start="278" end="755">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="278" end="485">
+<size>11</size></content>
+
+<content start="485" end="586">
+<href>fluctuations.cml</href><size>11</size></content>
+
+<content start="586" end="755">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="755" end="756">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="755" end="756">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="756" end="1175">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="756" end="1074">
+<size>11</size></content>
+
+<content start="1074" end="1174">
+<italic>true</italic><size>11</size></content>
+
+<content start="1174" end="1175">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1175" end="1176">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="1175" end="1176">
+<subscript>true</subscript><size>11</size></content>
+
+</paragraph>
+<paragraph start="1176" end="2154">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="1176" end="2154">
+<subscript>true</subscript><size>11</size></content>
+
+</paragraph>
+<paragraph start="2154" end="2155">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="2154" end="2155">
+<subscript>true</subscript><size>11</size></content>
+
+</paragraph>
+<paragraph start="2155" end="2162">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="2155" end="2156">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>ergodicity$0.mml</resource><menubar>false</menubar></component><size>11</size></content>
+
+<content start="2156" end="2157">
+<size>11</size></content>
+
+<content start="2157" end="2158">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Kinetic Energy/Particle Nt</timeseries>
+<multiplier>11594.0</multiplier>
+<max_fraction_digits>2</max_fraction_digits>
+<max_integer_digits>4</max_integer_digits>
+<width>55</width>
+<height>280</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>false</title>
+<fgcolor>-7f7f80</fgcolor>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>9.689541302388534</value>
+</component><size>11</size></content>
+
+<content start="2158" end="2159">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Kinetic Energy/Particle Pl</timeseries>
+<multiplier>11594.0</multiplier>
+<max_fraction_digits>2</max_fraction_digits>
+<max_integer_digits>4</max_integer_digits>
+<width>55</width>
+<height>280</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>false</title>
+<fgcolor>-7f7f80</fgcolor>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>4.282626759260893</value>
+</component><size>11</size></content>
+
+<content start="2159" end="2160">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Kinetic Energy/Particle Ws</timeseries>
+<multiplier>11594.0</multiplier>
+<max_fraction_digits>2</max_fraction_digits>
+<max_integer_digits>4</max_integer_digits>
+<width>55</width>
+<height>280</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>false</title>
+<fgcolor>-7f7f80</fgcolor>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>10.065011599799618</value>
+</component><size>11</size></content>
+
+<content start="2160" end="2161">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Kinetic Energy/Particle</timeseries>
+<description>Temperature of White Particle</description>
+<multiplier>11594.0</multiplier>
+<max_fraction_digits>2</max_fraction_digits>
+<max_integer_digits>4</max_integer_digits>
+<width>55</width>
+<height>280</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>false</title>
+<fgcolor>-10000</fgcolor>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>15.599440868245438</value>
+</component><size>11</size></content>
+
+<content start="2161" end="2162">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2162" end="2169">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="2162" end="2168">
+<italic>true</italic><size>11</size></content>
+
+<content start="2168" end="2169">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2169" end="2436">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="2169" end="2436">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2436" end="2437">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="2436" end="2437">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2437" end="3039">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="2437" end="3039">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3039" end="3040">
+<LeftIndent>8.0</LeftIndent>
+<content start="3039" end="3040">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3040" end="3571">
+<LeftIndent>8.0</LeftIndent>
+<content start="3040" end="3571">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3571" end="3572">
+<LeftIndent>8.0</LeftIndent>
+<content start="3571" end="3572">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3572" end="3630">
+<LeftIndent>8.0</LeftIndent>
+<content start="3572" end="3629">
+<size>11</size><bold>true</bold></content>
+
+<content start="3629" end="3630">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3630" end="3631">
+<LeftIndent>8.0</LeftIndent>
+<content start="3630" end="3631">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3631" end="4000">
+<LeftIndent>8.0</LeftIndent>
+<content start="3631" end="4000">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4000" end="4001">
+<LeftIndent>8.0</LeftIndent>
+<content start="4000" end="4001">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4001" end="4330">
+<LeftIndent>8.0</LeftIndent>
+<content start="4001" end="4330">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4330" end="4331">
+<LeftIndent>8.0</LeftIndent>
+<content start="4330" end="4331">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4331" end="4365">
+<LeftIndent>8.0</LeftIndent>
+<content start="4331" end="4339">
+<size>11</size><bold>true</bold></content>
+
+<content start="4339" end="4365">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4365" end="4366">
+<LeftIndent>8.0</LeftIndent>
+<content start="4365" end="4366">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4366" end="4474">
+<LeftIndent>8.0</LeftIndent>
+<content start="4366" end="4404">
+<size>11</size></content>
+
+<content start="4404" end="4405">
+<italic>true</italic><size>11</size></content>
+
+<content start="4405" end="4445">
+<size>11</size></content>
+
+<content start="4445" end="4446">
+<italic>true</italic><size>11</size></content>
+
+<content start="4446" end="4447">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4447" end="4474">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4474" end="4475">
+<LeftIndent>8.0</LeftIndent>
+<content start="4474" end="4475">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4475" end="4506">
+<LeftIndent>8.0</LeftIndent>
+<content start="4475" end="4476">
+<size>11</size></content>
+
+<content start="4476" end="4477">
+<italic>true</italic><size>11</size></content>
+
+<content start="4477" end="4478">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4478" end="4481">
+<size>11</size></content>
+
+<content start="4481" end="4482">
+<italic>true</italic><size>11</size></content>
+
+<content start="4482" end="4485">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4485" end="4486">
+<size>11</size></content>
+
+<content start="4486" end="4487">
+<italic>true</italic><size>11</size></content>
+
+<content start="4487" end="4490">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4490" end="4498">
+<size>11</size></content>
+
+<content start="4498" end="4499">
+<italic>true</italic><size>11</size></content>
+
+<content start="4499" end="4502">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4502" end="4504">
+<size>11</size></content>
+
+<content start="4504" end="4505">
+<italic>true</italic><size>11</size></content>
+
+<content start="4505" end="4506">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4506" end="4507">
+<LeftIndent>8.0</LeftIndent>
+<content start="4506" end="4507">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4507" end="4526">
+<LeftIndent>8.0</LeftIndent>
+<content start="4507" end="4515">
+<size>11</size></content>
+
+<content start="4515" end="4516">
+<italic>true</italic><size>11</size></content>
+
+<content start="4516" end="4517">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4517" end="4526">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4526" end="4527">
+<LeftIndent>8.0</LeftIndent>
+<content start="4526" end="4527">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4527" end="4558">
+<LeftIndent>8.0</LeftIndent>
+<content start="4527" end="4528">
+<size>11</size></content>
+
+<content start="4528" end="4529">
+<italic>true</italic><size>11</size></content>
+
+<content start="4529" end="4530">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4530" end="4533">
+<size>11</size></content>
+
+<content start="4533" end="4534">
+<italic>true</italic><size>11</size></content>
+
+<content start="4534" end="4537">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4537" end="4538">
+<size>11</size></content>
+
+<content start="4538" end="4539">
+<italic>true</italic><size>11</size></content>
+
+<content start="4539" end="4542">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4542" end="4550">
+<size>11</size></content>
+
+<content start="4550" end="4551">
+<italic>true</italic><size>11</size></content>
+
+<content start="4551" end="4554">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4554" end="4556">
+<size>11</size></content>
+
+<content start="4556" end="4557">
+<italic>true</italic><size>11</size></content>
+
+<content start="4557" end="4558">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4558" end="4559">
+<LeftIndent>8.0</LeftIndent>
+<content start="4558" end="4559">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4559" end="4568">
+<LeftIndent>8.0</LeftIndent>
+<content start="4559" end="4568">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4568" end="4569">
+<LeftIndent>8.0</LeftIndent>
+<content start="4568" end="4569">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4569" end="4588">
+<LeftIndent>8.0</LeftIndent>
+<content start="4569" end="4577">
+<size>11</size></content>
+
+<content start="4577" end="4578">
+<italic>true</italic><size>11</size></content>
+
+<content start="4578" end="4579">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4579" end="4588">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4588" end="4589">
+<LeftIndent>8.0</LeftIndent>
+<content start="4588" end="4589">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4589" end="4620">
+<LeftIndent>8.0</LeftIndent>
+<content start="4589" end="4590">
+<size>11</size></content>
+
+<content start="4590" end="4591">
+<italic>true</italic><size>11</size></content>
+
+<content start="4591" end="4592">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4592" end="4595">
+<size>11</size></content>
+
+<content start="4595" end="4596">
+<italic>true</italic><size>11</size></content>
+
+<content start="4596" end="4599">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4599" end="4600">
+<size>11</size></content>
+
+<content start="4600" end="4601">
+<italic>true</italic><size>11</size></content>
+
+<content start="4601" end="4604">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4604" end="4612">
+<size>11</size></content>
+
+<content start="4612" end="4613">
+<italic>true</italic><size>11</size></content>
+
+<content start="4613" end="4616">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4616" end="4618">
+<size>11</size></content>
+
+<content start="4618" end="4619">
+<italic>true</italic><size>11</size></content>
+
+<content start="4619" end="4620">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4620" end="4621">
+<LeftIndent>8.0</LeftIndent>
+<content start="4620" end="4621">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4621" end="4708">
+<LeftIndent>8.0</LeftIndent>
+<content start="4621" end="4637">
+<size>11</size></content>
+
+<content start="4637" end="4638">
+<italic>true</italic><size>11</size></content>
+
+<content start="4638" end="4639">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4639" end="4643">
+<size>11</size></content>
+
+<content start="4643" end="4644">
+<italic>true</italic><size>11</size></content>
+
+<content start="4644" end="4645">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4645" end="4657">
+<size>11</size></content>
+
+<content start="4657" end="4658">
+<italic>true</italic><size>11</size></content>
+
+<content start="4658" end="4659">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4659" end="4708">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4708" end="4709">
+<LeftIndent>8.0</LeftIndent>
+<content start="4708" end="4709">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4709" end="4757">
+<LeftIndent>8.0</LeftIndent>
+<content start="4709" end="4710">
+<size>11</size></content>
+
+<content start="4710" end="4711">
+<italic>true</italic><size>11</size></content>
+
+<content start="4711" end="4715">
+<size>11</size></content>
+
+<content start="4715" end="4716">
+<italic>true</italic><size>11</size></content>
+
+<content start="4716" end="4717">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4717" end="4720">
+<size>11</size></content>
+
+<content start="4720" end="4721">
+<italic>true</italic><size>11</size></content>
+
+<content start="4721" end="4722">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4722" end="4732">
+<size>11</size></content>
+
+<content start="4732" end="4733">
+<italic>true</italic><size>11</size></content>
+
+<content start="4733" end="4734">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4734" end="4742">
+<size>11</size></content>
+
+<content start="4742" end="4745">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4745" end="4746">
+<size>11</size></content>
+
+<content start="4746" end="4747">
+<italic>true</italic><size>11</size></content>
+
+<content start="4747" end="4750">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="4750" end="4753">
+<size>11</size></content>
+
+<content start="4753" end="4755">
+<italic>true</italic><size>11</size></content>
+
+<content start="4755" end="4757">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4757" end="4758">
+<LeftIndent>8.0</LeftIndent>
+<content start="4757" end="4758">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4758" end="5215">
+<LeftIndent>8.0</LeftIndent>
+<content start="4758" end="4819">
+<size>11</size></content>
+
+<content start="4819" end="4820">
+<italic>true</italic><size>11</size></content>
+
+<content start="4820" end="4829">
+<size>11</size></content>
+
+<content start="4829" end="4830">
+<italic>true</italic><size>11</size></content>
+
+<content start="4830" end="4831">
+<subscript>true</subscript><italic>true</italic><size>11</size></content>
+
+<content start="4831" end="4994">
+<size>11</size></content>
+
+<content start="4994" end="4995">
+<italic>true</italic><size>11</size></content>
+
+<content start="4995" end="5033">
+<size>11</size></content>
+
+<content start="5033" end="5034">
+<italic>true</italic><size>11</size></content>
+
+<content start="5034" end="5215">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5215" end="5216">
+<LeftIndent>8.0</LeftIndent>
+<content start="5215" end="5216">
+</content>
+
+</paragraph>
+<paragraph start="5216" end="5299">
+<LeftIndent>8.0</LeftIndent>
+<content start="5216" end="5299">
+</content>
+
+</paragraph>
+<paragraph start="5299" end="5491">
+<LeftIndent>8.0</LeftIndent>
+<content start="5299" end="5491">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="5491" end="5492">
+<LeftIndent>8.0</LeftIndent>
+<content start="5491" end="5492">
+</content>
+
+</paragraph>
+<paragraph start="5492" end="5508">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="5492" end="5493">
+</content>
+
+<content start="5493" end="5506">
+<href>index.cml</href></content>
+
+<content start="5506" end="5508">
+</content>
+
+</paragraph>
+<paragraph start="5508" end="5509">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="5508" end="5509">
+</content>
+
+</paragraph>
+<paragraph start="5509" end="5510">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="5509" end="5510">
+</content>
+
+</paragraph>
+<paragraph start="5510" end="5511">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="5510" end="5511">
+</content>
+
+</paragraph>
+<paragraph start="5511" end="5512">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+</paragraph>
+</section>
+</document>

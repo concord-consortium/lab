@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The extrusion tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The extrusion tool
+
+&lt; Previous | Index | Next &gt;
+
+The extrusion tool can be used to resize non-atomic, non-molecular shapes in a 3D model. To use this tool, select the &quot; &quot; button first. If you move the mouse over to an object, you may notice that the closest face your mouse is currently hovering will be highlighted, indicating that it is ready to be extruded. To extrude the face, hold down the mouse button and drag in the direction in which you would like the shape to be enlarged or shrinked.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="568">
+<paragraph start="0" end="19">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="18">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<size>11</size><href>genericparticle.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<size>11</size><href>cuboidobstacle.cml</href></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="497">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="168">
+<size>11</size></content>
+
+<content start="168" end="169">
+<icon>Extrude.gif</icon></content>
+
+<content start="169" end="497">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="497" end="498">
+<LeftIndent>140.0</LeftIndent>
+<content start="497" end="498">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="498" end="500">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="498" end="499">
+<component><class>org.concord.modeler.PageMd3d</class><resource>extrusion$0.mdd</resource><coordinate>extrusion$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="499" end="500">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="500" end="539">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="500" end="538">
+<size>10</size></content>
+
+<content start="538" end="539">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="539" end="540">
+<LeftIndent>140.0</LeftIndent>
+<content start="539" end="540">
+</content>
+
+</paragraph>
+<paragraph start="540" end="568">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="540" end="542">
+<size>11</size></content>
+
+<content start="542" end="550">
+<size>11</size><href>genericparticle.cml</href></content>
+
+<content start="550" end="553">
+<size>11</size></content>
+
+<content start="553" end="558">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="558" end="561">
+<size>11</size></content>
+
+<content start="561" end="565">
+<size>11</size><href>cuboidobstacle.cml</href></content>
+
+<content start="565" end="567">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

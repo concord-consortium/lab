@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Loading External Scripts from a File</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Loading External Scripts from a File
+
+&lt; Back &gt;
+
+
+Syntax:
+
+external [filename.mws]
+
+The following example shows the communication between two models, and a model and a text box, using the above command.
+
+  
+  
+   
+
+The external block should in general be favored, because the scripts will be saved when the page gets saved. Only when the scripts become very lengthy should you consider putting them in separate files.
+
+&lt; Back &gt;</text>
+<section start="0" end="427">
+<paragraph start="0" end="37">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="36">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="47">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="38" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<size>11</size><href>script_external.cml</href></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>100.0</LeftIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="49">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="49" end="57">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="57">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="57" end="58">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="58">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="58" end="82">
+<LeftIndent>160.0</LeftIndent>
+<content start="58" end="81">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="81" end="82">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="82" end="83">
+<LeftIndent>140.0</LeftIndent>
+<content start="82" end="83">
+</content>
+
+</paragraph>
+<paragraph start="83" end="202">
+<LeftIndent>140.0</LeftIndent>
+<content start="83" end="202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="202" end="203">
+<LeftIndent>140.0</LeftIndent>
+<content start="202" end="203">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="203" end="206">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="203" end="204">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>350.0</width>
+<height>50.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;font face=&quot;Verdana&quot;&gt;The ball is in the left box. &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-ff3334</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="204" end="205">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>350.0</width>
+<height>50.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-ff0034</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="205" end="206">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="206" end="209">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="206" end="207">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_external2$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="207" end="208">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_external2$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="208" end="209">
+</content>
+
+</paragraph>
+<paragraph start="209" end="213">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="209" end="210">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Run</title>
+<script>script:mw2d:1:run;
+script:mw2d:2:run;</script>
+<action>Script</action></component></content>
+
+<content start="210" end="211">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Stop</title>
+<script>script:mw2d:1:stop;
+script:mw2d:2:stop;</script>
+<action>Script</action></component></content>
+
+<content start="211" end="212">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Reset</title>
+<script>script:mw2d:1:stop;reset;
+script:mw2d:2:stop;reset;</script>
+<action>Script</action></component></content>
+
+<content start="212" end="213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="213" end="214">
+<LeftIndent>140.0</LeftIndent>
+<content start="213" end="214">
+</content>
+
+</paragraph>
+<paragraph start="214" end="417">
+<LeftIndent>140.0</LeftIndent>
+<content start="214" end="218">
+<bold>true</bold><size>11</size></content>
+
+<content start="218" end="226">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="226" end="321">
+<bold>true</bold><size>11</size></content>
+
+<content start="321" end="416">
+<size>11</size></content>
+
+<content start="416" end="417">
+</content>
+
+</paragraph>
+<paragraph start="417" end="418">
+<LeftIndent>140.0</LeftIndent>
+<content start="417" end="418">
+</content>
+
+</paragraph>
+<paragraph start="418" end="427">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="418" end="420">
+<size>11</size></content>
+
+<content start="420" end="424">
+<size>11</size><href>script_external.cml</href></content>
+
+<content start="424" end="426">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

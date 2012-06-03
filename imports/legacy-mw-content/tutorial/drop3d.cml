@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Dropping and dragging a single atom</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Dropping and dragging a single atom
+
+&lt; Previous | Index | Next &gt;
+
+The first thing we will do to build a 3D molecular model from scratch is to drop some atoms in the 3D space to begin with, before we build bonds to create molecules. Dropping an object in the 3D space is, nevertheless, very different from dropping one in a 2D model introduced in the previous Part.
+
+Laying atoms on a helper plane
+
+Because the computer screen is 2D, when you click somewhere in the model&apos;s window, the 3D coordinates cannot be determined from the clicked point per se. In theory, there are an infinite number of points in the virtual 3D space, standing behind the pixel we see on the screen. To help us determine the coordinates, we introduce three movable helper planes: planes that are perpendicular to x-, y- and z-axis, and can move along them, respectively. One and only one of these three helper planes will be shown when the corresponding button (&quot; &quot; or &quot; &quot; or &quot; &quot;) on the tool bar is pressed. When you double-click on one of these planes, an atom of the selected type will be added to the position on it. You can imagine the location as the intersection point between a line, perpendicular to the computer screen and running through the clicked point, and the helper plane, which serves as the adjustable ground for laying the atom.
+
+  
+&#12304;This is a screenshot of a helper plane.&#12305;
+
+To change to a different helper plane, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the button, and then select the corresponding item from the pop-up menu. 
+
+When you leave this editing mode, the helper plane will disappear.
+
+Moving a helper plane
+
+Using the arrow keys, a helper plane can be moved up and down along the corresponding axis, which is shown at the lower-right corner of the screen. For example, if you use a helper plane perpendicular to the z-axis, when you press the Up (or Right) arrow key, the plane will move in the direction where the z-coordinate of the plane increases. If you press the Down (or Left) arrow key, it will move in the opposite direction.
+
+Moving atoms within a plane
+
+This editing mode also allows you to select an atom whose van der Waals sphere intersects with the helper plane, and move it within a plane perpendicular to the corresponding axis. For instance, if you use a helper plane perpendicular to the z-axis, dragging an atom that is on the helper plane will move it around within it. If the selected atom is not on the helper plane but its van der Waals sphere intersects with it, dragging it will move it around on a z-plane that runs cross the atom&apos;s center. In other words, when the atom is dragged, the x and y coordinates will change while the z coordinate will remain the same. If an atom&apos;s van der Waals sphere does not even intersect the helper plane, then you cannot even select it.
+
+ 
+Tip: It is advised that the helper plane always be rotated to face the screen before adding or moving atoms, so that the visual perception about distances and locations are accurate.
+ 
+
+Selecting elements
+
+When you left-click the button, a pop-up menu, in which you can select the element, will show up (see the screenshot below). By default, helium is selected.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This drop-down menu shows all the elements you can add to the model. If you select one, it will be the type of atoms you will add.
+
+Practice
+
+You may play with the following model container to get some ideas how these tools work:
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3539">
+<paragraph start="0" end="36">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="35">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="65">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="37" end="39">
+<size>11</size></content>
+
+<content start="39" end="47">
+<href>glassbox.cml</href><size>11</size></content>
+
+<content start="47" end="50">
+<size>11</size></content>
+
+<content start="50" end="55">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="55" end="58">
+<size>11</size></content>
+
+<content start="58" end="62">
+<href>dropmol3d.cml</href><size>11</size></content>
+
+<content start="62" end="64">
+<size>11</size></content>
+
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="365">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="350">
+<size>11</size></content>
+
+<content start="350" end="363">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="363" end="365">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="365" end="366">
+<LeftIndent>140.0</LeftIndent>
+<content start="365" end="366">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="366" end="397">
+<LeftIndent>140.0</LeftIndent>
+<content start="366" end="396">
+<bold>true</bold><size>11</size></content>
+
+<content start="396" end="397">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="397" end="398">
+<LeftIndent>140.0</LeftIndent>
+<content start="397" end="398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="398" end="1324">
+<LeftIndent>140.0</LeftIndent>
+<content start="398" end="788">
+<size>11</size></content>
+
+<content start="788" end="789">
+<italic>true</italic><size>11</size></content>
+
+<content start="789" end="792">
+<size>11</size></content>
+
+<content start="792" end="793">
+<italic>true</italic><size>11</size></content>
+
+<content start="793" end="799">
+<size>11</size></content>
+
+<content start="799" end="800">
+<italic>true</italic><size>11</size></content>
+
+<content start="800" end="846">
+<size>11</size></content>
+
+<content start="846" end="862">
+<bold>true</bold><size>11</size></content>
+
+<content start="862" end="938">
+<size>11</size></content>
+
+<content start="938" end="939">
+<icon>AddAtomOnXPlane.gif</icon></content>
+
+<content start="939" end="945">
+<size>11</size></content>
+
+<content start="945" end="946">
+<icon>AddAtomOnYPlane.gif</icon></content>
+
+<content start="946" end="952">
+<size>11</size></content>
+
+<content start="952" end="953">
+<icon>AddAtomOnZPlane.gif</icon></content>
+
+<content start="953" end="993">
+<size>11</size></content>
+
+<content start="993" end="1005">
+<bold>true</bold><size>11</size></content>
+
+<content start="1005" end="1324">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1324" end="1325">
+<LeftIndent>140.0</LeftIndent>
+<content start="1324" end="1325">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1325" end="1328">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1325" end="1326">
+<size>11</size></content>
+
+<content start="1326" end="1327">
+<icon>helperplane.gif</icon></content>
+
+<content start="1327" end="1328">
+</content>
+
+</paragraph>
+<paragraph start="1328" end="1370">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1328" end="1369">
+<size>10</size></content>
+
+<content start="1369" end="1370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1370" end="1371">
+<LeftIndent>140.0</LeftIndent>
+<content start="1370" end="1371">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1371" end="1559">
+<LeftIndent>140.0</LeftIndent>
+<content start="1371" end="1408">
+<bold>true</bold><size>11</size></content>
+
+<content start="1408" end="1559">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1559" end="1560">
+<LeftIndent>140.0</LeftIndent>
+<content start="1559" end="1560">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1560" end="1627">
+<LeftIndent>140.0</LeftIndent>
+<content start="1560" end="1627">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1627" end="1628">
+<LeftIndent>140.0</LeftIndent>
+<content start="1627" end="1628">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1628" end="1650">
+<LeftIndent>140.0</LeftIndent>
+<content start="1628" end="1649">
+<bold>true</bold><size>11</size></content>
+
+<content start="1649" end="1650">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1650" end="1651">
+<LeftIndent>140.0</LeftIndent>
+<content start="1650" end="1651">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1651" end="2078">
+<LeftIndent>140.0</LeftIndent>
+<content start="1651" end="1859">
+<size>11</size></content>
+
+<content start="1859" end="1860">
+<italic>true</italic><size>11</size></content>
+
+<content start="1860" end="1958">
+<size>11</size></content>
+
+<content start="1958" end="1959">
+<italic>true</italic><size>11</size></content>
+
+<content start="1959" end="2078">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2078" end="2079">
+<LeftIndent>140.0</LeftIndent>
+<content start="2078" end="2079">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2079" end="2107">
+<LeftIndent>140.0</LeftIndent>
+<content start="2079" end="2106">
+<bold>true</bold><size>11</size></content>
+
+<content start="2106" end="2107">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2107" end="2108">
+<LeftIndent>140.0</LeftIndent>
+<content start="2107" end="2108">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2108" end="2842">
+<LeftIndent>140.0</LeftIndent>
+<content start="2108" end="2350">
+<size>11</size></content>
+
+<content start="2350" end="2351">
+<italic>true</italic><size>11</size></content>
+
+<content start="2351" end="2568">
+<size>11</size></content>
+
+<content start="2568" end="2569">
+<italic>true</italic><size>11</size></content>
+
+<content start="2569" end="2657">
+<size>11</size></content>
+
+<content start="2657" end="2658">
+<italic>true</italic><size>11</size></content>
+
+<content start="2658" end="2663">
+<size>11</size></content>
+
+<content start="2663" end="2664">
+<italic>true</italic><size>11</size></content>
+
+<content start="2664" end="2699">
+<size>11</size></content>
+
+<content start="2699" end="2700">
+<italic>true</italic><size>11</size></content>
+
+<content start="2700" end="2734">
+<size>11</size></content>
+
+<content start="2734" end="2841">
+<bold>true</bold><size>11</size></content>
+
+<content start="2841" end="2842">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2842" end="2843">
+<LeftIndent>140.0</LeftIndent>
+<content start="2842" end="2843">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2843" end="2845">
+<LeftIndent>140.0</LeftIndent>
+<content start="2843" end="2844">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2844" end="2845">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2845" end="3028">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2845" end="2849">
+<bold>true</bold><size>11</size></content>
+
+<content start="2849" end="2850">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+<content start="2850" end="3028">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3028" end="3030">
+<LeftIndent>140.0</LeftIndent>
+<content start="3028" end="3029">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="3029" end="3030">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3030" end="3031">
+<LeftIndent>140.0</LeftIndent>
+<content start="3030" end="3031">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3031" end="3050">
+<LeftIndent>140.0</LeftIndent>
+<content start="3031" end="3049">
+<bold>true</bold><size>11</size></content>
+
+<content start="3049" end="3050">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3050" end="3051">
+<LeftIndent>140.0</LeftIndent>
+<content start="3050" end="3051">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3051" end="3208">
+<LeftIndent>140.0</LeftIndent>
+<content start="3051" end="3060">
+<size>11</size></content>
+
+<content start="3060" end="3064">
+<italic>true</italic><size>11</size></content>
+
+<content start="3064" end="3208">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3208" end="3209">
+<LeftIndent>140.0</LeftIndent>
+<content start="3208" end="3209">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3209" end="3212">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3209" end="3210">
+<size>11</size></content>
+
+<content start="3210" end="3211">
+<icon>ElementPopupMenu.gif</icon></content>
+
+<content start="3211" end="3212">
+</content>
+
+</paragraph>
+<paragraph start="3212" end="3236">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3212" end="3235">
+<size>10</size></content>
+
+<content start="3235" end="3236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3236" end="3237">
+<LeftIndent>140.0</LeftIndent>
+<content start="3236" end="3237">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3237" end="3368">
+<LeftIndent>140.0</LeftIndent>
+<content start="3237" end="3368">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3368" end="3369">
+<LeftIndent>140.0</LeftIndent>
+<content start="3368" end="3369">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3369" end="3378">
+<LeftIndent>140.0</LeftIndent>
+<content start="3369" end="3377">
+<bold>true</bold><size>11</size></content>
+
+<content start="3377" end="3378">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3378" end="3379">
+<LeftIndent>140.0</LeftIndent>
+<content start="3378" end="3379">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3379" end="3467">
+<LeftIndent>140.0</LeftIndent>
+<content start="3379" end="3467">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3467" end="3468">
+<LeftIndent>140.0</LeftIndent>
+<content start="3467" end="3468">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3468" end="3470">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3468" end="3469">
+<component><class>org.concord.modeler.PageMd3d</class><resource>drop3d$0.mdd</resource><coordinate>drop3d$0.xyz</coordinate><width>600</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="3469" end="3470">
+</content>
+
+</paragraph>
+<paragraph start="3470" end="3509">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3470" end="3508">
+<size>10</size></content>
+
+<content start="3508" end="3509">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3509" end="3510">
+<LeftIndent>140.0</LeftIndent>
+<content start="3509" end="3510">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3510" end="3511">
+<LeftIndent>140.0</LeftIndent>
+<content start="3510" end="3511">
+</content>
+
+</paragraph>
+<paragraph start="3511" end="3539">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3511" end="3513">
+<size>11</size></content>
+
+<content start="3513" end="3521">
+<href>glassbox.cml</href><size>11</size></content>
+
+<content start="3521" end="3524">
+<size>11</size></content>
+
+<content start="3524" end="3529">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="3529" end="3532">
+<size>11</size></content>
+
+<content start="3532" end="3536">
+<href>dropmol3d.cml</href><size>11</size></content>
+
+<content start="3536" end="3538">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

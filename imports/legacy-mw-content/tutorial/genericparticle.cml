@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Generic particles</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Generic particles
+
+&lt; Previous | Index | Next &gt;
+
+In addition to the supported elements, the 3D model container also provides four types of generic particles, represented by symbols: X1, X2, X3, and X4. They can be used to create abstract particle models that do not carry a molecular meaning or model an object at the atomic scale. For example, the following is a model that uses a large ball to represent some kind of structure that interacts with small balls that represent something else.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+Unlike an element, the properties of a generic particle can be edited freely. Just right-click on a particle and select &quot;Properties&quot; from the pop-up menu. You should see a window that displays all the editable properties of the selected particle.
+
+To edit all the generic particles in the same place, use the model&apos;s properties window, which can be opened by selecting &quot;Access Model Properties&quot; from the default pop-up menu when you right-click on a spot in the view window that is not occupied by any object. When the &quot;Model Properties&quot; window opens, select the &quot;Interactions&quot; tab, and then click the &quot;Generic Particle Properties&quot; link. You should see the following window:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+The above window allows you to set the currently editable properties of all the supported generic particles.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1376">
+<paragraph start="0" end="18">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="17">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="47">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<size>11</size><href>extrusion.cml</href></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>140.0</LeftIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="491">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="491">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="491" end="492">
+<LeftIndent>140.0</LeftIndent>
+<content start="491" end="492">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="492" end="494">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="492" end="493">
+<component><class>org.concord.modeler.PageMd3d</class><resource>genericparticle$0.mdd</resource><coordinate>genericparticle$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="493" end="494">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="494" end="533">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="494" end="532">
+<size>10</size></content>
+
+<content start="532" end="533">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="533" end="534">
+<LeftIndent>140.0</LeftIndent>
+<content start="533" end="534">
+</content>
+
+</paragraph>
+<paragraph start="534" end="781">
+<LeftIndent>140.0</LeftIndent>
+<content start="534" end="781">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="781" end="782">
+<LeftIndent>140.0</LeftIndent>
+<content start="781" end="782">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="782" end="1209">
+<LeftIndent>140.0</LeftIndent>
+<content start="782" end="1209">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1209" end="1210">
+<LeftIndent>140.0</LeftIndent>
+<content start="1209" end="1210">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1210" end="1213">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1210" end="1211">
+<size>11</size></content>
+
+<content start="1211" end="1212">
+<icon>genericparticleprop.gif</icon></content>
+
+<content start="1212" end="1213">
+</content>
+
+</paragraph>
+<paragraph start="1213" end="1237">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1213" end="1236">
+<size>10</size></content>
+
+<content start="1236" end="1237">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1237" end="1238">
+<LeftIndent>140.0</LeftIndent>
+<content start="1237" end="1238">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1238" end="1347">
+<LeftIndent>140.0</LeftIndent>
+<content start="1238" end="1347">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1347" end="1348">
+<LeftIndent>140.0</LeftIndent>
+<content start="1347" end="1348">
+</content>
+
+</paragraph>
+<paragraph start="1348" end="1376">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1348" end="1361">
+<size>11</size></content>
+
+<content start="1361" end="1366">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="1366" end="1369">
+<size>11</size></content>
+
+<content start="1369" end="1373">
+<size>11</size><href>extrusion.cml</href></content>
+
+<content start="1373" end="1375">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

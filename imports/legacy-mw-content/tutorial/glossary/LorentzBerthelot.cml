@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>The Lorentz-Berthelot mixing rule</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Lorentz-Berthelot mixing rule
+
+
+A conventional assumption that says the cross-element Lennard-Jones potential 
+
+ 
+
+are in the middle of the two corresponding pure Lennard-Jones potentials: 
+
+ 
+
+ 
+
+   
+ return to index</text>
+<section start="0" end="222">
+<paragraph start="0" end="34">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="33">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>120.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<LeftIndent>120.0</LeftIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="115">
+<LeftIndent>140.0</LeftIndent>
+<content start="36" end="115">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="115" end="116">
+<LeftIndent>120.0</LeftIndent>
+<content start="115" end="116">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="116" end="118">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="116" end="117">
+<icon>lj.gif</icon><size>11</size></content>
+
+<content start="117" end="118">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="118" end="119">
+<LeftIndent>120.0</LeftIndent>
+<content start="118" end="119">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="119" end="194">
+<LeftIndent>140.0</LeftIndent>
+<content start="119" end="194">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="194" end="195">
+<LeftIndent>120.0</LeftIndent>
+<content start="194" end="195">
+</content>
+
+</paragraph>
+<paragraph start="195" end="197">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="195" end="196">
+<icon>eps_lb.gif</icon></content>
+
+<content start="196" end="197">
+</content>
+
+</paragraph>
+<paragraph start="197" end="198">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="197" end="198">
+</content>
+
+</paragraph>
+<paragraph start="198" end="200">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="198" end="199">
+<icon>sig_lb.gif</icon></content>
+
+<content start="199" end="200">
+</content>
+
+</paragraph>
+<paragraph start="200" end="201">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="200" end="201">
+</content>
+
+</paragraph>
+<paragraph start="201" end="205">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="201" end="202">
+</content>
+
+<content start="202" end="203">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="203" end="205">
+</content>
+
+</paragraph>
+<paragraph start="205" end="222">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="205" end="206">
+</content>
+
+<content start="206" end="221">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

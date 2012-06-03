@@ -75,11 +75,11 @@
                   <legend>Temperature Control</legend>
                   <input id='temperature-control-checkbox' type='checkbox' />
                   <select id='select-temperature'>
-                    <option value='25'>25</option>
-                    <option value='20'>20</option>
-                    <option value='15'>15</option>
-                    <option value='10'>10</option>
-                    <option selected='selected' value='5'>5</option>
+                    <option value='1000'>1000</option>
+                    <option value='800'>800</option>
+                    <option value='600'>600</option>
+                    <option value='400'>400</option>
+                    <option selected='selected' value='200'>200</option>
                     <option value='0'>0</option>
                   </select>
                 </fieldset>
@@ -87,14 +87,10 @@
               <li>
                 <fieldset>
                   <legend>Particle Force Interactions</legend>
-                  <label>
-                    Lennard-Jones
-                    <input checked='checked' id='lennard-jones-forces-checkbox' type='checkbox' />
-                  </label>
-                  <label>
-                    Coulomb
-                    <input id='coulomb-forces-checkbox' type='checkbox' />
-                  </label>
+                  <label for='lennard-jones-forces-checkbox'>Lennard-Jones</label>
+                  <input checked='checked' id='lennard-jones-forces-checkbox' type='checkbox' />
+                  <label for='coulomb-forces-checkbox'>Lennard-Jones</label>
+                  <input id='coulomb-forces-checkbox' type='checkbox' />
                 </fieldset>
               </li>
               <li>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Periodic Boundary Conditions</page_title>
+<text>Periodic Boundary Conditions
+
+  
+  
+
+Periodic boundary conditions are often used in molecular modeling to eleminate the boundary effect&#10102;. In additional to the conventional periodic boundary, Molecular Workbench provides a composite boundary that can be periodic in one direction and reflecting in the other direction. Periodic boundaries in Molecular Workbench also allow bond crossing.
+
+_________________________________________________________________________________________
+&#10102;The boundary effect occurs when we study a system that is confined in a simulation box. The boundary effect is directly seen as particles bounce back and forth within a box. This costs the conservation of the total momentum.</text>
+<section start="0" end="704">
+<paragraph start="0" end="29">
+<SpaceAbove>6.0</SpaceAbove>
+<LeftIndent>6.0</LeftIndent>
+<content start="0" end="28">
+<bold>true</bold><size>15</size></content>
+
+<content start="28" end="29">
+<bold>true</bold><size>18</size></content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="33">
+<Alignment>1</Alignment>
+<content start="30" end="31">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>periodic$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="31" end="32">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>periodic$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="36">
+<Alignment>1</Alignment>
+<content start="33" end="34">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<border>Raised Bevel</border>
+<script>script:mw:1:run;
+script:mw:2:run;</script>
+<action>Script</action></component></content>
+
+<content start="34" end="35">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<border>Raised Bevel</border>
+<script>script:mw:1:stop;
+script:mw:2:stop;</script>
+<action>Script</action></component></content>
+
+<content start="35" end="36">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="387">
+<LeftIndent>6.0</LeftIndent>
+<content start="37" end="135">
+<size>11</size></content>
+
+<content start="135" end="136">
+<size>13</size></content>
+
+<content start="136" end="387">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="387" end="388">
+<LeftIndent>6.0</LeftIndent>
+<content start="387" end="388">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="388" end="478">
+<LeftIndent>6.0</LeftIndent>
+<content start="388" end="478">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="478" end="704">
+<LeftIndent>6.0</LeftIndent>
+<content start="478" end="479">
+<size>13</size></content>
+
+<content start="479" end="703">
+<size>10</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Editing text: cut, copy, paste, undo and redo</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Editing text: cut, copy, paste, undo and redo
+
+&lt; Previous | Index | Next &gt;
+
+Text can be cut, copied and pasted through the system clipboard&#10102;. The keyboard shortcuts of these operations are the conventional ones:
+
+   CTRL+C (Windows, Linux) / Command+C (Mac OS X): copy
+   CTRL+V (Windows, Linux) / Command+V (Mac OS X): paste
+   CTRL+X (Windows, Linux) / Command+X (Mac OS X): cut
+
+The attributes of the cut/copied styled text are also duplicated when it is pasted. This allows you to copy and paste useful properties such as hyperlinks, embedded images and embedded components.
+
+ 
+Note: This feature works within MW. If you try to paste a segment of text with embedded images and/or components to other applications such as Microsoft WordTM, the elements will be replaced by a space character.
+ 
+
+Many of the text actions, though not all, are undoable and redoable.
+
+The cut, copy, paste and undo/redo actions can be done with the buttons on the tool bar, or the items on the Edit Menu, or the items on the pop-up menu opened using right-click (or CTRL+click on Mac OS X without a multiple-button mouse).
+
+A note about undo/redoing:
+
+The undo/redo menu and toolbar buttons of the main window are applied to authoring the components and text surrounding an embedded model only. For undo/redoing an editing action in an embedded model on a page, you must use the undo/redo menu of that model container.
+
+ 
+  &#10102; Warning: Pasting non-Western characters into MW may result in unreadable text in a page when it is saved and re-opened, if the encoding method of the characters is different from the current one, which is shown in the &quot;Edit&gt;Character Encoding&quot; menu.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1688">
+<paragraph start="0" end="46">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="45">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="75">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="47" end="49">
+<size>11</size></content>
+
+<content start="49" end="57">
+<href>paragraph.cml</href><size>11</size></content>
+
+<content start="57" end="60">
+<size>11</size></content>
+
+<content start="60" end="65">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="65" end="68">
+<size>11</size></content>
+
+<content start="68" end="72">
+<href>title.cml</href><size>11</size></content>
+
+<content start="72" end="75">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="75" end="76">
+<content start="75" end="76">
+</content>
+
+</paragraph>
+<paragraph start="76" end="212">
+<LeftIndent>140.0</LeftIndent>
+<content start="76" end="139">
+<size>11</size></content>
+
+<content start="139" end="140">
+<size>13</size></content>
+
+<content start="140" end="212">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="212" end="213">
+<LeftIndent>140.0</LeftIndent>
+<content start="212" end="213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="213" end="269">
+<LeftIndent>160.0</LeftIndent>
+<content start="213" end="214">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>11</size></content>
+
+<content start="214" end="269">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="269" end="326">
+<LeftIndent>160.0</LeftIndent>
+<content start="269" end="270">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>11</size></content>
+
+<content start="270" end="326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="326" end="381">
+<LeftIndent>160.0</LeftIndent>
+<content start="326" end="327">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon><size>11</size></content>
+
+<content start="327" end="381">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="381" end="382">
+<LeftIndent>140.0</LeftIndent>
+<content start="381" end="382">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="382" end="579">
+<LeftIndent>140.0</LeftIndent>
+<content start="382" end="579">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="579" end="580">
+<LeftIndent>140.0</LeftIndent>
+<content start="579" end="580">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="580" end="582">
+<LeftIndent>140.0</LeftIndent>
+<content start="580" end="581">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="581" end="582">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="582" end="795">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="582" end="586">
+<bold>true</bold><size>11</size></content>
+
+<content start="586" end="739">
+<size>11</size></content>
+
+<content start="739" end="741">
+<superscript>true</superscript><size>10</size></content>
+
+<content start="741" end="795">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="795" end="797">
+<LeftIndent>140.0</LeftIndent>
+<content start="795" end="796">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="796" end="797">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="797" end="798">
+<LeftIndent>140.0</LeftIndent>
+<content start="797" end="798">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="798" end="867">
+<LeftIndent>140.0</LeftIndent>
+<content start="798" end="867">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="867" end="868">
+<LeftIndent>140.0</LeftIndent>
+<content start="867" end="868">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="868" end="1106">
+<LeftIndent>140.0</LeftIndent>
+<content start="868" end="1106">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1106" end="1107">
+<LeftIndent>140.0</LeftIndent>
+<content start="1106" end="1107">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1107" end="1134">
+<RightIndent>40.0</RightIndent>
+<LeftIndent>180.0</LeftIndent>
+<content start="1107" end="1133">
+<bold>true</bold><size>11</size></content>
+
+<content start="1133" end="1134">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1134" end="1135">
+<LeftIndent>160.0</LeftIndent>
+<content start="1134" end="1135">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1135" end="1402">
+<RightIndent>40.0</RightIndent>
+<LeftIndent>180.0</LeftIndent>
+<content start="1135" end="1385">
+<size>11</size></content>
+
+<content start="1385" end="1400">
+<href>insertModel.cml</href><size>11</size></content>
+
+<content start="1400" end="1402">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1402" end="1403">
+<LeftIndent>140.0</LeftIndent>
+<content start="1402" end="1403">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1403" end="1405">
+<SpaceAbove>1.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<content start="1403" end="1404">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1404" end="1405">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1405" end="1659">
+<LeftIndent>140.0</LeftIndent>
+<content start="1405" end="1406">
+<icon>spider.gif</icon><size>11</size></content>
+
+<content start="1406" end="1407">
+<bold>true</bold><size>11</size></content>
+
+<content start="1407" end="1408">
+<size>13</size></content>
+
+<content start="1408" end="1409">
+<size>10</size></content>
+
+<content start="1409" end="1416">
+<bold>true</bold><foreground>255 0 0</foreground><size>10</size></content>
+
+<content start="1416" end="1418">
+<bold>true</bold><size>10</size></content>
+
+<content start="1418" end="1658">
+<size>10</size></content>
+
+<content start="1658" end="1659">
+</content>
+
+</paragraph>
+<paragraph start="1659" end="1660">
+<LeftIndent>100.0</LeftIndent>
+<content start="1659" end="1660">
+</content>
+
+</paragraph>
+<paragraph start="1660" end="1688">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1660" end="1662">
+<size>11</size></content>
+
+<content start="1662" end="1670">
+<href>paragraph.cml</href><size>11</size></content>
+
+<content start="1670" end="1673">
+<size>11</size></content>
+
+<content start="1673" end="1678">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="1678" end="1681">
+<size>11</size></content>
+
+<content start="1681" end="1685">
+<href>title.cml</href><size>11</size></content>
+
+<content start="1685" end="1687">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

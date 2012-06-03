@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Lap: Test case 2</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Lap test case 2
+Measuring internal pressures of an equilibrating process
+
+&lt; Back &gt;
+
+This test case seeks to prove that the local area pressure of an area originally with higher concentration of particles decreases when particles diffuse to areas of lower concentration.
+
+ 
+ 
+&#12304;This is an embedded model container.&#12305;
+
+ 
+Script used in the above button:
+
+define %onethird &quot;%width/3&quot;;
+lap 2 within (0, 0, %onethird, %height) and 2 within (%onethird, 0, %onethird, %height) and 2 within (&quot;2*%onethird&quot;, 0, %onethird, %height);
+ 
+
+The following image shows the running average results of the local area pressures calculated using the above script:
+
+  
+
+&lt; Back &gt;</text>
+<section start="0" end="655">
+<paragraph start="0" end="16">
+<Alignment>2</Alignment>
+<RightIndent>10.0</RightIndent>
+<content start="0" end="15">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="15" end="16">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="16" end="73">
+<Alignment>2</Alignment>
+<RightIndent>10.0</RightIndent>
+<content start="16" end="72">
+<italic>true</italic><size>15</size></content>
+
+<content start="72" end="73">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="73" end="74">
+<RightIndent>10.0</RightIndent>
+<content start="73" end="74">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="74" end="83">
+<Alignment>2</Alignment>
+<RightIndent>10.0</RightIndent>
+<content start="74" end="76">
+<size>11</size></content>
+
+<content start="76" end="80">
+<href>script_lap.cml</href><size>11</size></content>
+
+<content start="80" end="83">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="83" end="84">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="83" end="84">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="84" end="270">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="84" end="270">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="270" end="271">
+<RightIndent>10.0</RightIndent>
+<content start="270" end="271">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="271" end="273">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="271" end="272">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>laptest2$0.mml</resource><menubar>false</menubar></component><size>11</size></content>
+
+<content start="272" end="273">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="273" end="275">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="273" end="274">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Compute local area pressures of three areas</title>
+<tooltip>Compute local area pressures of three areas</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>define %onethird &quot;%width/3&quot;;
+lap 2 within (0, 0, %onethird, %height) and 2 within (%onethird, 0, %onethird, %height) and 2 within (&quot;2*%onethird&quot;, 0, %onethird, %height);</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="274" end="275">
+</content>
+
+</paragraph>
+<paragraph start="275" end="314">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="275" end="313">
+<size>10</size></content>
+
+<content start="313" end="314">
+</content>
+
+</paragraph>
+<paragraph start="314" end="315">
+<content start="314" end="315">
+</content>
+
+</paragraph>
+<paragraph start="315" end="317">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="315" end="316">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="316" end="317">
+</content>
+
+</paragraph>
+<paragraph start="317" end="350">
+<LeftIndent>160.0</LeftIndent>
+<content start="317" end="349">
+<italic>true</italic><size>11</size></content>
+
+<content start="349" end="350">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="350" end="351">
+<LeftIndent>140.0</LeftIndent>
+<content start="350" end="351">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="351" end="380">
+<LeftIndent>180.0</LeftIndent>
+<content start="351" end="380">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="380" end="521">
+<RightIndent>40.0</RightIndent>
+<LeftIndent>180.0</LeftIndent>
+<content start="380" end="520">
+<size>11</size><family>Courier New</family></content>
+
+<content start="520" end="521">
+</content>
+
+</paragraph>
+<paragraph start="521" end="523">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="521" end="522">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="522" end="523">
+</content>
+
+</paragraph>
+<paragraph start="523" end="524">
+<LeftIndent>140.0</LeftIndent>
+<content start="523" end="524">
+</content>
+
+</paragraph>
+<paragraph start="524" end="641">
+<LeftIndent>140.0</LeftIndent>
+<content start="524" end="640">
+<size>11</size></content>
+
+<content start="640" end="641">
+</content>
+
+</paragraph>
+<paragraph start="641" end="642">
+<LeftIndent>140.0</LeftIndent>
+<content start="641" end="642">
+</content>
+
+</paragraph>
+<paragraph start="642" end="645">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="642" end="643">
+</content>
+
+<content start="643" end="644">
+<icon>laptest2_1.gif</icon></content>
+
+<content start="644" end="645">
+</content>
+
+</paragraph>
+<paragraph start="645" end="646">
+<content start="645" end="646">
+</content>
+
+</paragraph>
+<paragraph start="646" end="655">
+<Alignment>2</Alignment>
+<RightIndent>10.0</RightIndent>
+<content start="646" end="648">
+<size>11</size></content>
+
+<content start="648" end="652">
+<href>script_lap.cml</href><size>11</size></content>
+
+<content start="652" end="654">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

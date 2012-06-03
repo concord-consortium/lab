@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Opening a page on your disk</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Opening a page on your disk
+
+&lt; Previous | Index | Next &gt;
+
+Suppose you have downloaded (or created) some pages and stored them on the hard disk.  Now you want to open them.  Here are three ways to open a page stored on the hard drive: 
+
+   Click the Open Button &quot; &quot; on the tool bar.
+   Choose the &quot;File&gt;Open&quot; menu. 
+   Press CTRL+O (on Windows and Linux) or Command+O (on Mac OS X).
+
+After you have done one of the above, a file dialog box will appear. Go to the file folders where you have stored your files. Choose the file you want to open, and click the Open Button of the dialog box. The selected file will be loaded into the main window.
+
+Currently, you can open files with the following extension names:
+
+   .cml  the page format (standing for the Concord Markup Language, not   the Chemical Markup Language)
+   .gif  the GIF image format
+   .jpg  the JPEG image format
+   .png  the PNG image format
+   .txt  the ASCII code plain text
+   .mws  the MW script (same as the plain text format)
+   .pdb  the   Protein Data Bank format
+   .xyz  stores the x, y, z coordinates of structures (the output of the 3D model) &#10102;
+
+Notice that you can directly open a PDB file, something you probably cannot do with a conventional web browser. To some extent, MW can be used as a PDB file browser as well.
+
+ 
+&#10102; In the XYZ format, the first row specifies the number of atoms, the second row specifies a description of the data, and the rest rows have a minimum of four columns of data, with the first one specifying the names of the atoms, and the rest three specifying the x, y, z coordinates of the atoms, respectively. There is no need to append an ending line. The XYZ format is commonly used to store data for small molecules and crystals. The PDB format is more appropriate for macromolecules such as proteins and DNAs.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1844">
+<paragraph start="0" end="28">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="27">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<RightIndent>20.0</RightIndent>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="57">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="29" end="31">
+<size>11</size></content>
+
+<content start="31" end="39">
+<size>11</size><href>whatToSend.cml</href></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="47">
+<size>11</size><href>index.cml</href></content>
+
+<content start="47" end="50">
+<size>11</size></content>
+
+<content start="50" end="54">
+<size>11</size><href>print.cml</href></content>
+
+<content start="54" end="56">
+<size>11</size></content>
+
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="58">
+<content start="57" end="58">
+</content>
+
+</paragraph>
+<paragraph start="58" end="235">
+<LeftIndent>140.0</LeftIndent>
+<content start="58" end="235">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="235" end="236">
+<LeftIndent>140.0</LeftIndent>
+<content start="235" end="236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="236" end="282">
+<LeftIndent>160.0</LeftIndent>
+<content start="236" end="237">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="237" end="262">
+<size>11</size></content>
+
+<content start="262" end="263">
+<icon>open.gif</icon><size>11</size></content>
+
+<content start="263" end="282">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="282" end="315">
+<LeftIndent>160.0</LeftIndent>
+<content start="282" end="283">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="283" end="315">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="315" end="382">
+<LeftIndent>160.0</LeftIndent>
+<content start="315" end="316">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="316" end="382">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="382" end="383">
+<LeftIndent>140.0</LeftIndent>
+<content start="382" end="383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="383" end="643">
+<LeftIndent>140.0</LeftIndent>
+<content start="383" end="643">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="643" end="644">
+<LeftIndent>140.0</LeftIndent>
+<content start="643" end="644">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="644" end="710">
+<LeftIndent>140.0</LeftIndent>
+<content start="644" end="710">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="710" end="711">
+<LeftIndent>140.0</LeftIndent>
+<content start="710" end="711">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="711" end="815">
+<LeftIndent>160.0</LeftIndent>
+<content start="711" end="712">
+<icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon><size>11</size></content>
+
+<content start="712" end="714">
+<size>11</size></content>
+
+<content start="714" end="718">
+<family>Courier New</family><size>11</size></content>
+
+<content start="718" end="736">
+<size>11</size></content>
+
+<content start="736" end="779">
+<size>10</size></content>
+
+<content start="779" end="783">
+<bold>true</bold><size>10</size><italic>true</italic></content>
+
+<content start="783" end="784">
+<icon>htmlink.gif</icon></content>
+
+<content start="784" end="785">
+<bold>true</bold><size>10</size><italic>true</italic></content>
+
+<content start="785" end="813">
+<bold>true</bold><size>10</size><href>http://www.xml-cml.org/</href></content>
+
+<content start="813" end="814">
+<size>10</size></content>
+
+<content start="814" end="815">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="815" end="845">
+<LeftIndent>160.0</LeftIndent>
+<content start="815" end="816">
+<icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon><size>11</size></content>
+
+<content start="816" end="818">
+<size>11</size></content>
+
+<content start="818" end="822">
+<family>Courier New</family><size>11</size></content>
+
+<content start="822" end="845">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="845" end="876">
+<LeftIndent>160.0</LeftIndent>
+<content start="845" end="846">
+<icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon><size>11</size></content>
+
+<content start="846" end="848">
+<size>11</size></content>
+
+<content start="848" end="852">
+<family>Courier New</family><size>11</size></content>
+
+<content start="852" end="876">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="876" end="906">
+<LeftIndent>160.0</LeftIndent>
+<content start="876" end="877">
+<icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon><size>11</size></content>
+
+<content start="877" end="879">
+<size>11</size></content>
+
+<content start="879" end="883">
+<family>Courier New</family><size>11</size></content>
+
+<content start="883" end="906">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="906" end="941">
+<LeftIndent>160.0</LeftIndent>
+<content start="906" end="907">
+<icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon><size>11</size></content>
+
+<content start="907" end="909">
+<size>11</size></content>
+
+<content start="909" end="913">
+<family>Courier New</family><size>11</size></content>
+
+<content start="913" end="941">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="941" end="996">
+<LeftIndent>160.0</LeftIndent>
+<content start="941" end="942">
+<icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="942" end="944">
+</content>
+
+<content start="944" end="948">
+<family>Courier New</family><size>11</size></content>
+
+<content start="948" end="954">
+<size>11</size></content>
+
+<content start="954" end="963">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="963" end="995">
+<size>11</size></content>
+
+<content start="995" end="996">
+</content>
+
+</paragraph>
+<paragraph start="996" end="1036">
+<LeftIndent>160.0</LeftIndent>
+<content start="996" end="997">
+<icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="997" end="999">
+</content>
+
+<content start="999" end="1003">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1003" end="1009">
+<size>11</size></content>
+
+<content start="1009" end="1010">
+<icon>htmlink.gif</icon></content>
+
+<content start="1010" end="1011">
+<size>11</size></content>
+
+<content start="1011" end="1028">
+<size>11</size><href>http://www.rcsb.org/</href></content>
+
+<content start="1028" end="1036">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1036" end="1121">
+<LeftIndent>160.0</LeftIndent>
+<content start="1036" end="1037">
+<icon>org.concord.modeler.text.BulletIcon$SolidSquareBulletIcon</icon></content>
+
+<content start="1037" end="1039">
+</content>
+
+<content start="1039" end="1043">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1043" end="1091">
+<size>11</size></content>
+
+<content start="1091" end="1117">
+<size>11</size><href>jmolcompanion.cml</href></content>
+
+<content start="1117" end="1119">
+<size>11</size></content>
+
+<content start="1119" end="1120">
+<size>13</size></content>
+
+<content start="1120" end="1121">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1121" end="1122">
+<LeftIndent>160.0</LeftIndent>
+<content start="1121" end="1122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1122" end="1296">
+<LeftIndent>140.0</LeftIndent>
+<content start="1122" end="1142">
+<size>11</size></content>
+
+<content start="1142" end="1166">
+<size>11</size><href>../molecules/drug/zantac.pdb</href></content>
+
+<content start="1166" end="1268">
+<size>11</size></content>
+
+<content start="1268" end="1286">
+<size>11</size><href>../molecules/drug/index.cml</href></content>
+
+<content start="1286" end="1296">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1296" end="1297">
+<LeftIndent>140.0</LeftIndent>
+<content start="1296" end="1297">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1297" end="1299">
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>1.0</SpaceAbove>
+<content start="1297" end="1298">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1298" end="1299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1299" end="1815">
+<LeftIndent>140.0</LeftIndent>
+<content start="1299" end="1300">
+<size>13</size></content>
+
+<content start="1300" end="1301">
+</content>
+
+<content start="1301" end="1814">
+<size>10</size></content>
+
+<content start="1814" end="1815">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1815" end="1816">
+<LeftIndent>140.0</LeftIndent>
+<content start="1815" end="1816">
+</content>
+
+</paragraph>
+<paragraph start="1816" end="1844">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1816" end="1818">
+<size>11</size></content>
+
+<content start="1818" end="1826">
+<size>11</size><href>whatToSend.cml</href></content>
+
+<content start="1826" end="1829">
+<size>11</size></content>
+
+<content start="1829" end="1834">
+<size>11</size><href>index.cml</href></content>
+
+<content start="1834" end="1837">
+<size>11</size></content>
+
+<content start="1837" end="1841">
+<size>11</size><href>print.cml</href></content>
+
+<content start="1841" end="1843">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

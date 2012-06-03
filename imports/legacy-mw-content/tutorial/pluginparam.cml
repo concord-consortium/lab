@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Feeding parameters to plugins</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Feeding parameters to plugins
+
+&lt; Previous | Index | Next &gt;
+
+Use the text area at the bottom of the Plugin Dialog to set the parameters in the format of name-value pairs.
+
+{name=&quot;data&quot; value=&quot;file.txt&quot;}
+
+Consult the plugin&apos;s documentation for what parameters it offers for the user to set. Note, however, that many applications do not provide a mechanism to get parameters through this mechanism that is typically used by a browser to pass parameters to an applet.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="494">
+<paragraph start="0" end="30">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="29">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="59">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="41">
+<href>mwpluginservice.cml</href><size>11</size></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="49">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="49" end="52">
+<size>11</size></content>
+
+<content start="52" end="56">
+<href>jmolplugin2.cml</href><size>11</size></content>
+
+<content start="56" end="58">
+<size>11</size></content>
+
+<content start="58" end="59">
+</content>
+
+</paragraph>
+<paragraph start="59" end="60">
+<content start="59" end="60">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="60" end="170">
+<LeftIndent>140.0</LeftIndent>
+<content start="60" end="170">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="170" end="171">
+<LeftIndent>140.0</LeftIndent>
+<content start="170" end="171">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="171" end="202">
+<LeftIndent>160.0</LeftIndent>
+<content start="171" end="201">
+<family>Courier New</family><size>11</size></content>
+
+<content start="201" end="202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="202" end="203">
+<LeftIndent>140.0</LeftIndent>
+<content start="202" end="203">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="203" end="464">
+<LeftIndent>140.0</LeftIndent>
+<content start="203" end="464">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="464" end="465">
+<LeftIndent>140.0</LeftIndent>
+<content start="464" end="465">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="465" end="466">
+<RightIndent>20.0</RightIndent>
+<content start="465" end="466">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="466" end="494">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="466" end="468">
+<size>11</size></content>
+
+<content start="468" end="476">
+<href>mwpluginservice.cml</href><size>11</size></content>
+
+<content start="476" end="479">
+<size>11</size></content>
+
+<content start="479" end="484">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="484" end="487">
+<size>11</size></content>
+
+<content start="487" end="491">
+<href>jmolplugin2.cml</href><size>11</size></content>
+
+<content start="491" end="493">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Element IDs</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Element IDs
+
+The following is a list of the ID numbers of all the fictitious particles supported in 2D models:
+
+ 
+
+</text>
+<section start="0" end="116">
+<paragraph start="0" end="12">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="11">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="13">
+<LeftIndent>100.0</LeftIndent>
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="111">
+<LeftIndent>140.0</LeftIndent>
+<content start="13" end="66">
+<size>11</size></content>
+
+<content start="66" end="86">
+<bold>true</bold><size>11</size></content>
+
+<content start="86" end="111">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="111" end="112">
+<LeftIndent>140.0</LeftIndent>
+<content start="111" end="112">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="112" end="114">
+<LeftIndent>140.0</LeftIndent>
+<content start="112" end="113">
+<component><class>org.concord.modeler.PageTable</class>
+<row>32</row>
+<column>3</column>
+<layout>166, 166, 166</layout>
+<width>500.0</width>
+<height>770.0</height>
+<border>Line</border>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>Name</te><te>ID</te><te>Represents:</te><te>Nt</te><te>0</te><te>generic atom</te><te>Pl</te><te>1</te><te>generic atom</te><te>Ws</te><te>2</te><te>generic atom</te><te>Ck</te><te>3</te><te>generic atom</te><te>Mo</te><te>4</te><te>molecular surface element</te><te>Ala</te><te>5</te><te>amino acid</te><te>Arg</te><te>6</te><te>amino acid</te><te>Asn</te><te>7</te><te>amino acid</te><te>Asp</te><te>8</te><te>amino acid</te><te>Cys</te><te>9</te><te>amino acid</te><te>Gln</te><te>10</te><te>amino acid</te><te>Glu</te><te>11</te><te>amino acid</te><te>Gly</te><te>12</te><te>amino acid</te><te>His</te><te>13</te><te>amino acid</te><te>Ile</te><te>14</te><te>amino acid</te><te>Leu</te><te>15</te><te>amino acid</te><te>Lys</te><te>16</te><te>amino acid</te><te>Met</te><te>17</te><te>amino acid</te><te>Phe</te><te>18</te><te>amino acid</te><te>Pro</te><te>19</te><te>amino acid</te><te>Ser</te><te>20</te><te>amino acid</te><te>Thr</te><te>21</te><te>amino acid</te><te>Trp</te><te>22</te><te>amino acid</te><te>Tyr</te><te>23</te><te>amino acid</te><te>Val</te><te>24</te><te>amino acid</te><te>Sp</te><te>25</te><te>sugar phosphate</te><te>A</te><te>26</te><te>adenine</te><te>C</te><te>27</te><te>cytosine</te><te>G</te><te>28</te><te>guanine</te><te>T</te><te>29</te><te>thymine</te><te>U</te><te>30</te><te>uracil</te></elementarray>
+</component></content>
+
+<content start="113" end="114">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="114" end="115">
+<LeftIndent>140.0</LeftIndent>
+<content start="114" end="115">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="115" end="116">
+</paragraph>
+</section>
+</document>

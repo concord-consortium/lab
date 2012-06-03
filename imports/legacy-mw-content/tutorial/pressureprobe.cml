@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Adding pressure gauges</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Adding pressure gauges
+
+&lt; Previous | Index | Next &gt;
+
+You can set up a pressure gauge to measure the  pressure of a system. A virtual pressure gauge in the Molecular Workbench includes the following elements: (1) an obstacle; (2) a direct-reading gauge on a surface of the obstacle that records the forces exerted on the surface by the momentum transfer of the incident particles; (3) a graph to display the outputs. To insert an obstacle, see the &quot;Dropping an object&quot; section. An obstacle can be made a piston (which is movable), if its density is set to be less than 500. It will be fixed if its density is set to be any number greater than 500.
+
+ 
+The common definition of pressure is based on the collisions of particles onto the wall of a container (which is used in the implementation of the pressure gauge in the Molecular Workbench):
+
+  
+
+At first glance, this definition seems to indicate that the pressure is entirely a kinetic effect, since collisions with the wall are kinetic. However, if we think more carefully, we will find that the momenta of interacting particles are actually affected by the forces among them. The attractive intermolecular interactions generally lower the kinetic pressure, as is stated by the virial theorem of Clausius:
+
+  
+or
+   
+
+where Fi is the force vector acting on the i-th particle. fij is the force between the i- and j-th particle, ri is the position vector of the i-th particle, rij is the distance vector between the i- and j-th particle, and d is the dimensionality (2 for 2D and 3 for 3D). For a solution, the first form of the above theorem can be used to define partial pressures of solvent and solute, respectively:
+
+  
+  
+
+To calculate the pressure of selected types of particles within selected areas, please use the lap command.
+ 
+
+To change the properties of an obstacle such as the density, double-click on it when the editor is in the selection mode.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+A pressure gauge can be put on each side of the obstacle. Just select the check boxes (at the bottom of the properties dialog window) corresponding to the sides on which you would like to put a gauge. Once you have selected the gauge(s), the next step is to show the output(s) with a graph.
+
+ 
+The pressure on the gauge is simply a mechanical response of a thermodynamical system. It is calculated according to the sum of the impulses resulting from the collisions of the particles with the surface divided by the area and the time interval the collisions are counted. Qualitatively, the higher the temperature is, the more times the surface is hit in a given time interval, which corresponds to a higher pressure --- a more violent response to the containment of the wall.
+ 
+
+To insert a graph that displays the measured data points of the pressure, select &quot;Insert&gt;Model Output&gt;X-Y Graph&quot; from the main menu bar, and then select the x or y variable to be the measured pressure, which has the name such as &quot;West pressure: Obstacle #0&quot;, &quot;East pressure: Obstacle #1&quot;, &quot;North pressure: Obstacle #0&quot;, and &quot;South pressure: Obstacle #0&quot; for the pressures measured on the western, eastern, northern, and southern side of the first gauge (the index is 0), respectively.
+
+The pressure gauge can be used to measure the partial pressure of a specified type of particle.
+
+An example is presented in the following to show a very simple setup.
+
+  
+&#12304;This is an embedded model container.&#12305;
+
+In the above model, the obstacle is fixed (a big number is set for its density). A pressure gauge is installed on its western surface, which is represented by an array of open circles along the boundary line of the surface. The obstacle is filled with a gradient color effect, but you can change it to anything you would like. A graph is connected to the output of the measured pressure.
+
+ 
+Note: You will see the pressures rise initially. This is due to the fact that the data the gauges collect are initially insufficient. Let the simulation run until these data points disappear --- the curve will fluctuate but no significant increasing or decreasing should be observed unless a condition is changed. In the above experiment, this will take approximately 25,000 femtoseconds (less than one minute to run on a typical computer). The initial zero reading of the pressure gauge might not be an artifact. It might reflect the responding time of the gauge. An analogy of this is that when we put a mercury thermometer into a cup of hot water, it usually takes a while for the bar to rise to the position that corresponds to the temperature of the hot water.
+ 
+
+In the next sections, we will do more experiments to test if the pressure gauge works properly.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4699">
+<paragraph start="0" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="22">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<RightIndent>20.0</RightIndent>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="52">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="24" end="26">
+<size>11</size></content>
+
+<content start="26" end="34">
+<size>11</size><href>simanim.cml</href></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="49">
+<href>multipressureprobe.cml</href><size>11</size></content>
+
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="53">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="53" end="647">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="100">
+<size>11</size></content>
+
+<content start="100" end="101">
+<icon>apiIcon.gif</icon></content>
+
+<content start="101" end="109">
+<href>glossary/Pressure.cml</href><size>11</size></content>
+
+<content start="109" end="448">
+<size>11</size></content>
+
+<content start="448" end="466">
+<href>dropAction.cml</href><size>11</size></content>
+
+<content start="466" end="647">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="647" end="648">
+<LeftIndent>140.0</LeftIndent>
+<content start="647" end="648">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="648" end="650">
+<LeftIndent>140.0</LeftIndent>
+<content start="648" end="649">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="649" end="650">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="650" end="841">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="650" end="841">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="841" end="842">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="841" end="842">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="842" end="845">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="842" end="843">
+<size>11</size></content>
+
+<content start="843" end="844">
+<icon>InternalWallPressureFormula.gif</icon></content>
+
+<content start="844" end="845">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="845" end="846">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="845" end="846">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="846" end="1258">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="846" end="1230">
+<size>11</size></content>
+
+<content start="1230" end="1256">
+<bold>true</bold><size>11</size></content>
+
+<content start="1256" end="1258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1258" end="1259">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1258" end="1259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1259" end="1262">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1259" end="1260">
+</content>
+
+<content start="1260" end="1261">
+<icon>PressureFormula0.gif</icon></content>
+
+<content start="1261" end="1262">
+</content>
+
+</paragraph>
+<paragraph start="1262" end="1265">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1262" end="1264">
+<size>11</size></content>
+
+<content start="1264" end="1265">
+</content>
+
+</paragraph>
+<paragraph start="1265" end="1269">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1265" end="1267">
+</content>
+
+<content start="1267" end="1268">
+<icon>PressureFormula.gif</icon></content>
+
+<content start="1268" end="1269">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1269" end="1270">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1269" end="1270">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1270" end="1670">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1270" end="1276">
+<size>11</size></content>
+
+<content start="1276" end="1277">
+<bold>true</bold><size>11</size></content>
+
+<content start="1277" end="1278">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1278" end="1313">
+<size>11</size></content>
+
+<content start="1313" end="1314">
+<size>11</size><italic>true</italic></content>
+
+<content start="1314" end="1328">
+<size>11</size></content>
+
+<content start="1328" end="1329">
+<bold>true</bold><size>11</size></content>
+
+<content start="1329" end="1331">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1331" end="1357">
+<size>11</size></content>
+
+<content start="1357" end="1358">
+<size>11</size><italic>true</italic></content>
+
+<content start="1358" end="1364">
+<size>11</size></content>
+
+<content start="1364" end="1365">
+<size>11</size><italic>true</italic></content>
+
+<content start="1365" end="1379">
+<size>11</size></content>
+
+<content start="1379" end="1380">
+<bold>true</bold><size>11</size></content>
+
+<content start="1380" end="1381">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1381" end="1412">
+<size>11</size></content>
+
+<content start="1412" end="1413">
+<size>11</size><italic>true</italic></content>
+
+<content start="1413" end="1427">
+<size>11</size></content>
+
+<content start="1427" end="1428">
+<bold>true</bold><size>11</size></content>
+
+<content start="1428" end="1430">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1430" end="1466">
+<size>11</size></content>
+
+<content start="1466" end="1467">
+<size>11</size><italic>true</italic></content>
+
+<content start="1467" end="1473">
+<size>11</size></content>
+
+<content start="1473" end="1474">
+<size>11</size><italic>true</italic></content>
+
+<content start="1474" end="1492">
+<size>11</size></content>
+
+<content start="1492" end="1493">
+<size>11</size><italic>true</italic></content>
+
+<content start="1493" end="1670">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1670" end="1671">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1670" end="1671">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1671" end="1674">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1671" end="1672">
+<size>11</size></content>
+
+<content start="1672" end="1673">
+<icon>PressureFormula_Solute.gif</icon></content>
+
+<content start="1673" end="1674">
+</content>
+
+</paragraph>
+<paragraph start="1674" end="1677">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1674" end="1675">
+</content>
+
+<content start="1675" end="1676">
+<icon>PressureFormula_Solvent.gif</icon></content>
+
+<content start="1676" end="1677">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1677" end="1678">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1677" end="1678">
+</content>
+
+</paragraph>
+<paragraph start="1678" end="1786">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1678" end="1773">
+<size>11</size></content>
+
+<content start="1773" end="1776">
+<family>Courier New</family><size>11</size><href>script_lap.cml</href></content>
+
+<content start="1776" end="1785">
+<size>11</size></content>
+
+<content start="1785" end="1786">
+</content>
+
+</paragraph>
+<paragraph start="1786" end="1788">
+<LeftIndent>140.0</LeftIndent>
+<content start="1786" end="1787">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1787" end="1788">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1788" end="1789">
+<LeftIndent>140.0</LeftIndent>
+<content start="1788" end="1789">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1789" end="1911">
+<LeftIndent>140.0</LeftIndent>
+<content start="1789" end="1911">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1911" end="1912">
+<LeftIndent>140.0</LeftIndent>
+<content start="1911" end="1912">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1912" end="1915">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1912" end="1913">
+<size>11</size></content>
+
+<content start="1913" end="1914">
+<icon>RectProp.gif</icon></content>
+
+<content start="1914" end="1915">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1915" end="1939">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1915" end="1938">
+<size>10</size></content>
+
+<content start="1938" end="1939">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1939" end="1940">
+<LeftIndent>140.0</LeftIndent>
+<content start="1939" end="1940">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1940" end="2231">
+<LeftIndent>140.0</LeftIndent>
+<content start="1940" end="2231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2231" end="2232">
+<LeftIndent>140.0</LeftIndent>
+<content start="2231" end="2232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2232" end="2234">
+<LeftIndent>140.0</LeftIndent>
+<content start="2232" end="2233">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2233" end="2234">
+</content>
+
+</paragraph>
+<paragraph start="2234" end="2714">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2234" end="2713">
+<size>11</size></content>
+
+<content start="2713" end="2714">
+</content>
+
+</paragraph>
+<paragraph start="2714" end="2716">
+<LeftIndent>140.0</LeftIndent>
+<content start="2714" end="2715">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2715" end="2716">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2716" end="2717">
+<LeftIndent>140.0</LeftIndent>
+<content start="2716" end="2717">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2717" end="3202">
+<LeftIndent>140.0</LeftIndent>
+<content start="2717" end="3202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3202" end="3203">
+<LeftIndent>140.0</LeftIndent>
+<content start="3202" end="3203">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3203" end="3299">
+<LeftIndent>140.0</LeftIndent>
+<content start="3203" end="3249">
+<size>11</size></content>
+
+<content start="3249" end="3265">
+<bold>true</bold><size>11</size></content>
+
+<content start="3265" end="3299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3299" end="3300">
+<LeftIndent>140.0</LeftIndent>
+<content start="3299" end="3300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3300" end="3370">
+<LeftIndent>140.0</LeftIndent>
+<content start="3300" end="3370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3370" end="3371">
+<LeftIndent>140.0</LeftIndent>
+<content start="3370" end="3371">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3371" end="3374">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3371" end="3372">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pressureprobe$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="3372" end="3373">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="0" size="4" spacing="5">West pressure:Obstacle #0</time_series_y1>
+<autofity>false</autofity>
+<axis_y_min>0.0</axis_y_min>
+<axis_y_max>4.0</axis_y_max>
+<width>300</width>
+<height>284</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Pressure (bar)</axis_y_title>
+<legend_x>46</legend_x>
+<legend_y>50</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="3373" end="3374">
+</content>
+
+</paragraph>
+<paragraph start="3374" end="3413">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3374" end="3412">
+<size>10</size></content>
+
+<content start="3412" end="3413">
+</content>
+
+</paragraph>
+<paragraph start="3413" end="3414">
+<content start="3413" end="3414">
+</content>
+
+</paragraph>
+<paragraph start="3414" end="3802">
+<LeftIndent>140.0</LeftIndent>
+<content start="3414" end="3802">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3802" end="3803">
+<LeftIndent>140.0</LeftIndent>
+<content start="3802" end="3803">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3803" end="3805">
+<LeftIndent>140.0</LeftIndent>
+<content start="3803" end="3804">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="3804" end="3805">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3805" end="4571">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="3805" end="3809">
+<bold>true</bold><size>11</size></content>
+
+<content start="3809" end="4571">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4571" end="4573">
+<LeftIndent>140.0</LeftIndent>
+<content start="4571" end="4572">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="4572" end="4573">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4573" end="4574">
+<LeftIndent>140.0</LeftIndent>
+<content start="4573" end="4574">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4574" end="4670">
+<LeftIndent>140.0</LeftIndent>
+<content start="4574" end="4669">
+<size>11</size></content>
+
+<content start="4669" end="4670">
+</content>
+
+</paragraph>
+<paragraph start="4670" end="4671">
+<LeftIndent>140.0</LeftIndent>
+<content start="4670" end="4671">
+</content>
+
+</paragraph>
+<paragraph start="4671" end="4699">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="4671" end="4673">
+<size>11</size></content>
+
+<content start="4673" end="4681">
+<size>11</size><href>simanim.cml</href></content>
+
+<content start="4681" end="4684">
+<size>11</size></content>
+
+<content start="4684" end="4689">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="4689" end="4692">
+<size>11</size></content>
+
+<content start="4692" end="4696">
+<href>multipressureprobe.cml</href><size>11</size></content>
+
+<content start="4696" end="4698">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Fixing atoms</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Fixing atoms
+
+&lt; Previous | Index | Next &gt;
+
+Atoms in the 3D Simulator can be fixed. When an atom is fixed, it does not move, but it will still provide a static non-bonded force field for other movable atoms to interact with. The effect of this is that a movable atom will still be attracted to it or bounce off from it.
+
+ 
+Fixing atoms is a useful concept in MW. If we know that, in a large system, the bulk does not move significantly in the time frame of the phenomenon we are simulating, then we can fix many of the atoms and leave the most interesting part movable. This technique can dramatically reduces the size of the system and allows the simulation to go much faster, because the molecular dynamics simulation is an order-N2 calculation (where N is the number of atoms of the system).
+
+In an extreme case, we can freeze the whole system but an atom, which in this case can be regarded as a probe. Such a simulation, which can be thought of as the first-order approximation, will go very fast, because it is an order-N calculation. Yet, we can learn a lot from it. For instance, we can simulate how a K+ ion pass through a cell membrane without having to use a supercomputer.
+ 
+
+There are several methods to fix atoms. The first one is to press the &quot; &quot; button on the tool bar, and then drag the mouse to draw a rectangular area. All the atoms that are visually within it will be fixed when the mouse is released. This tool allows you to quickly fix many atoms at a time.
+
+If you right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the button, you will see a pop-up menu, from which you can select the tool for fixing atoms in an oval area, and those for setting atoms unfixed (releasing atoms). When you select the oval tool, you will see that the image on the button changes to &quot; &quot;, indicating that an oval area will be selected. The tools for releasing atoms (&quot; &quot;, &quot; &quot;) are similar.
+
+If you just need to fix or release a few atoms from different location, right-click (Windows) or CTRL+click (Mac OS X) on an atom, and then select &quot;Properties&quot; from the pop-up menu. When the dialog window for setting the atom&apos;s properties shows up, select or deselect the &quot;Movable&quot; check box.
+
+Practice
+
+You may play with the following simulator about fixing atoms and the effect.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2370">
+<paragraph start="0" end="13">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="12">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="42">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="14" end="16">
+<size>11</size></content>
+
+<content start="16" end="24">
+<href>delete3d.cml</href><size>11</size></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="32">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="32" end="35">
+<size>11</size></content>
+
+<content start="35" end="39">
+<href>changevelocity3d.cml</href><size>11</size></content>
+
+<content start="39" end="41">
+<size>11</size></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<LeftIndent>140.0</LeftIndent>
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="319">
+<LeftIndent>140.0</LeftIndent>
+<content start="43" end="318">
+<size>11</size></content>
+
+<content start="318" end="319">
+</content>
+
+</paragraph>
+<paragraph start="319" end="320">
+<LeftIndent>140.0</LeftIndent>
+<content start="319" end="320">
+</content>
+
+</paragraph>
+<paragraph start="320" end="322">
+<LeftIndent>140.0</LeftIndent>
+<content start="320" end="321">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="321" end="322">
+</content>
+
+</paragraph>
+<paragraph start="322" end="794">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="322" end="360">
+<bold>true</bold><size>11</size></content>
+
+<content start="360" end="731">
+<size>11</size></content>
+
+<content start="731" end="732">
+<italic>true</italic><size>11</size></content>
+
+<content start="732" end="733">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="733" end="753">
+<size>11</size></content>
+
+<content start="753" end="754">
+<italic>true</italic><size>11</size></content>
+
+<content start="754" end="794">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="794" end="795">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="794" end="795">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="795" end="1184">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="795" end="899">
+<size>11</size></content>
+
+<content start="899" end="904">
+<bold>true</bold><size>11</size></content>
+
+<content start="904" end="1025">
+<size>11</size></content>
+
+<content start="1025" end="1026">
+<italic>true</italic><size>11</size></content>
+
+<content start="1026" end="1183">
+<size>11</size></content>
+
+<content start="1183" end="1184">
+</content>
+
+</paragraph>
+<paragraph start="1184" end="1186">
+<LeftIndent>140.0</LeftIndent>
+<content start="1184" end="1185">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1185" end="1186">
+</content>
+
+</paragraph>
+<paragraph start="1186" end="1187">
+<LeftIndent>140.0</LeftIndent>
+<content start="1186" end="1187">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1187" end="1479">
+<LeftIndent>140.0</LeftIndent>
+<content start="1187" end="1258">
+<size>11</size></content>
+
+<content start="1258" end="1259">
+<icon>fixrect.gif</icon></content>
+
+<content start="1259" end="1479">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1479" end="1480">
+<LeftIndent>140.0</LeftIndent>
+<content start="1479" end="1480">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1480" end="1916">
+<LeftIndent>140.0</LeftIndent>
+<content start="1480" end="1811">
+<size>11</size></content>
+
+<content start="1811" end="1812">
+<icon>fixoval.gif</icon></content>
+
+<content start="1812" end="1894">
+<size>11</size></content>
+
+<content start="1894" end="1895">
+<icon>unfixrect.gif</icon></content>
+
+<content start="1895" end="1899">
+<size>11</size></content>
+
+<content start="1899" end="1900">
+<icon>unfixoval.gif</icon></content>
+
+<content start="1900" end="1916">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1916" end="1917">
+<LeftIndent>140.0</LeftIndent>
+<content start="1916" end="1917">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1917" end="2210">
+<LeftIndent>140.0</LeftIndent>
+<content start="1917" end="2210">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2210" end="2211">
+<LeftIndent>140.0</LeftIndent>
+<content start="2210" end="2211">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2211" end="2220">
+<LeftIndent>140.0</LeftIndent>
+<content start="2211" end="2219">
+<bold>true</bold><size>11</size></content>
+
+<content start="2219" end="2220">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2220" end="2221">
+<LeftIndent>140.0</LeftIndent>
+<content start="2220" end="2221">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2221" end="2298">
+<LeftIndent>140.0</LeftIndent>
+<content start="2221" end="2298">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2298" end="2299">
+<LeftIndent>140.0</LeftIndent>
+<content start="2298" end="2299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2299" end="2301">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2299" end="2300">
+<component><class>org.concord.modeler.PageMd3d</class><resource>fixatom3d$0.mdd</resource><coordinate>fixatom3d$0.xyz</coordinate><width>500</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="2300" end="2301">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2301" end="2340">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2301" end="2339">
+<size>10</size></content>
+
+<content start="2339" end="2340">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2340" end="2341">
+<LeftIndent>140.0</LeftIndent>
+<content start="2340" end="2341">
+</content>
+
+</paragraph>
+<paragraph start="2341" end="2342">
+<LeftIndent>140.0</LeftIndent>
+<content start="2341" end="2342">
+</content>
+
+</paragraph>
+<paragraph start="2342" end="2370">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2342" end="2344">
+<size>11</size></content>
+
+<content start="2344" end="2352">
+<href>delete3d.cml</href><size>11</size></content>
+
+<content start="2352" end="2355">
+<size>11</size></content>
+
+<content start="2355" end="2360">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="2360" end="2363">
+<size>11</size></content>
+
+<content start="2363" end="2367">
+<href>changevelocity3d.cml</href><size>11</size></content>
+
+<content start="2367" end="2369">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

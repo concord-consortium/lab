@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a script console</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a script console
+&lt; Previous | Index | Next &gt;
+
+A console provides a dialog window to type in and execute MW scripts or   Jmol scripts to interact with models in a command-line style. Scripts are very useful for an author to produce certain effects of models that are not possible using only the GUI.
+
+To insert a scripting console, move the caret to the position in the page where the console should be located, and then select &quot;Insert&gt;Standard Controller for Model&gt;Script Console&quot;.
+
+As you can insert multiple models into a page, you can insert for each model a console. In the following, we show two Jmol molecular viewers, each with a console (note: the following molecules are live components, not screenshots):
+ 
+  
+  
+&#12304;These are embedded Jmol Containers and their script consoles.&#12305;
+
+This provides you with a convenient way to interact with multiple models with scripts.
+
+Note: If you know nothing about   Jmol scripts, you may want to try some very simple commands. Here are some simple examples:
+
+   Type or copy/paste &quot;reset&quot; to reset the molecule to the default position.
+   Type or copy/paste &quot;background [0, 0, 0]&quot; to set the background color to be black.
+   Type or copy/paste &quot;spin&quot; to spin the molecule.
+
+The console behaves a little like a   Unix shell (i.e the command line interface on a Unix operating system):
+
+   To clean up the scripts in the console, type the &quot;clear&quot; or &quot;cls&quot; and hit the RETURN key.
+   To recall previous commands, use the Up/Down arrows.
+
+Currently, a script console does not have a unique identifier, as it is mainly designed to be used by scripters, not end users. It is generally removed after use so that the end users will not see it.
+
+Changing and removing a script console
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove, and copy a script console.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1856">
+<paragraph start="0" end="27">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>2</Alignment>
+<content start="0" end="26">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="55">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>128.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>2</Alignment>
+<content start="27" end="29">
+<size>11</size></content>
+
+<content start="29" end="37">
+<href>insertComboBox.cml</href><size>11</size></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="52">
+<href>insertNumericBox.cml</href><size>11</size></content>
+
+<content start="52" end="54">
+<size>11</size></content>
+
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="56">
+<LeftIndent>128.0</LeftIndent>
+<content start="55" end="56">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="56" end="309">
+<LeftIndent>140.0</LeftIndent>
+<content start="56" end="114">
+<size>11</size></content>
+
+<content start="114" end="124">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="124" end="128">
+<size>11</size></content>
+
+<content start="128" end="129">
+<icon>htmlink.gif</icon></content>
+
+<content start="129" end="130">
+<size>11</size></content>
+
+<content start="130" end="142">
+<href>http://www.stolaf.edu/academics/chemapps/jmol/docs/</href><size>11</size></content>
+
+<content start="142" end="309">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="309" end="310">
+<LeftIndent>128.0</LeftIndent>
+<content start="309" end="310">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="310" end="492">
+<LeftIndent>140.0</LeftIndent>
+<content start="310" end="492">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="492" end="493">
+<LeftIndent>140.0</LeftIndent>
+<content start="492" end="493">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="493" end="725">
+<LeftIndent>140.0</LeftIndent>
+<content start="493" end="707">
+<size>11</size></content>
+
+<content start="707" end="710">
+<italic>true</italic><size>11</size></content>
+
+<content start="710" end="725">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="725" end="727">
+<LeftIndent>128.0</LeftIndent>
+<content start="725" end="726">
+<size>11</size></content>
+
+<content start="726" end="727">
+</content>
+
+</paragraph>
+<paragraph start="727" end="730">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="727" end="728">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>frank off;</script><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>benzene.pdb</resource><state>scriptconsole$0.jms</state><width>250.0</width>
+<height>200.0</height>
+</component></content>
+
+<content start="728" end="729">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>frank off;</script><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>ethane.pdb</resource><state>scriptconsole$1.jms</state><width>250.0</width>
+<height>200.0</height>
+</component></content>
+
+<content start="729" end="730">
+</content>
+
+</paragraph>
+<paragraph start="730" end="733">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="730" end="731">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<width>240</width><height>200</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="731" end="732">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>1</model>
+<width>240</width><height>200</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="732" end="733">
+</content>
+
+</paragraph>
+<paragraph start="733" end="797">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="733" end="734">
+<bold>true</bold><size>13</size></content>
+
+<content start="734" end="795">
+<size>10</size></content>
+
+<content start="795" end="796">
+<bold>true</bold><size>13</size></content>
+
+<content start="796" end="797">
+</content>
+
+</paragraph>
+<paragraph start="797" end="798">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="797" end="798">
+</content>
+
+</paragraph>
+<paragraph start="798" end="885">
+<LeftIndent>140.0</LeftIndent>
+<content start="798" end="885">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="885" end="886">
+<LeftIndent>140.0</LeftIndent>
+<content start="885" end="886">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="886" end="1012">
+<LeftIndent>140.0</LeftIndent>
+<content start="886" end="918">
+<size>11</size></content>
+
+<content start="918" end="919">
+<icon>htmlink.gif</icon></content>
+
+<content start="919" end="920">
+<size>11</size></content>
+
+<content start="920" end="932">
+<href>http://www.stolaf.edu/academics/chemapps/jmol/docs/</href><size>11</size></content>
+
+<content start="932" end="1012">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1012" end="1013">
+<LeftIndent>140.0</LeftIndent>
+<content start="1012" end="1013">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1013" end="1090">
+<LeftIndent>160.0</LeftIndent>
+<content start="1013" end="1014">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1014" end="1016">
+</content>
+
+<content start="1016" end="1036">
+<size>11</size></content>
+
+<content start="1036" end="1041">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1041" end="1090">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1090" end="1176">
+<LeftIndent>160.0</LeftIndent>
+<content start="1090" end="1091">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1091" end="1093">
+</content>
+
+<content start="1093" end="1113">
+<size>11</size></content>
+
+<content start="1113" end="1133">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1133" end="1176">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1176" end="1227">
+<LeftIndent>160.0</LeftIndent>
+<content start="1176" end="1177">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1177" end="1179">
+</content>
+
+<content start="1179" end="1199">
+<size>11</size></content>
+
+<content start="1199" end="1203">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1203" end="1227">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1227" end="1228">
+<LeftIndent>140.0</LeftIndent>
+<content start="1227" end="1228">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1228" end="1338">
+<LeftIndent>140.0</LeftIndent>
+<content start="1228" end="1264">
+<size>11</size></content>
+
+<content start="1264" end="1265">
+<icon>htmlink.gif</icon></content>
+
+<content start="1265" end="1266">
+<size>11</size></content>
+
+<content start="1266" end="1276">
+<href>http://en.wikipedia.org/wiki/Unix_shell</href><size>11</size></content>
+
+<content start="1276" end="1338">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1338" end="1339">
+<LeftIndent>140.0</LeftIndent>
+<content start="1338" end="1339">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1339" end="1432">
+<LeftIndent>160.0</LeftIndent>
+<content start="1339" end="1340">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1340" end="1342">
+</content>
+
+<content start="1342" end="1392">
+<size>11</size></content>
+
+<content start="1392" end="1397">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1397" end="1403">
+<size>11</size></content>
+
+<content start="1403" end="1406">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1406" end="1432">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1432" end="1488">
+<LeftIndent>160.0</LeftIndent>
+<content start="1432" end="1433">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1433" end="1435">
+</content>
+
+<content start="1435" end="1488">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1488" end="1489">
+<LeftIndent>160.0</LeftIndent>
+<content start="1488" end="1489">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1489" end="1690">
+<LeftIndent>140.0</LeftIndent>
+<content start="1489" end="1690">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1690" end="1691">
+<LeftIndent>160.0</LeftIndent>
+<content start="1690" end="1691">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1691" end="1730">
+<LeftIndent>140.0</LeftIndent>
+<content start="1691" end="1729">
+<bold>true</bold><size>11</size></content>
+
+<content start="1729" end="1730">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1730" end="1731">
+<LeftIndent>160.0</LeftIndent>
+<content start="1730" end="1731">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1731" end="1827">
+<LeftIndent>140.0</LeftIndent>
+<content start="1731" end="1736">
+<size>11</size></content>
+
+<content start="1736" end="1765">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="1765" end="1827">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1827" end="1828">
+<LeftIndent>140.0</LeftIndent>
+<content start="1827" end="1828">
+</content>
+
+</paragraph>
+<paragraph start="1828" end="1856">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<Alignment>2</Alignment>
+<content start="1828" end="1830">
+<size>11</size></content>
+
+<content start="1830" end="1838">
+<href>insertComboBox.cml</href><size>11</size></content>
+
+<content start="1838" end="1841">
+<size>11</size></content>
+
+<content start="1841" end="1846">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="1846" end="1849">
+<size>11</size></content>
+
+<content start="1849" end="1853">
+<href>insertNumericBox.cml</href><size>11</size></content>
+
+<content start="1853" end="1855">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

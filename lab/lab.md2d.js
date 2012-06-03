@@ -992,34 +992,86 @@ var constants = require('../constants'),
   This function also accepts a callback function which will be called with a hash representing
   the new coefficients, whenever the LJ coefficients are changed for the returned calculator.
 */
-exports.makeLennardJonesCalculator = function(params, cb) {
+exports.makeLennardJonesCalculator = function(elements, cb) {
+  /*
+     all of these pairwise variables are symmetrical matrices reprsenting the
+     parameters between each pair of elements. Thus pairwiseEpsilons[0][0] is the
+     epsilon component of the LJ force between two atoms of element 0, while
+     pairwiseEpsilons[0][1] and pairwiseEpsilons[1][0] both represent the epsilon
+     component between elements 0 and 1
+  */
+  var pairwiseEpsilons          = [],    // parameter; depth of the potential well, in eV
+      pairwiseSigmas            = [],    // parameter: characteristic distance from particle, in nm
+      pairwiseRmins             = [],    // distance from particle at which the potential is at its minimum
+      pairwiseAlphaPotentials   = [],    // precalculated; units are eV * nm^12
+      pairwiseBetaPotentials    = [],    // precalculated; units are eV * nm^6
+      pairwiseAlphaForces       = [],    // units are "MW Force Units" * nm^13
+      pairwiseBetaForces        = [],    // units are "MW Force Units" * nm^7
+      pairwiseCutoffDistanceSq  = [],
 
-  var epsilon,          // parameter; depth of the potential well, in eV
-      sigma,            // parameter: characteristic distance from particle, in nm
+      /*
+        Precalculates all of the paramters between every pair of elements.
+        @param elements: Elements of the form
+          [ [mass_0, epsilon_0, sigma_0], [mass_1, epsilon_1, sigma_1], ...]
 
-      rmin,             // distance from particle at which the potential is at its minimum
-      alpha_Potential,  // precalculated; units are eV * nm^12
-      beta_Potential,   // precalculated; units are eV * nm^6
-      alpha_Force,      // units are "MW Force Units" * nm^13
-      beta_Force,       // units are "MW Force Units" * nm^7
+        If we pass in
+          [ [30, 1, 1], [30, 2, 2] ]
 
-      setCoefficients = function(e, s) {
-        // Input units:
-        //  epsilon: eV
-        //  sigma:   nm
+        We will set
 
-        epsilon = e;
-        sigma   = s;
-        rmin    = Math.pow(2, 1/6) * sigma;
+        pairwiseEpsilons = [[ 1 , 1.5],
+                            [1.5,  2 ]]
 
-        if (epsilon != null && sigma != null) {
-          alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
-          beta_Potential  = 4 * epsilon * Math.pow(sigma, 6);
+        pairwiseSigmas   = [[ 1   , 1.414],
+                            [1.414,  2   ]]
 
-          // (1 J * nm^12) = (1 N * m * nm^12)
-          // (1 N * m * nm^12) * (b nm / m) * (c MWUnits / N) = (abc MWUnits nm^13)
-          alpha_Force = 12 * constants.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
-          beta_Force =  6 * constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+        rmin             = [[1.122, 1.587],
+                            [1.587, 2.245]]
+
+        alpha_Potential  = [[ 4   , 384  ],
+                            [384  , 32768]]
+
+        ...etc.
+      */
+      // FIXME: validate
+      setElements = function(elements) {
+        var i, ii, j, jj, epsilon, sigma, rmin, alpha_Potential, beta_Potential, alpha_Force, beta_Force, cutoffDistance;
+        for (i=0, ii=elements.length; i<ii; i++) {
+          pairwiseEpsilons[i]           = [];
+          pairwiseSigmas[i]             = [];
+          pairwiseRmins[i]              = [];
+          pairwiseAlphaPotentials[i]    = [];
+          pairwiseBetaPotentials[i]     = [];
+          pairwiseAlphaForces[i]        = [];
+          pairwiseBetaForces[i]         = [];
+          pairwiseCutoffDistanceSq[i]   = [];
+
+          for (j=0; j<i+1; j++) {
+            epsilon = (elements[i][1] + elements[j][1]) / 2;
+            sigma   = Math.sqrt(elements[i][2] * elements[j][2]);
+
+            rmin    =  Math.pow(2, 1/6) * sigma;
+            cutoffDistance = rmin * 5;
+
+            if (epsilon != null && sigma != null) {
+              alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
+              beta_Potential  = 4 * epsilon * Math.pow(sigma, 6);
+
+              // (1 J * nm^12) = (1 N * m * nm^12)
+              // (1 N * m * nm^12) * (b nm / m) * (c MWUnits / N) = (abc MWUnits nm^13)
+              alpha_Force = 12 * constants.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+              beta_Force =  6 * constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+            }
+
+            pairwiseEpsilons[i][j]          = pairwiseEpsilons[j][i]    = epsilon;
+            pairwiseSigmas[i][j]            = pairwiseSigmas[j][i]      = sigma;
+            pairwiseRmins[i][j]             = pairwiseRmins[j][i]       = rmin;
+            pairwiseAlphaPotentials[i][j]   = pairwiseAlphaPotentials[j][i]   = alpha_Potential;
+            pairwiseBetaPotentials[i][j]    = pairwiseBetaPotentials[j][i]    = beta_Potential;
+            pairwiseAlphaForces[i][j]       = pairwiseAlphaForces[j][i] = alpha_Force;
+            pairwiseBetaForces[i][j]        = pairwiseBetaForces[j][i]  = beta_Force;
+            pairwiseCutoffDistanceSq[i][j]  = pairwiseCutoffDistanceSq[j][i] = (cutoffDistance * cutoffDistance)
+          }
         }
 
         if (typeof cb === 'function') cb(getCoefficients(), this);
@@ -1027,9 +1079,10 @@ exports.makeLennardJonesCalculator = function(params, cb) {
 
       getCoefficients = function() {
         return {
-          epsilon: epsilon,
-          sigma  : sigma,
-          rmin   : rmin
+          epsilon: pairwiseEpsilons,
+          sigma  : pairwiseSigmas,
+          rmin   : pairwiseRmins,
+          cutoffDistanceSq : pairwiseCutoffDistanceSq
         };
       },
 
@@ -1050,25 +1103,15 @@ exports.makeLennardJonesCalculator = function(params, cb) {
 
       // At creation time, there must be a valid epsilon and sigma ... we're not gonna check during
       // inner-loop force calculations!
-      validateEpsilon(params.epsilon);
-      validateSigma(params.sigma);
+      // validateEpsilon(params.epsilon);
+      // validateSigma(params.sigma);
 
       // Initialize coefficients to passed-in values
-      setCoefficients(params.epsilon, params.sigma);
+      setElements(elements);
 
   return calculator = {
 
     coefficients: getCoefficients,
-
-    setEpsilon: function(e) {
-      validateEpsilon(e);
-      setCoefficients(e, sigma);
-    },
-
-    setSigma: function(s) {
-      validateSigma(s);
-      setCoefficients(epsilon, s);
-    },
 
     /**
       Input units: r_sq: nm^2
@@ -1076,38 +1119,38 @@ exports.makeLennardJonesCalculator = function(params, cb) {
 
       minimum is at r=rmin, V(rmin) = 0
     */
-    potentialFromSquaredDistance: function(r_sq) {
-       return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3);
+    potentialFromSquaredDistance: function(r_sq, el0, el1) {
+       return pairwiseAlphaPotentials[el0][el1]*Math.pow(r_sq, -6) - pairwiseBetaPotentials[el0][el1]*Math.pow(r_sq, -3);
     },
 
     /**
       Input units: r: nm
       Output units: eV
     */
-    potential: function(r) {
-      return calculator.potentialFromSquaredDistance(r*r);
+    potential: function(r, el0, el1) {
+      return calculator.potentialFromSquaredDistance(r*r, el0, el1);
     },
 
     /**
       Input units: r_sq: nm^2
       Output units: MW Force Units / nm (= Dalton / fs^2)
     */
-    forceOverDistanceFromSquaredDistance: function(r_sq) {
+    forceOverDistanceFromSquaredDistance: function(r_sq, el0, el1) {
       // optimizing divisions actually does appear to be *slightly* faster
       var r_minus2nd  = 1 / r_sq,
           r_minus6th  = r_minus2nd * r_minus2nd * r_minus2nd,
           r_minus8th  = r_minus6th * r_minus2nd,
           r_minus14th = r_minus8th * r_minus6th;
 
-      return alpha_Force*r_minus14th - beta_Force*r_minus8th;
+      return pairwiseAlphaForces[el0][el1]*r_minus14th - pairwiseBetaForces[el0][el1]*r_minus8th;
     },
 
     /**
       Input units: r: nm
       Output units: MW Force Units (= Dalton * nm / fs^2)
     */
-    force: function(r) {
-      return r * calculator.forceOverDistanceFromSquaredDistance(r*r);
+    force: function(r, el0, el1) {
+      return r * calculator.forceOverDistanceFromSquaredDistance(r*r, el0, el1);
     }
   };
 };
@@ -1209,7 +1252,7 @@ var arrays       = require('./arrays/arrays').arrays,
       if (isNaN(temperature)) {
         throw new Error("md2d: requested temperature " + t + " could not be understood.");
       }
-      if (temperature <= 0) {
+      if (temperature < 0) {
         throw new Error("md2d: requested temperature " + temperature + " was less than zero");
       }
       if (temperature === Infinity) {
@@ -1299,12 +1342,8 @@ exports.makeModel = function() {
       // For now properties are just defined by index, with no additional lookup for
       // the index (e.g. elements[0][ELEM_MASS_INDEX] for the mass of elem 0). We
       // have few enough properties that we currently don't need this additional lookup.
-      // element definition: [ MASS_IN_DALTONS ]
-      defaultElements = [
-        [ ARGON_MASS_IN_DALTON ]
-      ],
-
-      elements = defaultElements,       // set elements to defaults immediately, set later if requested
+      // element definition: [ MASS_IN_DALTONS, EPSILON, SIGMA ]
+      elements,
 
       // Individual property arrays for the particles. Each is a length-N array.
       radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element,
@@ -1337,23 +1376,29 @@ exports.makeModel = function() {
       // Object containing observations of the sytem (temperature, etc)
       outputState = window.state = {},
 
-      // Cutoff distance beyond which the Lennard-Jones force is clipped to 0.
-      cutoffDistance_LJ,
-
-      // Square of cutoff distance; this is a convenience for updatePairwiseAccelerations
-      cutoffDistance_LJ_sq,
+      // Paired square of cutoff distance; this is a convenience for updatePairwiseAccelerations
+      cutoffDistance_LJ_sq = [],
 
       // Callback that recalculates cutoffDistance_LJ when the Lennard-Jones sigma parameter changes.
       ljCoefficientsChanged = function(coefficients) {
-        cutoffDistance_LJ = coefficients.rmin * 5;
-        cutoffDistance_LJ_sq = cutoffDistance_LJ * cutoffDistance_LJ;
+        cutoffDistance_LJ_sq = coefficients.cutoffDistanceSq;
+        if (radius && element) {
+          setRadii();
+        }
+      },
+
+      setRadii = function() {
+        var sigmas = lennardJones.coefficients().sigma,
+            i,
+            len;
+
+        for (i = 0, len = radius.length; i < len; i++) {
+          radius[i] = 0.5 * sigmas[element[i]][element[i]];
+        }
       },
 
       // An object that calculates the magnitude of the Lennard-Jones force or potential at a given distance.
-      lennardJones = window.lennardJones = makeLennardJonesCalculator({
-        epsilon: ARGON_LJ_EPSILON_IN_EV,
-        sigma:   ARGON_LJ_SIGMA_IN_NM
-      }, ljCoefficientsChanged),
+      lennardJones,
 
       // Function that accepts a value T and returns an average of the last n values of T (for some n).
       T_windowed,
@@ -1519,10 +1564,14 @@ exports.makeModel = function() {
       // ax and ay before calling this function.
       updatePairwiseAccelerations = function(i) {
         var j, dx, dy, r_sq, f_over_r, f_over_r_dx, f_over_r_dy,
-            mass_inv = 1/elements[element[i]][0], mass_j_inv, q_i = charge[i];
+            el_i = element[i],
+            el_j,
+            mass_inv = 1/elements[el_i][0], mass_j_inv, q_i = charge[i];
 
         for (j = 0; j < i; j++) {
-          mass_j_inv = 1/elements[element[j]][0];
+          el_j = element[j];
+
+          mass_j_inv = 1/elements[el_j][0];
 
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -1530,8 +1579,8 @@ exports.makeModel = function() {
 
           f_over_r = 0;
 
-          if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
-            f_over_r += lennardJones.forceOverDistanceFromSquaredDistance(r_sq);
+          if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el_i][el_j]) {
+            f_over_r += lennardJones.forceOverDistanceFromSquaredDistance(r_sq, el_i, el_j);
           }
 
           if (useCoulombInteraction) {
@@ -1612,26 +1661,26 @@ exports.makeModel = function() {
       return [size[0], size[1]];
     },
 
-    setLJEpsilon: function(e) {
-      lennardJones.setEpsilon(e);
-    },
+    // setLJEpsilon: function(e) {
+    //   lennardJones.setEpsilon(e);
+    // },
 
-    getLJEpsilon: function() {
-      return lennardJones.coefficients().epsilon;
-    },
+    // getLJEpsilon: function() {
+    //   return lennardJones.coefficients().epsilon;
+    // },
 
-    setLJSigma: function(s) {
-      var i;
+    // setLJSigma: function(s) {
+    //   var i;
 
-      lennardJones.setSigma(s);
-      for (i = 0; i < N; i++) {
-        radius[i] = s/2;
-      }
-    },
+    //   lennardJones.setSigma(s);
+    //   for (i = 0; i < N; i++) {
+    //     radius[i] = s/2;
+    //   }
+    // },
 
-    getLJSigma: function() {
-      return lennardJones.coefficients().sigma;
-    },
+    // getLJSigma: function() {
+    //   return lennardJones.coefficients().sigma;
+    // },
 
     getLJCalculator: function() {
       return lennardJones;
@@ -1646,9 +1695,10 @@ exports.makeModel = function() {
     */
     setElements: function(elems) {
       if (atomsHaveBeenCreated) {
-        throw new Error("md2d: setElements cannot be called after elements have been created");
+        throw new Error("md2d: setElements cannot be called after atoms have been created");
       }
       elements = elems;
+      lennardJones = window.lennardJones = makeLennardJonesCalculator(elements, ljCoefficientsChanged);
     },
 
     // allocates 'nodes' array of arrays, sets number of atoms.
@@ -1661,9 +1711,9 @@ exports.makeModel = function() {
     //     Y: the Y locations of the atoms to create
     //   num: the number of atoms to create
     createAtoms: function(options) {
-      var rmin = lennardJones.coefficients().rmin,
-          arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular';
+      var arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
+          i;
 
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
@@ -1684,15 +1734,15 @@ exports.makeModel = function() {
         throw new Error("md2d: createAtoms was passed a non-integral 'N' option.");
       }
       if (N < N_MIN) {
-        throw new Error("md2d: create Atoms was passed an 'N' option less than the minimum allowable value N_MIN = " + N_MIN + ".");
+        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + N + " which is less than the minimum allowable value: N_MIN = " + N_MIN + ".");
       }
       if (N > N_MAX) {
-        throw new Error("md2d: create Atoms was passed an 'N' option greater than the maximum allowable value N_MAX = " + N_MAX + ".");
+        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + N + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
       }
 
       nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
 
-      radius = model.radius = nodes[INDICES.RADIUS] = arrays.create(N, 0.5 * rmin, arrayType );
+      radius = model.radius = nodes[INDICES.RADIUS] = arrays.create(N, 0, arrayType);
       px     = model.px     = nodes[INDICES.PX]     = arrays.create(N, 0, arrayType);
       py     = model.py     = nodes[INDICES.PY]     = arrays.create(N, 0, arrayType);
       x      = model.x      = nodes[INDICES.X]      = arrays.create(N, 0, arrayType);
@@ -1704,7 +1754,7 @@ exports.makeModel = function() {
       ay     = model.ay     = nodes[INDICES.AY]     = arrays.create(N, 0, arrayType);
       charge = model.charge = nodes[INDICES.CHARGE] = arrays.create(N, 0, arrayType);
 
-      // NOTE, this is a Uint8Array for now, but it's not clear if this is the best pattern
+      // NOTE, this is a Uint8Array for now, but this may not be the best pattern in the future
       // because Uint8Arrays length cannot be changed. Right now we never add or remove atoms
       // from the model without re-creating the atom arrays, but that might change in the future.
       element = model.element = nodes[INDICES.ELEMENT] = arrays.create(N, 0, uint8ArrayType);
@@ -1748,6 +1798,8 @@ exports.makeModel = function() {
       }
       totalMass = model.totalMass = cumulativeTotalMass;
 
+      setRadii();
+
       // Publish the current state
       T = computeTemperature();
       model.computeOutputState();
@@ -1760,7 +1812,8 @@ exports.makeModel = function() {
           ncols = Math.ceil(N/nrows),
 
           i, r, c, rowSpacing, colSpacing,
-          vMagnitude, vDirection;
+          vMagnitude, vDirection,
+          coefficients = lennardJones.coefficients();
 
       validateTemperature(temperature);
 
@@ -1794,6 +1847,7 @@ exports.makeModel = function() {
           charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
 
           element[i] = Math.floor(Math.random() * elements.length);     // random element
+          radius[i] = coefficients.rmin[element[i]][element[i]] / 2;
 
           model.totalMass = totalMass += elements[element[i]][0];
         }
@@ -1905,7 +1959,7 @@ exports.makeModel = function() {
 
           // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
           if (useLennardJonesInteraction ) {
-            PE += -lennardJones.potentialFromSquaredDistance(r_sq);
+            PE += -lennardJones.potentialFromSquaredDistance(r_sq, element[i], element[j]);
           }
           if (useCoulombInteraction) {
             PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);

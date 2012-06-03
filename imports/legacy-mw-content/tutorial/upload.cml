@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Submitting a page</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Submitting a page
+
+&lt; Previous | Index | Next &gt;
+
+The Concord Consortium provides a public web space in which you can submit a page you have created and would like to share with our world-wide users.
+
+To upload a single page to our database, open it first and then select &quot;Webspace&gt;Submit Current Page&quot; menu. After a disclaimer about privacy, you will see the following dialog window:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+Registration is required for submitting your work. After you have registered with MW, an account will be created for you. Once you log into your account, you will have access to all the models you have submitted to the MW Space. Once a model is submitted, it can be viewed by anyone. But you can choose to remove it from the public space. An item you remove will be placed in a trash can, in which you can revisit and undo the deletion.
+
+ 
+Important: If you have used scripts to link to resources that are not part of the page, for example, you have used the load command associated with a button or check box to load a model into a simulator, the linked model will NOT be included in the submission. If you know you will create some complex pages such as the one described above, you should generally create a new folder to store the pages and the models, and then submit the whole folder following the instructions described in the next page.
+ 
+
+Submitted pages can be viewed by clicking the &quot;Submissions&quot; link on the main page.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1472">
+<paragraph start="0" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="17">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<RightIndent>20.0</RightIndent>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="47">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="21">
+<size>11</size></content>
+
+<content start="21" end="29">
+<size>11</size><href>classes.cml</href></content>
+
+<content start="29" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<size>11</size><href>index3.cml</href></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<size>11</size><href>upload2.cml</href></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="198">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="82">
+<size>11</size></content>
+
+<content start="82" end="98">
+<size>11</size><href>modelspace.jsp?client=mw</href></content>
+
+<content start="98" end="198">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="198" end="199">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="198" end="199">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="199" end="383">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="199" end="383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="383" end="384">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="383" end="384">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="384" end="387">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="384" end="385">
+<size>11</size></content>
+
+<content start="385" end="386">
+<icon>UploadDialog.gif</icon><size>11</size></content>
+
+<content start="386" end="387">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="387" end="411">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="387" end="388">
+<size>13</size><bold>true</bold></content>
+
+<content start="388" end="409">
+<size>10</size></content>
+
+<content start="409" end="410">
+<size>13</size><bold>true</bold></content>
+
+<content start="410" end="411">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="411" end="412">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="411" end="412">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="412" end="849">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="412" end="849">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="849" end="850">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="849" end="850">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="850" end="852">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="850" end="851">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="851" end="852">
+</content>
+
+</paragraph>
+<paragraph start="852" end="1357">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="852" end="861">
+<size>11</size><bold>true</bold></content>
+
+<content start="861" end="971">
+<size>11</size></content>
+
+<content start="971" end="975">
+<size>11</size><href>script_load.cml</href></content>
+
+<content start="975" end="1346">
+<size>11</size></content>
+
+<content start="1346" end="1355">
+<size>11</size><href>upload2.cml</href></content>
+
+<content start="1355" end="1356">
+<size>11</size></content>
+
+<content start="1356" end="1357">
+</content>
+
+</paragraph>
+<paragraph start="1357" end="1359">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1357" end="1358">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1358" end="1359">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1359" end="1360">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1359" end="1360">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1360" end="1443">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1360" end="1407">
+<size>11</size></content>
+
+<content start="1407" end="1418">
+<size>11</size><href>modelspace.jsp?client=mw</href></content>
+
+<content start="1418" end="1428">
+<size>11</size></content>
+
+<content start="1428" end="1441">
+<size>11</size><href>../index.cml</href></content>
+
+<content start="1441" end="1442">
+<size>11</size></content>
+
+<content start="1442" end="1443">
+</content>
+
+</paragraph>
+<paragraph start="1443" end="1444">
+<content start="1443" end="1444">
+</content>
+
+</paragraph>
+<paragraph start="1444" end="1472">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1444" end="1446">
+<size>11</size></content>
+
+<content start="1446" end="1454">
+<size>11</size><href>classes.cml</href></content>
+
+<content start="1454" end="1457">
+<size>11</size></content>
+
+<content start="1457" end="1462">
+<size>11</size><href>index3.cml</href></content>
+
+<content start="1462" end="1465">
+<size>11</size></content>
+
+<content start="1465" end="1469">
+<size>11</size><href>upload2.cml</href></content>
+
+<content start="1469" end="1471">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

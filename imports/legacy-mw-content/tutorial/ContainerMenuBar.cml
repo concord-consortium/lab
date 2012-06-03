@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Customizing a simulator&apos;s appearance</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Customizing a simulator&apos;s appearance
+
+&lt; Previous | Index | Next &gt;
+
+Generally speaking, the menu bar and the tool bar of a simulator are parts of the model-building interface. It is advised that they be removed for the version of model intended to be used by the end users. Leaving them in their places does no harm, but will confuse the users. There are only two cases in which you want to keep them:
+
+&#10112; If you design an activity that requires the user to construct models on their own, you probably will want to show the menu bar and the tool bar.
+
+&#10113; Some tools that the end users can use to play with the model can be kept in the tool bar (the next section will show you how to customize it).
+
+In most other cases, they should not be seen by the end users. To remove the menu bar and the tool bar, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) somewhere in the model window not occupied by an object, and deselect the &quot;Show Menu Bar&quot; and select &quot;Remove Tool Bar&quot; from the pop-up menu.
+
+If you need to revise a model, you can just put the menu bar and the tool bar back. To restore the menu bar, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) somewhere in the model window not occupied by an object, and select the &quot;Show Menu Bar&quot; check box from the pop-up menu. When the menu bar appears, use the Toolbar menu to add the tool bar or customize one.
+
+If the whole model window is covered by objects, for example, if there is an image no smaller than the whole window of the model container, use SHIFT+right-click (or SHIFT+CTRL+click on Mac OS X without a multiple-button mouse) to invoke the default pop-up menu.
+
+You can also select whether or not the border of a model container should be shown from the default pop-up menu. Hiding the border creates the visual effect as if the objects of the model were directly on the page.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1910">
+<paragraph start="0" end="37">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="36">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="66">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="38" end="40">
+<size>11</size></content>
+
+<content start="40" end="48">
+<size>11</size><href>flow.cml</href></content>
+
+<content start="48" end="51">
+<size>11</size></content>
+
+<content start="51" end="56">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="56" end="59">
+<size>11</size></content>
+
+<content start="59" end="63">
+<size>11</size><href>toolbar.cml</href></content>
+
+<content start="63" end="65">
+<size>11</size></content>
+
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="67">
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="401">
+<LeftIndent>140.0</LeftIndent>
+<content start="67" end="87">
+<size>11</size></content>
+
+<content start="87" end="173">
+<bold>true</bold><size>11</size></content>
+
+<content start="173" end="401">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="401" end="402">
+<LeftIndent>140.0</LeftIndent>
+<content start="401" end="402">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="402" end="549">
+<LeftIndent>160.0</LeftIndent>
+<content start="402" end="403">
+<size>14</size></content>
+
+<content start="403" end="549">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="549" end="550">
+<LeftIndent>140.0</LeftIndent>
+<content start="549" end="550">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="550" end="695">
+<LeftIndent>160.0</LeftIndent>
+<content start="550" end="551">
+<size>14</size></content>
+
+<content start="551" end="673">
+<size>11</size></content>
+
+<content start="673" end="692">
+<size>11</size><href>toolbar.cml</href></content>
+
+<content start="692" end="695">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="695" end="696">
+<LeftIndent>140.0</LeftIndent>
+<content start="695" end="696">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="696" end="1013">
+<LeftIndent>140.0</LeftIndent>
+<content start="696" end="1013">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1013" end="1014">
+<LeftIndent>140.0</LeftIndent>
+<content start="1013" end="1014">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1014" end="1401">
+<LeftIndent>140.0</LeftIndent>
+<content start="1014" end="1401">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1401" end="1402">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1401" end="1402">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1402" end="1665">
+<LeftIndent>140.0</LeftIndent>
+<content start="1402" end="1665">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1665" end="1666">
+<LeftIndent>140.0</LeftIndent>
+<content start="1665" end="1666">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1666" end="1881">
+<LeftIndent>140.0</LeftIndent>
+<content start="1666" end="1823">
+<size>11</size></content>
+
+<content start="1823" end="1879">
+<size>11</size><href>../part2/ZoomIt/main.cml</href></content>
+
+<content start="1879" end="1881">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1881" end="1882">
+<LeftIndent>140.0</LeftIndent>
+<content start="1881" end="1882">
+</content>
+
+</paragraph>
+<paragraph start="1882" end="1910">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1882" end="1884">
+<size>11</size></content>
+
+<content start="1884" end="1892">
+<size>11</size><href>flow.cml</href></content>
+
+<content start="1892" end="1895">
+<size>11</size></content>
+
+<content start="1895" end="1900">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="1900" end="1903">
+<size>11</size></content>
+
+<content start="1903" end="1907">
+<size>11</size><href>toolbar.cml</href></content>
+
+<content start="1907" end="1909">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

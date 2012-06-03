@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Microscopic buoyancy measured by pressure gauges</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Microscopic buoyancy measured by gauges
+
+&lt; Previous | Index | Next &gt;
+
+The fifth test of the pressure gauge is to install two gauges on the opposite sides of the container, apply a potential gradient, and check if the measurements on the gauges reflect the effect of the gradient. A perfect example is to measure the buoyancy of microfluids using two gauges.
+
+The following experiment is set up to prove the existence of buoyancy at the microscopic level under a condition of extraordinary gravity. The system is a mixture composed of two types of molecules, represented by the blue and green particles. The blue particles have a larger radius but a smaller mass, and their number is relatively fewer than that of the green ones (assume that the green ones are water and the blue ones are plastic). A gauge is installed on the bottom surface of an obstacle fixed at the top of the container. Another one is installed on the top surface of an obstacle fixed at the bottom of the container. The two gauges measure the partial pressure of the blue particles (the Ws particles), and the total pressure. The periodic boundary condition is applied in the horizontal direction to eliminate the boundary effect. 
+
+  
+  
+&#12304;This is an embedded model container.&#12305;
+
+ 
+Important: If you care about getting more reliable results, increase the recorder length to at least 500 frames (set this under the &quot;Recorder&quot; tab in the Preferences dialog).
+ 
+
+The gravity (g=20 m/s2, about twice as much as the gravitational acceleration on the surface of the Earth) is initially on. Run the simulation until the tape is full and compare the pressure readings on the two gauges. Then turn off the gravity, and repeat the simulation.
+
+The simulation result shows a striking agreement with reality: Although the bottom gauge measures a higher pressure than does the top gauge under gravity (this is consistent to the well-known   barometric formula that states pressure decreases with respect to altitude), the partial pressure measured by the bottom gauge is lower than that by the top gauge! This means the probability of finding a blue particle is higher at the top than at the bottom. If we turn off the gravity, we will measure approximately the same total pressures and the same partial pressure at the top and at the bottom. Hence, the existence of buoyancy at the atomic level is proven.
+
+In fact, the molecular picture for buoyancy is quite straightforward. As we know, a thermodynamical system seeks for reducing its free energy. The potential energy of the system lowers when: (1) heavier molecules occupy the lower part of the container; (2) smaller molecules occupy the lower part of the container. The second situation lowers the potential energy because more mass will be in the lower part as we can stack up more smaller molecules. The combination of (1) and (2) is the mass density. The entire process of molecules exchanging their positions up and down never ends at finite temperature, which allows the system to settle down at an equilibrium if it is not already equilibrated.
+
+Again, this is a nice proof that a macroscopic phenomenon can ALWAYS be explained using atomic-scale reasoning, with the aid of a computer to simulate an ensemble of a reasonable size (something hard for us but easy for computers).
+
+More accurate results
+
+The results of a set of reference simulations carried out by the author are reported below (only the partial pressures are shown, the total pressures are not shown because the result is clear for them):
+
+    
+The cummulative running averages of the measured partial pressures for the blue particles. The left figure is the result for the case when the gravity is on. The right one is that for the case when the gravity is off. In the figures, the red ones are the partial pressures for the blue particles measured by the top gauge, the other ones are those measured by the bottom gauge. The result that the top gauge measures higher partial pressure than does the bottom gauge can be attributed to buoyancy.
+
+The simulations were carried out for about 1 million femtoseconds (a nanosecond) in the case when the gravity is turned on, and for about 2 million femtoseconds in the case of zero gravity. The result of the first simulation seems clear --- there is an evident difference between the measured partial pressures that is caused by buoyancy. The result of the second simulation shows that some small difference between the measured partial pressures, which should ideally be exactly identical. To get some more confidence for this result, we also provide the result for the partial pressures in the time window from 0 to 1 nanosecond, which shows that the small disagreement should probably be considered as normal fluctuations for such a small system instead of a serious disagreement with the theory. On the same page where that result is displayed, we also show the perfect energy conservation graphs for the simulations of both situations, which is a convincing evidence indicating that everything has gone well in both simulations.
+
+Your results do not need to be exactly identical, but should match at a qualitative level.
+
+Related simulation: Archimedes&apos; Principle of Buoyancy
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="5242">
+<paragraph start="0" end="40">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="39">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="69">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="51">
+<size>11</size><href>wallpressure.cml</href></content>
+
+<content start="51" end="54">
+<size>11</size></content>
+
+<content start="54" end="59">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="59" end="62">
+<size>11</size></content>
+
+<content start="62" end="66">
+<size>11</size><href>osmoticpressure.cml</href></content>
+
+<content start="66" end="68">
+<size>11</size></content>
+
+<content start="68" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="70">
+<LeftIndent>140.0</LeftIndent>
+<content start="69" end="70">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="70" end="358">
+<LeftIndent>140.0</LeftIndent>
+<content start="70" end="304">
+<size>11</size></content>
+
+<content start="304" end="356">
+<size>11</size><bold>true</bold></content>
+
+<content start="356" end="358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="358" end="359">
+<LeftIndent>140.0</LeftIndent>
+<content start="358" end="359">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="359" end="1204">
+<LeftIndent>140.0</LeftIndent>
+<content start="359" end="397">
+<size>11</size></content>
+
+<content start="397" end="496">
+<size>11</size><bold>true</bold></content>
+
+<content start="496" end="1204">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1204" end="1205">
+<LeftIndent>140.0</LeftIndent>
+<content start="1204" end="1205">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1205" end="1208">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1205" end="1206">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>microbuoyancy$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1206" end="1207">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-99cd" style="3" width="1.0" symbol="0" size="4" spacing="5">Ws south pressure:Obstacle #1</time_series_y1>
+<time_series_y2 color="-ffcc67" style="0" width="1.0" symbol="0" size="4" spacing="5">Ws north pressure:Obstacle #0</time_series_y2>
+<time_series_y3 color="-ffff01" style="0" width="0.0" symbol="1" size="4" spacing="5">South pressure:Obstacle #1</time_series_y3>
+<time_series_y4 color="-1000000" style="0" width="0.0" symbol="3" size="4" spacing="5">North pressure:Obstacle #0</time_series_y4>
+<autofity>false</autofity>
+<axis_y_min>0.0</axis_y_min>
+<axis_y_max>6.0</axis_y_max>
+<width>250</width>
+<height>333</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Pressure (bar)</axis_y_title>
+<legend_x>50</legend_x>
+<legend_y>45</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="1207" end="1208">
+</content>
+
+</paragraph>
+<paragraph start="1208" end="1211">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1208" end="1209">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Gravity</title>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Gravitational Field</action>
+</component></content>
+
+<content start="1209" end="1210">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show energies</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<action>Show kinetic, potential and total energies</action>
+</component></content>
+
+<content start="1210" end="1211">
+</content>
+
+</paragraph>
+<paragraph start="1211" end="1250">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1211" end="1249">
+<size>10</size></content>
+
+<content start="1249" end="1250">
+</content>
+
+</paragraph>
+<paragraph start="1250" end="1251">
+<LeftIndent>140.0</LeftIndent>
+<content start="1250" end="1251">
+</content>
+
+</paragraph>
+<paragraph start="1251" end="1253">
+<LeftIndent>140.0</LeftIndent>
+<content start="1251" end="1252">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1252" end="1253">
+</content>
+
+</paragraph>
+<paragraph start="1253" end="1428">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1253" end="1262">
+<size>11</size><bold>true</bold></content>
+
+<content start="1262" end="1427">
+<size>11</size></content>
+
+<content start="1427" end="1428">
+</content>
+
+</paragraph>
+<paragraph start="1428" end="1430">
+<LeftIndent>140.0</LeftIndent>
+<content start="1428" end="1429">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1429" end="1430">
+</content>
+
+</paragraph>
+<paragraph start="1430" end="1431">
+<LeftIndent>140.0</LeftIndent>
+<content start="1430" end="1431">
+</content>
+
+</paragraph>
+<paragraph start="1431" end="1704">
+<LeftIndent>140.0</LeftIndent>
+<content start="1431" end="1452">
+<size>11</size></content>
+
+<content start="1452" end="1453">
+<size>11</size><superscript>true</superscript></content>
+
+<content start="1453" end="1704">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1704" end="1705">
+<LeftIndent>140.0</LeftIndent>
+<content start="1704" end="1705">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1705" end="2365">
+<LeftIndent>140.0</LeftIndent>
+<content start="1705" end="1766">
+<size>11</size><bold>true</bold></content>
+
+<content start="1766" end="1897">
+<size>11</size></content>
+
+<content start="1897" end="1898">
+<icon>htmlink.gif</icon></content>
+
+<content start="1898" end="1899">
+<size>11</size></content>
+
+<content start="1899" end="1917">
+<size>11</size><href>http://hyperphysics.phy-astr.gsu.edu/hbase/kinetic/barfor.html#c2</href></content>
+
+<content start="1917" end="2365">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2365" end="2366">
+<LeftIndent>140.0</LeftIndent>
+<content start="2365" end="2366">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2366" end="3066">
+<LeftIndent>140.0</LeftIndent>
+<content start="2366" end="3066">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3066" end="3067">
+<LeftIndent>140.0</LeftIndent>
+<content start="3066" end="3067">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3067" end="3299">
+<LeftIndent>140.0</LeftIndent>
+<content start="3067" end="3100">
+<size>11</size></content>
+
+<content start="3100" end="3177">
+<size>11</size><bold>true</bold></content>
+
+<content start="3177" end="3299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3299" end="3300">
+<LeftIndent>140.0</LeftIndent>
+<content start="3299" end="3300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3300" end="3322">
+<LeftIndent>140.0</LeftIndent>
+<content start="3300" end="3321">
+<size>11</size><bold>true</bold></content>
+
+<content start="3321" end="3322">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3322" end="3323">
+<LeftIndent>140.0</LeftIndent>
+<content start="3322" end="3323">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3323" end="3526">
+<LeftIndent>140.0</LeftIndent>
+<content start="3323" end="3526">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3526" end="3527">
+<LeftIndent>140.0</LeftIndent>
+<content start="3526" end="3527">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3527" end="3532">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="3527" end="3528">
+<size>11</size></content>
+
+<content start="3528" end="3529">
+<icon>buoyancy1.gif</icon></content>
+
+<content start="3529" end="3530">
+</content>
+
+<content start="3530" end="3531">
+<icon>buoyancy2.gif</icon></content>
+
+<content start="3531" end="3532">
+</content>
+
+</paragraph>
+<paragraph start="3532" end="4031">
+<RightIndent>40.0</RightIndent>
+<LeftIndent>180.0</LeftIndent>
+<content start="3532" end="4030">
+<size>10</size></content>
+
+<content start="4030" end="4031">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4031" end="4032">
+<LeftIndent>140.0</LeftIndent>
+<content start="4031" end="4032">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4032" end="5066">
+<LeftIndent>140.0</LeftIndent>
+<content start="4032" end="4584">
+<size>11</size></content>
+
+<content start="4584" end="4662">
+<size>11</size><href>microbuoyancy2.cml</href></content>
+
+<content start="4662" end="5066">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5066" end="5067">
+<LeftIndent>140.0</LeftIndent>
+<content start="5066" end="5067">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5067" end="5158">
+<LeftIndent>140.0</LeftIndent>
+<content start="5067" end="5158">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5158" end="5159">
+<LeftIndent>140.0</LeftIndent>
+<content start="5158" end="5159">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5159" end="5213">
+<LeftIndent>140.0</LeftIndent>
+<content start="5159" end="5179">
+<size>10</size></content>
+
+<content start="5179" end="5212">
+<size>10</size><href>../student/fluid/archimedes.cml</href></content>
+
+<content start="5212" end="5213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5213" end="5214">
+<LeftIndent>140.0</LeftIndent>
+<content start="5213" end="5214">
+</content>
+
+</paragraph>
+<paragraph start="5214" end="5242">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="5214" end="5216">
+<size>11</size></content>
+
+<content start="5216" end="5224">
+<size>11</size><href>wallpressure.cml</href></content>
+
+<content start="5224" end="5227">
+<size>11</size></content>
+
+<content start="5227" end="5232">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="5232" end="5235">
+<size>11</size></content>
+
+<content start="5235" end="5239">
+<size>11</size><href>osmoticpressure.cml</href></content>
+
+<content start="5239" end="5241">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

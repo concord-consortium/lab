@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Applying external fields</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Applying external fields
+
+&lt; Previous | Index | Next &gt;
+
+As in a 2D model container, there are three types of fields you can apply in a 3D one:
+
+   Gravitational field 
+   Electric field 
+   Magnetic field
+
+To apply them, choose the corresponding items from the &quot;Interactions&quot; tab of the &quot;Model Properties&quot; dialog:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+Applying a gravitational field
+
+If you press &quot;Gravitational Field Editor&quot;, you will see a dialog window that provides a slider for changing the gravitational acceleration. In MW, the gravitational acceleration is not necessarily that of our planet (i.e. 9.8 m/s2). You can vary g in a wide range by pulling the slider. By default, the direction of the gravitational field always points downwards on the computer screen &#8722; it is independent of the rotation of the model&apos;s internal coordinate system. As a result, when you rotate the simulation box, you can change the direction of the graviational field (unless you spin around the vertical axis of the screen). If you do not wish to use this default gravitational field, you can select the x, y, z-components to customize the direction, in which case rotating the simulation box will not change the direction.
+
+ 
+Note: The natural gravity on the Earth is not a significant effect at atomic scale. Gravitational effect on atoms is so weak that it only shows up at macroscopic scale, with trillions and trillions of atoms adding up their weak contributions. In our model with up to a few hundreds of atoms, we use a superstrong gravitational field in order to amplify and accelerate the effect.
+ 
+
+Applying an electric field
+
+If you press &quot;Electric Field Editor&quot;, you will see a dialog window that provides three sliders, which change the x, y, z-component of the electric field respectively. Note that unlike the gravitational field, the direction of an electric field is set relatively to the internal coordinate system and does not change when the simulation box is rotated.
+
+Applying a magnetic field
+
+If you press &quot;Magnetic Field Editor&quot;, you will see a dialog window that provides three sliders, which change the x, y, z-component of the magnetic field respectively. Note that unlike the gravitational field, the direction of a magnetic field is set relatively to the internal coordinate system and does not change when the simulation box is rotated.
+
+Script support
+
+The set command can be used to change an external field:
+
+set gfield [graviational acceleration]; // when the direction of the field always points downward
+set gfield [x-component], [y-component], [z-component];
+set efield [x-component], [y-component], [z-component];
+set bfield [x-component], [y-component], [z-component];
+
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2718">
+<paragraph start="0" end="25">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="24">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="54">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="26" end="28">
+<size>11</size></content>
+
+<content start="28" end="36">
+<href>resizecontainer3d.cml</href><size>11</size></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="44">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="44" end="47">
+<size>11</size></content>
+
+<content start="47" end="51">
+<href>glassbox.cml</href><size>11</size></content>
+
+<content start="51" end="54">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<LeftIndent>140.0</LeftIndent>
+<content start="54" end="55">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="55" end="142">
+<LeftIndent>140.0</LeftIndent>
+<content start="55" end="142">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="142" end="143">
+<LeftIndent>160.0</LeftIndent>
+<content start="142" end="143">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="143" end="167">
+<LeftIndent>160.0</LeftIndent>
+<content start="143" end="144">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="144" end="167">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="167" end="186">
+<LeftIndent>160.0</LeftIndent>
+<content start="167" end="168">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="168" end="186">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="186" end="204">
+<LeftIndent>160.0</LeftIndent>
+<content start="186" end="187">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="187" end="204">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="204" end="205">
+<LeftIndent>100.0</LeftIndent>
+<content start="204" end="205">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="205" end="313">
+<LeftIndent>140.0</LeftIndent>
+<content start="205" end="313">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="313" end="314">
+<LeftIndent>140.0</LeftIndent>
+<content start="313" end="314">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="314" end="317">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="314" end="315">
+<size>11</size></content>
+
+<content start="315" end="316">
+<icon>fieldtab.gif</icon></content>
+
+<content start="316" end="317">
+</content>
+
+</paragraph>
+<paragraph start="317" end="341">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="317" end="340">
+<size>10</size></content>
+
+<content start="340" end="341">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="341" end="342">
+<LeftIndent>140.0</LeftIndent>
+<content start="341" end="342">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="342" end="373">
+<LeftIndent>140.0</LeftIndent>
+<content start="342" end="372">
+<bold>true</bold><size>11</size></content>
+
+<content start="372" end="373">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="373" end="374">
+<LeftIndent>140.0</LeftIndent>
+<content start="373" end="374">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="374" end="1201">
+<LeftIndent>140.0</LeftIndent>
+<content start="374" end="603">
+<size>11</size></content>
+
+<content start="603" end="604">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="604" end="620">
+<size>11</size></content>
+
+<content start="620" end="621">
+<italic>true</italic><size>11</size></content>
+
+<content start="621" end="661">
+<size>11</size></content>
+
+<content start="661" end="761">
+<bold>true</bold><size>11</size></content>
+
+<content start="761" end="763">
+<bold>true</bold></content>
+
+<content start="763" end="838">
+<bold>true</bold><size>11</size></content>
+
+<content start="838" end="1201">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1201" end="1202">
+<LeftIndent>140.0</LeftIndent>
+<content start="1201" end="1202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1202" end="1204">
+<LeftIndent>140.0</LeftIndent>
+<content start="1202" end="1203">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1203" end="1204">
+</content>
+
+</paragraph>
+<paragraph start="1204" end="1584">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1204" end="1208">
+<bold>true</bold><size>11</size></content>
+
+<content start="1208" end="1583">
+<size>11</size></content>
+
+<content start="1583" end="1584">
+</content>
+
+</paragraph>
+<paragraph start="1584" end="1586">
+<LeftIndent>140.0</LeftIndent>
+<content start="1584" end="1585">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1585" end="1586">
+</content>
+
+</paragraph>
+<paragraph start="1586" end="1587">
+<LeftIndent>140.0</LeftIndent>
+<content start="1586" end="1587">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1587" end="1614">
+<LeftIndent>140.0</LeftIndent>
+<content start="1587" end="1613">
+<bold>true</bold><size>11</size></content>
+
+<content start="1613" end="1614">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1614" end="1615">
+<LeftIndent>140.0</LeftIndent>
+<content start="1614" end="1615">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1615" end="1967">
+<LeftIndent>140.0</LeftIndent>
+<content start="1615" end="1967">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1967" end="1968">
+<LeftIndent>140.0</LeftIndent>
+<content start="1967" end="1968">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1968" end="1994">
+<LeftIndent>140.0</LeftIndent>
+<content start="1968" end="1994">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="1994" end="1995">
+<LeftIndent>140.0</LeftIndent>
+<content start="1994" end="1995">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1995" end="2346">
+<LeftIndent>140.0</LeftIndent>
+<content start="1995" end="2346">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2346" end="2347">
+<LeftIndent>140.0</LeftIndent>
+<content start="2346" end="2347">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2347" end="2362">
+<LeftIndent>140.0</LeftIndent>
+<content start="2347" end="2361">
+<bold>true</bold><size>11</size></content>
+
+<content start="2361" end="2362">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2362" end="2363">
+<LeftIndent>140.0</LeftIndent>
+<content start="2362" end="2363">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2363" end="2420">
+<LeftIndent>140.0</LeftIndent>
+<content start="2363" end="2367">
+<size>11</size></content>
+
+<content start="2367" end="2370">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2370" end="2420">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2420" end="2421">
+<LeftIndent>140.0</LeftIndent>
+<content start="2420" end="2421">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2421" end="2519">
+<LeftIndent>160.0</LeftIndent>
+<content start="2421" end="2519">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2519" end="2575">
+<LeftIndent>160.0</LeftIndent>
+<content start="2519" end="2575">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2575" end="2631">
+<LeftIndent>160.0</LeftIndent>
+<content start="2575" end="2631">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2631" end="2687">
+<LeftIndent>160.0</LeftIndent>
+<content start="2631" end="2686">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2686" end="2687">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2687" end="2688">
+<LeftIndent>140.0</LeftIndent>
+<content start="2687" end="2688">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2688" end="2689">
+<LeftIndent>140.0</LeftIndent>
+<content start="2688" end="2689">
+</content>
+
+</paragraph>
+<paragraph start="2689" end="2690">
+<RightIndent>20.0</RightIndent>
+<content start="2689" end="2690">
+</content>
+
+</paragraph>
+<paragraph start="2690" end="2718">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2690" end="2692">
+<size>11</size></content>
+
+<content start="2692" end="2700">
+<href>resizecontainer3d.cml</href><size>11</size></content>
+
+<content start="2700" end="2703">
+<size>11</size></content>
+
+<content start="2703" end="2708">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="2708" end="2711">
+<size>11</size></content>
+
+<content start="2711" end="2715">
+<href>glassbox.cml</href><size>11</size></content>
+
+<content start="2715" end="2717">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Measuring Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Measuring Tool
+
+&lt; Previous | Index | Next &gt;
+
+You can measure the distance between two particles, and the distance between a particle and an arbitrary point. To add a measurement, click the Measuring Tool button (&quot; &quot;), hold down the Shift key, and then click a particle. A line with the center of the selected particle at one end and a small green rectangular hot spot at the other end appears. If you drag the hot spot, the distance between the mouse cursor and the particle will be shown around the center of the line. If you release the mouse button when the mouse cursor is over a particle, the distance between the center of the two particles will be measured. Otherwise the distance between the center of the starting particle and the position where you release the mouse button will be measured. During a simulation, the end of the line attached to a particle will move with it and the measurement of the distance will be refreshed as the positions of the particles update.
+
+                   
+
+ 
+To add a new measurement (multiple measurements are allowed), hold down the SHIFT key and click a particle. To remove a measurement, drag the green hot spot and throw it out of the simulator&apos;s window.
+ 
+
+Try the Measuring Tool in the model below:
+
+ 
+  
+&#12304;This is an embedded model container.&#12305;
+
+Script support
+
+The Measuring Tool can only be used to measure the distance between objects for the current state of the model. The general method of obtaining a time series of a distance is to use the plot command. The following are two examples:
+
+1. Display the time series of the distance between the first and second atom:
+
+plot &quot;sqrt((%atom[0].rx-%atom[1].rx)*(%atom[0].rx-%atom[1].rx)+(%atom[0].ry-%atom[1].ry)*(%atom[0].ry-%atom[1].ry))&quot;
+
+2. Display the time series of the distance between the first atom and the center of the window, and that between the second atom and the center, in the same graph:
+
+plot &quot;sqrt((%atom[0].rx-%width/2)*(%atom[0].rx-%width/2)+(%atom[0].ry-%height/2)*(%atom[0].ry-%height/2))&quot;, &quot;sqrt((%atom[1].rx-%width/2)*(%atom[1].rx-%width/2)+(%atom[1].ry-%height/2)*(%atom[1].ry-%height/2))&quot;
+
+The example graphs can be displayed by clicking the two buttons below the model, which use the above two scripts.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2266">
+<paragraph start="0" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<size>11</size><href>whatIsThisAction.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<size>11</size><href>changeVelocityAction.cml</href></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="984">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="217">
+<size>11</size></content>
+
+<content start="217" end="218">
+<icon>Ruler.gif</icon><size>11</size></content>
+
+<content start="218" end="984">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="984" end="985">
+<LeftIndent>100.0</LeftIndent>
+<content start="984" end="985">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="985" end="1005">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="985" end="986">
+<size>11</size></content>
+
+<content start="986" end="987">
+<icon>MeasureDistanceScene1.gif</icon><size>11</size></content>
+
+<content start="987" end="1003">
+<size>11</size></content>
+
+<content start="1003" end="1004">
+<icon>MeasureDistanceScene2.gif</icon><size>11</size></content>
+
+<content start="1004" end="1005">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1005" end="1006">
+<LeftIndent>140.0</LeftIndent>
+<content start="1005" end="1006">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1006" end="1008">
+<LeftIndent>140.0</LeftIndent>
+<content start="1006" end="1007">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1007" end="1008">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1008" end="1209">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1008" end="1209">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1209" end="1211">
+<LeftIndent>140.0</LeftIndent>
+<content start="1209" end="1210">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1210" end="1211">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1211" end="1212">
+<LeftIndent>140.0</LeftIndent>
+<content start="1211" end="1212">
+</content>
+
+</paragraph>
+<paragraph start="1212" end="1255">
+<LeftIndent>140.0</LeftIndent>
+<content start="1212" end="1254">
+<size>11</size></content>
+
+<content start="1254" end="1255">
+</content>
+
+</paragraph>
+<paragraph start="1255" end="1256">
+<LeftIndent>140.0</LeftIndent>
+<content start="1255" end="1256">
+</content>
+
+</paragraph>
+<paragraph start="1256" end="1258">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1256" end="1257">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>measureDistanceAction$0.mml</resource><menubar>false</menubar><button>Measure Distance</button><button>Select Object</button><button>Draw Lines</button></component></content>
+
+<content start="1257" end="1258">
+</content>
+
+</paragraph>
+<paragraph start="1258" end="1261">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1258" end="1259">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Plot distance between marked atoms</title>
+<tooltip>Plot distance between marked atoms vs. time</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>plot &quot;sqrt((%atom[0].rx-%atom[1].rx)*(%atom[0].rx-%atom[1].rx)+(%atom[0].ry-%atom[1].ry)*(%atom[0].ry-%atom[1].ry))&quot;;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1259" end="1260">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Plot distances between marked atoms and the center</title>
+<tooltip>Plot distances between marked atoms and the center vs. time</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>plot &quot;sqrt((%atom[0].rx-%width/2)*(%atom[0].rx-%width/2)+(%atom[0].ry-%height/2)*(%atom[0].ry-%height/2))&quot;, &quot;sqrt((%atom[1].rx-%width/2)*(%atom[1].rx-%width/2)+(%atom[1].ry-%height/2)*(%atom[1].ry-%height/2))&quot;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1260" end="1261">
+</content>
+
+</paragraph>
+<paragraph start="1261" end="1300">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1261" end="1299">
+<size>10</size></content>
+
+<content start="1299" end="1300">
+</content>
+
+</paragraph>
+<paragraph start="1300" end="1301">
+<LeftIndent>140.0</LeftIndent>
+<content start="1300" end="1301">
+</content>
+
+</paragraph>
+<paragraph start="1301" end="1316">
+<LeftIndent>140.0</LeftIndent>
+<content start="1301" end="1315">
+<size>11</size><bold>true</bold></content>
+
+<content start="1315" end="1316">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1316" end="1317">
+<LeftIndent>140.0</LeftIndent>
+<content start="1316" end="1317">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1317" end="1549">
+<LeftIndent>140.0</LeftIndent>
+<content start="1317" end="1463">
+<size>11</size></content>
+
+<content start="1463" end="1474">
+<size>11</size><href>timeSeries.cml</href></content>
+
+<content start="1474" end="1503">
+<size>11</size></content>
+
+<content start="1503" end="1507">
+<family>Courier New</family><size>11</size><href>script_plot.cml</href></content>
+
+<content start="1507" end="1549">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1549" end="1550">
+<LeftIndent>140.0</LeftIndent>
+<content start="1549" end="1550">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1550" end="1628">
+<LeftIndent>140.0</LeftIndent>
+<content start="1550" end="1628">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1628" end="1629">
+<LeftIndent>140.0</LeftIndent>
+<content start="1628" end="1629">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1629" end="1746">
+<LeftIndent>160.0</LeftIndent>
+<content start="1629" end="1745">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1745" end="1746">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1746" end="1747">
+<LeftIndent>140.0</LeftIndent>
+<content start="1746" end="1747">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1747" end="1911">
+<LeftIndent>140.0</LeftIndent>
+<content start="1747" end="1911">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1911" end="1912">
+<LeftIndent>140.0</LeftIndent>
+<content start="1911" end="1912">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1912" end="2122">
+<LeftIndent>160.0</LeftIndent>
+<content start="1912" end="2121">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2121" end="2122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2122" end="2123">
+<LeftIndent>140.0</LeftIndent>
+<content start="2122" end="2123">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2123" end="2237">
+<LeftIndent>140.0</LeftIndent>
+<content start="2123" end="2236">
+<size>11</size></content>
+
+<content start="2236" end="2237">
+</content>
+
+</paragraph>
+<paragraph start="2237" end="2238">
+<LeftIndent>140.0</LeftIndent>
+<content start="2237" end="2238">
+</content>
+
+</paragraph>
+<paragraph start="2238" end="2266">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2238" end="2240">
+<size>11</size></content>
+
+<content start="2240" end="2248">
+<size>11</size><href>whatIsThisAction.cml</href></content>
+
+<content start="2248" end="2251">
+<size>11</size></content>
+
+<content start="2251" end="2256">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="2256" end="2259">
+<size>11</size></content>
+
+<content start="2259" end="2263">
+<size>11</size><href>changeVelocityAction.cml</href></content>
+
+<content start="2263" end="2265">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

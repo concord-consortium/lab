@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Avoiding stickiness caused by obstacle arrays</page_title>
+<text> Avoiding stickiness caused by obstacle arrays
+
+When an array of obstacles is used in a model, chances are that atoms could get stuck between two obstacles, if the size of the atoms is greater than the distance between the obstacles. This is because an atom trying to leave an obstacle after colliding with it could then collide with another immediately, making it bounce back right away to the original one, and in the next rounds of calculations, the same process is repeated on and on. If the displacements are smaller than one pixel, we might not notice the motion. As a result, the atom can appear to be stuck between the two obstacles.
+
+It must be pointed out that this is not likely to be physical. This happens because our calculation is based on sequential processing of collisions between atoms and obstacles. In other words, our algorithm deals with one obstacle after another. A drawback of this is that the algorithm will miscalculate the processes that should have involved multiple obstacles simultaneously.
+
+The left model in the following shows this problem. The workaround for this particular model is to shift some obstacles in the array so that there is no spot that could trap atoms.
+  
+Note that you do not have to use this workaround if the sizes of atoms are smaller than the distances between the obstacles.</text>
+<section start="0" end="1333">
+<paragraph start="0" end="47">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="46">
+<bold>true</bold><size>14</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>8.0</LeftIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="642">
+<LeftIndent>8.0</LeftIndent>
+<content start="48" end="157">
+<size>11</size></content>
+
+<content start="157" end="232">
+<bold>true</bold><size>11</size></content>
+
+<content start="232" end="642">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="642" end="643">
+<LeftIndent>8.0</LeftIndent>
+<content start="642" end="643">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="643" end="1023">
+<LeftIndent>8.0</LeftIndent>
+<content start="643" end="1023">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1023" end="1024">
+<LeftIndent>8.0</LeftIndent>
+<content start="1023" end="1024">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1024" end="1205">
+<LeftIndent>8.0</LeftIndent>
+<content start="1024" end="1204">
+<size>11</size></content>
+
+<content start="1204" end="1205">
+</content>
+
+</paragraph>
+<paragraph start="1205" end="1208">
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="1205" end="1206">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>sticky$0.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+
+<content start="1206" end="1207">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>sticky$1.mml</resource><menubar>false</menubar><recorder>true</recorder></component></content>
+
+<content start="1207" end="1208">
+</content>
+
+</paragraph>
+<paragraph start="1208" end="1333">
+<SpaceAbove>8.0</SpaceAbove>
+<LeftIndent>8.0</LeftIndent>
+<content start="1208" end="1332">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+</section>
+</document>

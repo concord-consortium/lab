@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Desiging itineraries</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Desiging itineraries
+
+&lt; Previous | Index | Next &gt;
+
+In the Molecular Animation Studio, an itinerary is a sequence of scenes. Once you have saved some scenes, you can select the &quot;Animation &gt; Edit Itinerary&quot; menu to open the Itinerary Editor (as shown in the screenshot below) and edit its properties.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+There are four properties you can set for a scene: the transition time (in seconds), the stop time (in seconds), the information to be displayed and the scripts to be executed at departure and arrival.
+
+   The transition time is the time for &quot;flying&quot; from one scene to another. The longer the transition time is, the slower the &quot;flying&quot; animation is. So if you would like the animation to be slower (e.g. for younger users), you may want to increase this parameter.
+
+   The stop time is the time for pausing at a scene when the Jmol viewer is in non-stop &quot;flying&quot; mode.
+
+ 
+&#12304;This embedded Jmol container shows a carbon nanotube.&#12305;
+
+The Studio also provides a mechanism for you to design scripts that will run stepwise under the user&apos;s control, regardless of whether or not the navigation mode is used. To do so, simply break up a long script into as many steps as needed, create the same number of scenes, and set each segment as the departure or arrivial scripts for the corresponding scene.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1349">
+<paragraph start="0" end="21">
+<RightIndent>8.0</RightIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>2</Alignment>
+<content start="0" end="20">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="50">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="22" end="24">
+<size>11</size></content>
+
+<content start="24" end="32">
+<size>11</size><href>guidedtour.cml</href></content>
+
+<content start="32" end="35">
+<size>11</size></content>
+
+<content start="35" end="40">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="40" end="43">
+<size>11</size></content>
+
+<content start="43" end="47">
+<size>11</size><href>attachannotation.cml</href></content>
+
+<content start="47" end="49">
+<size>11</size></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="299">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="89">
+<size>11</size></content>
+
+<content start="89" end="98">
+<size>11</size><italic>true</italic></content>
+
+<content start="98" end="299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="299" end="300">
+<LeftIndent>140.0</LeftIndent>
+<content start="299" end="300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="300" end="303">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="300" end="301">
+</content>
+
+<content start="301" end="302">
+<icon>ItineraryEditor.gif</icon></content>
+
+<content start="302" end="303">
+</content>
+
+</paragraph>
+<paragraph start="303" end="327">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="303" end="304">
+<bold>true</bold><size>13</size></content>
+
+<content start="304" end="325">
+<size>10</size></content>
+
+<content start="325" end="326">
+<bold>true</bold><size>13</size></content>
+
+<content start="326" end="327">
+</content>
+
+</paragraph>
+<paragraph start="327" end="328">
+<LeftIndent>140.0</LeftIndent>
+<content start="327" end="328">
+</content>
+
+</paragraph>
+<paragraph start="328" end="530">
+<LeftIndent>140.0</LeftIndent>
+<content start="328" end="530">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="530" end="531">
+<LeftIndent>140.0</LeftIndent>
+<content start="530" end="531">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="531" end="794">
+<LeftIndent>160.0</LeftIndent>
+<content start="531" end="532">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="532" end="534">
+</content>
+
+<content start="534" end="794">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="794" end="795">
+<LeftIndent>140.0</LeftIndent>
+<content start="794" end="795">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="795" end="898">
+<LeftIndent>160.0</LeftIndent>
+<content start="795" end="796">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="796" end="798">
+</content>
+
+<content start="798" end="897">
+<size>11</size></content>
+
+<content start="897" end="898">
+</content>
+
+</paragraph>
+<paragraph start="898" end="899">
+<LeftIndent>140.0</LeftIndent>
+<content start="898" end="899">
+</content>
+
+</paragraph>
+<paragraph start="899" end="901">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="899" end="900">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<axes>true</axes><toolbar>false</toolbar><navigation>true</navigation><resource>Nanotube8x3x1.pdb</resource><state>itinerary$0.jms</state><width>600.0</width>
+<height>330.0</height>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="900" end="901">
+</content>
+
+</paragraph>
+<paragraph start="901" end="957">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="901" end="902">
+<bold>true</bold><size>13</size></content>
+
+<content start="902" end="955">
+<size>10</size></content>
+
+<content start="955" end="957">
+<bold>true</bold><size>13</size></content>
+
+</paragraph>
+<paragraph start="957" end="958">
+<LeftIndent>140.0</LeftIndent>
+<content start="957" end="958">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="958" end="1319">
+<LeftIndent>140.0</LeftIndent>
+<content start="958" end="1318">
+<size>11</size></content>
+
+<content start="1318" end="1319">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1319" end="1320">
+<content start="1319" end="1320">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1320" end="1321">
+<LeftIndent>140.0</LeftIndent>
+<content start="1320" end="1321">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1321" end="1349">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1321" end="1323">
+<size>11</size></content>
+
+<content start="1323" end="1331">
+<size>11</size><href>guidedtour.cml</href></content>
+
+<content start="1331" end="1334">
+<size>11</size></content>
+
+<content start="1334" end="1339">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="1339" end="1342">
+<size>11</size></content>
+
+<content start="1342" end="1346">
+<size>11</size><href>attachannotation.cml</href></content>
+
+<content start="1346" end="1348">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

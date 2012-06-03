@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Accessing the time series of a model</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Accessing the time series of a model
+
+&lt; Previous | Index | Next &gt;
+
+Objects in a model can be classified into two types: static and mobile. Most objects in a model are mobile.
+
+It is important to keep track of mobile objects&apos; trajectories in the phase space during a simulation, because we want to watch the changes of their physical properties and/or do some statistical analysis based on their time averages.
+
+In statistics, a time series is a sequence of data points, measured typically at successive times, spaced at (often uniform) time intervals. In MW, time series is the mechanism to store any mobile object&apos;s trajectory of any kind. A time series can be created for many properties of a mobile object or a collection of mobile objects. There are two types of time series: basic time series and derived time series.
+
+A basic time series stores a basic property of a mobile object, for instance, the x coordinate of a particle. A derived time series stores a property which depends on more than one primitive properties. For instance, the distance between two particles [(xi-xj)2 +(yi-yj)2]1/2 depends on both coordinates of both particles. The average kinetic energy, potential energy, and total energy depend on the coordinates and/or velocities of all particles in the model.
+
+In MW, the term &quot;movie&quot; refers to a data structure composed of all the necessary time series for playing back a simulation. The process of recording a simulation is that of creating a bundle of time series for each mobile object in the model. For example, if your model has 100 atoms, there will be at least 600 basic time series (storing coordinates, velocities and accelerations, respectively). This feature allows you to trace every single mobile object that has been recorded in a movie vertically, and do some post-simulation analyses (e.g. time correlation analysis).
+
+  
+
+The time series of a particle can be accessed from links on its properties window. You will get a warning message if no data has been recorded or the recorder is disabled.
+
+Energy time series
+
+Three time series, the kinetic energy, the potential energy and the total energy, are important information about a simulation because they can be used to judge if the simulation has gone correctly. They are also put together in a single graph, which can be accessed from the &quot;View Energy Time Series&quot; item of the Toolbx sub-menu in the Option menu. The image below is an example of this graph for a collision simulation.
+
+   
+&#12304;This is a screenshot taken on Windows 2000.&#12305;
+
+For an isolated system, the total energy must remain approximately a straight horizontal line if the simulation goes all right. In general, this can be used to tell if the model has been set up correctly. If the total energy is not conserved, i.e. the fluctuations apparently exceed tolerance of numerical error, chance can be that something must have gone wrong in the simulation. There can be many causes for this: the system is too hot, or the time step is too big, or the model has high initial stresses, or the external forces are not balanced to keep the model from being continuously accelerated and crashing eventually.
+
+There are some situations in which the total energy will not remain constant. In these situations, there will be exchange of energy between the system with the environment, or work will be done on the system by an external source. For example, a heat bath is turned on to keep the temperature constant; a flow is set up to move atoms in and out; a steering force is applied to an object to move it; or friction is applied to some objects.
+
+Besides the ways introduced in this section to view a time series, a time series can also be displayed numerically, or exported to a bar graph. And multiple time series can be put together in an X-Y graph. All these graphs can be embedded in a page, so that students can see them immediately without having to open a new window.
+
+Derived time series
+
+Currently, derived time series can only be defined, computed and displayed using the plot command, in conjunction with math expression(s). Here is an example in which the distance between two atoms is computed and displayed. The script used in this example is:
+
+plot &quot;sqrt((%atom[0].rx-%atom[1].rx)*(%atom[0].rx-%atom[1].rx)+(%atom[0].ry-%atom[1].ry)*(%atom[0].ry-%atom[1].ry));
+
+The above command MUST be written in a single line. The documentation for the plot command also includes an example that involves the time series of the center of mass of four particles.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4548">
+<paragraph start="0" end="37">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="36">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="66">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="38" end="40">
+<size>11</size></content>
+
+<content start="40" end="48">
+<size>11</size><href>modelProp.cml</href></content>
+
+<content start="48" end="51">
+<size>11</size></content>
+
+<content start="51" end="56">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="56" end="59">
+<size>11</size></content>
+
+<content start="59" end="63">
+<size>11</size><href>taskManager.cml</href></content>
+
+<content start="63" end="65">
+<size>11</size></content>
+
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="67">
+<LeftIndent>100.0</LeftIndent>
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="175">
+<LeftIndent>140.0</LeftIndent>
+<content start="67" end="175">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="175" end="176">
+<LeftIndent>100.0</LeftIndent>
+<content start="175" end="176">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="176" end="410">
+<LeftIndent>140.0</LeftIndent>
+<content start="176" end="410">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="410" end="411">
+<LeftIndent>140.0</LeftIndent>
+<content start="410" end="411">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="411" end="823">
+<LeftIndent>140.0</LeftIndent>
+<content start="411" end="823">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="823" end="824">
+<LeftIndent>140.0</LeftIndent>
+<content start="823" end="824">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="824" end="1285">
+<LeftIndent>140.0</LeftIndent>
+<content start="824" end="906">
+<size>11</size></content>
+
+<content start="906" end="907">
+<size>11</size><italic>true</italic></content>
+
+<content start="907" end="1079">
+<size>11</size></content>
+
+<content start="1079" end="1080">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="1080" end="1082">
+<size>11</size></content>
+
+<content start="1082" end="1083">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="1083" end="1084">
+<size>11</size></content>
+
+<content start="1084" end="1085">
+<size>11</size><superscript>true</superscript></content>
+
+<content start="1085" end="1089">
+<size>11</size></content>
+
+<content start="1089" end="1090">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="1090" end="1092">
+<size>11</size></content>
+
+<content start="1092" end="1093">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="1093" end="1094">
+<size>11</size></content>
+
+<content start="1094" end="1095">
+<size>11</size><superscript>true</superscript></content>
+
+<content start="1095" end="1096">
+<size>11</size></content>
+
+<content start="1096" end="1099">
+<size>11</size><superscript>true</superscript></content>
+
+<content start="1099" end="1159">
+<size>11</size></content>
+
+<content start="1159" end="1173">
+<size>11</size><href>glossary/KineticEnergy.cml</href></content>
+
+<content start="1173" end="1175">
+<size>11</size></content>
+
+<content start="1175" end="1191">
+<size>11</size><href>glossary/PotentialEnergy.cml</href></content>
+
+<content start="1191" end="1197">
+<size>11</size></content>
+
+<content start="1197" end="1209">
+<size>11</size><href>glossary/TotalEnergy.cml</href></content>
+
+<content start="1209" end="1285">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1285" end="1286">
+<LeftIndent>140.0</LeftIndent>
+<content start="1285" end="1286">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1286" end="1860">
+<LeftIndent>140.0</LeftIndent>
+<content start="1286" end="1425">
+<size>11</size></content>
+
+<content start="1425" end="1447">
+<size>11</size><href>RecordSimulation.cml</href></content>
+
+<content start="1447" end="1832">
+<size>11</size></content>
+
+<content start="1832" end="1857">
+<size>11</size><href>script_tcf.cml</href></content>
+
+<content start="1857" end="1860">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1860" end="1861">
+<LeftIndent>100.0</LeftIndent>
+<content start="1860" end="1861">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1861" end="1864">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1861" end="1862">
+<size>11</size></content>
+
+<content start="1862" end="1863">
+<size>11</size><icon>SingleObjectTracking.gif</icon></content>
+
+<content start="1863" end="1864">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1864" end="1865">
+<LeftIndent>100.0</LeftIndent>
+<content start="1864" end="1865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1865" end="2037">
+<LeftIndent>140.0</LeftIndent>
+<content start="1865" end="1948">
+<size>11</size></content>
+
+<content start="1948" end="2037">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2037" end="2038">
+<LeftIndent>140.0</LeftIndent>
+<content start="2037" end="2038">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2038" end="2057">
+<LeftIndent>140.0</LeftIndent>
+<content start="2038" end="2056">
+<size>11</size><bold>true</bold></content>
+
+<content start="2056" end="2057">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2057" end="2058">
+<LeftIndent>140.0</LeftIndent>
+<content start="2057" end="2058">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2058" end="2480">
+<LeftIndent>140.0</LeftIndent>
+<content start="2058" end="2213">
+<size>11</size></content>
+
+<content start="2213" end="2255">
+<size>11</size><href>SetupSimulation.cml</href></content>
+
+<content start="2255" end="2480">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2480" end="2481">
+<LeftIndent>100.0</LeftIndent>
+<content start="2480" end="2481">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2481" end="2485">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2481" end="2483">
+<size>11</size></content>
+
+<content start="2483" end="2484">
+<size>11</size><icon>AccessEnergyTimeSeries.gif</icon></content>
+
+<content start="2484" end="2485">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2485" end="2531">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2485" end="2530">
+<size>10</size></content>
+
+<content start="2530" end="2531">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2531" end="2532">
+<LeftIndent>100.0</LeftIndent>
+<content start="2531" end="2532">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2532" end="3160">
+<LeftIndent>140.0</LeftIndent>
+<content start="2532" end="2573">
+<size>11</size></content>
+
+<content start="2573" end="2625">
+<size>11</size><bold>true</bold></content>
+
+<content start="2625" end="3160">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3160" end="3161">
+<LeftIndent>140.0</LeftIndent>
+<content start="3160" end="3161">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3161" end="3600">
+<LeftIndent>140.0</LeftIndent>
+<content start="3161" end="3600">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3600" end="3601">
+<LeftIndent>140.0</LeftIndent>
+<content start="3600" end="3601">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3601" end="3930">
+<LeftIndent>140.0</LeftIndent>
+<content start="3601" end="3694">
+<size>11</size></content>
+
+<content start="3694" end="3715">
+<size>11</size><href>insertNumericBox.cml</href></content>
+
+<content start="3715" end="3734">
+<size>11</size></content>
+
+<content start="3734" end="3743">
+<size>11</size><href>insertBarGraph.cml</href></content>
+
+<content start="3743" end="3796">
+<size>11</size></content>
+
+<content start="3796" end="3805">
+<size>11</size><href>insertXYGraph.cml</href></content>
+
+<content start="3805" end="3930">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3930" end="3931">
+<LeftIndent>140.0</LeftIndent>
+<content start="3930" end="3931">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3931" end="3951">
+<LeftIndent>140.0</LeftIndent>
+<content start="3931" end="3950">
+<size>11</size><bold>true</bold></content>
+
+<content start="3950" end="3951">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3951" end="3952">
+<LeftIndent>140.0</LeftIndent>
+<content start="3951" end="3952">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3952" end="4213">
+<LeftIndent>140.0</LeftIndent>
+<content start="3952" end="4037">
+<size>11</size></content>
+
+<content start="4037" end="4041">
+<family>Courier New</family><size>11</size><href>script_plot.cml</href></content>
+
+<content start="4041" end="4071">
+<size>11</size></content>
+
+<content start="4071" end="4089">
+<size>11</size><href>script_expression.cml</href></content>
+
+<content start="4089" end="4099">
+<size>11</size></content>
+
+<content start="4099" end="4109">
+<size>11</size><href>../student/motionandforce/elasticcollision.cml</href></content>
+
+<content start="4109" end="4213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4213" end="4214">
+<LeftIndent>140.0</LeftIndent>
+<content start="4213" end="4214">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4214" end="4331">
+<LeftIndent>160.0</LeftIndent>
+<content start="4214" end="4330">
+<family>Courier New</family><size>11</size></content>
+
+<content start="4330" end="4331">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4331" end="4332">
+<LeftIndent>140.0</LeftIndent>
+<content start="4331" end="4332">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4332" end="4519">
+<LeftIndent>140.0</LeftIndent>
+<content start="4332" end="4410">
+<size>11</size></content>
+
+<content start="4410" end="4414">
+<family>Courier New</family><size>11</size><href>script_plot.cml</href></content>
+
+<content start="4414" end="4518">
+<size>11</size></content>
+
+<content start="4518" end="4519">
+</content>
+
+</paragraph>
+<paragraph start="4519" end="4520">
+<content start="4519" end="4520">
+</content>
+
+</paragraph>
+<paragraph start="4520" end="4548">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="4520" end="4522">
+<size>11</size></content>
+
+<content start="4522" end="4530">
+<size>11</size><href>modelProp.cml</href></content>
+
+<content start="4530" end="4533">
+<size>11</size></content>
+
+<content start="4533" end="4538">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="4538" end="4541">
+<size>11</size></content>
+
+<content start="4541" end="4545">
+<size>11</size><href>taskManager.cml</href></content>
+
+<content start="4545" end="4547">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

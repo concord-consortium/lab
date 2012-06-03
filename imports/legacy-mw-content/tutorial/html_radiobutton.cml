@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Using radio buttons in HTML text box</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Using radio buttons in HTML text box
+
+&lt; Previous | Index | Next &gt;
+
+
+A group of radio buttons can be created using the following lines of code:
+
+&lt;input type=&quot;radio&quot; name=&quot;group name&quot; uid=&quot;uid1&quot; value=&quot;text1&quot; script=&quot;s1&quot; alt=&quot;tip1&quot; selfscript=&quot;ss1&quot; checked&gt;
+&lt;input type=&quot;radio&quot; name=&quot;group name&quot; uid=&quot;uid2&quot; value=&quot;text2&quot; script=&quot;s2&quot; alt=&quot;tip2&quot; selfscript=&quot;ss2&quot; enabled=&quot;false&quot;&gt;
+&lt;input type=&quot;radio&quot; name=&quot;group name&quot; uid=&quot;uid3&quot; value=&quot;text3&quot; script=&quot;s3&quot; alt=&quot;tip3&quot; selfscript=&quot;ss3&quot;&gt;
+
+ 
+Important: Do not enclose the embedded HTML components within &lt;form&gt; tags:
+
+&lt;FORM action=&quot;blah&quot; method=&quot;post&quot;&gt;
+&lt;input type=&quot;radio&quot; name=&quot;group name&quot; uid=&quot;uid1&quot; value=&quot;text1&quot; script=&quot;scripts1&quot; selfscript=&quot;selfscripts1&quot; alt=&quot;tooltip1&quot;&gt;
+&lt;input type=&quot;radio&quot; name=&quot;group name&quot; uid=&quot;uid2&quot; value=&quot;text2&quot; script=&quot;scripts2&quot; selfscript=&quot;selfscripts2&quot; alt=&quot;tooltip2&quot;&gt;
+&lt;/FORM&gt;
+
+If you do so, MW will try to send the data to a server, instead of a model.
+ 
+
+For the radio buttons to be in the same group (i.e. a mutually exclusive mode in which only one radio button can be selected at a time), they must have the same name attribute. The following is an example of using HTML radio buttons:
+
+  
+To view the source, save this page to your disk, enter the authoring mode and right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the text box.
+
+&#12304;This is an embedded model container.&#12305;
+
+Unlike buttons, the value attributes are not used as text of radio buttons. Therefore, you have to write text next to a radio button.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1537">
+<paragraph start="0" end="37">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="36">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="38">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="66">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="38" end="40">
+<size>11</size></content>
+
+<content start="40" end="48">
+<size>11</size><href>html_button.cml</href></content>
+
+<content start="48" end="51">
+<size>11</size></content>
+
+<content start="51" end="56">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="56" end="59">
+<size>11</size></content>
+
+<content start="59" end="63">
+<size>11</size><href>html_checkbox.cml</href></content>
+
+<content start="63" end="65">
+<size>11</size></content>
+
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="67">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="68">
+<LeftIndent>140.0</LeftIndent>
+<content start="67" end="68">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="68" end="143">
+<LeftIndent>140.0</LeftIndent>
+<content start="68" end="143">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="143" end="144">
+<LeftIndent>140.0</LeftIndent>
+<content start="143" end="144">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="144" end="256">
+<LeftIndent>160.0</LeftIndent>
+<content start="144" end="255">
+<family>Courier New</family><size>11</size></content>
+
+<content start="255" end="256">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="256" end="376">
+<LeftIndent>160.0</LeftIndent>
+<content start="256" end="293">
+<family>Courier New</family><size>11</size></content>
+
+<content start="293" end="304">
+<family>Courier New</family><size>11</size></content>
+
+<content start="304" end="375">
+<family>Courier New</family><size>11</size></content>
+
+<content start="375" end="376">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="376" end="480">
+<LeftIndent>160.0</LeftIndent>
+<content start="376" end="413">
+<family>Courier New</family><size>11</size></content>
+
+<content start="413" end="424">
+<family>Courier New</family><size>11</size></content>
+
+<content start="424" end="479">
+<family>Courier New</family><size>11</size></content>
+
+<content start="479" end="480">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="480" end="481">
+<LeftIndent>140.0</LeftIndent>
+<content start="480" end="481">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="481" end="483">
+<LeftIndent>140.0</LeftIndent>
+<content start="481" end="482">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="482" end="483">
+</content>
+
+</paragraph>
+<paragraph start="483" end="558">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="483" end="492">
+<bold>true</bold><size>11</size></content>
+
+<content start="492" end="545">
+<size>11</size></content>
+
+<content start="545" end="551">
+<family>Courier New</family><size>11</size></content>
+
+<content start="551" end="558">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="558" end="559">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="558" end="559">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="559" end="594">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="559" end="593">
+<family>Courier New</family><bold>true</bold><strikethrough>true</strikethrough><foreground>255 0 0</foreground></content>
+
+<content start="593" end="594">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="594" end="717">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>220.0</LeftIndent>
+<content start="594" end="631">
+<family>Courier New</family><size>11</size></content>
+
+<content start="631" end="642">
+<family>Courier New</family><size>11</size></content>
+
+<content start="642" end="717">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="717" end="840">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>220.0</LeftIndent>
+<content start="717" end="754">
+<family>Courier New</family><size>11</size></content>
+
+<content start="754" end="765">
+<family>Courier New</family><size>11</size></content>
+
+<content start="765" end="840">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="840" end="848">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="840" end="847">
+<family>Courier New</family><bold>true</bold><strikethrough>true</strikethrough><foreground>255 0 0</foreground></content>
+
+<content start="847" end="848">
+</content>
+
+</paragraph>
+<paragraph start="848" end="849">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="848" end="849">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="849" end="925">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="849" end="924">
+<size>11</size></content>
+
+<content start="924" end="925">
+</content>
+
+</paragraph>
+<paragraph start="925" end="927">
+<LeftIndent>140.0</LeftIndent>
+<content start="925" end="926">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="926" end="927">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="927" end="928">
+<LeftIndent>140.0</LeftIndent>
+<content start="927" end="928">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="928" end="1162">
+<LeftIndent>140.0</LeftIndent>
+<content start="928" end="1089">
+<size>11</size></content>
+
+<content start="1089" end="1093">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1093" end="1162">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1162" end="1163">
+<LeftIndent>140.0</LeftIndent>
+<content start="1162" end="1163">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1163" end="1166">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1163" end="1164">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>280.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;8&quot; marginheight=&quot;8&quot;&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;3&quot;&gt;This is an HTML text box, which has a 
+      group of embedded radio buttons for executing &lt;/font&gt;&lt;font face=&quot;Verdana&quot;&gt;&lt;a href=&quot;mwscripts.cml&quot;&gt;MW 
+      scripts&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot;&gt;.&lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;3&quot;&gt;Select:&lt;br&gt;&lt;input alt=&quot;Select element 1&quot; type=&quot;radio&quot; script=&quot;script:mw:1:select element 0;mark color [255 255 0];&quot; name=&quot;element&quot;&gt;Element 
+      1;&lt;br&gt;&lt;input alt=&quot;Select element 2&quot; type=&quot;radio&quot; script=&quot;script:mw:1:select element 1;mark color [255 255 0];&quot; name=&quot;element&quot;&gt;Element 
+      2;&lt;br&gt;&lt;input alt=&quot;Select element 3&quot; type=&quot;radio&quot; script=&quot;script:mw:1:select element 2;mark color [255 255 0];&quot; name=&quot;element&quot;&gt;Element 
+      3;&lt;br&gt;&lt;input alt=&quot;Select element 4&quot; type=&quot;radio&quot; script=&quot;script:mw:1:select element 3;mark color [255 255 0];&quot; name=&quot;element&quot;&gt;Element 
+      4;&lt;br&gt;&lt;input alt=&quot;Select none&quot; type=&quot;radio&quot; script=&quot;script:mw:1:select element none;mark;&quot; name=&quot;element&quot; checked=&quot;checked&quot;&gt;None. 
+      &lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1164" end="1165">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>html_radiobutton$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="1165" end="1166">
+</content>
+
+</paragraph>
+<paragraph start="1166" end="1333">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1166" end="1332">
+<size>10</size><italic>true</italic></content>
+
+<content start="1332" end="1333">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1333" end="1334">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1333" end="1334">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1334" end="1373">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1334" end="1335">
+<bold>true</bold><size>13</size></content>
+
+<content start="1335" end="1371">
+<size>10</size></content>
+
+<content start="1371" end="1372">
+<bold>true</bold><size>13</size></content>
+
+<content start="1372" end="1373">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1373" end="1374">
+<LeftIndent>140.0</LeftIndent>
+<content start="1373" end="1374">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1374" end="1508">
+<LeftIndent>140.0</LeftIndent>
+<content start="1374" end="1394">
+<size>11</size></content>
+
+<content start="1394" end="1399">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1399" end="1508">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1508" end="1509">
+<LeftIndent>140.0</LeftIndent>
+<content start="1508" end="1509">
+</content>
+
+</paragraph>
+<paragraph start="1509" end="1537">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1509" end="1511">
+<size>11</size></content>
+
+<content start="1511" end="1519">
+<size>11</size><href>html_button.cml</href></content>
+
+<content start="1519" end="1522">
+<size>11</size></content>
+
+<content start="1522" end="1527">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1527" end="1530">
+<size>11</size></content>
+
+<content start="1530" end="1534">
+<size>11</size><href>html_checkbox.cml</href></content>
+
+<content start="1534" end="1536">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

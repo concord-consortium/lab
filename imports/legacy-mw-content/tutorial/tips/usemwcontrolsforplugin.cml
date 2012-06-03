@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inorganic Molecules: a visual database</page_title>
+<text>
+     Sulfur Hexafluoride  
+Computed data displayed with Jmol
+More molecules are available at http://www.chemeddl.org/collections/labs/avisualdatabase
+
+Control commands:
+  
+     
+  
+    
+  
+Electrostatic Properties:
+ 
+  
+  
+Molecular Orbitals:
+     
+Normal Modes of Vibration:
+   
+Symmetry elements for the group Oh:
+                                 </text>
+<section start="0" end="351">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="1">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1" end="28">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1" end="5">
+<size>20</size><family>Microsoft Sans Serif</family><italic>true</italic></content>
+
+<content start="5" end="6">
+<size>24</size><underline>true</underline><family>Microsoft Sans Serif</family><bold>true</bold></content>
+
+<content start="6" end="25">
+<size>24</size><underline>true</underline><bold>true</bold></content>
+
+<content start="25" end="26">
+<size>24</size><underline>true</underline><family>Microsoft Sans Serif</family><bold>true</bold></content>
+
+<content start="26" end="27">
+<size>20</size><family>Microsoft Sans Serif</family><italic>true</italic></content>
+
+<content start="27" end="28">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="28" end="62">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="28" end="62">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="62" end="151">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="62" end="94">
+<size>11</size></content>
+
+<content start="94" end="151">
+<link_statusbar>true</link_statusbar><link_fullscreen>false</link_fullscreen><link_left>0</link_left><link_menubar>true</link_menubar><link_top>0</link_top><link_toolbar>true</link_toolbar><size>11</size><href>http://www.chemeddl.org/collections/labs/avisualdatabase</href><link_resizable>true</link_resizable><target>_blank</target></content>
+
+</paragraph>
+<paragraph start="151" end="152">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="151" end="152">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="152" end="170">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="152" end="169">
+<size>11</size><bold>true</bold></content>
+
+<content start="169" end="170">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="170" end="173">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="170" end="171">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Spin</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>spin on;</script>
+<script2>spin off;</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="171" end="172">
+<component><class>org.concord.modeler.PageButton</class>
+<title>move it!</title>
+<opaque>false</opaque>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>centerAt ABSOLUTE 0.0 0.0 0.0;move 90 120 -90 0 0 0 0 0 2</script>
+<action>Execute native script</action>
+</component></content>
+
+<content start="172" end="173">
+</content>
+
+</paragraph>
+<paragraph start="173" end="179">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="173" end="174">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Labels off</title>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<groupid>1216666882947</groupid>
+<script>labels off</script>
+<action>Execute native script</action></component></content>
+
+<content start="174" end="175">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Atom Labels</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<groupid>1216666882947</groupid>
+<script>label %e</script>
+<action>Execute native script</action></component></content>
+
+<content start="175" end="176">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>VdW radii</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<groupid>1216666882947</groupid>
+<script>labels %0.2V</script>
+<action>Execute native script</action></component></content>
+
+<content start="176" end="177">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Ionic radii</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<groupid>1216666882947</groupid>
+<script>labels %0.2I</script>
+<action>Execute native script</action></component></content>
+
+<content start="177" end="178">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Partial charges</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<groupid>1216666882947</groupid>
+<script>labels %0.2P</script>
+<action>Execute native script</action></component></content>
+
+<content start="178" end="179">
+</content>
+
+</paragraph>
+<paragraph start="179" end="182">
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="179" end="180">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Bonds</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>measure ALLCONNECTED (*)(*);set measurements angstroms</script>
+<script2>measure off</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="180" end="181">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Angles</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>measure ALLCONNECTED (*)(*)(*)</script>
+<script2>measure off</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="181" end="182">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="182" end="187">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="182" end="183">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<value>0.3430000001564622</value>
+<minimum>0.009999999776482582</minimum>
+<maximum>0.5</maximum>
+<nstep>50</nstep>
+<title>Wireframe</title>
+<width>80</width>
+<height>300</height>
+<orientation>1</orientation>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;0.4998000002279878&quot;, label=&quot;0.5&quot;}{value=&quot;0.25480000011622905&quot;, label=&quot;0.25&quot;}{value=&quot;0.009800000004470349&quot;, label=&quot;0.01&quot;}</labeltable>
+<script>wireframe %val</script>
+<change>Execute native script</change>
+</component></content>
+
+<content start="183" end="184">
+<component><class>org.concord.modeler.PageJContainer</class>
+<appletjar>JmolApplet.jar</appletjar>
+<appletjar>netscape.jar</appletjar>
+<appletclass>org.jmol.applet.MwPlugin</appletclass>
+<resource>usemwcontrolsforplugin$plugin$0.aps</resource><parameter>{name=&quot;load&quot; value=&quot;sf6.fq.log&quot;}{name=&quot;nostatepersistence&quot; value=&quot;false&quot;}{name=&quot;script&quot; value=&quot;background black;frame 2;set echo bottom center; font echo 16 sanserif bold;color echo grey;echo Sulfur Hexafluoride;centerAt ABSOLUTE 0.0 0.0 0.0;move 90 120 -90 0 0 0 0 0 2;&quot;}</parameter>
+<width>500</width><height>300</height>
+<border>None</border><codebase>http://mw2.concord.org/public/plugin/</codebase></component></content>
+
+<content start="184" end="185">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<value>45.0</value>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<nstep>20</nstep>
+<title>Spacefill (%)</title>
+<width>80</width>
+<height>300</height>
+<orientation>1</orientation>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;50.0&quot;, label=&quot;50&quot;}{value=&quot;100.0&quot;, label=&quot;100&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>spacefill %val%;</script>
+<change>Execute native script</change>
+</component></content>
+
+<content start="185" end="186">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Ball&amp;Stick</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>spacefill 20%; wireframe 0.15</script>
+<action>Execute native script</action>
+</component></content>
+
+<content start="186" end="187">
+</content>
+
+</paragraph>
+<paragraph start="187" end="190">
+<Alignment>1</Alignment>
+<content start="187" end="188">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<opaque>false</opaque>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="188" end="189">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Reset</title>
+<script>script:plugin:1:reset;</script>
+<action>Script</action></component></content>
+
+<content start="189" end="190">
+</content>
+
+</paragraph>
+<paragraph start="190" end="216">
+<Alignment>1</Alignment>
+<content start="190" end="215">
+<bold>true</bold></content>
+
+<content start="215" end="216">
+</content>
+
+</paragraph>
+<paragraph start="216" end="218">
+<Alignment>1</Alignment>
+<content start="216" end="217">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Dipole</title>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>dipole molecular width 0.1 offset 1.0;set echo dipo 100% 100%;echo Dipole = 0.0000 Debye</script>
+<script2>dipole molecular delete;set echo dipo off</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="217" end="218">
+</content>
+
+</paragraph>
+<paragraph start="218" end="221">
+<Alignment>1</Alignment>
+<content start="218" end="219">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>MEP On isopotential surfaces</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>isosurface delete mep1 resolution 12 mep;color isosurface translucent</script>
+<script2>isosurface mep1 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="219" end="220">
+<component><class>org.concord.modeler.PageSpinner</class>
+<title>; Isopotential MEP cutoff</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<minimum>0.01</minimum>
+<maximum>4.0</maximum>
+<step>0.01</step>
+<value>0.1</value>
+<script>isosurface delete pos01 %val resolution 12 mep;color isosurface translucent</script>
+<change>Execute native script</change>
+</component></content>
+
+<content start="220" end="221">
+</content>
+
+</paragraph>
+<paragraph start="221" end="224">
+<Alignment>1</Alignment>
+<content start="221" end="222">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>MEP On VdW surface</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>isosurface delete vdw 100% resolution 6 solvent mep;color isosurface absolute -0.05 0.05;color isosurface translucent</script>
+<script2>isosurface delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="222" end="223">
+<component><class>org.concord.modeler.PageSpinner</class>
+<title>; VdW MEP volume %</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<minimum>0.01</minimum>
+<maximum>200.0</maximum>
+<step>5.0</step>
+<value>75.0</value>
+<script>isosurface delete vdw %val% resolution 6 solvent mep;color isosurface absolute -0.05 0.05 ;color isosurface translucent</script>
+<change>Execute native script</change>
+</component></content>
+
+<content start="223" end="224">
+</content>
+
+</paragraph>
+<paragraph start="224" end="244">
+<Alignment>1</Alignment>
+<content start="224" end="243">
+<bold>true</bold></content>
+
+<content start="243" end="244">
+</content>
+
+</paragraph>
+<paragraph start="244" end="250">
+<Alignment>1</Alignment>
+<content start="244" end="245">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<action>Execute native script</action>
+<script>{option=&quot;MO off&quot;, script=&quot;frame 2;mo off&quot;}{option=&quot;N1 A1g  -89.34514&quot;, script=&quot;mo 1;mo color yellow purple&quot;}{option=&quot;N2 A1g  -24.76762&quot;, script=&quot;mo 2;mo color yellow purple&quot;}{option=&quot;N3 Eg  -24.76762&quot;, script=&quot;mo 3;mo color yellow purple&quot;}{option=&quot;N4 Eg  -24.76762&quot;, script=&quot;mo 4;mo color yellow purple&quot;}{option=&quot;N5 T1u  -24.76762&quot;, script=&quot;mo 5;mo color yellow purple&quot;}{option=&quot;N6 T1u  -24.76762&quot;, script=&quot;mo 6;mo color yellow purple&quot;}{option=&quot;N7 T1u  -24.76762&quot;, script=&quot;mo 7;mo color yellow purple&quot;}{option=&quot;N8 A1g   -8.33808&quot;, script=&quot;mo 8;mo color yellow purple&quot;}{option=&quot;N9 T1u   -6.30502&quot;, script=&quot;mo 9;mo color yellow purple&quot;}{option=&quot;N10 T1u   -6.30502&quot;, script=&quot;mo 10;mo color yellow purple&quot;}{option=&quot;N11 T1u   -6.30502&quot;, script=&quot;mo 11;mo color yellow purple&quot;}{option=&quot;N12 A1g   -1.39029&quot;, script=&quot;mo 12;mo color yellow purple&quot;}{option=&quot;N13 T1u   -1.27480&quot;, script=&quot;mo 13;mo color yellow purple&quot;}{option=&quot;N14 T1u   -1.27480&quot;, script=&quot;mo 14;mo color yellow purple&quot;}{option=&quot;N15 T1u   -1.27480&quot;, script=&quot;mo 15;mo color yellow purple&quot;}{option=&quot;N16 Eg   -1.22860&quot;, script=&quot;mo 16;mo color yellow purple&quot;}{option=&quot;N17 Eg   -1.22860&quot;, script=&quot;mo 17;mo color yellow purple&quot;}{option=&quot;N18 A1g   -0.82135&quot;, script=&quot;mo 18;mo color yellow purple&quot;}{option=&quot;N19 T1u   -0.66204&quot;, script=&quot;mo 19;mo color yellow purple&quot;}{option=&quot;N20 T1u   -0.66204&quot;, script=&quot;mo 20;mo color yellow purple&quot;}{option=&quot;N21 T1u   -0.66204&quot;, script=&quot;mo 21;mo color yellow purple&quot;}{option=&quot;N22 T2g   -0.54807&quot;, script=&quot;mo 22;mo color yellow purple&quot;}{option=&quot;N23 T2g   -0.54807&quot;, script=&quot;mo 23;mo color yellow purple&quot;}{option=&quot;N24 T2g   -0.54807&quot;, script=&quot;mo 24;mo color yellow purple&quot;}{option=&quot;N25 Eg   -0.52122&quot;, script=&quot;mo 25;mo color yellow purple&quot;}{option=&quot;N26 Eg   -0.52122&quot;, script=&quot;mo 26;mo color yellow purple&quot;}{option=&quot;N27 T1u   -0.46874&quot;, script=&quot;mo 27;mo color yellow purple&quot;}{option=&quot;N28 T1u   -0.46874&quot;, script=&quot;mo 28;mo color yellow purple&quot;}{option=&quot;N29 T1u   -0.46874&quot;, script=&quot;mo 29;mo color yellow purple&quot;}{option=&quot;N30 T2u   -0.46455&quot;, script=&quot;mo 30;mo color yellow purple&quot;}{option=&quot;N31 T2u   -0.46455&quot;, script=&quot;mo 31;mo color yellow purple&quot;}{option=&quot;N32 T2u   -0.46455&quot;, script=&quot;mo 32;mo color yellow purple&quot;}{option=&quot;N33 T1g   -0.42739&quot;, script=&quot;mo 33;mo color yellow purple&quot;}{option=&quot;N34 T1g   -0.42739&quot;, script=&quot;mo 34;mo color yellow purple&quot;}{option=&quot;N35 T1g   -0.42739&quot;, script=&quot;mo 35;mo color yellow purple&quot;}{option=&quot;N36 A1g   -0.08826&quot;, script=&quot;mo 36;mo color yellow purple&quot;}{option=&quot;N37 T1u    0.09460&quot;, script=&quot;mo 37;mo color yellow purple&quot;}{option=&quot;N38 T1u    0.09460&quot;, script=&quot;mo 38;mo color yellow purple&quot;}{option=&quot;N39 T1u    0.09460&quot;, script=&quot;mo 39;mo color yellow purple&quot;}{option=&quot;N40 A1g    0.27825&quot;, script=&quot;mo 40;mo color yellow purple&quot;}{option=&quot;N41 T1u    0.32619&quot;, script=&quot;mo 41;mo color yellow purple&quot;}</script>
+<tooltip>Choose a Molecular Orbital</tooltip>
+</component></content>
+
+<content start="245" end="246">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>HOMO</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<groupid>1216481753811</groupid>
+<script>frame 2;mo 35;mo color yellow purple</script>
+<action>Execute native script</action></component></content>
+
+<content start="246" end="247">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>LUMO</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<groupid>1216481753811</groupid>
+<script>frame 2;mo 36;mo color yellow purple</script>
+<action>Execute native script</action></component></content>
+
+<content start="247" end="248">
+<component><class>org.concord.modeler.PageSpinner</class>
+<title>MO cutoff</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<minimum>0.0010</minimum>
+<maximum>2.0</maximum>
+<step>0.01</step>
+<value>0.05</value>
+<script>mo cutoff %val</script>
+<change>Execute native script</change>
+</component></content>
+
+<content start="248" end="249">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Remove Molecular Orbitals</title>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<groupid>1216481753811</groupid>
+<script>mo off;</script>
+<action>Execute native script</action></component></content>
+
+<content start="249" end="250">
+</content>
+
+</paragraph>
+<paragraph start="250" end="277">
+<Alignment>1</Alignment>
+<content start="250" end="276">
+<bold>true</bold></content>
+
+<content start="276" end="277">
+</content>
+
+</paragraph>
+<paragraph start="277" end="281">
+<Alignment>1</Alignment>
+<content start="277" end="278">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<action>Execute native script</action>
+<script>{option=&quot;Vibration off&quot;, script=&quot;vibration off&quot;}{option=&quot;T2u 315.3117&quot;, script=&quot;frame 5;vibration on&quot;}{option=&quot;T2g 473.6883&quot;, script=&quot;frame 8;vibration on&quot;}{option=&quot;T1u 557.7031&quot;, script=&quot;frame 11;vibration on&quot;}{option=&quot;Eg 648.2291&quot;, script=&quot;frame 13;vibration on&quot;}{option=&quot;A1g 731.0109&quot;, script=&quot;frame 14;vibration on&quot;}{option=&quot;T1u 965.0258&quot;, script=&quot;frame 17;vibration on&quot;}</script>
+</component></content>
+
+<content start="278" end="279">
+<component><class>org.concord.modeler.PageSpinner</class>
+<title>Amplitude of vibration</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<minimum>0.1</minimum>
+<maximum>2.0</maximum>
+<step>0.1</step>
+<value>0.5</value>
+<script>set vibrationScale %val</script>
+<change>Execute native script</change>
+</component></content>
+
+<content start="279" end="280">
+<component><class>org.concord.modeler.PageSpinner</class>
+<title>Period of vibration</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<minimum>0.1</minimum>
+<maximum>2.0</maximum>
+<step>0.1</step>
+<value>0.5</value>
+<script>set vibrationperiod %val</script>
+<change>Execute native script</change>
+</component></content>
+
+<content start="280" end="281">
+</content>
+
+</paragraph>
+<paragraph start="281" end="317">
+<Alignment>1</Alignment>
+<content start="281" end="316">
+<bold>true</bold></content>
+
+<content start="316" end="317">
+</content>
+
+</paragraph>
+<paragraph start="317" end="351">
+<Alignment>1</Alignment>
+<content start="317" end="318">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C4</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig1 arrow 2000 { 1.0000000 -0.0000000 0.0000000} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig1 delete;draw sig1 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="318" end="319">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C4</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig2 arrow 2000 { 0.0000000 1.0000000 0.0000000} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig2 delete;draw sig2 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="319" end="320">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C4</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig3 arrow 2000 { -0.0000000 0.0000000 1.0000000} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig3 delete;draw sig3 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="320" end="321">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C3</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig4 arrow 2000 { 0.5773503 0.5773503 -0.5773503} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig4 delete;draw sig4 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="321" end="322">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C3</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig5 arrow 2000 { 0.5773503 0.5773503 0.5773503} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig5 delete;draw sig5 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="322" end="323">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C3</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig6 arrow 2000 { 0.5773503 -0.5773503 0.5773503} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig6 delete;draw sig6 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="323" end="324">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C3</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig7 arrow 2000 { 0.5773503 -0.5773503 -0.5773503} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig7 delete;draw sig7 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="324" end="325">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C2</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig8 arrow 2000 { 0.0000000 0.7071068 0.7071068} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig8 delete;draw sig8 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="325" end="326">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C2</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig9 arrow 2000 { -0.7071068 -0.7071068 0.0000000} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig9 delete;draw sig9 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="326" end="327">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C2</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig10 arrow 2000 { 0.7071068 -0.7071068 0.0000000} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig10 delete;draw sig10 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="327" end="328">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C2</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig11 arrow 2000 { 0.0000000 0.7071068 -0.7071068} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig11 delete;draw sig11 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="328" end="329">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C2</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig12 arrow 2000 { 0.7071068 0.0000000 0.7071068} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig12 delete;draw sig12 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="329" end="330">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C2</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig13 arrow 2000 { 0.7071068 0.0000000 -0.7071068} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig13 delete;draw sig13 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="330" end="331">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C2</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig14 arrow 2000 { 0.0000000 0.0000000 -1.0000000} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig14 delete;draw sig14 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="331" end="332">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C2</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig15 arrow 2000 { -1.0000000 0.0000000 0.0000000} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig15 delete;draw sig15 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="332" end="333">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Axis C2</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig16 arrow 2000 { 0.0000000 -1.0000000 -0.0000000} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig16 delete;draw sig16 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="333" end="334">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Improper S6</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig17 arrow 2000 { 0.57735027 -0.57735027 -0.57735027} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig17 delete;draw sig17 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="334" end="335">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Improper S6</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig18 arrow 2000 { 0.57735027 -0.57735027 0.57735027} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig18 delete;draw sig18 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="335" end="336">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Improper S6</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig19 arrow 2000 { 0.57735027 0.57735027 -0.57735027} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig19 delete;draw sig19 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="336" end="337">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Improper S6</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig20 arrow 2000 { 0.57735027 0.57735027 0.57735027} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig20 delete;draw sig20 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="337" end="338">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Improper S4</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig21 arrow 2000 { 0.00000000 1.00000000 0.00000000} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig21 delete;draw sig21 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="338" end="339">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Improper S4</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig22 arrow 2000 { -0.00000000 0.00000000 1.00000000} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig22 delete;draw sig22 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="339" end="340">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Improper S4</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> draw sig23 arrow 2000 { 1.00000000 -0.00000000 0.00000000} {0.00000000 0.00000000 0.00000000} </script>
+<script2>isosurface sig23 delete;draw sig23 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="340" end="341">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>&#963;</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> isosurface sig24 plane { 0.0000000 0.7071068 -0.7071068 0.0000000};color isosurface white translucent; </script>
+<script2>isosurface sig24 delete;draw sig24 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="341" end="342">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>&#963;</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> isosurface sig25 plane { 0.7071068 -0.7071068 0.0000000 0.0000000};color isosurface white translucent; </script>
+<script2>isosurface sig25 delete;draw sig25 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="342" end="343">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>&#963;</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> isosurface sig26 plane { 0.7071068 0.0000000 0.7071068 0.0000000};color isosurface white translucent; </script>
+<script2>isosurface sig26 delete;draw sig26 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="343" end="344">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>&#963;</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> isosurface sig27 plane { -0.7071068 -0.7071068 0.0000000 0.0000000};color isosurface white translucent; </script>
+<script2>isosurface sig27 delete;draw sig27 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="344" end="345">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>&#963;</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> isosurface sig28 plane { 0.0000000 -0.7071068 -0.7071068 0.0000000};color isosurface white translucent; </script>
+<script2>isosurface sig28 delete;draw sig28 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="345" end="346">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>&#963;</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> isosurface sig29 plane { 0.7071068 0.0000000 -0.7071068 0.0000000};color isosurface white translucent; </script>
+<script2>isosurface sig29 delete;draw sig29 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="346" end="347">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>&#963;</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> isosurface sig30 plane { 0.0000000 0.0000000 -1.0000000 0.0000000};color isosurface white translucent; </script>
+<script2>isosurface sig30 delete;draw sig30 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="347" end="348">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>&#963;</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> isosurface sig31 plane { 0.0000000 -1.0000000 0.0000000 0.0000000};color isosurface white translucent; </script>
+<script2>isosurface sig31 delete;draw sig31 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="348" end="349">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>&#963;</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> isosurface sig32 plane { -1.0000000 0.0000000 0.0000000 0.0000000};color isosurface white translucent; </script>
+<script2>isosurface sig32 delete;draw sig32 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="349" end="350">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Inversion center</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script> isosurface sig33 sphere 1.0;color isosurface white translucent; </script>
+<script2>isosurface sig33 delete;draw sig33 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

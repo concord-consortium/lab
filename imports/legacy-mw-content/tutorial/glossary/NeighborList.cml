@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Verlet neighbor list</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Verlet neighbor list
+
+
+A method to improve the efficiency of molecular dynamics. Neighbor list gets updated every (typically) 10 or 20 steps. Only the atoms in the neighbor list are counted when calculating forces.
+
+
+ 
+return to index</text>
+<section start="0" end="235">
+<paragraph start="0" end="21">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="20">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<LeftIndent>120.0</LeftIndent>
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<LeftIndent>120.0</LeftIndent>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="215">
+<LeftIndent>140.0</LeftIndent>
+<content start="23" end="214">
+<size>11</size></content>
+
+<content start="214" end="215">
+</content>
+
+</paragraph>
+<paragraph start="215" end="216">
+<LeftIndent>120.0</LeftIndent>
+<content start="215" end="216">
+</content>
+
+</paragraph>
+<paragraph start="216" end="217">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="216" end="217">
+</content>
+
+</paragraph>
+<paragraph start="217" end="219">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="217" end="218">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="218" end="219">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="219" end="235">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="219" end="234">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,65 @@
+{
+  "temperature_control": false,
+  "lennard_jones_forces": true,
+  "coulomb_forces": false,
+  "width": 5,
+  "height": 2.5,
+  "elements": [
+    {
+      "id": 0,
+      "mass": null,
+      "sigma": 0.15,
+      "epsilon": -0.1
+    },
+    {
+      "id": 1,
+      "mass": 240,
+      "sigma": 0.15,
+      "epsilon": -0.1
+    },
+    {
+      "id": 2,
+      "mass": 360,
+      "sigma": 0.15,
+      "epsilon": -0.1
+    },
+    {
+      "id": 3,
+      "mass": 480,
+      "sigma": 0.15,
+      "epsilon": -0.1
+    },
+    {
+      "id": 4,
+      "mass": 600,
+      "sigma": 0.3,
+      "epsilon": -5
+    }
+  ],
+  "atoms": {
+    "X": [
+      2.56,
+      3.2
+    ],
+    "Y": [
+      2.01,
+      1.86
+    ],
+    "VX": [
+      0.001,
+      0
+    ],
+    "VY": [
+      0,
+      0
+    ],
+    "CHARGE": [
+      0,
+      0
+    ],
+    "ELEMENT": [
+      0,
+      1
+    ]
+  }
+}

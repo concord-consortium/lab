@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Stop</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Stop
+
+&lt; Previous | Index | Next &gt;
+
+The stop command causes the simulation to stop. If there is a recorder, the simulation stops at the next recording step (there therefore can be a brief delay). Otherwise, it stops immediately.
+
+Syntax:
+
+stop
+stop immediately
+
+The stop command causes exactly the same effect as clicking the &quot;stop&quot; button of the simulator&apos;s control panel. To force the simulation to stop immediately when there is a recorder, add the immediately keyword to the command.
+
+Note that this command does not stop the execution of the current scripts. To terminate the execution of the scripts from inside the scripts, use the return command.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="683">
+<paragraph start="0" end="5">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="4">
+<bold>true</bold><italic>true</italic><size>16</size></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="8">
+<size>11</size></content>
+
+<content start="8" end="16">
+<href>script_run.cml</href><size>11</size></content>
+
+<content start="16" end="19">
+<size>11</size></content>
+
+<content start="19" end="24">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="31">
+<href>script_reset.cml</href><size>11</size></content>
+
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>100.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="228">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<family>Courier New</family><size>11</size></content>
+
+<content start="43" end="86">
+<size>11</size></content>
+
+<content start="86" end="105">
+<href>RecordSimulation.cml</href><size>11</size></content>
+
+<content start="105" end="228">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="228" end="229">
+<LeftIndent>140.0</LeftIndent>
+<content start="228" end="229">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="229" end="237">
+<LeftIndent>140.0</LeftIndent>
+<content start="229" end="237">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="237" end="238">
+<LeftIndent>140.0</LeftIndent>
+<content start="237" end="238">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="238" end="243">
+<LeftIndent>160.0</LeftIndent>
+<content start="238" end="243">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="243" end="260">
+<LeftIndent>160.0</LeftIndent>
+<content start="243" end="259">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="259" end="260">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="260" end="261">
+<LeftIndent>140.0</LeftIndent>
+<content start="260" end="261">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="261" end="487">
+<LeftIndent>140.0</LeftIndent>
+<content start="261" end="265">
+<size>11</size></content>
+
+<content start="265" end="269">
+<family>Courier New</family><size>11</size></content>
+
+<content start="269" end="451">
+<size>11</size></content>
+
+<content start="451" end="462">
+<family>Courier New</family><size>11</size></content>
+
+<content start="462" end="487">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="487" end="488">
+<LeftIndent>140.0</LeftIndent>
+<content start="487" end="488">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="488" end="654">
+<LeftIndent>140.0</LeftIndent>
+<content start="488" end="561">
+<bold>true</bold><size>11</size></content>
+
+<content start="561" end="563">
+<size>11</size></content>
+
+<content start="563" end="638">
+<size>11</size></content>
+
+<content start="638" end="644">
+<family>Courier New</family><href>script_return.cml</href><size>11</size></content>
+
+<content start="644" end="653">
+<size>11</size></content>
+
+<content start="653" end="654">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="654" end="655">
+<LeftIndent>140.0</LeftIndent>
+<content start="654" end="655">
+</content>
+
+</paragraph>
+<paragraph start="655" end="683">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="655" end="657">
+<size>11</size></content>
+
+<content start="657" end="665">
+<href>script_run.cml</href><size>11</size></content>
+
+<content start="665" end="668">
+<size>11</size></content>
+
+<content start="668" end="673">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="673" end="676">
+<size>11</size></content>
+
+<content start="676" end="680">
+<href>script_reset.cml</href><size>11</size></content>
+
+<content start="680" end="682">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

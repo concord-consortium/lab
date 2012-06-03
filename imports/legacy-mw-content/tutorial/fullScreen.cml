@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Using the full screen mode</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Using the full screen mode
+
+&lt; Previous | Index | Next &gt;
+
+The full screen mode allows you to directly project the content on a page onto the screen without showing the tool bar etc. associated with the main window. It can be used when you are showing a simulation to your class, or doing a presentation.
+
+If you are using Windows and Linux, you can turn on the full screen mode by pressing the F11 key, or choose the &quot;Full Screen&quot; item from the View menu. To return to the windowing mode, press the F11 key again, or click the &quot;Exit&quot; button on the small panel floating above the lower-right corner of window.
+
+ 
+For Mac users, the F11 key is reserved for other function. Please select the &quot;Full Screen&quot; menu item from the View Menu to enter the full screen mode, and use the &quot;Exit&quot; button on the floating palette to return to the normal window mode.
+ 
+
+When MW is used to display a molecule, invoking the full screen mode will automatically invoke a random   Jmol script and spin the molecule, making MW behave like a screensaver. (Well, it is not a real screensaver, because it does not automatically start when your computer becomes inactive for a certain amount of time. Also, while it may save your screen, it may exhaust your CPU because a lot of calculations need to be done to run the random script continuously.)
+
+To see the screensaver effect, click the following link to open a PDB file and then press F11 (on Windows and Linux only) or select &quot;View&gt;Full Screen&quot; menu (on Mac OS X, Windows and Linux). Note that as soon as you use the navigation palette to leave or reload the current page, the random script will be terminated. Also note that the random script is generated at the time the full screen mode is turned on, and it loops over until the full screen model is exited. If you would like to see the performance of a different screensaver script, just press F11 twice (one to exit the full screen mode and the other to re-enter).
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1976">
+<paragraph start="0" end="27">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="26">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<RightIndent>20.0</RightIndent>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="56">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="38">
+<size>11</size><href>bookmark.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="46">
+<size>11</size><href>index.cml</href></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="53">
+<size>11</size><href>proxy.cml</href></content>
+
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="303">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="303">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="303" end="304">
+<LeftIndent>140.0</LeftIndent>
+<content start="303" end="304">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="304" end="608">
+<LeftIndent>140.0</LeftIndent>
+<content start="304" end="608">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="608" end="609">
+<LeftIndent>140.0</LeftIndent>
+<content start="608" end="609">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="609" end="611">
+<LeftIndent>140.0</LeftIndent>
+<content start="609" end="610">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="610" end="611">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="611" end="849">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="611" end="624">
+<size>11</size><bold>true</bold></content>
+
+<content start="624" end="849">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="849" end="851">
+<LeftIndent>140.0</LeftIndent>
+<content start="849" end="850">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="850" end="851">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="851" end="852">
+<LeftIndent>140.0</LeftIndent>
+<content start="851" end="852">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="852" end="1320">
+<LeftIndent>140.0</LeftIndent>
+<content start="852" end="956">
+<size>11</size></content>
+
+<content start="956" end="957">
+<icon>htmlink.gif</icon></content>
+
+<content start="957" end="958">
+<size>11</size></content>
+
+<content start="958" end="969">
+<size>11</size><href>http://www.stolaf.edu/academics/chemapps/jmol/docs/</href></content>
+
+<content start="969" end="1320">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1320" end="1321">
+<LeftIndent>140.0</LeftIndent>
+<content start="1320" end="1321">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1321" end="1947">
+<LeftIndent>140.0</LeftIndent>
+<content start="1321" end="1350">
+<size>11</size><bold>true</bold></content>
+
+<content start="1350" end="1372">
+<size>11</size></content>
+
+<content start="1372" end="1376">
+<size>11</size><href>1EHZ.pdb</href></content>
+
+<content start="1376" end="1946">
+<size>11</size></content>
+
+<content start="1946" end="1947">
+</content>
+
+</paragraph>
+<paragraph start="1947" end="1948">
+<LeftIndent>100.0</LeftIndent>
+<content start="1947" end="1948">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="1948" end="1976">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1948" end="1950">
+<size>11</size></content>
+
+<content start="1950" end="1958">
+<size>11</size><href>bookmark.cml</href></content>
+
+<content start="1958" end="1961">
+<size>11</size></content>
+
+<content start="1961" end="1966">
+<size>11</size><href>index.cml</href></content>
+
+<content start="1966" end="1969">
+<size>11</size></content>
+
+<content start="1969" end="1973">
+<size>11</size><href>proxy.cml</href></content>
+
+<content start="1973" end="1975">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

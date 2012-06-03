@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>User Survey: 2D Simulation vs. 3D Simulation</page_title>
+<bg_color><Red>0</Red><Green>0</Green><Blue>0</Blue></bg_color>
+<text>User Survey: 2D Simulation vs. 3D Simulation
+
+A simple model about the collision of a particle with some obstacles in a box can be done in both 2D and 3D, as is shown below. Do you think the 3D effect would make a difference in learning for average students? Is the 2D version clearer and therefore easier to learn with? What more can a 3D simulation offer than a 2D one? Please share your opinion.
+   
+    
+
+How to add your comment? Press the &quot;Comment&quot; button to comment. 
+Press the &quot;View Opinions&quot; button next to it to view other people&apos;s opinions.
+
+
+</text>
+<section start="0" end="554">
+<paragraph start="0" end="45">
+<Alignment>1</Alignment>
+<content start="0" end="44">
+<size>20</size><foreground>255 255 255</foreground><bold>true</bold><family>Arial Black</family></content>
+
+<content start="44" end="45">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<content start="45" end="46">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="46" end="399">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="46" end="398">
+<foreground>255 255 255</foreground><size>14</size></content>
+
+<content start="398" end="399">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="399" end="403">
+<Alignment>1</Alignment>
+<content start="399" end="400">
+<foreground>255 255 255</foreground></content>
+
+<content start="400" end="401">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>2dvs3d$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="401" end="402">
+<component><class>org.concord.modeler.PageMd3d</class><resource>2dvs3d$0.mdd</resource><coordinate>2dvs3d$0.xyz</coordinate><width>360</width><height>360</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<statusbar>false</statusbar>
+</component><foreground>255 255 255</foreground></content>
+
+<content start="402" end="403">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="403" end="408">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="403" end="404">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<script>script:mw2d:1:run;
+script:mw3d:1:run;</script>
+<action>Script</action></component></content>
+
+<content start="404" end="405">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<script>script:mw2d:1:stop;
+script:mw3d:1:stop;</script>
+<action>Script</action></component></content>
+
+<content start="405" end="406">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Comment</title>
+<action>Comment</action></component></content>
+
+<content start="406" end="407">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>View Opinions</title>
+<bgcolor>-ce953b</bgcolor>
+<action>View comments</action></component></content>
+
+<content start="407" end="408">
+</content>
+
+</paragraph>
+<paragraph start="408" end="409">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="408" end="409">
+<foreground>255 255 255</foreground><size>14</size></content>
+
+</paragraph>
+<paragraph start="409" end="474">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="409" end="433">
+<bold>true</bold><foreground>255 255 255</foreground><size>14</size></content>
+
+<content start="433" end="474">
+<foreground>255 255 255</foreground><size>14</size></content>
+
+</paragraph>
+<paragraph start="474" end="551">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="474" end="550">
+<foreground>255 255 255</foreground><size>14</size></content>
+
+<content start="550" end="551">
+<foreground>255 255 255</foreground></content>
+
+</paragraph>
+<paragraph start="551" end="552">
+<RightIndent>10.0</RightIndent>
+<content start="551" end="552">
+</content>
+
+</paragraph>
+<paragraph start="552" end="553">
+<content start="552" end="553">
+</content>
+
+</paragraph>
+<paragraph start="553" end="554">
+</paragraph>
+</section>
+</document>

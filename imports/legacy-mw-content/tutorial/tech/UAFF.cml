@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The united-atom force fields model</page_title>
+<text> 
+ 
+
+A united-atom is a particle that incorporates a group of atoms but can approximately represent the molecular mechanical properties of the group on a scale of size that is larger than atomic scale. It is also called psudo-atom.
+
+The united-atom model is a good approximation to simulate molecular systems in which the intermolecular motion is much more important than the intramolecular motion, or the intramolecular motion is much less significant than the intermolecular motion. For example, in many materials that are composed of stable chemical compounds (i.e. they do not react with each other to form new compounds or break into smaller units), the way how these molecules interact as whole groups with each other often determines the physical and chemical properties of the bulk materials.
+  
+Figure 1. Elliptical objects can be used to simulate the intermolecular behaviors of ensembles of stable chemical compounds that do not dissociate or combine under the conditions studied.
+
+For united-atom simulations based on the uniaxial Gay-Berne model (see &#10102; for a brief history of this model), the potential energy function is expressed by
+
+  
+
+where
+  
+
+is the orientation-dependent range parameter, which was derived from the equi-density surface of the electron cloud of a uniaxially stretched Gaussian distribution (an ellipsoid of revolution around the principal axis), ui and uj are the orientation unit vectors of the i-th and j-th particles, whereas rij  is the distance unit vector between them, sigma0 is the contact parameter, which is set as:
+
+   
+
+The anisotropic parameters are defined as: 
+
+   
+and
+
+  
+
+where li and lj are the lengths of the interacting elliptic bodies, di and dj are the breadths. The well depth is: 
+
+  
+
+where epsilon0, i, epsilon0, j, m and n are adjustable parameters. The first term is dependent on the relative orientation of the two particles but independent of the distance between them: 
+
+  
+
+whereas the second term depends on both:
+
+  
+with the anisotropic ratio of interaction energy for this pair of particles defined as:
+
+  
+and
+
+  
+
+where epsilonSi  and epsilonSj are the well depths corresponding to the side-by-side arrangement for a pair of particles of the same type, epsilonEi and epsilonEj to the end-to-end arrangement for a pair of particles of the same type. The last three terms in the Hamiltonian of the generalized Gay-Berne model are charge-charge, charge-dipole and dipole-dipole interactions, respectively (qi and qj are the net charges of particle i and j , pi and pj are the electric dipole moments of particle i and j). Higher orders of electric moments from quadrupoles on are neglected.
+
+(a) Side-by-side alignment
+
+   
+  
+Figure 2. Nonelectrostatic energy of the side-by-side configuration
+
+(b) End-to-end alignment
+
+Note that because l&gt;d, the Lennard-Jones function is shifted outwards by an amount of  (l-d). That is to say, they will start to repul each other from a longer distance (21/6l) away when they come close to each other. This mechanism guarantees that the two particles will not overlap in the long axis direction.
+
+  
+  
+Figure 3. Nonelectrostatic energy of the end-to-end configuration
+
+(c) T-shaped alignment
+
+  
+  
+Figure 4. Nonelectrostatic energy of the T-shaped configuration
+
+It is obvious that when the Gay-Berne particle becomes spherical, the above potential function returns to the conventional Lennard-Jones form. Therefore, the Gay-Berne model can be regarded as a generalization of the soft sphere Lennard-Jones model to soft ellipsoid of revolution.
+
+Similiar to the all-atom force field, the united-atom force field consists of generalized Gay-Berne potentials, which is equivalent to the van der Waals potential, and lower order electrostatic contributions. At this point, you may be wondering what kind of force the Gay-Berne potential tries to model. If the Gay-Berne potential is sort of effective interaction between mesogens, then why is electrostatic forces singled out from it, considering the fact that dipole-dipole interactions can sometimes lead to self-alignment resembling liquid crystalline self-organization?
+
+The assumption that the physical forces behind the strong self-organization of liquid crystalline molecules are not simply dipole-dipole (or other higher-order electrostatic) interactions is supported by the experimental fact that not all liquid crystals are polar. The non-polar class of liquid crystals do not respond to exerted electric fields at all. Polar liquid crystals, a relatively new class of liquid crystals that can be controlled by external electric fields, was introduced by Robert B. Meyer in 1975.
+
+The physical origin of the strong inter-mesogen interactions that lead to liquid crystal phase must be quantum mechanical. And this is what the original Gay-Berne potential was designed to account for.
+
+ 
+[This is a Meso Particle Simulator.]
+
+ 
+&#10102; The Gay-Berne (GB) model was proposed by Gay and Berne in 1981 (Ref: J.G.Gay and B.J.Berne, Journal of Chemical Physics, 74, (1981) 3316). The GB potential has a similiar form with the Lennard-Jones potential, but is in actuality far more complicated. Because it has proven to be able to simulate nematic, discotic nematic, and biaxial nematic phases of liquid crystals, it has become rather popular for modeling mesogenic systems. The commonly used version of the GB model studies systems consisting of only one type of GB particle, which made it less useful in extending to molecules of general interest. Recently, interactions between a pair of unlike GB particles have been given by D.J.Cleaver, C.M.Care, M.P.Allen, and M.P.Neal (CCAN) ( Extension and generalization of the Gay-Berne potential, in Physical Review E54, 559-567, 1996), whose work has paved the way of applying the GB model to more structured systems. Based on their model, M.R.Wilson has constructed a more flexible model for polymer liquid crystals by combining the GB particles and the conventional Lennard-Jones ones with harmonic bonds and torsional potentials (See Molecular dynamics simulations of flexible liquid crystal molecules using a Gay-Berne/Lennard-Jones model, Journal of Chemical Physics, 107 (20), P. 8654-8663, 1997). The CCAN version of GB model assumes that all GB particles have the same energetic anistropy ratio, which is an assumption that favors the formation of a uniform liquid crystalline phase. In Molecular Workbench, we allow the GB particles to have distinct energetic anisotropies. Thus the mesogens could have some chance to form &quot;amorphous&quot; phases other than liquid and solid. Besides this modification, we also generalize the GB model by adding some low-order terms of electrostatic interactions to the Hamiltonian, which were missing in the aforementioned work.
+
+
+
+</text>
+<section start="0" end="6773">
+<paragraph start="0" end="2">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>600.0</width><height>50</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;b&gt;&lt;font color=&quot;#ffffff&quot; size=&quot;6&quot; face=&quot;Verdana&quot;&gt;The United-Atom Force 
+      Fields&lt;/font&gt;&lt;/b&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-999a00</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>600.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Charles Xie, Concord Consortium&lt;/font&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-ff0100</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="232">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="5" end="232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="232" end="233">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="232" end="233">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="233" end="801">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="233" end="800">
+<size>11</size></content>
+
+<content start="800" end="801">
+</content>
+
+</paragraph>
+<paragraph start="801" end="804">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="801" end="802">
+</content>
+
+<content start="802" end="803">
+<icon>UnitedAtomModeling.gif</icon></content>
+
+<content start="803" end="804">
+</content>
+
+</paragraph>
+<paragraph start="804" end="992">
+<RightIndent>80.0</RightIndent>
+<LeftIndent>80.0</LeftIndent>
+<content start="804" end="810">
+<bold>true</bold><size>11</size></content>
+
+<content start="810" end="992">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="992" end="993">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="992" end="993">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="993" end="1148">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="993" end="1064">
+<size>11</size></content>
+
+<content start="1064" end="1065">
+<size>13</size></content>
+
+<content start="1065" end="1147">
+<size>11</size></content>
+
+<content start="1147" end="1148">
+</content>
+
+</paragraph>
+<paragraph start="1148" end="1149">
+<content start="1148" end="1149">
+</content>
+
+</paragraph>
+<paragraph start="1149" end="1152">
+<Alignment>1</Alignment>
+<content start="1149" end="1150">
+</content>
+
+<content start="1150" end="1151">
+<icon>GBV.gif</icon></content>
+
+<content start="1151" end="1152">
+</content>
+
+</paragraph>
+<paragraph start="1152" end="1153">
+<content start="1152" end="1153">
+</content>
+
+</paragraph>
+<paragraph start="1153" end="1159">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="1153" end="1158">
+<size>11</size></content>
+
+<content start="1158" end="1159">
+</content>
+
+</paragraph>
+<paragraph start="1159" end="1162">
+<Alignment>1</Alignment>
+<content start="1159" end="1160">
+</content>
+
+<content start="1160" end="1161">
+<icon>RangeParameter.gif</icon></content>
+
+<content start="1161" end="1162">
+</content>
+
+</paragraph>
+<paragraph start="1162" end="1163">
+<content start="1162" end="1163">
+</content>
+
+</paragraph>
+<paragraph start="1163" end="1563">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="1163" end="1383">
+<size>11</size></content>
+
+<content start="1383" end="1384">
+<bold>true</bold><size>11</size></content>
+
+<content start="1384" end="1385">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1385" end="1390">
+<size>11</size></content>
+
+<content start="1390" end="1391">
+<bold>true</bold><size>11</size></content>
+
+<content start="1391" end="1392">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1392" end="1433">
+<size>11</size></content>
+
+<content start="1433" end="1434">
+<italic>true</italic><size>11</size></content>
+
+<content start="1434" end="1442">
+<size>11</size></content>
+
+<content start="1442" end="1443">
+<italic>true</italic><size>11</size></content>
+
+<content start="1443" end="1466">
+<size>11</size></content>
+
+<content start="1466" end="1467">
+<bold>true</bold><size>11</size></content>
+
+<content start="1467" end="1469">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1469" end="1518">
+<size>11</size></content>
+
+<content start="1518" end="1519">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1519" end="1562">
+<size>11</size></content>
+
+<content start="1562" end="1563">
+</content>
+
+</paragraph>
+<paragraph start="1563" end="1564">
+<content start="1563" end="1564">
+</content>
+
+</paragraph>
+<paragraph start="1564" end="1568">
+<Alignment>1</Alignment>
+<content start="1564" end="1566">
+</content>
+
+<content start="1566" end="1567">
+<icon>sigma0.gif</icon></content>
+
+<content start="1567" end="1568">
+</content>
+
+</paragraph>
+<paragraph start="1568" end="1569">
+<content start="1568" end="1569">
+</content>
+
+</paragraph>
+<paragraph start="1569" end="1613">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="1569" end="1612">
+<size>11</size></content>
+
+<content start="1612" end="1613">
+</content>
+
+</paragraph>
+<paragraph start="1613" end="1614">
+<content start="1613" end="1614">
+</content>
+
+</paragraph>
+<paragraph start="1614" end="1618">
+<Alignment>1</Alignment>
+<content start="1614" end="1616">
+</content>
+
+<content start="1616" end="1617">
+<icon>Chi.gif</icon></content>
+
+<content start="1617" end="1618">
+</content>
+
+</paragraph>
+<paragraph start="1618" end="1622">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="1618" end="1621">
+<size>11</size></content>
+
+<content start="1621" end="1622">
+</content>
+
+</paragraph>
+<paragraph start="1622" end="1623">
+<content start="1622" end="1623">
+</content>
+
+</paragraph>
+<paragraph start="1623" end="1626">
+<Alignment>1</Alignment>
+<content start="1623" end="1624">
+</content>
+
+<content start="1624" end="1625">
+<icon>Alpha.gif</icon></content>
+
+<content start="1625" end="1626">
+</content>
+
+</paragraph>
+<paragraph start="1626" end="1627">
+<content start="1626" end="1627">
+</content>
+
+</paragraph>
+<paragraph start="1627" end="1743">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="1627" end="1633">
+<size>11</size></content>
+
+<content start="1633" end="1634">
+<italic>true</italic><size>11</size></content>
+
+<content start="1634" end="1635">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1635" end="1640">
+<size>11</size></content>
+
+<content start="1640" end="1641">
+<italic>true</italic><size>11</size></content>
+
+<content start="1641" end="1642">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1642" end="1695">
+<size>11</size></content>
+
+<content start="1695" end="1696">
+<italic>true</italic><size>11</size></content>
+
+<content start="1696" end="1697">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1697" end="1702">
+<size>11</size></content>
+
+<content start="1702" end="1703">
+<italic>true</italic><size>11</size></content>
+
+<content start="1703" end="1704">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1704" end="1742">
+<size>11</size></content>
+
+<content start="1742" end="1743">
+</content>
+
+</paragraph>
+<paragraph start="1743" end="1744">
+<content start="1743" end="1744">
+</content>
+
+</paragraph>
+<paragraph start="1744" end="1747">
+<Alignment>1</Alignment>
+<content start="1744" end="1745">
+</content>
+
+<content start="1745" end="1746">
+<icon>GBEpsilon.gif</icon></content>
+
+<content start="1746" end="1747">
+</content>
+
+</paragraph>
+<paragraph start="1747" end="1748">
+<content start="1747" end="1748">
+</content>
+
+</paragraph>
+<paragraph start="1748" end="1939">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="1748" end="1761">
+<size>11</size></content>
+
+<content start="1761" end="1762">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1762" end="1764">
+<size>11</size></content>
+
+<content start="1764" end="1765">
+<italic>true</italic><size>11</size></content>
+
+<content start="1765" end="1774">
+<size>11</size></content>
+
+<content start="1774" end="1775">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1775" end="1777">
+<size>11</size></content>
+
+<content start="1777" end="1778">
+<italic>true</italic><size>11</size></content>
+
+<content start="1778" end="1780">
+<size>11</size></content>
+
+<content start="1780" end="1781">
+<italic>true</italic><size>11</size></content>
+
+<content start="1781" end="1786">
+<size>11</size></content>
+
+<content start="1786" end="1787">
+<italic>true</italic><size>11</size></content>
+
+<content start="1787" end="1939">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1939" end="1940">
+<content start="1939" end="1940">
+</content>
+
+</paragraph>
+<paragraph start="1940" end="1943">
+<Alignment>1</Alignment>
+<content start="1940" end="1941">
+</content>
+
+<content start="1941" end="1942">
+<icon>GBEpsilon1.gif</icon></content>
+
+<content start="1942" end="1943">
+</content>
+
+</paragraph>
+<paragraph start="1943" end="1944">
+<content start="1943" end="1944">
+</content>
+
+</paragraph>
+<paragraph start="1944" end="1985">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="1944" end="1984">
+<size>11</size></content>
+
+<content start="1984" end="1985">
+</content>
+
+</paragraph>
+<paragraph start="1985" end="1986">
+<content start="1985" end="1986">
+</content>
+
+</paragraph>
+<paragraph start="1986" end="1989">
+<Alignment>1</Alignment>
+<content start="1986" end="1987">
+</content>
+
+<content start="1987" end="1988">
+<icon>GBEpsilon2.gif</icon></content>
+
+<content start="1988" end="1989">
+</content>
+
+</paragraph>
+<paragraph start="1989" end="2077">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="1989" end="2076">
+<size>11</size></content>
+
+<content start="2076" end="2077">
+</content>
+
+</paragraph>
+<paragraph start="2077" end="2078">
+<content start="2077" end="2078">
+</content>
+
+</paragraph>
+<paragraph start="2078" end="2081">
+<Alignment>1</Alignment>
+<content start="2078" end="2079">
+</content>
+
+<content start="2079" end="2080">
+<icon>Chi1.gif</icon></content>
+
+<content start="2080" end="2081">
+</content>
+
+</paragraph>
+<paragraph start="2081" end="2085">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="2081" end="2084">
+<size>11</size></content>
+
+<content start="2084" end="2085">
+</content>
+
+</paragraph>
+<paragraph start="2085" end="2086">
+<content start="2085" end="2086">
+</content>
+
+</paragraph>
+<paragraph start="2086" end="2089">
+<Alignment>1</Alignment>
+<content start="2086" end="2087">
+</content>
+
+<content start="2087" end="2088">
+<icon>Alpha1.gif</icon></content>
+
+<content start="2088" end="2089">
+</content>
+
+</paragraph>
+<paragraph start="2089" end="2090">
+<content start="2089" end="2090">
+</content>
+
+</paragraph>
+<paragraph start="2090" end="2664">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="2090" end="2103">
+<size>11</size></content>
+
+<content start="2103" end="2104">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="2104" end="2105">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="2105" end="2118">
+<size>11</size></content>
+
+<content start="2118" end="2119">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="2119" end="2120">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="2120" end="2236">
+<size>11</size></content>
+
+<content start="2236" end="2237">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="2237" end="2238">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="2238" end="2250">
+<size>11</size></content>
+
+<content start="2250" end="2251">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="2251" end="2252">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="2252" end="2479">
+<size>11</size></content>
+
+<content start="2479" end="2480">
+<italic>true</italic><size>11</size></content>
+
+<content start="2480" end="2481">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="2481" end="2486">
+<size>11</size></content>
+
+<content start="2486" end="2487">
+<italic>true</italic><size>11</size></content>
+
+<content start="2487" end="2488">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="2488" end="2521">
+<size>11</size></content>
+
+<content start="2521" end="2522">
+<italic>true</italic><size>11</size></content>
+
+<content start="2522" end="2527">
+<size>11</size></content>
+
+<content start="2527" end="2528">
+<italic>true</italic><size>11</size></content>
+
+<content start="2528" end="2531">
+<size>11</size></content>
+
+<content start="2531" end="2532">
+<italic>true</italic><size>11</size></content>
+
+<content start="2532" end="2533">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="2533" end="2538">
+<size>11</size></content>
+
+<content start="2538" end="2539">
+<italic>true</italic><size>11</size></content>
+
+<content start="2539" end="2540">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="2540" end="2585">
+<size>11</size></content>
+
+<content start="2585" end="2586">
+<italic>true</italic><size>11</size></content>
+
+<content start="2586" end="2591">
+<size>11</size></content>
+
+<content start="2591" end="2592">
+<italic>true</italic><size>11</size></content>
+
+<content start="2592" end="2664">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2664" end="2665">
+<content start="2664" end="2665">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2665" end="2692">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="2665" end="2691">
+<bold>true</bold><size>11</size></content>
+
+<content start="2691" end="2692">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="2692" end="2693">
+<content start="2692" end="2693">
+</content>
+
+</paragraph>
+<paragraph start="2693" end="2697">
+<Alignment>1</Alignment>
+<content start="2693" end="2695">
+</content>
+
+<content start="2695" end="2696">
+<icon>SideBySide.gif</icon></content>
+
+<content start="2696" end="2697">
+</content>
+
+</paragraph>
+<paragraph start="2697" end="2700">
+<Alignment>1</Alignment>
+<content start="2697" end="2698">
+</content>
+
+<content start="2698" end="2699">
+<icon>SideBySideEnergy.gif</icon></content>
+
+<content start="2699" end="2700">
+</content>
+
+</paragraph>
+<paragraph start="2700" end="2768">
+<Alignment>1</Alignment>
+<content start="2700" end="2768">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="2768" end="2769">
+<content start="2768" end="2769">
+</content>
+
+</paragraph>
+<paragraph start="2769" end="2794">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="2769" end="2794">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="2794" end="2795">
+<content start="2794" end="2795">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2795" end="3107">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="2795" end="2813">
+<size>11</size></content>
+
+<content start="2813" end="2814">
+<italic>true</italic><size>11</size></content>
+
+<content start="2814" end="2815">
+<size>11</size></content>
+
+<content start="2815" end="2816">
+<italic>true</italic><size>11</size></content>
+
+<content start="2816" end="2883">
+<size>11</size></content>
+
+<content start="2883" end="2886">
+<italic>true</italic><size>11</size></content>
+
+<content start="2886" end="2966">
+<size>11</size></content>
+
+<content start="2966" end="2969">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="2969" end="2970">
+<italic>true</italic><size>11</size></content>
+
+<content start="2970" end="3106">
+<size>11</size></content>
+
+<content start="3106" end="3107">
+</content>
+
+</paragraph>
+<paragraph start="3107" end="3108">
+<content start="3107" end="3108">
+</content>
+
+</paragraph>
+<paragraph start="3108" end="3111">
+<Alignment>1</Alignment>
+<content start="3108" end="3109">
+</content>
+
+<content start="3109" end="3110">
+<icon>EndToEnd.gif</icon></content>
+
+<content start="3110" end="3111">
+</content>
+
+</paragraph>
+<paragraph start="3111" end="3114">
+<Alignment>1</Alignment>
+<content start="3111" end="3112">
+</content>
+
+<content start="3112" end="3113">
+<icon>EndToEndEnergy.gif</icon></content>
+
+<content start="3113" end="3114">
+</content>
+
+</paragraph>
+<paragraph start="3114" end="3180">
+<Alignment>1</Alignment>
+<content start="3114" end="3179">
+<italic>true</italic><size>11</size></content>
+
+<content start="3179" end="3180">
+<italic>true</italic><bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="3180" end="3181">
+<content start="3180" end="3181">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="3181" end="3204">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="3181" end="3203">
+<bold>true</bold><size>11</size></content>
+
+<content start="3203" end="3204">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="3204" end="3205">
+<content start="3204" end="3205">
+</content>
+
+</paragraph>
+<paragraph start="3205" end="3208">
+<Alignment>1</Alignment>
+<content start="3205" end="3206">
+</content>
+
+<content start="3206" end="3207">
+<icon>TShaped.gif</icon></content>
+
+<content start="3207" end="3208">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="3208" end="3211">
+<Alignment>1</Alignment>
+<content start="3208" end="3209">
+</content>
+
+<content start="3209" end="3210">
+<icon>TShapedEnergy.gif</icon></content>
+
+<content start="3210" end="3211">
+</content>
+
+</paragraph>
+<paragraph start="3211" end="3275">
+<Alignment>1</Alignment>
+<content start="3211" end="3274">
+<italic>true</italic><size>11</size></content>
+
+<content start="3274" end="3275">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3275" end="3276">
+<content start="3275" end="3276">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3276" end="3558">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="3276" end="3558">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3558" end="3559">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="3558" end="3559">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3559" end="4134">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="3559" end="4134">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4134" end="4135">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="4134" end="4135">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4135" end="4650">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="4135" end="4650">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4650" end="4651">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="4650" end="4651">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4651" end="4853">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="4651" end="4853">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4853" end="4854">
+<content start="4853" end="4854">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4854" end="4856">
+<Alignment>1</Alignment>
+<content start="4854" end="4855">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>UAFF$0.gbl</resource><button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Add GB</button><button>Rotate Object</button><button>Resize GB</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button></component></content>
+
+<content start="4855" end="4856">
+</content>
+
+</paragraph>
+<paragraph start="4856" end="4893">
+<Alignment>1</Alignment>
+<content start="4856" end="4892">
+<size>10</size></content>
+
+<content start="4892" end="4893">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4893" end="4894">
+<content start="4893" end="4894">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4894" end="4896">
+<SpaceAbove>2.0</SpaceAbove>
+<LeftIndent>10.0</LeftIndent>
+<content start="4894" end="4895">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="4895" end="4896">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4896" end="6769">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="4896" end="4897">
+<size>13</size></content>
+
+<content start="4897" end="4898">
+</content>
+
+<content start="4898" end="4990">
+<size>10</size></content>
+
+<content start="4990" end="5017">
+<italic>true</italic><size>10</size></content>
+
+<content start="5017" end="5019">
+<size>10</size></content>
+
+<content start="5019" end="5021">
+<bold>true</bold><size>10</size></content>
+
+<content start="5021" end="5701">
+<size>10</size></content>
+
+<content start="5701" end="5716">
+<italic>true</italic><size>10</size></content>
+
+<content start="5716" end="5717">
+<size>10</size></content>
+
+<content start="5717" end="5720">
+<bold>true</bold><size>10</size></content>
+
+<content start="5720" end="6146">
+<size>10</size></content>
+
+<content start="6146" end="6173">
+<italic>true</italic><size>10</size></content>
+
+<content start="6173" end="6175">
+<size>10</size></content>
+
+<content start="6175" end="6178">
+<bold>true</bold><size>10</size></content>
+
+<content start="6178" end="6769">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="6769" end="6770">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="6769" end="6770">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="6770" end="6771">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="6770" end="6771">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="6771" end="6772">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>10.0</LeftIndent>
+<content start="6771" end="6772">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="6772" end="6773">
+</paragraph>
+</section>
+</document>

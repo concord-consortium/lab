@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Inserting a bond-breaking energy barrier controller</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a bond-breaking energy barrier controller
+
+&lt; Previous | Index | Next &gt;
+
+A bond-breaking energy barrier controller controls the breaking of a type of chemical bond.
+
+Choose the &quot;Insert&gt;Special Controller for Model&gt;Chemical Reaction Kinetics&gt;Bond-Breaking Barrier&quot; menu action. You will see the following dialog window:
+
+  
+[This is a screenshot.]
+
+The parameters set by this controller apply to all bonds of the selected type.
+
+This controller is used only for the &quot;Chemical Reaction Kinetics&quot; container. If no reaction is supported by the container (as is also the case of &quot;Atomistic Simulation&quot; container), the second combo box will be empty.
+
+Taking a snapshot
+
+To take a snapshot of this graphical controller, right-click on it and choose &quot;Take a Snapshot&quot; from the popup menu.
+
+Changing and removing a bond-breaking energy barrier controller
+
+See &quot;Editing embedded components&quot; for how to change, move and remove a bond-breaking energy barrier controller.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="998">
+<paragraph start="0" end="52">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="51">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="81">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="63">
+<href>scriptconsole.cml</href><size>11</size></content>
+
+<content start="63" end="66">
+<size>11</size></content>
+
+<content start="66" end="71">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="71" end="74">
+<size>11</size></content>
+
+<content start="74" end="78">
+<href>activation.cml</href><size>11</size></content>
+
+<content start="78" end="80">
+<size>11</size></content>
+
+<content start="80" end="81">
+</content>
+
+</paragraph>
+<paragraph start="81" end="82">
+<LeftIndent>140.0</LeftIndent>
+<content start="81" end="82">
+</content>
+
+</paragraph>
+<paragraph start="82" end="174">
+<LeftIndent>140.0</LeftIndent>
+<content start="82" end="174">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="174" end="175">
+<LeftIndent>140.0</LeftIndent>
+<content start="174" end="175">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="175" end="328">
+<LeftIndent>140.0</LeftIndent>
+<content start="175" end="328">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="328" end="329">
+<LeftIndent>100.0</LeftIndent>
+<content start="328" end="329">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="329" end="332">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="329" end="330">
+<size>11</size></content>
+
+<content start="330" end="331">
+<size>11</size><icon>BondBreakingBarrier.gif</icon></content>
+
+<content start="331" end="332">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="332" end="356">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="332" end="355">
+<size>10</size></content>
+
+<content start="355" end="356">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="356" end="357">
+<LeftIndent>100.0</LeftIndent>
+<content start="356" end="357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="357" end="436">
+<LeftIndent>140.0</LeftIndent>
+<content start="357" end="436">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="436" end="437">
+<LeftIndent>140.0</LeftIndent>
+<content start="436" end="437">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="437" end="654">
+<LeftIndent>140.0</LeftIndent>
+<content start="437" end="654">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="654" end="655">
+<LeftIndent>140.0</LeftIndent>
+<content start="654" end="655">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="655" end="673">
+<LeftIndent>140.0</LeftIndent>
+<content start="655" end="672">
+<size>11</size><bold>true</bold></content>
+
+<content start="672" end="673">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="673" end="674">
+<LeftIndent>140.0</LeftIndent>
+<content start="673" end="674">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="674" end="791">
+<LeftIndent>140.0</LeftIndent>
+<content start="674" end="791">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="791" end="792">
+<LeftIndent>140.0</LeftIndent>
+<content start="791" end="792">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="792" end="856">
+<LeftIndent>140.0</LeftIndent>
+<content start="792" end="855">
+<size>11</size><bold>true</bold></content>
+
+<content start="855" end="856">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="856" end="857">
+<LeftIndent>140.0</LeftIndent>
+<content start="856" end="857">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="857" end="969">
+<LeftIndent>140.0</LeftIndent>
+<content start="857" end="862">
+<size>11</size></content>
+
+<content start="862" end="889">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="889" end="968">
+<size>11</size></content>
+
+<content start="968" end="969">
+</content>
+
+</paragraph>
+<paragraph start="969" end="970">
+<LeftIndent>100.0</LeftIndent>
+<content start="969" end="970">
+</content>
+
+</paragraph>
+<paragraph start="970" end="998">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="970" end="972">
+<size>11</size></content>
+
+<content start="972" end="980">
+<href>scriptconsole.cml</href><size>11</size></content>
+
+<content start="980" end="983">
+<size>11</size></content>
+
+<content start="983" end="988">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="988" end="991">
+<size>11</size></content>
+
+<content start="991" end="995">
+<href>activation.cml</href><size>11</size></content>
+
+<content start="995" end="997">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

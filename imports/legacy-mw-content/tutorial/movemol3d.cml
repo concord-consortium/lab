@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Manipulating a molecule: rotating and translating</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Manipulating a molecule: rotating and translating
+
+&lt; Previous | Index | Next &gt;
+
+When you create or edit molecules, the 3D modeling system behind the scene automatically figures out which atoms belong to which molecules. Atoms that are connected by a path of radial bonds &#10102; belong to the same molecule.
+
+A single molecule can be easily manipulated. You can rotate, translate, or remove it. To rotate a molecule, select the &quot; &quot; button from the tool bar, and then drag an atom of the molecule. To translate a molecule, right-click on the button and select the &quot; &quot; item. The icon of the button on the tool bar will now be changed to &quot; &quot;. Press the button, if it is not already pressed. You can then drag an atom of the molecule to translate it. Note that since the translation in this mode happens on a cross-section of the simulatio box, it may be hard to position the molecule precisely at the location you want.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+ 
+&#10102; Two atoms are considered &quot;connected&quot;, if we can find a path consisting of radial bonds that starts from one atom and ends at the other one. Typically, a molecule can be considered as a graph in   graph theory.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1197">
+<paragraph start="0" end="50">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="49">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="79">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="51" end="53">
+<size>11</size></content>
+
+<content start="53" end="61">
+<size>11</size><href>dropmol3d.cml</href></content>
+
+<content start="61" end="64">
+<size>11</size></content>
+
+<content start="64" end="69">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="69" end="72">
+<size>11</size></content>
+
+<content start="72" end="76">
+<size>11</size><href>position3d.cml</href></content>
+
+<content start="76" end="78">
+<size>11</size></content>
+
+<content start="78" end="79">
+</content>
+
+</paragraph>
+<paragraph start="79" end="80">
+<LeftIndent>140.0</LeftIndent>
+<content start="79" end="80">
+</content>
+
+</paragraph>
+<paragraph start="80" end="302">
+<LeftIndent>140.0</LeftIndent>
+<content start="80" end="271">
+<size>11</size></content>
+
+<content start="271" end="272">
+<size>13</size></content>
+
+<content start="272" end="302">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="302" end="303">
+<LeftIndent>140.0</LeftIndent>
+<content start="302" end="303">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="303" end="911">
+<LeftIndent>140.0</LeftIndent>
+<content start="303" end="423">
+<size>11</size></content>
+
+<content start="423" end="424">
+<icon>RotateAtoms.gif</icon></content>
+
+<content start="424" end="558">
+<size>11</size></content>
+
+<content start="558" end="559">
+<icon>TranslateAtoms.gif</icon></content>
+
+<content start="559" end="630">
+<size>11</size></content>
+
+<content start="630" end="631">
+<icon>TranslateAtoms.gif</icon></content>
+
+<content start="631" end="911">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="911" end="912">
+<LeftIndent>140.0</LeftIndent>
+<content start="911" end="912">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="912" end="914">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="912" end="913">
+<component><class>org.concord.modeler.PageMd3d</class><resource>movemol3d$0.mdd</resource><coordinate>movemol3d$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="913" end="914">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="914" end="953">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="914" end="952">
+<size>10</size></content>
+
+<content start="952" end="953">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="953" end="954">
+<LeftIndent>140.0</LeftIndent>
+<content start="953" end="954">
+</content>
+
+</paragraph>
+<paragraph start="954" end="956">
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<SpaceBelow>2.0</SpaceBelow>
+<content start="954" end="955">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.7</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="955" end="956">
+</content>
+
+</paragraph>
+<paragraph start="956" end="1168">
+<LeftIndent>140.0</LeftIndent>
+<content start="956" end="957">
+<size>13</size></content>
+
+<content start="957" end="958">
+</content>
+
+<content start="958" end="1143">
+<size>11</size></content>
+
+<content start="1143" end="1148">
+<italic>true</italic><size>11</size></content>
+
+<content start="1148" end="1152">
+<size>11</size></content>
+
+<content start="1152" end="1153">
+<icon>htmlink.gif</icon></content>
+
+<content start="1153" end="1154">
+<size>11</size></content>
+
+<content start="1154" end="1166">
+<size>11</size><href>http://en.wikipedia.org/wiki/Graph_theory</href></content>
+
+<content start="1166" end="1167">
+<size>11</size></content>
+
+<content start="1167" end="1168">
+</content>
+
+</paragraph>
+<paragraph start="1168" end="1169">
+<LeftIndent>140.0</LeftIndent>
+<content start="1168" end="1169">
+</content>
+
+</paragraph>
+<paragraph start="1169" end="1197">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1169" end="1171">
+<size>11</size></content>
+
+<content start="1171" end="1179">
+<size>11</size><href>dropmol3d.cml</href></content>
+
+<content start="1179" end="1182">
+<size>11</size></content>
+
+<content start="1182" end="1187">
+<size>11</size><href>index4.cml</href></content>
+
+<content start="1187" end="1190">
+<size>11</size></content>
+
+<content start="1190" end="1194">
+<size>11</size><href>position3d.cml</href></content>
+
+<content start="1194" end="1196">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

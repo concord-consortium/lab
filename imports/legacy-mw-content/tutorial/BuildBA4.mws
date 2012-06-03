@@ -1,0 +1,308 @@
+// prepare the annotation components
+reset;
+add image bang.gif (1000, 1000);
+add image finger.gif (1000, 1000);
+add image bond.gif (1000, 1000);
+add image bend.gif (1000, 1000);
+select image none;
+add textbox <t>Click to drop an atom</t> (1000, 1000);
+set textbox[0].background (220, 250, 220);
+set textbox[0].border 2;
+set textbox[0].shadow 1;
+set textbox[0].size 11;
+set textbox[0].x 2;
+set textbox[0].y 2;
+select textbox none;
+loop 1; // this command serves to indicate the beginning of the following loop.
+
+set %interval "2*(1-%loop_count)";
+set %i0 "%loop_count*5";
+set %i1 "%loop_count*5+1";
+set %i2 "%loop_count*5+2";
+set %i3 "%loop_count*5+3";
+set %i4 "%loop_count*5+4";
+
+// add atoms
+
+show index on;
+
+// atom 0
+set action ADDB_ID;
+set %x %xc;
+set %y %yc;
+set image[1].x %x;
+set image[1].y %y;
+set textbox[0].text <t>Click to drop a green atom</t>;
+delay "0.25*%interval";
+set image[1].x "%x-0.5";
+set image[1].y "%y-0.5";
+delay "0.25*%interval";
+add atom 1 (%x, %y);
+set image[1].x %x;
+set image[1].y %y;
+delay %interval;
+
+// atom 1
+set action ADDA_ID;
+set %x "%xc+%bondlength";
+set %y %yc;
+set image[1].x %x;
+set image[1].y %y;
+set textbox[0].text <t>Click to drop a white atom: #1</t>;
+delay "0.25*%interval";
+set image[1].x "%x-0.5";
+set image[1].y "%y-0.5";
+delay "0.25*%interval";
+add atom 0 (%x, %y);
+set image[1].x %x;
+set image[1].y %y;
+delay %interval;
+
+// atom 2
+set %x "%xc-%bondlength";
+set %y %yc;
+set image[1].x %x;
+set image[1].y %y;
+set textbox[0].text <t>Click to drop a white atom: #2</t>;
+delay "0.25*%interval";
+set image[1].x "%x-0.5";
+set image[1].y "%y-0.5";
+delay "0.25*%interval";
+add atom 0 (%x, %y);
+set image[1].x %x;
+set image[1].y %y;
+delay %interval;
+
+// atom 3
+set %x %xc;
+set %y "%yc-%bondlength";
+set image[1].x %x;
+set image[1].y %y;
+set textbox[0].text <t>Click to drop a white atom: #3</t>;
+delay "0.25*%interval";
+set image[1].x "%x-0.5";
+set image[1].y "%y-0.5";
+delay "0.25*%interval";
+add atom 0 (%x, %y);
+set image[1].x %x;
+set image[1].y %y;
+delay %interval;
+
+// atom 4
+set %x %xc;
+set %y "%yc+%bondlength";
+set image[1].x %x;
+set image[1].y %y;
+set textbox[0].text <t>Click to drop a white atom: #4</t>;
+delay "0.25*%interval";
+set image[1].x "%x-0.5";
+set image[1].y "%y-0.5";
+delay "0.25*%interval";
+add atom 0 (%x, %y);
+set image[1].x %x;
+set image[1].y %y;
+delay %interval;
+
+set image[1].x 1000; // move the image out of sight (don't discard it - keep it for reuse in the next iteration)
+
+set textbox[0].text <t>To see the bonds to be made, change to the ball-and-stick mode</t>;
+delay "%interval*2";
+
+show style BALL_AND_STICK;
+
+// add radial bonds
+
+set action BBON_ID;
+set textbox[0].text <t>Enter the radial-bond-building mode</t>;
+delay %interval;
+set image[2].x %atom[%i0].rx;
+set image[2].y %atom[%i0].ry;
+set textbox[0].text <t>Select the green atom at the center</t>;
+select atom %i0;
+show index off;
+delay %interval;
+
+// radial bond 0
+set %x "%atom[%i1].rx+0.5";
+set %y "%atom[%i1].ry+0.5";
+set image[2].x %x;
+set image[2].y %y;
+delay "0.25*%interval";
+set textbox[0].text <t>Building a radial bond: hold down ALT and click a white atom: #1</t>;
+set image[2].x %atom[%i1].rx;
+set image[2].y %atom[%i1].ry;
+delay "0.25*%interval";
+set image[2].x %x;
+set image[2].y %y;
+delay "0.25*%interval";
+bond %i0 %i1 0.1;
+delay %interval;
+
+// radial bond 1
+set %x "%atom[%i2].rx+0.5";
+set %y "%atom[%i2].ry+0.5";
+set image[2].x %x;
+set image[2].y %y;
+delay "0.25*%interval";
+set textbox[0].text <t>Building a radial bond: hold down ALT and click a white atom: #2</t>;
+set image[2].x %atom[%i2].rx;
+set image[2].y %atom[%i2].ry;
+delay "0.25*%interval";
+set image[2].x %x;
+set image[2].y %y;
+delay "0.25*%interval";
+bond %i0 %i2 0.1;
+delay %interval;
+
+// radial bond 2
+set %x "%atom[%i3].rx+0.5";
+set %y "%atom[%i3].ry+0.5";
+set image[2].x %x;
+set image[2].y %y;
+delay "0.25*%interval";
+set textbox[0].text <t>Building a radial bond: hold down ALT and click a white atom: #3</t>;
+set image[2].x %atom[%i3].rx;
+set image[2].y %atom[%i3].ry;
+delay "0.25*%interval";
+set image[2].x %x;
+set image[2].y %y;
+delay "0.25*%interval";
+bond %i0 %i3 0.1;
+delay %interval;
+
+// radial bond 3
+set %x "%atom[%i4].rx+0.5";
+set %y "%atom[%i4].ry+0.5";
+set image[2].x %x;
+set image[2].y %y;
+delay "0.25*%interval";
+set textbox[0].text <t>Building a radial bond: hold down ALT and click a white atom: #4</t>;
+set image[2].x %atom[%i4].rx;
+set image[2].y %atom[%i4].ry;
+delay "0.25*%interval";
+set image[2].x %x;
+set image[2].y %y;
+delay "0.25*%interval";
+bond %i0 %i4 0.1;
+delay %interval;
+
+select atom none;
+
+set image[2].x 1000; // move the image out of sight
+
+// add angular bonds
+set action BBEN_ID;
+set textbox[0].text <t>Enter the angular-bond-building mode</t>;
+delay %interval;
+
+set %x "0.5*(%atom[%i1].rx+%atom[%i0].rx)";
+set %y "0.5*(%atom[%i1].ry+%atom[%i0].ry)";
+set image[3].x %x;
+set image[3].y %y;
+set textbox[0].text <t>Select the bond pointing to the east</t>;
+select rbond "%loop_count*4";
+delay %interval;
+
+// angular bond 0
+set %x "0.5*(%atom[%i3].rx+%atom[%i0].rx+1)";
+set %y "0.5*(%atom[%i3].ry+%atom[%i0].ry+1)";
+set image[3].x %x;
+set image[3].y %y;
+delay "0.25*%interval";
+set textbox[0].text <t>Building an angular bond: hold down ALT and click the bond pointing to the north</t>;
+set image[3].x "%x-0.5";
+set image[3].y "%y-0.5";
+delay "0.25*%interval";
+bond %i1 %i0 %i3 2;
+set image[3].x %x;
+set image[3].y %y;
+delay %interval;
+
+// angular bond 1
+select abond none;
+set %x "0.5*(%atom[%i4].rx+%atom[%i0].rx+1)";
+set %y "0.5*(%atom[%i4].ry+%atom[%i0].ry+1)";
+set image[3].x %x;
+set image[3].y %y;
+delay "0.25*%interval";
+set textbox[0].text <t>Building an angular bond: hold down ALT and click the bond pointing to the south</t>;
+set image[3].x "%x-0.5";
+set image[3].y "%y-0.5";
+delay "0.25*%interval";
+bond %i1 %i0 %i4 2;
+set image[3].x %x;
+set image[3].y %y;
+delay %interval;
+
+select abond none;
+set image[3].x "0.5*(%atom[%i2].rx+%atom[%i0].rx)";
+set image[3].y "0.5*(%atom[%i2].ry+%atom[%i0].ry)";
+set textbox[0].text <t>Select the bond pointing to the west</t>;
+select rbond "%loop_count*4+1";
+delay %interval;
+
+// angular bond 2
+set %x "0.5*(%atom[%i3].rx+%atom[%i0].rx+1)";
+set %y "0.5*(%atom[%i3].ry+%atom[%i0].ry+1)";
+set image[3].x %x;
+set image[3].y %y;
+delay "0.25*%interval";
+set textbox[0].text <t>Building an angular bond: hold down ALT and click the bond pointing to the north</t>;
+set image[3].x "%x-0.5";
+set image[3].y "%y-0.5";
+delay "0.25*%interval";
+bond %i2 %i0 %i3 2;
+set image[3].x %x;
+set image[3].y %y;
+delay %interval;
+
+// angular bond 3
+select abond none;
+set %x "0.5*(%atom[%i4].rx+%atom[%i0].rx+1)";
+set %y "0.5*(%atom[%i4].ry+%atom[%i0].ry+1)";
+set image[3].x %x;
+set image[3].y %y;
+delay "0.25*%interval";
+set textbox[0].text <t>Building an angular bond: hold down ALT and click the bond pointing to the south</t>;
+set image[3].x "%x-0.5";
+set image[3].y "%y-0.5";
+delay "0.25*%interval";
+bond %i2 %i0 %i4 2;
+set image[3].x %x;
+set image[3].y %y;
+delay %interval;
+
+set image[3].x 1000; // move the image out of sight
+
+select abond none;
+select rbond none;
+set textbox[0].text <t>The molecule is ready!</t>;
+delay %interval;
+
+set action SELE_ID;
+select molecule %loop_count;
+set textbox[0].text <t>Move it to the left.</t>;
+delay "0.5*%interval";
+move ("(%loop_count-1)*12", 0);
+select molecule none;
+
+loop 2;
+
+set textbox[0].text <t>Change back to the space-filling mode.</t>;
+delay %interval;
+
+show style SPACE_FILLING;
+
+
+set %interval 1;
+
+set textbox[0].text <t>You don't have to repeat this process for building another one --- </t>;
+delay %interval;
+add textbox <t>Just use the Duplicating Tool to make a copy!</t> (2.5, 5);
+set textbox[1].color (255, 0, 0);
+set textbox[1].style 3;
+select textbox none;
+set image[0].x 1;
+set image[0].y 5;
+set action DUPL_ID;
+select image none;

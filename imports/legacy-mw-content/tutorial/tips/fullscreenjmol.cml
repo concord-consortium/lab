@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Using the fullscreen model to view molecules: a molecular screensaver</page_title>
+<text> Using the fullscreen model to view molecules: a molecular screensaver
+
+Click this link to view a molecule and then press F11 to enter the full screenmode (Windows), or use the View&gt;Full Screen menu (Mac OS X). This applies to any PDB file that are opened directly using MW.</text>
+<section start="0" end="275">
+<paragraph start="0" end="71">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="70">
+<size>15</size><bold>true</bold></content>
+
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="72">
+<LeftIndent>8.0</LeftIndent>
+<content start="71" end="72">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="72" end="275">
+<LeftIndent>8.0</LeftIndent>
+<content start="72" end="78">
+<size>11</size></content>
+
+<content start="78" end="87">
+<href>1EHZ.pdb</href><size>11</size></content>
+
+<content start="87" end="274">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

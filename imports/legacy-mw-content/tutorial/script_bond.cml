@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Bond</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Bond
+
+&lt; Previous | Index | Next &gt;
+
+The bond command creates radial bonds (also known as bond-stretching force) and angular bonds (also known as angle-bending force) with the specified strength for the specified atoms. (Click the links to see how to build radial bonds and angular bonds without using scripts.)
+
+Syntax:
+
+bond/rbond [atom1] [atom2] [strength]
+bond/abond [atom1] [atom2] [atom3] [strength]
+bond/tbond [atom1] [atom2] [atom3] [atom4] [strength] (3D only)
+
+The first command creates a radial bond between [atom1] and [atom2], which are the indices of the two atoms (they cannot be equal). The third argument defines the strength (recommended value: 0-0.1). If there is already a bond between the specified pair of atoms, then the bond strength is set to be the value of this argument. If it is zero, the radial bond will be removed. If there is no bond between the pair, a new one will be created and the equilibrium bond length will be set to be the current distance betwen the two atoms (which means there is no net force applied to each atom at exactly this distance).
+
+ 
+Note: There is no requirement of how far two atoms should be away from each other in order to make a radial bond between them. It is up to you to decide whether or not it makes sense to build a radial bond between two atoms. In the context of atoms and molecules, the length of a radial bond should be about the covalent bond length, which may be a little longer than the summation of the corresponding radii of the pair.
+ 
+
+The second command creates an angular bond between [atom1], [atom2], and [atom3], which are the indices of three atoms (they cannot be equal to each other). The fourth argument defines the strength (recommended value: 0-100). Prior to creating this angular bond, there must have been a radial bond between atom1 and atom2, and another between atom2 and atom3. Atom2 must be the one that the two radial bonds join. If there is already an angular bond connecting the three atoms, then the bond strength is set to be the value of the fourth argument. If it happens to be zero, the angular bond will be removed. If there is no angular bond before, a new one will be created and the equilibrium bond angle will be set to be the current angle between the two radial bonds that connect at atom2.
+
+You may try these commands with the model and the script console below:
+
+  
+&#12304;This is an embedded model container.&#12305;
+
+The third command creates a torsional bond between [atom1], [atom2], [atom3], and [atom4], which are the indices of four atoms (they cannot be equal to each other). The fifth argument defines the strength (recommended value: 0-100). Prior to creating this torsional bond, there must have been an angular bond between atom1, atom2, and atom3, and another between atom2, atom3, and atom4. Atom2 and atom3 must be the ones that the two angular bonds join. If there is already a torsional bond connecting the four atoms, then the bond strength is set to be the value of the fifth argument. If it happens to be zero, the angular bond will be removed. If there is no torsional bond before, a new one will be created and the equilibrium dihedral angle will be set to be the current angle between the two angular bonds.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3259">
+<paragraph start="0" end="5">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="4">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="34">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="6" end="8">
+<size>11</size></content>
+
+<content start="8" end="16">
+<size>11</size><href>script_rotate.cml</href></content>
+
+<content start="16" end="19">
+<size>11</size></content>
+
+<content start="19" end="24">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="31">
+<size>11</size><href>script_minimize.cml</href></content>
+
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>100.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="310">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<size>11</size><family>Courier New</family></content>
+
+<content start="43" end="255">
+<size>11</size></content>
+
+<content start="255" end="267">
+<size>11</size><href>makeBondAction.cml</href></content>
+
+<content start="267" end="272">
+<size>11</size></content>
+
+<content start="272" end="285">
+<size>11</size><href>makeBendAction.cml</href></content>
+
+<content start="285" end="310">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="310" end="311">
+<LeftIndent>140.0</LeftIndent>
+<content start="310" end="311">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="311" end="319">
+<LeftIndent>140.0</LeftIndent>
+<content start="311" end="319">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="319" end="320">
+<LeftIndent>140.0</LeftIndent>
+<content start="319" end="320">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="320" end="358">
+<LeftIndent>160.0</LeftIndent>
+<content start="320" end="330">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="330" end="358">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="358" end="404">
+<LeftIndent>160.0</LeftIndent>
+<content start="358" end="368">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="368" end="404">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="404" end="468">
+<LeftIndent>160.0</LeftIndent>
+<content start="404" end="414">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="414" end="457">
+<size>11</size><family>Courier New</family></content>
+
+<content start="457" end="458">
+<size>11</size><bold>true</bold></content>
+
+<content start="458" end="467">
+<size>11</size><bold>true</bold><foreground>128 128 128</foreground></content>
+
+<content start="467" end="468">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="468" end="469">
+<LeftIndent>140.0</LeftIndent>
+<content start="468" end="469">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="469" end="1084">
+<LeftIndent>140.0</LeftIndent>
+<content start="469" end="517">
+<size>11</size></content>
+
+<content start="517" end="524">
+<size>11</size><family>Courier New</family></content>
+
+<content start="524" end="529">
+<size>11</size></content>
+
+<content start="529" end="536">
+<size>11</size><family>Courier New</family></content>
+
+<content start="536" end="1084">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1084" end="1085">
+<LeftIndent>140.0</LeftIndent>
+<content start="1084" end="1085">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1085" end="1087">
+<LeftIndent>140.0</LeftIndent>
+<content start="1085" end="1086">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1086" end="1087">
+</content>
+
+</paragraph>
+<paragraph start="1087" end="1509">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1087" end="1091">
+<size>11</size><bold>true</bold></content>
+
+<content start="1091" end="1508">
+<size>11</size></content>
+
+<content start="1508" end="1509">
+</content>
+
+</paragraph>
+<paragraph start="1509" end="1511">
+<LeftIndent>140.0</LeftIndent>
+<content start="1509" end="1510">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1510" end="1511">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1511" end="1512">
+<LeftIndent>140.0</LeftIndent>
+<content start="1511" end="1512">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1512" end="2301">
+<LeftIndent>140.0</LeftIndent>
+<content start="1512" end="1563">
+<size>11</size></content>
+
+<content start="1563" end="1570">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1570" end="1572">
+<size>11</size></content>
+
+<content start="1572" end="1579">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1579" end="1585">
+<size>11</size></content>
+
+<content start="1585" end="1592">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1592" end="1818">
+<size>11</size></content>
+
+<content start="1818" end="1823">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1823" end="1828">
+<size>11</size></content>
+
+<content start="1828" end="1833">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1833" end="1855">
+<size>11</size></content>
+
+<content start="1855" end="1860">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1860" end="1865">
+<size>11</size></content>
+
+<content start="1865" end="1870">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1870" end="1872">
+<size>11</size></content>
+
+<content start="1872" end="1877">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1877" end="2294">
+<size>11</size></content>
+
+<content start="2294" end="2299">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2299" end="2301">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2301" end="2302">
+<LeftIndent>140.0</LeftIndent>
+<content start="2301" end="2302">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2302" end="2374">
+<LeftIndent>140.0</LeftIndent>
+<content start="2302" end="2374">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2374" end="2375">
+<LeftIndent>140.0</LeftIndent>
+<content start="2374" end="2375">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2375" end="2378">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2375" end="2376">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_bond$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="2376" end="2377">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>234</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="2377" end="2378">
+</content>
+
+</paragraph>
+<paragraph start="2378" end="2417">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2378" end="2416">
+<size>10</size></content>
+
+<content start="2416" end="2417">
+</content>
+
+</paragraph>
+<paragraph start="2417" end="2418">
+<LeftIndent>140.0</LeftIndent>
+<content start="2417" end="2418">
+</content>
+
+</paragraph>
+<paragraph start="2418" end="3230">
+<LeftIndent>140.0</LeftIndent>
+<content start="2418" end="2469">
+<size>11</size></content>
+
+<content start="2469" end="2476">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2476" end="2478">
+<size>11</size></content>
+
+<content start="2478" end="2486">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2486" end="2487">
+<size>11</size></content>
+
+<content start="2487" end="2494">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2494" end="2500">
+<size>11</size></content>
+
+<content start="2500" end="2507">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2507" end="2735">
+<size>11</size></content>
+
+<content start="2735" end="2740">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2740" end="2742">
+<size>11</size></content>
+
+<content start="2742" end="2747">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2747" end="2753">
+<size>11</size></content>
+
+<content start="2753" end="2758">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2758" end="2780">
+<size>11</size></content>
+
+<content start="2780" end="2785">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2785" end="2787">
+<size>11</size></content>
+
+<content start="2787" end="2792">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2792" end="2798">
+<size>11</size></content>
+
+<content start="2798" end="2803">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2803" end="2805">
+<size>11</size></content>
+
+<content start="2805" end="2810">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2810" end="2815">
+<size>11</size></content>
+
+<content start="2815" end="2820">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2820" end="3230">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3230" end="3231">
+<LeftIndent>140.0</LeftIndent>
+<content start="3230" end="3231">
+</content>
+
+</paragraph>
+<paragraph start="3231" end="3259">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3231" end="3233">
+<size>11</size></content>
+
+<content start="3233" end="3241">
+<size>11</size><href>script_rotate.cml</href></content>
+
+<content start="3241" end="3244">
+<size>11</size></content>
+
+<content start="3244" end="3249">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="3249" end="3252">
+<size>11</size></content>
+
+<content start="3252" end="3256">
+<size>11</size><href>script_minimize.cml</href></content>
+
+<content start="3256" end="3258">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

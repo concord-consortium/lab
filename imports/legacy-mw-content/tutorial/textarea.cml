@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a text area</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a text area
+
+&lt; Previous | Index | Next &gt;
+
+You can insert a text area to collect longer feedback that cannot be fit in a single-line text field, such as a reflection, opinion and so on. Choose &quot;Insert &gt; User Input Text Area&quot; (keyboard action: ALT+SHIFT+A), or press the Insert Text Area Button &quot; &quot; on the tool bar, you will see the following dialog:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+Similar to text fields, HTML code is supported for formating the question text, provided that they are placed inside a pair of &lt;html&gt; and &lt;/html&gt; tag. If you do not place the text inside the tags, it will be treated as plain text. For example, you can set up a text area for your students to write a reflection about the lesson you gave them:
+
+ 
+&#12304;This is an embedded text area.&#12305;
+
+The answers students type in a text area can be collected using the &quot;Report&quot; facility. The author can provide a reference answer to the question, which in the case that the student data are collected through the Internet can be used by a computer program to automatically analyze the results.
+
+Optionally, a text area question can be given a unique identifier (UID). It has two uses. First, it can be used by a scripter to find the text area question and then do something on it. Second, it can be used to generate data that reports the user&apos;s response to the question. A restriction of naming a UID is that it must be a string composed of only the alphanumeric characters (case-sensitive). At least one alphabetic character must be used. As its name indicates, you cannot have multiple components on the same page that shares the same UID.
+
+Changing and removing a text area
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove, and copy a text area.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1765">
+<paragraph start="0" end="22">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="21">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="51">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="23" end="25">
+<size>11</size></content>
+
+<content start="25" end="33">
+<href>textfield.cml</href><size>11</size></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="41">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="48">
+<href>imagequestion.cml</href><size>11</size></content>
+
+<content start="48" end="50">
+<size>11</size></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="359">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="304">
+<size>11</size></content>
+
+<content start="304" end="305">
+<icon>TextArea.gif</icon><size>11</size></content>
+
+<content start="305" end="359">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="359" end="360">
+<LeftIndent>100.0</LeftIndent>
+<content start="359" end="360">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="360" end="363">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="360" end="361">
+<size>11</size></content>
+
+<content start="361" end="362">
+<icon>TextAreaDialog.gif</icon><size>11</size></content>
+
+<content start="362" end="363">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="363" end="387">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="363" end="364">
+<bold>true</bold><size>13</size></content>
+
+<content start="364" end="385">
+<size>10</size></content>
+
+<content start="385" end="386">
+<bold>true</bold><size>13</size></content>
+
+<content start="386" end="387">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="387" end="388">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="387" end="388">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="388" end="731">
+<LeftIndent>140.0</LeftIndent>
+<content start="388" end="399">
+<size>11</size></content>
+
+<content start="399" end="410">
+<href>textfield.cml</href><size>11</size></content>
+
+<content start="410" end="515">
+<size>11</size></content>
+
+<content start="515" end="521">
+<family>Courier New</family><size>11</size></content>
+
+<content start="521" end="526">
+<size>11</size></content>
+
+<content start="526" end="533">
+<family>Courier New</family><size>11</size></content>
+
+<content start="533" end="731">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="731" end="732">
+<LeftIndent>100.0</LeftIndent>
+<content start="731" end="732">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="732" end="734">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="732" end="733">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>500</width>
+<height>300</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;table width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;b&gt;&lt;i&gt;Write a reflection.&lt;/i&gt;&lt;/b&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;font size=&quot;3&quot;&gt;This is &lt;a target=&quot;_blank&quot; href=&quot;tipwindow.cml&quot;&gt;a link&lt;/a&gt; 
+    that opens up in a tip window. This is an image link: &lt;a target=&quot;_blank&quot; href=&quot;tipwindow.cml&quot;&gt;&lt;img src=&quot;tip.gif&quot; border=&quot;0&quot;&gt;&lt;/a&gt;. 
+    &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-3334</bgcolor>
+<border>Lowered Etched</border>
+</component><size>11</size></content>
+
+<content start="733" end="734">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="734" end="767">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="734" end="735">
+<bold>true</bold><size>13</size></content>
+
+<content start="735" end="765">
+<size>10</size></content>
+
+<content start="765" end="766">
+<bold>true</bold><size>13</size></content>
+
+<content start="766" end="767">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="767" end="768">
+<LeftIndent>140.0</LeftIndent>
+<content start="767" end="768">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="768" end="1061">
+<LeftIndent>140.0</LeftIndent>
+<content start="768" end="832">
+<size>11</size></content>
+
+<content start="832" end="853">
+<href>report.cml</href><size>11</size></content>
+
+<content start="853" end="1061">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1061" end="1062">
+<LeftIndent>140.0</LeftIndent>
+<content start="1061" end="1062">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1062" end="1609">
+<LeftIndent>140.0</LeftIndent>
+<content start="1062" end="1408">
+<size>11</size></content>
+
+<content start="1408" end="1507">
+<size>11</size></content>
+
+<content start="1507" end="1609">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1609" end="1610">
+<LeftIndent>140.0</LeftIndent>
+<content start="1609" end="1610">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1610" end="1644">
+<LeftIndent>140.0</LeftIndent>
+<content start="1610" end="1643">
+<bold>true</bold><size>11</size></content>
+
+<content start="1643" end="1644">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1644" end="1645">
+<LeftIndent>140.0</LeftIndent>
+<content start="1644" end="1645">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1645" end="1736">
+<LeftIndent>140.0</LeftIndent>
+<content start="1645" end="1650">
+<size>11</size></content>
+
+<content start="1650" end="1679">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="1679" end="1735">
+<size>11</size></content>
+
+<content start="1735" end="1736">
+</content>
+
+</paragraph>
+<paragraph start="1736" end="1737">
+<LeftIndent>100.0</LeftIndent>
+<content start="1736" end="1737">
+</content>
+
+</paragraph>
+<paragraph start="1737" end="1765">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1737" end="1739">
+<size>11</size></content>
+
+<content start="1739" end="1747">
+<href>textfield.cml</href><size>11</size></content>
+
+<content start="1747" end="1750">
+<size>11</size></content>
+
+<content start="1750" end="1755">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="1755" end="1758">
+<size>11</size></content>
+
+<content start="1758" end="1762">
+<href>imagequestion.cml</href><size>11</size></content>
+
+<content start="1762" end="1764">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

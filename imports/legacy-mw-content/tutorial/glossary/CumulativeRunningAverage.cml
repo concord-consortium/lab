@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Growing-point running averages</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Growing-point running averages
+
+The growing-point running averages are a sequence of cummulative sums, averaged by the number of addends, of a given sequence. For example, the growing-point runnings averages of the sequence {a, b, c, d}, are {a, (a+b)/2, (a+b+c)/3, (a+b+c+d)/4}.
+
+Growing-point running averages can be used to show the tendency of convergence as the data points increase.
+
+See also simple running average and exponential running averages.
+
+   
+ return to index</text>
+<section start="0" end="478">
+<paragraph start="0" end="31">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="30">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<LeftIndent>120.0</LeftIndent>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="280">
+<LeftIndent>140.0</LeftIndent>
+<content start="32" end="280">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="280" end="281">
+<LeftIndent>140.0</LeftIndent>
+<content start="280" end="281">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="281" end="389">
+<LeftIndent>140.0</LeftIndent>
+<content start="281" end="389">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="389" end="390">
+<LeftIndent>140.0</LeftIndent>
+<content start="389" end="390">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="390" end="456">
+<LeftIndent>140.0</LeftIndent>
+<content start="390" end="399">
+<size>11</size></content>
+
+<content start="399" end="421">
+<size>11</size><href>NMovingAverage.cml</href></content>
+
+<content start="421" end="426">
+<size>11</size></content>
+
+<content start="426" end="454">
+<size>11</size><href>ema.cml</href></content>
+
+<content start="454" end="455">
+<size>11</size></content>
+
+<content start="455" end="456">
+</content>
+
+</paragraph>
+<paragraph start="456" end="457">
+<LeftIndent>140.0</LeftIndent>
+<content start="456" end="457">
+</content>
+
+</paragraph>
+<paragraph start="457" end="461">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="457" end="458">
+</content>
+
+<content start="458" end="459">
+<icon>index.gif</icon><href>index.cml</href></content>
+
+<content start="459" end="461">
+</content>
+
+</paragraph>
+<paragraph start="461" end="478">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="461" end="462">
+</content>
+
+<content start="462" end="477">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

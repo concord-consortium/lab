@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Multiple pressure gauges on the same system</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Multiple pressure gauges on the same system
+
+&lt; Previous | Index | Next &gt;
+
+The first test of the virtual pressure gauge is an experiment in which two gauges with different lengths are placed into the same system. Each gauge will produce a value. Will they measure the same pressure? The following experiment shows this:
+
+  
+&#12304;This is an embedded model container.&#12305;
+
+The pressures measured by these two independent gauges should be close to each other. Due to thermal fluctuations, they cannot be exactly equal to each other, but the statistical averages should be approximately the same, within an error tolerance. To get the statistical averages, press the third or fourth button in the tool bar above the graph.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="740">
+<paragraph start="0" end="44">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="43">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="73">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="55">
+<href>pressureprobe.cml</href><size>11</size></content>
+
+<content start="55" end="58">
+<size>11</size></content>
+
+<content start="58" end="63">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="63" end="66">
+<size>11</size></content>
+
+<content start="66" end="70">
+<href>pressurediff.cml</href><size>11</size></content>
+
+<content start="70" end="72">
+<size>11</size></content>
+
+<content start="72" end="73">
+</content>
+
+</paragraph>
+<paragraph start="73" end="74">
+<LeftIndent>140.0</LeftIndent>
+<content start="73" end="74">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="74" end="319">
+<LeftIndent>140.0</LeftIndent>
+<content start="74" end="319">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="319" end="320">
+<LeftIndent>140.0</LeftIndent>
+<content start="319" end="320">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="320" end="323">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="320" end="321">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>multipressureprobe$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="321" end="322">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="0" size="4" spacing="5">West pressure:Obstacle #0</time_series_y1>
+<time_series_y2 color="-1000000" style="2" width="1.0" symbol="0" size="4" spacing="5">West pressure:Obstacle #1</time_series_y2>
+<autofity>false</autofity>
+<axis_y_min>0.0</axis_y_min>
+<axis_y_max>4.0</axis_y_max>
+<width>300</width>
+<height>284</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Pressure (bar)</axis_y_title>
+<legend_x>46</legend_x>
+<legend_y>50</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="322" end="323">
+</content>
+
+</paragraph>
+<paragraph start="323" end="362">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="323" end="361">
+<size>10</size></content>
+
+<content start="361" end="362">
+</content>
+
+</paragraph>
+<paragraph start="362" end="363">
+<LeftIndent>140.0</LeftIndent>
+<content start="362" end="363">
+</content>
+
+</paragraph>
+<paragraph start="363" end="711">
+<LeftIndent>140.0</LeftIndent>
+<content start="363" end="710">
+<size>11</size></content>
+
+<content start="710" end="711">
+</content>
+
+</paragraph>
+<paragraph start="711" end="712">
+<LeftIndent>140.0</LeftIndent>
+<content start="711" end="712">
+</content>
+
+</paragraph>
+<paragraph start="712" end="740">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="712" end="714">
+<size>11</size></content>
+
+<content start="714" end="722">
+<href>pressureprobe.cml</href><size>11</size></content>
+
+<content start="722" end="725">
+<size>11</size></content>
+
+<content start="725" end="730">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="730" end="733">
+<size>11</size></content>
+
+<content start="733" end="737">
+<href>pressurediff.cml</href><size>11</size></content>
+
+<content start="737" end="739">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

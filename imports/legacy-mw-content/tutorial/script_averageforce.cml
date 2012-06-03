@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Averageforce</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Averageforce
+
+&lt; Previous | Index | Next &gt;
+
+The averageforce command shows or hides the vectors representing average forces on the centers of mass of the selected objects.
+
+Syntax:
+
+averageforce ON/OFF
+avfor ON/OFF
+
+The second is an abbreviation of the first.
+
+ 
+Note: If the recorder is disabled, asking to show the average forces on the selected objects has no effect --- because no data are recorded.
+ 
+
+The following model demonstrates the use of this command to prove that for a system in thermodynamical equilibrium without any external fields or pressure, the net forces on particles should be around zero (with some reasonable fluctuations, of course). This is evident, because otherwise the motion of the molecules will appear to be a flow, which is impossible for an isolated system.
+
+ 
+ 
+&#12304;This is an embedded model container.&#12305;
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="866">
+<paragraph start="0" end="13">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="12">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="42">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="14" end="16">
+<size>11</size></content>
+
+<content start="16" end="24">
+<size>11</size><href>script_averageposition.cml</href></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="32">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="32" end="35">
+<size>11</size></content>
+
+<content start="35" end="39">
+<size>11</size><href>script_lac.cml</href></content>
+
+<content start="39" end="41">
+<size>11</size></content>
+
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="43">
+<LeftIndent>100.0</LeftIndent>
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="171">
+<LeftIndent>140.0</LeftIndent>
+<content start="43" end="47">
+<size>11</size></content>
+
+<content start="47" end="59">
+<family>Courier New</family><size>11</size></content>
+
+<content start="59" end="171">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="171" end="172">
+<LeftIndent>140.0</LeftIndent>
+<content start="171" end="172">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="172" end="180">
+<LeftIndent>140.0</LeftIndent>
+<content start="172" end="180">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="180" end="181">
+<LeftIndent>140.0</LeftIndent>
+<content start="180" end="181">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="181" end="201">
+<LeftIndent>160.0</LeftIndent>
+<content start="181" end="193">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="193" end="201">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="201" end="214">
+<LeftIndent>160.0</LeftIndent>
+<content start="201" end="206">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="206" end="213">
+<family>Courier New</family><size>11</size></content>
+
+<content start="213" end="214">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="214" end="215">
+<LeftIndent>140.0</LeftIndent>
+<content start="214" end="215">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="215" end="259">
+<LeftIndent>140.0</LeftIndent>
+<content start="215" end="259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="259" end="260">
+<LeftIndent>140.0</LeftIndent>
+<content start="259" end="260">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="260" end="262">
+<LeftIndent>140.0</LeftIndent>
+<content start="260" end="261">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="261" end="262">
+</content>
+
+</paragraph>
+<paragraph start="262" end="403">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="262" end="266">
+<size>11</size><bold>true</bold></content>
+
+<content start="266" end="275">
+<size>11</size></content>
+
+<content start="275" end="283">
+<size>11</size><href>recordSimulation.cml</href></content>
+
+<content start="283" end="402">
+<size>11</size></content>
+
+<content start="402" end="403">
+</content>
+
+</paragraph>
+<paragraph start="403" end="405">
+<LeftIndent>140.0</LeftIndent>
+<content start="403" end="404">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="404" end="405">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="405" end="406">
+<LeftIndent>140.0</LeftIndent>
+<content start="405" end="406">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="406" end="793">
+<LeftIndent>140.0</LeftIndent>
+<content start="406" end="793">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="793" end="794">
+<LeftIndent>140.0</LeftIndent>
+<content start="793" end="794">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="794" end="796">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="794" end="795">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_averageforce$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="795" end="796">
+</content>
+
+</paragraph>
+<paragraph start="796" end="798">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="796" end="797">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show average forces on the purple particles</title>
+<tooltip>Show average forces on the purple particles</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>show selectionhalo off;
+select element 3;
+avfor on;
+select element none;
+show selectionhalo on;</script>
+<script2>show selectionhalo off;
+select element 3;
+avfor off;
+select element none;
+show selectionhalo on;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="797" end="798">
+</content>
+
+</paragraph>
+<paragraph start="798" end="837">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="798" end="836">
+<size>10</size></content>
+
+<content start="836" end="837">
+</content>
+
+</paragraph>
+<paragraph start="837" end="838">
+<LeftIndent>140.0</LeftIndent>
+<content start="837" end="838">
+</content>
+
+</paragraph>
+<paragraph start="838" end="866">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="838" end="840">
+<size>11</size></content>
+
+<content start="840" end="848">
+<size>11</size><href>script_averageposition.cml</href></content>
+
+<content start="848" end="851">
+<size>11</size></content>
+
+<content start="851" end="856">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="856" end="859">
+<size>11</size></content>
+
+<content start="859" end="863">
+<size>11</size><href>script_lac.cml</href></content>
+
+<content start="863" end="865">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

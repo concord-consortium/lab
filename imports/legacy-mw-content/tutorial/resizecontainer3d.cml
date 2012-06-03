@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Resizing the container</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Resizing the container
+
+&lt; Previous | Index | Next &gt;
+
+Once you have inserted a 3D model container, you can resize it by selecting the &quot;Edit &gt; Resize Container&quot; menu. Note that the size of a container, which defines the screen size of the view window, is different from the size of the glass box, which contains all the particles in 3D.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="365">
+<paragraph start="0" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="22">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="52">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="24" end="26">
+<size>11</size></content>
+
+<content start="26" end="34">
+<href>jmolcompanion.cml</href><size>11</size></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="49">
+<href>field3d.cml</href><size>11</size></content>
+
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="335">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="280">
+<size>11</size></content>
+
+<content start="280" end="293">
+<href>glassbox.cml</href><size>11</size></content>
+
+<content start="293" end="335">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="335" end="336">
+<LeftIndent>140.0</LeftIndent>
+<content start="335" end="336">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="336" end="337">
+<LeftIndent>140.0</LeftIndent>
+<content start="336" end="337">
+</content>
+
+</paragraph>
+<paragraph start="337" end="365">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="337" end="339">
+<size>11</size></content>
+
+<content start="339" end="347">
+<href>jmolcompanion.cml</href><size>11</size></content>
+
+<content start="347" end="350">
+<size>11</size></content>
+
+<content start="350" end="355">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="355" end="358">
+<size>11</size></content>
+
+<content start="358" end="362">
+<href>field3d.cml</href><size>11</size></content>
+
+<content start="362" end="364">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

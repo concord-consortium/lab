@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Accessing a rectangular obstacle&apos;s properties</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Accessing a rectangular obstacle&apos;s properties
+
+&lt; Previous | Index | Next &gt;
+
+To access a rectangular obstacle&apos;s properties, double-click it when the model container is in the selection mode (i.e. the button &quot; &quot; is chosen), and then you will see the following dialog window:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This dialog box allows you to change many properties, such as density, size, location, and background filling. You can fill the background with a single color, a color gradient, a texture, or an image. You can also set the permeability, which allows certain types of particles to pass through it.
+
+Script support
+
+The coordinates of the upper-left corner of a rectangular obstacle can be set by using the following scripts:
+
+set obstacle[i].x [value];
+set obstacle[i].y [value];
+
+The width and height can be set through:
+
+set obstacle[i].width [value];
+set obstacle[i].height [value];
+
+The velocity can be set by using:
+
+set obstacle[i].vx [value];
+set obstacle[i].vy [value];
+
+The external force can be set by using:
+
+set obstacle[i].hx [value];
+set obstacle[i].hy [value];
+
+where i is the index of the obstacle.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1145">
+<paragraph start="0" end="46">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="45">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="75">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="47" end="49">
+<size>11</size></content>
+
+<content start="49" end="57">
+<size>11</size><href>accessMolProp.cml</href></content>
+
+<content start="57" end="60">
+<size>11</size></content>
+
+<content start="60" end="65">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="65" end="68">
+<size>11</size></content>
+
+<content start="68" end="72">
+<size>11</size><href>accessGBProp.cml</href></content>
+
+<content start="72" end="74">
+<size>11</size></content>
+
+<content start="74" end="75">
+</content>
+
+</paragraph>
+<paragraph start="75" end="76">
+<LeftIndent>100.0</LeftIndent>
+<content start="75" end="76">
+</content>
+
+</paragraph>
+<paragraph start="76" end="273">
+<LeftIndent>140.0</LeftIndent>
+<content start="76" end="207">
+<size>11</size></content>
+
+<content start="207" end="208">
+<size>11</size><icon>Select.gif</icon></content>
+
+<content start="208" end="273">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="273" end="274">
+<LeftIndent>100.0</LeftIndent>
+<content start="273" end="274">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="274" end="277">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="274" end="275">
+<size>11</size></content>
+
+<content start="275" end="276">
+<size>11</size><icon>RectProp.gif</icon></content>
+
+<content start="276" end="277">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="277" end="301">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="277" end="300">
+<size>10</size></content>
+
+<content start="300" end="301">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="301" end="302">
+<LeftIndent>100.0</LeftIndent>
+<content start="301" end="302">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="302" end="599">
+<LeftIndent>140.0</LeftIndent>
+<content start="302" end="446">
+<size>11</size></content>
+
+<content start="446" end="460">
+<size>11</size><href>bgColor.cml</href></content>
+
+<content start="460" end="462">
+<size>11</size></content>
+
+<content start="462" end="478">
+<size>11</size><href>bgGradient.cml</href></content>
+
+<content start="478" end="480">
+<size>11</size></content>
+
+<content start="480" end="489">
+<size>11</size><href>bgTexture.cml</href></content>
+
+<content start="489" end="494">
+<size>11</size></content>
+
+<content start="494" end="502">
+<size>11</size><href>bgImage.cml</href></content>
+
+<content start="502" end="599">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="599" end="600">
+<LeftIndent>140.0</LeftIndent>
+<content start="599" end="600">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="600" end="615">
+<LeftIndent>140.0</LeftIndent>
+<content start="600" end="614">
+<bold>true</bold><size>11</size></content>
+
+<content start="614" end="615">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="615" end="616">
+<LeftIndent>140.0</LeftIndent>
+<content start="615" end="616">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="616" end="726">
+<LeftIndent>140.0</LeftIndent>
+<content start="616" end="726">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="726" end="727">
+<LeftIndent>140.0</LeftIndent>
+<content start="726" end="727">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="727" end="754">
+<LeftIndent>160.0</LeftIndent>
+<content start="727" end="754">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="754" end="781">
+<LeftIndent>160.0</LeftIndent>
+<content start="754" end="780">
+<size>11</size><family>Courier New</family></content>
+
+<content start="780" end="781">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="781" end="782">
+<LeftIndent>140.0</LeftIndent>
+<content start="781" end="782">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="782" end="823">
+<LeftIndent>140.0</LeftIndent>
+<content start="782" end="823">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="823" end="824">
+<LeftIndent>140.0</LeftIndent>
+<content start="823" end="824">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="824" end="855">
+<LeftIndent>160.0</LeftIndent>
+<content start="824" end="855">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="855" end="887">
+<LeftIndent>160.0</LeftIndent>
+<content start="855" end="886">
+<size>11</size><family>Courier New</family></content>
+
+<content start="886" end="887">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="887" end="888">
+<LeftIndent>140.0</LeftIndent>
+<content start="887" end="888">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="888" end="922">
+<LeftIndent>140.0</LeftIndent>
+<content start="888" end="922">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="922" end="923">
+<LeftIndent>140.0</LeftIndent>
+<content start="922" end="923">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="923" end="951">
+<LeftIndent>160.0</LeftIndent>
+<content start="923" end="951">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="951" end="979">
+<LeftIndent>160.0</LeftIndent>
+<content start="951" end="978">
+<size>11</size><family>Courier New</family></content>
+
+<content start="978" end="979">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="979" end="980">
+<LeftIndent>140.0</LeftIndent>
+<content start="979" end="980">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="980" end="1020">
+<LeftIndent>140.0</LeftIndent>
+<content start="980" end="1020">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1020" end="1021">
+<LeftIndent>140.0</LeftIndent>
+<content start="1020" end="1021">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1021" end="1049">
+<LeftIndent>160.0</LeftIndent>
+<content start="1021" end="1049">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1049" end="1077">
+<LeftIndent>160.0</LeftIndent>
+<content start="1049" end="1076">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1076" end="1077">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1077" end="1078">
+<LeftIndent>140.0</LeftIndent>
+<content start="1077" end="1078">
+</content>
+
+</paragraph>
+<paragraph start="1078" end="1116">
+<LeftIndent>140.0</LeftIndent>
+<content start="1078" end="1084">
+<size>11</size></content>
+
+<content start="1084" end="1085">
+<size>11</size><italic>true</italic></content>
+
+<content start="1085" end="1116">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1116" end="1117">
+<LeftIndent>140.0</LeftIndent>
+<content start="1116" end="1117">
+</content>
+
+</paragraph>
+<paragraph start="1117" end="1145">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1117" end="1119">
+<size>11</size></content>
+
+<content start="1119" end="1127">
+<size>11</size><href>accessMolProp.cml</href></content>
+
+<content start="1127" end="1130">
+<size>11</size></content>
+
+<content start="1130" end="1135">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="1135" end="1138">
+<size>11</size></content>
+
+<content start="1138" end="1142">
+<size>11</size><href>accessGBProp.cml</href></content>
+
+<content start="1142" end="1144">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

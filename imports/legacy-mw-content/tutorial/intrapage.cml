@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Intra-page communication using scripts</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Intra-page communication using scripts
+
+&lt; Previous | Index | Next &gt;
+
+Intra-page communication refers to the mechanism of interactions between any embedded components (including hyperlinks) that can send scripts to others or receive and execute scripts from others.
+
+This mechanism can be used to load different models into a model container and the HTML text that corresponds to the model into surrounding text boxes, without having to leave the current page. An activity page written using this mechanism is generally more compact, and the &quot;information-on-demand&quot; design principle can be better implemented. Here is an example:
+
+ 
+   
+ 
+&#12304;An embedded simulator with four surrounding text boxes.&#12305;
+
+For information about how to get a text box to load new content, check out the text box section about how to use the intra-textbox and inter-textbox links. For information about how to use scripts to interact with a model container, check out MW scripts or   Jmol scripts.
+
+The example below involves using scripts to add four types of atoms into a model container from four sides.
+
+ 
+   
+ 
+&#12304;An embedded simulator with four surrounding text boxes.&#12305;
+
+One could replace the textual hyperlinks with arrows pointing towards the container from four different directions to create better visual effect, and use background images to further contextualize the model.
+
+In some cases, you may need to control the state of a combo box, a button, a radio button, or a check box on the page. The following scripts allow you to set the state of such a component:
+
+enablecomponent [index] true|false;
+selectcomponent [index] true|false;
+selectcomponent [index] true|false execute;
+selectcombobox [index] [index of selected item];
+selectcombobox [index] [index of selected item] execute;
+
+If the unique identifier for a component has been set, it can be used to identify the component instead of using the index, which is subject to change when you insert, remove, or re-order components on the page.
+
+enablecomponent [uid] true|false;
+selectcomponent [uid] true|false;
+selectcomponent [uid] true|false execute;
+selectcombobox [uid] [index of selected item];
+selectcombobox [uid] [index of selected item] execute;
+
+Note that you generally need to add a header based on the script protocol before a command. The enablecomponent command allows you to enable or disable an embedded component, such as a button. The [index] parameter starts from 0. The selectcomponent command can be used to select or deselect a radio button or a check box. When the execute flag is set to true, the command not only sets the selection state of the radio button or the check box but also causes the action associated with it to be taken. The selectcombobox command can be used to select an item from a combo box&apos;s drop-down list. When the execute flag is set to true, the command not only sets the selected index of the combo box but also causes the action associated with it to be taken.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2980">
+<paragraph start="0" end="39">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="38">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="40">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="68">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="40" end="42">
+<size>11</size></content>
+
+<content start="42" end="50">
+<href>singleslider.cml</href><size>11</size></content>
+
+<content start="50" end="53">
+<size>11</size></content>
+
+<content start="53" end="58">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="58" end="61">
+<size>11</size></content>
+
+<content start="61" end="65">
+<href>additionalresource.cml</href><size>11</size></content>
+
+<content start="65" end="67">
+<size>11</size></content>
+
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="69">
+<LeftIndent>140.0</LeftIndent>
+<content start="68" end="69">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="69" end="265">
+<LeftIndent>140.0</LeftIndent>
+<content start="69" end="265">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="265" end="266">
+<LeftIndent>140.0</LeftIndent>
+<content start="265" end="266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="266" end="629">
+<LeftIndent>140.0</LeftIndent>
+<content start="266" end="542">
+<size>11</size></content>
+
+<content start="542" end="563">
+<bold>true</bold><size>11</size></content>
+
+<content start="563" end="629">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="629" end="630">
+<LeftIndent>140.0</LeftIndent>
+<content start="629" end="630">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="630" end="632">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="630" end="631">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>500.0</width>
+<height>80.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; face=&quot;Verdana&quot; topmargin=&quot;10&quot; leftmargin=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Top text box&lt;br&gt;&lt;br&gt;&lt;a href=&quot;script:textbox:2:load lefttextbox1.html;script:textbox:3:load righttextbox1.html;script:textbox:4:load bottomtextbox1.html;script:mw:1:load ModelA.mml;run&quot;&gt;Action 
+    A&lt;/a&gt; | &lt;a href=&quot;script:textbox:2:load lefttextbox2.html;script:textbox:3:load righttextbox2.html;script:textbox:4:load bottomtextbox2.html;script:mw:1:load ModelB.mml;run&quot;&gt;Action 
+    B&lt;/a&gt; | &lt;a href=&quot;script:textbox:2:load lefttextbox3.html;script:textbox:3:load righttextbox3.html;script:textbox:4:load bottomtextbox3.html;script:mw:1:load ModelC.mml;run&quot;&gt;Action 
+    C&lt;/a&gt;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-2b2f38</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="631" end="632">
+</content>
+
+</paragraph>
+<paragraph start="632" end="636">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="632" end="633">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>100.0</width>
+<height>250.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body leftmargin=&quot;10&quot; marginheight=&quot;10&quot; marginwidth=&quot;10&quot; topmargin=&quot;10&quot;&gt;
+    &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Left text box&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-2b2f38</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="633" end="634">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>intrapage$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="634" end="635">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>100.0</width>
+<height>250.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body leftmargin=&quot;10&quot; marginheight=&quot;10&quot; marginwidth=&quot;10&quot; topmargin=&quot;10&quot;&gt;
+    &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Right text box&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-2b2f38</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="635" end="636">
+</content>
+
+</paragraph>
+<paragraph start="636" end="638">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="636" end="637">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>500.0</width>
+<height>40.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; face=&quot;Verdana&quot; topmargin=&quot;10&quot; leftmargin=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;font size=&quot;2&quot;&gt;Bottom text box &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-2b2f38</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="637" end="638">
+</content>
+
+</paragraph>
+<paragraph start="638" end="696">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="638" end="639">
+<bold>true</bold><size>13</size></content>
+
+<content start="639" end="694">
+<size>10</size></content>
+
+<content start="694" end="695">
+<bold>true</bold><size>13</size></content>
+
+<content start="695" end="696">
+</content>
+
+</paragraph>
+<paragraph start="696" end="697">
+<LeftIndent>140.0</LeftIndent>
+<content start="696" end="697">
+</content>
+
+</paragraph>
+<paragraph start="697" end="970">
+<LeftIndent>140.0</LeftIndent>
+<content start="697" end="776">
+<size>11</size></content>
+
+<content start="776" end="792">
+<href>textbox.cml</href><size>11</size></content>
+
+<content start="792" end="940">
+<size>11</size></content>
+
+<content start="940" end="950">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="950" end="954">
+<size>11</size></content>
+
+<content start="954" end="955">
+<icon>htmlink.gif</icon></content>
+
+<content start="955" end="956">
+<size>11</size></content>
+
+<content start="956" end="968">
+<href>http://www.stolaf.edu/academics/chemapps/jmol/docs/</href><size>11</size></content>
+
+<content start="968" end="969">
+<size>11</size></content>
+
+<content start="969" end="970">
+</content>
+
+</paragraph>
+<paragraph start="970" end="971">
+<LeftIndent>140.0</LeftIndent>
+<content start="970" end="971">
+</content>
+
+</paragraph>
+<paragraph start="971" end="1079">
+<LeftIndent>140.0</LeftIndent>
+<content start="971" end="1079">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1079" end="1080">
+<LeftIndent>140.0</LeftIndent>
+<content start="1079" end="1080">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1080" end="1082">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1080" end="1081">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>500.0</width>
+<height>40.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;p&gt;
+        &lt;a href=&quot;script:mw:2:source AddD.mws&quot;&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Add 
+        Atom D&lt;/font&gt;&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-34</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1081" end="1082">
+</content>
+
+</paragraph>
+<paragraph start="1082" end="1086">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1082" end="1083">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>50.0</width>
+<height>265.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;p&gt;
+        
+      &lt;/p&gt;
+      &lt;p&gt;
+        
+      &lt;/p&gt;
+      &lt;p&gt;
+        
+      &lt;/p&gt;
+      &lt;p&gt;
+        &lt;a href=&quot;script:mw:2:source AddA.mws&quot;&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Add 
+        Atom A&lt;/font&gt;&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-34</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1083" end="1084">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>intrapage$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorderless>true</recorderless>
+</component></content>
+
+<content start="1084" end="1085">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>50.0</width>
+<height>265.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;p&gt;
+        
+      &lt;/p&gt;
+      &lt;p&gt;
+        
+      &lt;/p&gt;
+      &lt;p&gt;
+        
+      &lt;/p&gt;
+      &lt;p&gt;
+        &lt;a href=&quot;script:mw:2:source AddC.mws&quot;&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Add 
+        Atom C&lt;/font&gt;&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-34</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1085" end="1086">
+</content>
+
+</paragraph>
+<paragraph start="1086" end="1088">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1086" end="1087">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>500.0</width>
+<height>40.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;p&gt;
+        &lt;a href=&quot;script:mw:2:source AddB.mws&quot;&gt;&lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Add 
+        Atom B&lt;/font&gt;&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-34</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1087" end="1088">
+</content>
+
+</paragraph>
+<paragraph start="1088" end="1146">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1088" end="1089">
+<bold>true</bold><size>13</size></content>
+
+<content start="1089" end="1144">
+<size>10</size></content>
+
+<content start="1144" end="1145">
+<bold>true</bold><size>13</size></content>
+
+<content start="1145" end="1146">
+</content>
+
+</paragraph>
+<paragraph start="1146" end="1147">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1146" end="1147">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1147" end="1356">
+<LeftIndent>140.0</LeftIndent>
+<content start="1147" end="1356">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1356" end="1357">
+<LeftIndent>140.0</LeftIndent>
+<content start="1356" end="1357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1357" end="1546">
+<LeftIndent>140.0</LeftIndent>
+<content start="1357" end="1546">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1546" end="1547">
+<LeftIndent>140.0</LeftIndent>
+<content start="1546" end="1547">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1547" end="1583">
+<LeftIndent>160.0</LeftIndent>
+<content start="1547" end="1583">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1583" end="1619">
+<LeftIndent>160.0</LeftIndent>
+<content start="1583" end="1619">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1619" end="1663">
+<LeftIndent>160.0</LeftIndent>
+<content start="1619" end="1663">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1663" end="1712">
+<LeftIndent>160.0</LeftIndent>
+<content start="1663" end="1711">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1711" end="1712">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1712" end="1769">
+<LeftIndent>160.0</LeftIndent>
+<content start="1712" end="1769">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1769" end="1770">
+<LeftIndent>140.0</LeftIndent>
+<content start="1769" end="1770">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1770" end="1982">
+<LeftIndent>140.0</LeftIndent>
+<content start="1770" end="1982">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1982" end="1983">
+<LeftIndent>140.0</LeftIndent>
+<content start="1982" end="1983">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1983" end="2017">
+<LeftIndent>160.0</LeftIndent>
+<content start="1983" end="2017">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2017" end="2051">
+<LeftIndent>160.0</LeftIndent>
+<content start="2017" end="2051">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2051" end="2093">
+<LeftIndent>160.0</LeftIndent>
+<content start="2051" end="2093">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2093" end="2140">
+<LeftIndent>160.0</LeftIndent>
+<content start="2093" end="2139">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2139" end="2140">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2140" end="2195">
+<LeftIndent>160.0</LeftIndent>
+<content start="2140" end="2194">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2194" end="2195">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2195" end="2196">
+<LeftIndent>140.0</LeftIndent>
+<content start="2195" end="2196">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2196" end="2950">
+<LeftIndent>140.0</LeftIndent>
+<content start="2196" end="2254">
+<size>11</size></content>
+
+<content start="2254" end="2269">
+<href>script_protocol.cml</href><size>11</size></content>
+
+<content start="2269" end="2292">
+<size>11</size></content>
+
+<content start="2292" end="2307">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2307" end="2393">
+<size>11</size></content>
+
+<content start="2393" end="2400">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2400" end="2430">
+<size>11</size></content>
+
+<content start="2430" end="2445">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2445" end="2528">
+<size>11</size></content>
+
+<content start="2528" end="2535">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2535" end="2703">
+<size>11</size></content>
+
+<content start="2703" end="2717">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2717" end="2800">
+<size>11</size></content>
+
+<content start="2800" end="2807">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2807" end="2950">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2950" end="2951">
+<LeftIndent>140.0</LeftIndent>
+<content start="2950" end="2951">
+</content>
+
+</paragraph>
+<paragraph start="2951" end="2952">
+<LeftIndent>140.0</LeftIndent>
+<content start="2951" end="2952">
+</content>
+
+</paragraph>
+<paragraph start="2952" end="2980">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2952" end="2954">
+<size>11</size></content>
+
+<content start="2954" end="2962">
+<href>singleslider.cml</href><size>11</size></content>
+
+<content start="2962" end="2965">
+<size>11</size></content>
+
+<content start="2965" end="2970">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="2970" end="2973">
+<size>11</size></content>
+
+<content start="2973" end="2977">
+<href>additionalresource.cml</href><size>11</size></content>
+
+<content start="2977" end="2979">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>A coompleted ethylene molecule with four torsional bonds</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>A coompleted ethylene molecule with four torsional bonds
+
+&lt; Back  &gt;
+
+The following shows a completed ethylene molecule, which has four torsional bonds to maintain the planarity.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+&lt; Back &gt;</text>
+<section start="0" end="230">
+<paragraph start="0" end="57">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="56">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="58">
+<RightIndent>20.0</RightIndent>
+<content start="57" end="58">
+</content>
+
+</paragraph>
+<paragraph start="58" end="68">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="58" end="60">
+<size>11</size></content>
+
+<content start="60" end="64">
+<href>tbond3d.cml</href><size>11</size></content>
+
+<content start="64" end="67">
+<size>11</size></content>
+
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="69">
+<LeftIndent>140.0</LeftIndent>
+<content start="68" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="178">
+<LeftIndent>140.0</LeftIndent>
+<content start="69" end="178">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="178" end="179">
+<LeftIndent>140.0</LeftIndent>
+<content start="178" end="179">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="179" end="181">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="179" end="180">
+<component><class>org.concord.modeler.PageMd3d</class><resource>tbond3db$0.mdd</resource><coordinate>tbond3db$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="180" end="181">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="181" end="220">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="181" end="219">
+<size>10</size></content>
+
+<content start="219" end="220">
+</content>
+
+</paragraph>
+<paragraph start="220" end="221">
+<LeftIndent>140.0</LeftIndent>
+<content start="220" end="221">
+</content>
+
+</paragraph>
+<paragraph start="221" end="230">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="221" end="223">
+<size>11</size></content>
+
+<content start="223" end="227">
+<href>tbond3d.cml</href><size>11</size></content>
+
+<content start="227" end="229">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

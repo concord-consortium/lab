@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a spinner button</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a spinner button
+
+&lt; Previous | Index | Next &gt;
+
+You can insert a spinner button in a page for the user to change the values of variables, for instance, charges or masses of atoms.
+
+When you select the &quot;Insert&gt;Standard Controller for Model&gt;Spinner&quot; menu action (keyboard shortcut: ALT+SHIFT+S), you will see the following dialog (note that the type of model and action displaying in the dialog window may vary&#8722;only the models present on the page and only the actions that are permitted by the current state of the corresponding model will show up):
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This dialog allows you to select a model and a variable control that applies to the model. If there is no model on the page, the Model and Variable Combo Boxes will be blank. For variable controls, you have to set the upper bound, the lower bound, and the step size (the increment or decrement a click on the &quot;up&quot; or &quot;down&quot; button will result in).
+
+A spinner comes with a label to its left side. The text on the label is, by default, given by the name of the variable you see in the Variable Combo Box. But you can change the text (using the text field in the fourth row).
+
+You can set scripts that will be executed when one of the spinner&apos;s buttons is clicked or when a value is entered in the spinner&apos;s text field. The current value of the spinner can be referenced in the scripts as %val. The %val parameter can also be put into a mathematical expression in a script command. For example, you can use set element[2].mass exp(%val/10) to increase mass exponentially.
+
+ 
+Tip: If scripts are long and you will need to write them in a more comfortable way, use your favorite  text editor to write scripts and copy back to the text area. If there exist scripts already, copy them to your editor first before editing them.
+ 
+
+Optionally, a spinner button can be given a unique identifier (UID). It has two uses. First, it can be used by a scripter to find the spinner button and then do something on it. Second, it can be used to generate a log file that reports the user&apos;s activity on the spinner button. Data containing, for instance, how many times and when a spinner button has been clicked to what values, may provide insight to how the user learns from interacting with a model. A restriction of naming a UID is that it must be a string composed of only the alphanumeric characters and at least one alphabetic character. As its name indicates, you cannot have multiple components on the same page that share the same UID. If you do not need a UID for the spinner button, just leave the field blank.
+
+The following is an example of using scripts in a spinner:
+
+  
+[This is an embedded simulator.]
+
+Changing and removing a spinner button
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove, and copy a spinner button.
+
+Note: Spinner button and slider both control a variable within a certain range. Which controller to use is up to your personal choice.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2987">
+<paragraph start="0" end="27">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="26">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="56">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="38">
+<href>insertCheckBox.cml</href><size>11</size></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="46">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="53">
+<href>insertSlider.cml</href><size>11</size></content>
+
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<LeftIndent>100.0</LeftIndent>
+<content start="56" end="57">
+<bold>true</bold><foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="57" end="189">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="189">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="189" end="190">
+<LeftIndent>140.0</LeftIndent>
+<content start="189" end="190">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="190" end="557">
+<LeftIndent>140.0</LeftIndent>
+<content start="190" end="417">
+<size>11</size></content>
+
+<content start="417" end="418">
+</content>
+
+<content start="418" end="557">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="557" end="558">
+<LeftIndent>100.0</LeftIndent>
+<content start="557" end="558">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="558" end="561">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="558" end="559">
+<size>11</size></content>
+
+<content start="559" end="560">
+<icon>SpinnerController.gif</icon><size>11</size></content>
+
+<content start="560" end="561">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="561" end="585">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="561" end="562">
+<bold>true</bold><size>13</size></content>
+
+<content start="562" end="583">
+<size>10</size></content>
+
+<content start="583" end="584">
+<bold>true</bold><size>13</size></content>
+
+<content start="584" end="585">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="585" end="586">
+<LeftIndent>100.0</LeftIndent>
+<content start="585" end="586">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="586" end="934">
+<LeftIndent>140.0</LeftIndent>
+<content start="586" end="934">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="934" end="935">
+<LeftIndent>140.0</LeftIndent>
+<content start="934" end="935">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="935" end="1159">
+<LeftIndent>140.0</LeftIndent>
+<content start="935" end="1159">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1159" end="1160">
+<LeftIndent>140.0</LeftIndent>
+<content start="1159" end="1160">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1160" end="1555">
+<LeftIndent>140.0</LeftIndent>
+<content start="1160" end="1372">
+<size>11</size></content>
+
+<content start="1372" end="1376">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1376" end="1382">
+<size>11</size></content>
+
+<content start="1382" end="1386">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1386" end="1490">
+<size>11</size></content>
+
+<content start="1490" end="1522">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1522" end="1555">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1555" end="1556">
+<LeftIndent>140.0</LeftIndent>
+<content start="1555" end="1556">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1556" end="1558">
+<LeftIndent>140.0</LeftIndent>
+<content start="1556" end="1557">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1557" end="1558">
+</content>
+
+</paragraph>
+<paragraph start="1558" end="1806">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1558" end="1561">
+<bold>true</bold><size>11</size></content>
+
+<content start="1561" end="1805">
+<size>11</size></content>
+
+<content start="1805" end="1806">
+</content>
+
+</paragraph>
+<paragraph start="1806" end="1808">
+<LeftIndent>140.0</LeftIndent>
+<content start="1806" end="1807">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1807" end="1808">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1808" end="1809">
+<LeftIndent>140.0</LeftIndent>
+<content start="1808" end="1809">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1809" end="2588">
+<LeftIndent>140.0</LeftIndent>
+<content start="1809" end="2343">
+<size>11</size></content>
+
+<content start="2343" end="2408">
+<size>11</size></content>
+
+<content start="2408" end="2588">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2588" end="2589">
+<LeftIndent>140.0</LeftIndent>
+<content start="2588" end="2589">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2589" end="2648">
+<LeftIndent>140.0</LeftIndent>
+<content start="2589" end="2648">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2648" end="2649">
+<LeftIndent>140.0</LeftIndent>
+<content start="2648" end="2649">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2649" end="2652">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2649" end="2650">
+<component><class>org.concord.modeler.PageSpinner</class>
+<title>Swap charges:</title>
+<tooltip>Swap charges between two groups of atoms</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<minimum>-2.0</minimum>
+<maximum>2.0</maximum>
+<step>0.1</step>
+<value>0.0</value>
+<script>select element 1;
+charge %val;
+select element 2;
+charge -%val;
+select element none;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="2650" end="2651">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>insertSpinner$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="2651" end="2652">
+</content>
+
+</paragraph>
+<paragraph start="2652" end="2685">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2652" end="2684">
+<size>10</size></content>
+
+<content start="2684" end="2685">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2685" end="2686">
+<LeftIndent>140.0</LeftIndent>
+<content start="2685" end="2686">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2686" end="2725">
+<LeftIndent>140.0</LeftIndent>
+<content start="2686" end="2725">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="2725" end="2726">
+<LeftIndent>140.0</LeftIndent>
+<content start="2725" end="2726">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2726" end="2822">
+<LeftIndent>140.0</LeftIndent>
+<content start="2726" end="2731">
+<size>11</size></content>
+
+<content start="2731" end="2760">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="2760" end="2822">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2822" end="2823">
+<LeftIndent>140.0</LeftIndent>
+<content start="2822" end="2823">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2823" end="2958">
+<LeftIndent>140.0</LeftIndent>
+<content start="2823" end="2848">
+<size>11</size></content>
+
+<content start="2848" end="2854">
+<href>insertSlider.cml</href><size>11</size></content>
+
+<content start="2854" end="2957">
+<size>11</size></content>
+
+<content start="2957" end="2958">
+</content>
+
+</paragraph>
+<paragraph start="2958" end="2959">
+<LeftIndent>100.0</LeftIndent>
+<content start="2958" end="2959">
+</content>
+
+</paragraph>
+<paragraph start="2959" end="2987">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2959" end="2961">
+<size>11</size></content>
+
+<content start="2961" end="2969">
+<href>insertCheckBox.cml</href><size>11</size></content>
+
+<content start="2969" end="2972">
+<size>11</size></content>
+
+<content start="2972" end="2977">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="2977" end="2980">
+<size>11</size></content>
+
+<content start="2980" end="2984">
+<href>insertSlider.cml</href><size>11</size></content>
+
+<content start="2984" end="2986">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

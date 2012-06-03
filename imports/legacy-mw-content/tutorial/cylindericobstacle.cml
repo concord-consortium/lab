@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Adding, resizing and moving cylinderic obstacles</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Adding, resizing and moving cylinderic obstacles
+
+&lt; Previous | Index | Next &gt;
+
+A cylinderic obstacle is an area of cylinder into which particles cannot enter and will be reflected from its surface upon colliding.
+
+To add a cylinderic obstacle, select the tool (&quot; &quot; or &quot; &quot; or &quot; &quot;, you can right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the corresponding button and select the helper plane in the direction you will work on), and then you will see a translucent greenish helper plane appearing. Use the arrow keys to move it up or down to where you would like to add a cylinderic obstacle. Drag your mouse to draw a circle on the plane. When the mouse button is released, a thin cylinder (circle) will be created on the plane.
+
+Now, we have to use the Extrusion Tool (&quot; &quot;) to extrude the circle into a cylinder. When the Extrusion Tool is selected, the top or bottom face of the cylinder where your mouse moves over will be highlighted, indicating that it is ready to be pulled or pushed. Press a face and then drag the mouse. You will find that the height of the cylinder will increase or decrease in the direction you push or pull the face.
+
+When you pull or push the curved lateral surface, the diameter of the cylinder will be changed. The axis will remain in the original position.
+
+Practice
+
+You may play with the following simulator about adding cylinderic obstacles and/or extruding them.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1495">
+<paragraph start="0" end="49">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="48">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<RightIndent>20.0</RightIndent>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="78">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="50" end="52">
+<size>11</size></content>
+
+<content start="52" end="60">
+<href>cuboidobstacle.cml</href><size>11</size></content>
+
+<content start="60" end="63">
+<size>11</size></content>
+
+<content start="63" end="68">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="68" end="77">
+<size>11</size></content>
+
+<content start="77" end="78">
+</content>
+
+</paragraph>
+<paragraph start="78" end="79">
+<LeftIndent>140.0</LeftIndent>
+<content start="78" end="79">
+</content>
+
+</paragraph>
+<paragraph start="79" end="213">
+<LeftIndent>140.0</LeftIndent>
+<content start="79" end="213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="213" end="214">
+<LeftIndent>140.0</LeftIndent>
+<content start="213" end="214">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="214" end="753">
+<LeftIndent>140.0</LeftIndent>
+<content start="214" end="262">
+<size>11</size></content>
+
+<content start="262" end="263">
+<icon>AddOvalOnXPlane.gif</icon></content>
+
+<content start="263" end="269">
+<size>11</size></content>
+
+<content start="269" end="270">
+<icon>AddOvalOnYPlane.gif</icon></content>
+
+<content start="270" end="276">
+<size>11</size></content>
+
+<content start="276" end="277">
+<icon>AddOvalOnZPlane.gif</icon></content>
+
+<content start="277" end="753">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="753" end="754">
+<LeftIndent>140.0</LeftIndent>
+<content start="753" end="754">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="754" end="1169">
+<LeftIndent>140.0</LeftIndent>
+<content start="754" end="795">
+<size>11</size></content>
+
+<content start="795" end="796">
+<icon>Extrude.gif</icon></content>
+
+<content start="796" end="1169">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1169" end="1170">
+<LeftIndent>140.0</LeftIndent>
+<content start="1169" end="1170">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1170" end="1313">
+<LeftIndent>140.0</LeftIndent>
+<content start="1170" end="1313">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1313" end="1314">
+<LeftIndent>140.0</LeftIndent>
+<content start="1313" end="1314">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1314" end="1323">
+<LeftIndent>140.0</LeftIndent>
+<content start="1314" end="1322">
+<bold>true</bold><size>11</size></content>
+
+<content start="1322" end="1323">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1323" end="1324">
+<LeftIndent>140.0</LeftIndent>
+<content start="1323" end="1324">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1324" end="1423">
+<LeftIndent>140.0</LeftIndent>
+<content start="1324" end="1423">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1423" end="1424">
+<LeftIndent>140.0</LeftIndent>
+<content start="1423" end="1424">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1424" end="1426">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1424" end="1425">
+<component><class>org.concord.modeler.PageMd3d</class><resource>cylindericobstacle$0.mdd</resource><coordinate>cylindericobstacle$0.xyz</coordinate><width>500</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="1425" end="1426">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1426" end="1465">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1426" end="1464">
+<size>10</size></content>
+
+<content start="1464" end="1465">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1465" end="1466">
+<LeftIndent>140.0</LeftIndent>
+<content start="1465" end="1466">
+</content>
+
+</paragraph>
+<paragraph start="1466" end="1467">
+<LeftIndent>140.0</LeftIndent>
+<content start="1466" end="1467">
+</content>
+
+</paragraph>
+<paragraph start="1467" end="1495">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1467" end="1469">
+<size>11</size></content>
+
+<content start="1469" end="1477">
+<href>cuboidobstacle.cml</href><size>11</size></content>
+
+<content start="1477" end="1480">
+<size>11</size></content>
+
+<content start="1480" end="1485">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="1485" end="1494">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

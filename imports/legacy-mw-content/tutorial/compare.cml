@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Validity of the Gay-Berne Model on Modeling Intermolecular Motion and Interactions</page_title>
+<text>Validity of the Gay-Berne Model on Modeling Intermolecular Motion and Interactions
+
+  
+  
+
+Is the Gay-Berne model a good approximation?
+
+The Gay-Berne model is used as an approximation for modeling intermolecular motion. Compare the above two models and find how good the Gay-Berne approximation is.
+
+A whole class of application materials are composed of molecules with pretty stable structures within a certain temperature range. For example, if you are reading this page on a LCD monitor, the liquid crystal molecules in the LCD of your computer are such molecules. DNA molecules, as another example, are quite stable too. In these systems, the intramolecular motion does not play an important role on their critical functions. As a plausible approach, we model them as units, without considering their internal structures.
+
+
+</text>
+<section start="0" end="830">
+<paragraph start="0" end="83">
+<LeftIndent>8.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<content start="0" end="82">
+<size>15</size><bold>true</bold></content>
+
+<content start="82" end="83">
+<size>11</size><family>Arial Unicode MS</family><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="83" end="84">
+<content start="83" end="84">
+<size>11</size><family>Arial Unicode MS</family><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="84" end="87">
+<Alignment>1</Alignment>
+<content start="84" end="85">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>compare$0.gbl</resource><menubar>false</menubar></component><bold>true</bold><size>11</size><family>Arial Unicode MS</family></content>
+
+<content start="85" end="86">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>compare$0.mml</resource><menubar>false</menubar></component><bold>true</bold><size>11</size><family>Arial Unicode MS</family></content>
+
+<content start="86" end="87">
+<size>11</size><family>Arial Unicode MS</family><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="87" end="90">
+<Alignment>1</Alignment>
+<content start="87" end="88">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Run both models</title>
+<tooltip>Run both models</tooltip>
+<border>Raised Bevel</border>
+<script>script:mw:1:run;
+script:mw:2:run;</script>
+<action>Script</action></component><size>11</size></content>
+
+<content start="88" end="89">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Stop both models</title>
+<tooltip>Stop both models</tooltip>
+<border>Raised Bevel</border>
+<script>script:mw:1:stop;
+script:mw:2:stop;</script>
+<action>Script</action></component><size>11</size></content>
+
+<content start="89" end="90">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="90" end="91">
+<content start="90" end="91">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="91" end="136">
+<Alignment>1</Alignment>
+<content start="91" end="135">
+<bold>true</bold><size>14</size></content>
+
+<content start="135" end="136">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="136" end="137">
+<LeftIndent>8.0</LeftIndent>
+<content start="136" end="137">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="137" end="300">
+<LeftIndent>8.0</LeftIndent>
+<content start="137" end="141">
+<size>11</size></content>
+
+<content start="141" end="156">
+<href>tech/UAFF.cml</href><size>11</size></content>
+
+<content start="156" end="300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="300" end="301">
+<LeftIndent>8.0</LeftIndent>
+<content start="300" end="301">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="301" end="827">
+<LeftIndent>8.0</LeftIndent>
+<content start="301" end="626">
+<size>11</size></content>
+
+<content start="626" end="827">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="827" end="828">
+<LeftIndent>8.0</LeftIndent>
+<content start="827" end="828">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="828" end="829">
+<LeftIndent>8.0</LeftIndent>
+<content start="828" end="829">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="829" end="830">
+<LeftIndent>8.0</LeftIndent>
+</paragraph>
+</section>
+</document>

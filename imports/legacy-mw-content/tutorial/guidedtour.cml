@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Guided tours in molecules</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Guided tours in molecules
+
+&lt; Previous | Index | Next &gt;
+
+Now that students can navigate inside molecules freely, the question becomes how we would enable instructors to teach. As we know, students can navigate aimlessly without necessarily learning anything.
+
+MW presents the Molecular Animation Studio (MAS), which allows instructors to design &quot;guided tours&quot; to selected locations of the molecules.
+
+ 
+&#12304;This embedded Jmol container shows a myoglobin molecule.&#12305;
+
+Scenes
+
+The key concept of the MAS is scene, which means a combination of position and angle to view the molecule and the style for displaying it. There is no restriction about what can be a scene. Any combination of location, orientation and style can be a scene. We are, in general, only interested in those that show important sites.
+
+Creating a scene
+
+The process of creating a scene is straightforward. First, you navigate around the molecule. During the navigation, if you the view interests you, you can save it as a scene. To save a new scene, just select &quot;Animation &gt; Save As New Scene&quot;. If you would like to overwrite the current scene with the current view, just select &quot;Animation &gt; Save Scene&quot;.
+
+If you have created scenes for a molecule, the first scene will be displayed after the page is loaded. This is different from the case in which there is no stored scene. In that case, the scene when you save the page will be stored and used as the default scene.
+
+Navigating from scene to scene
+
+Once you have created a series of scenes, you can use the buttons below the viewer&apos;s main window to &quot;fly&quot; from one scene to the next, scene by scene or continuously. The route from one scene to another is interpolated stepwisely to produce smooth animation effect (i.e. with an adequate frames-per-second rate).
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1807">
+<paragraph start="0" end="26">
+<Alignment>2</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
+<RightIndent>8.0</RightIndent>
+<content start="0" end="25">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="55">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="27" end="29">
+<size>11</size></content>
+
+<content start="29" end="37">
+<href>navkey.cml</href><size>11</size></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<href>index_jmol.cml</href><size>11</size></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="52">
+<href>itinerary.cml</href><size>11</size></content>
+
+<content start="52" end="54">
+<size>11</size></content>
+
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="56">
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="258">
+<LeftIndent>140.0</LeftIndent>
+<content start="56" end="258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="258" end="259">
+<LeftIndent>140.0</LeftIndent>
+<content start="258" end="259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="259" end="399">
+<LeftIndent>140.0</LeftIndent>
+<content start="259" end="398">
+<size>11</size></content>
+
+<content start="398" end="399">
+</content>
+
+</paragraph>
+<paragraph start="399" end="400">
+<content start="399" end="400">
+</content>
+
+</paragraph>
+<paragraph start="400" end="402">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="400" end="401">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<toolbar>false</toolbar><navigation>true</navigation><resource>1MBN.pdb</resource><state>guidedtour$0.jms</state><width>600.0</width>
+<height>330.0</height>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="401" end="402">
+</content>
+
+</paragraph>
+<paragraph start="402" end="461">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="402" end="403">
+<bold>true</bold><size>13</size></content>
+
+<content start="403" end="459">
+<size>10</size></content>
+
+<content start="459" end="460">
+<bold>true</bold><size>13</size></content>
+
+<content start="460" end="461">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="461" end="462">
+<LeftIndent>140.0</LeftIndent>
+<content start="461" end="462">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="462" end="469">
+<LeftIndent>140.0</LeftIndent>
+<content start="462" end="468">
+<bold>true</bold><size>11</size></content>
+
+<content start="468" end="469">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="469" end="470">
+<LeftIndent>140.0</LeftIndent>
+<content start="469" end="470">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="470" end="799">
+<LeftIndent>140.0</LeftIndent>
+<content start="470" end="500">
+<size>11</size></content>
+
+<content start="500" end="505">
+<italic>true</italic><size>11</size></content>
+
+<content start="505" end="799">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="799" end="800">
+<LeftIndent>140.0</LeftIndent>
+<content start="799" end="800">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="800" end="817">
+<LeftIndent>140.0</LeftIndent>
+<content start="800" end="816">
+<bold>true</bold><size>11</size></content>
+
+<content start="816" end="817">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="817" end="818">
+<LeftIndent>140.0</LeftIndent>
+<content start="817" end="818">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="818" end="1169">
+<LeftIndent>140.0</LeftIndent>
+<content start="818" end="1169">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1169" end="1170">
+<LeftIndent>140.0</LeftIndent>
+<content start="1169" end="1170">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1170" end="1433">
+<LeftIndent>140.0</LeftIndent>
+<content start="1170" end="1433">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1433" end="1434">
+<LeftIndent>140.0</LeftIndent>
+<content start="1433" end="1434">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1434" end="1465">
+<LeftIndent>140.0</LeftIndent>
+<content start="1434" end="1464">
+<bold>true</bold><size>11</size></content>
+
+<content start="1464" end="1465">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1465" end="1466">
+<LeftIndent>140.0</LeftIndent>
+<content start="1465" end="1466">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1466" end="1778">
+<LeftIndent>140.0</LeftIndent>
+<content start="1466" end="1778">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1778" end="1779">
+<content start="1778" end="1779">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1779" end="1807">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="1779" end="1781">
+<size>11</size></content>
+
+<content start="1781" end="1789">
+<href>navkey.cml</href><size>11</size></content>
+
+<content start="1789" end="1792">
+<size>11</size></content>
+
+<content start="1792" end="1797">
+<href>index_jmol.cml</href><size>11</size></content>
+
+<content start="1797" end="1800">
+<size>11</size></content>
+
+<content start="1800" end="1804">
+<href>itinerary.cml</href><size>11</size></content>
+
+<content start="1804" end="1806">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

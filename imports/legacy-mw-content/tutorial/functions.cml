@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Supported Math Functions and Constants for Scripts and Graphs</page_title>
+<bg_image>sidebar1.gif</bg_image>
+<text> 
+ 
+
+Constants:
+
+pi                     ---  3.14159265 (the ratio of the circumference to the diameter of a circle)
+e                      ---  2.71828183 (the base of the natural exponential function)
+
+Common Functions:
+
+abs(x)                 ---  the absolute of x
+acos(x)/arccos(x)      ---  the arc cosine function
+acot(x)/arccot(x)      ---  the arc cotangent function
+arcsin(x)/asin(x)      ---  the arc sine function
+arctan(x)/atan(x)      ---  the arc tangent function
+cos(x)                 ---  the cosine function
+cosec(x)/csc(x)        ---  the cosec function
+cot(x)/cotan(x)/ctg(x) ---  the cotangent function                 
+cbrt(x)                ---  the cube root function
+exp(x)                 ---  the exponential function
+int(x)                 ---  the integer part of x
+ln(x)                  ---  the natural logarithm function
+log(x)                 ---  the logarithm function of base 10
+loga(a, x)             ---  the logarithm function of base a
+mod(x, a)              ---  the modulus function (the integer remainder of x/a) 
+pow(a, x)/power(a, x)  ---  the power function of base a and exponent x
+rand()                 ---  a random number between (0, 1]
+round(x)               ---  the closest integer to x
+sec(x)                 ---  the sec function
+sgn(x)                 ---  the sign function
+sin(x)                 ---  the sine function
+sqrt(x)                ---  the square root of x
+tan(x)/tg(x)           ---  the tangent function
+hypot(x, y)            ---  sqrt(x^2+y^2)
+sum(x1, x2, ..., xn)   ---  x1+x2+...+xn
+
+
+Special functions:
+
+acosh(x)/arccosh(x)    ---  the hyperbolic arc cosine function
+arcsinh(x)/asinh(x)    ---  the hyperbolic arc sine function
+arctanh(x)/atanh(x)    ---  the hyperbolic arc tangent function
+cosh(x)                ---  the hyperbolic cosine function
+chisq(a, x)            ---  the Chi square integral from 0 to x
+chisqc(a, x)           ---  the Chi square integral from 0 to infinity
+erf(x)                 ---  the error function
+erfc(x)                ---  the complementary error function
+gamma(x)               ---  the Gamma function
+ibeta(a, b, c, x)      ---  the incomplete Beta function
+igam(a, x)             ---  the incomplete Gamma function
+igamc(a, x)            ---  the complemented incomplete Gamma function
+j0(x)                  ---  the Bessel function of order 0
+j1(x)                  ---  the Bessel function of order 1
+jn(a, x)               ---  the Bessel function of order n
+lgamma(x)              ---  the natural logarithm of the Gamma function
+normal(x)              ---  the integral of Guassian function from negative infinity
+possion(a, x)          ---  the sum of the first k terms of the Poisson distribution
+possionc(a, x)         ---  the sum of the k+1 to infinite terms of the Possion distirbution
+sinh(x)                ---  the hyperbolic sine function
+tanh(x)                ---  the hyperbolic tangent function
+y0(x)                  ---  the Bessel function of the second type of order 0
+y1(x)                  ---  the Bessel function of the second type of order 1
+yn(a, x)               ---  the Bessel function of the scond type of order n
+
+Graph a function:
+
+You may want to plot a function from the above list with the following function graph:
+
+ 
+ </text>
+<section start="0" end="3280">
+<paragraph start="0" end="2">
+<Alignment>1</Alignment>
+<SpaceAbove>5.0</SpaceAbove>
+<LeftIndent>160.0</LeftIndent>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>640.0</width><height>40</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;b&gt;&lt;font size=&quot;4&quot; color=&quot;#ffffff&quot; face=&quot;Verdana&quot;&gt;Supported Math 
+      Functions and Constants for Scripts and Graphs&lt;/font&gt;&lt;/b&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-999a00</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<LeftIndent>160.0</LeftIndent>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>640.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-ff0100</bgcolor></icon></content>
+
+<content start="3" end="4">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<LeftIndent>160.0</LeftIndent>
+<content start="4" end="5">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="5" end="16">
+<LeftIndent>160.0</LeftIndent>
+<content start="5" end="15">
+<bold>true</bold></content>
+
+<content start="15" end="16">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<LeftIndent>180.0</LeftIndent>
+<content start="16" end="17">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="17" end="117">
+<LeftIndent>180.0</LeftIndent>
+<content start="17" end="117">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="117" end="203">
+<LeftIndent>180.0</LeftIndent>
+<content start="117" end="203">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="203" end="204">
+<LeftIndent>180.0</LeftIndent>
+<content start="203" end="204">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="204" end="222">
+<LeftIndent>160.0</LeftIndent>
+<content start="204" end="221">
+<bold>true</bold></content>
+
+<content start="221" end="222">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="222" end="223">
+<LeftIndent>160.0</LeftIndent>
+<content start="222" end="223">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="223" end="269">
+<LeftIndent>180.0</LeftIndent>
+<content start="223" end="269">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="269" end="321">
+<LeftIndent>180.0</LeftIndent>
+<content start="269" end="321">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="321" end="376">
+<LeftIndent>180.0</LeftIndent>
+<content start="321" end="376">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="376" end="426">
+<LeftIndent>180.0</LeftIndent>
+<content start="376" end="426">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="426" end="479">
+<LeftIndent>180.0</LeftIndent>
+<content start="426" end="479">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="479" end="527">
+<LeftIndent>180.0</LeftIndent>
+<content start="479" end="527">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="527" end="574">
+<LeftIndent>180.0</LeftIndent>
+<content start="527" end="574">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="574" end="642">
+<LeftIndent>180.0</LeftIndent>
+<content start="574" end="642">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="642" end="693">
+<LeftIndent>180.0</LeftIndent>
+<content start="642" end="693">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="693" end="746">
+<LeftIndent>180.0</LeftIndent>
+<content start="693" end="746">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="746" end="796">
+<LeftIndent>180.0</LeftIndent>
+<content start="746" end="796">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="796" end="855">
+<LeftIndent>180.0</LeftIndent>
+<content start="796" end="855">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="855" end="917">
+<LeftIndent>180.0</LeftIndent>
+<content start="855" end="917">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="917" end="978">
+<LeftIndent>180.0</LeftIndent>
+<content start="917" end="978">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="978" end="1059">
+<LeftIndent>180.0</LeftIndent>
+<content start="978" end="1059">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1059" end="1131">
+<LeftIndent>180.0</LeftIndent>
+<content start="1059" end="1131">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1131" end="1190">
+<LeftIndent>180.0</LeftIndent>
+<content start="1131" end="1190">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1190" end="1243">
+<LeftIndent>180.0</LeftIndent>
+<content start="1190" end="1243">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1243" end="1288">
+<LeftIndent>180.0</LeftIndent>
+<content start="1243" end="1288">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1288" end="1334">
+<LeftIndent>180.0</LeftIndent>
+<content start="1288" end="1334">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1334" end="1380">
+<LeftIndent>180.0</LeftIndent>
+<content start="1334" end="1380">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1380" end="1429">
+<LeftIndent>180.0</LeftIndent>
+<content start="1380" end="1429">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1429" end="1478">
+<LeftIndent>180.0</LeftIndent>
+<content start="1429" end="1478">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1478" end="1520">
+<LeftIndent>180.0</LeftIndent>
+<content start="1478" end="1520">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1520" end="1561">
+<LeftIndent>180.0</LeftIndent>
+<content start="1520" end="1561">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1561" end="1562">
+<LeftIndent>180.0</LeftIndent>
+<content start="1561" end="1562">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1562" end="1563">
+<LeftIndent>180.0</LeftIndent>
+<content start="1562" end="1563">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1563" end="1582">
+<LeftIndent>160.0</LeftIndent>
+<content start="1563" end="1581">
+<bold>true</bold></content>
+
+<content start="1581" end="1582">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1582" end="1583">
+<LeftIndent>180.0</LeftIndent>
+<content start="1582" end="1583">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1583" end="1646">
+<LeftIndent>180.0</LeftIndent>
+<content start="1583" end="1646">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1646" end="1707">
+<LeftIndent>180.0</LeftIndent>
+<content start="1646" end="1707">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1707" end="1771">
+<LeftIndent>180.0</LeftIndent>
+<content start="1707" end="1771">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1771" end="1830">
+<LeftIndent>180.0</LeftIndent>
+<content start="1771" end="1830">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1830" end="1894">
+<LeftIndent>180.0</LeftIndent>
+<content start="1830" end="1894">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1894" end="1965">
+<LeftIndent>180.0</LeftIndent>
+<content start="1894" end="1965">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1965" end="2012">
+<LeftIndent>180.0</LeftIndent>
+<content start="1965" end="2012">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2012" end="2073">
+<LeftIndent>180.0</LeftIndent>
+<content start="2012" end="2073">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2073" end="2120">
+<LeftIndent>180.0</LeftIndent>
+<content start="2073" end="2120">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2120" end="2177">
+<LeftIndent>180.0</LeftIndent>
+<content start="2120" end="2177">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2177" end="2235">
+<LeftIndent>180.0</LeftIndent>
+<content start="2177" end="2235">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2235" end="2306">
+<LeftIndent>180.0</LeftIndent>
+<content start="2235" end="2306">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2306" end="2365">
+<LeftIndent>180.0</LeftIndent>
+<content start="2306" end="2365">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2365" end="2424">
+<LeftIndent>180.0</LeftIndent>
+<content start="2365" end="2424">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2424" end="2483">
+<LeftIndent>180.0</LeftIndent>
+<content start="2424" end="2483">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2483" end="2555">
+<LeftIndent>180.0</LeftIndent>
+<content start="2483" end="2555">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2555" end="2640">
+<LeftIndent>180.0</LeftIndent>
+<content start="2555" end="2640">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2640" end="2725">
+<LeftIndent>180.0</LeftIndent>
+<content start="2640" end="2725">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2725" end="2818">
+<LeftIndent>180.0</LeftIndent>
+<content start="2725" end="2818">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2818" end="2875">
+<LeftIndent>180.0</LeftIndent>
+<content start="2818" end="2875">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2875" end="2935">
+<LeftIndent>180.0</LeftIndent>
+<content start="2875" end="2935">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="2935" end="3013">
+<LeftIndent>180.0</LeftIndent>
+<content start="2935" end="3013">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="3013" end="3091">
+<LeftIndent>180.0</LeftIndent>
+<content start="3013" end="3091">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="3091" end="3168">
+<LeftIndent>180.0</LeftIndent>
+<content start="3091" end="3168">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="3168" end="3169">
+<LeftIndent>180.0</LeftIndent>
+<content start="3168" end="3169">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="3169" end="3187">
+<LeftIndent>160.0</LeftIndent>
+<content start="3169" end="3186">
+<bold>true</bold></content>
+
+<content start="3186" end="3187">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3187" end="3188">
+<LeftIndent>160.0</LeftIndent>
+<content start="3187" end="3188">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3188" end="3275">
+<LeftIndent>160.0</LeftIndent>
+<content start="3188" end="3275">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3275" end="3276">
+<LeftIndent>160.0</LeftIndent>
+<content start="3275" end="3276">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="3276" end="3278">
+<Alignment>1</Alignment>
+<LeftIndent>160.0</LeftIndent>
+<content start="3276" end="3277">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>500.0</width><height>50</height><arcwidth>200</arcwidth><archeight>25</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;center&gt;
+      &lt;h3&gt;
+        Plot a function
+      &lt;/h3&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-ff3334</bgcolor></icon></content>
+
+<content start="3277" end="3278">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="3278" end="3280">
+<Alignment>1</Alignment>
+<LeftIndent>160.0</LeftIndent>
+<content start="3278" end="3279">
+<component><class>org.concord.modeler.PageFunctionGraph</class>
+<width>500</width><height>300</height><opaque>false</opaque>
+<border>None</border>
+<function><expression>x*sin(x)</expression>
+<color>-7f7f80</color><weight>3.0</weight><style>1</style><datapoint>100</datapoint></function></component></content>
+
+</paragraph>
+</section>
+</document>

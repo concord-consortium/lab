@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a check box</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a check box
+
+&lt; Previous | Index | Next &gt;
+
+You can insert a check box in a page for the user to toggle a boolean (yes or no, true or false) state of a model on the page. Check boxes are different from radio buttons in that if there is a group of check boxes, they are usually not mutually exclusive. In other words, they do not need to be grouped.
+
+When you select the &quot;Insert&gt;Standard Controllers for Model&gt;Check Box&quot; menu action (keyboard action: ALT+SHIFT+K), you will see the following dialog (note that the type of model and action displaying in the dialog window may vary&#8722;only the models present on the page and only the actions that are permitted by the current state of the corresponding model will show up):
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This dialog allows you to select a model and an action that applies to the model. If there is no model on the page, the Model and Action Combo Boxes will be blank.
+
+You can set the images that will appear on the radio button when it is selected or deselected, set the transparency of the check box, select a background color if it is not transparent, set the text for the tool tip that will appear when the mouse cursor enters and pauses, and set the text that will appear on it.
+
+By default, the size of a check box will be automatically decided by the text string and image on it, according to the font type/size and image size. But you can disable this auto-sizing functionality, and use the width and height parameters you specify with the &quot;Width&quot; and &quot;Height&quot; text fields.
+
+Optionally, a check box can be given a unique identifier (UID). It has two uses. First, it can be used by a scripter to find the check box and then do something on it. Second, it can be used to generate a log file that reports the user&apos;s activity on the check box. Data containing, for instance, how many times and when a check box has been selected and deselected, may provide insight to how the user learns from interacting with a model. A restriction of naming a UID is that it must be a string composed of only the alphanumeric characters and at least one alphabetic character. As its name indicates, you cannot have multiple components on the same page that share the same UID. If you do not need a UID for the check box, just leave the field blank.
+
+The following example uses a check box with images that act like a switch of a circuit:
+
+    
+&#12304;A 2D container and a check box with images of the toggle states of a switch.&#12305;
+
+The following example shows some check boxes that interact with a Jmol plugin:
+
+ 
+     
+&#12304;A Jmol plugin and its controls.&#12305;
+
+Setting scripts
+
+Unlike a button, for a check box, you can set two scripts associated with its states: one to be executed when it is selected, and the other to be executed when it is deselected. Note that although you are allowed to set arbitrary scripts for each state, you should generally bear in your mind that the two scripts should produce approximately opposite results for the model they interact with, as the user usually expects a check box to toggle between two opposite states.
+
+ 
+Tip: If scripts are long and you will need to write them in a more comfortable way, use your favorite  text editor to write scripts and copy back to the text area. If there exist scripts already, copy them to your editor first before editing them.
+ 
+
+Changing and removing a check box
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove, and copy a check box.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3486">
+<paragraph start="0" end="22">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="21">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="51">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="23" end="25">
+<size>11</size></content>
+
+<content start="25" end="33">
+<href>insertRadioButton.cml</href><size>11</size></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="41">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="48">
+<href>insertSpinner.cml</href><size>11</size></content>
+
+<content start="48" end="50">
+<size>11</size></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="357">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="210">
+<size>11</size></content>
+
+<content start="210" end="223">
+<href>insertRadioButton.cml</href><size>11</size></content>
+
+<content start="223" end="357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="357" end="358">
+<LeftIndent>140.0</LeftIndent>
+<content start="357" end="358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="358" end="726">
+<LeftIndent>140.0</LeftIndent>
+<content start="358" end="586">
+<size>11</size></content>
+
+<content start="586" end="587">
+</content>
+
+<content start="587" end="726">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="726" end="727">
+<LeftIndent>100.0</LeftIndent>
+<content start="726" end="727">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="727" end="730">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="727" end="728">
+<size>11</size></content>
+
+<content start="728" end="729">
+<icon>CheckBoxController.gif</icon></content>
+
+<content start="729" end="730">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="730" end="754">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="730" end="731">
+<bold>true</bold><size>13</size></content>
+
+<content start="731" end="752">
+<size>10</size></content>
+
+<content start="752" end="753">
+<bold>true</bold><size>13</size></content>
+
+<content start="753" end="754">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="754" end="755">
+<LeftIndent>100.0</LeftIndent>
+<content start="754" end="755">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="755" end="919">
+<LeftIndent>140.0</LeftIndent>
+<content start="755" end="919">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="919" end="920">
+<LeftIndent>140.0</LeftIndent>
+<content start="919" end="920">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="920" end="1235">
+<LeftIndent>140.0</LeftIndent>
+<content start="920" end="1235">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1235" end="1236">
+<LeftIndent>140.0</LeftIndent>
+<content start="1235" end="1236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1236" end="1533">
+<LeftIndent>140.0</LeftIndent>
+<content start="1236" end="1533">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1533" end="1534">
+<LeftIndent>140.0</LeftIndent>
+<content start="1533" end="1534">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1534" end="2289">
+<LeftIndent>140.0</LeftIndent>
+<content start="1534" end="2049">
+<size>11</size></content>
+
+<content start="2049" end="2114">
+<size>11</size></content>
+
+<content start="2114" end="2289">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2289" end="2290">
+<LeftIndent>140.0</LeftIndent>
+<content start="2289" end="2290">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2290" end="2378">
+<LeftIndent>140.0</LeftIndent>
+<content start="2290" end="2378">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2378" end="2379">
+<LeftIndent>140.0</LeftIndent>
+<content start="2378" end="2379">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2379" end="2384">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2379" end="2380">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>80.0</width>
+<height>250.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    Click me to turn on and off.&lt;br&gt;&lt;br&gt;&lt;font size=&quot;16&quot;&gt;&amp;#10154;&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2380" end="2381">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title></title>
+<imagefile>on.gif</imagefile>
+<imagefiledeselected>off.gif</imagefiledeselected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set line[0].x1 -10;
+set line[0].y1 -10;
+set line[0].x2 -10;
+set line[0].y2 -10;
+set line[1].x1 -10;
+set line[1].y1 -10;
+set line[1].x2 -10;
+set line[1].y2 -10;
+set ellipse[0].x 14.5;
+set ellipse[0].y 10;
+run;</script>
+<script2>set line[0].x1 7.4;
+set line[0].y1 10.4;
+set line[0].x2 7.4;
+set line[0].y2 15.6;
+set line[1].x1 7.9;
+set line[1].y1 9.8;
+set line[1].x2 3.3;
+set line[1].y2 14;
+set ellipse[0].x -100;
+set ellipse[0].y -100;
+stop;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2381" end="2382">
+</content>
+
+<content start="2382" end="2383">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>insertCheckBox$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorderless>true</recorderless>
+</component></content>
+
+<content start="2383" end="2384">
+</content>
+
+</paragraph>
+<paragraph start="2384" end="2463">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2384" end="2385">
+<bold>true</bold><size>13</size></content>
+
+<content start="2385" end="2461">
+<size>10</size></content>
+
+<content start="2461" end="2462">
+<bold>true</bold><size>13</size></content>
+
+<content start="2462" end="2463">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2463" end="2464">
+<LeftIndent>140.0</LeftIndent>
+<content start="2463" end="2464">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2464" end="2543">
+<LeftIndent>140.0</LeftIndent>
+<content start="2464" end="2543">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2543" end="2544">
+<LeftIndent>140.0</LeftIndent>
+<content start="2543" end="2544">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2544" end="2546">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2544" end="2545">
+<component><class>org.concord.modeler.PageJContainer</class>
+<appletjar>JmolApplet.jar</appletjar>
+<appletjar>netscape.jar</appletjar>
+<appletclass>org.jmol.applet.MwPlugin</appletclass>
+<resource>insertCheckBox$plugin$0.aps</resource><parameter>{name=&quot;frame&quot; value=&quot;2&quot;}
+{name=&quot;load&quot; value=&quot;ammonia.fq.log&quot;}
+{name=&quot;bgcolor&quot; value=&quot;white&quot;}
+</parameter>
+<width>400</width><height>300</height>
+<border>None</border><codebase>http://mw2.concord.org/public/plugin/</codebase></component></content>
+
+<content start="2545" end="2546">
+</content>
+
+</paragraph>
+<paragraph start="2546" end="2552">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2546" end="2547">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Spin</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>spin on;</script>
+<script2>spin off;</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="2547" end="2548">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Dipole</title>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>dipole molecular width 0.1 offset 1.0;set echo dipo 100% 100%;echo Dipole = 2.0967 Debye</script>
+<script2>dipole molecular delete;set echo dipo off</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="2548" end="2549">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Electrostatic potential map</title>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>isosurface delete mep1 resolution 12 mep;color isosurface translucent</script>
+<script2>isosurface mep1 delete</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="2549" end="2550">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>HOMO-LUMO</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>frame 2;mo 5;</script>
+<script2>frame 2;mo 6;</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="2550" end="2551">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Black background</title>
+<modelclass>org.concord.modeler.PageJContainer</modelclass>
+<model>0</model>
+<script>color background black;</script>
+<script2>color background white;</script2>
+<action>Execute native script</action>
+</component></content>
+
+<content start="2551" end="2552">
+</content>
+
+</paragraph>
+<paragraph start="2552" end="2586">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2552" end="2553">
+<bold>true</bold><size>13</size></content>
+
+<content start="2553" end="2584">
+<size>10</size></content>
+
+<content start="2584" end="2585">
+<bold>true</bold><size>13</size></content>
+
+<content start="2585" end="2586">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2586" end="2587">
+<LeftIndent>140.0</LeftIndent>
+<content start="2586" end="2587">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2587" end="2603">
+<LeftIndent>140.0</LeftIndent>
+<content start="2587" end="2602">
+<bold>true</bold><size>11</size></content>
+
+<content start="2602" end="2603">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2603" end="2604">
+<LeftIndent>140.0</LeftIndent>
+<content start="2603" end="2604">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2604" end="3077">
+<LeftIndent>140.0</LeftIndent>
+<content start="2604" end="3077">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3077" end="3078">
+<LeftIndent>140.0</LeftIndent>
+<content start="3077" end="3078">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3078" end="3080">
+<LeftIndent>140.0</LeftIndent>
+<content start="3078" end="3079">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="3079" end="3080">
+</content>
+
+</paragraph>
+<paragraph start="3080" end="3328">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="3080" end="3083">
+<bold>true</bold><size>11</size></content>
+
+<content start="3083" end="3327">
+<size>11</size></content>
+
+<content start="3327" end="3328">
+</content>
+
+</paragraph>
+<paragraph start="3328" end="3330">
+<LeftIndent>140.0</LeftIndent>
+<content start="3328" end="3329">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="3329" end="3330">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3330" end="3331">
+<LeftIndent>140.0</LeftIndent>
+<content start="3330" end="3331">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3331" end="3365">
+<LeftIndent>140.0</LeftIndent>
+<content start="3331" end="3364">
+<bold>true</bold><size>11</size></content>
+
+<content start="3364" end="3365">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3365" end="3366">
+<LeftIndent>140.0</LeftIndent>
+<content start="3365" end="3366">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3366" end="3457">
+<LeftIndent>140.0</LeftIndent>
+<content start="3366" end="3371">
+<size>11</size></content>
+
+<content start="3371" end="3400">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="3400" end="3456">
+<size>11</size></content>
+
+<content start="3456" end="3457">
+</content>
+
+</paragraph>
+<paragraph start="3457" end="3458">
+<LeftIndent>100.0</LeftIndent>
+<content start="3457" end="3458">
+</content>
+
+</paragraph>
+<paragraph start="3458" end="3486">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3458" end="3460">
+<size>11</size></content>
+
+<content start="3460" end="3468">
+<href>insertRadioButton.cml</href><size>11</size></content>
+
+<content start="3468" end="3471">
+<size>11</size></content>
+
+<content start="3471" end="3476">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="3476" end="3479">
+<size>11</size></content>
+
+<content start="3479" end="3483">
+<href>insertSpinner.cml</href><size>11</size></content>
+
+<content start="3483" end="3485">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

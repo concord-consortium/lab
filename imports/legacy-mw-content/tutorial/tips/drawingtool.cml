@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a drawing tool</page_title>
+<text> Inserting a drawing tool
+
+The following is a drawing tool applet developed by Scott Cytacki et. al. at the Concord Consortium. You can insert this applet into a MW page and use it as a sketch pad, following the instruction below the applet.
+
+ 
+[This drawing tool is an embedded applet, developed by Scott Cytacki et. al. at the Concord Consortium.]
+
+ 
+[This is an embedded button for taking a snapshot from the above applet.]
+
+The steps to use this applet in your MW page:
+
+&#10102; Save this page into the folder where your MW page is located.
+&#10103; Open the saved page if you haven&apos;t already opened it (the saved page is immediately opened following step 1).
+&#10104; Right-click (or Ctrl-click for Mac without a two-button mouse) on the graph window and select &quot;Copy this Applet&quot;.
+&#10105; Open the page you want to paste this drawing tool into (note that you must have an existing page to paste).
+&#10106; Move your caret to where you would like to insert this applet and paste it (Ctrl/Command-V or use menu).
+&#10107; Save the page.
+
+The above method is a convenient way of getting this applet to work on your page. The general instruction for setting up an applet, which requires a bit knowledge about applets, is available at this page.</text>
+<section start="0" end="1207">
+<paragraph start="0" end="26">
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="25">
+<size>18</size><family>Trebuchet MS</family><bold>true</bold></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="242">
+<LeftIndent>20.0</LeftIndent>
+<content start="27" end="242">
+</content>
+
+</paragraph>
+<paragraph start="242" end="243">
+<content start="242" end="243">
+</content>
+
+</paragraph>
+<paragraph start="243" end="245">
+<Alignment>1</Alignment>
+<content start="243" end="244">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>jdom-1.0.jar</appletjar>
+<appletjar>jug-1.1.2.jar</appletjar>
+<appletjar>otrunk-datagraph.jar</appletjar>
+<appletclass>org.concord.otrunkmw.applet.OTAppletViewerMWService</appletclass>
+<resource>drawingtool$applet$0.aps</resource><parameter>{name=&quot;resource&quot; value=&quot;/DrawingTool/drawing_tool.otml&quot;}
+</parameter>
+<width>600</width><height>360</height>
+<border>Lowered Etched</border><caching>true</caching></component></content>
+
+<content start="244" end="245">
+</content>
+
+</paragraph>
+<paragraph start="245" end="350">
+<Alignment>1</Alignment>
+<content start="245" end="350">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="350" end="351">
+<content start="350" end="351">
+</content>
+
+</paragraph>
+<paragraph start="351" end="353">
+<Alignment>1</Alignment>
+<content start="351" end="352">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Take a snapshot</title>
+<tooltip>Take a snapshot</tooltip>
+<script>script:applet:1:snapshot;</script>
+<action>Script</action></component></content>
+
+<content start="352" end="353">
+</content>
+
+</paragraph>
+<paragraph start="353" end="427">
+<Alignment>1</Alignment>
+<content start="353" end="426">
+<size>10</size></content>
+
+<content start="426" end="427">
+</content>
+
+</paragraph>
+<paragraph start="427" end="428">
+<content start="427" end="428">
+</content>
+
+</paragraph>
+<paragraph start="428" end="474">
+<LeftIndent>20.0</LeftIndent>
+<content start="428" end="474">
+</content>
+
+</paragraph>
+<paragraph start="474" end="475">
+<LeftIndent>20.0</LeftIndent>
+<content start="474" end="475">
+</content>
+
+</paragraph>
+<paragraph start="475" end="539">
+<LeftIndent>40.0</LeftIndent>
+<content start="475" end="476">
+<size>15</size></content>
+
+<content start="476" end="539">
+</content>
+
+</paragraph>
+<paragraph start="539" end="651">
+<LeftIndent>40.0</LeftIndent>
+<content start="539" end="540">
+<size>15</size></content>
+
+<content start="540" end="651">
+</content>
+
+</paragraph>
+<paragraph start="651" end="767">
+<LeftIndent>40.0</LeftIndent>
+<content start="651" end="652">
+<size>15</size></content>
+
+<content start="652" end="767">
+</content>
+
+</paragraph>
+<paragraph start="767" end="877">
+<LeftIndent>40.0</LeftIndent>
+<content start="767" end="768">
+<size>15</size></content>
+
+<content start="768" end="825">
+</content>
+
+<content start="825" end="874">
+<bold>true</bold></content>
+
+<content start="874" end="877">
+</content>
+
+</paragraph>
+<paragraph start="877" end="984">
+<LeftIndent>40.0</LeftIndent>
+<content start="877" end="878">
+<size>15</size></content>
+
+<content start="878" end="984">
+</content>
+
+</paragraph>
+<paragraph start="984" end="1001">
+<LeftIndent>40.0</LeftIndent>
+<content start="984" end="985">
+<size>15</size></content>
+
+<content start="985" end="1001">
+</content>
+
+</paragraph>
+<paragraph start="1001" end="1002">
+<content start="1001" end="1002">
+</content>
+
+</paragraph>
+<paragraph start="1002" end="1207">
+<LeftIndent>20.0</LeftIndent>
+<content start="1002" end="1196">
+</content>
+
+<content start="1196" end="1205">
+<href>../applet.cml</href></content>
+
+<content start="1205" end="1206">
+</content>
+
+</paragraph>
+</section>
+</document>

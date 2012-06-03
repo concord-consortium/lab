@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Trajectory</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Trajectory
+
+&lt; Previous | Index | Next &gt;
+
+The trajectory command shows or hides the trajectories of the centers of mass of the selected objects. (To see how to show and hide the trajectory of the center of mass of an object without using scripts, see this section.)
+
+Syntax:
+
+trajectory ON/OFF
+traj ON/OFF
+
+The second is an abbreviation of the first.
+
+ 
+Note: If the recorder is disabled, turning on the trajectory has no effect --- because the trajectories are not recorded.
+ 
+
+  
+ 
+&#12304;This is an embedded 2D model container.&#12305;
+
+
+   
+ 
+&#12304;This is an embedded 3D model container.&#12305;
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="604">
+<paragraph start="0" end="11">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="10">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="40">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="12" end="14">
+<size>11</size></content>
+
+<content start="14" end="22">
+<size>11</size><href>script_plot.cml</href></content>
+
+<content start="22" end="25">
+<size>11</size></content>
+
+<content start="25" end="30">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="37">
+<size>11</size><href>script_averageposition.cml</href></content>
+
+<content start="37" end="39">
+<size>11</size></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<LeftIndent>100.0</LeftIndent>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="265">
+<LeftIndent>140.0</LeftIndent>
+<content start="41" end="45">
+<size>11</size></content>
+
+<content start="45" end="55">
+<size>11</size><family>Courier New</family></content>
+
+<content start="55" end="250">
+<size>11</size></content>
+
+<content start="250" end="262">
+<size>11</size><href>showTrajAction.cml</href></content>
+
+<content start="262" end="265">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="265" end="266">
+<LeftIndent>140.0</LeftIndent>
+<content start="265" end="266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="266" end="274">
+<LeftIndent>140.0</LeftIndent>
+<content start="266" end="274">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="274" end="275">
+<LeftIndent>140.0</LeftIndent>
+<content start="274" end="275">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="275" end="293">
+<LeftIndent>160.0</LeftIndent>
+<content start="275" end="285">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="285" end="293">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="293" end="305">
+<LeftIndent>160.0</LeftIndent>
+<content start="293" end="297">
+<size>11</size><bold>true</bold><family>Courier New</family></content>
+
+<content start="297" end="304">
+<size>11</size><family>Courier New</family></content>
+
+<content start="304" end="305">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="305" end="306">
+<LeftIndent>140.0</LeftIndent>
+<content start="305" end="306">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="306" end="350">
+<LeftIndent>140.0</LeftIndent>
+<content start="306" end="350">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="350" end="351">
+<LeftIndent>140.0</LeftIndent>
+<content start="350" end="351">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="351" end="353">
+<LeftIndent>140.0</LeftIndent>
+<content start="351" end="352">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="352" end="353">
+</content>
+
+</paragraph>
+<paragraph start="353" end="475">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="353" end="357">
+<size>11</size><bold>true</bold></content>
+
+<content start="357" end="366">
+<size>11</size></content>
+
+<content start="366" end="374">
+<size>11</size><href>recordSimulation.cml</href></content>
+
+<content start="374" end="474">
+<size>11</size></content>
+
+<content start="474" end="475">
+</content>
+
+</paragraph>
+<paragraph start="475" end="477">
+<LeftIndent>140.0</LeftIndent>
+<content start="475" end="476">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="476" end="477">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="477" end="478">
+<LeftIndent>140.0</LeftIndent>
+<content start="477" end="478">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="478" end="481">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="478" end="479">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_traj$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="479" end="480">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>300</width><height>234</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="480" end="481">
+</content>
+
+</paragraph>
+<paragraph start="481" end="483">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="481" end="482">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show trajectories of atom 1 and 2</title>
+<tooltip>Show trajectories of atom 1 and 2</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom 1 2;
+traj on;
+select atom none;</script>
+<script2>select atom 1, 2;
+traj off;
+select atom none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="482" end="483">
+</content>
+
+</paragraph>
+<paragraph start="483" end="525">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="483" end="525">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="525" end="526">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="525" end="526">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="526" end="527">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="526" end="527">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="527" end="531">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="527" end="528">
+<component><class>org.concord.modeler.PageMd3d</class><resource>script_traj$0.mdd</resource><coordinate>script_traj$0.xyz</coordinate><width>350</width><height>250</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="528" end="529">
+</content>
+
+<content start="529" end="530">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<width>300</width><height>250</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="530" end="531">
+</content>
+
+</paragraph>
+<paragraph start="531" end="533">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="531" end="532">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show trajectories of atom 1 and 2</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>select atom 1 2;
+traj on;
+select atom none;</script>
+<script2>select atom 1, 2;
+traj off;
+select atom none;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="532" end="533">
+</content>
+
+</paragraph>
+<paragraph start="533" end="575">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="533" end="574">
+<size>10</size></content>
+
+<content start="574" end="575">
+</content>
+
+</paragraph>
+<paragraph start="575" end="576">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="575" end="576">
+</content>
+
+</paragraph>
+<paragraph start="576" end="604">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="576" end="578">
+<size>11</size></content>
+
+<content start="578" end="586">
+<size>11</size><href>script_plot.cml</href></content>
+
+<content start="586" end="589">
+<size>11</size></content>
+
+<content start="589" end="594">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="594" end="597">
+<size>11</size></content>
+
+<content start="597" end="601">
+<size>11</size><href>script_averageposition.cml</href></content>
+
+<content start="601" end="603">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Print</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Print
+
+&lt; Previous | Index | Next &gt;
+
+The print command prints data on the console.
+
+Syntax:
+
+print [variable]
+
+where [variable] can be a system variable and a defined varialbe. In addition, the following data can also be printed:
+
+&lt;rx&gt; --- the mean x coordinate of the selected particle(s) over the current frames
+&lt;ry&gt; --- the mean y coordinate of the selected particle(s) over the current frames
+&lt;vx&gt; --- the mean x-component of the velocity of the selected particle(s) over the current frames
+&lt;vy&gt; --- the mean y-component of the velocity of the selected particle(s) over the current frames
+
+The current frames mean the frames stored in the simulator&apos;s recorder. If the recorder is disabled, it will just report the mean for the selected particles in the current state.
+
+Printing the result of a math expression
+
+If a math expression is enclosed in a pair of double quotes, then it will be evaluated and the result will be printed. Otherwise, the math expression will be printed as a string without evaluation. For example, print 3*2 gives 3*2, whereas print &quot;3*2&quot; gives 6. 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1105">
+<paragraph start="0" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="5">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="9">
+<size>11</size></content>
+
+<content start="9" end="17">
+<href>script_beep.cml</href><size>11</size></content>
+
+<content start="17" end="20">
+<size>11</size></content>
+
+<content start="20" end="25">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="25" end="28">
+<size>11</size></content>
+
+<content start="28" end="32">
+<href>script_message.cml</href><size>11</size></content>
+
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<LeftIndent>100.0</LeftIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="82">
+<LeftIndent>140.0</LeftIndent>
+<content start="36" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<size>11</size><family>Courier New</family></content>
+
+<content start="45" end="82">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="82" end="83">
+<LeftIndent>140.0</LeftIndent>
+<content start="82" end="83">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="83" end="91">
+<LeftIndent>140.0</LeftIndent>
+<content start="83" end="91">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="91" end="92">
+<LeftIndent>140.0</LeftIndent>
+<content start="91" end="92">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="92" end="109">
+<LeftIndent>160.0</LeftIndent>
+<content start="92" end="97">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="97" end="109">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="109" end="110">
+<LeftIndent>160.0</LeftIndent>
+<content start="109" end="110">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="110" end="229">
+<LeftIndent>140.0</LeftIndent>
+<content start="110" end="116">
+<size>11</size></content>
+
+<content start="116" end="126">
+<size>11</size><family>Courier New</family></content>
+
+<content start="126" end="136">
+<size>11</size></content>
+
+<content start="136" end="151">
+<href>script_variable.cml</href><size>11</size></content>
+
+<content start="151" end="158">
+<size>11</size></content>
+
+<content start="158" end="174">
+<href>script_defvar.cml</href><size>11</size></content>
+
+<content start="174" end="229">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="229" end="230">
+<LeftIndent>140.0</LeftIndent>
+<content start="229" end="230">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="230" end="313">
+<LeftIndent>160.0</LeftIndent>
+<content start="230" end="239">
+<size>11</size><family>Courier New</family></content>
+
+<content start="239" end="248">
+<size>11</size></content>
+
+<content start="248" end="249">
+<size>11</size><italic>true</italic></content>
+
+<content start="249" end="313">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="313" end="396">
+<LeftIndent>160.0</LeftIndent>
+<content start="313" end="322">
+<size>11</size><family>Courier New</family></content>
+
+<content start="322" end="331">
+<size>11</size></content>
+
+<content start="331" end="332">
+<size>11</size><italic>true</italic></content>
+
+<content start="332" end="396">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="396" end="494">
+<LeftIndent>160.0</LeftIndent>
+<content start="396" end="405">
+<size>11</size><family>Courier New</family></content>
+
+<content start="405" end="414">
+<size>11</size></content>
+
+<content start="414" end="415">
+<size>11</size><italic>true</italic></content>
+
+<content start="415" end="494">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="494" end="592">
+<LeftIndent>160.0</LeftIndent>
+<content start="494" end="503">
+<size>11</size><family>Courier New</family></content>
+
+<content start="503" end="512">
+<size>11</size></content>
+
+<content start="512" end="513">
+<size>11</size><italic>true</italic></content>
+
+<content start="513" end="592">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="592" end="593">
+<LeftIndent>140.0</LeftIndent>
+<content start="592" end="593">
+</content>
+
+</paragraph>
+<paragraph start="593" end="771">
+<LeftIndent>140.0</LeftIndent>
+<content start="593" end="642">
+<size>11</size></content>
+
+<content start="642" end="662">
+<href>recordSimulation.cml</href><size>11</size></content>
+
+<content start="662" end="771">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="771" end="772">
+<LeftIndent>140.0</LeftIndent>
+<content start="771" end="772">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="772" end="813">
+<LeftIndent>140.0</LeftIndent>
+<content start="772" end="812">
+<bold>true</bold><size>11</size></content>
+
+<content start="812" end="813">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="813" end="814">
+<LeftIndent>140.0</LeftIndent>
+<content start="813" end="814">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="814" end="1076">
+<LeftIndent>140.0</LeftIndent>
+<content start="814" end="1025">
+<size>11</size></content>
+
+<content start="1025" end="1034">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1034" end="1054">
+<size>11</size></content>
+
+<content start="1054" end="1065">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1065" end="1076">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1076" end="1077">
+<LeftIndent>140.0</LeftIndent>
+<content start="1076" end="1077">
+</content>
+
+</paragraph>
+<paragraph start="1077" end="1105">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1077" end="1079">
+<size>11</size></content>
+
+<content start="1079" end="1087">
+<href>script_beep.cml</href><size>11</size></content>
+
+<content start="1087" end="1090">
+<size>11</size></content>
+
+<content start="1090" end="1095">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="1095" end="1098">
+<size>11</size></content>
+
+<content start="1098" end="1102">
+<href>script_message.cml</href><size>11</size></content>
+
+<content start="1102" end="1104">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

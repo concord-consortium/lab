@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Counting Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Counting Tool
+
+&lt; Previous | Index | Next &gt;
+
+The Counting Tool can be selected by pressing the &quot; &quot; button.
+
+To count object(s), click the Counting Tool button first, then drag the mouse to select a rectangular area that covers the object(s) needed to be marked. When the mouse is released, they will be marked.
+
+You may practice with the Counting Tool in the following model:
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+Script support
+
+There are a number of built-in functions for counting particles:
+
+count([id])
+- returns the number of particles of a given type specified by the [id] argument. For Gay-Berne models, the [id] parameter is ignored and all particles within the area will be included, since the particles have no typing. The same applies to other counting functions for Gay-Berne models.
+
+count([id], [x], [y], [width], [height])
+- returns the number of particles of a given type specified by the [id] argument that are within a rectangular area specified by the [x], [y], [width], and [height] arguments, where [x] and [y] are the coordinates of the upper-left corner, and [width] and [height] are the width and height of the rectangle. Use -1 for the [id] argument if all types of particles need to be included.
+
+count([id], [x1], [y1], [x2], [y2], [x3], [y3])
+- returns the number of particles of a given type specified by the [id] argument that are within a triangular area specified by the coordinates of the three vertices: [x1], [y1], [x2], [y2], [x3], and [y3]. Use -1 for the [id] argument if all types of particles need to be included.
+
+count([id], [x], [y], [radius])
+- returns the number of particles of a given type specified by the [id] argument that are within a circular area specified by the [x], [y], and [radius] arguments, where [x] and [y] are the coordinates of the center, and [radius] are the radius of the circle. Use -1 for the [id] argument if all types of particles need to be included.
+
+count([index], [radius])
+- returns the number of particles that are within a circle whose center is at the coordinate of the [index]-th particle and whose raidus is specified by the [radius] argument.
+
+In addition, the lac (local area counter) command can be used to count particles of specified types within a specified area. Unlike the Counting Tool presented here that counts based only on current distribution of particles, the count command can generate a graph of the number of particles within the selected area as a function of time.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2504">
+<paragraph start="0" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="17">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="47">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="21">
+<size>11</size></content>
+
+<content start="21" end="29">
+<size>11</size><href>dropAction.cml</href></content>
+
+<content start="29" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<size>11</size><href>markAction.cml</href></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>100.0</LeftIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="110">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="99">
+<size>11</size></content>
+
+<content start="99" end="100">
+<icon>Counter.gif</icon></content>
+
+<content start="100" end="110">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="110" end="111">
+<LeftIndent>140.0</LeftIndent>
+<content start="110" end="111">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="111" end="314">
+<LeftIndent>140.0</LeftIndent>
+<content start="111" end="314">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="314" end="315">
+<LeftIndent>140.0</LeftIndent>
+<content start="314" end="315">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="315" end="379">
+<LeftIndent>140.0</LeftIndent>
+<content start="315" end="378">
+<size>11</size></content>
+
+<content start="378" end="379">
+</content>
+
+</paragraph>
+<paragraph start="379" end="380">
+<LeftIndent>100.0</LeftIndent>
+<content start="379" end="380">
+</content>
+
+</paragraph>
+<paragraph start="380" end="382">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="380" end="381">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>CountingTool$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+<button>Select Object</button><button>Count Objects</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button></component></content>
+
+<content start="381" end="382">
+</content>
+
+</paragraph>
+<paragraph start="382" end="421">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="382" end="421">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="421" end="422">
+<RightIndent>20.0</RightIndent>
+<content start="421" end="422">
+</content>
+
+</paragraph>
+<paragraph start="422" end="437">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="422" end="436">
+<size>11</size><bold>true</bold></content>
+
+<content start="436" end="437">
+</content>
+
+</paragraph>
+<paragraph start="437" end="438">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="437" end="438">
+</content>
+
+</paragraph>
+<paragraph start="438" end="503">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="438" end="503">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="503" end="504">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="503" end="504">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="504" end="516">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="504" end="509">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="509" end="515">
+<family>Courier New</family><size>11</size></content>
+
+<content start="515" end="516">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="516" end="805">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="516" end="583">
+<size>11</size></content>
+
+<content start="583" end="587">
+<family>Courier New</family><size>11</size></content>
+
+<content start="587" end="624">
+<size>11</size></content>
+
+<content start="624" end="628">
+<family>Courier New</family><size>11</size></content>
+
+<content start="628" end="805">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="805" end="806">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="805" end="806">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="806" end="847">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="806" end="811">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="811" end="846">
+<family>Courier New</family><size>11</size></content>
+
+<content start="846" end="847">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="847" end="1231">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="847" end="914">
+<size>11</size></content>
+
+<content start="914" end="918">
+<family>Courier New</family><size>11</size></content>
+
+<content start="918" end="980">
+<size>11</size></content>
+
+<content start="980" end="983">
+<family>Courier New</family><size>11</size></content>
+
+<content start="983" end="985">
+<size>11</size></content>
+
+<content start="985" end="988">
+<family>Courier New</family><size>11</size></content>
+
+<content start="988" end="990">
+<size>11</size></content>
+
+<content start="990" end="997">
+<family>Courier New</family><size>11</size></content>
+
+<content start="997" end="1003">
+<size>11</size></content>
+
+<content start="1003" end="1011">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1011" end="1029">
+<size>11</size></content>
+
+<content start="1029" end="1032">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1032" end="1037">
+<size>11</size></content>
+
+<content start="1037" end="1040">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1040" end="1091">
+<size>11</size></content>
+
+<content start="1091" end="1098">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1098" end="1103">
+<size>11</size></content>
+
+<content start="1103" end="1111">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1111" end="1170">
+<size>11</size></content>
+
+<content start="1170" end="1174">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1174" end="1231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1231" end="1232">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1231" end="1232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1232" end="1280">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1232" end="1237">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="1237" end="1280">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="1280" end="1563">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1280" end="1347">
+<size>11</size></content>
+
+<content start="1347" end="1351">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1351" end="1447">
+<size>11</size></content>
+
+<content start="1447" end="1451">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1451" end="1453">
+<size>11</size></content>
+
+<content start="1453" end="1457">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1457" end="1459">
+<size>11</size></content>
+
+<content start="1459" end="1463">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1463" end="1465">
+<size>11</size></content>
+
+<content start="1465" end="1469">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1469" end="1471">
+<size>11</size></content>
+
+<content start="1471" end="1475">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1475" end="1481">
+<size>11</size></content>
+
+<content start="1481" end="1485">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1485" end="1502">
+<size>11</size></content>
+
+<content start="1502" end="1506">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1506" end="1563">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1563" end="1564">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1563" end="1564">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1564" end="1596">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1564" end="1569">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="1569" end="1595">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1595" end="1596">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1596" end="1932">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1596" end="1663">
+<size>11</size></content>
+
+<content start="1663" end="1667">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1667" end="1726">
+<size>11</size></content>
+
+<content start="1726" end="1729">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1729" end="1731">
+<size>11</size></content>
+
+<content start="1731" end="1734">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1734" end="1740">
+<size>11</size></content>
+
+<content start="1740" end="1748">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1748" end="1766">
+<size>11</size></content>
+
+<content start="1766" end="1769">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1769" end="1774">
+<size>11</size></content>
+
+<content start="1774" end="1777">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1777" end="1817">
+<size>11</size></content>
+
+<content start="1817" end="1825">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1825" end="1871">
+<size>11</size></content>
+
+<content start="1871" end="1875">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1875" end="1932">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1932" end="1933">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1932" end="1933">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1933" end="1958">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1933" end="1938">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="1938" end="1957">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1957" end="1958">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1958" end="2134">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1958" end="2058">
+<size>11</size></content>
+
+<content start="2058" end="2065">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2065" end="2115">
+<size>11</size></content>
+
+<content start="2115" end="2123">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2123" end="2134">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2134" end="2135">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2134" end="2135">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2135" end="2475">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2135" end="2152">
+<size>11</size></content>
+
+<content start="2152" end="2155">
+<family>Courier New</family><size>11</size><href>script_lac.cml</href></content>
+
+<content start="2155" end="2365">
+<size>11</size></content>
+
+<content start="2365" end="2370">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2370" end="2475">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2475" end="2476">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2475" end="2476">
+</content>
+
+</paragraph>
+<paragraph start="2476" end="2504">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2476" end="2478">
+<size>11</size></content>
+
+<content start="2478" end="2486">
+<size>11</size><href>dropAction.cml</href></content>
+
+<content start="2486" end="2489">
+<size>11</size></content>
+
+<content start="2489" end="2494">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="2494" end="2497">
+<size>11</size></content>
+
+<content start="2497" end="2501">
+<size>11</size><href>markAction.cml</href></content>
+
+<content start="2501" end="2503">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

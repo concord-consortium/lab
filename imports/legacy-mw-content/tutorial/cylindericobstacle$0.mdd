@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_01" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="obstacles"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CylinderObstacleState"> 
+      <void property="axis"> 
+       <char>x</char> 
+      </void> 
+      <void property="height"> 
+       <float>100.0</float> 
+      </void> 
+      <void property="radius"> 
+       <float>4.0619564</float> 
+      </void> 
+      <void property="ry"> 
+       <float>-10.866941</float> 
+      </void> 
+      <void property="rz"> 
+       <float>3.07531</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CylinderObstacleState"> 
+      <void property="axis"> 
+       <char>x</char> 
+      </void> 
+      <void property="height"> 
+       <float>98.46152</float> 
+      </void> 
+      <void property="radius"> 
+       <float>7.440776</float> 
+      </void> 
+      <void property="rx"> 
+       <float>0.76924133</float> 
+      </void> 
+      <void property="ry"> 
+       <float>7.4948425</float> 
+      </void> 
+      <void property="rz"> 
+       <float>-12.25896</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CylinderObstacleState"> 
+      <void property="axis"> 
+       <char>x</char> 
+      </void> 
+      <void property="height"> 
+       <float>100.0</float> 
+      </void> 
+      <void property="radius"> 
+       <float>8.476449</float> 
+      </void> 
+      <void property="ry"> 
+       <float>8.782679</float> 
+      </void> 
+      <void property="rz"> 
+       <float>12.933818</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CylinderObstacleState"> 
+      <void property="axis"> 
+       <char>y</char> 
+      </void> 
+      <void property="color"> 
+       <int>-16711936</int> 
+      </void> 
+      <void property="height"> 
+       <float>50.0</float> 
+      </void> 
+      <void property="radius"> 
+       <float>6.9029136</float> 
+      </void> 
+      <void property="rx"> 
+       <float>-0.46665192</float> 
+      </void> 
+      <void property="rz"> 
+       <float>-3.8710632</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CylinderObstacleState"> 
+      <void property="height"> 
+       <float>50.0</float> 
+      </void> 
+      <void property="radius"> 
+       <float>5.9810333</float> 
+      </void> 
+      <void property="rx"> 
+       <float>19.084885</float> 
+      </void> 
+      <void property="ry"> 
+       <float>-6.699753</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.mw3d.models.CuboidObstacleState"> 
+      <void property="color"> 
+       <int>-65332</int> 
+      </void> 
+      <void property="lx"> 
+       <float>50.0</float> 
+      </void> 
+      <void property="ly"> 
+       <float>1.6936207</float> 
+      </void> 
+      <void property="lz"> 
+       <float>25.0</float> 
+      </void> 
+      <void property="ry"> 
+       <float>19.698881</float> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="rotation"> 
+   <string>-896 68 439 145.0 34</string> 
+  </void> 
+  <void property="showEnergizer"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="trajectorySelection"> 
+   <string>0</string> 
+  </void> 
+ </object> 
+</java> 

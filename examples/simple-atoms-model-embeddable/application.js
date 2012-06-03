@@ -10,9 +10,8 @@
 
   var modelConfig = {
         mol_number          : 50,
-        temperature         : 3,
-        epsilon             : -0.1,
-        sigma               : 0.34,
+        temperature_control : true,
+        temperature         : 300,
         lennard_jones_forces: true,
         coulomb_forces      : false,
         width               : 10,
@@ -37,7 +36,7 @@
 
   if (hash = document.location.hash) {
     hash = hash.substr(1, hash.length);
-    modelUrl = ~hash.indexOf(".json") ? hash : '/model-config/' + hash;
+    modelUrl = ~hash.indexOf(".json") ? hash : '/md2d_models/' + hash;
     $.get(modelUrl).done(function(results) {
       opts = results;
       optsLoaded.resolve();
@@ -65,14 +64,14 @@
           req;
 
       // temporarily, for debugging, also POST to /model-configs and show the resulting config
-      req = $.ajax('/model-configs', {
+      req = $.ajax('/md2d_models', {
         type: 'POST',
         contentType: 'application/json',
         data: propsStr
       }).done(function(data) {
         var loc  = req.getResponseHeader('Location');
 
-        hash = '#' + /\/model-config\/(.*)$/.exec(loc)[1];
+        hash = '#' + /\/md2d_models\/(.*)$/.exec(loc)[1];
 
         var url = /[^#]*/.exec(document.location.href)[0] + hash;
 

@@ -1,0 +1,5 @@
+Solid
+
+Molecules in a solid stay in a
+fixed position for a long time
+(long-range order).

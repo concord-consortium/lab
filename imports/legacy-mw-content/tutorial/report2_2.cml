@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Experimental page 3 for multipage report</page_title>
+<text>
+     
+
+ 
+ 
+
+&#8678; Go back
+
+
+
+</text>
+<section start="0" end="27">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="7">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>report2_2$0.mml</resource><recorderless>true</recorderless>
+<button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button></component></content>
+
+<content start="2" end="5">
+</content>
+
+<content start="5" end="6">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>288</width>
+<height>241</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;font size=&quot;3&quot;&gt;Write your observations.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="10">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="12">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report for a page group in a new window</title>
+<description>Multipage report</description>
+<group>report2.cml, report2_1.cml, report2_2.cml</group>
+<border>Raised Bevel</border>
+<action>Create a report for a page group in a new window</action></component></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="13">
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="23">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<size>18</size></content>
+
+<content start="14" end="15">
+</content>
+
+<content start="15" end="22">
+<href>report2_1.cml</href></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+</paragraph>
+</section>
+</document>

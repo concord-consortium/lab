@@ -1,0 +1,38 @@
+html {
+  margin: 0.5em;
+  padding: 0.5em; }
+
+body {
+  background: url(../../resources/aspect-ratio-1x1.png) no-repeat -9999px -9999px; }
+
+#content {
+  width: 98%; }
+
+#top-controls {
+  margin-left: 2em; }
+
+#viz {
+  width: 100%; }
+
+.top {
+  width: 100%;
+  padding: 0.5em 1em;
+  position: relative;
+  display: inline-block; }
+  .top .top-left {
+    height: 100%;
+    display: inline-block;
+    vertical-align: top; }
+  .top .top-right {
+    float: right;
+    position: relative;
+    display: inline-block;
+    vertical-align: top; }
+    .top .top-right .top-right-upper {
+      position: relative;
+      display: block;
+      vertical-align: top; }
+    .top .top-right .top-right-lower {
+      position: relative;
+      display: block;
+      vertical-align: bottom; }

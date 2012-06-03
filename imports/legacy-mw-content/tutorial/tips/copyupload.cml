@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>How to copy an uploaded activity as a whole</page_title>
+<text> How to copy an uploaded activity as a whole
+
+The Upload Facility under the Collaboration Menu provides a convenient way for authors to collaborate on creating an activity. An author can upload an activity to the Upload Area, and notify the collaborators to pick it up (either by telling them the activity ID to find it in the Upload Area, or simply create a JNLP link that will directly launch the activity and email it as an attachment).
+
+There is always a need for other authors to copy all the files in an uploaded version to a new folder to work with or the old folder to overwrite the old version. You can save page by page, but there is a more convenient way of fetching all the files at once.
+
+When an uploaded activity is opened, take a look at the address bar. For example, you will see something like this:
+
+Windows:
+C:\Documents and Settings\****\Application Data\Molecular Workbench\cache\tmpzip\DNAtoProteins11113439741000\DNAtoProteins1.cml
+
+Mac OS X:
+/Users/****/Library/Application Support/Molecular Workbench/cache/tmpzip/DNAtoProteins11113439741000/DNAtoProteins1.cml
+
+where **** is your user name in the computer. The above address shows the location of the activity folder. In this case, it is:
+
+Windows:
+C:\Documents and Settings\****\Application Data\Molecular Workbench\cache\tmpzip\DNAtoProteins11113439741000\
+
+Mac OS X:
+/Users/****/Library/Application Support/Molecular Workbench/cache/tmpzip/DNAtoProteins11113439741000/
+
+i.e. the path after removing the CML part. You can copy the above address and paste it to your file browser, or go to the folder level by level. The folder contains everything of an activity. You can copy the folder to wherever you want.
+
+You may be wondering why the folder name contains a long number appended to the activity name. The number is actually a timestamp for an uploaded file, which is to make sure that there won&apos;t be duplicate folder names.
+
+ 
+The cache/tmpzip folder is a permanent place where all the uploaded files will be stored in your computer. If you need to copy the uploaded activity frequently, you may want to make a shortcut to it.
+ 
+
+&lt;Index of tips&gt;</text>
+<section start="0" end="2129">
+<paragraph start="0" end="45">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="44">
+<bold>true</bold><size>18</size></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="440">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="46" end="350">
+</content>
+
+<content start="350" end="368">
+<href>../../tutorial/LinkUpload.cml</href></content>
+
+<content start="368" end="440">
+</content>
+
+</paragraph>
+<paragraph start="440" end="441">
+<LeftIndent>8.0</LeftIndent>
+<content start="440" end="441">
+</content>
+
+</paragraph>
+<paragraph start="441" end="701">
+<LeftIndent>8.0</LeftIndent>
+<content start="441" end="701">
+</content>
+
+</paragraph>
+<paragraph start="701" end="702">
+<LeftIndent>8.0</LeftIndent>
+<content start="701" end="702">
+</content>
+
+</paragraph>
+<paragraph start="702" end="818">
+<LeftIndent>8.0</LeftIndent>
+<content start="702" end="818">
+</content>
+
+</paragraph>
+<paragraph start="818" end="819">
+<LeftIndent>8.0</LeftIndent>
+<content start="818" end="819">
+</content>
+
+</paragraph>
+<paragraph start="819" end="828">
+<LeftIndent>28.0</LeftIndent>
+<content start="819" end="826">
+<bold>true</bold></content>
+
+<content start="826" end="828">
+</content>
+
+</paragraph>
+<paragraph start="828" end="956">
+<LeftIndent>28.0</LeftIndent>
+<content start="828" end="956">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="956" end="957">
+<LeftIndent>28.0</LeftIndent>
+<content start="956" end="957">
+</content>
+
+</paragraph>
+<paragraph start="957" end="967">
+<LeftIndent>28.0</LeftIndent>
+<content start="957" end="965">
+<bold>true</bold></content>
+
+<content start="965" end="967">
+</content>
+
+</paragraph>
+<paragraph start="967" end="1087">
+<LeftIndent>28.0</LeftIndent>
+<content start="967" end="1087">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1087" end="1088">
+<LeftIndent>8.0</LeftIndent>
+<content start="1087" end="1088">
+</content>
+
+</paragraph>
+<paragraph start="1088" end="1216">
+<LeftIndent>8.0</LeftIndent>
+<content start="1088" end="1216">
+</content>
+
+</paragraph>
+<paragraph start="1216" end="1217">
+<LeftIndent>8.0</LeftIndent>
+<content start="1216" end="1217">
+</content>
+
+</paragraph>
+<paragraph start="1217" end="1226">
+<LeftIndent>28.0</LeftIndent>
+<content start="1217" end="1224">
+<bold>true</bold></content>
+
+<content start="1224" end="1226">
+</content>
+
+</paragraph>
+<paragraph start="1226" end="1336">
+<LeftIndent>28.0</LeftIndent>
+<content start="1226" end="1336">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1336" end="1337">
+<LeftIndent>28.0</LeftIndent>
+<content start="1336" end="1337">
+</content>
+
+</paragraph>
+<paragraph start="1337" end="1347">
+<LeftIndent>28.0</LeftIndent>
+<content start="1337" end="1345">
+<bold>true</bold></content>
+
+<content start="1345" end="1347">
+</content>
+
+</paragraph>
+<paragraph start="1347" end="1449">
+<LeftIndent>28.0</LeftIndent>
+<content start="1347" end="1449">
+<family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1449" end="1450">
+<LeftIndent>8.0</LeftIndent>
+<content start="1449" end="1450">
+</content>
+
+</paragraph>
+<paragraph start="1450" end="1688">
+<LeftIndent>8.0</LeftIndent>
+<content start="1450" end="1688">
+</content>
+
+</paragraph>
+<paragraph start="1688" end="1689">
+<LeftIndent>8.0</LeftIndent>
+<content start="1688" end="1689">
+</content>
+
+</paragraph>
+<paragraph start="1689" end="1907">
+<LeftIndent>8.0</LeftIndent>
+<content start="1689" end="1907">
+</content>
+
+</paragraph>
+<paragraph start="1907" end="1908">
+<LeftIndent>8.0</LeftIndent>
+<content start="1907" end="1908">
+</content>
+
+</paragraph>
+<paragraph start="1908" end="1910">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="1908" end="1909">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><background><red>0</red><green>0</green><blue>0</blue></background></icon></content>
+
+<content start="1909" end="1910">
+</content>
+
+</paragraph>
+<paragraph start="1910" end="2110">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1910" end="1914">
+</content>
+
+<content start="1914" end="1926">
+<family>Courier New</family></content>
+
+<content start="1926" end="2110">
+</content>
+
+</paragraph>
+<paragraph start="2110" end="2112">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="2110" end="2111">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.9</width><SpaceAbove>2</SpaceAbove><SpaceBelow>2</SpaceBelow><opaque>false</opaque><background><red>0</red><green>0</green><blue>0</blue></background></icon></content>
+
+<content start="2111" end="2112">
+</content>
+
+</paragraph>
+<paragraph start="2112" end="2113">
+<LeftIndent>8.0</LeftIndent>
+<content start="2112" end="2113">
+</content>
+
+</paragraph>
+<paragraph start="2113" end="2129">
+<Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
+<content start="2113" end="2114">
+</content>
+
+<content start="2114" end="2127">
+<href>tip.cml</href></content>
+
+<content start="2127" end="2128">
+</content>
+
+</paragraph>
+</section>
+</document>

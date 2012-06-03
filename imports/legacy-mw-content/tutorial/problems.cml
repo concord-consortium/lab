@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Known problems</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Known problems
+
+This page lists some known issues about molecular modeling in MW. We hope to be able to solve these difficult problems soon. If you have any idea about how to fix a problem, please kindly let us know.
+
+A problem in modeling covalent bonds
+
+Unlike a ball, an atom does not have a fixed size. There are several types of radius that characterize the average space an atom will occupy in a condensed state. The van der Waals (VDW) radius is the mean interatomic spacing between a pair of atoms when they are not covalently bonded. The covalent radius is that between a pair of atoms when they are covalently bonded. When an atom ionizes, its size is more appropriately characterized by the ionic radius. The interatomic distances between atoms in metals is more like covalent bond length than the VDW bond length.
+
+In MW, the size of an atom is solely determined by its VDW radius. When two atoms collide, they bounce off when their VDW surfaces come into contact. For a simulation that does not involve any covalent bond, this model works perfectly.
+
+The problem emerges when there are covalent bonds. In reality, the distance between two atoms that are covalently bonded is typically shorter than the sum of their VDW radii. However, in MW, making a radial bond shorter than the VDW diameter is not permitted by the user interface......</text>
+<section start="0" end="1351">
+<paragraph start="0" end="15">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="14">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<RightIndent>20.0</RightIndent>
+<content start="15" end="16">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="16" end="217">
+<LeftIndent>140.0</LeftIndent>
+<content start="16" end="204">
+<size>11</size></content>
+
+<content start="204" end="215">
+<href>../about.cml</href><size>11</size></content>
+
+<content start="215" end="217">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="217" end="218">
+<LeftIndent>140.0</LeftIndent>
+<content start="217" end="218">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="218" end="255">
+<LeftIndent>140.0</LeftIndent>
+<content start="218" end="254">
+<size>11</size><bold>true</bold></content>
+
+<content start="254" end="255">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="255" end="256">
+<LeftIndent>140.0</LeftIndent>
+<content start="255" end="256">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="256" end="826">
+<LeftIndent>140.0</LeftIndent>
+<content start="256" end="826">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="826" end="827">
+<LeftIndent>140.0</LeftIndent>
+<content start="826" end="827">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="827" end="1063">
+<LeftIndent>140.0</LeftIndent>
+<content start="827" end="1063">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1063" end="1064">
+<LeftIndent>140.0</LeftIndent>
+<content start="1063" end="1064">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1064" end="1351">
+<LeftIndent>140.0</LeftIndent>
+<content start="1064" end="1350">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

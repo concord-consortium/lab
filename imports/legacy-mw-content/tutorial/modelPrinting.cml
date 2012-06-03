@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Printing a model, making screenshots and producing image streams</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Printing a model, making screenshots and producing image streams
+
+&lt; Previous | Index | Next &gt;
+
+The &quot;Basics&quot; Part has shown how to print a page. In fact, you can print just a model, without having to printing other stuff on the page. Choosing the &quot;Print&quot; item from the File menu of a model container:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+The printer dialog window of the operating system will be invoked. The Page Setup item allows you to set up the page format for printing model (e.g. portrait or landscape). 
+
+If you choose the &quot;Save a Screenshot of Model&quot; item of the File menu, you can save an image of the model in the JPEG or PNG format (we recommend using the PNG format).
+
+Choose the &quot;Save Image Stream&quot; item if you would like to create a stream of images (in the PNG format). You can specify the movie parameters in the following dialog that will appear after you select the menu item:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+The &quot;Browse&quot; button allows you to choose a directory to put the PNG images. The number of image files (frames) and the interval for taking them can be specified in the next two dropdown lists. After the image stream has been created, you can use other software tools (e.g. Adobe PhotoshopTM) to import all the frames and encode them in different video formats (such as animated GIF or QuicktimeTM).
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1344">
+<paragraph start="0" end="65">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="64">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="64" end="65">
+<italic>true</italic><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="94">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="66" end="68">
+<size>11</size></content>
+
+<content start="68" end="76">
+<href>autostop.cml</href><size>11</size></content>
+
+<content start="76" end="79">
+<size>11</size></content>
+
+<content start="79" end="84">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="84" end="87">
+<size>11</size></content>
+
+<content start="87" end="91">
+<href>modelProp.cml</href><size>11</size></content>
+
+<content start="91" end="93">
+<size>11</size></content>
+
+<content start="93" end="94">
+</content>
+
+</paragraph>
+<paragraph start="94" end="95">
+<LeftIndent>100.0</LeftIndent>
+<content start="94" end="95">
+</content>
+
+</paragraph>
+<paragraph start="95" end="300">
+<LeftIndent>140.0</LeftIndent>
+<content start="95" end="123">
+<size>11</size></content>
+
+<content start="123" end="142">
+<href>print.cml</href><size>11</size></content>
+
+<content start="142" end="300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="300" end="301">
+<LeftIndent>140.0</LeftIndent>
+<content start="300" end="301">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="301" end="304">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="301" end="302">
+<size>11</size></content>
+
+<content start="302" end="303">
+<icon>FileMenu.gif</icon></content>
+
+<content start="303" end="304">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="304" end="328">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="304" end="327">
+<size>10</size></content>
+
+<content start="327" end="328">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="328" end="329">
+<LeftIndent>140.0</LeftIndent>
+<content start="328" end="329">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="329" end="503">
+<LeftIndent>140.0</LeftIndent>
+<content start="329" end="503">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="503" end="504">
+<LeftIndent>140.0</LeftIndent>
+<content start="503" end="504">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="504" end="672">
+<LeftIndent>140.0</LeftIndent>
+<content start="504" end="672">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="672" end="673">
+<content start="672" end="673">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="673" end="887">
+<LeftIndent>140.0</LeftIndent>
+<content start="673" end="887">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="887" end="888">
+<LeftIndent>100.0</LeftIndent>
+<content start="887" end="888">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="888" end="891">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="888" end="889">
+<size>11</size></content>
+
+<content start="889" end="890">
+<size>11</size><icon>SMILMovieCreator.gif</icon></content>
+
+<content start="890" end="891">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="891" end="915">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="891" end="914">
+<size>10</size></content>
+
+<content start="914" end="915">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="915" end="916">
+<LeftIndent>100.0</LeftIndent>
+<content start="915" end="916">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="916" end="1315">
+<LeftIndent>140.0</LeftIndent>
+<content start="916" end="1204">
+<size>11</size></content>
+
+<content start="1204" end="1206">
+<size>10</size><superscript>true</superscript></content>
+
+<content start="1206" end="1310">
+<size>11</size></content>
+
+<content start="1310" end="1312">
+<size>10</size><superscript>true</superscript></content>
+
+<content start="1312" end="1314">
+<size>11</size></content>
+
+<content start="1314" end="1315">
+</content>
+
+</paragraph>
+<paragraph start="1315" end="1316">
+<LeftIndent>100.0</LeftIndent>
+<content start="1315" end="1316">
+</content>
+
+</paragraph>
+<paragraph start="1316" end="1344">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1316" end="1318">
+<size>11</size></content>
+
+<content start="1318" end="1326">
+<href>autostop.cml</href><size>11</size></content>
+
+<content start="1326" end="1329">
+<size>11</size></content>
+
+<content start="1329" end="1334">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="1334" end="1337">
+<size>11</size></content>
+
+<content start="1337" end="1342">
+<href>modelProp.cml</href><size>11</size></content>
+
+<content start="1342" end="1343">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

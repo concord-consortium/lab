@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Call</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Call
+
+&lt; Previous | Index | Next &gt;
+
+To be implemented.
+
+The call command imports an external script file, execute them immediately, and then continue to execute the remaining scripts.
+
+Syntax:
+
+call [file name]
+
+where [file name] is the name of the script file to be imported.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="305">
+<paragraph start="0" end="5">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="4">
+<bold>true</bold><italic>true</italic><size>16</size></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="8">
+<size>11</size></content>
+
+<content start="8" end="16">
+<size>11</size><href>script_source.cml</href></content>
+
+<content start="16" end="19">
+<size>11</size></content>
+
+<content start="19" end="24">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="24" end="33">
+<size>11</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>140.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="54">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="53">
+<foreground>255 0 0</foreground><bold>true</bold><italic>true</italic></content>
+
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<LeftIndent>140.0</LeftIndent>
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="183">
+<LeftIndent>140.0</LeftIndent>
+<content start="55" end="59">
+<size>11</size></content>
+
+<content start="59" end="63">
+<family>Courier New</family><size>11</size></content>
+
+<content start="63" end="183">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="183" end="184">
+<LeftIndent>140.0</LeftIndent>
+<content start="183" end="184">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="184" end="192">
+<LeftIndent>140.0</LeftIndent>
+<content start="184" end="192">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="192" end="193">
+<LeftIndent>140.0</LeftIndent>
+<content start="192" end="193">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="193" end="210">
+<LeftIndent>160.0</LeftIndent>
+<content start="193" end="197">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="197" end="210">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="210" end="211">
+<LeftIndent>160.0</LeftIndent>
+<content start="210" end="211">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="211" end="276">
+<LeftIndent>140.0</LeftIndent>
+<content start="211" end="217">
+<size>11</size></content>
+
+<content start="217" end="228">
+<family>Courier New</family><size>11</size></content>
+
+<content start="228" end="276">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="276" end="277">
+<LeftIndent>140.0</LeftIndent>
+<content start="276" end="277">
+</content>
+
+</paragraph>
+<paragraph start="277" end="305">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="277" end="279">
+<size>11</size></content>
+
+<content start="279" end="287">
+<size>11</size><href>script_source.cml</href></content>
+
+<content start="287" end="290">
+<size>11</size></content>
+
+<content start="290" end="295">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="295" end="304">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

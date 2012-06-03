@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Run</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Run
+
+&lt; Previous | Index | Next &gt;
+
+The run command causes the model to run immediately.
+
+Syntax:
+
+run 
+
+The model runs in a separate thread from the one that executes scripts. As a result, the simulation process will be independent of the scripting process.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="286">
+<paragraph start="0" end="4">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="3">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="33">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="5" end="7">
+<size>11</size></content>
+
+<content start="7" end="15">
+<size>11</size><href>script_key.cml</href></content>
+
+<content start="15" end="18">
+<size>11</size></content>
+
+<content start="18" end="23">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="23" end="26">
+<size>11</size></content>
+
+<content start="26" end="30">
+<size>11</size><href>script_stop.cml</href></content>
+
+<content start="30" end="32">
+<size>11</size></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<LeftIndent>100.0</LeftIndent>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="87">
+<LeftIndent>140.0</LeftIndent>
+<content start="34" end="38">
+<size>11</size></content>
+
+<content start="38" end="41">
+<family>Courier New</family><size>11</size></content>
+
+<content start="41" end="87">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="87" end="88">
+<LeftIndent>140.0</LeftIndent>
+<content start="87" end="88">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="88" end="96">
+<LeftIndent>140.0</LeftIndent>
+<content start="88" end="96">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="96" end="97">
+<LeftIndent>140.0</LeftIndent>
+<content start="96" end="97">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="97" end="102">
+<LeftIndent>160.0</LeftIndent>
+<content start="97" end="101">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="101" end="102">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="102" end="103">
+<LeftIndent>140.0</LeftIndent>
+<content start="102" end="103">
+</content>
+
+</paragraph>
+<paragraph start="103" end="257">
+<LeftIndent>140.0</LeftIndent>
+<content start="103" end="257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="257" end="258">
+<LeftIndent>140.0</LeftIndent>
+<content start="257" end="258">
+</content>
+
+</paragraph>
+<paragraph start="258" end="286">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="258" end="260">
+<size>11</size></content>
+
+<content start="260" end="268">
+<size>11</size><href>script_key.cml</href></content>
+
+<content start="268" end="271">
+<size>11</size></content>
+
+<content start="271" end="276">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="276" end="279">
+<size>11</size></content>
+
+<content start="279" end="283">
+<size>11</size><href>script_stop.cml</href></content>
+
+<content start="283" end="285">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Introduction to the MW Space</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Introduction to the MW Space
+
+&lt; Index | Next &gt;
+
+The MW Space is a web program that communicates with the MW software on your desktop, which is usually called the MW Client. It provides a variety of resources and services that make it possible for you to take full advantage of the power of the Internet while you are working with MW. These advantages are, but not limited to, 
+
+   creating your own web space for your own classes,
+   selecting activities that you would like to use for each class,
+   collecting data and reports from your students,
+   grading your tests,
+   measuring your students&apos; learning with MW,
+   collaborating with others on building models and activities and sharing them, 
+
+and more.
+
+&lt; Index | Next &gt;</text>
+<section start="0" end="729">
+<paragraph start="0" end="29">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="28">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="47">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="30" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<size>11</size><href>index3.cml</href></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<size>11</size><href>classes.cml</href></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="377">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="60">
+<size>11</size><bold>true</bold></content>
+
+<content start="60" end="158">
+<size>11</size></content>
+
+<content start="158" end="171">
+<size>11</size><bold>true</bold></content>
+
+<content start="171" end="377">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="377" end="378">
+<LeftIndent>140.0</LeftIndent>
+<content start="377" end="378">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="378" end="431">
+<LeftIndent>160.0</LeftIndent>
+<content start="378" end="379">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="379" end="381">
+</content>
+
+<content start="381" end="431">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="431" end="498">
+<LeftIndent>160.0</LeftIndent>
+<content start="431" end="432">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="432" end="434">
+</content>
+
+<content start="434" end="498">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="498" end="549">
+<LeftIndent>160.0</LeftIndent>
+<content start="498" end="499">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="499" end="501">
+</content>
+
+<content start="501" end="549">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="549" end="572">
+<LeftIndent>160.0</LeftIndent>
+<content start="549" end="550">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="550" end="552">
+</content>
+
+<content start="552" end="572">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="572" end="618">
+<LeftIndent>160.0</LeftIndent>
+<content start="572" end="573">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="573" end="575">
+</content>
+
+<content start="575" end="618">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="618" end="700">
+<LeftIndent>160.0</LeftIndent>
+<content start="618" end="619">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="619" end="621">
+</content>
+
+<content start="621" end="700">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="700" end="701">
+<LeftIndent>140.0</LeftIndent>
+<content start="700" end="701">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="701" end="711">
+<LeftIndent>140.0</LeftIndent>
+<content start="701" end="710">
+<size>11</size></content>
+
+<content start="710" end="711">
+</content>
+
+</paragraph>
+<paragraph start="711" end="712">
+<LeftIndent>140.0</LeftIndent>
+<content start="711" end="712">
+</content>
+
+</paragraph>
+<paragraph start="712" end="729">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="712" end="714">
+<size>11</size></content>
+
+<content start="714" end="719">
+<size>11</size><href>index3.cml</href></content>
+
+<content start="719" end="722">
+<size>11</size></content>
+
+<content start="722" end="727">
+<size>11</size><href>classes.cml</href></content>
+
+<content start="727" end="728">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

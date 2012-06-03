@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Accessing a Gay-Berne particle&apos;s properties</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Accessing a Gay-Berne particle&apos;s properties
+
+&lt; Previous | Index | Next &gt;
+
+To access a Gay-Berne particle&apos;s properties, double-click it when the model container is in the selection mode (i.e. the button &quot; &quot; is chosen), and then you will see the following dialog window:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This dialog allows you to change a set of parameters.
+
+Change color
+
+Unlike an atom, a Gay-Berne particle can be given its own color.
+
+Change mass
+
+Unlike an atom, a Gay-Berne particle can be given its own mass.
+
+Change inertia
+
+The inertia of a Gay-Berne particle is, by default, mBL/2, where m is the mass, B is the breadth, and L is the length. However, you can vary the inertia to an arbitrary value. A deviation of the inertia from the value given by the formula is a result of deviation of mass distribution from uniform distribution.
+
+Change charge
+
+The charge on a Gay-Berne particle is supposed to locate at the center. The script for changing the charge is as follows: set particle[i].charge [value], where i is the index of the particle and [value] is the value of charge.
+
+Change dipole moment
+
+A Gay-Berne particle can have a dipole moment, which is a vector pointing from one end to the other along the long axis and going through the center. Charges and dipole moments interact according to the following formula:
+
+   
+
+The script for changing the dipole moment is as follows: set particle[i].dipole [value], where i is the index of the particle and [value] is the value of dipole moment.
+
+Changing velocity
+
+Besides directly dragging the velocity vector, you can also change the velocity components by typing a number. This is useful when you need to set the velocity of the selected particle to be precisely zero, for example. With the former method, it is hard to drag the vector so that it becomes exactly a point, which will produce a zero velocity. The scripts for changing the velocities are as follows:
+
+set particle[i].vx [value];    --- for changing the x-component velocity
+set particle[i].vx [value];    --- for changing the y-component velocity
+set particle[i].omega [value]; --- for changing the angular velocity
+
+Viewing the history of a variable
+
+Clicking a blue underlined name in the properties window will bring up a window that shows a graph of the selected variable as a function of time. You can see how the selected particle&apos;s coordinates, velocities and accelerations, as well as the angles, angular velocities and angular accelerations, change with respect to time. The plot command can be used to show the history of a variable in a graph. For example, to show the orientational angle vs. time, use: plot &quot;%particle[i].theta&quot;.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2695">
+<paragraph start="0" end="44">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="43">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="73">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="55">
+<href>accessRectProp.cml</href><size>11</size></content>
+
+<content start="55" end="58">
+<size>11</size></content>
+
+<content start="58" end="63">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="63" end="66">
+<size>11</size></content>
+
+<content start="66" end="70">
+<href>simpleui2d.cml</href><size>11</size></content>
+
+<content start="70" end="72">
+<size>11</size></content>
+
+<content start="72" end="73">
+</content>
+
+</paragraph>
+<paragraph start="73" end="74">
+<LeftIndent>140.0</LeftIndent>
+<content start="73" end="74">
+</content>
+
+</paragraph>
+<paragraph start="74" end="269">
+<LeftIndent>140.0</LeftIndent>
+<content start="74" end="203">
+<size>11</size></content>
+
+<content start="203" end="204">
+<size>11</size><icon>Select.gif</icon></content>
+
+<content start="204" end="269">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="269" end="270">
+<LeftIndent>140.0</LeftIndent>
+<content start="269" end="270">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="270" end="273">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="270" end="271">
+<size>11</size></content>
+
+<content start="271" end="272">
+<size>11</size><icon>GBProp.gif</icon></content>
+
+<content start="272" end="273">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="273" end="297">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="273" end="296">
+<size>10</size></content>
+
+<content start="296" end="297">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="297" end="298">
+<LeftIndent>140.0</LeftIndent>
+<content start="297" end="298">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="298" end="352">
+<LeftIndent>140.0</LeftIndent>
+<content start="298" end="352">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="352" end="353">
+<LeftIndent>140.0</LeftIndent>
+<content start="352" end="353">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="353" end="366">
+<LeftIndent>140.0</LeftIndent>
+<content start="353" end="365">
+<bold>true</bold><size>11</size></content>
+
+<content start="365" end="366">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="366" end="367">
+<LeftIndent>140.0</LeftIndent>
+<content start="366" end="367">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="367" end="432">
+<LeftIndent>140.0</LeftIndent>
+<content start="367" end="432">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="432" end="433">
+<LeftIndent>140.0</LeftIndent>
+<content start="432" end="433">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="433" end="445">
+<LeftIndent>140.0</LeftIndent>
+<content start="433" end="444">
+<bold>true</bold><size>11</size></content>
+
+<content start="444" end="445">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="445" end="446">
+<LeftIndent>140.0</LeftIndent>
+<content start="445" end="446">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="446" end="510">
+<LeftIndent>140.0</LeftIndent>
+<content start="446" end="510">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="510" end="511">
+<LeftIndent>140.0</LeftIndent>
+<content start="510" end="511">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="511" end="526">
+<LeftIndent>140.0</LeftIndent>
+<content start="511" end="525">
+<bold>true</bold><size>11</size></content>
+
+<content start="525" end="526">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="526" end="527">
+<LeftIndent>140.0</LeftIndent>
+<content start="526" end="527">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="527" end="839">
+<LeftIndent>140.0</LeftIndent>
+<content start="527" end="579">
+<size>11</size></content>
+
+<content start="579" end="582">
+<italic>true</italic><size>11</size></content>
+
+<content start="582" end="592">
+<size>11</size></content>
+
+<content start="592" end="593">
+<italic>true</italic><size>11</size></content>
+
+<content start="593" end="607">
+<size>11</size></content>
+
+<content start="607" end="608">
+<italic>true</italic><size>11</size></content>
+
+<content start="608" end="629">
+<size>11</size></content>
+
+<content start="629" end="630">
+<italic>true</italic><size>11</size></content>
+
+<content start="630" end="839">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="839" end="840">
+<LeftIndent>140.0</LeftIndent>
+<content start="839" end="840">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="840" end="854">
+<LeftIndent>140.0</LeftIndent>
+<content start="840" end="853">
+<bold>true</bold><size>11</size></content>
+
+<content start="853" end="854">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="854" end="855">
+<LeftIndent>140.0</LeftIndent>
+<content start="854" end="855">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="855" end="1082">
+<LeftIndent>140.0</LeftIndent>
+<content start="855" end="977">
+<size>11</size></content>
+
+<content start="977" end="1007">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1007" end="1015">
+<size>11</size></content>
+
+<content start="1015" end="1016">
+<italic>true</italic><size>11</size></content>
+
+<content start="1016" end="1050">
+<size>11</size></content>
+
+<content start="1050" end="1057">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1057" end="1082">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1082" end="1083">
+<LeftIndent>140.0</LeftIndent>
+<content start="1082" end="1083">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1083" end="1104">
+<LeftIndent>140.0</LeftIndent>
+<content start="1083" end="1103">
+<bold>true</bold><size>11</size></content>
+
+<content start="1103" end="1104">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1104" end="1105">
+<LeftIndent>140.0</LeftIndent>
+<content start="1104" end="1105">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1105" end="1327">
+<LeftIndent>140.0</LeftIndent>
+<content start="1105" end="1326">
+<size>11</size></content>
+
+<content start="1326" end="1327">
+</content>
+
+</paragraph>
+<paragraph start="1327" end="1328">
+<LeftIndent>100.0</LeftIndent>
+<content start="1327" end="1328">
+</content>
+
+</paragraph>
+<paragraph start="1328" end="1332">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1328" end="1330">
+</content>
+
+<content start="1330" end="1331">
+<icon>GBChargeDipole.gif</icon></content>
+
+<content start="1331" end="1332">
+</content>
+
+</paragraph>
+<paragraph start="1332" end="1333">
+<LeftIndent>140.0</LeftIndent>
+<content start="1332" end="1333">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1333" end="1502">
+<LeftIndent>140.0</LeftIndent>
+<content start="1333" end="1390">
+<size>11</size></content>
+
+<content start="1390" end="1420">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1420" end="1428">
+<size>11</size></content>
+
+<content start="1428" end="1429">
+<italic>true</italic><size>11</size></content>
+
+<content start="1429" end="1463">
+<size>11</size></content>
+
+<content start="1463" end="1470">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1470" end="1501">
+<size>11</size></content>
+
+<content start="1501" end="1502">
+</content>
+
+</paragraph>
+<paragraph start="1502" end="1503">
+<LeftIndent>140.0</LeftIndent>
+<content start="1502" end="1503">
+</content>
+
+</paragraph>
+<paragraph start="1503" end="1521">
+<LeftIndent>140.0</LeftIndent>
+<content start="1503" end="1520">
+<bold>true</bold><size>11</size></content>
+
+<content start="1520" end="1521">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1521" end="1522">
+<LeftIndent>140.0</LeftIndent>
+<content start="1521" end="1522">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1522" end="1924">
+<LeftIndent>140.0</LeftIndent>
+<content start="1522" end="1530">
+<size>11</size></content>
+
+<content start="1530" end="1567">
+<href>changeVelocityAction.cml</href><size>11</size></content>
+
+<content start="1567" end="1924">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1924" end="1925">
+<LeftIndent>140.0</LeftIndent>
+<content start="1924" end="1925">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1925" end="1998">
+<LeftIndent>160.0</LeftIndent>
+<content start="1925" end="1956">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1956" end="1998">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1998" end="2071">
+<LeftIndent>160.0</LeftIndent>
+<content start="1998" end="2029">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2029" end="2070">
+<size>11</size></content>
+
+<content start="2070" end="2071">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="2071" end="2140">
+<LeftIndent>160.0</LeftIndent>
+<content start="2071" end="2102">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2102" end="2139">
+<size>11</size></content>
+
+<content start="2139" end="2140">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="2140" end="2141">
+<LeftIndent>140.0</LeftIndent>
+<content start="2140" end="2141">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="2141" end="2175">
+<LeftIndent>140.0</LeftIndent>
+<content start="2141" end="2174">
+<bold>true</bold><size>11</size></content>
+
+<content start="2174" end="2175">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2175" end="2176">
+<LeftIndent>140.0</LeftIndent>
+<content start="2175" end="2176">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2176" end="2666">
+<LeftIndent>140.0</LeftIndent>
+<content start="2176" end="2508">
+<size>11</size></content>
+
+<content start="2508" end="2512">
+<href>script_plot.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="2512" end="2639">
+<size>11</size></content>
+
+<content start="2639" end="2664">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2664" end="2666">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2666" end="2667">
+<LeftIndent>140.0</LeftIndent>
+<content start="2666" end="2667">
+</content>
+
+</paragraph>
+<paragraph start="2667" end="2695">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2667" end="2669">
+<size>11</size></content>
+
+<content start="2669" end="2677">
+<href>accessRectProp.cml</href><size>11</size></content>
+
+<content start="2677" end="2680">
+<size>11</size></content>
+
+<content start="2680" end="2685">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="2685" end="2688">
+<size>11</size></content>
+
+<content start="2688" end="2692">
+<href>simpleui2d.cml</href><size>11</size></content>
+
+<content start="2692" end="2694">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

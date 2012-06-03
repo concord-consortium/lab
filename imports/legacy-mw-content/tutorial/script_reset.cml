@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Reset</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Reset
+
+&lt; Previous | Index | Next &gt;
+
+The reset command resets the simulation by reloading the saved model.
+
+Syntax:
+
+reset
+reset silently
+
+Unlike the built-in reset button at the bottom panel of a model container, this command never causes a message dialog to show up and ask for your confirmation about resetting. And unlike the built-in reset button which causes the saved model to be reloaded in an independent thread, it loads the model in the scripting thread. Furthermore, the reset command does not cause the current and pending scripts to be cancelled&#8722;it will wait in the script queue to be executed later if some other scripts are currently running. Therefore, the commands after this one will wait until the loading process is completed before they run. In other words, it is OK to use scripts such as this:
+
+reset;
+select element 0;
+remove;
+.....//do something else;
+
+The reset command is useful for resetting to the same initial condition and then modifying the model to create some different situations.
+
+If you have some controllers on an MW page that are linked to an embedded model, calling reset will cause them to also reset to their initial selection states. If you would like to avoid this behavior, you should use the silently flag. The following example shows the difference between reset and reset silently.
+
+ 
+
+     
+&#12304;This is an embedded 3D model container.&#12305;
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1411">
+<paragraph start="0" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="5">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="9">
+<size>11</size></content>
+
+<content start="9" end="17">
+<href>script_stop.cml</href><size>11</size></content>
+
+<content start="17" end="20">
+<size>11</size></content>
+
+<content start="20" end="25">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="25" end="28">
+<size>11</size></content>
+
+<content start="28" end="32">
+<href>script_load.cml</href><size>11</size></content>
+
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<LeftIndent>100.0</LeftIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="106">
+<LeftIndent>140.0</LeftIndent>
+<content start="36" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<size>11</size><family>Courier New</family></content>
+
+<content start="45" end="106">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="106" end="107">
+<LeftIndent>140.0</LeftIndent>
+<content start="106" end="107">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="107" end="115">
+<LeftIndent>140.0</LeftIndent>
+<content start="107" end="115">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="115" end="116">
+<LeftIndent>140.0</LeftIndent>
+<content start="115" end="116">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="116" end="122">
+<LeftIndent>160.0</LeftIndent>
+<content start="116" end="121">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="121" end="122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="122" end="137">
+<LeftIndent>160.0</LeftIndent>
+<content start="122" end="136">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="136" end="137">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="137" end="138">
+<LeftIndent>140.0</LeftIndent>
+<content start="137" end="138">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="138" end="817">
+<LeftIndent>140.0</LeftIndent>
+<content start="138" end="424">
+<size>11</size></content>
+
+<content start="424" end="463">
+<bold>true</bold><size>11</size></content>
+
+<content start="463" end="482">
+<size>11</size></content>
+
+<content start="482" end="487">
+<size>11</size><family>Courier New</family></content>
+
+<content start="487" end="496">
+<size>11</size></content>
+
+<content start="496" end="558">
+<bold>true</bold><size>11</size></content>
+
+<content start="558" end="559">
+</content>
+
+<content start="559" end="817">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="817" end="818">
+<LeftIndent>160.0</LeftIndent>
+<content start="817" end="818">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="818" end="825">
+<LeftIndent>160.0</LeftIndent>
+<content start="818" end="825">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="825" end="843">
+<LeftIndent>160.0</LeftIndent>
+<content start="825" end="843">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="843" end="851">
+<LeftIndent>160.0</LeftIndent>
+<content start="843" end="851">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="851" end="877">
+<LeftIndent>160.0</LeftIndent>
+<content start="851" end="876">
+<size>11</size><family>Courier New</family></content>
+
+<content start="876" end="877">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="877" end="878">
+<LeftIndent>140.0</LeftIndent>
+<content start="877" end="878">
+</content>
+
+</paragraph>
+<paragraph start="878" end="1016">
+<LeftIndent>140.0</LeftIndent>
+<content start="878" end="882">
+<size>11</size></content>
+
+<content start="882" end="887">
+<size>11</size><family>Courier New</family></content>
+
+<content start="887" end="1016">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1016" end="1017">
+<LeftIndent>140.0</LeftIndent>
+<content start="1016" end="1017">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1017" end="1330">
+<LeftIndent>140.0</LeftIndent>
+<content start="1017" end="1106">
+<size>11</size></content>
+
+<content start="1106" end="1111">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1111" end="1238">
+<size>11</size></content>
+
+<content start="1238" end="1246">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1246" end="1304">
+<size>11</size></content>
+
+<content start="1304" end="1309">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1309" end="1314">
+<size>11</size></content>
+
+<content start="1314" end="1328">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1328" end="1330">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1330" end="1331">
+<LeftIndent>140.0</LeftIndent>
+<content start="1330" end="1331">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1331" end="1333">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1331" end="1332">
+<component><class>org.concord.modeler.PageMd3d</class><resource>script_reset$0.mdd</resource><coordinate>script_reset$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="1332" end="1333">
+</content>
+
+</paragraph>
+<paragraph start="1333" end="1334">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1333" end="1334">
+</content>
+
+</paragraph>
+<paragraph start="1334" end="1340">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1334" end="1335">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1335" end="1336">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset silently</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<script>reset silently</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1336" end="1337">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Button 1</title>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<groupid>1219775030563</groupid>
+<action>Execute MW script</action></component></content>
+
+<content start="1337" end="1338">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Button 2</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<groupid>1219775030563</groupid>
+<action>Execute MW script</action></component></content>
+
+<content start="1338" end="1339">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Button 3</title>
+<modelclass>org.concord.modeler.PageMd3d</modelclass>
+<model>0</model>
+<groupid>1219775030563</groupid>
+<action>Execute MW script</action></component></content>
+
+<content start="1339" end="1340">
+</content>
+
+</paragraph>
+<paragraph start="1340" end="1382">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1340" end="1381">
+<size>10</size></content>
+
+<content start="1381" end="1382">
+</content>
+
+</paragraph>
+<paragraph start="1382" end="1383">
+<LeftIndent>140.0</LeftIndent>
+<content start="1382" end="1383">
+</content>
+
+</paragraph>
+<paragraph start="1383" end="1411">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1383" end="1385">
+<size>11</size></content>
+
+<content start="1385" end="1393">
+<href>script_stop.cml</href><size>11</size></content>
+
+<content start="1393" end="1396">
+<size>11</size></content>
+
+<content start="1396" end="1401">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="1401" end="1404">
+<size>11</size></content>
+
+<content start="1404" end="1408">
+<href>script_load.cml</href><size>11</size></content>
+
+<content start="1408" end="1410">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

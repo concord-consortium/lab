@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Filling with image</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Filling with image
+
+&lt; Previous | Index | Next &gt;
+
+With the following dialog box, you can place a background image.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+To import a picture from your hard drive, click the &quot;Input Image&quot; button at the bottom of the dialog, you will see a file system dialog.
+
+Background images are automatically tiled.
+
+ &lt; Previous | Index | Next &gt;</text>
+<section start="0" end="354">
+<paragraph start="0" end="19">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="18">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<size>11</size><href>bgTexture.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<size>11</size><href>ColorBar.cml</href></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="114">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="113">
+<size>11</size></content>
+
+<content start="113" end="114">
+</content>
+
+</paragraph>
+<paragraph start="114" end="115">
+<LeftIndent>140.0</LeftIndent>
+<content start="114" end="115">
+</content>
+
+</paragraph>
+<paragraph start="115" end="118">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="115" end="116">
+</content>
+
+<content start="116" end="117">
+<icon>ImageDialog.gif</icon></content>
+
+<content start="117" end="118">
+</content>
+
+</paragraph>
+<paragraph start="118" end="142">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="118" end="119">
+<bold>true</bold><size>13</size></content>
+
+<content start="119" end="140">
+<size>10</size></content>
+
+<content start="140" end="141">
+<bold>true</bold><size>13</size></content>
+
+<content start="141" end="142">
+</content>
+
+</paragraph>
+<paragraph start="142" end="143">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="142" end="143">
+</content>
+
+</paragraph>
+<paragraph start="143" end="280">
+<LeftIndent>140.0</LeftIndent>
+<content start="143" end="280">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="280" end="281">
+<LeftIndent>140.0</LeftIndent>
+<content start="280" end="281">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="281" end="324">
+<LeftIndent>140.0</LeftIndent>
+<content start="281" end="323">
+<size>11</size></content>
+
+<content start="323" end="324">
+</content>
+
+</paragraph>
+<paragraph start="324" end="325">
+<LeftIndent>100.0</LeftIndent>
+<content start="324" end="325">
+</content>
+
+</paragraph>
+<paragraph start="325" end="354">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="325" end="326">
+</content>
+
+<content start="326" end="328">
+<size>11</size></content>
+
+<content start="328" end="336">
+<size>11</size><href>bgTexture.cml</href></content>
+
+<content start="336" end="339">
+<size>11</size></content>
+
+<content start="339" end="344">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="344" end="347">
+<size>11</size></content>
+
+<content start="347" end="351">
+<size>11</size><href>ColorBar.cml</href></content>
+
+<content start="351" end="353">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

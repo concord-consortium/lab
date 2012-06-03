@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Authoring in different languages</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Authoring in different languages
+
+&lt; Previous | Index | Next &gt;
+
+Authoring in native code
+
+Currently, the support of authoring in a variety of languages has been tested in MW for the following languages: Arabic (ISO-8859-6), Baltic (ISO-8859-4), Central European (ISO-8859-2), Chinese Simplified (GB18030), Chinese Traditional (Big5), Cyrillic (ISO-8859-5), Greek (ISO-8859-7), Hebrew (ISO-8859-8), Japanese (EUC-JP), Korean (EUC-KR), Thai (ISO-8859-11), Turkish (ISO-8859-9), and Western (ISO-8859-1). Note that only the character encoding in the parenthesis is supported for the corresponding language. As we do not speak your language, we do not know what encoding is the most popular in your country. The current default encoding was determined from the Yahoo page in your language.
+
+When you write in your own language with the Molecular Workbench&apos;s multi-linguistic word processor, please make sure that the character encoding is properly selected. Use the Edit&gt;Character Encoding menu to find the right character encoding of your language before you save the page. For example, the users from China, the GB18030 encoding should be used. And so on.
+
+If you copy and paste text from another program that uses a different encoding, the characters might not be recognized and saved properly (unless the current encoding method is Unicode UTF-8). Also, you cannot interconvert a page between two different native encodings.
+
+Authoring in Unicode
+
+If you need to write multiple languages on the same page, you have to select the &quot;Unicode (UTF-8)&quot; encoding. The advantage of using the Unicode is that you can type any character supported by   the Unicode Standard on the same page. The disadvantages are that the resulting file may be larger than the natively-encoded one, and it may not be displayed correctly in other applications that do not support Unicode. If you are sure that your pages will only be viewed by the audience that speaks your language, native encoding is perhaps a better choice.
+
+Here is an example of a page encoded in Unicode, which displays co-existence of multiple languages.
+
+Interconversion between native code and Unicode
+
+If a page contains characters in only one language, you can always convert it into another page encoded in Unicode, or vice versa. But you cannot convert a page written in multiple languages from Unicode to a native code.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2401">
+<paragraph start="0" end="33">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="32">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="62">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="34" end="36">
+<size>11</size></content>
+
+<content start="36" end="44">
+<size>11</size><href>unlock.cml</href></content>
+
+<content start="44" end="47">
+<size>11</size></content>
+
+<content start="47" end="52">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="52" end="55">
+<size>11</size></content>
+
+<content start="55" end="59">
+<size>11</size><href>character.cml</href></content>
+
+<content start="59" end="61">
+<size>11</size></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="88">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="63" end="87">
+<bold>true</bold><size>11</size></content>
+
+<content start="87" end="88">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="88" end="89">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="88" end="89">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="89" end="785">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="89" end="202">
+<size>11</size></content>
+
+<content start="202" end="208">
+<size>11</size><href>arabic.cml</href></content>
+
+<content start="208" end="223">
+<size>11</size></content>
+
+<content start="223" end="229">
+<size>11</size><href>northerneuropean.cml</href></content>
+
+<content start="229" end="244">
+<size>11</size></content>
+
+<content start="244" end="260">
+<size>11</size><href>centraleuropean.cml</href></content>
+
+<content start="260" end="275">
+<size>11</size></content>
+
+<content start="275" end="293">
+<size>11</size><href>../cn/index.cml</href></content>
+
+<content start="293" end="305">
+<size>11</size></content>
+
+<content start="305" end="324">
+<size>11</size><href>../tw/index.cml</href></content>
+
+<content start="324" end="333">
+<size>11</size></content>
+
+<content start="333" end="341">
+<size>11</size><href>russian.cml</href></content>
+
+<content start="341" end="356">
+<size>11</size></content>
+
+<content start="356" end="361">
+<size>11</size><href>greek.cml</href></content>
+
+<content start="361" end="376">
+<size>11</size></content>
+
+<content start="376" end="382">
+<size>11</size><href>hebrew.cml</href></content>
+
+<content start="382" end="397">
+<size>11</size></content>
+
+<content start="397" end="405">
+<size>11</size><href>japanese.cml</href></content>
+
+<content start="405" end="416">
+<size>11</size></content>
+
+<content start="416" end="422">
+<size>11</size><href>korean.cml</href></content>
+
+<content start="422" end="433">
+<size>11</size></content>
+
+<content start="433" end="437">
+<size>11</size><href>thai.cml</href></content>
+
+<content start="437" end="453">
+<size>11</size></content>
+
+<content start="453" end="460">
+<size>11</size><href>turkish.cml</href></content>
+
+<content start="460" end="479">
+<size>11</size></content>
+
+<content start="479" end="486">
+<size>11</size><href>western.cml</href></content>
+
+<content start="486" end="501">
+<size>11</size></content>
+
+<content start="501" end="601">
+<bold>true</bold><size>11</size></content>
+
+<content start="601" end="785">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="785" end="786">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="785" end="786">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="786" end="1153">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="786" end="953">
+<size>11</size></content>
+
+<content start="953" end="1068">
+<bold>true</bold><size>11</size></content>
+
+<content start="1068" end="1153">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1153" end="1154">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1153" end="1154">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1154" end="1424">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1154" end="1424">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1424" end="1425">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1424" end="1425">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1425" end="1446">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1425" end="1445">
+<bold>true</bold><size>11</size></content>
+
+<content start="1445" end="1446">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1446" end="1447">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1446" end="1447">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1447" end="1999">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1447" end="1639">
+<size>11</size></content>
+
+<content start="1639" end="1640">
+<icon>htmlink.gif</icon></content>
+
+<content start="1640" end="1641">
+<size>11</size></content>
+
+<content start="1641" end="1661">
+<size>11</size><href>http://www.unicode.org</href></content>
+
+<content start="1661" end="1999">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1999" end="2000">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1999" end="2000">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2000" end="2100">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2000" end="2022">
+<size>11</size></content>
+
+<content start="2022" end="2047">
+<size>11</size><href>unicode.cml</href></content>
+
+<content start="2047" end="2100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2100" end="2101">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2100" end="2101">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2101" end="2149">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2101" end="2148">
+<bold>true</bold><size>11</size></content>
+
+<content start="2148" end="2149">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2149" end="2150">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2149" end="2150">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2150" end="2372">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2150" end="2289">
+<size>11</size></content>
+
+<content start="2289" end="2295">
+<bold>true</bold><size>11</size></content>
+
+<content start="2295" end="2372">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2372" end="2373">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2372" end="2373">
+</content>
+
+</paragraph>
+<paragraph start="2373" end="2401">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2373" end="2375">
+<size>11</size></content>
+
+<content start="2375" end="2383">
+<size>11</size><href>unlock.cml</href></content>
+
+<content start="2383" end="2386">
+<size>11</size></content>
+
+<content start="2386" end="2391">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="2391" end="2394">
+<size>11</size></content>
+
+<content start="2394" end="2398">
+<size>11</size><href>character.cml</href></content>
+
+<content start="2398" end="2400">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

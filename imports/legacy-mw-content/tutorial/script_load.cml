@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Load</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Load
+
+&lt; Previous | Index | Next &gt;
+
+The Load command loads a model from the specified file or URL. (To see how to load a model without using scripts, see this section.)
+
+Syntax:
+
+load [address]
+
+where [address] is the file name or URL address of a model. Relative address is supported. For example, the command load sample.mml loads the a model called sample.mml from the directory of the current page.
+
+For the Gay-Berne container, the file name must be of GBL type (i.e. with extension name *.gbl). For the rest of the 2D model container, the file name must be of MML type.
+
+Here is an example of using this command to load different models from external buttons:
+
+ 
+   
+&#12304;This is an embedded model container.&#12305;
+ 
+Note: The whole process of loading a model via the load command is executed in the script process (thread). This allows you to put the scripts that depend on the completion of the loading process after the load command.
+ 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="964">
+<paragraph start="0" end="5">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="4">
+<bold>true</bold><italic>true</italic><size>16</size></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="8">
+<size>11</size></content>
+
+<content start="8" end="16">
+<size>11</size><href>script_reset.cml</href></content>
+
+<content start="16" end="19">
+<size>11</size></content>
+
+<content start="19" end="24">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="31">
+<size>11</size><href>script_init.cml</href></content>
+
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>100.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="168">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<size>11</size><family>Courier New</family></content>
+
+<content start="43" end="153">
+<size>11</size></content>
+
+<content start="153" end="165">
+<size>11</size><href>modelIO.cml</href></content>
+
+<content start="165" end="168">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="168" end="169">
+<LeftIndent>140.0</LeftIndent>
+<content start="168" end="169">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="169" end="177">
+<LeftIndent>140.0</LeftIndent>
+<content start="169" end="177">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="177" end="178">
+<LeftIndent>140.0</LeftIndent>
+<content start="177" end="178">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="178" end="193">
+<LeftIndent>160.0</LeftIndent>
+<content start="178" end="182">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="182" end="192">
+<size>11</size><family>Courier New</family></content>
+
+<content start="192" end="193">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="193" end="194">
+<LeftIndent>140.0</LeftIndent>
+<content start="193" end="194">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="194" end="402">
+<LeftIndent>140.0</LeftIndent>
+<content start="194" end="200">
+<size>11</size></content>
+
+<content start="200" end="209">
+<size>11</size><family>Courier New</family></content>
+
+<content start="209" end="310">
+<size>11</size></content>
+
+<content start="310" end="325">
+<size>11</size><family>Courier New</family></content>
+
+<content start="325" end="402">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="402" end="403">
+<LeftIndent>140.0</LeftIndent>
+<content start="402" end="403">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="403" end="575">
+<LeftIndent>140.0</LeftIndent>
+<content start="403" end="575">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="575" end="576">
+<LeftIndent>140.0</LeftIndent>
+<content start="575" end="576">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="576" end="665">
+<LeftIndent>140.0</LeftIndent>
+<content start="576" end="665">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="665" end="666">
+<LeftIndent>140.0</LeftIndent>
+<content start="665" end="666">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="666" end="668">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="666" end="667">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_load$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="667" end="668">
+</content>
+
+</paragraph>
+<paragraph start="668" end="672">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="668" end="669">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Model A</title>
+<tooltip>Load model A</tooltip>
+<disabled_at_run>true</disabled_at_run>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1112362628405</groupid>
+<script>load Model_A.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="669" end="670">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Model B</title>
+<tooltip>Load model B</tooltip>
+<disabled_at_run>true</disabled_at_run>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1112362628405</groupid>
+<script>load Model_B.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="670" end="671">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Model C</title>
+<tooltip>Load model C</tooltip>
+<disabled_at_run>true</disabled_at_run>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1112362628405</groupid>
+<script>load Model_C.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="671" end="672">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="672" end="711">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="672" end="673">
+<size>13</size><bold>true</bold></content>
+
+<content start="673" end="709">
+<size>10</size></content>
+
+<content start="709" end="710">
+<size>13</size><bold>true</bold></content>
+
+<content start="710" end="711">
+</content>
+
+</paragraph>
+<paragraph start="711" end="713">
+<LeftIndent>140.0</LeftIndent>
+<content start="711" end="712">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="712" end="713">
+</content>
+
+</paragraph>
+<paragraph start="713" end="933">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="713" end="717">
+<size>11</size><bold>true</bold></content>
+
+<content start="717" end="764">
+<size>11</size></content>
+
+<content start="764" end="768">
+<size>11</size><family>Courier New</family></content>
+
+<content start="768" end="919">
+<size>11</size></content>
+
+<content start="919" end="923">
+<size>11</size><family>Courier New</family></content>
+
+<content start="923" end="933">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="933" end="935">
+<LeftIndent>140.0</LeftIndent>
+<content start="933" end="934">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="934" end="935">
+</content>
+
+</paragraph>
+<paragraph start="935" end="936">
+<LeftIndent>140.0</LeftIndent>
+<content start="935" end="936">
+</content>
+
+</paragraph>
+<paragraph start="936" end="964">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="936" end="938">
+<size>11</size></content>
+
+<content start="938" end="946">
+<size>11</size><href>script_reset.cml</href></content>
+
+<content start="946" end="949">
+<size>11</size></content>
+
+<content start="949" end="954">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="954" end="957">
+<size>11</size></content>
+
+<content start="957" end="961">
+<size>11</size><href>script_init.cml</href></content>
+
+<content start="961" end="963">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

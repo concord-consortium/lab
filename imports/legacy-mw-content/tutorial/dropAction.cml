@@ -1,0 +1,996 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Dropping Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Dropping Tool
+
+&lt; Previous | Index | Next &gt;
+
+The Dropping Tool inserts an object into the model. You just need to click the button at the tool bar corresponding to the type of object you would like to add to the model, then click somewhere in the box. You need not click the button again if you want to add more objects of the same type.
+ 
+Dropping atoms
+
+     Drop a #1 fictitious element (the Nt atom)
+     Drop a #2 fictitious element (the Pl atom)
+     Drop a #3 fictitious element (the Ws atom)
+     Drop a #4 fictitious element (the Ck atom)
+
+Nt, Pl, Ws, and Ck are fictitious elements. Two-letter names are used in order to reinforce that they are elements (types of atoms), not atoms. The following illustration shows them.
+ 
+   
+&#12304;This is an embedded model container.&#12305;
+
+Dropping molecules
+
+     Drop a diatomic molecule
+
+A diatomic molecule consists of two atoms and a  radial bond. The default diatomic molecule is a Pl-Pl, but you may customize this action by double-clicking the button:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+You may also customize its length and strength within the allowed range. 
+
+     Drop a triatomic molecule
+
+A triatomic molecule consists of three atoms, two  radial bonds and an  angular bond. The default triatomic molecule is a Pl-Ws-Pl, but you may customize this action by doubl-clicking the button:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+     Drop a benzene-like molecule
+
+The benzene molecule consists of six hydrogen atoms (represented by Nt), six carbon atoms (represented by Pl), twelve radial bonds and twelve angular bonds. Because this is a 2D model, there is no  torsional bond.
+
+     Drop a chain molecule
+
+A chain molecule is a string of atoms linked by radial and angular bonds. You may customize the chain molecule action by double-clicking on the button:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+There are a couple of parameters you can change. Here are some examples:
+
+   Sawtooth   
+   Curl-up   
+   Random  
+
+Dropping a rectangular obstacle  
+
+A rectangular obstacle will collide with atoms and molecules. It can be used as an obstacle to partition the model box into several compartments, or a moving component that participates in the system&apos;s dynamics if its mass is set to be not too heavy as opposed to those of atoms. Dropping a rectangular obstacle is slightly different than dropping the above objects. Clicking on the screen does not create a rectangle. You need to drag the mouse to specify the size.
+
+Dropping a molecular surface object
+
+There are three types of spline-based hollow objects: circular ( ), rectangular ( ), and free-form ( ), and three types of spline-based solid objects: circular ( ), rectangular ( ), and free-form ( ). There is also a line-based free-form solid object ( ).
+
+Illegal operations
+
+There are two types of illegal operations you may be warned when inserting an object. The first type is the overlap error. This error occurs when you drops an object on top of, or too close to, other objects. The second is the out-of-bound error. This error occurs when your action is detected to have fallen outside the physical boundary. When these two types of errors occur, a warning window will be ejected to warn the user. Illegal operations are not permitted.
+
+You may want to practice dropping objects with the following model:
+
+ 
+&#12304;This is an embedded model container for practicing dropping objects.&#12305;
+
+Dropping a Gay-Berne particle
+
+For a Gay-Berne model, the only object you can drop is a Gay-Berne particle. You can customize the button (&quot; &quot;) by double-clicking it:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This allows you to change some parameters for the Gay-Berne particle to be dropped to the model, including its size, initial orientation and energetic parameters. To understand some of the parameters, see also  End-to-end and  side-by-side arrangements.
+
+Script support
+
+The add command can be used to add objects to a specified position. In conjunction with the loop command, you can automate the process of laying down an array or lattice of particles, or randomly feeding atoms within a given area (for an example, see the simulation of the Atomic Layer Chemical Vapor Deposition).
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4174">
+<paragraph start="0" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="17">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="47">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="21">
+<size>11</size></content>
+
+<content start="21" end="29">
+<size>11</size><href>selectAction.cml</href></content>
+
+<content start="29" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<size>11</size><href>CountingTool.cml</href></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>100.0</LeftIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="341">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="341">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="341" end="343">
+<LeftIndent>140.0</LeftIndent>
+<content start="341" end="343">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="343" end="358">
+<LeftIndent>140.0</LeftIndent>
+<content start="343" end="357">
+<size>11</size><bold>true</bold></content>
+
+<content start="357" end="358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="358" end="359">
+<LeftIndent>100.0</LeftIndent>
+<content start="358" end="359">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="359" end="407">
+<LeftIndent>160.0</LeftIndent>
+<content start="359" end="360">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="360" end="362">
+<size>11</size></content>
+
+<content start="362" end="363">
+<icon>AddAtomA.gif</icon><size>11</size></content>
+
+<content start="363" end="407">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="407" end="455">
+<LeftIndent>160.0</LeftIndent>
+<content start="407" end="408">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="408" end="410">
+<size>11</size></content>
+
+<content start="410" end="411">
+<icon>AddAtomB.gif</icon><size>11</size></content>
+
+<content start="411" end="455">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="455" end="503">
+<LeftIndent>160.0</LeftIndent>
+<content start="455" end="456">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="456" end="458">
+<size>11</size></content>
+
+<content start="458" end="459">
+<icon>AddAtomC.gif</icon><size>11</size></content>
+
+<content start="459" end="503">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="503" end="551">
+<LeftIndent>160.0</LeftIndent>
+<content start="503" end="504">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="504" end="506">
+<size>11</size></content>
+
+<content start="506" end="507">
+<icon>AddAtomD.gif</icon><size>11</size></content>
+
+<content start="507" end="551">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="551" end="552">
+<LeftIndent>120.0</LeftIndent>
+<content start="551" end="552">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="552" end="735">
+<LeftIndent>140.0</LeftIndent>
+<content start="552" end="735">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="735" end="737">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="735" end="736">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>dropAction$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="736" end="737">
+</content>
+
+</paragraph>
+<paragraph start="737" end="741">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="737" end="738">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="738" end="739">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="739" end="740">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="740" end="741">
+</content>
+
+</paragraph>
+<paragraph start="741" end="780">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="741" end="779">
+<size>10</size></content>
+
+<content start="779" end="780">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="780" end="781">
+<LeftIndent>140.0</LeftIndent>
+<content start="780" end="781">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="781" end="800">
+<LeftIndent>140.0</LeftIndent>
+<content start="781" end="799">
+<size>11</size><bold>true</bold></content>
+
+<content start="799" end="800">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="800" end="801">
+<LeftIndent>140.0</LeftIndent>
+<content start="800" end="801">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="801" end="831">
+<LeftIndent>160.0</LeftIndent>
+<content start="801" end="802">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="802" end="804">
+<size>11</size></content>
+
+<content start="804" end="805">
+<icon>AddAB.gif</icon><size>11</size></content>
+
+<content start="805" end="831">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="831" end="832">
+<LeftIndent>120.0</LeftIndent>
+<content start="831" end="832">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="832" end="1001">
+<LeftIndent>180.0</LeftIndent>
+<content start="832" end="880">
+<size>11</size></content>
+
+<content start="880" end="881">
+<icon>apiIcon.gif</icon><size>11</size></content>
+
+<content start="881" end="892">
+<link_width>400</link_width><target>_blank</target><link_height>400</link_height><link_left>50</link_left><href>glossary/RadialBond.cml</href><link_menubar>false</link_menubar><link_top>50</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="892" end="1001">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1001" end="1002">
+<LeftIndent>140.0</LeftIndent>
+<content start="1001" end="1002">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1002" end="1005">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1002" end="1003">
+<size>11</size></content>
+
+<content start="1003" end="1004">
+<icon>CustomizeDiatomic.gif</icon><size>11</size></content>
+
+<content start="1004" end="1005">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1005" end="1029">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1005" end="1028">
+<size>10</size></content>
+
+<content start="1028" end="1029">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1029" end="1030">
+<LeftIndent>140.0</LeftIndent>
+<content start="1029" end="1030">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1030" end="1104">
+<LeftIndent>180.0</LeftIndent>
+<content start="1030" end="1104">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1104" end="1105">
+<LeftIndent>120.0</LeftIndent>
+<content start="1104" end="1105">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1105" end="1136">
+<LeftIndent>160.0</LeftIndent>
+<content start="1105" end="1106">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1106" end="1108">
+<size>11</size></content>
+
+<content start="1108" end="1109">
+<icon>AddABC.gif</icon><size>11</size></content>
+
+<content start="1109" end="1136">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1136" end="1137">
+<LeftIndent>120.0</LeftIndent>
+<content start="1136" end="1137">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1137" end="1333">
+<LeftIndent>180.0</LeftIndent>
+<content start="1137" end="1187">
+<size>11</size></content>
+
+<content start="1187" end="1188">
+<icon>apiIcon.gif</icon><size>11</size></content>
+
+<content start="1188" end="1200">
+<link_statusbar>false</link_statusbar><link_width>400</link_width><target>_blank</target><link_height>400</link_height><link_left>50</link_left><href>glossary/RadialBond.cml</href><link_menubar>false</link_menubar><link_top>50</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="1200" end="1208">
+<size>11</size></content>
+
+<content start="1208" end="1209">
+<icon>apiIcon.gif</icon><size>11</size></content>
+
+<content start="1209" end="1221">
+<link_statusbar>false</link_statusbar><link_width>400</link_width><target>_blank</target><link_height>400</link_height><link_left>50</link_left><href>glossary/AngularBond.cml</href><link_menubar>false</link_menubar><link_top>50</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="1221" end="1333">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1333" end="1334">
+<LeftIndent>140.0</LeftIndent>
+<content start="1333" end="1334">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1334" end="1337">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1334" end="1335">
+<size>11</size></content>
+
+<content start="1335" end="1336">
+<icon>CustomizeTriatomic.gif</icon><size>11</size></content>
+
+<content start="1336" end="1337">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1337" end="1361">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1337" end="1360">
+<size>10</size></content>
+
+<content start="1360" end="1361">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1361" end="1362">
+<LeftIndent>120.0</LeftIndent>
+<content start="1361" end="1362">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1362" end="1396">
+<LeftIndent>160.0</LeftIndent>
+<content start="1362" end="1363">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1363" end="1365">
+<size>11</size></content>
+
+<content start="1365" end="1366">
+<icon>AddBenz.gif</icon><size>11</size></content>
+
+<content start="1366" end="1396">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1396" end="1397">
+<LeftIndent>120.0</LeftIndent>
+<content start="1396" end="1397">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1397" end="1611">
+<LeftIndent>180.0</LeftIndent>
+<content start="1397" end="1594">
+<size>11</size></content>
+
+<content start="1594" end="1595">
+<icon>apiIcon.gif</icon><size>11</size></content>
+
+<content start="1595" end="1609">
+<link_statusbar>false</link_statusbar><link_width>400</link_width><target>_blank</target><link_height>400</link_height><link_left>50</link_left><href>glossary/TorsionalBond.cml</href><link_menubar>false</link_menubar><link_top>50</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="1609" end="1611">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1611" end="1612">
+<LeftIndent>120.0</LeftIndent>
+<content start="1611" end="1612">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1612" end="1639">
+<LeftIndent>160.0</LeftIndent>
+<content start="1612" end="1613">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1613" end="1615">
+<size>11</size></content>
+
+<content start="1615" end="1616">
+<icon>AddChain.gif</icon><size>11</size></content>
+
+<content start="1616" end="1639">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1639" end="1640">
+<LeftIndent>120.0</LeftIndent>
+<content start="1639" end="1640">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1640" end="1792">
+<LeftIndent>180.0</LeftIndent>
+<content start="1640" end="1792">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1792" end="1793">
+<LeftIndent>140.0</LeftIndent>
+<content start="1792" end="1793">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1793" end="1796">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1793" end="1794">
+<size>11</size></content>
+
+<content start="1794" end="1795">
+<icon>CustomizeChain.gif</icon><size>11</size></content>
+
+<content start="1795" end="1796">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1796" end="1820">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1796" end="1819">
+<size>10</size></content>
+
+<content start="1819" end="1820">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1820" end="1821">
+<LeftIndent>140.0</LeftIndent>
+<content start="1820" end="1821">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1821" end="1894">
+<LeftIndent>180.0</LeftIndent>
+<content start="1821" end="1894">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1894" end="1895">
+<LeftIndent>140.0</LeftIndent>
+<content start="1894" end="1895">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1895" end="1910">
+<LeftIndent>200.0</LeftIndent>
+<content start="1895" end="1896">
+<icon>org.concord.modeler.text.BulletIcon$DiamondBulletIcon</icon><size>11</size></content>
+
+<content start="1896" end="1907">
+<size>11</size></content>
+
+<content start="1907" end="1908">
+<icon>ChainMol1.gif</icon><size>11</size></content>
+
+<content start="1908" end="1910">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1910" end="1924">
+<LeftIndent>200.0</LeftIndent>
+<content start="1910" end="1911">
+<icon>org.concord.modeler.text.BulletIcon$DiamondBulletIcon</icon><size>11</size></content>
+
+<content start="1911" end="1921">
+<size>11</size></content>
+
+<content start="1921" end="1922">
+<icon>ChainMol2.gif</icon><size>11</size></content>
+
+<content start="1922" end="1924">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1924" end="1936">
+<LeftIndent>200.0</LeftIndent>
+<content start="1924" end="1925">
+<icon>org.concord.modeler.text.BulletIcon$DiamondBulletIcon</icon><size>11</size></content>
+
+<content start="1925" end="1934">
+<size>11</size></content>
+
+<content start="1934" end="1935">
+<icon>ChainMol3.gif</icon><size>11</size></content>
+
+<content start="1935" end="1936">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1936" end="1937">
+<LeftIndent>120.0</LeftIndent>
+<content start="1936" end="1937">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1937" end="1971">
+<LeftIndent>140.0</LeftIndent>
+<content start="1937" end="1969">
+<size>11</size><bold>true</bold></content>
+
+<content start="1969" end="1970">
+<icon>AddObstacle_Small.gif</icon></content>
+
+<content start="1970" end="1971">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1971" end="1972">
+<LeftIndent>120.0</LeftIndent>
+<content start="1971" end="1972">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1972" end="2439">
+<LeftIndent>160.0</LeftIndent>
+<content start="1972" end="2439">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2439" end="2440">
+<LeftIndent>140.0</LeftIndent>
+<content start="2439" end="2440">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2440" end="2476">
+<LeftIndent>140.0</LeftIndent>
+<content start="2440" end="2451">
+<size>11</size><bold>true</bold></content>
+
+<content start="2451" end="2475">
+<link_width>600</link_width><link_left>50</link_left><link_resizable>false</link_resizable><link_toolbar>false</link_toolbar><link_menubar>false</link_menubar><target>_blank</target><link_height>400</link_height><bold>true</bold><size>11</size><link_top>50</link_top></content>
+
+<content start="2475" end="2476">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2476" end="2477">
+<LeftIndent>120.0</LeftIndent>
+<content start="2476" end="2477">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2477" end="2733">
+<LeftIndent>160.0</LeftIndent>
+<content start="2477" end="2541">
+<size>11</size></content>
+
+<content start="2541" end="2542">
+<icon>AddCircularRibbon.gif</icon></content>
+
+<content start="2542" end="2558">
+<size>11</size></content>
+
+<content start="2558" end="2559">
+<icon>AddRectangularRibbon.gif</icon></content>
+
+<content start="2559" end="2577">
+<size>11</size></content>
+
+<content start="2577" end="2578">
+<icon>AddCurvedRibbon.gif</icon></content>
+
+<content start="2578" end="2638">
+<size>11</size></content>
+
+<content start="2638" end="2639">
+<icon>AddCircularSurface.gif</icon></content>
+
+<content start="2639" end="2655">
+<size>11</size></content>
+
+<content start="2655" end="2656">
+<icon>AddRectangularSurface.gif</icon></content>
+
+<content start="2656" end="2674">
+<size>11</size></content>
+
+<content start="2674" end="2675">
+<icon>AddCurvedSurface.gif</icon></content>
+
+<content start="2675" end="2729">
+<size>11</size></content>
+
+<content start="2729" end="2730">
+<icon>AddFreeFormSurface.gif</icon></content>
+
+<content start="2730" end="2733">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2733" end="2734">
+<LeftIndent>140.0</LeftIndent>
+<content start="2733" end="2734">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2734" end="2753">
+<RightIndent>60.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2734" end="2752">
+<size>11</size><bold>true</bold></content>
+
+<content start="2752" end="2753">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2753" end="2754">
+<RightIndent>60.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2753" end="2754">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2754" end="3221">
+<LeftIndent>160.0</LeftIndent>
+<content start="2754" end="3075">
+<size>11</size></content>
+
+<content start="3075" end="3092">
+<size>11</size><href>boundary.cml</href></content>
+
+<content start="3092" end="3221">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3221" end="3222">
+<LeftIndent>140.0</LeftIndent>
+<content start="3221" end="3222">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3222" end="3290">
+<LeftIndent>140.0</LeftIndent>
+<content start="3222" end="3290">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3290" end="3291">
+<LeftIndent>100.0</LeftIndent>
+<content start="3290" end="3291">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3291" end="3293">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3291" end="3292">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>dropAction$1.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+<button>Select Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Add Diatomic Molecule</button><button>Add Triatomic Molecule</button><button>Add Benzene</button><button>Add Chain Molecule</button><button>Add Rectangular Molecular Surface</button><button>Add Rectangular Molecular Ribbon</button><button>Add Circular Molecular Surface</button><button>Add Circular Molecular Ribbon</button><button>Add Curved Molecular Surface</button><button>Add Curved Molecular Ribbon</button><button>Add Molecular Surface in Free-Form Shape</button><button>Add Obstacle</button></component><size>11</size></content>
+
+<content start="3292" end="3293">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3293" end="3364">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3293" end="3363">
+<size>10</size></content>
+
+<content start="3363" end="3364">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3364" end="3365">
+<LeftIndent>100.0</LeftIndent>
+<content start="3364" end="3365">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3365" end="3395">
+<LeftIndent>140.0</LeftIndent>
+<content start="3365" end="3394">
+<size>11</size><bold>true</bold></content>
+
+<content start="3394" end="3395">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3395" end="3396">
+<LeftIndent>140.0</LeftIndent>
+<content start="3395" end="3396">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3396" end="3531">
+<LeftIndent>140.0</LeftIndent>
+<content start="3396" end="3504">
+<size>11</size></content>
+
+<content start="3504" end="3505">
+<icon>AddGB.gif</icon><size>11</size></content>
+
+<content start="3505" end="3531">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3531" end="3532">
+<LeftIndent>100.0</LeftIndent>
+<content start="3531" end="3532">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3532" end="3535">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3532" end="3533">
+<size>11</size></content>
+
+<content start="3533" end="3534">
+<icon>GBConfig.gif</icon><size>11</size></content>
+
+<content start="3534" end="3535">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3535" end="3559">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3535" end="3558">
+<size>10</size></content>
+
+<content start="3558" end="3559">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3559" end="3560">
+<LeftIndent>100.0</LeftIndent>
+<content start="3559" end="3560">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3560" end="3814">
+<LeftIndent>140.0</LeftIndent>
+<content start="3560" end="3770">
+<size>11</size></content>
+
+<content start="3770" end="3771">
+<icon>apiIcon.gif</icon><size>11</size></content>
+
+<content start="3771" end="3781">
+<link_width>600</link_width><target>_blank</target><link_height>400</link_height><link_left>50</link_left><href>glossary/End2End.cml</href><link_menubar>false</link_menubar><link_top>50</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="3781" end="3786">
+<size>11</size></content>
+
+<content start="3786" end="3787">
+<icon>apiIcon.gif</icon><size>11</size></content>
+
+<content start="3787" end="3799">
+<link_width>600</link_width><target>_blank</target><link_height>400</link_height><link_left>50</link_left><href>glossary/SideBySide.cml</href><link_menubar>false</link_menubar><link_top>50</link_top><link_toolbar>false</link_toolbar><size>11</size><link_resizable>false</link_resizable></content>
+
+<content start="3799" end="3814">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3814" end="3815">
+<LeftIndent>140.0</LeftIndent>
+<content start="3814" end="3815">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3815" end="3830">
+<LeftIndent>140.0</LeftIndent>
+<content start="3815" end="3829">
+<size>11</size><bold>true</bold></content>
+
+<content start="3829" end="3830">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3830" end="3831">
+<LeftIndent>140.0</LeftIndent>
+<content start="3830" end="3831">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3831" end="4145">
+<LeftIndent>140.0</LeftIndent>
+<content start="3831" end="3835">
+<size>11</size></content>
+
+<content start="3835" end="3838">
+<family>Courier New</family><size>11</size><href>script_add.cml</href></content>
+
+<content start="3838" end="3923">
+<size>11</size></content>
+
+<content start="3923" end="3927">
+<family>Courier New</family><size>11</size><href>script_loop.cml</href></content>
+
+<content start="3927" end="4082">
+<size>11</size></content>
+
+<content start="4082" end="4142">
+<size>11</size><href>../student/nano/alcvd.cml</href></content>
+
+<content start="4142" end="4145">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4145" end="4146">
+<LeftIndent>140.0</LeftIndent>
+<content start="4145" end="4146">
+</content>
+
+</paragraph>
+<paragraph start="4146" end="4174">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="4146" end="4148">
+<size>11</size></content>
+
+<content start="4148" end="4156">
+<size>11</size><href>selectAction.cml</href></content>
+
+<content start="4156" end="4159">
+<size>11</size></content>
+
+<content start="4159" end="4164">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="4164" end="4167">
+<size>11</size></content>
+
+<content start="4167" end="4171">
+<size>11</size><href>CountingTool.cml</href></content>
+
+<content start="4171" end="4173">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

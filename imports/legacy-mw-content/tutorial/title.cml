@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Changing the window title</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Changing the window title
+ 
+&lt; Previous | Index | Next &gt;
+
+A window title is a string of text that will show up in the top bar of a window when a page is loaded into it, such as this one &#10102;. It is also used as the name of the bookmark when a page is bookmarked.
+
+When you copy a page, the window title will be copied as well. If you use the copy as a template to make a new page, it is important that the window title be changed correspondingly. If you forget to set the window title properly, the user may get confused with a window title that is inconsistent or irrelevant to the content displayed on the page.
+
+When a new blank page is created, it has no window title by default. You will need to set one.
+
+To give a window title to a new page, or to change the window title of an existing page, use the menu &quot;Edit&gt;Title&quot; (keyboard shortcut: CTRL+T for Windows and Linux, Command+T for Mac OS X), and type in the text field on the dialog window that pops up.
+
+ 
+&#10102; A window title is different from the title you write on a page in that the window title will show up in the top bar, whereas the latter shows up at the top of a page. Usually, they can be identical (as is the case for most pages in this Manual), but the page title you type in the page will not automatically become the window title until you set it using the method described in this section.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1387">
+<paragraph start="0" end="26">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="25">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="28">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="26" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="56">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="38">
+<size>11</size><href>editing.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="46">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="53">
+<size>11</size><href>audioclip.cml</href></content>
+
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<LeftIndent>140.0</LeftIndent>
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="259">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="185">
+<size>11</size></content>
+
+<content start="185" end="186">
+<size>13</size></content>
+
+<content start="186" end="259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="259" end="260">
+<LeftIndent>140.0</LeftIndent>
+<content start="259" end="260">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="260" end="610">
+<LeftIndent>140.0</LeftIndent>
+<content start="260" end="610">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="610" end="611">
+<LeftIndent>140.0</LeftIndent>
+<content start="610" end="611">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="611" end="706">
+<LeftIndent>140.0</LeftIndent>
+<content start="611" end="616">
+<size>11</size></content>
+
+<content start="616" end="643">
+<size>11</size><href>blankPage.cml</href></content>
+
+<content start="643" end="706">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="706" end="707">
+<LeftIndent>140.0</LeftIndent>
+<content start="706" end="707">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="707" end="959">
+<LeftIndent>140.0</LeftIndent>
+<content start="707" end="959">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="959" end="960">
+<LeftIndent>140.0</LeftIndent>
+<content start="959" end="960">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="960" end="962">
+<SpaceAbove>1.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<content start="960" end="961">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="961" end="962">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="962" end="1358">
+<LeftIndent>140.0</LeftIndent>
+<content start="962" end="963">
+<size>13</size></content>
+
+<content start="963" end="964">
+</content>
+
+<content start="964" end="1357">
+<size>10</size></content>
+
+<content start="1357" end="1358">
+</content>
+
+</paragraph>
+<paragraph start="1358" end="1359">
+<LeftIndent>140.0</LeftIndent>
+<content start="1358" end="1359">
+</content>
+
+</paragraph>
+<paragraph start="1359" end="1387">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1359" end="1361">
+<size>11</size></content>
+
+<content start="1361" end="1369">
+<size>11</size><href>editing.cml</href></content>
+
+<content start="1369" end="1372">
+<size>11</size></content>
+
+<content start="1372" end="1377">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1377" end="1380">
+<size>11</size></content>
+
+<content start="1380" end="1384">
+<size>11</size><href>audioclip.cml</href></content>
+
+<content start="1384" end="1386">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

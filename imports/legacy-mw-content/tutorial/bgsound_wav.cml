@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<bgsound>jazz.wav</bgsound>
+<page_title>Background sound effect: An WAV example</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Background sound effect: An WAV example
+
+&lt;  Index  &gt;
+
+This is a page with a background sound in the WAV format, which is played once when the page is loaded. Click here for an example using the MIDI format.
+
+To stop the music, just leave this page.
+
+&lt; Index  &gt;</text>
+<section start="0" end="261">
+<paragraph start="0" end="40">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="39">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="53">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="49">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="49" end="52">
+<size>11</size></content>
+
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="54">
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="207">
+<LeftIndent>140.0</LeftIndent>
+<content start="54" end="164">
+<size>11</size></content>
+
+<content start="164" end="168">
+<href>bgsound.cml</href><size>11</size></content>
+
+<content start="168" end="207">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="207" end="208">
+<LeftIndent>140.0</LeftIndent>
+<content start="207" end="208">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="208" end="249">
+<LeftIndent>140.0</LeftIndent>
+<content start="208" end="232">
+<bold>true</bold><size>11</size></content>
+
+<content start="232" end="247">
+<bold>true</bold><href>audioclip.cml</href><size>11</size></content>
+
+<content start="247" end="248">
+<bold>true</bold><size>11</size></content>
+
+<content start="248" end="249">
+</content>
+
+</paragraph>
+<paragraph start="249" end="250">
+<RightIndent>20.0</RightIndent>
+<content start="249" end="250">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="250" end="261">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="250" end="252">
+<size>11</size></content>
+
+<content start="252" end="257">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="257" end="260">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a CC prediction graph</page_title>
+<text> Inserting a CC prediction graph
+
+The following is a prediction graph applet developed by Scott Cytacki et. al. at the Concord Consortium. You can insert this applet into a MW page and ask your students to predict how a simulation result would look like, following the instruction below the applet.
+
+ 
+[This drawing tool is an embedded applet, developed by Scott Cytacki et. al. at the Concord Consortium.]
+
+The steps to use this applet in your MW page:
+
+&#10102; Save this page into the folder where your MW page is located.
+&#10103; Open the saved page if you haven&apos;t already opened it (the saved page is immediately opened following step 1).
+&#10104; Right-click (or Ctrl-click for Mac without a two-button mouse) on the graph window and select &quot;Copy this Applet&quot;.
+&#10105; Open the page you want to paste this drawing tool into (note that you must have an existing page to paste).
+&#10106; Move your caret to where you would like to insert this applet and paste it (Ctrl/Command-V or use menu).
+&#10107; Save the page.
+
+The above method is a convenient way of getting this applet to work on your page. The general instruction for setting up an applet, which requires a bit knowledge about applets, is available at this page.</text>
+<section start="0" end="1187">
+<paragraph start="0" end="33">
+<content start="0" end="1">
+<icon>TipOfTheDay24.gif</icon></content>
+
+<content start="1" end="32">
+<size>18</size><family>Trebuchet MS</family><bold>true</bold></content>
+
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="34">
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="299">
+<LeftIndent>20.0</LeftIndent>
+<content start="34" end="299">
+</content>
+
+</paragraph>
+<paragraph start="299" end="300">
+<LeftIndent>20.0</LeftIndent>
+<content start="299" end="300">
+</content>
+
+</paragraph>
+<paragraph start="300" end="302">
+<Alignment>1</Alignment>
+<content start="300" end="301">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>jdom-1.0.jar</appletjar>
+<appletjar>jug-1.1.2.jar</appletjar>
+<appletjar>otrunk-datagraph.jar</appletjar>
+<appletclass>org.concord.otrunkmw.applet.OTAppletViewerMWService</appletclass>
+<resource>predictiongraph$applet$0.aps</resource><parameter>{name=&quot;resource&quot; value=&quot;/DataPrediction/data_prediction.otml&quot;}
+</parameter>
+<width>700</width><height>400</height>
+<border>None</border></component></content>
+
+<content start="301" end="302">
+</content>
+
+</paragraph>
+<paragraph start="302" end="407">
+<Alignment>1</Alignment>
+<content start="302" end="406">
+<size>10</size></content>
+
+<content start="406" end="407">
+</content>
+
+</paragraph>
+<paragraph start="407" end="408">
+<LeftIndent>20.0</LeftIndent>
+<content start="407" end="408">
+</content>
+
+</paragraph>
+<paragraph start="408" end="454">
+<LeftIndent>20.0</LeftIndent>
+<content start="408" end="454">
+</content>
+
+</paragraph>
+<paragraph start="454" end="455">
+<LeftIndent>20.0</LeftIndent>
+<content start="454" end="455">
+</content>
+
+</paragraph>
+<paragraph start="455" end="519">
+<LeftIndent>40.0</LeftIndent>
+<content start="455" end="456">
+<size>15</size></content>
+
+<content start="456" end="519">
+</content>
+
+</paragraph>
+<paragraph start="519" end="631">
+<LeftIndent>40.0</LeftIndent>
+<content start="519" end="520">
+<size>15</size></content>
+
+<content start="520" end="631">
+</content>
+
+</paragraph>
+<paragraph start="631" end="747">
+<LeftIndent>40.0</LeftIndent>
+<content start="631" end="632">
+<size>15</size></content>
+
+<content start="632" end="747">
+</content>
+
+</paragraph>
+<paragraph start="747" end="857">
+<LeftIndent>40.0</LeftIndent>
+<content start="747" end="748">
+<size>15</size></content>
+
+<content start="748" end="805">
+</content>
+
+<content start="805" end="854">
+<bold>true</bold></content>
+
+<content start="854" end="857">
+</content>
+
+</paragraph>
+<paragraph start="857" end="964">
+<LeftIndent>40.0</LeftIndent>
+<content start="857" end="858">
+<size>15</size></content>
+
+<content start="858" end="964">
+</content>
+
+</paragraph>
+<paragraph start="964" end="981">
+<LeftIndent>40.0</LeftIndent>
+<content start="964" end="965">
+<size>15</size></content>
+
+<content start="965" end="981">
+</content>
+
+</paragraph>
+<paragraph start="981" end="982">
+<LeftIndent>20.0</LeftIndent>
+<content start="981" end="982">
+</content>
+
+</paragraph>
+<paragraph start="982" end="1187">
+<LeftIndent>20.0</LeftIndent>
+<content start="982" end="1176">
+</content>
+
+<content start="1176" end="1185">
+<href>../applet.cml</href></content>
+
+<content start="1185" end="1186">
+</content>
+
+</paragraph>
+</section>
+</document>

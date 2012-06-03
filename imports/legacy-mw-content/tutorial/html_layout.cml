@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Using the HTML layout</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Using the HTML layout
+
+&lt; Previous | Index | Next &gt;
+
+The advantage of using the HTML controls is that you can layout the components using the HTML tables. The tables in which the components are put can mix with text and images, providing a very flexible layout method. For example, you can design a custom control palette that collects a set of actions you would like students to try out.
+
+The following is an example of using HTML layout:
+
+  
+To view the source, save this page to your disk, enter the authoring mode and right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the text box.
+
+&#12304;This is an embedded model container.&#12305;
+
+Besides the layout, HTML also offers background setting for each table cell. As you can see from the above example, the second cell in the top row has a different background color than those of the others.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="886">
+<paragraph start="0" end="22">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="21">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="51">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="23" end="25">
+<size>11</size></content>
+
+<content start="25" end="33">
+<href>html_textarea.cml</href><size>11</size></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="41">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="48">
+<href>singlecontrol.cml</href><size>11</size></content>
+
+<content start="48" end="50">
+<size>11</size></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="388">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="388">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="388" end="389">
+<LeftIndent>140.0</LeftIndent>
+<content start="388" end="389">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="389" end="439">
+<LeftIndent>140.0</LeftIndent>
+<content start="389" end="439">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="439" end="440">
+<LeftIndent>140.0</LeftIndent>
+<content start="439" end="440">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="440" end="443">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="440" end="441">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;4&quot; marginheight=&quot;4&quot;&gt;
+    &lt;p&gt;
+      &lt;font size=&quot;3&quot; face=&quot;Verdana&quot;&gt;This is an HTML text box, which uses a 
+      table to create a small control palette.&lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      
+    &lt;/p&gt;
+    &lt;table border=&quot;2&quot; bgcolor=&quot;#ccccff&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;select script4=&quot;script:mw:1:select atom 3;mark color [255 255 0];&quot; script3=&quot;script:mw:1:select atom 2;mark color [255 255 0];&quot; script2=&quot;script:mw:1:select atom 1;mark color [255 255 0];&quot; script1=&quot;script:mw:1:select atom none;mark;&quot; name=&quot;menu&quot; script5=&quot;script:mw:1:select atom 4;mark color [255 255 0];&quot;&gt;
+            &lt;option selected&gt;Select none 
+            &lt;option&gt;Select atom 1 
+            &lt;option&gt;Select atom 2 
+            &lt;option&gt;Select atom 3 
+            &lt;option&gt;Select atom 4 
+          &lt;/select&gt;
+          
+        &lt;/td&gt;
+        &lt;td bgcolor=&quot;#ffcccc&quot;&gt;
+          &lt;img src=&quot;List.gif&quot;&gt;
+          &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;&amp;#160;An image. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;input type=&quot;radio&quot; value=&quot;Select All Atoms&quot; name=&quot;group&quot; script=&quot;script:mw:1:select atom all;mark;&quot;&gt;
+          &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Select all &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;input type=&quot;radio&quot; value=&quot;Select No Atom&quot; name=&quot;group&quot; script=&quot;script:mw:1:select element 2;mark;&quot;&gt;
+          &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Select element 2&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;input type=&quot;radio&quot; value=&quot;Select within 2&quot; name=&quot;group&quot; script=&quot;script:mw:1:select element within (3.0, 2);mark;&quot;&gt;
+          &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Select some&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;input type=&quot;checkbox&quot; value=&quot;Show velocity vectors&quot; script_selected=&quot;script:mw:1:show velocity on;&quot; script_deselected=&quot;script:mw:1:show velocity off;&quot;&gt;
+          &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Show velocities &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;3&quot;&gt;This link &lt;a href=&quot;script:mw:1:select atom 1-3;charge 1;select atom 4-6;charge -1;&quot;&gt;charges 
+      atoms&lt;/a&gt;. &lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="441" end="442">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>html_layout$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="442" end="443">
+</content>
+
+</paragraph>
+<paragraph start="443" end="610">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="443" end="609">
+<size>10</size><italic>true</italic></content>
+
+<content start="609" end="610">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="610" end="611">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="610" end="611">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="611" end="650">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="611" end="612">
+<bold>true</bold><size>13</size></content>
+
+<content start="612" end="648">
+<size>10</size></content>
+
+<content start="648" end="649">
+<bold>true</bold><size>13</size></content>
+
+<content start="649" end="650">
+</content>
+
+</paragraph>
+<paragraph start="650" end="651">
+<LeftIndent>140.0</LeftIndent>
+<content start="650" end="651">
+</content>
+
+</paragraph>
+<paragraph start="651" end="857">
+<LeftIndent>140.0</LeftIndent>
+<content start="651" end="856">
+<size>11</size></content>
+
+<content start="856" end="857">
+</content>
+
+</paragraph>
+<paragraph start="857" end="858">
+<LeftIndent>140.0</LeftIndent>
+<content start="857" end="858">
+</content>
+
+</paragraph>
+<paragraph start="858" end="886">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="858" end="860">
+<size>11</size></content>
+
+<content start="860" end="868">
+<href>html_textarea.cml</href><size>11</size></content>
+
+<content start="868" end="871">
+<size>11</size></content>
+
+<content start="871" end="876">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="876" end="879">
+<size>11</size></content>
+
+<content start="879" end="883">
+<href>singlecontrol.cml</href><size>11</size></content>
+
+<content start="883" end="885">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

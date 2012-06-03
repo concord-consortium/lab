@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>What files does a page contain</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>What files does a page contain?
+
+&lt;Previous |  Index  | Next &gt;
+
+This page introduces the file structure of a page. Most readers can skip this page.
+
+Like an HTML page, a CML page contains embedded images and models that are stored independently of the page. A page does not include the data of the images and models --- what it holds are addresses of the resources it uses. If you would like to send a page to others, or upload it to a server, you must send or upload the resources as well. Otherwise, the other party will receive a page without the models and images.
+
+ 
+Fortunately, you do not need to worry about what files to include when sending by email a page or an activity that consists of several pages. If you choose the &quot;File&gt;Compress Current Page&quot; menu, all the files associated with the current page will be automatically added and compressed to a ZIP file, which you can store on your disk and attach to email later. The &quot;File&gt;Compress Current Activity Folder&quot; menu does a similar job; all the useful files in the current folder will be compressed into a ZIP file.
+
+You should always use this function to pack up a page or an activity when you want to send it to someone. You also should let the recipient know that they should unzip the ZIP file, and use MW to open the CML files (files with .cml suffix).
+
+We highly recommend you to get a free account in the MW Space for storing your files and sharing with others. MW provides a method for you to upload all the necessary files of a page or a multi-page activity into your account in a snap, using the &quot;Webspace &gt; Submit Current Page&quot; or &quot;Webspace &gt; Submit Current Activity Folder&quot; menu.
+ 
+
+In order to know what resources are associated with the current page, check the properties of the page. You can view the properties of the page by choosing the Properties Item from the File Menu. Sometimes, you will see a dialog window as follows:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+The dialog window shows that there are two embedded models associated with the page: gasliquid$0.mml and gasliquid$1.mml. These two files can be found in the same directory where the page, gasliquid.cml, is stored. When you want to send your work to another person, make sure that at least gasliquid.cml, gasliquid$0.mml, and gasliquid$1.mml are sent&#10102;. (To see this example, click here.)
+
+When there are images on the page, you have to know what their names are, and find the images in the same directory and send them as attachments as well.
+
+ 
+&#10102; The naming convention is that the resource files all have the same base name as the page name, a dollar character $ appended at the end of the base name to indicate that this is a file used by the page,  and a number appended to indicate that this is the n-th resource of its type that is associated with the page. The extension of the files, for example, .mml and .gbl stand for different types of resources.
+
+&lt; Previous |  Index | Next &gt;</text>
+<section start="0" end="2923">
+<paragraph start="0" end="32">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="31">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="33">
+<RightIndent>20.0</RightIndent>
+<content start="32" end="33">
+</content>
+
+</paragraph>
+<paragraph start="33" end="62">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="33" end="34">
+<size>11</size></content>
+
+<content start="34" end="42">
+<size>11</size><href>jnlp.cml</href></content>
+
+<content start="42" end="46">
+<size>11</size></content>
+
+<content start="46" end="51">
+<size>11</size><href>index.cml</href></content>
+
+<content start="51" end="55">
+<size>11</size></content>
+
+<content start="55" end="59">
+<size>11</size><href>open.cml</href></content>
+
+<content start="59" end="61">
+<size>11</size></content>
+
+<content start="61" end="62">
+</content>
+
+</paragraph>
+<paragraph start="62" end="63">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="147">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="63" end="113">
+<size>11</size></content>
+
+<content start="113" end="114">
+<size>11</size><foreground>255 0 0</foreground></content>
+
+<content start="114" end="144">
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
+
+<content start="144" end="145">
+<size>11</size><foreground>255 102 0</foreground><bold>true</bold></content>
+
+<content start="145" end="147">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="147" end="148">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="147" end="148">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="148" end="568">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="148" end="443">
+<size>11</size></content>
+
+<content start="443" end="488">
+<size>11</size><bold>true</bold></content>
+
+<content start="488" end="568">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="568" end="569">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="568" end="569">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="569" end="571">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="569" end="570">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="570" end="571">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="571" end="1079">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="571" end="1079">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1079" end="1080">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1079" end="1080">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1080" end="1321">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1080" end="1321">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1321" end="1322">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1321" end="1322">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1322" end="1655">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1322" end="1371">
+<size>11</size></content>
+
+<content start="1371" end="1383">
+<size>11</size><href>myhome.jsp?client=mw</href></content>
+
+<content start="1383" end="1654">
+<size>11</size></content>
+
+<content start="1654" end="1655">
+</content>
+
+</paragraph>
+<paragraph start="1655" end="1657">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1655" end="1656">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1656" end="1657">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1657" end="1658">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1657" end="1658">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1658" end="1906">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1658" end="1906">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1906" end="1907">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1906" end="1907">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1907" end="1910">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1907" end="1908">
+<size>11</size></content>
+
+<content start="1908" end="1909">
+<icon>PagePropertiesDialog.gif</icon><size>11</size></content>
+
+<content start="1909" end="1910">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1910" end="1934">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1910" end="1911">
+<size>13</size><bold>true</bold></content>
+
+<content start="1911" end="1932">
+<size>10</size></content>
+
+<content start="1932" end="1933">
+<size>13</size><bold>true</bold></content>
+
+<content start="1933" end="1934">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1934" end="1935">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1934" end="1935">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1935" end="2323">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="1935" end="2020">
+<size>11</size></content>
+
+<content start="2020" end="2035">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2035" end="2040">
+<size>11</size></content>
+
+<content start="2040" end="2055">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2055" end="2124">
+<size>11</size></content>
+
+<content start="2124" end="2137">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2137" end="2225">
+<size>11</size></content>
+
+<content start="2225" end="2238">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2238" end="2240">
+<size>11</size></content>
+
+<content start="2240" end="2255">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2255" end="2261">
+<size>11</size></content>
+
+<content start="2261" end="2276">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2276" end="2285">
+<size>11</size></content>
+
+<content start="2285" end="2286">
+<size>13</size></content>
+
+<content start="2286" end="2316">
+<size>11</size></content>
+
+<content start="2316" end="2320">
+<size>11</size><href>../student/stateofmatter/gasliquid.cml</href></content>
+
+<content start="2320" end="2323">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2323" end="2324">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2323" end="2324">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2324" end="2478">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2324" end="2478">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2478" end="2479">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2478" end="2479">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2479" end="2481">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2479" end="2480">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2480" end="2481">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2481" end="2893">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="2481" end="2482">
+<size>13</size></content>
+
+<content start="2482" end="2738">
+<size>10</size></content>
+
+<content start="2738" end="2739">
+<size>10</size><italic>true</italic></content>
+
+<content start="2739" end="2839">
+<size>10</size></content>
+
+<content start="2839" end="2843">
+<size>10</size><family>Courier New</family></content>
+
+<content start="2843" end="2848">
+<size>10</size></content>
+
+<content start="2848" end="2852">
+<size>10</size><family>Courier New</family></content>
+
+<content start="2852" end="2893">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="2893" end="2894">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2893" end="2894">
+</content>
+
+</paragraph>
+<paragraph start="2894" end="2923">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2894" end="2896">
+<size>11</size></content>
+
+<content start="2896" end="2904">
+<size>11</size><href>jnlp.cml</href></content>
+
+<content start="2904" end="2908">
+<size>11</size></content>
+
+<content start="2908" end="2913">
+<size>11</size><href>index.cml</href></content>
+
+<content start="2913" end="2916">
+<size>11</size></content>
+
+<content start="2916" end="2920">
+<size>11</size><href>open.cml</href></content>
+
+<content start="2920" end="2922">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Query Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Query Tool
+
+&lt; Previous | Index | Next &gt;
+
+The Query Tool (&quot; &quot;) returns a short textual description about the selected object in the model.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+If the clicked point is not contained within any object, this tool will just show the coordinates (in angstroms). It is noteworthy to point out that the origin of the coordinate system is at the upper-left corner of the window and the y axis points downwards. As a result, the lower-right corner has the maximum x and y coordinates. And all the coordinates are positive.
+
+This tool can be used to quickly find the index of an object, which is needed to access its properties through scripts. For example, to get the velocity of an atom, you will need to know its index first (say it is 10), and then use the expressions for the system variables: atom[10].vx and atom[10].vy to get the values. 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="894">
+<paragraph start="0" end="15">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="14">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="44">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="16" end="18">
+<size>11</size></content>
+
+<content start="18" end="26">
+<href>makeBendAction.cml</href><size>11</size></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="34">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="41">
+<href>measureDistanceAction.cml</href><size>11</size></content>
+
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<LeftIndent>100.0</LeftIndent>
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="142">
+<LeftIndent>140.0</LeftIndent>
+<content start="45" end="62">
+<size>11</size></content>
+
+<content start="62" end="63">
+<size>11</size><icon>WhatIsThis.gif</icon></content>
+
+<content start="63" end="142">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="142" end="143">
+<LeftIndent>140.0</LeftIndent>
+<content start="142" end="143">
+</content>
+
+</paragraph>
+<paragraph start="143" end="146">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="143" end="144">
+</content>
+
+<content start="144" end="145">
+<icon>WhatIsThisPointer.gif</icon></content>
+
+<content start="145" end="146">
+</content>
+
+</paragraph>
+<paragraph start="146" end="170">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="146" end="169">
+<size>10</size></content>
+
+<content start="169" end="170">
+</content>
+
+</paragraph>
+<paragraph start="170" end="171">
+<LeftIndent>140.0</LeftIndent>
+<content start="170" end="171">
+</content>
+
+</paragraph>
+<paragraph start="171" end="542">
+<LeftIndent>140.0</LeftIndent>
+<content start="171" end="483">
+<size>11</size></content>
+
+<content start="483" end="484">
+<italic>true</italic><size>11</size></content>
+
+<content start="484" end="489">
+<size>11</size></content>
+
+<content start="489" end="490">
+<italic>true</italic><size>11</size></content>
+
+<content start="490" end="541">
+<size>11</size></content>
+
+<content start="541" end="542">
+</content>
+
+</paragraph>
+<paragraph start="542" end="543">
+<LeftIndent>140.0</LeftIndent>
+<content start="542" end="543">
+</content>
+
+</paragraph>
+<paragraph start="543" end="865">
+<LeftIndent>140.0</LeftIndent>
+<content start="543" end="568">
+<size>11</size></content>
+
+<content start="568" end="603">
+<bold>true</bold><size>11</size></content>
+
+<content start="603" end="654">
+<size>11</size></content>
+
+<content start="654" end="661">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="661" end="799">
+<size>11</size></content>
+
+<content start="799" end="815">
+<href>script_variable.cml</href><size>11</size></content>
+
+<content start="815" end="817">
+<size>11</size></content>
+
+<content start="817" end="828">
+<size>11</size><family>Courier New</family></content>
+
+<content start="828" end="833">
+<size>11</size></content>
+
+<content start="833" end="844">
+<size>11</size><family>Courier New</family></content>
+
+<content start="844" end="865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="865" end="866">
+<LeftIndent>140.0</LeftIndent>
+<content start="865" end="866">
+</content>
+
+</paragraph>
+<paragraph start="866" end="894">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="866" end="868">
+<size>11</size></content>
+
+<content start="868" end="876">
+<href>makeBendAction.cml</href><size>11</size></content>
+
+<content start="876" end="879">
+<size>11</size></content>
+
+<content start="879" end="884">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="884" end="887">
+<size>11</size></content>
+
+<content start="887" end="891">
+<href>measureDistanceAction.cml</href><size>11</size></content>
+
+<content start="891" end="893">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

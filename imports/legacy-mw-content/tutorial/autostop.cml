@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The automatic reminder</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The automatic reminder
+
+&lt; Previous | Index | Next &gt;
+
+Once the user pushes the &quot;Run&quot; button, the model will run until the &quot;Stop&quot; button is pressed. This is the default behavior of the simulator. Sometimes you may want to pause the simulation and give the user a reminder before interesting things elapse without being noticed.
+
+ 
+Note: If your model&apos;s initial conditions are randomly generated, the simulation will NOT be deterministic. As a result, you cannot count on the reminder to capture certain events, though it still can be used to stop the simulation after certain amount of time.
+ 
+
+To set up an automatic reminder, select the &quot;Set Up Automatic Reminder&quot; from the &quot;Option&quot; menu of the model container, you will see a dialog window as below:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This dialog window allows you to customize the automatic reminder. The reminder can be set to invoke repeatedly at a frequency that can be specified in the text field. Note that the number you type in the text field is the molecular dynamics time in femtoseconds&#10102;, not the real time you sense. You can type the reminder message in the text area below the check box and the text field. An example of automatic reminder in action is shown in the image below:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+If you just want the model to stop without poping up the reminder window, just do not type anything on the message text area. To disable the automatic reminder, just uncheck the &quot;Apply&quot; check box. The settings with the automatic reminder will be saved when you save the page.
+
+The following model shows an application of the automatic reminder. You can play with it to get some idea about how it works.
+
+  
+&#12304;This is an embedded model container.&#12305;
+
+Other applications of the automatic reminder
+
+Using it as a timer
+
+If a model with carefully designed initial conditions shows interesting emergent behaviors within a certain length of time from the initial time, continuing the simulation after that may be unnecessary. The automatic reminder can be used to stop the simulation after a specified amount of simulation time. If no message is set, the model will just stop &quot;silently&quot; (without poping up a window) after the time is up. In this case, the reminder serves as a timer.
+
+Using it to conveniently make a series of snapshots
+
+You may know that you can press a &quot;Snapshot&quot; button to take a snapshot image of the model. If you were to take a series of snapshots evenly in time, it is not convenient to use the &quot;Snapshot&quot; button. The automatic reminder has a built-in button that makes this easy. If you check the &quot;Invoke reminder repeatedly&quot; check box, the reminder window will periodically pop up for the user to take a snapshot image.
+
+Designing more powerful automatic reminders
+
+If you would like to do something more useful beyond the automatic reminder, you can add a customer task to the Task Manager. The automatic reminder itself is a task, but it is a system task that does limited things. A customer task, combined with scripts, can be used to do many things flexibly and easily.
+ 
+&#10102; The molecular dynamics time in femtoseconds is the number displayed at the lower left corner, right next to the clock icon.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3214">
+<paragraph start="0" end="23">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="22">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="52">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="24" end="26">
+<size>11</size></content>
+
+<content start="26" end="34">
+<size>11</size><href>ResizeModelContainer.cml</href></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="49">
+<size>11</size><href>modelPrinting.cml</href></content>
+
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<LeftIndent>100.0</LeftIndent>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="326">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="326" end="327">
+<LeftIndent>140.0</LeftIndent>
+<content start="326" end="327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="327" end="329">
+<LeftIndent>140.0</LeftIndent>
+<content start="327" end="328">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="328" end="329">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="329" end="590">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="329" end="333">
+<size>11</size><bold>true</bold></content>
+
+<content start="333" end="590">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="590" end="592">
+<LeftIndent>140.0</LeftIndent>
+<content start="590" end="591">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="591" end="592">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="592" end="593">
+<LeftIndent>140.0</LeftIndent>
+<content start="592" end="593">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="593" end="751">
+<LeftIndent>140.0</LeftIndent>
+<content start="593" end="751">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="751" end="752">
+<LeftIndent>140.0</LeftIndent>
+<content start="751" end="752">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="752" end="755">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="752" end="753">
+</content>
+
+<content start="753" end="754">
+<icon>AutomaticalReminder.gif</icon></content>
+
+<content start="754" end="755">
+</content>
+
+</paragraph>
+<paragraph start="755" end="779">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="755" end="778">
+<size>10</size></content>
+
+<content start="778" end="779">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="779" end="780">
+<LeftIndent>140.0</LeftIndent>
+<content start="779" end="780">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="780" end="1237">
+<LeftIndent>140.0</LeftIndent>
+<content start="780" end="1003">
+<size>11</size></content>
+
+<content start="1003" end="1021">
+<size>11</size><href>glossary/MolecularDynamics.cml</href></content>
+
+<content start="1021" end="1042">
+<size>11</size></content>
+
+<content start="1042" end="1043">
+<size>13</size></content>
+
+<content start="1043" end="1045">
+<size>11</size></content>
+
+<content start="1045" end="1048">
+<italic>true</italic><size>11</size></content>
+
+<content start="1048" end="1237">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1237" end="1238">
+<LeftIndent>140.0</LeftIndent>
+<content start="1237" end="1238">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1238" end="1241">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1238" end="1239">
+</content>
+
+<content start="1239" end="1240">
+<icon>AutomaticalReminder2.gif</icon></content>
+
+<content start="1240" end="1241">
+</content>
+
+</paragraph>
+<paragraph start="1241" end="1265">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1241" end="1264">
+<size>10</size></content>
+
+<content start="1264" end="1265">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1265" end="1266">
+<LeftIndent>140.0</LeftIndent>
+<content start="1265" end="1266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1266" end="1542">
+<LeftIndent>140.0</LeftIndent>
+<content start="1266" end="1542">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1542" end="1543">
+<LeftIndent>140.0</LeftIndent>
+<content start="1542" end="1543">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1543" end="1669">
+<LeftIndent>140.0</LeftIndent>
+<content start="1543" end="1669">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1669" end="1670">
+<LeftIndent>140.0</LeftIndent>
+<content start="1669" end="1670">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1670" end="1673">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1670" end="1671">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>autostop$0.mml</resource></component></content>
+
+<content start="1671" end="1672">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="1" size="4" spacing="5">Potential Energy/Particle</time_series_y1>
+<width>250</width>
+<height>310</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Potential energy (eV)</axis_y_title>
+<legend_x>26</legend_x>
+<legend_y>11</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="1672" end="1673">
+</content>
+
+</paragraph>
+<paragraph start="1673" end="1712">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1673" end="1711">
+<size>10</size></content>
+
+<content start="1711" end="1712">
+</content>
+
+</paragraph>
+<paragraph start="1712" end="1713">
+<LeftIndent>140.0</LeftIndent>
+<content start="1712" end="1713">
+</content>
+
+</paragraph>
+<paragraph start="1713" end="1758">
+<LeftIndent>140.0</LeftIndent>
+<content start="1713" end="1757">
+<size>11</size><bold>true</bold></content>
+
+<content start="1757" end="1758">
+</content>
+
+</paragraph>
+<paragraph start="1758" end="1759">
+<LeftIndent>140.0</LeftIndent>
+<content start="1758" end="1759">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1759" end="1779">
+<LeftIndent>160.0</LeftIndent>
+<content start="1759" end="1778">
+<size>11</size><bold>true</bold></content>
+
+<content start="1778" end="1779">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1779" end="1780">
+<LeftIndent>140.0</LeftIndent>
+<content start="1779" end="1780">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1780" end="2241">
+<LeftIndent>160.0</LeftIndent>
+<content start="1780" end="2241">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2241" end="2242">
+<LeftIndent>160.0</LeftIndent>
+<content start="2241" end="2242">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2242" end="2294">
+<LeftIndent>160.0</LeftIndent>
+<content start="2242" end="2293">
+<size>11</size><bold>true</bold></content>
+
+<content start="2293" end="2294">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2294" end="2295">
+<LeftIndent>160.0</LeftIndent>
+<content start="2294" end="2295">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2295" end="2703">
+<LeftIndent>160.0</LeftIndent>
+<content start="2295" end="2357">
+<size>11</size></content>
+
+<content start="2357" end="2371">
+<size>11</size><href>snapshot.cml</href></content>
+
+<content start="2371" end="2703">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2703" end="2704">
+<LeftIndent>140.0</LeftIndent>
+<content start="2703" end="2704">
+</content>
+
+</paragraph>
+<paragraph start="2704" end="2748">
+<LeftIndent>140.0</LeftIndent>
+<content start="2704" end="2747">
+<size>11</size><bold>true</bold></content>
+
+<content start="2747" end="2748">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2748" end="2749">
+<LeftIndent>140.0</LeftIndent>
+<content start="2748" end="2749">
+</content>
+
+</paragraph>
+<paragraph start="2749" end="3057">
+<LeftIndent>140.0</LeftIndent>
+<content start="2749" end="2840">
+<size>11</size></content>
+
+<content start="2840" end="2853">
+<size>11</size><href>CustomerTask.cml</href></content>
+
+<content start="2853" end="2861">
+<size>11</size></content>
+
+<content start="2861" end="2873">
+<size>11</size><href>taskManager.cml</href></content>
+
+<content start="2873" end="2997">
+<size>11</size></content>
+
+<content start="2997" end="3004">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="3004" end="3056">
+<size>11</size></content>
+
+<content start="3056" end="3057">
+</content>
+
+</paragraph>
+<paragraph start="3057" end="3059">
+<SpaceAbove>1.0</SpaceAbove>
+<LeftIndent>140.0</LeftIndent>
+<content start="3057" end="3058">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="3058" end="3059">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3059" end="3185">
+<LeftIndent>140.0</LeftIndent>
+<content start="3059" end="3060">
+<size>13</size></content>
+
+<content start="3060" end="3061">
+</content>
+
+<content start="3061" end="3184">
+<size>10</size></content>
+
+<content start="3184" end="3185">
+</content>
+
+</paragraph>
+<paragraph start="3185" end="3186">
+<LeftIndent>140.0</LeftIndent>
+<content start="3185" end="3186">
+</content>
+
+</paragraph>
+<paragraph start="3186" end="3214">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="3186" end="3188">
+<size>11</size></content>
+
+<content start="3188" end="3196">
+<size>11</size><href>ResizeModelContainer.cml</href></content>
+
+<content start="3196" end="3199">
+<size>11</size></content>
+
+<content start="3199" end="3204">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="3204" end="3207">
+<size>11</size></content>
+
+<content start="3207" end="3212">
+<size>11</size><href>modelPrinting.cml</href></content>
+
+<content start="3212" end="3213">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

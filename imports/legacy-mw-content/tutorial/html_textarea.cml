@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Using text areas in HTML text box</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Using text areas in HTML text box
+
+&lt; Previous | Index | Next &gt;
+
+
+A text area can be created using the following line of code:
+
+&lt;textarea rows=&quot;number (e.g. 10)&quot; cols=&quot;number (e.g. 10)&quot; question=&quot;question text&quot; uid=&quot;uid&quot;&gt;
+
+ 
+Important: Do not enclose the embedded HTML components within &lt;form&gt; tags:
+
+&lt;FORM action=&quot;blah&quot; method=&quot;post&quot;&gt;
+&lt;textarea rows=&quot;number (e.g. 10)&quot; cols=&quot;number (e.g. 10)&quot; question=&quot;question text&quot;&gt;
+&lt;/FORM&gt;
+
+If you do so, MW will try to send the data to a server, instead of a model.
+ 
+
+The question attribute is used to set up a question text that will go along with the user&apos;s inputs into a report.
+
+The following is an example of using an HTML text area:
+
+ 
+To view the source, save this page to your disk, enter the authoring mode and right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the text boxes.
+
+To test, type some text in the above text area, and click the button below.
+
+ 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="959">
+<paragraph start="0" end="34">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="33">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="63">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="45">
+<size>11</size><href>html_textfield.cml</href></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="53">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="53" end="56">
+<size>11</size></content>
+
+<content start="56" end="60">
+<size>11</size><href>html_layout.cml</href></content>
+
+<content start="60" end="62">
+<size>11</size></content>
+
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="64">
+<LeftIndent>140.0</LeftIndent>
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="65">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="65" end="126">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="126">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="126" end="127">
+<LeftIndent>140.0</LeftIndent>
+<content start="126" end="127">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="127" end="221">
+<LeftIndent>160.0</LeftIndent>
+<content start="127" end="209">
+<family>Courier New</family><size>11</size></content>
+
+<content start="209" end="219">
+<family>Courier New</family><size>11</size></content>
+
+<content start="219" end="221">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="221" end="222">
+<LeftIndent>140.0</LeftIndent>
+<content start="221" end="222">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="222" end="224">
+<LeftIndent>140.0</LeftIndent>
+<content start="222" end="223">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="223" end="224">
+</content>
+
+</paragraph>
+<paragraph start="224" end="299">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="224" end="233">
+<bold>true</bold><size>11</size></content>
+
+<content start="233" end="286">
+<size>11</size></content>
+
+<content start="286" end="292">
+<family>Courier New</family><size>11</size></content>
+
+<content start="292" end="299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="299" end="300">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="299" end="300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="300" end="335">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="300" end="334">
+<family>Courier New</family><bold>true</bold><strikethrough>true</strikethrough><foreground>255 0 0</foreground></content>
+
+<content start="334" end="335">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="335" end="419">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>220.0</LeftIndent>
+<content start="335" end="419">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="419" end="427">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="419" end="426">
+<family>Courier New</family><bold>true</bold><strikethrough>true</strikethrough><foreground>255 0 0</foreground></content>
+
+<content start="426" end="427">
+</content>
+
+</paragraph>
+<paragraph start="427" end="428">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="427" end="428">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="428" end="504">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="428" end="503">
+<size>11</size></content>
+
+<content start="503" end="504">
+</content>
+
+</paragraph>
+<paragraph start="504" end="506">
+<LeftIndent>140.0</LeftIndent>
+<content start="504" end="505">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="505" end="506">
+</content>
+
+</paragraph>
+<paragraph start="506" end="507">
+<LeftIndent>140.0</LeftIndent>
+<content start="506" end="507">
+</content>
+
+</paragraph>
+<paragraph start="507" end="621">
+<LeftIndent>140.0</LeftIndent>
+<content start="507" end="511">
+<size>11</size></content>
+
+<content start="511" end="519">
+<family>Courier New</family><size>11</size></content>
+
+<content start="519" end="621">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="621" end="622">
+<LeftIndent>140.0</LeftIndent>
+<content start="621" end="622">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="622" end="678">
+<LeftIndent>140.0</LeftIndent>
+<content start="622" end="678">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="678" end="679">
+<LeftIndent>140.0</LeftIndent>
+<content start="678" end="679">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="679" end="681">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="679" end="680">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>400.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;8&quot; marginheight=&quot;8&quot;&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot;&gt;This is an HTML text box, which has an embedded 
+      text area for collecting student&apos;s answers.&lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;3&quot;&gt;How do you use the Molecular Workbench 
+      software?&lt;br&gt;&lt;br&gt;
+      &lt;textarea question=&quot;How do you use the Molecular Workbench software?&quot; cols=&quot;40&quot; rows=&quot;5&quot;&gt;
+                                                                               
+                
+                       
+                                                                               
+               
+                                                                              
+                                                                      
+                                                              
+                                                      
+                                              
+                                      
+                              
+                      
+              
+      &lt;/textarea&gt;
+       &lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="680" end="681">
+</content>
+
+</paragraph>
+<paragraph start="681" end="850">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="681" end="849">
+<size>10</size><italic>true</italic></content>
+
+<content start="849" end="850">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="850" end="851">
+<LeftIndent>140.0</LeftIndent>
+<content start="850" end="851">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="851" end="927">
+<LeftIndent>140.0</LeftIndent>
+<content start="851" end="927">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="927" end="928">
+<LeftIndent>140.0</LeftIndent>
+<content start="927" end="928">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="928" end="930">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="928" end="929">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report about this page in a new window</title>
+<border>Raised Bevel</border>
+<action>Create a report about this page in a new window</action></component></content>
+
+<content start="929" end="930">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="930" end="931">
+<LeftIndent>140.0</LeftIndent>
+<content start="930" end="931">
+</content>
+
+</paragraph>
+<paragraph start="931" end="959">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="931" end="933">
+<size>11</size></content>
+
+<content start="933" end="941">
+<size>11</size><href>html_textfield.cml</href></content>
+
+<content start="941" end="944">
+<size>11</size></content>
+
+<content start="944" end="949">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="949" end="952">
+<size>11</size></content>
+
+<content start="952" end="956">
+<size>11</size><href>html_layout.cml</href></content>
+
+<content start="956" end="958">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

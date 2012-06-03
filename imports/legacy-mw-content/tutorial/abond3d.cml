@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Adding and removing angular bonds</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Adding and removing angular bonds
+
+&lt; Previous | Index | Next &gt;
+
+What we call angular bonds in MW is commonly called angle-bending forces in molecular mechanics (see   NIH&apos;s introduction to molecular mechanics).
+
+To make an angular bond, you need to select the button (&quot; &quot;) from the tool bar. When the Constructor is in this mode, click a radial bond and then ALT+click on another radial bond. An angular bond will be made between the two selected radial bonds. Note that you cannot make an angular bond between two radial bonds that do not join together.
+
+ 
+If you have constructed 2D models in MW, the process of building an angular bond in 3D is identical to that in 2D. See this page for a reference.
+ 
+
+To remove an angular bond, just right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the triangular area formed between the two radial bonds and select &quot;Cut&quot; from the pop-up menu. At any time when an angular bond is selected, in which case it will be highlighted, you can always use CTRL+X (Windows/Linux) or Command+X (Mac), or DELETE and BACKSPACE key to remove it.
+
+Radial and angular bonds are not enough to maintain 3D molecular structures in molecular dynamics simulations, except for special cases such as triatomic molecules. The next section discusses about an additional force needed to maintain the angle between two adjacent angular bonds.
+
+Practice
+
+You may play with the following example about adding and removing angular bonds to construct an ethylene molecule. It would be interesting to observe how the molecule will change shape if you run this model without adding angular bonds.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1700">
+<paragraph start="0" end="34">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="33">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<RightIndent>20.0</RightIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="63">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="45">
+<href>rbond3d.cml</href><size>11</size></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="53">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="53" end="56">
+<size>11</size></content>
+
+<content start="56" end="60">
+<href>tbond3d.cml</href><size>11</size></content>
+
+<content start="60" end="62">
+<size>11</size></content>
+
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="64">
+<LeftIndent>140.0</LeftIndent>
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="211">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="77">
+<size>11</size></content>
+
+<content start="77" end="90">
+<italic>true</italic><size>11</size></content>
+
+<content start="90" end="165">
+<size>11</size></content>
+
+<content start="165" end="166">
+<icon>htmlink.gif</icon></content>
+
+<content start="166" end="167">
+<size>11</size></content>
+
+<content start="167" end="208">
+<href>http://cmm.cit.nih.gov/modeling/guide_documents/molecular_mechanics_document.html</href><size>11</size></content>
+
+<content start="208" end="211">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="211" end="212">
+<LeftIndent>140.0</LeftIndent>
+<content start="211" end="212">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="212" end="555">
+<LeftIndent>140.0</LeftIndent>
+<content start="212" end="269">
+<size>11</size></content>
+
+<content start="269" end="270">
+<icon>angularbond.gif</icon></content>
+
+<content start="270" end="555">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="555" end="556">
+<LeftIndent>140.0</LeftIndent>
+<content start="555" end="556">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="556" end="558">
+<LeftIndent>140.0</LeftIndent>
+<content start="556" end="557">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="557" end="558">
+</content>
+
+</paragraph>
+<paragraph start="558" end="704">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="558" end="677">
+<size>11</size></content>
+
+<content start="677" end="686">
+<href>makeBendAction.cml</href><size>11</size></content>
+
+<content start="686" end="703">
+<size>11</size></content>
+
+<content start="703" end="704">
+</content>
+
+</paragraph>
+<paragraph start="704" end="706">
+<LeftIndent>140.0</LeftIndent>
+<content start="704" end="705">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="705" end="706">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="706" end="707">
+<LeftIndent>140.0</LeftIndent>
+<content start="706" end="707">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="707" end="1097">
+<LeftIndent>140.0</LeftIndent>
+<content start="707" end="1097">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1097" end="1098">
+<LeftIndent>140.0</LeftIndent>
+<content start="1097" end="1098">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1098" end="1381">
+<LeftIndent>140.0</LeftIndent>
+<content start="1098" end="1267">
+<size>11</size></content>
+
+<content start="1267" end="1279">
+<href>tbond3d.cml</href><size>11</size></content>
+
+<content start="1279" end="1381">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1381" end="1382">
+<LeftIndent>140.0</LeftIndent>
+<content start="1381" end="1382">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1382" end="1391">
+<LeftIndent>140.0</LeftIndent>
+<content start="1382" end="1390">
+<bold>true</bold><size>11</size></content>
+
+<content start="1390" end="1391">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1391" end="1392">
+<LeftIndent>140.0</LeftIndent>
+<content start="1391" end="1392">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1392" end="1629">
+<LeftIndent>140.0</LeftIndent>
+<content start="1392" end="1629">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1629" end="1630">
+<LeftIndent>140.0</LeftIndent>
+<content start="1629" end="1630">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1630" end="1632">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1630" end="1631">
+<component><class>org.concord.modeler.PageMd3d</class><resource>abond3d$0.mdd</resource><coordinate>abond3d$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="1631" end="1632">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1632" end="1671">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1632" end="1670">
+<size>10</size></content>
+
+<content start="1670" end="1671">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1671" end="1672">
+<LeftIndent>140.0</LeftIndent>
+<content start="1671" end="1672">
+</content>
+
+</paragraph>
+<paragraph start="1672" end="1700">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1672" end="1674">
+<size>11</size></content>
+
+<content start="1674" end="1682">
+<href>rbond3d.cml</href><size>11</size></content>
+
+<content start="1682" end="1685">
+<size>11</size></content>
+
+<content start="1685" end="1690">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="1690" end="1693">
+<size>11</size></content>
+
+<content start="1693" end="1697">
+<href>tbond3d.cml</href><size>11</size></content>
+
+<content start="1697" end="1699">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

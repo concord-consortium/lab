@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a line</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a line
+
+&lt; Previous | Index | Next &gt;
+
+You can insert any number of lines into a model to annotate it. For instance, you may want to use a line to indicate the direction of the applied electric field, or a vertical line and a horizontal line to provide a reference system, or an array of lines as the tick marks of a ruler to measure the thermal expansion of a system.
+
+By default, a line is not a physical object --- it does not participate in motion. But there is an option to make a line a motion reflector, which does the job of causing particles to bounce back when they encounter it.
+
+Lines have several properties that you can customize. For instance, they can have arrows of various styles at either end. You can type to set the positions of the two end points (X1, Y1) and (X2, Y2). To change the properties of a line, just double-click on it when the model builder is in the selection mode. You will see the following dialog:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+The following model shows some examples of using lines in a model container. The border of the model container is hiden so that it appears as if the lines and text boxes were just directly on the page.
+
+ 
+      
+&#12304;This is an embedded model container showing lines in various styles. Double-click a line to change its attributes.&#12305;
+
+Like any other components in a model container, a line can be moved, cut, copied and pasted in the same way. The length can be changed arbitrarily. Please also note that a line can be attached to a moving object at three positions: the center and the two end points.
+
+If a line is selected to be attached to a radial bond, then its length will immediately become equal to that of the bond, and the two end points will be set to be at the two atoms. Therefore, you cannot adjust the length of a line that is attached to a bond.
+
+Lines as motion reflectors
+
+In addition to being used as an annotation tool, lines can be used as motion reflectors. Lines can be used to construct unmovable obstacles in orbitrary polygon shapes (connected by using lines), or shapes without a closing boundary.
+
+To turn this functionality on, right-click (or Ctrl-click on Mac OS X without a multi-button mouse) on the line and select &quot;Reflection&quot; from the &quot;Physics&quot; sub-menu.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+Tricks of the trade: &#10112; Sometimes, a particle can enter from an open end of a line and somehow get trapped within the line. To prevent this from happening, you can place two unmovable particles at the end points. &#10113; Avoid using lines that are nearly vertical or nearly horizontal (with &#177;5&#176;) lines. Just use perfectly horizontal or perfectly vertical lines. Note that a line does not insulate interactions. Two particles that are near each other but separated by a reflecting line can still stick to each other, though they will not cross the line.
+
+Script support
+
+To remove a line, use the select command to select it first and then call the remove command. There are two methods for moving it. The first one is to use the select command to select it first and then call the move command. The second one is to use the set command to set the coordinates of the two end points: (x1, y1) and (x2, y2). The second method can also be used to change the length of the line.
+
+The following attributes of a line can also be changed through the set command: weight, stroke.
+
+To know the index of a line that will be used in the set command, double-click on it when the model container is in the selecting and moving mode and look up the number after &quot;Line #&quot; in the Properties Panel that opens.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3616">
+<paragraph start="0" end="17">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="16">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="46">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="18" end="20">
+<size>11</size></content>
+
+<content start="20" end="28">
+<size>11</size><href>TextBoxInModel.cml</href></content>
+
+<content start="28" end="31">
+<size>11</size></content>
+
+<content start="31" end="36">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<size>11</size><href>RectangleInModel.cml</href></content>
+
+<content start="43" end="45">
+<size>11</size></content>
+
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="47">
+<LeftIndent>100.0</LeftIndent>
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="377">
+<LeftIndent>140.0</LeftIndent>
+<content start="47" end="377">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="377" end="378">
+<LeftIndent>140.0</LeftIndent>
+<content start="377" end="378">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="378" end="598">
+<LeftIndent>140.0</LeftIndent>
+<content start="378" end="598">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="598" end="599">
+<LeftIndent>140.0</LeftIndent>
+<content start="598" end="599">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="599" end="944">
+<LeftIndent>140.0</LeftIndent>
+<content start="599" end="779">
+<size>11</size></content>
+
+<content start="779" end="780">
+<subscript>true</subscript><size>10</size></content>
+
+<content start="780" end="783">
+<size>11</size></content>
+
+<content start="783" end="784">
+<subscript>true</subscript><size>10</size></content>
+
+<content start="784" end="792">
+<size>11</size></content>
+
+<content start="792" end="793">
+<subscript>true</subscript><size>10</size></content>
+
+<content start="793" end="796">
+<size>11</size></content>
+
+<content start="796" end="797">
+<subscript>true</subscript><size>10</size></content>
+
+<content start="797" end="944">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="944" end="945">
+<LeftIndent>140.0</LeftIndent>
+<content start="944" end="945">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="945" end="948">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="945" end="946">
+</content>
+
+<content start="946" end="947">
+<icon>LinePropertiesDialog.gif</icon></content>
+
+<content start="947" end="948">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="948" end="972">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="948" end="971">
+<size>10</size></content>
+
+<content start="971" end="972">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="972" end="973">
+<LeftIndent>140.0</LeftIndent>
+<content start="972" end="973">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="973" end="1175">
+<LeftIndent>140.0</LeftIndent>
+<content start="973" end="1175">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1175" end="1176">
+<LeftIndent>140.0</LeftIndent>
+<content start="1175" end="1176">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1176" end="1178">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1176" end="1177">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>LineInModel$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="1177" end="1178">
+</content>
+
+</paragraph>
+<paragraph start="1178" end="1185">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1178" end="1179">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Add line</title>
+<tooltip>Enter the mode of adding a line</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set action LINE_ID;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1179" end="1180">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Select</title>
+<tooltip>Enter the mode of selecting and moving</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set action SELE_ID;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1180" end="1181">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Clear</title>
+<tooltip>Erase all</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom all;
+remove;
+select line all;
+remove;
+select textbox all;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1181" end="1182">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1182" end="1183">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1183" end="1184">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1184" end="1185">
+</content>
+
+</paragraph>
+<paragraph start="1185" end="1302">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1185" end="1301">
+<size>10</size></content>
+
+<content start="1301" end="1302">
+</content>
+
+</paragraph>
+<paragraph start="1302" end="1303">
+<LeftIndent>140.0</LeftIndent>
+<content start="1302" end="1303">
+</content>
+
+</paragraph>
+<paragraph start="1303" end="1570">
+<LeftIndent>140.0</LeftIndent>
+<content start="1303" end="1570">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1570" end="1571">
+<LeftIndent>140.0</LeftIndent>
+<content start="1570" end="1571">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1571" end="1830">
+<LeftIndent>140.0</LeftIndent>
+<content start="1571" end="1830">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1830" end="1831">
+<LeftIndent>140.0</LeftIndent>
+<content start="1830" end="1831">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1831" end="1858">
+<LeftIndent>140.0</LeftIndent>
+<content start="1831" end="1857">
+<bold>true</bold><size>11</size></content>
+
+<content start="1857" end="1858">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1858" end="1859">
+<LeftIndent>140.0</LeftIndent>
+<content start="1858" end="1859">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1859" end="2093">
+<LeftIndent>140.0</LeftIndent>
+<content start="1859" end="2093">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2093" end="2094">
+<LeftIndent>140.0</LeftIndent>
+<content start="2093" end="2094">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2094" end="2259">
+<LeftIndent>140.0</LeftIndent>
+<content start="2094" end="2259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2259" end="2260">
+<LeftIndent>140.0</LeftIndent>
+<content start="2259" end="2260">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2260" end="2262">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2260" end="2261">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>LineInModel$1.mml</resource><menubar>false</menubar><button>Select Object</button><button>Draw Lines</button></component></content>
+
+<content start="2261" end="2262">
+</content>
+
+</paragraph>
+<paragraph start="2262" end="2301">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2262" end="2300">
+<size>10</size></content>
+
+<content start="2300" end="2301">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2301" end="2302">
+<LeftIndent>140.0</LeftIndent>
+<content start="2301" end="2302">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2302" end="2848">
+<LeftIndent>140.0</LeftIndent>
+<content start="2302" end="2322">
+<bold>true</bold><size>11</size><italic>true</italic></content>
+
+<content start="2322" end="2323">
+<bold>true</bold><size>11</size><foreground>255 102 0</foreground><italic>true</italic></content>
+
+<content start="2323" end="2324">
+<size>13</size></content>
+
+<content start="2324" end="2325">
+</content>
+
+<content start="2325" end="2514">
+<size>11</size></content>
+
+<content start="2514" end="2515">
+<size>13</size></content>
+
+<content start="2515" end="2516">
+</content>
+
+<content start="2516" end="2848">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2848" end="2849">
+<LeftIndent>140.0</LeftIndent>
+<content start="2848" end="2849">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2849" end="2864">
+<LeftIndent>140.0</LeftIndent>
+<content start="2849" end="2863">
+<bold>true</bold><size>11</size></content>
+
+<content start="2863" end="2864">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2864" end="2865">
+<LeftIndent>140.0</LeftIndent>
+<content start="2864" end="2865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2865" end="3269">
+<LeftIndent>140.0</LeftIndent>
+<content start="2865" end="2891">
+<size>11</size></content>
+
+<content start="2891" end="2897">
+<size>11</size><family>Courier New</family><href>script_select.cml</href></content>
+
+<content start="2897" end="2943">
+<size>11</size></content>
+
+<content start="2943" end="2949">
+<size>11</size><family>Courier New</family><href>script_remove.cml</href></content>
+
+<content start="2949" end="3024">
+<size>11</size></content>
+
+<content start="3024" end="3030">
+<size>11</size><family>Courier New</family><href>script_select.cml</href></content>
+
+<content start="3030" end="3076">
+<size>11</size></content>
+
+<content start="3076" end="3080">
+<size>11</size><family>Courier New</family><href>script_move.cml</href></content>
+
+<content start="3080" end="3119">
+<size>11</size></content>
+
+<content start="3119" end="3122">
+<size>11</size><family>Courier New</family><href>script_set.cml</href></content>
+
+<content start="3122" end="3269">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3269" end="3270">
+<LeftIndent>140.0</LeftIndent>
+<content start="3269" end="3270">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3270" end="3366">
+<LeftIndent>140.0</LeftIndent>
+<content start="3270" end="3337">
+<size>11</size></content>
+
+<content start="3337" end="3340">
+<size>11</size><family>Courier New</family><href>script_set.cml</href></content>
+
+<content start="3340" end="3366">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3366" end="3367">
+<LeftIndent>140.0</LeftIndent>
+<content start="3366" end="3367">
+</content>
+
+</paragraph>
+<paragraph start="3367" end="3587">
+<LeftIndent>140.0</LeftIndent>
+<content start="3367" end="3420">
+<size>11</size></content>
+
+<content start="3420" end="3423">
+<size>11</size><family>Courier New</family><href>script_set.cml</href></content>
+
+<content start="3423" end="3483">
+<size>11</size></content>
+
+<content start="3483" end="3512">
+<size>11</size><href>selectAction.cml</href></content>
+
+<content start="3512" end="3586">
+<size>11</size></content>
+
+<content start="3586" end="3587">
+</content>
+
+</paragraph>
+<paragraph start="3587" end="3588">
+<LeftIndent>140.0</LeftIndent>
+<content start="3587" end="3588">
+</content>
+
+</paragraph>
+<paragraph start="3588" end="3616">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3588" end="3590">
+<size>11</size></content>
+
+<content start="3590" end="3598">
+<size>11</size><href>TextBoxInModel.cml</href></content>
+
+<content start="3598" end="3601">
+<size>11</size></content>
+
+<content start="3601" end="3606">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="3606" end="3609">
+<size>11</size></content>
+
+<content start="3609" end="3613">
+<size>11</size><href>RectangleInModel.cml</href></content>
+
+<content start="3613" end="3615">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

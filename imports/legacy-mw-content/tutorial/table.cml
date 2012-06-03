@@ -1,0 +1,1031 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a table</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a table
+
+&lt; Previous | Index | Next &gt;
+
+You can insert tables into a page. Choose &quot;Insert&gt;Table&quot; menu (keyboard action: ALT+SHIFT+T), or press the Insert Table Button &quot; &quot; on the tool bar, you will see the following dialog:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+You can customize a table with this dialog. For instance, the followings are some 2x2 tables with different settings:
+
+         
+&#12304;These are embedded tables (editable in the authoring mode).&#12305;
+
+By default, a table comes with 4 columns and 4 rows, with a column header titled &quot;A&quot;, &quot;B&quot;, &quot;C&quot; and &quot;D&quot;. There is no row header. If you would like to have a row header, just type in the text field for &quot;Row names&quot;. If you would like to remove an existing row header, just clear that text field.
+
+Typing in the table
+
+To type something or edit the existing text in the table, click or double-click the cell you want to input or edit. You will see a text field open for the selected cell, as is illustrated by the following screenshot:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+The rectangular inset inside the cell indicates that it is ready to accept inputs. Just type text on it. (Unfortunately, this input is currently limited to a single line.)
+
+Text alignment
+
+To align the text in all cells to the left, center or right, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the table, and select the corresponding items from the &quot;Alignment&quot; sub-menu. Currently, the alignment setting is applied to all cells in the table, as well as the row and column headers.
+
+ 
+&#12304;This is an embedded table, where text is aligned to the right.&#12305;
+
+Removing a row or a column
+
+To remove a row or a column, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the table, and select the corresponding actions from the pop-up menu.
+
+Inserting a row or a column
+
+Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the table. Select the &quot;Insert a Row Above&quot; or &quot;Insert a Row Below&quot; item from the pop-up menu to insert a row, or select the &quot;Insert a Column to the Left&quot; or &quot;Insert a Column to the Right&quot; item to insert a column.
+
+Reordering columns
+
+Columns can be re-ordered in the authoring mode. To move a column to a different position, grab the table header (the bar with the letters &apos;A&apos;, &apos;B&apos;, &apos;C&apos;, and &apos;D&apos; in the following example) at the corresponding column. You will notice that the whole column becomes floatable. Drag it to the new position.
+
+  &#8680;  
+&#12304;These two are embedded tables, whose columns cannot be dragged unless in the authoring mode.&#12305;
+
+Resizing columns
+
+To resize columns, simply drag the lines between the columns in the table header. Note that as the previous settings, columns cannot be resized in the viewing mode. There is, however, an item in the pop-up menu that permits you to set the columns to be resizable, in case some columns become too narrow to show the full text.
+
+  &#8680;  
+[These are embedded tables.]
+
+Naming columns and rows
+
+By default, the columns come with the names &apos;A&apos;, &apos;B&apos;, &apos;C&apos;, &apos;D&apos;, etc. To change the names, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the table. Select the &quot;Customize This Table&quot; item from the pop-up menu. When the dialog window (see the first image on this page) opens, type the new names in the text field labeled &quot;Column names&quot;. Separate the names by a comma, such as &quot;C1, C2, C3, C4&quot;. When the window closes, the new names will be in effect. The names for rows can be set in a similar way.
+
+  &#8680;  
+&#12304;These are embedded tables.&#12305;
+
+HTML support
+
+You can type in HTML text (HTML 3.2) in the table. This can be used to set the color, font type, font size and style of the text. Multiple lines can be used. Images can be used, but currently, it must come from an absolute web address (i.e. its src attribute must start with http, such as &lt;img src=&quot;http://mw2.concord.org/public/cclogo.gif&quot;&gt;). The best way is input HTML text is to create them using a professional tool, and then copy and paste into the table. You can also copy HTML text from a table cell and paste it into another one.
+
+ 
+&#12304;This an embedded table.&#12305;
+
+Other options
+
+You can set the size of the whole table, set the grid color, set the background color, set the spacing between cells (i.e. row margin and column margin), choose to draw horizontal or vertical lines, and set the border.
+
+In the following, we show an example of using tables to write matrices:
+
+This is an identity matrix:   This is a Toeplitz matrix:  
+&#12304;These are embedded tables.&#12305;
+
+At this time, what you can do with tables on an MW page is limited to tabulating data and items. Many functions you have in Microsoft Word&#8482; for manipulating tables have not been implemented.
+
+Changing and removing a table
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove, and copy a table.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4827">
+<paragraph start="0" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="17">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="47">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="21">
+<size>11</size></content>
+
+<content start="21" end="29">
+<size>11</size><href>textbox.cml</href></content>
+
+<content start="29" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<size>11</size><href>message.cml</href></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="231">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="176">
+<size>11</size></content>
+
+<content start="176" end="177">
+<icon>Table.gif</icon><size>11</size></content>
+
+<content start="177" end="231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="231" end="232">
+<LeftIndent>100.0</LeftIndent>
+<content start="231" end="232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="232" end="235">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="232" end="233">
+<size>11</size></content>
+
+<content start="233" end="234">
+<icon>TableDialog.gif</icon><size>11</size></content>
+
+<content start="234" end="235">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="235" end="259">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="235" end="236">
+<bold>true</bold><size>13</size></content>
+
+<content start="236" end="257">
+<size>10</size></content>
+
+<content start="257" end="258">
+<bold>true</bold><size>13</size></content>
+
+<content start="258" end="259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="259" end="260">
+<LeftIndent>100.0</LeftIndent>
+<content start="259" end="260">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="260" end="378">
+<LeftIndent>140.0</LeftIndent>
+<content start="260" end="378">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="378" end="379">
+<LeftIndent>100.0</LeftIndent>
+<content start="378" end="379">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="379" end="389">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="379" end="380">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>Column 1, Column 2</columnname>
+<rowname>Row 1, Row 2</rowname>
+<row>2</row>
+<column>2</column>
+<layout>77, 77</layout>
+<width>200.0</width>
+<height>100.0</height>
+<bgcolor>-330034</bgcolor>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>Cell (1,1)</te><te>Cell (1,2)</te><te>Cell (2,1)</te><te>Cell (2,2)</te></elementarray>
+</component></content>
+
+<content start="380" end="383">
+</content>
+
+<content start="383" end="384">
+<component><class>org.concord.modeler.PageTable</class>
+<row>2</row>
+<column>2</column>
+<layout>80, 80</layout>
+<width>160.0</width>
+<height>100.0</height>
+<bgcolor>-333301</bgcolor>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>Cell (1,1)</te><te>Cell (1,2)</te><te>Cell (2,1)</te><te>Cell (2,2)</te></elementarray>
+</component></content>
+
+<content start="384" end="387">
+</content>
+
+<content start="387" end="388">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>Column 1, Column 2</columnname>
+<row>2</row>
+<column>2</column>
+<layout>100, 100</layout>
+<width>200.0</width>
+<height>100.0</height>
+<hline>false</hline>
+<vline>true</vline>
+<elementarray><te>Cell (1,1)</te><te>Cell (1,2)</te><te>Cell (2,1)</te><te>Cell (2,2)</te></elementarray>
+</component></content>
+
+<content start="388" end="389">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="389" end="451">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="389" end="390">
+<bold>true</bold><size>13</size></content>
+
+<content start="390" end="449">
+<size>10</size></content>
+
+<content start="449" end="450">
+<bold>true</bold><size>13</size></content>
+
+<content start="450" end="451">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="451" end="452">
+<LeftIndent>140.0</LeftIndent>
+<content start="451" end="452">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="452" end="745">
+<LeftIndent>140.0</LeftIndent>
+<content start="452" end="745">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="745" end="746">
+<LeftIndent>140.0</LeftIndent>
+<content start="745" end="746">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="746" end="766">
+<LeftIndent>140.0</LeftIndent>
+<content start="746" end="765">
+<bold>true</bold><size>11</size></content>
+
+<content start="765" end="766">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="766" end="767">
+<LeftIndent>140.0</LeftIndent>
+<content start="766" end="767">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="767" end="984">
+<LeftIndent>140.0</LeftIndent>
+<content start="767" end="984">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="984" end="985">
+<LeftIndent>140.0</LeftIndent>
+<content start="984" end="985">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="985" end="988">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="985" end="986">
+<size>11</size></content>
+
+<content start="986" end="987">
+<italic>true</italic><icon>CellEditState.gif</icon><size>11</size></content>
+
+<content start="987" end="988">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="988" end="1012">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="988" end="989">
+<bold>true</bold><size>13</size></content>
+
+<content start="989" end="1010">
+<size>10</size></content>
+
+<content start="1010" end="1011">
+<bold>true</bold><size>13</size></content>
+
+<content start="1011" end="1012">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1012" end="1013">
+<LeftIndent>140.0</LeftIndent>
+<content start="1012" end="1013">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1013" end="1185">
+<LeftIndent>140.0</LeftIndent>
+<content start="1013" end="1185">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1185" end="1186">
+<LeftIndent>140.0</LeftIndent>
+<content start="1185" end="1186">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1186" end="1201">
+<LeftIndent>140.0</LeftIndent>
+<content start="1186" end="1200">
+<bold>true</bold><size>11</size></content>
+
+<content start="1200" end="1201">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1201" end="1202">
+<LeftIndent>140.0</LeftIndent>
+<content start="1201" end="1202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1202" end="1525">
+<LeftIndent>140.0</LeftIndent>
+<content start="1202" end="1525">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1525" end="1526">
+<LeftIndent>140.0</LeftIndent>
+<content start="1525" end="1526">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1526" end="1528">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1526" end="1527">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>H, He, Li, Be</columnname>
+<rowname>Number, Name, Electrons</rowname>
+<row>3</row>
+<column>4</column>
+<layout>59, 59, 59, 59</layout>
+<cellalign>4</cellalign>
+<width>300.0</width>
+<height>125.0</height>
+<bgcolor>-333301</bgcolor>
+<border>Lowered Etched</border>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>1</te><te>2</te><te>3</te><te>4</te><te>Hydrogen</te><te>Helium</te><te>Lithium</te><te>Beryllium</te><te>&lt;html&gt;1s&lt;sup&gt;1&lt;/html&gt;</te><te>&lt;html&gt;1s&lt;sup&gt;2&lt;/html&gt;</te><te>&lt;html&gt;1s&lt;sup&gt;2&lt;/sup&gt;2s&lt;sup&gt;1&lt;/sup&gt;&lt;/html&gt;</te><te>&lt;html&gt;1s&lt;sup&gt;2&lt;/sup&gt;2s&lt;sup&gt;2&lt;/sup&gt;&lt;/html&gt;</te></elementarray>
+</component></content>
+
+<content start="1527" end="1528">
+</content>
+
+</paragraph>
+<paragraph start="1528" end="1593">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1528" end="1529">
+<bold>true</bold><size>13</size></content>
+
+<content start="1529" end="1591">
+<size>10</size></content>
+
+<content start="1591" end="1592">
+<bold>true</bold><size>13</size></content>
+
+<content start="1592" end="1593">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1593" end="1594">
+<LeftIndent>140.0</LeftIndent>
+<content start="1593" end="1594">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1594" end="1621">
+<LeftIndent>140.0</LeftIndent>
+<content start="1594" end="1620">
+<bold>true</bold><size>11</size></content>
+
+<content start="1620" end="1621">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1621" end="1622">
+<LeftIndent>140.0</LeftIndent>
+<content start="1621" end="1622">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1622" end="1796">
+<LeftIndent>140.0</LeftIndent>
+<content start="1622" end="1796">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1796" end="1797">
+<LeftIndent>140.0</LeftIndent>
+<content start="1796" end="1797">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1797" end="1825">
+<LeftIndent>140.0</LeftIndent>
+<content start="1797" end="1824">
+<bold>true</bold><size>11</size></content>
+
+<content start="1824" end="1825">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1825" end="1826">
+<LeftIndent>140.0</LeftIndent>
+<content start="1825" end="1826">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1826" end="2114">
+<LeftIndent>140.0</LeftIndent>
+<content start="1826" end="2114">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2114" end="2115">
+<LeftIndent>140.0</LeftIndent>
+<content start="2114" end="2115">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2115" end="2134">
+<LeftIndent>140.0</LeftIndent>
+<content start="2115" end="2133">
+<bold>true</bold><size>11</size></content>
+
+<content start="2133" end="2134">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2134" end="2135">
+<LeftIndent>140.0</LeftIndent>
+<content start="2134" end="2135">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2135" end="2438">
+<LeftIndent>140.0</LeftIndent>
+<content start="2135" end="2438">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2438" end="2439">
+<LeftIndent>140.0</LeftIndent>
+<content start="2438" end="2439">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2439" end="2445">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2439" end="2440">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>A, B, C, D</columnname>
+<row>4</row>
+<column>4</column>
+<layout>50, 50, 50, 50</layout>
+<cellalign>0</cellalign>
+<width>200.0</width>
+<height>120.0</height>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>1</te><te></te><te></te><te></te><te></te><te>2</te><te></te><te></te><te></te><te></te><te>3</te><te></te><te></te><te></te><te></te><te>4</te></elementarray>
+</component></content>
+
+<content start="2440" end="2441">
+</content>
+
+<content start="2441" end="2442">
+<size>30</size></content>
+
+<content start="2442" end="2443">
+</content>
+
+<content start="2443" end="2444">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>B, A, C, D</columnname>
+<row>4</row>
+<column>4</column>
+<layout>50, 50, 50, 50</layout>
+<cellalign>0</cellalign>
+<width>200.0</width>
+<height>120.0</height>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te></te><te>1</te><te></te><te></te><te>2</te><te></te><te></te><te></te><te></te><te></te><te>3</te><te></te><te></te><te></te><te></te><te>4</te></elementarray>
+</component></content>
+
+<content start="2444" end="2445">
+</content>
+
+</paragraph>
+<paragraph start="2445" end="2540">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2445" end="2446">
+<bold>true</bold><size>13</size></content>
+
+<content start="2446" end="2538">
+<size>10</size></content>
+
+<content start="2538" end="2539">
+<bold>true</bold><size>13</size></content>
+
+<content start="2539" end="2540">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2540" end="2541">
+<LeftIndent>140.0</LeftIndent>
+<content start="2540" end="2541">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2541" end="2558">
+<LeftIndent>140.0</LeftIndent>
+<content start="2541" end="2557">
+<bold>true</bold><size>11</size></content>
+
+<content start="2557" end="2558">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2558" end="2559">
+<LeftIndent>140.0</LeftIndent>
+<content start="2558" end="2559">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2559" end="2885">
+<LeftIndent>140.0</LeftIndent>
+<content start="2559" end="2885">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2885" end="2886">
+<LeftIndent>140.0</LeftIndent>
+<content start="2885" end="2886">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2886" end="2892">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2886" end="2887">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>A, B, C, D</columnname>
+<row>4</row>
+<column>4</column>
+<layout>50, 50, 50, 50</layout>
+<width>200.0</width>
+<height>120.0</height>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>1</te><te></te><te></te><te></te><te></te><te>2</te><te></te><te></te><te></te><te></te><te>3</te><te></te><te></te><te></te><te></te><te>4</te></elementarray>
+</component></content>
+
+<content start="2887" end="2888">
+</content>
+
+<content start="2888" end="2889">
+<size>30</size></content>
+
+<content start="2889" end="2890">
+</content>
+
+<content start="2890" end="2891">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>A, B, C, D</columnname>
+<row>4</row>
+<column>4</column>
+<layout>106, 32, 31, 31</layout>
+<width>200.0</width>
+<height>120.0</height>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>1</te><te></te><te></te><te></te><te></te><te>2</te><te></te><te></te><te></te><te></te><te>3</te><te></te><te></te><te></te><te></te><te>4</te></elementarray>
+</component></content>
+
+<content start="2891" end="2892">
+</content>
+
+</paragraph>
+<paragraph start="2892" end="2921">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2892" end="2920">
+<size>10</size></content>
+
+<content start="2920" end="2921">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2921" end="2922">
+<LeftIndent>140.0</LeftIndent>
+<content start="2921" end="2922">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2922" end="2946">
+<LeftIndent>140.0</LeftIndent>
+<content start="2922" end="2945">
+<bold>true</bold><size>11</size></content>
+
+<content start="2945" end="2946">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2946" end="2947">
+<LeftIndent>140.0</LeftIndent>
+<content start="2946" end="2947">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2947" end="3472">
+<LeftIndent>140.0</LeftIndent>
+<content start="2947" end="3310">
+<size>11</size></content>
+
+<content start="3310" end="3339">
+<bold>true</bold><size>11</size></content>
+
+<content start="3339" end="3472">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3472" end="3473">
+<LeftIndent>140.0</LeftIndent>
+<content start="3472" end="3473">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3473" end="3479">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3473" end="3474">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>A, B, C, D</columnname>
+<rowname>a, b, c, d</rowname>
+<row>4</row>
+<column>4</column>
+<layout>45, 44, 45, 44</layout>
+<width>200.0</width>
+<height>120.0</height>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>1</te><te></te><te></te><te></te><te></te><te>2</te><te></te><te></te><te></te><te></te><te>3</te><te></te><te></te><te></te><te></te><te>4</te></elementarray>
+</component></content>
+
+<content start="3474" end="3475">
+</content>
+
+<content start="3475" end="3476">
+<size>30</size></content>
+
+<content start="3476" end="3477">
+</content>
+
+<content start="3477" end="3478">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>C1, C2, C3, C4</columnname>
+<rowname>R1, R2, R3, R4</rowname>
+<row>4</row>
+<column>4</column>
+<layout>43, 43, 43, 42</layout>
+<width>200.0</width>
+<height>120.0</height>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>1</te><te></te><te></te><te></te><te></te><te>2</te><te></te><te></te><te></te><te></te><te>3</te><te></te><te></te><te></te><te></te><te>4</te></elementarray>
+</component></content>
+
+<content start="3478" end="3479">
+</content>
+
+</paragraph>
+<paragraph start="3479" end="3508">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3479" end="3480">
+<bold>true</bold><size>13</size></content>
+
+<content start="3480" end="3506">
+<size>10</size></content>
+
+<content start="3506" end="3507">
+<bold>true</bold><size>13</size></content>
+
+<content start="3507" end="3508">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3508" end="3509">
+<LeftIndent>140.0</LeftIndent>
+<content start="3508" end="3509">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3509" end="3522">
+<LeftIndent>140.0</LeftIndent>
+<content start="3509" end="3521">
+<bold>true</bold><size>11</size></content>
+
+<content start="3521" end="3522">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3522" end="3523">
+<LeftIndent>140.0</LeftIndent>
+<content start="3522" end="3523">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3523" end="4061">
+<LeftIndent>140.0</LeftIndent>
+<content start="3523" end="3719">
+<size>11</size></content>
+
+<content start="3719" end="3723">
+<bold>true</bold><size>11</size></content>
+
+<content start="3723" end="4061">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4061" end="4062">
+<LeftIndent>140.0</LeftIndent>
+<content start="4061" end="4062">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4062" end="4064">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4062" end="4063">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>Style, Multiline, Font</columnname>
+<row>2</row>
+<column>3</column>
+<layout>60, 170, 170</layout>
+<width>400.0</width>
+<height>300.0</height>
+<fgcolor>-1</fgcolor>
+<bgcolor>-9a</bgcolor>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>&lt;html&gt;&lt;font size=&quot;4&quot;&gt;&lt;b&gt;BOLD&lt;/b&gt;&lt;/font&gt;&lt;/html&gt;</te><te>&lt;html&gt;&lt;font size=&quot;3&quot;&gt;Line 1&lt;br&gt;Line 2&lt;/font&gt;&lt;/html&gt;</te><te>&lt;html&gt;&lt;font color=&quot;#0000ff&quot; size=&quot;4&quot;&gt;&lt;b&gt;An image&lt;/b&gt;&lt;/font&gt;&lt;p&gt;&lt;img src=&quot;http://mw.concord.org/modeler1.3/cclogo.gif&quot;&lt;/html&gt;</te><te>&lt;html&gt;&lt;font size=&quot;4&quot;&gt;&lt;i&gt;Italic&lt;/i&gt;&lt;/font&gt;&lt;/html&gt;</te><te>&lt;html&gt;&lt;font size=&quot;3&quot;&gt;A HTML table:&lt;p&gt;&lt;center&gt;&lt;table bgcolor=&quot;#00ffff&quot; border=&quot;2&quot;&gt;&lt;tr&gt;&lt;td&gt;c11&lt;/td&gt;&lt;td&gt;c12&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;c12&lt;/td&gt;&lt;td&gt;c22&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/center&gt;&lt;/font&gt;&lt;/html&gt;</te><te>&lt;html&gt;&lt;font size=&quot;4&quot;&gt;&lt;u&gt;Underline&lt;/u&gt;&lt;/font&gt;:&lt;p&gt;&lt;ul&gt;&lt;li&gt;One&lt;li&gt;Two&lt;/ul&gt;&lt;/html&gt;</te></elementarray>
+</component></content>
+
+<content start="4063" end="4064">
+</content>
+
+</paragraph>
+<paragraph start="4064" end="4090">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4064" end="4065">
+<bold>true</bold><size>13</size></content>
+
+<content start="4065" end="4088">
+<size>10</size></content>
+
+<content start="4088" end="4089">
+<bold>true</bold><size>13</size></content>
+
+<content start="4089" end="4090">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4090" end="4091">
+<LeftIndent>140.0</LeftIndent>
+<content start="4090" end="4091">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4091" end="4105">
+<LeftIndent>140.0</LeftIndent>
+<content start="4091" end="4104">
+<bold>true</bold><size>11</size></content>
+
+<content start="4104" end="4105">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4105" end="4106">
+<LeftIndent>140.0</LeftIndent>
+<content start="4105" end="4106">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4106" end="4325">
+<LeftIndent>140.0</LeftIndent>
+<content start="4106" end="4325">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4325" end="4326">
+<LeftIndent>140.0</LeftIndent>
+<content start="4325" end="4326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4326" end="4398">
+<LeftIndent>140.0</LeftIndent>
+<content start="4326" end="4398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4398" end="4399">
+<LeftIndent>140.0</LeftIndent>
+<content start="4398" end="4399">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4399" end="4458">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4399" end="4427">
+<size>11</size></content>
+
+<content start="4427" end="4428">
+</content>
+
+<content start="4428" end="4429">
+<component><class>org.concord.modeler.PageTable</class>
+<row>4</row>
+<column>4</column>
+<layout>40, 40, 40, 40</layout>
+<width>160.0</width>
+<height>100.0</height>
+<fgcolor>-1</fgcolor>
+<hline>false</hline>
+<vline>false</vline>
+<elementarray><te>1</te><te>0</te><te>0</te><te>0</te><te>0</te><te>1</te><te>0</te><te>0</te><te>0</te><te>0</te><te>1</te><te>0</te><te>0</te><te>0</te><te>0</te><te>1</te></elementarray>
+</component></content>
+
+<content start="4429" end="4456">
+<size>11</size></content>
+
+<content start="4456" end="4457">
+<component><class>org.concord.modeler.PageTable</class>
+<row>4</row>
+<column>4</column>
+<layout>40, 40, 40, 40</layout>
+<width>160.0</width>
+<height>100.0</height>
+<fgcolor>-1</fgcolor>
+<hline>false</hline>
+<vline>false</vline>
+<elementarray><te>m1</te><te>m2</te><te>m3</te><te>m4</te><te>0</te><te>m1</te><te>m2</te><te>m3</te><te>0</te><te>0</te><te>m1</te><te>m2</te><te>0</te><te>0</te><te>0</te><te>m1</te></elementarray>
+</component></content>
+
+<content start="4457" end="4458">
+</content>
+
+</paragraph>
+<paragraph start="4458" end="4487">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="4458" end="4459">
+<bold>true</bold><size>13</size></content>
+
+<content start="4459" end="4485">
+<size>10</size></content>
+
+<content start="4485" end="4486">
+<bold>true</bold><size>13</size></content>
+
+<content start="4486" end="4487">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4487" end="4488">
+<LeftIndent>140.0</LeftIndent>
+<content start="4487" end="4488">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4488" end="4679">
+<LeftIndent>140.0</LeftIndent>
+<content start="4488" end="4626">
+<size>11</size></content>
+
+<content start="4626" end="4627">
+</content>
+
+<content start="4627" end="4679">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4679" end="4680">
+<LeftIndent>140.0</LeftIndent>
+<content start="4679" end="4680">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4680" end="4710">
+<LeftIndent>140.0</LeftIndent>
+<content start="4680" end="4709">
+<bold>true</bold><size>11</size></content>
+
+<content start="4709" end="4710">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4710" end="4711">
+<LeftIndent>140.0</LeftIndent>
+<content start="4710" end="4711">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4711" end="4798">
+<LeftIndent>140.0</LeftIndent>
+<content start="4711" end="4716">
+<size>11</size></content>
+
+<content start="4716" end="4745">
+<size>11</size><href>changeComponent.cml</href></content>
+
+<content start="4745" end="4797">
+<size>11</size></content>
+
+<content start="4797" end="4798">
+</content>
+
+</paragraph>
+<paragraph start="4798" end="4799">
+<content start="4798" end="4799">
+</content>
+
+</paragraph>
+<paragraph start="4799" end="4827">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="4799" end="4801">
+<size>11</size></content>
+
+<content start="4801" end="4809">
+<size>11</size><href>textbox.cml</href></content>
+
+<content start="4809" end="4812">
+<size>11</size></content>
+
+<content start="4812" end="4817">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="4817" end="4820">
+<size>11</size></content>
+
+<content start="4820" end="4824">
+<size>11</size><href>message.cml</href></content>
+
+<content start="4824" end="4826">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

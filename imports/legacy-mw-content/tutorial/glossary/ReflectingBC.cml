@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Reflectory boundary conditions</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Reflectory boundary conditions
+
+Boundary conditions are computational protocols about what to do when a particle meets a boundary. The reflectory boundary conditions stipulate that a particle bounces back when it meets a boundary.
+
+See: periodic boundary conditions, composite boundary conditions.
+
+   
+ return to index</text>
+<section start="0" end="320">
+<paragraph start="0" end="31">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="30">
+<size>20</size><bold>true</bold><family>Bookman Old Style</family></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<LeftIndent>120.0</LeftIndent>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="231">
+<LeftIndent>140.0</LeftIndent>
+<content start="32" end="231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="231" end="232">
+<LeftIndent>140.0</LeftIndent>
+<content start="231" end="232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="232" end="298">
+<LeftIndent>140.0</LeftIndent>
+<content start="232" end="237">
+<size>11</size></content>
+
+<content start="237" end="265">
+<href>PeriodicBC.cml</href><size>11</size></content>
+
+<content start="265" end="267">
+<size>11</size></content>
+
+<content start="267" end="296">
+<href>CompositeBC.cml</href><size>11</size></content>
+
+<content start="296" end="297">
+<size>11</size></content>
+
+<content start="297" end="298">
+</content>
+
+</paragraph>
+<paragraph start="298" end="299">
+<LeftIndent>120.0</LeftIndent>
+<content start="298" end="299">
+</content>
+
+</paragraph>
+<paragraph start="299" end="303">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="299" end="300">
+</content>
+
+<content start="300" end="301">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="301" end="303">
+</content>
+
+</paragraph>
+<paragraph start="303" end="320">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="303" end="304">
+</content>
+
+<content start="304" end="319">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

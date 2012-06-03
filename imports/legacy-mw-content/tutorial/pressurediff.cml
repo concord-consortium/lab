@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Pressure equilibrium measured by pressure gauges</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Pressure equilibrium measured by gauges
+
+&lt; Previous | Index | Next &gt;
+
+The second test of the pressure gauge is to make the osbtacle a piston, put two gauges on both surfaces and monitor the measured pressures. We should be able to relate the measured results with the motion of the piston, as the piston is completely driven by the pressure difference, plus a damping force. Because of the damping force, the piston should stop but not oscillate when the pressures from both compartments measure approximately the same.
+
+Does this happen? Try it out with the following experiment:
+
+  
+&#12304;This is an embedded model container.&#12305;
+
+Not surprisingly, the piston stops when the pressure curves converge.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="724">
+<paragraph start="0" end="40">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="39">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="69">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="51">
+<href>multipressureprobe.cml</href><size>11</size></content>
+
+<content start="51" end="54">
+<size>11</size></content>
+
+<content start="54" end="59">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="59" end="62">
+<size>11</size></content>
+
+<content start="62" end="66">
+<href>isopressure.cml</href><size>11</size></content>
+
+<content start="66" end="68">
+<size>11</size></content>
+
+<content start="68" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="70">
+<LeftIndent>140.0</LeftIndent>
+<content start="69" end="70">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="70" end="520">
+<LeftIndent>140.0</LeftIndent>
+<content start="70" end="520">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="520" end="521">
+<LeftIndent>140.0</LeftIndent>
+<content start="520" end="521">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="521" end="581">
+<LeftIndent>140.0</LeftIndent>
+<content start="521" end="581">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="581" end="582">
+<LeftIndent>140.0</LeftIndent>
+<content start="581" end="582">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="582" end="585">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="582" end="583">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>pressurediff$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="583" end="584">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="0" size="4" spacing="5">West pressure:Obstacle #0</time_series_y1>
+<time_series_y2 color="-1000000" style="2" width="1.0" symbol="0" size="4" spacing="5">East pressure:Obstacle #0</time_series_y2>
+<autofity>false</autofity>
+<axis_y_min>0.0</axis_y_min>
+<axis_y_max>4.0</axis_y_max>
+<width>300</width>
+<height>284</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Pressure (bar)</axis_y_title>
+<legend_x>50</legend_x>
+<legend_y>45</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="584" end="585">
+</content>
+
+</paragraph>
+<paragraph start="585" end="624">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="585" end="623">
+<size>10</size></content>
+
+<content start="623" end="624">
+</content>
+
+</paragraph>
+<paragraph start="624" end="625">
+<LeftIndent>140.0</LeftIndent>
+<content start="624" end="625">
+</content>
+
+</paragraph>
+<paragraph start="625" end="695">
+<LeftIndent>140.0</LeftIndent>
+<content start="625" end="695">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="695" end="696">
+<LeftIndent>140.0</LeftIndent>
+<content start="695" end="696">
+</content>
+
+</paragraph>
+<paragraph start="696" end="724">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="696" end="698">
+<size>11</size></content>
+
+<content start="698" end="706">
+<href>multipressureprobe.cml</href><size>11</size></content>
+
+<content start="706" end="709">
+<size>11</size></content>
+
+<content start="709" end="714">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="714" end="717">
+<size>11</size></content>
+
+<content start="717" end="721">
+<href>isopressure.cml</href><size>11</size></content>
+
+<content start="721" end="723">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -32,6 +32,7 @@ layout.cancelFullScreen = false;
 layout.screen_factor = 1;
 layout.checkbox_factor = 1.1;
 layout.checkbox_scale = 1.1;
+layout.fullScreenRender = false;
 
 layout.canonical.width  = 1280;
 layout.canonical.height = 800;
@@ -59,6 +60,11 @@ layout.getDisplayProperties = function(obj) {
   return obj;
 };
 
+layout.screenEqualsPage = function() {
+  return ((layout.display.screen.width  === layout.display.page.width) ||
+          (layout.display.screen.height === layout.display.page.height))
+};
+
 layout.checkForResize = function() {
   if ((layout.display.screen.width  != screen.width) ||
       (layout.display.screen.height != screen.height) ||
@@ -80,7 +86,8 @@ layout.setupScreen = function(viewLists) {
   }
 
 
-  if(fullscreen) {
+  if(fullscreen || layout.fullScreenRender  || layout.screenEqualsPage()) {
+    layout.fullScreenRender = true;
     layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
     layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
     layout.screen_factor = layout.screen_factor_height;
@@ -89,30 +96,46 @@ layout.setupScreen = function(viewLists) {
     layout.not_rendered = true;
     switch (layout.selection) {
 
+      // fluid layout
       case "simple-screen":
-      setupSimpleFullScreenMoleculeContainer();
-      setupFullScreenDescriptionRight();
-      break;
-
-      case "simple-static-screen":
       if (layout.not_rendered) {
         setupSimpleFullScreenMoleculeContainer();
-        setupDescriptionRight();
       }
       break;
 
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
+      case "simple-static-screen":
+      if (layout.not_rendered) {
+        setupSimpleFullScreenMoleculeContainer();
+      }
+      break;
+
+      // fluid (but normally the iframe doesn't expose the full-screen action)
       case "simple-iframe":
       setupSimpleFullScreenMoleculeContainer();
       setupFullScreenDescriptionRight();
       break;
 
+      // fluid layout
+      case "compare-screen":
+      var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
+      compareScreen();
+      layout.not_rendered = false;
+      break;
+
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
       default:
-      setupFullScreen();
+      if (layout.not_rendered) {
+        setupFullScreen();
+      }
       break;
     }
   } else {
-    if (layout.cancelFullScreen) {
+    if (layout.cancelFullScreen || layout.fullScreenRender) {
       layout.cancelFullScreen = false;
+      layout.fullScreenRender = false;
+      layout.not_rendered = true;
       layout.regular_display = layout.previous_display;
     } else {
       layout.regular_display = layout.getDisplayProperties();
@@ -123,12 +146,14 @@ layout.setupScreen = function(viewLists) {
     layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
     switch (layout.selection) {
 
+      // fluid layout
       case "simple-screen":
-      layout.bodycss.style.fontSize = layout.screen_factor + 'em';
-      setupSimpleMoleculeContainer();
-      setupDescriptionRight();
+      var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
+      simpleScreen();
       break;
 
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
       case "simple-static-screen":
       if (layout.not_rendered) {
         var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
@@ -138,19 +163,28 @@ layout.setupScreen = function(viewLists) {
       }
       break;
 
+      // fluid layout
       case "simple-iframe":
       var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
       layout.bodycss.style.fontSize = emsize + 'em';
       setupSimpleIFrameScreen();
       break;
 
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
       case "full-static-screen":
       if (layout.not_rendered) {
         var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
         layout.bodycss.style.fontSize = emsize + 'em';
-        setupRegularScreen();
+        regularScreen();
         layout.not_rendered = false;
       }
+      break;
+
+      // fluid layout
+      case "compare-screen":
+      var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
+      compareScreen();
       break;
 
       default:
@@ -177,61 +211,120 @@ layout.setupScreen = function(viewLists) {
   //
   // Regular Screen Layout
   //
-  function setupRegularScreen() {
-    var i, width, height, mcsize, widthToPageRatio;
-    height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.40);
-    i = -1;  while(++i < viewLists.moleculeContainers.length) {
-      viewLists.moleculeContainers[i].resize(height, height);
-    };
+  function regularScreen() {
+    var i, width, height, mcsize, 
+        rightHeight, rightHalfWidth, rightQuarterWidth,
+        widthToPageRatio, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
+
+    mcsize = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    widthToPageRatio = mcsize[0] / pageWidth;
+    width = pageWidth * 0.46;
+    height = width * 1/modelAspectRatio;
+    if (height > pageHeight*0.70) {
+      height = pageHeight * 0.70;
+      width * height * modelAspectRatio;
+    }
     // HACK that will normally only work with one moleculeContainer
     // or if all the moleculeContainers end up the same width
-    mcsize = viewLists.moleculeContainers[0].scale();
-    widthToPageRatio = mcsize[0] / layout.display.page.width;
-    width = (layout.display.page.width - mcsize[0]) * 0.34;
-    height = layout.display.page.height * 0.30;
+    i = -1;  while(++i < viewLists.moleculeContainers.length) {
+      viewLists.moleculeContainers[i].resize(width, height);
+    }
+    rightQuarterWidth = (pageWidth - width) * 0.415;
+    rightHeight = height * 0.42;
     i = -1;  while(++i < viewLists.potentialCharts.length) {
-      viewLists.potentialCharts[i].resize(width, height);
-    };
-    width = (layout.display.page.width - mcsize[0]) * 0.34;
-    height = layout.display.page.height * 0.30;
+      viewLists.potentialCharts[i].resize(rightQuarterWidth, rightHeight);
+    }
     i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
-      viewLists.speedDistributionCharts[i].resize(width, height);
-    };
-    width = (layout.display.page.width - mcsize[0]) * 0.70;
-    height = layout.display.page.height * 0.39 + 0;
+      viewLists.speedDistributionCharts[i].resize(rightQuarterWidth, rightHeight);
+    }
+    rightHalfWidth = (pageWidth - width) * 0.86;
+    rightHeight = height * 0.57;
     i = -1;  while(++i < viewLists.energyCharts.length) {
-      viewLists.energyCharts[i].resize(width, height);
-    };
+      viewLists.energyCharts[i].resize(rightHalfWidth, rightHeight);
+    }
+  }
+
+  //
+  // Compare Screen Layout
+  //
+  function compareScreen() {
+    var i, width, height, mcsize, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
+
+    mcsize = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    width = pageWidth * 0.44;
+    height = width * 1/modelAspectRatio;
+    // HACK that will normally only work with one moleculeContainer
+    // or if all the moleculeContainers end up the same width
+    i = -1;  while(++i < viewLists.moleculeContainers.length) {
+      viewLists.moleculeContainers[i].resize(width, height);
+    }
+    i = -1;  while(++i < viewLists.appletContainers.length) {
+      viewLists.appletContainers[i].resize(width, height);
+    }
   }
 
   //
   // Full Screen Layout
   //
   function setupFullScreen() {
-    var i, width, height;
-    height = layout.display.page.height * 0.70;
+    var i, width, height, mcsize, 
+        rightHeight, rightHalfWidth, rightQuarterWidth,
+        widthToPageRatio, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
+
+    mcsize = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    widthToPageRatio = mcsize[0] / pageWidth;
+    width = pageWidth * 0.46;
+    height = width * 1/modelAspectRatio;
+    if (height > pageHeight*0.70) {
+      height = pageHeight * 0.70;
+      width * height * modelAspectRatio;
+    }
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
-      viewLists.moleculeContainers[i].resize(height, height);
-    };
-    width = layout.display.page.width * 0.24;
-    height = layout.display.page.height * 0.35;
+      viewLists.moleculeContainers[i].resize(width, height);
+    }
+    rightQuarterWidth = (pageWidth - width) * 0.41;
+    rightHeight = height * 0.42;
     i = -1;  while(++i < viewLists.potentialCharts.length) {
-      viewLists.potentialCharts[i].resize(width, height);
-    };
-    width = layout.display.page.width * 0.22;
-    height = layout.display.page.height * 0.35;
+      viewLists.potentialCharts[i].resize(rightQuarterWidth, rightHeight);
+    }
     i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
-      viewLists.speedDistributionCharts[i].resize(width, height);
-    };
-    width = layout.display.page.width * 0.47 + 5;
-    height = layout.display.page.height * 0.40 + 0;
+      viewLists.speedDistributionCharts[i].resize(rightQuarterWidth, rightHeight);
+    }
+    rightHalfWidth = (pageWidth - width) * 0.86;
+    rightHeight = height * 0.57;
     i = -1;  while(++i < viewLists.energyCharts.length) {
-      viewLists.energyCharts[i].resize(width, height);
-    };
+      viewLists.energyCharts[i].resize(rightHalfWidth, rightHeight);
+    }
   }
 
   //
   // Simple Screen Layout
+  //
+  function simpleScreen() {
+    var i, width, height, mcsize, widthToPageRatio;
+
+    height = Math.min(layout.display.page.height * 0.50, layout.display.page.width * 0.53);
+    viewLists.moleculeContainers[0].resize(height, height);
+    mcsize = viewLists.moleculeContainers[0].scale();
+    widthToPageRatio = mcsize[0] / layout.display.page.width;
+    if (widthToPageRatio > 0.53) {
+      height *= (0.53 / widthToPageRatio);
+      viewLists.moleculeContainers[0].resize(height, height);
+    }
+    viewLists.thermometers[0].resize();
+  }
+
+  //
+  // Simple Static Screen Layout
   //
   function simpleStaticScreen() {
     var i, width, height, mcsize, widthToPageRatio,
@@ -248,22 +341,31 @@ layout.setupScreen = function(viewLists) {
       //   description_right.style.width = (layout.display.page.width - mcsize[0]) * 0.50 + "px";
       // }
     }
+    viewLists.thermometers[0].resize();
   }
 
   //
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameScreen() {
-    var i, width, height, mcsize, widthToPageRatio;
+    var i, width, height, mcsize, 
+        rightHeight, rightHalfWidth, rightQuarterWidth,
+        widthToPageRatio, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
 
-    height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
-    viewLists.moleculeContainers[0].resize(height, height);
     mcsize = viewLists.moleculeContainers[0].scale();
-    widthToPageRatio = mcsize[0] / layout.display.page.width;
-    if (widthToPageRatio > 0.75) {
-      height *= (0.75 / widthToPageRatio);
-      viewLists.moleculeContainers[0].resize(height, height);
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    widthToPageRatio = mcsize[0] / pageWidth;
+    width = pageWidth * 0.80;
+    height = width * 1/modelAspectRatio;
+    if (height > pageHeight * 0.80) {
+      height = pageHeight * 0.80;
+      width * height * modelAspectRatio;
     }
+    viewLists.moleculeContainers[0].resize(width, height);
+    mcsize = viewLists.moleculeContainers[0].scale();
+    viewLists.thermometers[0].resize();
   }
 
   //
@@ -358,6 +460,128 @@ layout.transform = layout.getTransformProperty(document.body);
 
 // ------------------------------------------------------------
 //
+//   Applet Container
+//
+// ------------------------------------------------------------
+
+layout.appletContainer = function(e, options) {
+  var elem = d3.select(e),
+      node = elem.node(),
+      cx = elem.property("clientWidth"),
+      cy = elem.property("clientHeight"),
+      applet, appletString,
+      appletWidth, appletHeight, appletAspectRatio,
+      width, height,
+      scale_factor,
+      padding, size,
+      mw, mh, tx, ty, stroke,
+      default_options = {
+        appletID:             "mw-applet",
+        codebase:             "/jnlp",
+        code:                 "org.concord.modeler.MwApplet",
+        width:                "100%",
+        height:               "100%",
+        archive:              "org/concord/modeler/mw.jar",
+        align:                "left",
+        hspace:               "5",
+        vspace:               "5",
+        params: [
+          ["script", "page:0:import /imports/legacy-mw-content/potential-tests/two-atoms-two-elements/two-atoms-two-elements.cml"]
+        ]
+      };
+
+  if (options) {
+    for(var p in default_options) {
+      if (options[p] === undefined) {
+        options[p] = default_options[p];
+      }
+    }
+  } else {
+    options = default_options;
+  }
+
+  scale(cx, cy);
+
+  function scale(w, h) {
+    if (!arguments.length) {
+      cy = elem.property("clientHeight");
+      cx = elem.property("clientWidth");
+    } else {
+      cy = h;
+      cx = w;
+    }
+    if(applet) {
+      appletWidth  = +applet.runMwScript("mw2d:1:get %width");
+      appletHeight = +applet.runMwScript("mw2d:1:get %height");
+      appletAspectRatio = appletWidth/appletHeight;
+      cy = cx * 1/appletAspectRatio * 1.25;
+    }
+    node.style.width = cx +"px";
+    node.style.height = cy +"px";
+    scale_factor = layout.screen_factor;
+    if (layout.screen_factor_width && layout.screen_factor_height) {
+      scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
+    }
+    scale_factor = cx/600;
+    padding = {
+       "top":    5,
+       "right":  5,
+       "bottom": 5,
+       "left":   5
+    };
+
+    height = cy - padding.top  - padding.bottom;
+    width  = cx - padding.left  - padding.right;
+    size = { "width":  width, "height": height };
+
+    return [cx, cy];
+  }
+
+  function container() {
+    if (applet === undefined) {
+      appletString = generateAppletString();
+      node.innerHTML = appletString;
+      applet = document.getElementById(options.appletID);
+    } else {
+      applet.style.width  = size.width;
+      applet.style.height = size.height;
+      applet.width  = size.width;
+      applet.height = size.height;
+    }
+
+    function generateAppletString() {
+      var i, param, strArray;
+      strArray =
+        ['<applet id="' + options.appletID + '", codebase="' + options.codebase + '", code="' + options.code + '"',
+         '     width="' + options.width + '" height="' + options.height + '" MAYSCRIPT="true"',
+         '     archive="' + options.archive + '">',
+         '     MAYSCRIPT="true">'];
+      for(i = 0; i < options.params.length; i++) {
+        param = options.params[i];
+        strArray.push('  <param name="' + param[0] + '" value="' + param[1] + '"/>');
+      }
+      strArray.push('  <param name="MAYSCRIPT" value="true"/>');
+      strArray.push('  Your browser is completely ignoring the applet tag!');
+      strArray.push('</applet>');
+      return strArray.join('\n');
+    }
+
+    // make these private variables and functions available
+    container.node = node;
+    container.scale = scale;
+    container.applet = applet;
+  }
+
+  container.resize = function(w, h) {
+    container.scale(w, h);
+  };
+
+  if (node) { container(); }
+
+  return container;
+};
+// ------------------------------------------------------------
+//
 //   Molecule Container
 //
 // ------------------------------------------------------------
@@ -384,6 +608,7 @@ layout.moleculeContainer = function(e, options) {
       red_gradient,
       blue_gradient,
       green_gradient,
+      element_gradient_array,
       atom_tooltip_on,
       offset_left, offset_top,
       particle, label, labelEnter, tail,
@@ -435,19 +660,19 @@ layout.moleculeContainer = function(e, options) {
     }
     node.style.width = cx +"px";
     scale_factor = layout.screen_factor;
-    if (layout.screen_factor_width && layout.screen_factor_height) {
-      scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
-    }
-    scale_factor = cx/600;
     padding = {
        "top":    options.title  ? 40 * layout.screen_factor : 20,
        "right":                   25,
-       "bottom": options.xlabel ? 56  * layout.screen_factor : 20,
+       "bottom": 10,
        "left":   options.ylabel ? 60  * layout.screen_factor : 25
     };
 
+    if (options.xlabel || options.model_time_label) {
+      padding.bottom += (35  * scale_factor);
+    }
+
     if (options.playback_controller || options.play_only_controller) {
-      padding.bottom += (30  * scale_factor);
+      padding.bottom += (40  * scale_factor);
     }
 
     height = cy - padding.top  - padding.bottom;
@@ -460,11 +685,13 @@ layout.moleculeContainer = function(e, options) {
 
     offset_left = node.offsetLeft + padding.left;
     offset_top = node.offsetTop + padding.top;
-    pc_xpos = padding.left + size.width / 2 - 60;
-    if (options.playback_controller) { pc_xpos -= 50 * scale_factor; }
+    if (options.playback_controller) {
+      pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
+    };
+    if (options.play_only_controller) {
+      pc_xpos = padding.left + (size.width - (140 * scale_factor))/2;
+    }
     pc_ypos = cy - 42 * scale_factor;
-    // pc_ypos = cy - (options.ylabel ? 40 * scale_factor : 20 * scale_factor);
-    // pc_ypos = size.height + (options.ylabel ? 85 * scale_factor : 27);
     mw = size.width;
     mh = size.height;
 
@@ -493,6 +720,10 @@ layout.moleculeContainer = function(e, options) {
 
   function modelTimeLabel() {
     return time_prefix + model_time_formatter(model.getTime() / 1000) + time_suffix;
+  }
+
+  function get_element(i) {
+    return nodes[model.INDICES.ELEMENT][i];
   }
 
   function get_x(i) {
@@ -759,67 +990,36 @@ layout.moleculeContainer = function(e, options) {
           .attr("height", size.height)
           .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-      red_gradient = gradient_container.append("defs")
-          .append("radialGradient")
-          .attr("id", "neg-grad")
-          .attr("cx", "50%")
-          .attr("cy", "47%")
-          .attr("r", "53%")
-          .attr("fx", "35%")
-          .attr("fy", "30%");
-      red_gradient.append("stop")
-          .attr("stop-color", "#ffefff")
-          .attr("offset", "0%");
-      red_gradient.append("stop")
-          .attr("stop-color", "#fdadad")
-          .attr("offset", "40%");
-      red_gradient.append("stop")
-          .attr("stop-color", "#e95e5e")
-          .attr("offset", "80%");
-      red_gradient.append("stop")
-          .attr("stop-color", "#fdadad")
-          .attr("offset", "100%");
+      create_radial_gradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", gradient_container);
+      create_radial_gradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", gradient_container);
+      create_radial_gradient("green-grad", "#dfffef", "#75a643", "#2a7216", gradient_container);
+      create_radial_gradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", gradient_container);
+      create_radial_gradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", gradient_container);
+      create_radial_gradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", gradient_container);
 
-      blue_gradient = gradient_container.append("defs")
-          .append("radialGradient")
-          .attr("id", "pos-grad")
-          .attr("cx", "50%")
-          .attr("cy", "47%")
-          .attr("r", "53%")
-          .attr("fx", "35%")
-          .attr("fy", "30%");
-      blue_gradient.append("stop")
-          .attr("stop-color", "#dfffff")
-          .attr("offset", "0%");
-      blue_gradient.append("stop")
-          .attr("stop-color", "#9abeff")
-          .attr("offset", "40%");
-      blue_gradient.append("stop")
-          .attr("stop-color", "#767fbf")
-          .attr("offset", "80%");
-      blue_gradient.append("stop")
-          .attr("stop-color", "#9abeff")
-          .attr("offset", "100%");
+      element_gradient_array = ["green-grad", "purple-grad", "aqua-grad", "orange-grad"];
+    }
 
-      green_gradient = gradient_container.append("defs")
+    function create_radial_gradient(id, lightColor, medColor, darkColor, gradient_container) {
+      gradient = gradient_container.append("defs")
           .append("radialGradient")
-          .attr("id", "neu-grad")
+          .attr("id", id)
           .attr("cx", "50%")
           .attr("cy", "47%")
           .attr("r", "53%")
           .attr("fx", "35%")
           .attr("fy", "30%");
-      green_gradient.append("stop")
-          .attr("stop-color", "#dfffef")
+      gradient.append("stop")
+          .attr("stop-color", lightColor)
           .attr("offset", "0%");
-      green_gradient.append("stop")
-          .attr("stop-color", "#75a643")
+      gradient.append("stop")
+          .attr("stop-color", medColor)
           .attr("offset", "40%");
-      green_gradient.append("stop")
-          .attr("stop-color", "#2a7216")
+      gradient.append("stop")
+          .attr("stop-color", darkColor)
           .attr("offset", "80%");
-      green_gradient.append("stop")
-          .attr("stop-color", "#75a643")
+      gradient.append("stop")
+          .attr("stop-color", medColor)
           .attr("offset", "100%");
     }
 
@@ -851,13 +1051,15 @@ layout.moleculeContainer = function(e, options) {
             if (model.get("coulomb_forces")) {
               return (x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')";
             } else {
-              return "url('#neu-grad')";
+              element = get_element(i) % 4;
+              grad = element_gradient_array[element];
+              return "url('#"+grad+"')";
             }
           })
           .on("mousedown", molecule_mousedown)
           .on("mouseout", molecule_mouseout);
 
-      var font_size = x(ljf.rmin * 0.5 * 1.5);
+      var font_size = x(ljf.rmin[0][0] * 0.5 * 1.5);
       if (model.get('mol_number') > 100) { font_size *= 0.9; }
 
       label = gradient_container.selectAll("g.label")
@@ -885,7 +1087,7 @@ layout.moleculeContainer = function(e, options) {
             .attr("x", "-0.31em")
             .attr("y", "0.31em")
             .text(function(d, i) {
-              if (layout.coulomb_forces_checkbox.checked) {
+              if (model.get("coulomb_forces")) {
                 return (x(get_charge(i)) > 0) ? "+" : "–";
               } else {
                 return;    // ""
@@ -977,9 +1179,8 @@ layout.moleculeContainer = function(e, options) {
     container.playback_component = playback_component;
   }
 
-  container.resize = function(width, height) {
-    container.scale(width, height);
-    // container.scale();
+  container.resize = function(w, h) {
+    container.scale(w, h);
     container();
     container.setup_particles();
   };
@@ -1050,9 +1251,9 @@ layout.potentialChart = function(e, model, options) {
 
     ljCalculator = model.getLJCalculator();
     ljData.coefficients = ljCalculator.coefficients();
-    sigma   = ljData.coefficients.sigma;
-    epsilon = ljData.coefficients.epsilon;
-    rmin    = ljData.coefficients.rmin;
+    sigma   = ljData.coefficients.sigma[0][0];
+    epsilon = ljData.coefficients.epsilon[0][0];
+    rmin    = ljData.coefficients.rmin[0][0];
     ljData.xmax    = sigma * 3;
     ljData.xmin    = Math.floor(sigma/2);
     ljData.ymax    = 0.4;
@@ -1066,7 +1267,7 @@ layout.potentialChart = function(e, model, options) {
 
     ljPotentialGraphData.length = 0;
     for(r = sigma * 0.5; r < ljData.xmax * 3;  r += 0.001) {
-      y = -ljCalculator.potential(r);
+      y = -ljCalculator.potential(r, 0, 0);
       if (Math.abs(y) < 100) {
         ljPotentialGraphData.push([r, y]);
       }
@@ -1881,12 +2082,13 @@ layout.render_datatable = function(reset) {
   var i,
       titlerows = datatable_table.getElementsByClassName("title"),
       datarows = datatable_table.getElementsByClassName("data"),
-      column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'RADIUS', 'MASS', 'CHARGE'],
+      column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'CHARGE', 'RADIUS', 'ELEMENT'],
       i_formatter = d3.format(" 2d"),
+      charge_formatter = d3.format(" 1.1f"),
       f_formatter = d3.format(" 3.4f"),
-      formatters = [i_formatter, f_formatter, f_formatter, f_formatter, 
+      formatters = [f_formatter, f_formatter, f_formatter, 
                     f_formatter, f_formatter, f_formatter, f_formatter, 
-                    f_formatter, f_formatter, f_formatter, f_formatter, 
+                    f_formatter, f_formatter, charge_formatter, f_formatter, 
                     i_formatter];
 
   reset = reset || false;
@@ -2009,14 +2211,14 @@ layout.setupTemperature = function(model) {
       var temp_range = document.createElement("input");
       temp_range.type = "range";
       temp_range.min = "0";
-      temp_range.max = "25";
-      temp_range.step = "0.5";
+      temp_range.max = "1000";
+      temp_range.step = "20";
       temp_range.value = model.get("temperature");
       select_temperature.parentNode.replaceChild(temp_range, select_temperature);
       temp_range.id = "select-temperature";
       select_temperature = temp_range;
       select_temperature_display.id = "select-temperature-display";
-      select_temperature_display.innerText = temp_range.value;
+      select_temperature_display.innerText = temp_range.value + " K";
       select_temperature.parentNode.appendChild(select_temperature_display);
       select_temperature = document.getElementById("select-temperature");
     }
@@ -2027,7 +2229,7 @@ layout.setupTemperature = function(model) {
 function selectTemperatureChange() {
   var temperature = +select_temperature.value;
   if (select_temperature.type === "range") {
-    select_temperature_display.innerText = d3.format("4.1f")(temperature);
+    select_temperature_display.innerText = d3.format("4.1f")(temperature) + " K";
   }
   model.set({ "temperature": temperature });
 }
@@ -2175,7 +2377,7 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
     if (t < max) {
       $(heat_elem_id).removeClass('inactive');
       $(cool_elem_id).removeClass('inactive');
-      t = Math.floor((t * 2))/2 + 0.5;
+      t = Math.floor((t * 2))/2 + 100;
       model.set({temperature: t});
       if (typeof callback === 'function') {
         callback(t)
@@ -2190,7 +2392,7 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
     if (t > min) {
       $(heat_elem_id).removeClass('inactive');
       $(cool_elem_id).removeClass('inactive');
-      t = Math.floor((t * 2))/2 - 0.5;
+      t = Math.floor((t * 2))/2 - 100;
       model.set({temperature: t});
       if (typeof callback === 'function') {
         callback(t)

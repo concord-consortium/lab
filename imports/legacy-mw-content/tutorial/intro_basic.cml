@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Introduction</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Introduction
+
+&lt; Index | Next &gt;
+
+To begin with, the Molecular Workbench (MW) software is a special browser for opening pages with embedded models and simulations&#10102;, which we will call the MW pages throughout this Manual, as opposed to other web pages such as the HTML pages. This part of the software resembles a conventional web browser in many ways, but is not intended to be a web browser. It just has a standard user interface of a browser, which most users are already familiar with.
+
+For example, it has a navigating tool bar that provides a Back, Forward, Home, and Reload button. There is also an address field that shows the URL address of the current page, takes the input of a new address and keeps recent addresses in a drop-down list. An MW page can have hyperlinks to other MW pages or web resources that have a URL address. Visited pages are automatically cached for faster reloading and offline use, and updated whenever there are new versions on the server where they reside. A page can be bookmarked, or saved to the hard disk. The conventional keyboard shortcuts can be used for similar functionalities.
+
+Like a browser, MW can be used to open any MW page (created by MW&apos;s authoring system) put on any HTTP web server. If you want to make models or create activities and publish them on the Internet, you can be completely independent of MW&apos;s developer (much like that you are independent of the companies that produce your web browsers), as long as you have your own web space to upload your stuff.
+
+ 
+An example site created by an independent author
+&#10155; http://www.polarbearfood.com/fulcrum/index.cml
+ 
+
+The MW platform is much more than just a tool for browing MW pages. In fact, it is an all-in-one system that has the following modules:
+
+   A set of 2D and 3D particle model builders, simulators, and their associated scripting environments.
+   A word processor for creating XML hypertext.
+   An authoring system for building graphical user interfaces for your models.
+   An embedded-assessment system for measuring and tracking student learning.
+   Web space and services for authors, students, and teachers.
+   Extensibility: the ability of incorporating other simulations through its applet/plug-in support.
+
+All these modules are seamlessly integrated behind a simple user interface. The browsing part serves as a delivery system that brings up materials (created using MW) on the web or on your disk. Its relative simplicity helps ensure that the end products, which are interactive, simulation-based activities, will be simple to use by learners.
+
+In this Chapter, we will walk you through some basics to get you started and give you some ideas about how the users of your models, whom we refer to as the end users throughout this Manual, will use the software.
+
+ 
+&#10102; The MW system is capable of supporting any type of simulation through a plug-in mechanism, in addition to the built-in two- and three-dimensional molecular dynamics simulations. The fact that a plug-in can be a Java applet makes it capable of including many types of simulations.
+
+&lt; Index | Next &gt;</text>
+<section start="0" end="3091">
+<paragraph start="0" end="13">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="12">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="31">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="14" end="16">
+<size>11</size></content>
+
+<content start="16" end="21">
+<size>11</size><href>index.cml</href></content>
+
+<content start="21" end="24">
+<size>11</size></content>
+
+<content start="24" end="28">
+<size>11</size><href>navigate.cml</href></content>
+
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<LeftIndent>100.0</LeftIndent>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="487">
+<LeftIndent>140.0</LeftIndent>
+<content start="32" end="160">
+<size>11</size></content>
+
+<content start="160" end="161">
+<size>13</size></content>
+
+<content start="161" end="357">
+<size>11</size></content>
+
+<content start="357" end="360">
+<size>11</size><italic>true</italic></content>
+
+<content start="360" end="487">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="487" end="488">
+<LeftIndent>140.0</LeftIndent>
+<content start="487" end="488">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="488" end="1121">
+<LeftIndent>140.0</LeftIndent>
+<content start="488" end="508">
+<size>11</size></content>
+
+<content start="508" end="529">
+<size>11</size><href>navigate.cml</href></content>
+
+<content start="529" end="766">
+<size>11</size></content>
+
+<content start="766" end="776">
+<size>11</size><href>hyperlink.cml</href></content>
+
+<content start="776" end="869">
+<size>11</size></content>
+
+<content start="869" end="875">
+<size>11</size><href>caching.cml</href></content>
+
+<content start="875" end="1005">
+<size>11</size></content>
+
+<content start="1005" end="1015">
+<size>11</size><href>bookmark.cml</href></content>
+
+<content start="1015" end="1020">
+<size>11</size></content>
+
+<content start="1020" end="1025">
+<size>11</size><href>download.cml</href></content>
+
+<content start="1025" end="1061">
+<size>11</size></content>
+
+<content start="1061" end="1079">
+<size>11</size><href>keyboard.cml</href></content>
+
+<content start="1079" end="1121">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1121" end="1122">
+<LeftIndent>140.0</LeftIndent>
+<content start="1121" end="1122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1122" end="1517">
+<LeftIndent>140.0</LeftIndent>
+<content start="1122" end="1190">
+<size>11</size></content>
+
+<content start="1190" end="1206">
+<size>11</size><href>intro_authoring.cml</href></content>
+
+<content start="1206" end="1517">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1517" end="1518">
+<LeftIndent>140.0</LeftIndent>
+<content start="1517" end="1518">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1518" end="1520">
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<Alignment>1</Alignment>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1518" end="1519">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.6</width><height>1</height><cornerarc>5</cornerarc><opaque>false</opaque><bgcolor>-333334</bgcolor></icon></content>
+
+<content start="1519" end="1520">
+</content>
+
+</paragraph>
+<paragraph start="1520" end="1569">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1520" end="1568">
+<size>11</size><italic>true</italic></content>
+
+<content start="1568" end="1569">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1569" end="1618">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1569" end="1570">
+<size>15</size></content>
+
+<content start="1570" end="1571">
+<size>11</size></content>
+
+<content start="1571" end="1617">
+<size>11</size><href>http://www.polarbearfood.com/fulcrum/index.cml</href></content>
+
+<content start="1617" end="1618">
+</content>
+
+</paragraph>
+<paragraph start="1618" end="1620">
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<Alignment>1</Alignment>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1618" end="1619">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.6</width><height>1</height><cornerarc>10</cornerarc><bgcolor>-333334</bgcolor></icon></content>
+
+<content start="1619" end="1620">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1620" end="1621">
+<LeftIndent>140.0</LeftIndent>
+<content start="1620" end="1621">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1621" end="1757">
+<LeftIndent>140.0</LeftIndent>
+<content start="1621" end="1757">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1757" end="1758">
+<LeftIndent>140.0</LeftIndent>
+<content start="1757" end="1758">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1758" end="1862">
+<LeftIndent>160.0</LeftIndent>
+<content start="1758" end="1759">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1759" end="1761">
+</content>
+
+<content start="1761" end="1780">
+<size>11</size></content>
+
+<content start="1780" end="1803">
+<size>11</size><bold>true</bold></content>
+
+<content start="1803" end="1805">
+<size>11</size></content>
+
+<content start="1805" end="1815">
+<size>11</size><bold>true</bold></content>
+
+<content start="1815" end="1838">
+<size>11</size></content>
+
+<content start="1838" end="1847">
+<size>11</size><bold>true</bold></content>
+
+<content start="1847" end="1862">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1862" end="1910">
+<LeftIndent>160.0</LeftIndent>
+<content start="1862" end="1863">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1863" end="1865">
+</content>
+
+<content start="1865" end="1867">
+<size>11</size></content>
+
+<content start="1867" end="1881">
+<size>11</size><bold>true</bold></content>
+
+<content start="1881" end="1910">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1910" end="1989">
+<LeftIndent>160.0</LeftIndent>
+<content start="1910" end="1911">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1911" end="1913">
+</content>
+
+<content start="1913" end="1916">
+<size>11</size></content>
+
+<content start="1916" end="1932">
+<size>11</size><bold>true</bold></content>
+
+<content start="1932" end="1989">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1989" end="2067">
+<LeftIndent>160.0</LeftIndent>
+<content start="1989" end="1990">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1990" end="1992">
+</content>
+
+<content start="1992" end="1995">
+<size>11</size></content>
+
+<content start="1995" end="2014">
+<size>11</size><bold>true</bold></content>
+
+<content start="2014" end="2067">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2067" end="2130">
+<LeftIndent>160.0</LeftIndent>
+<content start="2067" end="2068">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="2068" end="2070">
+</content>
+
+<content start="2070" end="2092">
+<size>11</size><bold>true</bold></content>
+
+<content start="2092" end="2130">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2130" end="2231">
+<LeftIndent>160.0</LeftIndent>
+<content start="2130" end="2131">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="2131" end="2133">
+</content>
+
+<content start="2133" end="2146">
+<size>11</size><bold>true</bold></content>
+
+<content start="2146" end="2231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2231" end="2232">
+<LeftIndent>140.0</LeftIndent>
+<content start="2231" end="2232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2232" end="2573">
+<LeftIndent>140.0</LeftIndent>
+<content start="2232" end="2573">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2573" end="2574">
+<LeftIndent>140.0</LeftIndent>
+<content start="2573" end="2574">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2574" end="2788">
+<LeftIndent>140.0</LeftIndent>
+<content start="2574" end="2731">
+<size>11</size></content>
+
+<content start="2731" end="2740">
+<size>11</size><italic>true</italic></content>
+
+<content start="2740" end="2788">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2788" end="2789">
+<LeftIndent>140.0</LeftIndent>
+<content start="2788" end="2789">
+</content>
+
+</paragraph>
+<paragraph start="2789" end="2791">
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>1.0</SpaceBelow>
+<SpaceAbove>1.0</SpaceAbove>
+<content start="2789" end="2790">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2790" end="2791">
+</content>
+
+</paragraph>
+<paragraph start="2791" end="3073">
+<LeftIndent>140.0</LeftIndent>
+<content start="2791" end="2792">
+<size>13</size></content>
+
+<content start="2792" end="2793">
+</content>
+
+<content start="2793" end="3073">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="3073" end="3074">
+<LeftIndent>140.0</LeftIndent>
+<content start="3073" end="3074">
+</content>
+
+</paragraph>
+<paragraph start="3074" end="3091">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3074" end="3076">
+<size>11</size></content>
+
+<content start="3076" end="3081">
+<size>11</size><href>index.cml</href></content>
+
+<content start="3081" end="3084">
+<size>11</size></content>
+
+<content start="3084" end="3088">
+<size>11</size><href>navigate.cml</href></content>
+
+<content start="3088" end="3090">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

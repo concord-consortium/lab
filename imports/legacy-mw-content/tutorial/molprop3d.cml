@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Accessing a molecule&apos;s properties</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Accessing a molecule&apos;s properties
+
+&lt; Previous | Index | Next &gt;
+
+es.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="126">
+<paragraph start="0" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="33">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<RightIndent>20.0</RightIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="63">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="45">
+<href>atomprop3d.cml</href><size>11</size></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="53">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="53" end="62">
+<size>11</size></content>
+
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="64">
+<LeftIndent>140.0</LeftIndent>
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="68">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="68">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="68" end="69">
+<LeftIndent>140.0</LeftIndent>
+<content start="68" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="72">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="69" end="70">
+</content>
+
+<content start="70" end="71">
+<icon>molprop3d.gif</icon></content>
+
+<content start="71" end="72">
+</content>
+
+</paragraph>
+<paragraph start="72" end="96">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="72" end="95">
+<size>10</size></content>
+
+<content start="95" end="96">
+</content>
+
+</paragraph>
+<paragraph start="96" end="97">
+<LeftIndent>140.0</LeftIndent>
+<content start="96" end="97">
+</content>
+
+</paragraph>
+<paragraph start="97" end="98">
+<LeftIndent>140.0</LeftIndent>
+<content start="97" end="98">
+</content>
+
+</paragraph>
+<paragraph start="98" end="126">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="98" end="100">
+<size>11</size></content>
+
+<content start="100" end="108">
+<href>atomprop3d.cml</href><size>11</size></content>
+
+<content start="108" end="111">
+<size>11</size></content>
+
+<content start="111" end="116">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="116" end="125">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

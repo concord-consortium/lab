@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Resizing a simulator</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Resizing a simulator
+
+&lt; Previous | Index | Next &gt;
+
+You will frequently need to resize a simulator when creating a new model. Currently, drag-and-resize is not supported by the Authoring System that embeds a simulator. To resize a simulator, you have to use the &quot;Change Model Size&quot; menu under its Edit menu:
+
+  
+&#12304;This is a screenshot of the Edit menu of a Basic 2D Molecular Simulator.&#12305;
+
+When chosen, a dialog window will show up, which allows you to numerically specify the dimension of the model. Note that the unit for the dimension in this dialog window is pixel (a pixel equals to one tenth of an angstrom).
+
+Resizing will not be permitted if any component of the model falls outside the new boundary resulting from resizing.
+
+ 
+Note: If the boundary is a reflective one, it will be resized. If the boundary is a periodic one, the window will be resized but the cell will not.
+ 
+
+Resizing of a model is undoable and redoable.
+
+If there is an existing setup in the model container, you can translate or rotate the whole thing to make room for reducing the size of the model container without having to remove any component or changing the setup. To translate the whole model, use the &quot;Translate Whole Model&quot; menu, also available from the Edit menu of the model container. To rotate, use the &quot;Rotate All Particles&quot; menu.
+
+The actions of translating the whole model and rotating all particles are undoable and redoable.
+
+Script support
+
+A model can be resized by using the scripts: set width [value] and set height [value]. To translate all objects, use the select command to select all objects of a type and then use the move command to translate them.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1684">
+<paragraph start="0" end="21">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="20">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="20" end="21">
+<bold>true</bold><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="50">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="22" end="24">
+<size>11</size></content>
+
+<content start="24" end="32">
+<size>11</size><href>modelIO.cml</href></content>
+
+<content start="32" end="35">
+<size>11</size></content>
+
+<content start="35" end="40">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="40" end="43">
+<size>11</size></content>
+
+<content start="43" end="47">
+<size>11</size><href>autostop.cml</href></content>
+
+<content start="47" end="49">
+<size>11</size></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<LeftIndent>100.0</LeftIndent>
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="307">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="176">
+<size>11</size></content>
+
+<content start="176" end="192">
+<size>11</size><href>intro_authoring.cml</href></content>
+
+<content start="192" end="307">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="307" end="308">
+<LeftIndent>140.0</LeftIndent>
+<content start="307" end="308">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="308" end="311">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="308" end="309">
+</content>
+
+<content start="309" end="310">
+<icon>EditMenu.gif</icon></content>
+
+<content start="310" end="311">
+</content>
+
+</paragraph>
+<paragraph start="311" end="386">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="311" end="385">
+<size>10</size></content>
+
+<content start="385" end="386">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="386" end="387">
+<LeftIndent>140.0</LeftIndent>
+<content start="386" end="387">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="387" end="612">
+<LeftIndent>140.0</LeftIndent>
+<content start="387" end="612">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="612" end="613">
+<LeftIndent>140.0</LeftIndent>
+<content start="612" end="613">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="613" end="730">
+<LeftIndent>140.0</LeftIndent>
+<content start="613" end="730">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="730" end="731">
+<LeftIndent>140.0</LeftIndent>
+<content start="730" end="731">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="731" end="733">
+<LeftIndent>140.0</LeftIndent>
+<content start="731" end="732">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="732" end="733">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="733" end="881">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="733" end="737">
+<size>11</size><bold>true</bold></content>
+
+<content start="737" end="746">
+<size>11</size></content>
+
+<content start="746" end="754">
+<size>11</size><href>boundary.cml</href></content>
+
+<content start="754" end="760">
+<size>11</size></content>
+
+<content start="760" end="770">
+<size>11</size><href>glossary/ReflectingBC.cml</href></content>
+
+<content start="770" end="817">
+<size>11</size></content>
+
+<content start="817" end="825">
+<size>11</size><href>glossary/PeriodicBC.cml</href></content>
+
+<content start="825" end="881">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="881" end="883">
+<LeftIndent>140.0</LeftIndent>
+<content start="881" end="882">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="882" end="883">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="883" end="884">
+<LeftIndent>140.0</LeftIndent>
+<content start="883" end="884">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="884" end="930">
+<LeftIndent>140.0</LeftIndent>
+<content start="884" end="930">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="930" end="931">
+<LeftIndent>140.0</LeftIndent>
+<content start="930" end="931">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="931" end="1323">
+<LeftIndent>140.0</LeftIndent>
+<content start="931" end="1323">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1323" end="1324">
+<LeftIndent>140.0</LeftIndent>
+<content start="1323" end="1324">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1324" end="1421">
+<LeftIndent>140.0</LeftIndent>
+<content start="1324" end="1421">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1421" end="1422">
+<LeftIndent>140.0</LeftIndent>
+<content start="1421" end="1422">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1422" end="1437">
+<LeftIndent>140.0</LeftIndent>
+<content start="1422" end="1436">
+<size>11</size><bold>true</bold></content>
+
+<content start="1436" end="1437">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1437" end="1438">
+<LeftIndent>140.0</LeftIndent>
+<content start="1437" end="1438">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1438" end="1655">
+<LeftIndent>140.0</LeftIndent>
+<content start="1438" end="1483">
+<size>11</size></content>
+
+<content start="1483" end="1486">
+<family>Courier New</family><size>11</size><href>script_set.cml</href></content>
+
+<content start="1486" end="1500">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1500" end="1505">
+<size>11</size></content>
+
+<content start="1505" end="1523">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1523" end="1559">
+<size>11</size></content>
+
+<content start="1559" end="1565">
+<family>Courier New</family><size>11</size><href>script_select.cml</href></content>
+
+<content start="1565" end="1623">
+<size>11</size></content>
+
+<content start="1623" end="1627">
+<family>Courier New</family><size>11</size><href>script_move.cml</href></content>
+
+<content start="1627" end="1655">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1655" end="1656">
+<LeftIndent>140.0</LeftIndent>
+<content start="1655" end="1656">
+</content>
+
+</paragraph>
+<paragraph start="1656" end="1684">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1656" end="1658">
+<size>11</size></content>
+
+<content start="1658" end="1666">
+<size>11</size><href>modelIO.cml</href></content>
+
+<content start="1666" end="1669">
+<size>11</size></content>
+
+<content start="1669" end="1674">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="1674" end="1677">
+<size>11</size></content>
+
+<content start="1677" end="1682">
+<size>11</size><href>autostop.cml</href></content>
+
+<content start="1682" end="1683">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

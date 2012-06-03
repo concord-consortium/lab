@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Rotating Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Rotating Tool
+
+&lt; Previous | Index | Next &gt;
+
+The Rotating Tool &quot; &quot; can be used to rotate a rotatable object (not all objects have been made rotatable in Molecular Workbench). Like in most programs, you need to grab a rotation handler in order to rotate an object.
+
+Rotating a molecule
+
+In the case of a molecule, the rotation handler looks like:
+
+              
+Grab the rotation handler and drag around the center of mass.
+
+You can practice rotating a molecule with the model below:
+
+ 
+  
+&#12304;This is an embedded model container.&#12305;
+
+Rotating a Gay-Berne particle
+
+In the case of a Gay-Berne particle, the rotation handlers looks like: 
+
+  
+
+You can practice rotating a Gay-Berne particel with the model below:
+
+ 
+ 
+&#12304;This is an embedded model container.&#12305;
+
+Script support
+
+A Gay-Berne particle can be rotated using the following command: set particle[i].theta [value]. In the second model on this page, the slider sets the orientation of the particle through some scripts.
+
+There is no direct script for rotating a molecule in the Basic 2D Molecular Simulator, but you can implement it on your own using some simple math expressions. In the first model, you can rotate one of the molecules by pressing the buttons below the model. The following scripts are used to rotate the molecule:
+
+define %xc %molecule[0].x; // the x-coordinate of the center of mass of the molecule
+define %yc %molecule[0].y; // the y-coordinate of the center of mass of the molecule
+//define %xc %atom[9].rx;  // uncomment this if to rotate around an atom
+//define %yc %atom[9].ry;  // uncomment this if to rotate around an atom
+define %sintheta &quot;sin(pi/18)&quot;;
+define %costheta &quot;cos(pi/18)&quot;;
+loop 1;
+set %i %loop_count;
+set %xi %atom[%i].rx;
+set %yi %atom[%i].ry;
+set atom[%i].rx &quot;%xc+(%xi-%xc)*%costheta-(%yi-%yc)*%sintheta&quot;;
+set atom[%i].ry &quot;%yc+(%xi-%xc)*%sintheta+(%yi-%yc)*%costheta&quot;;
+loop 12;
+
+Unlike the Rotating Tool that always rotates a molecule around its center of mass, a rotation implemented through scripts can be around any point.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2047">
+<paragraph start="0" end="18">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="17">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="47">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="21">
+<size>11</size></content>
+
+<content start="21" end="29">
+<href>DampingAction.cml</href><size>11</size></content>
+
+<content start="29" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<href>removeAction.cml</href><size>11</size></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>100.0</LeftIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="267">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="67">
+<size>11</size></content>
+
+<content start="67" end="68">
+<size>11</size><icon>Rotate.gif</icon></content>
+
+<content start="68" end="267">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="267" end="268">
+<LeftIndent>140.0</LeftIndent>
+<content start="267" end="268">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="268" end="288">
+<LeftIndent>140.0</LeftIndent>
+<content start="268" end="287">
+<bold>true</bold><size>11</size></content>
+
+<content start="287" end="288">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="288" end="289">
+<LeftIndent>140.0</LeftIndent>
+<content start="288" end="289">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="289" end="349">
+<LeftIndent>140.0</LeftIndent>
+<content start="289" end="349">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="349" end="350">
+<LeftIndent>100.0</LeftIndent>
+<content start="349" end="350">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="350" end="365">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="350" end="351">
+<size>11</size></content>
+
+<content start="351" end="352">
+<size>11</size><icon>RotatingMol.gif</icon></content>
+
+<content start="352" end="363">
+<size>11</size></content>
+
+<content start="363" end="364">
+<size>11</size><icon>RotatingMol2.gif</icon></content>
+
+<content start="364" end="365">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="365" end="427">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="365" end="426">
+<size>10</size></content>
+
+<content start="426" end="427">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="427" end="428">
+<LeftIndent>140.0</LeftIndent>
+<content start="427" end="428">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="428" end="487">
+<LeftIndent>140.0</LeftIndent>
+<content start="428" end="487">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="487" end="488">
+<LeftIndent>100.0</LeftIndent>
+<content start="487" end="488">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="488" end="490">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="488" end="489">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>rotateAction$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder><button>Rotate Object</button><button>Select Object</button></component><size>11</size></content>
+
+<content start="489" end="490">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="490" end="493">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="490" end="491">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Rotate molecule around the center of mass using scripts</title>
+<tooltip>Rotate molecule through MW script</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>define %xc %molecule[0].x;
+define %yc %molecule[0].y;
+define %sintheta &quot;sin(pi/18)&quot;;
+define %costheta &quot;cos(pi/18)&quot;;
+loop 1;
+set %i &quot;%loop_count&quot;;
+set %xi %atom[%i].rx;
+set %yi %atom[%i].ry;
+set atom[%i].rx &quot;%xc+(%xi-%xc)*%costheta-(%yi-%yc)*%sintheta&quot;;
+set atom[%i].ry &quot;%yc+(%xi-%xc)*%sintheta+(%yi-%yc)*%costheta&quot;;
+loop 12;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="491" end="492">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Rotate molecule around an atom using scripts</title>
+<tooltip>Rotate molecule through MW script</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>define %xc %atom[9].rx;
+define %yc %atom[9].ry;
+define %sintheta &quot;sin(pi/18)&quot;;
+define %costheta &quot;cos(pi/18)&quot;;
+loop 1;
+set %i &quot;%loop_count&quot;;
+set %xi %atom[%i].rx;
+set %yi %atom[%i].ry;
+set atom[%i].rx &quot;%xc+(%xi-%xc)*%costheta-(%yi-%yc)*%sintheta&quot;;
+set atom[%i].ry &quot;%yc+(%xi-%xc)*%sintheta+(%yi-%yc)*%costheta&quot;;
+loop 12;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="492" end="493">
+</content>
+
+</paragraph>
+<paragraph start="493" end="532">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="493" end="531">
+<size>10</size></content>
+
+<content start="531" end="532">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="532" end="533">
+<LeftIndent>140.0</LeftIndent>
+<content start="532" end="533">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="533" end="563">
+<LeftIndent>140.0</LeftIndent>
+<content start="533" end="562">
+<bold>true</bold><size>11</size></content>
+
+<content start="562" end="563">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="563" end="564">
+<LeftIndent>140.0</LeftIndent>
+<content start="563" end="564">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="564" end="636">
+<LeftIndent>140.0</LeftIndent>
+<content start="564" end="636">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="636" end="637">
+<LeftIndent>100.0</LeftIndent>
+<content start="636" end="637">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="637" end="640">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="637" end="638">
+<size>11</size></content>
+
+<content start="638" end="639">
+<size>11</size><icon>RatatingGB.gif</icon></content>
+
+<content start="639" end="640">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="640" end="641">
+<LeftIndent>100.0</LeftIndent>
+<content start="640" end="641">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="641" end="710">
+<LeftIndent>140.0</LeftIndent>
+<content start="641" end="710">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="710" end="711">
+<LeftIndent>100.0</LeftIndent>
+<content start="710" end="711">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="711" end="713">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="711" end="712">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>rotateAction$0.gbl</resource><menubar>false</menubar><statusbar>false</statusbar><recorder>true</recorder><button>Rotate Object</button><button>Select Object</button></component><size>11</size></content>
+
+<content start="712" end="713">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="713" end="715">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="713" end="714">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MesoModel</modelclass>
+<model>2</model>
+<value>0.0</value>
+<minimum>0.0</minimum>
+<maximum>360.0</maximum>
+<nstep>36</nstep>
+<title>Set the orientation through script</title>
+<tooltip>Set the orientation through MW script</tooltip>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<disabled_at_script>true</disabled_at_script>
+<tick>true</tick>
+<labeltable>{value=&quot;180.0&quot;, label=&quot;180&quot;}{value=&quot;360.0&quot;, label=&quot;360 (degree)&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>set particle[0].theta &quot;%val*pi/180&quot;;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="714" end="715">
+</content>
+
+</paragraph>
+<paragraph start="715" end="754">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="715" end="753">
+<size>10</size></content>
+
+<content start="753" end="754">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="754" end="755">
+<LeftIndent>140.0</LeftIndent>
+<content start="754" end="755">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="755" end="770">
+<LeftIndent>140.0</LeftIndent>
+<content start="755" end="769">
+<bold>true</bold><size>11</size></content>
+
+<content start="769" end="770">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="770" end="771">
+<LeftIndent>140.0</LeftIndent>
+<content start="770" end="771">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="771" end="971">
+<LeftIndent>140.0</LeftIndent>
+<content start="771" end="836">
+<size>11</size></content>
+
+<content start="836" end="839">
+<href>script_set.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="839" end="865">
+<size>11</size><family>Courier New</family></content>
+
+<content start="865" end="971">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="971" end="972">
+<LeftIndent>140.0</LeftIndent>
+<content start="971" end="972">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="972" end="1284">
+<LeftIndent>140.0</LeftIndent>
+<content start="972" end="1114">
+<size>11</size></content>
+
+<content start="1114" end="1130">
+<href>script_expression.cml</href><size>11</size></content>
+
+<content start="1130" end="1284">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1284" end="1285">
+<LeftIndent>140.0</LeftIndent>
+<content start="1284" end="1285">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1285" end="1370">
+<LeftIndent>160.0</LeftIndent>
+<content start="1285" end="1370">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1370" end="1455">
+<LeftIndent>160.0</LeftIndent>
+<content start="1370" end="1455">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1455" end="1528">
+<LeftIndent>160.0</LeftIndent>
+<content start="1455" end="1528">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1528" end="1601">
+<LeftIndent>160.0</LeftIndent>
+<content start="1528" end="1601">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1601" end="1632">
+<LeftIndent>160.0</LeftIndent>
+<content start="1601" end="1632">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1632" end="1663">
+<LeftIndent>160.0</LeftIndent>
+<content start="1632" end="1663">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1663" end="1671">
+<LeftIndent>160.0</LeftIndent>
+<content start="1663" end="1671">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1671" end="1691">
+<LeftIndent>160.0</LeftIndent>
+<content start="1671" end="1691">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1691" end="1713">
+<LeftIndent>160.0</LeftIndent>
+<content start="1691" end="1713">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1713" end="1735">
+<LeftIndent>160.0</LeftIndent>
+<content start="1713" end="1735">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1735" end="1798">
+<LeftIndent>160.0</LeftIndent>
+<content start="1735" end="1798">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1798" end="1861">
+<LeftIndent>160.0</LeftIndent>
+<content start="1798" end="1861">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1861" end="1870">
+<LeftIndent>160.0</LeftIndent>
+<content start="1861" end="1869">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1869" end="1870">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1870" end="1871">
+<LeftIndent>140.0</LeftIndent>
+<content start="1870" end="1871">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1871" end="2018">
+<LeftIndent>140.0</LeftIndent>
+<content start="1871" end="2018">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2018" end="2019">
+<RightIndent>20.0</RightIndent>
+<content start="2018" end="2019">
+</content>
+
+</paragraph>
+<paragraph start="2019" end="2047">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2019" end="2021">
+<size>11</size></content>
+
+<content start="2021" end="2029">
+<href>DampingAction.cml</href><size>11</size></content>
+
+<content start="2029" end="2032">
+<size>11</size></content>
+
+<content start="2032" end="2037">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="2037" end="2040">
+<size>11</size></content>
+
+<content start="2040" end="2044">
+<href>removeAction.cml</href><size>11</size></content>
+
+<content start="2044" end="2046">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

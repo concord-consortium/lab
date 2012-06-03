@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a Jmol Viewer</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a Jmol Viewer
+
+&lt; Previous | Index | Next &gt;
+
+To insert a Jmol Viewer into a MW page, you should move the caret to the position where you would like to the Viewer to be located, and then select &quot;Insert &gt; Model Container &gt; Jmol Molecular Viewer&quot; from the main menu bar. The following dialog window will appear:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+You can set the size of the Viewer with this dialog, the background effect, the border type, and some   Jmol scripts to be run to initialize the view of the molecule after the data has been loaded.
+
+When you close the dialog window, a Jmol Viewer will be inserted into the page.
+
+In a later Section, we will discuss about the initialization scripts.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="726">
+<paragraph start="0" end="24">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="23">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="53">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="25" end="27">
+<size>11</size></content>
+
+<content start="27" end="35">
+<size>11</size><href>intro_jmol.cml</href></content>
+
+<content start="35" end="38">
+<size>11</size></content>
+
+<content start="38" end="43">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="43" end="46">
+<size>11</size></content>
+
+<content start="46" end="50">
+<size>11</size><href>importmolecule.cml</href></content>
+
+<content start="50" end="52">
+<size>11</size></content>
+
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="54">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="318">
+<LeftIndent>140.0</LeftIndent>
+<content start="54" end="318">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="318" end="319">
+<LeftIndent>140.0</LeftIndent>
+<content start="318" end="319">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="319" end="322">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="319" end="320">
+<size>11</size></content>
+
+<content start="320" end="321">
+<icon>InsertJmolDialog.gif</icon></content>
+
+<content start="321" end="322">
+</content>
+
+</paragraph>
+<paragraph start="322" end="346">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="322" end="323">
+<bold>true</bold><size>13</size></content>
+
+<content start="323" end="344">
+<size>10</size></content>
+
+<content start="344" end="345">
+<bold>true</bold><size>13</size></content>
+
+<content start="345" end="346">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="346" end="347">
+<LeftIndent>140.0</LeftIndent>
+<content start="346" end="347">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="347" end="545">
+<LeftIndent>140.0</LeftIndent>
+<content start="347" end="449">
+<size>11</size></content>
+
+<content start="449" end="450">
+<icon>htmlink.gif</icon></content>
+
+<content start="450" end="451">
+<size>11</size></content>
+
+<content start="451" end="463">
+<size>11</size><href>http://www.stolaf.edu/academics/chemapps/jmol/docs/</href></content>
+
+<content start="463" end="545">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="545" end="546">
+<LeftIndent>140.0</LeftIndent>
+<content start="545" end="546">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="546" end="626">
+<LeftIndent>140.0</LeftIndent>
+<content start="546" end="626">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="626" end="627">
+<LeftIndent>140.0</LeftIndent>
+<content start="626" end="627">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="627" end="697">
+<LeftIndent>140.0</LeftIndent>
+<content start="627" end="630">
+<size>11</size></content>
+
+<content start="630" end="645">
+<size>11</size><href>initializeJmol.cml</href></content>
+
+<content start="645" end="697">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="697" end="698">
+<LeftIndent>140.0</LeftIndent>
+<content start="697" end="698">
+</content>
+
+</paragraph>
+<paragraph start="698" end="726">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="698" end="700">
+<size>11</size></content>
+
+<content start="700" end="708">
+<size>11</size><href>intro_jmol.cml</href></content>
+
+<content start="708" end="711">
+<size>11</size></content>
+
+<content start="711" end="716">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="716" end="719">
+<size>11</size></content>
+
+<content start="719" end="723">
+<size>11</size><href>importmolecule.cml</href></content>
+
+<content start="723" end="725">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

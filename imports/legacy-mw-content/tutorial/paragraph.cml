@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Paragraph alignment, bullet and identation</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Paragraph alignment, bullet and identation
+
+&lt; Previous | Index | Next &gt;
+
+You can change the alignment and spacing of a paragraph in the text. Here are a few examples:
+
+ 
+
+This is a right-aligned paragraph with a right indent of 20 pixels.
+This is a center-aligned paragraph.
+This is a left-aligned paragraph.
+   This is a bulleted paragraph.
+This is an indented paragrah.
+This is a paragraph with a left indent of 300 pixels and a right indent of 200 pixels.
+This is a paragraph with a white space of 50 pixels above and one of 50 pixels below.
+ 
+
+You can set these with the buttons in the tool bar, or right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the main window and choose the &quot;Paragraph&quot; item from the pop-up menu, or choose &quot;Option&gt;Paragraph&quot; from the main menu bar. In the latter two cases, you will see the following window:
+
+  
+&#12304;This is a screenshot.&#12305;
+Note: Line spacing, first indent and justified alignment do not work yet.
+
+To change the bullet icon, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the main window and choose the &quot;Bullet&quot; item from the pop-up menu, or choose &quot;Option&gt;Bullet&quot; from the main menu bar. You will see the following window:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+Click one of the inset windows to apply the corresponding bullet icon to the currently selected paragraph(s).
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1386">
+<paragraph start="0" end="43">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="42">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="44">
+<RightIndent>20.0</RightIndent>
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="72">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="54">
+<href>character.cml</href><size>11</size></content>
+
+<content start="54" end="57">
+<size>11</size></content>
+
+<content start="57" end="62">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="62" end="65">
+<size>11</size></content>
+
+<content start="65" end="69">
+<href>editing.cml</href><size>11</size></content>
+
+<content start="69" end="71">
+<size>11</size></content>
+
+<content start="71" end="72">
+</content>
+
+</paragraph>
+<paragraph start="72" end="73">
+<content start="72" end="73">
+</content>
+
+</paragraph>
+<paragraph start="73" end="167">
+<LeftIndent>140.0</LeftIndent>
+<content start="73" end="167">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="167" end="168">
+<LeftIndent>140.0</LeftIndent>
+<content start="167" end="168">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="168" end="170">
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="168" end="169">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>8</height><bgcolor>-ff669a</bgcolor></icon></content>
+
+<content start="169" end="170">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="170" end="171">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="170" end="171">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="171" end="239">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="171" end="239">
+<size>11</size><foreground>0 153 102</foreground><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="239" end="275">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="239" end="275">
+<size>11</size><foreground>0 153 102</foreground><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="275" end="309">
+<LeftIndent>140.0</LeftIndent>
+<content start="275" end="309">
+<size>11</size><foreground>0 153 102</foreground><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="309" end="342">
+<LeftIndent>160.0</LeftIndent>
+<content start="309" end="310">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><foreground>0 153 102</foreground><size>11</size><italic>true</italic></content>
+
+<content start="310" end="342">
+<size>11</size><foreground>0 153 102</foreground><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="342" end="372">
+<LeftIndent>200.0</LeftIndent>
+<content start="342" end="372">
+<size>11</size><foreground>0 153 102</foreground><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="372" end="459">
+<LeftIndent>300.0</LeftIndent>
+<RightIndent>200.0</RightIndent>
+<content start="372" end="459">
+<size>11</size><foreground>0 153 102</foreground><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="459" end="545">
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>50.0</SpaceBelow>
+<SpaceAbove>50.0</SpaceAbove>
+<content start="459" end="544">
+<size>11</size><foreground>0 153 102</foreground><italic>true</italic></content>
+
+<content start="544" end="545">
+<size>11</size><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="545" end="547">
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="545" end="546">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>8</height><bgcolor>-ff669a</bgcolor></icon></content>
+
+<content start="546" end="547">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="547" end="548">
+<LeftIndent>140.0</LeftIndent>
+<content start="547" end="548">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="548" end="861">
+<LeftIndent>140.0</LeftIndent>
+<content start="548" end="861">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="861" end="862">
+<LeftIndent>100.0</LeftIndent>
+<content start="861" end="862">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="862" end="865">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="862" end="863">
+<size>11</size></content>
+
+<content start="863" end="864">
+<icon>ParagraphDialog.gif</icon><size>11</size></content>
+
+<content start="864" end="865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="865" end="889">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="865" end="866">
+<bold>true</bold><size>13</size></content>
+
+<content start="866" end="887">
+<size>10</size></content>
+
+<content start="887" end="888">
+<bold>true</bold><size>13</size></content>
+
+<content start="888" end="889">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="889" end="963">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="889" end="893">
+<bold>true</bold><size>10</size><foreground>255 0 0</foreground></content>
+
+<content start="893" end="894">
+<bold>true</bold><size>10</size></content>
+
+<content start="894" end="962">
+<size>10</size></content>
+
+<content start="962" end="963">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="963" end="964">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="963" end="964">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="964" end="1218">
+<LeftIndent>140.0</LeftIndent>
+<content start="964" end="1218">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1218" end="1219">
+<LeftIndent>100.0</LeftIndent>
+<content start="1218" end="1219">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1219" end="1222">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1219" end="1220">
+<size>11</size></content>
+
+<content start="1220" end="1221">
+<icon>BulletDialog.gif</icon><size>11</size></content>
+
+<content start="1221" end="1222">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1222" end="1246">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1222" end="1223">
+<bold>true</bold><size>13</size></content>
+
+<content start="1223" end="1244">
+<size>10</size></content>
+
+<content start="1244" end="1245">
+<bold>true</bold><size>13</size></content>
+
+<content start="1245" end="1246">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1246" end="1247">
+<LeftIndent>140.0</LeftIndent>
+<content start="1246" end="1247">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1247" end="1357">
+<LeftIndent>140.0</LeftIndent>
+<content start="1247" end="1356">
+<size>11</size></content>
+
+<content start="1356" end="1357">
+</content>
+
+</paragraph>
+<paragraph start="1357" end="1358">
+<content start="1357" end="1358">
+</content>
+
+</paragraph>
+<paragraph start="1358" end="1386">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1358" end="1360">
+<size>11</size></content>
+
+<content start="1360" end="1368">
+<href>character.cml</href><size>11</size></content>
+
+<content start="1368" end="1371">
+<size>11</size></content>
+
+<content start="1371" end="1376">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="1376" end="1379">
+<size>11</size></content>
+
+<content start="1379" end="1383">
+<href>editing.cml</href><size>11</size></content>
+
+<content start="1383" end="1385">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

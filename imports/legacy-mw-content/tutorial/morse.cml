@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Why do we favor the Lennard-Jones potential over the Morse potential?</page_title>
+<bg_image>sidebar1.gif</bg_image>
+<text>Why do we favor the Lennard-Jones potential over the Morse potential?
+
+The Lennard-Jones potential:
+
+  
+
+is widely used in molecular simulation. You may have also heard about   the Morse potential, which reads:
+
+   
+
+The Morse potential is well-known for its application to model the non-harmonic effect of molecular vibrations.  The two potential functions are very similar, as is shown in the following graph:
+
+ 
+The Lennard-Jones function (the solid line) vs. the Morse function (the dotted line): Can you tell the difference(s)?
+
+The two functions are effectively equivalent to each other: one may be able to always find a set of Morse parameters that will nearly perfectly fit a Lennard-Jones function, and vice versa. You may be wondering why we choose to use the Lennard-Jones functions in our simulations. The answer is that calculating exponential function is far less efficient than calculating the r-6 function. On the author&apos;s computer, calculating the Morse potential takes about 20 times longer than calculating the Lennard-Jones potential.
+
+The following image shows two more Morse functions plotted together (it wasn&apos;t plotted in the above graph because for some reason it gets very slow in redrawing the whole graph):
+
+  </text>
+<section start="0" end="1239">
+<paragraph start="0" end="70">
+<LeftIndent>160.0</LeftIndent>
+<content start="0" end="70">
+<foreground>8 24 99</foreground><bold>true</bold><size>15</size></content>
+
+</paragraph>
+<paragraph start="70" end="71">
+<LeftIndent>160.0</LeftIndent>
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="100">
+<LeftIndent>160.0</LeftIndent>
+<content start="71" end="100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="100" end="101">
+<LeftIndent>160.0</LeftIndent>
+<content start="100" end="101">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="101" end="104">
+<LeftIndent>160.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="101" end="102">
+</content>
+
+<content start="102" end="103">
+<icon>lj.gif</icon></content>
+
+<content start="103" end="104">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="104" end="105">
+<LeftIndent>160.0</LeftIndent>
+<content start="104" end="105">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="105" end="211">
+<LeftIndent>160.0</LeftIndent>
+<content start="105" end="175">
+<size>11</size></content>
+
+<content start="175" end="176">
+<icon>htmlink.gif</icon></content>
+
+<content start="176" end="177">
+<size>11</size></content>
+
+<content start="177" end="196">
+<href>http://en.wikipedia.org/wiki/Morse_potential</href><size>11</size></content>
+
+<content start="196" end="211">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="211" end="212">
+<LeftIndent>160.0</LeftIndent>
+<content start="211" end="212">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="212" end="216">
+<LeftIndent>160.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="212" end="214">
+<size>11</size></content>
+
+<content start="214" end="215">
+<icon>morsefunction.gif</icon></content>
+
+<content start="215" end="216">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="216" end="217">
+<LeftIndent>160.0</LeftIndent>
+<content start="216" end="217">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="217" end="412">
+<LeftIndent>160.0</LeftIndent>
+<content start="217" end="412">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="412" end="413">
+<LeftIndent>160.0</LeftIndent>
+<content start="412" end="413">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="413" end="415">
+<LeftIndent>160.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="413" end="414">
+<component><class>org.concord.modeler.PageFunctionGraph</class>
+<width>600</width><height>300</height><opaque>false</opaque>
+<border>None</border>
+<function><expression>pow(1/x, 12)-pow(1/x,6)</expression>
+<color>-3b22c5</color><weight>2.0</weight><style>0</style><datapoint>100</datapoint></function><function><expression>0.25*(exp(-10*(x-1.12))-2*exp(-5*(x-1.12)))</expression>
+<color>-d1c055</color><weight>1.0</weight><style>1</style><datapoint>100</datapoint></function><axis_x_min>0.7</axis_x_min><axis_x_max>3.8</axis_x_max><axis_y_min>-0.3</axis_y_min><axis_y_max>0.18</axis_y_max></component></content>
+
+<content start="414" end="415">
+</content>
+
+</paragraph>
+<paragraph start="415" end="533">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="415" end="532">
+<size>11</size></content>
+
+<content start="532" end="533">
+</content>
+
+</paragraph>
+<paragraph start="533" end="534">
+<LeftIndent>160.0</LeftIndent>
+<content start="533" end="534">
+</content>
+
+</paragraph>
+<paragraph start="534" end="1055">
+<LeftIndent>160.0</LeftIndent>
+<content start="534" end="909">
+<size>11</size></content>
+
+<content start="909" end="910">
+<italic>true</italic><size>11</size></content>
+
+<content start="910" end="912">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="912" end="949">
+<size>11</size></content>
+
+<content start="949" end="993">
+<bold>true</bold><size>11</size></content>
+
+<content start="993" end="995">
+<bold>true</bold><size>15</size><foreground>255 0 0</foreground></content>
+
+<content start="995" end="1053">
+<bold>true</bold><size>11</size></content>
+
+<content start="1053" end="1054">
+<size>11</size></content>
+
+<content start="1054" end="1055">
+</content>
+
+</paragraph>
+<paragraph start="1055" end="1056">
+<LeftIndent>160.0</LeftIndent>
+<content start="1055" end="1056">
+</content>
+
+</paragraph>
+<paragraph start="1056" end="1235">
+<LeftIndent>160.0</LeftIndent>
+<content start="1056" end="1235">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1235" end="1236">
+<LeftIndent>160.0</LeftIndent>
+<content start="1235" end="1236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1236" end="1239">
+<LeftIndent>160.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1236" end="1237">
+</content>
+
+<content start="1237" end="1238">
+<icon>morselj.gif</icon></content>
+
+</paragraph>
+</section>
+</document>

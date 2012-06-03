@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Focus</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Focus
+
+&lt; Previous | Index | Next &gt;
+
+In order for the keyboard to interact with the model, the model needs to establish a connection with the keyboard for receiving the key-typing events. This is called the keyboard focus.
+
+The focus command requests that the keyboard focus to be transferred to the model.
+
+Syntax:
+
+focus
+
+This command can be used to automatically transfer the keyboard focus to the model when you are designing a model in which the user will steer an object.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="506">
+<paragraph start="0" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="5">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="9">
+<size>11</size></content>
+
+<content start="9" end="17">
+<href>script_paint.cml</href><size>11</size></content>
+
+<content start="17" end="20">
+<size>11</size></content>
+
+<content start="20" end="25">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="25" end="28">
+<size>11</size></content>
+
+<content start="28" end="32">
+<href>script_beep.cml</href><size>11</size></content>
+
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<LeftIndent>100.0</LeftIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="222">
+<LeftIndent>140.0</LeftIndent>
+<content start="36" end="222">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="222" end="223">
+<LeftIndent>140.0</LeftIndent>
+<content start="222" end="223">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="223" end="306">
+<LeftIndent>140.0</LeftIndent>
+<content start="223" end="227">
+<size>11</size></content>
+
+<content start="227" end="232">
+<size>11</size><family>Courier New</family></content>
+
+<content start="232" end="306">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="306" end="307">
+<LeftIndent>140.0</LeftIndent>
+<content start="306" end="307">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="307" end="315">
+<LeftIndent>140.0</LeftIndent>
+<content start="307" end="315">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="315" end="316">
+<LeftIndent>140.0</LeftIndent>
+<content start="315" end="316">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="316" end="322">
+<LeftIndent>160.0</LeftIndent>
+<content start="316" end="321">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="321" end="322">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="322" end="323">
+<LeftIndent>160.0</LeftIndent>
+<content start="322" end="323">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="323" end="477">
+<LeftIndent>140.0</LeftIndent>
+<content start="323" end="460">
+<size>11</size></content>
+
+<content start="460" end="475">
+<href>SteerParticle.cml</href><size>11</size></content>
+
+<content start="475" end="477">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="477" end="478">
+<LeftIndent>140.0</LeftIndent>
+<content start="477" end="478">
+</content>
+
+</paragraph>
+<paragraph start="478" end="506">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="478" end="480">
+<size>11</size></content>
+
+<content start="480" end="488">
+<href>script_paint.cml</href><size>11</size></content>
+
+<content start="488" end="491">
+<size>11</size></content>
+
+<content start="491" end="496">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="496" end="499">
+<size>11</size></content>
+
+<content start="499" end="503">
+<href>script_beep.cml</href><size>11</size></content>
+
+<content start="503" end="505">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

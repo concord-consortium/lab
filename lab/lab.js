@@ -2368,34 +2368,86 @@ var constants = require('../constants'),
   This function also accepts a callback function which will be called with a hash representing
   the new coefficients, whenever the LJ coefficients are changed for the returned calculator.
 */
-exports.makeLennardJonesCalculator = function(params, cb) {
+exports.makeLennardJonesCalculator = function(elements, cb) {
+  /*
+     all of these pairwise variables are symmetrical matrices reprsenting the
+     parameters between each pair of elements. Thus pairwiseEpsilons[0][0] is the
+     epsilon component of the LJ force between two atoms of element 0, while
+     pairwiseEpsilons[0][1] and pairwiseEpsilons[1][0] both represent the epsilon
+     component between elements 0 and 1
+  */
+  var pairwiseEpsilons          = [],    // parameter; depth of the potential well, in eV
+      pairwiseSigmas            = [],    // parameter: characteristic distance from particle, in nm
+      pairwiseRmins             = [],    // distance from particle at which the potential is at its minimum
+      pairwiseAlphaPotentials   = [],    // precalculated; units are eV * nm^12
+      pairwiseBetaPotentials    = [],    // precalculated; units are eV * nm^6
+      pairwiseAlphaForces       = [],    // units are "MW Force Units" * nm^13
+      pairwiseBetaForces        = [],    // units are "MW Force Units" * nm^7
+      pairwiseCutoffDistanceSq  = [],
 
-  var epsilon,          // parameter; depth of the potential well, in eV
-      sigma,            // parameter: characteristic distance from particle, in nm
+      /*
+        Precalculates all of the paramters between every pair of elements.
+        @param elements: Elements of the form
+          [ [mass_0, epsilon_0, sigma_0], [mass_1, epsilon_1, sigma_1], ...]
 
-      rmin,             // distance from particle at which the potential is at its minimum
-      alpha_Potential,  // precalculated; units are eV * nm^12
-      beta_Potential,   // precalculated; units are eV * nm^6
-      alpha_Force,      // units are "MW Force Units" * nm^13
-      beta_Force,       // units are "MW Force Units" * nm^7
+        If we pass in
+          [ [30, 1, 1], [30, 2, 2] ]
 
-      setCoefficients = function(e, s) {
-        // Input units:
-        //  epsilon: eV
-        //  sigma:   nm
+        We will set
 
-        epsilon = e;
-        sigma   = s;
-        rmin    = Math.pow(2, 1/6) * sigma;
+        pairwiseEpsilons = [[ 1 , 1.5],
+                            [1.5,  2 ]]
 
-        if (epsilon != null && sigma != null) {
-          alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
-          beta_Potential  = 4 * epsilon * Math.pow(sigma, 6);
+        pairwiseSigmas   = [[ 1   , 1.414],
+                            [1.414,  2   ]]
 
-          // (1 J * nm^12) = (1 N * m * nm^12)
-          // (1 N * m * nm^12) * (b nm / m) * (c MWUnits / N) = (abc MWUnits nm^13)
-          alpha_Force = 12 * constants.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
-          beta_Force =  6 * constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+        rmin             = [[1.122, 1.587],
+                            [1.587, 2.245]]
+
+        alpha_Potential  = [[ 4   , 384  ],
+                            [384  , 32768]]
+
+        ...etc.
+      */
+      // FIXME: validate
+      setElements = function(elements) {
+        var i, ii, j, jj, epsilon, sigma, rmin, alpha_Potential, beta_Potential, alpha_Force, beta_Force, cutoffDistance;
+        for (i=0, ii=elements.length; i<ii; i++) {
+          pairwiseEpsilons[i]           = [];
+          pairwiseSigmas[i]             = [];
+          pairwiseRmins[i]              = [];
+          pairwiseAlphaPotentials[i]    = [];
+          pairwiseBetaPotentials[i]     = [];
+          pairwiseAlphaForces[i]        = [];
+          pairwiseBetaForces[i]         = [];
+          pairwiseCutoffDistanceSq[i]   = [];
+
+          for (j=0; j<i+1; j++) {
+            epsilon = (elements[i][1] + elements[j][1]) / 2;
+            sigma   = Math.sqrt(elements[i][2] * elements[j][2]);
+
+            rmin    =  Math.pow(2, 1/6) * sigma;
+            cutoffDistance = rmin * 5;
+
+            if (epsilon != null && sigma != null) {
+              alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
+              beta_Potential  = 4 * epsilon * Math.pow(sigma, 6);
+
+              // (1 J * nm^12) = (1 N * m * nm^12)
+              // (1 N * m * nm^12) * (b nm / m) * (c MWUnits / N) = (abc MWUnits nm^13)
+              alpha_Force = 12 * constants.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+              beta_Force =  6 * constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+            }
+
+            pairwiseEpsilons[i][j]          = pairwiseEpsilons[j][i]    = epsilon;
+            pairwiseSigmas[i][j]            = pairwiseSigmas[j][i]      = sigma;
+            pairwiseRmins[i][j]             = pairwiseRmins[j][i]       = rmin;
+            pairwiseAlphaPotentials[i][j]   = pairwiseAlphaPotentials[j][i]   = alpha_Potential;
+            pairwiseBetaPotentials[i][j]    = pairwiseBetaPotentials[j][i]    = beta_Potential;
+            pairwiseAlphaForces[i][j]       = pairwiseAlphaForces[j][i] = alpha_Force;
+            pairwiseBetaForces[i][j]        = pairwiseBetaForces[j][i]  = beta_Force;
+            pairwiseCutoffDistanceSq[i][j]  = pairwiseCutoffDistanceSq[j][i] = (cutoffDistance * cutoffDistance)
+          }
         }
 
         if (typeof cb === 'function') cb(getCoefficients(), this);
@@ -2403,9 +2455,10 @@ exports.makeLennardJonesCalculator = function(params, cb) {
 
       getCoefficients = function() {
         return {
-          epsilon: epsilon,
-          sigma  : sigma,
-          rmin   : rmin
+          epsilon: pairwiseEpsilons,
+          sigma  : pairwiseSigmas,
+          rmin   : pairwiseRmins,
+          cutoffDistanceSq : pairwiseCutoffDistanceSq
         };
       },
 
@@ -2426,25 +2479,15 @@ exports.makeLennardJonesCalculator = function(params, cb) {
 
       // At creation time, there must be a valid epsilon and sigma ... we're not gonna check during
       // inner-loop force calculations!
-      validateEpsilon(params.epsilon);
-      validateSigma(params.sigma);
+      // validateEpsilon(params.epsilon);
+      // validateSigma(params.sigma);
 
       // Initialize coefficients to passed-in values
-      setCoefficients(params.epsilon, params.sigma);
+      setElements(elements);
 
   return calculator = {
 
     coefficients: getCoefficients,
-
-    setEpsilon: function(e) {
-      validateEpsilon(e);
-      setCoefficients(e, sigma);
-    },
-
-    setSigma: function(s) {
-      validateSigma(s);
-      setCoefficients(epsilon, s);
-    },
 
     /**
       Input units: r_sq: nm^2
@@ -2452,38 +2495,38 @@ exports.makeLennardJonesCalculator = function(params, cb) {
 
       minimum is at r=rmin, V(rmin) = 0
     */
-    potentialFromSquaredDistance: function(r_sq) {
-       return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3);
+    potentialFromSquaredDistance: function(r_sq, el0, el1) {
+       return pairwiseAlphaPotentials[el0][el1]*Math.pow(r_sq, -6) - pairwiseBetaPotentials[el0][el1]*Math.pow(r_sq, -3);
     },
 
     /**
       Input units: r: nm
       Output units: eV
     */
-    potential: function(r) {
-      return calculator.potentialFromSquaredDistance(r*r);
+    potential: function(r, el0, el1) {
+      return calculator.potentialFromSquaredDistance(r*r, el0, el1);
     },
 
     /**
       Input units: r_sq: nm^2
       Output units: MW Force Units / nm (= Dalton / fs^2)
     */
-    forceOverDistanceFromSquaredDistance: function(r_sq) {
+    forceOverDistanceFromSquaredDistance: function(r_sq, el0, el1) {
       // optimizing divisions actually does appear to be *slightly* faster
       var r_minus2nd  = 1 / r_sq,
           r_minus6th  = r_minus2nd * r_minus2nd * r_minus2nd,
           r_minus8th  = r_minus6th * r_minus2nd,
           r_minus14th = r_minus8th * r_minus6th;
 
-      return alpha_Force*r_minus14th - beta_Force*r_minus8th;
+      return pairwiseAlphaForces[el0][el1]*r_minus14th - pairwiseBetaForces[el0][el1]*r_minus8th;
     },
 
     /**
       Input units: r: nm
       Output units: MW Force Units (= Dalton * nm / fs^2)
     */
-    force: function(r) {
-      return r * calculator.forceOverDistanceFromSquaredDistance(r*r);
+    force: function(r, el0, el1) {
+      return r * calculator.forceOverDistanceFromSquaredDistance(r*r, el0, el1);
     }
   };
 };
@@ -2585,7 +2628,7 @@ var arrays       = require('./arrays/arrays').arrays,
       if (isNaN(temperature)) {
         throw new Error("md2d: requested temperature " + t + " could not be understood.");
       }
-      if (temperature <= 0) {
+      if (temperature < 0) {
         throw new Error("md2d: requested temperature " + temperature + " was less than zero");
       }
       if (temperature === Infinity) {
@@ -2675,12 +2718,8 @@ exports.makeModel = function() {
       // For now properties are just defined by index, with no additional lookup for
       // the index (e.g. elements[0][ELEM_MASS_INDEX] for the mass of elem 0). We
       // have few enough properties that we currently don't need this additional lookup.
-      // element definition: [ MASS_IN_DALTONS ]
-      defaultElements = [
-        [ ARGON_MASS_IN_DALTON ]
-      ],
-
-      elements = defaultElements,       // set elements to defaults immediately, set later if requested
+      // element definition: [ MASS_IN_DALTONS, EPSILON, SIGMA ]
+      elements,
 
       // Individual property arrays for the particles. Each is a length-N array.
       radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element,
@@ -2713,23 +2752,29 @@ exports.makeModel = function() {
       // Object containing observations of the sytem (temperature, etc)
       outputState = window.state = {},
 
-      // Cutoff distance beyond which the Lennard-Jones force is clipped to 0.
-      cutoffDistance_LJ,
-
-      // Square of cutoff distance; this is a convenience for updatePairwiseAccelerations
-      cutoffDistance_LJ_sq,
+      // Paired square of cutoff distance; this is a convenience for updatePairwiseAccelerations
+      cutoffDistance_LJ_sq = [],
 
       // Callback that recalculates cutoffDistance_LJ when the Lennard-Jones sigma parameter changes.
       ljCoefficientsChanged = function(coefficients) {
-        cutoffDistance_LJ = coefficients.rmin * 5;
-        cutoffDistance_LJ_sq = cutoffDistance_LJ * cutoffDistance_LJ;
+        cutoffDistance_LJ_sq = coefficients.cutoffDistanceSq;
+        if (radius && element) {
+          setRadii();
+        }
+      },
+
+      setRadii = function() {
+        var sigmas = lennardJones.coefficients().sigma,
+            i,
+            len;
+
+        for (i = 0, len = radius.length; i < len; i++) {
+          radius[i] = 0.5 * sigmas[element[i]][element[i]];
+        }
       },
 
       // An object that calculates the magnitude of the Lennard-Jones force or potential at a given distance.
-      lennardJones = window.lennardJones = makeLennardJonesCalculator({
-        epsilon: ARGON_LJ_EPSILON_IN_EV,
-        sigma:   ARGON_LJ_SIGMA_IN_NM
-      }, ljCoefficientsChanged),
+      lennardJones,
 
       // Function that accepts a value T and returns an average of the last n values of T (for some n).
       T_windowed,
@@ -2895,10 +2940,14 @@ exports.makeModel = function() {
       // ax and ay before calling this function.
       updatePairwiseAccelerations = function(i) {
         var j, dx, dy, r_sq, f_over_r, f_over_r_dx, f_over_r_dy,
-            mass_inv = 1/elements[element[i]][0], mass_j_inv, q_i = charge[i];
+            el_i = element[i],
+            el_j,
+            mass_inv = 1/elements[el_i][0], mass_j_inv, q_i = charge[i];
 
         for (j = 0; j < i; j++) {
-          mass_j_inv = 1/elements[element[j]][0];
+          el_j = element[j];
+
+          mass_j_inv = 1/elements[el_j][0];
 
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -2906,8 +2955,8 @@ exports.makeModel = function() {
 
           f_over_r = 0;
 
-          if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq) {
-            f_over_r += lennardJones.forceOverDistanceFromSquaredDistance(r_sq);
+          if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el_i][el_j]) {
+            f_over_r += lennardJones.forceOverDistanceFromSquaredDistance(r_sq, el_i, el_j);
           }
 
           if (useCoulombInteraction) {
@@ -2988,26 +3037,26 @@ exports.makeModel = function() {
       return [size[0], size[1]];
     },
 
-    setLJEpsilon: function(e) {
-      lennardJones.setEpsilon(e);
-    },
+    // setLJEpsilon: function(e) {
+    //   lennardJones.setEpsilon(e);
+    // },
 
-    getLJEpsilon: function() {
-      return lennardJones.coefficients().epsilon;
-    },
+    // getLJEpsilon: function() {
+    //   return lennardJones.coefficients().epsilon;
+    // },
 
-    setLJSigma: function(s) {
-      var i;
+    // setLJSigma: function(s) {
+    //   var i;
 
-      lennardJones.setSigma(s);
-      for (i = 0; i < N; i++) {
-        radius[i] = s/2;
-      }
-    },
+    //   lennardJones.setSigma(s);
+    //   for (i = 0; i < N; i++) {
+    //     radius[i] = s/2;
+    //   }
+    // },
 
-    getLJSigma: function() {
-      return lennardJones.coefficients().sigma;
-    },
+    // getLJSigma: function() {
+    //   return lennardJones.coefficients().sigma;
+    // },
 
     getLJCalculator: function() {
       return lennardJones;
@@ -3022,9 +3071,10 @@ exports.makeModel = function() {
     */
     setElements: function(elems) {
       if (atomsHaveBeenCreated) {
-        throw new Error("md2d: setElements cannot be called after elements have been created");
+        throw new Error("md2d: setElements cannot be called after atoms have been created");
       }
       elements = elems;
+      lennardJones = window.lennardJones = makeLennardJonesCalculator(elements, ljCoefficientsChanged);
     },
 
     // allocates 'nodes' array of arrays, sets number of atoms.
@@ -3037,9 +3087,9 @@ exports.makeModel = function() {
     //     Y: the Y locations of the atoms to create
     //   num: the number of atoms to create
     createAtoms: function(options) {
-      var rmin = lennardJones.coefficients().rmin,
-          arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular';
+      var arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
+          i;
 
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
@@ -3060,15 +3110,15 @@ exports.makeModel = function() {
         throw new Error("md2d: createAtoms was passed a non-integral 'N' option.");
       }
       if (N < N_MIN) {
-        throw new Error("md2d: create Atoms was passed an 'N' option less than the minimum allowable value N_MIN = " + N_MIN + ".");
+        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + N + " which is less than the minimum allowable value: N_MIN = " + N_MIN + ".");
       }
       if (N > N_MAX) {
-        throw new Error("md2d: create Atoms was passed an 'N' option greater than the maximum allowable value N_MAX = " + N_MAX + ".");
+        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + N + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
       }
 
       nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
 
-      radius = model.radius = nodes[INDICES.RADIUS] = arrays.create(N, 0.5 * rmin, arrayType );
+      radius = model.radius = nodes[INDICES.RADIUS] = arrays.create(N, 0, arrayType);
       px     = model.px     = nodes[INDICES.PX]     = arrays.create(N, 0, arrayType);
       py     = model.py     = nodes[INDICES.PY]     = arrays.create(N, 0, arrayType);
       x      = model.x      = nodes[INDICES.X]      = arrays.create(N, 0, arrayType);
@@ -3080,7 +3130,7 @@ exports.makeModel = function() {
       ay     = model.ay     = nodes[INDICES.AY]     = arrays.create(N, 0, arrayType);
       charge = model.charge = nodes[INDICES.CHARGE] = arrays.create(N, 0, arrayType);
 
-      // NOTE, this is a Uint8Array for now, but it's not clear if this is the best pattern
+      // NOTE, this is a Uint8Array for now, but this may not be the best pattern in the future
       // because Uint8Arrays length cannot be changed. Right now we never add or remove atoms
       // from the model without re-creating the atom arrays, but that might change in the future.
       element = model.element = nodes[INDICES.ELEMENT] = arrays.create(N, 0, uint8ArrayType);
@@ -3124,6 +3174,8 @@ exports.makeModel = function() {
       }
       totalMass = model.totalMass = cumulativeTotalMass;
 
+      setRadii();
+
       // Publish the current state
       T = computeTemperature();
       model.computeOutputState();
@@ -3136,7 +3188,8 @@ exports.makeModel = function() {
           ncols = Math.ceil(N/nrows),
 
           i, r, c, rowSpacing, colSpacing,
-          vMagnitude, vDirection;
+          vMagnitude, vDirection,
+          coefficients = lennardJones.coefficients();
 
       validateTemperature(temperature);
 
@@ -3170,6 +3223,7 @@ exports.makeModel = function() {
           charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
 
           element[i] = Math.floor(Math.random() * elements.length);     // random element
+          radius[i] = coefficients.rmin[element[i]][element[i]] / 2;
 
           model.totalMass = totalMass += elements[element[i]][0];
         }
@@ -3281,7 +3335,7 @@ exports.makeModel = function() {
 
           // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
           if (useLennardJonesInteraction ) {
-            PE += -lennardJones.potentialFromSquaredDistance(r_sq);
+            PE += -lennardJones.potentialFromSquaredDistance(r_sq, element[i], element[j]);
           }
           if (useCoulombInteraction) {
             PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
@@ -3331,7 +3385,7 @@ modeler.VERSION = '0.2.0';
 
 modeler.model = function(initialProperties) {
   var model = {},
-      elements = initialProperties.elements,
+      elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
       atoms = [],
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
@@ -3381,17 +3435,15 @@ modeler.model = function(initialProperties) {
       listeners = {},
 
       properties = {
-        temperature           : 3,
+        temperature           : 300,
         coulomb_forces        : false,
-        epsilon               : -0.1,
-        sigma                 : 0.34,
         lennard_jones_forces  : true,
         temperature_control   : true,
 
         set_temperature: function(t) {
           this.temperature = t;
           if (coreModel) {
-            coreModel.setTargetTemperature(abstract_to_real_temperature(t));
+            coreModel.setTargetTemperature(t);
           }
         },
 
@@ -3410,17 +3462,11 @@ modeler.model = function(initialProperties) {
         },
 
         set_epsilon: function(e) {
-          this.epsilon = e;
-          if (coreModel) {
-            coreModel.setLJEpsilon(e);
-          }
+          console.log("set_epsilon: This method is temporarily deprecated");
         },
 
         set_sigma: function(s) {
-          this.sigma = s;
-          if (coreModel) {
-            coreModel.setLJSigma(s);
-          }
+          console.log("set_sigma: This method is temporarily deprecated");
         }
       };
 
@@ -3439,8 +3485,8 @@ modeler.model = function(initialProperties) {
     SPEED    : md2d.INDICES.SPEED,
     AX       : md2d.INDICES.AX,
     AY       : md2d.INDICES.AY,
-    MASS     : md2d.INDICES.MASS,
-    CHARGE   : md2d.INDICES.CHARGE
+    CHARGE   : md2d.INDICES.CHARGE,
+    ELEMENT  : md2d.INDICES.ELEMENT
   };
 
   function notifyListeners(listeners) {
@@ -3471,14 +3517,6 @@ modeler.model = function(initialProperties) {
       waitingToBeNotified = waitingToBeNotified.concat(listeners["all"]);
     }
     notifyListeners(waitingToBeNotified);
-  }
-
-  //
-  // The abstract_to_real_temperature(t) function is used to map temperatures in abstract units
-  // within a range of 0..25 to the 'real' temperature (2/N_df) * <mv^2>/2 where N_df = 2N-4
-  //
-  function abstract_to_real_temperature(t) {
-    return 5 + t * (2000-5)/25;  // Translate 0..25 to 5K..2500K
   }
 
   function average_speed() {
@@ -3601,7 +3639,7 @@ modeler.model = function(initialProperties) {
 
   function set_temperature(t) {
     temperature = t;
-    coreModel.setTargetTemperature(abstract_to_real_temperature(t));
+    coreModel.setTargetTemperature(t);
   }
 
   function set_properties(hash) {
@@ -3635,7 +3673,7 @@ modeler.model = function(initialProperties) {
       elemsArray = [];
       for (i=0, ii=elements.length; i<ii; i++){
         element = elements[i];
-        elemsArray[element.id] = [element.mass];
+        elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
       }
       coreModel.setElements(elemsArray);
     }
@@ -3668,8 +3706,8 @@ modeler.model = function(initialProperties) {
     atoms.length = nodes[0].length;
 
     // Initialize properties
-    lennard_jones_forces = properties.lennard_jones_forces;
-    coulomb_forces       = properties.coulomb_forces;
+    // lennard_jones_forces = properties.lennard_jones_forces;
+    // coulomb_forces       = properties.coulomb_forces;
     temperature_control  = properties.temperature_control;
     temperature          = properties.temperature;
 
@@ -3680,11 +3718,11 @@ modeler.model = function(initialProperties) {
     coreModel.useCoulombInteraction(properties.coulomb_forces);
     coreModel.useThermostat(properties.temperature_control);
 
-    T = abstract_to_real_temperature(temperature);
+    T = temperature;
     coreModel.setTargetTemperature(T);
 
-    coreModel.setLJEpsilon(properties.epsilon);
-    coreModel.setLJSigma(properties.sigma);
+    // coreModel.setLJEpsilon(properties.epsilon);
+    // coreModel.setLJSigma(properties.sigma);
 
     if (config.X && config.Y) {
       coreModel.initializeAtomsFromProperties(config);
@@ -4515,6 +4553,7 @@ layout.cancelFullScreen = false;
 layout.screen_factor = 1;
 layout.checkbox_factor = 1.1;
 layout.checkbox_scale = 1.1;
+layout.fullScreenRender = false;
 
 layout.canonical.width  = 1280;
 layout.canonical.height = 800;
@@ -4542,6 +4581,11 @@ layout.getDisplayProperties = function(obj) {
   return obj;
 };
 
+layout.screenEqualsPage = function() {
+  return ((layout.display.screen.width  === layout.display.page.width) ||
+          (layout.display.screen.height === layout.display.page.height))
+};
+
 layout.checkForResize = function() {
   if ((layout.display.screen.width  != screen.width) ||
       (layout.display.screen.height != screen.height) ||
@@ -4563,7 +4607,8 @@ layout.setupScreen = function(viewLists) {
   }
 
 
-  if(fullscreen) {
+  if(fullscreen || layout.fullScreenRender  || layout.screenEqualsPage()) {
+    layout.fullScreenRender = true;
     layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
     layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
     layout.screen_factor = layout.screen_factor_height;
@@ -4572,30 +4617,46 @@ layout.setupScreen = function(viewLists) {
     layout.not_rendered = true;
     switch (layout.selection) {
 
+      // fluid layout
       case "simple-screen":
-      setupSimpleFullScreenMoleculeContainer();
-      setupFullScreenDescriptionRight();
-      break;
-
-      case "simple-static-screen":
       if (layout.not_rendered) {
         setupSimpleFullScreenMoleculeContainer();
-        setupDescriptionRight();
       }
       break;
 
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
+      case "simple-static-screen":
+      if (layout.not_rendered) {
+        setupSimpleFullScreenMoleculeContainer();
+      }
+      break;
+
+      // fluid (but normally the iframe doesn't expose the full-screen action)
       case "simple-iframe":
       setupSimpleFullScreenMoleculeContainer();
       setupFullScreenDescriptionRight();
       break;
 
+      // fluid layout
+      case "compare-screen":
+      var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
+      compareScreen();
+      layout.not_rendered = false;
+      break;
+
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
       default:
-      setupFullScreen();
+      if (layout.not_rendered) {
+        setupFullScreen();
+      }
       break;
     }
   } else {
-    if (layout.cancelFullScreen) {
+    if (layout.cancelFullScreen || layout.fullScreenRender) {
       layout.cancelFullScreen = false;
+      layout.fullScreenRender = false;
+      layout.not_rendered = true;
       layout.regular_display = layout.previous_display;
     } else {
       layout.regular_display = layout.getDisplayProperties();
@@ -4606,12 +4667,14 @@ layout.setupScreen = function(viewLists) {
     layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
     switch (layout.selection) {
 
+      // fluid layout
       case "simple-screen":
-      layout.bodycss.style.fontSize = layout.screen_factor + 'em';
-      setupSimpleMoleculeContainer();
-      setupDescriptionRight();
+      var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
+      simpleScreen();
       break;
 
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
       case "simple-static-screen":
       if (layout.not_rendered) {
         var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
@@ -4621,19 +4684,28 @@ layout.setupScreen = function(viewLists) {
       }
       break;
 
+      // fluid layout
       case "simple-iframe":
       var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
       layout.bodycss.style.fontSize = emsize + 'em';
       setupSimpleIFrameScreen();
       break;
 
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
       case "full-static-screen":
       if (layout.not_rendered) {
         var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
         layout.bodycss.style.fontSize = emsize + 'em';
-        setupRegularScreen();
+        regularScreen();
         layout.not_rendered = false;
       }
+      break;
+
+      // fluid layout
+      case "compare-screen":
+      var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
+      compareScreen();
       break;
 
       default:
@@ -4660,61 +4732,120 @@ layout.setupScreen = function(viewLists) {
   //
   // Regular Screen Layout
   //
-  function setupRegularScreen() {
-    var i, width, height, mcsize, widthToPageRatio;
-    height = Math.min(layout.display.page.height * 0.70, layout.display.page.width * 0.40);
-    i = -1;  while(++i < viewLists.moleculeContainers.length) {
-      viewLists.moleculeContainers[i].resize(height, height);
-    };
+  function regularScreen() {
+    var i, width, height, mcsize, 
+        rightHeight, rightHalfWidth, rightQuarterWidth,
+        widthToPageRatio, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
+
+    mcsize = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    widthToPageRatio = mcsize[0] / pageWidth;
+    width = pageWidth * 0.46;
+    height = width * 1/modelAspectRatio;
+    if (height > pageHeight*0.70) {
+      height = pageHeight * 0.70;
+      width * height * modelAspectRatio;
+    }
     // HACK that will normally only work with one moleculeContainer
     // or if all the moleculeContainers end up the same width
-    mcsize = viewLists.moleculeContainers[0].scale();
-    widthToPageRatio = mcsize[0] / layout.display.page.width;
-    width = (layout.display.page.width - mcsize[0]) * 0.34;
-    height = layout.display.page.height * 0.30;
+    i = -1;  while(++i < viewLists.moleculeContainers.length) {
+      viewLists.moleculeContainers[i].resize(width, height);
+    }
+    rightQuarterWidth = (pageWidth - width) * 0.415;
+    rightHeight = height * 0.42;
     i = -1;  while(++i < viewLists.potentialCharts.length) {
-      viewLists.potentialCharts[i].resize(width, height);
-    };
-    width = (layout.display.page.width - mcsize[0]) * 0.34;
-    height = layout.display.page.height * 0.30;
+      viewLists.potentialCharts[i].resize(rightQuarterWidth, rightHeight);
+    }
     i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
-      viewLists.speedDistributionCharts[i].resize(width, height);
-    };
-    width = (layout.display.page.width - mcsize[0]) * 0.70;
-    height = layout.display.page.height * 0.39 + 0;
+      viewLists.speedDistributionCharts[i].resize(rightQuarterWidth, rightHeight);
+    }
+    rightHalfWidth = (pageWidth - width) * 0.86;
+    rightHeight = height * 0.57;
     i = -1;  while(++i < viewLists.energyCharts.length) {
-      viewLists.energyCharts[i].resize(width, height);
-    };
+      viewLists.energyCharts[i].resize(rightHalfWidth, rightHeight);
+    }
+  }
+
+  //
+  // Compare Screen Layout
+  //
+  function compareScreen() {
+    var i, width, height, mcsize, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
+
+    mcsize = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    width = pageWidth * 0.44;
+    height = width * 1/modelAspectRatio;
+    // HACK that will normally only work with one moleculeContainer
+    // or if all the moleculeContainers end up the same width
+    i = -1;  while(++i < viewLists.moleculeContainers.length) {
+      viewLists.moleculeContainers[i].resize(width, height);
+    }
+    i = -1;  while(++i < viewLists.appletContainers.length) {
+      viewLists.appletContainers[i].resize(width, height);
+    }
   }
 
   //
   // Full Screen Layout
   //
   function setupFullScreen() {
-    var i, width, height;
-    height = layout.display.page.height * 0.70;
+    var i, width, height, mcsize, 
+        rightHeight, rightHalfWidth, rightQuarterWidth,
+        widthToPageRatio, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
+
+    mcsize = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    widthToPageRatio = mcsize[0] / pageWidth;
+    width = pageWidth * 0.46;
+    height = width * 1/modelAspectRatio;
+    if (height > pageHeight*0.70) {
+      height = pageHeight * 0.70;
+      width * height * modelAspectRatio;
+    }
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
-      viewLists.moleculeContainers[i].resize(height, height);
-    };
-    width = layout.display.page.width * 0.24;
-    height = layout.display.page.height * 0.35;
+      viewLists.moleculeContainers[i].resize(width, height);
+    }
+    rightQuarterWidth = (pageWidth - width) * 0.41;
+    rightHeight = height * 0.42;
     i = -1;  while(++i < viewLists.potentialCharts.length) {
-      viewLists.potentialCharts[i].resize(width, height);
-    };
-    width = layout.display.page.width * 0.22;
-    height = layout.display.page.height * 0.35;
+      viewLists.potentialCharts[i].resize(rightQuarterWidth, rightHeight);
+    }
     i = -1;  while(++i < viewLists.speedDistributionCharts.length) {
-      viewLists.speedDistributionCharts[i].resize(width, height);
-    };
-    width = layout.display.page.width * 0.47 + 5;
-    height = layout.display.page.height * 0.40 + 0;
+      viewLists.speedDistributionCharts[i].resize(rightQuarterWidth, rightHeight);
+    }
+    rightHalfWidth = (pageWidth - width) * 0.86;
+    rightHeight = height * 0.57;
     i = -1;  while(++i < viewLists.energyCharts.length) {
-      viewLists.energyCharts[i].resize(width, height);
-    };
+      viewLists.energyCharts[i].resize(rightHalfWidth, rightHeight);
+    }
   }
 
   //
   // Simple Screen Layout
+  //
+  function simpleScreen() {
+    var i, width, height, mcsize, widthToPageRatio;
+
+    height = Math.min(layout.display.page.height * 0.50, layout.display.page.width * 0.53);
+    viewLists.moleculeContainers[0].resize(height, height);
+    mcsize = viewLists.moleculeContainers[0].scale();
+    widthToPageRatio = mcsize[0] / layout.display.page.width;
+    if (widthToPageRatio > 0.53) {
+      height *= (0.53 / widthToPageRatio);
+      viewLists.moleculeContainers[0].resize(height, height);
+    }
+    viewLists.thermometers[0].resize();
+  }
+
+  //
+  // Simple Static Screen Layout
   //
   function simpleStaticScreen() {
     var i, width, height, mcsize, widthToPageRatio,
@@ -4731,22 +4862,31 @@ layout.setupScreen = function(viewLists) {
       //   description_right.style.width = (layout.display.page.width - mcsize[0]) * 0.50 + "px";
       // }
     }
+    viewLists.thermometers[0].resize();
   }
 
   //
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameScreen() {
-    var i, width, height, mcsize, widthToPageRatio;
+    var i, width, height, mcsize, 
+        rightHeight, rightHalfWidth, rightQuarterWidth,
+        widthToPageRatio, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
 
-    height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
-    viewLists.moleculeContainers[0].resize(height, height);
     mcsize = viewLists.moleculeContainers[0].scale();
-    widthToPageRatio = mcsize[0] / layout.display.page.width;
-    if (widthToPageRatio > 0.75) {
-      height *= (0.75 / widthToPageRatio);
-      viewLists.moleculeContainers[0].resize(height, height);
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    widthToPageRatio = mcsize[0] / pageWidth;
+    width = pageWidth * 0.80;
+    height = width * 1/modelAspectRatio;
+    if (height > pageHeight * 0.80) {
+      height = pageHeight * 0.80;
+      width * height * modelAspectRatio;
     }
+    viewLists.moleculeContainers[0].resize(width, height);
+    mcsize = viewLists.moleculeContainers[0].scale();
+    viewLists.thermometers[0].resize();
   }
 
   //
@@ -4841,6 +4981,128 @@ layout.transform = layout.getTransformProperty(document.body);
 
 // ------------------------------------------------------------
 //
+//   Applet Container
+//
+// ------------------------------------------------------------
+
+layout.appletContainer = function(e, options) {
+  var elem = d3.select(e),
+      node = elem.node(),
+      cx = elem.property("clientWidth"),
+      cy = elem.property("clientHeight"),
+      applet, appletString,
+      appletWidth, appletHeight, appletAspectRatio,
+      width, height,
+      scale_factor,
+      padding, size,
+      mw, mh, tx, ty, stroke,
+      default_options = {
+        appletID:             "mw-applet",
+        codebase:             "/jnlp",
+        code:                 "org.concord.modeler.MwApplet",
+        width:                "100%",
+        height:               "100%",
+        archive:              "org/concord/modeler/mw.jar",
+        align:                "left",
+        hspace:               "5",
+        vspace:               "5",
+        params: [
+          ["script", "page:0:import /imports/legacy-mw-content/potential-tests/two-atoms-two-elements/two-atoms-two-elements.cml"]
+        ]
+      };
+
+  if (options) {
+    for(var p in default_options) {
+      if (options[p] === undefined) {
+        options[p] = default_options[p];
+      }
+    }
+  } else {
+    options = default_options;
+  }
+
+  scale(cx, cy);
+
+  function scale(w, h) {
+    if (!arguments.length) {
+      cy = elem.property("clientHeight");
+      cx = elem.property("clientWidth");
+    } else {
+      cy = h;
+      cx = w;
+    }
+    if(applet) {
+      appletWidth  = +applet.runMwScript("mw2d:1:get %width");
+      appletHeight = +applet.runMwScript("mw2d:1:get %height");
+      appletAspectRatio = appletWidth/appletHeight;
+      cy = cx * 1/appletAspectRatio * 1.25;
+    }
+    node.style.width = cx +"px";
+    node.style.height = cy +"px";
+    scale_factor = layout.screen_factor;
+    if (layout.screen_factor_width && layout.screen_factor_height) {
+      scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
+    }
+    scale_factor = cx/600;
+    padding = {
+       "top":    5,
+       "right":  5,
+       "bottom": 5,
+       "left":   5
+    };
+
+    height = cy - padding.top  - padding.bottom;
+    width  = cx - padding.left  - padding.right;
+    size = { "width":  width, "height": height };
+
+    return [cx, cy];
+  }
+
+  function container() {
+    if (applet === undefined) {
+      appletString = generateAppletString();
+      node.innerHTML = appletString;
+      applet = document.getElementById(options.appletID);
+    } else {
+      applet.style.width  = size.width;
+      applet.style.height = size.height;
+      applet.width  = size.width;
+      applet.height = size.height;
+    }
+
+    function generateAppletString() {
+      var i, param, strArray;
+      strArray =
+        ['<applet id="' + options.appletID + '", codebase="' + options.codebase + '", code="' + options.code + '"',
+         '     width="' + options.width + '" height="' + options.height + '" MAYSCRIPT="true"',
+         '     archive="' + options.archive + '">',
+         '     MAYSCRIPT="true">'];
+      for(i = 0; i < options.params.length; i++) {
+        param = options.params[i];
+        strArray.push('  <param name="' + param[0] + '" value="' + param[1] + '"/>');
+      }
+      strArray.push('  <param name="MAYSCRIPT" value="true"/>');
+      strArray.push('  Your browser is completely ignoring the applet tag!');
+      strArray.push('</applet>');
+      return strArray.join('\n');
+    }
+
+    // make these private variables and functions available
+    container.node = node;
+    container.scale = scale;
+    container.applet = applet;
+  }
+
+  container.resize = function(w, h) {
+    container.scale(w, h);
+  };
+
+  if (node) { container(); }
+
+  return container;
+};
+// ------------------------------------------------------------
+//
 //   Molecule Container
 //
 // ------------------------------------------------------------
@@ -4867,6 +5129,7 @@ layout.moleculeContainer = function(e, options) {
       red_gradient,
       blue_gradient,
       green_gradient,
+      element_gradient_array,
       atom_tooltip_on,
       offset_left, offset_top,
       particle, label, labelEnter, tail,
@@ -4918,19 +5181,19 @@ layout.moleculeContainer = function(e, options) {
     }
     node.style.width = cx +"px";
     scale_factor = layout.screen_factor;
-    if (layout.screen_factor_width && layout.screen_factor_height) {
-      scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
-    }
-    scale_factor = cx/600;
     padding = {
        "top":    options.title  ? 40 * layout.screen_factor : 20,
        "right":                   25,
-       "bottom": options.xlabel ? 56  * layout.screen_factor : 20,
+       "bottom": 10,
        "left":   options.ylabel ? 60  * layout.screen_factor : 25
     };
 
+    if (options.xlabel || options.model_time_label) {
+      padding.bottom += (35  * scale_factor);
+    }
+
     if (options.playback_controller || options.play_only_controller) {
-      padding.bottom += (30  * scale_factor);
+      padding.bottom += (40  * scale_factor);
     }
 
     height = cy - padding.top  - padding.bottom;
@@ -4943,11 +5206,13 @@ layout.moleculeContainer = function(e, options) {
 
     offset_left = node.offsetLeft + padding.left;
     offset_top = node.offsetTop + padding.top;
-    pc_xpos = padding.left + size.width / 2 - 60;
-    if (options.playback_controller) { pc_xpos -= 50 * scale_factor; }
+    if (options.playback_controller) {
+      pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
+    };
+    if (options.play_only_controller) {
+      pc_xpos = padding.left + (size.width - (140 * scale_factor))/2;
+    }
     pc_ypos = cy - 42 * scale_factor;
-    // pc_ypos = cy - (options.ylabel ? 40 * scale_factor : 20 * scale_factor);
-    // pc_ypos = size.height + (options.ylabel ? 85 * scale_factor : 27);
     mw = size.width;
     mh = size.height;
 
@@ -4976,6 +5241,10 @@ layout.moleculeContainer = function(e, options) {
 
   function modelTimeLabel() {
     return time_prefix + model_time_formatter(model.getTime() / 1000) + time_suffix;
+  }
+
+  function get_element(i) {
+    return nodes[model.INDICES.ELEMENT][i];
   }
 
   function get_x(i) {
@@ -5242,67 +5511,36 @@ layout.moleculeContainer = function(e, options) {
           .attr("height", size.height)
           .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-      red_gradient = gradient_container.append("defs")
-          .append("radialGradient")
-          .attr("id", "neg-grad")
-          .attr("cx", "50%")
-          .attr("cy", "47%")
-          .attr("r", "53%")
-          .attr("fx", "35%")
-          .attr("fy", "30%");
-      red_gradient.append("stop")
-          .attr("stop-color", "#ffefff")
-          .attr("offset", "0%");
-      red_gradient.append("stop")
-          .attr("stop-color", "#fdadad")
-          .attr("offset", "40%");
-      red_gradient.append("stop")
-          .attr("stop-color", "#e95e5e")
-          .attr("offset", "80%");
-      red_gradient.append("stop")
-          .attr("stop-color", "#fdadad")
-          .attr("offset", "100%");
+      create_radial_gradient("neg-grad", "#ffefff", "#fdadad", "#e95e5e", gradient_container);
+      create_radial_gradient("pos-grad", "#dfffff", "#9abeff", "#767fbf", gradient_container);
+      create_radial_gradient("green-grad", "#dfffef", "#75a643", "#2a7216", gradient_container);
+      create_radial_gradient("purple-grad", "#EED3F0", "#D941E0", "#84198A", gradient_container);
+      create_radial_gradient("aqua-grad", "#DCF5F4", "#41E0D8", "#12827C", gradient_container);
+      create_radial_gradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", gradient_container);
 
-      blue_gradient = gradient_container.append("defs")
-          .append("radialGradient")
-          .attr("id", "pos-grad")
-          .attr("cx", "50%")
-          .attr("cy", "47%")
-          .attr("r", "53%")
-          .attr("fx", "35%")
-          .attr("fy", "30%");
-      blue_gradient.append("stop")
-          .attr("stop-color", "#dfffff")
-          .attr("offset", "0%");
-      blue_gradient.append("stop")
-          .attr("stop-color", "#9abeff")
-          .attr("offset", "40%");
-      blue_gradient.append("stop")
-          .attr("stop-color", "#767fbf")
-          .attr("offset", "80%");
-      blue_gradient.append("stop")
-          .attr("stop-color", "#9abeff")
-          .attr("offset", "100%");
+      element_gradient_array = ["green-grad", "purple-grad", "aqua-grad", "orange-grad"];
+    }
 
-      green_gradient = gradient_container.append("defs")
+    function create_radial_gradient(id, lightColor, medColor, darkColor, gradient_container) {
+      gradient = gradient_container.append("defs")
           .append("radialGradient")
-          .attr("id", "neu-grad")
+          .attr("id", id)
           .attr("cx", "50%")
           .attr("cy", "47%")
           .attr("r", "53%")
           .attr("fx", "35%")
           .attr("fy", "30%");
-      green_gradient.append("stop")
-          .attr("stop-color", "#dfffef")
+      gradient.append("stop")
+          .attr("stop-color", lightColor)
           .attr("offset", "0%");
-      green_gradient.append("stop")
-          .attr("stop-color", "#75a643")
+      gradient.append("stop")
+          .attr("stop-color", medColor)
           .attr("offset", "40%");
-      green_gradient.append("stop")
-          .attr("stop-color", "#2a7216")
+      gradient.append("stop")
+          .attr("stop-color", darkColor)
           .attr("offset", "80%");
-      green_gradient.append("stop")
-          .attr("stop-color", "#75a643")
+      gradient.append("stop")
+          .attr("stop-color", medColor)
           .attr("offset", "100%");
     }
 
@@ -5334,13 +5572,15 @@ layout.moleculeContainer = function(e, options) {
             if (model.get("coulomb_forces")) {
               return (x(get_charge(i)) > 0) ? "url('#pos-grad')" : "url('#neg-grad')";
             } else {
-              return "url('#neu-grad')";
+              element = get_element(i) % 4;
+              grad = element_gradient_array[element];
+              return "url('#"+grad+"')";
             }
           })
           .on("mousedown", molecule_mousedown)
           .on("mouseout", molecule_mouseout);
 
-      var font_size = x(ljf.rmin * 0.5 * 1.5);
+      var font_size = x(ljf.rmin[0][0] * 0.5 * 1.5);
       if (model.get('mol_number') > 100) { font_size *= 0.9; }
 
       label = gradient_container.selectAll("g.label")
@@ -5368,7 +5608,7 @@ layout.moleculeContainer = function(e, options) {
             .attr("x", "-0.31em")
             .attr("y", "0.31em")
             .text(function(d, i) {
-              if (layout.coulomb_forces_checkbox.checked) {
+              if (model.get("coulomb_forces")) {
                 return (x(get_charge(i)) > 0) ? "+" : "–";
               } else {
                 return;    // ""
@@ -5460,9 +5700,8 @@ layout.moleculeContainer = function(e, options) {
     container.playback_component = playback_component;
   }
 
-  container.resize = function(width, height) {
-    container.scale(width, height);
-    // container.scale();
+  container.resize = function(w, h) {
+    container.scale(w, h);
     container();
     container.setup_particles();
   };
@@ -5533,9 +5772,9 @@ layout.potentialChart = function(e, model, options) {
 
     ljCalculator = model.getLJCalculator();
     ljData.coefficients = ljCalculator.coefficients();
-    sigma   = ljData.coefficients.sigma;
-    epsilon = ljData.coefficients.epsilon;
-    rmin    = ljData.coefficients.rmin;
+    sigma   = ljData.coefficients.sigma[0][0];
+    epsilon = ljData.coefficients.epsilon[0][0];
+    rmin    = ljData.coefficients.rmin[0][0];
     ljData.xmax    = sigma * 3;
     ljData.xmin    = Math.floor(sigma/2);
     ljData.ymax    = 0.4;
@@ -5549,7 +5788,7 @@ layout.potentialChart = function(e, model, options) {
 
     ljPotentialGraphData.length = 0;
     for(r = sigma * 0.5; r < ljData.xmax * 3;  r += 0.001) {
-      y = -ljCalculator.potential(r);
+      y = -ljCalculator.potential(r, 0, 0);
       if (Math.abs(y) < 100) {
         ljPotentialGraphData.push([r, y]);
       }
@@ -6364,12 +6603,13 @@ layout.render_datatable = function(reset) {
   var i,
       titlerows = datatable_table.getElementsByClassName("title"),
       datarows = datatable_table.getElementsByClassName("data"),
-      column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'RADIUS', 'MASS', 'CHARGE'],
+      column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'CHARGE', 'RADIUS', 'ELEMENT'],
       i_formatter = d3.format(" 2d"),
+      charge_formatter = d3.format(" 1.1f"),
       f_formatter = d3.format(" 3.4f"),
-      formatters = [i_formatter, f_formatter, f_formatter, f_formatter, 
+      formatters = [f_formatter, f_formatter, f_formatter, 
                     f_formatter, f_formatter, f_formatter, f_formatter, 
-                    f_formatter, f_formatter, f_formatter, f_formatter, 
+                    f_formatter, f_formatter, charge_formatter, f_formatter, 
                     i_formatter];
 
   reset = reset || false;
@@ -6492,14 +6732,14 @@ layout.setupTemperature = function(model) {
       var temp_range = document.createElement("input");
       temp_range.type = "range";
       temp_range.min = "0";
-      temp_range.max = "25";
-      temp_range.step = "0.5";
+      temp_range.max = "1000";
+      temp_range.step = "20";
       temp_range.value = model.get("temperature");
       select_temperature.parentNode.replaceChild(temp_range, select_temperature);
       temp_range.id = "select-temperature";
       select_temperature = temp_range;
       select_temperature_display.id = "select-temperature-display";
-      select_temperature_display.innerText = temp_range.value;
+      select_temperature_display.innerText = temp_range.value + " K";
       select_temperature.parentNode.appendChild(select_temperature_display);
       select_temperature = document.getElementById("select-temperature");
     }
@@ -6510,7 +6750,7 @@ layout.setupTemperature = function(model) {
 function selectTemperatureChange() {
   var temperature = +select_temperature.value;
   if (select_temperature.type === "range") {
-    select_temperature_display.innerText = d3.format("4.1f")(temperature);
+    select_temperature_display.innerText = d3.format("4.1f")(temperature) + " K";
   }
   model.set({ "temperature": temperature });
 }
@@ -6658,7 +6898,7 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
     if (t < max) {
       $(heat_elem_id).removeClass('inactive');
       $(cool_elem_id).removeClass('inactive');
-      t = Math.floor((t * 2))/2 + 0.5;
+      t = Math.floor((t * 2))/2 + 100;
       model.set({temperature: t});
       if (typeof callback === 'function') {
         callback(t)
@@ -6673,7 +6913,7 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
     if (t > min) {
       $(heat_elem_id).removeClass('inactive');
       $(cool_elem_id).removeClass('inactive');
-      t = Math.floor((t * 2))/2 - 0.5;
+      t = Math.floor((t * 2))/2 - 100;
       model.set({temperature: t});
       if (typeof callback === 'function') {
         callback(t)
@@ -8203,8 +8443,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       elements            = modelConfig.elements,
       atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
-      epsilon             = modelConfig.epsilon,
-      sigma               = modelConfig.sigma,
+      temperature_control = modelConfig.temperature_control,
       temperature         = modelConfig.temperature,
       coulomb_forces      = modelConfig.coulomb_forces,
       width               = modelConfig.width,
@@ -8217,239 +8456,677 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       epsilon_slider,
       viewLists;
 
-  // ------------------------------------------------------------
-  //
-  // Main callback from model process
-  //
-  // Pass this function to be called by the model on every model step
-  //
-  // ------------------------------------------------------------
+  function controller() {
 
-  model_listener = function(e) {
-    molecule_container.update_molecule_positions();
-    if (step_counter >= model.stepCounter()) { modelStop(); }
-  };
+    // ------------------------------------------------------------
+    //
+    // Main callback from model process
+    //
+    // Pass this function to be called by the model on every model step
+    //
+    // ------------------------------------------------------------
 
-  // ------------------------------------------------------------
-  //
-  // Create model and pass in properties
-  //
-  // ------------------------------------------------------------
+    model_listener = function(e) {
+      molecule_container.update_molecule_positions();
+      if (step_counter >= model.stepCounter()) { modelStop(); }
+    };
 
-  model = modeler.model({
-      elements: elements,
-      model_listener: model_listener,
-      temperature: temperature,
-      lennard_jones_forces: true,
-      coulomb_forces: coulomb_forces,
-      temperature_control: true,
-      epsilon: epsilon,
-      sigma: sigma,
-      width: width,
-      height: height
-    });
+    // ------------------------------------------------------------
+    //
+    // Create model and pass in properties
+    //
+    // ------------------------------------------------------------
+
+    function createModel() {
+      model = modeler.model({
+          elements: elements,
+          model_listener: model_listener,
+          temperature: temperature,
+          lennard_jones_forces: true,
+          coulomb_forces: coulomb_forces,
+          temperature_control: temperature_control,
+          width: width,
+          height: height
+        });
 
 
-  if (atoms_properties) {
-    model.createNewAtoms(atoms_properties);
-  } else if (mol_number) {
-    model.createNewAtoms(mol_number);
-    model.relax();
-  } else {
-    throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
-  }
-
-  // ------------------------------------------------------------
-  //
-  // Create player and container view for model
-  //
-  // ------------------------------------------------------------
-
-  layout.selection = layoutStyle;
-
-  model_player = new ModelPlayer(model, autostart);
-  molecule_container = layout.moleculeContainer(molecule_view_id,
-    {
-      xmax:                 width,
-      ymax:                 height
-    }
-  );
-
-  // ------------------------------------------------------------
-  //
-  // Setup list of views used by layout system
-  //
-  // ------------------------------------------------------------
-
-  viewLists = {
-    moleculeContainers:      [molecule_container]
-  };
-
-  // ------------------------------------------------------------
-  //
-  // Model Controller
-  //
-  // ------------------------------------------------------------
-
-  function modelStop() {
-    model.stop();
-  }
-
-  function modelGo() {
-    model.on("tick", model_listener);
-    if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
-      model.resume();
-    }
-  }
-
-  function modelStepBack() {
-    modelStop();
-    model.stepBack();
-  }
-
-  function modelStepForward() {
-    if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
-      model.stepForward();
-    }
-  }
-
-  // ------------------------------------------------------------
-  //
-  //   Molecular Model Setup
-  //
-
-  function setup() {
-    atoms = model.get_atoms();
-    nodes = model.get_nodes();
-
-    model.resetTime();
-
-    modelStop();
-    model.on("tick", model_listener);
-    molecule_container.updateMoleculeRadius();
-    molecule_container.setup_particles();
-    layout.setupScreen(viewLists);
-    step_counter = model.stepCounter();
-  }
-
-  // ------------------------------------------------------------
-  //
-  //  Wire up screen-resize handlers
-  //
-  // ------------------------------------------------------------
-
-  function onresize() {
-    layout.setupScreen(viewLists);
-    therm.resize();
-  }
-
-  document.onwebkitfullscreenchange = onresize;
-  window.onresize = onresize;
-
-  // ------------------------------------------------------------
-  //
-  // Handle keyboard shortcuts for model operation
-  //
-  // ------------------------------------------------------------
-
-  function handleKeyboardForModel(evt) {
-    evt = (evt) ? evt : ((window.event) ? event : null);
-    if (evt) {
-      switch (evt.keyCode) {
-        case 32:                // spacebar
-          if (model.is_stopped()) {
-            molecule_container.playback_component.action('play');
-          } else {
-            molecule_container.playback_component.action('stop');
-          }
-          evt.preventDefault();
-        break;
-        case 13:                // return
-          molecule_container.playback_component.action('play');
-          evt.preventDefault();
-        break;
-        case 37:                // left-arrow
-          if (!model.is_stopped()) {
-            molecule_container.playback_component.action('stop');
-          }
-          modelStepBack();
-          evt.preventDefault();
-        break;
-        case 39:                // right-arrow
-          if (!model.is_stopped()) {
-            molecule_container.playback_component.action('stop');
-          }
-          modelStepForward();
-          evt.preventDefault();
-        break;
+      if (atoms_properties) {
+        model.createNewAtoms(atoms_properties);
+      } else if (mol_number) {
+        model.createNewAtoms(mol_number);
+        model.relax();
+      } else {
+        throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
     }
+
+    // ------------------------------------------------------------
+    //
+    // Create Views
+    //
+    // ------------------------------------------------------------
+
+    function setupViews() {
+
+      // ------------------------------------------------------------
+      //
+      // Create player and container view for model
+      //
+      // ------------------------------------------------------------
+
+      layout.selection = layoutStyle;
+
+      model_player = new ModelPlayer(model, autostart);
+      molecule_container = layout.moleculeContainer(molecule_view_id,
+        {
+          xmax:                 width,
+          ymax:                 height
+        }
+      );
+
+      molecule_container.updateMoleculeRadius();
+      molecule_container.setup_particles();
+
+      // ------------------------------------------------------------
+      // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
+      // ------------------------------------------------------------
+
+      therm = new Thermometer('#thermometer', model.temperature(), 200, 4000);
+
+      model.addPropertiesListener(["temperature"], updateTherm);
+      therm.resize();
+      updateTherm();
+
+      // ------------------------------------------------------------
+      // Setup heat and cool buttons
+      // ------------------------------------------------------------
+
+      layout.heatCoolButtons("#heat_button", "#cool_button", 0, 3800, model, function (t) { therm.add_value(t); });
+
+      // ------------------------------------------------------------
+      // Add listener for coulomb_forces checkbox
+      // ------------------------------------------------------------
+
+      // $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+
+      model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
+      updateCoulombCheckbox();
+
+      // ------------------------------------------------------------
+      //
+      // Setup list of views used by layout system
+      //
+      // ------------------------------------------------------------
+
+      viewLists = {
+        moleculeContainers:      [molecule_container],
+        thermometers:            [therm]
+      };
+
+      layout.setupScreen(viewLists);
+
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Model Controller
+    //
+    // ------------------------------------------------------------
+
+    function updateCoulombCheckbox() {
+      $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+      molecule_container.setup_particles();
+    }
+
+    function updateTherm(){
+      therm.add_value(model.get("temperature"));
+    }
+
+    function modelStop() {
+      model.stop();
+    }
+
+    function modelGo() {
+      model.on("tick", model_listener);
+      if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
+        model.resume();
+      }
+    }
+
+    function modelStepBack() {
+      modelStop();
+      model.stepBack();
+    }
+
+    function modelStepForward() {
+      if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
+        model.stepForward();
+      }
+    }
+
+    // ------------------------------------------------------------
+    //
+    //   Molecular Model Setup
+    //
+
+    function setupModel() {
+      atoms = model.get_atoms();
+      nodes = model.get_nodes();
+
+      model.resetTime();
+
+      modelStop();
+      model.on("tick", model_listener);
+      step_counter = model.stepCounter();
+    }
+
+    // ------------------------------------------------------------
+    //
+    //  Wire up screen-resize handlers
+    //
+    // ------------------------------------------------------------
+
+    function onresize() {
+      layout.setupScreen(viewLists);
+      therm.resize();
+      updateTherm();
+    }
+
+    document.onwebkitfullscreenchange = onresize;
+    window.onresize = onresize;
+
+    // ------------------------------------------------------------
+    //
+    // Handle keyboard shortcuts for model operation
+    //
+    // ------------------------------------------------------------
+
+    function handleKeyboardForModel(evt) {
+      evt = (evt) ? evt : ((window.event) ? event : null);
+      if (evt) {
+        switch (evt.keyCode) {
+          case 32:                // spacebar
+            if (model.is_stopped()) {
+              molecule_container.playback_component.action('play');
+            } else {
+              molecule_container.playback_component.action('stop');
+            }
+            evt.preventDefault();
+          break;
+          case 13:                // return
+            molecule_container.playback_component.action('play');
+            evt.preventDefault();
+          break;
+          case 37:                // left-arrow
+            if (!model.is_stopped()) {
+              molecule_container.playback_component.action('stop');
+            }
+            modelStepBack();
+            evt.preventDefault();
+          break;
+          case 39:                // right-arrow
+            if (!model.is_stopped()) {
+              molecule_container.playback_component.action('stop');
+            }
+            modelStepForward();
+            evt.preventDefault();
+          break;
+        }
+      }
+    }
+
+    document.onkeydown = handleKeyboardForModel;
+
+    // ------------------------------------------------------------
+    //
+    // Reset the model after everything else ...
+    //
+    // ------------------------------------------------------------
+
+    try {
+      createModel();
+      setupModel();
+      setupViews();
+    } catch(e) {
+      alert(e);
+      throw new Error(e);
+    }
+
+
+    // epsilon_slider = new SliderComponent('#attraction_slider',
+    //   function (v) {
+    //     model.set({epsilon: v} );
+    //   }, lj_epsilon_max, lj_epsilon_min, epsilon);
+
+    // function updateEpsilon(){
+    //   epsilon_slider.set_scaled_value(model.get("epsilon"));
+    // }
+
+    // model.addPropertiesListener(["epsilon"], updateEpsilon);
+    // updateEpsilon();
+
+    // ------------------------------------------------------------
+    //
+    // Start if autostart is true
+    //
+    // ------------------------------------------------------------
+
+    if (autostart) {
+      modelGo();
+    }
   }
+  controller();
+  return controller;
+};
+/*globals
 
-  document.onkeydown = handleKeyboardForModel;
+  controllers
 
-  // ------------------------------------------------------------
-  //
-  // Reset the model after everything else ...
-  //
-  // ------------------------------------------------------------
+  modeler
+  ModelPlayer
+  Thermometer
+  SliderComponent
+  layout
 
-  setup();
+  model: true
+  model_player: true
+  atoms: true
+  nodes: true
+*/
+/*jslint onevar: true*/
+controllers.compareModelsController = function(molecule_view_id, appletContainerID, modelConfig, playerConfig) {
 
-  // ------------------------------------------------------------
-  // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
-  // ------------------------------------------------------------
+  var layoutStyle         = playerConfig.layoutStyle,
+      autostart           = playerConfig.autostart,
+      maximum_model_steps = playerConfig.maximum_model_steps,
+      lj_epsilon_max      = playerConfig.lj_epsilon_max,
+      lj_epsilon_min      = playerConfig.lj_epsilon_min,
 
-  therm = new Thermometer('#thermometer', model.temperature(), 0, 25);
+      elements            = modelConfig.elements,
+      atoms_properties    = modelConfig.atoms,
+      mol_number          = modelConfig.mol_number,
+      temperature_control = modelConfig.temperature_control,
+      temperature         = modelConfig.temperature,
+      coulomb_forces      = modelConfig.coulomb_forces,
+      width               = modelConfig.width,
+      height              = modelConfig.height,
 
-  function updateTherm(){
-    therm.add_value(model.get("temperature"));
+      molecule_container,
+      modelListener,
+      step_counter,
+      therm,
+      epsilon_slider,
+      viewLists,
+      appletString,
+      appletContainer,
+      appletOptions = {},
+      applet, cmlPath,
+      start, stop, reset,
+      modelSelect,
+      opts, optsLoaded = $.Deferred();
+
+  function controller() {
+
+    // ------------------------------------------------------------
+    //
+    // Main callback from model process
+    //
+    // Pass this function to be called by the model on every model step
+    //
+    // ------------------------------------------------------------
+
+    function modelListener(e) {
+      molecule_container.update_molecule_positions();
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Create model and pass in properties
+    //
+    // ------------------------------------------------------------
+
+    function createModel() {
+      model = modeler.model({
+          elements: elements,
+          model_listener: modelListener,
+          temperature: temperature,
+          lennard_jones_forces: true,
+          coulomb_forces: coulomb_forces,
+          temperature_control: temperature_control,
+          width: width,
+          height: height
+        });
+
+      if (atoms_properties) {
+        model.createNewAtoms(atoms_properties);
+      } else if (mol_number) {
+        model.createNewAtoms(mol_number);
+        model.relax();
+      } else {
+        throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
+      }
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Create Views
+    //
+    // ------------------------------------------------------------
+
+    function setupViews() {
+
+      // ------------------------------------------------------------
+      //
+      // Create player and container view for model
+      //
+      // ------------------------------------------------------------
+
+      layout.selection = layoutStyle;
+
+      model_player = new ModelPlayer(model, autostart);
+      molecule_container = layout.moleculeContainer(molecule_view_id,
+        {
+          playback_controller:  false,
+          play_only_controller: false,
+          model_time_label:     true,
+          grid_lines:           true,
+          xunits:               true,
+          yunits:               true,
+          xmax:                 width,
+          ymax:                 height
+        }
+      );
+
+      molecule_container.updateMoleculeRadius();
+      molecule_container.setup_particles();
+
+      // ------------------------------------------------------------
+      //
+      // Setup Java MW applet
+      //
+      // ------------------------------------------------------------
+
+      cmlPath = extractCmlPath(document.location.hash);
+      if (cmlPath) {
+        appletOptions = {
+          params: [["script", "page:0:import " + cmlPath]]
+        };
+      } else {
+        appletOptions = {};
+      }
+      appletContainer = layout.appletContainer(appletContainerID, appletOptions);
+
+      // ------------------------------------------------------------
+      //
+      // Setup list of views used by layout system
+      //
+      // ------------------------------------------------------------
+
+      viewLists = {
+        moleculeContainers:      [molecule_container],
+        appletContainers:        [appletContainer]
+      };
+
+      layout.setupScreen(viewLists);
+
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Model Controller
+    //
+    // ------------------------------------------------------------
+
+    function modelStop() {
+      model.stop();
+    }
+
+    function modelGo() {
+      model.on("tick", modelListener);
+      model.resume();
+    }
+
+    function modelStepBack() {
+      model.stop();
+      model.stepBack();
+    }
+
+    function modelStepForward() {
+      model.stop();
+      model.stepForward();
+    }
+
+    function modelReset() {
+      model.stop();
+      createModel();
+      setupModel();
+      modelListener();
+    }
+
+    // ------------------------------------------------------------
+    //
+    //   Molecular Model Setup
+    //
+    // ------------------------------------------------------------
+
+    function setupModel() {
+      atoms = model.get_atoms();
+      nodes = model.get_nodes();
+
+      model.resetTime();
+
+      modelStop();
+      model.on("tick", modelListener);
+      step_counter = model.stepCounter();
+    }
+
+    // ------------------------------------------------------------
+    //
+    //   Java MW Applet Setup
+    //
+    // ------------------------------------------------------------
+
+    function extractCmlPath(jsonPath) {
+      var regex = /#*(.*?)(\$.*|\.json$)/,
+          str;
+      str = regex.exec(jsonPath)[1];
+      if (str) {
+        return str.replace("/converted", "") + ".cml";
+      } else {
+        return false;
+      }
+    }
+
+    function extractModelselectValue(jsonPath) {
+      var regex = /#*\/imports\/legacy-mw-content\/converted\/(.*?)\.json$/,
+          str;
+      str = regex.exec(jsonPath)[1];
+      if (str) {
+        return str;
+      } else {
+        return false;
+      }
+    }
+
+    function runMWScript(script) {
+      return appletContainer.applet.runMwScript(script);
+    }
+
+    start = document.getElementById("start");
+    start.onclick = function() {
+      runMWScript("mw2d:1:run");
+      modelGo();
+    };
+
+    stop = document.getElementById("stop");
+    stop.onclick = function() {
+      runMWScript("mw2d:1:stop");
+      modelStop();
+    };
+
+    reset = document.getElementById("reset");
+    reset.onclick = function() {
+      runMWScript("mw2d:1:reset");
+      modelReset();
+    };
+
+    modelSelect = document.getElementById("model-select");
+
+    function modelSelectHandler() {
+      var jsonPath = "/imports/legacy-mw-content/converted/" + modelSelect.value + ".json",
+          cmlPath = extractCmlPath(jsonPath);
+      document.location.hash = "#" + jsonPath;
+      appletOptions.params = [["script", "page:0:import " + cmlPath]];
+      $.get(jsonPath).done(function(results) {
+        opts = results;
+        optsLoaded.resolve();
+      }).fail(function() {
+        $('#flash').html('<p class="error-message">Could not load config ' + document.location.hash + '</p>');
+        optsLoaded.resolve();
+      });
+    }
+
+    $.when(optsLoaded).done(function(results) {
+      $.extend(modelConfig, opts);
+      modelReset();
+      // appletContainer = layout.appletContainer(appletContainerID, appletOptions);
+    });
+
+    modelSelect.onchange = modelSelectHandler;
+
+    function setupMWApplet() {
+      modelSelect.value = extractModelselectValue(document.location.hash);
+      runMWScript("page:0:set %frank false");
+    }
+
+    // ------------------------------------------------------------
+    //
+    //  Wire up screen-resize handlers
+    //
+    // ------------------------------------------------------------
+
+    function onresize() {
+      layout.setupScreen(viewLists);
+    }
+
+    document.onwebkitfullscreenchange = onresize;
+    window.onresize = onresize;
+
+    // ------------------------------------------------------------
+    //
+    // Handle keyboard shortcuts for model operation
+    //
+    // ------------------------------------------------------------
+
+    function handleKeyboardForModel(evt) {
+      evt = (evt) ? evt : ((window.event) ? event : null);
+      if (evt) {
+        switch (evt.keyCode) {
+          case 32:                // spacebar
+            if (model.is_stopped()) {
+              molecule_container.playback_component.action('play');
+            } else {
+              molecule_container.playback_component.action('stop');
+            }
+            evt.preventDefault();
+          break;
+          case 13:                // return
+            molecule_container.playback_component.action('play');
+            evt.preventDefault();
+          break;
+          case 37:                // left-arrow
+            if (!model.is_stopped()) {
+              molecule_container.playback_component.action('stop');
+            }
+            modelStepBack();
+            evt.preventDefault();
+          break;
+          case 39:                // right-arrow
+            if (!model.is_stopped()) {
+              molecule_container.playback_component.action('stop');
+            }
+            modelStepForward();
+            evt.preventDefault();
+          break;
+        }
+      }
+    }
+
+    document.onkeydown = handleKeyboardForModel;
+
+    // ------------------------------------------------------------
+    //
+    // Reset the model after everything else ...
+    //
+    // ------------------------------------------------------------
+
+    try {
+      createModel();
+      setupModel();
+      setupViews();
+      setupMWApplet();
+    } catch(e) {
+      alert(e);
+      throw new Error(e);
+    }
+
+    // ------------------------------------------------------------
+    // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
+    // ------------------------------------------------------------
+    // 
+    // therm = new Thermometer('#thermometer', model.temperature(), 200, 4000);
+    // 
+    // function updateTherm(){
+    //   therm.add_value(model.get("temperature"));
+    // }
+    // 
+    // model.addPropertiesListener(["temperature"], updateTherm);
+    // updateTherm();
+
+    // epsilon_slider = new SliderComponent('#attraction_slider',
+    //   function (v) {
+    //     model.set({epsilon: v} );
+    //   }, lj_epsilon_max, lj_epsilon_min, epsilon);
+
+    // function updateEpsilon(){
+    //   epsilon_slider.set_scaled_value(model.get("epsilon"));
+    // }
+
+    // model.addPropertiesListener(["epsilon"], updateEpsilon);
+    // updateEpsilon();
+
+    // ------------------------------------------------------------
+    // Setup heat and cool buttons
+    // ------------------------------------------------------------
+
+    // layout.heatCoolButtons("#heat_button", "#cool_button", 0, 3800, model, function (t) { therm.add_value(t); });
+
+    // ------------------------------------------------------------
+    // Add listener for coulomb_forces checkbox
+    // ------------------------------------------------------------
+
+    // $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+
+    // function updateCoulombCheckbox() {
+    //   $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+    //   molecule_container.setup_particles();
+    // }
+    // 
+    // model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
+    // updateCoulombCheckbox();
+
+    // ------------------------------------------------------------
+    //
+    // Start if autostart is true
+    //
+    // ------------------------------------------------------------
+
+    // if (autostart) {
+    //   modelGo();
+    // }
   }
-
-  model.addPropertiesListener(["temperature"], updateTherm);
-  updateTherm();
-
-  epsilon_slider = new SliderComponent('#attraction_slider',
-    function (v) {
-      model.set({epsilon: v} );
-    }, lj_epsilon_max, lj_epsilon_min, epsilon);
-
-  function updateEpsilon(){
-    epsilon_slider.set_scaled_value(model.get("epsilon"));
-  }
-
-  model.addPropertiesListener(["epsilon"], updateEpsilon);
-  updateEpsilon();
-
-  // ------------------------------------------------------------
-  // Setup heat and cool buttons
-  // ------------------------------------------------------------
-
-  layout.heatCoolButtons("#heat_button", "#cool_button", 0, 25, model, function (t) { therm.add_value(t); });
-
-  // ------------------------------------------------------------
-  // Add listener for coulomb_forces checkbox
-  // ------------------------------------------------------------
-
-  // $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-
-  function updateCoulombCheckbox() {
-    $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-    molecule_container.setup_particles();
-  }
-
-  model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
-  updateCoulombCheckbox();
-
-  // ------------------------------------------------------------
-  //
-  // Start if autostart is true
-  //
-  // ------------------------------------------------------------
-
-  if (autostart) {
-    modelGo();
-  }
+  controller();
+  return controller;
 };
 /*globals
 
@@ -8486,8 +9163,6 @@ controllers.complexModelController =
       elements            = modelConfig.elements,
       atoms_properties    = modelConfig.atoms,
       mol_number          = modelConfig.mol_number,
-      epsilon             = modelConfig.epsilon,
-      sigma               = modelConfig.sigma,
       temperature         = modelConfig.temperature,
       temperature_control = modelConfig.temperature_control,
       coulomb_forces      = modelConfig.coulomb_forces,
@@ -8569,8 +9244,6 @@ controllers.complexModelController =
           lennard_jones_forces: true,
           coulomb_forces: coulomb_forces,
           temperature_control: temperature_control,
-          epsilon: epsilon,
-          sigma: sigma,
           width: width,
           height: height
         });
@@ -8584,6 +9257,12 @@ controllers.complexModelController =
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
     }
+
+    // ------------------------------------------------------------
+    //
+    // Create Views
+    //
+    // ------------------------------------------------------------
 
     function setupViews() {
       // ------------------------------------------------------------
@@ -8684,16 +9363,18 @@ controllers.complexModelController =
       //
       // ------------------------------------------------------------
 
+      // FIXME: The potential chart needs refactoring to handle multiple
+      // elements and pairwise potentials
       potentialChart = layout.potentialChart(lj_potential_chart_id, model, {
           title   : "Lennard-Jones potential",
           xlabel  : "Radius",
           ylabel  : "Potential Energy",
           epsilon_max:     lj_epsilon_max,
           epsilon_min:     lj_epsilon_min,
-          epsilon:         epsilon,
+          epsilon:         elements[0].epsilon,
           sigma_max:       lj_sigma_max,
           sigma_min:       lj_sigma_min,
-          sigma:           sigma
+          sigma:           elements[0].sigma
         });
 
       model.addPropertiesListener(["epsilon"], potentialChart.ljUpdate);
@@ -8963,9 +9644,14 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    createModel();
-    setupViews();
-    setupModel();
+    try {
+      createModel();
+      setupViews();
+      setupModel();
+    } catch(e) {
+      alert(e);
+      throw new Error(e);
+    }
 
     // ------------------------------------------------------------
     //

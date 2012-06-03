@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Accessing a molecule&apos;s properties</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Accessing a molecule&apos;s properties
+
+&lt; Previous | Index | Next &gt;
+
+To access a molecule&apos;s properties, double-click it when the model container is in the selection mode (i.e. the button &quot; &quot; is chosen), and then you will see the following dialog window:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+If the molecule represents a protein or a DNA strand, it will show the sequence information and other corresponding properties.
+
+The second tabbed pane shows the information about all the radial bonds contained in the molecule:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+When you select a row in the table of radial bonds, the corresponding bond will be shown in the view.
+
+The third tabbed pane shows the information about all the angular bonds contained in the molecule:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+Similar to the case of radial bonds, the corresponding angular bond will be shown in the view, when you select a row in the table of angular bonds.
+
+Script support
+
+To move a molecule, use the select command to select it and then call the move command to translate it. See here for an example of using scripts to rotate a molecule.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1127">
+<paragraph start="0" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="33">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="63">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="45">
+<href>accessBendProp.cml</href><size>11</size></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="53">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="53" end="56">
+<size>11</size></content>
+
+<content start="56" end="60">
+<href>accessRectProp.cml</href><size>11</size></content>
+
+<content start="60" end="62">
+<size>11</size></content>
+
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="64">
+<LeftIndent>140.0</LeftIndent>
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="249">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="183">
+<size>11</size></content>
+
+<content start="183" end="184">
+<size>11</size><icon>Select.gif</icon></content>
+
+<content start="184" end="249">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="249" end="250">
+<LeftIndent>140.0</LeftIndent>
+<content start="249" end="250">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="250" end="253">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="250" end="251">
+<size>11</size></content>
+
+<content start="251" end="252">
+<size>11</size><icon>MolProp1.gif</icon></content>
+
+<content start="252" end="253">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="253" end="277">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="253" end="276">
+<size>10</size></content>
+
+<content start="276" end="277">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="277" end="278">
+<LeftIndent>140.0</LeftIndent>
+<content start="277" end="278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="278" end="406">
+<LeftIndent>140.0</LeftIndent>
+<content start="278" end="406">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="406" end="407">
+<LeftIndent>140.0</LeftIndent>
+<content start="406" end="407">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="407" end="506">
+<LeftIndent>140.0</LeftIndent>
+<content start="407" end="506">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="506" end="507">
+<LeftIndent>100.0</LeftIndent>
+<content start="506" end="507">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="507" end="510">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="507" end="508">
+<size>11</size></content>
+
+<content start="508" end="509">
+<size>11</size><icon>MolProp2.gif</icon></content>
+
+<content start="509" end="510">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="510" end="534">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="510" end="533">
+<size>10</size></content>
+
+<content start="533" end="534">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="534" end="535">
+<LeftIndent>100.0</LeftIndent>
+<content start="534" end="535">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="535" end="637">
+<LeftIndent>140.0</LeftIndent>
+<content start="535" end="637">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="637" end="638">
+<LeftIndent>140.0</LeftIndent>
+<content start="637" end="638">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="638" end="737">
+<LeftIndent>140.0</LeftIndent>
+<content start="638" end="736">
+<size>11</size></content>
+
+<content start="736" end="737">
+</content>
+
+</paragraph>
+<paragraph start="737" end="738">
+<LeftIndent>140.0</LeftIndent>
+<content start="737" end="738">
+</content>
+
+</paragraph>
+<paragraph start="738" end="741">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="738" end="739">
+</content>
+
+<content start="739" end="740">
+<icon>MolProp3.gif</icon></content>
+
+<content start="740" end="741">
+</content>
+
+</paragraph>
+<paragraph start="741" end="765">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="741" end="764">
+<size>10</size></content>
+
+<content start="764" end="765">
+</content>
+
+</paragraph>
+<paragraph start="765" end="766">
+<LeftIndent>140.0</LeftIndent>
+<content start="765" end="766">
+</content>
+
+</paragraph>
+<paragraph start="766" end="914">
+<LeftIndent>140.0</LeftIndent>
+<content start="766" end="914">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="914" end="915">
+<LeftIndent>140.0</LeftIndent>
+<content start="914" end="915">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="915" end="930">
+<LeftIndent>140.0</LeftIndent>
+<content start="915" end="929">
+<bold>true</bold><size>11</size></content>
+
+<content start="929" end="930">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="930" end="931">
+<LeftIndent>140.0</LeftIndent>
+<content start="930" end="931">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="931" end="1098">
+<LeftIndent>140.0</LeftIndent>
+<content start="931" end="959">
+<size>11</size></content>
+
+<content start="959" end="965">
+<href>script_select.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="965" end="1005">
+<size>11</size></content>
+
+<content start="1005" end="1009">
+<href>script_move.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1009" end="1039">
+<size>11</size></content>
+
+<content start="1039" end="1043">
+<href>rotateAction.cml</href><size>11</size></content>
+
+<content start="1043" end="1097">
+<size>11</size></content>
+
+<content start="1097" end="1098">
+</content>
+
+</paragraph>
+<paragraph start="1098" end="1099">
+<content start="1098" end="1099">
+</content>
+
+</paragraph>
+<paragraph start="1099" end="1127">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1099" end="1101">
+<size>11</size></content>
+
+<content start="1101" end="1109">
+<href>accessBendProp.cml</href><size>11</size></content>
+
+<content start="1109" end="1112">
+<size>11</size></content>
+
+<content start="1112" end="1117">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="1117" end="1120">
+<size>11</size></content>
+
+<content start="1120" end="1124">
+<href>accessRectProp.cml</href><size>11</size></content>
+
+<content start="1124" end="1126">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

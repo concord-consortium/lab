@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Random number</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Random number
+
+&lt; Previous | Index | Next &gt;
+
+Random numbers are easily generated using the random function:rand(), which is just one of the many functions supported by MW scripts (covered in the previous section). But because of its unique usefulness in scripting (you would probably need to use it from time to time), we would discuss more about it in this section.
+
+The random function returns a number between 0 and 1, but you can scale it to any value in a mathematical expression.
+
+Below is an example, which uses the random function to insert atoms of random type randomly from the left side of the container and give a random velocity in the x direction to kick it off from the left wall.
+
+ 
+ 
+Please hit the Run button to start.
+&#12304;This is an embedded model container.&#12305;
+
+ 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="807">
+<paragraph start="0" end="14">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="13">
+<bold>true</bold><italic>true</italic><size>16</size></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="15">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="43">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="15" end="17">
+<size>11</size></content>
+
+<content start="17" end="25">
+<href>script_defvar.cml</href><size>11</size></content>
+
+<content start="25" end="28">
+<size>11</size></content>
+
+<content start="28" end="33">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="33" end="36">
+<size>11</size></content>
+
+<content start="36" end="40">
+<href>script_comment.cml</href><size>11</size></content>
+
+<content start="40" end="42">
+<size>11</size></content>
+
+<content start="42" end="43">
+</content>
+
+</paragraph>
+<paragraph start="43" end="44">
+<LeftIndent>100.0</LeftIndent>
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="366">
+<LeftIndent>140.0</LeftIndent>
+<content start="44" end="106">
+<size>11</size></content>
+
+<content start="106" end="112">
+<size>11</size><family>Courier New</family></content>
+
+<content start="112" end="366">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="366" end="367">
+<LeftIndent>140.0</LeftIndent>
+<content start="366" end="367">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="367" end="485">
+<LeftIndent>140.0</LeftIndent>
+<content start="367" end="485">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="485" end="486">
+<LeftIndent>140.0</LeftIndent>
+<content start="485" end="486">
+</content>
+
+</paragraph>
+<paragraph start="486" end="695">
+<LeftIndent>140.0</LeftIndent>
+<content start="486" end="648">
+<size>11</size></content>
+
+<content start="648" end="649">
+<italic>true</italic><size>11</size></content>
+
+<content start="649" end="694">
+<size>11</size></content>
+
+<content start="694" end="695">
+</content>
+
+</paragraph>
+<paragraph start="695" end="696">
+<LeftIndent>140.0</LeftIndent>
+<content start="695" end="696">
+</content>
+
+</paragraph>
+<paragraph start="696" end="698">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="696" end="697">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_random$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="697" end="698">
+</content>
+
+</paragraph>
+<paragraph start="698" end="700">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="698" end="699">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Insert an atom</title>
+<tooltip>Click this button to insert an atom </tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>add atom rand()*4 (1, rand()*%height);
+set atom[%number_of_particles].vx rand()*100;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="699" end="700">
+</content>
+
+</paragraph>
+<paragraph start="700" end="736">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="700" end="736">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="736" end="775">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="736" end="737">
+<bold>true</bold><size>13</size></content>
+
+<content start="737" end="773">
+<size>10</size></content>
+
+<content start="773" end="774">
+<bold>true</bold><size>13</size></content>
+
+<content start="774" end="775">
+</content>
+
+</paragraph>
+<paragraph start="775" end="776">
+<LeftIndent>140.0</LeftIndent>
+<content start="775" end="776">
+</content>
+
+</paragraph>
+<paragraph start="776" end="778">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="776" end="777">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>600.0</width>
+<height>50.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;pre&gt;&lt;font size=&quot;3&quot;&gt;add atom rand()*4 (1, rand()*%height);
+set atom[%number_of_particles].vx rand()*100;&lt;/font&gt;&lt;/pre&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="777" end="778">
+</content>
+
+</paragraph>
+<paragraph start="778" end="779">
+<LeftIndent>140.0</LeftIndent>
+<content start="778" end="779">
+</content>
+
+</paragraph>
+<paragraph start="779" end="807">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="779" end="781">
+<size>11</size></content>
+
+<content start="781" end="789">
+<href>script_defvar.cml</href><size>11</size></content>
+
+<content start="789" end="792">
+<size>11</size></content>
+
+<content start="792" end="797">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="797" end="800">
+<size>11</size></content>
+
+<content start="800" end="804">
+<href>script_comment.cml</href><size>11</size></content>
+
+<content start="804" end="806">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

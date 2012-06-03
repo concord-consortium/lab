@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_03" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw3d.ModelState"> 
+  <void property="cameraPosition"> 
+   <string>0.0 0.0 0.0</string> 
+  </void> 
+  <void property="drawList"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="attachmentPosition"> 
+       <byte>12</byte> 
+      </void> 
+      <void property="borderType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="callOut"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>143</int> 
+        <int>134</int> 
+       </object> 
+      </void> 
+      <void property="fillMode"> 
+       <object id="FillMode$ColorFill0" class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object id="Color0" class="java.awt.Color"> 
+          <int>255</int> 
+          <int>192</int> 
+          <int>255</int> 
+          <int>255</int> 
+         </object> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object id="Font0" class="java.awt.Font"> 
+        <string>Book Antiqua</string> 
+        <int>0</int> 
+        <int>11</int> 
+       </object> 
+      </void> 
+      <void property="shadowType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="text"> 
+       <string>Resizable glass simulation
+box within which objects move 
+and are displayed (powered
+by the Jmol graphics library). </string> 
+      </void> 
+      <void property="x"> 
+       <float>11.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>152.0</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="attachmentPosition"> 
+       <byte>12</byte> 
+      </void> 
+      <void property="borderType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="callOut"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>157</int> 
+        <int>315</int> 
+       </object> 
+      </void> 
+      <void property="fillMode"> 
+       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object idref="Color0"/> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Book Antiqua</string> 
+        <int>0</int> 
+        <int>11</int> 
+       </object> 
+      </void> 
+      <void property="shadowType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="text"> 
+       <string>Simulation and recorder controls</string> 
+      </void> 
+      <void property="x"> 
+       <float>94.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>277.0</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="attachmentPosition"> 
+       <byte>12</byte> 
+      </void> 
+      <void property="borderType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="callOut"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>17</int> 
+        <int>296</int> 
+       </object> 
+      </void> 
+      <void property="fillMode"> 
+       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object idref="Color0"/> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object id="Font1" class="java.awt.Font"> 
+        <string>Book Antiqua</string> 
+        <int>0</int> 
+        <int>11</int> 
+       </object> 
+      </void> 
+      <void property="shadowType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="text"> 
+       <string>Clock (showing simulation
+time in picoseconds)</string> 
+      </void> 
+      <void property="x"> 
+       <float>11.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>226.0</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="attachmentPosition"> 
+       <byte>12</byte> 
+      </void> 
+      <void property="borderType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="callOut"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>427</int> 
+        <int>275</int> 
+       </object> 
+      </void> 
+      <void property="fillMode"> 
+       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object idref="Color0"/> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object idref="Font1"/> 
+      </void> 
+      <void property="shadowType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="text"> 
+       <string>Compass axes
+red : x-axis
+green : y- axis
+blue : z-axis</string> 
+      </void> 
+      <void property="x"> 
+       <float>313.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>239.0</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="attachmentPosition"> 
+       <byte>12</byte> 
+      </void> 
+      <void property="borderType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="callOut"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>473</int> 
+        <int>128</int> 
+       </object> 
+      </void> 
+      <void property="fillMode"> 
+       <object id="FillMode$ColorFill1" class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object idref="Color0"/> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object idref="Font1"/> 
+      </void> 
+      <void property="shadowType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="text"> 
+       <string>Heat/cool
+control</string> 
+      </void> 
+      <void property="x"> 
+       <float>401.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>69.0</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="attachmentPosition"> 
+       <byte>12</byte> 
+      </void> 
+      <void property="borderType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="callOut"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>98</int> 
+        <int>6</int> 
+       </object> 
+      </void> 
+      <void property="fillMode"> 
+       <object idref="FillMode$ColorFill0"/> 
+      </void> 
+      <void property="font"> 
+       <object idref="Font0"/> 
+      </void> 
+      <void property="shadowType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="text"> 
+       <string>Tool bar with  buttons
+of the 3D Constructor.
+A small triangle at the
+lower-right corner indicates
+that there are more functions
+available from a right-click
+popup menu.</string> 
+      </void> 
+      <void property="x"> 
+       <float>11.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>14.0</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="borderType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>161</int> 
+        <int>146</int> 
+       </object> 
+      </void> 
+      <void property="fillMode"> 
+       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object class="java.awt.Color"> 
+          <int>0</int> 
+          <int>192</int> 
+          <int>255</int> 
+          <int>255</int> 
+         </object> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Book Antiqua Bold Italic</string> 
+        <int>3</int> 
+        <int>16</int> 
+       </object> 
+      </void> 
+      <void property="shadowType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="text"> 
+       <string>Canvas</string> 
+      </void> 
+      <void property="x"> 
+       <float>208.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>7.0</float> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="org.concord.modeler.draw.TextContainerState"> 
+      <void property="borderType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="callOutPoint"> 
+       <object class="java.awt.Point"> 
+        <int>470</int> 
+        <int>122</int> 
+       </object> 
+      </void> 
+      <void property="fillMode"> 
+       <object idref="FillMode$ColorFill1"/> 
+      </void> 
+      <void property="font"> 
+       <object idref="Font1"/> 
+      </void> 
+      <void property="shadowType"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="text"> 
+       <string>Right-click to invoke the pop-up
+menu for the selected object, and
+an empty spot to invoke the default
+pop-up menu.</string> 
+      </void> 
+      <void property="x"> 
+       <float>183.0</float> 
+      </void> 
+      <void property="y"> 
+       <float>43.0</float> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="fillMode"> 
+   <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+    <void property="color"> 
+     <object class="java.awt.Color"> 
+      <int>255</int> 
+      <int>255</int> 
+      <int>192</int> 
+      <int>255</int> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="rotation"> 
+   <string>-876 344 338 71.2 81</string> 
+  </void> 
+  <void property="showEnergizer"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="trajectorySelection"> 
+   <string>292 296</string> 
+  </void> 
+  <void property="velocitySelection"> 
+   <string>292 296</string> 
+  </void> 
+ </object> 
+</java> 

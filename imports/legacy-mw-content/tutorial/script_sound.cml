@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Sound</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Sound
+
+&lt; Previous | Index | Next &gt;
+
+The sound command plays a sound clip when called.
+
+Syntax:
+
+sound [filename or address of the sound clip] 
+
+For example, sound bang.wav plays an audio file named bang.wav from the current directory once.
+
+The following is an example that employs the sound command in a custom task to play an audio clip when the collision between the ball and the obstacle is detected.
+
+ 
+
+See also: beep 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="454">
+<paragraph start="0" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="5">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="35">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="9">
+<size>11</size></content>
+
+<content start="9" end="17">
+<size>11</size><href>script_external.cml</href></content>
+
+<content start="17" end="20">
+<size>11</size></content>
+
+<content start="20" end="25">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="25" end="28">
+<size>11</size></content>
+
+<content start="28" end="32">
+<size>11</size><href>script_cursor.cml</href></content>
+
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<LeftIndent>100.0</LeftIndent>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="86">
+<LeftIndent>140.0</LeftIndent>
+<content start="36" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<size>11</size><family>Courier New</family></content>
+
+<content start="45" end="86">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="86" end="87">
+<LeftIndent>140.0</LeftIndent>
+<content start="86" end="87">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="87" end="95">
+<LeftIndent>140.0</LeftIndent>
+<content start="87" end="95">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="95" end="96">
+<LeftIndent>140.0</LeftIndent>
+<content start="95" end="96">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="96" end="143">
+<LeftIndent>160.0</LeftIndent>
+<content start="96" end="101">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="101" end="141">
+<size>11</size><family>Courier New</family></content>
+
+<content start="141" end="142">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="142" end="143">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="143" end="144">
+<LeftIndent>140.0</LeftIndent>
+<content start="143" end="144">
+</content>
+
+</paragraph>
+<paragraph start="144" end="240">
+<LeftIndent>140.0</LeftIndent>
+<content start="144" end="157">
+<size>11</size></content>
+
+<content start="157" end="171">
+<size>11</size><family>Courier New</family></content>
+
+<content start="171" end="198">
+<size>11</size></content>
+
+<content start="198" end="206">
+<size>11</size><family>Courier New</family></content>
+
+<content start="206" end="240">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="240" end="241">
+<LeftIndent>140.0</LeftIndent>
+<content start="240" end="241">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="241" end="405">
+<LeftIndent>140.0</LeftIndent>
+<content start="241" end="286">
+<size>11</size></content>
+
+<content start="286" end="291">
+<size>11</size><family>Courier New</family></content>
+
+<content start="291" end="305">
+<size>11</size></content>
+
+<content start="305" end="316">
+<size>11</size><href>CustomerTask.cml</href></content>
+
+<content start="316" end="405">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="405" end="406">
+<LeftIndent>140.0</LeftIndent>
+<content start="405" end="406">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="406" end="408">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="406" end="407">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_sound$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="407" end="408">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="408" end="409">
+<LeftIndent>140.0</LeftIndent>
+<content start="408" end="409">
+</content>
+
+</paragraph>
+<paragraph start="409" end="425">
+<LeftIndent>140.0</LeftIndent>
+<content start="409" end="419">
+<size>11</size></content>
+
+<content start="419" end="423">
+<size>11</size><href>script_beep.cml</href></content>
+
+<content start="423" end="424">
+<size>11</size></content>
+
+<content start="424" end="425">
+</content>
+
+</paragraph>
+<paragraph start="425" end="426">
+<LeftIndent>140.0</LeftIndent>
+<content start="425" end="426">
+</content>
+
+</paragraph>
+<paragraph start="426" end="454">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="426" end="428">
+<size>11</size></content>
+
+<content start="428" end="436">
+<size>11</size><href>script_external.cml</href></content>
+
+<content start="436" end="439">
+<size>11</size></content>
+
+<content start="439" end="444">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="444" end="447">
+<size>11</size></content>
+
+<content start="447" end="451">
+<size>11</size><href>script_cursor.cml</href></content>
+
+<content start="451" end="453">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

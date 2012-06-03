@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Attaching an annotation to a bond</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Attaching an annotation to a bond
+
+&lt; Previous | Index | Next &gt;
+
+In addition to attaching an annotation to an atom, you can also attach one to a bond.
+
+ 
+&#12304;An annotation attached to a bond in a myoglobin molecule.&#12305;
+
+Inserting an annotation
+
+Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the bond that you will attach an annotation, and then select &quot;Attach Annotation to Clicked Bond&quot;. An annotation key will be added and the Annotation Editor will pop up, in which you can type in text. HTML code is supported, which allows you to write styled text, add images, and add hyperlinks within annotation.
+
+Once an annotation is added to a bond, you can always edit or remove using the pop-up menu opened when you right-click (or CTRL+click on Mac OS X without a multiple-button mouse) its head.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="846">
+<paragraph start="0" end="34">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="33">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="63">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="45">
+<size>11</size><href>attachannotation.cml</href></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="53">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="53" end="56">
+<size>11</size></content>
+
+<content start="56" end="60">
+<size>11</size><href>roversteer.cml</href></content>
+
+<content start="60" end="62">
+<size>11</size></content>
+
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="64">
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="150">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="149">
+<size>11</size></content>
+
+<content start="149" end="150">
+</content>
+
+</paragraph>
+<paragraph start="150" end="151">
+<content start="150" end="151">
+</content>
+
+</paragraph>
+<paragraph start="151" end="153">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="151" end="152">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<toolbar>false</toolbar><navigation>true</navigation><resource>1MBN.pdb</resource><state>attachbondannotation$0.jms</state><width>600.0</width>
+<height>330.0</height>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="152" end="153">
+</content>
+
+</paragraph>
+<paragraph start="153" end="213">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="153" end="154">
+<bold>true</bold><size>13</size></content>
+
+<content start="154" end="211">
+<size>10</size></content>
+
+<content start="211" end="212">
+<bold>true</bold><size>13</size></content>
+
+<content start="212" end="213">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="213" end="214">
+<LeftIndent>140.0</LeftIndent>
+<content start="213" end="214">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="214" end="238">
+<LeftIndent>140.0</LeftIndent>
+<content start="214" end="237">
+<bold>true</bold><size>11</size></content>
+
+<content start="237" end="238">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="238" end="239">
+<LeftIndent>140.0</LeftIndent>
+<content start="238" end="239">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="239" end="627">
+<LeftIndent>140.0</LeftIndent>
+<content start="239" end="597">
+<size>11</size></content>
+
+<content start="597" end="607">
+<size>11</size><href>hyperlink.cml</href></content>
+
+<content start="607" end="627">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="627" end="628">
+<LeftIndent>140.0</LeftIndent>
+<content start="627" end="628">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="628" end="817">
+<LeftIndent>140.0</LeftIndent>
+<content start="628" end="817">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="817" end="818">
+<content start="817" end="818">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="818" end="846">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="818" end="820">
+<size>11</size></content>
+
+<content start="820" end="828">
+<size>11</size><href>attachannotation.cml</href></content>
+
+<content start="828" end="831">
+<size>11</size></content>
+
+<content start="831" end="836">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="836" end="839">
+<size>11</size></content>
+
+<content start="839" end="843">
+<size>11</size><href>roversteer.cml</href></content>
+
+<content start="843" end="845">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

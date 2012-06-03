@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting an image</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting an image
+
+&lt; Previous | Index | Next &gt;
+
+To insert an image, choose &quot;Insert&gt;Picture&gt;From File&quot; (keyboard action: ALT+SHIFT+I), or press the Insert Picture Button &quot; &quot;, there will be a file dialog with which you can select an image from your file system and import it into the word processor.
+
+There are only three image formats supported: PNG, GIF, and JPEG. You cannot import images in other formats such as BMP. If you do have a picture in other formats, use a graphics tool to convert its format to GIF or JPEG or PNG first.
+
+An image on the page can be removed in the same way a character is removed (i.e. using the DELETE or BACKSPACE key), or use the &quot;Cut&quot; menu available from the pop-up menu when the image is right-clicked (or CTRL+click on Mac OS X without a multiple-button mouse). The pop-up menu also provides some other options and access to the information of the image:
+
+  
+&#12304;This is a screenshot of the popup menu over an image.&#12305;
+
+Note that you can annotate an image on the MW page by selecting the &quot;Annotate&quot; item from the pop-up menu. This will create a snapshot image in the Snapshot Gallery that users can include in their reports.
+
+At this time, there are some limitations with images embedded in text in our word processor: 
+
+   An image lies in line with the text. No other text wrapping styles are supported.
+   An image cannot be resized and rotated while in the page.
+   An image cannot be edited and processed.
+
+You can also insert a snapshot image from the Snapshot Gallery. The menu path for this action is: &quot;Insert &gt; Picture &gt; From Snapshot Gallery&quot;. Once you choose this menu item, the Snapshot Gallery will appear, if there are images stored in it. You can then choose an image and press the &quot;Insert&quot; button of the Snapshot Gallery. The selected snapshot image will be inserted to the page at the location where the caret is.
+
+ 
+NOTE: There is a bug related to the alignment of an image with a component in the same line. There is a workaround for this bug.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2025">
+<paragraph start="0" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<size>11</size><href>symbol.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<size>11</size><href>controller.cml</href></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="299">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="171">
+<size>11</size></content>
+
+<content start="171" end="172">
+<icon>InsertPicture.gif</icon><size>11</size></content>
+
+<content start="172" end="299">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="299" end="300">
+<LeftIndent>140.0</LeftIndent>
+<content start="299" end="300">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="300" end="535">
+<LeftIndent>140.0</LeftIndent>
+<content start="300" end="535">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="535" end="536">
+<LeftIndent>140.0</LeftIndent>
+<content start="535" end="536">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="536" end="892">
+<LeftIndent>140.0</LeftIndent>
+<content start="536" end="892">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="892" end="893">
+<LeftIndent>140.0</LeftIndent>
+<content start="892" end="893">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="893" end="896">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="893" end="894">
+<size>11</size></content>
+
+<content start="894" end="895">
+<icon>ImagePopupMenu.gif</icon><size>11</size></content>
+
+<content start="895" end="896">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="896" end="952">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="896" end="897">
+<bold>true</bold><size>13</size></content>
+
+<content start="897" end="950">
+<size>10</size></content>
+
+<content start="950" end="951">
+<bold>true</bold><size>13</size></content>
+
+<content start="951" end="952">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="952" end="953">
+<LeftIndent>140.0</LeftIndent>
+<content start="952" end="953">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="953" end="1158">
+<LeftIndent>140.0</LeftIndent>
+<content start="953" end="1100">
+<size>11</size></content>
+
+<content start="1100" end="1116">
+<size>11</size><href>snapshot.cml</href></content>
+
+<content start="1116" end="1158">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1158" end="1159">
+<LeftIndent>140.0</LeftIndent>
+<content start="1158" end="1159">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1159" end="1253">
+<LeftIndent>140.0</LeftIndent>
+<content start="1159" end="1253">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1253" end="1254">
+<LeftIndent>140.0</LeftIndent>
+<content start="1253" end="1254">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1254" end="1339">
+<LeftIndent>160.0</LeftIndent>
+<content start="1254" end="1255">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1255" end="1339">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1339" end="1400">
+<LeftIndent>160.0</LeftIndent>
+<content start="1339" end="1340">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1340" end="1400">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1400" end="1444">
+<LeftIndent>160.0</LeftIndent>
+<content start="1400" end="1401">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1401" end="1444">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1444" end="1445">
+<LeftIndent>160.0</LeftIndent>
+<content start="1444" end="1445">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1445" end="1864">
+<LeftIndent>140.0</LeftIndent>
+<content start="1445" end="1491">
+<size>11</size></content>
+
+<content start="1491" end="1507">
+<size>11</size><href>snapshot.cml</href></content>
+
+<content start="1507" end="1864">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1864" end="1865">
+<LeftIndent>140.0</LeftIndent>
+<content start="1864" end="1865">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1865" end="1867">
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>1.0</SpaceAbove>
+<content start="1865" end="1866">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1866" end="1867">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1867" end="1996">
+<RightIndent>10.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1867" end="1871">
+<foreground>255 0 0</foreground><size>10</size><bold>true</bold></content>
+
+<content start="1871" end="1971">
+<size>10</size></content>
+
+<content start="1971" end="1981">
+<size>10</size><href>../teacher/tips/alignimage.cml</href></content>
+
+<content start="1981" end="1995">
+<size>10</size></content>
+
+<content start="1995" end="1996">
+</content>
+
+</paragraph>
+<paragraph start="1996" end="1997">
+<LeftIndent>100.0</LeftIndent>
+<content start="1996" end="1997">
+</content>
+
+</paragraph>
+<paragraph start="1997" end="2025">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1997" end="1999">
+<size>11</size></content>
+
+<content start="1999" end="2007">
+<size>11</size><href>symbol.cml</href></content>
+
+<content start="2007" end="2010">
+<size>11</size></content>
+
+<content start="2010" end="2015">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="2015" end="2018">
+<size>11</size></content>
+
+<content start="2018" end="2022">
+<size>11</size><href>controller.cml</href></content>
+
+<content start="2022" end="2024">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,7 +1,5 @@
 {
   "temperature_control": false,
-  "epsilon": -0.009999999776482582,
-  "sigma": 0.08,
   "lennard_jones_forces": true,
   "coulomb_forces": false,
   "width": 5,
@@ -9,33 +7,33 @@
   "elements": [
     {
       "id": 0,
-      "mass": 0,
-      "sigma": "14.0",
-      "epsilon": ""
+      "mass": null,
+      "sigma": 0.14,
+      "epsilon": -0.1
     },
     {
-      "id": "1",
+      "id": 1,
       "mass": 20,
-      "sigma": "8.0",
-      "epsilon": "0.009999999776482582"
+      "sigma": 0.08,
+      "epsilon": -0.009999999776482582
     },
     {
-      "id": "2",
+      "id": 2,
       "mass": 360,
-      "sigma": "14.0",
-      "epsilon": ""
+      "sigma": 0.14,
+      "epsilon": -0.1
     },
     {
-      "id": "3",
+      "id": 3,
       "mass": 20,
-      "sigma": "8.0",
-      "epsilon": "0.009999999776482582"
+      "sigma": 0.08,
+      "epsilon": -0.009999999776482582
     },
     {
-      "id": "4",
+      "id": 4,
       "mass": 600,
-      "sigma": "",
-      "epsilon": "5.0"
+      "sigma": 0.3,
+      "epsilon": -5
     }
   ],
   "atoms": {

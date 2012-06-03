@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Remove</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Remove
+
+&lt; Previous | Index | Next &gt;
+
+The remove command removes the selected objects (e.g. atoms, bonds or images). (To see how to remove objects without using scripts, see this section.)
+
+Syntax:
+
+remove
+
+You may want to try this out on the console set up for the following model. For example, type the following commands in the console:
+
+select atom 1;
+remove;
+
+   
+&#12304;This is an embedded model container.&#12305;
+
+Note that the remaining atoms will be renumbered after the selected atom(s) is removed. This means that if you would like to remove, say atom 1 and 2, you cannot use scripts as follows:
+
+select atom 1;
+remove;
+select atom 2;
+remove;
+
+because the atoms will be renumbered after each remove command is called.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="745">
+<paragraph start="0" end="7">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="6">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="36">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="8" end="10">
+<size>11</size></content>
+
+<content start="10" end="18">
+<size>11</size><href>script_damp.cml</href></content>
+
+<content start="18" end="21">
+<size>11</size></content>
+
+<content start="21" end="26">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="33">
+<size>11</size><href>script_move.cml</href></content>
+
+<content start="33" end="35">
+<size>11</size></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<LeftIndent>100.0</LeftIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="188">
+<LeftIndent>140.0</LeftIndent>
+<content start="37" end="41">
+<size>11</size></content>
+
+<content start="41" end="47">
+<size>11</size><family>Courier New</family></content>
+
+<content start="47" end="173">
+<size>11</size></content>
+
+<content start="173" end="185">
+<size>11</size><href>removeAction.cml</href></content>
+
+<content start="185" end="188">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="188" end="189">
+<LeftIndent>140.0</LeftIndent>
+<content start="188" end="189">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="189" end="197">
+<LeftIndent>140.0</LeftIndent>
+<content start="189" end="197">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="197" end="198">
+<LeftIndent>140.0</LeftIndent>
+<content start="197" end="198">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="198" end="205">
+<LeftIndent>160.0</LeftIndent>
+<content start="198" end="204">
+<size>11</size><family>Courier New</family><bold>true</bold></content>
+
+<content start="204" end="205">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="205" end="206">
+<LeftIndent>140.0</LeftIndent>
+<content start="205" end="206">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="206" end="339">
+<LeftIndent>140.0</LeftIndent>
+<content start="206" end="339">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="339" end="340">
+<LeftIndent>140.0</LeftIndent>
+<content start="339" end="340">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="340" end="355">
+<LeftIndent>160.0</LeftIndent>
+<content start="340" end="355">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="355" end="363">
+<LeftIndent>160.0</LeftIndent>
+<content start="355" end="362">
+<size>11</size><family>Courier New</family></content>
+
+<content start="362" end="363">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="363" end="364">
+<LeftIndent>140.0</LeftIndent>
+<content start="363" end="364">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="364" end="368">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="364" end="365">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_remove$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="365" end="366">
+</content>
+
+<content start="366" end="367">
+<component><class>org.concord.modeler.PageScriptConsole</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<width>200</width><height>236</height>
+<border>Raised Bevel</border></component></content>
+
+<content start="367" end="368">
+</content>
+
+</paragraph>
+<paragraph start="368" end="407">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="368" end="406">
+<size>10</size></content>
+
+<content start="406" end="407">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="407" end="408">
+<LeftIndent>140.0</LeftIndent>
+<content start="407" end="408">
+</content>
+
+</paragraph>
+<paragraph start="408" end="594">
+<LeftIndent>140.0</LeftIndent>
+<content start="408" end="594">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="594" end="595">
+<LeftIndent>140.0</LeftIndent>
+<content start="594" end="595">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="595" end="610">
+<LeftIndent>160.0</LeftIndent>
+<content start="595" end="610">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="610" end="618">
+<LeftIndent>160.0</LeftIndent>
+<content start="610" end="618">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="618" end="633">
+<LeftIndent>160.0</LeftIndent>
+<content start="618" end="633">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="633" end="641">
+<LeftIndent>160.0</LeftIndent>
+<content start="633" end="640">
+<size>11</size><family>Courier New</family></content>
+
+<content start="640" end="641">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="641" end="642">
+<LeftIndent>140.0</LeftIndent>
+<content start="641" end="642">
+</content>
+
+</paragraph>
+<paragraph start="642" end="716">
+<LeftIndent>140.0</LeftIndent>
+<content start="642" end="690">
+<size>11</size></content>
+
+<content start="690" end="696">
+<size>11</size><family>Courier New</family></content>
+
+<content start="696" end="715">
+<size>11</size></content>
+
+<content start="715" end="716">
+</content>
+
+</paragraph>
+<paragraph start="716" end="717">
+<LeftIndent>140.0</LeftIndent>
+<content start="716" end="717">
+</content>
+
+</paragraph>
+<paragraph start="717" end="745">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="717" end="719">
+<size>11</size></content>
+
+<content start="719" end="727">
+<size>11</size><href>script_damp.cml</href></content>
+
+<content start="727" end="730">
+<size>11</size></content>
+
+<content start="730" end="735">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="735" end="738">
+<size>11</size></content>
+
+<content start="738" end="742">
+<size>11</size><href>script_move.cml</href></content>
+
+<content start="742" end="744">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

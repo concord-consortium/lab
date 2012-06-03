@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Exponential running averages</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Exponential running averages
+
+An exponential running average, sometimes also called an exponentially weighted moving average, applies weighting factors which decrease exponentially. The weighting for each older data point decreases exponentially, giving much more importance to recent observations while still not discarding older observations entirely. An exponential running average is often used to smoothen stochastic data obtained from a simulation or an experiment, to filter out the noise and show the trend more clearly.
+
+Given a sequence {x1, x2, x3, ......, xn}, the exponential running averages are a sequence given by:
+
+s1=x1
+
+si+1=&#945;xi+1+(1-&#945;)si
+
+where &#945; is called the weighting factor or the smoothing factor.
+
+See also simple running averages and growing-point running averages.
+
+   
+ return to index</text>
+<section start="0" end="815">
+<paragraph start="0" end="29">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="28">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<LeftIndent>120.0</LeftIndent>
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="529">
+<LeftIndent>140.0</LeftIndent>
+<content start="30" end="529">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="529" end="530">
+<LeftIndent>140.0</LeftIndent>
+<content start="529" end="530">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="530" end="631">
+<LeftIndent>140.0</LeftIndent>
+<content start="530" end="549">
+<size>11</size></content>
+
+<content start="549" end="550">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="550" end="553">
+<size>11</size></content>
+
+<content start="553" end="554">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="554" end="557">
+<size>11</size></content>
+
+<content start="557" end="558">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="558" end="569">
+<size>11</size></content>
+
+<content start="569" end="570">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="570" end="631">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="631" end="632">
+<LeftIndent>140.0</LeftIndent>
+<content start="631" end="632">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="632" end="638">
+<LeftIndent>140.0</LeftIndent>
+<content start="632" end="633">
+<size>11</size></content>
+
+<content start="633" end="634">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="634" end="636">
+<size>11</size></content>
+
+<content start="636" end="637">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="637" end="638">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="638" end="639">
+<LeftIndent>140.0</LeftIndent>
+<content start="638" end="639">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="639" end="658">
+<LeftIndent>140.0</LeftIndent>
+<content start="639" end="640">
+<size>11</size></content>
+
+<content start="640" end="643">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="643" end="644">
+<size>11</size></content>
+
+<content start="644" end="646">
+</content>
+
+<content start="646" end="649">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="649" end="653">
+<size>11</size></content>
+
+<content start="653" end="654">
+</content>
+
+<content start="654" end="656">
+<size>11</size></content>
+
+<content start="656" end="657">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="657" end="658">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="658" end="659">
+<LeftIndent>140.0</LeftIndent>
+<content start="658" end="659">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="659" end="723">
+<LeftIndent>140.0</LeftIndent>
+<content start="659" end="665">
+<size>11</size></content>
+
+<content start="665" end="666">
+</content>
+
+<content start="666" end="723">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="723" end="724">
+<LeftIndent>140.0</LeftIndent>
+<content start="723" end="724">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="724" end="793">
+<LeftIndent>140.0</LeftIndent>
+<content start="724" end="733">
+<size>11</size></content>
+
+<content start="733" end="756">
+<size>11</size><href>CumulativeRunningAverage.cml</href></content>
+
+<content start="756" end="761">
+<size>11</size></content>
+
+<content start="761" end="791">
+<size>11</size><href>NMovingAverage.cml</href></content>
+
+<content start="791" end="793">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="793" end="794">
+<LeftIndent>140.0</LeftIndent>
+<content start="793" end="794">
+</content>
+
+</paragraph>
+<paragraph start="794" end="798">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="794" end="795">
+</content>
+
+<content start="795" end="796">
+<icon>index.gif</icon><href>index.cml</href></content>
+
+<content start="796" end="798">
+</content>
+
+</paragraph>
+<paragraph start="798" end="815">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="798" end="799">
+</content>
+
+<content start="799" end="814">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

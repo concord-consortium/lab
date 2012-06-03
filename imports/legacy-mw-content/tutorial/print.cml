@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Printing a page</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Printing a page
+
+&lt; Previous | Index | Next &gt;
+
+There are three ways to invoke the printing wizard to print the current page:
+
+   Click the Print Button &quot; &quot; on one of the above tool bars.
+   Choose the &quot;File&gt;Print&quot; menu.
+   Simply press CTRL+P (on Windows and Linux) or Command+P (on Mac OS X).
+
+The Printer Dialog will show up. For example, on Windows XP, the following dialog will appear:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+Choose the print range and number of copies. Click OK.
+
+Printing settings
+
+The sizes of font, images and embedded components on a page will be different on a piece of paper than on the computer screen. They have to be properly rescaled to fit the size of paper before printing. The scaling factors for different types of elements may be different. You can adjust them from the &quot;Printing&quot; tab of the Preferences Dialog, as is shown in the following image:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+Note: You may find that the printed images on the paper are somehow blurred. This is because it has to be scaled to fit into the page. This happens if the scaling factor is set to be less than 100% or the image is simply wider than the printable width of the paper (so that it has to be scaled down to fit, even if the scaling factor is set to be 100%).
+
+Page format settings
+
+To set up the page format for printing, choose the &quot;File&gt;Page Setup&quot; menu. You will see, for example on Windows XP, the following dialog box:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+You can choose the paper size, the orientation, and the margins. Click OK to proceed to printing, or you can preview the page with the current printing format.
+
+Previewing before printing
+
+When a page is printed, the layout of text and embedded components on it is redone to fit the paper size you choose. You may want to see the effect of the layout on paper before sending it to the printer, especially when the document spreads on multiple pieces of paper.
+
+To preview the pages to be printed, choose the &quot;File&gt;Print Preview&quot; menu. Pages are previewed in the full-screen mode.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+Similar to other word processors, you can zoom out to have a look at all the generated pages on the same screen:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+When a printing job is sent to a printer, multiple pages will be printed sequentially as a group. A footnote that includes the page number will be added on each page, along with the user&apos;s information, if provided.
+
+A page can be converted in a PDF file.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2485">
+<paragraph start="0" end="16">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="15">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="15" end="16">
+<bold>true</bold><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<RightIndent>20.0</RightIndent>
+<content start="16" end="17">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="17" end="45">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="17" end="19">
+<size>11</size></content>
+
+<content start="19" end="27">
+<size>11</size><href>open.cml</href></content>
+
+<content start="27" end="30">
+<size>11</size></content>
+
+<content start="30" end="35">
+<size>11</size><href>index.cml</href></content>
+
+<content start="35" end="38">
+<size>11</size></content>
+
+<content start="38" end="42">
+<size>11</size><href>bookmark.cml</href></content>
+
+<content start="42" end="44">
+<size>11</size></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="124">
+<LeftIndent>140.0</LeftIndent>
+<content start="46" end="124">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="124" end="125">
+<LeftIndent>120.0</LeftIndent>
+<content start="124" end="125">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="125" end="186">
+<LeftIndent>160.0</LeftIndent>
+<content start="125" end="126">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="126" end="152">
+<size>11</size></content>
+
+<content start="152" end="153">
+<icon>printer2.gif</icon><size>11</size></content>
+
+<content start="153" end="186">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="186" end="219">
+<LeftIndent>160.0</LeftIndent>
+<content start="186" end="187">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="187" end="219">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="219" end="293">
+<LeftIndent>160.0</LeftIndent>
+<content start="219" end="220">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="220" end="293">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="293" end="294">
+<LeftIndent>100.0</LeftIndent>
+<content start="293" end="294">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="294" end="389">
+<LeftIndent>140.0</LeftIndent>
+<content start="294" end="389">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="389" end="390">
+<LeftIndent>100.0</LeftIndent>
+<content start="389" end="390">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="390" end="393">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="390" end="391">
+<size>11</size></content>
+
+<content start="391" end="392">
+<icon>WinPrintWizard.gif</icon><size>11</size></content>
+
+<content start="392" end="393">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="393" end="417">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="393" end="394">
+<size>13</size><bold>true</bold></content>
+
+<content start="394" end="415">
+<size>10</size></content>
+
+<content start="415" end="416">
+<size>13</size><bold>true</bold></content>
+
+<content start="416" end="417">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="417" end="418">
+<LeftIndent>100.0</LeftIndent>
+<content start="417" end="418">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="418" end="473">
+<LeftIndent>140.0</LeftIndent>
+<content start="418" end="473">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="473" end="474">
+<LeftIndent>140.0</LeftIndent>
+<content start="473" end="474">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="474" end="492">
+<LeftIndent>140.0</LeftIndent>
+<content start="474" end="491">
+<size>11</size><bold>true</bold></content>
+
+<content start="491" end="492">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="492" end="493">
+<LeftIndent>140.0</LeftIndent>
+<content start="492" end="493">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="493" end="873">
+<LeftIndent>140.0</LeftIndent>
+<content start="493" end="873">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="873" end="874">
+<LeftIndent>140.0</LeftIndent>
+<content start="873" end="874">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="874" end="877">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="874" end="875">
+<size>11</size></content>
+
+<content start="875" end="876">
+<icon>PrintingDialog.gif</icon><size>11</size></content>
+
+<content start="876" end="877">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="877" end="901">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="877" end="878">
+<size>13</size><bold>true</bold></content>
+
+<content start="878" end="899">
+<size>10</size></content>
+
+<content start="899" end="900">
+<size>13</size><bold>true</bold></content>
+
+<content start="900" end="901">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="901" end="902">
+<LeftIndent>140.0</LeftIndent>
+<content start="901" end="902">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="902" end="1256">
+<LeftIndent>140.0</LeftIndent>
+<content start="902" end="1255">
+<size>11</size></content>
+
+<content start="1255" end="1256">
+</content>
+
+</paragraph>
+<paragraph start="1256" end="1257">
+<LeftIndent>140.0</LeftIndent>
+<content start="1256" end="1257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1257" end="1278">
+<LeftIndent>140.0</LeftIndent>
+<content start="1257" end="1277">
+<size>11</size><bold>true</bold></content>
+
+<content start="1277" end="1278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1278" end="1279">
+<LeftIndent>140.0</LeftIndent>
+<content start="1278" end="1279">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1279" end="1421">
+<LeftIndent>140.0</LeftIndent>
+<content start="1279" end="1421">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1421" end="1422">
+<LeftIndent>140.0</LeftIndent>
+<content start="1421" end="1422">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1422" end="1425">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1422" end="1423">
+<size>11</size></content>
+
+<content start="1423" end="1424">
+<icon>WinPageFormatter.gif</icon></content>
+
+<content start="1424" end="1425">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1425" end="1449">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1425" end="1426">
+<size>13</size><bold>true</bold></content>
+
+<content start="1426" end="1447">
+<size>10</size></content>
+
+<content start="1447" end="1448">
+<size>13</size><bold>true</bold></content>
+
+<content start="1448" end="1449">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1449" end="1450">
+<LeftIndent>140.0</LeftIndent>
+<content start="1449" end="1450">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1450" end="1610">
+<LeftIndent>140.0</LeftIndent>
+<content start="1450" end="1610">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1610" end="1611">
+<LeftIndent>140.0</LeftIndent>
+<content start="1610" end="1611">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1611" end="1638">
+<LeftIndent>140.0</LeftIndent>
+<content start="1611" end="1637">
+<size>11</size><bold>true</bold></content>
+
+<content start="1637" end="1638">
+<foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="1638" end="1639">
+<LeftIndent>140.0</LeftIndent>
+<content start="1638" end="1639">
+</content>
+
+</paragraph>
+<paragraph start="1639" end="1910">
+<LeftIndent>140.0</LeftIndent>
+<content start="1639" end="1910">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1910" end="1911">
+<LeftIndent>140.0</LeftIndent>
+<content start="1910" end="1911">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1911" end="2030">
+<LeftIndent>140.0</LeftIndent>
+<content start="1911" end="2030">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2030" end="2031">
+<LeftIndent>140.0</LeftIndent>
+<content start="2030" end="2031">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2031" end="2034">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2031" end="2032">
+<size>11</size></content>
+
+<content start="2032" end="2033">
+<icon>PrintPreview2.gif</icon></content>
+
+<content start="2033" end="2034">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2034" end="2058">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2034" end="2035">
+<size>13</size><bold>true</bold></content>
+
+<content start="2035" end="2056">
+<size>10</size></content>
+
+<content start="2056" end="2057">
+<size>13</size><bold>true</bold></content>
+
+<content start="2057" end="2058">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2058" end="2059">
+<LeftIndent>140.0</LeftIndent>
+<content start="2058" end="2059">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2059" end="2172">
+<LeftIndent>140.0</LeftIndent>
+<content start="2059" end="2172">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2172" end="2173">
+<LeftIndent>140.0</LeftIndent>
+<content start="2172" end="2173">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2173" end="2176">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2173" end="2174">
+<size>11</size></content>
+
+<content start="2174" end="2175">
+<icon>PrintPreview1.gif</icon></content>
+
+<content start="2175" end="2176">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2176" end="2200">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2176" end="2177">
+<size>13</size><bold>true</bold></content>
+
+<content start="2177" end="2198">
+<size>10</size></content>
+
+<content start="2198" end="2199">
+<size>13</size><bold>true</bold></content>
+
+<content start="2199" end="2200">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2200" end="2201">
+<LeftIndent>140.0</LeftIndent>
+<content start="2200" end="2201">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2201" end="2416">
+<LeftIndent>140.0</LeftIndent>
+<content start="2201" end="2416">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2416" end="2417">
+<LeftIndent>140.0</LeftIndent>
+<content start="2416" end="2417">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2417" end="2456">
+<LeftIndent>140.0</LeftIndent>
+<content start="2417" end="2431">
+<size>11</size></content>
+
+<content start="2431" end="2454">
+<size>11</size><href>pdfize.cml</href></content>
+
+<content start="2454" end="2455">
+<size>11</size></content>
+
+<content start="2455" end="2456">
+<size>11</size><foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="2456" end="2457">
+<LeftIndent>140.0</LeftIndent>
+<content start="2456" end="2457">
+</content>
+
+</paragraph>
+<paragraph start="2457" end="2485">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2457" end="2459">
+<size>11</size></content>
+
+<content start="2459" end="2467">
+<size>11</size><href>open.cml</href></content>
+
+<content start="2467" end="2470">
+<size>11</size></content>
+
+<content start="2470" end="2475">
+<size>11</size><href>index.cml</href></content>
+
+<content start="2475" end="2478">
+<size>11</size></content>
+
+<content start="2478" end="2482">
+<size>11</size><href>bookmark.cml</href></content>
+
+<content start="2482" end="2484">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a function graph</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a function graph
+
+&lt; Previous | Index | Next &gt;
+
+MW provides a simple grapher that you can insert into anywhere in a page to draw a variety of functions (see a list of supported functions). To insert it, select the &quot;Insert&gt;Miscellaneous Components&gt;Function Graph&quot; menu. You will see the following dialog window:
+
+  
+&#12304;This is a screenshot. The &quot;Select function&quot; drop-down list is empty initially.&#12305;
+
+Once you click &quot;OK&quot;, a graph will be inserted into the position where the caret is currently located. There is initially no function in the graph. But you can input a math expression in the text field below the graph. The following graph shows an example of three functions:
+
+ 
+Use arrow keys to move around or just drag or rotate mouse wheel. Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) to see more options.
+
+&#12304;This is an embedded function graph.&#12305;
+
+Once you save the page, the expression(s) you have entered will be saved as well, along with the settings you have chosen for the functions, such as line colors and strokes, as is shown in the above example. This allows you to build lesson pages to teach different functions. For example, you can have a page for linear functions and another page for quadratic functions, and so on.
+
+If you want to change the settings with a graph after it has been inserted into a page,  right-click (Windows and Linux) or CTRL+click (Mac OS X) on it, and select the corresponding items from the pop-up menu. With this menu, you can remove functions, take snapshots, customize the graph, and so on.
+
+There are also a couple of hot keys that you can use:
+
+   &apos;i&apos; - Scale in (you can use the mouse wheel too)
+   &apos;o&apos; - Scale out (you can use the mouse wheel too)
+   Up - Move the coordinate system up
+   Down - Move the coordinate system down
+   Left - Move the coordinate system to the left
+   Right - Move the coodinate system to the right
+   &apos;r&apos; - Reset to the current scope and scale
+
+This component can be useful in teaching and learning math. For instance, teachers can set up challenges for students to solve equations, such as x3+5x-8=0, in which students need to scroll back and forth in the graph window to find the solutions, and fill the answer in a text field. Students can take snapshot images to prove what they do, with the drawing and annotation tools provided by the Snapshot Editor (see the screenshot below). By using the assessment facilities built in MW, teachers can collect and analyze these data.
+
+  
+&#12304;This is a screenshot of the Snapshot Editor.&#12305;
+
+Changing and removing a function graph
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove, and copy a function graph.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2704">
+<paragraph start="0" end="27">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="26">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="56">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="38">
+<size>11</size><href>PeriodicTable.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="46">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="53">
+<size>11</size><href>FeedbackArea.cml</href></content>
+
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="320">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="166">
+<size>11</size></content>
+
+<content start="166" end="195">
+<size>11</size><href>functions.cml</href></content>
+
+<content start="195" end="320">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="320" end="321">
+<LeftIndent>140.0</LeftIndent>
+<content start="320" end="321">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="321" end="324">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="321" end="322">
+<size>11</size></content>
+
+<content start="322" end="323">
+<icon>FunctionGraphDialog.gif</icon></content>
+
+<content start="323" end="324">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="324" end="405">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="324" end="325">
+<size>13</size><bold>true</bold></content>
+
+<content start="325" end="403">
+<size>10</size></content>
+
+<content start="403" end="404">
+<size>13</size><bold>true</bold></content>
+
+<content start="404" end="405">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="405" end="406">
+<LeftIndent>140.0</LeftIndent>
+<content start="405" end="406">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="406" end="681">
+<LeftIndent>140.0</LeftIndent>
+<content start="406" end="681">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="681" end="682">
+<LeftIndent>140.0</LeftIndent>
+<content start="681" end="682">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="682" end="684">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="682" end="683">
+<component><class>org.concord.modeler.PageFunctionGraph</class>
+<width>600</width><height>300</height><opaque>false</opaque>
+<border>None</border>
+<function><expression>tan(x)</expression>
+<color>-304490</color><weight>3.0</weight><style>1</style><datapoint>100</datapoint></function><function><expression>sin(x)*tan(x)</expression>
+<color>-871715</color><weight>3.0</weight><style>0</style><datapoint>100</datapoint></function><function><expression>sin(x)</expression>
+<color>-17a027</color><weight>3.0</weight><style>0</style><datapoint>100</datapoint></function></component></content>
+
+<content start="683" end="684">
+</content>
+
+</paragraph>
+<paragraph start="684" end="843">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="684" end="843">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="843" end="844">
+<LeftIndent>140.0</LeftIndent>
+<content start="843" end="844">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="844" end="882">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="844" end="845">
+<size>13</size><bold>true</bold></content>
+
+<content start="845" end="880">
+<size>10</size></content>
+
+<content start="880" end="881">
+<size>13</size><bold>true</bold></content>
+
+<content start="881" end="882">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="882" end="883">
+<LeftIndent>140.0</LeftIndent>
+<content start="882" end="883">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="883" end="1266">
+<LeftIndent>140.0</LeftIndent>
+<content start="883" end="1196">
+<size>11</size></content>
+
+<content start="1196" end="1212">
+<size>11</size><href>LinearFunction.cml</href></content>
+
+<content start="1212" end="1234">
+<size>11</size></content>
+
+<content start="1234" end="1253">
+<size>11</size><href>QuadraticFunction.cml</href></content>
+
+<content start="1253" end="1266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1266" end="1267">
+<LeftIndent>140.0</LeftIndent>
+<content start="1266" end="1267">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1267" end="1567">
+<LeftIndent>140.0</LeftIndent>
+<content start="1267" end="1567">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1567" end="1568">
+<LeftIndent>140.0</LeftIndent>
+<content start="1567" end="1568">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1568" end="1622">
+<LeftIndent>140.0</LeftIndent>
+<content start="1568" end="1622">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1622" end="1623">
+<LeftIndent>140.0</LeftIndent>
+<content start="1622" end="1623">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1623" end="1675">
+<LeftIndent>160.0</LeftIndent>
+<content start="1623" end="1624">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1624" end="1626">
+</content>
+
+<content start="1626" end="1675">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1675" end="1728">
+<LeftIndent>160.0</LeftIndent>
+<content start="1675" end="1676">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1676" end="1678">
+</content>
+
+<content start="1678" end="1728">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1728" end="1766">
+<LeftIndent>160.0</LeftIndent>
+<content start="1728" end="1729">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1729" end="1731">
+</content>
+
+<content start="1731" end="1766">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1766" end="1808">
+<LeftIndent>160.0</LeftIndent>
+<content start="1766" end="1767">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1767" end="1769">
+</content>
+
+<content start="1769" end="1808">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1808" end="1857">
+<LeftIndent>160.0</LeftIndent>
+<content start="1808" end="1809">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1809" end="1811">
+</content>
+
+<content start="1811" end="1857">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1857" end="1907">
+<LeftIndent>160.0</LeftIndent>
+<content start="1857" end="1858">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1858" end="1860">
+</content>
+
+<content start="1860" end="1907">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1907" end="1953">
+<LeftIndent>160.0</LeftIndent>
+<content start="1907" end="1908">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1908" end="1910">
+</content>
+
+<content start="1910" end="1953">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1953" end="1954">
+<LeftIndent>140.0</LeftIndent>
+<content start="1953" end="1954">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1954" end="2487">
+<LeftIndent>140.0</LeftIndent>
+<content start="1954" end="2101">
+<size>11</size></content>
+
+<content start="2101" end="2102">
+<size>11</size><superscript>true</superscript></content>
+
+<content start="2102" end="2227">
+<size>11</size></content>
+
+<content start="2227" end="2237">
+<size>11</size><href>textfield.cml</href></content>
+
+<content start="2237" end="2350">
+<size>11</size></content>
+
+<content start="2350" end="2365">
+<size>11</size><href>snapshot.cml</href></content>
+
+<content start="2365" end="2487">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2487" end="2488">
+<LeftIndent>140.0</LeftIndent>
+<content start="2487" end="2488">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2488" end="2491">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2488" end="2489">
+<size>11</size></content>
+
+<content start="2489" end="2490">
+<icon>FunctionGraphSnapshot.gif</icon></content>
+
+<content start="2490" end="2491">
+</content>
+
+</paragraph>
+<paragraph start="2491" end="2538">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2491" end="2492">
+<size>13</size><bold>true</bold></content>
+
+<content start="2492" end="2536">
+<size>10</size></content>
+
+<content start="2536" end="2537">
+<size>13</size><bold>true</bold></content>
+
+<content start="2537" end="2538">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2538" end="2539">
+<LeftIndent>140.0</LeftIndent>
+<content start="2538" end="2539">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2539" end="2578">
+<LeftIndent>140.0</LeftIndent>
+<content start="2539" end="2577">
+<size>11</size><bold>true</bold></content>
+
+<content start="2577" end="2578">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2578" end="2579">
+<LeftIndent>140.0</LeftIndent>
+<content start="2578" end="2579">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2579" end="2675">
+<LeftIndent>140.0</LeftIndent>
+<content start="2579" end="2584">
+<size>11</size></content>
+
+<content start="2584" end="2613">
+<size>11</size><href>changeComponent.cml</href></content>
+
+<content start="2613" end="2675">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2675" end="2676">
+<LeftIndent>140.0</LeftIndent>
+<content start="2675" end="2676">
+</content>
+
+</paragraph>
+<paragraph start="2676" end="2704">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2676" end="2678">
+<size>11</size></content>
+
+<content start="2678" end="2686">
+<size>11</size><href>PeriodicTable.cml</href></content>
+
+<content start="2686" end="2689">
+<size>11</size></content>
+
+<content start="2689" end="2694">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="2694" end="2697">
+<size>11</size></content>
+
+<content start="2697" end="2701">
+<size>11</size><href>FeedbackArea.cml</href></content>
+
+<content start="2701" end="2703">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

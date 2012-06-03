@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Changing the velocity vector of an atom</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Changing the velocity vector of an atom
+
+&lt; Previous | Index | Next &gt;
+
+This tool doesn&apos;t work well yet.
+
+Practice
+
+You may play with the following model about changing the velocity vector of an atom.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="271">
+<paragraph start="0" end="40">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="39">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="69">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="51">
+<href>fixatom3d.cml</href><size>11</size></content>
+
+<content start="51" end="54">
+<size>11</size></content>
+
+<content start="54" end="59">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="59" end="62">
+<size>11</size></content>
+
+<content start="62" end="66">
+<href>mergemodel3d.cml</href><size>11</size></content>
+
+<content start="66" end="68">
+<size>11</size></content>
+
+<content start="68" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="70">
+<LeftIndent>140.0</LeftIndent>
+<content start="69" end="70">
+</content>
+
+</paragraph>
+<paragraph start="70" end="103">
+<LeftIndent>140.0</LeftIndent>
+<content start="70" end="102">
+<bold>true</bold><foreground>255 0 0</foreground><size>11</size></content>
+
+<content start="102" end="103">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="103" end="104">
+<LeftIndent>140.0</LeftIndent>
+<content start="103" end="104">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="104" end="113">
+<LeftIndent>140.0</LeftIndent>
+<content start="104" end="112">
+<bold>true</bold><size>11</size></content>
+
+<content start="112" end="113">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="113" end="114">
+<LeftIndent>140.0</LeftIndent>
+<content start="113" end="114">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="114" end="199">
+<LeftIndent>140.0</LeftIndent>
+<content start="114" end="199">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="199" end="200">
+<LeftIndent>140.0</LeftIndent>
+<content start="199" end="200">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="200" end="202">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="200" end="201">
+<component><class>org.concord.modeler.PageMd3d</class><resource>changevelocity3d$0.mdd</resource><coordinate>changevelocity3d$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="201" end="202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="202" end="241">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="202" end="240">
+<size>10</size></content>
+
+<content start="240" end="241">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="241" end="242">
+<LeftIndent>140.0</LeftIndent>
+<content start="241" end="242">
+</content>
+
+</paragraph>
+<paragraph start="242" end="243">
+<LeftIndent>140.0</LeftIndent>
+<content start="242" end="243">
+</content>
+
+</paragraph>
+<paragraph start="243" end="271">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="243" end="245">
+<size>11</size></content>
+
+<content start="245" end="253">
+<href>fixatom3d.cml</href><size>11</size></content>
+
+<content start="253" end="256">
+<size>11</size></content>
+
+<content start="256" end="261">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="261" end="264">
+<size>11</size></content>
+
+<content start="264" end="268">
+<href>mergemodel3d.cml</href><size>11</size></content>
+
+<content start="268" end="270">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

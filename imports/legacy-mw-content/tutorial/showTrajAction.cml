@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Trajectory Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Trajectory Tool
+
+&lt; Previous | Index | Next &gt;
+
+It would be helpful to show an object&apos;s trajectory in a simulation. By default, the trajectory of a particle is not shown. To show or hide trajectories, choose the Trajectory Tool (&quot; &quot;), and then click on a particle. Its trajectory will be shown. Clicking the particle again will hide its trajectory.
+
+ 
+ 
+&#12304;This is an embedded model container.&#12305;
+
+Changing the color of a trajectory line
+
+To change the color of the trajectory line of a particle, select it first and then double-click on the &quot;Trajectory Tool&quot; button. A color palette will appear. You can change the color of the trajectory line of the selected particle by choosing a color from the palette.
+
+Changing the style of trajectory lines
+
+There are currently three styles for displaying trajectories: line, dotted line and circles. These options can be set from the &quot;Trajectory&quot; drop-down menu of the &quot;Style&quot; area of the &quot;View Options&quot; dialog window. The &quot;Circles&quot; style should be used for models with only a couple of particles.
+
+ 
+Important: The length of the trajectory line is determined by the number of frames the recorder will record times the interval between frames. If the recorder is disabled, no trajectory will be shown.
+ 
+
+Script support
+
+The trajectory command can be used to show or hide the trajectories of the selected particles. To turn on/off the trajectories of particles, select them first and then use the trajectory command. In the example above, the trajectory command is used to turn the trajectories of three selected particles on and off to create the flashing effect.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1634">
+<paragraph start="0" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="19">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<RightIndent>20.0</RightIndent>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="49">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="21" end="23">
+<size>11</size></content>
+
+<content start="23" end="31">
+<size>11</size><href>mutateAction.cml</href></content>
+
+<content start="31" end="34">
+<size>11</size></content>
+
+<content start="34" end="39">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="46">
+<size>11</size><href>AvposAction.cml</href></content>
+
+<content start="46" end="48">
+<size>11</size></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<LeftIndent>100.0</LeftIndent>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="351">
+<LeftIndent>140.0</LeftIndent>
+<content start="50" end="232">
+<size>11</size></content>
+
+<content start="232" end="233">
+<icon>traj.gif</icon><size>11</size></content>
+
+<content start="233" end="351">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="351" end="352">
+<LeftIndent>140.0</LeftIndent>
+<content start="351" end="352">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="352" end="354">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="352" end="353">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>showTrajAction$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><button>Select Object</button><button>Toggle Trajectory</button></component></content>
+
+<content start="353" end="354">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="354" end="356">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="354" end="355">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run for a while and show trajectories</title>
+<tooltip>Run for a while and show trajectories</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>run;
+delay modeltime 2000;
+stop immediately;
+show selectionhalo off;
+select atom 1-3;
+loop 1;
+trajectory on;
+delay 0.2;
+trajectory off;
+delay 0.2;
+loop 10;
+show selectionhalo on;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="355" end="356">
+</content>
+
+</paragraph>
+<paragraph start="356" end="395">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="356" end="394">
+<size>10</size></content>
+
+<content start="394" end="395">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="395" end="396">
+<LeftIndent>140.0</LeftIndent>
+<content start="395" end="396">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="396" end="436">
+<LeftIndent>140.0</LeftIndent>
+<content start="396" end="435">
+<size>11</size><bold>true</bold></content>
+
+<content start="435" end="436">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="436" end="437">
+<LeftIndent>140.0</LeftIndent>
+<content start="436" end="437">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="437" end="706">
+<LeftIndent>140.0</LeftIndent>
+<content start="437" end="495">
+<size>11</size></content>
+
+<content start="495" end="510">
+<size>11</size><bold>true</bold></content>
+
+<content start="510" end="706">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="706" end="707">
+<LeftIndent>140.0</LeftIndent>
+<content start="706" end="707">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="707" end="746">
+<LeftIndent>140.0</LeftIndent>
+<content start="707" end="745">
+<size>11</size><bold>true</bold></content>
+
+<content start="745" end="746">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="746" end="747">
+<LeftIndent>140.0</LeftIndent>
+<content start="746" end="747">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="747" end="1038">
+<LeftIndent>140.0</LeftIndent>
+<content start="747" end="1038">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1038" end="1039">
+<LeftIndent>140.0</LeftIndent>
+<content start="1038" end="1039">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1039" end="1041">
+<LeftIndent>140.0</LeftIndent>
+<content start="1039" end="1040">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1040" end="1041">
+<size>11</size><foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="1041" end="1242">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1041" end="1050">
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
+
+<content start="1050" end="1124">
+<size>11</size></content>
+
+<content start="1124" end="1136">
+<size>11</size><href>recordSimulation.cml</href></content>
+
+<content start="1136" end="1242">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1242" end="1244">
+<LeftIndent>140.0</LeftIndent>
+<content start="1242" end="1243">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1243" end="1244">
+</content>
+
+</paragraph>
+<paragraph start="1244" end="1245">
+<LeftIndent>140.0</LeftIndent>
+<content start="1244" end="1245">
+</content>
+
+</paragraph>
+<paragraph start="1245" end="1260">
+<LeftIndent>140.0</LeftIndent>
+<content start="1245" end="1259">
+<size>11</size><bold>true</bold></content>
+
+<content start="1259" end="1260">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1260" end="1261">
+<LeftIndent>140.0</LeftIndent>
+<content start="1260" end="1261">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1261" end="1605">
+<LeftIndent>140.0</LeftIndent>
+<content start="1261" end="1265">
+<size>11</size></content>
+
+<content start="1265" end="1275">
+<family>Courier New</family><size>11</size><href>script_traj.cml</href></content>
+
+<content start="1275" end="1402">
+<size>11</size></content>
+
+<content start="1402" end="1408">
+<size>11</size><href>script_select.cml</href></content>
+
+<content start="1408" end="1437">
+<size>11</size></content>
+
+<content start="1437" end="1447">
+<family>Courier New</family><size>11</size><href>script_traj.cml</href></content>
+
+<content start="1447" end="1483">
+<size>11</size></content>
+
+<content start="1483" end="1493">
+<family>Courier New</family><size>11</size><href>script_traj.cml</href></content>
+
+<content start="1493" end="1604">
+<size>11</size></content>
+
+<content start="1604" end="1605">
+</content>
+
+</paragraph>
+<paragraph start="1605" end="1606">
+<LeftIndent>140.0</LeftIndent>
+<content start="1605" end="1606">
+</content>
+
+</paragraph>
+<paragraph start="1606" end="1634">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1606" end="1608">
+<size>11</size></content>
+
+<content start="1608" end="1616">
+<size>11</size><href>mutateAction.cml</href></content>
+
+<content start="1616" end="1619">
+<size>11</size></content>
+
+<content start="1619" end="1624">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="1624" end="1627">
+<size>11</size></content>
+
+<content start="1627" end="1631">
+<size>11</size><href>AvposAction.cml</href></content>
+
+<content start="1631" end="1633">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

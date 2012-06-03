@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Changing your language</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Changing your language
+
+&lt; Previous | Index | Next &gt;
+
+By default, MW will use the language determined from the regional settings of your operating system. For example, if you are a user from China, MW will most likely display a user interface in Simplified Chinese.
+
+If, however, you would like to use the English user interface instead of the Chinese user interface, you can open the Preferences Dialog and select &quot;English (United States)&quot; from the &quot;Language Options&quot; drop-down menu. Once this is done, MW will restart to show the English interface. And the setting will be remembered so that the next time you start MW you will still get the English interface.
+
+If you decide to switch back to the Chinese interface, you can use the same drop-down menu to change it again.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+Curently, only four languages are available for the user interface: English (United States), Chinese Simplified, Chinese Traditional and Russian (the latter two are incomplete). However, you can write text and build activity interfaces in most languages with MW&apos;s multi-linguistic word processor.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1129">
+<paragraph start="0" end="23">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="22">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<RightIndent>20.0</RightIndent>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="52">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="24" end="26">
+<size>11</size></content>
+
+<content start="26" end="34">
+<size>11</size><href>caching.cml</href></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="42">
+<size>11</size><href>index.cml</href></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="49">
+<size>11</size><href>comment.cml</href></content>
+
+<content start="49" end="51">
+<size>11</size></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<LeftIndent>140.0</LeftIndent>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="265">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="265">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="265" end="266">
+<LeftIndent>140.0</LeftIndent>
+<content start="265" end="266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="266" end="662">
+<LeftIndent>140.0</LeftIndent>
+<content start="266" end="662">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="662" end="663">
+<LeftIndent>140.0</LeftIndent>
+<content start="662" end="663">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="663" end="774">
+<LeftIndent>140.0</LeftIndent>
+<content start="663" end="774">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="774" end="775">
+<LeftIndent>140.0</LeftIndent>
+<content start="774" end="775">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="775" end="778">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="775" end="776">
+</content>
+
+<content start="776" end="777">
+<icon>Preferences.gif</icon></content>
+
+<content start="777" end="778">
+</content>
+
+</paragraph>
+<paragraph start="778" end="802">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="778" end="779">
+<bold>true</bold><size>13</size></content>
+
+<content start="779" end="800">
+<size>10</size></content>
+
+<content start="800" end="801">
+<bold>true</bold><size>13</size></content>
+
+<content start="801" end="802">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="802" end="803">
+<LeftIndent>140.0</LeftIndent>
+<content start="802" end="803">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="803" end="1100">
+<LeftIndent>140.0</LeftIndent>
+<content start="803" end="1067">
+<size>11</size></content>
+
+<content start="1067" end="1083">
+<size>11</size><href>i18n.cml</href></content>
+
+<content start="1083" end="1099">
+<size>11</size></content>
+
+<content start="1099" end="1100">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="1100" end="1101">
+<LeftIndent>140.0</LeftIndent>
+<content start="1100" end="1101">
+<italic>true</italic></content>
+
+</paragraph>
+<paragraph start="1101" end="1129">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1101" end="1103">
+<size>11</size></content>
+
+<content start="1103" end="1111">
+<size>11</size><href>caching.cml</href></content>
+
+<content start="1111" end="1114">
+<size>11</size></content>
+
+<content start="1114" end="1119">
+<size>11</size><href>index.cml</href></content>
+
+<content start="1119" end="1122">
+<size>11</size></content>
+
+<content start="1122" end="1126">
+<size>11</size><href>comment.cml</href></content>
+
+<content start="1126" end="1128">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

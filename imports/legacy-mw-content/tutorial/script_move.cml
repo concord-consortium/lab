@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Move</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Move
+
+&lt; Previous | Index | Next &gt;
+
+The move command moves the selected objects. (To see how to move an object without using scripts, see this section.)
+
+Syntax for 2D models:
+
+move ([dx], [dy])
+
+where [dx] and [dy] are the distances in x and y directions that the selected objects will be moved. This command can be applied to images to produce animation effects. You can use math expressions in place of [dx] and [dy].
+
+Syntax for 3D models:
+
+move ([dx], [dy], [dz])
+
+where [dx], [dy], and [dz] are the distances in x, y, and z directions that the selected objects will be moved.
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="611">
+<paragraph start="0" end="5">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="4">
+<bold>true</bold><italic>true</italic><size>16</size></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="34">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="6" end="8">
+<size>11</size></content>
+
+<content start="8" end="16">
+<href>script_remove.cml</href><size>11</size></content>
+
+<content start="16" end="19">
+<size>11</size></content>
+
+<content start="19" end="24">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="24" end="27">
+<size>11</size></content>
+
+<content start="27" end="31">
+<href>script_rotate.cml</href><size>11</size></content>
+
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<LeftIndent>100.0</LeftIndent>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="152">
+<LeftIndent>140.0</LeftIndent>
+<content start="35" end="39">
+<size>11</size></content>
+
+<content start="39" end="43">
+<family>Courier New</family><size>11</size></content>
+
+<content start="43" end="137">
+<size>11</size></content>
+
+<content start="137" end="149">
+<href>dragAction.cml</href><size>11</size></content>
+
+<content start="149" end="152">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="152" end="153">
+<LeftIndent>140.0</LeftIndent>
+<content start="152" end="153">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="153" end="175">
+<LeftIndent>140.0</LeftIndent>
+<content start="153" end="175">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="175" end="176">
+<LeftIndent>140.0</LeftIndent>
+<content start="175" end="176">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="176" end="194">
+<LeftIndent>160.0</LeftIndent>
+<content start="176" end="182">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="182" end="192">
+<family>Courier New</family><size>11</size></content>
+
+<content start="192" end="194">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="194" end="195">
+<LeftIndent>140.0</LeftIndent>
+<content start="194" end="195">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="195" end="420">
+<LeftIndent>140.0</LeftIndent>
+<content start="195" end="201">
+<size>11</size></content>
+
+<content start="201" end="205">
+<family>Courier New</family><size>11</size></content>
+
+<content start="205" end="210">
+<size>11</size></content>
+
+<content start="210" end="214">
+<family>Courier New</family><size>11</size></content>
+
+<content start="214" end="405">
+<size>11</size></content>
+
+<content start="405" end="409">
+<family>Courier New</family><size>11</size></content>
+
+<content start="409" end="414">
+<size>11</size></content>
+
+<content start="414" end="418">
+<family>Courier New</family><size>11</size></content>
+
+<content start="418" end="420">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="420" end="421">
+<LeftIndent>140.0</LeftIndent>
+<content start="420" end="421">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="421" end="443">
+<LeftIndent>140.0</LeftIndent>
+<content start="421" end="443">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="443" end="444">
+<LeftIndent>140.0</LeftIndent>
+<content start="443" end="444">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="444" end="468">
+<LeftIndent>160.0</LeftIndent>
+<content start="444" end="450">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="450" end="466">
+<family>Courier New</family><size>11</size></content>
+
+<content start="466" end="467">
+<family>Courier New</family><size>11</size><bold>true</bold></content>
+
+<content start="467" end="468">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="468" end="469">
+<LeftIndent>140.0</LeftIndent>
+<content start="468" end="469">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="469" end="581">
+<LeftIndent>140.0</LeftIndent>
+<content start="469" end="475">
+<size>11</size></content>
+
+<content start="475" end="479">
+<family>Courier New</family><size>11</size></content>
+
+<content start="479" end="481">
+<size>11</size></content>
+
+<content start="481" end="485">
+<family>Courier New</family><size>11</size></content>
+
+<content start="485" end="491">
+<size>11</size></content>
+
+<content start="491" end="495">
+<family>Courier New</family><size>11</size></content>
+
+<content start="495" end="581">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="581" end="582">
+<LeftIndent>140.0</LeftIndent>
+<content start="581" end="582">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="582" end="583">
+<LeftIndent>140.0</LeftIndent>
+<content start="582" end="583">
+</content>
+
+</paragraph>
+<paragraph start="583" end="611">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="583" end="585">
+<size>11</size></content>
+
+<content start="585" end="593">
+<href>script_remove.cml</href><size>11</size></content>
+
+<content start="593" end="596">
+<size>11</size></content>
+
+<content start="596" end="601">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="601" end="604">
+<size>11</size></content>
+
+<content start="604" end="608">
+<href>script_rotate.cml</href><size>11</size></content>
+
+<content start="608" end="610">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

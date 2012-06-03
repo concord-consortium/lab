@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Customizing the tool bar</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Customizing the tool bar
+
+&lt; Previous | Index | Next &gt;
+
+The user interface for building a model consists of many tools (which will be introduced from the next section), some of which can be put on the tool bar of the model container. Although many of these tools are designed for an author to construct a model, some of them can also be used by the end user to interact with the model. For instance, the tool for selecting and moving an object may be useful in some models in which the end user needs to move objects around to create certain situations.
+
+You, as the author, should decide which tools should remain in the tool bar to be used by the end user. It is in general not preferable to leave all the tools in the tool bar, because most of the tools may not be needed for interacting with the current model. If they are left in the tool bar, the end user will be distracted or get confused. It is generally a good idea to create a &quot;sandbox&quot; within which the end user will play. For example, you may just want the user to move atoms around but would not want to allow them to remove atoms from or insert more atoms into the model, because the latter actions might result in inconsistency with the context --- removing too many atoms from a liquid or solid might turn it into a gas and adding too many atoms to a gas might turn it into a liquid.
+
+Customization of the tool bar can be done with the dialog window that will pop up if you select the &quot;Customize&quot; item from the &quot;Toolbar&quot; menu of the model container, as is shown in the following:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+For example, the following is an empty model container with a tool bar that has all available buttons on it:
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+In the above case, the total length of all the buttons exceeds the width of the model container. As a result, not all buttons are displayed in the tool bar. The buttons that cannot fit in the tool bar can be found on a popup menu that can be invoked by clicking on the arrow button at the right end of the tool bar.
+
+Once you have created a tool bar with some buttons, you can move or remove a button. If you right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the button, you will see a pop-up menu, as shown in the following:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This menu will allow you to move the clicked button forward or back within the tool bar, or remove the clicked button, or remove the entire tool bar. You can also remove a button by deselecting the corresponding check box of the &quot;Customize&quot; dialog window. If you want to get rid of the whole tool bar, you can also select &quot;Remove Toolbar&quot; from the &quot;Toolbar&quot; menu.
+
+You can put up any buttons in the tool bar, as is shown in the following model:
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+If the end user need not to use any of these tools, you should just remove the tool bar. Authors who are comfortable with scripting can set up more complex interactions than those offered by these tools. For example, authors can depoly scripts that use the add command repeatedly to insert a group of atoms automatically, at the positions that can be specified numerically, with no need to ask the end user to insert them one by one using the &quot;Drop Object&quot; button and then nudge them.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3309">
+<paragraph start="0" end="25">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="24">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="54">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="26" end="28">
+<size>11</size></content>
+
+<content start="28" end="36">
+<href>ContainerMenuBar.cml</href><size>11</size></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="44">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="44" end="47">
+<size>11</size></content>
+
+<content start="47" end="51">
+<href>selectAction.cml</href><size>11</size></content>
+
+<content start="51" end="53">
+<size>11</size></content>
+
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<LeftIndent>140.0</LeftIndent>
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="553">
+<LeftIndent>140.0</LeftIndent>
+<content start="55" end="412">
+<size>11</size></content>
+
+<content start="412" end="442">
+<href>selectAction.cml</href><size>11</size></content>
+
+<content start="442" end="553">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="553" end="554">
+<LeftIndent>140.0</LeftIndent>
+<content start="553" end="554">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="554" end="1350">
+<LeftIndent>140.0</LeftIndent>
+<content start="554" end="1350">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1350" end="1351">
+<LeftIndent>140.0</LeftIndent>
+<content start="1350" end="1351">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1351" end="1546">
+<LeftIndent>140.0</LeftIndent>
+<content start="1351" end="1546">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1546" end="1547">
+<LeftIndent>140.0</LeftIndent>
+<content start="1546" end="1547">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1547" end="1550">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1547" end="1548">
+<size>11</size></content>
+
+<content start="1548" end="1549">
+<size>11</size><icon>ToolBarCustomizationDialog.gif</icon></content>
+
+<content start="1549" end="1550">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1550" end="1574">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1550" end="1573">
+<size>10</size></content>
+
+<content start="1573" end="1574">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1574" end="1575">
+<LeftIndent>140.0</LeftIndent>
+<content start="1574" end="1575">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1575" end="1684">
+<LeftIndent>140.0</LeftIndent>
+<content start="1575" end="1684">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1684" end="1685">
+<LeftIndent>100.0</LeftIndent>
+<content start="1684" end="1685">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1685" end="1687">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1685" end="1686">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>toolbar$0.mml</resource><recorder>true</recorder><button>Select Object</button><button>What's This?</button><button>Draw Lines</button><button>Mark Object</button><button>Count Objects</button><button>Measure Distance</button><button>Toggle Trajectory</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Add Diatomic Molecule</button><button>Add Triatomic Molecule</button><button>Add Benzene</button><button>Add Chain Molecule</button><button>Add Obstacle</button><button>Fill Area with Nt Atoms</button><button>Fill Area with Pl Atoms</button><button>Fill Area with Ws Atoms</button><button>Fill Area with Ck Atoms</button><button>Add Rectangular Molecular Surface</button><button>Add Rectangular Molecular Ribbon</button><button>Add Circular Molecular Surface</button><button>Add Circular Molecular Ribbon</button><button>Add Curved Molecular Surface</button><button>Add Curved Molecular Ribbon</button><button>Add Molecular Surface in Free-Form Shape</button><button>Add an Amino Acid to Polypeptide</button><button>Subtract an Amino Acid from Polypeptide</button><button>Add a Nucleotide to DNA</button><button>Subtract a Nucleotide from DNA</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Add Positive Charge</button><button>Add Negative Charge</button><button>Increase Restraint</button><button>Decrease Restraint</button><button>Increase Damping</button><button>Decrease Damping</button><button>Rotate Object</button><button>Duplicate Object</button><button>Delete Objects</button><button>Setup Boundary</button><button>Change Type</button><button>Change Velocity</button><button>Build Radial Bond</button><button>Build Angular Bond</button></component><size>11</size></content>
+
+<content start="1686" end="1687">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1687" end="1726">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1687" end="1725">
+<size>10</size></content>
+
+<content start="1725" end="1726">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1726" end="1727">
+<LeftIndent>100.0</LeftIndent>
+<content start="1726" end="1727">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1727" end="2043">
+<LeftIndent>140.0</LeftIndent>
+<content start="1727" end="2043">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2043" end="2044">
+<LeftIndent>140.0</LeftIndent>
+<content start="2043" end="2044">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2044" end="2278">
+<LeftIndent>140.0</LeftIndent>
+<content start="2044" end="2278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2278" end="2279">
+<LeftIndent>140.0</LeftIndent>
+<content start="2278" end="2279">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2279" end="2282">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2279" end="2280">
+<size>11</size></content>
+
+<content start="2280" end="2281">
+<size>11</size><icon>ToolBarButtonMenu.gif</icon></content>
+
+<content start="2281" end="2282">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2282" end="2306">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2282" end="2305">
+<size>10</size></content>
+
+<content start="2305" end="2306">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2306" end="2307">
+<LeftIndent>140.0</LeftIndent>
+<content start="2306" end="2307">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2307" end="2671">
+<LeftIndent>140.0</LeftIndent>
+<content start="2307" end="2671">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2671" end="2672">
+<LeftIndent>140.0</LeftIndent>
+<content start="2671" end="2672">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2672" end="2752">
+<LeftIndent>140.0</LeftIndent>
+<content start="2672" end="2752">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2752" end="2753">
+<LeftIndent>100.0</LeftIndent>
+<content start="2752" end="2753">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2753" end="2755">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="2753" end="2754">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>toolbar$1.mml</resource><recorder>true</recorder><button>Select Object</button><button>What's This?</button><button>Draw Lines</button><button>Mark Object</button><button>Count Objects</button><button>Measure Distance</button><button>Toggle Trajectory</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button></component><size>11</size></content>
+
+<content start="2754" end="2755">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2755" end="2794">
+<Alignment>1</Alignment>
+<LeftIndent>100.0</LeftIndent>
+<content start="2755" end="2793">
+<size>10</size></content>
+
+<content start="2793" end="2794">
+</content>
+
+</paragraph>
+<paragraph start="2794" end="2795">
+<LeftIndent>140.0</LeftIndent>
+<content start="2794" end="2795">
+</content>
+
+</paragraph>
+<paragraph start="2795" end="3280">
+<LeftIndent>140.0</LeftIndent>
+<content start="2795" end="2917">
+<size>11</size></content>
+
+<content start="2917" end="2926">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="2926" end="3024">
+<size>11</size></content>
+
+<content start="3024" end="3038">
+<href>script_where.cml</href><size>11</size></content>
+
+<content start="3038" end="3052">
+<size>11</size></content>
+
+<content start="3052" end="3055">
+<href>script_add.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="3055" end="3239">
+<size>11</size></content>
+
+<content start="3239" end="3250">
+<href>dropAction.cml</href><size>11</size></content>
+
+<content start="3250" end="3268">
+<size>11</size></content>
+
+<content start="3268" end="3278">
+<href>selectAction.cml</href><size>11</size></content>
+
+<content start="3278" end="3279">
+<size>11</size></content>
+
+<content start="3279" end="3280">
+</content>
+
+</paragraph>
+<paragraph start="3280" end="3281">
+<LeftIndent>140.0</LeftIndent>
+<content start="3280" end="3281">
+</content>
+
+</paragraph>
+<paragraph start="3281" end="3309">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="3281" end="3283">
+<size>11</size></content>
+
+<content start="3283" end="3291">
+<href>ContainerMenuBar.cml</href><size>11</size></content>
+
+<content start="3291" end="3294">
+<size>11</size></content>
+
+<content start="3294" end="3299">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="3299" end="3302">
+<size>11</size></content>
+
+<content start="3302" end="3306">
+<href>selectAction.cml</href><size>11</size></content>
+
+<content start="3306" end="3308">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

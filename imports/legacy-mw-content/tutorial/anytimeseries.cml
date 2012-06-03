@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Computing and graphing any time series</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Computing and graphing any time series
+
+&lt; Previous | Index | Next &gt;
+
+The bar graph and X-Y line graph both support a large number of preprogrammed outputs, such as the average kinetic energy, the average potential energy and the average total energy, as well as all the mechanical properties of a particle (coordinates, velocities and accelerations).
+
+These outputs are, however, very limited, despited of their large number. For example, what if we want to compute the kinetic energy of an arbitrary number of particle (imagine we need to measure the temperature in a small area in the model)? What if we want to calculate temperature slab by slab (imagine we need to visualize the heat flow under a temperature gradient)? These things are nearly impossible to preprogram. They have to be calculated by using scripts. And then the results must be stored and exported to a graph for display.
+
+This page shows step by step how to set up this kind of task. The example we use here is to verify that the total momentum of a dynamical system conserves in both directions, but the total speed does not.
+
+Step 1: Define the properties you want to compute as variables in the initialization scripts
+
+Right-click on an empty place in the model&apos;s view window, and select &quot;Access Model Properties&quot;. When the Model Properties window opens, select the &quot;Script&quot; tab. In the script area, type in the definitions or anything needed to initialize the model. For instance, we define ten variables here:
+
+define %result0 0;
+define %result1 0;
+define %result2 0;
+define %result3 0;
+define %result4 0;
+define %result5 0;
+define %result6 0;
+define %result7 0;
+define %i 0;
+define %mass 0;
+
+Step 2: Create a custom task in which the properties are calculated and stored as time series
+
+Right-click on an empty place in the model&apos;s view window, and select &quot;Task Manager&quot; from the pop-up menu. When the Task Manager opens up, press &quot;Add Task&quot;. The Task window will appear. You can type the scripts needed to calculate a property in the script area. Be sure that the interval of the task is set to be identical to that of the System Task &quot;Record the simulation&quot;. You can also adjust the priority of the task, which specifies which task should be computed first multiple tasks are scheduled to be executed at the same time step.
+
+As follows are example scripts for the custom task:
+
+// store a property of an atom, which we could have chosen from the preprogrammed
+store 0 %atom[0].vx; // store in channel 0
+
+// store a computed property of an atom
+store 1 0.5*%atom[1].mass*%atom[1].vx*%atom[1].vx; // store in channel 1
+
+// if result cannot be written in a single expression
+set %i 0;
+set %mass 0;
+set %result2 0;
+set %result3 0;
+while(%i &lt; %number_of_atoms);
+  set %result2 %result2+%atom[%i].vx*%atom[%i].mass;
+  set %result3 %result3+%atom[%i].vy*%atom[%i].mass;
+  set %mass %mass+%atom[%i].mass;
+  ++%i;
+endwhile;
+store 2 %result2/%mass; // store in channel 2
+store 3 %result3/%mass; // store in channel 3
+
+// use built-in functions as much as you can
+set %result4 speed(x, -1); // calculate the average speed of all in x direction
+set %result5 speed(y, -1); // calculate the average speed of all in y direction
+store 4 %result4; // store in channel 4
+store 5 %result5; // store in channel 5
+
+Step 3: Insert a bar graph or an X-Y line graph and select the corresponding channels to display
+
+To insert a bar graph, use &quot;Insert &gt; Model Output &gt; Bar Graph&quot;. To insert an X-Y graph, use &quot;Insert &gt; Model Output &gt; X-Y Graph&quot;. When the customization dialog comes up for the graph, you have to select the correct channel of data stream that corresponds to the results calculated in the scripts and stored by using the store command.
+
+Here is the result of the above set up:
+
+       
+
+The line graph shows that the speed of the center of mass does not change, which is another way to express the conservation of total momentum, whereas the average speed without considering the masses as averaging weights varies.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4014">
+<paragraph start="0" end="39">
+<RightIndent>10.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="38">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="40">
+<RightIndent>10.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="68">
+<RightIndent>10.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="40" end="42">
+<size>11</size></content>
+
+<content start="42" end="50">
+<size>11</size><href>insertXYGraph.cml</href></content>
+
+<content start="50" end="53">
+<size>11</size></content>
+
+<content start="53" end="58">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="58" end="61">
+<size>11</size></content>
+
+<content start="61" end="65">
+<size>11</size><href>instrument.cml</href></content>
+
+<content start="65" end="67">
+<size>11</size></content>
+
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="69">
+<Alignment>1</Alignment>
+<content start="68" end="69">
+</content>
+
+</paragraph>
+<paragraph start="69" end="351">
+<LeftIndent>140.0</LeftIndent>
+<content start="69" end="351">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="351" end="352">
+<LeftIndent>140.0</LeftIndent>
+<content start="351" end="352">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="352" end="892">
+<LeftIndent>140.0</LeftIndent>
+<content start="352" end="892">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="892" end="893">
+<LeftIndent>140.0</LeftIndent>
+<content start="892" end="893">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="893" end="1098">
+<LeftIndent>140.0</LeftIndent>
+<content start="893" end="1098">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1098" end="1099">
+<LeftIndent>140.0</LeftIndent>
+<content start="1098" end="1099">
+<bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="1099" end="1192">
+<LeftIndent>140.0</LeftIndent>
+<content start="1099" end="1107">
+<bold>true</bold><size>11</size></content>
+
+<content start="1107" end="1113">
+<size>11</size><bold>true</bold><href>script_defvar.cml</href></content>
+
+<content start="1113" end="1191">
+<bold>true</bold><size>11</size></content>
+
+<content start="1191" end="1192">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1192" end="1193">
+<LeftIndent>140.0</LeftIndent>
+<content start="1192" end="1193">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1193" end="1486">
+<LeftIndent>140.0</LeftIndent>
+<content start="1193" end="1485">
+<size>11</size></content>
+
+<content start="1485" end="1486">
+</content>
+
+</paragraph>
+<paragraph start="1486" end="1487">
+<LeftIndent>140.0</LeftIndent>
+<content start="1486" end="1487">
+</content>
+
+</paragraph>
+<paragraph start="1487" end="1506">
+<LeftIndent>160.0</LeftIndent>
+<content start="1487" end="1506">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="1506" end="1525">
+<LeftIndent>160.0</LeftIndent>
+<content start="1506" end="1525">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="1525" end="1544">
+<LeftIndent>160.0</LeftIndent>
+<content start="1525" end="1544">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="1544" end="1563">
+<LeftIndent>160.0</LeftIndent>
+<content start="1544" end="1563">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="1563" end="1582">
+<LeftIndent>160.0</LeftIndent>
+<content start="1563" end="1582">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="1582" end="1601">
+<LeftIndent>160.0</LeftIndent>
+<content start="1582" end="1601">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="1601" end="1620">
+<LeftIndent>160.0</LeftIndent>
+<content start="1601" end="1620">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="1620" end="1639">
+<LeftIndent>160.0</LeftIndent>
+<content start="1620" end="1639">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="1639" end="1652">
+<LeftIndent>160.0</LeftIndent>
+<content start="1639" end="1652">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="1652" end="1668">
+<LeftIndent>160.0</LeftIndent>
+<content start="1652" end="1667">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+<content start="1667" end="1668">
+</content>
+
+</paragraph>
+<paragraph start="1668" end="1669">
+<LeftIndent>140.0</LeftIndent>
+<content start="1668" end="1669">
+</content>
+
+</paragraph>
+<paragraph start="1669" end="1763">
+<LeftIndent>140.0</LeftIndent>
+<content start="1669" end="1686">
+<bold>true</bold><size>11</size></content>
+
+<content start="1686" end="1697">
+<size>11</size><bold>true</bold><href>CustomerTask.cml</href></content>
+
+<content start="1697" end="1762">
+<bold>true</bold><size>11</size></content>
+
+<content start="1762" end="1763">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1763" end="1764">
+<LeftIndent>140.0</LeftIndent>
+<content start="1763" end="1764">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1764" end="2303">
+<LeftIndent>140.0</LeftIndent>
+<content start="1764" end="2303">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2303" end="2304">
+<LeftIndent>140.0</LeftIndent>
+<content start="2303" end="2304">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2304" end="2356">
+<LeftIndent>140.0</LeftIndent>
+<content start="2304" end="2356">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2356" end="2357">
+<LeftIndent>140.0</LeftIndent>
+<content start="2356" end="2357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2357" end="2439">
+<LeftIndent>160.0</LeftIndent>
+<content start="2357" end="2439">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2439" end="2482">
+<LeftIndent>160.0</LeftIndent>
+<content start="2439" end="2482">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2482" end="2483">
+<LeftIndent>160.0</LeftIndent>
+<content start="2482" end="2483">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2483" end="2523">
+<LeftIndent>160.0</LeftIndent>
+<content start="2483" end="2523">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2523" end="2596">
+<LeftIndent>160.0</LeftIndent>
+<content start="2523" end="2596">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2596" end="2597">
+<LeftIndent>160.0</LeftIndent>
+<content start="2596" end="2597">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2597" end="2651">
+<LeftIndent>160.0</LeftIndent>
+<content start="2597" end="2651">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2651" end="2661">
+<LeftIndent>160.0</LeftIndent>
+<content start="2651" end="2661">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2661" end="2674">
+<LeftIndent>160.0</LeftIndent>
+<content start="2661" end="2674">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2674" end="2690">
+<LeftIndent>160.0</LeftIndent>
+<content start="2674" end="2690">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2690" end="2706">
+<LeftIndent>160.0</LeftIndent>
+<content start="2690" end="2706">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2706" end="2736">
+<LeftIndent>160.0</LeftIndent>
+<content start="2706" end="2736">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2736" end="2789">
+<LeftIndent>160.0</LeftIndent>
+<content start="2736" end="2789">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2789" end="2842">
+<LeftIndent>160.0</LeftIndent>
+<content start="2789" end="2842">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2842" end="2876">
+<LeftIndent>160.0</LeftIndent>
+<content start="2842" end="2876">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2876" end="2884">
+<LeftIndent>160.0</LeftIndent>
+<content start="2876" end="2884">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2884" end="2894">
+<LeftIndent>160.0</LeftIndent>
+<content start="2884" end="2894">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2894" end="2940">
+<LeftIndent>160.0</LeftIndent>
+<content start="2894" end="2940">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2940" end="2986">
+<LeftIndent>160.0</LeftIndent>
+<content start="2940" end="2986">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2986" end="2987">
+<LeftIndent>160.0</LeftIndent>
+<content start="2986" end="2987">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="2987" end="3032">
+<LeftIndent>160.0</LeftIndent>
+<content start="2987" end="3032">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="3032" end="3112">
+<LeftIndent>160.0</LeftIndent>
+<content start="3032" end="3112">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="3112" end="3192">
+<LeftIndent>160.0</LeftIndent>
+<content start="3112" end="3192">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="3192" end="3232">
+<LeftIndent>160.0</LeftIndent>
+<content start="3192" end="3232">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+</paragraph>
+<paragraph start="3232" end="3272">
+<LeftIndent>160.0</LeftIndent>
+<content start="3232" end="3271">
+<family>Courier New</family><foreground>128 128 128</foreground><size>11</size></content>
+
+<content start="3271" end="3272">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3272" end="3273">
+<LeftIndent>140.0</LeftIndent>
+<content start="3272" end="3273">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3273" end="3370">
+<LeftIndent>140.0</LeftIndent>
+<content start="3273" end="3369">
+<bold>true</bold><size>11</size></content>
+
+<content start="3369" end="3370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3370" end="3371">
+<LeftIndent>140.0</LeftIndent>
+<content start="3370" end="3371">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3371" end="3705">
+<LeftIndent>140.0</LeftIndent>
+<content start="3371" end="3705">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3705" end="3706">
+<LeftIndent>140.0</LeftIndent>
+<content start="3705" end="3706">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3706" end="3746">
+<LeftIndent>140.0</LeftIndent>
+<content start="3706" end="3745">
+<size>11</size></content>
+
+<content start="3745" end="3746">
+</content>
+
+</paragraph>
+<paragraph start="3746" end="3747">
+<LeftIndent>140.0</LeftIndent>
+<content start="3746" end="3747">
+</content>
+
+</paragraph>
+<paragraph start="3747" end="3755">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3747" end="3748">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>anytimeseries$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="3748" end="3749">
+</content>
+
+<content start="3749" end="3750">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 0</timeseries>
+<datatype>1</datatype>
+<samplingpoints>10</samplingpoints>
+<max_fraction_digits>0</max_fraction_digits>
+<max_integer_digits>0</max_integer_digits>
+<width>15</width>
+<height>285</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<fgcolor>-ffff01</fgcolor>
+<minimum>-1000.0</minimum>
+<maximum>1000.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="3750" end="3751">
+</content>
+
+<content start="3751" end="3752">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>0</model>
+<timeseries>Channel 1</timeseries>
+<multiplier>1.0E-4</multiplier>
+<width>15</width>
+<height>285</height>
+<tick>false</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>false</label>
+<title>false</title>
+<fgcolor>-ff0100</fgcolor>
+<minimum>0.0</minimum>
+<maximum>1000.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="3752" end="3753">
+</content>
+
+<content start="3753" end="3754">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-ffff01" style="0" width="1.0" symbol="0" size="5" spacing="5">Channel 2</time_series_y1>
+<time_series_y2 color="-ff0100" style="0" width="1.0" symbol="0" size="5" spacing="5">Channel 3</time_series_y2>
+<time_series_y3 color="-33cd00" style="1" width="1.0" symbol="0" size="6" spacing="2">Channel 4</time_series_y3>
+<time_series_y4 color="-ccff9a" style="1" width="1.0" symbol="0" size="6" spacing="2">Channel 5</time_series_y4>
+<autofity>false</autofity>
+<axis_y_min>-100.0</axis_y_min>
+<axis_y_max>300.0</axis_y_max>
+<width>300</width>
+<height>285</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Speeds (m/s)</axis_y_title>
+<legend_x>180</legend_x>
+<legend_y>71</legend_y>
+<bgcolor>-333334</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="3754" end="3755">
+</content>
+
+</paragraph>
+<paragraph start="3755" end="3756">
+<LeftIndent>140.0</LeftIndent>
+<content start="3755" end="3756">
+</content>
+
+</paragraph>
+<paragraph start="3756" end="3985">
+<LeftIndent>140.0</LeftIndent>
+<content start="3756" end="3984">
+<size>11</size></content>
+
+<content start="3984" end="3985">
+</content>
+
+</paragraph>
+<paragraph start="3985" end="3986">
+<LeftIndent>20.0</LeftIndent>
+<content start="3985" end="3986">
+</content>
+
+</paragraph>
+<paragraph start="3986" end="4014">
+<RightIndent>10.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3986" end="3988">
+<size>11</size></content>
+
+<content start="3988" end="3996">
+<size>11</size><href>insertXYGraph.cml</href></content>
+
+<content start="3996" end="3999">
+<size>11</size></content>
+
+<content start="3999" end="4004">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="4004" end="4007">
+<size>11</size></content>
+
+<content start="4007" end="4011">
+<size>11</size><href>instrument.cml</href></content>
+
+<content start="4011" end="4013">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

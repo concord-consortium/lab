@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inputting and outputting</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inputting and outputting
+
+&lt; Previous | Index | Next &gt;
+
+When you save an MW page, the current state of an embedded 3D model will be automatically saved as well. But you can save a state to a file that is not part of an MW page. The file can be loaded to a model container later.
+
+To do this, you just need to use the &quot;Save Model As&quot; and &quot;Open Model&quot; items of the File Menu of the Simulator. Or simply right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on an empty spot of the model container&apos;s view window, and select the corresponding items from the pop-up menu. Note that the extension of the file is &quot;mdd&quot;.&#10102;
+
+Practice
+
+You may play with the following model container about outputting and inputting a model&apos;s state. Run the simulation for a while, stop it and then save the state to a file. Repeat for a few times. And then load back the saved files.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+ 
+&#10102; The MDD file contains the state of the model but not the coordinates of the atoms, which are saved separately in the XYZ format. So each model you create contains two files &#8722; one MDD file and one XYZ file.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1155">
+<paragraph start="0" end="25">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="24">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="54">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="26" end="28">
+<size>11</size></content>
+
+<content start="28" end="36">
+<href>recorder3d.cml</href><size>11</size></content>
+
+<content start="36" end="39">
+<size>11</size></content>
+
+<content start="39" end="44">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="44" end="47">
+<size>11</size></content>
+
+<content start="47" end="51">
+<href>jmolcompanion.cml</href><size>11</size></content>
+
+<content start="51" end="53">
+<size>11</size></content>
+
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<LeftIndent>140.0</LeftIndent>
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="278">
+<LeftIndent>140.0</LeftIndent>
+<content start="55" end="278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="278" end="279">
+<LeftIndent>140.0</LeftIndent>
+<content start="278" end="279">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="279" end="631">
+<LeftIndent>140.0</LeftIndent>
+<content start="279" end="629">
+<size>11</size></content>
+
+<content start="629" end="630">
+<size>13</size></content>
+
+<content start="630" end="631">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="631" end="632">
+<LeftIndent>140.0</LeftIndent>
+<content start="631" end="632">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="632" end="641">
+<LeftIndent>140.0</LeftIndent>
+<content start="632" end="640">
+<bold>true</bold><size>11</size></content>
+
+<content start="640" end="641">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="641" end="642">
+<LeftIndent>140.0</LeftIndent>
+<content start="641" end="642">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="642" end="873">
+<LeftIndent>140.0</LeftIndent>
+<content start="642" end="873">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="873" end="874">
+<LeftIndent>140.0</LeftIndent>
+<content start="873" end="874">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="874" end="876">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="874" end="875">
+<component><class>org.concord.modeler.PageMd3d</class><resource>io3d$0.mdd</resource><coordinate>io3d$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="875" end="876">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="876" end="915">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="876" end="914">
+<size>10</size></content>
+
+<content start="914" end="915">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="915" end="916">
+<LeftIndent>140.0</LeftIndent>
+<content start="915" end="916">
+</content>
+
+</paragraph>
+<paragraph start="916" end="918">
+<LeftIndent>140.0</LeftIndent>
+<content start="916" end="917">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="917" end="918">
+</content>
+
+</paragraph>
+<paragraph start="918" end="1126">
+<LeftIndent>140.0</LeftIndent>
+<content start="918" end="919">
+<size>13</size></content>
+
+<content start="919" end="920">
+</content>
+
+<content start="920" end="1093">
+<size>10</size></content>
+
+<content start="1093" end="1094">
+</content>
+
+<content start="1094" end="1125">
+<size>10</size></content>
+
+<content start="1125" end="1126">
+</content>
+
+</paragraph>
+<paragraph start="1126" end="1127">
+<RightIndent>20.0</RightIndent>
+<content start="1126" end="1127">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1127" end="1155">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1127" end="1129">
+<size>11</size></content>
+
+<content start="1129" end="1137">
+<href>recorder3d.cml</href><size>11</size></content>
+
+<content start="1137" end="1140">
+<size>11</size></content>
+
+<content start="1140" end="1145">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="1145" end="1148">
+<size>11</size></content>
+
+<content start="1148" end="1152">
+<href>jmolcompanion.cml</href><size>11</size></content>
+
+<content start="1152" end="1154">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

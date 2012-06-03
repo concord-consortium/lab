@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Lac: Local Area Counter</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Lac: Local Area Counter
+
+&lt; Previous | Index | Next &gt;
+
+The lac command counts atoms of the specified types in a specified rectangular area. The data are shown as a function of time, if there are frames in the recorder. (To see how to count atoms for each individual frame without using scripts, see this section.)
+
+Syntax:
+
+lac [expression]
+lac [expression1] and [expression2] and ...... and [expression_n]
+
+The expression can use the within clause that is also used in the select command:
+
+   [id] within ([x], [y], [w], [h])
+   [id1]-[id2] within ([x], [y], [w], [h])
+   [id1] [id2] ...... [idn] within ([x], [y], [w], [h])
+
+These three clauses can be used to count all atoms of the element type specified by [id], or a range [id1]-[id2], or several element types, that fall within the specified rectangular area. The within keyword followed by a quadruple enclosed in a pair of parentheses is used to specify a rectangular area, with the four numbers (in angstrom) representing the x coordinate and y coordinate of the upper left corner, and the width and the height of the rectangular area, respectively.
+
+ 
+Element IDs: The ID numbers for elements are defined as follows: Nt: 0; Pl: 1; Ws: 2; Ck: 3. For IDs of the non-editable elements, see this list.
+ 
+
+If there are no data recorded, the counting will be based on the current coordinates of the atoms and the result will be shown in a popup window. If there are data recorded, each frame will be counted and the results will be shown as a time series in a graph.
+
+ 
+Caution: You should generally use this command once per script execution. Avoid using it within a loop.
+ 
+
+ 
+  
+&#12304;This is an embedded model container.&#12305;
+
+The above simulation shows the inter-diffusion of two pure substances into each other&apos;s original territory. Note that the green particles enter into the left area more quickly than the white ones into the right area. The reason can be attributed to a pressure or temperature difference --- the green particles initially have a higher pressure and temperature than the white ones.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2084">
+<paragraph start="0" end="24">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="23">
+<bold>true</bold><size>16</size><italic>true</italic></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="53">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="25" end="27">
+<size>11</size></content>
+
+<content start="27" end="35">
+<href>script_averageforce.cml</href><size>11</size></content>
+
+<content start="35" end="38">
+<size>11</size></content>
+
+<content start="38" end="43">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="43" end="46">
+<size>11</size></content>
+
+<content start="46" end="50">
+<href>script_lat.cml</href><size>11</size></content>
+
+<content start="50" end="52">
+<size>11</size></content>
+
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="54">
+<LeftIndent>140.0</LeftIndent>
+<content start="53" end="54">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="54" end="313">
+<LeftIndent>140.0</LeftIndent>
+<content start="54" end="58">
+<size>11</size></content>
+
+<content start="58" end="61">
+<family>Courier New</family><size>11</size></content>
+
+<content start="61" end="298">
+<size>11</size></content>
+
+<content start="298" end="310">
+<href>CountingTool.cml</href><size>11</size></content>
+
+<content start="310" end="313">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="313" end="314">
+<LeftIndent>140.0</LeftIndent>
+<content start="313" end="314">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="314" end="322">
+<LeftIndent>140.0</LeftIndent>
+<content start="314" end="322">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="322" end="323">
+<LeftIndent>140.0</LeftIndent>
+<content start="322" end="323">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="323" end="340">
+<LeftIndent>160.0</LeftIndent>
+<content start="323" end="326">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="326" end="339">
+<family>Courier New</family><size>11</size></content>
+
+<content start="339" end="340">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="340" end="406">
+<LeftIndent>160.0</LeftIndent>
+<content start="340" end="343">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="343" end="405">
+<family>Courier New</family><size>11</size></content>
+
+<content start="405" end="406">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="406" end="407">
+<LeftIndent>140.0</LeftIndent>
+<content start="406" end="407">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="407" end="489">
+<LeftIndent>140.0</LeftIndent>
+<content start="407" end="434">
+<size>11</size></content>
+
+<content start="434" end="440">
+<family>Courier New</family><size>11</size></content>
+
+<content start="440" end="473">
+<size>11</size></content>
+
+<content start="473" end="479">
+<href>script_select.cml</href><family>Courier New</family><size>11</size></content>
+
+<content start="479" end="489">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="489" end="490">
+<LeftIndent>140.0</LeftIndent>
+<content start="489" end="490">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="490" end="526">
+<LeftIndent>160.0</LeftIndent>
+<content start="490" end="491">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="491" end="493">
+</content>
+
+<content start="493" end="498">
+<family>Courier New</family><size>11</size></content>
+
+<content start="498" end="504">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="504" end="525">
+<family>Courier New</family><size>11</size></content>
+
+<content start="525" end="526">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="526" end="569">
+<LeftIndent>160.0</LeftIndent>
+<content start="526" end="527">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="527" end="529">
+</content>
+
+<content start="529" end="541">
+<family>Courier New</family><size>11</size></content>
+
+<content start="541" end="547">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="547" end="569">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="569" end="625">
+<LeftIndent>160.0</LeftIndent>
+<content start="569" end="570">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="570" end="572">
+</content>
+
+<content start="572" end="597">
+<family>Courier New</family><size>11</size></content>
+
+<content start="597" end="603">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="603" end="624">
+<family>Courier New</family><size>11</size></content>
+
+<content start="624" end="625">
+</content>
+
+</paragraph>
+<paragraph start="625" end="626">
+<LeftIndent>140.0</LeftIndent>
+<content start="625" end="626">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="626" end="1108">
+<LeftIndent>140.0</LeftIndent>
+<content start="626" end="710">
+<size>11</size></content>
+
+<content start="710" end="714">
+<family>Courier New</family><size>11</size></content>
+
+<content start="714" end="727">
+<size>11</size></content>
+
+<content start="727" end="738">
+<family>Courier New</family><size>11</size></content>
+
+<content start="738" end="819">
+<size>11</size></content>
+
+<content start="819" end="825">
+<family>Courier New</family><size>11</size></content>
+
+<content start="825" end="984">
+<size>11</size></content>
+
+<content start="984" end="985">
+<italic>true</italic><size>11</size></content>
+
+<content start="985" end="1001">
+<size>11</size></content>
+
+<content start="1001" end="1002">
+<italic>true</italic><size>11</size></content>
+
+<content start="1002" end="1108">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1108" end="1109">
+<LeftIndent>140.0</LeftIndent>
+<content start="1108" end="1109">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1109" end="1111">
+<LeftIndent>140.0</LeftIndent>
+<content start="1109" end="1110">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1110" end="1111">
+</content>
+
+</paragraph>
+<paragraph start="1111" end="1257">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1111" end="1123">
+<bold>true</bold><size>11</size></content>
+
+<content start="1123" end="1246">
+<size>11</size></content>
+
+<content start="1246" end="1255">
+<href>element_id.cml</href><size>11</size></content>
+
+<content start="1255" end="1256">
+<size>11</size></content>
+
+<content start="1256" end="1257">
+</content>
+
+</paragraph>
+<paragraph start="1257" end="1259">
+<LeftIndent>140.0</LeftIndent>
+<content start="1257" end="1258">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1258" end="1259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1259" end="1260">
+<LeftIndent>140.0</LeftIndent>
+<content start="1259" end="1260">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1260" end="1520">
+<LeftIndent>140.0</LeftIndent>
+<content start="1260" end="1520">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1520" end="1521">
+<LeftIndent>140.0</LeftIndent>
+<content start="1520" end="1521">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1521" end="1523">
+<LeftIndent>140.0</LeftIndent>
+<content start="1521" end="1522">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1522" end="1523">
+</content>
+
+</paragraph>
+<paragraph start="1523" end="1627">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1523" end="1530">
+<bold>true</bold><foreground>255 0 0</foreground><size>11</size></content>
+
+<content start="1530" end="1621">
+<size>11</size></content>
+
+<content start="1621" end="1625">
+<href>script_loop.cml</href><size>11</size></content>
+
+<content start="1625" end="1626">
+<size>11</size></content>
+
+<content start="1626" end="1627">
+</content>
+
+</paragraph>
+<paragraph start="1627" end="1629">
+<LeftIndent>140.0</LeftIndent>
+<content start="1627" end="1628">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1628" end="1629">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1629" end="1630">
+<LeftIndent>140.0</LeftIndent>
+<content start="1629" end="1630">
+</content>
+
+</paragraph>
+<paragraph start="1630" end="1632">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1630" end="1631">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_lac$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1631" end="1632">
+</content>
+
+</paragraph>
+<paragraph start="1632" end="1635">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1632" end="1633">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Count green atoms in left and right part to monitor diffusion</title>
+<tooltip>Count green atoms in left and right part to monitor diffusion</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>lac 1 within (0, 0, &quot;0.5*%width&quot;, %height) and 1 within (&quot;0.5*%width&quot;, 0, &quot;0.5*%width&quot;, %height);</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1633" end="1634">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Count white atoms in left and right part to monitor diffusion</title>
+<tooltip>Count white atoms in left and right part to monitor diffusion</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>lac 0 within (0, 0, &quot;0.5*%width&quot;, %height) and 0 within (&quot;0.5*%width&quot;, 0, &quot;0.5*%width&quot;, %height);</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1634" end="1635">
+</content>
+
+</paragraph>
+<paragraph start="1635" end="1674">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1635" end="1673">
+<size>10</size></content>
+
+<content start="1673" end="1674">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1674" end="1675">
+<LeftIndent>140.0</LeftIndent>
+<content start="1674" end="1675">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1675" end="2055">
+<LeftIndent>140.0</LeftIndent>
+<content start="1675" end="2054">
+<size>11</size></content>
+
+<content start="2054" end="2055">
+</content>
+
+</paragraph>
+<paragraph start="2055" end="2056">
+<LeftIndent>140.0</LeftIndent>
+<content start="2055" end="2056">
+</content>
+
+</paragraph>
+<paragraph start="2056" end="2084">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2056" end="2058">
+<size>11</size></content>
+
+<content start="2058" end="2066">
+<href>script_averageforce.cml</href><size>11</size></content>
+
+<content start="2066" end="2069">
+<size>11</size></content>
+
+<content start="2069" end="2074">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="2074" end="2077">
+<size>11</size></content>
+
+<content start="2077" end="2081">
+<href>script_lat.cml</href><size>11</size></content>
+
+<content start="2081" end="2083">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

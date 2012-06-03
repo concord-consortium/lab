@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The all-atom force fields</page_title>
+<text> 
+ 
+
+At the heart of molecular dynamics is a potential energy function, which quantifies the interatomic and intermolecular interactions. A common potential energy function can be written as:
+
+   
+
+where the first term are the Lennard-Jones potentials (modeling the van der Waals interactions), the scond are the electrostatic potentials, the third are the Axilrod-Teller three-body potentials (which are not included in typical molecular mechanics force fields such as AMBER or CHARMm)&#10102;, the fourth are the bond stretching potentials, the fifth are the angle bending potentials, and the last are the torsional potentials. The first three terms are often refered to as non-bonded interactions. The last three terms are called bonded interactions, which model covalent bonds.
+
+   
+Figure 1. Bonded interactions. (a) Bond-stretching potential. (b) Angle-bending potential. (c) Torsional potential. (d) Torsional potential (improper).
+
+In order to avoid rapid divergency caused by core-core overlap or user operations, a four-dimensional form of the Lennard-Jones potential is used when the interatomic distance Rij= [(xi-xj)2  +(yi-yj)2  +(zi-zj)2]1/2  approaches to zero (In a 2D model, this should be three-dimensional) 
+
+   
+
+where wij is a non-zero parameter introduced to prevent numerical instability.&#10103;
+
+At the far end, the non-bonded interactions (the van der Waals interactions and the electrostatic interactions) can be shifted to zero at the truncation distance, to avoid the discontinuities in the computed forces and energies when the distance between a pair of atoms crosses the truncation point:
+
+   
+
+This potential-shifting method can improve the precision of energy conservation, and in the case of small truncation distance, reduce the risk of numeric instability in the engine caused by the cut-off discontinuities.
+
+ 
+Important Note: We do not use the Ewald Sum to compute the electrostatic potentials, because our systems typically have a finite size (unless the periodic boundary conditions are applied) and we need only qualitative results in many cases.
+ 
+
+This model of force fields is generic enough to model a variety of molecular systems. For example, people often use the Born-Mayer potential to model the interatomic interactions in alkahi halides (ionic crystals). In this model, the combination of the repulsive part of the Lennard-Jones potential and the Coulomic interactions simulates the interactions to the effect of the Born-Mayer potential. The attractive part of the Lennard-Jones potential can be regarded as a dispersion interaction.
+
+ 
+   
+ 
+
+ 
+&#10102; The Axilrod-Teller three-body potential is not computed, although it has been implemented in the Molecular Workbench. We found that including it in the calculation significantly slows down the simulation, but does not produce more physics than we currently need.
+&#10103; The four-dimensional Lennard-Jones potential is an idea inspired by CHARMm&apos;s four-dimension dynamics for free energy calculation. For reference, see CHARMm c27b1 documentation.
+
+
+
+</text>
+<section start="0" end="3034">
+<paragraph start="0" end="2">
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>700.0</width><height>50</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;b&gt;&lt;font color=&quot;#ffffff&quot; face=&quot;Verdana&quot; size=&quot;6&quot;&gt;The All-Atom Force 
+      Fields&lt;/font&gt;&lt;/b&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-999a00</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>700.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Charles Xie, Concord Consortium&lt;/font&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-ff0100</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="192">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="5" end="191">
+<size>11</size></content>
+
+<content start="191" end="192">
+</content>
+
+</paragraph>
+<paragraph start="192" end="193">
+<content start="192" end="193">
+</content>
+
+</paragraph>
+<paragraph start="193" end="197">
+<Alignment>1</Alignment>
+<content start="193" end="195">
+</content>
+
+<content start="195" end="196">
+<icon>hamiltonian.gif</icon></content>
+
+<content start="196" end="197">
+</content>
+
+</paragraph>
+<paragraph start="197" end="198">
+<content start="197" end="198">
+</content>
+
+</paragraph>
+<paragraph start="198" end="775">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="198" end="486">
+<size>11</size></content>
+
+<content start="486" end="487">
+<size>13</size></content>
+
+<content start="487" end="669">
+<size>11</size></content>
+
+<content start="669" end="692">
+<bold>true</bold><size>11</size></content>
+
+<content start="692" end="726">
+<size>11</size></content>
+
+<content start="726" end="745">
+<bold>true</bold><size>11</size></content>
+
+<content start="745" end="774">
+<size>11</size></content>
+
+<content start="774" end="775">
+</content>
+
+</paragraph>
+<paragraph start="775" end="776">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="775" end="776">
+</content>
+
+</paragraph>
+<paragraph start="776" end="780">
+<LeftIndent>10.0</LeftIndent>
+<Alignment>1</Alignment>
+<RightIndent>10.0</RightIndent>
+<content start="776" end="778">
+</content>
+
+<content start="778" end="779">
+<icon>bondTypes.gif</icon></content>
+
+<content start="779" end="780">
+</content>
+
+</paragraph>
+<paragraph start="780" end="932">
+<LeftIndent>80.0</LeftIndent>
+<RightIndent>80.0</RightIndent>
+<content start="780" end="788">
+<bold>true</bold><size>11</size></content>
+
+<content start="788" end="931">
+<size>11</size></content>
+
+<content start="931" end="932">
+</content>
+
+</paragraph>
+<paragraph start="932" end="933">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="932" end="933">
+</content>
+
+</paragraph>
+<paragraph start="933" end="1221">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="933" end="1110">
+<size>11</size></content>
+
+<content start="1110" end="1112">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1112" end="1117">
+<size>11</size></content>
+
+<content start="1117" end="1118">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1118" end="1120">
+<size>11</size></content>
+
+<content start="1120" end="1121">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1121" end="1122">
+<size>11</size></content>
+
+<content start="1122" end="1123">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="1123" end="1128">
+<size>11</size></content>
+
+<content start="1128" end="1129">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1129" end="1131">
+<size>11</size></content>
+
+<content start="1131" end="1132">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1132" end="1133">
+<size>11</size></content>
+
+<content start="1133" end="1134">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="1134" end="1139">
+<size>11</size></content>
+
+<content start="1139" end="1140">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1140" end="1142">
+<size>11</size></content>
+
+<content start="1142" end="1143">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1143" end="1144">
+<size>11</size></content>
+
+<content start="1144" end="1145">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="1145" end="1146">
+<size>11</size></content>
+
+<content start="1146" end="1149">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="1149" end="1220">
+<size>11</size></content>
+
+<content start="1220" end="1221">
+</content>
+
+</paragraph>
+<paragraph start="1221" end="1222">
+<content start="1221" end="1222">
+</content>
+
+</paragraph>
+<paragraph start="1222" end="1226">
+<Alignment>1</Alignment>
+<content start="1222" end="1224">
+</content>
+
+<content start="1224" end="1225">
+<icon>LJ4D.gif</icon></content>
+
+<content start="1225" end="1226">
+</content>
+
+</paragraph>
+<paragraph start="1226" end="1227">
+<content start="1226" end="1227">
+</content>
+
+</paragraph>
+<paragraph start="1227" end="1307">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="1227" end="1234">
+<size>11</size></content>
+
+<content start="1234" end="1236">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="1236" end="1305">
+<size>11</size></content>
+
+<content start="1305" end="1306">
+<size>13</size></content>
+
+<content start="1306" end="1307">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1307" end="1308">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="1307" end="1308">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1308" end="1608">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="1308" end="1608">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1608" end="1609">
+<content start="1608" end="1609">
+</content>
+
+</paragraph>
+<paragraph start="1609" end="1613">
+<Alignment>1</Alignment>
+<content start="1609" end="1611">
+</content>
+
+<content start="1611" end="1612">
+<icon>ShiftCutOffFormula.gif</icon></content>
+
+<content start="1612" end="1613">
+</content>
+
+</paragraph>
+<paragraph start="1613" end="1614">
+<content start="1613" end="1614">
+</content>
+
+</paragraph>
+<paragraph start="1614" end="1833">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="1614" end="1832">
+<size>11</size></content>
+
+<content start="1832" end="1833">
+</content>
+
+</paragraph>
+<paragraph start="1833" end="1834">
+<content start="1833" end="1834">
+</content>
+
+</paragraph>
+<paragraph start="1834" end="1836">
+<Alignment>1</Alignment>
+<content start="1834" end="1835">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.96</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1835" end="1836">
+</content>
+
+</paragraph>
+<paragraph start="1836" end="2076">
+<LeftIndent>50.0</LeftIndent>
+<RightIndent>50.0</RightIndent>
+<content start="1836" end="1850">
+<bold>true</bold><size>11</size></content>
+
+<content start="1850" end="1866">
+<size>11</size></content>
+
+<content start="1866" end="1879">
+<href>http://www.earth.ox.ac.uk/~keithr/moldy-manual/node11.html</href><size>11</size></content>
+
+<content start="1879" end="1978">
+<size>11</size></content>
+
+<content start="1978" end="2010">
+<href>../periodic.cml</href><size>11</size></content>
+
+<content start="2010" end="2075">
+<size>11</size></content>
+
+<content start="2075" end="2076">
+</content>
+
+</paragraph>
+<paragraph start="2076" end="2078">
+<Alignment>1</Alignment>
+<content start="2076" end="2077">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.96</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2077" end="2078">
+</content>
+
+</paragraph>
+<paragraph start="2078" end="2079">
+<Alignment>1</Alignment>
+<content start="2078" end="2079">
+</content>
+
+</paragraph>
+<paragraph start="2079" end="2574">
+<LeftIndent>8.0</LeftIndent>
+<content start="2079" end="2574">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2574" end="2575">
+<LeftIndent>8.0</LeftIndent>
+<content start="2574" end="2575">
+</content>
+
+</paragraph>
+<paragraph start="2575" end="2577">
+<Alignment>1</Alignment>
+<content start="2575" end="2576">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>520.0</width><height>50</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;b&gt;&lt;font color=&quot;#ffffff&quot; face=&quot;Verdana&quot; size=&quot;5&quot;&gt;Demo&lt;/font&gt;&lt;/b&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-339a</bgcolor></icon></content>
+
+<content start="2576" end="2577">
+</content>
+
+</paragraph>
+<paragraph start="2577" end="2581">
+<Alignment>1</Alignment>
+<content start="2577" end="2578">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>300</height><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-339a</bgcolor></icon></content>
+
+<content start="2578" end="2579">
+<component><class>org.concord.modeler.PageMd3d</class><resource>AAFF$0.mdd</resource><coordinate>AAFF$0.xyz</coordinate><width>500</width><height>300</height><menubar>false</menubar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="2579" end="2580">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>10.0</width><height>300</height><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-339a</bgcolor></icon></content>
+
+<content start="2580" end="2581">
+</content>
+
+</paragraph>
+<paragraph start="2581" end="2583">
+<Alignment>1</Alignment>
+<content start="2581" end="2582">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>520.0</width><height>30</height><arcwidth>250</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-339a</bgcolor></icon></content>
+
+<content start="2582" end="2583">
+</content>
+
+</paragraph>
+<paragraph start="2583" end="2584">
+<content start="2583" end="2584">
+</content>
+
+</paragraph>
+<paragraph start="2584" end="2586">
+<LeftIndent>10.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="2584" end="2585">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="2585" end="2586">
+</content>
+
+</paragraph>
+<paragraph start="2586" end="2851">
+<LeftIndent>10.0</LeftIndent>
+<content start="2586" end="2587">
+<size>13</size></content>
+
+<content start="2587" end="2851">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="2851" end="3030">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="2851" end="2852">
+<size>13</size></content>
+
+<content start="2852" end="3030">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="3030" end="3031">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="3030" end="3031">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="3031" end="3032">
+<LeftIndent>10.0</LeftIndent>
+<RightIndent>10.0</RightIndent>
+<content start="3031" end="3032">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="3032" end="3033">
+<content start="3032" end="3033">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="3033" end="3034">
+</paragraph>
+</section>
+</document>

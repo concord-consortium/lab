@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-7"?>
+<document>
+<language>ISO-8859-7</language>
+<page_title>Πανεπιστήμιον Αθηνών</page_title>
+<text>
+Greek language
+
+This test page is encoded in ISO-8859-7:
+
+Το Εθνικόν και Καποδιστριακόν Πανεπιστήμιον Αθηνών ιδρύθηκε την 3η Μαΐου του 1837 και στεγάστηκε στην κατοικία του αρχιτέκτονα Σταμάτη Κλεάνθη, στη βορειοανατολική πλευρά της Ακρόπολης. Ήταν το πρώτο Πανεπιστήμιο, όχι μόνο στο νέο Ελληνικό Κράτος αλλά και γενικότερα στην Ανατολική Μεσόγειο.</text>
+<section start="0" end="351">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="16">
+<LeftIndent>8.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1" end="16">
+<bold>true</bold><size>15</size></content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<LeftIndent>8.0</LeftIndent>
+<content start="16" end="17">
+<bold>true</bold><size>15</size></content>
+
+</paragraph>
+<paragraph start="17" end="58">
+<LeftIndent>8.0</LeftIndent>
+<content start="17" end="57">
+</content>
+
+<content start="57" end="58">
+</content>
+
+</paragraph>
+<paragraph start="58" end="59">
+<content start="58" end="59">
+</content>
+
+</paragraph>
+<paragraph start="59" end="351">
+<LeftIndent>8.0</LeftIndent>
+<content start="59" end="350">
+</content>
+
+</paragraph>
+</section>
+</document>

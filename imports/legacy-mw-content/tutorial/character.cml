@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Font type, size, color and styles</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Font type, size, color and styles
+
+&lt; Previous | Index | Next &gt;
+
+Like most word processors, MW enables you to write styled text. If you are already familiar with a word processor, it is easy to figure out how to set the styles of text.
+
+You can:
+
+   Choose font type.
+   Choose font size.
+   Choose font style: Bold, italic, underline, strikethrough, superscript, and subscript
+
+To perform these actions, you can either use the buttons and combo boxes on the tool bars, or right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the main window and choose the &quot;Font&quot; item, or choose &quot;Option&gt;Font&quot; from the main menu bar.
+
+In the latter two cases, the Font Dialog will be brought up:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+The options you select with the dialog window will be applied to the selected text. This dialog window can also be opened using the keyboard shortcut Ctrl+Shift+F (Windows and Linux) or Command+Shift+F (Mac OS X).
+
+In fact, MW has all the functionalities needed to write simple documents such as letters, something you do with commercial word processors such as Microsoft Word&#8482;.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1138">
+<paragraph start="0" end="34">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="33">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="33" end="34">
+</content>
+
+</paragraph>
+<paragraph start="34" end="35">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="63">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="45">
+<size>11</size><href>i18n.cml</href></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="53">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="53" end="56">
+<size>11</size></content>
+
+<content start="56" end="60">
+<size>11</size><href>paragraph.cml</href></content>
+
+<content start="60" end="62">
+<size>11</size></content>
+
+<content start="62" end="63">
+</content>
+
+</paragraph>
+<paragraph start="63" end="64">
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="235">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="235">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="235" end="236">
+<LeftIndent>140.0</LeftIndent>
+<content start="235" end="236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="236" end="245">
+<LeftIndent>140.0</LeftIndent>
+<content start="236" end="245">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="245" end="246">
+<LeftIndent>100.0</LeftIndent>
+<content start="245" end="246">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="246" end="267">
+<LeftIndent>160.0</LeftIndent>
+<content start="246" end="247">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="247" end="267">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="267" end="288">
+<LeftIndent>160.0</LeftIndent>
+<content start="267" end="268">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="268" end="288">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="288" end="377">
+<LeftIndent>160.0</LeftIndent>
+<content start="288" end="289">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="289" end="310">
+<size>11</size></content>
+
+<content start="310" end="314">
+<bold>true</bold><size>11</size></content>
+
+<content start="314" end="316">
+<size>11</size></content>
+
+<content start="316" end="322">
+<italic>true</italic><size>11</size></content>
+
+<content start="322" end="324">
+<size>11</size></content>
+
+<content start="324" end="333">
+<size>11</size><underline>true</underline></content>
+
+<content start="333" end="335">
+<size>11</size></content>
+
+<content start="335" end="348">
+<strikethrough>true</strikethrough><size>11</size></content>
+
+<content start="348" end="350">
+<size>11</size></content>
+
+<content start="350" end="361">
+<superscript>true</superscript><size>11</size></content>
+
+<content start="361" end="367">
+<size>11</size></content>
+
+<content start="367" end="376">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="376" end="377">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="377" end="378">
+<LeftIndent>120.0</LeftIndent>
+<content start="377" end="378">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="378" end="639">
+<LeftIndent>140.0</LeftIndent>
+<content start="378" end="639">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="639" end="640">
+<LeftIndent>140.0</LeftIndent>
+<content start="639" end="640">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="640" end="701">
+<LeftIndent>140.0</LeftIndent>
+<content start="640" end="700">
+<size>11</size></content>
+
+<content start="700" end="701">
+</content>
+
+</paragraph>
+<paragraph start="701" end="702">
+<LeftIndent>100.0</LeftIndent>
+<content start="701" end="702">
+</content>
+
+</paragraph>
+<paragraph start="702" end="705">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="702" end="703">
+</content>
+
+<content start="703" end="704">
+<icon>FontDialog.gif</icon></content>
+
+<content start="704" end="705">
+</content>
+
+</paragraph>
+<paragraph start="705" end="729">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="705" end="706">
+<bold>true</bold><size>13</size></content>
+
+<content start="706" end="727">
+<size>10</size></content>
+
+<content start="727" end="728">
+<bold>true</bold><size>13</size></content>
+
+<content start="728" end="729">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="729" end="730">
+<LeftIndent>140.0</LeftIndent>
+<content start="729" end="730">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="730" end="944">
+<LeftIndent>140.0</LeftIndent>
+<content start="730" end="944">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="944" end="945">
+<LeftIndent>140.0</LeftIndent>
+<content start="944" end="945">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="945" end="1109">
+<LeftIndent>140.0</LeftIndent>
+<content start="945" end="1106">
+<size>11</size></content>
+
+<content start="1106" end="1107">
+</content>
+
+<content start="1107" end="1108">
+<size>11</size></content>
+
+<content start="1108" end="1109">
+</content>
+
+</paragraph>
+<paragraph start="1109" end="1110">
+<content start="1109" end="1110">
+</content>
+
+</paragraph>
+<paragraph start="1110" end="1138">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1110" end="1112">
+<size>11</size></content>
+
+<content start="1112" end="1120">
+<size>11</size><href>i18n.cml</href></content>
+
+<content start="1120" end="1123">
+<size>11</size></content>
+
+<content start="1123" end="1128">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1128" end="1131">
+<size>11</size></content>
+
+<content start="1131" end="1135">
+<size>11</size><href>paragraph.cml</href></content>
+
+<content start="1135" end="1137">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

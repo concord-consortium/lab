@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>User&apos;s Manual: MW Scripts</page_title>
+<bg_image>sidebar1.gif</bg_image>
+<text> 
+  
+ Preface  | Appendices  |  Suggestions?
+
+To get this interactive User&apos;s Manual for offline reading, open the &quot;Option&quot; menu, choose &quot;The User&apos;s Manual&quot; from the &quot;Prefetch to Cache&quot; submenu, and wait until the process is complete.
+
+  General     2D Modeling     3D Modeling     Molecular Rover     Activity Authoring    Scripts     MW Space     Extensibility 
+ 
+
+ 
+Script examples: 1, 2, 3
+
+MW scripts are case-insensitive, except for file names used in the scripts that on some operating systems may be case-sensitive. For scripting with Jmol, see Bob Hanson&apos;s   Jmol  web site.
+
+ 
+  General    2D Modeling     3D Modeling     Molecular Rover     Activity Authoring    Scripts     MW Space     Extensibility 
+
+
+</text>
+<section start="0" end="716">
+<paragraph start="0" end="2">
+<Alignment>2</Alignment>
+<RightIndent>5.0</RightIndent>
+<SpaceAbove>5.0</SpaceAbove>
+<content start="0" end="1">
+<component><class>org.concord.modeler.SearchTextField</class>
+<type>2</type>
+</component></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="5">
+<LeftIndent>160.0</LeftIndent>
+<content start="2" end="3">
+</content>
+
+<content start="3" end="4">
+<icon>ug_script.gif</icon></content>
+
+<content start="4" end="5">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5" end="45">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<LeftIndent>160.0</LeftIndent>
+<content start="5" end="6">
+<size>9</size></content>
+
+<content start="6" end="13">
+<href>preface.cml</href><size>9</size></content>
+
+<content start="13" end="17">
+<size>9</size></content>
+
+<content start="17" end="27">
+<href>appendix.cml</href><size>9</size></content>
+
+<content start="27" end="32">
+<size>9</size></content>
+
+<content start="32" end="44">
+<href>suggestion.cml</href><size>9</size></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<LeftIndent>160.0</LeftIndent>
+<content start="45" end="46">
+<size>9</size></content>
+
+</paragraph>
+<paragraph start="46" end="234">
+<LeftIndent>160.0</LeftIndent>
+<content start="46" end="234">
+<size>9</size></content>
+
+</paragraph>
+<paragraph start="234" end="235">
+<LeftIndent>160.0</LeftIndent>
+<content start="234" end="235">
+</content>
+
+</paragraph>
+<paragraph start="235" end="363">
+<LeftIndent>160.0</LeftIndent>
+<content start="235" end="236">
+<icon>foldernew.gif</icon></content>
+
+<content start="236" end="237">
+<size>11</size></content>
+
+<content start="237" end="244">
+<href>index.cml</href><size>11</size></content>
+
+<content start="244" end="246">
+<size>11</size></content>
+
+<content start="246" end="247">
+<icon>foldernew.gif</icon></content>
+
+<content start="247" end="249">
+<size>11</size></content>
+
+<content start="249" end="260">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="260" end="262">
+<size>11</size></content>
+
+<content start="262" end="263">
+<icon>foldernew.gif</icon></content>
+
+<content start="263" end="264">
+</content>
+
+<content start="264" end="265">
+<size>11</size></content>
+
+<content start="265" end="276">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="276" end="278">
+<size>11</size></content>
+
+<content start="278" end="279">
+<icon>foldernew.gif</icon><size>11</size></content>
+
+<content start="279" end="281">
+<size>11</size></content>
+
+<content start="281" end="296">
+<href>index_jmol.cml</href><size>11</size></content>
+
+<content start="296" end="298">
+<size>11</size></content>
+
+<content start="298" end="299">
+<icon>foldernew.gif</icon></content>
+
+<content start="299" end="301">
+<size>11</size></content>
+
+<content start="301" end="319">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="319" end="321">
+<size>11</size></content>
+
+<content start="321" end="322">
+<icon>OpenedFolder.gif</icon></content>
+
+<content start="322" end="332">
+<size>11</size></content>
+
+<content start="332" end="333">
+<icon>foldernew.gif</icon></content>
+
+<content start="333" end="335">
+<size>11</size></content>
+
+<content start="335" end="343">
+<href>index3.cml</href><size>11</size></content>
+
+<content start="343" end="345">
+<size>11</size></content>
+
+<content start="345" end="346">
+<icon>foldernew.gif</icon></content>
+
+<content start="346" end="348">
+<size>11</size></content>
+
+<content start="348" end="361">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="361" end="363">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="363" end="365">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>160.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="363" end="364">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>4</height><bgcolor>-333400</bgcolor></icon></content>
+
+<content start="364" end="365">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="365" end="366">
+<LeftIndent>160.0</LeftIndent>
+<content start="365" end="366">
+</content>
+
+</paragraph>
+<paragraph start="366" end="368">
+<LeftIndent>160.0</LeftIndent>
+<content start="366" end="367">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>0.75</width>
+<height>360.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;table width=&quot;100%&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;a href=&quot;intro_script.cml&quot;&gt;&lt;font size=&quot;2&quot;&gt;Introduction&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script_where.cml&quot;&gt;Where 
+          to use scripts&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_protocol.cml&quot;&gt;The script 
+          protocol&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_variable.cml&quot;&gt;System variables&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_expression.cml&quot;&gt;Math 
+          expressions&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_defvar.cml&quot;&gt;Define a variable&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_random.cml&quot;&gt;Random 
+          number&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_comment.cml&quot;&gt;Comments&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_format.cml&quot;&gt;Format&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_operator.cml&quot;&gt;Operators&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_if.cml&quot;&gt;If&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_while.cml&quot;&gt;While&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_break.cml&quot;&gt;Break&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_return.cml&quot;&gt;Return&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_cancel.cml&quot;&gt;Cancel&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_loop.cml&quot;&gt;Loop&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_source.cml&quot;&gt;Source&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_external.cml&quot;&gt;External&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_sound.cml&quot;&gt;Sound&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_cursor.cml&quot;&gt;Mouse 
+          cursor&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_mouse.cml&quot;&gt;Mouse events&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_key.cml&quot;&gt;Keyboard 
+          events&lt;/a&gt; &lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;a href=&quot;script_run.cml&quot;&gt;&lt;font size=&quot;2&quot;&gt;Run&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script_stop.cml&quot;&gt;Stop&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_reset.cml&quot;&gt;Reset&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_load.cml&quot;&gt;Load&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_init.cml&quot;&gt;Init&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_runtask.cml&quot;&gt;Runtask&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_delay.cml&quot;&gt;Delay&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_select.cml&quot;&gt;Select 
+          (2D)&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_select3d.cml&quot;&gt;Select (3D)&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_logical.cml&quot;&gt;Logical 
+          expressions&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_set.cml&quot;&gt;Set&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_mark.cml&quot;&gt;Mark&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_add.cml&quot;&gt;Add&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_charge.cml&quot;&gt;Charge&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_restrain.cml&quot;&gt;Restrain&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_damp.cml&quot;&gt;Damp&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_heat.cml&quot;&gt;Heat&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_remove.cml&quot;&gt;Remove&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_move.cml&quot;&gt;Move&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_rotate.cml&quot;&gt;Rotate&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_bond.cml&quot;&gt;Bond&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_minimize.cml&quot;&gt;Minimize&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_attach.cml&quot;&gt;Attach&lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;
+          &lt;a href=&quot;script_function.cml&quot;&gt;&lt;font size=&quot;2&quot;&gt;Built-in functions&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt;&lt;br&gt;&lt;a href=&quot;script_store.cml&quot;&gt;Store 
+          &lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_show.cml&quot;&gt;Show&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_background.cml&quot;&gt;Background&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_paint.cml&quot;&gt;Paint&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_focus.cml&quot;&gt;Focus&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_beep.cml&quot;&gt;Beep&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_print.cml&quot;&gt;Print&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_message.cml&quot;&gt;Message&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_snapshot.cml&quot;&gt;Snapshot&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_plot.cml&quot;&gt;Plot&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_traj.cml&quot;&gt;Trajectory&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_averageposition.cml&quot;&gt;Averageposition&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_averageforce.cml&quot;&gt;Averageforce&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_lac.cml&quot;&gt;Lac 
+          (local area counter)&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_lat.cml&quot;&gt;Lat (local area 
+          temperature)&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_lap.cml&quot;&gt;Lap (local area 
+          pressure)&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_pcf.cml&quot;&gt;Pcf (pair correlation)&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_tcf.cml&quot;&gt;Tcf 
+          (time correlation)&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script_mvd.cml&quot;&gt;Mvd (velocity 
+          distribution)&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;/font&gt;* &lt;a href=&quot;functions.cml&quot;&gt;&lt;font size=&quot;2&quot;&gt;A 
+          list of supported math functions&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt; &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="367" end="368">
+</content>
+
+</paragraph>
+<paragraph start="368" end="393">
+<LeftIndent>180.0</LeftIndent>
+<content start="368" end="385">
+<size>11</size></content>
+
+<content start="385" end="386">
+<href>script_example.cml</href><size>11</size></content>
+
+<content start="386" end="393">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="393" end="394">
+<LeftIndent>160.0</LeftIndent>
+<content start="393" end="394">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="394" end="583">
+<LeftIndent>160.0</LeftIndent>
+<content start="394" end="565">
+<size>11</size></content>
+
+<content start="565" end="566">
+<icon>htmlink.gif</icon></content>
+
+<content start="566" end="567">
+<size>11</size></content>
+
+<content start="567" end="581">
+<href>http://www.stolaf.edu/academics/chemapps/jmol/</href><size>11</size></content>
+
+<content start="581" end="583">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="583" end="584">
+<LeftIndent>160.0</LeftIndent>
+<content start="583" end="584">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="584" end="586">
+<SpaceBelow>2.0</SpaceBelow>
+<LeftIndent>160.0</LeftIndent>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="584" end="585">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>4</height><bgcolor>-333400</bgcolor></icon></content>
+
+<content start="585" end="586">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="586" end="713">
+<LeftIndent>160.0</LeftIndent>
+<content start="586" end="587">
+<icon>foldernew.gif</icon></content>
+
+<content start="587" end="588">
+<size>11</size></content>
+
+<content start="588" end="595">
+<href>index.cml</href><size>11</size></content>
+
+<content start="595" end="597">
+<size>11</size></content>
+
+<content start="597" end="598">
+<icon>foldernew.gif</icon></content>
+
+<content start="598" end="599">
+<size>11</size></content>
+
+<content start="599" end="610">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="610" end="612">
+<size>11</size></content>
+
+<content start="612" end="613">
+<icon>foldernew.gif</icon></content>
+
+<content start="613" end="614">
+</content>
+
+<content start="614" end="615">
+<size>11</size></content>
+
+<content start="615" end="626">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="626" end="628">
+<size>11</size></content>
+
+<content start="628" end="629">
+<icon>foldernew.gif</icon><size>11</size></content>
+
+<content start="629" end="631">
+<size>11</size></content>
+
+<content start="631" end="646">
+<href>index_jmol.cml</href><size>11</size></content>
+
+<content start="646" end="648">
+<size>11</size></content>
+
+<content start="648" end="649">
+<icon>foldernew.gif</icon></content>
+
+<content start="649" end="651">
+<size>11</size></content>
+
+<content start="651" end="669">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="669" end="671">
+<size>11</size></content>
+
+<content start="671" end="672">
+<icon>OpenedFolder.gif</icon></content>
+
+<content start="672" end="682">
+<size>11</size></content>
+
+<content start="682" end="683">
+<icon>foldernew.gif</icon></content>
+
+<content start="683" end="685">
+<size>11</size></content>
+
+<content start="685" end="693">
+<href>index3.cml</href><size>11</size></content>
+
+<content start="693" end="695">
+<size>11</size></content>
+
+<content start="695" end="696">
+<icon>foldernew.gif</icon></content>
+
+<content start="696" end="698">
+<size>11</size></content>
+
+<content start="698" end="711">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="711" end="713">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="713" end="714">
+<LeftIndent>160.0</LeftIndent>
+<content start="713" end="714">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="714" end="715">
+<content start="714" end="715">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="715" end="716">
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting an audio player</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting an audio player
+
+&lt; Previous | Index | Next &gt;
+
+An audio player can be inserted into a page to play an audio clip in the MIDI (  Musical Instrument Digital Interface) or WAV (  Waveform Audio Format) format.
+
+To insert an audio player, you need to:
+
+&#10112; Copy the audio files to the directory where the current page is located.
+
+&#10113; Select the &quot;Audio Player&quot; item from the Insert menu. A dialog window will show up, with which you can customize the player:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+&#10114; Select the audio clip from the list. You can also set a short string of text that describes the clip, the text of the tool tip, background color and border.
+
+&#10115; Click &quot;OK&quot;, and an audio player will be inserted to where the caret is on the page.
+
+The following are two audio players embedded in the page, which play Beethoven&apos;s music in the MIDI format:
+
+       
+&#12304;There are embedded MIDI players.&#12305;
+
+The above music clips were obtained from   MidiWorld.com, a site that offers free clips, and are used here for education only.
+
+The following example is an audio player that plays a clip in the WAV format:
+
+ 
+&#12304;This is an embedded WAV player.&#12305;
+
+You can insert as many audio players as you need to replace or augment textual instructions.
+
+See also: Setting a background sound effect for a page.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1311">
+<paragraph start="0" end="26">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="25">
+<bold>true</bold><italic>true</italic><size>15</size></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="55">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="27" end="29">
+<size>11</size></content>
+
+<content start="29" end="37">
+<href>report2.cml</href><size>11</size></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="45">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="52">
+<href>textbox.cml</href><size>11</size></content>
+
+<content start="52" end="54">
+<size>11</size></content>
+
+<content start="54" end="55">
+</content>
+
+</paragraph>
+<paragraph start="55" end="56">
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="216">
+<LeftIndent>140.0</LeftIndent>
+<content start="56" end="135">
+<size>11</size></content>
+
+<content start="135" end="136">
+<icon>htmlink.gif</icon></content>
+
+<content start="136" end="137">
+<size>11</size></content>
+
+<content start="137" end="173">
+<href>http://www.midi.org/</href><size>11</size></content>
+
+<content start="173" end="183">
+<size>11</size></content>
+
+<content start="183" end="184">
+<icon>htmlink.gif</icon></content>
+
+<content start="184" end="185">
+<size>11</size></content>
+
+<content start="185" end="206">
+<href>http://en.wikipedia.org/wiki/Wav</href><size>11</size></content>
+
+<content start="206" end="216">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="216" end="217">
+<LeftIndent>140.0</LeftIndent>
+<content start="216" end="217">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="217" end="257">
+<LeftIndent>140.0</LeftIndent>
+<content start="217" end="257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="257" end="258">
+<LeftIndent>140.0</LeftIndent>
+<content start="257" end="258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="258" end="333">
+<LeftIndent>140.0</LeftIndent>
+<content start="258" end="259">
+<size>14</size></content>
+
+<content start="259" end="333">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="333" end="334">
+<LeftIndent>140.0</LeftIndent>
+<content start="333" end="334">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="334" end="460">
+<LeftIndent>140.0</LeftIndent>
+<content start="334" end="335">
+<size>14</size></content>
+
+<content start="335" end="460">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="460" end="461">
+<LeftIndent>140.0</LeftIndent>
+<content start="460" end="461">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="461" end="464">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="461" end="462">
+</content>
+
+<content start="462" end="463">
+<icon>AudioPlayerDialog.gif</icon></content>
+
+<content start="463" end="464">
+</content>
+
+</paragraph>
+<paragraph start="464" end="488">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="464" end="465">
+<bold>true</bold><size>13</size></content>
+
+<content start="465" end="486">
+<size>10</size></content>
+
+<content start="486" end="487">
+<bold>true</bold><size>13</size></content>
+
+<content start="487" end="488">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="488" end="489">
+<LeftIndent>140.0</LeftIndent>
+<content start="488" end="489">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="489" end="648">
+<LeftIndent>140.0</LeftIndent>
+<content start="489" end="490">
+<size>14</size></content>
+
+<content start="490" end="648">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="648" end="649">
+<LeftIndent>140.0</LeftIndent>
+<content start="648" end="649">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="649" end="735">
+<LeftIndent>140.0</LeftIndent>
+<content start="649" end="650">
+<size>14</size></content>
+
+<content start="650" end="735">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="735" end="736">
+<LeftIndent>140.0</LeftIndent>
+<content start="735" end="736">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="736" end="843">
+<LeftIndent>140.0</LeftIndent>
+<content start="736" end="843">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="843" end="844">
+<LeftIndent>140.0</LeftIndent>
+<content start="843" end="844">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="844" end="852">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="844" end="845">
+<component><class>org.concord.modeler.AudioPlayer</class>
+<title>F&#252;r Elise</title>
+<tooltip>Beethoven: Fuer Elise</tooltip>
+<description>furelise.mid</description>
+<bgcolor>-336700</bgcolor>
+<border>Raised Bevel</border></component></content>
+
+<content start="845" end="847">
+</content>
+
+<content start="847" end="848">
+<component><class>org.concord.modeler.AudioPlayer</class>
+<title>Adagio Sostenuto</title>
+<tooltip>Sonata No 14 in C#min (Mondschein): Adagio Sostenuto</tooltip>
+<description>beet27m1.mid</description>
+<bgcolor>-ff01</bgcolor>
+<border>Raised Bevel</border></component></content>
+
+<content start="848" end="850">
+</content>
+
+<content start="850" end="851">
+<component><class>org.concord.modeler.AudioPlayer</class>
+<title>Godfather</title>
+<tooltip>Godfather</tooltip>
+<description>godfather.mid</description>
+<bgcolor>-3334</bgcolor>
+<border>Raised Bevel</border></component></content>
+
+<content start="851" end="852">
+</content>
+
+</paragraph>
+<paragraph start="852" end="887">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="852" end="853">
+<bold>true</bold><size>13</size></content>
+
+<content start="853" end="885">
+<size>10</size></content>
+
+<content start="885" end="886">
+<bold>true</bold><size>13</size></content>
+
+<content start="886" end="887">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="887" end="888">
+<LeftIndent>140.0</LeftIndent>
+<content start="887" end="888">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="888" end="1015">
+<LeftIndent>140.0</LeftIndent>
+<content start="888" end="929">
+<size>11</size></content>
+
+<content start="929" end="930">
+<icon>htmlink.gif</icon></content>
+
+<content start="930" end="931">
+<size>11</size></content>
+
+<content start="931" end="944">
+<href>http://midiworld.com/beethoven.htm</href><size>11</size></content>
+
+<content start="944" end="1015">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1015" end="1016">
+<LeftIndent>140.0</LeftIndent>
+<content start="1015" end="1016">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1016" end="1094">
+<LeftIndent>140.0</LeftIndent>
+<content start="1016" end="1094">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1094" end="1095">
+<LeftIndent>140.0</LeftIndent>
+<content start="1094" end="1095">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1095" end="1097">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1095" end="1096">
+<component><class>org.concord.modeler.AudioPlayer</class>
+<title>Jazz</title>
+<tooltip>Jazz</tooltip>
+<description>jazz.wav</description>
+<border>Lowered Etched</border></component></content>
+
+<content start="1096" end="1097">
+</content>
+
+</paragraph>
+<paragraph start="1097" end="1131">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1097" end="1098">
+<bold>true</bold><size>13</size></content>
+
+<content start="1098" end="1129">
+<size>10</size></content>
+
+<content start="1129" end="1130">
+<bold>true</bold><size>13</size></content>
+
+<content start="1130" end="1131">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1131" end="1132">
+<LeftIndent>140.0</LeftIndent>
+<content start="1131" end="1132">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1132" end="1225">
+<LeftIndent>140.0</LeftIndent>
+<content start="1132" end="1225">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1225" end="1226">
+<LeftIndent>140.0</LeftIndent>
+<content start="1225" end="1226">
+</content>
+
+</paragraph>
+<paragraph start="1226" end="1282">
+<LeftIndent>140.0</LeftIndent>
+<content start="1226" end="1236">
+<size>11</size></content>
+
+<content start="1236" end="1280">
+<href>audioclip.cml</href><size>11</size></content>
+
+<content start="1280" end="1282">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1282" end="1283">
+<LeftIndent>140.0</LeftIndent>
+<content start="1282" end="1283">
+</content>
+
+</paragraph>
+<paragraph start="1283" end="1311">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1283" end="1285">
+<size>11</size></content>
+
+<content start="1285" end="1293">
+<href>report2.cml</href><size>11</size></content>
+
+<content start="1293" end="1296">
+<size>11</size></content>
+
+<content start="1296" end="1301">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="1301" end="1304">
+<size>11</size></content>
+
+<content start="1304" end="1308">
+<href>textbox.cml</href><size>11</size></content>
+
+<content start="1308" end="1310">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Navigating</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Navigating
+
+&lt; Previous | Index | Next &gt;
+
+Browsing MW pages with MW is similar to browsing HTML pages with any standard Web browsers:
+
+   Click any hyperlinked text to jump to another page, as in any browser. By default, hyperlinked text appears blue and underlined before the link is clicked. The page that a hyperlink points to can be on your computer or on the Internet. 
+
+ 
+IMPORTANT NOTE: If MW is in the authoring mode, clicking on a hyperlink will have no effect. Hyperlinks work only when MW is in the viewing mode. If you would like to test a hyperlink while authoring, save the current page, leave the authoring mode, and click the hyperlink.
+ 
+
+   Type, or copy and paste, an address into the Address Field and hit the ENTER key. The Address Field also keeps recent addresses that can be found in its associated drop-down list.
+
+   Click the Back Button &quot; &quot; in the toolbar to go back one page (the menu path: &quot;View&gt;Go To&gt;Back&quot;). You can go all the way back to the starting page. You can also press &quot;ALT+Left&quot; (on Windows and Linux) or  &quot;Command+[&quot; (on Mac OS X) key&#10102; to go back. If the previous page is longer than the height of the window, the scroll bar will be automatically brought to the position which you scrolled to when you left the page.
+
+   Click the Forward Button &quot; &quot; in the toolbar to go forward one page (&quot;View&gt;Go To&gt;Forward&quot;). This button is disabled if the current page is the latest one. You can also press &quot;ALT+Right&quot; (on Windows and Linux) or &quot;Command+]&quot; (on Mac OS X) key to go forward. If the forward page is longer than the height of the window, the scroll bar will be automatically brought to the position which you scrolled to when you left the page.
+
+   Click the Reload Button &quot; &quot; in the toolbar to reload the page (&quot;View&gt;Reload&quot;). You can also press F5/Ctrl+R (Windows and Linux) or Command+R (Mac OS X) to reload. Reloading the page can be used to reset all the simulations, their controls and their outputs on the page at once.
+
+   Click the Home Button &quot; &quot; in the toolbar to go to the home page. The default home page is the Molecular Workbench&apos;s Home Page. The home page can also be set to be the starting page that will be displayed after MW launches. To set the home page and the starting page, choose the &quot;Option&gt;Preferences&quot; menu (on Windows and Linux), or &quot;Molecular Workbench&gt;Preferences...&quot; menu (on Mac OS X). You will see the Preferences Dialog:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+When MW is in the authoring mode, all the menus and buttons for navigating will be grayed out or hidden. To restore the navigation functionalities, save the page you are working on and leave the authoring mode (see this Section for how to toggle between the authoring mode and the viewing mode).
+
+Scripting (for advanced authors)
+
+To cause MW to open a page, use the following scripts:
+
+&#10112; Open filename.cml in a remote server:
+
+script:page:0:load http://www.domain.edu/path/filename.cml;
+
+&#10113; Open filename.cml in the current directory:
+
+script:page:0:load filename.cml;
+
+The &quot;script:page:0:&quot; prefix is needed to instruct the Script Dispatcher that this is a script for the current MW page. See the Script Protocol for more information. In most cases, you do not need to use the load command to navigate to a page. Instead, you should just use a plain hyperlink. The load command should be used in cases when hyperlinking is not possible, such as actions fired from buttons, or when you would like to have the link do more than just switching to another page. An example of the latter case is that you may combine other commands with the load command, such as script:page:0:message &lt;t&gt;We are now going to the next page.&lt;/t&gt;; load download.cml, which will show a pop-up window with the message before opening the new page (for the message command, please see this page for more information).
+
+The equivalent scripts for the Back, Forward, Home and Reload buttons are as follows:
+
+script:page:0:back;
+script:page:0:forward;
+script:page:0:home;
+script:page:0:reload;
+
+These scripts can be set within an activity button to create your own navigation buttons anywhere on the page, as demonstrated below:
+
+    
+
+Buttons firing these scripts such as the above ones can be used to provide the navigation support for the pages that are supposed to be opened in a new window without a navigation bar, in which case the user will not have access to the Back, Forward and Reload Button.
+
+ 
+&#10102; The Command Key on the keyboard of an Apple computer is also known as the META Key or the Apple Key.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4534">
+<paragraph start="0" end="11">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="10">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<RightIndent>20.0</RightIndent>
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="40">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="12" end="14">
+<size>11</size></content>
+
+<content start="14" end="22">
+<href>intro_basic.cml</href><size>11</size></content>
+
+<content start="22" end="25">
+<size>11</size></content>
+
+<content start="25" end="30">
+<href>index.cml</href><size>11</size></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="37">
+<href>download.cml</href><size>11</size></content>
+
+<content start="37" end="39">
+<size>11</size></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="133">
+<LeftIndent>140.0</LeftIndent>
+<content start="41" end="133">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="133" end="134">
+<LeftIndent>100.0</LeftIndent>
+<content start="133" end="134">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="134" end="374">
+<LeftIndent>160.0</LeftIndent>
+<content start="134" end="135">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="135" end="147">
+<size>11</size></content>
+
+<content start="147" end="158">
+<href>hyperlink.cml</href><size>11</size></content>
+
+<content start="158" end="245">
+<size>11</size></content>
+
+<content start="245" end="264">
+<href>hlexample.cml</href><size>11</size></content>
+
+<content start="264" end="374">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="374" end="375">
+<LeftIndent>160.0</LeftIndent>
+<content start="374" end="375">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="375" end="377">
+<LeftIndent>160.0</LeftIndent>
+<content start="375" end="376">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.78</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="376" end="377">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="377" end="652">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="377" end="391">
+<bold>true</bold><size>11</size></content>
+
+<content start="391" end="402">
+<size>11</size></content>
+
+<content start="402" end="423">
+<href>unlock.cml</href><size>11</size></content>
+
+<content start="423" end="652">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="652" end="654">
+<LeftIndent>160.0</LeftIndent>
+<content start="652" end="653">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.78</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="653" end="654">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="654" end="655">
+<LeftIndent>160.0</LeftIndent>
+<content start="654" end="655">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="655" end="838">
+<LeftIndent>160.0</LeftIndent>
+<content start="655" end="656">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="656" end="658">
+</content>
+
+<content start="658" end="838">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="838" end="839">
+<LeftIndent>160.0</LeftIndent>
+<content start="838" end="839">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="839" end="1258">
+<LeftIndent>160.0</LeftIndent>
+<content start="839" end="840">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="840" end="865">
+<size>11</size></content>
+
+<content start="865" end="866">
+<icon>Back.gif</icon><size>11</size></content>
+
+<content start="866" end="1075">
+<size>11</size></content>
+
+<content start="1075" end="1076">
+<size>13</size></content>
+
+<content start="1076" end="1258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1258" end="1259">
+<LeftIndent>160.0</LeftIndent>
+<content start="1258" end="1259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1259" end="1686">
+<LeftIndent>160.0</LeftIndent>
+<content start="1259" end="1260">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1260" end="1288">
+<size>11</size></content>
+
+<content start="1288" end="1289">
+<icon>Forward.gif</icon><size>11</size></content>
+
+<content start="1289" end="1686">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1686" end="1687">
+<LeftIndent>160.0</LeftIndent>
+<content start="1686" end="1687">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1687" end="1968">
+<LeftIndent>160.0</LeftIndent>
+<content start="1687" end="1688">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1688" end="1690">
+</content>
+
+<content start="1690" end="1715">
+<size>11</size></content>
+
+<content start="1715" end="1716">
+<icon>Refresh.gif</icon></content>
+
+<content start="1716" end="1853">
+<size>11</size></content>
+
+<content start="1853" end="1966">
+<bold>true</bold><size>11</size></content>
+
+<content start="1966" end="1968">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1968" end="1969">
+<LeftIndent>140.0</LeftIndent>
+<content start="1968" end="1969">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1969" end="2397">
+<LeftIndent>160.0</LeftIndent>
+<content start="1969" end="1970">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1970" end="1972">
+</content>
+
+<content start="1972" end="1995">
+<size>11</size></content>
+
+<content start="1995" end="1996">
+<icon>Home.gif</icon></content>
+
+<content start="1996" end="2062">
+<size>11</size></content>
+
+<content start="2062" end="2097">
+<href>../index.cml</href><size>11</size></content>
+
+<content start="2097" end="2397">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2397" end="2398">
+<LeftIndent>160.0</LeftIndent>
+<content start="2397" end="2398">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2398" end="2401">
+<LeftIndent>160.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2398" end="2399">
+</content>
+
+<content start="2399" end="2400">
+<icon>Preferences.gif</icon></content>
+
+<content start="2400" end="2401">
+</content>
+
+</paragraph>
+<paragraph start="2401" end="2425">
+<LeftIndent>160.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2401" end="2402">
+<bold>true</bold><size>13</size></content>
+
+<content start="2402" end="2423">
+<size>10</size></content>
+
+<content start="2423" end="2424">
+<bold>true</bold><size>13</size></content>
+
+<content start="2424" end="2425">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2425" end="2426">
+<LeftIndent>140.0</LeftIndent>
+<content start="2425" end="2426">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2426" end="2722">
+<LeftIndent>140.0</LeftIndent>
+<content start="2426" end="2530">
+<bold>true</bold><size>11</size></content>
+
+<content start="2530" end="2641">
+<size>11</size></content>
+
+<content start="2641" end="2653">
+<href>unlock.cml</href><size>11</size></content>
+
+<content start="2653" end="2722">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2722" end="2723">
+<LeftIndent>140.0</LeftIndent>
+<content start="2722" end="2723">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2723" end="2756">
+<LeftIndent>140.0</LeftIndent>
+<content start="2723" end="2755">
+<bold>true</bold><size>11</size></content>
+
+<content start="2755" end="2756">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2756" end="2757">
+<LeftIndent>140.0</LeftIndent>
+<content start="2756" end="2757">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2757" end="2812">
+<LeftIndent>140.0</LeftIndent>
+<content start="2757" end="2812">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2812" end="2813">
+<LeftIndent>140.0</LeftIndent>
+<content start="2812" end="2813">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2813" end="2853">
+<LeftIndent>160.0</LeftIndent>
+<content start="2813" end="2814">
+</content>
+
+<content start="2814" end="2853">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2853" end="2854">
+<LeftIndent>160.0</LeftIndent>
+<content start="2853" end="2854">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2854" end="2914">
+<LeftIndent>160.0</LeftIndent>
+<content start="2854" end="2913">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2913" end="2914">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2914" end="2915">
+<LeftIndent>160.0</LeftIndent>
+<content start="2914" end="2915">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2915" end="2961">
+<LeftIndent>160.0</LeftIndent>
+<content start="2915" end="2916">
+</content>
+
+<content start="2916" end="2961">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2961" end="2962">
+<LeftIndent>160.0</LeftIndent>
+<content start="2961" end="2962">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2962" end="2995">
+<LeftIndent>160.0</LeftIndent>
+<content start="2962" end="2994">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2994" end="2995">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2995" end="2996">
+<LeftIndent>140.0</LeftIndent>
+<content start="2995" end="2996">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2996" end="3815">
+<LeftIndent>140.0</LeftIndent>
+<content start="2996" end="3001">
+<size>11</size></content>
+
+<content start="3001" end="3015">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3015" end="3123">
+<size>11</size></content>
+
+<content start="3123" end="3138">
+<href>script_protocol.cml</href><size>11</size></content>
+
+<content start="3138" end="3203">
+<size>11</size></content>
+
+<content start="3203" end="3207">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3207" end="3276">
+<size>11</size></content>
+
+<content start="3276" end="3285">
+<href>hyperlink.cml</href><size>11</size></content>
+
+<content start="3285" end="3291">
+<size>11</size></content>
+
+<content start="3291" end="3295">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3295" end="3562">
+<size>11</size></content>
+
+<content start="3562" end="3566">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3566" end="3584">
+<size>11</size></content>
+
+<content start="3584" end="3666">
+<href>script:page:0:message &lt;t&gt;We are now going to the next page.&lt;/t&gt;; load download.cml;</href><family>Courier New</family><size>11</size></content>
+
+<content start="3666" end="3754">
+<size>11</size></content>
+
+<content start="3754" end="3761">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3761" end="3782">
+<size>11</size></content>
+
+<content start="3782" end="3791">
+<href>message.cml</href><size>11</size></content>
+
+<content start="3791" end="3815">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3815" end="3816">
+<LeftIndent>140.0</LeftIndent>
+<content start="3815" end="3816">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3816" end="3902">
+<LeftIndent>140.0</LeftIndent>
+<content start="3816" end="3902">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3902" end="3903">
+<LeftIndent>140.0</LeftIndent>
+<content start="3902" end="3903">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3903" end="3923">
+<LeftIndent>160.0</LeftIndent>
+<content start="3903" end="3922">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3922" end="3923">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3923" end="3946">
+<LeftIndent>160.0</LeftIndent>
+<content start="3923" end="3945">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3945" end="3946">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3946" end="3966">
+<LeftIndent>160.0</LeftIndent>
+<content start="3946" end="3965">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3965" end="3966">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3966" end="3988">
+<LeftIndent>160.0</LeftIndent>
+<content start="3966" end="3987">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3987" end="3988">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3988" end="3989">
+<LeftIndent>140.0</LeftIndent>
+<content start="3988" end="3989">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3989" end="4123">
+<LeftIndent>140.0</LeftIndent>
+<content start="3989" end="4123">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4123" end="4124">
+<LeftIndent>140.0</LeftIndent>
+<content start="4123" end="4124">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4124" end="4129">
+<LeftIndent>140.0</LeftIndent>
+<content start="4124" end="4125">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Go back to the previous page</title>
+<imagefile>LeftArrow.gif</imagefile>
+<tooltip>Go back to the previous page</tooltip>
+<script>script:page:0:back;</script>
+<action>Script</action></component></content>
+
+<content start="4125" end="4126">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Go to the next page</title>
+<imagefile>RightArrow.gif</imagefile>
+<tooltip>Go to the next page</tooltip>
+<script>script:page:0:forward;</script>
+<action>Script</action></component></content>
+
+<content start="4126" end="4127">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Reload this page</title>
+<tooltip>Reload this page</tooltip>
+<script>script:page:0:reload;</script>
+<action>Script</action></component></content>
+
+<content start="4127" end="4128">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Go to the index page</title>
+<imagefile>UpArrow.gif</imagefile>
+<tooltip>Go to the index page</tooltip>
+<script>script:page:0:load index.cml;</script>
+<action>Script</action></component></content>
+
+<content start="4128" end="4129">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4129" end="4130">
+<LeftIndent>140.0</LeftIndent>
+<content start="4129" end="4130">
+</content>
+
+</paragraph>
+<paragraph start="4130" end="4399">
+<LeftIndent>140.0</LeftIndent>
+<content start="4130" end="4266">
+<size>11</size></content>
+
+<content start="4266" end="4313">
+<href>OpenNewWindow.cml</href><size>11</size></content>
+
+<content start="4313" end="4399">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4399" end="4400">
+<LeftIndent>140.0</LeftIndent>
+<content start="4399" end="4400">
+</content>
+
+</paragraph>
+<paragraph start="4400" end="4402">
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>1.0</SpaceAbove>
+<content start="4400" end="4401">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="4401" end="4402">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4402" end="4505">
+<LeftIndent>140.0</LeftIndent>
+<content start="4402" end="4403">
+<size>13</size></content>
+
+<content start="4403" end="4404">
+</content>
+
+<content start="4404" end="4504">
+<size>10</size></content>
+
+<content start="4504" end="4505">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4505" end="4506">
+<content start="4505" end="4506">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4506" end="4534">
+<LeftIndent>100.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="4506" end="4508">
+<size>11</size></content>
+
+<content start="4508" end="4516">
+<href>intro_basic.cml</href><size>11</size></content>
+
+<content start="4516" end="4519">
+<size>11</size></content>
+
+<content start="4519" end="4524">
+<href>index.cml</href><size>11</size></content>
+
+<content start="4524" end="4527">
+<size>11</size></content>
+
+<content start="4527" end="4531">
+<href>download.cml</href><size>11</size></content>
+
+<content start="4531" end="4533">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Did you know......</page_title>
+<bg_image>pencil.jpg</bg_image>
+<text>Did you know......
+
+   Double-clicking a toolbar button to bring up a customization dialog
+   An easier way to remove an embedded component
+
+
+</text>
+<section start="0" end="143">
+<paragraph start="0" end="19">
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<italic>true</italic><bold>true</bold><size>15</size><family>Georgia</family></content>
+
+<content start="18" end="19">
+<italic>true</italic><bold>true</bold><size>20</size></content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<LeftIndent>260.0</LeftIndent>
+<Alignment>2</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="91">
+<LeftIndent>300.0</LeftIndent>
+<content start="20" end="21">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="21" end="23">
+<size>11</size></content>
+
+<content start="23" end="90">
+<href>doubleclicktoolbarbutton.cml</href><size>11</size></content>
+
+<content start="90" end="91">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="91" end="140">
+<LeftIndent>300.0</LeftIndent>
+<content start="91" end="92">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="92" end="94">
+</content>
+
+<content start="94" end="139">
+<href>removecomponent.cml</href><size>11</size></content>
+
+<content start="139" end="140">
+</content>
+
+</paragraph>
+<paragraph start="140" end="141">
+<LeftIndent>300.0</LeftIndent>
+<content start="140" end="141">
+</content>
+
+</paragraph>
+<paragraph start="141" end="142">
+<content start="141" end="142">
+</content>
+
+</paragraph>
+<paragraph start="142" end="143">
+</paragraph>
+</section>
+</document>

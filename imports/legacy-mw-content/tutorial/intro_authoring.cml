@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Introduction to the MW authoring system</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Introduction to the MW authoring system
+
+&lt; Index | Next &gt;
+
+Many simulation tools designed for professional users are difficult to use in classrooms. One thing that frequently frustrates students is that when these tools start, they usually show a blank page with lots of buttons, menus and other types of controls. In many cases, these controls are just represented by small icons. Even if there is an explanation about a control, the vocabulary may be just too hard for non-professionals to understand.
+
+To contextualize a model and make it understandable, there should be appropriate introductions, annotations, hyperlinks, illustrations and others. These components can be created outside the modeling systems (2D and 3D). The top container of all the components and models is a page similar to a web page, which we call an MW page (or simply a page).
+
+The MW system provides an authoring system of MW pages, which operates in a way similar to creating a document using a word processor. Unlike a conventional word processor, the key elements this system processes are interactive simulations (earlier, most simulations were molecular simulations. Hence it had got the nickname: Word for Molecules!). A couple of simulation environments are integrated in this authoring system.
+
+ 
+All the pages you have seen or will see within MW are created by using this authoring system, without an exception.
+ 
+
+The authoring system allows you to insert controls and graphs, and set them up with the embedded models. Thus, you can build a customized user interface on which the end users only interact with the simulations through the controls you set up (with scripts or without) and only see the outputs you would like to display. This allows you to create an activity that focuses on a specific topic without distracting the end users with a complex user interface that has many controls not needed for the current topic. This is a very important feature of the authoring system.
+
+If you want to get an MW page on the Internet and edit it for your own use, you just need to save it onto your own hard disk first, and then after entering the authoring mode, you will be able to edit your copy freely.
+
+&lt; Index | Next &gt;</text>
+<section start="0" end="2212">
+<paragraph start="0" end="40">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="39">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="58">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="48">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="48" end="51">
+<size>11</size></content>
+
+<content start="51" end="55">
+<href>unlock.cml</href><size>11</size></content>
+
+<content start="55" end="57">
+<size>11</size></content>
+
+<content start="57" end="58">
+</content>
+
+</paragraph>
+<paragraph start="58" end="59">
+<content start="58" end="59">
+</content>
+
+</paragraph>
+<paragraph start="59" end="504">
+<LeftIndent>140.0</LeftIndent>
+<content start="59" end="504">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="504" end="505">
+<LeftIndent>140.0</LeftIndent>
+<content start="504" end="505">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="505" end="855">
+<LeftIndent>140.0</LeftIndent>
+<content start="505" end="614">
+<size>11</size></content>
+
+<content start="614" end="624">
+<href>hyperlink.cml</href><size>11</size></content>
+
+<content start="624" end="714">
+<size>11</size></content>
+
+<content start="714" end="716">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="716" end="721">
+<size>11</size></content>
+
+<content start="721" end="723">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="723" end="855">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="855" end="856">
+<LeftIndent>140.0</LeftIndent>
+<content start="855" end="856">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="856" end="1281">
+<LeftIndent>140.0</LeftIndent>
+<content start="856" end="1182">
+<size>11</size></content>
+
+<content start="1182" end="1201">
+<italic>true</italic><size>11</size><bold>true</bold></content>
+
+<content start="1201" end="1281">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1281" end="1282">
+<LeftIndent>140.0</LeftIndent>
+<content start="1281" end="1282">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1282" end="1284">
+<LeftIndent>140.0</LeftIndent>
+<content start="1282" end="1283">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1283" end="1284">
+</content>
+
+</paragraph>
+<paragraph start="1284" end="1400">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1284" end="1398">
+<size>11</size><bold>true</bold></content>
+
+<content start="1398" end="1399">
+<size>11</size></content>
+
+<content start="1399" end="1400">
+</content>
+
+</paragraph>
+<paragraph start="1400" end="1402">
+<LeftIndent>140.0</LeftIndent>
+<content start="1400" end="1401">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1401" end="1402">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1402" end="1403">
+<LeftIndent>140.0</LeftIndent>
+<content start="1402" end="1403">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1403" end="1974">
+<LeftIndent>140.0</LeftIndent>
+<content start="1403" end="1445">
+<size>11</size></content>
+
+<content start="1445" end="1453">
+<href>controller.cml</href><size>11</size></content>
+
+<content start="1453" end="1458">
+<size>11</size></content>
+
+<content start="1458" end="1464">
+<href>insertXYGraph.cml</href><size>11</size></content>
+
+<content start="1464" end="1491">
+<size>11</size></content>
+
+<content start="1491" end="1506">
+<href>insertModel.cml</href><size>11</size></content>
+
+<content start="1506" end="1530">
+<size>11</size></content>
+
+<content start="1530" end="1555">
+<size>11</size><bold>true</bold></content>
+
+<content start="1555" end="1579">
+<size>11</size></content>
+
+<content start="1579" end="1583">
+<size>11</size><bold>true</bold></content>
+
+<content start="1583" end="1652">
+<size>11</size></content>
+
+<content start="1652" end="1659">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="1659" end="1676">
+<size>11</size></content>
+
+<content start="1676" end="1680">
+<size>11</size><bold>true</bold></content>
+
+<content start="1680" end="1974">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1974" end="1975">
+<LeftIndent>140.0</LeftIndent>
+<content start="1974" end="1975">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1975" end="2194">
+<RightIndent>40.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="1975" end="2068">
+<size>11</size></content>
+
+<content start="2068" end="2075">
+<href>download.cml</href><size>11</size></content>
+
+<content start="2075" end="2122">
+<size>11</size></content>
+
+<content start="2122" end="2149">
+<href>unlock.cml</href><size>11</size></content>
+
+<content start="2149" end="2194">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2194" end="2195">
+<RightIndent>40.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="2194" end="2195">
+</content>
+
+</paragraph>
+<paragraph start="2195" end="2212">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2195" end="2197">
+<size>11</size></content>
+
+<content start="2197" end="2202">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="2202" end="2205">
+<size>11</size></content>
+
+<content start="2205" end="2209">
+<href>unlock.cml</href><size>11</size></content>
+
+<content start="2209" end="2211">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

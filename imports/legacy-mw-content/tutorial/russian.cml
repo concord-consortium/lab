@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-5"?>
+<document>
+<language>ISO-8859-5</language>
+<page_title>Конфиденциальность данных</page_title>
+<text>Russian language
+
+This test page is encoded in ISO-8859-5:
+
+В российской столице в Храме Христа Спасителя Патриарх Московский и всея Руси Алексий II совершил в ночь на воскресенье пасхальное богослужение.</text>
+<section start="0" end="205">
+<paragraph start="0" end="17">
+<Alignment>1</Alignment>
+<content start="0" end="16">
+<bold>true</bold><size>15</size></content>
+
+<content start="16" end="17">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="17" end="18">
+<content start="17" end="18">
+<size>15</size></content>
+
+</paragraph>
+<paragraph start="18" end="59">
+<content start="18" end="59">
+</content>
+
+</paragraph>
+<paragraph start="59" end="60">
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="205">
+<content start="60" end="204">
+</content>
+
+</paragraph>
+</section>
+</document>

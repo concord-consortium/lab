@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Potential energy minimization</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Potential energy minimization
+
+&lt; Previous | Index | Next &gt;
+
+Potential energy minimization can be used to put your molecular system into a lower energy state, which may or may not be the state of the lowest energy. In our 3D modeling system, you can do potential energy minimization for the whole system, or just for the selected atoms (or unselected atoms). 
+
+Practice
+
+Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the view, and select an item from the &quot;Run Energy Minimization&quot; sub-menu from the pop-up menu.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="612">
+<paragraph start="0" end="30">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="29">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="59">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="41">
+<href>mergemodel3d.cml</href><size>11</size></content>
+
+<content start="41" end="44">
+<size>11</size></content>
+
+<content start="44" end="49">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="49" end="58">
+<size>11</size></content>
+
+<content start="58" end="59">
+</content>
+
+</paragraph>
+<paragraph start="59" end="60">
+<LeftIndent>140.0</LeftIndent>
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="359">
+<LeftIndent>140.0</LeftIndent>
+<content start="60" end="359">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="359" end="360">
+<LeftIndent>140.0</LeftIndent>
+<content start="359" end="360">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="360" end="369">
+<LeftIndent>140.0</LeftIndent>
+<content start="360" end="368">
+<bold>true</bold><size>11</size></content>
+
+<content start="368" end="369">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="369" end="370">
+<LeftIndent>140.0</LeftIndent>
+<content start="369" end="370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="370" end="540">
+<LeftIndent>140.0</LeftIndent>
+<content start="370" end="540">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="540" end="541">
+<LeftIndent>140.0</LeftIndent>
+<content start="540" end="541">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="541" end="543">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="541" end="542">
+<component><class>org.concord.modeler.PageMd3d</class><resource>minimize3d$0.mdd</resource><coordinate>minimize3d$0.xyz</coordinate><width>400</width><height>300</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="542" end="543">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="543" end="582">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="543" end="581">
+<size>10</size></content>
+
+<content start="581" end="582">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="582" end="583">
+<LeftIndent>140.0</LeftIndent>
+<content start="582" end="583">
+</content>
+
+</paragraph>
+<paragraph start="583" end="584">
+<LeftIndent>140.0</LeftIndent>
+<content start="583" end="584">
+</content>
+
+</paragraph>
+<paragraph start="584" end="612">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="584" end="586">
+<size>11</size></content>
+
+<content start="586" end="594">
+<href>mergemodel3d.cml</href><size>11</size></content>
+
+<content start="594" end="597">
+<size>11</size></content>
+
+<content start="597" end="602">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="602" end="611">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

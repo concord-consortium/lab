@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Charging Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Charging Tool
+
+&lt; Previous | Index | Next &gt;
+
+There are two buttons for the Charging Tool. One adds a positive charge (0.5 e by default) on a particle. The other adds a negative charge (-0.5 e by default) on a particle.
+
+To charge a particle, first click on one of the buttons, and then click on the particle.
+
+ 
+Tip: The functionalities of these two Charging Tool buttons are interconvertible: If you hold down the SHIFT key, a charge of oppostive sign will be added. For example, if you select the &quot;Add Positive Charge&quot; button but you hold down the SHIFT key, an amount of charge will be substracted.
+ 
+
+You may practice with the Charging Tool in the following model:
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+You will immediately see the effect of electrostatic forces when you run the model after charging some particles.
+
+Script support
+
+The charge command can be used to charge the selected particles with a speficied value of charge. Another method is to use the set command: set particle[i].charge [value], where i is the index of the particle. Combined with the select and loop command, the task of charging a set of particles with different values can be automated.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1208">
+<paragraph start="0" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="17">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<RightIndent>20.0</RightIndent>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="47">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="21">
+<size>11</size></content>
+
+<content start="21" end="29">
+<size>11</size><href>markAction.cml</href></content>
+
+<content start="29" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<size>11</size><href>polarizeAction.cml</href></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>100.0</LeftIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="222">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="222">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="222" end="223">
+<LeftIndent>140.0</LeftIndent>
+<content start="222" end="223">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="223" end="312">
+<LeftIndent>140.0</LeftIndent>
+<content start="223" end="312">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="312" end="313">
+<LeftIndent>140.0</LeftIndent>
+<content start="312" end="313">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="313" end="315">
+<LeftIndent>140.0</LeftIndent>
+<content start="313" end="314">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="314" end="315">
+</content>
+
+</paragraph>
+<paragraph start="315" end="605">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="315" end="318">
+<size>11</size><bold>true</bold></content>
+
+<content start="318" end="605">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="605" end="607">
+<LeftIndent>140.0</LeftIndent>
+<content start="605" end="606">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="606" end="607">
+</content>
+
+</paragraph>
+<paragraph start="607" end="608">
+<LeftIndent>140.0</LeftIndent>
+<content start="607" end="608">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="608" end="672">
+<LeftIndent>140.0</LeftIndent>
+<content start="608" end="671">
+<size>11</size></content>
+
+<content start="671" end="672">
+</content>
+
+</paragraph>
+<paragraph start="672" end="673">
+<LeftIndent>140.0</LeftIndent>
+<content start="672" end="673">
+</content>
+
+</paragraph>
+<paragraph start="673" end="675">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="673" end="674">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>chargeAction$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+<button>Add Positive Charge</button><button>Add Negative Charge</button><button>Select Object</button></component></content>
+
+<content start="674" end="675">
+</content>
+
+</paragraph>
+<paragraph start="675" end="714">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="675" end="713">
+<size>10</size></content>
+
+<content start="713" end="714">
+</content>
+
+</paragraph>
+<paragraph start="714" end="715">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>100.0</LeftIndent>
+<content start="714" end="715">
+</content>
+
+</paragraph>
+<paragraph start="715" end="829">
+<LeftIndent>140.0</LeftIndent>
+<content start="715" end="829">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="829" end="830">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="829" end="830">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="830" end="845">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="830" end="844">
+<size>11</size><bold>true</bold></content>
+
+<content start="844" end="845">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="845" end="846">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="845" end="846">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="846" end="1179">
+<LeftIndent>140.0</LeftIndent>
+<content start="846" end="850">
+<size>11</size></content>
+
+<content start="850" end="856">
+<family>Courier New</family><size>11</size><href>script_charge.cml</href></content>
+
+<content start="856" end="973">
+<size>11</size></content>
+
+<content start="973" end="976">
+<family>Courier New</family><size>11</size><href>script_set.cml</href></content>
+
+<content start="976" end="986">
+<size>11</size></content>
+
+<content start="986" end="1016">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1016" end="1024">
+<size>11</size></content>
+
+<content start="1024" end="1025">
+<size>11</size><italic>true</italic></content>
+
+<content start="1025" end="1074">
+<size>11</size></content>
+
+<content start="1074" end="1080">
+<family>Courier New</family><size>11</size><href>script_select.cml</href></content>
+
+<content start="1080" end="1085">
+<size>11</size></content>
+
+<content start="1085" end="1089">
+<family>Courier New</family><size>11</size><href>script_loop.cml</href></content>
+
+<content start="1089" end="1178">
+<size>11</size></content>
+
+<content start="1178" end="1179">
+</content>
+
+</paragraph>
+<paragraph start="1179" end="1180">
+<RightIndent>20.0</RightIndent>
+<content start="1179" end="1180">
+</content>
+
+</paragraph>
+<paragraph start="1180" end="1208">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1180" end="1182">
+<size>11</size></content>
+
+<content start="1182" end="1190">
+<size>11</size><href>markAction.cml</href></content>
+
+<content start="1190" end="1193">
+<size>11</size></content>
+
+<content start="1193" end="1198">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="1198" end="1201">
+<size>11</size></content>
+
+<content start="1201" end="1205">
+<size>11</size><href>polarizeAction.cml</href></content>
+
+<content start="1205" end="1207">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

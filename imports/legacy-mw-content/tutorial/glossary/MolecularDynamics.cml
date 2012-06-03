@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Molecular dynamics simulation</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text> 
+ 
+
+There are four basic behaviors of atoms and/or molecules that a simulation has to produce phenonmenologically (see, for example, E. Hecht, Physics: Algebra/Trig, Second Edition, Brooks/Cole Publishing Company, 1998, P. 3):
+
+   Atoms experience a short-ranged attraction. 
+   When atoms and/or molecules are far apart, they barely interact. 
+   When atoms and/or molecules come very close to one another, they powerfully repel. 
+   Atoms and molecules are in never-ending motion. 
+
+The molecular dynamics (MD) simulation method guarantees production of all these critical behaviors, by numerically solving the Newton&apos;s equations of motion for a system of atoms and molecules that interact with each other through reasonable interatomic and intermolecular potentials.
+
+ 
+If the equations of motion are Newtonian, the method is called classical MD. If the equations of motion are quantum, it is called quantum or first principle MD. Classical MD was pioneered by scientists in the 1960s at US National Labs, where the world&apos;s most powerful computers at that time were built and used. The first implementation of quantum MD was proposed by Car and Parrinello in 1985. Quantum MD can be used to study material properties that cannot be studied using classical MD, such as the electrical and optical properties, or chemical reactions. For macromolecules, a Molecular Mechanics (MM)/Quantum Mechanics (QM) hybrid of the classical and quantum MD, which combines the advantages of both, is often used (e.g. classical MD is used to model the thermodynamics of the surrounding environment whereas quantum MD to precisely model the chemistry of the reaction site). The Molecular Workbench software is based on classical MD, in combination with different sets of rules that can be used to model electronic dynamics.
+ 
+
+Inherently introducing the time axis, the method can be used to study the behaviors and functions of molecular systems, which usually involve dynamical processes between different states and may not be accurately inferred based on information obtained from one or a few static structures.
+
+     
+ 
+A flowcart of the MD simulation with a live simulation on top of it. You can stop the simulation and drag the atoms and molecules around. The atoms are shown in the ball-and-stick mode, with dotted circles around them to represent the van der Waals (VDW) surfaces, where non-bonded atoms should bounce off from each other when they meet. The periodic boundary conditions are applied, and the shaded balls represent the images of the VDW surfaces of the atoms in the neighboring boxes.
+
+The method consists of two major parts (see the above flowchart, made using MW&apos;s annotation tools!). The first one is to compute the forces on the particles from the potential energy functions. The second task is to time-propagate the equations of motion according to the calculated forces. The two steps can be concisely written in the following equation:
+
+  
+
+MD simulations for microcanonical ensembles (i.e. isolated systems) possess two significant properties: energy conservation and reversibility, which are demonstrated on this page.
+
+Computer simulation techniques, including molecular dynamics, are now practical methods for accelerating discovery of new drugs and new materials. As computational methods develop and computer power increases, computationally screening leading candidates from vast number of combinations will be adopted by more researchers.
+
+Other fields in which molecular dynamics is applied includes mechanical engineering, chemical engineering and fluid dynamics.
+
+ 
+
+
+
+</text>
+<section start="0" end="3597">
+<paragraph start="0" end="2">
+<LeftIndent>140.0</LeftIndent>
+<SpaceAbove>4.0</SpaceAbove>
+<Alignment>1</Alignment>
+<content start="0" end="1">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>600.0</width><height>50</height><arcwidth>20</arcwidth><archeight>20</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;b&gt;&lt;font color=&quot;#ffffff&quot; face=&quot;Verdana&quot; size=&quot;6&quot;&gt;Molecular Dynamics 
+      Simulation&lt;/font&gt;&lt;/b&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-999a00</bgcolor></icon></content>
+
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="4">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2" end="3">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>600.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>10</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Charles Xie&lt;/font&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-ff0100</bgcolor></icon></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="5">
+<LeftIndent>120.0</LeftIndent>
+<content start="4" end="5">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5" end="228">
+<LeftIndent>140.0</LeftIndent>
+<content start="5" end="144">
+<size>11</size></content>
+
+<content start="144" end="165">
+<italic>true</italic><size>11</size></content>
+
+<content start="165" end="228">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="228" end="229">
+<LeftIndent>140.0</LeftIndent>
+<content start="228" end="229">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="229" end="277">
+<LeftIndent>160.0</LeftIndent>
+<content start="229" end="230">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="230" end="232">
+</content>
+
+<content start="232" end="277">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="277" end="346">
+<LeftIndent>160.0</LeftIndent>
+<content start="277" end="278">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="278" end="280">
+</content>
+
+<content start="280" end="346">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="346" end="433">
+<LeftIndent>160.0</LeftIndent>
+<content start="346" end="347">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="347" end="349">
+</content>
+
+<content start="349" end="433">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="433" end="485">
+<LeftIndent>160.0</LeftIndent>
+<content start="433" end="434">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="434" end="436">
+</content>
+
+<content start="436" end="485">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="485" end="486">
+<LeftIndent>140.0</LeftIndent>
+<content start="485" end="486">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="486" end="771">
+<LeftIndent>140.0</LeftIndent>
+<content start="486" end="771">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="771" end="772">
+<LeftIndent>140.0</LeftIndent>
+<content start="771" end="772">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="772" end="774">
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="772" end="773">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="773" end="774">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="774" end="1808">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>80.0</RightIndent>
+<content start="774" end="1808">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1808" end="1810">
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="1808" end="1809">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="1809" end="1810">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1810" end="1811">
+<LeftIndent>140.0</LeftIndent>
+<content start="1810" end="1811">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1811" end="2100">
+<LeftIndent>140.0</LeftIndent>
+<content start="1811" end="2100">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2100" end="2101">
+<LeftIndent>140.0</LeftIndent>
+<content start="2100" end="2101">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2101" end="2107">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2101" end="2102">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2102" end="2103">
+</content>
+
+<content start="2103" end="2104">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2104" end="2105">
+</content>
+
+<content start="2105" end="2106">
+<component><class>org.concord.modeler.PageComboBox</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Display Style</action>
+<selectedIndex>1</selectedIndex>
+</component></content>
+
+<content start="2106" end="2107">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2107" end="2109">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2107" end="2108">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>MolecularDynamics$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="2108" end="2109">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2109" end="2594">
+<LeftIndent>180.0</LeftIndent>
+<RightIndent>80.0</RightIndent>
+<content start="2109" end="2451">
+<size>11</size></content>
+
+<content start="2451" end="2479">
+<href>../periodic.cml</href><size>11</size></content>
+
+<content start="2479" end="2594">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2594" end="2595">
+<LeftIndent>140.0</LeftIndent>
+<content start="2594" end="2595">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2595" end="2952">
+<LeftIndent>140.0</LeftIndent>
+<content start="2595" end="2671">
+<size>11</size></content>
+
+<content start="2671" end="2692">
+<href>../TextBoxInModel.cml</href><size>11</size></content>
+
+<content start="2692" end="2952">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2952" end="2953">
+<LeftIndent>120.0</LeftIndent>
+<content start="2952" end="2953">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2953" end="2956">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2953" end="2954">
+<size>11</size></content>
+
+<content start="2954" end="2955">
+<icon>newtonEquation.gif</icon><size>11</size></content>
+
+<content start="2955" end="2956">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2956" end="2957">
+<LeftIndent>140.0</LeftIndent>
+<content start="2956" end="2957">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2957" end="3137">
+<LeftIndent>140.0</LeftIndent>
+<content start="2957" end="3126">
+<size>11</size></content>
+
+<content start="3126" end="3135">
+<href>../accuracyproof2.cml</href><size>11</size></content>
+
+<content start="3135" end="3137">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3137" end="3138">
+<LeftIndent>140.0</LeftIndent>
+<content start="3137" end="3138">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3138" end="3463">
+<LeftIndent>140.0</LeftIndent>
+<content start="3138" end="3463">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3463" end="3464">
+<LeftIndent>140.0</LeftIndent>
+<content start="3463" end="3464">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3464" end="3590">
+<LeftIndent>140.0</LeftIndent>
+<content start="3464" end="3590">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3590" end="3591">
+<LeftIndent>140.0</LeftIndent>
+<content start="3590" end="3591">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3591" end="3593">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3591" end="3592">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>120.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    &lt;center&gt;
+      [&lt;a href=&quot;index.cml&quot;&gt;&lt;b&gt;&lt;font&gt;Index&lt;/font&gt;&lt;/b&gt;&lt;/a&gt;]
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-333301</bgcolor></icon></content>
+
+<content start="3592" end="3593">
+</content>
+
+</paragraph>
+<paragraph start="3593" end="3594">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3593" end="3594">
+</content>
+
+</paragraph>
+<paragraph start="3594" end="3595">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3594" end="3595">
+</content>
+
+</paragraph>
+<paragraph start="3595" end="3596">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3595" end="3596">
+</content>
+
+</paragraph>
+<paragraph start="3596" end="3597">
+</paragraph>
+</section>
+</document>

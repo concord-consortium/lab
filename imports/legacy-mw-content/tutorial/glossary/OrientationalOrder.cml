@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Orientational ordering</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Orientational ordering
+
+
+For molecules that have rigid anisotropic structures such as most liquid crystalline molecules or chain amphiphiles, an important mode of motion is the rotation of the molecule as a whole while maintaining the internal conformation. They can, under some circumstance, form a structure in which all the molecules cooperatively point to the same direction. This is called orientational ordering. 
+
+In a spontaneously ordering situation, the exact director may not be known. Therefore, the following tensor, which depicts nematic ordering in all possible directions, is usually calculated: 
+
+ 
+
+The last factor in the above formula is introduced to shift the parameter to the interval [0,1], with zero corresponding to full disorder and one full order. (Note: The above formula is for 3D. For 2D simulation, the prefactors before the orientational factors and the delta function ought to be changed to 2 and 1, respectively.) The nematic order (P2) is the largest eigenvalue of the above ordering tensor, the corresponding eigenvector is the director of the nematic phase. When the molecular system is completely orientationally ordered, the absolute value of the nematic order equals to unity. The more the molecular system becomes orientationally disordered, the closer the nematic order approaches zero. This definition guarantees that the nematic order can be obtained in a way independent of the coordinate system that has been chosen. 
+
+
+ 
+return to index</text>
+<section start="0" end="1484">
+<paragraph start="0" end="23">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="22">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<LeftIndent>120.0</LeftIndent>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<LeftIndent>120.0</LeftIndent>
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="420">
+<LeftIndent>140.0</LeftIndent>
+<content start="25" end="420">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="420" end="421">
+<LeftIndent>140.0</LeftIndent>
+<content start="420" end="421">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="421" end="613">
+<LeftIndent>140.0</LeftIndent>
+<content start="421" end="613">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="613" end="614">
+<LeftIndent>120.0</LeftIndent>
+<content start="613" end="614">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="614" end="616">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="614" end="615">
+<icon>OrderTensorFormula.gif</icon><size>11</size></content>
+
+<content start="615" end="616">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="616" end="617">
+<LeftIndent>120.0</LeftIndent>
+<content start="616" end="617">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="617" end="1464">
+<LeftIndent>140.0</LeftIndent>
+<content start="617" end="968">
+<size>11</size></content>
+
+<content start="968" end="969">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="969" end="1463">
+<size>11</size></content>
+
+<content start="1463" end="1464">
+</content>
+
+</paragraph>
+<paragraph start="1464" end="1465">
+<LeftIndent>120.0</LeftIndent>
+<content start="1464" end="1465">
+</content>
+
+</paragraph>
+<paragraph start="1465" end="1466">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1465" end="1466">
+</content>
+
+</paragraph>
+<paragraph start="1466" end="1468">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1466" end="1467">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="1467" end="1468">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="1468" end="1484">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1468" end="1483">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

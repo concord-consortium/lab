@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Experimental page 2 for multipage report</page_title>
+<text>
+       
+
+ 
+
+&#10153; Go to the next experimental page
+
+
+</text>
+<section start="0" end="51">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="9">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>report2_1$0.mml</resource><recorderless>true</recorderless>
+<button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button></component></content>
+
+<content start="2" end="7">
+</content>
+
+<content start="7" end="8">
+<component><class>org.concord.modeler.PageMultipleChoice</class>
+<single>false</single>
+<row>4</row>
+<width>360</width>
+<height>180</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;10&quot; marginheight=&quot;10&quot; bgcolor=&quot;#fcfccf&quot;&gt;
+    &lt;font face=&quot;Verdana&quot;&gt;Question: Which of the following are true?&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<choice>A molecule consists of a group of atoms.</choice>
+<choice>A chemical bond links multiple atoms.</choice>
+<choice>A molecule cannot be broken.</choice>
+<choice>Molecules and atoms are the same thing.</choice>
+<answer>0 1</answer>
+<bgcolor>-131628</bgcolor>
+<border>Lowered Etched</border>
+<script> -choiceseparator- </script>
+</component></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="12">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<border>Raised Bevel</border>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="13">
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="48">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<size>16</size></content>
+
+<content start="14" end="15">
+</content>
+
+<content start="15" end="48">
+<href>report2_2.cml</href></content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<content start="48" end="49">
+<href>report2_2.cml</href></content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<content start="49" end="50">
+<href>report2_2.cml</href></content>
+
+</paragraph>
+<paragraph start="50" end="51">
+</paragraph>
+</section>
+</document>

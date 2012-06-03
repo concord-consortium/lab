@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Steering a slider</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Steering a slider
+
+&lt; Back &gt;
+
+Click the Run button, and then use the Up and Down key to steer the slider. When you start to apply the steering force, the slider will accelerate in the direction of the force. Meanwhile, you will observe the rapid rising of the energy bar on the right. Your challenge is to stop the moving of the slider and reverse it.
+
+ 
+   
+&#12304;This is an embedded model container.&#12305;
+
+Note that if you do not apply any steering force, the slider will move with a constant speed, or just stand still.</text>
+<section start="0" end="513">
+<paragraph start="0" end="18">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="17">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<LeftIndent>140.0</LeftIndent>
+<content start="18" end="19">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="19" end="28">
+<RightIndent>20.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<Alignment>2</Alignment>
+<content start="19" end="21">
+<size>11</size></content>
+
+<content start="21" end="25">
+<size>11</size><href>SteerObstacle.cml</href></content>
+
+<content start="25" end="28">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<LeftIndent>140.0</LeftIndent>
+<content start="28" end="29">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="29" end="351">
+<LeftIndent>140.0</LeftIndent>
+<content start="29" end="351">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="351" end="352">
+<LeftIndent>140.0</LeftIndent>
+<content start="351" end="352">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="352" end="354">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="352" end="353">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>SlidingObstacle$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+</component></content>
+
+<content start="353" end="354">
+</content>
+
+</paragraph>
+<paragraph start="354" end="358">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="354" end="355">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>run;focus;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="355" end="356">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="356" end="357">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="357" end="358">
+</content>
+
+</paragraph>
+<paragraph start="358" end="397">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="358" end="396">
+<size>10</size></content>
+
+<content start="396" end="397">
+</content>
+
+</paragraph>
+<paragraph start="397" end="398">
+<LeftIndent>140.0</LeftIndent>
+<content start="397" end="398">
+</content>
+
+</paragraph>
+<paragraph start="398" end="513">
+<LeftIndent>140.0</LeftIndent>
+<content start="398" end="512">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

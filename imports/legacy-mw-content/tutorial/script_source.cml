@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Source</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Source
+
+&lt; Previous | Index | Next &gt;
+
+The source command imports scripts stored in a file and executes them.
+
+Syntax:
+
+source [address]
+
+where [address] is the file name or URL address of a script source. Relative address is supported. For example, the command source sample.mws imports a MW script source from the directory of the current page, and executes the commands stored in the file subsequently.
+
+The source command is primarily used as a convenient way of executing scripts stored in a file. It is not intended to be used in the same way as other commands are used. When a source command is used, you should not use any other commands in the same script body. Namely, it is illegal to write the following scripts:
+
+......
+source x.mws;
+......
+source y.mws;
+......
+
+The script body should contain one and only one source command. This also helps to prevent dead locks in your scripts. Namely, if you have multiple sources that end up calling one another, there is a chance that the script execution can enter an infinite loop. For example, if you import source A in source B, and import source B in source A, the program will go back and forth between the two sources endlessly until it is interrupted.
+
+CAUTION:
+
+(1) When the user saves a page, the script sources referenced by the page are not saved as well. As a result, the user will unexpectedly end up with an incomplete page.
+
+(2) Script sources are cached only when they are opened. If the user does not invoke the scripts that employ the source command during an activity, the sources will not be cached. As a result, if the user goes off line, the page might not work properly.
+
+Recommendation: Script source files are good for authors who want to build their own libraries of reusable scripts. It is always suggested that this error-prone command be avoided in production releases if possible. You should always copy the sources and paste them into the script areas of the corresponding controllers, unless the scripts have too many lines.
+
+To be compatible with Jmol scripts, the keyword script can be used interchangably with source.
+
+Below is an example of using the source command to do a slide show. To have some fun, we are going to show something else this time. The script source file is fish.mws.
+
+ 
+ 
+(Fish pictures are from Massachusetts Division of Marine Fisheries)
+&#12304;This is an embedded model container.&#12305;
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2416">
+<paragraph start="0" end="7">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="6">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="36">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="8" end="10">
+<size>11</size></content>
+
+<content start="10" end="18">
+<size>11</size><href>script_loop.cml</href></content>
+
+<content start="18" end="21">
+<size>11</size></content>
+
+<content start="21" end="26">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="26" end="29">
+<size>11</size></content>
+
+<content start="29" end="33">
+<size>11</size><href>script_external.cml</href></content>
+
+<content start="33" end="35">
+<size>11</size></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<LeftIndent>100.0</LeftIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="108">
+<LeftIndent>140.0</LeftIndent>
+<content start="37" end="41">
+<size>11</size></content>
+
+<content start="41" end="47">
+<size>11</size><family>Courier New</family></content>
+
+<content start="47" end="108">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="108" end="109">
+<LeftIndent>140.0</LeftIndent>
+<content start="108" end="109">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="109" end="117">
+<LeftIndent>140.0</LeftIndent>
+<content start="109" end="117">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="117" end="118">
+<LeftIndent>140.0</LeftIndent>
+<content start="117" end="118">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="118" end="135">
+<LeftIndent>160.0</LeftIndent>
+<content start="118" end="124">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="124" end="135">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="135" end="136">
+<LeftIndent>160.0</LeftIndent>
+<content start="135" end="136">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="136" end="404">
+<LeftIndent>140.0</LeftIndent>
+<content start="136" end="142">
+<size>11</size></content>
+
+<content start="142" end="151">
+<size>11</size><family>Courier New</family></content>
+
+<content start="151" end="260">
+<size>11</size></content>
+
+<content start="260" end="277">
+<size>11</size><family>Courier New</family></content>
+
+<content start="277" end="404">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="404" end="405">
+<LeftIndent>140.0</LeftIndent>
+<content start="404" end="405">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="405" end="723">
+<LeftIndent>140.0</LeftIndent>
+<content start="405" end="409">
+<size>11</size></content>
+
+<content start="409" end="415">
+<size>11</size><family>Courier New</family></content>
+
+<content start="415" end="582">
+<size>11</size></content>
+
+<content start="582" end="588">
+<size>11</size><family>Courier New</family></content>
+
+<content start="588" end="683">
+<size>11</size></content>
+
+<content start="683" end="690">
+<bold>true</bold><size>11</size></content>
+
+<content start="690" end="723">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="723" end="724">
+<LeftIndent>140.0</LeftIndent>
+<content start="723" end="724">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="724" end="731">
+<LeftIndent>160.0</LeftIndent>
+<content start="724" end="731">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="731" end="745">
+<LeftIndent>160.0</LeftIndent>
+<content start="731" end="745">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="745" end="752">
+<LeftIndent>160.0</LeftIndent>
+<content start="745" end="752">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="752" end="766">
+<LeftIndent>160.0</LeftIndent>
+<content start="752" end="766">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="766" end="773">
+<LeftIndent>160.0</LeftIndent>
+<content start="766" end="772">
+<size>11</size><family>Courier New</family></content>
+
+<content start="772" end="773">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="773" end="774">
+<LeftIndent>140.0</LeftIndent>
+<content start="773" end="774">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="774" end="1211">
+<LeftIndent>140.0</LeftIndent>
+<content start="774" end="821">
+<bold>true</bold><size>11</size></content>
+
+<content start="821" end="822">
+<size>11</size></content>
+
+<content start="822" end="828">
+<size>11</size><family>Courier New</family></content>
+
+<content start="828" end="829">
+<size>11</size></content>
+
+<content start="829" end="836">
+<bold>true</bold><size>11</size></content>
+
+<content start="836" end="1211">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1211" end="1212">
+<LeftIndent>140.0</LeftIndent>
+<content start="1211" end="1212">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1212" end="1221">
+<LeftIndent>140.0</LeftIndent>
+<content start="1212" end="1220">
+<bold>true</bold><size>11</size><foreground>255 0 0</foreground></content>
+
+<content start="1220" end="1221">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1221" end="1222">
+<LeftIndent>140.0</LeftIndent>
+<content start="1221" end="1222">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1222" end="1391">
+<LeftIndent>140.0</LeftIndent>
+<content start="1222" end="1391">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1391" end="1392">
+<LeftIndent>140.0</LeftIndent>
+<content start="1391" end="1392">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1392" end="1646">
+<LeftIndent>140.0</LeftIndent>
+<content start="1392" end="1505">
+<size>11</size></content>
+
+<content start="1505" end="1511">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1511" end="1646">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1646" end="1647">
+<LeftIndent>140.0</LeftIndent>
+<content start="1646" end="1647">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1647" end="2009">
+<LeftIndent>140.0</LeftIndent>
+<content start="1647" end="1662">
+<bold>true</bold><size>11</size></content>
+
+<content start="1662" end="1956">
+<size>11</size></content>
+
+<content start="1956" end="1967">
+<size>11</size><href>script_where.cml</href></content>
+
+<content start="1967" end="2009">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2009" end="2010">
+<LeftIndent>140.0</LeftIndent>
+<content start="2009" end="2010">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2010" end="2105">
+<LeftIndent>140.0</LeftIndent>
+<content start="2010" end="2058">
+<size>11</size></content>
+
+<content start="2058" end="2064">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2064" end="2097">
+<size>11</size></content>
+
+<content start="2097" end="2103">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2103" end="2105">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2105" end="2106">
+<LeftIndent>140.0</LeftIndent>
+<content start="2105" end="2106">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2106" end="2275">
+<LeftIndent>140.0</LeftIndent>
+<content start="2106" end="2139">
+<size>11</size></content>
+
+<content start="2139" end="2145">
+<size>11</size><family>Courier New</family></content>
+
+<content start="2145" end="2265">
+<size>11</size></content>
+
+<content start="2265" end="2273">
+<size>11</size><href>fish.mws</href></content>
+
+<content start="2273" end="2275">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2275" end="2276">
+<LeftIndent>140.0</LeftIndent>
+<content start="2275" end="2276">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2276" end="2278">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2276" end="2277">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Show some beautiful fish in our ocean</title>
+<tooltip>Show me some ocean fish found in MA</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>source fish.mws;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="2277" end="2278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2278" end="2280">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2278" end="2279">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>script_source$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="2279" end="2280">
+</content>
+
+</paragraph>
+<paragraph start="2280" end="2348">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2280" end="2348">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="2348" end="2387">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2348" end="2349">
+<bold>true</bold><size>13</size></content>
+
+<content start="2349" end="2385">
+<size>10</size></content>
+
+<content start="2385" end="2386">
+<bold>true</bold><size>13</size></content>
+
+<content start="2386" end="2387">
+</content>
+
+</paragraph>
+<paragraph start="2387" end="2388">
+<LeftIndent>140.0</LeftIndent>
+<content start="2387" end="2388">
+</content>
+
+</paragraph>
+<paragraph start="2388" end="2416">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2388" end="2390">
+<size>11</size></content>
+
+<content start="2390" end="2398">
+<size>11</size><href>script_loop.cml</href></content>
+
+<content start="2398" end="2401">
+<size>11</size></content>
+
+<content start="2401" end="2406">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="2406" end="2409">
+<size>11</size></content>
+
+<content start="2409" end="2413">
+<size>11</size><href>script_external.cml</href></content>
+
+<content start="2413" end="2415">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

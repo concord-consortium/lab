@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting an image</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting an image
+
+&lt; Previous | Index | Next &gt;
+
+You can insert an image into a model, and attach it to a moving object (e.g. an atom or a radial bond). Images can be inserted to change the &quot;face&quot; of the object it is attached to, or stand alone to be an annotation.
+
+To insert an image, select the &quot;Input Image&quot; item from the Edit Menu of a model container, choose the image you want to insert using the file chooser that pops up, and press the &quot;Open&quot; button of the file chooser.
+
+Once you have inserted an image, you can change its attributes by using its pop-up menu, which can be invoked when the image is right-clicked (or CTRL+clicked on Mac OS X without a multiple-button mouse). The pop-up menu allows you to remove the image, duplicate it, change its layer position, and attach it to a moving object. If an image is sent backward, it will be drawn before other annotation components that overlap with it, therefore, it will appear to be behind those. Conversely, if an image is brought forward, it will be drawn after other annotation components that overlap with it, therefore, it will appear to be on top of those. There are also two options that allow you to set the layer position relative to the particles. An image can be set to be on top of all particles (in front of the particle layer), or to be beneath all particles (behind the particle layer). Note that if an image is set to be behind the particle layer, it will NOT be able to brought forward to an annotation component that is in front of the particle layer. Conversely, if an image is set to be in front of the particle layer, it will NOT be able to sent behind an annotation component that is behind the particle layer.
+
+An image can also be rotated. To set its rotation angle, double-click on it and type the angle in degrees in the Rotation Angle field of the popup window. When an image is attached to a rotatable object such as a radial bond, you can also set an offset angle when you are selecting the object to attach. The actual angle will be the sum of the offset angle and the current rotation angle of the host object.
+
+Supported graphics formats
+
+Currently, the GIF, JPEG, and PNG formats are supported. In addition to static images, animated images in the animated GIF format are also supported. The delay time for each frame in an animated GIF file is approximately respected. The delay time setting, however, is not respected by the simulator&apos;s recorder. This means rewinding the recorder does not play back a GIF animation correctly.
+ 
+Looping in animated GIFs: Unfortunately we cannot retrieve the looping option stored in animated GIF files. As a fix, we added our own support of looping. To set the number of loops a GIF file will be played, double-click on the image and type in the &quot;Number of Loops&quot; text field in the &quot;Animation&quot; tab. If you do not want the animation to run at all, set this parameter to be -1.&#10102; If you want the animation to loop forever, set this parameter to be 0. Any positive integer will cause the animation to be played exactly the times specified by it.
+ 
+
+The following model shows an example. Three helicopter images (just for fun) are inserted into a model container, and attached to three particles, each moving with different speed. A couple of other images are inserted to make the view look like a game.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+Script support
+
+Images can be inserted using the add command. To remove an image, use the select command to select it first, and then call the remove command. There are two methods for moving an image around. The first one is to select first and then call the move command. The second one is to use set image[i].x [xvalue] and set image[i].y [yvalue], where i is the index of the image, and [xvalue] and [yvalue] are the new coordinates of the upper-left corner (not the center) of the image.
+
+To know the index of an image, double-click on it when the model container is in the selecting and moving mode and look up &quot;Index&quot; in the Properties Panel that opens.
+
+ 
+&#10102; When you load an animation GIF, you usually want to play it. But there are cases that you want to control the animation by yourself by setting the frame of the animation yourself through setting the frame parameter of the image (e.g., set image[0].frame 10). See this page for an example.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4357">
+<paragraph start="0" end="19">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="18">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<size>11</size><href>simpleui2d.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<size>11</size><href>TextBoxInModel.cml</href></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>100.0</LeftIndent>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="266">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="266" end="267">
+<LeftIndent>140.0</LeftIndent>
+<content start="266" end="267">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="267" end="480">
+<LeftIndent>140.0</LeftIndent>
+<content start="267" end="480">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="480" end="481">
+<LeftIndent>140.0</LeftIndent>
+<content start="480" end="481">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="481" end="1695">
+<LeftIndent>140.0</LeftIndent>
+<content start="481" end="1364">
+<size>11</size></content>
+
+<content start="1364" end="1693">
+<size>11</size><bold>true</bold></content>
+
+<content start="1693" end="1695">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1695" end="1696">
+<LeftIndent>140.0</LeftIndent>
+<content start="1695" end="1696">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1696" end="2104">
+<LeftIndent>140.0</LeftIndent>
+<content start="1696" end="2104">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2104" end="2105">
+<LeftIndent>140.0</LeftIndent>
+<content start="2104" end="2105">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2105" end="2132">
+<LeftIndent>140.0</LeftIndent>
+<content start="2105" end="2131">
+<size>11</size><bold>true</bold></content>
+
+<content start="2131" end="2132">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2132" end="2133">
+<LeftIndent>140.0</LeftIndent>
+<content start="2132" end="2133">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2133" end="2524">
+<LeftIndent>140.0</LeftIndent>
+<content start="2133" end="2524">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2524" end="2526">
+<LeftIndent>140.0</LeftIndent>
+<content start="2524" end="2525">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2525" end="2526">
+</content>
+
+</paragraph>
+<paragraph start="2526" end="3073">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="2526" end="2550">
+<size>11</size><bold>true</bold></content>
+
+<content start="2550" end="2906">
+<size>11</size></content>
+
+<content start="2906" end="2907">
+<size>13</size></content>
+
+<content start="2907" end="3072">
+<size>11</size></content>
+
+<content start="3072" end="3073">
+</content>
+
+</paragraph>
+<paragraph start="3073" end="3075">
+<LeftIndent>140.0</LeftIndent>
+<content start="3073" end="3074">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="3074" end="3075">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3075" end="3076">
+<LeftIndent>140.0</LeftIndent>
+<content start="3075" end="3076">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3076" end="3330">
+<LeftIndent>140.0</LeftIndent>
+<content start="3076" end="3330">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3330" end="3331">
+<LeftIndent>140.0</LeftIndent>
+<content start="3330" end="3331">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3331" end="3333">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3331" end="3332">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>ImageInModel$0.mml</resource><recorderless>true</recorderless>
+</component></content>
+
+<content start="3332" end="3333">
+</content>
+
+</paragraph>
+<paragraph start="3333" end="3372">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3333" end="3371">
+<size>10</size></content>
+
+<content start="3371" end="3372">
+</content>
+
+</paragraph>
+<paragraph start="3372" end="3373">
+<LeftIndent>140.0</LeftIndent>
+<content start="3372" end="3373">
+</content>
+
+</paragraph>
+<paragraph start="3373" end="3388">
+<LeftIndent>140.0</LeftIndent>
+<content start="3373" end="3387">
+<size>11</size><bold>true</bold></content>
+
+<content start="3387" end="3388">
+</content>
+
+</paragraph>
+<paragraph start="3388" end="3389">
+<LeftIndent>140.0</LeftIndent>
+<content start="3388" end="3389">
+</content>
+
+</paragraph>
+<paragraph start="3389" end="3866">
+<LeftIndent>140.0</LeftIndent>
+<content start="3389" end="3422">
+<size>11</size></content>
+
+<content start="3422" end="3425">
+<family>Courier New</family><size>11</size><href>script_add.cml</href></content>
+
+<content start="3425" end="3463">
+<size>11</size></content>
+
+<content start="3463" end="3469">
+<family>Courier New</family><size>11</size><href>script_select.cml</href></content>
+
+<content start="3469" end="3516">
+<size>11</size></content>
+
+<content start="3516" end="3522">
+<family>Courier New</family><size>11</size><href>script_remove.cml</href></content>
+
+<content start="3522" end="3633">
+<size>11</size></content>
+
+<content start="3633" end="3637">
+<family>Courier New</family><size>11</size><href>script_move.cml</href></content>
+
+<content start="3637" end="3672">
+<size>11</size></content>
+
+<content start="3672" end="3695">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3695" end="3700">
+<size>11</size></content>
+
+<content start="3700" end="3723">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3723" end="3731">
+<size>11</size></content>
+
+<content start="3731" end="3732">
+<italic>true</italic><size>11</size></content>
+
+<content start="3732" end="3764">
+<size>11</size></content>
+
+<content start="3764" end="3772">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3772" end="3777">
+<size>11</size></content>
+
+<content start="3777" end="3785">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3785" end="3836">
+<size>11</size></content>
+
+<content start="3836" end="3839">
+<italic>true</italic><size>11</size></content>
+
+<content start="3839" end="3866">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3866" end="3867">
+<LeftIndent>140.0</LeftIndent>
+<content start="3866" end="3867">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3867" end="4034">
+<LeftIndent>140.0</LeftIndent>
+<content start="3867" end="3948">
+<size>11</size></content>
+
+<content start="3948" end="3977">
+<size>11</size><href>selectAction.cml</href></content>
+
+<content start="3977" end="4034">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4034" end="4035">
+<LeftIndent>140.0</LeftIndent>
+<content start="4034" end="4035">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4035" end="4037">
+<LeftIndent>140.0</LeftIndent>
+<content start="4035" end="4036">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="4036" end="4037">
+</content>
+
+</paragraph>
+<paragraph start="4037" end="4328">
+<LeftIndent>140.0</LeftIndent>
+<content start="4037" end="4038">
+<size>13</size></content>
+
+<content start="4038" end="4039">
+</content>
+
+<content start="4039" end="4274">
+<size>10</size></content>
+
+<content start="4274" end="4295">
+<family>Courier New</family><size>10</size></content>
+
+<content start="4295" end="4302">
+<size>10</size></content>
+
+<content start="4302" end="4311">
+<size>10</size><href>simanim.cml</href></content>
+
+<content start="4311" end="4327">
+<size>10</size></content>
+
+<content start="4327" end="4328">
+</content>
+
+</paragraph>
+<paragraph start="4328" end="4329">
+<LeftIndent>140.0</LeftIndent>
+<content start="4328" end="4329">
+</content>
+
+</paragraph>
+<paragraph start="4329" end="4357">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="4329" end="4331">
+<size>11</size></content>
+
+<content start="4331" end="4339">
+<size>11</size><href>simpleui2d.cml</href></content>
+
+<content start="4339" end="4342">
+<size>11</size></content>
+
+<content start="4342" end="4347">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="4347" end="4350">
+<size>11</size></content>
+
+<content start="4350" end="4354">
+<size>11</size><href>TextBoxInModel.cml</href></content>
+
+<content start="4354" end="4356">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

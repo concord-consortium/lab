@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Using buttons in HTML text box</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Using buttons in HTML text box
+
+&lt; Previous | Index | Next &gt;
+
+
+A button can be created using the following line of code:
+
+&lt;input type=&quot;submit&quot; name=&quot;button name&quot; value=&quot;button text&quot; script=&quot;scripts&quot; selfscript=&quot;self scripts&quot; enabled=&quot;true or false&quot; alt=&quot;tooltip&quot; uid=&quot;unique identifier&quot;&gt;
+
+ 
+Important: Do not enclose the embedded HTML components within &lt;form&gt; tags:
+
+&lt;FORM action=&quot;blah&quot; method=&quot;post&quot;&gt;
+&lt;input type=&quot;submit&quot; name=&quot;button name&quot; value=&quot;button text&quot; script=&quot;scripts&quot; selfscript=&quot;scripts&quot; alt=&quot;tooltip&quot; uid=&quot;unique identifier&quot;&gt;
+&lt;/FORM&gt;
+
+If you do so, MW will try to send the data to a server, instead of a model.
+ 
+
+The type attribute must be set to be &quot;submit&quot;, in order for the button to be created. The word &quot;submit&quot; usually means &quot;submit data to a server&quot;. If a script attribute is set, it means &quot;submit a script to a program&quot;. The text that will appear on the button is given by the value attribute.
+
+The script attribute can be written in multiple lines for easy reading. In other words, you can type in or copy a paragraph of scripts, in which each command is in a single line, such as:
+
+&lt;input type=&quot;submit&quot; name=&quot;button name&quot; value=&quot;button text&quot;
+ alt=&quot;This button charges some atoms and remove some.&quot;
+ script=&quot;script:mw:1:select atom  1-10;
+                     charge 1.0;
+                     select atom 11-20;
+                     charge -1.0;
+                     select atom 21-30;
+                     remove;&quot;&gt;
+
+The following is an example of using HTML buttons in conjunction with MW scripts:
+
+  
+To view the source, save this page to your disk, enter the authoring mode and right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the text box.
+
+&#12304;This is an embedded model container.&#12305;
+
+To provide a short string of text that will be shown when the user pauses with the mouse cursor over a button (the so-called tool tip), you can use the alt attribute defined in the standard HTML input element.
+
+There are a couple of limitations. The size of a button is determined by the length of the text on a button and the font type given by the system. The user does not have control over the font type and the size. Neither can the user change the appearance of a button (e.g. background color, border and so on).
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2282">
+<paragraph start="0" end="31">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="30">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="60">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="42">
+<href>htmlform.cml</href><size>11</size></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="50">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="50" end="53">
+<size>11</size></content>
+
+<content start="53" end="57">
+<href>html_radiobutton.cml</href><size>11</size></content>
+
+<content start="57" end="59">
+<size>11</size></content>
+
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<LeftIndent>140.0</LeftIndent>
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="62">
+<LeftIndent>140.0</LeftIndent>
+<content start="61" end="62">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="62" end="120">
+<LeftIndent>140.0</LeftIndent>
+<content start="62" end="120">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="120" end="121">
+<LeftIndent>140.0</LeftIndent>
+<content start="120" end="121">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="121" end="287">
+<LeftIndent>140.0</LeftIndent>
+<content start="121" end="286">
+<size>11</size><family>Courier New</family></content>
+
+<content start="286" end="287">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="287" end="288">
+<LeftIndent>140.0</LeftIndent>
+<content start="287" end="288">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="288" end="290">
+<LeftIndent>140.0</LeftIndent>
+<content start="288" end="289">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="289" end="290">
+</content>
+
+</paragraph>
+<paragraph start="290" end="365">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="290" end="299">
+<bold>true</bold><size>11</size></content>
+
+<content start="299" end="352">
+<size>11</size></content>
+
+<content start="352" end="358">
+<size>11</size><family>Courier New</family></content>
+
+<content start="358" end="365">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="365" end="366">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="365" end="366">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="366" end="401">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="366" end="400">
+<bold>true</bold><foreground>255 0 0</foreground><family>Courier New</family><strikethrough>true</strikethrough></content>
+
+<content start="400" end="401">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="401" end="538">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>220.0</LeftIndent>
+<content start="401" end="538">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="538" end="546">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="538" end="545">
+<bold>true</bold><foreground>255 0 0</foreground><family>Courier New</family><strikethrough>true</strikethrough></content>
+
+<content start="545" end="546">
+</content>
+
+</paragraph>
+<paragraph start="546" end="547">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="546" end="547">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="547" end="623">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="547" end="622">
+<size>11</size></content>
+
+<content start="622" end="623">
+</content>
+
+</paragraph>
+<paragraph start="623" end="625">
+<LeftIndent>140.0</LeftIndent>
+<content start="623" end="624">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="624" end="625">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="625" end="626">
+<LeftIndent>140.0</LeftIndent>
+<content start="625" end="626">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="626" end="915">
+<LeftIndent>140.0</LeftIndent>
+<content start="626" end="630">
+<size>11</size></content>
+
+<content start="630" end="634">
+<size>11</size><family>Courier New</family></content>
+
+<content start="634" end="645">
+<size>11</size></content>
+
+<content start="645" end="649">
+<size>11</size><italic>true</italic></content>
+
+<content start="649" end="776">
+<size>11</size></content>
+
+<content start="776" end="782">
+<size>11</size><family>Courier New</family></content>
+
+<content start="782" end="898">
+<size>11</size></content>
+
+<content start="898" end="903">
+<size>11</size><family>Courier New</family></content>
+
+<content start="903" end="915">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="915" end="916">
+<LeftIndent>140.0</LeftIndent>
+<content start="915" end="916">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="916" end="1104">
+<LeftIndent>140.0</LeftIndent>
+<content start="916" end="920">
+<size>11</size></content>
+
+<content start="920" end="926">
+<size>11</size><family>Courier New</family></content>
+
+<content start="926" end="1104">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1104" end="1105">
+<LeftIndent>140.0</LeftIndent>
+<content start="1104" end="1105">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1105" end="1165">
+<LeftIndent>140.0</LeftIndent>
+<content start="1105" end="1165">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1165" end="1220">
+<LeftIndent>140.0</LeftIndent>
+<content start="1165" end="1220">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1220" end="1260">
+<LeftIndent>140.0</LeftIndent>
+<content start="1220" end="1260">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1260" end="1293">
+<LeftIndent>140.0</LeftIndent>
+<content start="1260" end="1293">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1293" end="1333">
+<LeftIndent>140.0</LeftIndent>
+<content start="1293" end="1333">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1333" end="1367">
+<LeftIndent>140.0</LeftIndent>
+<content start="1333" end="1367">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1367" end="1407">
+<LeftIndent>140.0</LeftIndent>
+<content start="1367" end="1407">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="1407" end="1438">
+<LeftIndent>140.0</LeftIndent>
+<content start="1407" end="1437">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1437" end="1438">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1438" end="1439">
+<LeftIndent>140.0</LeftIndent>
+<content start="1438" end="1439">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1439" end="1521">
+<LeftIndent>140.0</LeftIndent>
+<content start="1439" end="1521">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1521" end="1522">
+<LeftIndent>140.0</LeftIndent>
+<content start="1521" end="1522">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1522" end="1525">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1522" end="1523">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>280.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;8&quot; marginheight=&quot;8&quot;&gt;
+    &lt;p&gt;
+      &lt;font face=&quot;Verdana&quot;&gt;This is an HTML text box, which has embedded 
+      buttons for executing &lt;/font&gt;&lt;font face=&quot;Verdana&quot;&gt;&lt;a href=&quot;mwscripts.cml&quot;&gt;MW 
+      scripts&lt;/a&gt;&lt;/font&gt;&lt;font face=&quot;Verdana&quot;&gt;. &lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;input value=&quot;Create a Lattice&quot; type=&quot;submit&quot; script=&quot;script:mw:1:stop;delay 0.5;
+select atom all;remove;
+define %i 0;
+while(%i &lt; 5);
+  if(mod(%i, 2)==0);
+    add atom 1 (10+2*%i, 4); delay 0.1;
+  else;
+    add atom 2 (10+2*%i, 4); delay 0.1;
+  endif;
+  ++%i
+endwhile;
+delay 0.2;
+set %i 0;
+while(%i &lt; 5);
+  if(mod(%i, 2)==0);
+    add atom 2 (10+2*%i, 6); delay 0.1;
+  else;
+    add atom 1 (10+2*%i, 6); delay 0.1;
+  endif;
+  ++%i
+endwhile;
+delay 0.2;
+set %i 0;
+while(%i &lt; 5);
+  if(mod(%i, 2)==0);
+    add atom 1 (10+2*%i, 8); delay 0.1;
+  else;
+    add atom 2 (10+2*%i, 8); delay 0.1;
+  endif;
+  ++%i
+endwhile;
+delay 0.2;
+set %i 0;
+while(%i &lt; 5);
+  if(mod(%i, 2)==0);
+    add atom 2 (10+2*%i, 10); delay 0.1;
+  else;
+    add atom 1 (10+2*%i, 10); delay 0.1;
+  endif;
+  ++%i
+endwhile;
+delay 0.2;
+run;&quot; alt=&quot;Create a square lattice&quot; name=&quot;lattice&quot;&gt;
+      
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;input value=&quot;Create a Charged Lattice&quot; type=&quot;submit&quot; script=&quot;script:mw:1:stop;delay 0.5;
+select atom all;remove;
+add atom 1 (10.0, 4.0); delay 0.1;
+add atom 2 (12.0, 4.0); delay 0.1;
+add atom 1 (14.0, 4.0); delay 0.1;
+add atom 2 (16.0, 4.0); delay 0.1;
+add atom 1 (18.0, 4.0); delay 0.1;
+delay 0.2;
+add atom 2 (10.0, 6.0); delay 0.1;
+add atom 1 (12.0, 6.0); delay 0.1;
+add atom 2 (14.0, 6.0); delay 0.1;
+add atom 1 (16.0, 6.0); delay 0.1;
+add atom 2 (18.0, 6.0); delay 0.1;
+delay 0.2;
+add atom 1 (10.0, 8.0); delay 0.1;
+add atom 2 (12.0, 8.0); delay 0.1;
+add atom 1 (14.0, 8.0); delay 0.1;
+add atom 2 (16.0, 8.0); delay 0.1;
+add atom 1 (18.0, 8.0); delay 0.1;
+delay 0.2;
+add atom 2 (10.0, 10.0); delay 0.1;
+add atom 1 (12.0, 10.0); delay 0.1;
+add atom 2 (14.0, 10.0); delay 0.1;
+add atom 1 (16.0, 10.0); delay 0.1;
+add atom 2 (18.0, 10.0); delay 0.1;
+delay 0.2;
+add atom 1 (10.0, 12.0); delay 0.1;
+add atom 2 (12.0, 12.0); delay 0.1;
+add atom 1 (14.0, 12.0); delay 0.1;
+add atom 2 (16.0, 12.0); delay 0.1;
+add atom 1 (18.0, 12.0); delay 0.1;
+delay 0.2;
+select element 1;
+charge 1;
+select element 2;
+charge -1;
+run;&quot; alt=&quot;Create a charged square lattice&quot; name=&quot;lattice2&quot;&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="1523" end="1524">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>html_button$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="1524" end="1525">
+</content>
+
+</paragraph>
+<paragraph start="1525" end="1692">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="1525" end="1615">
+<size>10</size><italic>true</italic></content>
+
+<content start="1615" end="1616">
+<size>11</size><italic>true</italic></content>
+
+<content start="1616" end="1691">
+<size>10</size><italic>true</italic></content>
+
+<content start="1691" end="1692">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1692" end="1693">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1692" end="1693">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1693" end="1732">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1693" end="1694">
+<bold>true</bold><size>13</size></content>
+
+<content start="1694" end="1730">
+<size>10</size></content>
+
+<content start="1730" end="1731">
+<bold>true</bold><size>13</size></content>
+
+<content start="1731" end="1732">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1732" end="1733">
+<LeftIndent>140.0</LeftIndent>
+<content start="1732" end="1733">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1733" end="1943">
+<LeftIndent>140.0</LeftIndent>
+<content start="1733" end="1885">
+<size>11</size></content>
+
+<content start="1885" end="1888">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1888" end="1928">
+<size>11</size></content>
+
+<content start="1928" end="1933">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1933" end="1943">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1943" end="1944">
+<LeftIndent>140.0</LeftIndent>
+<content start="1943" end="1944">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1944" end="2253">
+<LeftIndent>140.0</LeftIndent>
+<content start="1944" end="2253">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2253" end="2254">
+<LeftIndent>140.0</LeftIndent>
+<content start="2253" end="2254">
+</content>
+
+</paragraph>
+<paragraph start="2254" end="2282">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2254" end="2256">
+<size>11</size></content>
+
+<content start="2256" end="2264">
+<href>htmlform.cml</href><size>11</size></content>
+
+<content start="2264" end="2267">
+<size>11</size></content>
+
+<content start="2267" end="2272">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="2272" end="2275">
+<size>11</size></content>
+
+<content start="2275" end="2279">
+<href>html_radiobutton.cml</href><size>11</size></content>
+
+<content start="2279" end="2281">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

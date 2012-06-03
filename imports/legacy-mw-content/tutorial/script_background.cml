@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Background</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Background
+
+&lt; Previous | Index | Next &gt;
+
+The background command sets the background for the view of a model. To see how to change the background without using scripts, see this section for changing the view.
+
+Syntax:
+
+background color [r, g, b]
+background color 0x[hex color code]
+background color #[hex color code]
+background image [file name or address]
+
+The above commands allow you to set the background color and the background image.
+
+    
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="476">
+<paragraph start="0" end="11">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="10">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="40">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="12" end="14">
+<size>11</size></content>
+
+<content start="14" end="22">
+<href>script_show.cml</href><size>11</size></content>
+
+<content start="22" end="25">
+<size>11</size></content>
+
+<content start="25" end="30">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="37">
+<href>script_paint.cml</href><size>11</size></content>
+
+<content start="37" end="39">
+<size>11</size></content>
+
+<content start="39" end="40">
+</content>
+
+</paragraph>
+<paragraph start="40" end="41">
+<LeftIndent>100.0</LeftIndent>
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="208">
+<LeftIndent>140.0</LeftIndent>
+<content start="41" end="45">
+<size>11</size></content>
+
+<content start="45" end="55">
+<size>11</size><family>Courier New</family></content>
+
+<content start="55" end="172">
+<size>11</size></content>
+
+<content start="172" end="184">
+<href>viewSettings.cml</href><size>11</size></content>
+
+<content start="184" end="208">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="208" end="209">
+<LeftIndent>140.0</LeftIndent>
+<content start="208" end="209">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="209" end="217">
+<LeftIndent>140.0</LeftIndent>
+<content start="209" end="217">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="217" end="218">
+<LeftIndent>140.0</LeftIndent>
+<content start="217" end="218">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="218" end="245">
+<LeftIndent>160.0</LeftIndent>
+<content start="218" end="228">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="228" end="245">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="245" end="281">
+<LeftIndent>160.0</LeftIndent>
+<content start="245" end="255">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="255" end="280">
+<size>11</size><family>Courier New</family></content>
+
+<content start="280" end="281">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="281" end="316">
+<LeftIndent>160.0</LeftIndent>
+<content start="281" end="291">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="291" end="315">
+<size>11</size><family>Courier New</family></content>
+
+<content start="315" end="316">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="316" end="356">
+<LeftIndent>160.0</LeftIndent>
+<content start="316" end="326">
+<bold>true</bold><size>11</size><family>Courier New</family></content>
+
+<content start="326" end="355">
+<size>11</size><family>Courier New</family></content>
+
+<content start="355" end="356">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="356" end="357">
+<LeftIndent>160.0</LeftIndent>
+<content start="356" end="357">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="357" end="440">
+<LeftIndent>140.0</LeftIndent>
+<content start="357" end="440">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="440" end="441">
+<LeftIndent>140.0</LeftIndent>
+<content start="440" end="441">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="441" end="446">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="441" end="442">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>350.0</width>
+<height>400.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    &lt;a href=&quot;script:mw3d:1:background color [128, 128, 128];&quot;&gt;&lt;font size=&quot;2&quot;&gt;background 
+    color [128, 128, 128]&lt;/font&gt;&lt;/a&gt;&lt;font size=&quot;2&quot;&gt; &lt;/font&gt;&lt;br&gt;&lt;a href=&quot;script:mw3d:1:background color 0x000000;&quot;&gt;&lt;font size=&quot;2&quot;&gt;background 
+    color 0x000000&lt;/font&gt;&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw3d:1:background color #ffffff;&quot;&gt;&lt;font size=&quot;2&quot;&gt;background 
+    color #ffffff&lt;/font&gt;&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;script:mw3d:1:background image park.gif;&quot;&gt;&lt;font size=&quot;2&quot;&gt;background 
+    image park.gif&lt;/font&gt;&lt;/a&gt;&lt;br&gt;......
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="442" end="444">
+</content>
+
+<content start="444" end="445">
+<component><class>org.concord.modeler.PageMd3d</class><resource>script_background$0.mdd</resource><coordinate>script_background$0.xyz</coordinate><width>400</width><height>400</height><menubar>false</menubar>
+<toolbar>false</toolbar>
+<border>Raised Bevel</border>
+<recorderless>true</recorderless>
+</component></content>
+
+<content start="445" end="446">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="446" end="447">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="446" end="447">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="447" end="448">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="447" end="448">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="448" end="476">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="448" end="450">
+<size>11</size></content>
+
+<content start="450" end="458">
+<href>script_show.cml</href><size>11</size></content>
+
+<content start="458" end="461">
+<size>11</size></content>
+
+<content start="461" end="466">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="466" end="469">
+<size>11</size></content>
+
+<content start="469" end="473">
+<href>script_paint.cml</href><size>11</size></content>
+
+<content start="473" end="475">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

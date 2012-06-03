@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Using the Chemical Reaction Simulator to model the H2O reaction</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Using the Chemical Reaction Simulator to model the H2O reaction
+
+&lt; Previous | Index | Next &gt;
+
+Basic setup
+
+To set up an H2O reaction, follow these steps: 
+
+(1) Open a new blank page using the &quot;File&gt;New Blank Page&quot; menu.
+(2) Use &quot;Insert&gt;Model Container&gt;2D Chemical Reaction Simulator&quot; to insert a Chemical Reaction Simulator.
+(3) When the Simulator shows up, select &quot;Reaction&gt;Choose a Reaction&gt;Hydrogen-Oxygen Reaction: ......&quot; from the Simulator&apos;s menu bar.
+(4) Add two green particles and two blue particles using the corresponding buttons in the tool bar of the Simulator. The two green particles should be near each other. So are the two blue ones.
+(5) Adjust the parameters of the green and blue particles so that they become hydrogen and oxygen (in Molecular Workbench, the four virtual elements can be cast into any real elements by adjusting their parameters such as masses, van der Waals interactions, and so on).
+   Double-click on a green particle. On the Properties Dialog Window, change the mass to 1 g/mol and the epsilon parameter (the strength of the van der Waals bond) to be 0.01 eV, and the sigma value (the atomic diameter) to be 1.0 angstrom.
+   Double-click on a blue particle. On the Properties Dialog Window, change the mass to 16 g/mol, the epsilon parameter to 0.02 eV, and the sigma parameter to 1.5 angstrom.
+(6) Change the time step to 0.2 fs, using the &quot;Edit&gt;Change Time Step&quot; menu of the Simulator. This is necessary for stablizing the simulation for the above chosen parameters and for the explosive reaction in which temperature will rise rapidly.
+(7) Apply a heat bath (a virtual apparatus that maintains the temperature of the system) using the &quot;Option&gt;Toolbox&gt;Heat Bath&quot; menu. Set the temperature of the heat bath to be 300 K.
+(8) Hit the Run button on the rightmost of the VCR-like control panel at the bottom of the Simulator. Wait until the two pairs of free radicals recombine into an H2 and an O2 molecule, and stop the simulation.
+(9) Use the &quot;duplicate&quot; button in the tool bar to make more H2 and O2 molecules. Use the &quot;Add Green Atom&quot; button or the &quot;Add Blue Atom&quot; button to add one and only H or O atom, which will initiate the chain reactions (otherwise there will not be any reaction).
+
+These are all you need to do to get started with the H2O reaction. If your reaction model was saved from from an existing one that has been correctly set up, such as the one provided on this page, step (1)(2)(3)(5)(6) can all be skipped, because the settings have been inheritted from the existing model. We will talk about different controls of the reaction, how to set up output graphs, and so on.
+
+Setting up controls
+
+The first thing you may want to consider is whether you should leave the heat bath on. The reason we have to use a heat bath in step (7) is because the recombinations of the H and O free radicals release a lot of energy and do not result in a normal initial state for the H2 and O2 mixture. If your goal is to show explosion, turn it off. The explosive reaction happens very rapidly, however. So you may want to show a non-explosive reaction under a heat bath.
+
+The second thing to consider is whether you should leave some buttons on the tool bar of the simulator, in particular, the two buttons for adding the green and blue particles. These buttons will allow the user to add or remove molecules (thus changing the concentrations). The &quot;duplicate&quot; button can be used to create more reactants.
+
+     
+ 
+&#12304;This is an embedded model container for chemical reactions.&#12305;
+
+Setting up outputs
+
+&#10112; Mole fractions
+
+The above setup uses bar graphs to display the mole fractions of H2, O2, and H2O. But you can use an X-Y graph to display them. The reaction rates can be deduced from the changes of the mole fractions versus time.
+
+&#10113; Energies
+
+You can output the kinetic energy or the potential energy to an X-Y graph.
+
+&#10114; Pressure
+
+The increasing of pressure may be interesting to measure.
+
+Animating the ignition
+
+This reaction needs to be ignited, typically by a spark from a spark-plug. The spark will create the initial free radicals. This process cannot be scientifically simulated, but can be animated using some MW scripts. This page provides such an example.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4240">
+<paragraph start="0" end="64">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<SpaceAbove>8.0</SpaceAbove>
+<content start="0" end="52">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="52" end="53">
+<size>16</size><subscript>true</subscript><italic>true</italic><bold>true</bold></content>
+
+<content start="53" end="63">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="63" end="64">
+<size>14</size><bold>true</bold></content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="93">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="65" end="67">
+<size>11</size></content>
+
+<content start="67" end="75">
+<size>11</size><href>prosyn2.cml</href></content>
+
+<content start="75" end="78">
+<size>11</size></content>
+
+<content start="78" end="83">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="83" end="92">
+<size>11</size></content>
+
+<content start="92" end="93">
+</content>
+
+</paragraph>
+<paragraph start="93" end="94">
+<LeftIndent>140.0</LeftIndent>
+<content start="93" end="94">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="94" end="106">
+<LeftIndent>140.0</LeftIndent>
+<content start="94" end="105">
+<bold>true</bold><size>11</size></content>
+
+<content start="105" end="106">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="106" end="107">
+<LeftIndent>140.0</LeftIndent>
+<content start="106" end="107">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="107" end="155">
+<LeftIndent>140.0</LeftIndent>
+<content start="107" end="121">
+<size>11</size></content>
+
+<content start="121" end="122">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="122" end="155">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="155" end="156">
+<LeftIndent>140.0</LeftIndent>
+<content start="155" end="156">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="156" end="220">
+<LeftIndent>140.0</LeftIndent>
+<content start="156" end="220">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="220" end="325">
+<LeftIndent>140.0</LeftIndent>
+<content start="220" end="325">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="325" end="458">
+<LeftIndent>140.0</LeftIndent>
+<content start="325" end="458">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="458" end="652">
+<LeftIndent>140.0</LeftIndent>
+<content start="458" end="652">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="652" end="922">
+<LeftIndent>140.0</LeftIndent>
+<content start="652" end="656">
+<size>11</size></content>
+
+<content start="656" end="749">
+<bold>true</bold><size>11</size></content>
+
+<content start="749" end="922">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="922" end="1163">
+<LeftIndent>160.0</LeftIndent>
+<content start="922" end="923">
+<icon>org.concord.modeler.text.BulletIcon$SolidCircleBulletIcon</icon></content>
+
+<content start="923" end="925">
+</content>
+
+<content start="925" end="1163">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1163" end="1336">
+<LeftIndent>160.0</LeftIndent>
+<content start="1163" end="1164">
+<icon>org.concord.modeler.text.BulletIcon$SolidCircleBulletIcon</icon></content>
+
+<content start="1164" end="1166">
+</content>
+
+<content start="1166" end="1336">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1336" end="1580">
+<LeftIndent>140.0</LeftIndent>
+<content start="1336" end="1340">
+<size>11</size></content>
+
+<content start="1340" end="1370">
+<bold>true</bold><size>11</size></content>
+
+<content start="1370" end="1580">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1580" end="1762">
+<LeftIndent>140.0</LeftIndent>
+<content start="1580" end="1762">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1762" end="1972">
+<LeftIndent>140.0</LeftIndent>
+<content start="1762" end="1925">
+<size>11</size></content>
+
+<content start="1925" end="1926">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="1926" end="1935">
+<size>11</size></content>
+
+<content start="1935" end="1936">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="1936" end="1972">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1972" end="2232">
+<LeftIndent>140.0</LeftIndent>
+<content start="1972" end="2033">
+<size>11</size></content>
+
+<content start="2033" end="2034">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="2034" end="2040">
+<size>11</size></content>
+
+<content start="2040" end="2041">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="2041" end="2232">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2232" end="2233">
+<LeftIndent>140.0</LeftIndent>
+<content start="2232" end="2233">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2233" end="2633">
+<LeftIndent>140.0</LeftIndent>
+<content start="2233" end="2287">
+<size>11</size></content>
+
+<content start="2287" end="2288">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="2288" end="2300">
+<size>11</size></content>
+
+<content start="2300" end="2537">
+<bold>true</bold><size>11</size></content>
+
+<content start="2537" end="2633">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2633" end="2634">
+<LeftIndent>140.0</LeftIndent>
+<content start="2633" end="2634">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2634" end="2654">
+<LeftIndent>140.0</LeftIndent>
+<content start="2634" end="2653">
+<bold>true</bold><size>11</size></content>
+
+<content start="2653" end="2654">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2654" end="2655">
+<LeftIndent>140.0</LeftIndent>
+<content start="2654" end="2655">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2655" end="3116">
+<LeftIndent>140.0</LeftIndent>
+<content start="2655" end="2928">
+<size>11</size></content>
+
+<content start="2928" end="2929">
+<size>11</size><subscript>true</subscript></content>
+
+<content start="2929" end="3116">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3116" end="3117">
+<LeftIndent>140.0</LeftIndent>
+<content start="3116" end="3117">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3117" end="3451">
+<LeftIndent>140.0</LeftIndent>
+<content start="3117" end="3451">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3451" end="3452">
+<LeftIndent>140.0</LeftIndent>
+<content start="3451" end="3452">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="3452" end="3458">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3452" end="3453">
+<component><class>org.concord.mw2d.activity.ChemContainer</class>
+<resource>h2o$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Rotate Object</button><button>Duplicate Object</button><button>Add Pl</button><button>Add Ws</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Mark Object</button><button>Draw Lines</button><button>Count Objects</button><button>What's This?</button><button>Toggle Trajectory</button><button>Measure Distance</button></component></content>
+
+<content start="3453" end="3454">
+</content>
+
+<content start="3454" end="3455">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<timeseries>Mole Fraction H2(%)</timeseries>
+<max_fraction_digits>0</max_fraction_digits>
+<width>70</width>
+<height>330</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-7f7f80</fgcolor>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>65.57376861572266</value>
+</component></content>
+
+<content start="3455" end="3456">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<timeseries>Mole Fraction O2(%)</timeseries>
+<max_fraction_digits>0</max_fraction_digits>
+<width>70</width>
+<height>330</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-7f7f80</fgcolor>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>32.78688430786133</value>
+</component></content>
+
+<content start="3456" end="3457">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<timeseries>Mole Fraction H2O(%)</timeseries>
+<max_fraction_digits>0</max_fraction_digits>
+<width>70</width>
+<height>330</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<fgcolor>-7f7f80</fgcolor>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="3457" end="3458">
+</content>
+
+</paragraph>
+<paragraph start="3458" end="3460">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3458" end="3459">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Clear all annotations</title>
+<tooltip>Clear all annotations</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select textbox all;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="3459" end="3460">
+<italic>true</italic><size>11</size></content>
+
+</paragraph>
+<paragraph start="3460" end="3522">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3460" end="3521">
+<size>10</size></content>
+
+<content start="3521" end="3522">
+</content>
+
+</paragraph>
+<paragraph start="3522" end="3523">
+<LeftIndent>140.0</LeftIndent>
+<content start="3522" end="3523">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3523" end="3542">
+<LeftIndent>140.0</LeftIndent>
+<content start="3523" end="3541">
+<bold>true</bold><size>11</size></content>
+
+<content start="3541" end="3542">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3542" end="3543">
+<LeftIndent>140.0</LeftIndent>
+<content start="3542" end="3543">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3543" end="3560">
+<LeftIndent>140.0</LeftIndent>
+<content start="3543" end="3544">
+<size>14</size></content>
+
+<content start="3544" end="3560">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3560" end="3561">
+<LeftIndent>140.0</LeftIndent>
+<content start="3560" end="3561">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3561" end="3775">
+<LeftIndent>140.0</LeftIndent>
+<content start="3561" end="3627">
+<size>11</size></content>
+
+<content start="3627" end="3628">
+<size>10</size><subscript>true</subscript></content>
+
+<content start="3628" end="3631">
+<size>11</size></content>
+
+<content start="3631" end="3632">
+<size>10</size><subscript>true</subscript></content>
+
+<content start="3632" end="3639">
+<size>11</size></content>
+
+<content start="3639" end="3640">
+<size>10</size><subscript>true</subscript></content>
+
+<content start="3640" end="3655">
+<size>11</size></content>
+
+<content start="3655" end="3671">
+<size>11</size><href>h2o_molefraction_linegraph.cml</href></content>
+
+<content start="3671" end="3775">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3775" end="3776">
+<LeftIndent>140.0</LeftIndent>
+<content start="3775" end="3776">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3776" end="3787">
+<LeftIndent>140.0</LeftIndent>
+<content start="3776" end="3777">
+<size>14</size></content>
+
+<content start="3777" end="3787">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3787" end="3788">
+<LeftIndent>140.0</LeftIndent>
+<content start="3787" end="3788">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3788" end="3863">
+<LeftIndent>140.0</LeftIndent>
+<content start="3788" end="3803">
+<size>11</size></content>
+
+<content start="3803" end="3845">
+<size>11</size><href>h2o_energies.cml</href></content>
+
+<content start="3845" end="3863">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3863" end="3864">
+<LeftIndent>140.0</LeftIndent>
+<content start="3863" end="3864">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3864" end="3875">
+<LeftIndent>140.0</LeftIndent>
+<content start="3864" end="3865">
+<size>14</size></content>
+
+<content start="3865" end="3875">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3875" end="3876">
+<LeftIndent>140.0</LeftIndent>
+<content start="3875" end="3876">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3876" end="3934">
+<LeftIndent>140.0</LeftIndent>
+<content start="3876" end="3880">
+<size>11</size></content>
+
+<content start="3880" end="3902">
+<size>11</size><href>h2o_pressure.cml</href></content>
+
+<content start="3902" end="3934">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3934" end="3935">
+<LeftIndent>140.0</LeftIndent>
+<content start="3934" end="3935">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3935" end="3958">
+<LeftIndent>140.0</LeftIndent>
+<content start="3935" end="3957">
+<bold>true</bold><size>11</size></content>
+
+<content start="3957" end="3958">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3958" end="3959">
+<LeftIndent>140.0</LeftIndent>
+<content start="3958" end="3959">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3959" end="4211">
+<LeftIndent>140.0</LeftIndent>
+<content start="3959" end="4175">
+<size>11</size></content>
+
+<content start="4175" end="4184">
+<size>11</size><href>h2o_spark.cml</href></content>
+
+<content start="4184" end="4211">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4211" end="4212">
+<LeftIndent>140.0</LeftIndent>
+<content start="4211" end="4212">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4212" end="4240">
+<RightIndent>8.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<Alignment>2</Alignment>
+<content start="4212" end="4214">
+<size>11</size></content>
+
+<content start="4214" end="4222">
+<size>11</size><href>prosyn2.cml</href></content>
+
+<content start="4222" end="4225">
+<size>11</size></content>
+
+<content start="4225" end="4230">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="4230" end="4239">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

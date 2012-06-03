@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting an image question</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting an image question
+
+&lt; Previous | Index | Next &gt;
+
+What is an image question?
+
+A picture is worth between 999 and 1001 words. To evaluate how students learn with visual simulations, MW allows the user to take snapshots of models and graphs. These snapshot images can be put into a report that can be automatically generated at the end of an activity.
+
+Image questions are a class of components that make this kind of image data mining more specific. An image question allows you to ask a question, and the user can drag an image from the Snapshot Gallery and drop it into the image question&apos;s container. This process is similar to picking up an answer of a multiple choice question, but with images the user created by himself/herself instead of some pure text set by others, or answering an open-ended question with an image created by the user from a visual simulation.  When a report is generated, the selected image will be automatically pasted under the corresponding question. Thus, a researcher can measure student learning more accurately.
+
+How to insert an image question
+
+To insert an image question, select &quot;Image Question&quot; from the Insert Menu, or press ALT+SHIFT+Q, or hit the &quot; &quot; button from the tool bar. A dialog window will appear, in which you can set the question, the size, among others. Note that you are not allowed to have an image question without question text.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+How an image question works
+
+When a page is loaded, an empty image question appears to be like the left screenshot below. If you follow the instruction and click the &quot;Open&quot; button, a thumbnail image panel will appear at the bottom of the empty window, as is illustrated in the right screenshot below:
+
+    
+&#12304;These are screenshots on Windows 2000.&#12305;
+
+Now, you can follow the instruction in the middle of the window to drag a thumbnail image from the panel into the empty window above it. You can always pull the scroll bar to find an image, or simply use the left and right arrow key to move to the previous or next image. If an image is selected, it will be highlighted by a red rectangle, as is shown in the screenshot on the left below. If you are done with selecting an image, you can click the &quot;Close&quot; button at the bottom, and the thumbnail image panel will disappear, as is shown in the screenshot on the right below:
+
+    
+&#12304;These are screenshots on Windows 2000.&#12305;
+
+By default, the selected image is rescaled so that its width or height, whichever is larger, fits that of the window. You can, however, simply drag it around (this is known as panning an image), as is shown in the screenshots below:
+
+    
+&#12304;These are screenshots on Windows 2000.&#12305;
+
+Finally, if you want to add or edit annotations or comments on the selected image, you do not have to go back to the Snapshot Gallery. You can just double-click on the image in the window, and the Snapshot Editor will open up, as is shown in the following screenshot:
+
+  
+&#12304;This is a screenshot on Windows 2000.&#12305;
+
+The annotations and comments you add or change will be associated with the image in the Snapshot Gallery, which means they will be included in a report, when it is automatically generated.
+
+An example
+
+An example is provided in the following for you to get some idea about how it works.
+
+   
+   
+&#12304;These are an embedded simulator and an embedded image question.&#12305;
+
+When you are done with selecting an image and dragging it into the window, try hitting the &quot;Create a report for this page&quot; button to see where the image is placed in the report.
+
+You can insert as many image questions as needed.
+
+Optionally, an image question can be given a unique identifier (UID). It has two uses. First, it can be used by a scripter to find the image question and then do something on it. Second, it can be used to generate data that reports the user&apos;s response to the question. A restriction of naming a UID is that it must be a string composed of only the alphanumeric characters (case-sensitive). At least one alphabetic character must be used. As its name indicates, you cannot have multiple components on the same page that shares the same UID.
+
+Changing and removing an image question
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove, and copy an image question.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4289">
+<paragraph start="0" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="27">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="57">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="29" end="31">
+<size>11</size></content>
+
+<content start="31" end="39">
+<href>textarea.cml</href><size>11</size></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="47">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="47" end="50">
+<size>11</size></content>
+
+<content start="50" end="54">
+<href>report2.cml</href><size>11</size></content>
+
+<content start="54" end="56">
+<size>11</size></content>
+
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="58">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="58">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="58" end="85">
+<LeftIndent>140.0</LeftIndent>
+<content start="58" end="84">
+<bold>true</bold><size>11</size></content>
+
+<content start="84" end="85">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="85" end="86">
+<LeftIndent>140.0</LeftIndent>
+<content start="85" end="86">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="86" end="358">
+<LeftIndent>140.0</LeftIndent>
+<content start="86" end="358">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="358" end="359">
+<LeftIndent>140.0</LeftIndent>
+<content start="358" end="359">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="359" end="1055">
+<LeftIndent>140.0</LeftIndent>
+<content start="359" end="611">
+<size>11</size></content>
+
+<content start="611" end="877">
+<bold>true</bold><size>11</size></content>
+
+<content start="877" end="1055">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1055" end="1056">
+<LeftIndent>140.0</LeftIndent>
+<content start="1055" end="1056">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1056" end="1088">
+<LeftIndent>140.0</LeftIndent>
+<content start="1056" end="1087">
+<bold>true</bold><size>11</size></content>
+
+<content start="1087" end="1088">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1088" end="1089">
+<LeftIndent>140.0</LeftIndent>
+<content start="1088" end="1089">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1089" end="1394">
+<LeftIndent>140.0</LeftIndent>
+<content start="1089" end="1198">
+<size>11</size></content>
+
+<content start="1198" end="1199">
+<icon>ImageQuestion.gif</icon></content>
+
+<content start="1199" end="1394">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1394" end="1395">
+<LeftIndent>140.0</LeftIndent>
+<content start="1394" end="1395">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1395" end="1398">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1395" end="1396">
+<size>11</size></content>
+
+<content start="1396" end="1397">
+<icon>ImageQuestionDialog.gif</icon></content>
+
+<content start="1397" end="1398">
+</content>
+
+</paragraph>
+<paragraph start="1398" end="1422">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1398" end="1399">
+<bold>true</bold><size>13</size></content>
+
+<content start="1399" end="1420">
+<size>10</size></content>
+
+<content start="1420" end="1421">
+<bold>true</bold><size>13</size></content>
+
+<content start="1421" end="1422">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1422" end="1423">
+<LeftIndent>140.0</LeftIndent>
+<content start="1422" end="1423">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1423" end="1451">
+<LeftIndent>140.0</LeftIndent>
+<content start="1423" end="1450">
+<bold>true</bold><size>11</size></content>
+
+<content start="1450" end="1451">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1451" end="1452">
+<LeftIndent>140.0</LeftIndent>
+<content start="1451" end="1452">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1452" end="1724">
+<LeftIndent>140.0</LeftIndent>
+<content start="1452" end="1724">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1724" end="1725">
+<LeftIndent>140.0</LeftIndent>
+<content start="1724" end="1725">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1725" end="1730">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1725" end="1726">
+<size>11</size></content>
+
+<content start="1726" end="1727">
+<icon>ImageQuestion1.gif</icon></content>
+
+<content start="1727" end="1728">
+</content>
+
+<content start="1728" end="1729">
+<icon>ImageQuestion2.gif</icon></content>
+
+<content start="1729" end="1730">
+</content>
+
+</paragraph>
+<paragraph start="1730" end="1771">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1730" end="1731">
+<bold>true</bold><size>13</size></content>
+
+<content start="1731" end="1769">
+<size>10</size></content>
+
+<content start="1769" end="1770">
+<bold>true</bold><size>13</size></content>
+
+<content start="1770" end="1771">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1771" end="1772">
+<LeftIndent>140.0</LeftIndent>
+<content start="1771" end="1772">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1772" end="2346">
+<LeftIndent>140.0</LeftIndent>
+<content start="1772" end="2346">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2346" end="2347">
+<LeftIndent>140.0</LeftIndent>
+<content start="2346" end="2347">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2347" end="2352">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2347" end="2348">
+<size>11</size></content>
+
+<content start="2348" end="2349">
+<icon>ImageQuestion3.gif</icon></content>
+
+<content start="2349" end="2350">
+</content>
+
+<content start="2350" end="2351">
+<icon>ImageQuestion4.gif</icon></content>
+
+<content start="2351" end="2352">
+</content>
+
+</paragraph>
+<paragraph start="2352" end="2393">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2352" end="2353">
+<bold>true</bold><size>13</size></content>
+
+<content start="2353" end="2391">
+<size>10</size></content>
+
+<content start="2391" end="2392">
+<bold>true</bold><size>13</size></content>
+
+<content start="2392" end="2393">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2393" end="2394">
+<LeftIndent>140.0</LeftIndent>
+<content start="2393" end="2394">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2394" end="2627">
+<LeftIndent>140.0</LeftIndent>
+<content start="2394" end="2627">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2627" end="2628">
+<LeftIndent>140.0</LeftIndent>
+<content start="2627" end="2628">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2628" end="2633">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2628" end="2629">
+<size>11</size></content>
+
+<content start="2629" end="2630">
+<icon>ImageQuestion5.gif</icon></content>
+
+<content start="2630" end="2631">
+</content>
+
+<content start="2631" end="2632">
+<icon>ImageQuestion6.gif</icon></content>
+
+<content start="2632" end="2633">
+</content>
+
+</paragraph>
+<paragraph start="2633" end="2674">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2633" end="2634">
+<bold>true</bold><size>13</size></content>
+
+<content start="2634" end="2672">
+<size>10</size></content>
+
+<content start="2672" end="2673">
+<bold>true</bold><size>13</size></content>
+
+<content start="2673" end="2674">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2674" end="2675">
+<LeftIndent>140.0</LeftIndent>
+<content start="2674" end="2675">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2675" end="2943">
+<LeftIndent>140.0</LeftIndent>
+<content start="2675" end="2943">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2943" end="2944">
+<LeftIndent>140.0</LeftIndent>
+<content start="2943" end="2944">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2944" end="2947">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2944" end="2945">
+<size>11</size></content>
+
+<content start="2945" end="2946">
+<icon>ImageQuestion7.gif</icon></content>
+
+<content start="2946" end="2947">
+</content>
+
+</paragraph>
+<paragraph start="2947" end="2987">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2947" end="2948">
+<bold>true</bold><size>13</size></content>
+
+<content start="2948" end="2985">
+<size>10</size></content>
+
+<content start="2985" end="2986">
+<bold>true</bold><size>13</size></content>
+
+<content start="2986" end="2987">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2987" end="2988">
+<LeftIndent>140.0</LeftIndent>
+<content start="2987" end="2988">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2988" end="3177">
+<LeftIndent>140.0</LeftIndent>
+<content start="2988" end="3177">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3177" end="3178">
+<LeftIndent>140.0</LeftIndent>
+<content start="3177" end="3178">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3178" end="3189">
+<LeftIndent>140.0</LeftIndent>
+<content start="3178" end="3188">
+<bold>true</bold><size>11</size></content>
+
+<content start="3188" end="3189">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3189" end="3190">
+<LeftIndent>140.0</LeftIndent>
+<content start="3189" end="3190">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3190" end="3275">
+<LeftIndent>140.0</LeftIndent>
+<content start="3190" end="3275">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3275" end="3276">
+<LeftIndent>140.0</LeftIndent>
+<content start="3275" end="3276">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3276" end="3280">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3276" end="3277">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>imagequestion$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="3277" end="3278">
+</content>
+
+<content start="3278" end="3279">
+<component><class>org.concord.modeler.ImageQuestion</class><width>280</width><height>294</height><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table width=&quot;100%&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;window6.gif&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana&quot; size=&quot;2&quot;&gt;Please fill in an image that shows &lt;b&gt;spatial 
+          equilibrium&lt;/b&gt;:&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-3301</bgcolor>
+<border>Lowered Etched</border>
+</component></content>
+
+<content start="3279" end="3280">
+</content>
+
+</paragraph>
+<paragraph start="3280" end="3284">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3280" end="3281">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="3281" end="3282">
+</content>
+
+<content start="3282" end="3283">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Create a report for this page</title>
+<group>imagequestion.cml</group>
+<border>Raised Bevel</border>
+<action>Create a report for a page group in a new window</action></component></content>
+
+<content start="3283" end="3284">
+</content>
+
+</paragraph>
+<paragraph start="3284" end="3350">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3284" end="3285">
+<bold>true</bold><size>13</size></content>
+
+<content start="3285" end="3348">
+<size>10</size></content>
+
+<content start="3348" end="3349">
+<bold>true</bold><size>13</size></content>
+
+<content start="3349" end="3350">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="3350" end="3351">
+<LeftIndent>140.0</LeftIndent>
+<content start="3350" end="3351">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3351" end="3529">
+<LeftIndent>140.0</LeftIndent>
+<content start="3351" end="3529">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3529" end="3530">
+<LeftIndent>140.0</LeftIndent>
+<content start="3529" end="3530">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3530" end="3580">
+<LeftIndent>140.0</LeftIndent>
+<content start="3530" end="3580">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3580" end="3581">
+<LeftIndent>140.0</LeftIndent>
+<content start="3580" end="3581">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3581" end="4121">
+<LeftIndent>140.0</LeftIndent>
+<content start="3581" end="3920">
+<size>11</size></content>
+
+<content start="3920" end="4019">
+<size>11</size></content>
+
+<content start="4019" end="4121">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4121" end="4122">
+<LeftIndent>140.0</LeftIndent>
+<content start="4121" end="4122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4122" end="4162">
+<LeftIndent>140.0</LeftIndent>
+<content start="4122" end="4161">
+<bold>true</bold><size>11</size></content>
+
+<content start="4161" end="4162">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4162" end="4163">
+<LeftIndent>140.0</LeftIndent>
+<content start="4162" end="4163">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4163" end="4260">
+<LeftIndent>140.0</LeftIndent>
+<content start="4163" end="4168">
+<size>11</size></content>
+
+<content start="4168" end="4197">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="4197" end="4259">
+<size>11</size></content>
+
+<content start="4259" end="4260">
+</content>
+
+</paragraph>
+<paragraph start="4260" end="4261">
+<LeftIndent>140.0</LeftIndent>
+<content start="4260" end="4261">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4261" end="4289">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="4261" end="4263">
+<size>11</size></content>
+
+<content start="4263" end="4271">
+<href>textarea.cml</href><size>11</size></content>
+
+<content start="4271" end="4274">
+<size>11</size></content>
+
+<content start="4274" end="4279">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="4279" end="4282">
+<size>11</size></content>
+
+<content start="4282" end="4286">
+<href>report2.cml</href><size>11</size></content>
+
+<content start="4286" end="4288">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Building the user interface for an activity</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Building the user interface for an activity
+
+&lt; Previous | Index | Next &gt;
+
+In the previous Chapters, you have learned how to insert a model container into a page and construct models. The next question is: how can the user interact with a model?
+
+There are two ways to interact with a model. The first way is to use the graphical user interface (GUI) that the model container provides. A problem with this, however, is that the native GUI of a model container, which was designed for building models, is usually too complicated for students --- the GUI contains lots of menus, buttons and dialogs that are often only useful to the model designers.
+
+A complicated GUI is certainly not friendly in classrooms. Students should focus on learning the science but not on learning the GUI. A good GUI can help students concentrate on learning the science. The easier the GUI is, the better it is.
+
+To solve this critically important problem, MW provides a set of customizable controllers for embedded models and plugins for building a simple and clean GUI. By inserting only the needed controllers into a page to interact with the embedded models (or applets and plugins), through scripts or not, you can build a &quot;sandbox&quot; within which students will explore a particular aspect of a model at a time.
+
+There are two types of controllers: standard and special controllers. Standard controllers are general GUI components that can be applied to all types of models, whereas special controllers can be applied only to a certain type of model.
+
+Standard controllers can be categorized as follows:
+
+   Stateless actions:  button
+   Two-state switches:  check box
+   Multi-state switches:  radio buttons
+   Variable range controls:  spinner button, slider
+   Multiple choices:  combo box
+   Interactive dialogs: script console
+
+There are three ways to access the menu for inserting a controller:
+
+   Use the right-click (or CTRL+click on Mac OS X without a multiple-button mouse) pop-up menu. Select from the &quot;Insert Standard Controller&quot; or &quot;Insert Special Controller&quot; Sub-Menu the type of controller you would like to add.
+
+   Click the Insert Component Button &quot; &quot;. Select from the &quot;Standard Controller&quot; or &quot;Special Controller&quot; Sub-Menu of the pop-up menu the type of controller you would like to add.
+
+   Choose the type of controller you would like to add from the &quot;Insert&gt;Standard Controller&quot;,  or &quot;Insert&gt;Special Controller&quot; sub-menu on the main menu bar.
+
+Scripts for setting the state of a controller
+
+The controllers that have a state can sometimes run into problems when one controller sets the model into a state that is inconsistent with those of other controllers. The following commands are currently supported for setting the state of a controller:
+
+script:page:0:enablecomponent [index] true|false;
+script:page:0:selectcomponent [index] true|false;
+script:page:0:selectcomponent [index] true|false execute;
+script:page:0:selectcombobox [index] [index of selected item];
+script:page:0:selectcombobox [index] [index of selected item] execute;
+
+Note that you need to add the script:page:0: header before a command. The enablecomponent command allows you to enable or disable an embedded component, such as a button. The [index] parameter starts from 0 and count every embedded component, including the models. The selectcomponent command can be used to select or deselect a radio button or a check box. When the execute flag is set to true, the command not only sets the selection state of the radio button or the check box but also causes the action associated with it to be taken. The selectcombobox command can be used to select an item from a combo box&apos;s drop-down list. When the execute flag is set to true, the command not only sets the selected index of the combo box but also causes the action associated with it to be taken.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3860">
+<paragraph start="0" end="44">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="43">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="73">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="55">
+<size>11</size><href>image.cml</href></content>
+
+<content start="55" end="58">
+<size>11</size></content>
+
+<content start="58" end="63">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="63" end="66">
+<size>11</size></content>
+
+<content start="66" end="70">
+<size>11</size><href>insertButton.cml</href></content>
+
+<content start="70" end="72">
+<size>11</size></content>
+
+<content start="72" end="73">
+</content>
+
+</paragraph>
+<paragraph start="73" end="74">
+<content start="73" end="74">
+</content>
+
+</paragraph>
+<paragraph start="74" end="245">
+<LeftIndent>140.0</LeftIndent>
+<content start="74" end="117">
+<size>11</size></content>
+
+<content start="117" end="160">
+<size>11</size><href>insertModel.cml</href></content>
+
+<content start="160" end="165">
+<size>11</size></content>
+
+<content start="165" end="181">
+<size>11</size><href>intro_2d.cml</href></content>
+
+<content start="181" end="245">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="245" end="246">
+<LeftIndent>140.0</LeftIndent>
+<content start="245" end="246">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="246" end="647">
+<LeftIndent>140.0</LeftIndent>
+<content start="246" end="544">
+<size>11</size></content>
+
+<content start="544" end="645">
+<bold>true</bold><size>11</size></content>
+
+<content start="645" end="647">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="647" end="648">
+<LeftIndent>140.0</LeftIndent>
+<content start="647" end="648">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="648" end="889">
+<LeftIndent>140.0</LeftIndent>
+<content start="648" end="707">
+<size>11</size></content>
+
+<content start="707" end="780">
+<bold>true</bold><size>11</size></content>
+
+<content start="780" end="889">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="889" end="890">
+<LeftIndent>140.0</LeftIndent>
+<content start="889" end="890">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="890" end="1292">
+<LeftIndent>140.0</LeftIndent>
+<content start="890" end="934">
+<size>11</size></content>
+
+<content start="934" end="1047">
+<bold>true</bold><size>11</size></content>
+
+<content start="1047" end="1143">
+<size>11</size></content>
+
+<content start="1143" end="1150">
+<size>11</size><href>applet.cml</href></content>
+
+<content start="1150" end="1155">
+<size>11</size></content>
+
+<content start="1155" end="1162">
+<size>11</size><href>plugin.cml</href></content>
+
+<content start="1162" end="1173">
+<size>11</size></content>
+
+<content start="1173" end="1180">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="1180" end="1292">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1292" end="1293">
+<LeftIndent>140.0</LeftIndent>
+<content start="1292" end="1293">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1293" end="1531">
+<LeftIndent>140.0</LeftIndent>
+<content start="1293" end="1531">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1531" end="1532">
+<LeftIndent>140.0</LeftIndent>
+<content start="1531" end="1532">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1532" end="1584">
+<LeftIndent>140.0</LeftIndent>
+<content start="1532" end="1584">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1584" end="1585">
+<LeftIndent>140.0</LeftIndent>
+<content start="1584" end="1585">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1585" end="1615">
+<LeftIndent>160.0</LeftIndent>
+<content start="1585" end="1586">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1586" end="1608">
+<size>11</size></content>
+
+<content start="1608" end="1614">
+<size>11</size><href>insertButton.cml</href></content>
+
+<content start="1614" end="1615">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1615" end="1649">
+<LeftIndent>160.0</LeftIndent>
+<content start="1615" end="1616">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1616" end="1639">
+<size>11</size></content>
+
+<content start="1639" end="1648">
+<size>11</size><href>insertCheckBox.cml</href></content>
+
+<content start="1648" end="1649">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1649" end="1689">
+<LeftIndent>160.0</LeftIndent>
+<content start="1649" end="1650">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1650" end="1675">
+<size>11</size></content>
+
+<content start="1675" end="1688">
+<size>11</size><href>insertRadioButton.cml</href></content>
+
+<content start="1688" end="1689">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1689" end="1741">
+<LeftIndent>160.0</LeftIndent>
+<content start="1689" end="1690">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1690" end="1718">
+<size>11</size></content>
+
+<content start="1718" end="1732">
+<size>11</size><href>insertSpinner.cml</href></content>
+
+<content start="1732" end="1734">
+<size>11</size></content>
+
+<content start="1734" end="1740">
+<size>11</size><href>insertSlider.cml</href></content>
+
+<content start="1740" end="1741">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1741" end="1773">
+<LeftIndent>160.0</LeftIndent>
+<content start="1741" end="1742">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1742" end="1763">
+<size>11</size></content>
+
+<content start="1763" end="1772">
+<size>11</size><href>insertComboBox.cml</href></content>
+
+<content start="1772" end="1773">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1773" end="1812">
+<LeftIndent>160.0</LeftIndent>
+<content start="1773" end="1774">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1774" end="1776">
+</content>
+
+<content start="1776" end="1797">
+<size>11</size></content>
+
+<content start="1797" end="1811">
+<size>11</size><href>scriptconsole.cml</href></content>
+
+<content start="1811" end="1812">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1812" end="1813">
+<LeftIndent>140.0</LeftIndent>
+<content start="1812" end="1813">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1813" end="1881">
+<LeftIndent>140.0</LeftIndent>
+<content start="1813" end="1881">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1881" end="1882">
+<LeftIndent>140.0</LeftIndent>
+<content start="1881" end="1882">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1882" end="2109">
+<LeftIndent>160.0</LeftIndent>
+<content start="1882" end="1883">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1883" end="2109">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2109" end="2110">
+<LeftIndent>160.0</LeftIndent>
+<content start="2109" end="2110">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2110" end="2288">
+<LeftIndent>160.0</LeftIndent>
+<content start="2110" end="2111">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="2111" end="2148">
+<size>11</size></content>
+
+<content start="2148" end="2149">
+<icon>InsertComponent.gif</icon><size>11</size></content>
+
+<content start="2149" end="2288">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2288" end="2289">
+<LeftIndent>160.0</LeftIndent>
+<content start="2288" end="2289">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2289" end="2446">
+<LeftIndent>160.0</LeftIndent>
+<content start="2289" end="2290">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="2290" end="2446">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2446" end="2447">
+<LeftIndent>160.0</LeftIndent>
+<content start="2446" end="2447">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2447" end="2493">
+<LeftIndent>140.0</LeftIndent>
+<content start="2447" end="2492">
+<bold>true</bold><size>11</size></content>
+
+<content start="2492" end="2493">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2493" end="2494">
+<LeftIndent>140.0</LeftIndent>
+<content start="2493" end="2494">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2494" end="2748">
+<LeftIndent>140.0</LeftIndent>
+<content start="2494" end="2748">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2748" end="2749">
+<LeftIndent>160.0</LeftIndent>
+<content start="2748" end="2749">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2749" end="2799">
+<LeftIndent>160.0</LeftIndent>
+<content start="2749" end="2799">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2799" end="2849">
+<LeftIndent>160.0</LeftIndent>
+<content start="2799" end="2849">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2849" end="2907">
+<LeftIndent>160.0</LeftIndent>
+<content start="2849" end="2907">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="2907" end="2970">
+<LeftIndent>160.0</LeftIndent>
+<content start="2907" end="2969">
+<family>Courier New</family><size>11</size></content>
+
+<content start="2969" end="2970">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2970" end="3041">
+<LeftIndent>160.0</LeftIndent>
+<content start="2970" end="3040">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3040" end="3041">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3041" end="3042">
+<LeftIndent>160.0</LeftIndent>
+<content start="3041" end="3042">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3042" end="3831">
+<LeftIndent>140.0</LeftIndent>
+<content start="3042" end="3072">
+<size>11</size></content>
+
+<content start="3072" end="3086">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3086" end="3116">
+<size>11</size></content>
+
+<content start="3116" end="3131">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3131" end="3213">
+<size>11</size></content>
+
+<content start="3213" end="3217">
+<bold>true</bold><size>11</size></content>
+
+<content start="3217" end="3224">
+<family>Courier New</family><bold>true</bold><size>11</size></content>
+
+<content start="3224" end="3305">
+<bold>true</bold><size>11</size></content>
+
+<content start="3305" end="3311">
+<size>11</size></content>
+
+<content start="3311" end="3326">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3326" end="3409">
+<size>11</size></content>
+
+<content start="3409" end="3416">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3416" end="3584">
+<size>11</size></content>
+
+<content start="3584" end="3598">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3598" end="3681">
+<size>11</size></content>
+
+<content start="3681" end="3688">
+<family>Courier New</family><size>11</size></content>
+
+<content start="3688" end="3830">
+<size>11</size></content>
+
+<content start="3830" end="3831">
+</content>
+
+</paragraph>
+<paragraph start="3831" end="3832">
+<content start="3831" end="3832">
+</content>
+
+</paragraph>
+<paragraph start="3832" end="3860">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3832" end="3834">
+<size>11</size></content>
+
+<content start="3834" end="3842">
+<size>11</size><href>image.cml</href></content>
+
+<content start="3842" end="3845">
+<size>11</size></content>
+
+<content start="3845" end="3850">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="3850" end="3853">
+<size>11</size></content>
+
+<content start="3853" end="3857">
+<size>11</size><href>insertButton.cml</href></content>
+
+<content start="3857" end="3859">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

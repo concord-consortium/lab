@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Setting the initialization scripts</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Setting the initialization scripts
+
+&lt; Previous | Index | Next &gt;
+
+Jmol supports   a rich collection of script commands that allow one to design custom views of molecules. In MW, you can initialize the state of the molecule by setting a batch of scripts that will be run right after the molecule is loaded into the Jmol Viewer.
+
+There are two types of initialization commands that MW saves. The first one is the system-set initialization commands. The second one is the user-set initialization commands. The system-set initialization commands are those that are easier to set by the user through directly interacting with the molecule through mouse or keyboard actions and simple menus. The user-set initialization commands are those that set the states more easily through scripting. The user-set initialization commands will be run immediately after the system-set initialization commands have been run.
+
+ 
+&#12304;This is an embedded Jmol Viewer that uses an initialization script to set custom view of the molecule.&#12305;
+
+To set the custom initialization script, enter the authoring mode, and right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the Jmol window and select &quot;Customize This Jmol Viewer&quot; from the pop-up menu. Type your initialization commands in the text area with the title &quot;Custom initialization script&quot;. This user-set initialization commands will be saved when a page is saved.
+
+Note that, however, the initialization script is not applied when you close the customization window. It is applied only after the model is loaded. If you would like your initialization script to be in effect immediately, save the page first and then reload the page.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1707">
+<paragraph start="0" end="35">
+<RightIndent>8.0</RightIndent>
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>2</Alignment>
+<content start="0" end="34">
+<size>15</size><italic>true</italic><bold>true</bold></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="64">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="36" end="38">
+<size>11</size></content>
+
+<content start="38" end="46">
+<href>importmolecule.cml</href><size>11</size></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="54">
+<href>index_jmol.cml</href><size>11</size></content>
+
+<content start="54" end="57">
+<size>11</size></content>
+
+<content start="57" end="61">
+<href>rovingmode.cml</href><size>11</size></content>
+
+<content start="61" end="63">
+<size>11</size></content>
+
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="326">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="79">
+<size>11</size></content>
+
+<content start="79" end="80">
+<icon>htmlink.gif</icon></content>
+
+<content start="80" end="81">
+<size>11</size></content>
+
+<content start="81" end="117">
+<href>http://www.stolaf.edu/academics/chemapps/jmol/docs/</href><size>11</size></content>
+
+<content start="117" end="326">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="326" end="327">
+<LeftIndent>140.0</LeftIndent>
+<content start="326" end="327">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="327" end="904">
+<LeftIndent>140.0</LeftIndent>
+<content start="327" end="903">
+<size>11</size></content>
+
+<content start="903" end="904">
+</content>
+
+</paragraph>
+<paragraph start="904" end="905">
+<content start="904" end="905">
+</content>
+
+</paragraph>
+<paragraph start="905" end="907">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="905" end="906">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>set frank on;
+select protein and backbone;
+cartoon on;
+wireframe off;
+select protein and not backbone;
+cpk 30%;
+wireframe 0.2;
+select nucleic;
+ribbon on;
+wireframe off;</script><resource>3CRO.pdb</resource><state>initializeJmol$0.jms</state><width>600.0</width>
+<height>330.0</height>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="906" end="907">
+</content>
+
+</paragraph>
+<paragraph start="907" end="1012">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="907" end="908">
+<bold>true</bold><size>13</size></content>
+
+<content start="908" end="1010">
+<size>10</size></content>
+
+<content start="1010" end="1011">
+<bold>true</bold><size>13</size></content>
+
+<content start="1011" end="1012">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="1012" end="1013">
+<content start="1012" end="1013">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1013" end="1409">
+<LeftIndent>140.0</LeftIndent>
+<content start="1013" end="1054">
+<size>11</size></content>
+
+<content start="1054" end="1078">
+<href>unlock.cml</href><size>11</size></content>
+
+<content start="1078" end="1409">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1409" end="1410">
+<LeftIndent>140.0</LeftIndent>
+<content start="1409" end="1410">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1410" end="1678">
+<LeftIndent>140.0</LeftIndent>
+<content start="1410" end="1414">
+<bold>true</bold><size>11</size></content>
+
+<content start="1414" end="1678">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1678" end="1679">
+<LeftIndent>140.0</LeftIndent>
+<content start="1678" end="1679">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1679" end="1707">
+<RightIndent>8.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1679" end="1681">
+<size>11</size></content>
+
+<content start="1681" end="1689">
+<href>importmolecule.cml</href><size>11</size></content>
+
+<content start="1689" end="1692">
+<size>11</size></content>
+
+<content start="1692" end="1697">
+<href>index_jmol.cml</href><size>11</size></content>
+
+<content start="1697" end="1700">
+<size>11</size></content>
+
+<content start="1700" end="1704">
+<href>rovingmode.cml</href><size>11</size></content>
+
+<content start="1704" end="1706">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

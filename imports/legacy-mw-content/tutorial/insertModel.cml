@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a model container</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a model container
+
+&lt; Previous | Index | Next &gt;
+
+To design a model, we need to insert a model container &#10102; first. MW allows you to insert models into text and remove them in a way as simple as just removing a big character (namely, using the DELETE key or the BACKSPACE key to remove an embedded component, or select the text surrounding the component and cut).
+
+ 
+
+Vocabulary: Model container and simulator are used interchangably throughout this Manual and in MW. When the former is used, it refers more to the static properties: the current state, the objects and so on. When the latter is used, it refers more to the dynamic properties: the time evolution, the emergent behaviors, and so on. So are the word &quot;models&quot; and &quot;simulations&quot;.
+ 
+
+Types of model containers
+
+There are currently four types of 2D simulators available for use. They are:
+
+   Basic 2D Molecular Simulator (see the mathematical model)
+   2D Mesoscale Particle Simulator based on the Gay-Berne model (see the mathematical model)
+   2D Chemical Reaction Simulator (see the mathematical model)
+   2D Protein Synthesis Simulator
+
+And two types of 3D tools:
+
+   Jmol Molecular Viewer for displaying molecular structures
+   3D Molecular Simulator for creating/editing molecular structures and performing simulation
+
+Some of the names of these simulators may sound odd to you. So let us briefly explain what they mean here. A molecular model refers to a model about a molecular structure that is based on taking every atom in that structure into account (i.e. atomistically). For example, if we are to model a water molecule with an atomistic approach, the model should contain two hydrogen atoms and an oxygen atom.
+
+People sometimes, for simplicity, treat the whole water molecule as a single entity, i.e. assume that it is a particle of some sort without considering the actual intramolecular structure. A reasonable approach is to use some sort of particle to represent a rigid chain molecule (is this a good approximation?). Such a particle is greater than the atomic scale but smaller than the scale an optical microscope can reveal. It is therefore called a mesoscale particle. A well-known mesoscale particle model is the Gay-Berne model, which is a mathematical model for elliptical particles. The second type of our 2D model uses the Gay-Berne model.
+
+The third type of 2D model, the chemical reaction model, is derived from the first one. A molecular model of the first type is based on the   conventional molecular mechanics, in which bonds are not allowed to be made or broken. The chemical reaction models introduce new algorithms to permit atoms to make bonds or bonds to break, thus making it possible to model chemical reactions without using quantum mechanics calculations.
+
+Inserting a model container
+
+There are four ways of inserting a model container:
+
+   From the main menu bar: choose the type of model you would like to add from the &quot;Insert&gt;Model Container&quot; submenu of the main menu bar.
+
+   From the pop-up menu: right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the place where you want to insert a model into, and select the type of model you would like to add from the &quot;Insert Model Container&quot; submenu of the pop-up menu.
+
+   From the main tool bar: click the button &quot; &quot; on the tool bar, and select the class of model you would like to add from the &quot;Model Container&quot; submenu of the pop-up menu. Note that the button does not show up when MW is not in the editing mode. (Click here to see how to enter the editing mode.)
+
+   Keyboard shortcuts: Press ALT+SHIFT+1 for the Basic 2D Molecular Simulator, ALT+SHIFT+2 for the 2D Chemical Reaction Simulator, ALT+SHIFT+4 for the 2D Mesoscale Particle Simulator, and so on.
+
+Note that:
+
+   When a model is inserted, it is inserted right at the position where the caret was before insertion. Make sure to move the caret to the desired location before taking the insertion action.
+
+   After a model is inserted, it becomes a part of a paragraph. All the paragraph actions apply to it. You can align it on the left, center or right.
+
+   Deleting a model is indentical to deleting a character. Use the backspace/delete key. If a model is in the middle of the selected text, it will be deleted if the selected text is deleted.
+
+   Undo/redoing of a model deletion and insertion is similar to those of a text string.
+
+   The screen space occupied by a model is occupied exclusively by it. You cannot, for example, write some text inside that space.
+
+   You cannot insert more than two 2D models of the same class into the same page (there is currently no limitation Jmol viewers and 3D models, but you should generally avoid inserting more than two containers into the same page). Multiple models on a single page allows your users to compare the models. But a disadvantage is that if you run the models concurrently, they will slow one another down. Another disadvantage is that the total loading time for a page will increase if it contains multiple models. If you have a sequence of models, we recommend that each be put in a different but hyperlinked page.
+
+   If the page has a model and you insert another of the same type before it, you must also redo the controls and outputs that have been set up with the existing model (see Building the user interface for an activity). Similarly, if the page has two models of the same type and you remove the first one, you must also remove the controls and outputs that are associated with the removed models and redo those that have been set up with the remaining model.
+
+In the following chapters, we will show you in details about how to make models using the model containers and create pages around them.
+
+ 
+&#10102; The title of this page is &quot;Inserting a Model Container&quot;, but you may be wondering why we did not just say &quot;Inserting a Model&quot; since we have not mentioned anything about what the word &quot;container&quot; means at all. This is because the component that is inserted is not just a specific computational model of a natural phenomenon. It is a software container that provides many functionalities related to processing and operating models, such as inputting, outputting, creating, and running/recording simulations, through its own user interface.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="6294">
+<paragraph start="0" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="27">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="57">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="29" end="31">
+<size>11</size></content>
+
+<content start="31" end="39">
+<href>blankPage.cml</href><size>11</size></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="47">
+<href>index.cml</href><size>11</size></content>
+
+<content start="47" end="56">
+<size>11</size></content>
+
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="58">
+<content start="57" end="58">
+</content>
+
+</paragraph>
+<paragraph start="58" end="370">
+<LeftIndent>140.0</LeftIndent>
+<content start="58" end="113">
+<size>11</size></content>
+
+<content start="113" end="114">
+<size>13</size></content>
+
+<content start="114" end="370">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="370" end="371">
+<LeftIndent>140.0</LeftIndent>
+<content start="370" end="371">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="371" end="373">
+<LeftIndent>140.0</LeftIndent>
+<content start="371" end="372">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="372" end="373">
+</content>
+
+</paragraph>
+<paragraph start="373" end="374">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>140.0</LeftIndent>
+<content start="373" end="374">
+<size>11</size><bold>true</bold><foreground>255 0 0</foreground></content>
+
+</paragraph>
+<paragraph start="374" end="748">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="374" end="384">
+<size>11</size><bold>true</bold><foreground>255 0 0</foreground></content>
+
+<content start="384" end="386">
+<size>11</size></content>
+
+<content start="386" end="401">
+<size>11</size><bold>true</bold></content>
+
+<content start="401" end="406">
+<size>11</size></content>
+
+<content start="406" end="415">
+<size>11</size><bold>true</bold></content>
+
+<content start="415" end="747">
+<size>11</size></content>
+
+<content start="747" end="748">
+</content>
+
+</paragraph>
+<paragraph start="748" end="750">
+<LeftIndent>140.0</LeftIndent>
+<content start="748" end="749">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="749" end="750">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="750" end="751">
+<LeftIndent>140.0</LeftIndent>
+<content start="750" end="751">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="751" end="777">
+<LeftIndent>140.0</LeftIndent>
+<content start="751" end="776">
+<size>11</size><bold>true</bold></content>
+
+<content start="776" end="777">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="777" end="778">
+<LeftIndent>140.0</LeftIndent>
+<content start="777" end="778">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="778" end="855">
+<LeftIndent>140.0</LeftIndent>
+<content start="778" end="855">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="855" end="856">
+<LeftIndent>140.0</LeftIndent>
+<content start="855" end="856">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="856" end="917">
+<LeftIndent>160.0</LeftIndent>
+<content start="856" end="857">
+<icon>AtomModel.gif</icon></content>
+
+<content start="857" end="859">
+<size>11</size></content>
+
+<content start="859" end="888">
+<link_left>0</link_left><target>_blank</target><link_resizable>true</link_resizable><link_menubar>false</link_menubar><link_toolbar>false</link_toolbar><link_fullscreen>false</link_fullscreen><size>11</size><link_top>0</link_top><link_statusbar>true</link_statusbar></content>
+
+<content start="888" end="893">
+<size>11</size></content>
+
+<content start="893" end="915">
+<href>../teacher/molsim/AAFF.cml</href><size>11</size></content>
+
+<content start="915" end="917">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="917" end="1010">
+<LeftIndent>160.0</LeftIndent>
+<content start="917" end="918">
+<icon>GBModel.gif</icon></content>
+
+<content start="918" end="920">
+<size>11</size></content>
+
+<content start="920" end="980">
+<link_left>0</link_left><target>_blank</target><link_resizable>true</link_resizable><link_menubar>false</link_menubar><link_toolbar>false</link_toolbar><link_fullscreen>false</link_fullscreen><size>11</size><link_top>0</link_top><link_statusbar>true</link_statusbar></content>
+
+<content start="980" end="986">
+<size>11</size></content>
+
+<content start="986" end="1008">
+<href>../teacher/molsim/UAFF.cml</href><size>11</size></content>
+
+<content start="1008" end="1010">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1010" end="1073">
+<LeftIndent>160.0</LeftIndent>
+<content start="1010" end="1011">
+<icon>ChemReaction.gif</icon></content>
+
+<content start="1011" end="1013">
+<size>11</size></content>
+
+<content start="1013" end="1043">
+<link_left>0</link_left><target>_blank</target><link_resizable>true</link_resizable><link_menubar>false</link_menubar><link_toolbar>false</link_toolbar><link_fullscreen>false</link_fullscreen><size>11</size><link_top>0</link_top><link_statusbar>true</link_statusbar></content>
+
+<content start="1043" end="1049">
+<size>11</size></content>
+
+<content start="1049" end="1071">
+<href>../teacher/articles/reaction.cml</href><size>11</size></content>
+
+<content start="1071" end="1073">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1073" end="1107">
+<LeftIndent>160.0</LeftIndent>
+<content start="1073" end="1074">
+<icon>Prosyn.gif</icon></content>
+
+<content start="1074" end="1076">
+</content>
+
+<content start="1076" end="1106">
+<href>prosyn.cml</href><size>11</size></content>
+
+<content start="1106" end="1107">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1107" end="1108">
+<LeftIndent>140.0</LeftIndent>
+<content start="1107" end="1108">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1108" end="1135">
+<LeftIndent>140.0</LeftIndent>
+<content start="1108" end="1135">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1135" end="1136">
+<LeftIndent>140.0</LeftIndent>
+<content start="1135" end="1136">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1136" end="1197">
+<LeftIndent>160.0</LeftIndent>
+<content start="1136" end="1137">
+<icon>MV.gif</icon></content>
+
+<content start="1137" end="1139">
+</content>
+
+<content start="1139" end="1160">
+<href>intro_jmol.cml</href><size>11</size></content>
+
+<content start="1160" end="1197">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1197" end="1291">
+<LeftIndent>160.0</LeftIndent>
+<content start="1197" end="1198">
+<icon>MD3D.gif</icon></content>
+
+<content start="1198" end="1200">
+</content>
+
+<content start="1200" end="1222">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="1222" end="1291">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1291" end="1292">
+<LeftIndent>140.0</LeftIndent>
+<content start="1291" end="1292">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1292" end="1692">
+<LeftIndent>140.0</LeftIndent>
+<content start="1292" end="1585">
+<size>11</size></content>
+
+<content start="1585" end="1599">
+<href>../molecules/famous/water.pdb</href><size>11</size></content>
+
+<content start="1599" end="1692">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1692" end="1693">
+<LeftIndent>140.0</LeftIndent>
+<content start="1692" end="1693">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1693" end="2336">
+<LeftIndent>140.0</LeftIndent>
+<content start="1693" end="1973">
+<size>11</size></content>
+
+<content start="1973" end="2002">
+<href>compare.cml</href><size>11</size></content>
+
+<content start="2002" end="2336">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2336" end="2337">
+<LeftIndent>140.0</LeftIndent>
+<content start="2336" end="2337">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2337" end="2767">
+<LeftIndent>140.0</LeftIndent>
+<content start="2337" end="2477">
+<size>11</size></content>
+
+<content start="2477" end="2478">
+<icon>htmlink.gif</icon></content>
+
+<content start="2478" end="2479">
+<size>11</size></content>
+
+<content start="2479" end="2511">
+<href>http://cmm.cit.nih.gov/modeling/guide_documents/molecular_mechanics_document.html</href><size>11</size></content>
+
+<content start="2511" end="2767">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2767" end="2768">
+<LeftIndent>140.0</LeftIndent>
+<content start="2767" end="2768">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2768" end="2796">
+<LeftIndent>140.0</LeftIndent>
+<content start="2768" end="2795">
+<size>11</size><bold>true</bold></content>
+
+<content start="2795" end="2796">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2796" end="2797">
+<LeftIndent>140.0</LeftIndent>
+<content start="2796" end="2797">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2797" end="2849">
+<LeftIndent>140.0</LeftIndent>
+<content start="2797" end="2849">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2849" end="2850">
+<LeftIndent>140.0</LeftIndent>
+<content start="2849" end="2850">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2850" end="2988">
+<LeftIndent>160.0</LeftIndent>
+<content start="2850" end="2851">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="2851" end="2853">
+</content>
+
+<content start="2853" end="2875">
+<size>11</size><bold>true</bold></content>
+
+<content start="2875" end="2988">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2988" end="2989">
+<LeftIndent>160.0</LeftIndent>
+<content start="2988" end="2989">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2989" end="3251">
+<LeftIndent>160.0</LeftIndent>
+<content start="2989" end="2990">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="2990" end="2992">
+<size>11</size></content>
+
+<content start="2992" end="3012">
+<size>11</size><bold>true</bold></content>
+
+<content start="3012" end="3251">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3251" end="3252">
+<LeftIndent>140.0</LeftIndent>
+<content start="3251" end="3252">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3252" end="3549">
+<LeftIndent>160.0</LeftIndent>
+<content start="3252" end="3253">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="3253" end="3255">
+<size>11</size></content>
+
+<content start="3255" end="3277">
+<size>11</size><bold>true</bold></content>
+
+<content start="3277" end="3297">
+<size>11</size></content>
+
+<content start="3297" end="3298">
+<size>11</size><icon>InsertComponent.gif</icon></content>
+
+<content start="3298" end="3505">
+<size>11</size></content>
+
+<content start="3505" end="3509">
+<href>unlock.cml</href><size>11</size></content>
+
+<content start="3509" end="3549">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3549" end="3550">
+<LeftIndent>140.0</LeftIndent>
+<content start="3549" end="3550">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3550" end="3745">
+<LeftIndent>160.0</LeftIndent>
+<content start="3550" end="3551">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="3551" end="3553">
+<size>11</size></content>
+
+<content start="3553" end="3571">
+<size>11</size><bold>true</bold></content>
+
+<content start="3571" end="3745">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3745" end="3746">
+<LeftIndent>140.0</LeftIndent>
+<content start="3745" end="3746">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3746" end="3757">
+<LeftIndent>140.0</LeftIndent>
+<content start="3746" end="3757">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3757" end="3758">
+<LeftIndent>140.0</LeftIndent>
+<content start="3757" end="3758">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3758" end="3950">
+<LeftIndent>160.0</LeftIndent>
+<content start="3758" end="3759">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="3759" end="3862">
+<size>11</size></content>
+
+<content start="3862" end="3949">
+<size>11</size><bold>true</bold></content>
+
+<content start="3949" end="3950">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3950" end="3951">
+<LeftIndent>140.0</LeftIndent>
+<content start="3950" end="3951">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3951" end="4101">
+<LeftIndent>160.0</LeftIndent>
+<content start="3951" end="3952">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="3952" end="4023">
+<size>11</size></content>
+
+<content start="4023" end="4040">
+<href>paragraph.cml</href><size>11</size></content>
+
+<content start="4040" end="4101">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4101" end="4102">
+<LeftIndent>160.0</LeftIndent>
+<content start="4101" end="4102">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4102" end="4293">
+<LeftIndent>160.0</LeftIndent>
+<content start="4102" end="4103">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="4103" end="4293">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4293" end="4294">
+<LeftIndent>160.0</LeftIndent>
+<content start="4293" end="4294">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4294" end="4382">
+<LeftIndent>160.0</LeftIndent>
+<content start="4294" end="4295">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="4295" end="4382">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4382" end="4383">
+<LeftIndent>140.0</LeftIndent>
+<content start="4382" end="4383">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4383" end="4514">
+<LeftIndent>160.0</LeftIndent>
+<content start="4383" end="4384">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="4384" end="4514">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4514" end="4515">
+<LeftIndent>160.0</LeftIndent>
+<content start="4514" end="4515">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4515" end="5126">
+<LeftIndent>160.0</LeftIndent>
+<content start="4515" end="4516">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="4516" end="5108">
+<size>11</size></content>
+
+<content start="5108" end="5119">
+<href>hyperlink.cml</href><size>11</size></content>
+
+<content start="5119" end="5126">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5126" end="5127">
+<LeftIndent>160.0</LeftIndent>
+<content start="5126" end="5127">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5127" end="5584">
+<LeftIndent>160.0</LeftIndent>
+<content start="5127" end="5128">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="5128" end="5130">
+</content>
+
+<content start="5130" end="5300">
+<size>11</size></content>
+
+<content start="5300" end="5343">
+<href>controller.cml</href><size>11</size></content>
+
+<content start="5343" end="5584">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5584" end="5585">
+<LeftIndent>140.0</LeftIndent>
+<content start="5584" end="5585">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5585" end="5722">
+<LeftIndent>140.0</LeftIndent>
+<content start="5585" end="5722">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5722" end="5723">
+<LeftIndent>140.0</LeftIndent>
+<content start="5722" end="5723">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="5723" end="5725">
+<LeftIndent>140.0</LeftIndent>
+<SpaceBelow>2.0</SpaceBelow>
+<SpaceAbove>2.0</SpaceAbove>
+<content start="5723" end="5724">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="5724" end="5725">
+</content>
+
+</paragraph>
+<paragraph start="5725" end="6265">
+<LeftIndent>140.0</LeftIndent>
+<content start="5725" end="5726">
+<size>13</size></content>
+
+<content start="5726" end="5727">
+</content>
+
+<content start="5727" end="6165">
+<size>10</size></content>
+
+<content start="6165" end="6186">
+<href>modelIO.cml</href><size>10</size></content>
+
+<content start="6186" end="6202">
+<size>10</size></content>
+
+<content start="6202" end="6231">
+<href>RecordSimulation.cml</href><size>10</size></content>
+
+<content start="6231" end="6264">
+<size>10</size></content>
+
+<content start="6264" end="6265">
+</content>
+
+</paragraph>
+<paragraph start="6265" end="6266">
+<LeftIndent>140.0</LeftIndent>
+<content start="6265" end="6266">
+</content>
+
+</paragraph>
+<paragraph start="6266" end="6294">
+<Alignment>2</Alignment>
+<content start="6266" end="6268">
+<size>11</size></content>
+
+<content start="6268" end="6276">
+<href>blankPage.cml</href><size>11</size></content>
+
+<content start="6276" end="6279">
+<size>11</size></content>
+
+<content start="6279" end="6284">
+<href>index.cml</href><size>11</size></content>
+
+<content start="6284" end="6293">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

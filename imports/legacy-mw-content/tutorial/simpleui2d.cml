@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<language>ISO-8859-1</language>
+<page_title>Simplifying the user interface</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Simplifying the user interface
+
+&lt; Previous | Index | Next &gt;
+
+The user interface (UI) for making models is mostly useful when you build a model. Once you finish the construction, the UI can be simplified for the intended end users of your model, who do not need to see the complex model-building interface. For example, the tool bar and menu bar can be removed (thus access to the options and controls, mainly designed for authors, can be blocked). As scriptability has been extensively enabled, you seldom need to keep them for the end users. Most actions in the menu bar and the tool bar can be delivered through scripts, which can be set up for most widgets and hyperlinks. The simulation controls can be hidden and replaced by inserted buttons that employ the run, stop, and reset command to control the simulation. In fact, the model container can have only the molecular view (i.e. the window in which atoms are shown) with all the other components removed (see this page for an example --- the simulations are controlled through scripts set for the radio buttons). The border for the molecular view can also be hidden to create a visual effect as if the simulation were part of the page (see this page for a 2D example and this page for a 3D example).
+
+If you need to revise a model later, you can easily put the model-building UI back.
+
+Although we strongly recommend that a simplified UI be presented to the end users, you can leave the controls that you believe the end users would also benefit from using in the activity. For example, in a diffusion activity, you may want to leave the buttons for adding, moving, and deleting particles in the tool bar and ask students to use them to set up diffusion models of their own.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1762">
+<paragraph start="0" end="31">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="30">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="32">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="31" end="32">
+</content>
+
+</paragraph>
+<paragraph start="32" end="60">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="32" end="34">
+<size>11</size></content>
+
+<content start="34" end="42">
+<size>11</size><href>accessGBProp.cml</href></content>
+
+<content start="42" end="45">
+<size>11</size></content>
+
+<content start="45" end="50">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="50" end="53">
+<size>11</size></content>
+
+<content start="53" end="57">
+<size>11</size><href>ImageInModel.cml</href></content>
+
+<content start="57" end="59">
+<size>11</size></content>
+
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<LeftIndent>140.0</LeftIndent>
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="1258">
+<LeftIndent>140.0</LeftIndent>
+<content start="61" end="323">
+<size>11</size></content>
+
+<content start="323" end="331">
+<size>11</size><href>toolbar.cml</href></content>
+
+<content start="331" end="614">
+<size>11</size></content>
+
+<content start="614" end="621">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="621" end="636">
+<size>11</size></content>
+
+<content start="636" end="674">
+<size>11</size><href>script_where.cml</href></content>
+
+<content start="674" end="730">
+<size>11</size></content>
+
+<content start="730" end="746">
+<size>11</size><href>insertButton.cml</href></content>
+
+<content start="746" end="763">
+<size>11</size></content>
+
+<content start="763" end="766">
+<size>11</size><href>script_run.cml</href></content>
+
+<content start="766" end="768">
+<size>11</size></content>
+
+<content start="768" end="772">
+<size>11</size><href>script_stop.cml</href></content>
+
+<content start="772" end="778">
+<size>11</size></content>
+
+<content start="778" end="783">
+<size>11</size><href>script_reset.cml</href></content>
+
+<content start="783" end="967">
+<size>11</size></content>
+
+<content start="967" end="976">
+<size>11</size><href>../student/gaslaws/avogadro.cml</href></content>
+
+<content start="976" end="1055">
+<size>11</size></content>
+
+<content start="1055" end="1068">
+<size>11</size><href>insertRadioButton.cml</href></content>
+
+<content start="1068" end="1198">
+<size>11</size></content>
+
+<content start="1198" end="1207">
+<size>11</size><href>../part2/ZoomIt/main.cml</href></content>
+
+<content start="1207" end="1229">
+<size>11</size></content>
+
+<content start="1229" end="1238">
+<size>11</size><href>../student/organic/threebenzene.cml</href></content>
+
+<content start="1238" end="1258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1258" end="1259">
+<LeftIndent>140.0</LeftIndent>
+<content start="1258" end="1259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1259" end="1343">
+<LeftIndent>140.0</LeftIndent>
+<content start="1259" end="1343">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1343" end="1344">
+<LeftIndent>140.0</LeftIndent>
+<content start="1343" end="1344">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1344" end="1733">
+<LeftIndent>140.0</LeftIndent>
+<content start="1344" end="1550">
+<size>11</size></content>
+
+<content start="1550" end="1568">
+<size>11</size><href>../part1/dan/DandOpage2.cml</href></content>
+
+<content start="1568" end="1733">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1733" end="1734">
+<LeftIndent>140.0</LeftIndent>
+<content start="1733" end="1734">
+</content>
+
+</paragraph>
+<paragraph start="1734" end="1762">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1734" end="1736">
+<size>11</size></content>
+
+<content start="1736" end="1744">
+<size>11</size><href>accessGBProp.cml</href></content>
+
+<content start="1744" end="1747">
+<size>11</size></content>
+
+<content start="1747" end="1752">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="1752" end="1755">
+<size>11</size></content>
+
+<content start="1755" end="1759">
+<size>11</size><href>ImageInModel.cml</href></content>
+
+<content start="1759" end="1761">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

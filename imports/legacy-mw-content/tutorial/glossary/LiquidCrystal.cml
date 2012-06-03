@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Liquid crystal</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Liquid crystal
+
+
+A thermodynamically stable intermediate phase (mesophase) between solid and liquid in the phase diagram. First discovered by Austrian botanist Friedrich Reinitzer in 1888.
+
+
+
+ 
+return to index</text>
+<section start="0" end="210">
+<paragraph start="0" end="15">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="14">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="14" end="15">
+</content>
+
+</paragraph>
+<paragraph start="15" end="16">
+<LeftIndent>120.0</LeftIndent>
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="17">
+<LeftIndent>120.0</LeftIndent>
+<content start="16" end="17">
+</content>
+
+</paragraph>
+<paragraph start="17" end="189">
+<LeftIndent>140.0</LeftIndent>
+<content start="17" end="188">
+<size>11</size></content>
+
+<content start="188" end="189">
+</content>
+
+</paragraph>
+<paragraph start="189" end="190">
+<LeftIndent>120.0</LeftIndent>
+<content start="189" end="190">
+</content>
+
+</paragraph>
+<paragraph start="190" end="191">
+<LeftIndent>120.0</LeftIndent>
+<content start="190" end="191">
+</content>
+
+</paragraph>
+<paragraph start="191" end="192">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="191" end="192">
+</content>
+
+</paragraph>
+<paragraph start="192" end="194">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="192" end="193">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="193" end="194">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="194" end="210">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="194" end="209">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

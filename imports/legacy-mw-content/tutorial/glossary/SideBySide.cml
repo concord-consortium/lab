@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Side-by-side arrangement</page_title>
+<info>null</info>
+<bg_image>sidebar2.gif</bg_image>
+<text>Side-by-side arrangement
+
+A configuration of two Gay-Berne  particles, as shown below: 
+
+ 
+
+For a pair of identical Gay-Berne particles, the interaction energy corresponding to this configuration is: 
+
+ 
+
+See end-to-end arrangement  and T-shaped arrangement. 
+
+
+ 
+return to index</text>
+<section start="0" end="280">
+<paragraph start="0" end="25">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="24">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="26">
+<LeftIndent>120.0</LeftIndent>
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="88">
+<LeftIndent>140.0</LeftIndent>
+<content start="26" end="88">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="88" end="89">
+<LeftIndent>120.0</LeftIndent>
+<content start="88" end="89">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="89" end="91">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="89" end="90">
+<icon>SideBySide.gif</icon><size>11</size></content>
+
+<content start="90" end="91">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="91" end="92">
+<LeftIndent>120.0</LeftIndent>
+<content start="91" end="92">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="92" end="201">
+<LeftIndent>140.0</LeftIndent>
+<content start="92" end="201">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="201" end="202">
+<LeftIndent>120.0</LeftIndent>
+<content start="201" end="202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="202" end="204">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="202" end="203">
+<icon>SideBySideEnergy.gif</icon><size>11</size></content>
+
+<content start="203" end="204">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="204" end="205">
+<LeftIndent>120.0</LeftIndent>
+<content start="204" end="205">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="205" end="260">
+<LeftIndent>140.0</LeftIndent>
+<content start="205" end="209">
+<size>11</size></content>
+
+<content start="209" end="231">
+<href>End2End.cml</href><size>11</size></content>
+
+<content start="231" end="237">
+<size>11</size></content>
+
+<content start="237" end="257">
+<href>TShape.cml</href><size>11</size></content>
+
+<content start="257" end="259">
+<size>11</size></content>
+
+<content start="259" end="260">
+</content>
+
+</paragraph>
+<paragraph start="260" end="261">
+<LeftIndent>120.0</LeftIndent>
+<content start="260" end="261">
+</content>
+
+</paragraph>
+<paragraph start="261" end="262">
+<LeftIndent>120.0</LeftIndent>
+<content start="261" end="262">
+</content>
+
+</paragraph>
+<paragraph start="262" end="264">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="262" end="263">
+<href>index.cml</href><icon>index.gif</icon></content>
+
+<content start="263" end="264">
+<href>index.cml</href></content>
+
+</paragraph>
+<paragraph start="264" end="280">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="264" end="279">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

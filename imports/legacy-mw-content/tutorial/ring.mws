@@ -1,0 +1,37 @@
+define %oldn %number_of_atoms;
+define %xc %width/2;
+define %yc %height/2;
+define %n 64; // number of atoms in the ring
+define %d 10.0; // the radius of ring
+define %sintheta 0;
+define %costheta 0;
+define %i 0;
+
+// add atoms
+while(%i < %n);
+  set %sintheta sin(2*pi*%i/%n);
+  set %costheta cos(2*pi*%i/%n);
+  add atom 0 (%xc+%d*%costheta, %yc+%d*%sintheta);
+  %i++;
+endwhile;
+set %i 0;
+
+// build the radial bonds
+while (%i < %n-1);
+  bond "%oldn+%i" "%oldn+%i+1" 10;
+  %i++;
+endwhile;
+bond "%oldn" "%oldn+%n-1" 10;
+set %i 0;
+
+// build the angular bonds
+while(%i < %n-2);
+  bond "%oldn+%i" "%oldn+%i+1" "%oldn+%i+2" 100;
+  %i++;
+endwhile;
+bond "%oldn+%n-2" "%oldn+%n-1" "%oldn" 100;
+bond "%oldn+%n-1" "%oldn" "%oldn+1" 100;
+
+select abond none;
+select rbond none;
+select atom none;

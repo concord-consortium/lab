@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Isotropicity of pressure measured by pressure gauges</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Isotropicity of pressure measured by gauges
+
+&lt; Previous | Index | Next &gt;
+
+The third test of the pressure gauge is to install a gauge on each surface of an obstacle and measure the pressure of a fluid from four directions. As we know, there is no directionality of pressure for a fluid if there is no field, or anything that can cause biased motion, such as a chemical potential gradient. Fluid molecules move randomly with equal probability in all directions and a pressure gauge should read approximately the same values in different directions (within a tolerance of error).
+
+The following experiment is set up to prove this. To remove the boundary effect, the periodic boundary conditions are used. The obstacle that the gauges stick to is almost but not exactly square, which ensures that the quality of data for each gauge is more or less the same. It is fixed (by setting the density to be higher than 1000,000). Two types of gas molecules are introduced to make the simulation more interesting. According to Dalton&apos;s Law, the result should be similar to the case where all the atoms are of the same type.
+
+  
+ 
+&#12304;This is an embedded model container.&#12305;
+
+The following images are some running-average results from a few test runs. You can verify them with the above model.
+
+    
+
+This is not just a proof of the pressure apparatus --- there is some physics behind these simulations. For example, this means that pressure is the same in any direction at a point inside a fluid, an aspect of Pascal&apos;s Principle (see the next section).
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1565">
+<paragraph start="0" end="44">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="43">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="73">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="55">
+<href>pressurediff.cml</href><size>11</size></content>
+
+<content start="55" end="58">
+<size>11</size></content>
+
+<content start="58" end="63">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="63" end="66">
+<size>11</size></content>
+
+<content start="66" end="70">
+<href>wallpressure.cml</href><size>11</size></content>
+
+<content start="70" end="72">
+<size>11</size></content>
+
+<content start="72" end="73">
+</content>
+
+</paragraph>
+<paragraph start="73" end="74">
+<LeftIndent>140.0</LeftIndent>
+<content start="73" end="74">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="74" end="577">
+<LeftIndent>140.0</LeftIndent>
+<content start="74" end="577">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="577" end="578">
+<LeftIndent>140.0</LeftIndent>
+<content start="577" end="578">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="578" end="1112">
+<LeftIndent>140.0</LeftIndent>
+<content start="578" end="1112">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1112" end="1113">
+<LeftIndent>140.0</LeftIndent>
+<content start="1112" end="1113">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1113" end="1116">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1113" end="1114">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>isopressure$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="1114" end="1115">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-1000000" style="0" width="1.0" symbol="0" size="4" spacing="5">West pressure:Obstacle #0</time_series_y1>
+<time_series_y2 color="-1000000" style="2" width="1.0" symbol="0" size="4" spacing="5">East pressure:Obstacle #0</time_series_y2>
+<time_series_y3 color="-ffff01" style="3" width="1.0" symbol="0" size="4" spacing="5">North pressure:Obstacle #0</time_series_y3>
+<time_series_y4 color="-ffff01" style="4" width="1.0" symbol="0" size="4" spacing="5">South pressure:Obstacle #0</time_series_y4>
+<autofity>false</autofity>
+<axis_y_min>0.0</axis_y_min>
+<axis_y_max>6.0</axis_y_max>
+<width>300</width>
+<height>284</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Pressure (bar)</axis_y_title>
+<legend_x>50</legend_x>
+<legend_y>45</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="1115" end="1116">
+</content>
+
+</paragraph>
+<paragraph start="1116" end="1118">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1116" end="1117">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Test run with a pure gas and compare</title>
+<tooltip>Test run with a pure gas and compare</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<disabled_at_script>true</disabled_at_script>
+<script>load isopressure_onetype.mml;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="1117" end="1118">
+</content>
+
+</paragraph>
+<paragraph start="1118" end="1157">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1118" end="1156">
+<size>10</size></content>
+
+<content start="1156" end="1157">
+</content>
+
+</paragraph>
+<paragraph start="1157" end="1158">
+<LeftIndent>140.0</LeftIndent>
+<content start="1157" end="1158">
+</content>
+
+</paragraph>
+<paragraph start="1158" end="1276">
+<LeftIndent>140.0</LeftIndent>
+<content start="1158" end="1276">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1276" end="1277">
+<LeftIndent>140.0</LeftIndent>
+<content start="1276" end="1277">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1277" end="1282">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1277" end="1278">
+<size>11</size></content>
+
+<content start="1278" end="1279">
+<icon>isopressure1.gif</icon></content>
+
+<content start="1279" end="1280">
+</content>
+
+<content start="1280" end="1281">
+<icon>isopressure2.gif</icon></content>
+
+<content start="1281" end="1282">
+</content>
+
+</paragraph>
+<paragraph start="1282" end="1283">
+<LeftIndent>140.0</LeftIndent>
+<content start="1282" end="1283">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1283" end="1536">
+<LeftIndent>140.0</LeftIndent>
+<content start="1283" end="1535">
+<size>11</size></content>
+
+<content start="1535" end="1536">
+</content>
+
+</paragraph>
+<paragraph start="1536" end="1537">
+<LeftIndent>140.0</LeftIndent>
+<content start="1536" end="1537">
+</content>
+
+</paragraph>
+<paragraph start="1537" end="1565">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1537" end="1539">
+<size>11</size></content>
+
+<content start="1539" end="1547">
+<href>pressurediff.cml</href><size>11</size></content>
+
+<content start="1547" end="1550">
+<size>11</size></content>
+
+<content start="1550" end="1555">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="1555" end="1558">
+<size>11</size></content>
+
+<content start="1558" end="1562">
+<href>wallpressure.cml</href><size>11</size></content>
+
+<content start="1562" end="1564">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

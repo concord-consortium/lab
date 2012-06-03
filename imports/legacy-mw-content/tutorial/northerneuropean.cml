@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-4"?>
+<document>
+<language>ISO-8859-4</language>
+<page_title>Northern European Languages</page_title>
+<text>Northern European languages
+
+This test page is encoded in ISO-8859-4:
+
+   Estonian: Eesti Maaülikool
+   Latvian: latvie¹u valoda
+   Lithuanian:  Auk¹taitian, Auk¹taièiù, ®emaièiù/®emaitiu</text>
+<section start="0" end="188">
+<paragraph start="0" end="28">
+<Alignment>1</Alignment>
+<content start="0" end="27">
+<bold>true</bold></content>
+
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="29">
+<content start="28" end="29">
+</content>
+
+</paragraph>
+<paragraph start="29" end="70">
+<content start="29" end="70">
+</content>
+
+</paragraph>
+<paragraph start="70" end="71">
+<content start="70" end="71">
+</content>
+
+</paragraph>
+<paragraph start="71" end="101">
+<LeftIndent>40.0</LeftIndent>
+<content start="71" end="72">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="72" end="74">
+</content>
+
+<content start="74" end="83">
+<bold>true</bold></content>
+
+<content start="83" end="101">
+</content>
+
+</paragraph>
+<paragraph start="101" end="129">
+<LeftIndent>40.0</LeftIndent>
+<content start="101" end="102">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="102" end="104">
+</content>
+
+<content start="104" end="112">
+<bold>true</bold></content>
+
+<content start="112" end="129">
+</content>
+
+</paragraph>
+<paragraph start="129" end="188">
+<LeftIndent>40.0</LeftIndent>
+<content start="129" end="130">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="130" end="132">
+</content>
+
+<content start="132" end="143">
+<bold>true</bold></content>
+
+<content start="143" end="187">
+</content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Adding, resizing and moving cuboid obstacles</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Adding, resizing and moving cuboid obstacles
+
+&lt; Previous | Index | Next &gt;
+
+A cuboid (rectangular parallelepiped or rectangular prism) obstacle is an area of cuboid into which particles cannot enter and will be reflected from its surface upon colliding.
+
+To add a cuboid obstacle, select the tool (&quot; &quot; or &quot; &quot; or &quot; &quot;, you can right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the corresponding button and select the helper plane in the direction you will work on), and then you will see a translucent greenish helper plane appearing. Use the arrow keys to move it up or down to where you would like to add a cuboid obstacle. Drag your mouse to draw a rectangle on the plane. When the mouse button is released, a thin cuboid (rectangle) will be created on the plane.
+
+Now, we have to use the Extrusion Tool (&quot; &quot;) to extrude the rectangle into a cuboid. When the Extrusion Tool is selected, the face of the cuboid where your mouse moves over will be highlighted, indicating that it is ready to be pulled or pushed. Press a face and then drag the mouse. You will find that the cuboid will expand or shink in the direction you push or pull the face.
+
+Practice
+
+You may play with the following simulator about adding cuboid obstacles and/or extruding them.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1347">
+<paragraph start="0" end="45">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="44">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="44" end="45">
+</content>
+
+</paragraph>
+<paragraph start="45" end="46">
+<RightIndent>20.0</RightIndent>
+<content start="45" end="46">
+</content>
+
+</paragraph>
+<paragraph start="46" end="74">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="46" end="48">
+<size>11</size></content>
+
+<content start="48" end="56">
+<href>extrusion.cml</href><size>11</size></content>
+
+<content start="56" end="59">
+<size>11</size></content>
+
+<content start="59" end="64">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="64" end="67">
+<size>11</size></content>
+
+<content start="67" end="71">
+<href>cylindericobstacle.cml</href><size>11</size></content>
+
+<content start="71" end="73">
+<size>11</size></content>
+
+<content start="73" end="74">
+</content>
+
+</paragraph>
+<paragraph start="74" end="75">
+<LeftIndent>140.0</LeftIndent>
+<content start="74" end="75">
+</content>
+
+</paragraph>
+<paragraph start="75" end="253">
+<LeftIndent>140.0</LeftIndent>
+<content start="75" end="253">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="253" end="254">
+<LeftIndent>140.0</LeftIndent>
+<content start="253" end="254">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="254" end="789">
+<LeftIndent>140.0</LeftIndent>
+<content start="254" end="298">
+<size>11</size></content>
+
+<content start="298" end="299">
+<icon>AddRectangleOnXPlane.gif</icon></content>
+
+<content start="299" end="305">
+<size>11</size></content>
+
+<content start="305" end="306">
+<icon>AddRectangleOnYPlane.gif</icon></content>
+
+<content start="306" end="312">
+<size>11</size></content>
+
+<content start="312" end="313">
+<icon>AddRectangleOnZPlane.gif</icon></content>
+
+<content start="313" end="789">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="789" end="790">
+<LeftIndent>140.0</LeftIndent>
+<content start="789" end="790">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="790" end="1169">
+<LeftIndent>140.0</LeftIndent>
+<content start="790" end="831">
+<size>11</size></content>
+
+<content start="831" end="832">
+<icon>Extrude.gif</icon></content>
+
+<content start="832" end="1169">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1169" end="1170">
+<LeftIndent>140.0</LeftIndent>
+<content start="1169" end="1170">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1170" end="1179">
+<LeftIndent>140.0</LeftIndent>
+<content start="1170" end="1178">
+<bold>true</bold><size>11</size></content>
+
+<content start="1178" end="1179">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1179" end="1180">
+<LeftIndent>140.0</LeftIndent>
+<content start="1179" end="1180">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1180" end="1275">
+<LeftIndent>140.0</LeftIndent>
+<content start="1180" end="1275">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1275" end="1276">
+<LeftIndent>140.0</LeftIndent>
+<content start="1275" end="1276">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1276" end="1278">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1276" end="1277">
+<component><class>org.concord.modeler.PageMd3d</class><resource>cuboidobstacle$0.mdd</resource><coordinate>cuboidobstacle$0.xyz</coordinate><width>500</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="1277" end="1278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1278" end="1317">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1278" end="1316">
+<size>10</size></content>
+
+<content start="1316" end="1317">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1317" end="1318">
+<LeftIndent>140.0</LeftIndent>
+<content start="1317" end="1318">
+</content>
+
+</paragraph>
+<paragraph start="1318" end="1319">
+<LeftIndent>140.0</LeftIndent>
+<content start="1318" end="1319">
+</content>
+
+</paragraph>
+<paragraph start="1319" end="1347">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1319" end="1321">
+<size>11</size></content>
+
+<content start="1321" end="1329">
+<href>extrusion.cml</href><size>11</size></content>
+
+<content start="1329" end="1332">
+<size>11</size></content>
+
+<content start="1332" end="1337">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="1337" end="1340">
+<size>11</size></content>
+
+<content start="1340" end="1344">
+<href>cylindericobstacle.cml</href><size>11</size></content>
+
+<content start="1344" end="1346">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

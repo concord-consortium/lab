@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Synchronizing realtime simulations with premade animations</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Synchronizing realtime simulations with premade animations
+
+&lt; Previous | Index | Next &gt;
+
+As an author, you often need to link, and better, synchronize, a molecular simulation to a premade animation, in order to establish a macro-micro relationship. The following model demonstrates such an example.
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+On the left of the above window is a molecular dynamics model. On the right is an animated GIF image. The example uses a simple custom task:
+
+if(%model_time&lt;1201);
+  set %frame 0;
+  set image[0].frame 0;
+  return;
+endif;
+if(%number_of_particles&lt;10);
+  return;
+endif;
+select particle 0;
+remove;
+set image[0].frame %frame;
+++%frame;
+
+to coordinate the simulation process and the animation process. The loop parameter of the animation GIF file is set to be -1, which disables the automatical playing of the animation when the model runs. Which frame of the animation GIF to show depends on a parameter calculated in the above custom script.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1009">
+<paragraph start="0" end="59">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="58">
+<italic>true</italic><bold>true</bold><size>16</size></content>
+
+<content start="58" end="59">
+</content>
+
+</paragraph>
+<paragraph start="59" end="60">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="88">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="60" end="62">
+<size>11</size></content>
+
+<content start="62" end="70">
+<size>11</size><href>TriangleInModel.cml</href></content>
+
+<content start="70" end="73">
+<size>11</size></content>
+
+<content start="73" end="78">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="78" end="81">
+<size>11</size></content>
+
+<content start="81" end="85">
+<size>11</size><href>pressureprobe.cml</href></content>
+
+<content start="85" end="87">
+<size>11</size></content>
+
+<content start="87" end="88">
+</content>
+
+</paragraph>
+<paragraph start="88" end="89">
+<RightIndent>20.0</RightIndent>
+<content start="88" end="89">
+</content>
+
+</paragraph>
+<paragraph start="89" end="299">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="89" end="298">
+<size>11</size></content>
+
+<content start="298" end="299">
+</content>
+
+</paragraph>
+<paragraph start="299" end="300">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<content start="299" end="300">
+</content>
+
+</paragraph>
+<paragraph start="300" end="302">
+<LeftIndent>140.0</LeftIndent>
+<RightIndent>20.0</RightIndent>
+<Alignment>1</Alignment>
+<content start="300" end="301">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>simanim$0.gbl</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="301" end="302">
+</content>
+
+</paragraph>
+<paragraph start="302" end="341">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="302" end="340">
+<size>10</size></content>
+
+<content start="340" end="341">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="341" end="342">
+<LeftIndent>140.0</LeftIndent>
+<content start="341" end="342">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="342" end="483">
+<LeftIndent>140.0</LeftIndent>
+<content start="342" end="483">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="483" end="484">
+<LeftIndent>140.0</LeftIndent>
+<content start="483" end="484">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="484" end="506">
+<LeftIndent>200.0</LeftIndent>
+<content start="484" end="506">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="506" end="522">
+<LeftIndent>200.0</LeftIndent>
+<content start="506" end="522">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="522" end="546">
+<LeftIndent>200.0</LeftIndent>
+<content start="522" end="546">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="546" end="556">
+<LeftIndent>200.0</LeftIndent>
+<content start="546" end="556">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="556" end="563">
+<LeftIndent>200.0</LeftIndent>
+<content start="556" end="563">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="563" end="592">
+<LeftIndent>200.0</LeftIndent>
+<content start="563" end="592">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="592" end="602">
+<LeftIndent>200.0</LeftIndent>
+<content start="592" end="602">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="602" end="609">
+<LeftIndent>200.0</LeftIndent>
+<content start="602" end="609">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="609" end="628">
+<LeftIndent>200.0</LeftIndent>
+<content start="609" end="628">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="628" end="636">
+<LeftIndent>200.0</LeftIndent>
+<content start="628" end="636">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="636" end="663">
+<LeftIndent>200.0</LeftIndent>
+<content start="636" end="663">
+<size>11</size><family>Courier New</family></content>
+
+</paragraph>
+<paragraph start="663" end="673">
+<LeftIndent>200.0</LeftIndent>
+<content start="663" end="672">
+<size>11</size><family>Courier New</family></content>
+
+<content start="672" end="673">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="673" end="674">
+<LeftIndent>140.0</LeftIndent>
+<content start="673" end="674">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="674" end="980">
+<LeftIndent>140.0</LeftIndent>
+<content start="674" end="979">
+<size>11</size></content>
+
+<content start="979" end="980">
+</content>
+
+</paragraph>
+<paragraph start="980" end="981">
+<LeftIndent>140.0</LeftIndent>
+<content start="980" end="981">
+</content>
+
+</paragraph>
+<paragraph start="981" end="1009">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="981" end="983">
+<size>11</size></content>
+
+<content start="983" end="991">
+<size>11</size><href>TriangleInModel.cml</href></content>
+
+<content start="991" end="994">
+<size>11</size></content>
+
+<content start="994" end="999">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="999" end="1002">
+<size>11</size></content>
+
+<content start="1002" end="1006">
+<size>11</size><href>pressureprobe.cml</href></content>
+
+<content start="1006" end="1008">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

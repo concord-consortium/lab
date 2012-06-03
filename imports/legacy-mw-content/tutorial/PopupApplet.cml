@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Popup Applet</page_title>
+<bg_color><Red>0</Red><Green>0</Green><Blue>0</Blue></bg_color>
+<text>Sierpinski&apos;s Carpet
+
+ 
+
+ </text>
+<section start="0" end="26">
+<paragraph start="0" end="20">
+<Alignment>1</Alignment>
+<content start="0" end="19">
+<size>16</size><bold>true</bold><foreground>255 204 0</foreground></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<Alignment>1</Alignment>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="23">
+<Alignment>1</Alignment>
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageApplet</class>
+<appletjar>chaos.jar</appletjar>
+<appletclass>SCarpet</appletclass>
+<width>200</width><height>200</height>
+<border>None</border></component></content>
+
+<content start="22" end="23">
+</content>
+
+</paragraph>
+<paragraph start="23" end="24">
+<Alignment>1</Alignment>
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="26">
+<Alignment>1</Alignment>
+<content start="24" end="25">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Close</title>
+<border>Raised Bevel</border>
+<action>Close this page</action></component></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Controling multiple models with a single controller</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Controling multiple models with a single controller
+
+&lt; Previous | Index | Next &gt;
+
+In the previous section, you have learned how to use a controller to control a model. If you have multiple models on the same page, you may want to have a single controller that can interact with more than one model. For example, you may want to have buttons that can start, stop and reset two models at the same time upon being clicked (so that the user can compare the simulations):
+
+  
+   
+&#12304;These are two embedded models.&#12305;
+
+To set up the above example, you have to insert a set of Activity Buttons (select &quot;Insert &gt; Activity Button&quot;), choose the &quot;Script&quot; item from the &quot;Action&quot; drop-down list, and then type in the scripts needed to control the models, as is illustrated in the image below:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+Another example is that you may want to set the properties of the models with single controllers:
+
+   
+&#12304;These are two embedded Jmol viewers.&#12305;
+
+Note that in order to use this functionality, you need to know how to use the MW/  Jmol scripts.
+
+ 
+Tip: If scripts are long and you will need to write them in a more comfortable way, use your favorite  text editor to write scripts and copy back to the text area. If there exist scripts already, copy them to your editor first before editing them.
+ 
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1327">
+<paragraph start="0" end="52">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="51">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="53">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="52" end="53">
+</content>
+
+</paragraph>
+<paragraph start="53" end="81">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="63">
+<size>11</size><href>html_layout.cml</href></content>
+
+<content start="63" end="66">
+<size>11</size></content>
+
+<content start="66" end="71">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="71" end="74">
+<size>11</size></content>
+
+<content start="74" end="78">
+<size>11</size><href>singleslider.cml</href></content>
+
+<content start="78" end="80">
+<size>11</size></content>
+
+<content start="80" end="81">
+</content>
+
+</paragraph>
+<paragraph start="81" end="82">
+<LeftIndent>140.0</LeftIndent>
+<content start="81" end="82">
+</content>
+
+</paragraph>
+<paragraph start="82" end="467">
+<LeftIndent>140.0</LeftIndent>
+<content start="82" end="467">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="467" end="468">
+<LeftIndent>140.0</LeftIndent>
+<content start="467" end="468">
+</content>
+
+</paragraph>
+<paragraph start="468" end="471">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="468" end="469">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>singlecontrol$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="469" end="470">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>singlecontrol$1.mml</resource><menubar>false</menubar></component></content>
+
+<content start="470" end="471">
+</content>
+
+</paragraph>
+<paragraph start="471" end="475">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="471" end="472">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Run</title>
+<tooltip>Run both models</tooltip>
+<border>Raised Bevel</border>
+<script>script:mw:1:run;
+script:mw:2:run;</script>
+<action>Script</action></component></content>
+
+<content start="472" end="473">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Stop</title>
+<tooltip>Stop both models</tooltip>
+<border>Raised Bevel</border>
+<script>script:mw:1:stop;
+script:mw:2:stop;</script>
+<action>Script</action></component></content>
+
+<content start="473" end="474">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Reset</title>
+<tooltip>Reset both models</tooltip>
+<border>Raised Bevel</border>
+<script>script:mw:1:reset;
+script:mw:2:reset;</script>
+<action>Script</action></component></content>
+
+<content start="474" end="475">
+</content>
+
+</paragraph>
+<paragraph start="475" end="508">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="475" end="476">
+<size>13</size><bold>true</bold></content>
+
+<content start="476" end="506">
+<size>10</size></content>
+
+<content start="506" end="507">
+<size>13</size><bold>true</bold></content>
+
+<content start="507" end="508">
+</content>
+
+</paragraph>
+<paragraph start="508" end="509">
+<LeftIndent>140.0</LeftIndent>
+<content start="508" end="509">
+</content>
+
+</paragraph>
+<paragraph start="509" end="776">
+<LeftIndent>140.0</LeftIndent>
+<content start="509" end="776">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="776" end="777">
+<LeftIndent>140.0</LeftIndent>
+<content start="776" end="777">
+</content>
+
+</paragraph>
+<paragraph start="777" end="780">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="777" end="778">
+</content>
+
+<content start="778" end="779">
+<icon>ActivityScriptButton.gif</icon></content>
+
+<content start="779" end="780">
+</content>
+
+</paragraph>
+<paragraph start="780" end="804">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="780" end="781">
+<size>13</size><bold>true</bold></content>
+
+<content start="781" end="802">
+<size>10</size></content>
+
+<content start="802" end="803">
+<size>13</size><bold>true</bold></content>
+
+<content start="803" end="804">
+</content>
+
+</paragraph>
+<paragraph start="804" end="805">
+<LeftIndent>140.0</LeftIndent>
+<content start="804" end="805">
+</content>
+
+</paragraph>
+<paragraph start="805" end="903">
+<LeftIndent>140.0</LeftIndent>
+<content start="805" end="903">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="903" end="904">
+<LeftIndent>140.0</LeftIndent>
+<content start="903" end="904">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="904" end="908">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="904" end="905">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>200.0</width>
+<height>230.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;b&gt;&lt;font size=&quot;3&quot; face=&quot;Verdana&quot;&gt;Display style:&lt;/font&gt;&lt;/b&gt;&lt;br&gt;
+
+    &lt;table bgcolor=&quot;#ccccff&quot; border=&quot;2&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;&lt;input type=&quot;radio&quot; alt=&quot;Space filling&quot; script=&quot;script:jmol:1:cpk 100%;script:jmol:2:cpk 100%;&quot; name=&quot;style&quot;&gt;
+          Space filling;&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;input type=&quot;radio&quot; alt=&quot;Wireframe&quot; script=&quot;script:jmol:1:cpk 0%;wireframe 0.1;script:jmol:2:cpk 0%;wireframe 0.1;&quot; name=&quot;style&quot;&gt;
+          &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Wireframe; &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;input type=&quot;radio&quot; alt=&quot;Stick&quot; script=&quot;script:jmol:1:cpk off;wireframe 0.4;script:jmol:2:cpk off;wireframe 0.4&quot; name=&quot;style&quot;&gt;
+          &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Stick; &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;input type=&quot;radio&quot; alt=&quot;Ball &amp; stick&quot; script=&quot;script:jmol:1:cpk 20%;wireframe 0.15;script:jmol:2:cpk 20%;wireframe 0.15;&quot; name=&quot;style&quot;&gt;
+          &lt;font size=&quot;2&quot; face=&quot;Verdana&quot;&gt;Ball &amp;amp; stick. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="905" end="906">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>alphahelix.pdb</resource><state>singlecontrol$0.jms</state><width>200.0</width>
+<height>200.0</height>
+</component></content>
+
+<content start="906" end="907">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>betasheet.pdb</resource><state>singlecontrol$1.jms</state><width>200.0</width>
+<height>200.0</height>
+</component></content>
+
+<content start="907" end="908">
+</content>
+
+</paragraph>
+<paragraph start="908" end="947">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="908" end="909">
+<size>13</size><bold>true</bold></content>
+
+<content start="909" end="945">
+<size>10</size></content>
+
+<content start="945" end="946">
+<size>13</size><bold>true</bold></content>
+
+<content start="946" end="947">
+</content>
+
+</paragraph>
+<paragraph start="947" end="948">
+<LeftIndent>140.0</LeftIndent>
+<content start="947" end="948">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="948" end="1045">
+<LeftIndent>140.0</LeftIndent>
+<content start="948" end="1026">
+<size>11</size></content>
+
+<content start="1026" end="1028">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="1028" end="1029">
+<size>11</size></content>
+
+<content start="1029" end="1030">
+<icon>htmlink.gif</icon></content>
+
+<content start="1030" end="1031">
+<size>11</size></content>
+
+<content start="1031" end="1035">
+<size>11</size><href>http://www.stolaf.edu/academics/chemapps/jmol/docs/</href></content>
+
+<content start="1035" end="1045">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1045" end="1046">
+<LeftIndent>140.0</LeftIndent>
+<content start="1045" end="1046">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1046" end="1048">
+<LeftIndent>140.0</LeftIndent>
+<content start="1046" end="1047">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1047" end="1048">
+</content>
+
+</paragraph>
+<paragraph start="1048" end="1296">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1048" end="1051">
+<size>11</size><bold>true</bold></content>
+
+<content start="1051" end="1295">
+<size>11</size></content>
+
+<content start="1295" end="1296">
+</content>
+
+</paragraph>
+<paragraph start="1296" end="1298">
+<LeftIndent>140.0</LeftIndent>
+<content start="1296" end="1297">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1297" end="1298">
+</content>
+
+</paragraph>
+<paragraph start="1298" end="1299">
+<LeftIndent>140.0</LeftIndent>
+<content start="1298" end="1299">
+</content>
+
+</paragraph>
+<paragraph start="1299" end="1327">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1299" end="1301">
+<size>11</size></content>
+
+<content start="1301" end="1309">
+<size>11</size><href>html_layout.cml</href></content>
+
+<content start="1309" end="1312">
+<size>11</size></content>
+
+<content start="1312" end="1317">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1317" end="1320">
+<size>11</size></content>
+
+<content start="1320" end="1324">
+<size>11</size><href>singleslider.cml</href></content>
+
+<content start="1324" end="1326">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

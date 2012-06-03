@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Duplicating Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Duplicating Tool
+
+&lt; Previous | Index | Next &gt;
+
+Constructing a molecule usually involves quite a few steps: Adding atoms, moving them to appropriate positions, building radial bonds to join them, setting up angular bonds to stablize the structure, and probably some rotations. Once you have constructed a molecule, you do not need to repeat all these steps to construct another one with the same structure. You can simply duplicate it using the Duplicating Tool.
+
+To duplicate an object, you first click the Duplicating Tool button (&quot; &quot;), and then drag the object out of which you would like to make a copy. Once you drag the mouse, you will see a new object identical to the selected one is created. When you release the mouse button, it will stay at the position where the mouse cursor points. However, if it is found that it is illegal to drop the molecule at that position, the duplication action will be rolled back.
+
+You can practice duplicating a molecule with the following model:
+
+ 
+&#12304;This is an embedded simulator for practicing duplicating a molecule.&#12305;
+
+Script support
+
+There is currently no script support for this tool. For duplicating objects, operating through the graphical user interface may be more convenient than manipulating through scripts.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1294">
+<paragraph start="0" end="21">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="20">
+<size>16</size><italic>true</italic><bold>true</bold></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="21" end="22">
+</content>
+
+</paragraph>
+<paragraph start="22" end="50">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="22" end="24">
+<size>11</size></content>
+
+<content start="24" end="32">
+<size>11</size><href>removeAction.cml</href></content>
+
+<content start="32" end="35">
+<size>11</size></content>
+
+<content start="35" end="40">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="40" end="43">
+<size>11</size></content>
+
+<content start="43" end="47">
+<size>11</size><href>PointHeater.cml</href></content>
+
+<content start="47" end="49">
+<size>11</size></content>
+
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="51">
+<LeftIndent>100.0</LeftIndent>
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="466">
+<LeftIndent>140.0</LeftIndent>
+<content start="51" end="466">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="466" end="467">
+<LeftIndent>140.0</LeftIndent>
+<content start="466" end="467">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="467" end="925">
+<LeftIndent>140.0</LeftIndent>
+<content start="467" end="537">
+<size>11</size></content>
+
+<content start="537" end="538">
+<icon>copy.gif</icon><size>11</size></content>
+
+<content start="538" end="925">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="925" end="926">
+<LeftIndent>140.0</LeftIndent>
+<content start="925" end="926">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="926" end="992">
+<LeftIndent>140.0</LeftIndent>
+<content start="926" end="992">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="992" end="993">
+<LeftIndent>100.0</LeftIndent>
+<content start="992" end="993">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="993" end="995">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="993" end="994">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>duplicateAction$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+<button>Duplicate Object</button><button>Select Object</button></component><size>11</size></content>
+
+<content start="994" end="995">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="995" end="1066">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="995" end="1065">
+<size>10</size></content>
+
+<content start="1065" end="1066">
+</content>
+
+</paragraph>
+<paragraph start="1066" end="1067">
+<LeftIndent>140.0</LeftIndent>
+<content start="1066" end="1067">
+</content>
+
+</paragraph>
+<paragraph start="1067" end="1082">
+<LeftIndent>140.0</LeftIndent>
+<content start="1067" end="1081">
+<bold>true</bold><size>11</size></content>
+
+<content start="1081" end="1082">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1082" end="1083">
+<LeftIndent>140.0</LeftIndent>
+<content start="1082" end="1083">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1083" end="1265">
+<LeftIndent>140.0</LeftIndent>
+<content start="1083" end="1264">
+<size>11</size></content>
+
+<content start="1264" end="1265">
+</content>
+
+</paragraph>
+<paragraph start="1265" end="1266">
+<LeftIndent>140.0</LeftIndent>
+<content start="1265" end="1266">
+</content>
+
+</paragraph>
+<paragraph start="1266" end="1294">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1266" end="1268">
+<size>11</size></content>
+
+<content start="1268" end="1276">
+<size>11</size><href>removeAction.cml</href></content>
+
+<content start="1276" end="1279">
+<size>11</size></content>
+
+<content start="1279" end="1284">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="1284" end="1287">
+<size>11</size></content>
+
+<content start="1287" end="1291">
+<size>11</size><href>PointHeater.cml</href></content>
+
+<content start="1291" end="1293">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

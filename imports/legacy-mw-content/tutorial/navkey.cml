@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Keyboard shortcuts for navigation</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Keyboard shortcuts for navigation
+
+&lt; Previous | Index | Next &gt;
+
+In addition to the navigation pad at the left side of the window, the user can also use the following keyboard shortcuts to navigate.
+
+  
+&#12304;This is an embedded Jmol Viewer.&#12305;
+
+Using only these keyboard shortcuts, you should be able to access any location inside the molecule. When you want to fly to a location, use the crosshair to aim at one of the atoms there (just like in a flight simulator!).
+
+At any time, you can drag the mouse to rotate the view freely, or hold down SHIFT key and drag the mouse (or rotate the mouse wheel) to move forward and back, or right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on an atom and select the &quot;Attach Camera to Clicked Atom&quot; to move the camera to its center. When you attach the camera on an atom, the camera&apos;s orientation is kept as much as possible in its original direction, but there may be a shift, depending on the relative orientation of the picked atom from the current position of the camera.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1064">
+<paragraph start="0" end="38">
+<SpaceAbove>8.0</SpaceAbove>
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="0" end="37">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="67">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="39" end="41">
+<size>11</size></content>
+
+<content start="41" end="49">
+<size>11</size><href>rovingmode.cml</href></content>
+
+<content start="49" end="52">
+<size>11</size></content>
+
+<content start="52" end="57">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="57" end="60">
+<size>11</size></content>
+
+<content start="60" end="64">
+<size>11</size><href>guidedtour.cml</href></content>
+
+<content start="64" end="66">
+<size>11</size></content>
+
+<content start="66" end="67">
+</content>
+
+</paragraph>
+<paragraph start="67" end="68">
+<content start="67" end="68">
+</content>
+
+</paragraph>
+<paragraph start="68" end="202">
+<LeftIndent>140.0</LeftIndent>
+<content start="68" end="201">
+<size>11</size></content>
+
+<content start="201" end="202">
+</content>
+
+</paragraph>
+<paragraph start="202" end="203">
+<content start="202" end="203">
+</content>
+
+</paragraph>
+<paragraph start="203" end="206">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="203" end="204">
+<component><class>org.concord.modeler.PageTable</class>
+<columnname>Key, Navigation</columnname>
+<row>10</row>
+<column>2</column>
+<layout>117, 183</layout>
+<cellalign>10</cellalign>
+<width>300.0</width>
+<height>350.0</height>
+<hline>true</hline>
+<vline>true</vline>
+<elementarray><te>&apos;A&apos;</te><te>Thrust forward</te><te>&apos;S&apos;</te><te>Thrust back</te><te>Shift+Arrows</te><te>Thrust left, right, up and down</te><te>Up/Down Arrow</te><te>Pitch up/down</te><te>Left/Right</te><te>Yaw left/right</te><te>&apos;Z&apos;/Shift+&apos;Z&apos;</te><te>Roll clockwise/counterclosewise</te><te>Alt+Up Arrow</te><te>Thrust up and pitch down</te><te>Alt+Down Arrow</te><te>Thrust down and pitch up</te><te>Alt+Left Arrow</te><te>Thrust left and yaw right</te><te>Alt+Right Arrow</te><te>Thrust right and yaw left</te></elementarray>
+</component></content>
+
+<content start="204" end="205">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<axes>true</axes><toolbar>false</toolbar><navigation>true</navigation><resource>diffGear.pdb</resource><state>navkey$0.jms</state><width>360.0</width>
+<height>350.0</height>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="205" end="206">
+</content>
+
+</paragraph>
+<paragraph start="206" end="241">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="206" end="207">
+<bold>true</bold><size>13</size></content>
+
+<content start="207" end="239">
+<size>10</size></content>
+
+<content start="239" end="240">
+<bold>true</bold><size>13</size></content>
+
+<content start="240" end="241">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="241" end="242">
+<content start="241" end="242">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="242" end="465">
+<LeftIndent>140.0</LeftIndent>
+<content start="242" end="465">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="465" end="466">
+<LeftIndent>140.0</LeftIndent>
+<content start="465" end="466">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="466" end="1035">
+<LeftIndent>140.0</LeftIndent>
+<content start="466" end="1035">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1035" end="1036">
+<LeftIndent>140.0</LeftIndent>
+<content start="1035" end="1036">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1036" end="1064">
+<Alignment>2</Alignment>
+<RightIndent>8.0</RightIndent>
+<content start="1036" end="1038">
+<size>11</size></content>
+
+<content start="1038" end="1046">
+<size>11</size><href>rovingmode.cml</href></content>
+
+<content start="1046" end="1049">
+<size>11</size></content>
+
+<content start="1049" end="1054">
+<size>11</size><href>index_jmol.cml</href></content>
+
+<content start="1054" end="1057">
+<size>11</size></content>
+
+<content start="1057" end="1061">
+<size>11</size><href>guidedtour.cml</href></content>
+
+<content start="1061" end="1063">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

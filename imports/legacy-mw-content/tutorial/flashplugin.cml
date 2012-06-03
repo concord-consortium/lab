@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Example: A Flash player using a Quicktime plugin</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Example: A Flash player using a Quicktime plugin
+
+&lt; Previous | Index | Next &gt;
+
+Note: The following plugin should automatically work for Mac users. If you are using Windows, you must have installed   Quicktime from Apple to get it work. If you are using Linux, it will not work.
+
+UNFORTUNATELY, the latest version of QuickTime does NOT support Flash any more.
+The following applet will NOT work.
+ 
+ 
+&#12304;This is a Flash player through a Quicktime plugin that can play Flash files.&#12305;
+The Flash interactive used in the above demo was created by Dan Damelin.
+
+If you would like to use this Flash plugin on your MW pages, you have to download this jar file: QtPlayer.jar and place it into the folder of the MW pages, and then follow the instructions on a previous page to set it up. Note that you must select org.concord.qt.QtPlayer as the main class.
+
+As we have mentioned earlier, this Flash plugin can be used to open files on your disk, whereas the Flash applet cannot (it will give you a security error). The Flash plugin also does media caching, which allows the user to play the animation offline. Hence, it may be more sensible to use the plugin.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1175">
+<paragraph start="0" end="49">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="48">
+<size>15</size><bold>true</bold><italic>true</italic></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="78">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="50" end="52">
+<size>11</size></content>
+
+<content start="52" end="60">
+<href>qtplugin.cml</href><size>11</size></content>
+
+<content start="60" end="63">
+<size>11</size></content>
+
+<content start="63" end="68">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="68" end="77">
+<size>11</size></content>
+
+<content start="77" end="78">
+</content>
+
+</paragraph>
+<paragraph start="78" end="79">
+<content start="78" end="79">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="79" end="278">
+<LeftIndent>140.0</LeftIndent>
+<content start="79" end="197">
+<size>11</size></content>
+
+<content start="197" end="198">
+<icon>htmlink.gif</icon></content>
+
+<content start="198" end="199">
+<size>11</size></content>
+
+<content start="199" end="219">
+<href>http://www.apple.com/quicktime/download/</href><size>11</size></content>
+
+<content start="219" end="278">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="278" end="279">
+<LeftIndent>140.0</LeftIndent>
+<content start="278" end="279">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="279" end="359">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="279" end="359">
+<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+
+</paragraph>
+<paragraph start="359" end="395">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="359" end="394">
+<foreground>255 0 0</foreground><bold>true</bold><size>11</size></content>
+
+<content start="394" end="395">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="395" end="397">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="395" end="396">
+<component><class>org.concord.modeler.PageJContainer</class>
+<appletjar>QtPlayer.jar</appletjar>
+<appletclass>org.concord.qt.QtPlayer</appletclass>
+<resource>flashplugin$plugin$0.aps</resource><parameter>{name=&quot;errormessage&quot; value=&quot;Sorry, this plugin needs Quicktime to be installed and properly set up.&quot;}{name=&quot;errorurl&quot; value=&quot;2Dspring.swf&quot;}{name=&quot;address&quot; value=&quot;2Dspring.swf&quot;}</parameter>
+<width>450</width><height>300</height>
+<border>Line</border></component></content>
+
+<content start="396" end="397">
+</content>
+
+</paragraph>
+<paragraph start="397" end="399">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="397" end="398">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Snapshot</title>
+<script>script:plugin:1:snapshot;</script>
+<action>Script</action></component></content>
+
+<content start="398" end="399">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="399" end="478">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="399" end="400">
+<bold>true</bold><size>13</size></content>
+
+<content start="400" end="476">
+<size>10</size></content>
+
+<content start="476" end="477">
+<bold>true</bold><size>13</size></content>
+
+<content start="477" end="478">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="478" end="551">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="478" end="550">
+<size>10</size></content>
+
+<content start="550" end="551">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="551" end="552">
+<LeftIndent>140.0</LeftIndent>
+<content start="551" end="552">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="552" end="843">
+<LeftIndent>140.0</LeftIndent>
+<content start="552" end="649">
+<size>11</size></content>
+
+<content start="649" end="661">
+<href>QtPlayer.jar</href><size>11</size></content>
+
+<content start="661" end="744">
+<size>11</size></content>
+
+<content start="744" end="759">
+<href>plugin.cml</href><size>11</size></content>
+
+<content start="759" end="800">
+<size>11</size></content>
+
+<content start="800" end="823">
+<size>11</size><family>Courier New</family></content>
+
+<content start="823" end="843">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="843" end="844">
+<LeftIndent>140.0</LeftIndent>
+<content start="843" end="844">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="844" end="1146">
+<LeftIndent>140.0</LeftIndent>
+<content start="844" end="940">
+<size>11</size></content>
+
+<content start="940" end="956">
+<href>flashapplet.cml</href><size>11</size></content>
+
+<content start="956" end="1146">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1146" end="1147">
+<RightIndent>20.0</RightIndent>
+<content start="1146" end="1147">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1147" end="1175">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1147" end="1149">
+<size>11</size></content>
+
+<content start="1149" end="1157">
+<href>qtplugin.cml</href><size>11</size></content>
+
+<content start="1157" end="1160">
+<size>11</size></content>
+
+<content start="1160" end="1165">
+<href>index5.cml</href><size>11</size></content>
+
+<content start="1165" end="1174">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

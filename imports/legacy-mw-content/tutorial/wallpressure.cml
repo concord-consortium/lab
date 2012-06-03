@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Pascal&apos;s Principle: pressure is the same throughout a fluid</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Pascal&apos;s Principle: pressure is the same throughout a fluid
+
+&lt; Previous | Index | Next &gt;
+
+The fourth test of the pressure gauge is an extension from the third test. A gauge is installed on each side of the container to measure the pressure of a fluid on them. When the fluid is in equilibrium and there is no gradient of any kind, the pressure on each wall of the container must be approximately equal. This is a very important property of a fluid: For a homogeneous fluid under no gradient of any kind, pressure is equal no matter where it is measured. This is known as Pascal&apos;s Principle, which is the fundamental law of hydraulics.
+
+The following experiment is set up to prove this.
+
+  
+&#12304;This is an embedded model container.&#12305;
+
+The above simulation shows that the pressures measured at four walls are approximately the same (~2 bar), with some reasonable fluctuations for a small system such as this.
+
+Related simulation: A hydraulic lever
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="971">
+<paragraph start="0" end="60">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="59">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="59" end="60">
+</content>
+
+</paragraph>
+<paragraph start="60" end="61">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="60" end="61">
+</content>
+
+</paragraph>
+<paragraph start="61" end="89">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="61" end="63">
+<size>11</size></content>
+
+<content start="63" end="71">
+<href>isopressure.cml</href><size>11</size></content>
+
+<content start="71" end="74">
+<size>11</size></content>
+
+<content start="74" end="79">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="79" end="82">
+<size>11</size></content>
+
+<content start="82" end="86">
+<href>microbuoyancy.cml</href><size>11</size></content>
+
+<content start="86" end="88">
+<size>11</size></content>
+
+<content start="88" end="89">
+</content>
+
+</paragraph>
+<paragraph start="89" end="90">
+<LeftIndent>140.0</LeftIndent>
+<content start="89" end="90">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="90" end="635">
+<LeftIndent>140.0</LeftIndent>
+<content start="90" end="449">
+<size>11</size></content>
+
+<content start="449" end="502">
+<bold>true</bold><size>11</size></content>
+
+<content start="502" end="504">
+<size>11</size></content>
+
+<content start="504" end="552">
+<bold>true</bold><size>11</size></content>
+
+<content start="552" end="571">
+<size>11</size></content>
+
+<content start="571" end="589">
+<bold>true</bold><size>11</size></content>
+
+<content start="589" end="635">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="635" end="636">
+<LeftIndent>140.0</LeftIndent>
+<content start="635" end="636">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="636" end="686">
+<LeftIndent>140.0</LeftIndent>
+<content start="636" end="686">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="686" end="687">
+<LeftIndent>140.0</LeftIndent>
+<content start="686" end="687">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="687" end="690">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="687" end="688">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>wallpressure$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="688" end="689">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-10000" style="1" width="1.0" symbol="0" size="4" spacing="5">East pressure:Obstacle #2</time_series_y1>
+<time_series_y2 color="-339a" style="2" width="1.0" symbol="0" size="4" spacing="5">West pressure:Obstacle #3</time_series_y2>
+<time_series_y3 color="-33ff34" style="3" width="1.0" symbol="0" size="4" spacing="5">North pressure:Obstacle #0</time_series_y3>
+<time_series_y4 color="-336700" style="0" width="1.0" symbol="0" size="4" spacing="5">South pressure:Obstacle #1</time_series_y4>
+<autofity>false</autofity>
+<axis_y_min>0.0</axis_y_min>
+<axis_y_max>6.0</axis_y_max>
+<width>250</width>
+<height>334</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Pressure (bar)</axis_y_title>
+<legend_x>40</legend_x>
+<legend_y>40</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="689" end="690">
+</content>
+
+</paragraph>
+<paragraph start="690" end="729">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="690" end="728">
+<size>10</size></content>
+
+<content start="728" end="729">
+</content>
+
+</paragraph>
+<paragraph start="729" end="730">
+<LeftIndent>140.0</LeftIndent>
+<content start="729" end="730">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="730" end="903">
+<LeftIndent>140.0</LeftIndent>
+<content start="730" end="902">
+<size>11</size></content>
+
+<content start="902" end="903">
+</content>
+
+</paragraph>
+<paragraph start="903" end="904">
+<LeftIndent>140.0</LeftIndent>
+<content start="903" end="904">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="904" end="942">
+<LeftIndent>140.0</LeftIndent>
+<content start="904" end="924">
+<size>10</size></content>
+
+<content start="924" end="941">
+<href>../student/fluid/pascal.cml</href><size>10</size></content>
+
+<content start="941" end="942">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="942" end="943">
+<LeftIndent>140.0</LeftIndent>
+<content start="942" end="943">
+</content>
+
+</paragraph>
+<paragraph start="943" end="971">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="943" end="945">
+<size>11</size></content>
+
+<content start="945" end="953">
+<href>isopressure.cml</href><size>11</size></content>
+
+<content start="953" end="956">
+<size>11</size></content>
+
+<content start="956" end="961">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="961" end="964">
+<size>11</size></content>
+
+<content start="964" end="968">
+<href>microbuoyancy.cml</href><size>11</size></content>
+
+<content start="968" end="970">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

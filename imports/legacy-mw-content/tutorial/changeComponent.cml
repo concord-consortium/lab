@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+<page_title>Editing an embedded component</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Editing an embedded component
+
+&lt; Index &gt;
+
+When the Molecular Workbench (MW) is in the authoring mode, you can edit an embedded component in a way similar to editing an image or shape in the Microsoft WordTM.
+
+How to customize a component
+
+   Make sure to unlock the page editor.
+   Right-click on the component, if you are using Windows or Linux or a Mac OS X with a two-button mouse; CTRL+click, if you are using Mac OS X with a single-button mouse.
+   Choose the &quot;Customize&quot; item from the pop-up menu to customize it (and then you will see the corresponding dialog box with which you can use to customize the component).
+
+How to remove a component
+
+Remove a component using the pop-up menu:
+
+   Make sure to unlock the page editor.
+   Right-click on the component, if you are using Windows or Linux or a Mac OS X with a two-button mouse; CTRL+click, if you are using Mac OS X with a single-button mouse.
+   Choose the &quot;Remove&quot; item to remove it from the current page.
+
+You can also use the DELETE or BACKSPACE key to remove it (just like deleting a character or an embedded image).
+
+If you delete a component by mistake, you can use the &quot;Undo&quot; button or menu to undo the deletion.
+
+How to move a component around
+
+Currently, MW does not support drag-and-drop for moving embedded components and images. However, you can use the cut/copy/paste function to move components and images around within the same page, or duplicate them to a new page.
+
+How to duplicate a component
+
+Duplicate a component using the pop-up menus:
+
+   In the editing mode, right-click the component and select the &quot;Copy This ***&quot; (*** is the name of the component) item from the pop-up menu associated with it.
+   Move the caret to the place where you would like the duplicated componet to be located.
+   Right-click on the page and invoke the default pop-up menu of the page.
+   A copy of the original component will be inserted.
+
+Duplicating a component will duplicate its functions and appearance, as well as the original scripts associated with it (if any). In most cases, you may use this to quickly insert a component of the same kind and of the same settings with the original one, as opposed to using the Insert menu to insert a component and then redo other settings than its functions. Remember, if you duplicate a controller or a graph, you have to change the corresponding action and output, otherwise the duplicated one will have exactly the same function and the same display.
+
+&lt; Index &gt;</text>
+<section start="0" end="2476">
+<paragraph start="0" end="30">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="29">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="41">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="31" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="38" end="40">
+<size>11</size></content>
+
+<content start="40" end="41">
+</content>
+
+</paragraph>
+<paragraph start="41" end="42">
+<content start="41" end="42">
+</content>
+
+</paragraph>
+<paragraph start="42" end="208">
+<LeftIndent>140.0</LeftIndent>
+<content start="42" end="79">
+<size>11</size></content>
+
+<content start="79" end="100">
+<size>11</size><href>unlock.cml</href></content>
+
+<content start="100" end="204">
+<size>11</size></content>
+
+<content start="204" end="206">
+<superscript>true</superscript><size>10</size></content>
+
+<content start="206" end="208">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="208" end="209">
+<LeftIndent>140.0</LeftIndent>
+<content start="208" end="209">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="209" end="238">
+<LeftIndent>140.0</LeftIndent>
+<content start="209" end="237">
+<bold>true</bold><size>11</size></content>
+
+<content start="237" end="238">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="238" end="239">
+<LeftIndent>100.0</LeftIndent>
+<content start="238" end="239">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="239" end="279">
+<LeftIndent>160.0</LeftIndent>
+<content start="239" end="240">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="240" end="255">
+<size>11</size></content>
+
+<content start="255" end="278">
+<size>11</size><href>unlock.cml</href></content>
+
+<content start="278" end="279">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="279" end="451">
+<LeftIndent>160.0</LeftIndent>
+<content start="279" end="280">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="280" end="451">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="451" end="623">
+<LeftIndent>160.0</LeftIndent>
+<content start="451" end="452">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="452" end="623">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="623" end="624">
+<LeftIndent>160.0</LeftIndent>
+<content start="623" end="624">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="624" end="650">
+<LeftIndent>140.0</LeftIndent>
+<content start="624" end="649">
+<bold>true</bold><size>11</size></content>
+
+<content start="649" end="650">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="650" end="651">
+<LeftIndent>140.0</LeftIndent>
+<content start="650" end="651">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="651" end="693">
+<LeftIndent>140.0</LeftIndent>
+<content start="651" end="693">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="693" end="694">
+<LeftIndent>140.0</LeftIndent>
+<content start="693" end="694">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="694" end="734">
+<LeftIndent>160.0</LeftIndent>
+<content start="694" end="695">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="695" end="710">
+<size>11</size></content>
+
+<content start="710" end="733">
+<size>11</size><href>unlock.cml</href></content>
+
+<content start="733" end="734">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="734" end="906">
+<LeftIndent>160.0</LeftIndent>
+<content start="734" end="735">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="735" end="906">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="906" end="970">
+<LeftIndent>160.0</LeftIndent>
+<content start="906" end="907">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="907" end="970">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="970" end="971">
+<LeftIndent>120.0</LeftIndent>
+<content start="970" end="971">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="971" end="1084">
+<LeftIndent>140.0</LeftIndent>
+<content start="971" end="1084">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1084" end="1085">
+<LeftIndent>140.0</LeftIndent>
+<content start="1084" end="1085">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1085" end="1183">
+<LeftIndent>140.0</LeftIndent>
+<content start="1085" end="1183">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1183" end="1184">
+<LeftIndent>140.0</LeftIndent>
+<content start="1183" end="1184">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1184" end="1215">
+<LeftIndent>140.0</LeftIndent>
+<content start="1184" end="1214">
+<bold>true</bold><size>11</size></content>
+
+<content start="1214" end="1215">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1215" end="1216">
+<LeftIndent>140.0</LeftIndent>
+<content start="1215" end="1216">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1216" end="1445">
+<LeftIndent>140.0</LeftIndent>
+<content start="1216" end="1445">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1445" end="1446">
+<LeftIndent>140.0</LeftIndent>
+<content start="1445" end="1446">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1446" end="1475">
+<LeftIndent>140.0</LeftIndent>
+<content start="1446" end="1474">
+<bold>true</bold><size>11</size></content>
+
+<content start="1474" end="1475">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1475" end="1476">
+<LeftIndent>140.0</LeftIndent>
+<content start="1475" end="1476">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1476" end="1522">
+<LeftIndent>140.0</LeftIndent>
+<content start="1476" end="1522">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1522" end="1523">
+<LeftIndent>140.0</LeftIndent>
+<content start="1522" end="1523">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1523" end="1685">
+<LeftIndent>160.0</LeftIndent>
+<content start="1523" end="1524">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1524" end="1526">
+</content>
+
+<content start="1526" end="1685">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1685" end="1776">
+<LeftIndent>160.0</LeftIndent>
+<content start="1685" end="1686">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1686" end="1688">
+</content>
+
+<content start="1688" end="1776">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1776" end="1851">
+<LeftIndent>160.0</LeftIndent>
+<content start="1776" end="1777">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1777" end="1779">
+</content>
+
+<content start="1779" end="1851">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1851" end="1905">
+<LeftIndent>160.0</LeftIndent>
+<content start="1851" end="1852">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="1852" end="1854">
+</content>
+
+<content start="1854" end="1905">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1905" end="1906">
+<LeftIndent>160.0</LeftIndent>
+<content start="1905" end="1906">
+</content>
+
+</paragraph>
+<paragraph start="1906" end="2465">
+<LeftIndent>140.0</LeftIndent>
+<content start="1906" end="1999">
+<size>11</size></content>
+
+<content start="1999" end="2006">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="2006" end="2465">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2465" end="2466">
+<LeftIndent>140.0</LeftIndent>
+<content start="2465" end="2466">
+</content>
+
+</paragraph>
+<paragraph start="2466" end="2476">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="2466" end="2468">
+<size>11</size></content>
+
+<content start="2468" end="2473">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="2473" end="2475">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

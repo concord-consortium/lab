@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Introduction: 2D modeling</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Introduction: 2D modeling
+
+&lt; Index | Next &gt;
+
+In this Chapter, we will show you how to create 2D models. Creating components that contextualize a model, control it, and display its outputs will be presented in another Chapter.
+
+Inserting a 2D model container
+
+To create a 2D model, you will need to insert a 2D model container into the page first. After the container is inserted, the window inside it is the workspace in which you will build your model.
+
+ 
+Two different workspaces: There are two levels of workspace in MW. The first one is an MW page, which you are reading now. This is the level you will write and the end users will read. The second one is the workspace for models, in which you will construct models and the end users will view how they run. The workspace for models is embedded into the workspace for pages. The latter is more or less similar to a word processor. The former shares some similarities to a typical drawing program.
+
+A page is responsible for loading and saving states of model(s) embedded in it. In other words, when you save the page, the state of an embedded model will be saved automatically. Hence you do not need to save your work on the model separately.
+ 
+
+The user interface of a model container
+
+A model container embedded in a page provides its own user interface (UI) for constructing a model, setting up the initial conditions, running the simulation, visualizing the results, and inputting/outputting a model. The following is an anatomy of the UI of a Basic 2D Molecular Simulator:
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+The UI can be customized. All the components can be chosen to be shown or hidden, depending on your needs. In general, we recommend that you simplify the UI when you are done with constructing a model.
+
+&lt; Index | Next &gt;</text>
+<section start="0" end="1796">
+<paragraph start="0" end="26">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="25">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="25" end="26">
+</content>
+
+</paragraph>
+<paragraph start="26" end="27">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="44">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="27" end="29">
+<size>11</size></content>
+
+<content start="29" end="34">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="34" end="37">
+<size>11</size></content>
+
+<content start="37" end="41">
+<size>11</size><href>SetupSimulation.cml</href></content>
+
+<content start="41" end="43">
+<size>11</size></content>
+
+<content start="43" end="44">
+</content>
+
+</paragraph>
+<paragraph start="44" end="45">
+<LeftIndent>100.0</LeftIndent>
+<content start="44" end="45">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="45" end="226">
+<LeftIndent>140.0</LeftIndent>
+<content start="45" end="209">
+<size>11</size></content>
+
+<content start="209" end="224">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="224" end="226">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="226" end="227">
+<LeftIndent>140.0</LeftIndent>
+<content start="226" end="227">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="227" end="258">
+<LeftIndent>140.0</LeftIndent>
+<content start="227" end="257">
+<size>11</size><bold>true</bold></content>
+
+<content start="257" end="258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="258" end="259">
+<LeftIndent>140.0</LeftIndent>
+<content start="258" end="259">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="259" end="454">
+<LeftIndent>140.0</LeftIndent>
+<content start="259" end="298">
+<size>11</size></content>
+
+<content start="298" end="325">
+<size>11</size><href>insertModel.cml</href></content>
+
+<content start="325" end="408">
+<size>11</size></content>
+
+<content start="408" end="417">
+<italic>true</italic><size>11</size></content>
+
+<content start="417" end="454">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="454" end="455">
+<LeftIndent>140.0</LeftIndent>
+<content start="454" end="455">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="455" end="457">
+<LeftIndent>140.0</LeftIndent>
+<content start="455" end="456">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="456" end="457">
+</content>
+
+</paragraph>
+<paragraph start="457" end="952">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="457" end="481">
+<size>11</size><bold>true</bold></content>
+
+<content start="481" end="952">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="952" end="953">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="952" end="953">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="953" end="1198">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="953" end="1197">
+<size>11</size></content>
+
+<content start="1197" end="1198">
+</content>
+
+</paragraph>
+<paragraph start="1198" end="1200">
+<LeftIndent>140.0</LeftIndent>
+<content start="1198" end="1199">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1199" end="1200">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1200" end="1201">
+<LeftIndent>140.0</LeftIndent>
+<content start="1200" end="1201">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1201" end="1241">
+<LeftIndent>140.0</LeftIndent>
+<content start="1201" end="1240">
+<size>11</size><bold>true</bold></content>
+
+<content start="1240" end="1241">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1241" end="1242">
+<LeftIndent>140.0</LeftIndent>
+<content start="1241" end="1242">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1242" end="1533">
+<LeftIndent>140.0</LeftIndent>
+<content start="1242" end="1244">
+<size>11</size></content>
+
+<content start="1244" end="1259">
+<size>11</size><href>insertModel.cml</href></content>
+
+<content start="1259" end="1533">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1533" end="1534">
+<LeftIndent>140.0</LeftIndent>
+<content start="1533" end="1534">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1534" end="1536">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1534" end="1535">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>intro_2d$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Duplicate Object</button><button>Rotate Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button></component></content>
+
+<content start="1535" end="1536">
+</content>
+
+</paragraph>
+<paragraph start="1536" end="1575">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1536" end="1574">
+<size>10</size></content>
+
+<content start="1574" end="1575">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1575" end="1576">
+<LeftIndent>140.0</LeftIndent>
+<content start="1575" end="1576">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1576" end="1778">
+<LeftIndent>140.0</LeftIndent>
+<content start="1576" end="1590">
+<size>11</size></content>
+
+<content start="1590" end="1600">
+<size>11</size><href>ContainerMenuBar.cml</href></content>
+
+<content start="1600" end="1717">
+<size>11</size></content>
+
+<content start="1717" end="1732">
+<size>11</size><href>simpleui2d.cml</href></content>
+
+<content start="1732" end="1778">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1778" end="1779">
+<LeftIndent>140.0</LeftIndent>
+<content start="1778" end="1779">
+</content>
+
+</paragraph>
+<paragraph start="1779" end="1796">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1779" end="1781">
+<size>11</size></content>
+
+<content start="1781" end="1786">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="1786" end="1789">
+<size>11</size></content>
+
+<content start="1789" end="1794">
+<size>11</size><href>SetupSimulation.cml</href></content>
+
+<content start="1794" end="1795">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

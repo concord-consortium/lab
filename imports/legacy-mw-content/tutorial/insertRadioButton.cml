@@ -1,0 +1,853 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Inserting a group of radio buttons</page_title>
+<referenced_files>addTextDOWN.png,
+deleteDOWN.png,
+dropCarbonDOWN.png,
+dropHydrogenDOWN.png,
+dropNitrogenDOWN.png,
+dropOxygenDOWN.png,
+duplicateDOWN.png,
+formBondDOWN.png,
+moveDOWN.png,
+rotateDOWN.png,
+ocursor.gif, o.png,
+ncursor.gif, n.png,
+hcursor.gif, h.png,
+ccursor.gif, c.png, 
+help.html</referenced_files>
+<bg_image>sidebar2.gif</bg_image>
+<text>Inserting a group of radio buttons
+
+&lt; Previous | Index | Next &gt;
+
+You can insert a set of radio buttons into a page for the user to choose a state of an embedded model from the options you provided in the radio buttons. 
+
+When you select the &quot;Insert&gt;Standard Controller for Model&gt;A Group of Radio Buttons&quot; menu action (keyboard action: ALT+SHIFT+R), you will see the following dialog:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+After selecting the number of radio buttons you would like to create in a group, you will find the radio buttons will be inserted right away into the page, as is shown in the following:
+
+    
+
+The above radio buttons are not linked to any model and are not customized. Therefore, they do not do anything useful --- they are just used to show the state of the button group right after insertion. We have to customize the radio buttons individually to make them do some work. To customize a radio button, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on it. You should see a dialog window as follows (note that the type of model and action displaying in the dialog window may vary&#8722;only the models present on the page and only the actions that are permitted by the current state of the corresponding model will show up):
+
+  
+&#12304;This is a screenshot.&#12305;
+
+This dialog allows you to select a model and an action that applies to the model. If there is no model on the page, the Model and Action Combo Boxes will be blank.
+
+You can set the images that will appear on the radio button when it is selected or deselected, set the transparency of the radio button, change the text that will appear on it (the default text will be the name of the action you see in the &quot;Select an action&quot; combo box), set the text for the tool tip that will appear when the mouse cursor enters and pauses, and set its background color if it is not transparent. You can also set up scripts that will be executed when the button is selected.
+
+ 
+Tip: If scripts are long and you will need to write them in a more comfortable way, use your favorite  text editor to write scripts and copy back to the text area. If there exist scripts already, copy them to your editor first before editing them.
+ 
+
+By default, the size of a radio button will be automatically decided by the text string and image on it, according to the font type/size and image size. But you can disable this auto-sizing functionality, and use the width and height parameters you specify with the &quot;Width&quot; and &quot;Height&quot; text fields.
+
+Optionally, a radio button can be given a unique identifier (UID). It has two uses. First, it can be used by a scripter to find the radio button and then do something on it. Second, it can be used to generate a log file that reports the user&apos;s activity on the radio button. Data containing, for instance, how many times and when a radio button has been selected, may provide insight to how the user learns from interacting with a model. A restriction of naming a UID is that it must be a string composed of only the alphanumeric characters and at least one alphabetic character. As its name indicates, you cannot have multiple components on the same page that share the same UID. If you do not need a UID for the radio button, just leave the field blank.
+
+Remember that you will have to customize all of the radio buttons. If you do not assign any action to a radio button, it will do nothing when it is selected.
+
+Radio button groups are useful in setting exclusive states of models. The following example shows using three radio buttons to show a DNA molecule from three different directions.
+ 
+   
+&#12304;An embedded Jmol Container and its controls.&#12305;
+
+Below is another example of using radio buttons to construct a customized user interface for creating molecules.
+
+               
+ 
+&#12304;A 2D container with a customized user interface that has an array of radio buttons for creating molecules.&#12305;
+
+How to remove a radio button from a group
+
+Just remove the radio button from the page. (See the last item of this section to learn how to remove a radio button.)
+
+How to add more radio buttons to an existing group
+
+This requires a bit more work than just inserting a new radio button. Every time when you insert a new group of radio buttons, they will belong to a different group. To add more radio buttons to an existing group, follow these steps:
+
+   Right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on a radio button in the group.
+   Select &quot;Copy This Radio Button&quot; item from the popup menu.
+   Paste the copied radio button to the position you would like the new button to appear.
+   Customize the newly added button (otherwise, it is just replica of the original button).
+
+Changing and removing a radio button
+
+See &quot;Editing an embedded component&quot; for how to change, move, remove, and copy a radio button.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="4852">
+<paragraph start="0" end="35">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="34">
+<italic>true</italic><bold>true</bold><size>15</size></content>
+
+<content start="34" end="35">
+</content>
+
+</paragraph>
+<paragraph start="35" end="36">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="64">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="36" end="38">
+<size>11</size></content>
+
+<content start="38" end="46">
+<href>insertButton.cml</href><size>11</size></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="54">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="54" end="57">
+<size>11</size></content>
+
+<content start="57" end="61">
+<href>insertCheckBox.cml</href><size>11</size></content>
+
+<content start="61" end="63">
+<size>11</size></content>
+
+<content start="63" end="64">
+</content>
+
+</paragraph>
+<paragraph start="64" end="65">
+<LeftIndent>140.0</LeftIndent>
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="220">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="220">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="220" end="221">
+<LeftIndent>140.0</LeftIndent>
+<content start="220" end="221">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="221" end="384">
+<LeftIndent>140.0</LeftIndent>
+<content start="221" end="384">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="384" end="385">
+<LeftIndent>140.0</LeftIndent>
+<content start="384" end="385">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="385" end="388">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="385" end="386">
+</content>
+
+<content start="386" end="387">
+<icon>RadioButtonDialog.gif</icon></content>
+
+<content start="387" end="388">
+</content>
+
+</paragraph>
+<paragraph start="388" end="412">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="388" end="389">
+<bold>true</bold><size>13</size></content>
+
+<content start="389" end="410">
+<size>10</size></content>
+
+<content start="410" end="411">
+<bold>true</bold><size>13</size></content>
+
+<content start="411" end="412">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="412" end="413">
+<LeftIndent>140.0</LeftIndent>
+<content start="412" end="413">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="413" end="599">
+<LeftIndent>140.0</LeftIndent>
+<content start="413" end="599">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="599" end="600">
+<LeftIndent>140.0</LeftIndent>
+<content start="599" end="600">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="600" end="605">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="600" end="601">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Button 1</title>
+<model>-1</model>
+<groupid>1112363130146</groupid>
+</component></content>
+
+<content start="601" end="602">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Button 2</title>
+<model>-1</model>
+<groupid>1112363130146</groupid>
+</component></content>
+
+<content start="602" end="603">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Button 3</title>
+<model>-1</model>
+<groupid>1112363130146</groupid>
+</component></content>
+
+<content start="603" end="604">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Button 4</title>
+<model>-1</model>
+<groupid>1112363130146</groupid>
+</component></content>
+
+<content start="604" end="605">
+</content>
+
+</paragraph>
+<paragraph start="605" end="606">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="605" end="606">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="606" end="1257">
+<LeftIndent>140.0</LeftIndent>
+<content start="606" end="1117">
+<size>11</size></content>
+
+<content start="1117" end="1118">
+</content>
+
+<content start="1118" end="1257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1257" end="1258">
+<LeftIndent>140.0</LeftIndent>
+<content start="1257" end="1258">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1258" end="1261">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1258" end="1259">
+<size>11</size></content>
+
+<content start="1259" end="1260">
+<icon>RadioButtonController.gif</icon><size>11</size></content>
+
+<content start="1260" end="1261">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1261" end="1285">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1261" end="1262">
+<bold>true</bold><size>13</size></content>
+
+<content start="1262" end="1283">
+<size>10</size></content>
+
+<content start="1283" end="1284">
+<bold>true</bold><size>13</size></content>
+
+<content start="1284" end="1285">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1285" end="1286">
+<LeftIndent>100.0</LeftIndent>
+<content start="1285" end="1286">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1286" end="1450">
+<LeftIndent>140.0</LeftIndent>
+<content start="1286" end="1450">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1450" end="1451">
+<LeftIndent>140.0</LeftIndent>
+<content start="1450" end="1451">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1451" end="1944">
+<LeftIndent>140.0</LeftIndent>
+<content start="1451" end="1944">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1944" end="1945">
+<LeftIndent>140.0</LeftIndent>
+<content start="1944" end="1945">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1945" end="1947">
+<LeftIndent>140.0</LeftIndent>
+<content start="1945" end="1946">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1946" end="1947">
+</content>
+
+</paragraph>
+<paragraph start="1947" end="2195">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1947" end="1950">
+<bold>true</bold><size>11</size></content>
+
+<content start="1950" end="2194">
+<size>11</size></content>
+
+<content start="2194" end="2195">
+</content>
+
+</paragraph>
+<paragraph start="2195" end="2197">
+<LeftIndent>140.0</LeftIndent>
+<content start="2195" end="2196">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2196" end="2197">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2197" end="2198">
+<LeftIndent>140.0</LeftIndent>
+<content start="2197" end="2198">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2198" end="2498">
+<LeftIndent>140.0</LeftIndent>
+<content start="2198" end="2498">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2498" end="2499">
+<LeftIndent>140.0</LeftIndent>
+<content start="2498" end="2499">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2499" end="3254">
+<LeftIndent>140.0</LeftIndent>
+<content start="2499" end="3254">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3254" end="3255">
+<LeftIndent>140.0</LeftIndent>
+<content start="3254" end="3255">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3255" end="3413">
+<LeftIndent>140.0</LeftIndent>
+<content start="3255" end="3413">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3413" end="3414">
+<LeftIndent>140.0</LeftIndent>
+<content start="3413" end="3414">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3414" end="3594">
+<LeftIndent>140.0</LeftIndent>
+<content start="3414" end="3594">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3594" end="3596">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3594" end="3595">
+<component><class>org.concord.modeler.PageMolecularViewer</class>
+<script>color structure;</script><menubar>false</menubar><toolbar>false</toolbar><statusbar>false</statusbar><resource>dna.pdb</resource><state>insertRadioButton$0.jms</state><width>300.0</width>
+<height>300.0</height>
+</component></content>
+
+<content start="3595" end="3596">
+</content>
+
+</paragraph>
+<paragraph start="3596" end="3600">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3596" end="3597">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>moveto 2 1 0 0 -90</title>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1112363690552</groupid>
+<script>moveto 2 1 0 0 -90</script>
+<action>Execute Jmol script</action></component></content>
+
+<content start="3597" end="3598">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>moveto 2 0 1 0 90</title>
+<selected>true</selected>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1112363690552</groupid>
+<script>moveto 2 0 1 0 90</script>
+<action>Execute Jmol script</action></component></content>
+
+<content start="3598" end="3599">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>moveto 2 0 0 1 90</title>
+<modelclass>org.concord.modeler.PageMolecularViewer</modelclass>
+<model>0</model>
+<groupid>1112363690552</groupid>
+<script>moveto 2 0 0 1 90</script>
+<action>Execute Jmol script</action></component></content>
+
+<content start="3599" end="3600">
+</content>
+
+</paragraph>
+<paragraph start="3600" end="3647">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3600" end="3601">
+<bold>true</bold><size>13</size></content>
+
+<content start="3601" end="3645">
+<size>10</size></content>
+
+<content start="3645" end="3646">
+<bold>true</bold><size>13</size></content>
+
+<content start="3646" end="3647">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3647" end="3648">
+<LeftIndent>140.0</LeftIndent>
+<content start="3647" end="3648">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3648" end="3761">
+<LeftIndent>140.0</LeftIndent>
+<content start="3648" end="3761">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3761" end="3762">
+<LeftIndent>140.0</LeftIndent>
+<content start="3761" end="3762">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3762" end="3778">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3762" end="3763">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>moveDOWN.png</imagefile>
+<imagefiledeselected>moveUP.png</imagefiledeselected>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action SELE_ID;
+set %buttonSelected %move;
+cursor MOVE_CURSOR;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="3763" end="3764">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>dropHydrogenDOWN.png</imagefile>
+<imagefiledeselected>dropHydrogenUP.png</imagefiledeselected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action ADDA_ID;
+set %buttonSelected %dropH;
+cursor hcursor.gif (8,8);</script>
+<action>Execute MW script</action></component></content>
+
+<content start="3764" end="3765">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>dropOxygenDOWN.png</imagefile>
+<imagefiledeselected>dropOxygenUP.png</imagefiledeselected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action ADDB_ID;
+set %buttonSelected %dropO;
+cursor ocursor.gif (14,14);</script>
+<action>Execute MW script</action></component></content>
+
+<content start="3765" end="3766">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>dropCarbonDOWN.png</imagefile>
+<imagefiledeselected>dropCarbonUP.png</imagefiledeselected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action ADDC_ID;
+set %buttonSelected %dropC;
+cursor ccursor.gif (16,16);</script>
+<action>Execute MW script</action></component></content>
+
+<content start="3766" end="3767">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>dropNitrogenDOWN.png</imagefile>
+<imagefiledeselected>dropNitrogenUP.png</imagefiledeselected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action ADDD_ID;
+set %buttonSelected %dropN;
+cursor ncursor.gif (15,15);</script>
+<action>Execute MW script</action></component></content>
+
+<content start="3767" end="3768">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>formBondDOWN.png</imagefile>
+<imagefiledeselected>formBondUP.png</imagefiledeselected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action DGBD_ID;
+set %buttonSelected %bond;
+//cursor bondCursor.png (0,0);</script>
+<action>Execute MW script</action></component></content>
+
+<content start="3768" end="3769">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>rotateDOWN.png</imagefile>
+<imagefiledeselected>rotateUP.png</imagefiledeselected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action ROTA_ID;
+set %buttonSelected %rotate;
+//cursor rotateCursor.png (7,9);</script>
+<action>Execute MW script</action></component></content>
+
+<content start="3769" end="3770">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>duplicateDOWN.png</imagefile>
+<imagefiledeselected>duplicateUP.png</imagefiledeselected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action DUPL_ID;
+set %buttonSelected %duplicate;
+cursor HAND_CURSOR;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="3770" end="3771">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>addTextDOWN.png</imagefile>
+<imagefiledeselected>addTextUP.png</imagefiledeselected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action NONE_ID;
+set %buttonSelected %addText;
+cursor TEXT_CURSOR;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="3771" end="3772">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>deleteDOWN.png</imagefile>
+<imagefiledeselected>deleteUP.png</imagefiledeselected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action DELE_ID;
+set %buttonSelected %delete;
+cursor CROSSHAIR_CURSOR;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="3772" end="3775">
+</content>
+
+<content start="3775" end="3776">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Clear</title>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select atom all;
+remove;
+select image all;
+remove;
+select textbox all;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="3776" end="3777">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>help</title>
+<tooltip>Help on how to use these tools.</tooltip>
+<script>script:page:0:message help.html;</script>
+<action>Script</action></component></content>
+
+<content start="3777" end="3778">
+</content>
+
+</paragraph>
+<paragraph start="3778" end="3780">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3778" end="3779">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>insertRadioButton$0.mml</resource><menubar>false</menubar><recorderless>true</recorderless>
+</component></content>
+
+<content start="3779" end="3780">
+</content>
+
+</paragraph>
+<paragraph start="3780" end="3889">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="3780" end="3781">
+<bold>true</bold><size>13</size></content>
+
+<content start="3781" end="3887">
+<size>10</size></content>
+
+<content start="3887" end="3888">
+<bold>true</bold><size>13</size></content>
+
+<content start="3888" end="3889">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3889" end="3890">
+<LeftIndent>140.0</LeftIndent>
+<content start="3889" end="3890">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3890" end="3932">
+<LeftIndent>140.0</LeftIndent>
+<content start="3890" end="3931">
+<bold>true</bold><size>11</size></content>
+
+<content start="3931" end="3932">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3932" end="3933">
+<LeftIndent>140.0</LeftIndent>
+<content start="3932" end="3933">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3933" end="4052">
+<LeftIndent>140.0</LeftIndent>
+<content start="3933" end="4052">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4052" end="4053">
+<LeftIndent>140.0</LeftIndent>
+<content start="4052" end="4053">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4053" end="4104">
+<LeftIndent>140.0</LeftIndent>
+<content start="4053" end="4103">
+<bold>true</bold><size>11</size></content>
+
+<content start="4103" end="4104">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4104" end="4105">
+<LeftIndent>140.0</LeftIndent>
+<content start="4104" end="4105">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4105" end="4339">
+<LeftIndent>140.0</LeftIndent>
+<content start="4105" end="4339">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4339" end="4340">
+<LeftIndent>140.0</LeftIndent>
+<content start="4339" end="4340">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4340" end="4447">
+<LeftIndent>160.0</LeftIndent>
+<content start="4340" end="4341">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="4341" end="4343">
+</content>
+
+<content start="4343" end="4447">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4447" end="4508">
+<LeftIndent>160.0</LeftIndent>
+<content start="4447" end="4448">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="4448" end="4450">
+</content>
+
+<content start="4450" end="4508">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4508" end="4598">
+<LeftIndent>160.0</LeftIndent>
+<content start="4508" end="4509">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="4509" end="4511">
+</content>
+
+<content start="4511" end="4598">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4598" end="4690">
+<LeftIndent>160.0</LeftIndent>
+<content start="4598" end="4599">
+<icon>org.concord.modeler.text.BulletIcon$OpenCircleBulletIcon</icon></content>
+
+<content start="4599" end="4601">
+</content>
+
+<content start="4601" end="4690">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4690" end="4691">
+<LeftIndent>140.0</LeftIndent>
+<content start="4690" end="4691">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4691" end="4728">
+<LeftIndent>140.0</LeftIndent>
+<content start="4691" end="4727">
+<bold>true</bold><size>11</size></content>
+
+<content start="4727" end="4728">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4728" end="4729">
+<LeftIndent>140.0</LeftIndent>
+<content start="4728" end="4729">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="4729" end="4823">
+<LeftIndent>140.0</LeftIndent>
+<content start="4729" end="4734">
+<size>11</size></content>
+
+<content start="4734" end="4763">
+<href>changeComponent.cml</href><size>11</size></content>
+
+<content start="4763" end="4822">
+<size>11</size></content>
+
+<content start="4822" end="4823">
+</content>
+
+</paragraph>
+<paragraph start="4823" end="4824">
+<LeftIndent>140.0</LeftIndent>
+<content start="4823" end="4824">
+</content>
+
+</paragraph>
+<paragraph start="4824" end="4852">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="4824" end="4826">
+<size>11</size></content>
+
+<content start="4826" end="4834">
+<href>insertButton.cml</href><size>11</size></content>
+
+<content start="4834" end="4837">
+<size>11</size></content>
+
+<content start="4837" end="4842">
+<href>index2.cml</href><size>11</size></content>
+
+<content start="4842" end="4845">
+<size>11</size></content>
+
+<content start="4845" end="4849">
+<href>insertCheckBox.cml</href><size>11</size></content>
+
+<content start="4849" end="4851">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

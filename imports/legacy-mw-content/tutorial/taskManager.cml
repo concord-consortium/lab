@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Accessing the task manager</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Accessing the task manager
+
+&lt; Previous | Index | Next &gt;
+
+There are two types of processes in a molecular dynamics simulation:
+
+   Synchronized: process run by the main thread running the molecular dynamics 
+   Non-synchronized: process run by a different thread than the one running the molecular dynamics 
+
+ 
+What is a thread? Modern computers can simultaneously run multiple tasks. Each of these tasks is said to run in a thread. This mechanism is called multithreading, which is supported by the computer&apos;s operating system or central processing unit. See   Wikipedia for more information.
+ 
+
+Non-synchronized processes are usually started by user&apos;s interactions, or a script execution. A synchronized process is usually not related to user&apos;s interactions. This Section discusses the synchronized processes. 
+
+Primary and secondary processes
+
+A model is driven by several runnable processes, among which the molecular dynamics is the main one.
+
+Molecular dynamics, the primary process of a simulation that unfolds a model, provides a natural &quot;system clock&quot;. Other processes depend on the molecular dynamics cycles. Therefore, they are called secondary processes. There are several types of secondary process:
+
+   Modeling processes:
+Periodically executed to simulate certain phenonmena relative to the molecular dynamics. For example, a Monte Carlo process, running in parallel to the molecular dynamics to simulate a phenonmena that the molecular dynamics does not directly model, is such a process.
+
+Tasks: Heat bath, light source, photon absorption and emission, flow, etc.
+
+   Graphical processes: 
+Periodically update the model&apos;s view on the screen to create animation effect.
+
+Tasks: Painting view.
+
+   Analytical processes: 
+Periodically or aperiodically compute interested properties or collect data.
+
+Tasks: Recording the simulation, calculating properties such as mean square displacements.
+
+   Supporting processes:
+Periodically or aperiodically check errors, or communicate with other processes.
+
+Tasks: Watch dog, generating JPEG stream, automatic reminder.
+
+The Task Manager of a molecular dynamics model can be accessed from its container&apos;s Option Menu. The following image shows it:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+Interval and lifetime of a task
+
+In order to understand more about secondary processes, which we will refer to as tasks (speaking from computer&apos;s perspective) or jobs (speaking from human&apos;s perspective), you will have to understand two important concepts about tasks: interval and lifetime. 
+
+The interval of a task means the number of molecular dynamics steps that elapse between its two adjacent calls of the task. If the interval equals to one, the task becomes isorhythmic with the molecular dynamics, namely, it will be called at every molecular dynamics step (see a flow chart about what it is done at each step). If the interval equals to infinity, the task will just get called at the beginning (it is guaranteed that a task will be executed at least once) and never be called again.
+
+The lifetime of a task means how many times it will get called. The numbers in the lifetime column of the Task Manager&apos;s table of tasks are not the absolute time spans of the tasks in a simulation. Rather, the absolute lifetimes of tasks are the product of those numbers with the values of intervals. If a task has an infinite lifetime (which we call a permanent task), it will be called all the time until the model is stopped or removed. If a task has a finite lifetime (which we call a transient task), it will be called during its lifetime and then removed from the task pool upon completion. A task with a finite lifetime can be used as a ticking timer relative to the molecular dynamics clock. This mechanism is used to run the automatic reminder. 
+
+You can change the interval for a task (double-click on the &quot;Interval&quot; cell and type in a number).
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="3908">
+<paragraph start="0" end="27">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="26">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="26" end="27">
+</content>
+
+</paragraph>
+<paragraph start="27" end="28">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="27" end="28">
+</content>
+
+</paragraph>
+<paragraph start="28" end="56">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="28" end="30">
+<size>11</size></content>
+
+<content start="30" end="38">
+<href>timeSeries.cml</href><size>11</size></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="46">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="46" end="49">
+<size>11</size></content>
+
+<content start="49" end="53">
+<href>CustomerTask.cml</href><size>11</size></content>
+
+<content start="53" end="55">
+<size>11</size></content>
+
+<content start="55" end="56">
+</content>
+
+</paragraph>
+<paragraph start="56" end="57">
+<LeftIndent>100.0</LeftIndent>
+<content start="56" end="57">
+</content>
+
+</paragraph>
+<paragraph start="57" end="126">
+<LeftIndent>140.0</LeftIndent>
+<content start="57" end="95">
+<size>11</size></content>
+
+<content start="95" end="124">
+<href>glossary/MolecularDynamics.cml</href><size>11</size></content>
+
+<content start="124" end="126">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="126" end="127">
+<LeftIndent>100.0</LeftIndent>
+<content start="126" end="127">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="127" end="207">
+<LeftIndent>160.0</LeftIndent>
+<content start="127" end="128">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="128" end="207">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="207" end="307">
+<LeftIndent>160.0</LeftIndent>
+<content start="207" end="208">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="208" end="307">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="307" end="308">
+<LeftIndent>140.0</LeftIndent>
+<content start="307" end="308">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="308" end="310">
+<LeftIndent>140.0</LeftIndent>
+<content start="308" end="309">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="309" end="310">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="310" end="593">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="310" end="327">
+<bold>true</bold><size>11</size></content>
+
+<content start="327" end="559">
+<size>11</size></content>
+
+<content start="559" end="560">
+<icon>htmlink.gif</icon></content>
+
+<content start="560" end="561">
+<size>11</size></content>
+
+<content start="561" end="570">
+<href>http://en.wikipedia.org/wiki/Thread_(computer_science)</href><size>11</size></content>
+
+<content start="570" end="593">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="593" end="595">
+<LeftIndent>140.0</LeftIndent>
+<content start="593" end="594">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="594" end="595">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="595" end="596">
+<LeftIndent>140.0</LeftIndent>
+<content start="595" end="596">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="596" end="812">
+<LeftIndent>140.0</LeftIndent>
+<content start="596" end="672">
+<size>11</size></content>
+
+<content start="672" end="678">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="678" end="812">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="812" end="813">
+<LeftIndent>140.0</LeftIndent>
+<content start="812" end="813">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="813" end="845">
+<LeftIndent>140.0</LeftIndent>
+<content start="813" end="844">
+<bold>true</bold><size>11</size></content>
+
+<content start="844" end="845">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="845" end="846">
+<LeftIndent>100.0</LeftIndent>
+<content start="845" end="846">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="846" end="947">
+<LeftIndent>140.0</LeftIndent>
+<content start="846" end="947">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="947" end="948">
+<LeftIndent>140.0</LeftIndent>
+<content start="947" end="948">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="948" end="1212">
+<LeftIndent>140.0</LeftIndent>
+<content start="948" end="1212">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1212" end="1213">
+<LeftIndent>100.0</LeftIndent>
+<content start="1212" end="1213">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1213" end="1236">
+<LeftIndent>160.0</LeftIndent>
+<content start="1213" end="1214">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1214" end="1216">
+</content>
+
+<content start="1216" end="1234">
+<size>11</size><italic>true</italic></content>
+
+<content start="1234" end="1236">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1236" end="1504">
+<LeftIndent>160.0</LeftIndent>
+<content start="1236" end="1504">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1504" end="1505">
+<LeftIndent>160.0</LeftIndent>
+<content start="1504" end="1505">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1505" end="1580">
+<LeftIndent>160.0</LeftIndent>
+<content start="1505" end="1512">
+<size>11</size></content>
+
+<content start="1512" end="1521">
+<href>heatbath.cml</href><size>11</size></content>
+
+<content start="1521" end="1523">
+<size>11</size></content>
+
+<content start="1523" end="1535">
+<href>../student/light/light1.cml</href><size>11</size></content>
+
+<content start="1535" end="1537">
+<size>11</size></content>
+
+<content start="1537" end="1567">
+<href>../student/light/moleculartag.cml</href><size>11</size></content>
+
+<content start="1567" end="1569">
+<size>11</size></content>
+
+<content start="1569" end="1573">
+<href>flow.cml</href><size>11</size></content>
+
+<content start="1573" end="1580">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1580" end="1581">
+<LeftIndent>100.0</LeftIndent>
+<content start="1580" end="1581">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1581" end="1606">
+<LeftIndent>160.0</LeftIndent>
+<content start="1581" end="1582">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1582" end="1583">
+<size>11</size></content>
+
+<content start="1583" end="1603">
+<size>11</size><italic>true</italic></content>
+
+<content start="1603" end="1606">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1606" end="1685">
+<LeftIndent>160.0</LeftIndent>
+<content start="1606" end="1685">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1685" end="1686">
+<LeftIndent>160.0</LeftIndent>
+<content start="1685" end="1686">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1686" end="1708">
+<LeftIndent>160.0</LeftIndent>
+<content start="1686" end="1708">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1708" end="1709">
+<LeftIndent>160.0</LeftIndent>
+<content start="1708" end="1709">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1709" end="1735">
+<LeftIndent>160.0</LeftIndent>
+<content start="1709" end="1710">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1710" end="1712">
+<size>11</size></content>
+
+<content start="1712" end="1732">
+<size>11</size><italic>true</italic></content>
+
+<content start="1732" end="1735">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1735" end="1812">
+<LeftIndent>160.0</LeftIndent>
+<content start="1735" end="1812">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1812" end="1813">
+<LeftIndent>160.0</LeftIndent>
+<content start="1812" end="1813">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1813" end="1904">
+<LeftIndent>160.0</LeftIndent>
+<content start="1813" end="1820">
+<size>11</size></content>
+
+<content start="1820" end="1844">
+<href>RecordSimulation.cml</href><size>11</size></content>
+
+<content start="1844" end="1877">
+<size>11</size></content>
+
+<content start="1877" end="1902">
+<href>glossary/msd.cml</href><size>11</size></content>
+
+<content start="1902" end="1904">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1904" end="1905">
+<LeftIndent>160.0</LeftIndent>
+<content start="1904" end="1905">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1905" end="1930">
+<LeftIndent>160.0</LeftIndent>
+<content start="1905" end="1906">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon><size>11</size></content>
+
+<content start="1906" end="1908">
+<size>11</size></content>
+
+<content start="1908" end="1928">
+<size>11</size><italic>true</italic></content>
+
+<content start="1928" end="1930">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1930" end="2011">
+<LeftIndent>160.0</LeftIndent>
+<content start="1930" end="2011">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2011" end="2012">
+<LeftIndent>160.0</LeftIndent>
+<content start="2011" end="2012">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2012" end="2074">
+<LeftIndent>160.0</LeftIndent>
+<content start="2012" end="2030">
+<size>11</size></content>
+
+<content start="2030" end="2052">
+<href>modelPrinting.cml</href><size>11</size></content>
+
+<content start="2052" end="2054">
+<size>11</size></content>
+
+<content start="2054" end="2072">
+<href>autostop.cml</href><size>11</size></content>
+
+<content start="2072" end="2074">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2074" end="2075">
+<LeftIndent>120.0</LeftIndent>
+<content start="2074" end="2075">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2075" end="2202">
+<LeftIndent>140.0</LeftIndent>
+<content start="2075" end="2202">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2202" end="2203">
+<LeftIndent>120.0</LeftIndent>
+<content start="2202" end="2203">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2203" end="2206">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2203" end="2204">
+<size>11</size></content>
+
+<content start="2204" end="2205">
+<icon>TaskManager.gif</icon><size>11</size></content>
+
+<content start="2205" end="2206">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2206" end="2230">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2206" end="2229">
+<size>10</size></content>
+
+<content start="2229" end="2230">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2230" end="2231">
+<LeftIndent>100.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="2230" end="2231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2231" end="2263">
+<LeftIndent>140.0</LeftIndent>
+<content start="2231" end="2262">
+<bold>true</bold><size>11</size></content>
+
+<content start="2262" end="2263">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2263" end="2264">
+<LeftIndent>140.0</LeftIndent>
+<content start="2263" end="2264">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2264" end="2523">
+<LeftIndent>140.0</LeftIndent>
+<content start="2264" end="2523">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2523" end="2524">
+<LeftIndent>140.0</LeftIndent>
+<content start="2523" end="2524">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2524" end="3023">
+<LeftIndent>140.0</LeftIndent>
+<content start="2524" end="2803">
+<size>11</size></content>
+
+<content start="2803" end="2813">
+<href>SetupSimulation.cml</href><size>11</size></content>
+
+<content start="2813" end="3023">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3023" end="3024">
+<LeftIndent>140.0</LeftIndent>
+<content start="3023" end="3024">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3024" end="3779">
+<LeftIndent>140.0</LeftIndent>
+<content start="3024" end="3377">
+<size>11</size></content>
+
+<content start="3377" end="3391">
+<bold>true</bold><size>11</size></content>
+
+<content start="3391" end="3513">
+<size>11</size></content>
+
+<content start="3513" end="3527">
+<bold>true</bold><size>11</size></content>
+
+<content start="3527" end="3758">
+<size>11</size></content>
+
+<content start="3758" end="3776">
+<href>autostop.cml</href><size>11</size></content>
+
+<content start="3776" end="3779">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3779" end="3780">
+<LeftIndent>140.0</LeftIndent>
+<content start="3779" end="3780">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="3780" end="3879">
+<LeftIndent>140.0</LeftIndent>
+<content start="3780" end="3878">
+<size>11</size></content>
+
+<content start="3878" end="3879">
+</content>
+
+</paragraph>
+<paragraph start="3879" end="3880">
+<LeftIndent>100.0</LeftIndent>
+<content start="3879" end="3880">
+</content>
+
+</paragraph>
+<paragraph start="3880" end="3908">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="3880" end="3882">
+<size>11</size></content>
+
+<content start="3882" end="3890">
+<href>timeSeries.cml</href><size>11</size></content>
+
+<content start="3890" end="3893">
+<size>11</size></content>
+
+<content start="3893" end="3898">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="3898" end="3901">
+<size>11</size></content>
+
+<content start="3901" end="3905">
+<href>CustomerTask.cml</href><size>11</size></content>
+
+<content start="3905" end="3907">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

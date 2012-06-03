@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Background filling</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Background filling
+
+&lt; Previous | Index | Next &gt;
+
+As with a web page, you can set the background of a page. Background filling can be set with the Properties Dialog.
+
+There are three ways to open the Properties Dialog:
+
+   Right click on somewhere of the main window (the place you are reading now), there will be a pop-up menu, select the &quot;Properties&quot;(Windows and Linux) or &quot;Get Info&quot; (Mac OS X) item.
+   Choose the &quot;File&gt;Properties&quot; (on Windows and Linux) or &quot;File&gt;Get Info&quot; (on Mac OS X) menu.
+   Press CTRL+SHIFT+P on Windows and Linux, or &quot;APPLE+,&quot; on Mac OS X.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+As the name implies, this window shows the properties of the current page. You can do the following things with this dialog box:
+
+   Type in the &quot;Title&quot; text field the title for the page. 
+   Choose from the Background Combo Box a filling method for the background.
+   Finally, click the &quot;OK&quot; button to confirm all the changes you made, or &quot;Cancel&quot; to quit.
+
+To learn how to fill the background, start from here.
+
+Remember, all the above functions are disabled if the current page is a remote one or is currently locked against editing. If a page is local, you need to unlock the editor first in order to get access to the functions.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1258">
+<paragraph start="0" end="19">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="18">
+<bold>true</bold><size>15</size><italic>true</italic></content>
+
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="20">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="48">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="20" end="22">
+<size>11</size></content>
+
+<content start="22" end="30">
+<size>11</size><href>downloadmultipage.cml</href></content>
+
+<content start="30" end="33">
+<size>11</size></content>
+
+<content start="33" end="38">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="38" end="41">
+<size>11</size></content>
+
+<content start="41" end="45">
+<size>11</size><href>bgColor.cml</href></content>
+
+<content start="45" end="47">
+<size>11</size></content>
+
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="49">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="165">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="165">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="165" end="166">
+<LeftIndent>140.0</LeftIndent>
+<content start="165" end="166">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="166" end="218">
+<LeftIndent>140.0</LeftIndent>
+<content start="166" end="218">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="218" end="219">
+<LeftIndent>140.0</LeftIndent>
+<content start="218" end="219">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="219" end="402">
+<LeftIndent>160.0</LeftIndent>
+<content start="219" end="220">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="220" end="402">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="402" end="496">
+<LeftIndent>160.0</LeftIndent>
+<content start="402" end="403">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="403" end="496">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="496" end="566">
+<LeftIndent>160.0</LeftIndent>
+<content start="496" end="497">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="497" end="566">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="566" end="567">
+<LeftIndent>140.0</LeftIndent>
+<content start="566" end="567">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="567" end="570">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="567" end="568">
+<size>11</size></content>
+
+<content start="568" end="569">
+<size>11</size><icon>PropertiesDialog.gif</icon></content>
+
+<content start="569" end="570">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="570" end="594">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="570" end="571">
+<bold>true</bold><size>13</size></content>
+
+<content start="571" end="592">
+<size>10</size></content>
+
+<content start="592" end="593">
+<bold>true</bold><size>13</size></content>
+
+<content start="593" end="594">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="594" end="595">
+<LeftIndent>140.0</LeftIndent>
+<content start="594" end="595">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="595" end="724">
+<LeftIndent>140.0</LeftIndent>
+<content start="595" end="724">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="724" end="725">
+<LeftIndent>100.0</LeftIndent>
+<content start="724" end="725">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="725" end="784">
+<LeftIndent>160.0</LeftIndent>
+<content start="725" end="726">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="726" end="784">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="784" end="861">
+<LeftIndent>160.0</LeftIndent>
+<content start="784" end="785">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="785" end="861">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="861" end="953">
+<LeftIndent>160.0</LeftIndent>
+<content start="861" end="862">
+<size>11</size><icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="862" end="953">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="953" end="954">
+<LeftIndent>100.0</LeftIndent>
+<content start="953" end="954">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="954" end="1008">
+<LeftIndent>140.0</LeftIndent>
+<content start="954" end="1002">
+<size>11</size></content>
+
+<content start="1002" end="1006">
+<size>11</size><href>bgColor.cml</href></content>
+
+<content start="1006" end="1008">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1008" end="1009">
+<LeftIndent>140.0</LeftIndent>
+<content start="1008" end="1009">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1009" end="1229">
+<LeftIndent>140.0</LeftIndent>
+<content start="1009" end="1229">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1229" end="1230">
+<LeftIndent>100.0</LeftIndent>
+<content start="1229" end="1230">
+</content>
+
+</paragraph>
+<paragraph start="1230" end="1258">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1230" end="1232">
+<size>11</size></content>
+
+<content start="1232" end="1240">
+<size>11</size><href>downloadmultipage.cml</href></content>
+
+<content start="1240" end="1243">
+<size>11</size></content>
+
+<content start="1243" end="1248">
+<size>11</size><href>index2.cml</href></content>
+
+<content start="1248" end="1251">
+<size>11</size></content>
+
+<content start="1251" end="1255">
+<size>11</size><href>bgColor.cml</href></content>
+
+<content start="1255" end="1257">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

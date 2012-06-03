@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Simple running averages</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Simple running averages
+
+Given a sequence {a1, a2, a3, ......, an}, the simple running averages are a sequence given by:
+
+si=(ai+ai+1+ai+2+......+ai+n-1)/n
+
+For example,
+
+S2=(1/2){a1+a2 , a2+a3 , a3+a4 , ...... , an-1+an)
+
+The simple running averages are often used to smoothen stochastic data obtained from a simulation or an experiment.
+
+See also growing-point running averages and exponential running averages.
+
+   
+ return to index</text>
+<section start="0" end="436">
+<paragraph start="0" end="24">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="23">
+<family>Bookman Old Style</family><size>20</size><bold>true</bold></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<LeftIndent>120.0</LeftIndent>
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="121">
+<LeftIndent>140.0</LeftIndent>
+<content start="25" end="44">
+<size>11</size></content>
+
+<content start="44" end="45">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="45" end="48">
+<size>11</size></content>
+
+<content start="48" end="49">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="49" end="52">
+<size>11</size></content>
+
+<content start="52" end="53">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="53" end="64">
+<size>11</size></content>
+
+<content start="64" end="65">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="65" end="121">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="121" end="122">
+<LeftIndent>140.0</LeftIndent>
+<content start="121" end="122">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="122" end="156">
+<LeftIndent>140.0</LeftIndent>
+<content start="122" end="123">
+<size>11</size></content>
+
+<content start="123" end="124">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="124" end="127">
+<size>11</size></content>
+
+<content start="127" end="128">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="128" end="130">
+<size>11</size></content>
+
+<content start="130" end="133">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="133" end="135">
+<size>11</size></content>
+
+<content start="135" end="138">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="138" end="147">
+<size>11</size></content>
+
+<content start="147" end="152">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="152" end="156">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="156" end="157">
+<LeftIndent>140.0</LeftIndent>
+<content start="156" end="157">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="157" end="170">
+<LeftIndent>140.0</LeftIndent>
+<content start="157" end="170">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="170" end="171">
+<LeftIndent>140.0</LeftIndent>
+<content start="170" end="171">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="171" end="222">
+<LeftIndent>140.0</LeftIndent>
+<content start="171" end="172">
+<size>11</size></content>
+
+<content start="172" end="173">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="173" end="181">
+<size>11</size></content>
+
+<content start="181" end="182">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="182" end="184">
+<size>11</size></content>
+
+<content start="184" end="185">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="185" end="189">
+<size>11</size></content>
+
+<content start="189" end="190">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="190" end="192">
+<size>11</size></content>
+
+<content start="192" end="193">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="193" end="197">
+<size>11</size></content>
+
+<content start="197" end="198">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="198" end="200">
+<size>11</size></content>
+
+<content start="200" end="201">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="201" end="214">
+<size>11</size></content>
+
+<content start="214" end="217">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="217" end="219">
+<size>11</size></content>
+
+<content start="219" end="220">
+<subscript>true</subscript><size>11</size></content>
+
+<content start="220" end="222">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="222" end="223">
+<LeftIndent>140.0</LeftIndent>
+<content start="222" end="223">
+<size>11</size><italic>true</italic></content>
+
+</paragraph>
+<paragraph start="223" end="339">
+<LeftIndent>140.0</LeftIndent>
+<content start="223" end="339">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="339" end="340">
+<LeftIndent>140.0</LeftIndent>
+<content start="339" end="340">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="340" end="414">
+<LeftIndent>140.0</LeftIndent>
+<content start="340" end="349">
+<size>11</size></content>
+
+<content start="349" end="379">
+<size>11</size><href>CumulativeRunningAverage.cml</href></content>
+
+<content start="379" end="384">
+<size>11</size></content>
+
+<content start="384" end="412">
+<size>11</size><href>ema.cml</href></content>
+
+<content start="412" end="414">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="414" end="415">
+<LeftIndent>140.0</LeftIndent>
+<content start="414" end="415">
+</content>
+
+</paragraph>
+<paragraph start="415" end="419">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="415" end="416">
+</content>
+
+<content start="416" end="417">
+<icon>index.gif</icon><href>index.cml</href></content>
+
+<content start="417" end="419">
+</content>
+
+</paragraph>
+<paragraph start="419" end="436">
+<LeftIndent>120.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="419" end="420">
+</content>
+
+<content start="420" end="435">
+<href>index.cml</href></content>
+
+</paragraph>
+</section>
+</document>

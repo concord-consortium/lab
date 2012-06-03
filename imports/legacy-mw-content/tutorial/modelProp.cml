@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Accessing the properties of a model</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Accessing the properties of a model
+
+&lt; Previous | Index | Next &gt;
+
+A model has many properties that you may want to take a look and change. To get access to these properties, pull down the File menu of a model container and select the &quot;Access Model Properties&quot; item.
+
+  
+&#12304;This is a screenshot of the File menu of a model container.&#12305;
+
+For the Basic 2D Molecular Simulator, the following dialog appears:
+
+  
+&#12304;This is a screenshot.&#12305;
+
+There are several tabs that may be interesting to look at. They basically tell how many objects are in the model, what the boundary conditions are, and so on. Access to changing these properties are also provided in this dialog window. Of these tabs, the &quot;Script&quot; tab needs more introduction.
+
+Setting up initialization scripts
+
+In the &quot;Script&quot; tab, you can set up the scripts that will be run immediately after a model is loaded when the page it is embedded in is loaded (this means that the initialization scripts will not be run when the model is reset or loaded through scripts that do not involve the loading of its page). We call these scripts the initialization scripts.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+The initialization scripts can be useful if you know how to use them correctly. Here are several common uses:
+
+   Auto-run the model after it is loaded: Just set a run command to be the initialization script. You may want to put a delay command before the run command to retard the automatical running.
+
+   Define variables that will be used later. For example, the result of a complex math expression can be stored as a variable, which can be used repeatedly later.
+
+   Use the model container to create auto-scrolling text, and other similar motion effect when you need to make your page more vivid.
+
+Do not use any motion scripts if the model will not be visible upon loading (if the user cannot use the motion effect, what is the point of setting them up?).
+
+ 
+Caution about the initialization scripts!
+
+   Long-running initialization scripts are dangerous to authoring! Imagine you are in the authoring mode and just loading a page for editing, if there is a set of long self-running scripts, they will just keep running --- probably silently --- while you start to edit the page or change the mode without noticing that the scripts are running. The result of this can be annoying. So the general advice of using the intialization scripts is: (1) Do not use it if you are a novice user; (2) When you use it, keep it short.
+
+   When a model is saved, the initialization script will be saved as well. If you develop a new model based on a saved one, make sure to check if you want to keep the same initialization script. An old initialization script may not work with the current model without modification.
+ 
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2780">
+<paragraph start="0" end="36">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="35">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="65">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="37" end="39">
+<size>11</size></content>
+
+<content start="39" end="47">
+<size>11</size><href>modelPrinting.cml</href></content>
+
+<content start="47" end="50">
+<size>11</size></content>
+
+<content start="50" end="55">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="55" end="58">
+<size>11</size></content>
+
+<content start="58" end="62">
+<size>11</size><href>timeSeries.cml</href></content>
+
+<content start="62" end="64">
+<size>11</size></content>
+
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<LeftIndent>100.0</LeftIndent>
+<content start="65" end="66">
+</content>
+
+</paragraph>
+<paragraph start="66" end="266">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="266">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="266" end="267">
+<LeftIndent>100.0</LeftIndent>
+<content start="266" end="267">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="267" end="270">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="267" end="268">
+<size>11</size></content>
+
+<content start="268" end="269">
+<icon>FileMenu.gif</icon></content>
+
+<content start="269" end="270">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="270" end="332">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="270" end="331">
+<size>10</size></content>
+
+<content start="331" end="332">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="332" end="333">
+<LeftIndent>140.0</LeftIndent>
+<content start="332" end="333">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="333" end="401">
+<LeftIndent>140.0</LeftIndent>
+<content start="333" end="401">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="401" end="402">
+<LeftIndent>100.0</LeftIndent>
+<content start="401" end="402">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="402" end="405">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="402" end="403">
+<size>11</size></content>
+
+<content start="403" end="404">
+<size>11</size><icon>ModelAccessor1.gif</icon></content>
+
+<content start="404" end="405">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="405" end="429">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="405" end="428">
+<size>10</size></content>
+
+<content start="428" end="429">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="429" end="430">
+<LeftIndent>140.0</LeftIndent>
+<content start="429" end="430">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="430" end="723">
+<LeftIndent>140.0</LeftIndent>
+<content start="430" end="553">
+<size>11</size></content>
+
+<content start="553" end="572">
+<size>11</size><href>boundary.cml</href></content>
+
+<content start="572" end="723">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="723" end="724">
+<LeftIndent>140.0</LeftIndent>
+<content start="723" end="724">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="724" end="758">
+<LeftIndent>140.0</LeftIndent>
+<content start="724" end="757">
+<size>11</size><bold>true</bold></content>
+
+<content start="757" end="758">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="758" end="759">
+<LeftIndent>140.0</LeftIndent>
+<content start="758" end="759">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="759" end="1108">
+<LeftIndent>140.0</LeftIndent>
+<content start="759" end="799">
+<size>11</size></content>
+
+<content start="799" end="806">
+<size>11</size><href>mwscripts.cml</href></content>
+
+<content start="806" end="902">
+<size>11</size></content>
+
+<content start="902" end="1056">
+<size>11</size><foreground>255 0 0</foreground><bold>true</bold></content>
+
+<content start="1056" end="1084">
+<size>11</size></content>
+
+<content start="1084" end="1106">
+<size>11</size><italic>true</italic></content>
+
+<content start="1106" end="1108">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1108" end="1109">
+<LeftIndent>140.0</LeftIndent>
+<content start="1108" end="1109">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1109" end="1112">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1109" end="1110">
+</content>
+
+<content start="1110" end="1111">
+<icon>ModelAccessor2.gif</icon></content>
+
+<content start="1111" end="1112">
+</content>
+
+</paragraph>
+<paragraph start="1112" end="1136">
+<LeftIndent>140.0</LeftIndent>
+<Alignment>1</Alignment>
+<content start="1112" end="1135">
+<size>10</size></content>
+
+<content start="1135" end="1136">
+</content>
+
+</paragraph>
+<paragraph start="1136" end="1137">
+<LeftIndent>140.0</LeftIndent>
+<content start="1136" end="1137">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1137" end="1247">
+<LeftIndent>140.0</LeftIndent>
+<content start="1137" end="1247">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1247" end="1248">
+<LeftIndent>140.0</LeftIndent>
+<content start="1247" end="1248">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1248" end="1440">
+<LeftIndent>160.0</LeftIndent>
+<content start="1248" end="1249">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1249" end="1251">
+</content>
+
+<content start="1251" end="1301">
+<size>11</size></content>
+
+<content start="1301" end="1304">
+<family>Courier New</family><size>11</size><href>script_run.cml</href></content>
+
+<content start="1304" end="1368">
+<size>11</size></content>
+
+<content start="1368" end="1373">
+<family>Courier New</family><size>11</size><href>script_delay.cml</href></content>
+
+<content start="1373" end="1393">
+<size>11</size></content>
+
+<content start="1393" end="1396">
+<family>Courier New</family><size>11</size></content>
+
+<content start="1396" end="1440">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1440" end="1441">
+<LeftIndent>160.0</LeftIndent>
+<content start="1440" end="1441">
+</content>
+
+</paragraph>
+<paragraph start="1441" end="1604">
+<LeftIndent>160.0</LeftIndent>
+<content start="1441" end="1442">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1442" end="1444">
+</content>
+
+<content start="1444" end="1460">
+<size>11</size><href>script_defvar.cml</href></content>
+
+<content start="1460" end="1523">
+<size>11</size></content>
+
+<content start="1523" end="1538">
+<size>11</size><href>script_expression.cml</href></content>
+
+<content start="1538" end="1603">
+<size>11</size></content>
+
+<content start="1603" end="1604">
+</content>
+
+</paragraph>
+<paragraph start="1604" end="1605">
+<LeftIndent>160.0</LeftIndent>
+<content start="1604" end="1605">
+</content>
+
+</paragraph>
+<paragraph start="1605" end="1739">
+<LeftIndent>160.0</LeftIndent>
+<content start="1605" end="1606">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1606" end="1608">
+</content>
+
+<content start="1608" end="1642">
+<size>11</size></content>
+
+<content start="1642" end="1661">
+<size>11</size><href>autoscrolltext.cml</href></content>
+
+<content start="1661" end="1739">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1739" end="1740">
+<LeftIndent>140.0</LeftIndent>
+<content start="1739" end="1740">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1740" end="1899">
+<LeftIndent>140.0</LeftIndent>
+<content start="1740" end="1899">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1899" end="1900">
+<LeftIndent>140.0</LeftIndent>
+<content start="1899" end="1900">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1900" end="1902">
+<LeftIndent>140.0</LeftIndent>
+<content start="1900" end="1901">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1901" end="1902">
+</content>
+
+</paragraph>
+<paragraph start="1902" end="1944">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1902" end="1943">
+<size>11</size><bold>true</bold></content>
+
+<content start="1943" end="1944">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1944" end="1945">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1944" end="1945">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1945" end="2465">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="1945" end="1946">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="1946" end="1948">
+</content>
+
+<content start="1948" end="2465">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2465" end="2466">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2465" end="2466">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2466" end="2748">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="2466" end="2467">
+<icon>org.concord.modeler.text.BulletIcon$SquareBulletIcon</icon></content>
+
+<content start="2467" end="2469">
+</content>
+
+<content start="2469" end="2747">
+<size>11</size></content>
+
+<content start="2747" end="2748">
+</content>
+
+</paragraph>
+<paragraph start="2748" end="2750">
+<LeftIndent>140.0</LeftIndent>
+<content start="2748" end="2749">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="2749" end="2750">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2750" end="2751">
+<LeftIndent>140.0</LeftIndent>
+<content start="2750" end="2751">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2751" end="2752">
+<LeftIndent>140.0</LeftIndent>
+<content start="2751" end="2752">
+</content>
+
+</paragraph>
+<paragraph start="2752" end="2780">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2752" end="2754">
+<size>11</size></content>
+
+<content start="2754" end="2762">
+<size>11</size><href>modelPrinting.cml</href></content>
+
+<content start="2762" end="2765">
+<size>11</size></content>
+
+<content start="2765" end="2770">
+<size>11</size><href>index1.cml</href></content>
+
+<content start="2770" end="2773">
+<size>11</size></content>
+
+<content start="2773" end="2778">
+<size>11</size><href>timeSeries.cml</href></content>
+
+<content start="2778" end="2779">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Osmotic pressure measured by gauges</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Osmotic pressure measured by gauges
+
+&lt; Previous | Index | Next &gt;
+
+The sixth test of the pressure gauge is to measure the osmotic pressure. Two gauges are installed in each compartment of an osmotic system: one is aligned vertically and the other horizontally. This setup is to test if the osmotic pressure exists only in the direction perpendicular to the semipermeable membrane.
+
+Other items to test are: (a) If we remove the solutes, will all the gauges read the same pressure? (b) If we remove all the solvents, will the pressure read by the two gauges in the left compartment be equal to that of the osmotic pressure? (c) If we increase the temperature of the heat bath, will the osmotic pressure increase as well according to van&apos;t Hoff&apos;s Law of Osmosis?
+
+  
+ 
+  
+&#12304;This is an embedded model container.&#12305;
+
+ 
+Important: If you care about getting more reliable results, increase the recorder length to 500 frames (set this under the &quot;Recorder&quot; tab in the Preferences dialog).
+ 
+
+The test results showed no surprise. You can verify by yourself using the above model.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1096">
+<paragraph start="0" end="36">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="0" end="35">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="35" end="36">
+</content>
+
+</paragraph>
+<paragraph start="36" end="37">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="36" end="37">
+</content>
+
+</paragraph>
+<paragraph start="37" end="65">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="37" end="39">
+<size>11</size></content>
+
+<content start="39" end="47">
+<href>microbuoyancy.cml</href><size>11</size></content>
+
+<content start="47" end="50">
+<size>11</size></content>
+
+<content start="50" end="55">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="55" end="64">
+<size>11</size></content>
+
+<content start="64" end="65">
+</content>
+
+</paragraph>
+<paragraph start="65" end="66">
+<LeftIndent>140.0</LeftIndent>
+<content start="65" end="66">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="66" end="380">
+<LeftIndent>140.0</LeftIndent>
+<content start="66" end="282">
+<size>11</size></content>
+
+<content start="282" end="378">
+<bold>true</bold><size>11</size></content>
+
+<content start="378" end="380">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="380" end="381">
+<LeftIndent>140.0</LeftIndent>
+<content start="380" end="381">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="381" end="760">
+<LeftIndent>140.0</LeftIndent>
+<content start="381" end="760">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="760" end="761">
+<LeftIndent>140.0</LeftIndent>
+<content start="760" end="761">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="761" end="764">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="761" end="762">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>osmoticpressure$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="762" end="763">
+<component><class>org.concord.modeler.PageXYGraph</class>
+<model>0</model>
+<time_series_x>Time (fs)</time_series_x>
+<time_series_y1 color="-99cd" style="3" width="1.0" symbol="0" size="4" spacing="5">East pressure:Obstacle #0</time_series_y1>
+<time_series_y2 color="-ffcc67" style="0" width="1.0" symbol="0" size="4" spacing="5">West pressure:Obstacle #3</time_series_y2>
+<time_series_y3 color="-ffff01" style="0" width="0.0" symbol="1" size="4" spacing="5">North pressure:Obstacle #1</time_series_y3>
+<time_series_y4 color="-1000000" style="0" width="0.0" symbol="3" size="4" spacing="5">North pressure:Obstacle #2</time_series_y4>
+<width>250</width>
+<height>300</height>
+<axis_x_title>Time (fs)</axis_x_title>
+<axis_y_title>Pressure (bar)</axis_y_title>
+<legend_x>50</legend_x>
+<legend_y>160</legend_y>
+<bgcolor>-1</bgcolor>
+<fgcolor>-1</fgcolor>
+<menubar>false</menubar>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="763" end="764">
+</content>
+
+</paragraph>
+<paragraph start="764" end="766">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="764" end="765">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>500.0</value>
+<minimum>400.0</minimum>
+<maximum>800.0</maximum>
+<nstep>40</nstep>
+<title>Temperature</title>
+<width>400</width>
+<height>70</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;400.0&quot;, label=&quot;400K&quot;}{value=&quot;600.0&quot;, label=&quot;600K&quot;}{value=&quot;800.0&quot;, label=&quot;800K&quot;}</labeltable>
+<change>Temperature</change>
+</component></content>
+
+<content start="765" end="766">
+</content>
+
+</paragraph>
+<paragraph start="766" end="769">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="766" end="767">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove all solutes</title>
+<tooltip>Remove all solutes</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select element 1;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="767" end="768">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Remove all solvents</title>
+<tooltip>Remove all solvents</tooltip>
+<border>Raised Bevel</border>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_script>true</disabled_at_script>
+<script>select element 2;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="768" end="769">
+</content>
+
+</paragraph>
+<paragraph start="769" end="808">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="769" end="807">
+<size>10</size></content>
+
+<content start="807" end="808">
+</content>
+
+</paragraph>
+<paragraph start="808" end="809">
+<LeftIndent>140.0</LeftIndent>
+<content start="808" end="809">
+</content>
+
+</paragraph>
+<paragraph start="809" end="811">
+<LeftIndent>140.0</LeftIndent>
+<content start="809" end="810">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-1000000</bgcolor></icon></content>
+
+<content start="810" end="811">
+</content>
+
+</paragraph>
+<paragraph start="811" end="977">
+<RightIndent>100.0</RightIndent>
+<LeftIndent>200.0</LeftIndent>
+<content start="811" end="820">
+<bold>true</bold><size>11</size></content>
+
+<content start="820" end="976">
+<size>11</size></content>
+
+<content start="976" end="977">
+</content>
+
+</paragraph>
+<paragraph start="977" end="979">
+<LeftIndent>140.0</LeftIndent>
+<content start="977" end="978">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="978" end="979">
+</content>
+
+</paragraph>
+<paragraph start="979" end="980">
+<LeftIndent>140.0</LeftIndent>
+<content start="979" end="980">
+</content>
+
+</paragraph>
+<paragraph start="980" end="1067">
+<LeftIndent>140.0</LeftIndent>
+<content start="980" end="1067">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1067" end="1068">
+<LeftIndent>140.0</LeftIndent>
+<content start="1067" end="1068">
+</content>
+
+</paragraph>
+<paragraph start="1068" end="1096">
+<RightIndent>20.0</RightIndent>
+<Alignment>2</Alignment>
+<content start="1068" end="1070">
+<size>11</size></content>
+
+<content start="1070" end="1078">
+<href>microbuoyancy.cml</href><size>11</size></content>
+
+<content start="1078" end="1081">
+<size>11</size></content>
+
+<content start="1081" end="1086">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="1086" end="1095">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

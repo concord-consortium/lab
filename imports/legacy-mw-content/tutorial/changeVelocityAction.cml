@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>The Velocity Tool</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>The Velocity Tool
+
+&lt; Previous | Index | Next &gt;
+
+To change the velocity of a particle, click the Velocity Tool button (&quot; &quot;). You should see the velocity vector for the selected particle, with a little red square (hotspot) attached at the tip of the vector. When you drag the hotspot, the velocity is changed. The change of the velocity can be seen as soon as you start or continue the simulation.
+
+You can practice changing a velocity vector with the model below:
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+Similarly, you can change the velocity of the center of mass of a Gay-Berne particle in exactly the same way. 
+
+Changing the angular velocity of a Gay-Berne particle is less intuitive than changing the velocity of the center of mass. You first click the &quot;Change Angular Velocity&quot; button (&quot; &quot;), and then drag the little red hotspot to change the magnitude. The scope will be limited within a full circle, which means you cannot increase the magnitude of the angular velocity beyond a certain limit.
+
+To reverse the direction of an angular velocity, click the little white circle in the middle. Red arc represents clockwise rotation (angular velocity pointing inward). Green arc represents anti-clockwise rotation (angular velocity pointing outward). 
+
+Inward:   Outward:   
+
+You may practice changing linear and angular velocities of a Gay-Berne particle with the model below:
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+Script support
+
+The velocity of a particle can be changed by using the set command: set particle[i].vx [value] and set particle[i].vy [value].  The angular velocity can be changed using set particle[i].omega [value].
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1671">
+<paragraph start="0" end="18">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="17">
+<italic>true</italic><size>16</size><bold>true</bold></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="19">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="18" end="19">
+</content>
+
+</paragraph>
+<paragraph start="19" end="47">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="19" end="21">
+<size>11</size></content>
+
+<content start="21" end="29">
+<href>measureDistanceAction.cml</href><size>11</size></content>
+
+<content start="29" end="32">
+<size>11</size></content>
+
+<content start="32" end="37">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="37" end="40">
+<size>11</size></content>
+
+<content start="40" end="44">
+<href>mutateAction.cml</href><size>11</size></content>
+
+<content start="44" end="46">
+<size>11</size></content>
+
+<content start="46" end="47">
+</content>
+
+</paragraph>
+<paragraph start="47" end="48">
+<LeftIndent>100.0</LeftIndent>
+<content start="47" end="48">
+</content>
+
+</paragraph>
+<paragraph start="48" end="396">
+<LeftIndent>140.0</LeftIndent>
+<content start="48" end="119">
+<size>11</size></content>
+
+<content start="119" end="120">
+<size>11</size><icon>VelocityVector.gif</icon></content>
+
+<content start="120" end="396">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="396" end="397">
+<LeftIndent>140.0</LeftIndent>
+<content start="396" end="397">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="397" end="463">
+<LeftIndent>140.0</LeftIndent>
+<content start="397" end="462">
+<size>11</size></content>
+
+<content start="462" end="463">
+</content>
+
+</paragraph>
+<paragraph start="463" end="464">
+<LeftIndent>100.0</LeftIndent>
+<content start="463" end="464">
+</content>
+
+</paragraph>
+<paragraph start="464" end="466">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="464" end="465">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>changeVelocityAction$0.mml</resource><menubar>false</menubar><recorder>true</recorder><button>Change Velocity</button><button>Select Object</button></component></content>
+
+<content start="465" end="466">
+</content>
+
+</paragraph>
+<paragraph start="466" end="505">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="466" end="504">
+<size>10</size></content>
+
+<content start="504" end="505">
+</content>
+
+</paragraph>
+<paragraph start="505" end="506">
+<LeftIndent>100.0</LeftIndent>
+<content start="505" end="506">
+</content>
+
+</paragraph>
+<paragraph start="506" end="617">
+<LeftIndent>140.0</LeftIndent>
+<content start="506" end="617">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="617" end="618">
+<LeftIndent>140.0</LeftIndent>
+<content start="617" end="618">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="618" end="1004">
+<LeftIndent>140.0</LeftIndent>
+<content start="618" end="795">
+<size>11</size></content>
+
+<content start="795" end="796">
+<size>11</size><icon>Omega.gif</icon></content>
+
+<content start="796" end="1004">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1004" end="1005">
+<LeftIndent>140.0</LeftIndent>
+<content start="1004" end="1005">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1005" end="1256">
+<LeftIndent>140.0</LeftIndent>
+<content start="1005" end="1256">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1256" end="1257">
+<LeftIndent>100.0</LeftIndent>
+<content start="1256" end="1257">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1257" end="1279">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1257" end="1265">
+<size>11</size></content>
+
+<content start="1265" end="1266">
+<size>11</size><icon>InwardOmega.gif</icon></content>
+
+<content start="1266" end="1276">
+<size>11</size></content>
+
+<content start="1276" end="1277">
+<size>11</size><icon>OutwardOmega.gif</icon></content>
+
+<content start="1277" end="1279">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1279" end="1280">
+<LeftIndent>100.0</LeftIndent>
+<content start="1279" end="1280">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1280" end="1382">
+<LeftIndent>140.0</LeftIndent>
+<content start="1280" end="1381">
+<size>11</size></content>
+
+<content start="1381" end="1382">
+</content>
+
+</paragraph>
+<paragraph start="1382" end="1383">
+<LeftIndent>100.0</LeftIndent>
+<content start="1382" end="1383">
+</content>
+
+</paragraph>
+<paragraph start="1383" end="1385">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1383" end="1384">
+<component><class>org.concord.mw2d.activity.GBContainer</class>
+<resource>changeVelocityAction$0.gbl</resource><menubar>false</menubar><recorder>true</recorder><button>Change Velocity</button><button>Change Angular Velocity</button><button>Select Object</button></component></content>
+
+<content start="1384" end="1385">
+</content>
+
+</paragraph>
+<paragraph start="1385" end="1424">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1385" end="1423">
+<size>10</size></content>
+
+<content start="1423" end="1424">
+</content>
+
+</paragraph>
+<paragraph start="1424" end="1425">
+<content start="1424" end="1425">
+</content>
+
+</paragraph>
+<paragraph start="1425" end="1440">
+<LeftIndent>140.0</LeftIndent>
+<content start="1425" end="1439">
+<bold>true</bold><size>11</size></content>
+
+<content start="1439" end="1440">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1440" end="1441">
+<LeftIndent>140.0</LeftIndent>
+<content start="1440" end="1441">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1441" end="1642">
+<LeftIndent>140.0</LeftIndent>
+<content start="1441" end="1496">
+<size>11</size></content>
+
+<content start="1496" end="1499">
+<href>script_set.cml</href><size>11</size><family>Courier New</family></content>
+
+<content start="1499" end="1509">
+<size>11</size></content>
+
+<content start="1509" end="1535">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1535" end="1540">
+<size>11</size></content>
+
+<content start="1540" end="1566">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1566" end="1615">
+<size>11</size></content>
+
+<content start="1615" end="1640">
+<size>11</size><family>Courier New</family></content>
+
+<content start="1640" end="1641">
+<size>11</size></content>
+
+<content start="1641" end="1642">
+</content>
+
+</paragraph>
+<paragraph start="1642" end="1643">
+<LeftIndent>140.0</LeftIndent>
+<content start="1642" end="1643">
+</content>
+
+</paragraph>
+<paragraph start="1643" end="1671">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1643" end="1645">
+<size>11</size></content>
+
+<content start="1645" end="1653">
+<href>measureDistanceAction.cml</href><size>11</size></content>
+
+<content start="1653" end="1656">
+<size>11</size></content>
+
+<content start="1656" end="1661">
+<href>index1.cml</href><size>11</size></content>
+
+<content start="1661" end="1664">
+<size>11</size></content>
+
+<content start="1664" end="1668">
+<href>mutateAction.cml</href><size>11</size></content>
+
+<content start="1668" end="1670">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

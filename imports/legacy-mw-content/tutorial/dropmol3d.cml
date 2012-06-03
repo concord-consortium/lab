@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Dropping a molecule</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Dropping a molecule
+
+&lt; Previous | Index | Next &gt;
+
+You can build a molecule from scratch by dropping some atoms and then adding bonds to stick them together. But this would be cumbersome if you are to build complex molecular systems. We have also provided a variety of molecules that you can use as the building blocks.
+
+Laying molecules on a helper plane
+
+Like dropping an atom, we need to work with a helper plane. Clicking a button (&quot; &quot; or &quot; &quot; or &quot; &quot;) on the tool bar will turn on a plane perpendicular to x or y or z axis. When you double-click on the plane, a molecule of the selected type will be added, with the center (note: not the center of mass) at the clicked position on the plane and the orientation determined by the default internal coordinates. Later, we will learn how to change the position and orientation of a molecule.
+
+  
+
+To change to a different helper plane, right-click (or CTRL+click on Mac OS X without a multiple-button mouse) on the button, and then select the corresponding item from the pop-up menu. 
+
+Moving a helper plane
+
+Using the arrow keys, a helper plane can be moved up and down along the corresponding axis, which is shown at the lower-right corner of the screen. For example, if you use a helper plane perpendicular to the z-axis, when you press the Up (or Right) arrow key, the plane will move in the direction where the z-coordinate of the plane increases. If you press the Down (or Left) arrow key, it will move in the opposite direction.
+
+Selecting molecules
+
+When you left-click the button, a pop-up menu, in which you can select the type of a molecule to be added, will show up (see the screenshot below). The list of molecules is in alphabetical order. By default, the first one is selected.
+
+  
+&#12304;This is a screenshot.&#12305;
+
+Practice
+
+You may play with the following model container to get some ideas how you can add molecules to different positions in the 3D space (if you see this button &quot; &quot; on the tool bar, right-click on it and select &quot; &quot; or similar):
+
+ 
+&#12304;This is an embedded model container.&#12305;
+
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="2074">
+<paragraph start="0" end="20">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="19">
+<italic>true</italic><size>15</size><bold>true</bold></content>
+
+<content start="19" end="20">
+</content>
+
+</paragraph>
+<paragraph start="20" end="21">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="49">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="21" end="23">
+<size>11</size></content>
+
+<content start="23" end="31">
+<href>drop3d.cml</href><size>11</size></content>
+
+<content start="31" end="34">
+<size>11</size></content>
+
+<content start="34" end="39">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="39" end="42">
+<size>11</size></content>
+
+<content start="42" end="46">
+<href>movemol3d.cml</href><size>11</size></content>
+
+<content start="46" end="48">
+<size>11</size></content>
+
+<content start="48" end="49">
+</content>
+
+</paragraph>
+<paragraph start="49" end="50">
+<LeftIndent>140.0</LeftIndent>
+<content start="49" end="50">
+</content>
+
+</paragraph>
+<paragraph start="50" end="319">
+<LeftIndent>140.0</LeftIndent>
+<content start="50" end="255">
+<size>11</size></content>
+
+<content start="255" end="277">
+<href>SupportedMolecules.cml</href><size>11</size></content>
+
+<content start="277" end="319">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="319" end="320">
+<LeftIndent>140.0</LeftIndent>
+<content start="319" end="320">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="320" end="355">
+<LeftIndent>140.0</LeftIndent>
+<content start="320" end="354">
+<bold>true</bold><size>11</size></content>
+
+<content start="354" end="355">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="355" end="356">
+<LeftIndent>140.0</LeftIndent>
+<content start="355" end="356">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="356" end="840">
+<LeftIndent>140.0</LeftIndent>
+<content start="356" end="361">
+<size>11</size></content>
+
+<content start="361" end="377">
+<href>drop3d.cml</href><size>11</size></content>
+
+<content start="377" end="436">
+<size>11</size></content>
+
+<content start="436" end="437">
+<icon>AddMolOnXPlane.gif</icon></content>
+
+<content start="437" end="443">
+<size>11</size></content>
+
+<content start="443" end="444">
+<icon>AddMolOnYPlane.gif</icon></content>
+
+<content start="444" end="450">
+<size>11</size></content>
+
+<content start="450" end="451">
+<icon>AddMolOnZPlane.gif</icon></content>
+
+<content start="451" end="508">
+<size>11</size></content>
+
+<content start="508" end="509">
+<italic>true</italic><size>11</size></content>
+
+<content start="509" end="513">
+<size>11</size></content>
+
+<content start="513" end="514">
+<italic>true</italic><size>11</size></content>
+
+<content start="514" end="518">
+<size>11</size></content>
+
+<content start="518" end="519">
+<italic>true</italic><size>11</size></content>
+
+<content start="519" end="535">
+<size>11</size></content>
+
+<content start="535" end="547">
+<bold>true</bold><size>11</size></content>
+
+<content start="547" end="632">
+<size>11</size></content>
+
+<content start="632" end="635">
+<italic>true</italic><size>11</size></content>
+
+<content start="635" end="840">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="840" end="841">
+<LeftIndent>140.0</LeftIndent>
+<content start="840" end="841">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="841" end="844">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="841" end="842">
+<size>11</size></content>
+
+<content start="842" end="843">
+<icon>helperplane.gif</icon></content>
+
+<content start="843" end="844">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="844" end="845">
+<LeftIndent>140.0</LeftIndent>
+<content start="844" end="845">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="845" end="1033">
+<LeftIndent>140.0</LeftIndent>
+<content start="845" end="882">
+<bold>true</bold><size>11</size></content>
+
+<content start="882" end="1033">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1033" end="1034">
+<LeftIndent>140.0</LeftIndent>
+<content start="1033" end="1034">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1034" end="1056">
+<LeftIndent>140.0</LeftIndent>
+<content start="1034" end="1055">
+<bold>true</bold><size>11</size></content>
+
+<content start="1055" end="1056">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1056" end="1057">
+<LeftIndent>140.0</LeftIndent>
+<content start="1056" end="1057">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1057" end="1484">
+<LeftIndent>140.0</LeftIndent>
+<content start="1057" end="1265">
+<size>11</size></content>
+
+<content start="1265" end="1266">
+<italic>true</italic><size>11</size></content>
+
+<content start="1266" end="1364">
+<size>11</size></content>
+
+<content start="1364" end="1365">
+<italic>true</italic><size>11</size></content>
+
+<content start="1365" end="1484">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1484" end="1485">
+<LeftIndent>140.0</LeftIndent>
+<content start="1484" end="1485">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1485" end="1505">
+<LeftIndent>140.0</LeftIndent>
+<content start="1485" end="1504">
+<bold>true</bold><size>11</size></content>
+
+<content start="1504" end="1505">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1505" end="1506">
+<LeftIndent>140.0</LeftIndent>
+<content start="1505" end="1506">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1506" end="1741">
+<LeftIndent>140.0</LeftIndent>
+<content start="1506" end="1515">
+<size>11</size></content>
+
+<content start="1515" end="1519">
+<italic>true</italic><size>11</size></content>
+
+<content start="1519" end="1741">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1741" end="1742">
+<LeftIndent>140.0</LeftIndent>
+<content start="1741" end="1742">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1742" end="1745">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1742" end="1743">
+<size>11</size></content>
+
+<content start="1743" end="1744">
+<icon>MoleculePopupMenu.gif</icon></content>
+
+<content start="1744" end="1745">
+</content>
+
+</paragraph>
+<paragraph start="1745" end="1769">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="1745" end="1768">
+<size>10</size></content>
+
+<content start="1768" end="1769">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1769" end="1770">
+<LeftIndent>140.0</LeftIndent>
+<content start="1769" end="1770">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1770" end="1779">
+<LeftIndent>140.0</LeftIndent>
+<content start="1770" end="1778">
+<bold>true</bold><size>11</size></content>
+
+<content start="1778" end="1779">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1779" end="1780">
+<LeftIndent>140.0</LeftIndent>
+<content start="1779" end="1780">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1780" end="2002">
+<LeftIndent>140.0</LeftIndent>
+<content start="1780" end="1936">
+<size>11</size></content>
+
+<content start="1936" end="1937">
+<icon>AddAtomOnXPlane.gif</icon></content>
+
+<content start="1937" end="1986">
+<size>11</size></content>
+
+<content start="1986" end="1987">
+<icon>AddMolOnXPlane.gif</icon></content>
+
+<content start="1987" end="2002">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2002" end="2003">
+<LeftIndent>140.0</LeftIndent>
+<content start="2002" end="2003">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2003" end="2005">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2003" end="2004">
+<component><class>org.concord.modeler.PageMd3d</class><resource>dropmol3d$0.mdd</resource><coordinate>dropmol3d$0.xyz</coordinate><width>600</width><height>400</height><border>Raised Bevel</border>
+</component></content>
+
+<content start="2004" end="2005">
+</content>
+
+</paragraph>
+<paragraph start="2005" end="2044">
+<Alignment>1</Alignment>
+<LeftIndent>140.0</LeftIndent>
+<content start="2005" end="2043">
+<size>10</size></content>
+
+<content start="2043" end="2044">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2044" end="2045">
+<LeftIndent>140.0</LeftIndent>
+<content start="2044" end="2045">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="2045" end="2046">
+<LeftIndent>140.0</LeftIndent>
+<content start="2045" end="2046">
+</content>
+
+</paragraph>
+<paragraph start="2046" end="2074">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="2046" end="2048">
+<size>11</size></content>
+
+<content start="2048" end="2056">
+<href>drop3d.cml</href><size>11</size></content>
+
+<content start="2056" end="2059">
+<size>11</size></content>
+
+<content start="2059" end="2064">
+<href>index4.cml</href><size>11</size></content>
+
+<content start="2064" end="2067">
+<size>11</size></content>
+
+<content start="2067" end="2071">
+<href>movemol3d.cml</href><size>11</size></content>
+
+<content start="2071" end="2073">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Minimize</page_title>
+<bg_image>sidebar2.gif</bg_image>
+<text>Minimize
+
+&lt; Previous | Index | Next &gt;
+
+The minimize command performs potential energy minization.
+
+Syntax:
+
+minimize [steplengh] [number of steps]
+minimize [method] [steplengh] [number of steps]
+
+where [method] is a string parameter that specifies the minimization method (&quot;SD&quot; or &quot;CG&quot;), [steplength] is a real number that specifies the distance the atoms will move at each minimization step, and [number of steps] is an integer number that specifies the number of steps to be performed.
+
+There are currently two methods available: The steepest descent (SD) method and the conjugate gradient (CG) method. By default, the SD method is used.
+
+ 
+Tip: Energy minimization is extremely useful for creating a model. For example, if you want to create a bigger nanogear from an exisiting one, what you can do is to insert more atoms and connect them with the neighboring atoms with the equilibrium bond lengths and bond strengths appropriately set, and then invoke the energy minimization for the newly-added atoms to automatically find their position and the rest of the system to adjust accordingly.
+ 
+
+This command should be used when you are constructing a model. You generally should not use this command while the model is running.
+
+&lt; Previous | Index | Next &gt;</text>
+<section start="0" end="1260">
+<paragraph start="0" end="9">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="0" end="8">
+<size>16</size><bold>true</bold><italic>true</italic></content>
+
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="38">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="10" end="12">
+<size>11</size></content>
+
+<content start="12" end="20">
+<href>script_bond.cml</href><size>11</size></content>
+
+<content start="20" end="23">
+<size>11</size></content>
+
+<content start="23" end="28">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="28" end="31">
+<size>11</size></content>
+
+<content start="31" end="35">
+<href>script_attach.cml</href><size>11</size></content>
+
+<content start="35" end="37">
+<size>11</size></content>
+
+<content start="37" end="38">
+</content>
+
+</paragraph>
+<paragraph start="38" end="39">
+<LeftIndent>100.0</LeftIndent>
+<content start="38" end="39">
+</content>
+
+</paragraph>
+<paragraph start="39" end="98">
+<LeftIndent>140.0</LeftIndent>
+<content start="39" end="43">
+<size>11</size></content>
+
+<content start="43" end="51">
+<family>Courier New</family><size>11</size></content>
+
+<content start="51" end="98">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="98" end="99">
+<LeftIndent>140.0</LeftIndent>
+<content start="98" end="99">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="99" end="107">
+<LeftIndent>140.0</LeftIndent>
+<content start="99" end="107">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="107" end="108">
+<LeftIndent>140.0</LeftIndent>
+<content start="107" end="108">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="108" end="147">
+<LeftIndent>160.0</LeftIndent>
+<content start="108" end="116">
+<bold>true</bold><family>Courier New</family><size>11</size></content>
+
+<content start="116" end="147">
+<family>Courier New</family><size>11</size></content>
+
+</paragraph>
+<paragraph start="147" end="195">
+<LeftIndent>160.0</LeftIndent>
+<content start="147" end="155">
+<bold>true</bold><family>Courier New</family><size>11</size></content>
+
+<content start="155" end="194">
+<family>Courier New</family><size>11</size></content>
+
+<content start="194" end="195">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="195" end="196">
+<LeftIndent>160.0</LeftIndent>
+<content start="195" end="196">
+</content>
+
+</paragraph>
+<paragraph start="196" end="488">
+<LeftIndent>140.0</LeftIndent>
+<content start="196" end="202">
+<size>11</size></content>
+
+<content start="202" end="210">
+<family>Courier New</family><size>11</size></content>
+
+<content start="210" end="274">
+<size>11</size></content>
+
+<content start="274" end="276">
+<family>Courier New</family><size>11</size></content>
+
+<content start="276" end="282">
+<size>11</size></content>
+
+<content start="282" end="284">
+<family>Courier New</family><size>11</size></content>
+
+<content start="284" end="288">
+<size>11</size></content>
+
+<content start="288" end="300">
+<family>Courier New</family><size>11</size></content>
+
+<content start="300" end="397">
+<size>11</size></content>
+
+<content start="397" end="414">
+<family>Courier New</family><size>11</size></content>
+
+<content start="414" end="488">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="488" end="489">
+<LeftIndent>140.0</LeftIndent>
+<content start="488" end="489">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="489" end="640">
+<LeftIndent>140.0</LeftIndent>
+<content start="489" end="640">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="640" end="641">
+<LeftIndent>140.0</LeftIndent>
+<content start="640" end="641">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="641" end="643">
+<LeftIndent>140.0</LeftIndent>
+<content start="641" end="642">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="642" end="643">
+</content>
+
+</paragraph>
+<paragraph start="643" end="1095">
+<LeftIndent>200.0</LeftIndent>
+<RightIndent>100.0</RightIndent>
+<content start="643" end="671">
+<size>11</size></content>
+
+<content start="671" end="687">
+<bold>true</bold><size>11</size></content>
+
+<content start="687" end="1094">
+<size>11</size></content>
+
+<content start="1094" end="1095">
+</content>
+
+</paragraph>
+<paragraph start="1095" end="1097">
+<LeftIndent>140.0</LeftIndent>
+<content start="1095" end="1096">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>0.8</width><height>1</height><opaque>false</opaque><bgcolor>-7f7f80</bgcolor></icon></content>
+
+<content start="1096" end="1097">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1097" end="1098">
+<LeftIndent>140.0</LeftIndent>
+<content start="1097" end="1098">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1098" end="1231">
+<LeftIndent>140.0</LeftIndent>
+<content start="1098" end="1231">
+<size>11</size></content>
+
+</paragraph>
+<paragraph start="1231" end="1232">
+<LeftIndent>140.0</LeftIndent>
+<content start="1231" end="1232">
+</content>
+
+</paragraph>
+<paragraph start="1232" end="1260">
+<Alignment>2</Alignment>
+<RightIndent>20.0</RightIndent>
+<content start="1232" end="1234">
+<size>11</size></content>
+
+<content start="1234" end="1242">
+<href>script_bond.cml</href><size>11</size></content>
+
+<content start="1242" end="1245">
+<size>11</size></content>
+
+<content start="1245" end="1250">
+<href>mwscripts.cml</href><size>11</size></content>
+
+<content start="1250" end="1253">
+<size>11</size></content>
+
+<content start="1253" end="1257">
+<href>script_attach.cml</href><size>11</size></content>
+
+<content start="1257" end="1259">
+<size>11</size></content>
+
+</paragraph>
+</section>
+</document>

@@ -429,9 +429,10 @@ h3 {
   background-image: linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
   font-size: 1em;
   height: auto !important;
-  padding: 0.5em 0;
+  padding: 0.5em 0em;
+  margin: 0.2em 0.3em;
   text-align: center;
-  width: 50% !important; }
+  width: 40% !important; }
 .component_group button#cool_button:hover, .component_group button#heat_button:hover {
   background-color: #cccccc;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c9c9c9), color-stop(50%, #c9c9c9), color-stop(50%, #bbbbbb), color-stop(100%, #bbbbbb));
@@ -484,7 +485,8 @@ h3 {
 .top {
   padding: 0.5em 1em;
   position: relative;
-  display: inline-block; }
+  display: inline-block;
+  width: 100%; }
 
 .bottom {
   padding: 0.1em 1em;
@@ -501,6 +503,31 @@ h3 {
     postion: relative;
     display: block;
     height: 100%; }
+
+#applet-container {
+  display: inline-block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #f9eec1;
+  -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  -ms-border-radius: 0.5em;
+  -o-border-radius: 0.5em;
+  border-radius: 0.5em;
+  -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  height: 100%;
+  width: 100%;
+  min-width: 20em;
+  min-height: 20em;
+  margin: 2px 1em 2px 0px;
+  padding: 0.8em; }
+
+applet {
+  border: thin solid #eeeeee; }
 
 #molecule-container {
   display: inline-block;
@@ -641,7 +668,7 @@ div.tooltip {
 .slider_container {
   background: #f9eec1;
   border: none !important;
-  padding: 0.3em 0.5em !important;
+  padding: 0.3em 0.6em !important;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
   -ms-border-radius: 0.5em;
@@ -654,8 +681,7 @@ div.tooltip {
   vertical-align: top;
   margin: 0.5em 1em 0.5em 0em;
   min-height: 4.8em;
-  font-size: 1em;
-  padding: 3px; }
+  font-size: 1em; }
   .slider_container .left_half {
     width: 49%;
     float: left;
