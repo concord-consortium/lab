@@ -48,6 +48,9 @@ layout.getDisplayProperties = function(obj) {
       width: layout.getPageWidth(),
       height: layout.getPageHeight()
   };
+  obj.screen_factor_width  = obj.page.width / layout.canonical.width;
+  obj.screen_factor_height = obj.page.height / layout.canonical.height;
+  obj.emsize = Math.min(obj.screen_factor_width * 1.1, obj.screen_factor_height);
   return obj;
 };
 
