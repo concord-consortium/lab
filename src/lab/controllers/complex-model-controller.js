@@ -514,9 +514,14 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    createModel();
-    setupViews();
-    setupModel();
+    try {
+      createModel();
+      setupViews();
+      setupModel();
+    } catch(e) {
+      alert(e);
+      throw new Error(e);
+    }
 
     // ------------------------------------------------------------
     //

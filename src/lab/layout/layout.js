@@ -87,23 +87,27 @@ layout.setupScreen = function(viewLists) {
     layout.not_rendered = true;
     switch (layout.selection) {
 
+      // fluid layout
       case "simple-screen":
       if (layout.not_rendered) {
         setupSimpleFullScreenMoleculeContainer();
       }
       break;
 
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
       case "simple-static-screen":
       if (layout.not_rendered) {
         setupSimpleFullScreenMoleculeContainer();
       }
       break;
 
+      // fluid (but normally the iframe doesn't expose the full-screen action)
       case "simple-iframe":
       setupSimpleFullScreenMoleculeContainer();
       setupFullScreenDescriptionRight();
       break;
 
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
       default:
       if (layout.not_rendered) {
         setupFullScreen();
@@ -125,15 +129,14 @@ layout.setupScreen = function(viewLists) {
     layout.checkbox_factor = Math.max(0.8, layout.checkbox_scale * layout.screen_factor);
     switch (layout.selection) {
 
+      // fluid layout
       case "simple-screen":
-      if (layout.not_rendered) {
-        var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
-        layout.bodycss.style.fontSize = emsize + 'em';
-        simpleScreen();
-        layout.not_rendered = false;
-      }
+      var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+      layout.bodycss.style.fontSize = emsize + 'em';
+      simpleScreen();
       break;
 
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
       case "simple-static-screen":
       if (layout.not_rendered) {
         var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
@@ -143,12 +146,14 @@ layout.setupScreen = function(viewLists) {
       }
       break;
 
+      // fluid layout
       case "simple-iframe":
       var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
       layout.bodycss.style.fontSize = emsize + 'em';
       setupSimpleIFrameScreen();
       break;
 
+      // only fluid on page load (and when resizing on trnasition to and from full-screen)
       case "full-static-screen":
       if (layout.not_rendered) {
         var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
@@ -158,6 +163,7 @@ layout.setupScreen = function(viewLists) {
       }
       break;
 
+      // only fluid on page load
       case "compare-screen":
       if (layout.not_rendered) {
         var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
@@ -301,6 +307,7 @@ layout.setupScreen = function(viewLists) {
       height *= (0.53 / widthToPageRatio);
       viewLists.moleculeContainers[0].resize(height, height);
     }
+    viewLists.thermometers[0].resize();
   }
 
   //
@@ -321,6 +328,7 @@ layout.setupScreen = function(viewLists) {
       //   description_right.style.width = (layout.display.page.width - mcsize[0]) * 0.50 + "px";
       // }
     }
+    viewLists.thermometers[0].resize();
   }
 
   //
