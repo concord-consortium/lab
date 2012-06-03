@@ -14,7 +14,7 @@
   nodes: true
 */
 /*jslint onevar: true*/
-controllers.compareModelsController = function(molecule_view_id, appletViewID, modelConfig, playerConfig) {
+controllers.compareModelsController = function(molecule_view_id, appletContainerID, modelConfig, playerConfig) {
 
   var layoutStyle         = playerConfig.layoutStyle,
       autostart           = playerConfig.autostart,
@@ -39,7 +39,8 @@ controllers.compareModelsController = function(molecule_view_id, appletViewID, m
       viewLists,
       appletString,
       appletContainer,
-      applet, appletOptions, cmlPath,
+      appletOptions = {},
+      applet, cmlPath,
       start, stop, reset,
       modelSelect,
       optsLoaded = $.Deferred();
@@ -130,7 +131,7 @@ controllers.compareModelsController = function(molecule_view_id, appletViewID, m
       } else {
         appletOptions = {};
       }
-      appletContainer = layout.appletContainer(appletViewID, appletOptions);
+      appletContainer = layout.appletContainer(appletContainerID, appletOptions);
 
       // ------------------------------------------------------------
       //
@@ -252,8 +253,9 @@ controllers.compareModelsController = function(molecule_view_id, appletViewID, m
       var jsonPath = "/imports/legacy-mw-content/converted/" + modelSelect.value + ".json",
           cmlPath = extractCmlPath(jsonPath);
       appletOptions.params = [["script", "page:0:import " + cmlPath]];
-      appletContainer = layout.appletContainer(appletViewID, appletOptions);
+      appletContainer = layout.appletContainer(appletContainerID, appletOptions);
       document.location.hash = "#" + jsonPath;
+      modelSelect.value = extractModelselectValue(document.location.hash);
       $.get(jsonPath).done(function(results) {
         opts = results;
         optsLoaded.resolve();
