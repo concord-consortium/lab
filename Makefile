@@ -58,6 +58,7 @@ all: \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
 	server/public/index.css
 
+.PHONY: public
 public:
 	bash -O extglob -c 'rm -rf -d server/public/!(.git|jnlp|vendor)'
 	$(MAKE) all
@@ -158,24 +159,21 @@ server/public/doc:
 	# copy directories, javascript, json, and image resources from src/examples/
 	rsync -aq --filter '+ */' --include='*.js' --include='*.json' --include='*.gif' --include='*.png' --include='*.jpg'  --filter 'hide,! */' src/doc/ server/public/doc/
 
+.PHONY: server/public/experiments
 server/public/experiments:
 	mkdir -p server/public/experiments
 	rsync -aq src/experiments server/public/
 
-.PHONY: server/public/experiments
-
+.PHONY: server/public/jnlp
 server/public/jnlp:
 	mkdir -p server/public/jnlp
 	rsync -aq src/jnlp server/public/
 
-.PHONY: server/public/jnlp
-
+.PHONY: server/public/imports
 server/public/imports:
 	mkdir -p server/public/imports
 	rsync -aq imports/ server/public/imports/
 	$(BATCH_CONVERT_MML_FILES)
-
-.PHONY: server/public/imports
 
 server/public/resources:
 	cp -R ./src/resources ./server/public/
