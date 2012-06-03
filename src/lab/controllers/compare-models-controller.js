@@ -252,10 +252,8 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     function modelSelectHandler() {
       var jsonPath = "/imports/legacy-mw-content/converted/" + modelSelect.value + ".json",
           cmlPath = extractCmlPath(jsonPath);
-      appletOptions.params = [["script", "page:0:import " + cmlPath]];
-      appletContainer = layout.appletContainer(appletContainerID, appletOptions);
       document.location.hash = "#" + jsonPath;
-      modelSelect.value = extractModelselectValue(document.location.hash);
+      appletOptions.params = [["script", "page:0:import " + cmlPath]];
       $.get(jsonPath).done(function(results) {
         opts = results;
         optsLoaded.resolve();
@@ -268,6 +266,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     $.when(optsLoaded).done(function(results) {
       $.extend(modelConfig, opts);
       modelReset();
+      // appletContainer = layout.appletContainer(appletContainerID, appletOptions);
     });
 
     modelSelect.onchange = modelSelectHandler;
