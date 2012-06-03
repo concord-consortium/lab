@@ -352,6 +352,7 @@ layout.setupScreen = function(viewLists) {
     }
     viewLists.moleculeContainers[0].resize(width, height);
     mcsize = viewLists.moleculeContainers[0].scale();
+    viewLists.thermometers[0].resize();
   }
 
   //
