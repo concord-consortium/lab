@@ -43,7 +43,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       applet, cmlPath,
       start, stop, reset,
       modelSelect,
-      optsLoaded = $.Deferred();
+      opts, optsLoaded = $.Deferred();
 
   function controller() {
 
