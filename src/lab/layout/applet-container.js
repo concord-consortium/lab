@@ -107,7 +107,6 @@ layout.appletContainer = function(e, options) {
 
   container.resize = function(w, h) {
     container.scale(w, h);
-    container();
   };
 
   if (node) { container(); }
