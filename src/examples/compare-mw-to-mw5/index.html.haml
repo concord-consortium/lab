@@ -1,0 +1,73 @@
+!!! 5
+%html
+  %head
+    %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
+    %title Compare HTML5 and Java 2D Molecular Models
+    %script{:src => "../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
+    %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
+    %script{:src => "../../vendor/d3/d3.v2.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/science.js/science.v1.js", :type => "text/javascript"}
+    %script{:src => "http://use.typekit.com/hdw8ayt.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      try{Typekit.load();}catch(e){}
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&subset=latin,greek,latin-ext", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "application.css", :rel => "stylesheet", :type => "text/css"}/
+  %body
+    #content
+      #top-controls
+        .component_group
+          %form
+            %fieldset
+              %legend
+                Available models
+              %select#model-select
+                %optgroup{:label => "potential-tests"}
+                  %option{:value => "potential-tests/simple-atoms-in-classic/simpleAtomsModel$0"} simple-atoms-in-classic
+                  %option{:value => "potential-tests/single-element-neutral/single-element-neutral$0"} single-element-neutral
+                  %option{:value => "potential-tests/single-element-charged/single-element-charged$0"} single-element-charged
+                  %option{:value => "potential-tests/single-element-diatomic/single-element-diatomic$0"} single-element-diatomic
+                  %option{:value => "potential-tests/two-atoms-two-elements/two-atoms-two-elements$0"} two-atoms-two-elements
+                  %option{:value => "potential-tests/single-element-neutral/single-element-neutral$0"} single-element-neutral
+                  %option{:value => "potential-tests/static-coulomb-test/testingForces$0"} static-coulomb-test/testingForces$0
+
+                %optgroup{:label => "sam-activities"}
+                  %optgroup{:label => "\u00A0chemical-reactions"}
+                    %option{:value => "sam-activities/chemical-reactions/original-interactives-in-pages/page1/page1$0"} page1
+                    %option{:value => "sam-activities/chemical-reactions/original-interactives-in-pages/page2/page2$0"} page2
+                    %option{:value => "sam-activities/chemical-reactions/original-interactives-in-pages/page3/page3$0"} page3
+                    %option{:value => "sam-activities/chemical-reactions/original-interactives-in-pages/page4/page4$0"} page4
+
+                  %optgroup{:label => "\u00A0intermolecular-attraction"}
+                    %option{:value => "sam-activities/intermolecular-attraction/original-interactives-in-pages/page1/page1$0"} page1
+                    %option{:value => "sam-activities/intermolecular-attraction/original-interactives-in-pages/page2/page2$0"} page2
+
+                  %optgroup{:label => "\u00A0phase-change"}
+                    %option{:value => "sam-activities/intermolecular-attraction/original-interactives-in-pages/page1/page5$0"} page5
+
+                  %optgroup{:label => "\u00A0gas-laws"}
+                    %option{:value => "sam-activities/gas-laws/original-interactives-in-pages/page1/page2$0"} page2
+                    %option{:value => "sam-activities/gas-laws/original-interactives-in-pages/page1/page3$0"} page3
+                    %option{:value => "sam-activities/gas-laws/original-interactives-in-pages/page1/page4$0"} page4
+                    %option{:value => "sam-activities/gas-laws/original-interactives-in-pages/page1/page5$0"} page5
+                    %option{:value => "sam-activities/gas-laws/original-interactives-in-pages/page1/page6$0"} page6
+                    %option{:value => "sam-activities/gas-laws/original-interactives-in-pages/page1/page7$0"} page7
+
+
+        .component_group{:style => "margin-left:2em;"}
+          .content
+            %div
+              %button#start(type="button" class="left_edge" value="colder")Start
+              %button#stop(type="button" class="right_edge" value="hotter")Stop
+              %button#reset(type="button" class="right_edge" value="hotter")Reset
+      #viz
+        .top
+          .top-left
+            #molecule-container
+          .top-right
+            #applet-container
+
+    %script{:src => "../../lab/lab.js", :type => "text/javascript"}
+    %script{:src => "application.js", :type => "text/javascript"}

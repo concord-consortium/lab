@@ -304,6 +304,7 @@ server/public/lab/lab.arrays.js: \
 server/public/lab/lab.layout.js: \
 	src/lab/start.js \
 	src/lab/layout/layout.js \
+	src/lab/layout/applet-container.js \
 	src/lab/layout/molecule-container.js \
 	src/lab/layout/potential-chart.js \
 	src/lab/layout/speed-distribution-histogram.js \
@@ -320,6 +321,7 @@ server/public/lab/lab.controllers.js: \
 	src/lab/start.js \
 	src/lab/controllers/controllers.js \
 	src/lab/controllers/simple-model-controller.js \
+	src/lab/controllers/compare-models-controller.js \
 	src/lab/controllers/complex-model-controller.js \
 	src/lab/end.js
 
