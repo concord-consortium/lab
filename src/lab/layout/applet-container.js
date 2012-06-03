@@ -10,6 +10,7 @@ layout.appletContainer = function(e, options) {
       cx = elem.property("clientWidth"),
       cy = elem.property("clientHeight"),
       applet, appletString,
+      appletWidth, appletHeight, appletAspectRatio,
       width, height,
       scale_factor,
       padding, size,
@@ -47,10 +48,16 @@ layout.appletContainer = function(e, options) {
       cx = elem.property("clientWidth");
     } else {
       cy = h;
-      node.style.height = cy +"px";
       cx = w;
     }
+    if(applet) {
+      appletWidth  = +applet.runMwScript("mw2d:1:get %width");
+      appletHeight = +applet.runMwScript("mw2d:1:get %height");
+      appletAspectRatio = appletWidth/appletHeight;
+      cy = cx * 1/appletAspectRatio * 1.2;
+    }
     node.style.width = cx +"px";
+    node.style.height = cy +"px";
     scale_factor = layout.screen_factor;
     if (layout.screen_factor_width && layout.screen_factor_height) {
       scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
