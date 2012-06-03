@@ -58,6 +58,12 @@ all: \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
 	server/public/index.css
 
+.PHONY: everything
+everything:
+	$(MAKE) clean
+	$(MAKE) all
+	$(MAKE) jnlp-all
+
 .PHONY: public
 public:
 	bash -O extglob -c 'rm -rf -d server/public/!(.git|jnlp|vendor)'
