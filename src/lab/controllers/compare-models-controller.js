@@ -337,10 +337,15 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     //
     // ------------------------------------------------------------
 
-    createModel();
-    setupViews();
-    setupModel();
-    setupMWApplet();
+    try {
+      createModel();
+      setupViews();
+      setupModel();
+      setupMWApplet();
+    } catch(e) {
+      alert(e);
+      throw new Error(e);
+    }
 
     // ------------------------------------------------------------
     // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
