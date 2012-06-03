@@ -15,16 +15,20 @@ grapher.graph = function(elem, options, message) {
       downy = Math.NaN,
       dragged = null,
       selected = null,
+      emsize = layout.getDisplayProperties().emsize,
+      titles = [],
       default_options = {
-        "xmax": 60, "xmin": 0,
-        "ymax": 40, "ymin": 0, 
-        "title": "Simple Graph1",
-        "xlabel": "X Axis",
-        "ylabel": "Y Axis",
-        "circleRadius": 10.0,
-        "dataChange": true,
-        "points": false,
-        "notification": false
+        "xmax":            60,
+        "xmin":             0,
+        "ymax":            40,
+        "ymin":             0, 
+        "title":          "Simple Graph1",
+        "xlabel":         "X Axis",
+        "ylabel":         "Y Axis",
+        "circleRadius":    10.0,
+        "dataChange":      true,
+        "points":          false,
+        "notification":    false
       };
 
   initialize(options);
@@ -56,7 +60,6 @@ grapher.graph = function(elem, options, message) {
     options.xrange = options.xmax - options.xmin;
     options.yrange = options.ymax - options.ymin;
 
-
     padding = {
      "top":    options.title  ? 40 : 20,
      "right":                 30,
@@ -68,6 +71,15 @@ grapher.graph = function(elem, options, message) {
       "width":  cx - padding.left - padding.right,
       "height": cy - padding.top  - padding.bottom
     };
+
+    emsize = layout.getDisplayProperties().emsize;
+
+    if(Object.prototype.toString.call(options.title) === "[object Array]") {
+      titles = options.title;
+    } else {
+      titles = [options.title];
+    }
+    padding.top += (titles.length-1) * emsize * 20;
 
     xValue = function(d) { return d[0]; };
     yValue = function(d) { return d[1]; };
@@ -128,11 +140,13 @@ grapher.graph = function(elem, options, message) {
 
       // add Chart Title
       if (options.title) {
-        title = vis.append("text")
+        title = vis.selectAll("text")
+          .data(titles, function(d) { return d; });
+        title.enter().append("text")
             .attr("class", "title")
-            .text(options.title)
+            .text(function(d) { return d; })
             .attr("x", size.width/2)
-            .attr("dy","-0.8em")
+            .attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; })
             .style("text-anchor","middle");
       }
 
