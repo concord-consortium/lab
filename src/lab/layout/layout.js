@@ -23,6 +23,7 @@ layout.cancelFullScreen = false;
 layout.screen_factor = 1;
 layout.checkbox_factor = 1.1;
 layout.checkbox_scale = 1.1;
+layout.fullScreenRender = false;
 
 layout.canonical.width  = 1280;
 layout.canonical.height = 800;
@@ -50,6 +51,11 @@ layout.getDisplayProperties = function(obj) {
   return obj;
 };
 
+layout.screenEqualsPage = function() {
+  return ((layout.display.screen.width  === layout.display.page.width) ||
+          (layout.display.screen.height === layout.display.page.height))
+};
+
 layout.checkForResize = function() {
   if ((layout.display.screen.width  != screen.width) ||
       (layout.display.screen.height != screen.height) ||
@@ -71,7 +77,8 @@ layout.setupScreen = function(viewLists) {
   }
 
 
-  if(fullscreen) {
+  if(fullscreen || layout.fullScreenRender  || layout.screenEqualsPage()) {
+    layout.fullScreenRender = true;
     layout.screen_factor_width  = layout.display.page.width / layout.canonical.width;
     layout.screen_factor_height = layout.display.page.height / layout.canonical.height;
     layout.screen_factor = layout.screen_factor_height;
@@ -81,14 +88,14 @@ layout.setupScreen = function(viewLists) {
     switch (layout.selection) {
 
       case "simple-screen":
-      setupSimpleFullScreenMoleculeContainer();
-      setupFullScreenDescriptionRight();
+      if (layout.not_rendered) {
+        setupSimpleFullScreenMoleculeContainer();
+      }
       break;
 
       case "simple-static-screen":
       if (layout.not_rendered) {
         setupSimpleFullScreenMoleculeContainer();
-        setupDescriptionRight();
       }
       break;
 
@@ -98,12 +105,16 @@ layout.setupScreen = function(viewLists) {
       break;
 
       default:
-      setupFullScreen();
+      if (layout.not_rendered) {
+        setupFullScreen();
+      }
       break;
     }
   } else {
-    if (layout.cancelFullScreen) {
+    if (layout.cancelFullScreen || layout.fullScreenRender) {
       layout.cancelFullScreen = false;
+      layout.fullScreenRender = false;
+      layout.not_rendered = true;
       layout.regular_display = layout.previous_display;
     } else {
       layout.regular_display = layout.getDisplayProperties();
@@ -115,9 +126,12 @@ layout.setupScreen = function(viewLists) {
     switch (layout.selection) {
 
       case "simple-screen":
-      layout.bodycss.style.fontSize = layout.screen_factor + 'em';
-      setupSimpleMoleculeContainer();
-      setupDescriptionRight();
+      if (layout.not_rendered) {
+        var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+        layout.bodycss.style.fontSize = emsize + 'em';
+        simpleScreen();
+        layout.not_rendered = false;
+      }
       break;
 
       case "simple-static-screen":
@@ -143,6 +157,12 @@ layout.setupScreen = function(viewLists) {
         layout.not_rendered = false;
       }
       break;
+
+      case "compare-screen":
+      if (layout.not_rendered) {
+        var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
+        layout.bodycss.style.fontSize = emsize + 'em';
+        compareScreen();
         layout.not_rendered = false;
       }
       break;
@@ -207,6 +227,27 @@ layout.setupScreen = function(viewLists) {
     }
   }
 
+  //
+  // Compare Screen Layout
+  //
+  function compareScreen() {
+    var i, width, height, mcsize, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height,
+        javaMWHeightCorrection = 1.1;
+
+    mcsize = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    width = pageWidth * 0.45;
+    height = width * 1/modelAspectRatio;
+    // HACK that will normally only work with one moleculeContainer
+    // or if all the moleculeContainers end up the same width
+    i = -1;  while(++i < viewLists.moleculeContainers.length) {
+      viewLists.moleculeContainers[i].resize(width, height);
+    }
+    i = -1;  while(++i < viewLists.appletContainers.length) {
+      viewLists.appletContainers[i].resize(width, height*javaMWHeightCorrection);
+    }
   }
 
   //
@@ -249,6 +290,22 @@ layout.setupScreen = function(viewLists) {
   //
   // Simple Screen Layout
   //
+  function simpleScreen() {
+    var i, width, height, mcsize, widthToPageRatio;
+
+    height = Math.min(layout.display.page.height * 0.50, layout.display.page.width * 0.53);
+    viewLists.moleculeContainers[0].resize(height, height);
+    mcsize = viewLists.moleculeContainers[0].scale();
+    widthToPageRatio = mcsize[0] / layout.display.page.width;
+    if (widthToPageRatio > 0.53) {
+      height *= (0.53 / widthToPageRatio);
+      viewLists.moleculeContainers[0].resize(height, height);
+    }
+  }
+
+  //
+  // Simple Static Screen Layout
+  //
   function simpleStaticScreen() {
     var i, width, height, mcsize, widthToPageRatio,
         description_right = document.getElementById("description-right");
@@ -270,16 +327,23 @@ layout.setupScreen = function(viewLists) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameScreen() {
-    var i, width, height, mcsize, widthToPageRatio;
+    var i, width, height, mcsize, 
+        rightHeight, rightHalfWidth, rightQuarterWidth,
+        widthToPageRatio, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
 
-    height = Math.min(layout.display.page.height * 0.78, layout.display.page.width * 0.75);
-    viewLists.moleculeContainers[0].resize(height, height);
     mcsize = viewLists.moleculeContainers[0].scale();
-    widthToPageRatio = mcsize[0] / layout.display.page.width;
-    if (widthToPageRatio > 0.75) {
-      height *= (0.75 / widthToPageRatio);
-      viewLists.moleculeContainers[0].resize(height, height);
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    widthToPageRatio = mcsize[0] / pageWidth;
+    width = pageWidth * 0.80;
+    height = width * 1/modelAspectRatio;
+    if (height > pageHeight * 0.80) {
+      height = pageHeight * 0.80;
+      width * height * modelAspectRatio;
     }
+    viewLists.moleculeContainers[0].resize(width, height);
+    mcsize = viewLists.moleculeContainers[0].scale();
   }
 
   //
