@@ -54,7 +54,7 @@ layout.appletContainer = function(e, options) {
       appletWidth  = +applet.runMwScript("mw2d:1:get %width");
       appletHeight = +applet.runMwScript("mw2d:1:get %height");
       appletAspectRatio = appletWidth/appletHeight;
-      cy = cx * 1/appletAspectRatio * 1.2;
+      cy = cx * 1/appletAspectRatio * 1.25;
     }
     node.style.width = cx +"px";
     node.style.height = cy +"px";
