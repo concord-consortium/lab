@@ -117,6 +117,9 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
         }
       );
 
+      molecule_container.updateMoleculeRadius();
+      molecule_container.setup_particles();
+
       // ------------------------------------------------------------
       //
       // Setup Java MW applet
@@ -143,6 +146,9 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
         moleculeContainers:      [molecule_container],
         appletContainers:        [appletContainer]
       };
+
+      layout.setupScreen(viewLists);
+
     }
 
     // ------------------------------------------------------------
@@ -191,9 +197,6 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
 
       modelStop();
       model.on("tick", modelListener);
-      molecule_container.updateMoleculeRadius();
-      molecule_container.setup_particles();
-      layout.setupScreen(viewLists);
       step_counter = model.stepCounter();
     }
 
@@ -339,8 +342,8 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
 
     try {
       createModel();
-      setupViews();
       setupModel();
+      setupViews();
       setupMWApplet();
     } catch(e) {
       alert(e);
