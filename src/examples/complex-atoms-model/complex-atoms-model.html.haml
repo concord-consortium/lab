@@ -68,12 +68,10 @@
               %li
                 %fieldset
                   %legend Particle Force Interactions
-                  %label
-                    Lennard-Jones
-                    %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
-                  %label
-                    Coulomb
-                    %input(id="coulomb-forces-checkbox" type="checkbox")
+                  %label{:for=>"lennard-jones-forces-checkbox"} Lennard-Jones
+                  %input(id="lennard-jones-forces-checkbox" type="checkbox" checked)
+                  %label{:for=>"coulomb-forces-checkbox"} Lennard-Jones
+                  %input(id="coulomb-forces-checkbox" type="checkbox")
               %li
                 %button{:id=>"save-button", :class=>"component button", :style=> "width: 5em; display: block"}
                   Save

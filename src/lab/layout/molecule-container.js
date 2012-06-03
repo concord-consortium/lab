@@ -78,19 +78,19 @@ layout.moleculeContainer = function(e, options) {
     }
     node.style.width = cx +"px";
     scale_factor = layout.screen_factor;
-    if (layout.screen_factor_width && layout.screen_factor_height) {
-      scale_factor = Math.min(layout.screen_factor_width, layout.screen_factor_height);
-    }
-    scale_factor = cx/600;
     padding = {
        "top":    options.title  ? 40 * layout.screen_factor : 20,
        "right":                   25,
-       "bottom": options.xlabel ? 56  * layout.screen_factor : 20,
+       "bottom": 10,
        "left":   options.ylabel ? 60  * layout.screen_factor : 25
     };
 
+    if (options.xlabel || options.model_time_label) {
+      padding.bottom += (35  * scale_factor);
+    }
+
     if (options.playback_controller || options.play_only_controller) {
-      padding.bottom += (30  * scale_factor);
+      padding.bottom += (40  * scale_factor);
     }
 
     height = cy - padding.top  - padding.bottom;
@@ -103,11 +103,13 @@ layout.moleculeContainer = function(e, options) {
 
     offset_left = node.offsetLeft + padding.left;
     offset_top = node.offsetTop + padding.top;
-    pc_xpos = padding.left + size.width / 2 - 60;
-    if (options.playback_controller) { pc_xpos -= 50 * scale_factor; }
+    if (options.playback_controller) {
+      pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
+    };
+    if (options.play_only_controller) {
+      pc_xpos = padding.left + (size.width - (140 * scale_factor))/2;
+    }
     pc_ypos = cy - 42 * scale_factor;
-    // pc_ypos = cy - (options.ylabel ? 40 * scale_factor : 20 * scale_factor);
-    // pc_ypos = size.height + (options.ylabel ? 85 * scale_factor : 27);
     mw = size.width;
     mh = size.height;
 
@@ -503,7 +505,7 @@ layout.moleculeContainer = function(e, options) {
             .attr("x", "-0.31em")
             .attr("y", "0.31em")
             .text(function(d, i) {
-              if (layout.coulomb_forces_checkbox.checked) {
+              if (model.get("coulomb_forces")) {
                 return (x(get_charge(i)) > 0) ? "+" : "–";
               } else {
                 return;    // ""
@@ -595,9 +597,8 @@ layout.moleculeContainer = function(e, options) {
     container.playback_component = playback_component;
   }
 
-  container.resize = function(width, height) {
-    container.scale(width, height);
-    // container.scale();
+  container.resize = function(w, h) {
+    container.scale(w, h);
     container();
     container.setup_particles();
   };
