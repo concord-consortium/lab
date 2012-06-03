@@ -176,7 +176,6 @@ layout.setupScreen = function(viewLists) {
       var emsize = Math.min(layout.screen_factor_width * 1.1, layout.screen_factor_height);
       layout.bodycss.style.fontSize = emsize + 'em';
       compareScreen();
-      layout.not_rendered = false;
       break;
 
       default:
