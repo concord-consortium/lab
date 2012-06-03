@@ -205,9 +205,9 @@ The `.rvmrc` specifies that this project dependeds on Ruby 1.9.3-p194 and all th
 will be installed in the RVM gemset named `ruby-1.9.3-p194@lab`.
 
     cd lab
-    make clean; make
+    make everything
 
-When `make` is run on a freshly cloned repository it performs the following tasks:
+When `make everything` is run on a freshly cloned repository it performs the following tasks:
 
 1. Install the runtime dependencies as git submodules into the `vendor/` directory:
 
@@ -228,7 +228,9 @@ When `make` is run on a freshly cloned repository it performs the following task
    This creates the `bin/` directory and populates it with command-line executables for running
    the specific versions of the RubyGems installed for development.
 
-4.  Generates the `dist/` directory:
+4.  Generates the `server/public` directory:
+
+5.  Generates the Java resources in the `server/public/jnlp` directory:
 
 You should now be able to open the file: `dist/index.html` in a browser and run some of the examples.
 
