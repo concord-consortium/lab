@@ -62,6 +62,16 @@ public:
 	bash -O extglob -c 'rm -rf -d server/public/!(.git|jnlp|vendor)'
 	$(MAKE) all
 
+src: \
+	$(MARKDOWN_EXAMPLE_FILES) \
+	$(LAB_JS_FILES) \
+	$(LAB_JS_FILES:.js=.min.js) \
+	$(HAML_FILES) \
+	$(SASS_EXAMPLE_FILES) \
+	$(SASS_DOC_FILES) \
+	$(SCSS_EXAMPLE_FILES) \
+	$(COFFEESCRIPT_EXAMPLE_FILES) \
+
 jnlp-all: clean-jnlp \
 	server/public/jnlp
 	script/build-and-deploy-jars.rb --maven-update
@@ -324,6 +334,12 @@ server/public/lab/lab.mw-helpers.js: src/mw-helpers/*.coffee
 test: test/layout.html \
 	src/vendor/d3 \
 	server/public \
+	$(LAB_JS_FILES) \
+	$(JS_FILES:.js=.min.js) \
+	$(MD_ENGINE_JS_FILES)
+	@$(JS_TESTER)
+
+test-src: test/layout.html \
 	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js) \
 	$(MD_ENGINE_JS_FILES)
