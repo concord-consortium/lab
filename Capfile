@@ -32,6 +32,12 @@ desc "update server"
 task :update_server do
   run "cd /var/www/app; bundle install"
   run "cd /var/www/app; git pull origin master"
+  run "cd /var/www/app; make public"
+end
+
+desc "update server"
+task :clean_and_update_server do
+  run "cd /var/www/app; bundle install"
   run "cd /var/www/app; git pull origin master"
   run "cd /var/www/app; make clean; make"
 end
