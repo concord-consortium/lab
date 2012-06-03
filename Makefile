@@ -58,6 +58,10 @@ all: \
 	$(COFFEESCRIPT_EXAMPLE_FILES) \
 	server/public/index.css
 
+public:
+	bash -O extglob -c 'rm -rf -d server/public/!(.git|jnlp|vendor)'
+	$(MAKE) all
+
 jnlp-all: clean-jnlp \
 	server/public/jnlp
 	script/build-and-deploy-jars.rb --maven-update
