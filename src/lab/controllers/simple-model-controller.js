@@ -160,6 +160,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   function onresize() {
     layout.setupScreen(viewLists);
     therm.resize();
+    updateTherm();
   }
 
   document.onwebkitfullscreenchange = onresize;
