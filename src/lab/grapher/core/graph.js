@@ -420,35 +420,42 @@ grapher.graph = function(elem, options, message) {
 
       if (!isNaN(downx)) {
         d3.select('body').style("cursor", "ew-resize");
-        var rupx = xScale.invert(p[0]),
-            xaxis1 = xScale.domain()[0],
-            xaxis2 = xScale.domain()[1],
-            xextent = xaxis2 - xaxis1;
-        if (rupx !== 0) {
-          changex = downx / rupx;
-          new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-          xScale.domain(new_domain);
-          redraw();
-        }
+        xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+        redraw();
         d3.event.preventDefault();
         d3.event.stopPropagation();
       }
 
       if (!isNaN(downy)) {
         d3.select('body').style("cursor", "ns-resize");
-        var rupy = yScale.invert(p[1]),
-            yaxis1 = yScale.domain()[1],
-            yaxis2 = yScale.domain()[0],
-            yextent = yaxis2 - yaxis1;
-        if (rupy !== 0) {
-          changey = downy / rupy;
-          new_domain = [yaxis2, yaxis2 - yextent * changey];
-          yScale.domain(new_domain);
-          redraw();
-        }
+        yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+        redraw();
         d3.event.preventDefault();
         d3.event.stopPropagation();
       }
+    }
+
+    function xAxisProcessDrag(dragstart, currentdrag, domain) {
+      var newdomain,
+          origin = 0,
+          xaxis1 = domain[0],
+          xaxis2 = domain[1],
+          xextent = xaxis2 - xaxis1;
+      if (currentdrag !== 0) {
+        if  (xaxis1 >= 0) {                           // example: [ 10,  50]
+          origin = xaxis1;
+        } else if ((xaxis1 < 0) && (xaxis2 > 0)) {    // example: [-50,  50]
+          origin = 0;
+          xextent = (currentDrag > 0) ? xaxis2 : xaxis1;
+        } else if ((xaxis1 < 0) && (xaxis2 < 0)) {    // example: [-50, -10]
+          origin = xaxis2;
+        }
+        changex = dragstart / currentdrag;
+        newdomain = [xaxis1, xaxis1 + (xextent * changex)];
+      } else {
+        nedomain = domain;
+      }
+      return newdomain;
     }
 
     function mouseup() {
