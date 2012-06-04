@@ -120,10 +120,12 @@ layout.potentialChart = function(e, model, options) {
     mh = size.height;
 
     // x-scale
-    xScale.domain([ljData.xmin, ljData.xmax]).range([0, mw]);
+    xScale = d3.scale.linear()
+      .domain([ljData.xmin, ljData.xmax]).range([0, mw]);
 
     // y-scale (inverted domain)
-    yScale.domain([ljData.ymax, ljData.ymin]).range([0, mh]);
+    yScale = d3.scale.linear()
+      .domain([ljData.ymax, ljData.ymin]).range([0, mh]);
 
     // drag x-axis logic
     downx = Math.NaN;
@@ -247,6 +249,12 @@ layout.potentialChart = function(e, model, options) {
       vis.selectAll("g.x").remove();
       vis.selectAll("g.y").remove();
 
+      d3.select(this)
+          .on("mousemove.drag", mousemove)
+          .on("touchmove.drag", mousemove)
+          .on("mouseup.drag",   mouseup)
+          .on("touchend.drag",  mouseup);
+
       redraw();
     }
 
@@ -256,7 +264,7 @@ layout.potentialChart = function(e, model, options) {
       }
 
       var fx = xScale.tickFormat(5),
-          fy = yScale.tickFormat(10);
+          fy = yScale.tickFormat(5);
 
       // Regenerate x-ticks…
       var gx = vis.selectAll("g.x")
@@ -375,26 +383,44 @@ layout.potentialChart = function(e, model, options) {
     }
 
     function mousemove() {
-      if (!coefficient_dragged) return;
-      node.onselectstart = function(){ return false; };
-      var m = d3.svg.mouse(vis.node()),
-        newx, newy;
-      if (coefficient_dragged.coefficient == "epsilon") {
-        newx = ljData.coefficients.rmin;
-        newy = yScale.invert(Math.max(0, Math.min(size.height, m[1])));
-        if (newy > options.epsilon_max) { newy = options.epsilon_max; }
-        if (newy < options.epsilon_min) { newy = options.epsilon_min; }
-        model.set( { epsilon: newy } );
-      } else {
-        newy = 0;
-        newx = xScale.invert(Math.max(0, Math.min(size.width, m[0])));
-        if (newx < options.sigma_min) { newx = options.sigma_min; }
-        if (newx > options.sigma_max) { newx = options.sigma_max; }
-        model.set( { sigma: newx } );
+      var p = d3.svg.mouse(vis[0][0]),
+          changex, changey, new_domain,
+          t = d3.event.changedTouches;
+      if (coefficient_dragged) {
+        node.onselectstart = function(){ return false; };
+        var m = d3.svg.mouse(vis.node()),
+          newx, newy;
+        if (coefficient_dragged.coefficient == "epsilon") {
+          newx = ljData.coefficients.rmin;
+          newy = yScale.invert(Math.max(0, Math.min(size.height, m[1])));
+          if (newy > options.epsilon_max) { newy = options.epsilon_max; }
+          if (newy < options.epsilon_min) { newy = options.epsilon_min; }
+          model.set( { epsilon: newy } );
+        } else {
+          newy = 0;
+          newx = xScale.invert(Math.max(0, Math.min(size.width, m[0])));
+          if (newx < options.sigma_min) { newx = options.sigma_min; }
+          if (newx > options.sigma_max) { newx = options.sigma_max; }
+          model.set( { sigma: newx } );
+        }
+        coefficient_dragged.x = newx;
+        coefficient_dragged.y = newy;
+        update();
       }
-      coefficient_dragged.x = newx;
-      coefficient_dragged.y = newy;
-      update();
+      if (!isNaN(downx)) {
+        d3.select('body').style("cursor", "ew-resize");
+        xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+        redraw();
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+      if (!isNaN(downy)) {
+        d3.select('body').style("cursor", "ns-resize");
+        yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+        redraw();
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
     }
 
     function mouseup() {
@@ -423,38 +449,19 @@ layout.potentialChart = function(e, model, options) {
     //
     // ------------------------------------------------------------
 
+
     elem.on("mousemove", function(d) {
       document.onselectstart = function() { return true; };
       var p = d3.svg.mouse(vis[0][0]);
       if (!isNaN(downx)) {
-        var rupx = xScale.invert(p[0]),
-          xaxis1 = xScale.domain()[0],
-          xaxis2 = xScale.domain()[1],
-          xextent = xaxis2 - xaxis1;
-        if (rupx !== 0) {
-            var changex, dragx_factor, new_domain;
-            dragx_factor = xextent/downx;
-            changex = 1 + (downx / rupx - 1) * (xextent/(downx-xaxis1))/dragx_factor;
-            new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-            xScale.domain(new_domain);
-            redraw();
-        }
+        xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+        redraw();
         d3.event.preventDefault();
         d3.event.stopPropagation();
       }
       if (!isNaN(downy)) {
-          var rupy = yScale.invert(p[1]),
-          yaxis1 = yScale.domain()[1],
-          yaxis2 = yScale.domain()[0],
-          yextent = yaxis2 - yaxis1;
-        if (rupy !== 0) {
-            var changey, dragy_factor, new_range;
-            dragy_factor = yextent/downy;
-            changey = 1 - (rupy / downy - 1) * (yextent/(downy-yaxis1))/dragy_factor;
-            new_range = [yaxis1 + (yextent * changey), yaxis1];
-            yScale.domain(new_range);
-            redraw();
-        }
+        yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[0]), yScale.domain()));
+        redraw();
         d3.event.preventDefault();
         d3.event.stopPropagation();
       }

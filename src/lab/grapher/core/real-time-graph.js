@@ -407,34 +407,16 @@ grapher.realTimeGraph = function(e, options) {
 
       document.onselectstart = function() { return true; };
       if (!isNaN(downx)) {
-        var rupx = xScale.invert(p[0]),
-          xaxis1 = xScale.domain()[0],
-          xaxis2 = xScale.domain()[1],
-          xextent = xaxis2 - xaxis1;
-
         d3.select('body').style("cursor", "ew-resize");
-        if (rupx !== 0) {
-          changex = downx / rupx;
-          new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-          xScale.domain(new_domain);
-          redraw();
-        }
+        xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+        redraw();
         d3.event.preventDefault();
         d3.event.stopPropagation();
       }
       if (!isNaN(downy)) {
-        var rupy = yScale.invert(p[1]),
-            yaxis1 = yScale.domain()[1],
-            yaxis2 = yScale.domain()[0],
-            yextent = yaxis2 - yaxis1;
-
         d3.select('body').style("cursor", "ns-resize");
-        if (rupy !== 0) {
-          changey = downy / rupy;
-          new_domain = [yaxis2, yaxis2 - yextent * changey];
-          yScale.domain(new_domain);
-          redraw();
-        }
+        yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+        redraw();
         d3.event.preventDefault();
         d3.event.stopPropagation();
       }
