@@ -10,8 +10,6 @@
 
   model: true
   model_player: true
-  atoms: true
-  nodes: true
 */
 /*jslint onevar: true*/
 controllers.compareModelsController = function(molecule_view_id, appletContainerID, modelConfig, playerConfig) {
@@ -30,6 +28,9 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       coulomb_forces      = modelConfig.coulomb_forces,
       width               = modelConfig.width,
       height              = modelConfig.height,
+
+      atoms,
+      nodes,
 
       molecule_container,
       modelListener,
@@ -113,7 +114,9 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
           xunits:               true,
           yunits:               true,
           xmax:                 width,
-          ymax:                 height
+          ymax:                 height,
+          get_nodes:            function() { return model.get_nodes(); },
+          get_atoms:            function() { return model.get_atoms(); }
         }
       );
 

@@ -32,6 +32,10 @@ layout.moleculeContainer = function(e, options) {
       particle, label, labelEnter, tail,
       molRadius,
       molecule_div, molecule_div_pre,
+      atoms,
+      get_atoms,
+      nodes,
+      get_nodes,
       default_options = {
         title:                false,
         xlabel:               false,
@@ -58,6 +62,13 @@ layout.moleculeContainer = function(e, options) {
   } else {
     options = default_options;
   }
+
+  // The get_nodes option allows us to update 'nodes' array every model tick.
+  get_nodes = options.get_nodes;
+  nodes = get_nodes();
+
+  get_atoms = options.get_atoms;
+  atoms = get_atoms();
 
   scale(cx, cy);
 
@@ -564,6 +575,10 @@ layout.moleculeContainer = function(e, options) {
     }
 
     function update_molecule_positions() {
+
+      atoms = get_atoms();
+      nodes = get_nodes();
+
       // update model time display
       if (options.model_time_label) {
         time_label.text(modelTimeLabel());
