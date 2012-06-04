@@ -26,6 +26,15 @@ suite.addBatch({
     },
     "axisProcessDrag: (-60, -50, [-80, -40]) => [-120, -40]": function(axisProcessDrag) {
       assert.deepEqual(axisProcessDrag(-60, -50, [-80, -40]), [-120, -40]);
+    },
+    "axisProcessDrag: (-0.4, -0.2, [-1.0, 0.4]) => [-2.0, 0.8]": function(axisProcessDrag) {
+      assert.deepEqual(axisProcessDrag(-0.4, -0.2, [-1.0, 0.4]), [-2.0, 0.8]);
+    },
+    "axisProcessDrag: (-0.2, -0.4, [-1.0, 0.4]) => [-0.5, 0.2]": function(axisProcessDrag) {
+      assert.deepEqual(axisProcessDrag(-0.2, -0.4, [-1.0, 0.4]), [-0.5, 0.2]);
+    },
+    "axisProcessDrag: (-0.4, -0.2, [0.4, -1.0]) => [0.8, -2.0]": function(axisProcessDrag) {
+      assert.deepEqual(axisProcessDrag(-0.4, -0.2, [0.4, -1.0]), [0.8, -2.0]);
     }
   }
 });
