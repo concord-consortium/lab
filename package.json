@@ -23,7 +23,7 @@
   "dependencies": {
   },
   "devDependencies": {
-    "uglify-js": "1.2.5",
+    "uglify-js": "1.3.0",
     "jsdom": "0.2.12",
     "vows": "0.6.2",
     "coffee-script": "1.2.0",
