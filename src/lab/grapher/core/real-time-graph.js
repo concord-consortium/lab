@@ -17,7 +17,8 @@ grapher.realTimeGraph = function(e, options) {
       emsize = layout.getDisplayProperties().emsize,
       titles = [],
       line_path, line_seglist,
-      vis, plot, viewbox, points,
+      vis, plot, viewbox,
+      points, pointArray,
       markedPoint, marker,
       sample,
       default_options = {
@@ -59,7 +60,18 @@ grapher.realTimeGraph = function(e, options) {
   options.yrange = options.ymax - options.ymin;
 
   scale(cx, cy);
-  points = indexedData(options.dataset, 0);
+
+  pointArray = [];
+
+  if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
+    for (var i = 0; i < options.dataset.length; i++) {
+      pointArray.push(indexedData(options.dataset[i], 0));
+    }
+    points = pointArray[0];
+  } else {
+    points = indexedData(options.dataset, 0);
+    pointArray = [points];
+  }
 
   function indexedData(dataset, initial_index, sample) {
     var i = 0,
@@ -482,9 +494,9 @@ grapher.realTimeGraph = function(e, options) {
       var index = points.length,
           lengthX = index * sample,
           previousX = lengthX - sample,
+          point = { x: lengthX, y: p },
           oldx = xScale.call(self, previousX, previousX),
           oldy = yScale.call(self, points[index-1].y, index-1),
-          point = { x: lengthX, y: p },
           newx, newy;
 
       points.push(point);
@@ -494,6 +506,36 @@ grapher.realTimeGraph = function(e, options) {
       gctx.moveTo(oldx, oldy);
       gctx.lineTo(newx, newy);
       gctx.stroke();
+    }
+
+    function add_points(p) {
+      for (var i = 0; i < pointArray.length; i++) {
+        points = pointArray[i];
+        add_point(pnts[i]);
+      }
+    }
+
+
+    function add_canvas_points(pnts) {
+      for (var i = 0; i < pointArray.length; i++) {
+        points = pointArray[i];
+        setPointStrokeColor(i);
+        add_canvas_point(pnts[i]);
+      }
+    }
+
+    function setPointStrokeColor(i) {
+      switch(i) {
+        case 0:
+          gctx.strokeStyle = "rgba(160,00,0, 1.0)";
+          break;
+        case 1:
+          gctx.strokeStyle = "rgba(44,160,0, 1.0)";
+          break;
+        case 2:
+          gctx.strokeStyle = "rgba(44,0,160, 1.0)";
+          break;
+      }
     }
 
     function new_data(d) {
@@ -541,21 +583,27 @@ grapher.realTimeGraph = function(e, options) {
 
     // update real-time canvas line graph
     function update_canvas() {
+      var i, pc, py;
       if (points.length === 0) { return; }
-      var px = xScale.call(self, 0, 0),
-          py = yScale.call(self, points[0].y, 0),
-          index, lengthX = 0;
       clear_canvas();
       gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-      gctx.beginPath();
-      gctx.moveTo(px, py);
-      for (index=0; index < points.length-1; index++) {
-        lengthX += sample;
-        px = xScale.call(self, lengthX, lengthX);
-        py = yScale.call(self, points[index].y, lengthX);
-        gctx.lineTo(px, py);
+      for (i = 0; i < pointArray.length; i++) {
+        points = pointArray[i];
+        setPointStrokeColor(i);
+        px = xScale.call(self, 0, 0);
+        py = yScale.call(self, points[0].y, 0);
+        index = 0;
+        lengthX = 0;
+        gctx.beginPath();
+        gctx.moveTo(px, py);
+        for (index=0; index < points.length-1; index++) {
+          lengthX += sample;
+          px = xScale.call(self, lengthX, lengthX);
+          py = yScale.call(self, points[index].y, lengthX);
+          gctx.lineTo(px, py);
+        }
+        gctx.stroke();
       }
-      gctx.stroke();
     }
 
     function initialize_canvas() {
@@ -606,6 +654,7 @@ grapher.realTimeGraph = function(e, options) {
     graph.new_data = new_data;
     graph.add_point = add_point;
     graph.add_canvas_point = add_canvas_point;
+    graph.add_canvas_points = add_canvas_points;
     graph.initialize_canvas = initialize_canvas;
     graph.show_canvas = show_canvas;
     graph.hide_canvas = hide_canvas;

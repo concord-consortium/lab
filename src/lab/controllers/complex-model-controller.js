@@ -44,7 +44,7 @@ controllers.complexModelController =
       step_counter,
       ljCalculator,
       kechart, energyGraph, energyGraph_options,
-      te_data,
+      energy_data,
       model_controls,
       model_controls_inputs,
       select_molecule_number,
@@ -79,11 +79,13 @@ controllers.complexModelController =
 
       if (model.isNewStep()) {
         currentTick++;
-        te_data.push(te);
+        energy_data[0].push(ke);
+        energy_data[1].push(pe);
+        energy_data[2].push(te);
         if (model.is_stopped()) {
-          energyGraph.add_point(te);
+          energyGraph.add_points([ke, pe, te]);
         } else {
-          energyGraph.add_canvas_point(te);
+          energyGraph.add_canvas_points([ke, pe, te]);
         }
       } else {
         energyGraph.update();
@@ -96,8 +98,11 @@ controllers.complexModelController =
       if (layout.datatable_visible) { layout.render_datatable(); }
     }
 
-    function resetTEData() {
-      te_data = [model.ke() + model.pe()];
+    function resetEnergyData() {
+      ke = model.ke();
+      pe = model.pe();
+      te = ke + pe;
+      energy_data = [[ke], [pe], [te]];
     }
 
     // ------------------------------------------------------------
@@ -173,30 +178,30 @@ controllers.complexModelController =
 
       // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
 
-      resetTEData();
+      resetEnergyData();
 
       energyGraph = grapher.realTimeGraph(energy_graph_view_id, {
-        title:     "Total Energy of the System",
+        title:     "Energy of the System",
         xlabel:    "Model Time (ps)",
         xmin:      0,
         xmax:     2500,
         sample:    0.25,
         ylabel:    null,
-        ymin:      0.0,
-        ymax:      200,
-        dataset:   te_data
+        ymin:      -5.0,
+        ymax:      5.0,
+        dataset:   energy_data
       });
 
-      energyGraph.new_data(te_data);
+      energyGraph.new_data(energy_data);
 
       model.on('play', function() {
         if (energyGraph.number_of_points() && currentTick < energyGraph.number_of_points()) {
           if (currentTick === 0) {
-            resetTEData();
+            resetEnergyData();
           } else {
-            te_data.length = currentTick;
+            energy_data.length = currentTick;
           }
-          energyGraph.new_data(te_data);
+          energyGraph.new_data(energy_data);
         }
         energyGraph.show_canvas();
       });
@@ -206,8 +211,8 @@ controllers.complexModelController =
       });
 
       model.on('seek', function() {
-        resetTEData();
-        energyGraph.new_data(te_data);
+        resetEnergyData();
+        energyGraph.new_data(energy_data);
       });
 
       // ------------------------------------------------------------
@@ -358,7 +363,7 @@ controllers.complexModelController =
       nodes = model.get_nodes();
 
       model.resetTime();
-      resetTEData();
+      resetEnergyData();
 
       moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_particles();
@@ -381,7 +386,6 @@ controllers.complexModelController =
       model.stop();
       energyGraph.hide_canvas();
       moleculeContainer.playback_component.action('stop');
-      // energyGraph.new_data(te_data);
       if (model_controls) {
         model_controls_inputs[0].checked = true;
       }
@@ -445,8 +449,8 @@ controllers.complexModelController =
       } else {
         layout.hide_datatable();
       }
-      resetTEData();
-      energyGraph.new_data(te_data);
+      resetEnergyData();
+      energyGraph.new_data(energy_data);
       energyGraph.hide_canvas();
       if (model_controls) {
         model_controls_inputs[0].checked = true;
@@ -537,7 +541,7 @@ controllers.complexModelController =
     controller.modelGo = modelGo;
     controller.modelStop = modelStop;
     controller.modelReset = modelReset;
-    controller.resetTEData = resetTEData;
+    controller.resetEnergyData = resetEnergyData;
     controller.energyGraph = energyGraph;
     controller.moleculeContainer = moleculeContainer;
   }
