@@ -439,6 +439,7 @@ modeler.model = function(initialProperties) {
     tick_history_list_extract(tick_history_list_index);
     dispatch.seek();
     notifyListenersOfEvents("seek");
+    if (model_listener) { model_listener(); }
     return tick_counter;
   };
 
