@@ -60,7 +60,7 @@ guard 'shell' do
   end
 
   watch(/^test\/.+\.js$/) do
-    system("make test")
+    system("make test-src")
   end
 
   watch(/(^src\/examples\/[^.].+)$/) do |match|
