@@ -278,6 +278,7 @@ server/public/lab/lab.grapher.js: \
 	src/lab/start.js \
 	src/lab/grapher/core/core.js \
 	src/lab/grapher/core/data.js \
+	src/lab/grapher/core/axis.js \
 	src/lab/grapher/core/indexed-data.js \
 	src/lab/grapher/core/graph.js \
 	src/lab/grapher/core/real-time-graph.js \
