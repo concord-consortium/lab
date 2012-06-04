@@ -14,6 +14,8 @@ grapher.realTimeGraph = function(e, options) {
             .x(function(d, i) { return xScale(points[i].x ); })
             .y(function(d, i) { return yScale(points[i].y); }),
       dragged, selected,
+      emsize = layout.getDisplayProperties().emsize,
+      titles = [],
       line_path, line_seglist,
       vis, plot, viewbox, points,
       markedPoint, marker,
@@ -30,6 +32,7 @@ grapher.realTimeGraph = function(e, options) {
         selectable_points: true,
         circleRadius: false,
         dataChange: false,
+        points: false,
         sample: 1
       };
 
@@ -85,11 +88,21 @@ grapher.realTimeGraph = function(e, options) {
     node.style.height = cy +"px";
 
     padding = {
-       "top":    options.title  ? 40  : 20,
-       "right":                   35,
-       "bottom": options.xlabel ? 50  : 30,
-       "left":   options.ylabel ? 60  : 35
+     "top":    options.title  ? 40 : 20,
+     "right":                   30,
+     "bottom": options.xlabel ? 60 : 10,
+     "left":   options.ylabel ? 70 : 45
     };
+
+    emsize = layout.getDisplayProperties().emsize;
+
+    if(Object.prototype.toString.call(options.title) === "[object Array]") {
+      titles = options.title;
+    } else {
+      titles = [options.title];
+    }
+
+    padding.top += (titles.length-1) * emsize * 20;
 
     width =  cx - padding.left - padding.right;
     height = cy - padding.top  - padding.bottom;
@@ -154,11 +167,13 @@ grapher.realTimeGraph = function(e, options) {
 
       // add Chart Title
       if (options.title) {
-        vis.append("text")
+        title = vis.selectAll("text")
+          .data(titles, function(d) { return d; });
+        title.enter().append("text")
             .attr("class", "title")
-            .text(options.title)
+            .text(function(d) { return d; })
             .attr("x", size.width/2)
-            .attr("dy","-1em")
+            .attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; })
             .style("text-anchor","middle");
       }
 

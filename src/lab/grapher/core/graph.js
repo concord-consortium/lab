@@ -62,14 +62,9 @@ grapher.graph = function(elem, options, message) {
 
     padding = {
      "top":    options.title  ? 40 : 20,
-     "right":                 30,
+     "right":                   30,
      "bottom": options.xlabel ? 60 : 10,
      "left":   options.ylabel ? 70 : 45
-    };
-
-    size = {
-      "width":  cx - padding.left - padding.right,
-      "height": cy - padding.top  - padding.bottom
     };
 
     emsize = layout.getDisplayProperties().emsize;
@@ -79,7 +74,13 @@ grapher.graph = function(elem, options, message) {
     } else {
       titles = [options.title];
     }
+
     padding.top += (titles.length-1) * emsize * 20;
+
+    size = {
+      "width":  cx - padding.left - padding.right,
+      "height": cy - padding.top  - padding.bottom
+    };
 
     xValue = function(d) { return d[0]; };
     yValue = function(d) { return d[1]; };
@@ -433,29 +434,6 @@ grapher.graph = function(elem, options, message) {
         d3.event.preventDefault();
         d3.event.stopPropagation();
       }
-    }
-
-    function xAxisProcessDrag(dragstart, currentdrag, domain) {
-      var newdomain,
-          origin = 0,
-          xaxis1 = domain[0],
-          xaxis2 = domain[1],
-          xextent = xaxis2 - xaxis1;
-      if (currentdrag !== 0) {
-        if  (xaxis1 >= 0) {                           // example: [ 10,  50]
-          origin = xaxis1;
-        } else if ((xaxis1 < 0) && (xaxis2 > 0)) {    // example: [-50,  50]
-          origin = 0;
-          xextent = (currentDrag > 0) ? xaxis2 : xaxis1;
-        } else if ((xaxis1 < 0) && (xaxis2 < 0)) {    // example: [-50, -10]
-          origin = xaxis2;
-        }
-        changex = dragstart / currentdrag;
-        newdomain = [xaxis1, xaxis1 + (xextent * changex)];
-      } else {
-        nedomain = domain;
-      }
-      return newdomain;
     }
 
     function mouseup() {
