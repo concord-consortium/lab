@@ -10,8 +10,6 @@
 
   model: true
   model_player: true
-  atoms: true
-  nodes: true
 */
 /*jslint onevar: true*/
 controllers.complexModelController =
@@ -55,6 +53,9 @@ controllers.complexModelController =
       viewLists,
       select_molecule_number,
       radio_randomize_pos_vel,
+
+      atoms,
+      nodes,
 
       currentTick = 0;
 
@@ -164,7 +165,9 @@ controllers.complexModelController =
           xmin:                 0,
           xmax:                 width,
           ymin:                 0,
-          ymax:                 height
+          ymax:                 height,
+          get_nodes:            function() { return model.get_nodes(); },
+          get_atoms:            function() { return model.get_atoms(); }
         }
       );
 

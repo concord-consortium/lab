@@ -10,8 +10,6 @@
 
   model: true
   model_player: true
-  atoms: true
-  nodes: true
 */
 /*jslint onevar: true*/
 controllers.simpleModelController = function(molecule_view_id, modelConfig, playerConfig) {
@@ -30,6 +28,9 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       coulomb_forces      = modelConfig.coulomb_forces,
       width               = modelConfig.width,
       height              = modelConfig.height,
+
+      atoms,
+      nodes,
 
       molecule_container,
       model_listener,
@@ -102,7 +103,9 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       molecule_container = layout.moleculeContainer(molecule_view_id,
         {
           xmax:                 width,
-          ymax:                 height
+          ymax:                 height,
+          get_nodes:            function() { return model.get_nodes(); },
+          get_atoms:            function() { return model.get_atoms(); }
         }
       );
 
