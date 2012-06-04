@@ -508,7 +508,7 @@ grapher.realTimeGraph = function(e, options) {
       gctx.stroke();
     }
 
-    function add_points(p) {
+    function add_points(pnts) {
       for (var i = 0; i < pointArray.length; i++) {
         points = pointArray[i];
         add_point(pnts[i]);
@@ -653,6 +653,7 @@ grapher.realTimeGraph = function(e, options) {
     graph.number_of_points = number_of_points;
     graph.new_data = new_data;
     graph.add_point = add_point;
+    graph.add_points = add_points;
     graph.add_canvas_point = add_canvas_point;
     graph.add_canvas_points = add_canvas_points;
     graph.initialize_canvas = initialize_canvas;

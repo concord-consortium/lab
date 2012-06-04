@@ -181,7 +181,7 @@ controllers.complexModelController =
       resetEnergyData();
 
       energyGraph = grapher.realTimeGraph(energy_graph_view_id, {
-        title:     "Energy of the System",
+        title:     "Energy of the System (KE:red, PE:green, TE:blue)",
         xlabel:    "Model Time (ps)",
         xmin:      0,
         xmax:     2500,
