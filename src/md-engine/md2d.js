@@ -8,7 +8,7 @@ var arrays       = require('./arrays/arrays').arrays,
     unit         = constants.unit,
     math         = require('./math'),
     coulomb      = require('./potentials').coulomb,
-    makeLennardJonesCalculator = require('./potentials').makeLennardJonesCalculator,
+    lennardJones = require('./potentials').lennardJones,
 
     // TODO: Actually check for Safari. Typed arrays are faster almost everywhere
     // ... except Safari.
@@ -114,7 +114,6 @@ exports.ELEMENT_INDICES = ELEMENT_INDICES = {
   EPSILON: 1,
   SIGMA: 2
 },
-
 
 exports.INDICES = INDICES = {
   RADIUS :  0,
@@ -232,7 +231,7 @@ exports.makeModel = function() {
 
       // Each [i,j] that calculates the magnitude of the Lennard-Jones force or
       // or poential between elements i and j.
-      lennardJones = [],
+      ljCalculator = [],
 
       // Callback that recalculates cutoffDistance_LJ_sq when the Lennard-Jones sigma parameter changes.
       ljCoefficientsChanged = function(el1, el2, coefficients) {
@@ -244,7 +243,7 @@ exports.makeModel = function() {
 
       setRadii = function() {
         for (var i = 0, len = radius.length; i < len; i++) {
-          radius[i] = 0.5 * sigma[element[i]][element[i]];
+          radius[i] = 0.5 * ljCalculator[element[i]][element[i]].coefficients().rmin;
         }
       },
 
@@ -428,7 +427,7 @@ exports.makeModel = function() {
           f_over_r = 0;
 
           if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el_i][el_j]) {
-            f_over_r += lennardJones[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq, el_i, el_j);
+            f_over_r += ljCalculator[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq, el_i, el_j);
           }
 
           if (useCoulombInteraction) {
@@ -510,7 +509,7 @@ exports.makeModel = function() {
     },
 
     getLJCalculator: function() {
-      return lennardJones;
+      return ljCalculator;
     },
 
     /*
@@ -531,7 +530,7 @@ exports.makeModel = function() {
       for (i = 0; i < elements.length; i++) {
         epsilon[i] = [];
         sigma[i] = [];
-        lennardJones[i] = [];
+        ljCalculator[i] = [];
         cutoffDistance_LJ_sq[i] = [];
       }
 
@@ -543,12 +542,12 @@ exports.makeModel = function() {
           epsilon_j = elements[j][ELEMENT_INDICES.EPSILON];
           sigma_j   = elements[j][ELEMENT_INDICES.SIGMA];
 
-          epsilon[i][j] = epsilon[j][i] = 0.5 * (epsilon_i + epsilon_j);
-          sigma[i][j]   = sigma[j][i]   = Math.sqrt(sigma_i * sigma_j);
+          epsilon[i][j] = epsilon[j][i] = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
+          sigma[i][j]   = sigma[j][i]   = lennardJones.pairwiseSigma(sigma_i, sigma_j);
 
           // bind i and j to the callback made below
           (function(i, j) {
-            lennardJones[i][j] = lennardJones[j][i] = makeLennardJonesCalculator({
+            ljCalculator[i][j] = ljCalculator[j][i] = lennardJones.newLJCalculator({
               epsilon: epsilon[i][j],
               sigma:   sigma[i][j]
             }, function(coefficients) {
@@ -855,7 +854,7 @@ exports.makeModel = function() {
 
           // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
           if (useLennardJonesInteraction ) {
-            lj = lennardJones[element[i]][element[j]];
+            lj = ljCalculator[element[i]][element[j]];
             PE += -lj.potentialFromSquaredDistance(r_sq, element[i], element[j]);
           }
           if (useCoulombInteraction) {
