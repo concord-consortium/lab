@@ -258,8 +258,10 @@ layout.setupScreen = function(viewLists) {
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
       viewLists.moleculeContainers[i].resize(width, height);
     }
-    i = -1;  while(++i < viewLists.appletContainers.length) {
-      viewLists.appletContainers[i].resize(width, height);
+    if (viewLists.appletContainers) {
+      i = -1;  while(++i < viewLists.appletContainers.length) {
+        viewLists.appletContainers[i].resize(width, height);
+      }
     }
   }
 

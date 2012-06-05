@@ -69,7 +69,7 @@ grapher.graph = function(elem, options, message) {
 
     emsize = layout.getDisplayProperties().emsize;
 
-    if(Object.prototype.toString.call(options.title) === "[object Array]") {
+    if (Object.prototype.toString.call(options.title) === "[object Array]") {
       titles = options.title;
     } else {
       titles = [options.title];
