@@ -198,11 +198,15 @@ controllers.complexModelController =
       energyGraph.new_data(energy_data);
 
       model.on('play', function() {
+        var i, len;
+
         if (energyGraph.number_of_points() && currentTick < energyGraph.number_of_points()) {
           if (currentTick === 0) {
             resetEnergyData();
           } else {
-            energy_data.length = currentTick;
+            for (i = 0, len = energy_data.length; i < len; i++) {
+              energy_data[i].length = currentTick;
+            }
           }
           energyGraph.new_data(energy_data);
         }
