@@ -875,33 +875,67 @@ exports.makeModel = function() {
       outputState.omega_CM = omega_CM;
     },
 
-    newPotentialCalculator: function(testElement, testCharge) {
+    /**
+      Given a test element and charge, returns a function that returns for a location (x, y) in nm:
+       * the potential energy, in eV, of an atom of that element and charge at location (x, y)
+       * optionally, if calculateGradient is true, the gradient of the potential as an
+         array [gradX, gradY]. (units: eV/nm)
+    */
+    newPotentialCalculator: function(testElement, testCharge, calculateGradient) {
 
       return function(testX, testY) {
-        var i,
+        var PE = 0,
+            fx = 0,
+            fy = 0,
+            gradX,
+            gradY,
+            ljTest = ljCalculator[testElement],
+            i,
             dx,
             dy,
             r_sq,
-            PE = 0,
-            gradX = 0,
-            gradY = 0,
-            ljTest = ljCalculator[testElement];
+            r,
+            f_over_r,
+            lj;
 
         for (i = 0; i < N; i++) {
           dx = testX - x[i];
           dy = testY - y[i];
           r_sq = dx*dx + dy*dy;
+          f_over_r = 0;
 
           if (useLennardJonesInteraction) {
-            PE += ljTest[element[i]].potentialFromSquaredDistance(r_sq, testElement, element[i]);
+            lj = ljTest[element[i]];
+            PE += -lj.potentialFromSquaredDistance(r_sq, testElement, element[i]);
+            if (calculateGradient) {
+              f_over_r += lj.forceOverDistanceFromSquaredDistance(r_sq, testElement, element[i]);
+            }
           }
+
           if (useCoulombInteraction && testCharge) {
-            PE += coulomb.potential(Math.sqrt(r_sq), testCharge, charge[i]);
+            r = Math.sqrt(r_sq);
+            PE += -coulomb.potential(r, testCharge, charge[i]);
+            if (calculateGradient) {
+              f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, testElement, element[i]);
+            }
+          }
+
+         // MW Force Units / nm (= Dalton / fs^2)
+         // Dalton / fs^2
+
+          if (f_over_r) {
+            fx += f_over_r * dx;
+            fy += f_over_r * dy;
           }
         }
 
-        PE = constants.convert(PE, { from: unit.EV, to: unit.MW_ENERGY_UNIT });
-        return [PE, [gradX, gradY]];
+        if (calculateGradient) {
+          gradX = constants.convert(fx, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
+          gradY = constants.convert(fy, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
+          return [PE, [gradX, gradY]];
+        }
+
+        return PE;
       };
     },
 
