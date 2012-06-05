@@ -13,7 +13,6 @@ modeler.VERSION = '0.2.0';
 modeler.model = function(initialProperties) {
   var model = {},
       elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
-      atoms = [],
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
       lennard_jones_forces, coulomb_forces,
@@ -141,7 +140,7 @@ modeler.model = function(initialProperties) {
   }
 
   function average_speed() {
-    var i, s = 0, n = nodes[0].length;
+    var i, s = 0, n = model.get_num_atoms();
     i = -1; while (++i < n) { s += coreModel.speed[i]; }
     return s/n;
   }
@@ -297,9 +296,6 @@ modeler.model = function(initialProperties) {
     nodes = coreModel.nodes;
 
     modelOutputState = coreModel.outputState;
-
-    // The d3 molecule viewer requires this length to be set correctly:
-    atoms.length = nodes[0].length;
 
     // Initialize properties
     temperature_control = properties.temperature_control;
@@ -483,7 +479,6 @@ modeler.model = function(initialProperties) {
   model.addAtom = function() {
     coreModel.addAtom.apply(coreModel, arguments);
     nodes = coreModel.nodes;
-    atoms.length = nodes[0].length;
     coreModel.computeOutputState();
     if (model_listener) model_listener();
   },
@@ -520,8 +515,8 @@ modeler.model = function(initialProperties) {
     return nodes;
   };
 
-  model.get_atoms = function() {
-    return atoms;
+  model.get_num_atoms = function() {
+    return nodes[0].length;
   };
 
   model.on = function(type, listener) {
@@ -571,7 +566,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.ave_ke = function() {
-    return modelOutputState? modelOutputState.KE / nodes[0].length : undefined;
+    return modelOutputState? modelOutputState.KE / model.get_num_atoms() : undefined;
   };
 
   model.pe = function() {
@@ -579,7 +574,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.ave_pe = function() {
-    return modelOutputState? modelOutputState.PE / nodes[0].length : undefined;
+    return modelOutputState? modelOutputState.PE / model.get_num_atoms() : undefined;
   };
 
   model.speed = function() {
