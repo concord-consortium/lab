@@ -39,7 +39,9 @@ var arrays       = require('./arrays/arrays').arrays,
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
-    NODE_PROPERTIES_COUNT, INDICES, SAVEABLE_INDICES,
+    NODE_PROPERTIES_COUNT,
+    INDICES,
+    SAVEABLE_INDICES,
 
     cross = function(a0, a1, b0, b1) {
       return a0*b1 - a1*b0;
@@ -48,8 +50,6 @@ var arrays       = require('./arrays/arrays').arrays,
     sumSquare = function(a,b) {
       return a*a + b*b;
     },
-
-    emptyFunction = function() {},
 
     /**
       Convert total kinetic energy in the container of N atoms to a temperature in Kelvin.
@@ -501,27 +501,6 @@ exports.makeModel = function() {
       return [size[0], size[1]];
     },
 
-    // setLJEpsilon: function(e) {
-    //   lennardJones.setEpsilon(e);
-    // },
-
-    // getLJEpsilon: function() {
-    //   return lennardJones.coefficients().epsilon;
-    // },
-
-    // setLJSigma: function(s) {
-    //   var i;
-
-    //   lennardJones.setSigma(s);
-    //   for (i = 0; i < N; i++) {
-    //     radius[i] = s/2;
-    //   }
-    // },
-
-    // getLJSigma: function() {
-    //   return lennardJones.coefficients().sigma;
-    // },
-
     getLJCalculator: function() {
       return lennardJones;
     },
@@ -541,19 +520,15 @@ exports.makeModel = function() {
       lennardJones = window.lennardJones = makeLennardJonesCalculator(elements, ljCoefficientsChanged);
     },
 
-    // allocates 'nodes' array of arrays, sets number of atoms.
-    // Must either pass in a hash that includes X and Y locations of the atoms,
-    // or a single number to represent the number of atoms.
-    // Note: even if X and Y are passed in, atoms won't be placed until
-    // initializeAtomsFromProperties() is called.
-    // options:
-    //     X: the X locations of the atoms to create
-    //     Y: the Y locations of the atoms to create
-    //   num: the number of atoms to create
+    /**
+      Allocates 'nodes' array of arrays, sets number of atoms.
+
+      options:
+        num: the number of atoms to create
+    */
     createAtoms: function(options) {
       var arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
-          i;
+          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular';
 
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
@@ -565,7 +540,7 @@ exports.makeModel = function() {
         throw new Error("md2d: createAtoms was called without options specifying the atoms to create.");
       }
 
-      N = (options.X && options.Y) ? options.X.length : options.num;
+      N = options.num;
 
       if (typeof N === 'undefined') {
         throw new Error("md2d: createAtoms was called without the required 'N' option specifying the number of atoms to create.");

@@ -22,7 +22,6 @@ modeler.model = function(initialProperties) {
       tick_history_list_index = 0,
       tick_counter = 0,
       new_step = false,
-      epsilon, sigma,
       pressure, pressures = [0],
       sample_time, sample_times = [],
 
@@ -40,11 +39,6 @@ modeler.model = function(initialProperties) {
 
       modelOutputState,
       model_listener,
-
-      //
-      // Individual property arrays for the nodes
-      //
-      radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
 
       width = initialProperties.width,
       height = initialProperties.height,
@@ -148,7 +142,7 @@ modeler.model = function(initialProperties) {
 
   function average_speed() {
     var i, s = 0, n = nodes[0].length;
-    i = -1; while (++i < n) { s += speed[i]; }
+    i = -1; while (++i < n) { s += coreModel.speed[i]; }
     return s/n;
   }
 
@@ -247,16 +241,6 @@ modeler.model = function(initialProperties) {
     return pressures.reduce(function(j,k) { return j+k; })/pressures.length;
   }
 
-  function speed_history(speeds) {
-    if (arguments.length) {
-      speed_history.push(speeds);
-      // limit the pressures array to the most recent 16 entries
-      speed_history.splice(0, speed_history.length - 100);
-    } else {
-      return speed_history.reduce(function(j,k) { return j+k; })/pressures.length;
-    }
-  }
-
   function average_rate() {
     var i, ave, s = 0, n = sample_times.length;
     i = -1; while (++i < n) { s += sample_times[i]; }
@@ -289,7 +273,7 @@ modeler.model = function(initialProperties) {
   // @config: either the number of atoms (for a random setup) or
   //          a hash specifying the x,y,vx,vy properties of the atoms
   function createNewCoreModel(config) {
-    var T, elemsArray, element, i, ii;
+    var T, num, elemsArray, element, i, ii;
 
     // get a fresh model
     coreModel = md2d.makeModel();
@@ -305,27 +289,12 @@ modeler.model = function(initialProperties) {
       coreModel.setElements(elemsArray);
     }
 
-    if (typeof config === "number") {
-      coreModel.createAtoms({
-        num: config
-      });
-    } else {
-      coreModel.createAtoms(config);
-    }
+    num = typeof config === 'number' ? config : config.X.length;
 
-    nodes    = coreModel.nodes;
-    radius   = coreModel.radius;
-    px       = coreModel.px;
-    py       = coreModel.py;
-    x        = coreModel.x;
-    y        = coreModel.y;
-    vx       = coreModel.vx;
-    vy       = coreModel.vy;
-    speed    = coreModel.speed;
-    ax       = coreModel.ax;
-    ay       = coreModel.ay;
-    mass     = coreModel.mass;
-    charge   = coreModel.charge;
+    coreModel.createAtoms({
+      num: num
+    });
+    nodes = coreModel.nodes;
 
     modelOutputState = coreModel.outputState;
 
@@ -333,10 +302,8 @@ modeler.model = function(initialProperties) {
     atoms.length = nodes[0].length;
 
     // Initialize properties
-    // lennard_jones_forces = properties.lennard_jones_forces;
-    // coulomb_forces       = properties.coulomb_forces;
-    temperature_control  = properties.temperature_control;
-    temperature          = properties.temperature;
+    temperature_control = properties.temperature_control;
+    temperature         = properties.temperature;
 
     reset_tick_history_list();
     new_step = true;
@@ -347,9 +314,6 @@ modeler.model = function(initialProperties) {
 
     T = temperature;
     coreModel.setTargetTemperature(T);
-
-    // coreModel.setLJEpsilon(properties.epsilon);
-    // coreModel.setLJSigma(properties.sigma);
 
     if (config.X && config.Y) {
       coreModel.initializeAtomsFromProperties(config);
@@ -518,23 +482,9 @@ modeler.model = function(initialProperties) {
 
   model.addAtom = function() {
     coreModel.addAtom.apply(coreModel, arguments);
-
-    nodes    = coreModel.nodes;
-    radius   = coreModel.radius;
-    px       = coreModel.px;
-    py       = coreModel.py;
-    x        = coreModel.x;
-    y        = coreModel.y;
-    vx       = coreModel.vx;
-    vy       = coreModel.vy;
-    speed    = coreModel.speed;
-    ax       = coreModel.ax;
-    ay       = coreModel.ay;
-    mass     = coreModel.mass;
-    charge   = coreModel.charge;
-
+    nodes = coreModel.nodes;
     atoms.length = nodes[0].length;
-    coreModel.integrate(0);
+    coreModel.computeOutputState();
     if (model_listener) model_listener();
   },
 
@@ -545,7 +495,7 @@ modeler.model = function(initialProperties) {
 
   // return a copy of the array of speeds
   model.get_speed = function() {
-    return arrays.copy(speed, []);
+    return arrays.copy(coreModel.speed, []);
   };
 
   model.get_rate = function() {
