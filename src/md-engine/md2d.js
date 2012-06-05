@@ -710,6 +710,48 @@ exports.makeModel = function() {
       model.computeOutputState();
     },
 
+    /**
+      (Inefficiently) extends typed arrays by one to contain one more atom with listed properties
+    */
+    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy) {
+      var saved_radius = radius,
+          saved_px     = px,
+          saved_py     = py,
+          saved_x      = x,
+          saved_y      = y,
+          saved_vx     = vx,
+          saved_vy     = vy,
+          saved_speed  = speed,
+          saved_ax     = ax,
+          saved_ay     = ay,
+          saved_charge = charge;
+
+      atomsHaveBeenCreated = false;
+      model.createAtoms({ num: N+1 });
+
+      arrays.copy(saved_radius, radius);
+      arrays.copy(saved_px, px);
+      arrays.copy(saved_py, py);
+      arrays.copy(saved_x, x);
+      arrays.copy(saved_y, y);
+      arrays.copy(saved_vx, vx);
+      arrays.copy(saved_vy, vy);
+      arrays.copy(saved_speed, speed);
+      arrays.copy(saved_ax, ax);
+      arrays.copy(saved_ay, ay);
+      arrays.copy(saved_charge, charge);
+
+      // hack
+      elements[N-1] = atom_element;
+      x[N-1] = atom_x;
+      y[N-1] = atom_y;
+      vx[N-1] = atom_vx;
+      vy[N-1] = atom_vy;
+      px[N-1] = atom_vx * elements[atom_element][0];
+      px[N-1] = atom_vx * elements[atom_element][0];
+      speed[N-1] = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
+      setRadii();
+    },
 
     relaxToTemperature: function(T) {
       if (T != null) T_target = T;
