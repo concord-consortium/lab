@@ -10,6 +10,7 @@ SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
 MD_ENGINE_JS_FILES := $(shell find src/md-engine -name '*.js' -print)
 BROWSERIFY = ./node_modules/.bin/browserify
 BATCH_CONVERT_MML_FILES = ./node-bin/mw-batch-converter
+BATCH_POST_PROCESS_MML_CONVERSION = ruby src/mw-helpers/post-batch-processor.rb
 
 # targets
 HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/server\/public\/\1/' )
@@ -180,6 +181,7 @@ server/public/imports:
 	mkdir -p server/public/imports
 	rsync -aq imports/ server/public/imports/
 	$(BATCH_CONVERT_MML_FILES)
+	$(BATCH_POST_PROCESS_MML_CONVERSION)
 
 server/public/resources:
 	cp -R ./src/resources ./server/public/
