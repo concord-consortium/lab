@@ -875,6 +875,36 @@ exports.makeModel = function() {
       outputState.omega_CM = omega_CM;
     },
 
+    newPotentialCalculator: function(testElement, testCharge) {
+
+      return function(testX, testY) {
+        var i,
+            dx,
+            dy,
+            r_sq,
+            PE = 0,
+            gradX = 0,
+            gradY = 0,
+            ljTest = ljCalculator[testElement];
+
+        for (i = 0; i < N; i++) {
+          dx = testX - x[i];
+          dy = testY - y[i];
+          r_sq = dx*dx + dy*dy;
+
+          if (useLennardJonesInteraction) {
+            PE += ljTest[element[i]].potentialFromSquaredDistance(r_sq, testElement, element[i]);
+          }
+          if (useCoulombInteraction && testCharge) {
+            PE += coulomb.potential(Math.sqrt(r_sq), testCharge, charge[i]);
+          }
+        }
+
+        PE = constants.convert(PE, { from: unit.EV, to: unit.MW_ENERGY_UNIT });
+        return [PE, [gradX, gradY]];
+      };
+    },
+
     serialize: function() {
       var serializedData = {},
           prop,
