@@ -33,7 +33,7 @@ layout.moleculeContainer = function(e, options) {
       molRadius,
       molecule_div, molecule_div_pre,
       atoms,
-      get_atoms,
+      get_num_atoms,
       nodes,
       get_nodes,
       default_options = {
@@ -67,8 +67,8 @@ layout.moleculeContainer = function(e, options) {
   get_nodes = options.get_nodes;
   nodes = get_nodes();
 
-  get_atoms = options.get_atoms;
-  atoms = get_atoms();
+  get_num_atoms = options.get_num_atoms;
+  (atoms=[]).length = get_num_atoms();
 
   scale(cx, cy);
 
@@ -583,7 +583,7 @@ layout.moleculeContainer = function(e, options) {
 
     function update_molecule_positions() {
 
-      atoms = get_atoms();
+      (atoms = []).length = get_num_atoms();
       nodes = get_nodes();
 
       // update model time display

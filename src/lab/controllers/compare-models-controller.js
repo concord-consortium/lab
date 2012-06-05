@@ -8,6 +8,9 @@
   SliderComponent
   layout
 
+  $
+  alert
+
   model: true
   model_player: true
 */
@@ -29,7 +32,6 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       width               = modelConfig.width,
       height              = modelConfig.height,
 
-      atoms,
       nodes,
 
       molecule_container,
@@ -116,7 +118,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
           xmax:                 width,
           ymax:                 height,
           get_nodes:            function() { return model.get_nodes(); },
-          get_atoms:            function() { return model.get_atoms(); }
+          get_num_atoms:        function() { return model.get_num_atoms(); }
         }
       );
 
@@ -193,7 +195,6 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     // ------------------------------------------------------------
 
     function setupModel() {
-      atoms = model.get_atoms();
       nodes = model.get_nodes();
 
       model.resetTime();
@@ -356,13 +357,13 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     // ------------------------------------------------------------
     // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
     // ------------------------------------------------------------
-    // 
+    //
     // therm = new Thermometer('#thermometer', model.temperature(), 200, 4000);
-    // 
+    //
     // function updateTherm(){
     //   therm.add_value(model.get("temperature"));
     // }
-    // 
+    //
     // model.addPropertiesListener(["temperature"], updateTherm);
     // updateTherm();
 
@@ -394,7 +395,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     //   $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
     //   molecule_container.setup_particles();
     // }
-    // 
+    //
     // model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
     // updateCoulombCheckbox();
 
