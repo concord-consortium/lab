@@ -97,7 +97,7 @@ arrays.copy = function(source, dest) {
   var len = source.length,
       i = -1;
   while(++i < len) { dest[i] = source[i]; }
-  dest.length = len;
+  if (arrays.constructor_function(dest) === Array) dest.length = len;
   return dest;
 };
 
