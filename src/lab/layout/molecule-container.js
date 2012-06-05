@@ -484,9 +484,9 @@ layout.moleculeContainer = function(e, options) {
         return;
       }
 
-      var ljf = model.getLJCalculator().coefficients();
-      // molRadius = ljf.rmin * 0.5;
-      // model.set_radius(molRadius);
+      var ljf = model.getLJCalculator()[0][0].coefficients();
+      // // molRadius = ljf.rmin * 0.5;
+      // // model.set_radius(molRadius);
 
       gradient_container.selectAll("circle").remove();
       gradient_container.selectAll("g").remove();
@@ -495,7 +495,7 @@ layout.moleculeContainer = function(e, options) {
 
       circlesEnter(particle);
 
-      var font_size = x(ljf.rmin[0][0] * 0.5 * 1.5);
+      var font_size = x(ljf.rmin * 0.5 * 1.5);
       if (model.get('mol_number') > 100) { font_size *= 0.9; }
 
       label = gradient_container.selectAll("g.label")

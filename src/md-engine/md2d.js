@@ -41,6 +41,7 @@ var arrays       = require('./arrays/arrays').arrays,
 
     NODE_PROPERTIES_COUNT,
     INDICES,
+    ELEMENT_INDICES,
     SAVEABLE_INDICES,
 
     cross = function(a0, a1, b0, b1) {
@@ -107,6 +108,13 @@ var arrays       = require('./arrays/arrays').arrays,
       }
       return copy;
     };
+
+exports.ELEMENT_INDICES = ELEMENT_INDICES = {
+  MASS: 0,
+  EPSILON: 1,
+  SIGMA: 2
+},
+
 
 exports.INDICES = INDICES = {
   RADIUS :  0,
@@ -216,29 +224,29 @@ exports.makeModel = function() {
       // Object containing observations of the sytem (temperature, etc)
       outputState = window.state = {},
 
-      // Paired square of cutoff distance; this is a convenience for updatePairwiseAccelerations
+      // The following are the pairwise values for elements i and j, indexed
+      // like [i][j]
+      epsilon = [],
+      sigma = [],
       cutoffDistance_LJ_sq = [],
 
-      // Callback that recalculates cutoffDistance_LJ when the Lennard-Jones sigma parameter changes.
-      ljCoefficientsChanged = function(coefficients) {
-        cutoffDistance_LJ_sq = coefficients.cutoffDistanceSq;
+      // Each [i,j] that calculates the magnitude of the Lennard-Jones force or
+      // or poential between elements i and j.
+      lennardJones = [],
+
+      // Callback that recalculates cutoffDistance_LJ_sq when the Lennard-Jones sigma parameter changes.
+      ljCoefficientsChanged = function(el1, el2, coefficients) {
+        cutoffDistance_LJ_sq[el1][el2] = cutoffDistance_LJ_sq[el2][el1] = 5*coefficients.rmin;
         if (radius && element) {
           setRadii();
         }
       },
 
       setRadii = function() {
-        var sigmas = lennardJones.coefficients().sigma,
-            i,
-            len;
-
-        for (i = 0, len = radius.length; i < len; i++) {
-          radius[i] = 0.5 * sigmas[element[i]][element[i]];
+        for (var i = 0, len = radius.length; i < len; i++) {
+          radius[i] = 0.5 * sigma[element[i]][element[i]];
         }
       },
-
-      // An object that calculates the magnitude of the Lennard-Jones force or potential at a given distance.
-      lennardJones,
 
       // Function that accepts a value T and returns an average of the last n values of T (for some n).
       T_windowed,
@@ -420,7 +428,7 @@ exports.makeModel = function() {
           f_over_r = 0;
 
           if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el_i][el_j]) {
-            f_over_r += lennardJones.forceOverDistanceFromSquaredDistance(r_sq, el_i, el_j);
+            f_over_r += lennardJones[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq, el_i, el_j);
           }
 
           if (useCoulombInteraction) {
@@ -513,11 +521,42 @@ exports.makeModel = function() {
       ]
     */
     setElements: function(elems) {
+      var i, j, epsilon_i, epsilon_j, sigma_i, sigma_j;
+
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: setElements cannot be called after atoms have been created");
       }
       elements = elems;
-      lennardJones = window.lennardJones = makeLennardJonesCalculator(elements, ljCoefficientsChanged);
+
+      for (i = 0; i < elements.length; i++) {
+        epsilon[i] = [];
+        sigma[i] = [];
+        lennardJones[i] = [];
+        cutoffDistance_LJ_sq[i] = [];
+      }
+
+      for (i = 0; i < elements.length; i++) {
+        epsilon_i = elements[i][ELEMENT_INDICES.EPSILON];
+        sigma_i   = elements[i][ELEMENT_INDICES.SIGMA];
+
+        for (j = i; j < elements.length; j++) {
+          epsilon_j = elements[j][ELEMENT_INDICES.EPSILON];
+          sigma_j   = elements[j][ELEMENT_INDICES.SIGMA];
+
+          epsilon[i][j] = epsilon[j][i] = 0.5 * (epsilon_i + epsilon_j);
+          sigma[i][j]   = sigma[j][i]   = Math.sqrt(sigma_i * sigma_j);
+
+          // bind i and j to the callback made below
+          (function(i, j) {
+            lennardJones[i][j] = lennardJones[j][i] = makeLennardJonesCalculator({
+              epsilon: epsilon[i][j],
+              sigma:   sigma[i][j]
+            }, function(coefficients) {
+              ljCoefficientsChanged(i, j, coefficients);
+            });
+          }(i,j));
+        }
+      }
     },
 
     /**
@@ -627,8 +666,7 @@ exports.makeModel = function() {
           ncols = Math.ceil(N/nrows),
 
           i, r, c, rowSpacing, colSpacing,
-          vMagnitude, vDirection,
-          coefficients = lennardJones.coefficients();
+          vMagnitude, vDirection;
 
       validateTemperature(temperature);
 
@@ -662,7 +700,7 @@ exports.makeModel = function() {
           charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
 
           element[i] = Math.floor(Math.random() * elements.length);     // random element
-          radius[i] = coefficients.rmin[element[i]][element[i]] / 2;
+          setRadii();
 
           model.totalMass = totalMass += elements[element[i]][0];
         }
@@ -798,6 +836,7 @@ exports.makeModel = function() {
       var i, j,
           dx, dy,
           r_sq,
+          lj,
           KEinMWUnits,       // total kinetic energy, in MW units
           PE;                // potential energy, in eV
 
@@ -816,7 +855,8 @@ exports.makeModel = function() {
 
           // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
           if (useLennardJonesInteraction ) {
-            PE += -lennardJones.potentialFromSquaredDistance(r_sq, element[i], element[j]);
+            lj = lennardJones[element[i]][element[j]];
+            PE += -lj.potentialFromSquaredDistance(r_sq, element[i], element[j]);
           }
           if (useCoulombInteraction) {
             PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
