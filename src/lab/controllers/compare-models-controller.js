@@ -12,7 +12,7 @@
   model_player: true
 */
 /*jslint onevar: true*/
-controllers.compareModelsController = function(molecule_view_id, appletContainerID, modelConfig, playerConfig) {
+controllers.compareModelsController = function(molecule_view_id, appletContainerID, modelSelectID, modelConfig, playerConfig) {
 
   var layoutStyle         = playerConfig.layoutStyle,
       autostart           = playerConfig.autostart,
@@ -38,13 +38,13 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       therm,
       epsilon_slider,
       viewLists,
+      jsonFullPath, cmlFullPath,
       appletString,
       appletContainer,
       appletOptions = {},
       applet, cmlPath,
       start, stop, reset,
-      modelSelect,
-      opts, optsLoaded = $.Deferred();
+      modelSelect, pathList, hash;
 
   function controller() {
 
@@ -129,10 +129,10 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       //
       // ------------------------------------------------------------
 
-      cmlPath = extractCmlPath(document.location.hash);
+      cmlPath = currentCMLPath();
       if (cmlPath) {
         appletOptions = {
-          params: [["script", "page:0:import " + cmlPath]]
+          params: [["script", "page:0:import " + "/imports/legacy-mw-content/" + cmlPath]]
         };
       } else {
         appletOptions = {};
@@ -205,31 +205,79 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
 
     // ------------------------------------------------------------
     //
-    //   Java MW Applet Setup
+    //   Model List Setup
     //
     // ------------------------------------------------------------
 
-    function extractCmlPath(jsonPath) {
-      var regex = /#*(.*?)(\$.*|\.json$)/,
-          str;
-      str = regex.exec(jsonPath)[1];
-      if (str) {
-        return str.replace("/converted", "") + ".cml";
+    function currentJsonPath() {
+      hash = document.location.hash;
+      if (hash.length > 0) {
+        return hash.substr(1, hash.length);
       } else {
         return false;
       }
     }
 
-    function extractModelselectValue(jsonPath) {
-      var regex = /#*\/imports\/legacy-mw-content\/converted\/(.*?)\.json$/,
-          str;
-      str = regex.exec(jsonPath)[1];
-      if (str) {
-        return str;
+    function currentCMLPath() {
+      var path = currentJsonPath();
+      if (path) {
+        return pathList[path.replace("/imports/legacy-mw-content/converted/", "")].cmlPath;
       } else {
         return false;
       }
     }
+
+    modelSelect = document.getElementById(modelSelectID);
+
+    function updateModelSelect() {
+      var path = currentJsonPath();
+      if (path) {
+        modelSelect.value = path.replace("/imports/legacy-mw-content/converted/", "");
+      } else {
+        modelSelect.value = "two-atoms-two-elements/two-atoms-two-elements$0.json";
+      }
+    }
+
+    function createPathList() {
+      var i, j, item, sectionList, sectionPath;
+      pathList = {};
+      for(i = 0; i < modelList.length; i++) {
+        sectionList = modelList[i];
+        sectionPath = sectionList.section;
+        for(j = 0; j < sectionList.content.length; j++) {
+          item = sectionList.content[j];
+          pathList[sectionPath + "/" + item.content[0]] = {
+            "name": item.name, 
+            "jsonPath": sectionPath + "/" + item.content[0],
+            "cmlPath":  sectionPath + "/" + item.content[1]
+          };
+        }
+      }
+    }
+
+    function processModelList() {
+      createPathList();
+      d3.select(modelSelect).selectAll("optgroup")
+          .data(modelList)
+        .enter().append("optgroup")
+          .attr("label", function(d) { return d.section; })
+          .selectAll("option")
+              .data(function(d) { return d.content; })
+            .enter().append("option")
+              .text(function(d) { return d.name; })
+              .attr("value", function(d) { 
+                return pathList[d.path + d.content[0]].jsonPath; })
+              .attr("data-cml-path", function(d) { 
+                return pathList[d.path + d.content[0]].cmlPath; });
+      updateModelSelect();
+    }
+
+
+    // ------------------------------------------------------------
+    //
+    //   Java MW Applet Setup
+    //
+    // ------------------------------------------------------------
 
     function runMWScript(script) {
       return appletContainer.applet.runMwScript(script);
@@ -253,33 +301,28 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       modelReset();
     };
 
-    modelSelect = document.getElementById("model-select");
-
     function modelSelectHandler() {
-      var jsonPath = "/imports/legacy-mw-content/converted/" + modelSelect.value + ".json",
-          cmlPath = extractCmlPath(jsonPath);
-      document.location.hash = "#" + jsonPath;
-      appletOptions.params = [["script", "page:0:import " + cmlPath]];
-      $.get(jsonPath).done(function(results) {
-        opts = results;
-        optsLoaded.resolve();
-      }).fail(function() {
-        $('#flash').html('<p class="error-message">Could not load config ' + document.location.hash + '</p>');
-        optsLoaded.resolve();
-      });
-    }
+      var selection = $(modelSelect).find("option:selected"),
+          initialPath = "/imports/legacy-mw-content/",
+          jsonPath = selection.attr("value"),
+          cmlPath =  selection.data("cml-path");
 
-    $.when(optsLoaded).done(function(results) {
-      $.extend(modelConfig, opts);
-      modelReset();
-      // appletContainer = layout.appletContainer(appletContainerID, appletOptions);
-    });
+      jsonFullPath = initialPath + "converted/" + jsonPath;
+      cmlFullPath  = initialPath + cmlPath;
+      appletOptions.params = [["script", "page:0:import " + cmlFullPath]];
+      document.location.hash = "#" + jsonFullPath;
+    }
 
     modelSelect.onchange = modelSelectHandler;
 
     function setupMWApplet() {
-      modelSelect.value = extractModelselectValue(document.location.hash);
-      runMWScript("page:0:set %frank false");
+      if (currentCMLPath()) {
+        appletOptions = { params: [["script", "page:0:import " + currentCMLPath()]] };
+        appletContainer = layout.appletContainer(appletContainerID, appletOptions);
+        runMWScript("page:0:set frank false");
+        viewLists.appletContainers = [appletContainer];
+        layout.setupScreen(viewLists);
+      }
     }
 
     // ------------------------------------------------------------
@@ -343,70 +386,19 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     //
     // ------------------------------------------------------------
 
-    try {
+    // try {
+      processModelList();
       createModel();
       setupModel();
       setupViews();
-      setupMWApplet();
-    } catch(e) {
-      alert(e);
-      throw new Error(e);
-    }
+      updateModelSelect();
+      // setupMWApplet();
 
-    // ------------------------------------------------------------
-    // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
-    // ------------------------------------------------------------
-    // 
-    // therm = new Thermometer('#thermometer', model.temperature(), 200, 4000);
-    // 
-    // function updateTherm(){
-    //   therm.add_value(model.get("temperature"));
-    // }
-    // 
-    // model.addPropertiesListener(["temperature"], updateTherm);
-    // updateTherm();
-
-    // epsilon_slider = new SliderComponent('#attraction_slider',
-    //   function (v) {
-    //     model.set({epsilon: v} );
-    //   }, lj_epsilon_max, lj_epsilon_min, epsilon);
-
-    // function updateEpsilon(){
-    //   epsilon_slider.set_scaled_value(model.get("epsilon"));
+    // } catch(e) {
+    //   alert(e);
+    //   throw new Error(e);
     // }
 
-    // model.addPropertiesListener(["epsilon"], updateEpsilon);
-    // updateEpsilon();
-
-    // ------------------------------------------------------------
-    // Setup heat and cool buttons
-    // ------------------------------------------------------------
-
-    // layout.heatCoolButtons("#heat_button", "#cool_button", 0, 3800, model, function (t) { therm.add_value(t); });
-
-    // ------------------------------------------------------------
-    // Add listener for coulomb_forces checkbox
-    // ------------------------------------------------------------
-
-    // $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-
-    // function updateCoulombCheckbox() {
-    //   $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-    //   molecule_container.setup_particles();
-    // }
-    // 
-    // model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
-    // updateCoulombCheckbox();
-
-    // ------------------------------------------------------------
-    //
-    // Start if autostart is true
-    //
-    // ------------------------------------------------------------
-
-    // if (autostart) {
-    //   modelGo();
-    // }
   }
   controller();
   return controller;
