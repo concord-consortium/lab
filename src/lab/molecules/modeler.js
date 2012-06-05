@@ -516,6 +516,28 @@ modeler.model = function(initialProperties) {
     return modelOutputState ? modelOutputState.time : undefined;
   };
 
+  model.addAtom = function() {
+    coreModel.addAtom.apply(coreModel, arguments);
+
+    nodes    = coreModel.nodes;
+    radius   = coreModel.radius;
+    px       = coreModel.px;
+    py       = coreModel.py;
+    x        = coreModel.x;
+    y        = coreModel.y;
+    vx       = coreModel.vx;
+    vy       = coreModel.vy;
+    speed    = coreModel.speed;
+    ax       = coreModel.ax;
+    ay       = coreModel.ay;
+    mass     = coreModel.mass;
+    charge   = coreModel.charge;
+
+    atoms.length = nodes[0].length;
+    coreModel.integrate(0);
+    if (model_listener) model_listener();
+  },
+
   model.set_radius = function(r) {
     // var i, n = nodes[0].length;
     // i = -1; while(++i < n) { radius[i] = r; }
