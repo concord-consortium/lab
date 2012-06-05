@@ -112,6 +112,14 @@ exports.unit = unit = {
     type: types.FORCE
   },
 
+  EV_PER_NM: {
+    name: "electron volts per nanometer",
+    value: 1 * KILOGRAMS_PER_DALTON * METERS_PER_NANOMETER * METERS_PER_NANOMETER *
+           (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND) *
+           (1/JOULES_PER_EV),
+    type: types.FORCE
+  },
+
   MW_VELOCITY_UNIT: {
     name: "MW velocity units (nm / fs)",
     value: 1,
