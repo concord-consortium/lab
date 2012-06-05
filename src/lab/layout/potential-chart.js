@@ -57,11 +57,11 @@ layout.potentialChart = function(e, model, options) {
   function updateLJData() {
     var sigma, epsilon, rmin, y, r, i;
 
-    ljCalculator = model.getLJCalculator();
+    ljCalculator = model.getLJCalculator()[0][0];
     ljData.coefficients = ljCalculator.coefficients();
-    sigma   = ljData.coefficients.sigma[0][0];
-    epsilon = ljData.coefficients.epsilon[0][0];
-    rmin    = ljData.coefficients.rmin[0][0];
+    sigma   = ljData.coefficients.sigma;
+    epsilon = ljData.coefficients.epsilon;
+    rmin    = ljData.coefficients.rmin;
     ljData.xmax    = sigma * 3;
     ljData.xmin    = Math.floor(sigma/2);
     ljData.ymax    = 0.4;
