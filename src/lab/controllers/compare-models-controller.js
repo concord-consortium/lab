@@ -8,6 +8,9 @@
   SliderComponent
   layout
 
+  $
+  alert
+
   model: true
   model_player: true
 */
@@ -29,7 +32,6 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       width               = modelConfig.width,
       height              = modelConfig.height,
 
-      atoms,
       nodes,
 
       molecule_container,
@@ -116,7 +118,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
           xmax:                 width,
           ymax:                 height,
           get_nodes:            function() { return model.get_nodes(); },
-          get_atoms:            function() { return model.get_atoms(); }
+          get_num_atoms:        function() { return model.get_num_atoms(); }
         }
       );
 
@@ -193,7 +195,6 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     // ------------------------------------------------------------
 
     function setupModel() {
-      atoms = model.get_atoms();
       nodes = model.get_nodes();
 
       model.resetTime();
@@ -394,11 +395,60 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       updateModelSelect();
       // setupMWApplet();
 
-    // } catch(e) {
-    //   alert(e);
-    //   throw new Error(e);
+    // ------------------------------------------------------------
+    // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
+    // ------------------------------------------------------------
+    //
+    // therm = new Thermometer('#thermometer', model.temperature(), 200, 4000);
+    //
+    // function updateTherm(){
+    //   therm.add_value(model.get("temperature"));
+    // }
+    //
+    // model.addPropertiesListener(["temperature"], updateTherm);
+    // updateTherm();
+
+    // epsilon_slider = new SliderComponent('#attraction_slider',
+    //   function (v) {
+    //     model.set({epsilon: v} );
+    //   }, lj_epsilon_max, lj_epsilon_min, epsilon);
+
+    // function updateEpsilon(){
+    //   epsilon_slider.set_scaled_value(model.get("epsilon"));
     // }
 
+    // model.addPropertiesListener(["epsilon"], updateEpsilon);
+    // updateEpsilon();
+
+    // ------------------------------------------------------------
+    // Setup heat and cool buttons
+    // ------------------------------------------------------------
+
+    // layout.heatCoolButtons("#heat_button", "#cool_button", 0, 3800, model, function (t) { therm.add_value(t); });
+
+    // ------------------------------------------------------------
+    // Add listener for coulomb_forces checkbox
+    // ------------------------------------------------------------
+
+    // $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+
+    // function updateCoulombCheckbox() {
+    //   $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
+    //   molecule_container.setup_particles();
+    // }
+    //
+    // model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
+    // updateCoulombCheckbox();
+
+    // ------------------------------------------------------------
+    //
+    // Start if autostart is true
+    //
+    // ------------------------------------------------------------
+
+    // if (autostart) {
+    //   modelGo();
+    // }
   }
   controller();
   return controller;

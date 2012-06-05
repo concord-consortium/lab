@@ -11,7 +11,7 @@ var benchmarks_to_run = [
   {
     name: "molecules",
     run: function() {
-      return model.get_atoms().length;
+      return model.get_num_atoms();
     }
   },
   {

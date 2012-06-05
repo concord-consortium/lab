@@ -45,16 +45,14 @@ suite.addBatch({
       return model;
     },
     "creates default molecular model": function(model) {
-      assert.equal(atoms.length, 0);
-      atoms = model.get_atoms();
-      assert.equal(atoms.length, 50);
+      assert.equal(model.get_num_atoms(), 50);
       // FIXME: custom error strings
       // expected [ 100, 100 ],
 	    // got      [ 1, 1 ] (deepEqual) // molecules-test.js:46
       assert.deepEqual(model.size(), [10, 10]);
     },
     "creates 50 molecules without setting model size or initializing forces": function(model) {
-      assert.equal(atoms.length, 50);
+      assert.equal(model.get_num_atoms(), 50);
     },
     "creates 50 molecules with a total charge of 0": function(model) {
       var nodes, total_charge;
@@ -62,7 +60,7 @@ suite.addBatch({
       model.createNewAtoms(50);
 
       nodes = model.get_nodes();
-      atoms = model.get_atoms();
+      (atoms = []).length = model.get_num_atoms();
 
       assert.equal(atoms.length, 50);
       total_charge = d3.sum(atoms, function(d, i) { return get_charge(i);  });
@@ -71,20 +69,20 @@ suite.addBatch({
     "creates 100 molecules with a total charge of 0": function(model) {
       model.createNewAtoms(100);
 
-      atoms = model.get_atoms();
+      (atoms = []).length = model.get_num_atoms();
       assert.equal(atoms.length, 100);
       var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
     },
     "creates first 50 and then 100 molecules with a total charge of 0": function(model) {
       model.createNewAtoms(50);
-      atoms = model.get_atoms();
+      (atoms = []).length = model.get_num_atoms();
       assert.equal(atoms.length, 50);
       var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
 
       model.createNewAtoms(100);
-      atoms = model.get_atoms();
+      (atoms = []).length = model.get_num_atoms();
       assert.equal(atoms.length, 100);
       var total_charge = d3.sum(atoms, function(d, i) { return get_charge(i); });
       assert.equal(total_charge, 0);
