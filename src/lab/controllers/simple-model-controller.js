@@ -7,7 +7,8 @@
   Thermometer
   SliderComponent
   layout
-
+  $
+  alert
   model: true
   model_player: true
 */
@@ -29,7 +30,6 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       width               = modelConfig.width,
       height              = modelConfig.height,
 
-      atoms,
       nodes,
 
       molecule_container,
@@ -105,7 +105,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
           xmax:                 width,
           ymax:                 height,
           get_nodes:            function() { return model.get_nodes(); },
-          get_atoms:            function() { return model.get_atoms(); }
+          get_num_atoms:        function() { return model.get_num_atoms(); }
         }
       );
 
@@ -195,7 +195,6 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     //
 
     function setupModel() {
-      atoms = model.get_atoms();
       nodes = model.get_nodes();
 
       model.resetTime();

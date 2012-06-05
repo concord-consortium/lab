@@ -13,7 +13,6 @@ modeler.VERSION = '0.2.0';
 modeler.model = function(initialProperties) {
   var model = {},
       elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
-      atoms = [],
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
       lennard_jones_forces, coulomb_forces,
@@ -22,7 +21,6 @@ modeler.model = function(initialProperties) {
       tick_history_list_index = 0,
       tick_counter = 0,
       new_step = false,
-      epsilon, sigma,
       pressure, pressures = [0],
       sample_time, sample_times = [],
 
@@ -40,11 +38,6 @@ modeler.model = function(initialProperties) {
 
       modelOutputState,
       model_listener,
-
-      //
-      // Individual property arrays for the nodes
-      //
-      radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
 
       width = initialProperties.width,
       height = initialProperties.height,
@@ -147,8 +140,8 @@ modeler.model = function(initialProperties) {
   }
 
   function average_speed() {
-    var i, s = 0, n = nodes[0].length;
-    i = -1; while (++i < n) { s += speed[i]; }
+    var i, s = 0, n = model.get_num_atoms();
+    i = -1; while (++i < n) { s += coreModel.speed[i]; }
     return s/n;
   }
 
@@ -247,16 +240,6 @@ modeler.model = function(initialProperties) {
     return pressures.reduce(function(j,k) { return j+k; })/pressures.length;
   }
 
-  function speed_history(speeds) {
-    if (arguments.length) {
-      speed_history.push(speeds);
-      // limit the pressures array to the most recent 16 entries
-      speed_history.splice(0, speed_history.length - 100);
-    } else {
-      return speed_history.reduce(function(j,k) { return j+k; })/pressures.length;
-    }
-  }
-
   function average_rate() {
     var i, ave, s = 0, n = sample_times.length;
     i = -1; while (++i < n) { s += sample_times[i]; }
@@ -289,75 +272,48 @@ modeler.model = function(initialProperties) {
   // @config: either the number of atoms (for a random setup) or
   //          a hash specifying the x,y,vx,vy properties of the atoms
   function createNewCoreModel(config) {
-    var T, elemsArray, element, i, ii;
+    var elemsArray, element, i, ii;
+
+    // convert from easily-readble json format to simplified array format
+    elemsArray = [];
+    for (i=0, ii=elements.length; i<ii; i++){
+      element = elements[i];
+      elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
+    }
 
     // get a fresh model
     coreModel = md2d.makeModel();
     coreModel.setSize([width,height]);
+    coreModel.setElements(elemsArray);
+    coreModel.createAtoms({
+      num: typeof config === 'number' ? config : config.X.length
+    });
 
-    if (elements) {
-      // convert from easily-readble json format to simplified array format
-      elemsArray = [];
-      for (i=0, ii=elements.length; i<ii; i++){
-        element = elements[i];
-        elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
-      }
-      coreModel.setElements(elemsArray);
-    }
-
-    if (typeof config === "number") {
-      coreModel.createAtoms({
-        num: config
-      });
-    } else {
-      coreModel.createAtoms(config);
-    }
-
-    nodes    = coreModel.nodes;
-    radius   = coreModel.radius;
-    px       = coreModel.px;
-    py       = coreModel.py;
-    x        = coreModel.x;
-    y        = coreModel.y;
-    vx       = coreModel.vx;
-    vy       = coreModel.vy;
-    speed    = coreModel.speed;
-    ax       = coreModel.ax;
-    ay       = coreModel.ay;
-    mass     = coreModel.mass;
-    charge   = coreModel.charge;
-
+    nodes = coreModel.nodes;
     modelOutputState = coreModel.outputState;
 
-    // The d3 molecule viewer requires this length to be set correctly:
-    atoms.length = nodes[0].length;
-
     // Initialize properties
-    // lennard_jones_forces = properties.lennard_jones_forces;
-    // coulomb_forces       = properties.coulomb_forces;
-    temperature_control  = properties.temperature_control;
-    temperature          = properties.temperature;
-
-    reset_tick_history_list();
-    new_step = true;
+    temperature_control = properties.temperature_control;
+    temperature         = properties.temperature;
 
     coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
     coreModel.useCoulombInteraction(properties.coulomb_forces);
-    coreModel.useThermostat(properties.temperature_control);
+    coreModel.useThermostat(temperature_control);
 
-    T = temperature;
-    coreModel.setTargetTemperature(T);
-
-    // coreModel.setLJEpsilon(properties.epsilon);
-    // coreModel.setLJSigma(properties.sigma);
+    coreModel.setTargetTemperature(temperature);
 
     if (config.X && config.Y) {
       coreModel.initializeAtomsFromProperties(config);
     } else {
       coreModel.initializeAtomsRandomly({
-        temperature: T
+        temperature: temperature
       });
     }
+
+    // tick history stuff
+    reset_tick_history_list();
+    new_step = true;
+
     return coreModel;
   }
 
@@ -518,34 +474,14 @@ modeler.model = function(initialProperties) {
 
   model.addAtom = function() {
     coreModel.addAtom.apply(coreModel, arguments);
-
-    nodes    = coreModel.nodes;
-    radius   = coreModel.radius;
-    px       = coreModel.px;
-    py       = coreModel.py;
-    x        = coreModel.x;
-    y        = coreModel.y;
-    vx       = coreModel.vx;
-    vy       = coreModel.vy;
-    speed    = coreModel.speed;
-    ax       = coreModel.ax;
-    ay       = coreModel.ay;
-    mass     = coreModel.mass;
-    charge   = coreModel.charge;
-
-    atoms.length = nodes[0].length;
-    coreModel.integrate(0);
+    nodes = coreModel.nodes;
+    coreModel.computeOutputState();
     if (model_listener) model_listener();
   },
 
-  model.set_radius = function(r) {
-    // var i, n = nodes[0].length;
-    // i = -1; while(++i < n) { radius[i] = r; }
-  };
-
   // return a copy of the array of speeds
   model.get_speed = function() {
-    return arrays.copy(speed, []);
+    return arrays.copy(coreModel.speed, []);
   };
 
   model.get_rate = function() {
@@ -570,8 +506,8 @@ modeler.model = function(initialProperties) {
     return nodes;
   };
 
-  model.get_atoms = function() {
-    return atoms;
+  model.get_num_atoms = function() {
+    return nodes[0].length;
   };
 
   model.on = function(type, listener) {
@@ -621,7 +557,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.ave_ke = function() {
-    return modelOutputState? modelOutputState.KE / nodes[0].length : undefined;
+    return modelOutputState? modelOutputState.KE / model.get_num_atoms() : undefined;
   };
 
   model.pe = function() {
@@ -629,7 +565,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.ave_pe = function() {
-    return modelOutputState? modelOutputState.PE / nodes[0].length : undefined;
+    return modelOutputState? modelOutputState.PE / model.get_num_atoms() : undefined;
   };
 
   model.speed = function() {

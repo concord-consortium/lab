@@ -54,7 +54,6 @@ controllers.complexModelController =
       select_molecule_number,
       radio_randomize_pos_vel,
 
-      atoms,
       nodes,
 
       currentTick = 0;
@@ -167,7 +166,7 @@ controllers.complexModelController =
           ymin:                 0,
           ymax:                 height,
           get_nodes:            function() { return model.get_nodes(); },
-          get_atoms:            function() { return model.get_atoms(); }
+          get_num_atoms:        function() { return model.get_num_atoms(); }
         }
       );
 
@@ -366,7 +365,6 @@ controllers.complexModelController =
     // ------------------------------------------------------------
 
     function setupModel() {
-      atoms = model.get_atoms();
       nodes = model.get_nodes();
 
       model.resetTime();
@@ -376,7 +374,7 @@ controllers.complexModelController =
       moleculeContainer.setup_particles();
       layout.setupScreen(viewLists);
       step_counter = model.stepCounter();
-      select_molecule_number.value = atoms.length;
+      select_molecule_number.value = model.get_num_atoms();
 
       modelStop();
       model.on("tick", modelListener);
