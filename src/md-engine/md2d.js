@@ -916,12 +916,9 @@ exports.makeModel = function() {
             r = Math.sqrt(r_sq);
             PE += -coulomb.potential(r, testCharge, charge[i]);
             if (calculateGradient) {
-              f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, testElement, element[i]);
+              f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, testCharge, charge[i]);
             }
           }
-
-         // MW Force Units / nm (= Dalton / fs^2)
-         // Dalton / fs^2
 
           if (f_over_r) {
             fx += f_over_r * dx;
