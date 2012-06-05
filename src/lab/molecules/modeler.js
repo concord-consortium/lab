@@ -464,6 +464,10 @@ modeler.model = function(initialProperties) {
     return coreModel.getLJCalculator();
   };
 
+  model.getPotentialFunction = function(element, charge) {
+    return coreModel.newPotentialCalculator(element, charge);
+  },
+
   model.resetTime = function() {
     coreModel.setTime(0);
   };
