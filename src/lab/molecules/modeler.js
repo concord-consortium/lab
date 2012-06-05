@@ -272,52 +272,48 @@ modeler.model = function(initialProperties) {
   // @config: either the number of atoms (for a random setup) or
   //          a hash specifying the x,y,vx,vy properties of the atoms
   function createNewCoreModel(config) {
-    var T, num, elemsArray, element, i, ii;
+    var elemsArray, element, i, ii;
+
+    // convert from easily-readble json format to simplified array format
+    elemsArray = [];
+    for (i=0, ii=elements.length; i<ii; i++){
+      element = elements[i];
+      elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
+    }
 
     // get a fresh model
     coreModel = md2d.makeModel();
     coreModel.setSize([width,height]);
-
-    if (elements) {
-      // convert from easily-readble json format to simplified array format
-      elemsArray = [];
-      for (i=0, ii=elements.length; i<ii; i++){
-        element = elements[i];
-        elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
-      }
-      coreModel.setElements(elemsArray);
-    }
-
-    num = typeof config === 'number' ? config : config.X.length;
-
+    coreModel.setElements(elemsArray);
     coreModel.createAtoms({
-      num: num
+      num: typeof config === 'number' ? config : config.X.length
     });
-    nodes = coreModel.nodes;
 
+    nodes = coreModel.nodes;
     modelOutputState = coreModel.outputState;
 
     // Initialize properties
     temperature_control = properties.temperature_control;
     temperature         = properties.temperature;
 
-    reset_tick_history_list();
-    new_step = true;
-
     coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
     coreModel.useCoulombInteraction(properties.coulomb_forces);
-    coreModel.useThermostat(properties.temperature_control);
+    coreModel.useThermostat(temperature_control);
 
-    T = temperature;
-    coreModel.setTargetTemperature(T);
+    coreModel.setTargetTemperature(temperature);
 
     if (config.X && config.Y) {
       coreModel.initializeAtomsFromProperties(config);
     } else {
       coreModel.initializeAtomsRandomly({
-        temperature: T
+        temperature: temperature
       });
     }
+
+    // tick history stuff
+    reset_tick_history_list();
+    new_step = true;
+
     return coreModel;
   }
 
@@ -482,11 +478,6 @@ modeler.model = function(initialProperties) {
     coreModel.computeOutputState();
     if (model_listener) model_listener();
   },
-
-  model.set_radius = function(r) {
-    // var i, n = nodes[0].length;
-    // i = -1; while(++i < n) { radius[i] = r; }
-  };
 
   // return a copy of the array of speeds
   model.get_speed = function() {
