@@ -158,7 +158,7 @@ suite.addBatch({
       // 5 atoms of mass 1
       new_initialization_options = {
         elements: [
-          {id: 0, mass: 1}
+          {id: 0, mass: 1, epsilon: -0.1, sigma: 0.07}
         ],
         mol_number: 5
       }
@@ -170,7 +170,7 @@ suite.addBatch({
       // 5 atoms of mass 2
       new_initialization_options = {
         elements: [
-          {id: 0, mass: 2}
+          {id: 0, mass: 2, epsilon: -0.1, sigma: 0.07}
         ],
         mol_number: 5
       }
@@ -182,8 +182,8 @@ suite.addBatch({
       // 100 atoms randomly created either with mass 1 or 2
       new_initialization_options = {
         elements: [
-          {id: 0, mass: 1},
-          {id: 1, mass: 2}
+          {id: 0, mass: 1, epsilon: -0.1, sigma: 0.07},
+          {id: 1, mass: 2, epsilon: -0.1, sigma: 0.07}
         ],
         mol_number: 100
       }
@@ -196,8 +196,8 @@ suite.addBatch({
       // three atoms created, two with mass 1 and one with mass 2
       new_initialization_options = {
         elements: [
-          {id: 0, mass: 1},
-          {id: 1, mass: 20}
+          {id: 0, mass: 1, epsilon: -0.1, sigma: 0.07},
+          {id: 1, mass: 20, epsilon: -0.1, sigma: 0.07}
         ],
         atoms: {
           X: [0,0,0],
