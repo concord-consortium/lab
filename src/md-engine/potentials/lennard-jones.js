@@ -6,6 +6,22 @@ var constants = require('../constants'),
     MW_FORCE_UNITS_PER_NEWTON = constants.ratio( unit.MW_FORCE_UNIT, { per: unit.NEWTON });
 
 /**
+  Helper function that returns the correct pairwise epsilon value to be used
+  when elements each have epsilon values epsilon1, epsilon2
+*/
+exports.pairwiseEpsilon = function(epsilon1, epsilon2) {
+  return 0.5 * (epsilon1 + epsilon2);
+},
+
+/**
+  Helper function that returns the correct pairwise sigma value to be used
+  when elements each have sigma values sigma1, sigma2
+*/
+exports.pairwiseSigma = function(sigma1, sigma2) {
+  return Math.sqrt(sigma1 * sigma2);
+},
+
+/**
   Returns a new object with methods for calculating the force and potential for a Lennard-Jones
   potential with particular values of its parameters epsilon and sigma. These can be adjusted.
 
@@ -16,7 +32,7 @@ var constants = require('../constants'),
   This function also accepts a callback function which will be called with a hash representing
   the new coefficients, whenever the LJ coefficients are changed for the returned calculator.
 */
-exports.makeLennardJonesCalculator = function(params, cb) {
+exports.newLJCalculator = function(params, cb) {
 
   var epsilon,          // parameter; depth of the potential well, in eV
       sigma,            // parameter: characteristic distance from particle, in nm
