@@ -577,7 +577,7 @@ exports.makeModel = function() {
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
-      var cumulativeTotalMass = 0,
+      var totalMass = 0,
           i, ii;
 
       if (!(props.X && props.Y)) {
@@ -606,12 +606,12 @@ exports.makeModel = function() {
       if (props.ELEMENT) {
         for (i=0, ii=N; i<ii; i++){
           element[i] = props.ELEMENT[i];
-          cumulativeTotalMass += elements[element[i]][0];
+          totalMass += elements[element[i]][0];
         }
       } else {
-        cumulativeTotalMass = N * elements[0][0];
+        totalMass = N * elements[0][0];
       }
-      totalMass = model.totalMass = cumulativeTotalMass;
+      model.totalMass = totalMass;
 
       setRadii();
 
