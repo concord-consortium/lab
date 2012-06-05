@@ -457,20 +457,10 @@ layout.moleculeContainer = function(e, options) {
       // vis.selectAll("text").attr("font-size", x(molRadius * 1.3) );
     }
 
-    function setup_particles() {
-      if (typeof atoms == "undefined" || !atoms){
-        return;
-      }
-
-      var ljf = model.getLJCalculator().coefficients();
-      // molRadius = ljf.rmin * 0.5;
-      // model.set_radius(molRadius);
-
-      gradient_container.selectAll("circle").remove();
-      gradient_container.selectAll("g").remove();
-
-      particle = gradient_container.selectAll("circle").data(atoms);
-
+    /**
+      Call this wherever a d3 selection is being used to add circles for atoms
+    */
+    function circlesEnter(particle) {
       particle.enter().append("circle")
           .attr("r",  function(d, i) { return x(get_radius(i)); })
           .attr("cx", function(d, i) { return x(get_x(i)); })
@@ -487,6 +477,23 @@ layout.moleculeContainer = function(e, options) {
           })
           .on("mousedown", molecule_mousedown)
           .on("mouseout", molecule_mouseout);
+    }
+
+    function setup_particles() {
+      if (typeof atoms == "undefined" || !atoms){
+        return;
+      }
+
+      var ljf = model.getLJCalculator().coefficients();
+      // molRadius = ljf.rmin * 0.5;
+      // model.set_radius(molRadius);
+
+      gradient_container.selectAll("circle").remove();
+      gradient_container.selectAll("g").remove();
+
+      particle = gradient_container.selectAll("circle").data(atoms);
+
+      circlesEnter(particle);
 
       var font_size = x(ljf.rmin[0][0] * 0.5 * 1.5);
       if (model.get('mol_number') > 100) { font_size *= 0.9; }
@@ -590,7 +597,8 @@ layout.moleculeContainer = function(e, options) {
           return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
         });
 
-      particle = elem.selectAll("circle").data(atoms);
+      particle = gradient_container.selectAll("circle").data(atoms);
+      circlesEnter(particle);
 
       particle.attr("cx", function(d, i) {
           return x(nodes[model.INDICES.X][i]); })
