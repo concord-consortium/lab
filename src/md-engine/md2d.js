@@ -982,7 +982,41 @@ exports.makeModel = function() {
 
       if (res.error) return false;
       return res[1];
+    },
 
+    /**
+      Starting at (x,y), try to find a position which minimizes the square of the potential energy
+      change caused by adding at atom of element el, i.e., find a "farthest from everything"
+      position.
+    */
+    findMinimumPESquaredLocation: function(el, x, y, charge) {
+      var pot = model.newPotentialCalculator(el, charge, true),
+
+          // squared potential energy, with gradient
+          potsq = function(x,y) {
+            var res, f, grad;
+
+            res = pot(x,y);
+            f = res[0];
+            grad = res[1];
+
+            // chain rule
+            grad[0] *= (2*f);
+            grad[1] *= (2*f);
+
+            return [f*f, grad];
+          },
+
+          radius = elements[el][ELEMENT_INDICES.RADIUS],
+
+          res = math.minimize(potsq, [x, y], {
+            bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ],
+            stopval: 1e-4,
+            precision: 1e-6
+          });
+
+      if (res.error) return false;
+      return res[1];
     },
 
     serialize: function() {
