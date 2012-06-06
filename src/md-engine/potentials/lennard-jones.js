@@ -22,6 +22,20 @@ exports.pairwiseSigma = function(sigma1, sigma2) {
 },
 
 /**
+  Helper function that returns the correct rmin value for a given sigma
+*/
+exports.rmin = function(sigma) {
+  return Math.pow(2, 1/6) * sigma;
+};
+
+/**
+  Helper function that returns the correct atomic radius for a given sigma
+*/
+exports.radius = function(sigma) {
+  return 0.5 * exports.rmin(sigma);
+}
+
+/**
   Returns a new object with methods for calculating the force and potential for a Lennard-Jones
   potential with particular values of its parameters epsilon and sigma. These can be adjusted.
 
@@ -50,7 +64,7 @@ exports.newLJCalculator = function(params, cb) {
 
         epsilon = e;
         sigma   = s;
-        rmin    = Math.pow(2, 1/6) * sigma;
+        rmin    = exports.rmin(sigma);
 
         if (epsilon != null && sigma != null) {
           alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
