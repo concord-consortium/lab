@@ -480,6 +480,18 @@ modeler.model = function(initialProperties) {
     return modelOutputState ? modelOutputState.time : undefined;
   };
 
+  model.addRandomAtom = function(el) {
+    if (el == null) el = Math.floor( Math.random() * elements.length );
+
+    var size   = model.size(),
+        // TODO: put this computation in one place.
+        radius = 0.5 * model.getLJCalculator()[el][el].coefficients().rmin,
+
+        x = Math.random() * size[0] - 2*radius,
+        y = Math.random() * size[1] - 2*radius;
+
+    model.addAtom(el, x, y, 0, 0);
+  },
 
   /**
     add a new atom with element 'el' and velocity '[vx, vy]' near position [x, y].
