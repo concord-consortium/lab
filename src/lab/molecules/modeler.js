@@ -285,7 +285,7 @@ modeler.model = function(initialProperties) {
       num: typeof config === 'number' ? config : config.X.length
     });
 
-    nodes = coreModel.nodes;
+    nodes = coreModel.atoms;
     modelOutputState = coreModel.outputState;
 
     // Initialize properties
@@ -506,7 +506,7 @@ modeler.model = function(initialProperties) {
 
     coreModel.addAtom(el, loc[0], loc[1], vx, vy);
 
-    nodes = coreModel.nodes;
+    nodes = coreModel.atoms;
     coreModel.computeOutputState();
     if (model_listener) model_listener();
   },
