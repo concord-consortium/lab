@@ -968,6 +968,19 @@ exports.makeModel = function() {
       };
     },
 
+    /**
+      Starting at (x,y), try to find a position which minimizes the potential energy change caused
+      by adding at atom of element el.
+    */
+    findMinimumPELocation: function(el, x, y, charge) {
+      var pot    = model.newPotentialCalculator(el, charge, true),
+          radius = elements[el][ELEMENT_INDICES.RADIUS];
+
+      return math.minimize(pot, [x, y], {
+        bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ]
+      })[1];
+    },
+
     serialize: function() {
       var serializedData = {},
           prop,
