@@ -1,11 +1,14 @@
+/*jshint eqnull:true */
 /**
   Simple, good-enough minimization via gradient descent.
 */
 exports.minimize = function(f, x0, opts) {
   opts = opts || {};
 
+  if (opts.precision == null) opts.precision = 0.01;
+
   var // stop when the absolute difference between successive values of f is this much or less
-      precision = opts.precision || 0.01,
+      precision = opts.precision,
 
       // array of [min, max] boundaries for each component of x
       bounds    = opts.bounds,
@@ -48,7 +51,15 @@ exports.minimize = function(f, x0, opts) {
 
   iter = 0;
   do {
-    if (f_cur <= stopval) break;
+    if (f_cur <= stopval) {
+      break;
+    }
+
+    if (iter > maxiter) {
+      console.log("maxiter reached");
+      // don't throw on error, but return some diagnostic information
+      return { error: "maxiter reached", f: f_cur, iter: maxiter, x: x };
+    }
 
     // Limit gradient descent step size to maxstep
     gradnormsq = 0;
@@ -82,7 +93,7 @@ exports.minimize = function(f, x0, opts) {
     grad = res[1];
 
     iter++;
-  } while ( Math.abs(f_cur-f_prev) > precision && iter <= maxiter );
+  } while ( Math.abs(f_cur-f_prev) > precision );
 
   return [f_cur, x];
 };
