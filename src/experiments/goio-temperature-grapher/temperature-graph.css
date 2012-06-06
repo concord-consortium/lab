@@ -1,7 +1,7 @@
 body {
   font: 13px sans-serif;
   margin: 1em 2em; }
-h1 { font-size: 1.8em; }
+h1 { font-size: 1.6em; }
 p {
   font-size: 1.4em;
   margin-left: 1.0em;
@@ -46,6 +46,15 @@ circle {
   circle.selected:hover {
     fill: #ff7f0e;
     stroke: #ff7f0e; }
+
+.sensor-selector {
+  font-size: 2.0em;
+  font-weight: bold }
+  .sensor-selector select {
+     background: #eee;
+     padding: 0.2em;
+     font-size: 0.9em;
+     border: 1px solid #ddd; }
 
 ul.sensorbuttons li {
 display: inline;

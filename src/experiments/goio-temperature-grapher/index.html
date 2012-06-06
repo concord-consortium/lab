@@ -2,66 +2,171 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <title>Vernier GoIO Temperature Grapher</title>
+    <title>Vernier GoIO Sensor Grapher</title>
     <link href='temperature-graph.css' rel='stylesheet' type='text/css' />
     <script type="text/javascript" src="../../vendor/modernizr/modernizr.js"></script>
     <script type="text/javascript">
       if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
     </script>
     <script type="text/javascript" src="../../vendor/d3/d3.v2.js"></script>
+    <script type="text/javascript" src="../../lab/lab.layout.js"></script>
     <script type="text/javascript" src="../../lab/lab.grapher.js"></script>
     <script src="sensor.js"></script>
   </head>
   <body>
-    <h1>Vernier GoIO Temperature Grapher</h1>
-    <p>
-      Connect either a <a href="http://www.vernier.com/products/sensors/temperature-sensors/go-temp/">Vernier GoTemp</a>
-      or a <a href="http://www.vernier.com/products/interfaces/go-link/">Vernier GoLink</a> with an attached
-      <a href="http://www.vernier.com/products/sensors/temperature-sensors/sts-bta/">Temperature Sensor</a>
-      and click the <b>Start</b> button to start graphing temperature.
+    <p class="sensor-selector">Select a Vernier GoIO Sensor Type:
+      <select id="sensor-type-selector">
+        <option disabled selected>select sensor ...</option>
+        <option value="temperature">temperature</option>
+        <option value="light">light</option>
+        <option value="distance">distance</option>
+      </select>
     </p>
     <div id="vis">
       <div id="graph" class="chart"></div>
     </div>
     <div id="applet-container" ></div>
     <p>
+      <b>Temperature Sensors</b>: connect either a <a href="http://www.vernier.com/products/sensors/temperature-sensors/go-temp/">Vernier GoTemp</a>
+      or a <a href="http://www.vernier.com/products/interfaces/go-link/">Vernier GoLink</a> with an attached
+      <a href="http://www.vernier.com/products/sensors/temperature-sensors/sts-bta/">Temperature Sensor</a>.
+    </p>
+    <p>
+      <b>Light Sensor</b>: connect a <a href="http://www.vernier.com/products/sensors/ls-bta/">Vernier Light Sensor</a>
+      to a <a href="http://www.vernier.com/products/interfaces/go-link/">Vernier GoLink</a>.
+    </p>
+    <p>
+      <b>Distance Sensor</b>: connect a <a href="http://www.vernier.com/products/sensors/motion-detectors/go-mot/">Vernier Go!Motion</a>
+      ultrasonic distance-ranging sensor.
+    </p>
+    <p>
       This example uses a small Java applet running in the background to collect data from the probe and pass it to the graph.
     </p>
     <script type="text/javascript">
       var vis = document.getElementById("vis"),
-          temperature_data = [],
-          graph = grapher.graph("#graph", {
-            title: "GoIO Temperature Sensor",
+          blankGraphOptions = {
+            title: "GoIO Sensor Graph",
             xlabel:    "Time (s)",
             xmin: 0, xmax: 60,
-            ylabel:    "Temperature, (Degrees C)",
+            ylabel:    "Y Axis",
             ymin: 10, ymax: 40,
-            points: temperature_data,
+            points: [],
             circleRadius: false,
             dataChange: false
-          }, "Sensor Applet Loading ...");
-      var applet_string =
-            ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.OTSensorApplet"',
-             '     width="1" height="1" MAYSCRIPT="true"',
-             '     archive="org/concord/sensor-native/sensor-native.jar,',
-             '           org/concord/otrunk/otrunk.jar,',
-             '           org/concord/framework/framework.jar,',
-             '           org/concord/frameworkview/frameworkview.jar,',
-             '           jug/jug/jug.jar,',
-             '           jdom/jdom/jdom.jar,',
-             '           org/concord/sensor/sensor.jar,',
-             '           org/concord/data/data.jar,',
-             '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-             '     MAYSCRIPT="true">',
-             '  <param name="resource" value="/temperature.otml"/>',
-             '  <param name="name" value="sensor"/>',
-             '  <!-- <param name="sensorStatePath" value="sensorState"/> -->',
-             '  <param name="MAYSCRIPT" value="true"/>',
-             '  Your browser is completely ignoring the applet tag!',
-             '</applet>'].join('\n');
-      document.getElementById("applet-container").innerHTML = applet_string;
-      var applet = document.getElementById("sensor-applet");
-      applet_grapher = new sensor.AppletGrapher(applet, vis, graph, 'temperature', "applet_grapher.JsListener()", graph.notify);
+          },
+          graph = grapher.graph("#graph", blankGraphOptions, "Select a Sensor Type"),
+          applet,
+          appletContainer = document.getElementById("applet-container"),
+          appletLoadingStr = "Sensor Applet Loading ...",
+          sensorTypeSelector = document.getElementById("sensor-type-selector"),
+          temperature_data = [],
+          distance_data = [],
+          light_data = [],
+          sensorType,
+          sensorConfigurations = {
+            "temperature": {
+              "graphOptions": {
+                title: "GoIO Temperature Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "Temperature, (Degrees C)",
+                ymin: 10, ymax: 40,
+                points: temperature_data,
+                circleRadius: false,
+                dataChange: false
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.OTSensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="org/concord/sensor-native/sensor-native.jar,',
+                               '           org/concord/otrunk/otrunk.jar,',
+                               '           org/concord/framework/framework.jar,',
+                               '           org/concord/frameworkview/frameworkview.jar,',
+                               '           jug/jug/jug.jar,',
+                               '           jdom/jdom/jdom.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/data/data.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="resource" value="/temperature.otml"/>',
+                               '  <param name="name" value="sensor"/>',
+                               '  <!-- <param name="sensorStatePath" value="sensorState"/> -->',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "distance": {
+              "graphOptions": {
+                title: "GoIO Distance Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "Distance, (m)",
+                ymin: 0, ymax: 5,
+                points: distance_data,
+                circleRadius: false,
+                dataChange: false
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.OTSensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="org/concord/sensor-native/sensor-native.jar,',
+                               '           org/concord/otrunk/otrunk.jar,',
+                               '           org/concord/framework/framework.jar,',
+                               '           org/concord/frameworkview/frameworkview.jar,',
+                               '           jug/jug/jug.jar,',
+                               '           jdom/jdom/jdom.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/data/data.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="resource" value="/distance.otml"/>',
+                               '  <param name="name" value="sensor"/>',
+                               '  <!-- <param name="sensorStatePath" value="sensorState"/> -->',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            },
+            "light": {
+              "graphOptions": {
+                title: "GoIO Light Sensor",
+                xlabel:    "Time (s)",
+                xmin: 0, xmax: 60,
+                ylabel:    "Light, (Lux)",
+                ymin: 0, ymax: 10000,
+                points: light_data,
+                circleRadius: false,
+                dataChange: false
+              },
+              "appletString": ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.OTSensorApplet"',
+                               '     width="1" height="1" MAYSCRIPT="true"',
+                               '     archive="org/concord/sensor-native/sensor-native.jar,',
+                               '           org/concord/otrunk/otrunk.jar,',
+                               '           org/concord/framework/framework.jar,',
+                               '           org/concord/frameworkview/frameworkview.jar,',
+                               '           jug/jug/jug.jar,',
+                               '           jdom/jdom/jdom.jar,',
+                               '           org/concord/sensor/sensor.jar,',
+                               '           org/concord/data/data.jar,',
+                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
+                               '     MAYSCRIPT="true">',
+                               '  <param name="resource" value="/light.otml"/>',
+                               '  <param name="name" value="sensor"/>',
+                               '  <!-- <param name="sensorStatePath" value="sensorState"/> -->',
+                               '  <param name="MAYSCRIPT" value="true"/>',
+                               '  Your browser is completely ignoring the applet tag!',
+                               '</applet>'].join('\n')
+            }
+          };
+
+      function sensorTypeSelectorHandler() {
+        graph.notify(appletLoadingStr);
+        sensorType = sensorTypeSelector.value;
+        sensorConfig = sensorConfigurations[sensorType];
+        graph.reset(sensorConfig.graphOptions, appletLoadingStr);
+        d3.selectAll(".sensorbuttons").remove();
+        appletContainer.innerHTML = sensorConfig.appletString;
+        applet = document.getElementById("sensor-applet");
+        applet_grapher = new sensor.AppletGrapher(applet, vis, graph, sensorType, "applet_grapher.JsListener()", graph.notify);
+      }
+      sensorTypeSelector.onchange = sensorTypeSelectorHandler;
     </script>
   </body>
 </html>
