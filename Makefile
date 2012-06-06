@@ -330,6 +330,7 @@ server/public/lab/lab.controllers.js: \
 	src/lab/controllers/simple-model-controller.js \
 	src/lab/controllers/compare-models-controller.js \
 	src/lab/controllers/complex-model-controller.js \
+	src/lab/controllers/interactives-controller.js \
 	src/lab/end.js
 
 server/public/lab/lab.components.js: src/lab/components/*.coffee
