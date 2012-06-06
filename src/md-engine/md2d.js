@@ -860,7 +860,7 @@ exports.makeModel = function() {
     },
 
     getRadiusOfElement: function(el) {
-      return elements[el][ELEMENT_INDICES.RADIUS]
+      return elements[el][ELEMENT_INDICES.RADIUS];
     },
 
     computeOutputState: function() {
@@ -974,11 +974,15 @@ exports.makeModel = function() {
     */
     findMinimumPELocation: function(el, x, y, charge) {
       var pot    = model.newPotentialCalculator(el, charge, true),
-          radius = elements[el][ELEMENT_INDICES.RADIUS];
+          radius = elements[el][ELEMENT_INDICES.RADIUS],
 
-      return math.minimize(pot, [x, y], {
-        bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ]
-      })[1];
+          res =  math.minimize(pot, [x, y], {
+            bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ]
+          });
+
+      if (res.error) return false;
+      return res[1];
+
     },
 
     serialize: function() {
