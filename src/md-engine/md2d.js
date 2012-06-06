@@ -427,7 +427,7 @@ exports.makeModel = function() {
           f_over_r = 0;
 
           if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el_i][el_j]) {
-            f_over_r += ljCalculator[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq, el_i, el_j);
+            f_over_r += ljCalculator[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq);
           }
 
           if (useCoulombInteraction) {
@@ -908,7 +908,7 @@ exports.makeModel = function() {
             lj = ljTest[element[i]];
             PE += -lj.potentialFromSquaredDistance(r_sq, testElement, element[i]);
             if (calculateGradient) {
-              f_over_r += lj.forceOverDistanceFromSquaredDistance(r_sq, testElement, element[i]);
+              f_over_r += lj.forceOverDistanceFromSquaredDistance(r_sq);
             }
           }
 
