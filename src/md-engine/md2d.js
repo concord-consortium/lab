@@ -661,6 +661,39 @@ exports.makeModel = function() {
       totalMass = 0;
     },
 
+    /**
+      The canonical method for adding an atom to the collections of atoms.
+
+      If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
+      extends the length of the typed arrays by one to contain one more atom with listed properties.
+    */
+    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge) {
+      var el, mass;
+
+      if (N+1 > atoms[0].length) {
+        extendAtomsArray(N+1);
+      }
+
+      el = elements[atom_element];
+      mass = el[ELEMENT_INDICES.MASS];
+
+      element[N] = atom_element;
+      radius[N]  = elements[atom_element][ELEMENT_INDICES.RADIUS];
+      x[N]       = atom_x;
+      y[N]       = atom_y;
+      vx[N]      = atom_vx;
+      vy[N]      = atom_vy;
+      px[N]      = atom_vx * mass;
+      py[N]      = atom_vy * mass;
+      ax[N]      = 0;
+      ay[N]      = 0;
+      speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
+      charge[N]  = atom_charge;
+
+      totalMass += mass;
+      N++;
+    },
+
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
       var x, y, vx, vy, charge, element,
@@ -752,39 +785,6 @@ exports.makeModel = function() {
       model.computeOutputState();
     },
 
-    /**
-      The canonical method for adding an atom to the collections of atoms.
-
-      If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
-      extends the length of the typed arrays by one to contain one more atom with listed properties.
-    */
-    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge) {
-      var el, mass;
-
-      if (N+1 > atoms[0].length) {
-        extendAtomsArray(N+1);
-      }
-
-      el = elements[atom_element];
-      mass = el[ELEMENT_INDICES.MASS];
-
-      element[N] = atom_element;
-      radius[N]  = elements[atom_element][ELEMENT_INDICES.RADIUS];
-      x[N]       = atom_x;
-      y[N]       = atom_y;
-      vx[N]      = atom_vx;
-      vy[N]      = atom_vy;
-      px[N]      = atom_vx * mass;
-      py[N]      = atom_vy * mass;
-      ax[N]      = 0;
-      ay[N]      = 0;
-      speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
-      charge[N]  = atom_charge;
-
-      totalMass += mass;
-      N++;
-    },
-
     relaxToTemperature: function(T) {
       if (T != null) T_target = T;
 
@@ -795,7 +795,6 @@ exports.makeModel = function() {
         model.integrate();
       }
     },
-
 
     integrate: function(duration, opt_dt) {
 
