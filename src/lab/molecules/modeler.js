@@ -479,11 +479,18 @@ modeler.model = function(initialProperties) {
 
     var size   = model.size(),
         radius = coreModel.getRadiusOfElement(el),
+        x,
+        y,
+        loc;
 
-        x = Math.random() * size[0] - 2*radius,
-        y = Math.random() * size[1] - 2*radius,
+    do {
+      x = Math.random() * size[0] - 2*radius;
+      y = Math.random() * size[1] - 2*radius;
 
-        loc = coreModel.findMinimumPELocation(el, x, y, 0, 0, charge);
+      // findMinimimuPELocation will return false if minimization doesn't converge, in which case
+      // tray again from a different x, y
+      loc = coreModel.findMinimumPELocation(el, x, y, 0, 0, charge);
+    } while (!loc);
 
     model.addAtom(el, loc[0], loc[1], 0, 0);
   },
