@@ -1,13 +1,17 @@
 grapher.graph = function(elem, options, message) {
-  var cx = 600, cy = 300;
+  var cx = 600, cy = 300, 
+      node;
 
   if (arguments.length) {
     elem = d3.select(elem);
+    node = elem.node();
     cx = elem.property("clientWidth");
     cy = elem.property("clientHeight");
   }
 
-  var vis, plot, title, xlabel, ylabel, xtic, ytic, notification,
+  var svg, vis, plot, viewbox,
+      title, xlabel, ylabel, xtic, ytic,
+      notification,
       padding, size,
       xScale, yScale, xValue, yValue, line,
       circleCursorStyle,
@@ -46,9 +50,30 @@ grapher.graph = function(elem, options, message) {
     return options;
   }
 
-  function initialize(newOptions) {
+  function scale(w, h) {
+    if (!arguments.length) {
+      cx = elem.property("clientWidth");
+      cy = elem.property("clientHeight");
+    } else {
+      cx = w;
+      cy = h;
+      node.style.width =  cx +"px";
+      node.style.height = cy +"px";
+    }
+  }
+
+  function initialize(newOptions, mesg) {
     if (newOptions || !options) {
-      options = setupOptions(options);
+      options = setupOptions(newOptions);
+    }
+
+    if (svg !== undefined) {
+      svg.remove();
+      svg = undefined;
+    }
+
+    if (mesg) {
+      message = mesg;
     }
 
     if (options.dataChange) {
@@ -56,6 +81,8 @@ grapher.graph = function(elem, options, message) {
     } else {
       circleCursorStyle = "crosshair";
     }
+
+    scale();
 
     options.xrange = options.xmax - options.xmin;
     options.yrange = options.ymax - options.ymin;
@@ -102,6 +129,8 @@ grapher.graph = function(elem, options, message) {
     if (!selection) { selection = elem; }
     selection.each(function() {
 
+      elem = d3.select(this);
+
       if (this.clientWidth && this.clientHeight) {
         cx = this.clientWidth;
         cy = this.clientHeight;
@@ -113,77 +142,123 @@ grapher.graph = function(elem, options, message) {
       updateXScale();
       updateYScale();
 
-      vis = d3.select(this).append("svg")
+      if (svg === undefined) {
+
+        svg = elem.append("svg")
+            .attr("width",  cx)
+            .attr("height", cy);
+
+        vis = svg.append("g")
+              .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
+        plot = vis.append("rect")
+            .attr("class", "plot")
+            .attr("width", size.width)
+            .attr("height", size.height)
+            .style("fill", "#EEEEEE")
+            .attr("pointer-events", "all")
+            .on("mousedown.drag", plot_drag)
+            .on("touchstart.drag", plot_drag)
+            .call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
+
+        viewbox = vis.append("svg")
+            .attr("class", "viewbox")
+            .attr("top", 0)
+            .attr("left", 0)
+            .attr("width", size.width)
+            .attr("height", size.height)
+            .attr("viewBox", "0 0 "+size.width+" "+size.height)
+            .attr("class", "line")
+
+        viewbox.append("path")
+            .attr("class", "line")
+            .attr("d", line(points));
+
+        // add Chart Title
+        if (options.title) {
+          title = vis.selectAll("text")
+            .data(titles, function(d) { return d; });
+          title.enter().append("text")
+              .attr("class", "title")
+              .text(function(d) { return d; })
+              .attr("x", size.width/2)
+              .attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; })
+              .style("text-anchor","middle");
+        }
+
+        // Add the x-axis label
+        if (options.xlabel) {
+          xlabel = vis.append("text")
+              .attr("class", "axis")
+              .text(options.xlabel)
+              .attr("x", size.width/2)
+              .attr("y", size.height)
+              .attr("dy","2.4em")
+              .style("text-anchor","middle");
+        }
+
+        // add y-axis label
+        if (options.ylabel) {
+          ylabel = vis.append("g").append("text")
+              .attr("class", "axis")
+              .text(options.ylabel)
+              .style("text-anchor","middle")
+              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+        }
+
+        d3.select(node)
+            .on("mousemove.drag", mousemove)
+            .on("touchmove.drag", mousemove)
+            .on("mouseup.drag",   mouseup)
+            .on("touchend.drag",  mouseup);
+
+        notification = vis.append("text")
+            .attr("class", "graph-notification")
+            .text(message)
+            .attr("x", size.width/2)
+            .attr("y", size.height/2)
+            .style("text-anchor","middle");
+
+      } else {
+
+        vis
           .attr("width",  cx)
-          .attr("height", cy)
-          .append("g")
-            .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+          .attr("height", cy);
 
-      plot = vis.append("rect")
+        plot
           .attr("width", size.width)
-          .attr("height", size.height)
-          .style("fill", "#EEEEEE")
-          .attr("pointer-events", "all")
-          .on("mousedown.drag", plot_drag)
-          .on("touchstart.drag", plot_drag)
-          .call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
+          .attr("height", size.height);
 
-      vis.append("svg")
-          .attr("top", 0)
-          .attr("left", 0)
-          .attr("width", size.width)
-          .attr("height", size.height)
-          .attr("viewBox", "0 0 "+size.width+" "+size.height)
-          .attr("class", "line")
-          .append("path")
-              .attr("class", "line")
-              .attr("d", line(points));
+        viewbox
+            .attr("top", 0)
+            .attr("left", 0)
+            .attr("width", size.width)
+            .attr("height", size.height)
+            .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-      // add Chart Title
-      if (options.title) {
-        title = vis.selectAll("text")
-          .data(titles, function(d) { return d; });
-        title.enter().append("text")
-            .attr("class", "title")
-            .text(function(d) { return d; })
-            .attr("x", size.width/2)
-            .attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; })
-            .style("text-anchor","middle");
-      }
+        if (options.title) {
+            title.each(function(d, i) {
+              d3.select(this).attr("x", size.width/2)
+              d3.select(this).attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; });
+            });
+        }
 
-      // Add the x-axis label
-      if (options.xlabel) {
-        xlabel = vis.append("text")
-            .attr("class", "axis")
-            .text(options.xlabel)
-            .attr("x", size.width/2)
-            .attr("y", size.height)
-            .attr("dy","2.4em")
-            .style("text-anchor","middle");
-      }
+        if (options.xlabel) {
+          xlabel
+              .attr("x", size.width/2)
+              .attr("y", size.height);
+        }
 
-      // add y-axis label
-      if (options.ylabel) {
-        ylabel = vis.append("g").append("text")
-            .attr("class", "axis")
-            .text(options.ylabel)
-            .style("text-anchor","middle")
-            .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
-      }
+        if (options.ylabel) {
+          ylabel
+              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+        }
 
-      d3.select(this)
-          .on("mousemove.drag", mousemove)
-          .on("touchmove.drag", mousemove)
-          .on("mouseup.drag",   mouseup)
-          .on("touchend.drag",  mouseup);
-
-      redraw();
-      notification = vis.append("text")
-          .attr("class", "graph-notification")
-          .text('')
+        notification
           .attr("x", size.width/2)
-          .attr("y", size.height/2)
-          .style("text-anchor","middle");
+          .attr("y", size.height/2);
+      }
+      redraw();
     });
 
     function notify(mesg) {
@@ -465,6 +540,7 @@ grapher.graph = function(elem, options, message) {
     graph.initialize = initialize;
     graph.updateXScale = updateXScale;
     graph.updateYScale = updateYScale;
+    graph.scale = scale;
 
   }
 
@@ -504,12 +580,6 @@ grapher.graph = function(elem, options, message) {
   function gRedraw() {
     redraw();
   }
-
-  graph.options = function(_) {
-    if (!arguments.length) return options;
-    // options = _;
-    return graph;
-  };
 
   graph.margin = function(_) {
     if (!arguments.length) return margin;
@@ -660,21 +730,25 @@ grapher.graph = function(elem, options, message) {
     return graph;
   };
 
-  graph.reset = function(options) {
+  graph.reset = function(options, message) {
     if (arguments.length) {
-      graph.initialize(options);
+      graph.initialize(options, message);
     } else {
       graph.initialize();
     }
-    graph.redraw();
+    graph();
+    return graph;
+  };
+
+  graph.resize = function(w, h) {
+    graph.scale(w, h);
+    graph.initialize();
+    graph();
     return graph;
   };
 
   if (elem) {
     elem.call(graph);
-    if (message) {
-      graph.notify(message);
-    }
   }
 
   return graph;
