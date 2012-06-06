@@ -667,15 +667,18 @@ exports.makeModel = function() {
 
     initializeAtomsRandomly: function(options) {
 
-      // fill up the entire 'nodes' array
-      N = nodes[0].length;
+      var // if a temperature is not explicitly requested, we just need any nonzero number
+          temperature = options.temperature || 100,
 
-      var temperature = options.temperature || 100,  // if not requested, just need any number
-          nrows = Math.floor(Math.sqrt(N)),
-          ncols = Math.ceil(N/nrows),
+          // fill up the entire 'nodes' array if not otherwise requested
+          num         = options.num         || nodes[0].length,
+
+          nrows = Math.floor(Math.sqrt(num)),
+          ncols = Math.ceil(num/nrows),
 
           i, r, c, rowSpacing, colSpacing,
-          vMagnitude, vDirection;
+          vMagnitude, vDirection,
+          x, y, vx, vy, charge, element;
 
       validateTemperature(temperature);
 
@@ -689,29 +692,20 @@ exports.makeModel = function() {
       for (r = 1; r <= nrows; r++) {
         for (c = 1; c <= ncols; c++) {
           i++;
-          if (i === N) break;
+          if (i === num) break;
 
-          element[i] = Math.floor(Math.random() * elements.length);     // random element
-
-          x[i] = c*colSpacing;
-          y[i] = r*rowSpacing;
-
+          element    = Math.floor(Math.random() * elements.length);     // random element
           vMagnitude = math.normal(1, 1/4);
           vDirection = 2 * Math.random() * Math.PI;
-          vx[i] = vMagnitude * Math.cos(vDirection);
-          px[i] = elements[element[i]][0] * vx[i];
-          vy[i] = vMagnitude * Math.sin(vDirection);
-          py[i] = elements[element[i]][0] * vy[i];
 
-          ax[i] = 0;
-          ay[i] = 0;
+          x = c*colSpacing;
+          y = r*rowSpacing;
+          vx = vMagnitude * Math.cos(vDirection);
+          vy = vMagnitude * Math.sin(vDirection);
 
-          speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
-          charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
+          charge = 2*(i%2)-1;      // alternate negative and positive charges
 
-          setRadii();
-
-          totalMass += elements[element[i]][0];
+          model.addAtom(element, x, y, vx, vy, charge);
         }
       }
 
