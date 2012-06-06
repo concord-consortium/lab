@@ -165,7 +165,7 @@ suite.addBatch({
       model = modeler.model(new_initialization_options);
       md2d = model.createNewAtoms(new_initialization_options.mol_number);
 
-      assert.equal(md2d.totalMass, 5);
+      assert.equal(md2d.getTotalMass(), 5);
 
       // 5 atoms of mass 2
       new_initialization_options = {
@@ -177,7 +177,7 @@ suite.addBatch({
       model = modeler.model(new_initialization_options);
       md2d = model.createNewAtoms(new_initialization_options.mol_number);
 
-      assert.equal(md2d.totalMass, 10);
+      assert.equal(md2d.getTotalMass(), 10);
 
       // 100 atoms randomly created either with mass 1 or 2
       new_initialization_options = {
@@ -190,8 +190,8 @@ suite.addBatch({
       model = modeler.model(new_initialization_options);
       md2d = model.createNewAtoms(new_initialization_options.mol_number);
 
-      assert(md2d.totalMass > 100, "Total mass should be greater than 100. Actual: "+md2d.totalMass);
-      assert(md2d.totalMass < 200, "Total mass should be less than 200. Actual: "+md2d.totalMass);
+      assert(md2d.getTotalMass() > 100, "Total mass should be greater than 100. Actual: "+md2d.getTotalMass());
+      assert(md2d.getTotalMass() < 200, "Total mass should be less than 200. Actual: "+md2d.getTotalMass());
 
       // three atoms created, two with mass 1 and one with mass 2
       new_initialization_options = {
@@ -210,7 +210,7 @@ suite.addBatch({
       model = modeler.model(new_initialization_options);
       md2d = model.createNewAtoms(new_initialization_options.atoms);
 
-      assert.equal(md2d.totalMass, 22);
+      assert.equal(md2d.getTotalMass(), 22);
     }
   }
 });
