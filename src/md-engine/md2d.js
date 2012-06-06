@@ -237,11 +237,11 @@ exports.makeModel = function() {
         cutoffDistance_LJ_sq[el1][el2] = cutoffDistance_LJ_sq[el2][el1] = 5*coefficients.rmin;
         if (radius && el1 === el2) {
           elements[element[el1]][ELEMENT_INDICES.RADIUS] = lennardJones.radius(coefficients.sigma);
-          setRadii();
+          updateRadii();
         }
       },
 
-      setRadii = function() {
+      updateRadii = function() {
         for (var i = 0, len = radius.length; i < len; i++) {
           radius[i] = elements[element[i]][ELEMENT_INDICES.RADIUS];
         }
@@ -727,8 +727,10 @@ exports.makeModel = function() {
     },
 
     /**
-      Addd one atom. If there isn't enough room in the 'nodes' array, it (somewhat inefficiently)
-      extends the length of the typed arrays by one to contain one more atom with listed properties
+      The canonical method for adding an atom to the collections of atoms.
+
+      If there isn't enough room in the 'nodes' array, it (somewhat inefficiently)
+      extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
     addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge) {
       var saved_radius,
