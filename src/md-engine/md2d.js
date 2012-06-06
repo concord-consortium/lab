@@ -190,11 +190,11 @@ exports.makeModel = function() {
       // element definition: [ MASS_IN_DALTONS, EPSILON, SIGMA ]
       elements,
 
-      // Individual property arrays for the particles. Each is a length-N array.
+      // Individual property arrays for the atoms, indexed by atom number
       radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element,
 
-      // An array of length NODE_PROPERTIES_COUNT which containes the above length-N arrays.
-      nodes,
+      // An array of length max(INDICES)+1 which contains the above property arrays
+      atoms,
 
       // The location of the center of mass, in nanometers.
       x_CM, y_CM,
@@ -250,26 +250,26 @@ exports.makeModel = function() {
         }
       },
 
-      // Make the nodes array bigger
-      extendNodesArray = function(num) {
+      // Make the 'atoms' array bigger
+      extendAtomsArray = function(num) {
         var savedArrays = [],
             savedTotalMass,
             i;
 
-        for (i = 0; i < nodes.length; i++) {
-          savedArrays[i] = nodes[i];
+        for (i = 0; i < atoms.length; i++) {
+          savedArrays[i] = atoms[i];
         }
 
         savedTotalMass = totalMass;
         atomsHaveBeenCreated = false;
         model.createAtoms({ num: num });
 
-        for (i = 0; i < nodes.length; i++) {
-          arrays.copy(savedArrays[i], nodes[i]);
+        for (i = 0; i < atoms.length; i++) {
+          arrays.copy(savedArrays[i], atoms[i]);
         }
 
         // restore N and totalMass
-        N = savedArrays[0].length;        // nodes[0].length is now > N!
+        N = savedArrays[0].length;        // atoms[0].length is now > N!
         totalMass = savedTotalMass;
       },
 
@@ -594,7 +594,7 @@ exports.makeModel = function() {
     },
 
     /**
-      Allocates 'nodes' array of arrays, sets number of atoms.
+      Allocates 'atoms' array of arrays, sets number of atoms.
 
       options:
         num: the number of atoms to create
@@ -638,24 +638,24 @@ exports.makeModel = function() {
         return n;
       }());
 
-      nodes  = model.nodes  = arrays.create(numIndices, null, 'regular');
+      atoms  = model.atoms  = arrays.create(numIndices, null, 'regular');
 
-      radius = model.radius = nodes[INDICES.RADIUS] = arrays.create(num, 0, arrayType);
-      px     = model.px     = nodes[INDICES.PX]     = arrays.create(num, 0, arrayType);
-      py     = model.py     = nodes[INDICES.PY]     = arrays.create(num, 0, arrayType);
-      x      = model.x      = nodes[INDICES.X]      = arrays.create(num, 0, arrayType);
-      y      = model.y      = nodes[INDICES.Y]      = arrays.create(num, 0, arrayType);
-      vx     = model.vx     = nodes[INDICES.VX]     = arrays.create(num, 0, arrayType);
-      vy     = model.vy     = nodes[INDICES.VY]     = arrays.create(num, 0, arrayType);
-      speed  = model.speed  = nodes[INDICES.SPEED]  = arrays.create(num, 0, arrayType);
-      ax     = model.ax     = nodes[INDICES.AX]     = arrays.create(num, 0, arrayType);
-      ay     = model.ay     = nodes[INDICES.AY]     = arrays.create(num, 0, arrayType);
-      charge = model.charge = nodes[INDICES.CHARGE] = arrays.create(num, 0, arrayType);
+      radius = model.radius = atoms[INDICES.RADIUS] = arrays.create(num, 0, arrayType);
+      px     = model.px     = atoms[INDICES.PX]     = arrays.create(num, 0, arrayType);
+      py     = model.py     = atoms[INDICES.PY]     = arrays.create(num, 0, arrayType);
+      x      = model.x      = atoms[INDICES.X]      = arrays.create(num, 0, arrayType);
+      y      = model.y      = atoms[INDICES.Y]      = arrays.create(num, 0, arrayType);
+      vx     = model.vx     = atoms[INDICES.VX]     = arrays.create(num, 0, arrayType);
+      vy     = model.vy     = atoms[INDICES.VY]     = arrays.create(num, 0, arrayType);
+      speed  = model.speed  = atoms[INDICES.SPEED]  = arrays.create(num, 0, arrayType);
+      ax     = model.ax     = atoms[INDICES.AX]     = arrays.create(num, 0, arrayType);
+      ay     = model.ay     = atoms[INDICES.AY]     = arrays.create(num, 0, arrayType);
+      charge = model.charge = atoms[INDICES.CHARGE] = arrays.create(num, 0, arrayType);
 
       // NOTE, this is a Uint8Array for now, but this may not be the best pattern in the future
       // because Uint8Arrays length cannot be changed. Right now we never add or remove atoms
       // from the model without re-creating the atom arrays, but that might change in the future.
-      element = model.element = nodes[INDICES.ELEMENT] = arrays.create(num, 0, uint8ArrayType);
+      element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8ArrayType);
 
       N = 0;
       totalMass = 0;
@@ -696,8 +696,8 @@ exports.makeModel = function() {
       var // if a temperature is not explicitly requested, we just need any nonzero number
           temperature = options.temperature || 100,
 
-          // fill up the entire 'nodes' array if not otherwise requested
-          num         = options.num         || nodes[0].length,
+          // fill up the entire 'atoms' array if not otherwise requested
+          num         = options.num         || atoms[0].length,
 
           nrows = Math.floor(Math.sqrt(num)),
           ncols = Math.ceil(num/nrows),
@@ -755,14 +755,14 @@ exports.makeModel = function() {
     /**
       The canonical method for adding an atom to the collections of atoms.
 
-      If there isn't enough room in the 'nodes' array, it (somewhat inefficiently)
+      If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
     addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge) {
       var el, mass;
 
-      if (N+1 > nodes[0].length) {
-        extendNodesArray(N+1);
+      if (N+1 > atoms[0].length) {
+        extendAtomsArray(N+1);
       }
 
       el = elements[atom_element];
@@ -972,7 +972,7 @@ exports.makeModel = function() {
           i, ii;
       for (i=0, ii=SAVEABLE_INDICES.length; i<ii; i++) {
         prop = SAVEABLE_INDICES[i];
-        array = nodes[INDICES[prop]];
+        array = atoms[INDICES[prop]];
         serializedData[prop] = array.slice ? array.slice() : copyTypedArray(array);
       }
       return serializedData;
