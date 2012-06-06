@@ -859,6 +859,10 @@ exports.makeModel = function() {
       return totalMass;
     },
 
+    getRadiusOfElement: function(el) {
+      return elements[el][ELEMENT_INDICES.RADIUS]
+    },
+
     computeOutputState: function() {
       var i, j,
           dx, dy,
