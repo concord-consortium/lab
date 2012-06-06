@@ -44,11 +44,6 @@ modeler.model = function(initialProperties) {
       height = initialProperties.height,
 
       //
-      // Number of individual properties for a node
-      //
-      node_properties_length = 12,
-
-      //
       // A two dimensional array consisting of arrays of node property values
       //
       nodes,
@@ -153,7 +148,7 @@ modeler.model = function(initialProperties) {
   function tick_history_list_push() {
     var i,
         newnodes = [],
-        n = node_properties_length;
+        n = nodes.length;
 
     i = -1; while (++i < n) {
       newnodes[i] = arrays.clone(nodes[i]);
@@ -222,7 +217,7 @@ modeler.model = function(initialProperties) {
   }
 
   function tick_history_list_extract(index) {
-    var i, n=node_properties_length;
+    var i, n=nodes.length;
     if (index < 0) {
       throw new Error("modeler: request for tick_history_list[" + index + "]");
     }
