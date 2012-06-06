@@ -5,6 +5,7 @@
 //
 
 var md2d = require('./md2d'),
+    math = require('./math'),
     coreModel;
 
 modeler = {};
@@ -479,8 +480,25 @@ modeler.model = function(initialProperties) {
     return modelOutputState ? modelOutputState.time : undefined;
   };
 
-  model.addAtom = function() {
-    coreModel.addAtom.apply(coreModel, arguments);
+
+  /**
+    add a new atom with element 'el' and velocity '[vx, vy]' near position [x, y].
+
+    If [x, y] overlaps with another atom it is placed nearby
+  */
+  model.addAtom = function(el, x, y, vx, vy) {
+    // find a good location for the atom
+    var pot = model.getPotentialFunction(el, 0, true),
+
+        size   = model.size(),
+        radius = 0.5 * model.getLJCalculator()[el][el].coefficients().rmin,
+
+        loc = math.minimize(pot, [x, y], {
+          bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ]
+        })[1];
+
+    coreModel.addAtom(el, loc[0], loc[1], vx, vy);
+
     nodes = coreModel.nodes;
     coreModel.computeOutputState();
     if (model_listener) model_listener();
