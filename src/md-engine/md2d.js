@@ -112,7 +112,8 @@ var arrays       = require('./arrays/arrays').arrays,
 exports.ELEMENT_INDICES = ELEMENT_INDICES = {
   MASS: 0,
   EPSILON: 1,
-  SIGMA: 2
+  SIGMA: 2,
+  RADIUS: 3
 },
 
 exports.INDICES = INDICES = {
@@ -229,21 +230,23 @@ exports.makeModel = function() {
       sigma = [],
       cutoffDistance_LJ_sq = [],
 
-      // Each [i,j] that calculates the magnitude of the Lennard-Jones force or
-      // or poential between elements i and j.
+      // Each object at ljCalculator[i,j] can calculate the magnitude of the Lennard-Jones force and
+      // potential between elements i and j
       ljCalculator = [],
 
-      // Callback that recalculates cutoffDistance_LJ_sq when the Lennard-Jones sigma parameter changes.
+      // Callback that recalculates element radii  and cutoffDistance_LJ_sq when the Lennard-Jones
+      // sigma parameter changes.
       ljCoefficientsChanged = function(el1, el2, coefficients) {
         cutoffDistance_LJ_sq[el1][el2] = cutoffDistance_LJ_sq[el2][el1] = 5*coefficients.rmin;
-        if (radius && element) {
+        if (radius && el1 === el2) {
+          elements[element[el1]][ELEMENT_INDICES.RADIUS] = lennardJones.radius(coefficients.sigma);
           setRadii();
         }
       },
 
       setRadii = function() {
         for (var i = 0, len = radius.length; i < len; i++) {
-          radius[i] = 0.5 * ljCalculator[element[i]][element[i]].coefficients().rmin;
+          radius[i] = elements[element[i]][ELEMENT_INDICES.RADIUS];
         }
       },
 
@@ -538,6 +541,9 @@ exports.makeModel = function() {
         epsilon_i = elements[i][ELEMENT_INDICES.EPSILON];
         sigma_i   = elements[i][ELEMENT_INDICES.SIGMA];
 
+        // the radius is derived from sigma
+        elements[i][ELEMENT_INDICES.RADIUS] = lennardJones.radius(sigma_i);
+
         for (j = i; j < elements.length; j++) {
           epsilon_j = elements[j][ELEMENT_INDICES.EPSILON];
           sigma_j   = elements[j][ELEMENT_INDICES.SIGMA];
@@ -754,6 +760,7 @@ exports.makeModel = function() {
       arrays.copy(saved_charge, charge);
 
       // hack
+      radius[N-1] = elements[atom_element][ELEMENT_INDICES.RADIUS];
       elements[N-1] = atom_element;
       x[N-1] = atom_x;
       y[N-1] = atom_y;
@@ -762,7 +769,6 @@ exports.makeModel = function() {
       px[N-1] = atom_vx * elements[atom_element][0];
       px[N-1] = atom_vx * elements[atom_element][0];
       speed[N-1] = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
-      setRadii();
     },
 
     relaxToTemperature: function(T) {
@@ -779,6 +785,8 @@ exports.makeModel = function() {
 
     integrate: function(duration, opt_dt) {
 
+      var radius;
+
       if (!atomsHaveBeenCreated) {
         throw new Error("md2d: integrate called before atoms created.");
       }
@@ -788,10 +796,13 @@ exports.makeModel = function() {
       dt = opt_dt || 1;
       dt_sq = dt*dt;                      // time step, squared
 
-      leftwall   = radius[0];
-      bottomwall = radius[0];
-      rightwall  = size[0] - radius[0];
-      topwall    = size[1] - radius[0];
+      // FIXME we still need to make bounceOffWalls respect each atom's actual radius, rather than
+      // assuming just one radius as below
+      radius = elements[element[0]][ELEMENT_INDICES.RADIUS];
+      leftwall   = radius;
+      bottomwall = radius;
+      rightwall  = size[0] - radius;
+      topwall    = size[1] - radius;
 
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
