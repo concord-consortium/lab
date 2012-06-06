@@ -250,6 +250,29 @@ exports.makeModel = function() {
         }
       },
 
+      // Make the nodes array bigger
+      extendNodesArray = function(num) {
+        var savedArrays = [],
+            savedTotalMass,
+            i;
+
+        for (i = 0; i < nodes.length; i++) {
+          savedArrays[i] = nodes[i];
+        }
+
+        savedTotalMass = totalMass;
+        atomsHaveBeenCreated = false;
+        model.createAtoms({ num: num });
+
+        for (i = 0; i < nodes.length; i++) {
+          arrays.copy(savedArrays[i], nodes[i]);
+        }
+
+        // restore N and totalMass
+        N = savedArrays[0].length;        // nodes[0].length is now > N!
+        totalMass = savedTotalMass;
+      },
+
       // Function that accepts a value T and returns an average of the last n values of T (for some n).
       T_windowed,
 
@@ -736,51 +759,10 @@ exports.makeModel = function() {
       extends the length of the typed arrays by one to contain one more atom with listed properties.
     */
     addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge) {
-      var saved_radius,
-          saved_px    ,
-          saved_py    ,
-          saved_x     ,
-          saved_y     ,
-          saved_vx    ,
-          saved_vy    ,
-          saved_speed ,
-          saved_ax    ,
-          saved_ay    ,
-          saved_charge,
-          el,
-          mass,
-          savedTotalMass;
+      var el, mass;
 
       if (N+1 > nodes[0].length) {
-        saved_radius = radius;
-        saved_px     = px;
-        saved_py     = py;
-        saved_x      = x;
-        saved_y      = y;
-        saved_vx     = vx;
-        saved_vy     = vy;
-        saved_speed  = speed;
-        saved_ax     = ax;
-        saved_ay     = ay;
-        saved_charge = charge;
-
-        savedTotalMass = totalMass;
-        atomsHaveBeenCreated = false;
-        model.createAtoms({ num: N+1 });
-
-        arrays.copy(saved_radius, radius);
-        arrays.copy(saved_px, px);
-        arrays.copy(saved_py, py);
-        arrays.copy(saved_x, x);
-        arrays.copy(saved_y, y);
-        arrays.copy(saved_vx, vx);
-        arrays.copy(saved_vy, vy);
-        arrays.copy(saved_speed, speed);
-        arrays.copy(saved_ax, ax);
-        arrays.copy(saved_ay, ay);
-        arrays.copy(saved_charge, charge);
-        N = saved_radius.length;
-        totalMass = savedTotalMass;
+        extendNodesArray(N+1);
       }
 
       el = elements[atom_element];
