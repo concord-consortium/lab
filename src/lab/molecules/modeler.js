@@ -5,7 +5,6 @@
 //
 
 var md2d = require('./md2d'),
-    math = require('./math'),
     coreModel;
 
 modeler = {};
@@ -475,17 +474,18 @@ modeler.model = function(initialProperties) {
     return modelOutputState ? modelOutputState.time : undefined;
   };
 
-  model.addRandomAtom = function(el) {
+  model.addRandomAtom = function(el, charge) {
     if (el == null) el = Math.floor( Math.random() * elements.length );
 
     var size   = model.size(),
-        // TODO: put this computation in one place.
-        radius = 0.5 * model.getLJCalculator()[el][el].coefficients().rmin,
+        radius = coreModel.getRadiusOfElement(el),
 
         x = Math.random() * size[0] - 2*radius,
-        y = Math.random() * size[1] - 2*radius;
+        y = Math.random() * size[1] - 2*radius,
 
-    model.addAtom(el, x, y, 0, 0);
+        loc = coreModel.findMinimumPELocation(el, x, y, 0, 0, charge);
+
+    model.addAtom(el, loc[0], loc[1], 0, 0);
   },
 
   /**
@@ -493,19 +493,8 @@ modeler.model = function(initialProperties) {
 
     If [x, y] overlaps with another atom it is placed nearby
   */
-  model.addAtom = function(el, x, y, vx, vy) {
-    // find a good location for the atom
-    var pot = model.getPotentialFunction(el, 0, true),
-
-        size   = model.size(),
-        radius = 0.5 * model.getLJCalculator()[el][el].coefficients().rmin,
-
-        loc = math.minimize(pot, [x, y], {
-          bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ]
-        })[1];
-
-    coreModel.addAtom(el, loc[0], loc[1], vx, vy);
-
+  model.addAtom = function(el, x, y, vx, vy, charge) {
+    coreModel.addAtom(el, x, y, vx, vy, charge);
     nodes = coreModel.atoms;
     coreModel.computeOutputState();
     if (model_listener) model_listener();
