@@ -235,13 +235,16 @@ exports.makeModel = function() {
       // sigma parameter changes.
       ljCoefficientsChanged = function(el1, el2, coefficients) {
         cutoffDistance_LJ_sq[el1][el2] = cutoffDistance_LJ_sq[el2][el1] = 5*coefficients.rmin;
-        if (radius && el1 === el2) {
-          elements[element[el1]][ELEMENT_INDICES.RADIUS] = lennardJones.radius(coefficients.sigma);
-          updateRadii();
-        }
+
+        if (el1 === el2) updateElementRadius(el1, coefficients);
       },
 
-      updateRadii = function() {
+      // Update radius of element # 'el'. Also, if 'element' and 'radius' arrays are defined, update
+      // all atom's radii to match the new radii of their corresponding elements.
+      updateElementRadius = function(el, coefficients) {
+        elements[el][ELEMENT_INDICES.RADIUS] = lennardJones.radius( coefficients.sigma );
+
+        if (!radius || !element) return;
         for (var i = 0, len = radius.length; i < len; i++) {
           radius[i] = elements[element[i]][ELEMENT_INDICES.RADIUS];
         }
