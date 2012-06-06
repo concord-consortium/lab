@@ -39,7 +39,6 @@ var arrays       = require('./arrays/arrays').arrays,
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
-    NODE_PROPERTIES_COUNT,
     INDICES,
     ELEMENT_INDICES,
     SAVEABLE_INDICES,
@@ -132,8 +131,6 @@ exports.INDICES = INDICES = {
 };
 
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
-
-exports.NODE_PROPERTIES_COUNT = NODE_PROPERTIES_COUNT = 12;
 
 exports.makeModel = function() {
 
@@ -578,7 +575,9 @@ exports.makeModel = function() {
     */
     createAtoms: function(options) {
       var arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular';
+          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
+          numIndices,
+          num;
 
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
@@ -590,44 +589,55 @@ exports.makeModel = function() {
         throw new Error("md2d: createAtoms was called without options specifying the atoms to create.");
       }
 
-      N = options.num;
+      num = options.num;
 
-      if (typeof N === 'undefined') {
-        throw new Error("md2d: createAtoms was called without the required 'N' option specifying the number of atoms to create.");
+      if (typeof num === 'undefined') {
+        throw new Error("md2d: createAtoms was called without the required 'num' option specifying the number of atoms to create.");
       }
-      if (N !== Math.floor(N)) {
-        throw new Error("md2d: createAtoms was passed a non-integral 'N' option.");
+      if (num !== Math.floor(num)) {
+        throw new Error("md2d: createAtoms was passed a non-integral 'num' option.");
       }
-      if (N < N_MIN) {
-        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + N + " which is less than the minimum allowable value: N_MIN = " + N_MIN + ".");
+      if (num < N_MIN) {
+        throw new Error("md2d: create Atoms was passed an 'num' option equal to: " + num + " which is less than the minimum allowable value: N_MIN = " + N_MIN + ".");
       }
-      if (N > N_MAX) {
-        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + N + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
+      if (num > N_MAX) {
+        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
       }
 
-      nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
+      numIndices = (function() {
+        var n = 0, index;
+        for (index in INDICES) {
+          if (INDICES.hasOwnProperty(index)) n++;
+        }
+        return n;
+      }());
 
-      radius = model.radius = nodes[INDICES.RADIUS] = arrays.create(N, 0, arrayType);
-      px     = model.px     = nodes[INDICES.PX]     = arrays.create(N, 0, arrayType);
-      py     = model.py     = nodes[INDICES.PY]     = arrays.create(N, 0, arrayType);
-      x      = model.x      = nodes[INDICES.X]      = arrays.create(N, 0, arrayType);
-      y      = model.y      = nodes[INDICES.Y]      = arrays.create(N, 0, arrayType);
-      vx     = model.vx     = nodes[INDICES.VX]     = arrays.create(N, 0, arrayType);
-      vy     = model.vy     = nodes[INDICES.VY]     = arrays.create(N, 0, arrayType);
-      speed  = model.speed  = nodes[INDICES.SPEED]  = arrays.create(N, 0, arrayType);
-      ax     = model.ax     = nodes[INDICES.AX]     = arrays.create(N, 0, arrayType);
-      ay     = model.ay     = nodes[INDICES.AY]     = arrays.create(N, 0, arrayType);
-      charge = model.charge = nodes[INDICES.CHARGE] = arrays.create(N, 0, arrayType);
+      nodes  = model.nodes  = arrays.create(numIndices, null, 'regular');
+
+      radius = model.radius = nodes[INDICES.RADIUS] = arrays.create(num, 0, arrayType);
+      px     = model.px     = nodes[INDICES.PX]     = arrays.create(num, 0, arrayType);
+      py     = model.py     = nodes[INDICES.PY]     = arrays.create(num, 0, arrayType);
+      x      = model.x      = nodes[INDICES.X]      = arrays.create(num, 0, arrayType);
+      y      = model.y      = nodes[INDICES.Y]      = arrays.create(num, 0, arrayType);
+      vx     = model.vx     = nodes[INDICES.VX]     = arrays.create(num, 0, arrayType);
+      vy     = model.vy     = nodes[INDICES.VY]     = arrays.create(num, 0, arrayType);
+      speed  = model.speed  = nodes[INDICES.SPEED]  = arrays.create(num, 0, arrayType);
+      ax     = model.ax     = nodes[INDICES.AX]     = arrays.create(num, 0, arrayType);
+      ay     = model.ay     = nodes[INDICES.AY]     = arrays.create(num, 0, arrayType);
+      charge = model.charge = nodes[INDICES.CHARGE] = arrays.create(num, 0, arrayType);
 
       // NOTE, this is a Uint8Array for now, but this may not be the best pattern in the future
       // because Uint8Arrays length cannot be changed. Right now we never add or remove atoms
       // from the model without re-creating the atom arrays, but that might change in the future.
-      element = model.element = nodes[INDICES.ELEMENT] = arrays.create(N, 0, uint8ArrayType);
+      element = model.element = nodes[INDICES.ELEMENT] = arrays.create(num, 0, uint8ArrayType);
+
+      N = 0;
+      totalMass = 0;
     },
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
-      var totalMass = 0,
+      var x, y, vx, vy, charge, element,
           i, ii;
 
       if (!(props.X && props.Y)) {
@@ -639,33 +649,16 @@ exports.makeModel = function() {
         throw new Error("md2d: For now, velocities must be set when locations are set.");
       }
 
-      for (i=0, ii=N; i<ii; i++){
-        x[i] = props.X[i];
-        y[i] = props.Y[i];
-        vx[i] = props.VX[i];
-        vy[i] = props.VY[i];
-        px[i] = vx[i] * elements[element[i]][0];
-        py[i] = vy[i] * elements[element[i]][0];
-        speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
-      }
+      for (i=0, ii=props.X.length; i<ii; i++){
+        element = props.ELEMENT ? props.ELEMENT[i] : 0;
+        x = props.X[i];
+        y = props.Y[i];
+        vx = props.VX[i];
+        vy = props.VY[i];
+        charge = props.CHARGE ? props.CHARGE[i] : 0;
 
-      if (props.CHARGE) {
-        for (i=0, ii=N; i<ii; i++){
-          charge[i] = props.CHARGE[i];
-        }
+        model.addAtom(element, x, y, vx, vy, charge);
       }
-
-      if (props.ELEMENT) {
-        for (i=0, ii=N; i<ii; i++){
-          element[i] = props.ELEMENT[i];
-          totalMass += elements[element[i]][0];
-        }
-      } else {
-        totalMass = N * elements[0][0];
-      }
-      model.totalMass = totalMass;
-
-      setRadii();
 
       // Publish the current state
       T = computeTemperature();
@@ -673,6 +666,9 @@ exports.makeModel = function() {
     },
 
     initializeAtomsRandomly: function(options) {
+
+      // fill up the entire 'nodes' array
+      N = nodes[0].length;
 
       var temperature = options.temperature || 100,  // if not requested, just need any number
           nrows = Math.floor(Math.sqrt(N)),
@@ -690,11 +686,12 @@ exports.makeModel = function() {
       // configuration. But it works OK for now.
       i = -1;
 
-      totalMass = 0;
       for (r = 1; r <= nrows; r++) {
         for (c = 1; c <= ncols; c++) {
           i++;
           if (i === N) break;
+
+          element[i] = Math.floor(Math.random() * elements.length);     // random element
 
           x[i] = c*colSpacing;
           y[i] = r*rowSpacing;
@@ -712,10 +709,9 @@ exports.makeModel = function() {
           speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
           charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
 
-          element[i] = Math.floor(Math.random() * elements.length);     // random element
           setRadii();
 
-          model.totalMass = totalMass += elements[element[i]][0];
+          totalMass += elements[element[i]][0];
         }
       }
 
@@ -737,46 +733,75 @@ exports.makeModel = function() {
     },
 
     /**
-      (Inefficiently) extends typed arrays by one to contain one more atom with listed properties
+      Addd one atom. If there isn't enough room in the 'nodes' array, it (somewhat inefficiently)
+      extends the length of the typed arrays by one to contain one more atom with listed properties
     */
-    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy) {
-      var saved_radius = radius,
-          saved_px     = px,
-          saved_py     = py,
-          saved_x      = x,
-          saved_y      = y,
-          saved_vx     = vx,
-          saved_vy     = vy,
-          saved_speed  = speed,
-          saved_ax     = ax,
-          saved_ay     = ay,
-          saved_charge = charge;
+    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge) {
+      var saved_radius,
+          saved_px    ,
+          saved_py    ,
+          saved_x     ,
+          saved_y     ,
+          saved_vx    ,
+          saved_vy    ,
+          saved_speed ,
+          saved_ax    ,
+          saved_ay    ,
+          saved_charge,
+          el,
+          mass,
+          savedTotalMass;
 
-      atomsHaveBeenCreated = false;
-      model.createAtoms({ num: N+1 });
+      if (N+1 > nodes[0].length) {
+        saved_radius = radius;
+        saved_px     = px;
+        saved_py     = py;
+        saved_x      = x;
+        saved_y      = y;
+        saved_vx     = vx;
+        saved_vy     = vy;
+        saved_speed  = speed;
+        saved_ax     = ax;
+        saved_ay     = ay;
+        saved_charge = charge;
 
-      arrays.copy(saved_radius, radius);
-      arrays.copy(saved_px, px);
-      arrays.copy(saved_py, py);
-      arrays.copy(saved_x, x);
-      arrays.copy(saved_y, y);
-      arrays.copy(saved_vx, vx);
-      arrays.copy(saved_vy, vy);
-      arrays.copy(saved_speed, speed);
-      arrays.copy(saved_ax, ax);
-      arrays.copy(saved_ay, ay);
-      arrays.copy(saved_charge, charge);
+        savedTotalMass = totalMass;
+        atomsHaveBeenCreated = false;
+        model.createAtoms({ num: N+1 });
 
-      // hack
-      radius[N-1] = elements[atom_element][ELEMENT_INDICES.RADIUS];
-      elements[N-1] = atom_element;
-      x[N-1] = atom_x;
-      y[N-1] = atom_y;
-      vx[N-1] = atom_vx;
-      vy[N-1] = atom_vy;
-      px[N-1] = atom_vx * elements[atom_element][ELEMENT_INDICES.MASS];
-      px[N-1] = atom_vx * elements[atom_element][ELEMENT_INDICES.MASS];
-      speed[N-1] = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
+        arrays.copy(saved_radius, radius);
+        arrays.copy(saved_px, px);
+        arrays.copy(saved_py, py);
+        arrays.copy(saved_x, x);
+        arrays.copy(saved_y, y);
+        arrays.copy(saved_vx, vx);
+        arrays.copy(saved_vy, vy);
+        arrays.copy(saved_speed, speed);
+        arrays.copy(saved_ax, ax);
+        arrays.copy(saved_ay, ay);
+        arrays.copy(saved_charge, charge);
+        N = saved_radius.length;
+        totalMass = savedTotalMass;
+      }
+
+      el = elements[atom_element];
+      mass = el[ELEMENT_INDICES.MASS];
+
+      element[N] = atom_element;
+      radius[N]  = elements[atom_element][ELEMENT_INDICES.RADIUS];
+      x[N]       = atom_x;
+      y[N]       = atom_y;
+      vx[N]      = atom_vx;
+      vy[N]      = atom_vy;
+      px[N]      = atom_vx * mass;
+      py[N]      = atom_vy * mass;
+      ax[N]      = 0;
+      ay[N]      = 0;
+      speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
+      charge[N]  = atom_charge;
+
+      totalMass += mass;
+      N++;
     },
 
     relaxToTemperature: function(T) {
@@ -848,6 +873,10 @@ exports.makeModel = function() {
       } // end of integration loop
 
       model.computeOutputState();
+    },
+
+    getTotalMass: function() {
+      return totalMass;
     },
 
     computeOutputState: function() {
