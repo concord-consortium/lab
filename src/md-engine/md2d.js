@@ -292,15 +292,17 @@ exports.makeModel = function() {
         vx[i] += vx_t;
         vy[i] += vy_t;
 
-        // add momenta
-        px[i] += elements[element[i]][0]*vx_t;
-        py[i] += elements[element[i]][0]*vy_t;
+        px[i] = vx[i]*elements[element[i]][0];
+        py[i] = vy[i]*elements[element[i]][0];
       },
 
       // Adds effect of angular velocity omega, relative to (x_CM, y_CM), to the velocity vector of particle i
       addAngularVelocity = function(i, omega) {
         vx[i] -= omega * (y[i] - y_CM);
         vy[i] += omega * (x[i] - x_CM);
+
+        px[i] = vx[i]*elements[element[i]][0];
+        py[i] = vy[i]*elements[element[i]][0];
       },
 
       // Subtracts the center-of-mass linear velocity and the system angular velocity from the velocity vectors
@@ -384,18 +386,22 @@ exports.makeModel = function() {
         if (x[i] < leftwall) {
           x[i]  = leftwall + (leftwall - x[i]);
           vx[i] *= -1;
+          px[i] *= -1;
         } else if (x[i] > rightwall) {
           x[i]  = rightwall - (x[i] - rightwall);
           vx[i] *= -1;
+          px[i] *= -1;
         }
 
         // Bounce off horizontal walls
         if (y[i] < bottomwall) {
           y[i]  = bottomwall + (bottomwall - y[i]);
           vy[i] *= -1;
+          py[i] *= -1;
         } else if (y[i] > topwall) {
           y[i]  = topwall - (y[i] - topwall);
           vy[i] *= -1;
+          py[i] *= -1;
         }
       },
 
@@ -638,6 +644,8 @@ exports.makeModel = function() {
         y[i] = props.Y[i];
         vx[i] = props.VX[i];
         vy[i] = props.VY[i];
+        px[i] = vx[i] * elements[element[i]][0];
+        py[i] = vy[i] * elements[element[i]][0];
         speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
       }
 
@@ -766,8 +774,8 @@ exports.makeModel = function() {
       y[N-1] = atom_y;
       vx[N-1] = atom_vx;
       vy[N-1] = atom_vy;
-      px[N-1] = atom_vx * elements[atom_element][0];
-      px[N-1] = atom_vx * elements[atom_element][0];
+      px[N-1] = atom_vx * elements[atom_element][ELEMENT_INDICES.MASS];
+      px[N-1] = atom_vx * elements[atom_element][ELEMENT_INDICES.MASS];
       speed[N-1] = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
     },
 
