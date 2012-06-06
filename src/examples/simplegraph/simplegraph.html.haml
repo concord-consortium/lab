@@ -19,55 +19,63 @@
       %a#logo(href="http://www.concord.org/")
         %img(src="../../resources/layout/cc-logo.png")
       %h1 Simple Grapher
-    #chart
-    .description
-      %h2 About the Graph
-      %ul
-        %li Drag on the canvas to translate/pan the graph.
-        %li double-click on the canvas to zoom in
-        %li shift-double-click on the canvas to zoom out
-        %li Drag on one of the X or Y axis numeric labels to re-scale that axis
-        %li click on a data point to select it
-        %li drag a selected data point to change it's value
-        %li enter the delete or backspace key to delete a selected data point
-        %li drag a selected data point to change it's value
-        %li hold the ALT/Option key down and click an empty area of the graph to add a data point
-      %h2 D3 References:
-      %ul
-        %li
-          %a{:href => "https://github.com/mbostock/d3"} repository
-        %li
-          %a{:href => "http://mbostock.github.com/d3/"} wiki
-        %li
-          %a{:href => "http://mbostock.github.com/d3/ex/"} examples
-        %li
-          %a{:href => "https://github.com/mbostock/d3/wiki/API-Reference"} API
-        %li
-          %a{:href => "https://github.com/mbostock/d3/wiki/Quantitative-Scales"} Quantitative Scales
-      %h2 D3 Tutorials:
-      %ul
-        %li
-          %a{:href => "http://mbostock.github.com/d3/tutorial/circle.html"} Three Little Circles
-        %li
-          %a{:href => "http://mbostock.github.com/d3/tutorial/bar-1.html"} A Bar Chart, Part 1
-        %li
-          %a{:href => "http://mbostock.github.com/d3/tutorial/bar-2.html"} A Bar Chart, Part 2
-      %h2 External D3 Tutorials
-      %ul
-        %li
-          %a{:href => "http://christopheviau.com/d3_tutorial/"} Try D3 Now
-        %li
-          %a{:href => "http://www.janwillemtulp.com/2011/03/31/tutorialthe-basics-working-with-arrays-in-d3/"} Array Basics
-        %li
-          %a{:href => "http://www.janwillemtulp.com/2011/03/23/tutorial-line-interpolations-in-d3/"} Line Interpolations
-        %li
-          %a{:href => "http://www.janwillemtulp.com/2011/04/01/tutorial-line-chart-in-d3/"} Line Chart
-        %li
-          %a{:href => "http://www.janwillemtulp.com/2011/03/22/tutorial-conways-game-of-life-in-d3/"} Conway's Game of Life
-        %li
-          %a{:href => "http://www.janwillemtulp.com/2011/03/20/tutorial-introduction-to-d3/"} Introudction
-      %h3 SVG Graphics
-      %ul
-        %li
-          %a{:href => "http://www.w3.org/TR/SVG/"} standard
+    #content
+      %p
+        Select Graph Size:
+        %select#select-size
+          %option{:value => "large"} large
+          %option{:value => "medium", :selected => true} medium
+          %option{:value => "small"} small
+
+      #chart
+      .description
+        %h2 About the Graph
+        %ul
+          %li Drag on the canvas to translate/pan the graph.
+          %li double-click on the canvas to zoom in
+          %li shift-double-click on the canvas to zoom out
+          %li Drag on one of the X or Y axis numeric labels to re-scale that axis
+          %li click on a data point to select it
+          %li drag a selected data point to change it's value
+          %li enter the delete or backspace key to delete a selected data point
+          %li drag a selected data point to change it's value
+          %li hold the ALT/Option key down and click an empty area of the graph to add a data point
+        %h2 D3 References:
+        %ul
+          %li
+            %a{:href => "https://github.com/mbostock/d3"} repository
+          %li
+            %a{:href => "http://mbostock.github.com/d3/"} wiki
+          %li
+            %a{:href => "http://mbostock.github.com/d3/ex/"} examples
+          %li
+            %a{:href => "https://github.com/mbostock/d3/wiki/API-Reference"} API
+          %li
+            %a{:href => "https://github.com/mbostock/d3/wiki/Quantitative-Scales"} Quantitative Scales
+        %h2 D3 Tutorials:
+        %ul
+          %li
+            %a{:href => "http://mbostock.github.com/d3/tutorial/circle.html"} Three Little Circles
+          %li
+            %a{:href => "http://mbostock.github.com/d3/tutorial/bar-1.html"} A Bar Chart, Part 1
+          %li
+            %a{:href => "http://mbostock.github.com/d3/tutorial/bar-2.html"} A Bar Chart, Part 2
+        %h2 External D3 Tutorials
+        %ul
+          %li
+            %a{:href => "http://christopheviau.com/d3_tutorial/"} Try D3 Now
+          %li
+            %a{:href => "http://www.janwillemtulp.com/2011/03/31/tutorialthe-basics-working-with-arrays-in-d3/"} Array Basics
+          %li
+            %a{:href => "http://www.janwillemtulp.com/2011/03/23/tutorial-line-interpolations-in-d3/"} Line Interpolations
+          %li
+            %a{:href => "http://www.janwillemtulp.com/2011/04/01/tutorial-line-chart-in-d3/"} Line Chart
+          %li
+            %a{:href => "http://www.janwillemtulp.com/2011/03/22/tutorial-conways-game-of-life-in-d3/"} Conway's Game of Life
+          %li
+            %a{:href => "http://www.janwillemtulp.com/2011/03/20/tutorial-introduction-to-d3/"} Introudction
+        %h3 SVG Graphics
+        %ul
+          %li
+            %a{:href => "http://www.w3.org/TR/SVG/"} standard
     %script{:src => "simplegraph.js", :type => "text/javascript"}
