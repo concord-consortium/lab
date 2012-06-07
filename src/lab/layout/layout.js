@@ -198,6 +198,7 @@ layout.setupScreen = function(viewLists) {
     layout.temperatureControlUpdate();
   }
 
+  var benchmarks_table = document.getElementById("benchmarks-table");
   if (benchmarks_table) {
     benchmarks_table.style.display = "none";
   }
