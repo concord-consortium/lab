@@ -530,6 +530,7 @@ grapher.graph = function(elem, options, message) {
     }
 
     function plot_drag() {
+      d3.event.preventDefault();
       grapher.registerKeyboardHandler(keydown);
       d3.select('body').style("cursor", "move");
       if (d3.event.altKey) {
@@ -546,20 +547,27 @@ grapher.graph = function(elem, options, message) {
           });
           selected = newpoint;
           update();
+        } else {
+          var p = d3.svg.mouse(vis[0][0]);
+          downx = xScale.invert(p[0]);
+          downy = yScale.invert(p[1]);
+          dragged = false;
+          d3.event.stopPropagation();
         }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
+        // d3.event.stopPropagation();
       }
     }
 
     function xaxis_drag(d) {
       document.onselectstart = function() { return false; };
+      d3.event.preventDefault();
       var p = d3.svg.mouse(vis[0][0]);
       downx = xScale.invert(p[0]);
     }
 
     function yaxis_drag(d) {
       document.onselectstart = function() { return false; };
+      d3.event.preventDefault();
       var p = d3.svg.mouse(vis[0][0]);
       downy = yScale.invert(p[1]);
     }
@@ -576,6 +584,7 @@ grapher.graph = function(elem, options, message) {
           changex, changey, new_domain,
           t = d3.event.changedTouches;
 
+      d3.event.preventDefault();
       if (dragged && options.dataChange) {
         dragged[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
         update();
@@ -585,7 +594,6 @@ grapher.graph = function(elem, options, message) {
         d3.select('body').style("cursor", "ew-resize");
         xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
         redraw();
-        d3.event.preventDefault();
         d3.event.stopPropagation();
       }
 
@@ -593,7 +601,6 @@ grapher.graph = function(elem, options, message) {
         d3.select('body').style("cursor", "ns-resize");
         yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
         redraw();
-        d3.event.preventDefault();
         d3.event.stopPropagation();
       }
     }
@@ -601,22 +608,15 @@ grapher.graph = function(elem, options, message) {
     function mouseup() {
       document.onselectstart = function() { return true; };
       d3.select('body').style("cursor", "auto");
-      d3.select('body').style("cursor", "auto");
       if (!isNaN(downx)) {
-        redraw();
         downx = Math.NaN;
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
+        redraw();
       }
       if (!isNaN(downy)) {
-        redraw();
         downy = Math.NaN;
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
+        redraw();
       }
-      if (dragged) {
-        dragged = null;
-      }
+      dragged = null;
     }
 
     // make these private variables and functions available

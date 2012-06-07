@@ -186,7 +186,7 @@ controllers.complexModelController =
         title:     "Energy of the System (KE:red, PE:green, TE:blue)",
         xlabel:    "Model Time (ps)",
         xmin:      0,
-        xmax:     2500,
+        xmax:     100,
         sample:    0.25,
         ylabel:    null,
         ymin:      -5.0,
@@ -213,7 +213,7 @@ controllers.complexModelController =
       });
 
       model.on('stop', function() {
-        energyGraph.hide_canvas();
+        // energyGraph.hide_canvas();
       });
 
       model.on('seek', function() {
@@ -389,7 +389,7 @@ controllers.complexModelController =
 
     function modelStop() {
       model.stop();
-      energyGraph.hide_canvas();
+      // energyGraph.hide_canvas();
       moleculeContainer.playback_component.action('stop');
       if (model_controls) {
         model_controls_inputs[0].checked = true;
@@ -400,7 +400,7 @@ controllers.complexModelController =
       model.stop();
       if (model.stepCounter() < maximum_model_steps) {
         model.stepForward();
-        energyGraph.hide_canvas();
+        // energyGraph.hide_canvas();
         if (model_controls) {
           model_controls_inputs[0].checked = true;
         }
@@ -456,7 +456,7 @@ controllers.complexModelController =
       }
       resetEnergyData();
       energyGraph.new_data(energy_data);
-      energyGraph.hide_canvas();
+      // energyGraph.hide_canvas();
       if (model_controls) {
         model_controls_inputs[0].checked = true;
       }
