@@ -7,6 +7,7 @@ MARKDOWN_COMPILER = bin/kramdown
 JS_TESTER   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
+ENERGY2D_ENGINE_JS_FILES := $(shell find src/lab/models/energy2d/engine -name '*.js' -print)
 BROWSERIFY = ./node_modules/.bin/browserify
 BATCH_CONVERT_MML_FILES = ./node-bin/mw-batch-converter
 BATCH_POST_PROCESS_MML_CONVERSION = ruby src/mw-helpers/post-batch-processor.rb
@@ -43,6 +44,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.views.js \
 	server/public/lab/lab.arrays.js \
 	server/public/lab/lab.molecules.js \
+	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.components.js \
 	server/public/lab/lab.controllers.js \
 	server/public/lab/lab.js
@@ -287,6 +289,7 @@ server/public/lab:
 server/public/lab/lab.js: \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.molecules.js \
+	server/public/lab/lab.energy2d.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.arrays.js \
 	server/public/lab/lab.layout.js \
@@ -314,6 +317,19 @@ server/public/lab/lab.molecules.js: \
 	src/lab/start.js \
 	server/public/lab/lab.md2d.js \
 	src/lab/models/md2d/modeler.js \
+	src/lab/end.js
+
+server/public/lab/lab.models.energy2d.engine.js: \
+	$(ENERGY2D_ENGINE_JS_FILES)
+	$(BROWSERIFY) src/lab/models/energy2d/engine/core-model.js -o server/public/lab/lab.models.energy2d.engine.js
+
+server/public/lab/lab.energy2d.js: \
+	src/lab/start.js \
+	src/lab/energy2d-module.js \
+	server/public/lab/lab.models.energy2d.engine.js \
+	src/lab/models/energy2d/modeler.js \
+	src/lab/views/energy2d/views.js \
+	src/lab/controllers/energy2d/controllers.js \
 	src/lab/end.js
 
 server/public/lab/lab.benchmark.js: \
