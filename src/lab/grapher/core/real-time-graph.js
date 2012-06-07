@@ -156,6 +156,7 @@ grapher.realTimeGraph = function(e, options) {
         .attr("width", size.width)
         .attr("height", size.height)
         .style("fill", "#EEEEEE")
+        // .attr("fill-opacity", 0.0)
         .attr("pointer-events", "all")
         .on("mousedown", plot_drag)
         .on("touchstart", plot_drag);
@@ -209,6 +210,12 @@ grapher.realTimeGraph = function(e, options) {
                 .style("text-anchor","middle")
                 .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
       }
+
+      d3.select(node)
+          .on("mousemove.drag", mousemove)
+          .on("touchmove.drag", mousemove)
+          .on("mouseup.drag",   mouseup)
+          .on("touchend.drag",  mouseup);
 
       // variables for speeding up dynamic plotting
       // line_path = vis.select("path")[0][0];
@@ -354,14 +361,6 @@ grapher.realTimeGraph = function(e, options) {
 
       var gplot = node.children[0].getElementsByTagName("rect")[0];
 
-      if (gcanvas.style.zIndex === "-100") {
-        vis.select("path.line").attr("d", line(points));
-        // line_seglist.clear();
-        // for(i=0; i < points.length; i++) {
-        //   line_seglist.appendItem(line_path.createSVGPathSegLinetoAbs(points[i].x, points[i].y));
-        // }
-      }
-
       update_canvas();
 
       if (graph.selectable_points) {
@@ -404,7 +403,15 @@ grapher.realTimeGraph = function(e, options) {
     }
 
     function plot_drag() {
+      d3.event.preventDefault();
       plot.style("cursor", "move");
+      if (d3.event.altKey) {
+        var p = d3.svg.mouse(vis[0][0]);
+        downx = xScale.invert(p[0]);
+        downy = yScale.invert(p[1]);
+        dragged = false;
+        d3.event.stopPropagation();
+      }
     }
 
     function xaxis_drag(d) {
@@ -433,18 +440,17 @@ grapher.realTimeGraph = function(e, options) {
           t = d3.event.changedTouches;
 
       document.onselectstart = function() { return true; };
+      d3.event.preventDefault();
       if (!isNaN(downx)) {
         d3.select('body').style("cursor", "ew-resize");
         xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
         redraw();
-        d3.event.preventDefault();
         d3.event.stopPropagation();
       }
       if (!isNaN(downy)) {
         d3.select('body').style("cursor", "ns-resize");
         yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
         redraw();
-        d3.event.preventDefault();
         d3.event.stopPropagation();
       }
     }
@@ -455,18 +461,12 @@ grapher.realTimeGraph = function(e, options) {
       if (!isNaN(downx)) {
         redraw();
         downx = Math.NaN;
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
       }
       if (!isNaN(downy)) {
         redraw();
         downy = Math.NaN;
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
       }
-      if (dragged) {
-        dragged = null;
-      }
+      dragged = null;
     }
 
     function showMarker(index) {
@@ -635,6 +635,8 @@ grapher.realTimeGraph = function(e, options) {
       canvas.style.left = cplot.left + 'px';
       canvas.style.top = cplot.top + 'px';
       canvas.style.border = 'solid 1px red';
+      canvas.style.pointerEvents = "none";
+      canvas.className += "canvas-overlay";
       gctx = gcanvas.getContext( '2d' );
       gctx.globalCompositeOperation = "source-over";
       gctx.lineWidth = 1;
