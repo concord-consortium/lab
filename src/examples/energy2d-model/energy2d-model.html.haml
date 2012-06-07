@@ -1,0 +1,116 @@
+!!! 5
+%html
+  %head
+    %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
+    %title Simple Atoms Model
+    %script{:src => "../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
+    %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "default.css", :rel => "stylesheet", :type => "text/css"}/
+    %script{:src => "../../vendor/d3/d3.v2.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/science.js/science.v1.js", :type => "text/javascript"}
+    %script{:src => "http://use.typekit.com/hdw8ayt.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      try{Typekit.load();}catch(e){}
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&subset=latin,greek,latin-ext", :rel => "stylesheet", :type => "text/css"}/
+  %body
+    #header
+      %a#logo(href="http://www.concord.org/")
+        %img(src="../../resources/layout/cc-logo.png")
+      %h1
+        %a(href="http://lab.dev.concord.org/examples/energy2d-model/energy2d-model.html") Energy2D Model
+      %img#fullscreen(class="size-full wp-image-1880" src="../../resources/layout/fullscreen.gif")
+    #content
+      #viz
+        .top
+          #canvasContainer
+            %canvas#canvasTemperatureLayer
+            %canvas#canvasPartsLayer
+            %canvas#canvasVelocityLayer
+        .bottom
+          %form
+            %select#models-select
+              %option default
+           
+          %h2#step-count frame 0
+           
+          %form
+            %legend Simulation
+            %label
+              %input{:id => "sim-stop", :type => "radio", :name => "step", :value => "stop", :checked => "checked"} 
+              Stop
+            %label
+              %input{:id => "sim-reset", :type => "radio", :name => "step", :value => "reset"} 
+              Reset
+            %label
+              %input{:id => "sim-step", :type => "radio", :name => "step", :value => "step"} 
+              Step
+            %label
+              %input{:id => "sim-go", :type => "radio", :name => "step", :value => "go"} 
+              Go
+            
+            %label                  
+              %select#steps-per-frame
+                %option{:value => "1"} 1
+                %option{:value => "2"} 2
+                %option{:value => "3", :selected => "selected"} 3
+                %option{:value => "4"} 4
+              steps per frame
+              
+          %form#choose-array-type
+            %label
+              %input{:type => "radio", :name => "array", :value => "regular", :checked => "checked"} 
+              Regular
+            %label
+              %input{:type => "radio", :name => "array", :value => "typed", :disabled => "disabled"} 
+              Typed
+              
+          %form#show-me
+            %legend Rendering
+            %label
+              %input{:id => "show-visualization", :type =>"checkbox", :checked => "checked"} 
+              Temperature
+            %label
+              %input{:id => "show-velocity-arrows", :type =>"checkbox", :checked => "checked"} 
+              Velocity arrows
+            %label
+              %input{:id => "show-velocity-length", :type =>"checkbox"} 
+              Velocity vector length
+            %label
+              %input{:id => "show-temp-data-table", :type =>"checkbox"} 
+              Temperature data array
+              
+          %form#smoothing-options
+            %legend HQ smoothing
+            %label
+              %input{:id => "hq-smoothing", :type => "checkbox"} 
+              Enabled
+            %label
+              %select#hq-smoothing-grid
+                %option{:value => "100"} 100x100
+                %option{:value => "200"} 200x200
+                %option{:value => "300"} 300x300
+                %option{:value => "400"} 400x400
+                %option{:value => "500"} 500x500
+                %option{:value => "600", :selected => "selected"} 600x600
+              Grid dimensions
+
+
+          #debug
+            %h3 Velocity Vector Length
+            %canvas#canvasVelocityLenDestination
+      
+            %h3 Temperature Data Array
+            %pre{:id => "tdata", :style => "font-size:70%"}
+
+      #description-right
+        %p
+          A JavaScript port of the Java application: <a href="http://energy.concord.org/energy2d/index.html">Energy2D</a>.
+          Energy2D-JS supports using <a href=" https://developer.mozilla.org/en/JavaScript_typed_arrays">JavaScript Typed Arrays</a>
+          if they are available in this browser. 
+
+    %script{:src => "../../lab/lab.energy2d.js", :type => "text/javascript"}
+    %script{:src => "application.js", :type => "text/javascript"}
+      
