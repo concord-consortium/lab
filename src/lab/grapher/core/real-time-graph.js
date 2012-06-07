@@ -453,19 +453,38 @@ grapher.realTimeGraph = function(e, options) {
       markedPoint = { x: points[index].x, y: points[index].y };
     }
 
-    function add_point(p) {
+    function updateOrRescale() {
+      var i,
+          domain = xScale.domain(),
+          xextent = domain[1] - domain[0],
+          maxExtent = (points.length) * sample,
+          shift = xextent * 0.9;
+
+      if (maxExtent > domain[1]) {
+        domain[0] += shift;
+        domain[1] += shift;
+        xScale.domain(domain);
+        redraw();
+      } else {
+        update();
+      }
+    }
+
+    function _add_point(p) {
       if (points.length === 0) { return; }
       markedPoint = false;
       var index = points.length,
           lengthX = index * sample,
           point = { x: lengthX, y: p },
           newx, newy;
-
       points.push(point);
-      update();
-      // newx = xScale.call(self, lengthX, lengthX);
-      // newy = yScale.call(self, p, lengthX);
-      // line_seglist.appendItem(line_path.createSVGPathSegLinetoAbs(newx, newy));
+      updateOrRescale();
+    }
+
+    function add_point(p) {
+      if (points.length === 0) { return; }
+      _add_point(p);
+      updateOrRescale();
     }
 
     function add_canvas_point(p) {
@@ -491,8 +510,9 @@ grapher.realTimeGraph = function(e, options) {
     function add_points(pnts) {
       for (var i = 0; i < pointArray.length; i++) {
         points = pointArray[i];
-        add_point(pnts[i]);
+        _add_point(pnts[i]);
       }
+      updateOrRescale();
     }
 
 
@@ -520,9 +540,10 @@ grapher.realTimeGraph = function(e, options) {
     }
 
     function new_data(d) {
+      var i;
       pointArray = [];
       if (Object.prototype.toString.call(d) === "[object Array]") {
-        for (var i = 0; i < d.length; i++) {
+        for (i = 0; i < d.length; i++) {
           points = indexedData(d[i], 0, sample);
           pointArray.push(points);
         }
@@ -530,7 +551,7 @@ grapher.realTimeGraph = function(e, options) {
         points = indexedData(options.dataset, 0, sample);
         pointArray = [points];
       }
-      update();
+      updateOrRescale();
     }
 
     function change_xaxis(xmax) {
@@ -573,7 +594,7 @@ grapher.realTimeGraph = function(e, options) {
 
     // update real-time canvas line graph
     function update_canvas(currentSample) {
-      var i, index, pc, py, samplePoint, pointStop;;
+      var i, index, pc, py, samplePoint, pointStop;
       if (typeof currentSample === 'undefined') {
         samplePoint = pointArray[0].length;
       } else {
