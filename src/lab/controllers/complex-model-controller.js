@@ -88,11 +88,18 @@ controllers.complexModelController =
       if (layout.datatable_visible) { layout.render_datatable(); }
     }
 
-    function resetEnergyData() {
-      ke = model.ke();
-      pe = model.pe();
-      te = ke + pe;
-      energy_data = [[ke], [pe], [te]];
+    function resetEnergyData(index) {
+      var modelsteps = model.stepCounter();
+      if (index) {
+        for (i = 0, len = energy_data.length; i < len; i++) {
+          energy_data[i].length = modelsteps
+        }
+      } else {
+        ke = model.ke();
+        pe = model.pe();
+        te = ke + pe;
+        energy_data = [[ke], [pe], [te]];
+      }
     }
 
     // ------------------------------------------------------------
@@ -190,23 +197,17 @@ controllers.complexModelController =
         var i, len;
 
         if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
-          if (model.stepCounter() === 0) {
-            resetEnergyData();
-          } else {
-            for (i = 0, len = energy_data.length; i < len; i++) {
-              energy_data[i].length = model.stepCounter();
-            }
-          }
+          resetEnergyData(model.stepCounter());
           energyGraph.new_data(energy_data);
         }
         energyGraph.show_canvas();
       });
 
       model.on('stop', function() {
-        // energyGraph.hide_canvas();
       });
 
       model.on('seek', function() {
+        if (model.stepCounter())
         resetEnergyData();
         energyGraph.new_data(energy_data);
       });
