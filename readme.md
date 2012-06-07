@@ -419,6 +419,12 @@ Optionally you can specify one or more projects to operate on. This builds just 
 
 The deployed resources have a timestamp in the deployed artifact so unless you specifically request an earlier version you will always get the latest deployed version.
 
+##### JnlpApp Rack Application Service
+
+The Rails server has a Rack application `JnlpApp` mounted at the route `/jnlp` for servicing requests for Java jar resources.
+
+The `JnlpApp` Rack application uses the `Rack::Jnlp` middleware defined here `server/lib/rack/jnlp.rb`.
+
 Normally versions for jars can only be specified by using a jnlp form. A jnlp form of specification can be used for webstart and also for applets.
 
 The older form of applet invocation that uses the <applet> html element normally can't specify version numbers for jar dependencies, however the Jnlp::Rack application included with Lab does allow version specification.
@@ -454,6 +460,23 @@ This feature of specifying versioned jar resources should NOT be used for produc
 
 When a version is specified in a jnlp form for an applet the jar WILL be cached properly.
 
+**Development Note**: If the applets no longer operate properly it may be that the server is no longer operating properly
+and needs to be restarted. The Java console log for the applet may show requests made for jars that are not fulfilled.
+
+If a request like the following produces an error:
+
+    $ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor-native/sensor-native.jar
+    HTTP/1.1 500 Internal Server Error
+
+Restart the server and the request should now suceed:
+
+    $ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor-native/sensor-native.jar
+    HTTP/1.1 200 OK
+    Last-Modified: Thu, 07 Jun 2012 16:44:28 GMT
+    Content-Type: application/java-archive
+    Content-Length: 34632
+    content-encoding: pack200-gzip
+    
 ### Deploying to a remote server
 
 There are several Capistrano tasks for deploying to the remote server
