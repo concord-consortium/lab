@@ -84,7 +84,6 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
         model.createNewAtoms(atoms_properties);
       } else if (mol_number) {
         model.createNewAtoms(mol_number);
-        model.relax();
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }

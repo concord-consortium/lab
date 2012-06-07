@@ -72,12 +72,10 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
           height: height
         });
 
-
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
       } else if (mol_number) {
         model.createNewAtoms(mol_number);
-        model.relax();
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }

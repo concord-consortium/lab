@@ -262,7 +262,10 @@ modeler.model = function(initialProperties) {
   // Creates a new md2d coreModel
   // @config: either the number of atoms (for a random setup) or
   //          a hash specifying the x,y,vx,vy properties of the atoms
-  function createNewCoreModel(config) {
+  // The random setup will additionally parse an optional boolean argument
+  // to skip the initial thermalization relaxation method normally used on
+  // a random ensemble.
+  function createNewCoreModel(config, dontRelaxRandom) {
     var elemsArray, element, i, ii;
 
     // convert from easily-readble json format to simplified array format
@@ -300,6 +303,9 @@ modeler.model = function(initialProperties) {
         temperature: temperature
       });
       coreModel.integrate();
+      if (!dontRelaxRandom) {
+        coreModel.relaxToTemperature();
+      }
       pressure = modelOutputState.pressure;
       pe       = modelOutputState.PE;
       ke       = modelOutputState.KE;
@@ -613,8 +619,11 @@ modeler.model = function(initialProperties) {
   // Creates a new md2d coreModel
   // @config: either the number of atoms (for a random setup) or
   //          a hash specifying the x,y,vx,vy properties of the atoms
-  model.createNewAtoms = function(config) {
-    return createNewCoreModel(config);
+  // The random setup will additionally parse an optional boolean argument
+  // to skip the initial thermalization relaxation method normally used on
+  // a random ensemble.
+  model.createNewAtoms = function(config, dontRelaxRandom) {
+    return createNewCoreModel(config, dontRelaxRandom);
   };
 
   model.set = function(hash) {

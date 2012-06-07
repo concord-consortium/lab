@@ -124,7 +124,6 @@ controllers.complexModelController =
         model.createNewAtoms(atoms_properties);
       } else if (mol_number) {
         model.createNewAtoms(mol_number);
-        model.relax();
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
@@ -313,10 +312,6 @@ controllers.complexModelController =
       function selectMoleculeNumberChange() {
         mol_number = +select_molecule_number.value;
         modelReset();
-        if (checkbox_thermalize.checked) {
-          model.relax();
-          moleculeContainer.update_molecule_positions();
-        }
         radio_randomize_pos_vel.checked = false
         updateMolNumberViewDependencies();
       }
@@ -369,8 +364,8 @@ controllers.complexModelController =
       model.resetTime();
       resetEnergyData();
 
-      moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_particles();
+      moleculeContainer.updateMoleculeRadius();
       layout.setupScreen(viewLists);
       step_counter = model.stepCounter();
       select_molecule_number.value = model.get_num_atoms();
@@ -443,9 +438,11 @@ controllers.complexModelController =
     }
 
     function modelReset() {
+      var dontRelaxRandom = !checkbox_thermalize.checked;
       mol_number = +select_molecule_number.value;
-      model.createNewAtoms(mol_number);
+      model.createNewAtoms(mol_number, dontRelaxRandom);
       setupModel();
+      moleculeContainer.update_molecule_positions();
       step_counter = model.stepCounter();
       layout.displayStats();
       if (layout.datatable_visible) {
@@ -455,7 +452,6 @@ controllers.complexModelController =
       }
       resetEnergyData();
       energyGraph.new_data(energy_data);
-      // energyGraph.hide_canvas();
       if (model_controls) {
         model_controls_inputs[0].checked = true;
       }
