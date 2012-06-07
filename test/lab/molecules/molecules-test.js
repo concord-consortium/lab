@@ -218,22 +218,33 @@ suite.addBatch({
 suite.addBatch({
   "model stepping": {
     topic: function() {
-      node_options.num = 10;
       model = modeler.model(initialization_options);
       model.createNewAtoms(initialization_options.mol_number);
+      atom0InitialPosition = [model.get_nodes()[model.INDICES.X][0], model.get_nodes()[model.INDICES.Y][0]];
       return model;
     },
     "a newly initialized model starts at step 0": function(model) {
       assert.equal(model.steps(), 0);
       assert.isTrue(model.isNewStep());
     },
+    "a newly initialized model stepCounter also starts at 0": function(model) {
+      assert.equal(model.stepCounter(), 0);
+    },
     "after running one tick the model is at step 1": function(model) {
       model.tick();
       assert.equal(model.stepCounter(), 1);
       assert.isTrue(model.isNewStep());
     },
-    "after running 9 more ticks the model is at step 10": function(model) {
-      model.tick(9);
+    "after stepping back one step the model is at step 0 and atom0 is in the same initial position": function(model) {
+      model.stepBack();
+      assert.equal(model.stepCounter(), 0);
+      assert.deepEqual(
+        [model.get_nodes()[model.INDICES.X][0], model.get_nodes()[model.INDICES.Y][0]],
+        atom0InitialPosition
+      );
+    },
+    "after running 10 more ticks the model is at step 10": function(model) {
+      model.tick(10);
       assert.equal(model.stepCounter(), 10);
       assert.isTrue(model.isNewStep());
     },

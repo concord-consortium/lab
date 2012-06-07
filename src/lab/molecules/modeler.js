@@ -140,41 +140,8 @@ modeler.model = function(initialProperties) {
     return s/n;
   }
 
-  function tick_history_list_is_empty() {
-    return tick_history_list_index === 0;
-  }
-
-  function tick_history_list_push() {
-    var i,
-        newnodes = [],
-        n = nodes.length;
-
-    i = -1; while (++i < n) {
-      newnodes[i] = arrays.clone(nodes[i]);
-    }
-    tick_history_list.length = tick_history_list_index;
-    tick_history_list_index++;
-    tick_counter++;
-    new_step = true;
-    tick_history_list.push({
-      nodes:   newnodes,
-      pressure: modelOutputState.pressure,
-      pe:       modelOutputState.PE,
-      ke:       modelOutputState.KE,
-      time:     modelOutputState.time
-    });
-    if (tick_history_list_index > 1000) {
-      tick_history_list.splice(0,1);
-      tick_history_list_index = 1000;
-    }
-  }
-
   function tick() {
     var t;
-
-    if (tick_history_list_is_empty()) {
-      tick_history_list_push();
-    }
 
     coreModel.integrate();
 
@@ -205,10 +172,39 @@ modeler.model = function(initialProperties) {
     return stopped;
   }
 
+  function tick_history_list_is_empty() {
+    return tick_history_list_index === 0;
+  }
+
+  function tick_history_list_push() {
+    var i,
+        newnodes = [],
+        n = nodes.length;
+
+    i = -1; while (++i < n) {
+      newnodes[i] = arrays.clone(nodes[i]);
+    }
+    tick_history_list.length = tick_history_list_index;
+    tick_history_list_index++;
+    tick_counter++;
+    new_step = true;
+    tick_history_list.push({
+      nodes:   newnodes,
+      pressure: modelOutputState.pressure,
+      pe:       modelOutputState.PE,
+      ke:       modelOutputState.KE,
+      time:     modelOutputState.time
+    });
+    if (tick_history_list_index > 1000) {
+      tick_history_list.splice(0,1);
+      tick_history_list_index = 1000;
+    }
+  }
+
   function reset_tick_history_list() {
     tick_history_list = [];
     tick_history_list_index = 0;
-    tick_counter = -1;
+    tick_counter = 0;
   }
 
   function tick_history_list_reset_to_ptr() {
@@ -303,10 +299,17 @@ modeler.model = function(initialProperties) {
       coreModel.initializeAtomsRandomly({
         temperature: temperature
       });
+      coreModel.integrate();
+      pressure = modelOutputState.pressure;
+      pe       = modelOutputState.PE;
+      ke       = modelOutputState.KE;
+      time     = modelOutputState.time;
     }
 
     // tick history stuff
     reset_tick_history_list();
+    tick_history_list_push();
+    tick_counter = 0;
     new_step = true;
 
     return coreModel;
@@ -365,15 +368,6 @@ modeler.model = function(initialProperties) {
       position
   */
   model.steps = function() {
-
-    // If no ticks have run, tick_history_list will be uninitialized.
-    if (tick_history_list_is_empty()) {
-      return 0;
-    }
-
-    // The first tick will push 2 states to the tick_history_list: the initialized state ("step 0")
-    // and the post-tick model state ("step 1")
-    // Subsequent ticks will push 1 state per tick. So subtract 1 from the length to get the step #.
     return tick_history_list.length - 1;
   };
 

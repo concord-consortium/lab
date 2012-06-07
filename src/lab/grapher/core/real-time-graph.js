@@ -345,12 +345,12 @@ grapher.realTimeGraph = function(e, options) {
     //
     // ------------------------------------------------------------
 
-    function update() {
+    function update(currentSample) {
       var i;
 
       var gplot = node.children[0].getElementsByTagName("rect")[0];
 
-      update_canvas();
+      update_canvas(currentSample);
 
       if (graph.selectable_points) {
         var circle = vis.selectAll("circle")
@@ -504,16 +504,17 @@ grapher.realTimeGraph = function(e, options) {
       }
     }
 
-    function setPointStrokeColor(i) {
+    function setPointStrokeColor(i, afterSamplePoint) {
+      var opacity = afterSamplePoint ? 0.5 : 1.0;
       switch(i) {
         case 0:
-          gctx.strokeStyle = "rgba(160,00,0, 1.0)";
+          gctx.strokeStyle = "rgba(160,00,0," + opacity + ")";
           break;
         case 1:
-          gctx.strokeStyle = "rgba(44,160,0, 1.0)";
+          gctx.strokeStyle = "rgba(44,160,0," + opacity + ")";
           break;
         case 2:
-          gctx.strokeStyle = "rgba(44,0,160, 1.0)";
+          gctx.strokeStyle = "rgba(44,0,160," + opacity + ")";
           break;
       }
     }
@@ -562,27 +563,44 @@ grapher.realTimeGraph = function(e, options) {
     }
 
     // update real-time canvas line graph
-    function update_canvas() {
-      var i, pc, py;
+    function update_canvas(currentSample) {
+      var i, index, pc, py, samplePoint, pointStop;;
+      if (typeof currentSample === 'undefined') {
+        samplePoint = pointArray[0].length;
+      } else {
+        samplePoint = currentSample;
+      }
       if (points.length === 0) { return; }
       clear_canvas();
       gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
       for (i = 0; i < pointArray.length; i++) {
         points = pointArray[i];
-        setPointStrokeColor(i);
         px = xScale.call(self, 0, 0);
         py = yScale.call(self, points[0].y, 0);
         index = 0;
         lengthX = 0;
+        setPointStrokeColor(i);
         gctx.beginPath();
         gctx.moveTo(px, py);
-        for (index=0; index < points.length-1; index++) {
+        pointStop = samplePoint - 1;
+        for (index=0; index < pointStop; index++) {
           lengthX += sample;
           px = xScale.call(self, lengthX, lengthX);
           py = yScale.call(self, points[index].y, lengthX);
           gctx.lineTo(px, py);
         }
         gctx.stroke();
+        pointStop = points.length-1;
+        if (index < pointStop) {
+          setPointStrokeColor(i, true);
+          for (;index < pointStop; index++) {
+            lengthX += sample;
+            px = xScale.call(self, lengthX, lengthX);
+            py = yScale.call(self, points[index].y, lengthX);
+            gctx.lineTo(px, py);
+          }
+          gctx.stroke();
+        }
       }
     }
 
@@ -652,6 +670,36 @@ grapher.realTimeGraph = function(e, options) {
   graph.resize = function(width, height) {
     graph.scale(width, height);
     graph();
+  };
+
+  graph.add_data = function(newdata) {
+    if (!arguments.length) return points;
+    var domain = xScale.domain(),
+        xextent = domain[1] - domain[0],
+        shift = xextent * 0.8,
+        i;
+    if (newdata instanceof Array && newdata.length > 0) {
+      if (newdata[0] instanceof Array) {
+        for(i = 0; i < newdata.length; i++) {
+          points.push(newdata[i]);
+        }
+      } else {
+        if (newdata.length === 2) {
+          points.push(newdata);
+        } else {
+          throw new Error("invalid argument to graph.add_data() " + newdata + " length should === 2.");
+        }
+      }
+    }
+    if (points[points.length-1][0] > domain[1]) {
+      domain[0] += shift;
+      domain[1] += shift;
+      xScale.domain(domain);
+      graph.redraw();
+    } else {
+      graph.update();
+    }
+    return graph;
   };
 
 
