@@ -38,6 +38,7 @@ LAB_JS_FILES = \
 	server/public/lab/lab.grapher.js \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.layout.js \
+	server/public/lab/lab.views.js \
 	server/public/lab/lab.arrays.js \
 	server/public/lab/lab.molecules.js \
 	server/public/lab/lab.components.js \
@@ -273,6 +274,7 @@ server/public/lab/lab.js: \
 	server/public/lab/lab.benchmark.js \
 	server/public/lab/lab.arrays.js \
 	server/public/lab/lab.layout.js \
+	server/public/lab/lab.views.js \
 	server/public/lab/lab.components.js \
   server/public/lab/lab.controllers.js
 
@@ -311,17 +313,22 @@ server/public/lab/lab.arrays.js: \
 server/public/lab/lab.layout.js: \
 	src/lab/start.js \
 	src/lab/layout/layout.js \
-	src/lab/layout/applet-container.js \
-	src/lab/layout/molecule-container.js \
-	src/lab/layout/potential-chart.js \
-	src/lab/layout/speed-distribution-histogram.js \
-	src/lab/layout/benchmarks.js \
-	src/lab/layout/datatable.js \
-	src/lab/layout/temperature-control.js \
-	src/lab/layout/force-interaction-controls.js \
-	src/lab/layout/display-stats.js \
 	src/lab/layout/fullscreen.js \
-	src/lab/layout/heat-cool-buttons.js \
+	src/lab/end.js
+
+server/public/lab/lab.views.js: \
+	src/lab/start.js \
+	src/lab/views/views.js \
+	src/lab/views/applet-container.js \
+	src/lab/views/molecule-container.js \
+	src/lab/views/potential-chart.js \
+	src/lab/views/speed-distribution-histogram.js \
+	src/lab/views/benchmarks.js \
+	src/lab/views/datatable.js \
+	src/lab/views/temperature-control.js \
+	src/lab/views/force-interaction-controls.js \
+	src/lab/views/display-stats.js \
+	src/lab/views/heat-cool-buttons.js \
 	src/lab/end.js
 
 server/public/lab/lab.controllers.js: \
