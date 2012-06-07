@@ -480,6 +480,13 @@ layout.moleculeContainer = function(e, options) {
     }
 
     function setup_particles() {
+      // The get_nodes option allows us to update 'nodes' array every model tick.
+      get_nodes = options.get_nodes;
+      nodes = get_nodes();
+
+      get_num_atoms = options.get_num_atoms;
+      (atoms=[]).length = get_num_atoms();
+
       if (typeof atoms == "undefined" || !atoms){
         return;
       }
