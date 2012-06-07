@@ -18,6 +18,8 @@ layout.hide_datatable = function() {
 layout.render_datatable = function(reset) {
   datatable_table.style.display = "";
   var i,
+      nodes = model.get_nodes(),
+      atoms = [],
       titlerows = datatable_table.getElementsByClassName("title"),
       datarows = datatable_table.getElementsByClassName("data"),
       column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'CHARGE', 'RADIUS', 'ELEMENT'],
@@ -29,6 +31,7 @@ layout.render_datatable = function(reset) {
                     f_formatter, f_formatter, charge_formatter, f_formatter, 
                     i_formatter];
 
+  atoms.length = nodes[0].length;
   reset = reset || false;
 
   function empty_table() {
@@ -114,7 +117,7 @@ layout.render_datatable = function(reset) {
     add_column_headings(title_row, column_titles)
     datarows = add_data_rows(atoms.length);
   }
-  if (reset) { datarows = add_data_rows(atoms.length); }
+  if (reset) { datarows = add_data_rows(model.get_num_atoms()); }
   i = -1; while (++i < atoms.length) {
     add_molecule_data(datarows[i], i);
   }
