@@ -206,10 +206,18 @@ controllers.complexModelController =
       model.on('stop', function() {
       });
 
+      // Right now this action is acting as an indication of model reset ...
+      // This should be refactoring to distinguish the difference between reset
+      // and seek to location in model history.
       model.on('seek', function() {
-        if (model.stepCounter())
-        resetEnergyData();
-        energyGraph.new_data(energy_data);
+        modelsteps = model.stepCounter();
+        if (modelsteps > 0) {
+          resetEnergyData(modelsteps);
+          energyGraph.new_data(energy_data);
+        } else {
+          resetEnergyData();
+          energyGraph.new_data(energy_data);
+        }
       });
 
       // ------------------------------------------------------------
@@ -426,7 +434,7 @@ controllers.complexModelController =
     function modelStepForward() {
       if (model.stepCounter() < maximum_model_steps) {
         model.stepForward();
-        energyGraph.showMarker(model.stepCounter());
+        // energyGraph.showMarker(model.stepCounter());
       } else {
         if (model_controls) {
           model_controls_inputs[0].checked = true;
