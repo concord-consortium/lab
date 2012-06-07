@@ -425,11 +425,13 @@ grapher.realTimeGraph = function(e, options) {
         d3.select('body').style("cursor", "ew-resize");
         xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
         redraw();
+        d3.event.stopPropagation();
       }
       if (!isNaN(downy)) {
         d3.select('body').style("cursor", "ns-resize");
         yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
         redraw();
+        d3.event.stopPropagation();
       }
     }
 
