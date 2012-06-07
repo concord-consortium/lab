@@ -12,6 +12,8 @@ suite.addBatch({
     topic: function() {
       return grapher.axis.axisProcessDrag;
     },
+    // axisProcessDrag((dragstart, currentdrag, domain);
+    // => newDomain
     "axisProcessDrag: (20, 10, [0, 40]) => [0, 80]": function(axisProcessDrag) {
       assert.deepEqual(axisProcessDrag(20, 10, [0, 40]), [0, 80]);
     },
@@ -33,9 +35,6 @@ suite.addBatch({
     "axisProcessDrag: (-0.2, -0.4, [-1.0, 0.4]) => [-0.5, 0.2]": function(axisProcessDrag) {
       assert.deepEqual(axisProcessDrag(-0.2, -0.4, [-1.0, 0.4]), [-0.5, 0.2]);
     },
-    "axisProcessDrag: (-0.4, -0.2, [0.4, -1.0]) => [0.8, -2.0]": function(axisProcessDrag) {
-      assert.deepEqual(axisProcessDrag(-0.4, -0.2, [0.4, -1.0]), [0.8, -2.0]);
-    }
   }
 });
 
