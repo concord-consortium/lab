@@ -95,7 +95,7 @@ suite.addBatch({
         mol_number: 5,
         width: 3,
         height: 4
-      }
+      };
       model = modeler.model(initialization_options);
       model.createNewAtoms(initialization_options.mol_number);
 
@@ -113,7 +113,7 @@ suite.addBatch({
         mol_number: 10,
         width: 4,
         height: 5
-      }
+      };
       model.set(new_options);
       model.createNewAtoms(new_options.mol_number);
 
@@ -130,7 +130,7 @@ suite.addBatch({
         coulomb_forces: true,
         model_listener: false,
         mol_number: 5
-      }
+      };
       model = modeler.model(new_initialization_options);
       model.createNewAtoms(new_initialization_options.mol_number);
 
@@ -145,7 +145,7 @@ suite.addBatch({
 
       newModelHash = model.serialize(true);
 
-      for (prop in oldAtomStates) {
+      for (var prop in oldAtomStates) {
         if (oldAtomStates.hasOwnProperty(prop)) {
           array = oldAtomStates[prop];
           for (i = 0, ii = array.length; i<ii; i++){
@@ -161,7 +161,7 @@ suite.addBatch({
           {id: 0, mass: 1, epsilon: -0.1, sigma: 0.07}
         ],
         mol_number: 5
-      }
+      };
       model = modeler.model(new_initialization_options);
       md2d = model.createNewAtoms(new_initialization_options.mol_number);
 
@@ -173,7 +173,7 @@ suite.addBatch({
           {id: 0, mass: 2, epsilon: -0.1, sigma: 0.07}
         ],
         mol_number: 5
-      }
+      };
       model = modeler.model(new_initialization_options);
       md2d = model.createNewAtoms(new_initialization_options.mol_number);
 
@@ -186,7 +186,7 @@ suite.addBatch({
           {id: 1, mass: 2, epsilon: -0.1, sigma: 0.07}
         ],
         mol_number: 100
-      }
+      };
       model = modeler.model(new_initialization_options);
       md2d = model.createNewAtoms(new_initialization_options.mol_number);
 
@@ -206,7 +206,7 @@ suite.addBatch({
           VY: [0,0,0],
           ELEMENT: [0,0,1]
         }
-      }
+      };
       model = modeler.model(new_initialization_options);
       md2d = model.createNewAtoms(new_initialization_options.atoms);
 
