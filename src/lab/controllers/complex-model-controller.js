@@ -54,9 +54,7 @@ controllers.complexModelController =
       select_molecule_number,
       radio_randomize_pos_vel,
 
-      nodes,
-
-      currentTick = 0;
+      nodes;
 
   function controller() {
 
@@ -78,20 +76,12 @@ controllers.complexModelController =
       moleculeContainer.update_molecule_positions();
 
       if (model.isNewStep()) {
-        currentTick++;
         energy_data[0].push(ke);
         energy_data[1].push(pe);
         energy_data[2].push(te);
-        if (model.is_stopped()) {
-          energyGraph.add_points([ke, pe, te]);
-        } else {
-          energyGraph.add_canvas_points([ke, pe, te]);
-        }
+        energyGraph.add_points([ke, pe, te]);
       } else {
-        energyGraph.update();
-      }
-      if (step_counter > 0.95 * energyGraph.xmax && energyGraph.xmax < maximum_model_steps) {
-        energyGraph.change_xaxis(energyGraph.xmax * 2);
+        energyGraph.update(model.stepCounter());
       }
       if (step_counter >= maximum_model_steps) { modelStop(); }
       layout.displayStats();
@@ -199,12 +189,12 @@ controllers.complexModelController =
       model.on('play', function() {
         var i, len;
 
-        if (energyGraph.number_of_points() && currentTick < energyGraph.number_of_points()) {
-          if (currentTick === 0) {
+        if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
+          if (model.stepCounter() === 0) {
             resetEnergyData();
           } else {
             for (i = 0, len = energy_data.length; i < len; i++) {
-              energy_data[i].length = currentTick;
+              energy_data[i].length = model.stepCounter();
             }
           }
           energyGraph.new_data(energy_data);
@@ -428,14 +418,14 @@ controllers.complexModelController =
 
     function modelStepBack() {
       modelStop();
-      currentTick = model.stepBack();
-      energyGraph.showMarker(currentTick);
+      model.stepBack();
+      energyGraph.showMarker(model.stepCounter());
     }
 
     function modelStepForward() {
       if (model.stepCounter() < maximum_model_steps) {
-        currentTick = model.stepForward();
-        energyGraph.showMarker(currentTick);
+        model.stepForward();
+        energyGraph.showMarker(model.stepCounter());
       } else {
         if (model_controls) {
           model_controls_inputs[0].checked = true;
