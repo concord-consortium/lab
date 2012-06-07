@@ -161,7 +161,7 @@ grapher.realTimeGraph = function(e, options) {
         .on("mousedown", plot_drag)
         .on("touchstart", plot_drag);
 
-      plot.call(d3.behavior.zoom().x(xScale).y(yScale).scaleExtent([1, 8]).on("zoom", redraw));
+      plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
 
       viewbox = vis.append("svg")
         .attr("class", "viewbox")
@@ -222,8 +222,6 @@ grapher.realTimeGraph = function(e, options) {
       // line_seglist = line_path.pathSegList;
       initialize_canvas();
 
-      redraw();
-
     } else {
 
       d3.select(node).select("svg")
@@ -263,14 +261,9 @@ grapher.realTimeGraph = function(e, options) {
       vis.selectAll("g.y").remove();
 
       resize_canvas();
-      redraw();
     }
 
-    d3.select(this)
-        .on("mousemove.drag", mousemove)
-        .on("touchmove.drag", mousemove)
-        .on("mouseup.drag",   mouseup)
-        .on("touchend.drag",  mouseup);
+    redraw();
 
     // ------------------------------------------------------------
     //
@@ -279,10 +272,6 @@ grapher.realTimeGraph = function(e, options) {
     // ------------------------------------------------------------
 
     function redraw() {
-      if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-          d3.event.transform(x, y);
-      }
-
       var fx = xScale.tickFormat(10),
           fy = yScale.tickFormat(8);
 
@@ -346,7 +335,7 @@ grapher.realTimeGraph = function(e, options) {
           .on("touchstart.drag", yaxis_drag);
 
       gy.exit().remove();
-      plot.call(d3.behavior.zoom().x(xScale).y(yScale).scaleExtent([1, 8]).on("zoom", redraw));
+      plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
       update();
     }
 
@@ -385,17 +374,6 @@ grapher.realTimeGraph = function(e, options) {
         circle.exit().remove();
       }
 
-      // if (markedPoint) {
-      //   marker
-      //       .attr("stroke", "#F00")
-      //       .attr("x1", markedPoint.x)
-      //       .attr("y1", 0)
-      //       .attr("y2", size.height)
-      //       .attr("x2", markedPoint.x);
-      // } else {
-      //   marker.attr("d", []);
-      // }
-
       if (d3.event && d3.event.keyCode) {
         d3.event.preventDefault();
         d3.event.stopPropagation();
@@ -416,12 +394,14 @@ grapher.realTimeGraph = function(e, options) {
 
     function xaxis_drag(d) {
       document.onselectstart = function() { return false; };
+      d3.event.preventDefault();
       var p = d3.svg.mouse(vis[0][0]);
       downx = xScale.invert(p[0]);
     }
 
     function yaxis_drag(d) {
       document.onselectstart = function() { return false; };
+      d3.event.preventDefault();
       var p = d3.svg.mouse(vis[0][0]);
       downy = yScale.invert(p[1]);
     }
@@ -445,13 +425,11 @@ grapher.realTimeGraph = function(e, options) {
         d3.select('body').style("cursor", "ew-resize");
         xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
         redraw();
-        d3.event.stopPropagation();
       }
       if (!isNaN(downy)) {
         d3.select('body').style("cursor", "ns-resize");
         yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
         redraw();
-        d3.event.stopPropagation();
       }
     }
 
