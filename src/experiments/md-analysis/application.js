@@ -1,3 +1,4 @@
+var graph;
 d3.text("data/cm-random-walk.csv", "text/csv", function(text) {
   var data = d3.csv.parseRows(text);
   data.length = 5000;
@@ -17,4 +18,32 @@ d3.text("data/cm-random-walk.csv", "text/csv", function(text) {
     dataChange: false,
     points: random_walk
   });
+  selectSize = document.getElementById('select-size');
+
+  function selectSizeHandler() {
+    switch(selectSize.value) {
+      case "large":
+      graph.resize(1000, 1000);
+      break;
+
+      case "medium":
+      graph.resize(700, 700);
+      break;
+
+      case "small":
+      graph.resize(400, 500);
+      break;
+
+      case "tiny":
+      graph.resize(240, 240);
+      break;
+
+      case "icon":
+      graph.resize(120, 120);
+      break;
+    }
+  }
+
+  selectSize.onchange = selectSizeHandler;
+
 });

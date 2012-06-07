@@ -15,11 +15,22 @@ grapher.graph = function(elem, options, message) {
       padding, size,
       xScale, yScale, xValue, yValue, line,
       circleCursorStyle,
+      displayProperties,
+      emsize,
+      scaleFactor,
+      sizeType = {
+        category: "medium",
+        value: 3,
+        icon: 120,
+        tiny: 240,
+        small: 480,
+        medium: 960,
+        large: 1920
+      },
       downx = Math.NaN,
       downy = Math.NaN,
       dragged = null,
       selected = null,
-      emsize = layout.getDisplayProperties().emsize,
       titles = [],
       default_options = {
         "xmax":            60,
@@ -50,6 +61,28 @@ grapher.graph = function(elem, options, message) {
     return options;
   }
 
+  function calculateSizeType() {
+    if(cx <= sizeType.icon) {
+      sizeType.category = 'icon';
+      sizeType.value = 0;
+    } else if (cx <= sizeType.tiny) {
+      sizeType.category = 'tiny';
+      sizeType.value = 1;
+    } else if (cx <= sizeType.small) {
+      sizeType.category = 'small';
+      sizeType.value = 2;
+    } else if (cx <= sizeType.medium) {
+      sizeType.category = 'medium';
+      sizeType.value = 3;
+    } else if (cx <= sizeType.large) {
+      sizeType.category = 'large';
+      sizeType.value = 4;
+    } else {
+      sizeType.category = 'extralarge';
+      sizeType.value = 5;
+    }
+  }
+
   function scale(w, h) {
     if (!arguments.length) {
       cx = elem.property("clientWidth");
@@ -60,6 +93,9 @@ grapher.graph = function(elem, options, message) {
       node.style.width =  cx +"px";
       node.style.height = cy +"px";
     }
+    calculateSizeType();
+    displayProperties = layout.getDisplayProperties();
+    emsize = displayProperties.emsize;
   }
 
   function initialize(newOptions, mesg) {
@@ -87,14 +123,53 @@ grapher.graph = function(elem, options, message) {
     options.xrange = options.xmax - options.xmin;
     options.yrange = options.ymax - options.ymin;
 
-    padding = {
-     "top":    options.title  ? 40 : 20,
-     "right":                   30,
-     "bottom": options.xlabel ? 60 : 10,
-     "left":   options.ylabel ? 70 : 45
-    };
 
-    emsize = layout.getDisplayProperties().emsize;
+    switch(sizeType.value) {
+      case 0:
+      padding = {
+       "top":    4,
+       "right":  4,
+       "bottom": 4,
+       "left":   4
+      };
+      break;
+
+      case 1:
+      padding = {
+       "top":    8,
+       "right":  8,
+       "bottom": 8,
+       "left":   8
+      };
+      break;
+
+      case 2:
+      padding = {
+       "top":    options.title  ? 25 : 15,
+       "right":  15,
+       "bottom": 20,
+       "left":   20
+      };
+      break;
+
+      case 3:
+      padding = {
+       "top":    options.title  ? 30 : 20,
+       "right":                   30,
+       "bottom": options.xlabel ? 60 : 10,
+       "left":   options.ylabel ? 70 : 45
+      };
+      break;
+
+      default:
+      padding = {
+       "top":    options.title  ? 40 : 20,
+       "right":                   30,
+       "bottom": options.xlabel ? 60 : 10,
+       "left":   options.ylabel ? 70 : 45
+      };
+      break;
+    }
 
     if (Object.prototype.toString.call(options.title) === "[object Array]") {
       titles = options.title;
@@ -102,7 +177,11 @@ grapher.graph = function(elem, options, message) {
       titles = [options.title];
     }
 
-    padding.top += (titles.length-1) * emsize * 20;
+    if (sizeType.value > 2 ) {
+      padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * emsize * 22;
+    } else {
+      titles = [titles[0]];
+    }
 
     size = {
       "width":  cx - padding.left - padding.right,
@@ -168,28 +247,30 @@ grapher.graph = function(elem, options, message) {
             .attr("width", size.width)
             .attr("height", size.height)
             .attr("viewBox", "0 0 "+size.width+" "+size.height)
-            .attr("class", "line")
+            .attr("class", "line");
 
         viewbox.append("path")
             .attr("class", "line")
             .attr("d", line(points));
 
         // add Chart Title
-        if (options.title) {
+        if (options.title && sizeType.value > 1) {
           title = vis.selectAll("text")
             .data(titles, function(d) { return d; });
           title.enter().append("text")
               .attr("class", "title")
+              .style("font-size", sizeType.value/2.4 * 100 + "%")
               .text(function(d) { return d; })
               .attr("x", size.width/2)
-              .attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; })
+              .attr("dy", function(d, i) { return -0.5 + -1 * sizeType.value/2.8 * i * emsize + "em"; })
               .style("text-anchor","middle");
         }
 
         // Add the x-axis label
-        if (options.xlabel) {
+        if (options.xlabel && sizeType.value > 2) {
           xlabel = vis.append("text")
               .attr("class", "axis")
+              .style("font-size", sizeType.value/2.6 * 100 + "%")
               .text(options.xlabel)
               .attr("x", size.width/2)
               .attr("y", size.height)
@@ -198,9 +279,10 @@ grapher.graph = function(elem, options, message) {
         }
 
         // add y-axis label
-        if (options.ylabel) {
+        if (options.ylabel && sizeType.value > 2) {
           ylabel = vis.append("g").append("text")
               .attr("class", "axis")
+              .style("font-size", sizeType.value/2.6 * 100 + "%")
               .text(options.ylabel)
               .style("text-anchor","middle")
               .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
@@ -236,20 +318,20 @@ grapher.graph = function(elem, options, message) {
             .attr("height", size.height)
             .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-        if (options.title) {
+        if (options.title && sizeType.value > 1) {
             title.each(function(d, i) {
-              d3.select(this).attr("x", size.width/2)
+              d3.select(this).attr("x", size.width/2);
               d3.select(this).attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; });
             });
         }
 
-        if (options.xlabel) {
+        if (options.xlabel && sizeType.value > 1) {
           xlabel
               .attr("x", size.width/2)
               .attr("y", size.height);
         }
 
-        if (options.ylabel) {
+        if (options.ylabel && sizeType.value > 1) {
           ylabel
               .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
         }
@@ -351,8 +433,7 @@ grapher.graph = function(elem, options, message) {
           .data(xScale.ticks(10), String)
           .attr("transform", tx);
 
-      gx.select("text")
-          .text(fx);
+      gx.select("text").text(fx);
 
       var gxe = gx.enter().insert("g", "a")
           .attr("class", "x")
@@ -363,17 +444,20 @@ grapher.graph = function(elem, options, message) {
           .attr("y1", 0)
           .attr("y2", size.height);
 
-      gxe.append("text")
-          .attr("class", "axis")
-          .attr("y", size.height)
-          .attr("dy", "1em")
-          .attr("text-anchor", "middle")
-          .text(fx)
-          .style("cursor", "ew-resize")
-          .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-          .on("mousedown.drag",  xaxis_drag)
-          .on("touchstart.drag", xaxis_drag);
+      if (sizeType.value > 1) {
+        gxe.append("text")
+            .attr("class", "axis")
+            .style("font-size", sizeType.value/2.7 * 100 + "%")
+            .attr("y", size.height)
+            .attr("dy", "1em")
+            .attr("text-anchor", "middle")
+            .text(fx)
+            .style("cursor", "ew-resize")
+            .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+            .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+            .on("mousedown.drag",  xaxis_drag)
+            .on("touchstart.drag", xaxis_drag);
+      }
 
       gx.exit().remove();
 
@@ -395,17 +479,20 @@ grapher.graph = function(elem, options, message) {
           .attr("x1", 0)
           .attr("x2", size.width);
 
-      gye.append("text")
-          .attr("class", "axis")
-          .attr("x", -3)
-          .attr("dy", ".35em")
-          .attr("text-anchor", "end")
-          .text(fy)
-          .style("cursor", "ns-resize")
-          .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-          .on("mousedown.drag",  yaxis_drag)
-          .on("touchstart.drag", yaxis_drag);
+      if (sizeType.value > 1) {
+        gye.append("text")
+            .attr("class", "axis")
+            .style("font-size", sizeType.value/2.7 * 100 + "%")
+            .attr("x", -3)
+            .attr("dy", ".35em")
+            .attr("text-anchor", "end")
+            .text(fy)
+            .style("cursor", "ns-resize")
+            .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+            .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+            .on("mousedown.drag",  yaxis_drag)
+            .on("touchstart.drag", yaxis_drag);
+      }
 
       gy.exit().remove();
       plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
@@ -418,12 +505,12 @@ grapher.graph = function(elem, options, message) {
       var circle = vis.select("svg").selectAll("circle")
           .data(points, function(d) { return d; });
 
-      if (options.circleRadius){
+      if (options.circleRadius && sizeType.value > 0){
         circle.enter().append("circle")
             .attr("class", function(d) { return d === selected ? "selected" : null; })
             .attr("cx",    function(d) { return xScale(d[0]); })
             .attr("cy",    function(d) { return yScale(d[1]); })
-            .attr("r", options.circleRadius)
+            .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
             .style("cursor", circleCursorStyle)
             .on("mousedown.drag",  datapoint_drag)
             .on("touchstart.drag", datapoint_drag);

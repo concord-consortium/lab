@@ -16,6 +16,14 @@ function selectSizeHandler() {
     case "small":
     graph.resize(480, 250);
     break;
+
+    case "tiny":
+    graph.resize(240, 125);
+    break;
+
+    case "icon":
+    graph.resize(120, 62);
+    break;
   }
 }
 
