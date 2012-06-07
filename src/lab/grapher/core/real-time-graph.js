@@ -65,7 +65,7 @@ grapher.realTimeGraph = function(e, options) {
 
   if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
     for (var i = 0; i < options.dataset.length; i++) {
-      pointArray.push(indexedData(options.dataset[i], 0));
+      pointArray.push(indexedData(options.dataset[i], 0, sample));
     }
     points = pointArray[0];
   } else {
@@ -505,7 +505,7 @@ grapher.realTimeGraph = function(e, options) {
     }
 
     function setPointStrokeColor(i, afterSamplePoint) {
-      var opacity = afterSamplePoint ? 0.5 : 1.0;
+      var opacity = afterSamplePoint ? 0.4 : 1.0;
       switch(i) {
         case 0:
           gctx.strokeStyle = "rgba(160,00,0," + opacity + ")";
@@ -520,7 +520,16 @@ grapher.realTimeGraph = function(e, options) {
     }
 
     function new_data(d) {
-      points = indexedData(d, 0, sample);
+      pointArray = [];
+      if (Object.prototype.toString.call(d) === "[object Array]") {
+        for (var i = 0; i < d.length; i++) {
+          points = indexedData(d[i], 0, sample);
+          pointArray.push(points);
+        }
+      } else {
+        points = indexedData(options.dataset, 0, sample);
+        pointArray = [points];
+      }
       update();
     }
 
