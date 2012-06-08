@@ -259,68 +259,6 @@ modeler.model = function(initialProperties) {
     notifyListenersOfEvents(propsChanged);
   }
 
-  // Creates a new md2d coreModel
-  // @config: either the number of atoms (for a random setup) or
-  //          a hash specifying the x,y,vx,vy properties of the atoms
-  // The random setup will additionally parse an optional boolean argument
-  // to skip the initial thermalization relaxation method normally used on
-  // a random ensemble.
-  function createNewCoreModel(config, dontRelaxRandom) {
-    var elemsArray, element, i, ii;
-
-    // convert from easily-readble json format to simplified array format
-    elemsArray = [];
-    for (i=0, ii=elements.length; i<ii; i++){
-      element = elements[i];
-      elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
-    }
-
-    // get a fresh model
-    coreModel = md2d.makeModel();
-    coreModel.setSize([width,height]);
-    coreModel.setElements(elemsArray);
-    coreModel.createAtoms({
-      num: typeof config === 'number' ? config : config.X.length
-    });
-
-    nodes = coreModel.atoms;
-    modelOutputState = coreModel.outputState;
-
-    // Initialize properties
-    temperature_control = properties.temperature_control;
-    temperature         = properties.temperature;
-
-    coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
-    coreModel.useCoulombInteraction(properties.coulomb_forces);
-    coreModel.useThermostat(temperature_control);
-
-    coreModel.setTargetTemperature(temperature);
-
-    if (config.X && config.Y) {
-      coreModel.initializeAtomsFromProperties(config);
-    } else {
-      coreModel.initializeAtomsRandomly({
-        temperature: temperature
-      });
-      coreModel.integrate();
-      if (!dontRelaxRandom) {
-        coreModel.relaxToTemperature();
-      }
-      pressure = modelOutputState.pressure;
-      pe       = modelOutputState.PE;
-      ke       = modelOutputState.KE;
-      time     = modelOutputState.time;
-    }
-
-    // tick history stuff
-    reset_tick_history_list();
-    tick_history_list_push();
-    tick_counter = 0;
-    new_step = true;
-
-    return coreModel;
-  }
-
   // ------------------------------
   // finish setting up the model
   // ------------------------------
@@ -427,6 +365,80 @@ modeler.model = function(initialProperties) {
     return tick_counter;
   };
 
+  /**
+    Creates a new md2d model with a new set of atoms and leaves it in 'coreModel'
+
+    @config: either the number of atoms (for a random setup) or
+             a hash specifying the x,y,vx,vy properties of the atoms
+    When random setup is used, the option 'relax' determines whether the model is requested to
+    relax to a steady-state temperature (and in effect gets thermalized). If false, the atoms are
+    left in whatever grid the coreModel's initialization leaves them in.
+  */
+  model.createNewAtoms = function(config) {
+    var elemsArray, element, i, ii, num;
+
+    if (typeof config === 'number') {
+      num = config;
+    } else if (config.num != null) {
+      num = config.num;
+    } else if (config.X) {
+      num = config.X.length;
+    }
+
+    // convert from easily-readble json format to simplified array format
+    elemsArray = [];
+    for (i=0, ii=elements.length; i<ii; i++){
+      element = elements[i];
+      elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
+    }
+
+    // get a fresh model
+    coreModel = md2d.makeModel();
+    coreModel.setSize([width,height]);
+    coreModel.setElements(elemsArray);
+    coreModel.createAtoms({
+      num: num
+    });
+
+    nodes = coreModel.atoms;
+    modelOutputState = coreModel.outputState;
+
+    // Initialize properties
+    temperature_control = properties.temperature_control;
+    temperature         = properties.temperature;
+
+    coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
+    coreModel.useCoulombInteraction(properties.coulomb_forces);
+    coreModel.useThermostat(temperature_control);
+
+    coreModel.setTargetTemperature(temperature);
+
+    if (config.X && config.Y) {
+      coreModel.initializeAtomsFromProperties(config);
+    } else {
+      coreModel.initializeAtomsRandomly({
+        temperature: temperature
+      });
+      if (config.relax) coreModel.relaxToTemperature();
+    }
+
+    coreModel.computeOutputState();
+
+    pressure = modelOutputState.pressure;
+    pe       = modelOutputState.PE;
+    ke       = modelOutputState.KE;
+    time     = modelOutputState.time;
+
+    // tick history stuff
+    reset_tick_history_list();
+    tick_history_list_push();
+    tick_counter = 0;
+    new_step = true;
+
+    // return model, for chaining (if used)
+    return model;
+  };
+
   // The next four functions assume we're are doing this for
   // all the atoms will need to be changed when different atoms
   // can have different LJ sigma values
@@ -472,6 +484,10 @@ modeler.model = function(initialProperties) {
 
   model.getTime = function() {
     return modelOutputState ? modelOutputState.time : undefined;
+  };
+
+  model.getTotalMass = function() {
+    return coreModel.getTotalMass();
   };
 
   model.addRandomAtom = function(el, charge) {
@@ -614,16 +630,6 @@ modeler.model = function(initialProperties) {
     if (!arguments.length) return coreModel.getSize();
     coreModel.setSize(x);
     return model;
-  };
-
-  // Creates a new md2d coreModel
-  // @config: either the number of atoms (for a random setup) or
-  //          a hash specifying the x,y,vx,vy properties of the atoms
-  // The random setup will additionally parse an optional boolean argument
-  // to skip the initial thermalization relaxation method normally used on
-  // a random ensemble.
-  model.createNewAtoms = function(config, dontRelaxRandom) {
-    return createNewCoreModel(config, dontRelaxRandom);
   };
 
   model.set = function(hash) {
