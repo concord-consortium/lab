@@ -786,6 +786,10 @@ exports.makeModel = function() {
     },
 
     relaxToTemperature: function(T) {
+
+      // FIXME this method needs to be modified. It should rescale velocities only periodically
+      // and stop when the temperature approaches a steady state between rescalings.
+
       if (T != null) T_target = T;
 
       validateTemperature(T_target);
