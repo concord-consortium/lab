@@ -36,8 +36,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       model_listener,
       step_counter,
       therm,
-      epsilon_slider,
-      viewLists;
+      epsilon_slider;
 
   function controller() {
 
@@ -141,12 +140,10 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       //
       // ------------------------------------------------------------
 
-      viewLists = {
-        moleculeContainers:      [molecule_container],
-        thermometers:            [therm]
-      };
+      layout.addView('moleculeContainers', molecule_container);
+      layout.addView('thermometers', therm);
 
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
 
     }
 
@@ -209,7 +206,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     // ------------------------------------------------------------
 
     function onresize() {
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
       therm.resize();
       updateTherm();
     }
