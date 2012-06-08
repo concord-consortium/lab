@@ -17,7 +17,11 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
           maximum_model_steps: Infinity
         };
       $.get(modelUrl).done(function(modelConfig) {
-        simpleController = controllers.simpleModelController('#molecule-container', modelConfig, playerConfig);
+        if (simpleController) {
+          simpleController.reload(modelConfig, playerConfig);
+        } else {
+          simpleController = controllers.simpleModelController('#molecule-container', modelConfig, playerConfig);
+        }
       });
     }
 
@@ -47,9 +51,13 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
     function loadInteractive(newInteractive, interactive_view_id) {
       interactive = newInteractive;
       $interactiveContainer = $(interactive_view_id);
-      $interactiveContainer.empty();
-      $interactiveContainer.append('<div id="molecule-container"/>');
-      $interactiveContainer.append('<div id="bottom"/>');
+      if ($interactiveContainer.children().length === 0) {
+        $interactiveContainer.append('<div id="molecule-container"/>');
+        $interactiveContainer.append('<div id="bottom"/>');
+      } else {
+        $(bottom).remove();
+        $interactiveContainer.append('<div id="bottom"/>');
+      }
 
       if (interactive.model) {
         loadModel(interactive.model);
