@@ -476,13 +476,21 @@ controllers.complexModelController =
     //
     // ------------------------------------------------------------
 
-    try {
+    function finishSetup() {
       createModel();
       setupViews();
       setupModel();
-    } catch(e) {
-      alert(e);
-      throw new Error(e);
+    }
+
+    if (typeof DEVELOPMENT === 'undefined') {
+      try {
+        finishSetup()
+      } catch(e) {
+        alert(e);
+        throw new Error(e);
+      }
+    } else {
+      finishSetup()
     }
 
     // ------------------------------------------------------------

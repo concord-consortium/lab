@@ -223,13 +223,21 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     //
     // ------------------------------------------------------------
 
-    try {
+    function finishSetup() {
       createModel();
       setupModel();
       setupViews();
-    } catch(e) {
-      alert(e);
-      throw new Error(e);
+    }
+
+    if (typeof DEVELOPMENT === 'undefined') {
+      try {
+        finishSetup()
+      } catch(e) {
+        alert(e);
+        throw new Error(e);
+      }
+    } else {
+      finishSetup()
     }
 
 
