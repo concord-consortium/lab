@@ -156,6 +156,21 @@ parseMML = (mmlString) ->
 
       atoms.push elemId: elemId, x: x, y: y, vx: vx, vy: vy, charge: 0
 
+    ###
+      radial bonds
+    ###
+    radialBonds = []
+    radialBondNodes = $mml('.org-concord-mw2d-models-RadialBond-Delegate')
+    for node in radialBondNodes
+      $node = getNode cheerio node
+      radialBonds.push
+        # It appears from an inspection of MW's AtomicModel.encode(java.beans.XMLEncoder out) method
+        # that atoms are written to the MML. Atom IDs are apparently red herrings.
+        # file in ascending order, so atom1 and atom2 are indices into the atoms array.
+        atom1Index: parseInt($node.find('[property=atom1]').text(), 10) || 0
+        atom2Index: parseInt($node.find('[property=atom2]').text(), 10) || 0
+        bondLength:   parseFloat $node.find('[property=bondLength]').text()
+        bondStrength: parseFloat $node.find('[property=bondStrength]').text()
 
     ###
       heatBath settings
@@ -192,6 +207,7 @@ parseMML = (mmlString) ->
         VY: vy
         CHARGE: charge
         ELEMENT: element
+      radialBonds         : radialBonds
 
     json.temperature = temperature if temperature
 
