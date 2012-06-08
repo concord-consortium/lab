@@ -335,60 +335,27 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
 
     // ------------------------------------------------------------
     //
-    // Handle keyboard shortcuts for model operation
-    //
-    // ------------------------------------------------------------
-
-    function handleKeyboardForModel(evt) {
-      evt = (evt) ? evt : ((window.event) ? event : null);
-      if (evt) {
-        switch (evt.keyCode) {
-          case 32:                // spacebar
-            if (model.is_stopped()) {
-              molecule_container.playback_component.action('play');
-            } else {
-              molecule_container.playback_component.action('stop');
-            }
-            evt.preventDefault();
-          break;
-          case 13:                // return
-            molecule_container.playback_component.action('play');
-            evt.preventDefault();
-          break;
-          case 37:                // left-arrow
-            if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
-            }
-            modelStepBack();
-            evt.preventDefault();
-          break;
-          case 39:                // right-arrow
-            if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
-            }
-            modelStepForward();
-            evt.preventDefault();
-          break;
-        }
-      }
-    }
-
-    document.onkeydown = handleKeyboardForModel;
-
-    // ------------------------------------------------------------
-    //
     // Reset the model after everything else ...
     //
     // ------------------------------------------------------------
 
-    try {
+    function finishSetup() {
       processModelList();
       createModel();
       setupModel();
       setupViews();
       updateModelSelect();
-    } catch(e) {
-      alert(e);
+    }
+
+    if (typeof DEVELOPMENT === 'undefined') {
+      try {
+        finishSetup()
+      } catch(e) {
+        alert(e);
+        throw new Error(e);
+      }
+    } else {
+      finishSetup()
     }
   }
 
