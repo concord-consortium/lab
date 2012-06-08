@@ -39,7 +39,6 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       step_counter,
       therm,
       epsilon_slider,
-      viewLists,
       jsonFullPath, cmlFullPath,
       appletString,
       appletContainer,
@@ -146,12 +145,10 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       //
       // ------------------------------------------------------------
 
-      viewLists = {
-        moleculeContainers:      [molecule_container],
-        appletContainers:        [appletContainer]
-      };
+      layout.addView('moleculeContainers', molecule_container);
+      layout.addView('appletContainers', appletContainer);
 
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
 
     }
 
@@ -247,7 +244,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
         for(j = 0; j < sectionList.content.length; j++) {
           item = sectionList.content[j];
           pathList[item.json] = {
-            "name": item.name, 
+            "name": item.name,
             "jsonPath": item.json,
             "cmlPath":  item.cml
           };
@@ -315,8 +312,8 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
         appletOptions = { params: [["script", "page:0:import " + currentCMLPath()]] };
         appletContainer = layout.appletContainer(appletContainerID, appletOptions);
         runMWScript("page:0:set frank false");
-        viewLists.appletContainers = [appletContainer];
-        layout.setupScreen(viewLists);
+        layout.setView('appletContainers', [appletContainer]);
+        layout.setupScreen();
       }
     }
 
@@ -327,7 +324,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     // ------------------------------------------------------------
 
     function onresize() {
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
     }
 
     document.onwebkitfullscreenchange = onresize;
