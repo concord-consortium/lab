@@ -16,7 +16,7 @@ grapher.graph = function(elem, options, message) {
       xScale, yScale, xValue, yValue, line,
       circleCursorStyle,
       displayProperties,
-      emsize,
+      emsize, strokeWidth,
       scaleFactor,
       sizeType = {
         category: "medium",
@@ -41,7 +41,9 @@ grapher.graph = function(elem, options, message) {
         "xlabel":         "X Axis",
         "ylabel":         "Y Axis",
         "circleRadius":    10.0,
+        "strokeWidth":      2.0,
         "dataChange":      true,
+        "addData":         true,
         "points":          false,
         "notification":    false
       };
@@ -123,6 +125,9 @@ grapher.graph = function(elem, options, message) {
     options.xrange = options.xmax - options.xmin;
     options.yrange = options.ymax - options.ymin;
 
+    options.datacount = 2;
+
+    strokeWidth = options.strokeWidth;
 
     switch(sizeType.value) {
       case 0:
@@ -176,6 +181,7 @@ grapher.graph = function(elem, options, message) {
     } else {
       titles = [options.title];
     }
+    titles.reverse();
 
     if (sizeType.value > 2 ) {
       padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * emsize * 22;
@@ -251,6 +257,7 @@ grapher.graph = function(elem, options, message) {
 
         viewbox.append("path")
             .attr("class", "line")
+            .style("stroke-width", strokeWidth)
             .attr("d", line(points));
 
         // add Chart Title
@@ -425,8 +432,8 @@ grapher.graph = function(elem, options, message) {
         return d ? "#ccc" : "#666";
       },
 
-      fx = xScale.tickFormat(options.datacount),
-      fy = xScale.tickFormat(options.datacount);
+      fx = xScale.tickFormat(d3.format(".3r")),
+      fy = xScale.tickFormat(d3.format(".3r"));
 
       // Regenerate x-ticks…
       var gx = vis.selectAll("g.x")
@@ -505,21 +512,26 @@ grapher.graph = function(elem, options, message) {
       var circle = vis.select("svg").selectAll("circle")
           .data(points, function(d) { return d; });
 
-      if (options.circleRadius && sizeType.value > 0){
-        circle.enter().append("circle")
-            .attr("class", function(d) { return d === selected ? "selected" : null; })
-            .attr("cx",    function(d) { return xScale(d[0]); })
-            .attr("cy",    function(d) { return yScale(d[1]); })
-            .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
-            .style("cursor", circleCursorStyle)
-            .on("mousedown.drag",  datapoint_drag)
-            .on("touchstart.drag", datapoint_drag);
-      }
+      if (options.circleRadius && sizeType.value > 1) {
+        if (!(options.circleRadius <= 4 && sizeType.value < 3)) {
+          circle.enter().append("circle")
+              .attr("class", function(d) { return d === selected ? "selected" : null; })
+              .attr("cx",    function(d) { return xScale(d[0]); })
+              .attr("cy",    function(d) { return yScale(d[1]); })
+              .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
+              .style("stroke-width", options.circleRadius/6 * (sizeType.value - 1.5))
+              .style("cursor", circleCursorStyle)
+              .on("mousedown.drag",  datapoint_drag)
+              .on("touchstart.drag", datapoint_drag);
 
-      circle
-          .attr("class", function(d) { return d === selected ? "selected" : null; })
-          .attr("cx",    function(d) { return xScale(d[0]); })
-          .attr("cy",    function(d) { return yScale(d[1]); });
+          circle
+              .attr("class", function(d) { return d === selected ? "selected" : null; })
+              .attr("cx",    function(d) { return xScale(d[0]); })
+              .attr("cy",    function(d) { return yScale(d[1]); })
+              .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
+              .style("stroke-width", options.circleRadius/6 * (sizeType.value - 1.5));
+        }
+      }
 
       circle.exit().remove();
 
@@ -534,7 +546,7 @@ grapher.graph = function(elem, options, message) {
       grapher.registerKeyboardHandler(keydown);
       d3.select('body').style("cursor", "move");
       if (d3.event.altKey) {
-        if (options.dataChange) {
+        if (d3.event.shiftKey && options.addData) {
           var p = d3.svg.mouse(vis.node());
           var newpoint = [];
           newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));

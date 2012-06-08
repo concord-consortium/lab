@@ -29,6 +29,14 @@
           %option{:value => "tiny"} tiny
           %option{:value => "icon"} icon
 
+        &nbsp;Select Data:
+        %select#select-data
+          %option{:value => "fake", :selected => true} Fake Data
+          %option{:value => "earth-surface-temperature"} Earth's Surface Temperature
+          %option{:value => "md2d-center-of-mass"} MD2D Center of Mass Analysis
+          %option{:value => "stair-steps"} Stair Steps
+          %option{:value => "streaming"} Streaming Data
+
       #chart
       .description
         %h2 About the Graph
@@ -37,11 +45,11 @@
           %li double-click on the canvas to zoom in
           %li shift-double-click on the canvas to zoom out
           %li Drag on one of the X or Y axis numeric labels to re-scale that axis
+          %li hold ALT/Option key down and drag in the graph to re-scale both X and Y axes
           %li click on a data point to select it
-          %li drag a selected data point to change it's value
+          %li drag a selected data point up or down to change it's value
           %li enter the delete or backspace key to delete a selected data point
-          %li drag a selected data point to change it's value
-          %li hold the ALT/Option key down and click an empty area of the graph to add a data point
+          %li hold the ALT/Option and SHIFT keys down and click an empty area of the graph to add a data point
         %h2 D3 References:
         %ul
           %li
