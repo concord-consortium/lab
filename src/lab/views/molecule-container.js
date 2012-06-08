@@ -267,6 +267,12 @@ layout.moleculeContainer = function(e, options) {
 
       molecule_div_pre = molecule_div.append("pre");
 
+      d3.select(node)
+        .attr("tabindex", 0)
+        .on("mousedown", mousedown);
+
+      registerKeyboardHandlers();
+
       redraw();
       create_gradients();
 
@@ -539,6 +545,10 @@ layout.moleculeContainer = function(e, options) {
       }
     }
 
+    function mousedown() {
+      node.focus();
+    }
+
     function molecule_mouseover(d) {
       // molecule_div.transition()
       //       .duration(250)
@@ -546,6 +556,7 @@ layout.moleculeContainer = function(e, options) {
     }
 
     function molecule_mousedown(d, i) {
+      node.focus();
       if (atom_tooltip_on) {
         molecule_div.style("opacity", 1e-6);
         molecule_div.style("display", "none");
@@ -616,6 +627,50 @@ layout.moleculeContainer = function(e, options) {
       if ((typeof(atom_tooltip_on) === "number")) {
         render_atom_tooltip(atom_tooltip_on);
       }
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Handle keyboard shortcuts for model operation
+    //
+    // ------------------------------------------------------------
+
+    function handleKeyboardForView(evt) {
+      evt = (evt) ? evt : ((window.event) ? event : null);
+      if (evt) {
+        switch (evt.keyCode) {
+          case 32:                // spacebar
+            if (model.is_stopped()) {
+              playback_component.action('play');
+            } else {
+              playback_component.action('stop');
+            }
+            evt.preventDefault();
+          break;
+          case 13:                // return
+            playback_component.action('play');
+            evt.preventDefault();
+          break;
+          // case 37:                // left-arrow
+          //   if (!model.is_stopped()) {
+          //     playback_component.action('stop');
+          //   }
+          //   modelStepBack();
+          //   evt.preventDefault();
+          // break;
+          // case 39:                // right-arrow
+          //   if (!model.is_stopped()) {
+          //     playback_component.action('stop');
+          //   }
+          //   modelStepForward();
+          //   evt.preventDefault();
+          // break;
+        }
+      }
+    }
+
+    function registerKeyboardHandlers() {
+      node.onkeydown = handleKeyboardForView;
     }
 
     // make these private variables and functions available
