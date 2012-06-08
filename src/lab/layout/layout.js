@@ -68,8 +68,22 @@ layout.checkForResize = function() {
   }
 };
 
-layout.setupScreen = function(viewLists, forceRender) {
-  var fullscreen = document.fullScreen ||
+layout.views = {};
+
+layout.addView = function(type, view) {
+  if (!layout.views[type]) {
+    layout.views[type] = [];
+  }
+  layout.views[type].push(view);
+};
+
+layout.setView = function(type, viewArray) {
+  layout.views[type] = viewArray;
+};
+
+layout.setupScreen = function(forceRender) {
+  var viewLists  = layout.views,
+      fullscreen = document.fullScreen ||
                    document.webkitIsFullScreen ||
                    document.mozFullScreen;
 
@@ -211,7 +225,7 @@ layout.setupScreen = function(viewLists, forceRender) {
   // Regular Screen Layout
   //
   function regularScreen() {
-    var i, width, height, mcsize, 
+    var i, width, height, mcsize,
         rightHeight, rightHalfWidth, rightQuarterWidth,
         widthToPageRatio, modelAspectRatio,
         pageWidth = layout.display.page.width,
@@ -274,7 +288,7 @@ layout.setupScreen = function(viewLists, forceRender) {
   // Full Screen Layout
   //
   function setupFullScreen() {
-    var i, width, height, mcsize, 
+    var i, width, height, mcsize,
         rightHeight, rightHalfWidth, rightQuarterWidth,
         widthToPageRatio, modelAspectRatio,
         pageWidth = layout.display.page.width,
@@ -349,7 +363,7 @@ layout.setupScreen = function(viewLists, forceRender) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameScreen() {
-    var i, width, height, mcsize, 
+    var i, width, height, mcsize,
         rightHeight, rightHalfWidth, rightQuarterWidth,
         widthToPageRatio, modelAspectRatio,
         pageWidth = layout.display.page.width,

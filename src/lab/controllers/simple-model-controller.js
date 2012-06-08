@@ -15,20 +15,20 @@
 /*jslint onevar: true*/
 controllers.simpleModelController = function(molecule_view_id, modelConfig, playerConfig) {
 
-  var layoutStyle         = playerConfig.layoutStyle,
-      autostart           = playerConfig.autostart,
-      maximum_model_steps = playerConfig.maximum_model_steps,
-      lj_epsilon_max      = playerConfig.lj_epsilon_max,
-      lj_epsilon_min      = playerConfig.lj_epsilon_min,
+  var layoutStyle,
+      autostart,
+      maximum_model_steps,
+      lj_epsilon_max,
+      lj_epsilon_min,
 
-      elements            = modelConfig.elements,
-      atoms_properties    = modelConfig.atoms,
-      mol_number          = modelConfig.mol_number,
-      temperature_control = modelConfig.temperature_control,
-      temperature         = modelConfig.temperature,
-      coulomb_forces      = modelConfig.coulomb_forces,
-      width               = modelConfig.width,
-      height              = modelConfig.height,
+      elements,
+      atoms_properties,
+      mol_number,
+      temperature_control,
+      temperature,
+      coulomb_forces,
+      width,
+      height,
 
       nodes,
 
@@ -36,10 +36,27 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       model_listener,
       step_counter,
       therm,
-      epsilon_slider,
-      viewLists;
+      epsilon_slider;
 
   function controller() {
+
+
+    function initializeLocalVariables() {
+      layoutStyle         = playerConfig.layoutStyle;
+      autostart           = playerConfig.autostart;
+      maximum_model_steps = playerConfig.maximum_model_steps;
+      lj_epsilon_max      = playerConfig.lj_epsilon_max;
+      lj_epsilon_min      = playerConfig.lj_epsilon_min;
+
+      elements            = modelConfig.elements;
+      atoms_properties    = modelConfig.atoms;
+      mol_number          = modelConfig.mol_number;
+      temperature_control = modelConfig.temperature_control;
+      temperature         = modelConfig.temperature;
+      coulomb_forces      = modelConfig.coulomb_forces;
+      width               = modelConfig.width;
+      height              = modelConfig.height;
+    }
 
     // ------------------------------------------------------------
     //
@@ -141,12 +158,10 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       //
       // ------------------------------------------------------------
 
-      viewLists = {
-        moleculeContainers:      [molecule_container],
-        thermometers:            [therm]
-      };
+      layout.addView('moleculeContainers', molecule_container);
+      layout.addView('thermometers', therm);
 
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
 
     }
 
@@ -209,7 +224,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     // ------------------------------------------------------------
 
     function onresize() {
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
       therm.resize();
       updateTherm();
     }
@@ -224,6 +239,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     // ------------------------------------------------------------
 
     function finishSetup() {
+      initializeLocalVariables();
       createModel();
       setupModel();
       setupViews();
@@ -231,17 +247,26 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
 
     if (typeof DEVELOPMENT === 'undefined') {
       try {
-        finishSetup()
+        finishSetup();
       } catch(e) {
         alert(e);
         throw new Error(e);
       }
     } else {
-      finishSetup()
+      finishSetup();
     }
 
     function updateLayout() {
-      layout.setupScreen(viewLists, true);
+      layout.setupScreen(true);
+    }
+
+    function reload(newModelConfig, newPlayerConfig) {
+       modelConfig = newModelConfig;
+       playerConfig = newPlayerConfig;
+       initializeLocalVariables();
+       createModel();
+       setupModel();
+       updateLayout();
     }
 
     // epsilon_slider = new SliderComponent('#attraction_slider',
@@ -266,6 +291,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       modelGo();
     }
     controller.updateLayout = updateLayout;
+    controller.reload = reload;
   }
   controller();
   return controller;

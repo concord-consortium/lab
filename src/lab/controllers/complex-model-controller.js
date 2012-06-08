@@ -50,7 +50,6 @@ controllers.complexModelController =
       mol_number_to_speed_yaxis_map,
       potentialChart,
       speedDistributionChart,
-      viewLists,
       select_molecule_number,
       radio_randomize_pos_vel,
 
@@ -279,12 +278,10 @@ controllers.complexModelController =
       //
       // ------------------------------------------------------------
 
-      viewLists = {
-        moleculeContainers:      [moleculeContainer],
-        potentialCharts:         [potentialChart],
-        speedDistributionCharts: [speedDistributionChart],
-        energyCharts:            [energyGraph]
-      };
+      layout.addView('moleculeContainers', moleculeContainer);
+      layout.addView('potentialCharts', potentialChart);
+      layout.addView('speedDistributionCharts', speedDistributionChart);
+      layout.addView('energyCharts', energyGraph);
 
       // ------------------------------------------------------------
       //
@@ -366,7 +363,7 @@ controllers.complexModelController =
 
       moleculeContainer.setup_particles();
       moleculeContainer.updateMoleculeRadius();
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
       step_counter = model.stepCounter();
       select_molecule_number.value = model.get_num_atoms();
 
@@ -464,7 +461,7 @@ controllers.complexModelController =
     // ------------------------------------------------------------
 
     function onresize() {
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
     }
 
     document.onwebkitfullscreenchange = onresize;
