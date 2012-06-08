@@ -34,6 +34,32 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
     [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause), and
     [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
 9.  [OpenSans Font](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
+10. [Codemirror2](https://github.com/marijnh/CodeMirror2): [MIT](http://www.opensource.org/licenses/MIT)
+    Codemirror2 includes a number of modules from third parties. All of the modules are licensed under either the MIT or BSD
+    license except for the following which are excluded during the Make process where resources from `src/vendor/` are
+    generated and copied to `server/public/vendor/`.
+
+    **Licensing of Excluded Modules**
+
+    1.   src/vendor/codemirror2/mode/go/index.html: no license ...
+    2.   src/vendor/codemirror2/mode/rst/index.html: ...??
+    3.   src/vendor/codemirror2/mode/verilog//index.html: GPL
+
+    **Licensing of included Modules**
+
+    1.   src/vendor/codemirror2/mode/coffeescript/LICENSE
+    2.   src/vendor/codemirror2/mode/pascal/LICENSE: MIT
+    3.   src/vendor/codemirror2/mode/perl/LICENSE: MIT
+    4.   src/vendor/codemirror2/mode/python/LICENSE: MIT
+    5.   src/vendor/codemirror2/mode/r/LICENSE: BSD
+    6.   src/vendor/codemirror2/mode/ruby/LICENSE: BSD
+    7.   src/vendor/codemirror2/mode/rpm/spec/index.html: same as codemirror2
+    8.   src/vendor/codemirror2/mode/xquery/LICENSE: MIT
+    9.   src/vendor/codemirror2/mode/xquery/index.html: MIT
+    10.  src/vendor/codemirror2/mode/xquery/xquery.js: MIT
+    11.  src/vendor/codemirror2/theme/xq-dark.css: MIT
+    12.  src/vendor/codemirror2/lib/util/foldcode.js: MIT
+    
 
 The files in the `src/imports/` directory which are copied to the `imports/` directory
 when a distribution is created are all Copyright 2012 (c) by the Concord Consortium and distributed

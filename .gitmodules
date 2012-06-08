@@ -19,3 +19,6 @@
 [submodule "src/vendor/mathjax"]
 	path = src/vendor/mathjax
 	url = git://github.com/mathjax/MathJax.git
+[submodule "src/vendor/codemirror2"]
+	path = src/vendor/codemirror2
+	url = git://github.com/marijnh/CodeMirror2.git

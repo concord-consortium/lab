@@ -197,6 +197,7 @@ server/public/vendor: \
 	server/public/vendor/hijs \
 	server/public/vendor/mathjax \
 	server/public/vendor/fonts \
+	server/public/vendor/codemirror2 \
   server/public/favicon
 
 server/public/vendor/d3:
@@ -248,6 +249,19 @@ server/public/vendor/mathjax:
 server/public/vendor/fonts:
 	mkdir -p server/public/vendor/fonts
 	cp -R src/vendor/fonts server/public/vendor/
+
+server/public/vendor/codemirror2:
+	mkdir -p server/public/vendor/codemirror2
+	cp src/vendor/codemirror2/LICENSE server/public/vendor/codemirror2
+	cp src/vendor/codemirror2/README.md server/public/vendor/codemirror2
+	cp -R src/vendor/codemirror2/lib server/public/vendor/codemirror2
+	cp -R src/vendor/codemirror2/mode server/public/vendor/codemirror2
+	cp -R src/vendor/codemirror2/theme server/public/vendor/codemirror2
+	cp -R src/vendor/codemirror2/keymap server/public/vendor/codemirror2
+	# remove Codemirror2 modules excluded by incompatible licensing
+	rm -rf server/public/vendor/codemirror2/mode/go
+	rm -rf server/public/vendor/codemirror2/mode/rst
+	rm -rf server/public/vendor/codemirror2/mode/verilog
 
 server/public/favicon:
 	cp -f src/favicon.ico server/public/favicon.ico
