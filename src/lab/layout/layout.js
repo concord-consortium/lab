@@ -68,10 +68,14 @@ layout.checkForResize = function() {
   }
 };
 
-layout.setupScreen = function(viewLists) {
+layout.setupScreen = function(viewLists, forceRender) {
   var fullscreen = document.fullScreen ||
                    document.webkitIsFullScreen ||
                    document.mozFullScreen;
+
+  if (forceRender) {
+    layout.not_rendered = true;
+  }
 
   layout.display = layout.getDisplayProperties();
 
