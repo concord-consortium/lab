@@ -49,6 +49,10 @@ parseMML = (mmlString) ->
       viewPortHeight = height
       viewPortX = viewPortY = 0
 
+    # scale from MML units to Lab's units
+    width  = width / 100      # 100 pixels per nm
+    height = height / 100
+
     ###
       Find all elements. Results in:
       [
@@ -152,9 +156,6 @@ parseMML = (mmlString) ->
 
       atoms.push elemId: elemId, x: x, y: y, vx: vx, vy: vy, charge: 0
 
-    # scale from MML units to Lab's units
-    width  = width / 100      # 100 pixels per nm
-    height = height / 100
 
     ###
       heatBath settings
