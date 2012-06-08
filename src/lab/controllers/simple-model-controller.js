@@ -240,6 +240,9 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       finishSetup()
     }
 
+    function updateLayout() {
+      layout.setupScreen(viewLists, true);
+    }
 
     // epsilon_slider = new SliderComponent('#attraction_slider',
     //   function (v) {
@@ -262,6 +265,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     if (autostart) {
       modelGo();
     }
+    controller.updateLayout = updateLayout;
   }
   controller();
   return controller;
