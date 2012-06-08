@@ -122,7 +122,10 @@ controllers.complexModelController =
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
       } else if (mol_number) {
-        model.createNewAtoms(mol_number);
+        model.createNewAtoms({
+          num: mol_number,
+          relax: true
+        });
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
