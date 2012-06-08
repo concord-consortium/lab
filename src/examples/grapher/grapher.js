@@ -124,7 +124,7 @@ function selectDataHandler() {
         frequency1 = 0.5,
         amplitude1 = 1,
         twopifreq1 = twopi * frequency1,
-        frequency2 = 4,
+        frequency2 = Math.PI,
         amplitude2 = 0.2,
         twopifreq2 = twopi * frequency2,
         time = 0,
@@ -134,6 +134,7 @@ function selectDataHandler() {
     d3.timer(function(elapsed) {
       time = (time + (elapsed - lastSample) / 1000);
       lastSample = elapsed;
+      if (stopStreaming) { return true; }
       value1 = Math.sin(twopifreq1 * time) * amplitude1;
       value2 = Math.sin(twopifreq2 * time) * amplitude2;
       graph.add_data([time, value1 + value2]);
