@@ -267,7 +267,7 @@ server/public/favicon:
 	cp -f src/favicon.ico server/public/favicon.ico
 
 src/vendor/jquery/jquery.min.js: src/vendor/jquery
-	cd src/vendor/jquery; make
+	cd src/vendor/jquery; npm install; ./node_modules/grunt/bin/grunt
 
 src/vendor/jquery:
 	git submodule update --init --recursive
