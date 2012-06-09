@@ -502,6 +502,9 @@ Here are the list of deploy commands:
     cap deploy:update           # update server
     cap deploy:update_jnlps     # update server jnlps
 
+When you have made changes in the repository like adding or updating a git submodule in
+`src/vendor` then you will need to run `cap deploy:clean_and_update`.
+
 ##### Updating the Java jar resources on a remote rerver
 
 The Java resources require much less frequent updates since the main body of work
