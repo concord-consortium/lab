@@ -27,6 +27,10 @@ DEVELOPMENT = true;
   }
   selectInteractive.onchange = selectInteractiveHandler;
 
+  if (!document.location.hash) {
+     document.location.hash = "#interactives/heat-and-cool-example.json";
+  }
+
   if (hash = document.location.hash) {
     interactiveUrl = hash.substr(1, hash.length);
     selectInteractive.value = interactiveUrl;
