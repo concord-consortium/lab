@@ -153,11 +153,11 @@
         average_sample_time_ms = (average_sample_time_ms * 1.75 + (last_sample_time - one_before_that_sample_time) * 0.25) / 2;
         one_before_that_sample_time = last_sample_time;
         last_sample_time = sample_time;
-        step_count.innerHTML = 'step: ' + model.indexOfStep + ', model step rate: ' + (steps_per_frame/average_sample_time_ms * 1000) + ' fps';
+        step_count.innerHTML = 'step: ' + model.getIndexOfStep() + ', model step rate: ' + (steps_per_frame/average_sample_time_ms * 1000).toFixed(2) + ' fps';
         if (show_visualization.checked)
             displayTemperatureFunc(canvas_temperature, model);
         if (show_velocity_arrows.checked)
-            model2d.displayVectorField(canvas_velocity, model.u, model.v, model.nx, model.ny, 4);
+            model2d.displayVectorField(canvas_velocity, model.getUVelocityArray(), model.getVVelocityArray(), model.getGridWidth(), model.getGridHeight(), 4);
         if (show_velocity_len.checked)
             model2d.displayVelocityLengthCanvas(canvas_debug, model);
         if (show_data_table.checked) 
@@ -171,7 +171,7 @@
         } else {
             array_selection = "typed";
         }
-        var model = new model2d.Model2D(options, array_selection);
+        var model = energy2d.modeler.makeModeler(options, array_selection);
         return model;
     }
     
@@ -187,18 +187,18 @@
         }
         else {
             displayTemperatureFunc = model2d.displayTemperatureCanvas;
-            model2d.initCanvas(canvas_temperature, model.nx, model.ny);
+            model2d.initCanvas(canvas_temperature, model.getGridWidth(), model.getGridHeight());
         }
         displayTemperatureFunc(canvas_temperature, model);
         
         model2d.initCanvas(canvas_parts, canvas_parts.clientWidth, canvas_parts.clientHeight);
-        model2d.displayParts(canvas_parts, model.parts, model.lx, model.ly);
+        model2d.displayParts(canvas_parts, model.getPartsArray(), model.getWidth(), model.getHeight());
         
         model2d.initCanvas(canvas_velocity, canvas_velocity.clientWidth, canvas_velocity.clientHeight);
         if (show_velocity_arrows.checked)
-            model2d.displayVectorField(canvas_velocity, model.u, model.v, model.nx, model.ny, 4);
+            model2d.displayVectorField(canvas_velocity, model.getUVelocityArray(), model.getVVelocityArray(), model.getGridWidth(), model.getGridHeight(), 4);
         
-        model2d.initCanvas(canvas_debug, model.nx, model.ny);
+        model2d.initCanvas(canvas_debug, model.getGridWidth(), model.getGridHeight());
         if (show_velocity_len.checked)
             model2d.displayVelocityLengthCanvas(canvas_debug, model);
     }

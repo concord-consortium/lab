@@ -2,22 +2,32 @@
 // lab/models/energy2d/engines/default-config.js
 //
 
-// TODO: add all available settings to this object
+var constants = require('./constants.js');
+
+// TODO: add *ALL* available settings to this object!
 exports.DEFAULT_MODEL_OPTIONS = {
+    model_width: 10,
+    model_height: 10,
     timestep: 0.1,
-    measurement_interval: 100,
-    viewupdate_interval: 20,
-    sunny: true,
-    sun_angle: 1.5707964,
-    solar_power_density: 20000,
-    solar_ray_count: 24,
-    solar_ray_speed: 0.001,
-    photon_emission_interval: 5,
     convective: true,
-    background_conductivity: 0.25,
+    
+    background_conductivity: 10 * constants.AIR_THERMAL_CONDUCTIVITY,
+    background_viscosity: 10 * constants.AIR_VISCOSITY,
+    background_specific_heat: constants.AIR_SPECIFIC_HEAT,
+    background_density: constants.AIR_DENSITY,
+    background_temperature: 0,
+    
     thermal_buoyancy: 0.00025,
     buoyancy_approximation: 1,
-    background_density: 1,
+    
+    measurement_interval: 100,        // unnecessary
+    viewupdate_interval: 20,          // unnecessary
+    sunny: true,                      // unnecessary (ray solver not implemented)
+    sun_angle: 1.5707964,             // unnecessary (ray solver not implemented)
+    solar_power_density: 20000,       // unnecessary (ray solver not implemented)
+    solar_ray_count: 24,              // unnecessary (ray solver not implemented)
+    solar_ray_speed: 0.001,           // unnecessary (ray solver not implemented)
+    photon_emission_interval: 5,      // unnecessary (ray solver not implemented)
 
     boundary: {
         flux_at_border: {
@@ -30,6 +40,8 @@ exports.DEFAULT_MODEL_OPTIONS = {
 
     sensor: undefined,
 
+    // TODO: Default structure should be empty. 
+    // TODO: Provide default part configuration.
     structure: {
         part: [
             {
