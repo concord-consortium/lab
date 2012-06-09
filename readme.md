@@ -479,20 +479,35 @@ Restart the server and the request should now suceed:
     
 ### Deploying to a remote server
 
-There are several Capistrano tasks for deploying to the remote server
-[lab2.dev.concord.org](http://lab2.dev.concord.org).
+There are a number of Capistrano tasks for setting up and deploying to remote servers.
 
-    $ cap update_server
+Use a `<deploy-target>` to refer to the server:
 
-Updates the source checkout on the server from themaster branch of the repository,
-builds the application and deploys the generated products to the server directory.
+* **lab-dev** [lab.dev.concord.org](http://lab.dev.concord.org).
+* **lab2-dev** [lab2.dev.concord.org](http://lab2.dev.concord.org).
+
+The capistrano commands take the form:
+
+    cap <deploy-target> task
+
+The basic command to update a server:
+
+    can <deploy-taget> deploy:update
+
+Here are the list of deploy commands:
+
+    $ cap -T deploy:
+    cap deploy:clean_and_update # clean and update server
+    cap deploy:setup            # setup server
+    cap deploy:update           # update server
+    cap deploy:update_jnlps     # update server jnlps
 
 ##### Updating the Java jar resources on a remote rerver
 
 The Java resources require much less frequent updates since the main body of work
 is occuriring in the HTML5 development.
 
-    $ cap update_server_jnlps
+    $ cap <deploy-target> deploy:update_jnlps
 
 Erases the `server/public/jnlp/` directory on the remote server and
 re-generates and deploy the packed signed jars from source or from downloads:
@@ -556,7 +571,7 @@ repository. Make sure the security group you choose has port 80 open.
 Modify the value of the `:host` key in the configuration file `config/config.yml` to reference
 the domain name of the new server.
 
-    $ cap setup_server
+    $ cap <deploy-target> deploy:setup
 
 Will do an initial deploy and build of all the project resources to the server.
 
