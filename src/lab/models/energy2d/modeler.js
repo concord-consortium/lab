@@ -1,12 +1,33 @@
+/*jslint indent: 2 */
 //
 // lab/models/energy2d/modeler.js
 //
 
-var model2d = require('./core-model.js');
+// Why not require('./engine/core-model.js')?
+// This file is not browserified, only concatenated with browserified engine.
+var coremodel = require('./core-model.js');
 
 // define namespace
 energy2d.namespace('energy2d.modeler');
 
-energy2d.modeler.newModeler = function (options) {
-
+energy2d.modeler.makeModeler = function (options, array_type) {
+  var core_model = coremodel.makeCoreModel(options, array_type);
+  return {
+    nextStep: function () {
+      core_model.nextStep();
+    },
+    getWidth: function () {
+      return core_model.getModelOptions().model_width;
+    },
+    getHeight: function () {
+      return core_model.getModelOptions().model_height;
+    },
+    getIndexOfStep: core_model.getIndexOfStep,
+    getGridWidth: core_model.getGridWidth,
+    getGridHeight: core_model.getGridHeight,
+    getTemperatureArray: core_model.getTemperatureArray,
+    getUVelocityArray: core_model.getUVelocityArray,
+    getVVelocityArray: core_model.getVVelocityArray,
+    getPartsArray: core_model.getPartsArray
+  }
 };

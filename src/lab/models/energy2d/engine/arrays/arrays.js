@@ -36,7 +36,9 @@ arrays.create = function(size, fill, array_type) {
       array_type = "regular";
     }
   }
-  fill = fill || 0;
+  // fill = fill || 0; -> this doesn't handle NaN value
+  if (fill === undefined)
+    fill = 0;
   var a, i;
   if (array_type === "regular") {
     a = new Array(size);
