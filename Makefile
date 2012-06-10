@@ -241,7 +241,7 @@ server/public/vendor/jquery/jquery.min.js: \
 	cp src/vendor/jquery/MIT-LICENSE.txt server/public/vendor/jquery
 	cp src/vendor/jquery/README.md server/public/vendor/jquery
 
-server/public/vendor/jquery: 
+server/public/vendor/jquery:
 	mkdir -p server/public/vendor/jquery
 
 server/public/vendor/science.js:
