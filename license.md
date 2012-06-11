@@ -67,30 +67,53 @@ under various open source licenses. These resources represent some of the author
 work on the Java versions of Molecular Workbench and Energy2D and are distributed here to aid in the
 conversion of these resources to HTML5 for the Lab project.
 
-The files in the `src/jnlp/` directory are copied to the `jnlp/` directory when a distribution is created.
-Most of these files are also Copyright 2012 (c) by the Concord Consortium and distributed
+Java files in `src/jnlp`
+
+The files in the `src/jnlp` directory are compiled Java Jar archives and are copied to `server/public/jnlp/`
+when a runnable distribution is created during the build process.
+
+The only files in this directory are the native Java JNI libraries for accessin g the Vernier GoIO probeware.
+
+These files consist of code developed at Concord Consortium and licensed under the Lab license and the
+[Vernier GoIO SDK](http://www.vernier.com/downloads/software-development-kits/go-sdk/) distributed by
+Vernier as Public Domain software ([git mirror](https://github.com/concord-consortium/goio_sdk)).
+
+Java files in the `java` directory.
+
+Some of these files are also Copyright 2012 (c) by the Concord Consortium and distributed
 under various open source licenses. These resources represent our earlier work to support the Java versions
 of our computational simulations and probeware.
 
-Here is a list of files in the `src/jnlp/` directory, their authorship and licenses:
+Some of the files are from third parties.
 
-1.  JDom (external), an XML processing library: `src/jnlp/jdom/jdom/jdom.jar`. JDom has an [Apache-like license
+Here is a list of files in the `java` directory, their authorship and licenses:
+
+1.  JDom (external), an XML processing library: `java/jdom/jdom-1.0.jar`. JDom has an [Apache-like license
     with the attribution clause removed](http://www.jdom.org/docs/faq.html#a0030)
 
-2.  JUG: Java UUID generator (external): `src/jnlp/jug/jug/jug.jar`. [JUG](http://jug.safehaus.org/Download)
+2.  JUG: Java UUID generator (external): `java/jug/jug-1.1.2.jar`. [JUG](http://jug.safehaus.org/Download)
     v2 of JUG is available under: LGPL 2.1 and ASL 2.0, we are using v1.1.2 which is only under the LGPL 2.1
 
-3.  The Java Molecular Workbench files in this directory: `src/jnlp/org/concord/modeler/` (CC and external). The Java version
+3.  The Java Molecular Workbench files in this directory: `java/mw`` (CC and external). The Java version
     of Molecular Workbench is distributed under the GNU General Public License. The Molecular Workbench
     jar also includes code from the external GPL-licensed JMol project.
     [Java Molecular Workbench source code](http://svn.concord.org/svn/projects/trunk/common/java/simulations/mw/)
 
-4.  The rest of the files in the `src/jnlp/org/concord/` directory were created by Concord Consortium and are all
-    distributed under the LGPL license.
+4.  The NetLogo jar file in this directory: `java/nlogo` is distributed under the
+    [GPL license](http://ccl.northwestern.edu/netlogo/docs/copyright.html) and created by:
 
-If you have downloaded the source code repository for the Lab project the files mentioned so far are all present
-in the repository and during the build process are copied to the distribution directory which is located
-here in the source code repository: `server/public/`.
+    Wilensky, U. (1999). NetLogo. http://ccl.northwestern.edu/netlogo/.
+    Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
+    
+    And distributed here [github.com/NetLogo/NetLogo](https://github.com/NetLogo/NetLogo)
+
+5.  The rest of the files in the `src/jnlp/org/concord/` directory were created by Concord Consortium and are all
+    distributed under the Lab licenses.
+
+If you have downloaded the source code repository for the Lab project only the files in the `src/jnlp` directory
+are present in the repository.
+
+The initiation of a separate build task is required to integrate the rest of the Java resources.
 
 All other files distributed in the complete source code repository other than the ones specifically mentioned above
 are distributed under the Concord Consortium Lab project software license.

@@ -51,7 +51,7 @@ namespace :deploy do
     run "cd /var/www/app; make clean; make"
   end
 
-  desc "update server"
+  desc "update public/jnlp dir on server"
   task :update_jnlps do
     run "cd /var/www/app; make clean-jnlp"
     run "cd /var/www/app; make server/public/jnlp"
