@@ -225,6 +225,9 @@ exports.makeModel = function() {
       // like [i][j]
       epsilon = [],
       sigma = [],
+
+      // cutoff for force calculations, as a factor of sigma
+      cutoff = 5.0,
       cutoffDistance_LJ_sq = [],
 
       // Each object at ljCalculator[i,j] can calculate the magnitude of the Lennard-Jones force and
@@ -234,7 +237,9 @@ exports.makeModel = function() {
       // Callback that recalculates element radii  and cutoffDistance_LJ_sq when the Lennard-Jones
       // sigma parameter changes.
       ljCoefficientsChanged = function(el1, el2, coefficients) {
-        cutoffDistance_LJ_sq[el1][el2] = cutoffDistance_LJ_sq[el2][el1] = 5*coefficients.rmin;
+        cutoffDistance_LJ_sq[el1][el2] =
+          cutoffDistance_LJ_sq[el2][el1] =
+          cutoff * cutoff * coefficients.sigma * coefficients.sigma;
 
         if (el1 === el2) updateElementRadius(el1, coefficients);
       },
