@@ -266,10 +266,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     function reload(newModelConfig, newPlayerConfig) {
        modelConfig = newModelConfig;
        playerConfig = newPlayerConfig;
-       initializeLocalVariables();
-       createModel();
-       setupModel();
-       updateLayout();
+       finishSetup();
     }
 
     // epsilon_slider = new SliderComponent('#attraction_slider',
