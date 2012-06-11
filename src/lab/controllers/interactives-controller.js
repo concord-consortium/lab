@@ -3,13 +3,12 @@
 /*jslint onevar: true*/
 controllers.interactivesController = function(interactive, interactive_view_id) {
 
-  var components,
+  var controller = {},
+      components,
       component,
       simpleController,
       $interactiveContainer,
       i, ii;
-
-  function controller() {
 
     function loadModel(modelUrl) {
       var playerConfig = {    // to be removed
@@ -81,9 +80,6 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
     // make these private variables and functions available
     controller.loadInteractive = loadInteractive;
     controller.updateLayout = updateLayout;
-  }
-
-  controller();
 
   return controller;
 };
