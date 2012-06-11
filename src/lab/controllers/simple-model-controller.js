@@ -241,22 +241,26 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     //
     // ------------------------------------------------------------
 
-    function finishSetup() {
+    function finishSetup(firstTime) {
       initializeLocalVariables();
       createModel();
       setupModel();
-      setupViews();
+      if (firstTime) {
+        setupViews();
+      } else {
+        updateLayout();
+      }
     }
 
     if (typeof DEVELOPMENT === 'undefined') {
       try {
-        finishSetup();
+        finishSetup(true);
       } catch(e) {
         alert(e);
         throw new Error(e);
       }
     } else {
-      finishSetup();
+      finishSetup(true);
     }
 
     function updateLayout() {
@@ -266,7 +270,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     function reload(newModelConfig, newPlayerConfig) {
        modelConfig = newModelConfig;
        playerConfig = newPlayerConfig;
-       finishSetup();
+       finishSetup(false);
     }
 
     // epsilon_slider = new SliderComponent('#attraction_slider',
