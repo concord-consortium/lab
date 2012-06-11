@@ -167,7 +167,7 @@ modeler.model = function(initialProperties) {
       }
     }
 
-    dispatch.tick({type: "tick"});
+    dispatch.tick();
     return stopped;
   }
 
@@ -559,7 +559,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.tickInPlace = function() {
-    dispatch.tick({type: "tick"});
+    dispatch.tick();
     return model;
   };
 
