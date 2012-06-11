@@ -27,7 +27,8 @@ var benchmarks_to_run = [
       var start = +Date.now();
       var i = -1;
       while (i++ < 100) {
-        model.tick();
+        // advance model 1 tick, but don't paint the display
+        model.tick(1, { dontDispatchTickEvent: true });
       }
       elapsed = Date.now() - start;
       return d3.format("5.1f")(100/elapsed*1000)
@@ -41,7 +42,6 @@ var benchmarks_to_run = [
       var i = -1;
       while (i++ < 100) {
         model.tick();
-        controller.modelListener();
       }
       elapsed = Date.now() - start;
       return d3.format("5.1f")(100/elapsed*1000)

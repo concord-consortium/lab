@@ -140,7 +140,7 @@ modeler.model = function(initialProperties) {
     return s/n;
   }
 
-  function tick() {
+  function tick(elapsedTime, dontDispatchTickEvent) {
     var t;
 
     coreModel.integrate();
@@ -167,7 +167,7 @@ modeler.model = function(initialProperties) {
       }
     }
 
-    dispatch.tick();
+    if (!dontDispatchTickEvent) dispatch.tick();
     return stopped;
   }
 
@@ -563,11 +563,14 @@ modeler.model = function(initialProperties) {
     return model;
   };
 
-  model.tick = function(num) {
-    if (!arguments.length) { num = 1; }
-    var i = -1;
+  model.tick = function(num, opts) {
+    if (!arguments.length) num = 1;
+
+    var dontDispatchTickEvent = opts && opts.dontDispatchTickEvent || false,
+        i = -1;
+
     while(++i < num) {
-      tick();
+      tick(null, dontDispatchTickEvent);
     }
     return model;
   };
