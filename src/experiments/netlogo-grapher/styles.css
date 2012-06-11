@@ -1,0 +1,90 @@
+body { font: 12px Verdana, Arial, Helvetica, sans-serif;
+  margin: 1.0em 2.0em;
+  background-color: white;}
+h1 { font-size: 1.6em;
+  font-weight: bold; }
+h2 { font-size: 1.4em;
+  font-weight: bold; }
+h1 { font-size: 1.2em;
+  font-weight: bold; }
+hr { margin: 2em 0em; }
+p { max-width: 600px; }
+#appletwrapper { border: 1px solid white;
+  padding: 10px;
+  width: 600px;
+  height: 490px;
+  background-color: white; }
+applet { padding: 0px;
+  background-color: white; }
+table { border: 1px solid gray;
+  border-spacing: 0px;
+  border-collapse: collapse;
+  font: 10px/24px Verdana, Arial, Helvetica, sans-serif; }
+  table th {
+    border: 1px solid gray;
+    padding: 0em 1em;
+    text-align: center; }
+  table td {
+    font-size: 0.9em;
+    border: 1px solid gray;
+    padding: 0em 1em;
+    text-align: right;
+    width: 14em; }
+  table td.left {
+    padding: 0em 1em 0em 2em;
+    text-align: left; }
+ul {
+  list-style-type: none;
+  padding: 0em 0em;
+  margin: 0.5em 0em 0em 0.5em;
+  width: 100%; }
+  ul li {
+    margin: 0em;
+    padding: 0em 1em; }
+  ul.hlist li {
+    display: table-cell;
+    vertical-align: top;
+    margin: 0em;
+    padding: 0em 0.5em; }
+button.active {
+  font-weight: bold;
+  font-color: black;
+  border-bottom: 2px solid black; }
+button {
+  font-weight: normal;
+  font-color: gray;
+  border-bottom: 0px solid black; }
+pre { font-size: 0.8em;
+  border: 1px solid gray;
+  padding: 1em;
+  background-color: #F0F0F0;
+  width: 80em;
+  height: 40em;
+  overflow: scroll; }
+.chart {
+  border: 1px solid white;
+  background-color: #FAFAFA;
+  margin-top: 20px;
+  width: 580px;
+  height: 465px; }
+circle, .line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1px; }
+text.title { font-size: 1.2em;
+  font-weight: bold; }
+text.axis { font-size: 1.0em;
+  font-weight: normal; }
+circle {
+  fill: white;
+  fill-opacity: 0.2;
+  cursor: move; }
+  circle.selected {
+    fill: #ff7f0e;
+    stroke: #ff7f0e; }
+  circle:hover {
+    fill: #ff7f0e;
+    stroke: #707f0e; }
+  circle.selected:hover {
+    fill: #ff7f0e;
+    stroke: #ff7f0e; }

@@ -111,6 +111,12 @@ PROJECT_LIST = {
                         :branch => 'master',
                         :path => 'org/concord/modeler',
                         :has_applet_class => true,
-                        :sign => false }
+                        :sign => false },
+
+  'NetLogoLite'         => { :build_type => :download,
+                        :url => 'http://ccl.northwestern.edu/netlogo/5.0.1/NetLogoLite.jar',
+                        :path => 'org/nlogo',
+                        :version => '5.0.1',
+                        :sign => false },
 
 }
