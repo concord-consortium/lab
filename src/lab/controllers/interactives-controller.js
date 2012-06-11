@@ -8,6 +8,8 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
       component,
       simpleController,
       $interactiveContainer,
+      propertiesListeners = [],
+      actionQueue = [],
       i, ii;
 
   function loadModel(modelUrl) {
@@ -20,6 +22,7 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
         simpleController.reload(modelConfig, playerConfig);
       } else {
         simpleController = controllers.simpleModelController('#molecule-container', modelConfig, playerConfig);
+        modelLoaded();
       }
     });
   }
@@ -28,6 +31,8 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
     switch (component.type) {
       case "button":
         return createButton(component);
+      case "thermometer":
+        return createThermometer(component);
     }
   }
 
@@ -47,11 +52,55 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
     return $button;
   }
 
+  function createThermometer(component) {
+    var $therm = $('<div id="thermometer"/>'),
+        thermometer = new Thermometer($therm, 0, component.min, component.max);
+
+    function updateTherm() {
+      thermometer.add_value(model.get("temperature"));
+    }
+
+    queuePropertiesListener(["temperature"], updateTherm);
+    queueActionOnModelLoad(function() {
+      thermometer.resize();
+      updateTherm();
+    });
+    return $therm;
+  }
+
+  function queuePropertiesListener(properties, func) {
+    if (typeof model !== "undefined") {
+      model.addPropertiesListener(properties, func)
+    } else {
+      propertiesListeners.push([properties, func]);
+    }
+  }
+
+  function queueActionOnModelLoad(action) {
+    if (typeof model !== "undefined") {
+      action();
+    } else {
+      actionQueue.push(action);
+    }
+  }
+
+  function modelLoaded() {
+    while (propertiesListeners.length > 0) {
+      listener = propertiesListeners.pop();
+      model.addPropertiesListener(listener[0], listener[1]);
+    }
+    while (actionQueue.length > 0) {
+      action = actionQueue.pop()();
+    }
+  }
+
   function loadInteractive(newInteractive, interactive_view_id) {
     interactive = newInteractive;
     $interactiveContainer = $(interactive_view_id);
     if ($interactiveContainer.children().length === 0) {
-      $interactiveContainer.append('<div id="molecule-container"/>');
+      $top = $('<div id="top"/>');
+      $top.append('<div id="molecule-container"/>');
+      $interactiveContainer.append($top);
       $interactiveContainer.append('<div id="bottom"/>');
     } else {
       $('#bottom').remove();
