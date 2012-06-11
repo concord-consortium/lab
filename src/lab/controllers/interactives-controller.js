@@ -54,7 +54,7 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
       $interactiveContainer.append('<div id="molecule-container"/>');
       $interactiveContainer.append('<div id="bottom"/>');
     } else {
-      $(bottom).remove();
+      $('#bottom').remove();
       $interactiveContainer.append('<div id="bottom"/>');
     }
 
