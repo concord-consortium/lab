@@ -1,4 +1,6 @@
+/*globals energy2d */
 /*jslint indent: 2 */
+// JSLint report: OK
 //
 // lab/models/energy2d/modeler.js
 //
@@ -11,6 +13,7 @@ var coremodel = require('./core-model.js');
 energy2d.namespace('energy2d.modeler');
 
 energy2d.modeler.makeModeler = function (options, array_type) {
+  'use strict';
   var core_model = coremodel.makeCoreModel(options, array_type);
   return {
     nextStep: function () {
@@ -29,5 +32,5 @@ energy2d.modeler.makeModeler = function (options, array_type) {
     getUVelocityArray: core_model.getUVelocityArray,
     getVVelocityArray: core_model.getVVelocityArray,
     getPartsArray: core_model.getPartsArray
-  }
+  };
 };
