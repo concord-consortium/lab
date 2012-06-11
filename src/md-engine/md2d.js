@@ -227,7 +227,7 @@ exports.makeModel = function() {
       sigma = [],
 
       // cutoff for force calculations, as a factor of sigma
-      cutoff = 5.0,
+      cutoff = 2.0,
       cutoffDistance_LJ_sq = [],
 
       // Each object at ljCalculator[i,j] can calculate the magnitude of the Lennard-Jones force and
