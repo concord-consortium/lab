@@ -165,10 +165,9 @@ modeler.model = function(initialProperties) {
       } else {
         sample_time = t;
       }
-      dispatch.tick({type: "tick"});
-    } else {
-      if (model_listener) { model_listener(); }
     }
+
+    dispatch.tick({type: "tick"});
     return stopped;
   }
 
