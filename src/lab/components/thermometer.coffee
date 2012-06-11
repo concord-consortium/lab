@@ -1,7 +1,7 @@
 class Thermometer
 
   constructor: (@dom_id="#thermometer", initial_value, @min, @max) ->
-    @dom_element = $(@dom_id)
+    @dom_element = if typeof @dom_id == "string" then $(@dom_id) else @dom_id
     @dom_element.addClass('thermometer')
     @samples = []
     @samples.push initial_value
