@@ -199,6 +199,16 @@ layout.setupScreen = function(forceRender) {
       compareScreen();
       break;
 
+      // like full-static-screen, but all component position definitions are set from properties
+      case "interactive":
+      if (layout.not_rendered) {
+        var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+        layout.bodycss.style.fontSize = emsize + 'em';
+        setupInteractiveScreen();
+        layout.not_rendered = false;
+      }
+      break;
+
       default:
       layout.bodycss.style.fontSize = layout.screen_factor + 'em';
       setupRegularScreen();
@@ -257,6 +267,37 @@ layout.setupScreen = function(forceRender) {
     rightHeight = height * 0.57;
     i = -1;  while(++i < viewLists.energyCharts.length) {
       viewLists.energyCharts[i].resize(rightHalfWidth, rightHeight);
+    }
+  }
+
+  /**
+    At the moment, this just finds every view in viewlist and calls resize()
+    on it. Eventually this should work out which div each component wants to
+    be in and resize it in some intelligent way
+  **/
+  function setupInteractiveScreen() {
+    var i, width, height, mcsize,
+        rightHeight, rightHalfWidth, rightQuarterWidth,
+        widthToPageRatio, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
+
+    mcsize = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    widthToPageRatio = mcsize[0] / pageWidth;
+    width = pageWidth * 0.46;
+    height = width * 1/modelAspectRatio;
+    if (height > pageHeight*0.70) {
+      height = pageHeight * 0.70;
+      width * height * modelAspectRatio;
+    }
+
+    for (viewType in viewLists) {
+      if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
+        i = -1;  while(++i < viewLists[viewType].length) {
+          viewLists[viewType][i].resize(width, height);
+        }
+      }
     }
   }
 
