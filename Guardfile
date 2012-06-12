@@ -1,4 +1,4 @@
-ignore_paths 'bin', 'examples', 'lab', 'node_modules'
+ignore %r{(bin|node_modules)}
 
 # FireSass allows Firebug to display the original Sass filename
 # and line number of Sass-generated CSS styles
