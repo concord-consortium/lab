@@ -207,7 +207,13 @@ parseMML = (mmlString) ->
         VY: vy
         CHARGE: charge
         ELEMENT: element
-      radialBonds         : radialBonds
+
+    if radialBonds.length > 0
+      json.radialBonds =
+        atom1Index: (bond.atom1Index for bond in radialBonds)
+        atom2Index: (bond.atom2Index for bond in radialBonds)
+        bondLength: (bond.bondLength for bond in radialBonds)
+        bondStrength: (bond.bondStrength for bond in radialBonds)
 
     json.temperature = temperature if temperature
 
