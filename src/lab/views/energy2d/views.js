@@ -368,9 +368,13 @@ model2d.getPartColor = function(part) {
     var scale = max_hue / (max_temp - min_temp);
     
     if (part.color) {
-        color = part.color.toString(16);
-        while(color.length < 6) {
-            color = '0' + color;
+        if (typeof part.color === 'string') {
+          color = part.color;
+        } else {
+          color = part.color.toString(16);
+          while(color.length < 6) {
+              color = '0' + color;
+          }
         }
     } else if (part.power > 0) {
         color = "FFFF00";

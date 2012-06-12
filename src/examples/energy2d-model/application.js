@@ -208,8 +208,25 @@
     }
     
     function loadModelState(state_name) {
+        // just for debugging
+        var def_options = {
+          structure: {
+            part: [
+              {
+                rectangle: {
+                  x: 4.5,
+                  y: 4.5,
+                  width: 1,
+                  height: 1
+                },
+                constant_temperature: true,
+                temperature: 50
+              }
+            ]
+          }
+        };
         if (!state_name || state_name == "default") {
-            model = setupModel();
+            model = setupModel(def_options);
             setupRendering();
         }
         else if (models_library[state_name]) {

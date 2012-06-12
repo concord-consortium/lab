@@ -4,36 +4,42 @@
 // lab/models/energy2d/engines/this.js
 //
 
-// 
-// Utils
-//
-
 // Based on: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 // It is optional to repeat the first vertex at the end of list of polygon vertices.
-var pointInsidePolygon = function (nvert, vertx, verty, testx, testy) {
-  'use strict';
-  var c = 0, i, j;
-  for (i = 0, j = nvert - 1; i < nvert; j = i += 1) {
-    if (((verty[i] > testy) !== (verty[j] > testy)) && (testx < (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i])) {
-      c = !c;
+var
+  default_config = require('./default-config.js'),
+
+  pointInsidePolygon = function (nvert, vertx, verty, testx, testy) {
+    'use strict';
+    var c = 0, i, j;
+    for (i = 0, j = nvert - 1; i < nvert; j = i += 1) {
+      if (((verty[i] > testy) !== (verty[j] > testy)) && (testx < (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i])) {
+        c = !c;
+      }
     }
-  }
-  return c;
+    return c;
 };
 
 exports.Part = function (options) {
   'use strict';
   var count, i;
 
-  if (!options) {
-    options = {};
-  }
+  options = default_config.fillWithDefaultValues(options, default_config.DEFAULT_VALUES.part);
 
-  // shape
-  this.rectangle = options.rectangle;
-  this.ellipse = options.ellipse;
-  this.ring = options.ring;
-  this.polygon = options.polygon;
+  // Validate and process options.
+
+  // Check shape
+  if (options.rectangle) {
+    this.rectangle = options.rectangle;
+  } else if (options.ellipse) {
+    this.ellipse = options.ellipse;
+  } else if (options.ring) {
+    this.ring = options.ring;
+  } else if (options.polygon) {
+    this.polygon = options.polygon;
+  } else {
+    throw new Error("Part: shape not defined.");
+  }
 
   if (this.polygon && typeof (this.polygon.vertices) === "string") {
     count = this.polygon.count;
@@ -47,29 +53,21 @@ exports.Part = function (options) {
   }
 
   // source properties
-  this.thermal_conductivity = options.thermal_conductivity !== undefined ? options.thermal_conductivity : 1;
-  this.specific_heat = options.specific_heat !== undefined ? options.specific_heat : 1300;
-  this.density = options.density !== undefined ? options.density : 25;
-  this.temperature = options.temperature !== undefined ? options.temperature : 0;
-  this.constant_temperature = options.constant_temperature !== undefined ? options.constant_temperature : false;
-  this.power = options.power !== undefined ? options.power : 0;
-  this.wind_speed = options.wind_speed !== undefined ? options.wind_speed : 0;
-  this.wind_angle = options.wind_angle !== undefined ? options.wind_angle : 0;
-
-  // optical properties (ray solver not implemented)
-  this.transmission = options.transmission !== undefined ? options.transmission : 0;
-  this.reflection = options.reflection !== undefined ? options.reflection : 0;
-  this.absorption = options.absorption !== undefined ? options.absorption : 1;
-  this.emissivity = options.emissivity !== undefined ? options.emissivity : 0;
+  this.thermal_conductivity = options.thermal_conductivity;
+  this.specific_heat = options.specific_heat;
+  this.density = options.density;
+  this.temperature = options.temperature;
+  this.constant_temperature = options.constant_temperature;
+  this.power = options.power;
+  this.wind_speed = options.wind_speed;
+  this.wind_angle = options.wind_angle;
 
   // visual properties
-  this.visible = options.visible !== undefined ? options.visible : true;
-  this.filled = options.filled !== undefined ? options.filled : true;
-  this.draggable = options.draggable !== undefined ? options.draggable : true;
+  this.visible = options.visible;
+  this.filled = options.filled;
   this.color = options.color;
   this.texture = options.texture;
   this.label = options.label;
-  this.uid = options.uid;
 };
 
 exports.Part.prototype.getLabel = function () {
