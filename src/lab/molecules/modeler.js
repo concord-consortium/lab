@@ -507,19 +507,44 @@ modeler.model = function(initialProperties) {
       loc = coreModel.findMinimumPELocation(el, x, y, 0, 0, charge);
     } while (!loc);
 
-    model.addAtom(el, loc[0], loc[1], 0, 0);
+    return model.addAtom(el, loc[0], loc[1], 0, 0);
   },
 
   /**
-    add a new atom with element 'el' and velocity '[vx, vy]' near position [x, y].
+    Adds a new atom with element 'el', charge 'charge', and velocity '[vx, vy]' to the model
+    at position [x, y]. (Intended to be exposed as a script API method.)
 
-    If [x, y] overlaps with another atom it is placed nearby
+    Adjusts (x,y) if needed so that the whole atom is within the walls of the container.
+
+    Returns false and does not add the atom if the potential energy change of adding an *uncharged*
+    atom of the specified element to the specified location would be positive (i.e, if the atom
+    intrudes into the repulsive region of another atom.)
+
+    Otherwise, returns true.
   */
   model.addAtom = function(el, x, y, vx, vy, charge) {
-    coreModel.addAtom(el, x, y, vx, vy, charge);
-    nodes = coreModel.atoms;
-    coreModel.computeOutputState();
-    if (model_listener) model_listener();
+    var size      = model.size(),
+        radius    = coreModel.getRadiusOfElement(el);
+
+    // As a convenience to script authors, bump the atom within bounds
+    if (x < radius) x = radius;
+    if (x > size[0]-radius) x = size[0]-radius;
+    if (y < radius) y = radius;
+    if (y > size[1]-radius) y = size[1]-radius;
+
+    // check the potential energy change caused by adding an *uncharged* atom at (x,y)
+    if (model.getPotentialFunction(el, 0, false)(x, y) <= 0) {
+      coreModel.addAtom(el, x, y, vx, vy, charge);
+
+      // reassign nodes to possibly-reallocated atoms array
+      nodes = coreModel.atoms;
+      coreModel.computeOutputState();
+      if (model_listener) model_listener();
+
+      return true;
+    }
+    // return false on failure
+    return false;
   },
 
   // return a copy of the array of speeds
