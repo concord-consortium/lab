@@ -489,25 +489,38 @@ modeler.model = function(initialProperties) {
     return coreModel.getTotalMass();
   };
 
+  /**
+    Attempts to add an 0-velocity atom to a random location. Returns false if after 10 tries it
+    can't find a location. (Intended to be exposed as a script API method.)
+
+    Optionally allows specifying the element (default is to randomly select from all elements) and
+    charge (default is neutral).
+  */
   model.addRandomAtom = function(el, charge) {
     if (el == null) el = Math.floor( Math.random() * elements.length );
+    if (charge == null) charge = 0;
 
     var size   = model.size(),
         radius = coreModel.getRadiusOfElement(el),
         x,
         y,
-        loc;
+        loc,
+        added = false,
+        numTries = 0,
+        // try at most ten times.
+        maxTries = 10;
 
     do {
       x = Math.random() * size[0] - 2*radius;
       y = Math.random() * size[1] - 2*radius;
 
       // findMinimimuPELocation will return false if minimization doesn't converge, in which case
-      // tray again from a different x, y
+      // try again from a different x, y
       loc = coreModel.findMinimumPELocation(el, x, y, 0, 0, charge);
-    } while (!loc);
+      if (loc && model.addAtom(el, loc[0], loc[1], 0, 0, charge)) return true;
+    } while (++numTries < maxTries);
 
-    return model.addAtom(el, loc[0], loc[1], 0, 0);
+    return false;
   },
 
   /**
