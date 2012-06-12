@@ -196,6 +196,19 @@ exports.makeModel = function() {
       // An array of length max(INDICES)+1 which contains the above property arrays
       atoms,
 
+      // Individual property arrays for the "radial" bonds, indexed by bond number
+      radialBondAtom1Index,
+      radialBondAtom2Index,
+      radialBondLength,
+      radialBondStrength,
+
+      // An array of length 4 which contains the above 4 property arrays.
+      // Left undefined if no radial bonds are defined.
+      radialBonds,
+
+      // Number of actual radial bonds (may be smaller than the length of the property arrays)
+      N_radialBonds = 0,
+
       // The location of the center of mass, in nanometers.
       x_CM, y_CM,
 
@@ -276,6 +289,36 @@ exports.makeModel = function() {
         // restore N and totalMass
         N = savedArrays[0].length;        // atoms[0].length is now > N!
         totalMass = savedTotalMass;
+      },
+
+      createRadialBondsArray = function(num) {
+      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
+
+        radialBonds = [];
+
+        radialBonds[0] = radialBondAtom1Index = arrays.create(num, 0, uint16);
+        radialBonds[1] = radialBondAtom2Index = arrays.create(num, 0, uint16);
+        radialBonds[2] = radialBondLength     = arrays.create(num, 0, float32);
+        radialBonds[3] = radialBondStrength   = arrays.create(num, 0, float32);
+      },
+
+
+      // Make the 'radialBonds' array bigger. FIXME: needs to be factored
+      // into a common pattern with 'extendAtomsArray'
+      extendRadialBondsArray = function(num) {
+        var savedArrays = [],
+            i;
+
+        for (i = 0; i < radialBonds.length; i++) {
+          savedArrays[i] = radialBonds[i];
+        }
+
+        createRadialBondsArray(num);
+
+        for (i = 0; i < radialBonds.length; i++) {
+          arrays.copy(savedArrays[i], radialBonds[i]);
+        }
       },
 
       // Function that accepts a value T and returns an average of the last n values of T (for some n).
@@ -479,6 +522,60 @@ exports.makeModel = function() {
             ax[j] -= fx * mass_j_inv;
             ay[j] -= fy * mass_j_inv;
           }
+        }
+      },
+
+      updateBondAccelerations = function() {
+        // fast path if no radial bonds have been defined
+        if (!radialBonds || radialBonds[0].length === 0) return;
+
+        var i,
+            len,
+            i1,
+            i2,
+            dx,
+            dy,
+            r_sq,
+            r,
+            k,
+            r0,
+            f_over_r,
+            fx,
+            fy,
+            mass1_inv,
+            mass2_inv;
+
+        for (i = 0, len = radialBonds[0].length; i < len; i++) {
+          i1 = radialBondAtom1Index[i];
+          i2 = radialBondAtom2Index[i];
+
+          mass1_inv = 1/elements[element[i1]][0];
+          mass2_inv = 1/elements[element[i2]][0];
+
+          dx = x[i2] - x[i1];
+          dy = y[i2] - y[i1];
+          r_sq = dx*dx + dy*dy;
+          r = Math.sqrt(r_sq);
+
+          // radialBondStrength units are eV/(0.01 nm)^2
+          // radialBondLength is in units of length 0.01 nm
+          // THESE DEFAULTS WILL BE CHANGED SHORTLY.
+
+          // eV/nm^2
+          k = radialBondStrength[i] * 1e4;
+
+          // nm
+          r0 = radialBondLength[i] * 0.01;
+
+          f_over_r = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+
+          fx = f_over_r * dx;
+          fy = f_over_r * dy;
+
+          ax[i1] += fx * mass1_inv;
+          ay[i1] += fy * mass1_inv;
+          ax[i2] -= fx * mass2_inv;
+          ay[i2] -= fy * mass2_inv;
         }
       },
 
@@ -699,6 +796,26 @@ exports.makeModel = function() {
       N++;
     },
 
+    /**
+      The canonical method for adding a radial bond to the collection of radial bonds.
+
+      If there isn't enough room in the 'radialBonds' array, it (somewhat inefficiently)
+      extends the length of the typed arrays by one to contain one more atom with listed properties.
+    */
+    addRadialBond: function(atomIndex1, atomIndex2, bondLength, bondStrength) {
+
+      if (N_radialBonds+1 > radialBondAtom1Index.length) {
+        extendRadialBondsArray(N+1);
+      }
+
+      radialBondAtom1Index[N_radialBonds] = atomIndex1;
+      radialBondAtom2Index[N_radialBonds] = atomIndex2;
+      radialBondLength[N_radialBonds]     = bondLength;
+      radialBondStrength[N_radialBonds]   = bondStrength;
+
+      N_radialBonds++;
+    },
+
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
       var x, y, vx, vy, charge, element,
@@ -790,6 +907,22 @@ exports.makeModel = function() {
       model.computeOutputState();
     },
 
+    initializeRadialBonds: function(props) {
+      var num = props.atom1Index.length,
+          i;
+
+      createRadialBondsArray(props.atom1Index.length);
+
+      for (i = 0; i < num; i++) {
+        model.addRadialBond(
+          props.atom1Index[i],
+          props.atom2Index[i],
+          props.bondLength[i],
+          props.bondStrength[i]
+        );
+      }
+    },
+
     relaxToTemperature: function(T) {
 
       // FIXME this method needs to be modified. It should rescale velocities only periodically
@@ -849,6 +982,9 @@ exports.makeModel = function() {
           // usable until this loop completes; it won't have contributions from a(t+dt, k) for k > i
           updatePairwiseAccelerations(i);
         }
+
+        // Accumulate accelerations from bonded interactions into a(t+dt)
+        updateBondAccelerations();
 
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
