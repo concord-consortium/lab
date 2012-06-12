@@ -32,12 +32,24 @@ exports.makeCoreModel = function (model_options) {
   var
     // Validate provided options.
     opt = (function () {
-      var validated_options;
-      if (!model_options) {
-        validated_options = default_config.DEFAULT_MODEL_OPTIONS;
+      var boundary;
+
+      model_options = default_config.fillWithDefaultValues(model_options, default_config.DEFAULT_VALUES.model);
+
+      // Validation.
+      //
+      // Check boundary settings, as they have complex structure.
+      boundary = model_options.boundary.temperature_at_border || model_options.boundary.flux_at_border;
+      if (!boundary) {
+        throw new Error("Core model: missing boundary settings.");
+      } else if (boundary.upper === undefined ||
+                 boundary.right === undefined ||
+                 boundary.lower === undefined ||
+                 boundary.left  === undefined) {
+        throw new Error("Core model: incomplete boundary settings.");
       }
-      // TODO: Implement me!
-      return validated_options;
+
+      return model_options;
     }()),
 
     // Simulation grid dimensions.
