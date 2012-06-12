@@ -88,3 +88,89 @@ circle {
   circle.selected:hover {
     fill: #ff7f0e;
     stroke: #ff7f0e; }
+
+.component_group button {
+  border: solid 1px #999999;
+  font-size: 120%;
+  color: #222222;
+  margin: 0;
+  opacity: 1 !important;
+  padding: 0.75em 1.5em;
+  background-color: #dddddd;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(50%, #f6f6f6), color-stop(50%, #dddddd), color-stop(100%, #dddddd));
+  background-image: -webkit-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: -moz-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: -ms-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: -o-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  background-image: linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #dddddd 50%, #dddddd 100%);
+  -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.7);
+  -moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(255, 255, 255, 0.7); }
+
+.component_group button[disabled="disabled"] {
+  color: #999999;
+  background-color: #f6f6f6;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(50%, #f6f6f6), color-stop(50%, #f6f6f6), color-stop(100%, #f6f6f6));
+  background-image: -webkit-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #f6f6f6 50%, #f6f6f6 100%);
+  background-image: -moz-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #f6f6f6 50%, #f6f6f6 100%);
+  background-image: -ms-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #f6f6f6 50%, #f6f6f6 100%);
+  background-image: -o-linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #f6f6f6 50%, #f6f6f6 100%);
+  background-image: linear-gradient(top, #f6f6f6 0%, #f6f6f6 50%, #f6f6f6 50%, #f6f6f6 100%); }
+
+.component_group button:hover, .component_group button:active {
+  background: #aaaaaa;
+  color: black;
+  cursor: pointer; }
+
+.component_group button.left_edge {
+  border-right-width: 0;
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-top-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -ms-border-top-left-radius: 3px;
+  -o-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -webkit-border-top-right-radius: 0;
+  -moz-border-top-right-radius: 0;
+  -moz-border-radius-topright: 0;
+  -ms-border-top-right-radius: 0;
+  -o-border-top-right-radius: 0;
+  border-top-right-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+  -moz-border-bottom-right-radius: 0;
+  -moz-border-radius-bottomright: 0;
+  -ms-border-bottom-right-radius: 0;
+  -o-border-bottom-right-radius: 0;
+  border-bottom-right-radius: 0;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-bottom-left-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  -ms-border-bottom-left-radius: 3px;
+  -o-border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 3px; }
+
+.component_group button.right_edge {
+  -webkit-border-top-left-radius: 0;
+  -moz-border-top-left-radius: 0;
+  -moz-border-radius-topleft: 0;
+  -ms-border-top-left-radius: 0;
+  -o-border-top-left-radius: 0;
+  border-top-left-radius: 0;
+  -webkit-border-top-right-radius: 3px;
+  -moz-border-top-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -ms-border-top-right-radius: 3px;
+  -o-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-bottom-right-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  -ms-border-bottom-right-radius: 3px;
+  -o-border-bottom-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  -webkit-border-bottom-left-radius: 0;
+  -moz-border-bottom-left-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+  -ms-border-bottom-left-radius: 0;
+  -o-border-bottom-left-radius: 0;
+  border-bottom-left-radius: 0; }
