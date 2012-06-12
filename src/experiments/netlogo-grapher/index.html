@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <title>NetLogo Applet Grapher</title>
+    <title>NetLogo Model and Lab Grapher</title>
     <link href="styles.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="../../vendor/modernizr/modernizr.js"></script>
     <script type="text/javascript">
@@ -13,11 +13,11 @@
     <script type="text/javascript" src="../../lab/lab.grapher.js"></script>
   </head>
   <body>
-    <h1>Simple Global Climate Change NetLogo Applet</h1>
+    <h1>NetLogo Global Climate Change model sending data to Lab Grapher</h1>
     <ul class="hlist">
       <li>
         <div id="appletwrapper">
-          <ul class="hlist">
+          <ul class="hlist component_group">
             <li><button id="run-button" class="nlogo">Run</button></li>
             <li><button id="reset-button" class="nlogo">Reset</button></li>
             <li><button id="watch-sunray-button" class="nlogo">Watch Sunray</button></li>
@@ -47,7 +47,7 @@
         <table>
           <thead><tr>
             <th>Globals</th>
-            <th><button id="update-globals-button" class="nlogo">Update Values</button></th>
+            <th><button id="update-globals-button" class="nlogo component_group">Update Values</button></th>
           </tr></thead>
           <tbody id="globals-table"></tbody>
         </table>
@@ -60,8 +60,8 @@
           state back into the NetLogo Applet.
         </p>
         <ul class="hlist">
-          <li><button id="save-state-button" class="nlogo">Save State</button></li>
-          <li><button id="restore-state-button" class="nlogo">Restore State</button></li>
+          <li><button id="save-state-button" class="nlogo component_group">Save State</button></li>
+          <li><button id="restore-state-button" class="nlogo component_group">Restore State</button></li>
         </ul>
         <pre id="world-state"></pre>
       </li>
