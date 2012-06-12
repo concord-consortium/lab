@@ -165,7 +165,7 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
   }
 
   function updateLayout() {
-    simpleController.updateLayout();
+    layout.setupScreen(true);
   }
 
   // run this when controller is created
