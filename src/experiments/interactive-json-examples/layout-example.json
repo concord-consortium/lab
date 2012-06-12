@@ -18,6 +18,21 @@
                 "}",
                 "model.set({temperature: newTemp});"
               ]
+    },
+    {
+      "type": "thermometer",
+      "id": "thermometer",
+      "min": 200,
+      "max": 4000
     }
-  ]
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "abs-zero",
+      "add-heat"
+    ]
+  }
 }
