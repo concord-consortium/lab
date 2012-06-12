@@ -4,7 +4,7 @@
 controllers.interactivesController = function(interactive, interactive_view_id) {
 
   var controller = {},
-      simpleController,
+      modelController,
       $interactiveContainer,
       propertiesListeners = [],
       actionQueue = [];
@@ -15,10 +15,10 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
         maximum_model_steps: Infinity
       };
     $.get(modelUrl).done(function(modelConfig) {
-      if (simpleController) {
-        simpleController.reload(modelConfig, playerConfig);
+      if (modelController) {
+        modelController.reload(modelConfig, playerConfig);
       } else {
-        simpleController = controllers.simpleModelController('#molecule-container', modelConfig, playerConfig);
+        modelController = controllers.modelController('#molecule-container', modelConfig, playerConfig);
         modelLoaded();
       }
     });
