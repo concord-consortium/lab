@@ -557,16 +557,13 @@ exports.makeModel = function() {
           r_sq = dx*dx + dy*dy;
           r = Math.sqrt(r_sq);
 
-          // radialBondStrength units are eV/(0.01 nm)^2
-          // radialBondLength is in units of length 0.01 nm
-          // THESE DEFAULTS WILL BE CHANGED SHORTLY.
-
           // eV/nm^2
-          k = radialBondStrength[i] * 1e4;
+          k = radialBondStrength[i];
 
           // nm
-          r0 = radialBondLength[i] * 0.01;
+          r0 = radialBondLength[i];
 
+          // "natural" Next Gen force units / nm
           f_over_r = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
 
           fx = f_over_r * dx;
