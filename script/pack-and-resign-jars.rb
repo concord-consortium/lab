@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 require_relative 'setup.rb'
+
+require File.join(CONFIG_PATH, 'java-projects.rb')
+
 require 'optparse'
 
 @nosign = @trusted_library = @cmd_logging = false
@@ -25,10 +28,10 @@ end
 
 keystore = ""
 
-if CONFIG[:keystore_path]
-  keystore = `keytool -list -v -keystore #{File.join(PROJECT_ROOT, CONFIG[:keystore_path])} -storepass #{CONFIG[:password]}`
+if CONFIG[:java][:keystore_path]
+  keystore = `keytool -list -v -keystore #{File.join(PROJECT_ROOT, CONFIG[:java][:keystore_path])} -storepass #{CONFIG[:java][:password]}`
 else
-  keystore = `keytool -list -v -storepass #{CONFIG[:password]}`
+  keystore = `keytool -list -v -storepass #{CONFIG[:java][:password]}`
 end
 keystore_expires = keystore[/until:\s(.*)/, 1]
 
@@ -44,7 +47,7 @@ else
 
     Java Code Siging Certificate Keystore:
 
-      Alias:   #{CONFIG[:alias]}
+      Alias:   #{CONFIG[:java][:alias]}
       Expires: #{keystore_expires}
   HEREDOC
 end
@@ -99,8 +102,8 @@ jars.each do |jar_path|
     cmd("pack200 --repack --segment-limit=-1 #{name}")
     unless @nosign
       puts "\nsigning:\n  #{path}/#{name}"
-      if CONFIG[:keystore_path]
-        cmd("jarsigner -storepass #{CONFIG[:password]} -keystore #{File.join(PROJECT_ROOT, CONFIG[:keystore_path])}  #{name} #{CONFIG[:alias]}")
+      if CONFIG[:java][:keystore_path]
+        cmd("jarsigner -storepass #{CONFIG[:password]} -keystore #{File.join(PROJECT_ROOT, CONFIG[:java][:keystore_path])}  #{name} #{CONFIG[:alias]}")
       else
         cmd("jarsigner -storepass #{CONFIG[:password]} #{name} #{CONFIG[:alias]}")
       end

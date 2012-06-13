@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 require_relative 'setup.rb'
+
+require File.join(CONFIG_PATH, 'java-projects.rb')
+
 require 'optparse'
 
 puts <<HEREDOC
