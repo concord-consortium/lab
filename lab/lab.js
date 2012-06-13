@@ -17,6 +17,46 @@ grapher.data = function(array) {
   };
   return points;
 };
+grapher.axis = {
+  axisProcessDrag: function(dragstart, currentdrag, domain) {
+    var originExtent, maxDragIn,
+        newdomain = domain,
+        origin = 0,
+        axis1 = domain[0],
+        axis2 = domain[1],
+        extent = axis2 - axis1;
+    if (currentdrag !== 0) {
+      if  ((axis1 >= 0) && (axis2 > axis1)) {                 // example: (20, 10, [0, 40]) => [0, 80]
+        origin = axis1;
+        originExtent = dragstart-origin;
+        maxDragIn = originExtent * 0.2 + origin;
+        if (currentdrag > maxDragIn) {
+          change = originExtent / (currentdrag-origin);
+          extent = axis2 - origin;
+          newdomain = [axis1, axis1 + (extent * change)];
+        }
+      } else if ((axis1 < 0) && (axis2 > 0)) {                // example: (20, 10, [-40, 40])       => [-80, 80]
+        origin = 0;                                           //          (-0.4, -0.2, [-1.0, 0.4]) => [-1.0, 0.4]
+        originExtent = dragstart-origin;
+        maxDragIn = originExtent * 0.2 + origin;
+        if ((dragstart >= 0 && currentdrag > maxDragIn) || (dragstart  < 0  && currentdrag < maxDragIn)) {
+          change = originExtent / (currentdrag-origin);
+          newdomain = [axis1 * change, axis2 * change];
+        }
+      } else if ((axis1 < 0) && (axis2 < 0)) {                // example: (-60, -50, [-80, -40]) => [-120, -40]
+        origin = axis2;
+        originExtent = dragstart-origin;
+        maxDragIn = originExtent * 0.2 + origin;
+        if (currentdrag < maxDragIn) {
+          change = originExtent / (currentdrag-origin);
+          extent = axis1 - origin;
+          newdomain = [axis2 + (extent * change), axis2];
+        }
+      }
+    }
+    return newdomain;
+  }
+};
 grapher.indexedData = function(array, initial_index) {
   var i = 0,
       start_index = initial_index || 0,
@@ -28,32 +68,53 @@ grapher.indexedData = function(array, initial_index) {
   return points;
 };
 grapher.graph = function(elem, options, message) {
-  var cx = 600, cy = 300;
+  var cx = 600, cy = 300, 
+      node;
 
   if (arguments.length) {
     elem = d3.select(elem);
+    node = elem.node();
     cx = elem.property("clientWidth");
     cy = elem.property("clientHeight");
   }
 
-  var vis, plot, title, xlabel, ylabel, xtic, ytic, notification,
+  var svg, vis, plot, viewbox,
+      title, xlabel, ylabel, xtic, ytic,
+      notification,
       padding, size,
       xScale, yScale, xValue, yValue, line,
       circleCursorStyle,
+      displayProperties,
+      emsize, strokeWidth,
+      scaleFactor,
+      sizeType = {
+        category: "medium",
+        value: 3,
+        icon: 120,
+        tiny: 240,
+        small: 480,
+        medium: 960,
+        large: 1920
+      },
       downx = Math.NaN,
       downy = Math.NaN,
       dragged = null,
       selected = null,
+      titles = [],
       default_options = {
-        "xmax": 60, "xmin": 0,
-        "ymax": 40, "ymin": 0, 
-        "title": "Simple Graph1",
-        "xlabel": "X Axis",
-        "ylabel": "Y Axis",
-        "circleRadius": 10.0,
-        "dataChange": true,
-        "points": false,
-        "notification": false
+        "xmax":            60,
+        "xmin":             0,
+        "ymax":            40,
+        "ymin":             0, 
+        "title":          "Simple Graph1",
+        "xlabel":         "X Axis",
+        "ylabel":         "Y Axis",
+        "circleRadius":    10.0,
+        "strokeWidth":      2.0,
+        "dataChange":      true,
+        "addData":         true,
+        "points":          false,
+        "notification":    false
       };
 
   initialize(options);
@@ -71,9 +132,55 @@ grapher.graph = function(elem, options, message) {
     return options;
   }
 
-  function initialize(newOptions) {
+  function calculateSizeType() {
+    if(cx <= sizeType.icon) {
+      sizeType.category = 'icon';
+      sizeType.value = 0;
+    } else if (cx <= sizeType.tiny) {
+      sizeType.category = 'tiny';
+      sizeType.value = 1;
+    } else if (cx <= sizeType.small) {
+      sizeType.category = 'small';
+      sizeType.value = 2;
+    } else if (cx <= sizeType.medium) {
+      sizeType.category = 'medium';
+      sizeType.value = 3;
+    } else if (cx <= sizeType.large) {
+      sizeType.category = 'large';
+      sizeType.value = 4;
+    } else {
+      sizeType.category = 'extralarge';
+      sizeType.value = 5;
+    }
+  }
+
+  function scale(w, h) {
+    if (!arguments.length) {
+      cx = elem.property("clientWidth");
+      cy = elem.property("clientHeight");
+    } else {
+      cx = w;
+      cy = h;
+      node.style.width =  cx +"px";
+      node.style.height = cy +"px";
+    }
+    calculateSizeType();
+    displayProperties = layout.getDisplayProperties();
+    emsize = displayProperties.emsize;
+  }
+
+  function initialize(newOptions, mesg) {
     if (newOptions || !options) {
-      options = setupOptions(options);
+      options = setupOptions(newOptions);
+    }
+
+    if (svg !== undefined) {
+      svg.remove();
+      svg = undefined;
+    }
+
+    if (mesg) {
+      message = mesg;
     }
 
     if (options.dataChange) {
@@ -82,16 +189,74 @@ grapher.graph = function(elem, options, message) {
       circleCursorStyle = "crosshair";
     }
 
+    scale();
+
     options.xrange = options.xmax - options.xmin;
     options.yrange = options.ymax - options.ymin;
 
+    options.datacount = 2;
 
-    padding = {
-     "top":    options.title  ? 40 : 20,
-     "right":                 30,
-     "bottom": options.xlabel ? 60 : 10,
-     "left":   options.ylabel ? 70 : 45
-    };
+    strokeWidth = options.strokeWidth;
+
+    switch(sizeType.value) {
+      case 0:
+      padding = {
+       "top":    4,
+       "right":  4,
+       "bottom": 4,
+       "left":   4
+      };
+      break;
+
+      case 1:
+      padding = {
+       "top":    8,
+       "right":  8,
+       "bottom": 8,
+       "left":   8
+      };
+      break;
+
+      case 2:
+      padding = {
+       "top":    options.title  ? 25 : 15,
+       "right":  15,
+       "bottom": 20,
+       "left":   20
+      };
+      break;
+
+      case 3:
+      padding = {
+       "top":    options.title  ? 30 : 20,
+       "right":                   30,
+       "bottom": options.xlabel ? 60 : 10,
+       "left":   options.ylabel ? 70 : 45
+      };
+      break;
+
+      default:
+      padding = {
+       "top":    options.title  ? 40 : 20,
+       "right":                   30,
+       "bottom": options.xlabel ? 60 : 10,
+       "left":   options.ylabel ? 70 : 45
+      };
+      break;
+    }
+
+    if (Object.prototype.toString.call(options.title) === "[object Array]") {
+      titles = options.title;
+    } else {
+      titles = [options.title];
+    }
+    titles.reverse();
+
+    if (sizeType.value > 2 ) {
+      padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * emsize * 22;
+    } else {
+      titles = [titles[0]];
+    }
 
     size = {
       "width":  cx - padding.left - padding.right,
@@ -118,6 +283,8 @@ grapher.graph = function(elem, options, message) {
     if (!selection) { selection = elem; }
     selection.each(function() {
 
+      elem = d3.select(this);
+
       if (this.clientWidth && this.clientHeight) {
         cx = this.clientWidth;
         cy = this.clientHeight;
@@ -129,75 +296,127 @@ grapher.graph = function(elem, options, message) {
       updateXScale();
       updateYScale();
 
-      vis = d3.select(this).append("svg")
+      if (svg === undefined) {
+
+        svg = elem.append("svg")
+            .attr("width",  cx)
+            .attr("height", cy);
+
+        vis = svg.append("g")
+              .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
+        plot = vis.append("rect")
+            .attr("class", "plot")
+            .attr("width", size.width)
+            .attr("height", size.height)
+            .style("fill", "#EEEEEE")
+            .attr("pointer-events", "all")
+            .on("mousedown.drag", plot_drag)
+            .on("touchstart.drag", plot_drag)
+            .call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
+
+        viewbox = vis.append("svg")
+            .attr("class", "viewbox")
+            .attr("top", 0)
+            .attr("left", 0)
+            .attr("width", size.width)
+            .attr("height", size.height)
+            .attr("viewBox", "0 0 "+size.width+" "+size.height)
+            .attr("class", "line");
+
+        viewbox.append("path")
+            .attr("class", "line")
+            .style("stroke-width", strokeWidth)
+            .attr("d", line(points));
+
+        // add Chart Title
+        if (options.title && sizeType.value > 1) {
+          title = vis.selectAll("text")
+            .data(titles, function(d) { return d; });
+          title.enter().append("text")
+              .attr("class", "title")
+              .style("font-size", sizeType.value/2.4 * 100 + "%")
+              .text(function(d) { return d; })
+              .attr("x", size.width/2)
+              .attr("dy", function(d, i) { return -0.5 + -1 * sizeType.value/2.8 * i * emsize + "em"; })
+              .style("text-anchor","middle");
+        }
+
+        // Add the x-axis label
+        if (options.xlabel && sizeType.value > 2) {
+          xlabel = vis.append("text")
+              .attr("class", "axis")
+              .style("font-size", sizeType.value/2.6 * 100 + "%")
+              .text(options.xlabel)
+              .attr("x", size.width/2)
+              .attr("y", size.height)
+              .attr("dy","2.4em")
+              .style("text-anchor","middle");
+        }
+
+        // add y-axis label
+        if (options.ylabel && sizeType.value > 2) {
+          ylabel = vis.append("g").append("text")
+              .attr("class", "axis")
+              .style("font-size", sizeType.value/2.6 * 100 + "%")
+              .text(options.ylabel)
+              .style("text-anchor","middle")
+              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+        }
+
+        d3.select(node)
+            .on("mousemove.drag", mousemove)
+            .on("touchmove.drag", mousemove)
+            .on("mouseup.drag",   mouseup)
+            .on("touchend.drag",  mouseup);
+
+        notification = vis.append("text")
+            .attr("class", "graph-notification")
+            .text(message)
+            .attr("x", size.width/2)
+            .attr("y", size.height/2)
+            .style("text-anchor","middle");
+
+      } else {
+
+        vis
           .attr("width",  cx)
-          .attr("height", cy)
-          .append("g")
-            .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+          .attr("height", cy);
 
-      plot = vis.append("rect")
+        plot
           .attr("width", size.width)
-          .attr("height", size.height)
-          .style("fill", "#EEEEEE")
-          .attr("pointer-events", "all")
-          .on("mousedown.drag", plot_drag)
-          .on("touchstart.drag", plot_drag)
-          .call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
+          .attr("height", size.height);
 
-      vis.append("svg")
-          .attr("top", 0)
-          .attr("left", 0)
-          .attr("width", size.width)
-          .attr("height", size.height)
-          .attr("viewBox", "0 0 "+size.width+" "+size.height)
-          .attr("class", "line")
-          .append("path")
-              .attr("class", "line")
-              .attr("d", line(points));
+        viewbox
+            .attr("top", 0)
+            .attr("left", 0)
+            .attr("width", size.width)
+            .attr("height", size.height)
+            .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-      // add Chart Title
-      if (options.title) {
-        title = vis.append("text")
-            .attr("class", "title")
-            .text(options.title)
-            .attr("x", size.width/2)
-            .attr("dy","-0.8em")
-            .style("text-anchor","middle");
-      }
+        if (options.title && sizeType.value > 1) {
+            title.each(function(d, i) {
+              d3.select(this).attr("x", size.width/2);
+              d3.select(this).attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; });
+            });
+        }
 
-      // Add the x-axis label
-      if (options.xlabel) {
-        xlabel = vis.append("text")
-            .attr("class", "axis")
-            .text(options.xlabel)
-            .attr("x", size.width/2)
-            .attr("y", size.height)
-            .attr("dy","2.4em")
-            .style("text-anchor","middle");
-      }
+        if (options.xlabel && sizeType.value > 1) {
+          xlabel
+              .attr("x", size.width/2)
+              .attr("y", size.height);
+        }
 
-      // add y-axis label
-      if (options.ylabel) {
-        ylabel = vis.append("g").append("text")
-            .attr("class", "axis")
-            .text(options.ylabel)
-            .style("text-anchor","middle")
-            .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
-      }
+        if (options.ylabel && sizeType.value > 1) {
+          ylabel
+              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+        }
 
-      d3.select(this)
-          .on("mousemove.drag", mousemove)
-          .on("touchmove.drag", mousemove)
-          .on("mouseup.drag",   mouseup)
-          .on("touchend.drag",  mouseup);
-
-      redraw();
-      notification = vis.append("text")
-          .attr("class", "graph-notification")
-          .text('')
+        notification
           .attr("x", size.width/2)
-          .attr("y", size.height/2)
-          .style("text-anchor","middle");
+          .attr("y", size.height/2);
+      }
+      redraw();
     });
 
     function notify(mesg) {
@@ -282,16 +501,15 @@ grapher.graph = function(elem, options, message) {
         return d ? "#ccc" : "#666";
       },
 
-      fx = xScale.tickFormat(options.datacount),
-      fy = xScale.tickFormat(options.datacount);
+      fx = xScale.tickFormat(d3.format(".3r")),
+      fy = xScale.tickFormat(d3.format(".3r"));
 
       // Regenerate x-ticks…
       var gx = vis.selectAll("g.x")
           .data(xScale.ticks(10), String)
           .attr("transform", tx);
 
-      gx.select("text")
-          .text(fx);
+      gx.select("text").text(fx);
 
       var gxe = gx.enter().insert("g", "a")
           .attr("class", "x")
@@ -302,17 +520,20 @@ grapher.graph = function(elem, options, message) {
           .attr("y1", 0)
           .attr("y2", size.height);
 
-      gxe.append("text")
-          .attr("class", "axis")
-          .attr("y", size.height)
-          .attr("dy", "1em")
-          .attr("text-anchor", "middle")
-          .text(fx)
-          .style("cursor", "ew-resize")
-          .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-          .on("mousedown.drag",  xaxis_drag)
-          .on("touchstart.drag", xaxis_drag);
+      if (sizeType.value > 1) {
+        gxe.append("text")
+            .attr("class", "axis")
+            .style("font-size", sizeType.value/2.7 * 100 + "%")
+            .attr("y", size.height)
+            .attr("dy", "1em")
+            .attr("text-anchor", "middle")
+            .text(fx)
+            .style("cursor", "ew-resize")
+            .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+            .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+            .on("mousedown.drag",  xaxis_drag)
+            .on("touchstart.drag", xaxis_drag);
+      }
 
       gx.exit().remove();
 
@@ -334,17 +555,20 @@ grapher.graph = function(elem, options, message) {
           .attr("x1", 0)
           .attr("x2", size.width);
 
-      gye.append("text")
-          .attr("class", "axis")
-          .attr("x", -3)
-          .attr("dy", ".35em")
-          .attr("text-anchor", "end")
-          .text(fy)
-          .style("cursor", "ns-resize")
-          .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-          .on("mousedown.drag",  yaxis_drag)
-          .on("touchstart.drag", yaxis_drag);
+      if (sizeType.value > 1) {
+        gye.append("text")
+            .attr("class", "axis")
+            .style("font-size", sizeType.value/2.7 * 100 + "%")
+            .attr("x", -3)
+            .attr("dy", ".35em")
+            .attr("text-anchor", "end")
+            .text(fy)
+            .style("cursor", "ns-resize")
+            .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+            .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+            .on("mousedown.drag",  yaxis_drag)
+            .on("touchstart.drag", yaxis_drag);
+      }
 
       gy.exit().remove();
       plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
@@ -357,21 +581,26 @@ grapher.graph = function(elem, options, message) {
       var circle = vis.select("svg").selectAll("circle")
           .data(points, function(d) { return d; });
 
-      if (options.circleRadius){
-        circle.enter().append("circle")
-            .attr("class", function(d) { return d === selected ? "selected" : null; })
-            .attr("cx",    function(d) { return xScale(d[0]); })
-            .attr("cy",    function(d) { return yScale(d[1]); })
-            .attr("r", options.circleRadius)
-            .style("cursor", circleCursorStyle)
-            .on("mousedown.drag",  datapoint_drag)
-            .on("touchstart.drag", datapoint_drag);
-      }
+      if (options.circleRadius && sizeType.value > 1) {
+        if (!(options.circleRadius <= 4 && sizeType.value < 3)) {
+          circle.enter().append("circle")
+              .attr("class", function(d) { return d === selected ? "selected" : null; })
+              .attr("cx",    function(d) { return xScale(d[0]); })
+              .attr("cy",    function(d) { return yScale(d[1]); })
+              .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
+              .style("stroke-width", options.circleRadius/6 * (sizeType.value - 1.5))
+              .style("cursor", circleCursorStyle)
+              .on("mousedown.drag",  datapoint_drag)
+              .on("touchstart.drag", datapoint_drag);
 
-      circle
-          .attr("class", function(d) { return d === selected ? "selected" : null; })
-          .attr("cx",    function(d) { return xScale(d[0]); })
-          .attr("cy",    function(d) { return yScale(d[1]); });
+          circle
+              .attr("class", function(d) { return d === selected ? "selected" : null; })
+              .attr("cx",    function(d) { return xScale(d[0]); })
+              .attr("cy",    function(d) { return yScale(d[1]); })
+              .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
+              .style("stroke-width", options.circleRadius/6 * (sizeType.value - 1.5));
+        }
+      }
 
       circle.exit().remove();
 
@@ -382,10 +611,11 @@ grapher.graph = function(elem, options, message) {
     }
 
     function plot_drag() {
+      d3.event.preventDefault();
       grapher.registerKeyboardHandler(keydown);
       d3.select('body').style("cursor", "move");
       if (d3.event.altKey) {
-        if (options.dataChange) {
+        if (d3.event.shiftKey && options.addData) {
           var p = d3.svg.mouse(vis.node());
           var newpoint = [];
           newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
@@ -398,20 +628,27 @@ grapher.graph = function(elem, options, message) {
           });
           selected = newpoint;
           update();
+        } else {
+          var p = d3.svg.mouse(vis[0][0]);
+          downx = xScale.invert(p[0]);
+          downy = yScale.invert(p[1]);
+          dragged = false;
+          d3.event.stopPropagation();
         }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
+        // d3.event.stopPropagation();
       }
     }
 
     function xaxis_drag(d) {
       document.onselectstart = function() { return false; };
+      d3.event.preventDefault();
       var p = d3.svg.mouse(vis[0][0]);
       downx = xScale.invert(p[0]);
     }
 
     function yaxis_drag(d) {
       document.onselectstart = function() { return false; };
+      d3.event.preventDefault();
       var p = d3.svg.mouse(vis[0][0]);
       downy = yScale.invert(p[1]);
     }
@@ -428,6 +665,7 @@ grapher.graph = function(elem, options, message) {
           changex, changey, new_domain,
           t = d3.event.changedTouches;
 
+      d3.event.preventDefault();
       if (dragged && options.dataChange) {
         dragged[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
         update();
@@ -435,33 +673,15 @@ grapher.graph = function(elem, options, message) {
 
       if (!isNaN(downx)) {
         d3.select('body').style("cursor", "ew-resize");
-        var rupx = xScale.invert(p[0]),
-            xaxis1 = xScale.domain()[0],
-            xaxis2 = xScale.domain()[1],
-            xextent = xaxis2 - xaxis1;
-        if (rupx !== 0) {
-          changex = downx / rupx;
-          new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-          xScale.domain(new_domain);
-          redraw();
-        }
-        d3.event.preventDefault();
+        xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+        redraw();
         d3.event.stopPropagation();
       }
 
       if (!isNaN(downy)) {
         d3.select('body').style("cursor", "ns-resize");
-        var rupy = yScale.invert(p[1]),
-            yaxis1 = yScale.domain()[1],
-            yaxis2 = yScale.domain()[0],
-            yextent = yaxis2 - yaxis1;
-        if (rupy !== 0) {
-          changey = downy / rupy;
-          new_domain = [yaxis2, yaxis2 - yextent * changey];
-          yScale.domain(new_domain);
-          redraw();
-        }
-        d3.event.preventDefault();
+        yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+        redraw();
         d3.event.stopPropagation();
       }
     }
@@ -469,22 +689,15 @@ grapher.graph = function(elem, options, message) {
     function mouseup() {
       document.onselectstart = function() { return true; };
       d3.select('body').style("cursor", "auto");
-      d3.select('body').style("cursor", "auto");
       if (!isNaN(downx)) {
-        redraw();
         downx = Math.NaN;
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
+        redraw();
       }
       if (!isNaN(downy)) {
-        redraw();
         downy = Math.NaN;
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
+        redraw();
       }
-      if (dragged) {
-        dragged = null;
-      }
+      dragged = null;
     }
 
     // make these private variables and functions available
@@ -495,6 +708,7 @@ grapher.graph = function(elem, options, message) {
     graph.initialize = initialize;
     graph.updateXScale = updateXScale;
     graph.updateYScale = updateYScale;
+    graph.scale = scale;
 
   }
 
@@ -534,12 +748,6 @@ grapher.graph = function(elem, options, message) {
   function gRedraw() {
     redraw();
   }
-
-  graph.options = function(_) {
-    if (!arguments.length) return options;
-    // options = _;
-    return graph;
-  };
 
   graph.margin = function(_) {
     if (!arguments.length) return margin;
@@ -690,21 +898,25 @@ grapher.graph = function(elem, options, message) {
     return graph;
   };
 
-  graph.reset = function(options) {
+  graph.reset = function(options, message) {
     if (arguments.length) {
-      graph.initialize(options);
+      graph.initialize(options, message);
     } else {
       graph.initialize();
     }
-    graph.redraw();
+    graph();
+    return graph;
+  };
+
+  graph.resize = function(w, h) {
+    graph.scale(w, h);
+    graph.initialize();
+    graph();
     return graph;
   };
 
   if (elem) {
     elem.call(graph);
-    if (message) {
-      graph.notify(message);
-    }
   }
 
   return graph;
@@ -725,8 +937,11 @@ grapher.realTimeGraph = function(e, options) {
             .x(function(d, i) { return xScale(points[i].x ); })
             .y(function(d, i) { return yScale(points[i].y); }),
       dragged, selected,
+      emsize = layout.getDisplayProperties().emsize,
+      titles = [],
       line_path, line_seglist,
-      vis, plot, viewbox, points,
+      vis, plot, viewbox,
+      points, pointArray,
       markedPoint, marker,
       sample,
       default_options = {
@@ -741,6 +956,7 @@ grapher.realTimeGraph = function(e, options) {
         selectable_points: true,
         circleRadius: false,
         dataChange: false,
+        points: false,
         sample: 1
       };
 
@@ -767,7 +983,18 @@ grapher.realTimeGraph = function(e, options) {
   options.yrange = options.ymax - options.ymin;
 
   scale(cx, cy);
-  points = indexedData(options.dataset, 0);
+
+  pointArray = [];
+
+  if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
+    for (var i = 0; i < options.dataset.length; i++) {
+      pointArray.push(indexedData(options.dataset[i], 0, sample));
+    }
+    points = pointArray[0];
+  } else {
+    points = indexedData(options.dataset, 0);
+    pointArray = [points];
+  }
 
   function indexedData(dataset, initial_index, sample) {
     var i = 0,
@@ -796,11 +1023,21 @@ grapher.realTimeGraph = function(e, options) {
     node.style.height = cy +"px";
 
     padding = {
-       "top":    options.title  ? 40  : 20,
-       "right":                   35,
-       "bottom": options.xlabel ? 50  : 30,
-       "left":   options.ylabel ? 60  : 35
+     "top":    options.title  ? 40 : 20,
+     "right":                   30,
+     "bottom": options.xlabel ? 60 : 10,
+     "left":   options.ylabel ? 70 : 45
     };
+
+    emsize = layout.getDisplayProperties().emsize;
+
+    if(Object.prototype.toString.call(options.title) === "[object Array]") {
+      titles = options.title;
+    } else {
+      titles = [options.title];
+    }
+
+    padding.top += (titles.length-1) * emsize * 20;
 
     width =  cx - padding.left - padding.right;
     height = cy - padding.top  - padding.bottom;
@@ -842,11 +1079,12 @@ grapher.realTimeGraph = function(e, options) {
         .attr("width", size.width)
         .attr("height", size.height)
         .style("fill", "#EEEEEE")
+        // .attr("fill-opacity", 0.0)
         .attr("pointer-events", "all")
         .on("mousedown", plot_drag)
         .on("touchstart", plot_drag);
 
-      plot.call(d3.behavior.zoom().x(xScale).y(yScale).scaleExtent([1, 8]).on("zoom", redraw));
+      plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
 
       viewbox = vis.append("svg")
         .attr("class", "viewbox")
@@ -865,11 +1103,13 @@ grapher.realTimeGraph = function(e, options) {
 
       // add Chart Title
       if (options.title) {
-        vis.append("text")
+        title = vis.selectAll("text")
+          .data(titles, function(d) { return d; });
+        title.enter().append("text")
             .attr("class", "title")
-            .text(options.title)
+            .text(function(d) { return d; })
             .attr("x", size.width/2)
-            .attr("dy","-1em")
+            .attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; })
             .style("text-anchor","middle");
       }
 
@@ -894,12 +1134,16 @@ grapher.realTimeGraph = function(e, options) {
                 .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
       }
 
+      d3.select(node)
+          .on("mousemove.drag", mousemove)
+          .on("touchmove.drag", mousemove)
+          .on("mouseup.drag",   mouseup)
+          .on("touchend.drag",  mouseup);
+
       // variables for speeding up dynamic plotting
       // line_path = vis.select("path")[0][0];
       // line_seglist = line_path.pathSegList;
       initialize_canvas();
-
-      redraw();
 
     } else {
 
@@ -940,14 +1184,9 @@ grapher.realTimeGraph = function(e, options) {
       vis.selectAll("g.y").remove();
 
       resize_canvas();
-      redraw();
     }
 
-    d3.select(this)
-        .on("mousemove.drag", mousemove)
-        .on("touchmove.drag", mousemove)
-        .on("mouseup.drag",   mouseup)
-        .on("touchend.drag",  mouseup);
+    redraw();
 
     // ------------------------------------------------------------
     //
@@ -956,10 +1195,6 @@ grapher.realTimeGraph = function(e, options) {
     // ------------------------------------------------------------
 
     function redraw() {
-      if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-          d3.event.transform(x, y);
-      }
-
       var fx = xScale.tickFormat(10),
           fy = yScale.tickFormat(8);
 
@@ -1023,7 +1258,7 @@ grapher.realTimeGraph = function(e, options) {
           .on("touchstart.drag", yaxis_drag);
 
       gy.exit().remove();
-      plot.call(d3.behavior.zoom().x(xScale).y(yScale).scaleExtent([1, 8]).on("zoom", redraw));
+      plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
       update();
     }
 
@@ -1033,20 +1268,12 @@ grapher.realTimeGraph = function(e, options) {
     //
     // ------------------------------------------------------------
 
-    function update() {
+    function update(currentSample) {
       var i;
 
       var gplot = node.children[0].getElementsByTagName("rect")[0];
 
-      if (gcanvas.style.zIndex === "-100") {
-        vis.select("path.line").attr("d", line(points));
-        // line_seglist.clear();
-        // for(i=0; i < points.length; i++) {
-        //   line_seglist.appendItem(line_path.createSVGPathSegLinetoAbs(points[i].x, points[i].y));
-        // }
-      }
-
-      update_canvas();
+      update_canvas(currentSample);
 
       if (graph.selectable_points) {
         var circle = vis.selectAll("circle")
@@ -1070,17 +1297,6 @@ grapher.realTimeGraph = function(e, options) {
         circle.exit().remove();
       }
 
-      // if (markedPoint) {
-      //   marker
-      //       .attr("stroke", "#F00")
-      //       .attr("x1", markedPoint.x)
-      //       .attr("y1", 0)
-      //       .attr("y2", size.height)
-      //       .attr("x2", markedPoint.x);
-      // } else {
-      //   marker.attr("d", []);
-      // }
-
       if (d3.event && d3.event.keyCode) {
         d3.event.preventDefault();
         d3.event.stopPropagation();
@@ -1088,17 +1304,27 @@ grapher.realTimeGraph = function(e, options) {
     }
 
     function plot_drag() {
+      d3.event.preventDefault();
       plot.style("cursor", "move");
+      if (d3.event.altKey) {
+        var p = d3.svg.mouse(vis[0][0]);
+        downx = xScale.invert(p[0]);
+        downy = yScale.invert(p[1]);
+        dragged = false;
+        d3.event.stopPropagation();
+      }
     }
 
     function xaxis_drag(d) {
       document.onselectstart = function() { return false; };
+      d3.event.preventDefault();
       var p = d3.svg.mouse(vis[0][0]);
       downx = xScale.invert(p[0]);
     }
 
     function yaxis_drag(d) {
       document.onselectstart = function() { return false; };
+      d3.event.preventDefault();
       var p = d3.svg.mouse(vis[0][0]);
       downy = yScale.invert(p[1]);
     }
@@ -1117,36 +1343,17 @@ grapher.realTimeGraph = function(e, options) {
           t = d3.event.changedTouches;
 
       document.onselectstart = function() { return true; };
+      d3.event.preventDefault();
       if (!isNaN(downx)) {
-        var rupx = xScale.invert(p[0]),
-          xaxis1 = xScale.domain()[0],
-          xaxis2 = xScale.domain()[1],
-          xextent = xaxis2 - xaxis1;
-
         d3.select('body').style("cursor", "ew-resize");
-        if (rupx !== 0) {
-          changex = downx / rupx;
-          new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-          xScale.domain(new_domain);
-          redraw();
-        }
-        d3.event.preventDefault();
+        xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+        redraw();
         d3.event.stopPropagation();
       }
       if (!isNaN(downy)) {
-        var rupy = yScale.invert(p[1]),
-            yaxis1 = yScale.domain()[1],
-            yaxis2 = yScale.domain()[0],
-            yextent = yaxis2 - yaxis1;
-
         d3.select('body').style("cursor", "ns-resize");
-        if (rupy !== 0) {
-          changey = downy / rupy;
-          new_domain = [yaxis2, yaxis2 - yextent * changey];
-          yScale.domain(new_domain);
-          redraw();
-        }
-        d3.event.preventDefault();
+        yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+        redraw();
         d3.event.stopPropagation();
       }
     }
@@ -1157,37 +1364,50 @@ grapher.realTimeGraph = function(e, options) {
       if (!isNaN(downx)) {
         redraw();
         downx = Math.NaN;
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
       }
       if (!isNaN(downy)) {
         redraw();
         downy = Math.NaN;
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
       }
-      if (dragged) {
-        dragged = null;
-      }
+      dragged = null;
     }
 
     function showMarker(index) {
       markedPoint = { x: points[index].x, y: points[index].y };
     }
 
-    function add_point(p) {
+    function updateOrRescale() {
+      var i,
+          domain = xScale.domain(),
+          xextent = domain[1] - domain[0],
+          maxExtent = (points.length) * sample,
+          shift = xextent * 0.9;
+
+      if (maxExtent > domain[1]) {
+        domain[0] += shift;
+        domain[1] += shift;
+        xScale.domain(domain);
+        redraw();
+      } else {
+        update();
+      }
+    }
+
+    function _add_point(p) {
       if (points.length === 0) { return; }
       markedPoint = false;
       var index = points.length,
           lengthX = index * sample,
           point = { x: lengthX, y: p },
           newx, newy;
-
       points.push(point);
-      update();
-      // newx = xScale.call(self, lengthX, lengthX);
-      // newy = yScale.call(self, p, lengthX);
-      // line_seglist.appendItem(line_path.createSVGPathSegLinetoAbs(newx, newy));
+      updateOrRescale();
+    }
+
+    function add_point(p) {
+      if (points.length === 0) { return; }
+      _add_point(p);
+      updateOrRescale();
     }
 
     function add_canvas_point(p) {
@@ -1196,9 +1416,9 @@ grapher.realTimeGraph = function(e, options) {
       var index = points.length,
           lengthX = index * sample,
           previousX = lengthX - sample,
+          point = { x: lengthX, y: p },
           oldx = xScale.call(self, previousX, previousX),
           oldy = yScale.call(self, points[index-1].y, index-1),
-          point = { x: lengthX, y: p },
           newx, newy;
 
       points.push(point);
@@ -1210,9 +1430,51 @@ grapher.realTimeGraph = function(e, options) {
       gctx.stroke();
     }
 
+    function add_points(pnts) {
+      for (var i = 0; i < pointArray.length; i++) {
+        points = pointArray[i];
+        _add_point(pnts[i]);
+      }
+      updateOrRescale();
+    }
+
+
+    function add_canvas_points(pnts) {
+      for (var i = 0; i < pointArray.length; i++) {
+        points = pointArray[i];
+        setPointStrokeColor(i);
+        add_canvas_point(pnts[i]);
+      }
+    }
+
+    function setPointStrokeColor(i, afterSamplePoint) {
+      var opacity = afterSamplePoint ? 0.4 : 1.0;
+      switch(i) {
+        case 0:
+          gctx.strokeStyle = "rgba(160,00,0," + opacity + ")";
+          break;
+        case 1:
+          gctx.strokeStyle = "rgba(44,160,0," + opacity + ")";
+          break;
+        case 2:
+          gctx.strokeStyle = "rgba(44,0,160," + opacity + ")";
+          break;
+      }
+    }
+
     function new_data(d) {
-      points = indexedData(d, 0, sample);
-      update();
+      var i;
+      pointArray = [];
+      if (Object.prototype.toString.call(d) === "[object Array]") {
+        for (i = 0; i < d.length; i++) {
+          points = indexedData(d[i], 0, sample);
+          pointArray.push(points);
+        }
+      } else {
+        points = indexedData(options.dataset, 0, sample);
+        pointArray = [points];
+      }
+      updateOrRescale();
     }
 
     function change_xaxis(xmax) {
@@ -1254,22 +1516,45 @@ grapher.realTimeGraph = function(e, options) {
     }
 
     // update real-time canvas line graph
-    function update_canvas() {
+    function update_canvas(currentSample) {
+      var i, index, pc, py, samplePoint, pointStop;
+      if (typeof currentSample === 'undefined') {
+        samplePoint = pointArray[0].length;
+      } else {
+        samplePoint = currentSample;
+      }
       if (points.length === 0) { return; }
-      var px = xScale.call(self, 0, 0),
-          py = yScale.call(self, points[0].y, 0),
-          index, lengthX = 0;
       clear_canvas();
       gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-      gctx.beginPath();
-      gctx.moveTo(px, py);
-      for (index=0; index < points.length-1; index++) {
-        lengthX += sample;
-        px = xScale.call(self, lengthX, lengthX);
-        py = yScale.call(self, points[index].y, lengthX);
-        gctx.lineTo(px, py);
+      for (i = 0; i < pointArray.length; i++) {
+        points = pointArray[i];
+        px = xScale.call(self, 0, 0);
+        py = yScale.call(self, points[0].y, 0);
+        index = 0;
+        lengthX = 0;
+        setPointStrokeColor(i);
+        gctx.beginPath();
+        gctx.moveTo(px, py);
+        pointStop = samplePoint - 1;
+        for (index=0; index < pointStop; index++) {
+          lengthX += sample;
+          px = xScale.call(self, lengthX, lengthX);
+          py = yScale.call(self, points[index].y, lengthX);
+          gctx.lineTo(px, py);
+        }
+        gctx.stroke();
+        pointStop = points.length-1;
+        if (index < pointStop) {
+          setPointStrokeColor(i, true);
+          for (;index < pointStop; index++) {
+            lengthX += sample;
+            px = xScale.call(self, lengthX, lengthX);
+            py = yScale.call(self, points[index].y, lengthX);
+            gctx.lineTo(px, py);
+          }
+          gctx.stroke();
+        }
       }
-      gctx.stroke();
     }
 
     function initialize_canvas() {
@@ -1301,6 +1586,8 @@ grapher.realTimeGraph = function(e, options) {
       canvas.style.left = cplot.left + 'px';
       canvas.style.top = cplot.top + 'px';
       canvas.style.border = 'solid 1px red';
+      canvas.style.pointerEvents = "none";
+      canvas.className += "canvas-overlay";
       gctx = gcanvas.getContext( '2d' );
       gctx.globalCompositeOperation = "source-over";
       gctx.lineWidth = 1;
@@ -1319,7 +1606,9 @@ grapher.realTimeGraph = function(e, options) {
     graph.number_of_points = number_of_points;
     graph.new_data = new_data;
     graph.add_point = add_point;
+    graph.add_points = add_points;
     graph.add_canvas_point = add_canvas_point;
+    graph.add_canvas_points = add_canvas_points;
     graph.initialize_canvas = initialize_canvas;
     graph.show_canvas = show_canvas;
     graph.hide_canvas = hide_canvas;
@@ -1334,6 +1623,36 @@ grapher.realTimeGraph = function(e, options) {
   graph.resize = function(width, height) {
     graph.scale(width, height);
     graph();
+  };
+
+  graph.add_data = function(newdata) {
+    if (!arguments.length) return points;
+    var domain = xScale.domain(),
+        xextent = domain[1] - domain[0],
+        shift = xextent * 0.8,
+        i;
+    if (newdata instanceof Array && newdata.length > 0) {
+      if (newdata[0] instanceof Array) {
+        for(i = 0; i < newdata.length; i++) {
+          points.push(newdata[i]);
+        }
+      } else {
+        if (newdata.length === 2) {
+          points.push(newdata);
+        } else {
+          throw new Error("invalid argument to graph.add_data() " + newdata + " length should === 2.");
+        }
+      }
+    }
+    if (points[points.length-1][0] > domain[1]) {
+      domain[0] += shift;
+      domain[1] += shift;
+      xScale.domain(domain);
+      graph.redraw();
+    } else {
+      graph.update();
+    }
+    return graph;
   };
 
 
@@ -1820,7 +2139,7 @@ arrays.copy = function(source, dest) {
   var len = source.length,
       i = -1;
   while(++i < len) { dest[i] = source[i]; }
-  dest.length = len;
+  if (arrays.constructor_function(dest) === Array) dest.length = len;
   return dest;
 };
 
@@ -2136,6 +2455,14 @@ exports.unit = unit = {
     type: types.FORCE
   },
 
+  EV_PER_NM: {
+    name: "electron volts per nanometer",
+    value: 1 * KILOGRAMS_PER_DALTON * METERS_PER_NANOMETER * METERS_PER_NANOMETER *
+           (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND) *
+           (1/JOULES_PER_EV),
+    type: types.FORCE
+  },
+
   MW_VELOCITY_UNIT: {
     name: "MW velocity units (nm / fs)",
     value: 1,
@@ -2197,6 +2524,9 @@ exports.convert = convert = function(val, fromTo) {
 require.define("/math/index.js", function (require, module, exports, __dirname, __filename) {
 exports.normal              = require('./distributions').normal;
 exports.getWindowedAverager = require('./utils').getWindowedAverager;
+exports.minimize            = require('./minimizer').minimize;
+
+if (window) window.minimize = exports.minimize;
 
 });
 
@@ -2274,11 +2604,114 @@ exports.getWindowedAverager = function(windowSize) {
 
 });
 
+require.define("/math/minimizer.js", function (require, module, exports, __dirname, __filename) {
+/*jshint eqnull:true */
+/**
+  Simple, good-enough minimization via gradient descent.
+*/
+exports.minimize = function(f, x0, opts) {
+  opts = opts || {};
+
+  if (opts.precision == null) opts.precision = 0.01;
+
+  var // stop when the absolute difference between successive values of f is this much or less
+      precision = opts.precision,
+
+      // array of [min, max] boundaries for each component of x
+      bounds    = opts.bounds,
+
+      // maximum number of iterations
+      maxiter   = opts.maxiter   || 1000,
+
+      // optionally, stop when f is less than or equal to this value
+      stopval   = opts.stopval   || -Infinity,
+
+      // maximum distance to move x between steps
+      maxstep   = opts.maxstep   || 0.01,
+
+      // multiplied by the gradient
+      eps       = opts.eps       || 0.01,
+      dim       = x0.length,
+      x,
+      res,
+      f_cur,
+      f_prev,
+      grad,
+      maxstepsq,
+      gradnormsq,
+      iter,
+      i,
+      a;
+
+  maxstepsq = maxstep*maxstep;
+
+  // copy x0 into x (which we will mutate)
+  x = [];
+  for (i = 0; i < dim; i++) {
+    x[i] = x0[i];
+  }
+
+  // evaluate f and get the gradient
+  res = f.apply(null, x);
+  f_cur = res[0];
+  grad = res[1];
+
+  iter = 0;
+  do {
+    if (f_cur <= stopval) {
+      break;
+    }
+
+    if (iter > maxiter) {
+      console.log("maxiter reached");
+      // don't throw on error, but return some diagnostic information
+      return { error: "maxiter reached", f: f_cur, iter: maxiter, x: x };
+    }
+
+    // Limit gradient descent step size to maxstep
+    gradnormsq = 0;
+    for (i = 0; i < dim; i++) {
+      gradnormsq += grad[i]*grad[i];
+    }
+    if (eps*eps*gradnormsq > maxstepsq) {
+      a = Math.sqrt(maxstepsq / gradnormsq) / eps;
+      for (i = 0; i < dim; i++) {
+        grad[i] = a * grad[i];
+      }
+    }
+
+    // Take a step in the direction opposite the gradient
+    for (i = 0; i < dim; i++) {
+      x[i] -= eps * grad[i];
+
+      // check bounds
+      if (bounds && x[i] < bounds[i][0]) {
+        x[i] = bounds[i][0];
+      }
+      if (bounds && x[i] > bounds[i][1]) {
+        x[i] = bounds[i][1];
+      }
+    }
+
+    f_prev = f_cur;
+
+    res = f.apply(null, x);
+    f_cur = res[0];
+    grad = res[1];
+
+    iter++;
+  } while ( Math.abs(f_cur-f_prev) > precision );
+
+  return [f_cur, x];
+};
+
+});
+
 require.define("/potentials/index.js", function (require, module, exports, __dirname, __filename) {
 var potentials = exports.potentials = {};
 
 exports.coulomb = require('./coulomb');
-exports.makeLennardJonesCalculator = require('./lennard-jones').makeLennardJonesCalculator;
+exports.lennardJones = require('./lennard-jones');
 
 });
 
@@ -2358,6 +2791,36 @@ var constants = require('../constants'),
     MW_FORCE_UNITS_PER_NEWTON = constants.ratio( unit.MW_FORCE_UNIT, { per: unit.NEWTON });
 
 /**
+  Helper function that returns the correct pairwise epsilon value to be used
+  when elements each have epsilon values epsilon1, epsilon2
+*/
+exports.pairwiseEpsilon = function(epsilon1, epsilon2) {
+  return 0.5 * (epsilon1 + epsilon2);
+},
+
+/**
+  Helper function that returns the correct pairwise sigma value to be used
+  when elements each have sigma values sigma1, sigma2
+*/
+exports.pairwiseSigma = function(sigma1, sigma2) {
+  return Math.sqrt(sigma1 * sigma2);
+},
+
+/**
+  Helper function that returns the correct rmin value for a given sigma
+*/
+exports.rmin = function(sigma) {
+  return Math.pow(2, 1/6) * sigma;
+};
+
+/**
+  Helper function that returns the correct atomic radius for a given sigma
+*/
+exports.radius = function(sigma) {
+  return 0.5 * exports.rmin(sigma);
+}
+
+/**
   Returns a new object with methods for calculating the force and potential for a Lennard-Jones
   potential with particular values of its parameters epsilon and sigma. These can be adjusted.
 
@@ -2368,86 +2831,34 @@ var constants = require('../constants'),
   This function also accepts a callback function which will be called with a hash representing
   the new coefficients, whenever the LJ coefficients are changed for the returned calculator.
 */
-exports.makeLennardJonesCalculator = function(elements, cb) {
-  /*
-     all of these pairwise variables are symmetrical matrices reprsenting the
-     parameters between each pair of elements. Thus pairwiseEpsilons[0][0] is the
-     epsilon component of the LJ force between two atoms of element 0, while
-     pairwiseEpsilons[0][1] and pairwiseEpsilons[1][0] both represent the epsilon
-     component between elements 0 and 1
-  */
-  var pairwiseEpsilons          = [],    // parameter; depth of the potential well, in eV
-      pairwiseSigmas            = [],    // parameter: characteristic distance from particle, in nm
-      pairwiseRmins             = [],    // distance from particle at which the potential is at its minimum
-      pairwiseAlphaPotentials   = [],    // precalculated; units are eV * nm^12
-      pairwiseBetaPotentials    = [],    // precalculated; units are eV * nm^6
-      pairwiseAlphaForces       = [],    // units are "MW Force Units" * nm^13
-      pairwiseBetaForces        = [],    // units are "MW Force Units" * nm^7
-      pairwiseCutoffDistanceSq  = [],
+exports.newLJCalculator = function(params, cb) {
 
-      /*
-        Precalculates all of the paramters between every pair of elements.
-        @param elements: Elements of the form
-          [ [mass_0, epsilon_0, sigma_0], [mass_1, epsilon_1, sigma_1], ...]
+  var epsilon,          // parameter; depth of the potential well, in eV
+      sigma,            // parameter: characteristic distance from particle, in nm
 
-        If we pass in
-          [ [30, 1, 1], [30, 2, 2] ]
+      rmin,             // distance from particle at which the potential is at its minimum
+      alpha_Potential,  // precalculated; units are eV * nm^12
+      beta_Potential,   // precalculated; units are eV * nm^6
+      alpha_Force,      // units are "MW Force Units" * nm^13
+      beta_Force,       // units are "MW Force Units" * nm^7
 
-        We will set
+      setCoefficients = function(e, s) {
+        // Input units:
+        //  epsilon: eV
+        //  sigma:   nm
 
-        pairwiseEpsilons = [[ 1 , 1.5],
-                            [1.5,  2 ]]
+        epsilon = e;
+        sigma   = s;
+        rmin    = exports.rmin(sigma);
 
-        pairwiseSigmas   = [[ 1   , 1.414],
-                            [1.414,  2   ]]
+        if (epsilon != null && sigma != null) {
+          alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
+          beta_Potential  = 4 * epsilon * Math.pow(sigma, 6);
 
-        rmin             = [[1.122, 1.587],
-                            [1.587, 2.245]]
-
-        alpha_Potential  = [[ 4   , 384  ],
-                            [384  , 32768]]
-
-        ...etc.
-      */
-      // FIXME: validate
-      setElements = function(elements) {
-        var i, ii, j, jj, epsilon, sigma, rmin, alpha_Potential, beta_Potential, alpha_Force, beta_Force, cutoffDistance;
-        for (i=0, ii=elements.length; i<ii; i++) {
-          pairwiseEpsilons[i]           = [];
-          pairwiseSigmas[i]             = [];
-          pairwiseRmins[i]              = [];
-          pairwiseAlphaPotentials[i]    = [];
-          pairwiseBetaPotentials[i]     = [];
-          pairwiseAlphaForces[i]        = [];
-          pairwiseBetaForces[i]         = [];
-          pairwiseCutoffDistanceSq[i]   = [];
-
-          for (j=0; j<i+1; j++) {
-            epsilon = (elements[i][1] + elements[j][1]) / 2;
-            sigma   = Math.sqrt(elements[i][2] * elements[j][2]);
-
-            rmin    =  Math.pow(2, 1/6) * sigma;
-            cutoffDistance = rmin * 5;
-
-            if (epsilon != null && sigma != null) {
-              alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
-              beta_Potential  = 4 * epsilon * Math.pow(sigma, 6);
-
-              // (1 J * nm^12) = (1 N * m * nm^12)
-              // (1 N * m * nm^12) * (b nm / m) * (c MWUnits / N) = (abc MWUnits nm^13)
-              alpha_Force = 12 * constants.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
-              beta_Force =  6 * constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
-            }
-
-            pairwiseEpsilons[i][j]          = pairwiseEpsilons[j][i]    = epsilon;
-            pairwiseSigmas[i][j]            = pairwiseSigmas[j][i]      = sigma;
-            pairwiseRmins[i][j]             = pairwiseRmins[j][i]       = rmin;
-            pairwiseAlphaPotentials[i][j]   = pairwiseAlphaPotentials[j][i]   = alpha_Potential;
-            pairwiseBetaPotentials[i][j]    = pairwiseBetaPotentials[j][i]    = beta_Potential;
-            pairwiseAlphaForces[i][j]       = pairwiseAlphaForces[j][i] = alpha_Force;
-            pairwiseBetaForces[i][j]        = pairwiseBetaForces[j][i]  = beta_Force;
-            pairwiseCutoffDistanceSq[i][j]  = pairwiseCutoffDistanceSq[j][i] = (cutoffDistance * cutoffDistance)
-          }
+          // (1 J * nm^12) = (1 N * m * nm^12)
+          // (1 N * m * nm^12) * (b nm / m) * (c MWUnits / N) = (abc MWUnits nm^13)
+          alpha_Force = 12 * constants.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+          beta_Force =  6 * constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
         }
 
         if (typeof cb === 'function') cb(getCoefficients(), this);
@@ -2455,10 +2866,9 @@ exports.makeLennardJonesCalculator = function(elements, cb) {
 
       getCoefficients = function() {
         return {
-          epsilon: pairwiseEpsilons,
-          sigma  : pairwiseSigmas,
-          rmin   : pairwiseRmins,
-          cutoffDistanceSq : pairwiseCutoffDistanceSq
+          epsilon: epsilon,
+          sigma  : sigma,
+          rmin   : rmin
         };
       },
 
@@ -2479,15 +2889,25 @@ exports.makeLennardJonesCalculator = function(elements, cb) {
 
       // At creation time, there must be a valid epsilon and sigma ... we're not gonna check during
       // inner-loop force calculations!
-      // validateEpsilon(params.epsilon);
-      // validateSigma(params.sigma);
+      validateEpsilon(params.epsilon);
+      validateSigma(params.sigma);
 
       // Initialize coefficients to passed-in values
-      setElements(elements);
+      setCoefficients(params.epsilon, params.sigma);
 
   return calculator = {
 
     coefficients: getCoefficients,
+
+    setEpsilon: function(e) {
+      validateEpsilon(e);
+      setCoefficients(e, sigma);
+    },
+
+    setSigma: function(s) {
+      validateSigma(s);
+      setCoefficients(epsilon, s);
+    },
 
     /**
       Input units: r_sq: nm^2
@@ -2495,38 +2915,38 @@ exports.makeLennardJonesCalculator = function(elements, cb) {
 
       minimum is at r=rmin, V(rmin) = 0
     */
-    potentialFromSquaredDistance: function(r_sq, el0, el1) {
-       return pairwiseAlphaPotentials[el0][el1]*Math.pow(r_sq, -6) - pairwiseBetaPotentials[el0][el1]*Math.pow(r_sq, -3);
+    potentialFromSquaredDistance: function(r_sq) {
+       return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3);
     },
 
     /**
       Input units: r: nm
       Output units: eV
     */
-    potential: function(r, el0, el1) {
-      return calculator.potentialFromSquaredDistance(r*r, el0, el1);
+    potential: function(r) {
+      return calculator.potentialFromSquaredDistance(r*r);
     },
 
     /**
       Input units: r_sq: nm^2
       Output units: MW Force Units / nm (= Dalton / fs^2)
     */
-    forceOverDistanceFromSquaredDistance: function(r_sq, el0, el1) {
+    forceOverDistanceFromSquaredDistance: function(r_sq) {
       // optimizing divisions actually does appear to be *slightly* faster
       var r_minus2nd  = 1 / r_sq,
           r_minus6th  = r_minus2nd * r_minus2nd * r_minus2nd,
           r_minus8th  = r_minus6th * r_minus2nd,
           r_minus14th = r_minus8th * r_minus6th;
 
-      return pairwiseAlphaForces[el0][el1]*r_minus14th - pairwiseBetaForces[el0][el1]*r_minus8th;
+      return alpha_Force*r_minus14th - beta_Force*r_minus8th;
     },
 
     /**
       Input units: r: nm
       Output units: MW Force Units (= Dalton * nm / fs^2)
     */
-    force: function(r, el0, el1) {
-      return r * calculator.forceOverDistanceFromSquaredDistance(r*r, el0, el1);
+    force: function(r) {
+      return r * calculator.forceOverDistanceFromSquaredDistance(r*r);
     }
   };
 };
@@ -2544,7 +2964,7 @@ var arrays       = require('./arrays/arrays').arrays,
     unit         = constants.unit,
     math         = require('./math'),
     coulomb      = require('./potentials').coulomb,
-    makeLennardJonesCalculator = require('./potentials').makeLennardJonesCalculator,
+    lennardJones = require('./potentials').lennardJones,
 
     // TODO: Actually check for Safari. Typed arrays are faster almost everywhere
     // ... except Safari.
@@ -2575,7 +2995,9 @@ var arrays       = require('./arrays/arrays').arrays,
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
-    NODE_PROPERTIES_COUNT, INDICES, SAVEABLE_INDICES,
+    INDICES,
+    ELEMENT_INDICES,
+    SAVEABLE_INDICES,
 
     cross = function(a0, a1, b0, b1) {
       return a0*b1 - a1*b0;
@@ -2584,8 +3006,6 @@ var arrays       = require('./arrays/arrays').arrays,
     sumSquare = function(a,b) {
       return a*a + b*b;
     },
-
-    emptyFunction = function() {},
 
     /**
       Convert total kinetic energy in the container of N atoms to a temperature in Kelvin.
@@ -2644,6 +3064,13 @@ var arrays       = require('./arrays/arrays').arrays,
       return copy;
     };
 
+exports.ELEMENT_INDICES = ELEMENT_INDICES = {
+  MASS: 0,
+  EPSILON: 1,
+  SIGMA: 2,
+  RADIUS: 3
+},
+
 exports.INDICES = INDICES = {
   RADIUS :  0,
   PX     :  1,
@@ -2660,8 +3087,6 @@ exports.INDICES = INDICES = {
 };
 
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
-
-exports.NODE_PROPERTIES_COUNT = NODE_PROPERTIES_COUNT = 12;
 
 exports.makeModel = function() {
 
@@ -2721,11 +3146,24 @@ exports.makeModel = function() {
       // element definition: [ MASS_IN_DALTONS, EPSILON, SIGMA ]
       elements,
 
-      // Individual property arrays for the particles. Each is a length-N array.
+      // Individual property arrays for the atoms, indexed by atom number
       radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element,
 
-      // An array of length NODE_PROPERTIES_COUNT which containes the above length-N arrays.
-      nodes,
+      // An array of length max(INDICES)+1 which contains the above property arrays
+      atoms,
+
+      // Individual property arrays for the "radial" bonds, indexed by bond number
+      radialBondAtom1Index,
+      radialBondAtom2Index,
+      radialBondLength,
+      radialBondStrength,
+
+      // An array of length 4 which contains the above 4 property arrays.
+      // Left undefined if no radial bonds are defined.
+      radialBonds,
+
+      // Number of actual radial bonds (may be smaller than the length of the property arrays)
+      N_radialBonds = 0,
 
       // The location of the center of mass, in nanometers.
       x_CM, y_CM,
@@ -2752,29 +3190,92 @@ exports.makeModel = function() {
       // Object containing observations of the sytem (temperature, etc)
       outputState = window.state = {},
 
-      // Paired square of cutoff distance; this is a convenience for updatePairwiseAccelerations
+      // The following are the pairwise values for elements i and j, indexed
+      // like [i][j]
+      epsilon = [],
+      sigma = [],
+
+      // cutoff for force calculations, as a factor of sigma
+      cutoff = 5.0,
       cutoffDistance_LJ_sq = [],
 
-      // Callback that recalculates cutoffDistance_LJ when the Lennard-Jones sigma parameter changes.
-      ljCoefficientsChanged = function(coefficients) {
-        cutoffDistance_LJ_sq = coefficients.cutoffDistanceSq;
-        if (radius && element) {
-          setRadii();
+      // Each object at ljCalculator[i,j] can calculate the magnitude of the Lennard-Jones force and
+      // potential between elements i and j
+      ljCalculator = [],
+
+      // Callback that recalculates element radii  and cutoffDistance_LJ_sq when the Lennard-Jones
+      // sigma parameter changes.
+      ljCoefficientsChanged = function(el1, el2, coefficients) {
+        cutoffDistance_LJ_sq[el1][el2] =
+          cutoffDistance_LJ_sq[el2][el1] =
+          cutoff * cutoff * coefficients.sigma * coefficients.sigma;
+
+        if (el1 === el2) updateElementRadius(el1, coefficients);
+      },
+
+      // Update radius of element # 'el'. Also, if 'element' and 'radius' arrays are defined, update
+      // all atom's radii to match the new radii of their corresponding elements.
+      updateElementRadius = function(el, coefficients) {
+        elements[el][ELEMENT_INDICES.RADIUS] = lennardJones.radius( coefficients.sigma );
+
+        if (!radius || !element) return;
+        for (var i = 0, len = radius.length; i < len; i++) {
+          radius[i] = elements[element[i]][ELEMENT_INDICES.RADIUS];
         }
       },
 
-      setRadii = function() {
-        var sigmas = lennardJones.coefficients().sigma,
-            i,
-            len;
+      // Make the 'atoms' array bigger
+      extendAtomsArray = function(num) {
+        var savedArrays = [],
+            savedTotalMass,
+            i;
 
-        for (i = 0, len = radius.length; i < len; i++) {
-          radius[i] = 0.5 * sigmas[element[i]][element[i]];
+        for (i = 0; i < atoms.length; i++) {
+          savedArrays[i] = atoms[i];
         }
+
+        savedTotalMass = totalMass;
+        atomsHaveBeenCreated = false;
+        model.createAtoms({ num: num });
+
+        for (i = 0; i < atoms.length; i++) {
+          arrays.copy(savedArrays[i], atoms[i]);
+        }
+
+        // restore N and totalMass
+        N = savedArrays[0].length;        // atoms[0].length is now > N!
+        totalMass = savedTotalMass;
       },
 
-      // An object that calculates the magnitude of the Lennard-Jones force or potential at a given distance.
-      lennardJones,
+      createRadialBondsArray = function(num) {
+      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
+
+        radialBonds = [];
+
+        radialBonds[0] = radialBondAtom1Index = arrays.create(num, 0, uint16);
+        radialBonds[1] = radialBondAtom2Index = arrays.create(num, 0, uint16);
+        radialBonds[2] = radialBondLength     = arrays.create(num, 0, float32);
+        radialBonds[3] = radialBondStrength   = arrays.create(num, 0, float32);
+      },
+
+
+      // Make the 'radialBonds' array bigger. FIXME: needs to be factored
+      // into a common pattern with 'extendAtomsArray'
+      extendRadialBondsArray = function(num) {
+        var savedArrays = [],
+            i;
+
+        for (i = 0; i < radialBonds.length; i++) {
+          savedArrays[i] = radialBonds[i];
+        }
+
+        createRadialBondsArray(num);
+
+        for (i = 0; i < radialBonds.length; i++) {
+          arrays.copy(savedArrays[i], radialBonds[i]);
+        }
+      },
 
       // Function that accepts a value T and returns an average of the last n values of T (for some n).
       T_windowed,
@@ -2818,15 +3319,17 @@ exports.makeModel = function() {
         vx[i] += vx_t;
         vy[i] += vy_t;
 
-        // add momenta
-        px[i] += elements[element[i]][0]*vx_t;
-        py[i] += elements[element[i]][0]*vy_t;
+        px[i] = vx[i]*elements[element[i]][0];
+        py[i] = vy[i]*elements[element[i]][0];
       },
 
       // Adds effect of angular velocity omega, relative to (x_CM, y_CM), to the velocity vector of particle i
       addAngularVelocity = function(i, omega) {
         vx[i] -= omega * (y[i] - y_CM);
         vy[i] += omega * (x[i] - x_CM);
+
+        px[i] = vx[i]*elements[element[i]][0];
+        py[i] = vy[i]*elements[element[i]][0];
       },
 
       // Subtracts the center-of-mass linear velocity and the system angular velocity from the velocity vectors
@@ -2910,18 +3413,22 @@ exports.makeModel = function() {
         if (x[i] < leftwall) {
           x[i]  = leftwall + (leftwall - x[i]);
           vx[i] *= -1;
+          px[i] *= -1;
         } else if (x[i] > rightwall) {
           x[i]  = rightwall - (x[i] - rightwall);
           vx[i] *= -1;
+          px[i] *= -1;
         }
 
         // Bounce off horizontal walls
         if (y[i] < bottomwall) {
           y[i]  = bottomwall + (bottomwall - y[i]);
           vy[i] *= -1;
+          py[i] *= -1;
         } else if (y[i] > topwall) {
           y[i]  = topwall - (y[i] - topwall);
           vy[i] *= -1;
+          py[i] *= -1;
         }
       },
 
@@ -2939,7 +3446,7 @@ exports.makeModel = function() {
       // where j < i. Note a(t, i) and a(t, j) (accelerations from the previous time step) should be cleared from arrays
       // ax and ay before calling this function.
       updatePairwiseAccelerations = function(i) {
-        var j, dx, dy, r_sq, f_over_r, f_over_r_dx, f_over_r_dy,
+        var j, dx, dy, r_sq, f_over_r, fx, fy,
             el_i = element[i],
             el_j,
             mass_inv = 1/elements[el_i][0], mass_j_inv, q_i = charge[i];
@@ -2956,7 +3463,7 @@ exports.makeModel = function() {
           f_over_r = 0;
 
           if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el_i][el_j]) {
-            f_over_r += lennardJones.forceOverDistanceFromSquaredDistance(r_sq, el_i, el_j);
+            f_over_r += ljCalculator[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq);
           }
 
           if (useCoulombInteraction) {
@@ -2964,13 +3471,64 @@ exports.makeModel = function() {
           }
 
           if (f_over_r) {
-            f_over_r_dx = f_over_r * dx;
-            f_over_r_dy = f_over_r * dy;
-            ax[i] += f_over_r_dx * mass_inv;
-            ay[i] += f_over_r_dy * mass_inv;
-            ax[j] -= f_over_r_dx * mass_j_inv;
-            ay[j] -= f_over_r_dy * mass_j_inv;
+            fx = f_over_r * dx;
+            fy = f_over_r * dy;
+            ax[i] += fx * mass_inv;
+            ay[i] += fy * mass_inv;
+            ax[j] -= fx * mass_j_inv;
+            ay[j] -= fy * mass_j_inv;
           }
+        }
+      },
+
+      updateBondAccelerations = function() {
+        // fast path if no radial bonds have been defined
+        if (N_radialBonds < 1) return;
+
+        var i,
+            len,
+            i1,
+            i2,
+            dx,
+            dy,
+            r_sq,
+            r,
+            k,
+            r0,
+            f_over_r,
+            fx,
+            fy,
+            mass1_inv,
+            mass2_inv;
+
+        for (i = 0, len = radialBonds[0].length; i < len; i++) {
+          i1 = radialBondAtom1Index[i];
+          i2 = radialBondAtom2Index[i];
+
+          mass1_inv = 1/elements[element[i1]][0];
+          mass2_inv = 1/elements[element[i2]][0];
+
+          dx = x[i2] - x[i1];
+          dy = y[i2] - y[i1];
+          r_sq = dx*dx + dy*dy;
+          r = Math.sqrt(r_sq);
+
+          // eV/nm^2
+          k = radialBondStrength[i];
+
+          // nm
+          r0 = radialBondLength[i];
+
+          // "natural" Next Gen MW force units / nm
+          f_over_r = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+
+          fx = f_over_r * dx;
+          fy = f_over_r * dy;
+
+          ax[i1] += fx * mass1_inv;
+          ay[i1] += fy * mass1_inv;
+          ax[i2] -= fx * mass2_inv;
+          ay[i2] -= fy * mass2_inv;
         }
       },
 
@@ -3037,29 +3595,8 @@ exports.makeModel = function() {
       return [size[0], size[1]];
     },
 
-    // setLJEpsilon: function(e) {
-    //   lennardJones.setEpsilon(e);
-    // },
-
-    // getLJEpsilon: function() {
-    //   return lennardJones.coefficients().epsilon;
-    // },
-
-    // setLJSigma: function(s) {
-    //   var i;
-
-    //   lennardJones.setSigma(s);
-    //   for (i = 0; i < N; i++) {
-    //     radius[i] = s/2;
-    //   }
-    // },
-
-    // getLJSigma: function() {
-    //   return lennardJones.coefficients().sigma;
-    // },
-
     getLJCalculator: function() {
-      return lennardJones;
+      return ljCalculator;
     },
 
     /*
@@ -3070,26 +3607,58 @@ exports.makeModel = function() {
       ]
     */
     setElements: function(elems) {
+      var i, j, epsilon_i, epsilon_j, sigma_i, sigma_j;
+
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: setElements cannot be called after atoms have been created");
       }
       elements = elems;
-      lennardJones = window.lennardJones = makeLennardJonesCalculator(elements, ljCoefficientsChanged);
+
+      for (i = 0; i < elements.length; i++) {
+        epsilon[i] = [];
+        sigma[i] = [];
+        ljCalculator[i] = [];
+        cutoffDistance_LJ_sq[i] = [];
+      }
+
+      for (i = 0; i < elements.length; i++) {
+        epsilon_i = elements[i][ELEMENT_INDICES.EPSILON];
+        sigma_i   = elements[i][ELEMENT_INDICES.SIGMA];
+
+        // the radius is derived from sigma
+        elements[i][ELEMENT_INDICES.RADIUS] = lennardJones.radius(sigma_i);
+
+        for (j = i; j < elements.length; j++) {
+          epsilon_j = elements[j][ELEMENT_INDICES.EPSILON];
+          sigma_j   = elements[j][ELEMENT_INDICES.SIGMA];
+
+          epsilon[i][j] = epsilon[j][i] = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
+          sigma[i][j]   = sigma[j][i]   = lennardJones.pairwiseSigma(sigma_i, sigma_j);
+
+          // bind i and j to the callback made below
+          (function(i, j) {
+            ljCalculator[i][j] = ljCalculator[j][i] = lennardJones.newLJCalculator({
+              epsilon: epsilon[i][j],
+              sigma:   sigma[i][j]
+            }, function(coefficients) {
+              ljCoefficientsChanged(i, j, coefficients);
+            });
+          }(i,j));
+        }
+      }
     },
 
-    // allocates 'nodes' array of arrays, sets number of atoms.
-    // Must either pass in a hash that includes X and Y locations of the atoms,
-    // or a single number to represent the number of atoms.
-    // Note: even if X and Y are passed in, atoms won't be placed until
-    // initializeAtomsFromProperties() is called.
-    // options:
-    //     X: the X locations of the atoms to create
-    //     Y: the Y locations of the atoms to create
-    //   num: the number of atoms to create
+    /**
+      Allocates 'atoms' array of arrays, sets number of atoms.
+
+      options:
+        num: the number of atoms to create
+    */
     createAtoms: function(options) {
       var arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
           uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
-          i;
+          numIndices,
+          num;
 
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
@@ -3101,44 +3670,108 @@ exports.makeModel = function() {
         throw new Error("md2d: createAtoms was called without options specifying the atoms to create.");
       }
 
-      N = (options.X && options.Y) ? options.X.length : options.num;
+      num = options.num;
 
-      if (typeof N === 'undefined') {
-        throw new Error("md2d: createAtoms was called without the required 'N' option specifying the number of atoms to create.");
+      if (typeof num === 'undefined') {
+        throw new Error("md2d: createAtoms was called without the required 'num' option specifying the number of atoms to create.");
       }
-      if (N !== Math.floor(N)) {
-        throw new Error("md2d: createAtoms was passed a non-integral 'N' option.");
+      if (num !== Math.floor(num)) {
+        throw new Error("md2d: createAtoms was passed a non-integral 'num' option.");
       }
-      if (N < N_MIN) {
-        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + N + " which is less than the minimum allowable value: N_MIN = " + N_MIN + ".");
+      if (num < N_MIN) {
+        throw new Error("md2d: create Atoms was passed an 'num' option equal to: " + num + " which is less than the minimum allowable value: N_MIN = " + N_MIN + ".");
       }
-      if (N > N_MAX) {
-        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + N + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
+      if (num > N_MAX) {
+        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
       }
 
-      nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
+      numIndices = (function() {
+        var n = 0, index;
+        for (index in INDICES) {
+          if (INDICES.hasOwnProperty(index)) n++;
+        }
+        return n;
+      }());
 
-      radius = model.radius = nodes[INDICES.RADIUS] = arrays.create(N, 0, arrayType);
-      px     = model.px     = nodes[INDICES.PX]     = arrays.create(N, 0, arrayType);
-      py     = model.py     = nodes[INDICES.PY]     = arrays.create(N, 0, arrayType);
-      x      = model.x      = nodes[INDICES.X]      = arrays.create(N, 0, arrayType);
-      y      = model.y      = nodes[INDICES.Y]      = arrays.create(N, 0, arrayType);
-      vx     = model.vx     = nodes[INDICES.VX]     = arrays.create(N, 0, arrayType);
-      vy     = model.vy     = nodes[INDICES.VY]     = arrays.create(N, 0, arrayType);
-      speed  = model.speed  = nodes[INDICES.SPEED]  = arrays.create(N, 0, arrayType);
-      ax     = model.ax     = nodes[INDICES.AX]     = arrays.create(N, 0, arrayType);
-      ay     = model.ay     = nodes[INDICES.AY]     = arrays.create(N, 0, arrayType);
-      charge = model.charge = nodes[INDICES.CHARGE] = arrays.create(N, 0, arrayType);
+      atoms  = model.atoms  = arrays.create(numIndices, null, 'regular');
+
+      radius = model.radius = atoms[INDICES.RADIUS] = arrays.create(num, 0, arrayType);
+      px     = model.px     = atoms[INDICES.PX]     = arrays.create(num, 0, arrayType);
+      py     = model.py     = atoms[INDICES.PY]     = arrays.create(num, 0, arrayType);
+      x      = model.x      = atoms[INDICES.X]      = arrays.create(num, 0, arrayType);
+      y      = model.y      = atoms[INDICES.Y]      = arrays.create(num, 0, arrayType);
+      vx     = model.vx     = atoms[INDICES.VX]     = arrays.create(num, 0, arrayType);
+      vy     = model.vy     = atoms[INDICES.VY]     = arrays.create(num, 0, arrayType);
+      speed  = model.speed  = atoms[INDICES.SPEED]  = arrays.create(num, 0, arrayType);
+      ax     = model.ax     = atoms[INDICES.AX]     = arrays.create(num, 0, arrayType);
+      ay     = model.ay     = atoms[INDICES.AY]     = arrays.create(num, 0, arrayType);
+      charge = model.charge = atoms[INDICES.CHARGE] = arrays.create(num, 0, arrayType);
 
       // NOTE, this is a Uint8Array for now, but this may not be the best pattern in the future
       // because Uint8Arrays length cannot be changed. Right now we never add or remove atoms
       // from the model without re-creating the atom arrays, but that might change in the future.
-      element = model.element = nodes[INDICES.ELEMENT] = arrays.create(N, 0, uint8ArrayType);
+      element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8ArrayType);
+
+      N = 0;
+      totalMass = 0;
+    },
+
+    /**
+      The canonical method for adding an atom to the collections of atoms.
+
+      If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
+      extends the length of the typed arrays by one to contain one more atom with listed properties.
+    */
+    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge) {
+      var el, mass;
+
+      if (N+1 > atoms[0].length) {
+        extendAtomsArray(N+1);
+      }
+
+      el = elements[atom_element];
+      mass = el[ELEMENT_INDICES.MASS];
+
+      element[N] = atom_element;
+      radius[N]  = elements[atom_element][ELEMENT_INDICES.RADIUS];
+      x[N]       = atom_x;
+      y[N]       = atom_y;
+      vx[N]      = atom_vx;
+      vy[N]      = atom_vy;
+      px[N]      = atom_vx * mass;
+      py[N]      = atom_vy * mass;
+      ax[N]      = 0;
+      ay[N]      = 0;
+      speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
+      charge[N]  = atom_charge;
+
+      totalMass += mass;
+      N++;
+    },
+
+    /**
+      The canonical method for adding a radial bond to the collection of radial bonds.
+
+      If there isn't enough room in the 'radialBonds' array, it (somewhat inefficiently)
+      extends the length of the typed arrays by one to contain one more atom with listed properties.
+    */
+    addRadialBond: function(atomIndex1, atomIndex2, bondLength, bondStrength) {
+
+      if (N_radialBonds+1 > radialBondAtom1Index.length) {
+        extendRadialBondsArray(N+1);
+      }
+
+      radialBondAtom1Index[N_radialBonds] = atomIndex1;
+      radialBondAtom2Index[N_radialBonds] = atomIndex2;
+      radialBondLength[N_radialBonds]     = bondLength;
+      radialBondStrength[N_radialBonds]   = bondStrength;
+
+      N_radialBonds++;
     },
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
-      var cumulativeTotalMass = 0,
+      var x, y, vx, vy, charge, element,
           i, ii;
 
       if (!(props.X && props.Y)) {
@@ -3150,31 +3783,16 @@ exports.makeModel = function() {
         throw new Error("md2d: For now, velocities must be set when locations are set.");
       }
 
-      for (i=0, ii=N; i<ii; i++){
-        x[i] = props.X[i];
-        y[i] = props.Y[i];
-        vx[i] = props.VX[i];
-        vy[i] = props.VY[i];
-        speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
-      }
+      for (i=0, ii=props.X.length; i<ii; i++){
+        element = props.ELEMENT ? props.ELEMENT[i] : 0;
+        x = props.X[i];
+        y = props.Y[i];
+        vx = props.VX[i];
+        vy = props.VY[i];
+        charge = props.CHARGE ? props.CHARGE[i] : 0;
 
-      if (props.CHARGE) {
-        for (i=0, ii=N; i<ii; i++){
-          charge[i] = props.CHARGE[i];
-        }
+        model.addAtom(element, x, y, vx, vy, charge);
       }
-
-      if (props.ELEMENT) {
-        for (i=0, ii=N; i<ii; i++){
-          element[i] = props.ELEMENT[i];
-          cumulativeTotalMass += elements[element[i]][0];
-        }
-      } else {
-        cumulativeTotalMass = N * elements[0][0];
-      }
-      totalMass = model.totalMass = cumulativeTotalMass;
-
-      setRadii();
 
       // Publish the current state
       T = computeTemperature();
@@ -3183,13 +3801,18 @@ exports.makeModel = function() {
 
     initializeAtomsRandomly: function(options) {
 
-      var temperature = options.temperature || 100,  // if not requested, just need any number
-          nrows = Math.floor(Math.sqrt(N)),
-          ncols = Math.ceil(N/nrows),
+      var // if a temperature is not explicitly requested, we just need any nonzero number
+          temperature = options.temperature || 100,
+
+          // fill up the entire 'atoms' array if not otherwise requested
+          num         = options.num         || atoms[0].length,
+
+          nrows = Math.floor(Math.sqrt(num)),
+          ncols = Math.ceil(num/nrows),
 
           i, r, c, rowSpacing, colSpacing,
           vMagnitude, vDirection,
-          coefficients = lennardJones.coefficients();
+          x, y, vx, vy, charge, element;
 
       validateTemperature(temperature);
 
@@ -3200,32 +3823,23 @@ exports.makeModel = function() {
       // configuration. But it works OK for now.
       i = -1;
 
-      totalMass = 0;
       for (r = 1; r <= nrows; r++) {
         for (c = 1; c <= ncols; c++) {
           i++;
-          if (i === N) break;
+          if (i === num) break;
 
-          x[i] = c*colSpacing;
-          y[i] = r*rowSpacing;
-
+          element    = Math.floor(Math.random() * elements.length);     // random element
           vMagnitude = math.normal(1, 1/4);
           vDirection = 2 * Math.random() * Math.PI;
-          vx[i] = vMagnitude * Math.cos(vDirection);
-          px[i] = elements[element[i]][0] * vx[i];
-          vy[i] = vMagnitude * Math.sin(vDirection);
-          py[i] = elements[element[i]][0] * vy[i];
 
-          ax[i] = 0;
-          ay[i] = 0;
+          x = c*colSpacing;
+          y = r*rowSpacing;
+          vx = vMagnitude * Math.cos(vDirection);
+          vy = vMagnitude * Math.sin(vDirection);
 
-          speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
-          charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
+          charge = 2*(i%2)-1;      // alternate negative and positive charges
 
-          element[i] = Math.floor(Math.random() * elements.length);     // random element
-          radius[i] = coefficients.rmin[element[i]][element[i]] / 2;
-
-          model.totalMass = totalMass += elements[element[i]][0];
+          model.addAtom(element, x, y, vx, vy, charge);
         }
       }
 
@@ -3246,8 +3860,27 @@ exports.makeModel = function() {
       model.computeOutputState();
     },
 
+    initializeRadialBonds: function(props) {
+      var num = props.atom1Index.length,
+          i;
+
+      createRadialBondsArray(props.atom1Index.length);
+
+      for (i = 0; i < num; i++) {
+        model.addRadialBond(
+          props.atom1Index[i],
+          props.atom2Index[i],
+          props.bondLength[i],
+          props.bondStrength[i]
+        );
+      }
+    },
 
     relaxToTemperature: function(T) {
+
+      // FIXME this method needs to be modified. It should rescale velocities only periodically
+      // and stop when the temperature approaches a steady state between rescalings.
+
       if (T != null) T_target = T;
 
       validateTemperature(T_target);
@@ -3258,8 +3891,9 @@ exports.makeModel = function() {
       }
     },
 
-
     integrate: function(duration, opt_dt) {
+
+      var radius;
 
       if (!atomsHaveBeenCreated) {
         throw new Error("md2d: integrate called before atoms created.");
@@ -3270,10 +3904,13 @@ exports.makeModel = function() {
       dt = opt_dt || 1;
       dt_sq = dt*dt;                      // time step, squared
 
-      leftwall   = radius[0];
-      bottomwall = radius[0];
-      rightwall  = size[0] - radius[0];
-      topwall    = size[1] - radius[0];
+      // FIXME we still need to make bounceOffWalls respect each atom's actual radius, rather than
+      // assuming just one radius as below
+      radius = elements[element[0]][ELEMENT_INDICES.RADIUS];
+      leftwall   = radius;
+      bottomwall = radius;
+      rightwall  = size[0] - radius;
+      topwall    = size[1] - radius;
 
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
@@ -3299,6 +3936,9 @@ exports.makeModel = function() {
           updatePairwiseAccelerations(i);
         }
 
+        // Accumulate accelerations from bonded interactions into a(t+dt)
+        updateBondAccelerations();
+
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
           halfUpdateVelocity(i);
@@ -3313,10 +3953,22 @@ exports.makeModel = function() {
       model.computeOutputState();
     },
 
+    getTotalMass: function() {
+      return totalMass;
+    },
+
+    getRadiusOfElement: function(el) {
+      return elements[el][ELEMENT_INDICES.RADIUS];
+    },
+
     computeOutputState: function() {
       var i, j,
+          i1, i2,
           dx, dy,
           r_sq,
+          k,
+          dr,
+          lj,
           KEinMWUnits,       // total kinetic energy, in MW units
           PE;                // potential energy, in eV
 
@@ -3327,6 +3979,8 @@ exports.makeModel = function() {
 
       for (i = 0; i < N; i++) {
         KEinMWUnits += 0.5 * elements[element[i]][0] * (vx[i] * vx[i] + vy[i] * vy[i]);
+
+        // pairwise interactions
         for (j = i+1; j < N; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -3335,12 +3989,31 @@ exports.makeModel = function() {
 
           // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
           if (useLennardJonesInteraction ) {
-            PE += -lennardJones.potentialFromSquaredDistance(r_sq, element[i], element[j]);
+            lj = ljCalculator[element[i]][element[j]];
+            PE += -lj.potentialFromSquaredDistance(r_sq, element[i], element[j]);
           }
           if (useCoulombInteraction) {
             PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
         }
+      }
+
+      // radial bonds
+      for (i = 0; i < N_radialBonds; i++) {
+        i1 = radialBondAtom1Index[i];
+        i2 = radialBondAtom2Index[i];
+
+        dx = x[i2] - x[i1];
+        dy = y[i2] - y[i1];
+        r_sq = dx*dx + dy*dy;
+
+        // eV/nm^2
+        k = radialBondStrength[i];
+
+        // nm
+        dr = Math.sqrt(r_sq) - radialBondLength[i];
+
+        PE = 0.5*k*dr*dr;
       }
 
       // State to be read by the rest of the system:
@@ -3355,6 +4028,118 @@ exports.makeModel = function() {
       outputState.omega_CM = omega_CM;
     },
 
+    /**
+      Given a test element and charge, returns a function that returns for a location (x, y) in nm:
+       * the potential energy, in eV, of an atom of that element and charge at location (x, y)
+       * optionally, if calculateGradient is true, the gradient of the potential as an
+         array [gradX, gradY]. (units: eV/nm)
+    */
+    newPotentialCalculator: function(testElement, testCharge, calculateGradient) {
+
+      return function(testX, testY) {
+        var PE = 0,
+            fx = 0,
+            fy = 0,
+            gradX,
+            gradY,
+            ljTest = ljCalculator[testElement],
+            i,
+            dx,
+            dy,
+            r_sq,
+            r,
+            f_over_r,
+            lj;
+
+        for (i = 0; i < N; i++) {
+          dx = testX - x[i];
+          dy = testY - y[i];
+          r_sq = dx*dx + dy*dy;
+          f_over_r = 0;
+
+          if (useLennardJonesInteraction) {
+            lj = ljTest[element[i]];
+            PE += -lj.potentialFromSquaredDistance(r_sq, testElement, element[i]);
+            if (calculateGradient) {
+              f_over_r += lj.forceOverDistanceFromSquaredDistance(r_sq);
+            }
+          }
+
+          if (useCoulombInteraction && testCharge) {
+            r = Math.sqrt(r_sq);
+            PE += -coulomb.potential(r, testCharge, charge[i]);
+            if (calculateGradient) {
+              f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, testCharge, charge[i]);
+            }
+          }
+
+          if (f_over_r) {
+            fx += f_over_r * dx;
+            fy += f_over_r * dy;
+          }
+        }
+
+        if (calculateGradient) {
+          gradX = constants.convert(fx, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
+          gradY = constants.convert(fy, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
+          return [PE, [gradX, gradY]];
+        }
+
+        return PE;
+      };
+    },
+
+    /**
+      Starting at (x,y), try to find a position which minimizes the potential energy change caused
+      by adding at atom of element el.
+    */
+    findMinimumPELocation: function(el, x, y, charge) {
+      var pot    = model.newPotentialCalculator(el, charge, true),
+          radius = elements[el][ELEMENT_INDICES.RADIUS],
+
+          res =  math.minimize(pot, [x, y], {
+            bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ]
+          });
+
+      if (res.error) return false;
+      return res[1];
+    },
+
+    /**
+      Starting at (x,y), try to find a position which minimizes the square of the potential energy
+      change caused by adding at atom of element el, i.e., find a "farthest from everything"
+      position.
+    */
+    findMinimumPESquaredLocation: function(el, x, y, charge) {
+      var pot = model.newPotentialCalculator(el, charge, true),
+
+          // squared potential energy, with gradient
+          potsq = function(x,y) {
+            var res, f, grad;
+
+            res = pot(x,y);
+            f = res[0];
+            grad = res[1];
+
+            // chain rule
+            grad[0] *= (2*f);
+            grad[1] *= (2*f);
+
+            return [f*f, grad];
+          },
+
+          radius = elements[el][ELEMENT_INDICES.RADIUS],
+
+          res = math.minimize(potsq, [x, y], {
+            bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ],
+            stopval: 1e-4,
+            precision: 1e-6
+          });
+
+      if (res.error) return false;
+      return res[1];
+    },
+
     serialize: function() {
       var serializedData = {},
           prop,
@@ -3362,7 +4147,7 @@ exports.makeModel = function() {
           i, ii;
       for (i=0, ii=SAVEABLE_INDICES.length; i<ii; i++) {
         prop = SAVEABLE_INDICES[i];
-        array = nodes[INDICES[prop]];
+        array = atoms[INDICES[prop]];
         serializedData[prop] = array.slice ? array.slice() : copyTypedArray(array);
       }
       return serializedData;
@@ -3386,7 +4171,6 @@ modeler.VERSION = '0.2.0';
 modeler.model = function(initialProperties) {
   var model = {},
       elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
-      atoms = [],
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
       lennard_jones_forces, coulomb_forces,
@@ -3395,7 +4179,6 @@ modeler.model = function(initialProperties) {
       tick_history_list_index = 0,
       tick_counter = 0,
       new_step = false,
-      epsilon, sigma,
       pressure, pressures = [0],
       sample_time, sample_times = [],
 
@@ -3414,18 +4197,8 @@ modeler.model = function(initialProperties) {
       modelOutputState,
       model_listener,
 
-      //
-      // Individual property arrays for the nodes
-      //
-      radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
-
       width = initialProperties.width,
       height = initialProperties.height,
-
-      //
-      // Number of individual properties for a node
-      //
-      node_properties_length = 12,
 
       //
       // A two dimensional array consisting of arrays of node property values
@@ -3520,46 +4293,13 @@ modeler.model = function(initialProperties) {
   }
 
   function average_speed() {
-    var i, s = 0, n = nodes[0].length;
-    i = -1; while (++i < n) { s += speed[i]; }
+    var i, s = 0, n = model.get_num_atoms();
+    i = -1; while (++i < n) { s += coreModel.speed[i]; }
     return s/n;
   }
 
-  function tick_history_list_is_empty() {
-    return tick_history_list_index === 0;
-  }
-
-  function tick_history_list_push() {
-    var i,
-        newnodes = [],
-        n = node_properties_length;
-
-    i = -1; while (++i < n) {
-      newnodes[i] = arrays.clone(nodes[i]);
-    }
-    tick_history_list.length = tick_history_list_index;
-    tick_history_list_index++;
-    tick_counter++;
-    new_step = true;
-    tick_history_list.push({
-      nodes:   newnodes,
-      pressure: modelOutputState.pressure,
-      pe:       modelOutputState.PE,
-      ke:       modelOutputState.KE,
-      time:     modelOutputState.time
-    });
-    if (tick_history_list_index > 1000) {
-      tick_history_list.splice(0,1);
-      tick_history_list_index = 1000;
-    }
-  }
-
-  function tick() {
+  function tick(elapsedTime, dontDispatchTickEvent) {
     var t;
-
-    if (tick_history_list_is_empty()) {
-      tick_history_list_push();
-    }
 
     coreModel.integrate();
 
@@ -3583,17 +4323,45 @@ modeler.model = function(initialProperties) {
       } else {
         sample_time = t;
       }
-      dispatch.tick({type: "tick"});
-    } else {
-      if (model_listener) { model_listener(); }
     }
+
+    if (!dontDispatchTickEvent) dispatch.tick();
     return stopped;
+  }
+
+  function tick_history_list_is_empty() {
+    return tick_history_list_index === 0;
+  }
+
+  function tick_history_list_push() {
+    var i,
+        newnodes = [],
+        n = nodes.length;
+
+    i = -1; while (++i < n) {
+      newnodes[i] = arrays.clone(nodes[i]);
+    }
+    tick_history_list.length = tick_history_list_index;
+    tick_history_list_index++;
+    tick_counter++;
+    new_step = true;
+    tick_history_list.push({
+      nodes:   newnodes,
+      pressure: modelOutputState.pressure,
+      pe:       modelOutputState.PE,
+      ke:       modelOutputState.KE,
+      time:     modelOutputState.time
+    });
+    if (tick_history_list_index > 1000) {
+      tick_history_list.splice(0,1);
+      tick_history_list_index = 1000;
+    }
   }
 
   function reset_tick_history_list() {
     tick_history_list = [];
     tick_history_list_index = 0;
-    tick_counter = -1;
+    tick_counter = 0;
   }
 
   function tick_history_list_reset_to_ptr() {
@@ -3601,7 +4369,7 @@ modeler.model = function(initialProperties) {
   }
 
   function tick_history_list_extract(index) {
-    var i, n=node_properties_length;
+    var i, n=nodes.length;
     if (index < 0) {
       throw new Error("modeler: request for tick_history_list[" + index + "]");
     }
@@ -3618,16 +4386,6 @@ modeler.model = function(initialProperties) {
 
   function container_pressure() {
     return pressures.reduce(function(j,k) { return j+k; })/pressures.length;
-  }
-
-  function speed_history(speeds) {
-    if (arguments.length) {
-      speed_history.push(speeds);
-      // limit the pressures array to the most recent 16 entries
-      speed_history.splice(0, speed_history.length - 100);
-    } else {
-      return speed_history.reduce(function(j,k) { return j+k; })/pressures.length;
-    }
   }
 
   function average_rate() {
@@ -3658,80 +4416,13 @@ modeler.model = function(initialProperties) {
     notifyListenersOfEvents(propsChanged);
   }
 
-  // Creates a new md2d coreModel
-  // @config: either the number of atoms (for a random setup) or
-  //          a hash specifying the x,y,vx,vy properties of the atoms
-  function createNewCoreModel(config) {
-    var T, elemsArray, element, i, ii;
+  function readModelState() {
+    coreModel.computeOutputState();
 
-    // get a fresh model
-    coreModel = md2d.makeModel();
-    coreModel.setSize([width,height]);
-
-    if (elements) {
-      // convert from easily-readble json format to simplified array format
-      elemsArray = [];
-      for (i=0, ii=elements.length; i<ii; i++){
-        element = elements[i];
-        elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
-      }
-      coreModel.setElements(elemsArray);
-    }
-
-    if (typeof config === "number") {
-      coreModel.createAtoms({
-        num: config
-      });
-    } else {
-      coreModel.createAtoms(config);
-    }
-
-    nodes    = coreModel.nodes;
-    radius   = coreModel.radius;
-    px       = coreModel.px;
-    py       = coreModel.py;
-    x        = coreModel.x;
-    y        = coreModel.y;
-    vx       = coreModel.vx;
-    vy       = coreModel.vy;
-    speed    = coreModel.speed;
-    ax       = coreModel.ax;
-    ay       = coreModel.ay;
-    mass     = coreModel.mass;
-    charge   = coreModel.charge;
-
-    modelOutputState = coreModel.outputState;
-
-    // The d3 molecule viewer requires this length to be set correctly:
-    atoms.length = nodes[0].length;
-
-    // Initialize properties
-    // lennard_jones_forces = properties.lennard_jones_forces;
-    // coulomb_forces       = properties.coulomb_forces;
-    temperature_control  = properties.temperature_control;
-    temperature          = properties.temperature;
-
-    reset_tick_history_list();
-    new_step = true;
-
-    coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
-    coreModel.useCoulombInteraction(properties.coulomb_forces);
-    coreModel.useThermostat(properties.temperature_control);
-
-    T = temperature;
-    coreModel.setTargetTemperature(T);
-
-    // coreModel.setLJEpsilon(properties.epsilon);
-    // coreModel.setLJSigma(properties.sigma);
-
-    if (config.X && config.Y) {
-      coreModel.initializeAtomsFromProperties(config);
-    } else {
-      coreModel.initializeAtomsRandomly({
-        temperature: T
-      });
-    }
-    return coreModel;
+    pressure = modelOutputState.pressure;
+    pe       = modelOutputState.PE;
+    ke       = modelOutputState.KE;
+    time     = modelOutputState.time;
   }
 
   // ------------------------------
@@ -3787,15 +4478,6 @@ modeler.model = function(initialProperties) {
       position
   */
   model.steps = function() {
-
-    // If no ticks have run, tick_history_list will be uninitialized.
-    if (tick_history_list_is_empty()) {
-      return 0;
-    }
-
-    // The first tick will push 2 states to the tick_history_list: the initialized state ("step 0")
-    // and the post-tick model state ("step 1")
-    // Subsequent ticks will push 1 state per tick. So subtract 1 from the length to get the step #.
     return tick_history_list.length - 1;
   };
 
@@ -3812,6 +4494,7 @@ modeler.model = function(initialProperties) {
     tick_history_list_extract(tick_history_list_index);
     dispatch.seek();
     notifyListenersOfEvents("seek");
+    if (model_listener) { model_listener(); }
     return tick_counter;
   };
 
@@ -3848,6 +4531,81 @@ modeler.model = function(initialProperties) {
     return tick_counter;
   };
 
+  /**
+    Creates a new md2d model with a new set of atoms and leaves it in 'coreModel'
+
+    @config: either the number of atoms (for a random setup) or
+             a hash specifying the x,y,vx,vy properties of the atoms
+    When random setup is used, the option 'relax' determines whether the model is requested to
+    relax to a steady-state temperature (and in effect gets thermalized). If false, the atoms are
+    left in whatever grid the coreModel's initialization leaves them in.
+  */
+  model.createNewAtoms = function(config) {
+    var elemsArray, element, i, ii, num;
+
+    if (typeof config === 'number') {
+      num = config;
+    } else if (config.num != null) {
+      num = config.num;
+    } else if (config.X) {
+      num = config.X.length;
+    }
+
+    // convert from easily-readble json format to simplified array format
+    elemsArray = [];
+    for (i=0, ii=elements.length; i<ii; i++){
+      element = elements[i];
+      elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
+    }
+
+    // get a fresh model
+    coreModel = md2d.makeModel();
+    coreModel.setSize([width,height]);
+    coreModel.setElements(elemsArray);
+    coreModel.createAtoms({
+      num: num
+    });
+
+    nodes = coreModel.atoms;
+    modelOutputState = coreModel.outputState;
+
+    // Initialize properties
+    temperature_control = properties.temperature_control;
+    temperature         = properties.temperature;
+
+    coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
+    coreModel.useCoulombInteraction(properties.coulomb_forces);
+    coreModel.useThermostat(temperature_control);
+
+    coreModel.setTargetTemperature(temperature);
+
+    if (config.X && config.Y) {
+      coreModel.initializeAtomsFromProperties(config);
+    } else {
+      coreModel.initializeAtomsRandomly({
+        temperature: temperature
+      });
+      if (config.relax) coreModel.relaxToTemperature();
+    }
+
+    readModelState();
+
+    // tick history stuff
+    reset_tick_history_list();
+    tick_history_list_push();
+    tick_counter = 0;
+    new_step = true;
+
+    // return model, for chaining (if used)
+    return model;
+  };
+
+  model.createRadialBonds = function(radialBonds) {
+    coreModel.initializeRadialBonds(radialBonds);
+    readModelState();
+    return model;
+  };
+
   // The next four functions assume we're are doing this for
   // all the atoms will need to be changed when different atoms
   // can have different LJ sigma values
@@ -3880,6 +4638,13 @@ modeler.model = function(initialProperties) {
     return coreModel.getLJCalculator();
   };
 
+  model.getPotentialFunction = function(element, charge, calculateGradient) {
+    if (charge == null) charge = 0;
+    calculateGradient = !!calculateGradient;
+
+    return coreModel.newPotentialCalculator(element, charge, calculateGradient);
+  },
+
   model.resetTime = function() {
     coreModel.setTime(0);
   };
@@ -3888,14 +4653,83 @@ modeler.model = function(initialProperties) {
     return modelOutputState ? modelOutputState.time : undefined;
   };
 
-  model.set_radius = function(r) {
-    // var i, n = nodes[0].length;
-    // i = -1; while(++i < n) { radius[i] = r; }
+  model.getTotalMass = function() {
+    return coreModel.getTotalMass();
   };
+
+  /**
+    Attempts to add an 0-velocity atom to a random location. Returns false if after 10 tries it
+    can't find a location. (Intended to be exposed as a script API method.)
+
+    Optionally allows specifying the element (default is to randomly select from all elements) and
+    charge (default is neutral).
+  */
+  model.addRandomAtom = function(el, charge) {
+    if (el == null) el = Math.floor( Math.random() * elements.length );
+    if (charge == null) charge = 0;
+
+    var size   = model.size(),
+        radius = coreModel.getRadiusOfElement(el),
+        x,
+        y,
+        loc,
+        numTries = 0,
+        // try at most ten times.
+        maxTries = 10;
+
+    do {
+      x = Math.random() * size[0] - 2*radius;
+      y = Math.random() * size[1] - 2*radius;
+
+      // findMinimimuPELocation will return false if minimization doesn't converge, in which case
+      // try again from a different x, y
+      loc = coreModel.findMinimumPELocation(el, x, y, 0, 0, charge);
+      if (loc && model.addAtom(el, loc[0], loc[1], 0, 0, charge)) return true;
+    } while (++numTries < maxTries);
+
+    return false;
+  },
+
+  /**
+    Adds a new atom with element 'el', charge 'charge', and velocity '[vx, vy]' to the model
+    at position [x, y]. (Intended to be exposed as a script API method.)
+
+    Adjusts (x,y) if needed so that the whole atom is within the walls of the container.
+
+    Returns false and does not add the atom if the potential energy change of adding an *uncharged*
+    atom of the specified element to the specified location would be positive (i.e, if the atom
+    intrudes into the repulsive region of another atom.)
+
+    Otherwise, returns true.
+  */
+  model.addAtom = function(el, x, y, vx, vy, charge) {
+    var size      = model.size(),
+        radius    = coreModel.getRadiusOfElement(el);
+
+    // As a convenience to script authors, bump the atom within bounds
+    if (x < radius) x = radius;
+    if (x > size[0]-radius) x = size[0]-radius;
+    if (y < radius) y = radius;
+    if (y > size[1]-radius) y = size[1]-radius;
+
+    // check the potential energy change caused by adding an *uncharged* atom at (x,y)
+    if (model.getPotentialFunction(el, 0, false)(x, y) <= 0) {
+      coreModel.addAtom(el, x, y, vx, vy, charge);
+
+      // reassign nodes to possibly-reallocated atoms array
+      nodes = coreModel.atoms;
+      coreModel.computeOutputState();
+      if (model_listener) model_listener();
+
+      return true;
+    }
+    // return false on failure
+    return false;
+  },
 
   // return a copy of the array of speeds
   model.get_speed = function() {
-    return arrays.copy(speed, []);
+    return arrays.copy(coreModel.speed, []);
   };
 
   model.get_rate = function() {
@@ -3920,8 +4754,8 @@ modeler.model = function(initialProperties) {
     return nodes;
   };
 
-  model.get_atoms = function() {
-    return atoms;
+  model.get_num_atoms = function() {
+    return nodes[0].length;
   };
 
   model.on = function(type, listener) {
@@ -3930,15 +4764,18 @@ modeler.model = function(initialProperties) {
   };
 
   model.tickInPlace = function() {
-    dispatch.tick({type: "tick"});
+    dispatch.tick();
     return model;
   };
 
-  model.tick = function(num) {
-    if (!arguments.length) { num = 1; }
-    var i = -1;
+  model.tick = function(num, opts) {
+    if (!arguments.length) num = 1;
+
+    var dontDispatchTickEvent = opts && opts.dontDispatchTickEvent || false,
+        i = -1;
+
     while(++i < num) {
-      tick();
+      tick(null, dontDispatchTickEvent);
     }
     return model;
   };
@@ -3971,7 +4808,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.ave_ke = function() {
-    return modelOutputState? modelOutputState.KE / nodes[0].length : undefined;
+    return modelOutputState? modelOutputState.KE / model.get_num_atoms() : undefined;
   };
 
   model.pe = function() {
@@ -3979,7 +4816,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.ave_pe = function() {
-    return modelOutputState? modelOutputState.PE / nodes[0].length : undefined;
+    return modelOutputState? modelOutputState.PE / model.get_num_atoms() : undefined;
   };
 
   model.speed = function() {
@@ -4000,13 +4837,6 @@ modeler.model = function(initialProperties) {
     if (!arguments.length) return coreModel.getSize();
     coreModel.setSize(x);
     return model;
-  };
-
-  // Creates a new md2d coreModel
-  // @config: either the number of atoms (for a random setup) or
-  //          a hash specifying the x,y,vx,vy properties of the atoms
-  model.createNewAtoms = function(config) {
-    return createNewCoreModel(config);
   };
 
   model.set = function(hash) {
@@ -4578,6 +5408,9 @@ layout.getDisplayProperties = function(obj) {
       width: layout.getPageWidth(),
       height: layout.getPageHeight()
   };
+  obj.screen_factor_width  = obj.page.width / layout.canonical.width;
+  obj.screen_factor_height = obj.page.height / layout.canonical.height;
+  obj.emsize = Math.min(obj.screen_factor_width * 1.1, obj.screen_factor_height);
   return obj;
 };
 
@@ -4595,10 +5428,28 @@ layout.checkForResize = function() {
   }
 };
 
-layout.setupScreen = function(viewLists) {
-  var fullscreen = document.fullScreen ||
+layout.views = {};
+
+layout.addView = function(type, view) {
+  if (!layout.views[type]) {
+    layout.views[type] = [];
+  }
+  layout.views[type].push(view);
+};
+
+layout.setView = function(type, viewArray) {
+  layout.views[type] = viewArray;
+};
+
+layout.setupScreen = function(forceRender) {
+  var viewLists  = layout.views,
+      fullscreen = document.fullScreen ||
                    document.webkitIsFullScreen ||
                    document.mozFullScreen;
+
+  if (forceRender) {
+    layout.not_rendered = true;
+  }
 
   layout.display = layout.getDisplayProperties();
 
@@ -4708,6 +5559,16 @@ layout.setupScreen = function(viewLists) {
       compareScreen();
       break;
 
+      // like full-static-screen, but all component position definitions are set from properties
+      case "interactive":
+      if (layout.not_rendered) {
+        var emsize = Math.min(layout.screen_factor_width * 1.5, layout.screen_factor_height);
+        layout.bodycss.style.fontSize = emsize + 'em';
+        setupInteractiveScreen();
+        layout.not_rendered = false;
+      }
+      break;
+
       default:
       layout.bodycss.style.fontSize = layout.screen_factor + 'em';
       setupRegularScreen();
@@ -4725,6 +5586,7 @@ layout.setupScreen = function(viewLists) {
     layout.temperatureControlUpdate();
   }
 
+  var benchmarks_table = document.getElementById("benchmarks-table");
   if (benchmarks_table) {
     benchmarks_table.style.display = "none";
   }
@@ -4733,7 +5595,7 @@ layout.setupScreen = function(viewLists) {
   // Regular Screen Layout
   //
   function regularScreen() {
-    var i, width, height, mcsize, 
+    var i, width, height, mcsize,
         rightHeight, rightHalfWidth, rightQuarterWidth,
         widthToPageRatio, modelAspectRatio,
         pageWidth = layout.display.page.width,
@@ -4768,6 +5630,37 @@ layout.setupScreen = function(viewLists) {
     }
   }
 
+  /**
+    At the moment, this just finds every view in viewlist and calls resize()
+    on it. Eventually this should work out which div each component wants to
+    be in and resize it in some intelligent way
+  **/
+  function setupInteractiveScreen() {
+    var i, width, height, mcsize,
+        rightHeight, rightHalfWidth, rightQuarterWidth,
+        widthToPageRatio, modelAspectRatio,
+        pageWidth = layout.display.page.width,
+        pageHeight = layout.display.page.height;
+
+    mcsize = viewLists.moleculeContainers[0].scale();
+    modelAspectRatio = mcsize[0] / mcsize[1];
+    widthToPageRatio = mcsize[0] / pageWidth;
+    width = pageWidth * 0.46;
+    height = width * 1/modelAspectRatio;
+    if (height > pageHeight*0.70) {
+      height = pageHeight * 0.70;
+      width * height * modelAspectRatio;
+    }
+
+    for (viewType in viewLists) {
+      if (viewLists.hasOwnProperty(viewType) && viewLists[viewType].length) {
+        i = -1;  while(++i < viewLists[viewType].length) {
+          viewLists[viewType][i].resize(width, height);
+        }
+      }
+    }
+  }
+
   //
   // Compare Screen Layout
   //
@@ -4785,8 +5678,10 @@ layout.setupScreen = function(viewLists) {
     i = -1;  while(++i < viewLists.moleculeContainers.length) {
       viewLists.moleculeContainers[i].resize(width, height);
     }
-    i = -1;  while(++i < viewLists.appletContainers.length) {
-      viewLists.appletContainers[i].resize(width, height);
+    if (viewLists.appletContainers) {
+      i = -1;  while(++i < viewLists.appletContainers.length) {
+        viewLists.appletContainers[i].resize(width, height);
+      }
     }
   }
 
@@ -4794,7 +5689,7 @@ layout.setupScreen = function(viewLists) {
   // Full Screen Layout
   //
   function setupFullScreen() {
-    var i, width, height, mcsize, 
+    var i, width, height, mcsize,
         rightHeight, rightHalfWidth, rightQuarterWidth,
         widthToPageRatio, modelAspectRatio,
         pageWidth = layout.display.page.width,
@@ -4869,7 +5764,7 @@ layout.setupScreen = function(viewLists) {
   // Simple iframe Screen Layout
   //
   function setupSimpleIFrameScreen() {
-    var i, width, height, mcsize, 
+    var i, width, height, mcsize,
         rightHeight, rightHalfWidth, rightQuarterWidth,
         widthToPageRatio, modelAspectRatio,
         pageWidth = layout.display.page.width,
@@ -4963,10 +5858,12 @@ layout.getTransformProperty = function(element) {
         'OTransform'
     ];
     var p;
-    while (p = properties.shift()) {
-        if (typeof element.style[p] != 'undefined') {
-            return p;
-        }
+    if (element) {
+      while (p = properties.shift()) {
+          if (typeof element.style[p] != 'undefined') {
+              return p;
+          }
+      }
     }
     return false;
 };
@@ -4979,6 +5876,73 @@ if (description_right !== null) {
 layout.bodycss = layout.getStyleForSelector("body");
 layout.transform = layout.getTransformProperty(document.body);
 
+// ------------------------------------------------------------
+//
+// Fullscreen API
+//
+// ------------------------------------------------------------
+
+/** do we have the querySelectorAll method? **/
+if (document.querySelectorAll) {
+  var fullScreenImage = document.querySelector ('#fullscreen');
+  if (fullScreenImage) {
+    fullScreenImage.style.cursor = "pointer";
+    fullScreenImage.addEventListener ('click', function () {
+      var el = document.documentElement;
+      var request = el.requestFullScreen ||
+                    el.webkitRequestFullScreen ||
+                    el.mozRequestFullScreen;
+
+      var fullscreen = document.fullScreen ||
+                       document.webkitIsFullScreen ||
+                       document.mozFullScreen;
+
+      var cancel = document.cancelFullScreen ||
+                   document.webkitCancelFullScreen ||
+                   document.mozCancelFullScreen;
+
+      if (request) {
+        if (fullscreen) {
+          layout.cancelFullScreen = true;
+          cancel.call(document);
+        } else {
+          layout.cancelFullScreen = false;
+          request.call(el);
+        }
+      } else {
+        alert("You'll need to use a newer browser to use the\n" +
+              "full-screen API.\n\n" +
+              "Chrome v15 (beta)\n" +
+              "http://www.google.com/landing/chrome/beta/\n\n" +
+              "Chrome v17 Canary:\n" +
+              "http://tools.google.com/dlpage/chromesxs\n\n" +
+              "Safari v5.1.1:\n\n" +
+              "FireFox v9 Aurora:\n" +
+              "https://www.mozilla.org/en-US/firefox/channel/\n\n" +
+              "FireFox v10 Nightly\n" +
+              "http://nightly.mozilla.org/\n" +
+              "Open 'about:config' and set: full-screen-api-enabled");
+      }
+    }, false);
+  }
+}
+})();
+(function(){
+
+  // prevent a console.log from blowing things up if we are on a browser that
+  // does not support it
+  if (typeof console === 'undefined') {
+    window.console = {} ;
+    console.log = console.info = console.warn = console.error = function(){};
+  }
+
+// ------------------------------------------------------------
+//
+//   View Components
+//
+// ------------------------------------------------------------
+
+views = { version: "0.0.1" };
 // ------------------------------------------------------------
 //
 //   Applet Container
@@ -5135,6 +6099,10 @@ layout.moleculeContainer = function(e, options) {
       particle, label, labelEnter, tail,
       molRadius,
       molecule_div, molecule_div_pre,
+      atoms,
+      get_num_atoms,
+      nodes,
+      get_nodes,
       default_options = {
         title:                false,
         xlabel:               false,
@@ -5161,6 +6129,13 @@ layout.moleculeContainer = function(e, options) {
   } else {
     options = default_options;
   }
+
+  // The get_nodes option allows us to update 'nodes' array every model tick.
+  get_nodes = options.get_nodes;
+  nodes = get_nodes();
+
+  get_num_atoms = options.get_num_atoms;
+  (atoms=[]).length = get_num_atoms();
 
   scale(cx, cy);
 
@@ -5359,6 +6334,12 @@ layout.moleculeContainer = function(e, options) {
 
       molecule_div_pre = molecule_div.append("pre");
 
+      d3.select(node)
+        .attr("tabindex", 0)
+        .on("mousedown", mousedown);
+
+      registerKeyboardHandlers();
+
       redraw();
       create_gradients();
 
@@ -5549,20 +6530,10 @@ layout.moleculeContainer = function(e, options) {
       // vis.selectAll("text").attr("font-size", x(molRadius * 1.3) );
     }
 
-    function setup_particles() {
-      if (typeof atoms == "undefined" || !atoms){
-        return;
-      }
-
-      var ljf = model.getLJCalculator().coefficients();
-      // molRadius = ljf.rmin * 0.5;
-      // model.set_radius(molRadius);
-
-      gradient_container.selectAll("circle").remove();
-      gradient_container.selectAll("g").remove();
-
-      particle = gradient_container.selectAll("circle").data(atoms);
-
+    /**
+      Call this wherever a d3 selection is being used to add circles for atoms
+    */
+    function circlesEnter(particle) {
       particle.enter().append("circle")
           .attr("r",  function(d, i) { return x(get_radius(i)); })
           .attr("cx", function(d, i) { return x(get_x(i)); })
@@ -5579,8 +6550,32 @@ layout.moleculeContainer = function(e, options) {
           })
           .on("mousedown", molecule_mousedown)
           .on("mouseout", molecule_mouseout);
+    }
 
-      var font_size = x(ljf.rmin[0][0] * 0.5 * 1.5);
+    function setup_particles() {
+      // The get_nodes option allows us to update 'nodes' array every model tick.
+      get_nodes = options.get_nodes;
+      nodes = get_nodes();
+
+      get_num_atoms = options.get_num_atoms;
+      (atoms=[]).length = get_num_atoms();
+
+      if (typeof atoms == "undefined" || !atoms){
+        return;
+      }
+
+      var ljf = model.getLJCalculator()[0][0].coefficients();
+      // // molRadius = ljf.rmin * 0.5;
+      // // model.set_radius(molRadius);
+
+      gradient_container.selectAll("circle").remove();
+      gradient_container.selectAll("g").remove();
+
+      particle = gradient_container.selectAll("circle").data(atoms);
+
+      circlesEnter(particle);
+
+      var font_size = x(ljf.rmin * 0.5 * 1.5);
       if (model.get('mol_number') > 100) { font_size *= 0.9; }
 
       label = gradient_container.selectAll("g.label")
@@ -5617,6 +6612,10 @@ layout.moleculeContainer = function(e, options) {
       }
     }
 
+    function mousedown() {
+      node.focus();
+    }
+
     function molecule_mouseover(d) {
       // molecule_div.transition()
       //       .duration(250)
@@ -5624,6 +6623,7 @@ layout.moleculeContainer = function(e, options) {
     }
 
     function molecule_mousedown(d, i) {
+      node.focus();
       if (atom_tooltip_on) {
         molecule_div.style("opacity", 1e-6);
         molecule_div.style("display", "none");
@@ -5667,6 +6667,10 @@ layout.moleculeContainer = function(e, options) {
     }
 
     function update_molecule_positions() {
+
+      (atoms = []).length = get_num_atoms();
+      nodes = get_nodes();
+
       // update model time display
       if (options.model_time_label) {
         time_label.text(modelTimeLabel());
@@ -5678,7 +6682,8 @@ layout.moleculeContainer = function(e, options) {
           return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
         });
 
-      particle = elem.selectAll("circle").data(atoms);
+      particle = gradient_container.selectAll("circle").data(atoms);
+      circlesEnter(particle);
 
       particle.attr("cx", function(d, i) {
           return x(nodes[model.INDICES.X][i]); })
@@ -5689,6 +6694,50 @@ layout.moleculeContainer = function(e, options) {
       if ((typeof(atom_tooltip_on) === "number")) {
         render_atom_tooltip(atom_tooltip_on);
       }
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Handle keyboard shortcuts for model operation
+    //
+    // ------------------------------------------------------------
+
+    function handleKeyboardForView(evt) {
+      evt = (evt) ? evt : ((window.event) ? event : null);
+      if (evt) {
+        switch (evt.keyCode) {
+          case 32:                // spacebar
+            if (model.is_stopped()) {
+              playback_component.action('play');
+            } else {
+              playback_component.action('stop');
+            }
+            evt.preventDefault();
+          break;
+          case 13:                // return
+            playback_component.action('play');
+            evt.preventDefault();
+          break;
+          // case 37:                // left-arrow
+          //   if (!model.is_stopped()) {
+          //     playback_component.action('stop');
+          //   }
+          //   modelStepBack();
+          //   evt.preventDefault();
+          // break;
+          // case 39:                // right-arrow
+          //   if (!model.is_stopped()) {
+          //     playback_component.action('stop');
+          //   }
+          //   modelStepForward();
+          //   evt.preventDefault();
+          // break;
+        }
+      }
+    }
+
+    function registerKeyboardHandlers() {
+      node.onkeydown = handleKeyboardForView;
     }
 
     // make these private variables and functions available
@@ -5770,11 +6819,11 @@ layout.potentialChart = function(e, model, options) {
   function updateLJData() {
     var sigma, epsilon, rmin, y, r, i;
 
-    ljCalculator = model.getLJCalculator();
+    ljCalculator = model.getLJCalculator()[0][0];
     ljData.coefficients = ljCalculator.coefficients();
-    sigma   = ljData.coefficients.sigma[0][0];
-    epsilon = ljData.coefficients.epsilon[0][0];
-    rmin    = ljData.coefficients.rmin[0][0];
+    sigma   = ljData.coefficients.sigma;
+    epsilon = ljData.coefficients.epsilon;
+    rmin    = ljData.coefficients.rmin;
     ljData.xmax    = sigma * 3;
     ljData.xmin    = Math.floor(sigma/2);
     ljData.ymax    = 0.4;
@@ -5833,10 +6882,12 @@ layout.potentialChart = function(e, model, options) {
     mh = size.height;
 
     // x-scale
-    xScale.domain([ljData.xmin, ljData.xmax]).range([0, mw]);
+    xScale = d3.scale.linear()
+      .domain([ljData.xmin, ljData.xmax]).range([0, mw]);
 
     // y-scale (inverted domain)
-    yScale.domain([ljData.ymax, ljData.ymin]).range([0, mh]);
+    yScale = d3.scale.linear()
+      .domain([ljData.ymax, ljData.ymin]).range([0, mh]);
 
     // drag x-axis logic
     downx = Math.NaN;
@@ -5960,6 +7011,12 @@ layout.potentialChart = function(e, model, options) {
       vis.selectAll("g.x").remove();
       vis.selectAll("g.y").remove();
 
+      d3.select(this)
+          .on("mousemove.drag", mousemove)
+          .on("touchmove.drag", mousemove)
+          .on("mouseup.drag",   mouseup)
+          .on("touchend.drag",  mouseup);
+
       redraw();
     }
 
@@ -5969,7 +7026,7 @@ layout.potentialChart = function(e, model, options) {
       }
 
       var fx = xScale.tickFormat(5),
-          fy = yScale.tickFormat(10);
+          fy = yScale.tickFormat(5);
 
       // Regenerate x-ticks…
       var gx = vis.selectAll("g.x")
@@ -6088,26 +7145,44 @@ layout.potentialChart = function(e, model, options) {
     }
 
     function mousemove() {
-      if (!coefficient_dragged) return;
-      node.onselectstart = function(){ return false; };
-      var m = d3.svg.mouse(vis.node()),
-        newx, newy;
-      if (coefficient_dragged.coefficient == "epsilon") {
-        newx = ljData.coefficients.rmin;
-        newy = yScale.invert(Math.max(0, Math.min(size.height, m[1])));
-        if (newy > options.epsilon_max) { newy = options.epsilon_max; }
-        if (newy < options.epsilon_min) { newy = options.epsilon_min; }
-        model.set( { epsilon: newy } );
-      } else {
-        newy = 0;
-        newx = xScale.invert(Math.max(0, Math.min(size.width, m[0])));
-        if (newx < options.sigma_min) { newx = options.sigma_min; }
-        if (newx > options.sigma_max) { newx = options.sigma_max; }
-        model.set( { sigma: newx } );
+      var p = d3.svg.mouse(vis[0][0]),
+          changex, changey, new_domain,
+          t = d3.event.changedTouches;
+      if (coefficient_dragged) {
+        node.onselectstart = function(){ return false; };
+        var m = d3.svg.mouse(vis.node()),
+          newx, newy;
+        if (coefficient_dragged.coefficient == "epsilon") {
+          newx = ljData.coefficients.rmin;
+          newy = yScale.invert(Math.max(0, Math.min(size.height, m[1])));
+          if (newy > options.epsilon_max) { newy = options.epsilon_max; }
+          if (newy < options.epsilon_min) { newy = options.epsilon_min; }
+          model.set( { epsilon: newy } );
+        } else {
+          newy = 0;
+          newx = xScale.invert(Math.max(0, Math.min(size.width, m[0])));
+          if (newx < options.sigma_min) { newx = options.sigma_min; }
+          if (newx > options.sigma_max) { newx = options.sigma_max; }
+          model.set( { sigma: newx } );
+        }
+        coefficient_dragged.x = newx;
+        coefficient_dragged.y = newy;
+        update();
       }
-      coefficient_dragged.x = newx;
-      coefficient_dragged.y = newy;
-      update();
+      if (!isNaN(downx)) {
+        d3.select('body').style("cursor", "ew-resize");
+        xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+        redraw();
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
+      if (!isNaN(downy)) {
+        d3.select('body').style("cursor", "ns-resize");
+        yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+        redraw();
+        d3.event.preventDefault();
+        d3.event.stopPropagation();
+      }
     }
 
     function mouseup() {
@@ -6136,38 +7211,19 @@ layout.potentialChart = function(e, model, options) {
     //
     // ------------------------------------------------------------
 
+
     elem.on("mousemove", function(d) {
       document.onselectstart = function() { return true; };
       var p = d3.svg.mouse(vis[0][0]);
       if (!isNaN(downx)) {
-        var rupx = xScale.invert(p[0]),
-          xaxis1 = xScale.domain()[0],
-          xaxis2 = xScale.domain()[1],
-          xextent = xaxis2 - xaxis1;
-        if (rupx !== 0) {
-            var changex, dragx_factor, new_domain;
-            dragx_factor = xextent/downx;
-            changex = 1 + (downx / rupx - 1) * (xextent/(downx-xaxis1))/dragx_factor;
-            new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-            xScale.domain(new_domain);
-            redraw();
-        }
+        xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+        redraw();
         d3.event.preventDefault();
         d3.event.stopPropagation();
       }
       if (!isNaN(downy)) {
-          var rupy = yScale.invert(p[1]),
-          yaxis1 = yScale.domain()[1],
-          yaxis2 = yScale.domain()[0],
-          yextent = yaxis2 - yaxis1;
-        if (rupy !== 0) {
-            var changey, dragy_factor, new_range;
-            dragy_factor = yextent/downy;
-            changey = 1 - (rupy / downy - 1) * (yextent/(downy-yaxis1))/dragy_factor;
-            new_range = [yaxis1 + (yextent * changey), yaxis1];
-            yScale.domain(new_range);
-            redraw();
-        }
+        yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[0]), yScale.domain()));
+        redraw();
         d3.event.preventDefault();
         d3.event.stopPropagation();
       }
@@ -6537,7 +7593,7 @@ var benchmarks_to_run = [
   {
     name: "molecules",
     run: function() {
-      return model.get_atoms().length;
+      return model.get_num_atoms();
     }
   },
   {
@@ -6553,7 +7609,8 @@ var benchmarks_to_run = [
       var start = +Date.now();
       var i = -1;
       while (i++ < 100) {
-        model.tick();
+        // advance model 1 tick, but don't paint the display
+        model.tick(1, { dontDispatchTickEvent: true });
       }
       elapsed = Date.now() - start;
       return d3.format("5.1f")(100/elapsed*1000)
@@ -6567,7 +7624,6 @@ var benchmarks_to_run = [
       var i = -1;
       while (i++ < 100) {
         model.tick();
-        controller.modelListener();
       }
       elapsed = Date.now() - start;
       return d3.format("5.1f")(100/elapsed*1000)
@@ -6601,6 +7657,8 @@ layout.hide_datatable = function() {
 layout.render_datatable = function(reset) {
   datatable_table.style.display = "";
   var i,
+      nodes = model.get_nodes(),
+      atoms = [],
       titlerows = datatable_table.getElementsByClassName("title"),
       datarows = datatable_table.getElementsByClassName("data"),
       column_titles = ['PX', 'PY', 'X', 'Y', 'VX', 'VY', 'AX', 'AY', 'SPEED', 'CHARGE', 'RADIUS', 'ELEMENT'],
@@ -6612,6 +7670,7 @@ layout.render_datatable = function(reset) {
                     f_formatter, f_formatter, charge_formatter, f_formatter, 
                     i_formatter];
 
+  atoms.length = nodes[0].length;
   reset = reset || false;
 
   function empty_table() {
@@ -6697,7 +7756,7 @@ layout.render_datatable = function(reset) {
     add_column_headings(title_row, column_titles)
     datarows = add_data_rows(atoms.length);
   }
-  if (reset) { datarows = add_data_rows(atoms.length); }
+  if (reset) { datarows = add_data_rows(model.get_num_atoms()); }
   i = -1; while (++i < atoms.length) {
     add_molecule_data(datarows[i], i);
   }
@@ -6839,56 +7898,6 @@ layout.displayStats = function() {
   }
 }
 
-// ------------------------------------------------------------
-//
-// Fullscreen API
-//
-// ------------------------------------------------------------
-
-/** do we have the querySelectorAll method? **/
-if (document.querySelectorAll) {
-  var fullScreenImage = document.querySelector ('#fullscreen');
-  if (fullScreenImage) {
-    fullScreenImage.style.cursor = "pointer";
-    fullScreenImage.addEventListener ('click', function () {
-      var el = document.documentElement;
-      var request = el.requestFullScreen ||
-                    el.webkitRequestFullScreen ||
-                    el.mozRequestFullScreen;
-
-      var fullscreen = document.fullScreen ||
-                       document.webkitIsFullScreen ||
-                       document.mozFullScreen;
-
-      var cancel = document.cancelFullScreen ||
-                   document.webkitCancelFullScreen ||
-                   document.mozCancelFullScreen;
-
-      if (request) {
-        if (fullscreen) {
-          layout.cancelFullScreen = true;
-          cancel.call(document);
-        } else {
-          layout.cancelFullScreen = false;
-          request.call(el);
-        }
-      } else {
-        alert("You'll need to use a newer browser to use the\n" +
-              "full-screen API.\n\n" +
-              "Chrome v15 (beta)\n" +
-              "http://www.google.com/landing/chrome/beta/\n\n" +
-              "Chrome v17 Canary:\n" +
-              "http://tools.google.com/dlpage/chromesxs\n\n" +
-              "Safari v5.1.1:\n\n" +
-              "FireFox v9 Aurora:\n" +
-              "https://www.mozilla.org/en-US/firefox/channel/\n\n" +
-              "FireFox v10 Nightly\n" +
-              "http://nightly.mozilla.org/\n" +
-              "Open 'about:config' and set: full-screen-api-enabled");
-      }
-    }, false);
-  }
-}
 layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, callback) {
   var heat_button = new ButtonComponent(heat_elem_id, 'circlesmall-plus');
   var cool_button = new ButtonComponent(cool_elem_id, 'circlesmall-minus');
@@ -8284,7 +9293,7 @@ layout.heatCoolButtons = function(heat_elem_id, cool_elem_id, min, max, model, c
       this.min = min;
       this.max = max;
       this.resize = __bind(this.resize, this);
-      this.dom_element = $(this.dom_id);
+      this.dom_element = typeof this.dom_id === "string" ? $(this.dom_id) : this.dom_id;
       this.dom_element.addClass('thermometer');
       this.samples = [];
       this.samples.push(initial_value);
@@ -8425,38 +9434,56 @@ controllers = { version: "0.0.1" };
   Thermometer
   SliderComponent
   layout
-
+  $
+  alert
   model: true
   model_player: true
-  atoms: true
-  nodes: true
 */
 /*jslint onevar: true*/
 controllers.simpleModelController = function(molecule_view_id, modelConfig, playerConfig) {
 
-  var layoutStyle         = playerConfig.layoutStyle,
-      autostart           = playerConfig.autostart,
-      maximum_model_steps = playerConfig.maximum_model_steps,
-      lj_epsilon_max      = playerConfig.lj_epsilon_max,
-      lj_epsilon_min      = playerConfig.lj_epsilon_min,
+  var layoutStyle,
+      autostart,
+      maximum_model_steps,
+      lj_epsilon_max,
+      lj_epsilon_min,
 
-      elements            = modelConfig.elements,
-      atoms_properties    = modelConfig.atoms,
-      mol_number          = modelConfig.mol_number,
-      temperature_control = modelConfig.temperature_control,
-      temperature         = modelConfig.temperature,
-      coulomb_forces      = modelConfig.coulomb_forces,
-      width               = modelConfig.width,
-      height              = modelConfig.height,
+      elements,
+      atoms_properties,
+      mol_number,
+      temperature_control,
+      temperature,
+      coulomb_forces,
+      width,
+      height,
+
+      nodes,
 
       molecule_container,
       model_listener,
       step_counter,
       therm,
-      epsilon_slider,
-      viewLists;
+      epsilon_slider;
 
   function controller() {
+
+
+    function initializeLocalVariables() {
+      layoutStyle         = playerConfig.layoutStyle;
+      autostart           = playerConfig.autostart;
+      maximum_model_steps = playerConfig.maximum_model_steps;
+      lj_epsilon_max      = playerConfig.lj_epsilon_max;
+      lj_epsilon_min      = playerConfig.lj_epsilon_min;
+
+      elements            = modelConfig.elements;
+      atoms_properties    = modelConfig.atoms;
+      mol_number          = modelConfig.mol_number;
+      temperature_control = modelConfig.temperature_control;
+      temperature         = modelConfig.temperature;
+      coulomb_forces      = modelConfig.coulomb_forces;
+      width               = modelConfig.width;
+      height              = modelConfig.height;
+    }
 
     // ------------------------------------------------------------
     //
@@ -8489,12 +9516,13 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
           height: height
         });
 
-
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
       } else if (mol_number) {
-        model.createNewAtoms(mol_number);
-        model.relax();
+        model.createNewAtoms({
+          num: mol_number,
+          relax: true
+        });
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
@@ -8520,7 +9548,9 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       molecule_container = layout.moleculeContainer(molecule_view_id,
         {
           xmax:                 width,
-          ymax:                 height
+          ymax:                 height,
+          get_nodes:            function() { return model.get_nodes(); },
+          get_num_atoms:        function() { return model.get_num_atoms(); }
         }
       );
 
@@ -8558,12 +9588,10 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       //
       // ------------------------------------------------------------
 
-      viewLists = {
-        moleculeContainers:      [molecule_container],
-        thermometers:            [therm]
-      };
+      layout.addView('moleculeContainers', molecule_container);
+      layout.addView('thermometers', therm);
 
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
 
     }
 
@@ -8610,7 +9638,6 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     //
 
     function setupModel() {
-      atoms = model.get_atoms();
       nodes = model.get_nodes();
 
       model.resetTime();
@@ -8627,7 +9654,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     // ------------------------------------------------------------
 
     function onresize() {
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
       therm.resize();
       updateTherm();
     }
@@ -8637,61 +9664,41 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
 
     // ------------------------------------------------------------
     //
-    // Handle keyboard shortcuts for model operation
-    //
-    // ------------------------------------------------------------
-
-    function handleKeyboardForModel(evt) {
-      evt = (evt) ? evt : ((window.event) ? event : null);
-      if (evt) {
-        switch (evt.keyCode) {
-          case 32:                // spacebar
-            if (model.is_stopped()) {
-              molecule_container.playback_component.action('play');
-            } else {
-              molecule_container.playback_component.action('stop');
-            }
-            evt.preventDefault();
-          break;
-          case 13:                // return
-            molecule_container.playback_component.action('play');
-            evt.preventDefault();
-          break;
-          case 37:                // left-arrow
-            if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
-            }
-            modelStepBack();
-            evt.preventDefault();
-          break;
-          case 39:                // right-arrow
-            if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
-            }
-            modelStepForward();
-            evt.preventDefault();
-          break;
-        }
-      }
-    }
-
-    document.onkeydown = handleKeyboardForModel;
-
-    // ------------------------------------------------------------
-    //
     // Reset the model after everything else ...
     //
     // ------------------------------------------------------------
 
-    try {
+    function finishSetup(firstTime) {
+      initializeLocalVariables();
       createModel();
       setupModel();
-      setupViews();
-    } catch(e) {
-      alert(e);
-      throw new Error(e);
+      if (firstTime) {
+        setupViews();
+      } else {
+        updateLayout();
+      }
     }
 
+    if (typeof DEVELOPMENT === 'undefined') {
+      try {
+        finishSetup(true);
+      } catch(e) {
+        alert(e);
+        throw new Error(e);
+      }
+    } else {
+      finishSetup(true);
+    }
+
+    function updateLayout() {
+      layout.setupScreen(true);
+    }
+
+    function reload(newModelConfig, newPlayerConfig) {
+       modelConfig = newModelConfig;
+       playerConfig = newPlayerConfig;
+       finishSetup(false);
+    }
 
     // epsilon_slider = new SliderComponent('#attraction_slider',
     //   function (v) {
@@ -8714,6 +9721,8 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     if (autostart) {
       modelGo();
     }
+    controller.updateLayout = updateLayout;
+    controller.reload = reload;
   }
   controller();
   return controller;
@@ -8728,13 +9737,14 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   SliderComponent
   layout
 
+  $
+  alert
+
   model: true
   model_player: true
-  atoms: true
-  nodes: true
 */
 /*jslint onevar: true*/
-controllers.compareModelsController = function(molecule_view_id, appletContainerID, modelConfig, playerConfig) {
+controllers.compareModelsController = function(molecule_view_id, appletContainerID, modelSelectID, modelConfig, playerConfig) {
 
   var layoutStyle         = playerConfig.layoutStyle,
       autostart           = playerConfig.autostart,
@@ -8751,19 +9761,20 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       width               = modelConfig.width,
       height              = modelConfig.height,
 
+      nodes,
+
       molecule_container,
       modelListener,
       step_counter,
       therm,
       epsilon_slider,
-      viewLists,
+      jsonFullPath, cmlFullPath,
       appletString,
       appletContainer,
       appletOptions = {},
       applet, cmlPath,
       start, stop, reset,
-      modelSelect,
-      opts, optsLoaded = $.Deferred();
+      modelSelect, pathList, hash;
 
   function controller() {
 
@@ -8800,8 +9811,10 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
       } else if (mol_number) {
-        model.createNewAtoms(mol_number);
-        model.relax();
+        model.createNewAtoms({
+          num: mol_number,
+          relax: true
+        });
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
@@ -8833,7 +9846,9 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
           xunits:               true,
           yunits:               true,
           xmax:                 width,
-          ymax:                 height
+          ymax:                 height,
+          get_nodes:            function() { return model.get_nodes(); },
+          get_num_atoms:        function() { return model.get_num_atoms(); }
         }
       );
 
@@ -8846,10 +9861,10 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       //
       // ------------------------------------------------------------
 
-      cmlPath = extractCmlPath(document.location.hash);
+      cmlPath = currentCMLPath();
       if (cmlPath) {
         appletOptions = {
-          params: [["script", "page:0:import " + cmlPath]]
+          params: [["script", "page:0:import " + "/imports/legacy-mw-content/" + cmlPath]]
         };
       } else {
         appletOptions = {};
@@ -8862,12 +9877,10 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       //
       // ------------------------------------------------------------
 
-      viewLists = {
-        moleculeContainers:      [molecule_container],
-        appletContainers:        [appletContainer]
-      };
+      layout.addView('moleculeContainers', molecule_container);
+      layout.addView('appletContainers', appletContainer);
 
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
 
     }
 
@@ -8910,7 +9923,6 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     // ------------------------------------------------------------
 
     function setupModel() {
-      atoms = model.get_atoms();
       nodes = model.get_nodes();
 
       model.resetTime();
@@ -8922,31 +9934,77 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
 
     // ------------------------------------------------------------
     //
-    //   Java MW Applet Setup
+    //   Model List Setup
     //
     // ------------------------------------------------------------
 
-    function extractCmlPath(jsonPath) {
-      var regex = /#*(.*?)(\$.*|\.json$)/,
-          str;
-      str = regex.exec(jsonPath)[1];
-      if (str) {
-        return str.replace("/converted", "") + ".cml";
+    function currentJsonPath() {
+      hash = document.location.hash;
+      if (hash.length > 0) {
+        return hash.substr(1, hash.length);
       } else {
         return false;
       }
     }
 
-    function extractModelselectValue(jsonPath) {
-      var regex = /#*\/imports\/legacy-mw-content\/converted\/(.*?)\.json$/,
-          str;
-      str = regex.exec(jsonPath)[1];
-      if (str) {
-        return str;
+    function currentCMLPath() {
+      var path = currentJsonPath();
+      if (path) {
+        return pathList[path.replace("/imports/legacy-mw-content/", "")].cmlPath;
       } else {
         return false;
       }
     }
+
+    modelSelect = document.getElementById(modelSelectID);
+
+    function updateModelSelect() {
+      var path = currentJsonPath();
+      if (path) {
+        modelSelect.value = path.replace("/imports/legacy-mw-content/", "");
+      } else {
+        modelSelect.value = "two-atoms-two-elements/two-atoms-two-elements$0.json";
+      }
+    }
+
+    function createPathList() {
+      var i, j, item, sectionList, sectionPath;
+      pathList = {};
+      for(i = 0; i < modelList.length; i++) {
+        sectionList = modelList[i];
+        sectionPath = sectionList.section;
+        for(j = 0; j < sectionList.content.length; j++) {
+          item = sectionList.content[j];
+          pathList[item.json] = {
+            "name": item.name,
+            "jsonPath": item.json,
+            "cmlPath":  item.cml
+          };
+        }
+      }
+    }
+
+    function processModelList() {
+      createPathList();
+      d3.select(modelSelect).selectAll("optgroup")
+          .data(modelList)
+        .enter().append("optgroup")
+          .attr("label", function(d) { return d.section; })
+          .selectAll("option")
+              .data(function(d) { return d.content; })
+            .enter().append("option")
+              .text(function(d) { return d.name; })
+              .attr("value", function(d) { return d.json; })
+              .attr("data-cml-path", function(d) { return d.cml; });
+      updateModelSelect();
+    }
+
+
+    // ------------------------------------------------------------
+    //
+    //   Java MW Applet Setup
+    //
+    // ------------------------------------------------------------
 
     function runMWScript(script) {
       return appletContainer.applet.runMwScript(script);
@@ -8970,33 +10028,25 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       modelReset();
     };
 
-    modelSelect = document.getElementById("model-select");
-
     function modelSelectHandler() {
-      var jsonPath = "/imports/legacy-mw-content/converted/" + modelSelect.value + ".json",
-          cmlPath = extractCmlPath(jsonPath);
-      document.location.hash = "#" + jsonPath;
-      appletOptions.params = [["script", "page:0:import " + cmlPath]];
-      $.get(jsonPath).done(function(results) {
-        opts = results;
-        optsLoaded.resolve();
-      }).fail(function() {
-        $('#flash').html('<p class="error-message">Could not load config ' + document.location.hash + '</p>');
-        optsLoaded.resolve();
-      });
-    }
+      var selection = $(modelSelect).find("option:selected"),
+          initialPath = "/imports/legacy-mw-content/",
+          jsonPath = selection.attr("value");
 
-    $.when(optsLoaded).done(function(results) {
-      $.extend(modelConfig, opts);
-      modelReset();
-      // appletContainer = layout.appletContainer(appletContainerID, appletOptions);
-    });
+      jsonFullPath = initialPath + jsonPath;
+      document.location.hash = "#" + jsonFullPath;
+    }
 
     modelSelect.onchange = modelSelectHandler;
 
     function setupMWApplet() {
-      modelSelect.value = extractModelselectValue(document.location.hash);
-      runMWScript("page:0:set %frank false");
+      if (currentCMLPath()) {
+        appletOptions = { params: [["script", "page:0:import " + currentCMLPath()]] };
+        appletContainer = layout.appletContainer(appletContainerID, appletOptions);
+        runMWScript("page:0:set frank false");
+        layout.setView('appletContainers', [appletContainer]);
+        layout.setupScreen();
+      }
     }
 
     // ------------------------------------------------------------
@@ -9006,7 +10056,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     // ------------------------------------------------------------
 
     function onresize() {
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
     }
 
     document.onwebkitfullscreenchange = onresize;
@@ -9014,117 +10064,30 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
 
     // ------------------------------------------------------------
     //
-    // Handle keyboard shortcuts for model operation
-    //
-    // ------------------------------------------------------------
-
-    function handleKeyboardForModel(evt) {
-      evt = (evt) ? evt : ((window.event) ? event : null);
-      if (evt) {
-        switch (evt.keyCode) {
-          case 32:                // spacebar
-            if (model.is_stopped()) {
-              molecule_container.playback_component.action('play');
-            } else {
-              molecule_container.playback_component.action('stop');
-            }
-            evt.preventDefault();
-          break;
-          case 13:                // return
-            molecule_container.playback_component.action('play');
-            evt.preventDefault();
-          break;
-          case 37:                // left-arrow
-            if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
-            }
-            modelStepBack();
-            evt.preventDefault();
-          break;
-          case 39:                // right-arrow
-            if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
-            }
-            modelStepForward();
-            evt.preventDefault();
-          break;
-        }
-      }
-    }
-
-    document.onkeydown = handleKeyboardForModel;
-
-    // ------------------------------------------------------------
-    //
     // Reset the model after everything else ...
     //
     // ------------------------------------------------------------
 
-    try {
+    function finishSetup() {
+      processModelList();
       createModel();
       setupModel();
       setupViews();
-      setupMWApplet();
-    } catch(e) {
-      alert(e);
-      throw new Error(e);
+      updateModelSelect();
     }
 
-    // ------------------------------------------------------------
-    // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
-    // ------------------------------------------------------------
-    // 
-    // therm = new Thermometer('#thermometer', model.temperature(), 200, 4000);
-    // 
-    // function updateTherm(){
-    //   therm.add_value(model.get("temperature"));
-    // }
-    // 
-    // model.addPropertiesListener(["temperature"], updateTherm);
-    // updateTherm();
-
-    // epsilon_slider = new SliderComponent('#attraction_slider',
-    //   function (v) {
-    //     model.set({epsilon: v} );
-    //   }, lj_epsilon_max, lj_epsilon_min, epsilon);
-
-    // function updateEpsilon(){
-    //   epsilon_slider.set_scaled_value(model.get("epsilon"));
-    // }
-
-    // model.addPropertiesListener(["epsilon"], updateEpsilon);
-    // updateEpsilon();
-
-    // ------------------------------------------------------------
-    // Setup heat and cool buttons
-    // ------------------------------------------------------------
-
-    // layout.heatCoolButtons("#heat_button", "#cool_button", 0, 3800, model, function (t) { therm.add_value(t); });
-
-    // ------------------------------------------------------------
-    // Add listener for coulomb_forces checkbox
-    // ------------------------------------------------------------
-
-    // $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-
-    // function updateCoulombCheckbox() {
-    //   $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-    //   molecule_container.setup_particles();
-    // }
-    // 
-    // model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
-    // updateCoulombCheckbox();
-
-    // ------------------------------------------------------------
-    //
-    // Start if autostart is true
-    //
-    // ------------------------------------------------------------
-
-    // if (autostart) {
-    //   modelGo();
-    // }
+    if (typeof DEVELOPMENT === 'undefined') {
+      try {
+        finishSetup()
+      } catch(e) {
+        alert(e);
+        throw new Error(e);
+      }
+    } else {
+      finishSetup()
+    }
   }
+
   controller();
   return controller;
 };
@@ -9140,8 +10103,6 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
 
   model: true
   model_player: true
-  atoms: true
-  nodes: true
 */
 /*jslint onevar: true*/
 controllers.complexModelController =
@@ -9162,6 +10123,7 @@ controllers.complexModelController =
 
       elements            = modelConfig.elements,
       atoms_properties    = modelConfig.atoms,
+      radialBonds         = modelConfig.radialBonds,
       mol_number          = modelConfig.mol_number,
       temperature         = modelConfig.temperature,
       temperature_control = modelConfig.temperature_control,
@@ -9174,7 +10136,7 @@ controllers.complexModelController =
       step_counter,
       ljCalculator,
       kechart, energyGraph, energyGraph_options,
-      te_data,
+      energy_data,
       model_controls,
       model_controls_inputs,
       select_molecule_number,
@@ -9182,11 +10144,10 @@ controllers.complexModelController =
       mol_number_to_speed_yaxis_map,
       potentialChart,
       speedDistributionChart,
-      viewLists,
       select_molecule_number,
       radio_randomize_pos_vel,
 
-      currentTick = 0;
+      nodes;
 
   function controller() {
 
@@ -9208,26 +10169,30 @@ controllers.complexModelController =
       moleculeContainer.update_molecule_positions();
 
       if (model.isNewStep()) {
-        currentTick++;
-        te_data.push(te);
-        if (model.is_stopped()) {
-          energyGraph.add_point(te);
-        } else {
-          energyGraph.add_canvas_point(te);
-        }
+        energy_data[0].push(ke);
+        energy_data[1].push(pe);
+        energy_data[2].push(te);
+        energyGraph.add_points([ke, pe, te]);
       } else {
-        energyGraph.update();
-      }
-      if (step_counter > 0.95 * energyGraph.xmax && energyGraph.xmax < maximum_model_steps) {
-        energyGraph.change_xaxis(energyGraph.xmax * 2);
+        energyGraph.update(model.stepCounter());
       }
       if (step_counter >= maximum_model_steps) { modelStop(); }
       layout.displayStats();
       if (layout.datatable_visible) { layout.render_datatable(); }
     }
 
-    function resetTEData() {
-      te_data = [model.ke() + model.pe()];
+    function resetEnergyData(index) {
+      var modelsteps = model.stepCounter();
+      if (index) {
+        for (i = 0, len = energy_data.length; i < len; i++) {
+          energy_data[i].length = modelsteps
+        }
+      } else {
+        ke = model.ke();
+        pe = model.pe();
+        te = ke + pe;
+        energy_data = [[ke], [pe], [te]];
+      }
     }
 
     // ------------------------------------------------------------
@@ -9250,9 +10215,12 @@ controllers.complexModelController =
 
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
+        model.createRadialBonds(radialBonds);
       } else if (mol_number) {
-        model.createNewAtoms(mol_number);
-        model.relax();
+        model.createNewAtoms({
+          num: mol_number,
+          relax: true
+        });
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
@@ -9289,7 +10257,9 @@ controllers.complexModelController =
           xmin:                 0,
           xmax:                 width,
           ymin:                 0,
-          ymax:                 height
+          ymax:                 height,
+          get_nodes:            function() { return model.get_nodes(); },
+          get_num_atoms:        function() { return model.get_num_atoms(); }
         }
       );
 
@@ -9303,41 +10273,47 @@ controllers.complexModelController =
 
       // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
 
-      resetTEData();
+      resetEnergyData();
 
       energyGraph = grapher.realTimeGraph(energy_graph_view_id, {
-        title:     "Total Energy of the System",
+        title:     "Energy of the System (KE:red, PE:green, TE:blue)",
         xlabel:    "Model Time (ps)",
         xmin:      0,
-        xmax:     2500,
+        xmax:     100,
         sample:    0.25,
         ylabel:    null,
-        ymin:      0.0,
-        ymax:      200,
-        dataset:   te_data
+        ymin:      -5.0,
+        ymax:      5.0,
+        dataset:   energy_data
       });
 
-      energyGraph.new_data(te_data);
+      energyGraph.new_data(energy_data);
 
       model.on('play', function() {
-        if (energyGraph.number_of_points() && currentTick < energyGraph.number_of_points()) {
-          if (currentTick === 0) {
-            resetTEData();
-          } else {
-            te_data.length = currentTick;
-          }
-          energyGraph.new_data(te_data);
+        var i, len;
+
+        if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
+          resetEnergyData(model.stepCounter());
+          energyGraph.new_data(energy_data);
         }
         energyGraph.show_canvas();
       });
 
       model.on('stop', function() {
-        energyGraph.hide_canvas();
       });
 
+      // Right now this action is acting as an indication of model reset ...
+      // This should be refactoring to distinguish the difference between reset
+      // and seek to location in model history.
       model.on('seek', function() {
-        resetTEData();
-        energyGraph.new_data(te_data);
+        modelsteps = model.stepCounter();
+        if (modelsteps > 0) {
+          resetEnergyData(modelsteps);
+          energyGraph.new_data(energy_data);
+        } else {
+          resetEnergyData();
+          energyGraph.new_data(energy_data);
+        }
       });
 
       // ------------------------------------------------------------
@@ -9400,12 +10376,10 @@ controllers.complexModelController =
       //
       // ------------------------------------------------------------
 
-      viewLists = {
-        moleculeContainers:      [moleculeContainer],
-        potentialCharts:         [potentialChart],
-        speedDistributionCharts: [speedDistributionChart],
-        energyCharts:            [energyGraph]
-      };
+      layout.addView('moleculeContainers', moleculeContainer);
+      layout.addView('potentialCharts', potentialChart);
+      layout.addView('speedDistributionCharts', speedDistributionChart);
+      layout.addView('energyCharts', energyGraph);
 
       // ------------------------------------------------------------
       //
@@ -9433,10 +10407,6 @@ controllers.complexModelController =
       function selectMoleculeNumberChange() {
         mol_number = +select_molecule_number.value;
         modelReset();
-        if (checkbox_thermalize.checked) {
-          model.relax();
-          moleculeContainer.update_molecule_positions();
-        }
         radio_randomize_pos_vel.checked = false
         updateMolNumberViewDependencies();
       }
@@ -9484,17 +10454,16 @@ controllers.complexModelController =
     // ------------------------------------------------------------
 
     function setupModel() {
-      atoms = model.get_atoms();
       nodes = model.get_nodes();
 
       model.resetTime();
-      resetTEData();
+      resetEnergyData();
 
-      moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_particles();
-      layout.setupScreen(viewLists);
+      moleculeContainer.updateMoleculeRadius();
+      layout.setupScreen();
       step_counter = model.stepCounter();
-      select_molecule_number.value = atoms.length;
+      select_molecule_number.value = model.get_num_atoms();
 
       modelStop();
       model.on("tick", modelListener);
@@ -9509,9 +10478,8 @@ controllers.complexModelController =
 
     function modelStop() {
       model.stop();
-      energyGraph.hide_canvas();
+      // energyGraph.hide_canvas();
       moleculeContainer.playback_component.action('stop');
-      // energyGraph.new_data(te_data);
       if (model_controls) {
         model_controls_inputs[0].checked = true;
       }
@@ -9521,7 +10489,7 @@ controllers.complexModelController =
       model.stop();
       if (model.stepCounter() < maximum_model_steps) {
         model.stepForward();
-        energyGraph.hide_canvas();
+        // energyGraph.hide_canvas();
         if (model_controls) {
           model_controls_inputs[0].checked = true;
         }
@@ -9549,14 +10517,14 @@ controllers.complexModelController =
 
     function modelStepBack() {
       modelStop();
-      currentTick = model.stepBack();
-      energyGraph.showMarker(currentTick);
+      model.stepBack();
+      energyGraph.showMarker(model.stepCounter());
     }
 
     function modelStepForward() {
       if (model.stepCounter() < maximum_model_steps) {
-        currentTick = model.stepForward();
-        energyGraph.showMarker(currentTick);
+        model.stepForward();
+        // energyGraph.showMarker(model.stepCounter());
       } else {
         if (model_controls) {
           model_controls_inputs[0].checked = true;
@@ -9565,9 +10533,11 @@ controllers.complexModelController =
     }
 
     function modelReset() {
+      var dontRelaxRandom = !checkbox_thermalize.checked;
       mol_number = +select_molecule_number.value;
-      model.createNewAtoms(mol_number);
+      model.createNewAtoms(mol_number, dontRelaxRandom);
       setupModel();
+      moleculeContainer.update_molecule_positions();
       step_counter = model.stepCounter();
       layout.displayStats();
       if (layout.datatable_visible) {
@@ -9575,9 +10545,8 @@ controllers.complexModelController =
       } else {
         layout.hide_datatable();
       }
-      resetTEData();
-      energyGraph.new_data(te_data);
-      energyGraph.hide_canvas();
+      resetEnergyData();
+      energyGraph.new_data(energy_data);
       if (model_controls) {
         model_controls_inputs[0].checked = true;
       }
@@ -9590,7 +10559,7 @@ controllers.complexModelController =
     // ------------------------------------------------------------
 
     function onresize() {
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
     }
 
     document.onwebkitfullscreenchange = onresize;
@@ -9598,59 +10567,25 @@ controllers.complexModelController =
 
     // ------------------------------------------------------------
     //
-    // Handle keyboard shortcuts for model operation
-    //
-    // ------------------------------------------------------------
-
-    function handleKeyboardForModel(evt) {
-      evt = (evt) ? evt : ((window.event) ? event : null);
-      if (evt) {
-        switch (evt.keyCode) {
-          case 32:                // spacebar
-            if (model.is_stopped()) {
-              moleculeContainer.playback_component.action('play');
-            } else {
-              moleculeContainer.playback_component.action('stop');
-            }
-            evt.preventDefault();
-          break;
-          case 13:                // return
-            moleculeContainer.playback_component.action('play');
-            evt.preventDefault();
-          break;
-          case 37:                // left-arrow
-            if (!model.is_stopped()) {
-              moleculeContainer.playback_component.action('stop');
-            }
-            modelStepBack();
-            evt.preventDefault();
-          break;
-          case 39:                // right-arrow
-            if (!model.is_stopped()) {
-              moleculeContainer.playback_component.action('stop');
-            }
-            modelStepForward();
-            evt.preventDefault();
-          break;
-        }
-      }
-    }
-
-    document.onkeydown = handleKeyboardForModel;
-
-    // ------------------------------------------------------------
-    //
     // Reset the model after everything else ...
     //
     // ------------------------------------------------------------
 
-    try {
+    function finishSetup() {
       createModel();
       setupViews();
       setupModel();
-    } catch(e) {
-      alert(e);
-      throw new Error(e);
+    }
+
+    if (typeof DEVELOPMENT === 'undefined') {
+      try {
+        finishSetup()
+      } catch(e) {
+        alert(e);
+        throw new Error(e);
+      }
+    } else {
+      finishSetup()
     }
 
     // ------------------------------------------------------------
@@ -9667,11 +10602,392 @@ controllers.complexModelController =
     controller.modelGo = modelGo;
     controller.modelStop = modelStop;
     controller.modelReset = modelReset;
-    controller.resetTEData = resetTEData;
+    controller.resetEnergyData = resetEnergyData;
     controller.energyGraph = energyGraph;
     controller.moleculeContainer = moleculeContainer;
   }
 
   controller();
   return controller;
-};})();
+};/*globals controllers model layout Thermometer $ */
+
+/*jslint onevar: true*/
+controllers.interactivesController = function(interactive, interactive_view_id) {
+
+  var controller = {},
+      modelController,
+      $interactiveContainer,
+      propertiesListeners = [],
+      actionQueue = [];
+
+  function loadModel(modelUrl) {
+    var playerConfig = {    // to be removed
+        layoutStyle        : 'interactive',
+        maximum_model_steps: Infinity
+      };
+    $.get(modelUrl).done(function(modelConfig) {
+      if (modelController) {
+        modelController.reload(modelConfig, playerConfig);
+      } else {
+        modelController = controllers.modelController('#molecule-container', modelConfig, playerConfig);
+        modelLoaded();
+      }
+    });
+  }
+
+  function createComponent(component) {
+    switch (component.type) {
+      case "button":
+        return createButton(component);
+      case "thermometer":
+        return createThermometer(component);
+    }
+  }
+
+  function createButton(component) {
+    var $button, scriptStr, script;
+
+    $button = $("<button>").attr('id', component.id).html(component.text);
+
+    if (typeof component.action === "string") {
+      scriptStr = component.action;
+    } else {
+      scriptStr = component.action.join('\n');
+    }
+    eval("script = function() {"+scriptStr+"}");
+    $button.click(script);
+
+    return $button;
+  }
+
+  function createThermometer(component) {
+    var $therm = $('<div>').attr('id', component.id),
+        thermometer = new Thermometer($therm, 0, component.min, component.max),
+        $wrapper = $('<div>').css("padding-bottom", "4em")
+          .append($therm)
+          .append($('<div>').text("Thermometer"));
+
+    function updateTherm() {
+      thermometer.add_value(model.get("temperature"));
+    }
+
+    queuePropertiesListener(["temperature"], updateTherm);
+    queueActionOnModelLoad(function() {
+      thermometer.resize();
+      updateTherm();
+    });
+
+    layout.addView('thermometers', thermometer);
+    return $wrapper;
+  }
+
+  function queuePropertiesListener(properties, func) {
+    if (typeof model !== "undefined") {
+      model.addPropertiesListener(properties, func);
+    } else {
+      propertiesListeners.push([properties, func]);
+    }
+  }
+
+  function queueActionOnModelLoad(action) {
+    if (typeof model !== "undefined") {
+      action();
+    } else {
+      actionQueue.push(action);
+    }
+  }
+
+  function modelLoaded() {
+    var listener,
+        action;
+
+    while (propertiesListeners.length > 0) {
+      listener = propertiesListeners.pop();
+      model.addPropertiesListener(listener[0], listener[1]);
+    }
+    while (actionQueue.length > 0) {
+      action = actionQueue.pop()();
+    }
+  }
+
+  function loadInteractive(newInteractive, interactive_view_id) {
+    var componentJsons,
+        components = {},
+        component,
+        divArray,
+        div,
+        componentId,
+        $top, $right,
+        i, ii;
+
+    interactive = newInteractive;
+    $interactiveContainer = $(interactive_view_id);
+    if ($interactiveContainer.children().length === 0) {
+      $top = $('<div class="top" id="top"/>');
+      $top.append('<div id="molecule-container"/>');
+      $right = $('<div id="right"/>');
+      $top.append($right);
+      $interactiveContainer.append($top);
+      $interactiveContainer.append('<div class="bottom" id="bottom"/>');
+    } else {
+      $('#bottom').html('');
+      $('#right').html('');
+      $interactiveContainer.append('<div id="bottom"/>');
+    }
+
+    if (interactive.model) {
+      loadModel(interactive.model);
+    }
+
+    componentJsons = interactive.components;
+
+    for (i = 0, ii=componentJsons.length; i<ii; i++) {
+      component = createComponent(componentJsons[i]);
+      components[componentJsons[i].id] = component;
+    }
+
+
+    // look at each div defined in layout, and add any components in that
+    // array to that div. Then rm the component from components so we can
+    // add the remainder to #bottom at the end
+    if (interactive.layout) {
+      for (div in interactive.layout) {
+        if (interactive.layout.hasOwnProperty(div)) {
+          divArray = interactive.layout[div];
+          for (i = 0, ii = divArray.length; i<ii; i++) {
+            componentId = divArray[i];
+            if (components[componentId]) {
+              $('#'+div).append(components[componentId]);
+              delete components[componentId];
+            }
+          }
+        }
+      }
+    }
+
+    // add the remaining components to #bottom
+    for (componentId in components) {
+      if (components.hasOwnProperty(componentId)) {
+        $('#bottom').append(components[componentId]);
+      }
+    }
+
+
+  }
+
+  function updateLayout() {
+    layout.setupScreen(true);
+  }
+
+  // run this when controller is created
+  loadInteractive(interactive, interactive_view_id);
+
+  // make these private variables and functions available
+  controller.loadInteractive = loadInteractive;
+  controller.updateLayout = updateLayout;
+
+  return controller;
+};
+/*globals
+
+  controllers
+
+  modeler
+  ModelPlayer
+  Thermometer
+  SliderComponent
+  layout
+  $
+  alert
+  model: true
+  model_player: true
+*/
+/*jslint onevar: true*/
+controllers.modelController = function(molecule_view_id, modelConfig, playerConfig) {
+  var controller          = {},
+
+      layoutStyle         = playerConfig.layoutStyle,
+      autostart           = playerConfig.autostart,
+      maximum_model_steps = playerConfig.maximum_model_steps,
+
+      elements            = modelConfig.elements,
+      atoms_properties    = modelConfig.atoms,
+      mol_number          = modelConfig.mol_number,
+      temperature_control = modelConfig.temperature_control,
+      temperature         = modelConfig.temperature,
+      coulomb_forces      = modelConfig.coulomb_forces,
+      width               = modelConfig.width,
+      height              = modelConfig.height,
+
+      nodes,
+
+      molecule_container,
+      step_counter,
+      therm,
+      epsilon_slider;
+
+    // ------------------------------------------------------------
+    //
+    // Main callback from model process
+    //
+    // Pass this function to be called by the model on every model step
+    //
+    // ------------------------------------------------------------
+
+    function model_listener(e) {
+      molecule_container.update_molecule_positions();
+      if (step_counter >= model.stepCounter()) { modelStop(); }
+    }
+
+
+    // ------------------------------------------------------------
+    //
+    // Create model and pass in properties
+    //
+    // ------------------------------------------------------------
+
+    function createModel() {
+      model = modeler.model({
+          elements: elements,
+          model_listener: model_listener,
+          temperature: temperature,
+          lennard_jones_forces: true,
+          coulomb_forces: coulomb_forces,
+          temperature_control: temperature_control,
+          width: width,
+          height: height
+        });
+
+
+      if (atoms_properties) {
+        model.createNewAtoms(atoms_properties);
+      } else if (mol_number) {
+        model.createNewAtoms(mol_number);
+        model.relax();
+      } else {
+        throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
+      }
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Create Model Player
+    //
+    // ------------------------------------------------------------
+
+    function setupModelPlayer() {
+
+      // ------------------------------------------------------------
+      //
+      // Create player and container view for model
+      //
+      // ------------------------------------------------------------
+
+      layout.selection = layoutStyle;
+
+      model_player = new ModelPlayer(model, autostart);
+      molecule_container = layout.moleculeContainer(molecule_view_id,
+        {
+          xmax:                 width,
+          ymax:                 height,
+          get_nodes:            function() { return model.get_nodes(); },
+          get_num_atoms:        function() { return model.get_num_atoms(); }
+        }
+      );
+
+      molecule_container.updateMoleculeRadius();
+      molecule_container.setup_particles();
+
+      layout.addView('moleculeContainers', molecule_container);
+
+      // FIXME: should not be here
+      layout.setupScreen();
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Model Controller
+    //
+    // ------------------------------------------------------------
+    function modelStop() {
+      model.stop();
+    }
+
+    function modelGo() {
+      model.on("tick", model_listener);
+      if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
+        model.resume();
+      }
+    }
+
+    function modelStepBack() {
+      modelStop();
+      model.stepBack();
+    }
+
+    function modelStepForward() {
+      if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
+        model.stepForward();
+      }
+    }
+
+    // ------------------------------------------------------------
+    //
+    //   Molecular Model Setup
+    //
+
+    function setupModel() {
+      nodes = model.get_nodes();
+
+      model.resetTime();
+
+      modelStop();
+      model.on("tick", model_listener);
+      step_counter = model.stepCounter();
+    }
+
+    function finishSetup(firstTime) {
+      createModel();
+      setupModel();
+      if (firstTime) {
+        setupModelPlayer();
+      } else {
+        layout.setupScreen(true);
+      }
+    }
+
+    function reload(newModelConfig, newPlayerConfig) {
+       modelConfig = newModelConfig;
+       playerConfig = newPlayerConfig;
+       finishSetup(false);
+    }
+
+    if (typeof DEVELOPMENT === 'undefined') {
+      try {
+        finishSetup(true);
+      } catch(e) {
+        alert(e);
+        throw new Error(e);
+      }
+    } else {
+      finishSetup(true);
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Start if autostart is true
+    //
+    // ------------------------------------------------------------
+
+    if (autostart) {
+      modelGo();
+    }
+
+    controller.reload = reload;
+
+    return controller;
+};
+
+
+
+})();

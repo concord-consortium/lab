@@ -17,6 +17,46 @@ grapher.data = function(array) {
   };
   return points;
 };
+grapher.axis = {
+  axisProcessDrag: function(dragstart, currentdrag, domain) {
+    var originExtent, maxDragIn,
+        newdomain = domain,
+        origin = 0,
+        axis1 = domain[0],
+        axis2 = domain[1],
+        extent = axis2 - axis1;
+    if (currentdrag !== 0) {
+      if  ((axis1 >= 0) && (axis2 > axis1)) {                 // example: (20, 10, [0, 40]) => [0, 80]
+        origin = axis1;
+        originExtent = dragstart-origin;
+        maxDragIn = originExtent * 0.2 + origin;
+        if (currentdrag > maxDragIn) {
+          change = originExtent / (currentdrag-origin);
+          extent = axis2 - origin;
+          newdomain = [axis1, axis1 + (extent * change)];
+        }
+      } else if ((axis1 < 0) && (axis2 > 0)) {                // example: (20, 10, [-40, 40])       => [-80, 80]
+        origin = 0;                                           //          (-0.4, -0.2, [-1.0, 0.4]) => [-1.0, 0.4]
+        originExtent = dragstart-origin;
+        maxDragIn = originExtent * 0.2 + origin;
+        if ((dragstart >= 0 && currentdrag > maxDragIn) || (dragstart  < 0  && currentdrag < maxDragIn)) {
+          change = originExtent / (currentdrag-origin);
+          newdomain = [axis1 * change, axis2 * change];
+        }
+      } else if ((axis1 < 0) && (axis2 < 0)) {                // example: (-60, -50, [-80, -40]) => [-120, -40]
+        origin = axis2;
+        originExtent = dragstart-origin;
+        maxDragIn = originExtent * 0.2 + origin;
+        if (currentdrag < maxDragIn) {
+          change = originExtent / (currentdrag-origin);
+          extent = axis1 - origin;
+          newdomain = [axis2 + (extent * change), axis2];
+        }
+      }
+    }
+    return newdomain;
+  }
+};
 grapher.indexedData = function(array, initial_index) {
   var i = 0,
       start_index = initial_index || 0,
@@ -28,32 +68,53 @@ grapher.indexedData = function(array, initial_index) {
   return points;
 };
 grapher.graph = function(elem, options, message) {
-  var cx = 600, cy = 300;
+  var cx = 600, cy = 300, 
+      node;
 
   if (arguments.length) {
     elem = d3.select(elem);
+    node = elem.node();
     cx = elem.property("clientWidth");
     cy = elem.property("clientHeight");
   }
 
-  var vis, plot, title, xlabel, ylabel, xtic, ytic, notification,
+  var svg, vis, plot, viewbox,
+      title, xlabel, ylabel, xtic, ytic,
+      notification,
       padding, size,
       xScale, yScale, xValue, yValue, line,
       circleCursorStyle,
+      displayProperties,
+      emsize, strokeWidth,
+      scaleFactor,
+      sizeType = {
+        category: "medium",
+        value: 3,
+        icon: 120,
+        tiny: 240,
+        small: 480,
+        medium: 960,
+        large: 1920
+      },
       downx = Math.NaN,
       downy = Math.NaN,
       dragged = null,
       selected = null,
+      titles = [],
       default_options = {
-        "xmax": 60, "xmin": 0,
-        "ymax": 40, "ymin": 0, 
-        "title": "Simple Graph1",
-        "xlabel": "X Axis",
-        "ylabel": "Y Axis",
-        "circleRadius": 10.0,
-        "dataChange": true,
-        "points": false,
-        "notification": false
+        "xmax":            60,
+        "xmin":             0,
+        "ymax":            40,
+        "ymin":             0, 
+        "title":          "Simple Graph1",
+        "xlabel":         "X Axis",
+        "ylabel":         "Y Axis",
+        "circleRadius":    10.0,
+        "strokeWidth":      2.0,
+        "dataChange":      true,
+        "addData":         true,
+        "points":          false,
+        "notification":    false
       };
 
   initialize(options);
@@ -71,9 +132,55 @@ grapher.graph = function(elem, options, message) {
     return options;
   }
 
-  function initialize(newOptions) {
+  function calculateSizeType() {
+    if(cx <= sizeType.icon) {
+      sizeType.category = 'icon';
+      sizeType.value = 0;
+    } else if (cx <= sizeType.tiny) {
+      sizeType.category = 'tiny';
+      sizeType.value = 1;
+    } else if (cx <= sizeType.small) {
+      sizeType.category = 'small';
+      sizeType.value = 2;
+    } else if (cx <= sizeType.medium) {
+      sizeType.category = 'medium';
+      sizeType.value = 3;
+    } else if (cx <= sizeType.large) {
+      sizeType.category = 'large';
+      sizeType.value = 4;
+    } else {
+      sizeType.category = 'extralarge';
+      sizeType.value = 5;
+    }
+  }
+
+  function scale(w, h) {
+    if (!arguments.length) {
+      cx = elem.property("clientWidth");
+      cy = elem.property("clientHeight");
+    } else {
+      cx = w;
+      cy = h;
+      node.style.width =  cx +"px";
+      node.style.height = cy +"px";
+    }
+    calculateSizeType();
+    displayProperties = layout.getDisplayProperties();
+    emsize = displayProperties.emsize;
+  }
+
+  function initialize(newOptions, mesg) {
     if (newOptions || !options) {
-      options = setupOptions(options);
+      options = setupOptions(newOptions);
+    }
+
+    if (svg !== undefined) {
+      svg.remove();
+      svg = undefined;
+    }
+
+    if (mesg) {
+      message = mesg;
     }
 
     if (options.dataChange) {
@@ -82,16 +189,74 @@ grapher.graph = function(elem, options, message) {
       circleCursorStyle = "crosshair";
     }
 
+    scale();
+
     options.xrange = options.xmax - options.xmin;
     options.yrange = options.ymax - options.ymin;
 
+    options.datacount = 2;
 
-    padding = {
-     "top":    options.title  ? 40 : 20,
-     "right":                 30,
-     "bottom": options.xlabel ? 60 : 10,
-     "left":   options.ylabel ? 70 : 45
-    };
+    strokeWidth = options.strokeWidth;
+
+    switch(sizeType.value) {
+      case 0:
+      padding = {
+       "top":    4,
+       "right":  4,
+       "bottom": 4,
+       "left":   4
+      };
+      break;
+
+      case 1:
+      padding = {
+       "top":    8,
+       "right":  8,
+       "bottom": 8,
+       "left":   8
+      };
+      break;
+
+      case 2:
+      padding = {
+       "top":    options.title  ? 25 : 15,
+       "right":  15,
+       "bottom": 20,
+       "left":   20
+      };
+      break;
+
+      case 3:
+      padding = {
+       "top":    options.title  ? 30 : 20,
+       "right":                   30,
+       "bottom": options.xlabel ? 60 : 10,
+       "left":   options.ylabel ? 70 : 45
+      };
+      break;
+
+      default:
+      padding = {
+       "top":    options.title  ? 40 : 20,
+       "right":                   30,
+       "bottom": options.xlabel ? 60 : 10,
+       "left":   options.ylabel ? 70 : 45
+      };
+      break;
+    }
+
+    if (Object.prototype.toString.call(options.title) === "[object Array]") {
+      titles = options.title;
+    } else {
+      titles = [options.title];
+    }
+    titles.reverse();
+
+    if (sizeType.value > 2 ) {
+      padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * emsize * 22;
+    } else {
+      titles = [titles[0]];
+    }
 
     size = {
       "width":  cx - padding.left - padding.right,
@@ -118,6 +283,8 @@ grapher.graph = function(elem, options, message) {
     if (!selection) { selection = elem; }
     selection.each(function() {
 
+      elem = d3.select(this);
+
       if (this.clientWidth && this.clientHeight) {
         cx = this.clientWidth;
         cy = this.clientHeight;
@@ -129,75 +296,127 @@ grapher.graph = function(elem, options, message) {
       updateXScale();
       updateYScale();
 
-      vis = d3.select(this).append("svg")
+      if (svg === undefined) {
+
+        svg = elem.append("svg")
+            .attr("width",  cx)
+            .attr("height", cy);
+
+        vis = svg.append("g")
+              .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
+        plot = vis.append("rect")
+            .attr("class", "plot")
+            .attr("width", size.width)
+            .attr("height", size.height)
+            .style("fill", "#EEEEEE")
+            .attr("pointer-events", "all")
+            .on("mousedown.drag", plot_drag)
+            .on("touchstart.drag", plot_drag)
+            .call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
+
+        viewbox = vis.append("svg")
+            .attr("class", "viewbox")
+            .attr("top", 0)
+            .attr("left", 0)
+            .attr("width", size.width)
+            .attr("height", size.height)
+            .attr("viewBox", "0 0 "+size.width+" "+size.height)
+            .attr("class", "line");
+
+        viewbox.append("path")
+            .attr("class", "line")
+            .style("stroke-width", strokeWidth)
+            .attr("d", line(points));
+
+        // add Chart Title
+        if (options.title && sizeType.value > 1) {
+          title = vis.selectAll("text")
+            .data(titles, function(d) { return d; });
+          title.enter().append("text")
+              .attr("class", "title")
+              .style("font-size", sizeType.value/2.4 * 100 + "%")
+              .text(function(d) { return d; })
+              .attr("x", size.width/2)
+              .attr("dy", function(d, i) { return -0.5 + -1 * sizeType.value/2.8 * i * emsize + "em"; })
+              .style("text-anchor","middle");
+        }
+
+        // Add the x-axis label
+        if (options.xlabel && sizeType.value > 2) {
+          xlabel = vis.append("text")
+              .attr("class", "axis")
+              .style("font-size", sizeType.value/2.6 * 100 + "%")
+              .text(options.xlabel)
+              .attr("x", size.width/2)
+              .attr("y", size.height)
+              .attr("dy","2.4em")
+              .style("text-anchor","middle");
+        }
+
+        // add y-axis label
+        if (options.ylabel && sizeType.value > 2) {
+          ylabel = vis.append("g").append("text")
+              .attr("class", "axis")
+              .style("font-size", sizeType.value/2.6 * 100 + "%")
+              .text(options.ylabel)
+              .style("text-anchor","middle")
+              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+        }
+
+        d3.select(node)
+            .on("mousemove.drag", mousemove)
+            .on("touchmove.drag", mousemove)
+            .on("mouseup.drag",   mouseup)
+            .on("touchend.drag",  mouseup);
+
+        notification = vis.append("text")
+            .attr("class", "graph-notification")
+            .text(message)
+            .attr("x", size.width/2)
+            .attr("y", size.height/2)
+            .style("text-anchor","middle");
+
+      } else {
+
+        vis
           .attr("width",  cx)
-          .attr("height", cy)
-          .append("g")
-            .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+          .attr("height", cy);
 
-      plot = vis.append("rect")
+        plot
           .attr("width", size.width)
-          .attr("height", size.height)
-          .style("fill", "#EEEEEE")
-          .attr("pointer-events", "all")
-          .on("mousedown.drag", plot_drag)
-          .on("touchstart.drag", plot_drag)
-          .call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
+          .attr("height", size.height);
 
-      vis.append("svg")
-          .attr("top", 0)
-          .attr("left", 0)
-          .attr("width", size.width)
-          .attr("height", size.height)
-          .attr("viewBox", "0 0 "+size.width+" "+size.height)
-          .attr("class", "line")
-          .append("path")
-              .attr("class", "line")
-              .attr("d", line(points));
+        viewbox
+            .attr("top", 0)
+            .attr("left", 0)
+            .attr("width", size.width)
+            .attr("height", size.height)
+            .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-      // add Chart Title
-      if (options.title) {
-        title = vis.append("text")
-            .attr("class", "title")
-            .text(options.title)
-            .attr("x", size.width/2)
-            .attr("dy","-0.8em")
-            .style("text-anchor","middle");
-      }
+        if (options.title && sizeType.value > 1) {
+            title.each(function(d, i) {
+              d3.select(this).attr("x", size.width/2);
+              d3.select(this).attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; });
+            });
+        }
 
-      // Add the x-axis label
-      if (options.xlabel) {
-        xlabel = vis.append("text")
-            .attr("class", "axis")
-            .text(options.xlabel)
-            .attr("x", size.width/2)
-            .attr("y", size.height)
-            .attr("dy","2.4em")
-            .style("text-anchor","middle");
-      }
+        if (options.xlabel && sizeType.value > 1) {
+          xlabel
+              .attr("x", size.width/2)
+              .attr("y", size.height);
+        }
 
-      // add y-axis label
-      if (options.ylabel) {
-        ylabel = vis.append("g").append("text")
-            .attr("class", "axis")
-            .text(options.ylabel)
-            .style("text-anchor","middle")
-            .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
-      }
+        if (options.ylabel && sizeType.value > 1) {
+          ylabel
+              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+        }
 
-      d3.select(this)
-          .on("mousemove.drag", mousemove)
-          .on("touchmove.drag", mousemove)
-          .on("mouseup.drag",   mouseup)
-          .on("touchend.drag",  mouseup);
-
-      redraw();
-      notification = vis.append("text")
-          .attr("class", "graph-notification")
-          .text('')
+        notification
           .attr("x", size.width/2)
-          .attr("y", size.height/2)
-          .style("text-anchor","middle");
+          .attr("y", size.height/2);
+      }
+      redraw();
     });
 
     function notify(mesg) {
@@ -282,16 +501,15 @@ grapher.graph = function(elem, options, message) {
         return d ? "#ccc" : "#666";
       },
 
-      fx = xScale.tickFormat(options.datacount),
-      fy = xScale.tickFormat(options.datacount);
+      fx = xScale.tickFormat(d3.format(".3r")),
+      fy = xScale.tickFormat(d3.format(".3r"));
 
       // Regenerate x-ticks…
       var gx = vis.selectAll("g.x")
           .data(xScale.ticks(10), String)
           .attr("transform", tx);
 
-      gx.select("text")
-          .text(fx);
+      gx.select("text").text(fx);
 
       var gxe = gx.enter().insert("g", "a")
           .attr("class", "x")
@@ -302,17 +520,20 @@ grapher.graph = function(elem, options, message) {
           .attr("y1", 0)
           .attr("y2", size.height);
 
-      gxe.append("text")
-          .attr("class", "axis")
-          .attr("y", size.height)
-          .attr("dy", "1em")
-          .attr("text-anchor", "middle")
-          .text(fx)
-          .style("cursor", "ew-resize")
-          .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-          .on("mousedown.drag",  xaxis_drag)
-          .on("touchstart.drag", xaxis_drag);
+      if (sizeType.value > 1) {
+        gxe.append("text")
+            .attr("class", "axis")
+            .style("font-size", sizeType.value/2.7 * 100 + "%")
+            .attr("y", size.height)
+            .attr("dy", "1em")
+            .attr("text-anchor", "middle")
+            .text(fx)
+            .style("cursor", "ew-resize")
+            .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+            .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+            .on("mousedown.drag",  xaxis_drag)
+            .on("touchstart.drag", xaxis_drag);
+      }
 
       gx.exit().remove();
 
@@ -334,17 +555,20 @@ grapher.graph = function(elem, options, message) {
           .attr("x1", 0)
           .attr("x2", size.width);
 
-      gye.append("text")
-          .attr("class", "axis")
-          .attr("x", -3)
-          .attr("dy", ".35em")
-          .attr("text-anchor", "end")
-          .text(fy)
-          .style("cursor", "ns-resize")
-          .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-          .on("mousedown.drag",  yaxis_drag)
-          .on("touchstart.drag", yaxis_drag);
+      if (sizeType.value > 1) {
+        gye.append("text")
+            .attr("class", "axis")
+            .style("font-size", sizeType.value/2.7 * 100 + "%")
+            .attr("x", -3)
+            .attr("dy", ".35em")
+            .attr("text-anchor", "end")
+            .text(fy)
+            .style("cursor", "ns-resize")
+            .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+            .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+            .on("mousedown.drag",  yaxis_drag)
+            .on("touchstart.drag", yaxis_drag);
+      }
 
       gy.exit().remove();
       plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
@@ -357,21 +581,26 @@ grapher.graph = function(elem, options, message) {
       var circle = vis.select("svg").selectAll("circle")
           .data(points, function(d) { return d; });
 
-      if (options.circleRadius){
-        circle.enter().append("circle")
-            .attr("class", function(d) { return d === selected ? "selected" : null; })
-            .attr("cx",    function(d) { return xScale(d[0]); })
-            .attr("cy",    function(d) { return yScale(d[1]); })
-            .attr("r", options.circleRadius)
-            .style("cursor", circleCursorStyle)
-            .on("mousedown.drag",  datapoint_drag)
-            .on("touchstart.drag", datapoint_drag);
-      }
+      if (options.circleRadius && sizeType.value > 1) {
+        if (!(options.circleRadius <= 4 && sizeType.value < 3)) {
+          circle.enter().append("circle")
+              .attr("class", function(d) { return d === selected ? "selected" : null; })
+              .attr("cx",    function(d) { return xScale(d[0]); })
+              .attr("cy",    function(d) { return yScale(d[1]); })
+              .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
+              .style("stroke-width", options.circleRadius/6 * (sizeType.value - 1.5))
+              .style("cursor", circleCursorStyle)
+              .on("mousedown.drag",  datapoint_drag)
+              .on("touchstart.drag", datapoint_drag);
 
-      circle
-          .attr("class", function(d) { return d === selected ? "selected" : null; })
-          .attr("cx",    function(d) { return xScale(d[0]); })
-          .attr("cy",    function(d) { return yScale(d[1]); });
+          circle
+              .attr("class", function(d) { return d === selected ? "selected" : null; })
+              .attr("cx",    function(d) { return xScale(d[0]); })
+              .attr("cy",    function(d) { return yScale(d[1]); })
+              .attr("r", options.circleRadius * (1 + sizeType.value) / 4)
+              .style("stroke-width", options.circleRadius/6 * (sizeType.value - 1.5));
+        }
+      }
 
       circle.exit().remove();
 
@@ -382,10 +611,11 @@ grapher.graph = function(elem, options, message) {
     }
 
     function plot_drag() {
+      d3.event.preventDefault();
       grapher.registerKeyboardHandler(keydown);
       d3.select('body').style("cursor", "move");
       if (d3.event.altKey) {
-        if (options.dataChange) {
+        if (d3.event.shiftKey && options.addData) {
           var p = d3.svg.mouse(vis.node());
           var newpoint = [];
           newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
@@ -398,20 +628,27 @@ grapher.graph = function(elem, options, message) {
           });
           selected = newpoint;
           update();
+        } else {
+          var p = d3.svg.mouse(vis[0][0]);
+          downx = xScale.invert(p[0]);
+          downy = yScale.invert(p[1]);
+          dragged = false;
+          d3.event.stopPropagation();
         }
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
+        // d3.event.stopPropagation();
       }
     }
 
     function xaxis_drag(d) {
       document.onselectstart = function() { return false; };
+      d3.event.preventDefault();
       var p = d3.svg.mouse(vis[0][0]);
       downx = xScale.invert(p[0]);
     }
 
     function yaxis_drag(d) {
       document.onselectstart = function() { return false; };
+      d3.event.preventDefault();
       var p = d3.svg.mouse(vis[0][0]);
       downy = yScale.invert(p[1]);
     }
@@ -428,6 +665,7 @@ grapher.graph = function(elem, options, message) {
           changex, changey, new_domain,
           t = d3.event.changedTouches;
 
+      d3.event.preventDefault();
       if (dragged && options.dataChange) {
         dragged[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
         update();
@@ -435,33 +673,15 @@ grapher.graph = function(elem, options, message) {
 
       if (!isNaN(downx)) {
         d3.select('body').style("cursor", "ew-resize");
-        var rupx = xScale.invert(p[0]),
-            xaxis1 = xScale.domain()[0],
-            xaxis2 = xScale.domain()[1],
-            xextent = xaxis2 - xaxis1;
-        if (rupx !== 0) {
-          changex = downx / rupx;
-          new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-          xScale.domain(new_domain);
-          redraw();
-        }
-        d3.event.preventDefault();
+        xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+        redraw();
         d3.event.stopPropagation();
       }
 
       if (!isNaN(downy)) {
         d3.select('body').style("cursor", "ns-resize");
-        var rupy = yScale.invert(p[1]),
-            yaxis1 = yScale.domain()[1],
-            yaxis2 = yScale.domain()[0],
-            yextent = yaxis2 - yaxis1;
-        if (rupy !== 0) {
-          changey = downy / rupy;
-          new_domain = [yaxis2, yaxis2 - yextent * changey];
-          yScale.domain(new_domain);
-          redraw();
-        }
-        d3.event.preventDefault();
+        yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+        redraw();
         d3.event.stopPropagation();
       }
     }
@@ -469,22 +689,15 @@ grapher.graph = function(elem, options, message) {
     function mouseup() {
       document.onselectstart = function() { return true; };
       d3.select('body').style("cursor", "auto");
-      d3.select('body').style("cursor", "auto");
       if (!isNaN(downx)) {
-        redraw();
         downx = Math.NaN;
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
+        redraw();
       }
       if (!isNaN(downy)) {
-        redraw();
         downy = Math.NaN;
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
+        redraw();
       }
-      if (dragged) {
-        dragged = null;
-      }
+      dragged = null;
     }
 
     // make these private variables and functions available
@@ -495,6 +708,7 @@ grapher.graph = function(elem, options, message) {
     graph.initialize = initialize;
     graph.updateXScale = updateXScale;
     graph.updateYScale = updateYScale;
+    graph.scale = scale;
 
   }
 
@@ -534,12 +748,6 @@ grapher.graph = function(elem, options, message) {
   function gRedraw() {
     redraw();
   }
-
-  graph.options = function(_) {
-    if (!arguments.length) return options;
-    // options = _;
-    return graph;
-  };
 
   graph.margin = function(_) {
     if (!arguments.length) return margin;
@@ -690,21 +898,25 @@ grapher.graph = function(elem, options, message) {
     return graph;
   };
 
-  graph.reset = function(options) {
+  graph.reset = function(options, message) {
     if (arguments.length) {
-      graph.initialize(options);
+      graph.initialize(options, message);
     } else {
       graph.initialize();
     }
-    graph.redraw();
+    graph();
+    return graph;
+  };
+
+  graph.resize = function(w, h) {
+    graph.scale(w, h);
+    graph.initialize();
+    graph();
     return graph;
   };
 
   if (elem) {
     elem.call(graph);
-    if (message) {
-      graph.notify(message);
-    }
   }
 
   return graph;
@@ -725,8 +937,11 @@ grapher.realTimeGraph = function(e, options) {
             .x(function(d, i) { return xScale(points[i].x ); })
             .y(function(d, i) { return yScale(points[i].y); }),
       dragged, selected,
+      emsize = layout.getDisplayProperties().emsize,
+      titles = [],
       line_path, line_seglist,
-      vis, plot, viewbox, points,
+      vis, plot, viewbox,
+      points, pointArray,
       markedPoint, marker,
       sample,
       default_options = {
@@ -741,6 +956,7 @@ grapher.realTimeGraph = function(e, options) {
         selectable_points: true,
         circleRadius: false,
         dataChange: false,
+        points: false,
         sample: 1
       };
 
@@ -767,7 +983,18 @@ grapher.realTimeGraph = function(e, options) {
   options.yrange = options.ymax - options.ymin;
 
   scale(cx, cy);
-  points = indexedData(options.dataset, 0);
+
+  pointArray = [];
+
+  if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
+    for (var i = 0; i < options.dataset.length; i++) {
+      pointArray.push(indexedData(options.dataset[i], 0, sample));
+    }
+    points = pointArray[0];
+  } else {
+    points = indexedData(options.dataset, 0);
+    pointArray = [points];
+  }
 
   function indexedData(dataset, initial_index, sample) {
     var i = 0,
@@ -796,11 +1023,21 @@ grapher.realTimeGraph = function(e, options) {
     node.style.height = cy +"px";
 
     padding = {
-       "top":    options.title  ? 40  : 20,
-       "right":                   35,
-       "bottom": options.xlabel ? 50  : 30,
-       "left":   options.ylabel ? 60  : 35
+     "top":    options.title  ? 40 : 20,
+     "right":                   30,
+     "bottom": options.xlabel ? 60 : 10,
+     "left":   options.ylabel ? 70 : 45
     };
+
+    emsize = layout.getDisplayProperties().emsize;
+
+    if(Object.prototype.toString.call(options.title) === "[object Array]") {
+      titles = options.title;
+    } else {
+      titles = [options.title];
+    }
+
+    padding.top += (titles.length-1) * emsize * 20;
 
     width =  cx - padding.left - padding.right;
     height = cy - padding.top  - padding.bottom;
@@ -842,11 +1079,12 @@ grapher.realTimeGraph = function(e, options) {
         .attr("width", size.width)
         .attr("height", size.height)
         .style("fill", "#EEEEEE")
+        // .attr("fill-opacity", 0.0)
         .attr("pointer-events", "all")
         .on("mousedown", plot_drag)
         .on("touchstart", plot_drag);
 
-      plot.call(d3.behavior.zoom().x(xScale).y(yScale).scaleExtent([1, 8]).on("zoom", redraw));
+      plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
 
       viewbox = vis.append("svg")
         .attr("class", "viewbox")
@@ -865,11 +1103,13 @@ grapher.realTimeGraph = function(e, options) {
 
       // add Chart Title
       if (options.title) {
-        vis.append("text")
+        title = vis.selectAll("text")
+          .data(titles, function(d) { return d; });
+        title.enter().append("text")
             .attr("class", "title")
-            .text(options.title)
+            .text(function(d) { return d; })
             .attr("x", size.width/2)
-            .attr("dy","-1em")
+            .attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; })
             .style("text-anchor","middle");
       }
 
@@ -894,12 +1134,16 @@ grapher.realTimeGraph = function(e, options) {
                 .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
       }
 
+      d3.select(node)
+          .on("mousemove.drag", mousemove)
+          .on("touchmove.drag", mousemove)
+          .on("mouseup.drag",   mouseup)
+          .on("touchend.drag",  mouseup);
+
       // variables for speeding up dynamic plotting
       // line_path = vis.select("path")[0][0];
       // line_seglist = line_path.pathSegList;
       initialize_canvas();
-
-      redraw();
 
     } else {
 
@@ -940,14 +1184,9 @@ grapher.realTimeGraph = function(e, options) {
       vis.selectAll("g.y").remove();
 
       resize_canvas();
-      redraw();
     }
 
-    d3.select(this)
-        .on("mousemove.drag", mousemove)
-        .on("touchmove.drag", mousemove)
-        .on("mouseup.drag",   mouseup)
-        .on("touchend.drag",  mouseup);
+    redraw();
 
     // ------------------------------------------------------------
     //
@@ -956,10 +1195,6 @@ grapher.realTimeGraph = function(e, options) {
     // ------------------------------------------------------------
 
     function redraw() {
-      if (d3.event && d3.event.transform && isNaN(downx) && isNaN(downy)) {
-          d3.event.transform(x, y);
-      }
-
       var fx = xScale.tickFormat(10),
           fy = yScale.tickFormat(8);
 
@@ -1023,7 +1258,7 @@ grapher.realTimeGraph = function(e, options) {
           .on("touchstart.drag", yaxis_drag);
 
       gy.exit().remove();
-      plot.call(d3.behavior.zoom().x(xScale).y(yScale).scaleExtent([1, 8]).on("zoom", redraw));
+      plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
       update();
     }
 
@@ -1033,20 +1268,12 @@ grapher.realTimeGraph = function(e, options) {
     //
     // ------------------------------------------------------------
 
-    function update() {
+    function update(currentSample) {
       var i;
 
       var gplot = node.children[0].getElementsByTagName("rect")[0];
 
-      if (gcanvas.style.zIndex === "-100") {
-        vis.select("path.line").attr("d", line(points));
-        // line_seglist.clear();
-        // for(i=0; i < points.length; i++) {
-        //   line_seglist.appendItem(line_path.createSVGPathSegLinetoAbs(points[i].x, points[i].y));
-        // }
-      }
-
-      update_canvas();
+      update_canvas(currentSample);
 
       if (graph.selectable_points) {
         var circle = vis.selectAll("circle")
@@ -1070,17 +1297,6 @@ grapher.realTimeGraph = function(e, options) {
         circle.exit().remove();
       }
 
-      // if (markedPoint) {
-      //   marker
-      //       .attr("stroke", "#F00")
-      //       .attr("x1", markedPoint.x)
-      //       .attr("y1", 0)
-      //       .attr("y2", size.height)
-      //       .attr("x2", markedPoint.x);
-      // } else {
-      //   marker.attr("d", []);
-      // }
-
       if (d3.event && d3.event.keyCode) {
         d3.event.preventDefault();
         d3.event.stopPropagation();
@@ -1088,17 +1304,27 @@ grapher.realTimeGraph = function(e, options) {
     }
 
     function plot_drag() {
+      d3.event.preventDefault();
       plot.style("cursor", "move");
+      if (d3.event.altKey) {
+        var p = d3.svg.mouse(vis[0][0]);
+        downx = xScale.invert(p[0]);
+        downy = yScale.invert(p[1]);
+        dragged = false;
+        d3.event.stopPropagation();
+      }
     }
 
     function xaxis_drag(d) {
       document.onselectstart = function() { return false; };
+      d3.event.preventDefault();
       var p = d3.svg.mouse(vis[0][0]);
       downx = xScale.invert(p[0]);
     }
 
     function yaxis_drag(d) {
       document.onselectstart = function() { return false; };
+      d3.event.preventDefault();
       var p = d3.svg.mouse(vis[0][0]);
       downy = yScale.invert(p[1]);
     }
@@ -1117,36 +1343,17 @@ grapher.realTimeGraph = function(e, options) {
           t = d3.event.changedTouches;
 
       document.onselectstart = function() { return true; };
+      d3.event.preventDefault();
       if (!isNaN(downx)) {
-        var rupx = xScale.invert(p[0]),
-          xaxis1 = xScale.domain()[0],
-          xaxis2 = xScale.domain()[1],
-          xextent = xaxis2 - xaxis1;
-
         d3.select('body').style("cursor", "ew-resize");
-        if (rupx !== 0) {
-          changex = downx / rupx;
-          new_domain = [xaxis1, xaxis1 + (xextent * changex)];
-          xScale.domain(new_domain);
-          redraw();
-        }
-        d3.event.preventDefault();
+        xScale.domain(grapher.axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
+        redraw();
         d3.event.stopPropagation();
       }
       if (!isNaN(downy)) {
-        var rupy = yScale.invert(p[1]),
-            yaxis1 = yScale.domain()[1],
-            yaxis2 = yScale.domain()[0],
-            yextent = yaxis2 - yaxis1;
-
         d3.select('body').style("cursor", "ns-resize");
-        if (rupy !== 0) {
-          changey = downy / rupy;
-          new_domain = [yaxis2, yaxis2 - yextent * changey];
-          yScale.domain(new_domain);
-          redraw();
-        }
-        d3.event.preventDefault();
+        yScale.domain(grapher.axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
+        redraw();
         d3.event.stopPropagation();
       }
     }
@@ -1157,37 +1364,50 @@ grapher.realTimeGraph = function(e, options) {
       if (!isNaN(downx)) {
         redraw();
         downx = Math.NaN;
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
       }
       if (!isNaN(downy)) {
         redraw();
         downy = Math.NaN;
-        d3.event.preventDefault();
-        d3.event.stopPropagation();
       }
-      if (dragged) {
-        dragged = null;
-      }
+      dragged = null;
     }
 
     function showMarker(index) {
       markedPoint = { x: points[index].x, y: points[index].y };
     }
 
-    function add_point(p) {
+    function updateOrRescale() {
+      var i,
+          domain = xScale.domain(),
+          xextent = domain[1] - domain[0],
+          maxExtent = (points.length) * sample,
+          shift = xextent * 0.9;
+
+      if (maxExtent > domain[1]) {
+        domain[0] += shift;
+        domain[1] += shift;
+        xScale.domain(domain);
+        redraw();
+      } else {
+        update();
+      }
+    }
+
+    function _add_point(p) {
       if (points.length === 0) { return; }
       markedPoint = false;
       var index = points.length,
           lengthX = index * sample,
           point = { x: lengthX, y: p },
           newx, newy;
-
       points.push(point);
-      update();
-      // newx = xScale.call(self, lengthX, lengthX);
-      // newy = yScale.call(self, p, lengthX);
-      // line_seglist.appendItem(line_path.createSVGPathSegLinetoAbs(newx, newy));
+      updateOrRescale();
+    }
+
+    function add_point(p) {
+      if (points.length === 0) { return; }
+      _add_point(p);
+      updateOrRescale();
     }
 
     function add_canvas_point(p) {
@@ -1196,9 +1416,9 @@ grapher.realTimeGraph = function(e, options) {
       var index = points.length,
           lengthX = index * sample,
           previousX = lengthX - sample,
+          point = { x: lengthX, y: p },
           oldx = xScale.call(self, previousX, previousX),
           oldy = yScale.call(self, points[index-1].y, index-1),
-          point = { x: lengthX, y: p },
           newx, newy;
 
       points.push(point);
@@ -1210,9 +1430,51 @@ grapher.realTimeGraph = function(e, options) {
       gctx.stroke();
     }
 
+    function add_points(pnts) {
+      for (var i = 0; i < pointArray.length; i++) {
+        points = pointArray[i];
+        _add_point(pnts[i]);
+      }
+      updateOrRescale();
+    }
+
+
+    function add_canvas_points(pnts) {
+      for (var i = 0; i < pointArray.length; i++) {
+        points = pointArray[i];
+        setPointStrokeColor(i);
+        add_canvas_point(pnts[i]);
+      }
+    }
+
+    function setPointStrokeColor(i, afterSamplePoint) {
+      var opacity = afterSamplePoint ? 0.4 : 1.0;
+      switch(i) {
+        case 0:
+          gctx.strokeStyle = "rgba(160,00,0," + opacity + ")";
+          break;
+        case 1:
+          gctx.strokeStyle = "rgba(44,160,0," + opacity + ")";
+          break;
+        case 2:
+          gctx.strokeStyle = "rgba(44,0,160," + opacity + ")";
+          break;
+      }
+    }
+
     function new_data(d) {
-      points = indexedData(d, 0, sample);
-      update();
+      var i;
+      pointArray = [];
+      if (Object.prototype.toString.call(d) === "[object Array]") {
+        for (i = 0; i < d.length; i++) {
+          points = indexedData(d[i], 0, sample);
+          pointArray.push(points);
+        }
+      } else {
+        points = indexedData(options.dataset, 0, sample);
+        pointArray = [points];
+      }
+      updateOrRescale();
     }
 
     function change_xaxis(xmax) {
@@ -1254,22 +1516,45 @@ grapher.realTimeGraph = function(e, options) {
     }
 
     // update real-time canvas line graph
-    function update_canvas() {
+    function update_canvas(currentSample) {
+      var i, index, pc, py, samplePoint, pointStop;
+      if (typeof currentSample === 'undefined') {
+        samplePoint = pointArray[0].length;
+      } else {
+        samplePoint = currentSample;
+      }
       if (points.length === 0) { return; }
-      var px = xScale.call(self, 0, 0),
-          py = yScale.call(self, points[0].y, 0),
-          index, lengthX = 0;
       clear_canvas();
       gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-      gctx.beginPath();
-      gctx.moveTo(px, py);
-      for (index=0; index < points.length-1; index++) {
-        lengthX += sample;
-        px = xScale.call(self, lengthX, lengthX);
-        py = yScale.call(self, points[index].y, lengthX);
-        gctx.lineTo(px, py);
+      for (i = 0; i < pointArray.length; i++) {
+        points = pointArray[i];
+        px = xScale.call(self, 0, 0);
+        py = yScale.call(self, points[0].y, 0);
+        index = 0;
+        lengthX = 0;
+        setPointStrokeColor(i);
+        gctx.beginPath();
+        gctx.moveTo(px, py);
+        pointStop = samplePoint - 1;
+        for (index=0; index < pointStop; index++) {
+          lengthX += sample;
+          px = xScale.call(self, lengthX, lengthX);
+          py = yScale.call(self, points[index].y, lengthX);
+          gctx.lineTo(px, py);
+        }
+        gctx.stroke();
+        pointStop = points.length-1;
+        if (index < pointStop) {
+          setPointStrokeColor(i, true);
+          for (;index < pointStop; index++) {
+            lengthX += sample;
+            px = xScale.call(self, lengthX, lengthX);
+            py = yScale.call(self, points[index].y, lengthX);
+            gctx.lineTo(px, py);
+          }
+          gctx.stroke();
+        }
       }
-      gctx.stroke();
     }
 
     function initialize_canvas() {
@@ -1301,6 +1586,8 @@ grapher.realTimeGraph = function(e, options) {
       canvas.style.left = cplot.left + 'px';
       canvas.style.top = cplot.top + 'px';
       canvas.style.border = 'solid 1px red';
+      canvas.style.pointerEvents = "none";
+      canvas.className += "canvas-overlay";
       gctx = gcanvas.getContext( '2d' );
       gctx.globalCompositeOperation = "source-over";
       gctx.lineWidth = 1;
@@ -1319,7 +1606,9 @@ grapher.realTimeGraph = function(e, options) {
     graph.number_of_points = number_of_points;
     graph.new_data = new_data;
     graph.add_point = add_point;
+    graph.add_points = add_points;
     graph.add_canvas_point = add_canvas_point;
+    graph.add_canvas_points = add_canvas_points;
     graph.initialize_canvas = initialize_canvas;
     graph.show_canvas = show_canvas;
     graph.hide_canvas = hide_canvas;
@@ -1334,6 +1623,36 @@ grapher.realTimeGraph = function(e, options) {
   graph.resize = function(width, height) {
     graph.scale(width, height);
     graph();
+  };
+
+  graph.add_data = function(newdata) {
+    if (!arguments.length) return points;
+    var domain = xScale.domain(),
+        xextent = domain[1] - domain[0],
+        shift = xextent * 0.8,
+        i;
+    if (newdata instanceof Array && newdata.length > 0) {
+      if (newdata[0] instanceof Array) {
+        for(i = 0; i < newdata.length; i++) {
+          points.push(newdata[i]);
+        }
+      } else {
+        if (newdata.length === 2) {
+          points.push(newdata);
+        } else {
+          throw new Error("invalid argument to graph.add_data() " + newdata + " length should === 2.");
+        }
+      }
+    }
+    if (points[points.length-1][0] > domain[1]) {
+      domain[0] += shift;
+      domain[1] += shift;
+      xScale.domain(domain);
+      graph.redraw();
+    } else {
+      graph.update();
+    }
+    return graph;
   };
 
 

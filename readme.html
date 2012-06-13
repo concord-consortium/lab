@@ -58,6 +58,7 @@
           </li>
           <li><a href="#java-builddeploy-integration">Java build/deploy integration</a>            <ul>
               <li><a href="#java-projects-build-strategies">Java Projects Build Strategies</a></li>
+              <li><a href="#jnlpapp-rack-application-service">JnlpApp Rack Application Service</a></li>
             </ul>
           </li>
         </ul>
@@ -364,10 +365,10 @@ ask you if this <em>new</em> <code>.rvmrc</code> file should be trusted.</p>
 will be installed in the RVM gemset named <code>ruby-1.9.3-p194@lab</code>.</p>
 
 <pre><code>cd lab
-make clean; make
+make everything
 </code></pre>
 
-<p>When <code>make</code> is run on a freshly cloned repository it performs the following tasks:</p>
+<p>When <code>make everything</code> is run on a freshly cloned repository it performs the following tasks:</p>
 
 <ol>
   <li>
@@ -396,7 +397,10 @@ are managed by <a href="http://npmjs.org/">npm</a>:</p>
 the specific versions of the RubyGems installed for development.</p>
   </li>
   <li>
-    <p>Generates the <code>dist/</code> directory:</p>
+    <p>Generates the <code>server/public</code> directory:</p>
+  </li>
+  <li>
+    <p>Generates the Java resources in the <code>server/public/jnlp</code> directory:</p>
   </li>
 </ol>
 
@@ -606,6 +610,12 @@ additional build information in the <code>:build</code> option.</p>
 
 <p>The deployed resources have a timestamp in the deployed artifact so unless you specifically request an earlier version you will always get the latest deployed version.</p>
 
+<h5 id="jnlpapp-rack-application-service">JnlpApp Rack Application Service</h5>
+
+<p>The Rails server has a Rack application <code>JnlpApp</code> mounted at the route <code>/jnlp</code> for servicing requests for Java jar resources.</p>
+
+<p>The <code>JnlpApp</code> Rack application uses the <code>Rack::Jnlp</code> middleware defined here <code>server/lib/rack/jnlp.rb</code>.</p>
+
 <p>Normally versions for jars can only be specified by using a jnlp form. A jnlp form of specification can be used for webstart and also for applets.</p>
 
 <p>The older form of applet invocation that uses the &lt;applet&gt; html element normally can’t specify version numbers for jar dependencies, however the Jnlp::Rack application included with Lab does allow version specification.</p>
@@ -644,23 +654,64 @@ x-java-jnlp-version-id: 1.5.0-20101012.203835-2
 
 <p>When a version is specified in a jnlp form for an applet the jar WILL be cached properly.</p>
 
-<h3 id="deploying-to-a-remote-server">Deploying to a remote server</h3>
+<p><strong>Development Note</strong>: If the applets no longer operate properly it may be that the server is no longer operating properly
+and needs to be restarted. The Java console log for the applet may show requests made for jars that are not fulfilled.</p>
 
-<p>There are several Capistrano tasks for deploying to the remote server
-<a href="http://lab2.dev.concord.org">lab2.dev.concord.org</a>.</p>
+<p>If a request like the following produces an error:</p>
 
-<pre><code>$ cap update_server
+<pre><code>$ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor-native/sensor-native.jar
+HTTP/1.1 500 Internal Server Error
 </code></pre>
 
-<p>Updates the source checkout on the server from themaster branch of the repository,
-builds the application and deploys the generated products to the server directory.</p>
+<p>Restart the server and the request should now suceed:</p>
+
+<pre><code>$ curl --user-agent java -I http://localhost:3000/jnlp/org/concord/sensor-native/sensor-native.jar
+HTTP/1.1 200 OK
+Last-Modified: Thu, 07 Jun 2012 16:44:28 GMT
+Content-Type: application/java-archive
+Content-Length: 34632
+content-encoding: pack200-gzip
+</code></pre>
+
+<h3 id="deploying-to-a-remote-server">Deploying to a remote server</h3>
+
+<p>There are a number of Capistrano tasks for setting up and deploying to remote servers.</p>
+
+<p>Use a <code>&lt;deploy-target&gt;</code> to refer to the server:</p>
+
+<ul>
+  <li><strong>lab-dev</strong> <a href="http://lab.dev.concord.org">lab.dev.concord.org</a>.</li>
+  <li><strong>lab2-dev</strong> <a href="http://lab2.dev.concord.org">lab2.dev.concord.org</a>.</li>
+</ul>
+
+<p>The capistrano commands take the form:</p>
+
+<pre><code>cap &lt;deploy-target&gt; task
+</code></pre>
+
+<p>The basic command to update a server:</p>
+
+<pre><code>can &lt;deploy-taget&gt; deploy:update
+</code></pre>
+
+<p>Here are the list of deploy commands:</p>
+
+<pre><code>$ cap -T deploy:
+cap deploy:clean_and_update # clean and update server
+cap deploy:setup            # setup server
+cap deploy:update           # update server
+cap deploy:update_jnlps     # update server jnlps
+</code></pre>
+
+<p>When you have made changes in the repository like adding or updating a git submodule in
+<code>src/vendor</code> then you will need to run <code>cap deploy:clean_and_update</code>.</p>
 
 <h5 id="updating-the-java-jar-resources-on-a-remote-rerver">Updating the Java jar resources on a remote rerver</h5>
 
 <p>The Java resources require much less frequent updates since the main body of work
 is occuriring in the HTML5 development.</p>
 
-<pre><code>$ cap update_server_jnlps
+<pre><code>$ cap &lt;deploy-target&gt; deploy:update_jnlps
 </code></pre>
 
 <p>Erases the <code>server/public/jnlp/</code> directory on the remote server and
@@ -726,7 +777,7 @@ repository. Make sure the security group you choose has port 80 open.</p>
 <p>Modify the value of the <code>:host</code> key in the configuration file <code>config/config.yml</code> to reference
 the domain name of the new server.</p>
 
-<pre><code>$ cap setup_server
+<pre><code>$ cap &lt;deploy-target&gt; deploy:setup
 </code></pre>
 
 <p>Will do an initial deploy and build of all the project resources to the server.</p>

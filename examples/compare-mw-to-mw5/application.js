@@ -27,7 +27,7 @@
       optsLoaded = $.Deferred(),
       windowLoaded = $.Deferred(),
 
-      hash, modelUrl,
+      hash, modelUrl, fragment,
       controller,
       opts,
       timer;
@@ -57,7 +57,7 @@
   $.when(optsLoaded, windowLoaded).done(function(results) {
     // update modelConfig with opts, if any
     $.extend(modelConfig, opts);
-    controller = controllers.compareModelsController('#molecule-container', '#applet-container', modelConfig, playerConfig);
+    controller = controllers.compareModelsController('#molecule-container', '#applet-container', 'model-select', modelConfig, playerConfig);
 
     $('#save-button').attr("disabled", "disabled").click(function() {
       var props     = model.serialize(true),
@@ -65,14 +65,15 @@
           req;
 
       // temporarily, for debugging, also POST to /model-configs and show the resulting config
-      req = $.ajax('/model-configs', {
+      req = $.ajax('/md2d_models', {
         type: 'POST',
         contentType: 'application/json',
         data: propsStr
       }).done(function(data) {
         var loc  = req.getResponseHeader('Location');
 
-        hash = '#' + /\/model-config\/(.*)$/.exec(loc)[1];
+        fragment = /\/md2d_models\/(.*)$/.exec(loc)[1];
+        hash = "#" + fragment;
 
         var url = /[^#]*/.exec(document.location.href)[0] + hash;
 

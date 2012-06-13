@@ -23,38 +23,56 @@ controllers = { version: "0.0.1" };
   Thermometer
   SliderComponent
   layout
-
+  $
+  alert
   model: true
   model_player: true
-  atoms: true
-  nodes: true
 */
 /*jslint onevar: true*/
 controllers.simpleModelController = function(molecule_view_id, modelConfig, playerConfig) {
 
-  var layoutStyle         = playerConfig.layoutStyle,
-      autostart           = playerConfig.autostart,
-      maximum_model_steps = playerConfig.maximum_model_steps,
-      lj_epsilon_max      = playerConfig.lj_epsilon_max,
-      lj_epsilon_min      = playerConfig.lj_epsilon_min,
+  var layoutStyle,
+      autostart,
+      maximum_model_steps,
+      lj_epsilon_max,
+      lj_epsilon_min,
 
-      elements            = modelConfig.elements,
-      atoms_properties    = modelConfig.atoms,
-      mol_number          = modelConfig.mol_number,
-      temperature_control = modelConfig.temperature_control,
-      temperature         = modelConfig.temperature,
-      coulomb_forces      = modelConfig.coulomb_forces,
-      width               = modelConfig.width,
-      height              = modelConfig.height,
+      elements,
+      atoms_properties,
+      mol_number,
+      temperature_control,
+      temperature,
+      coulomb_forces,
+      width,
+      height,
+
+      nodes,
 
       molecule_container,
       model_listener,
       step_counter,
       therm,
-      epsilon_slider,
-      viewLists;
+      epsilon_slider;
 
   function controller() {
+
+
+    function initializeLocalVariables() {
+      layoutStyle         = playerConfig.layoutStyle;
+      autostart           = playerConfig.autostart;
+      maximum_model_steps = playerConfig.maximum_model_steps;
+      lj_epsilon_max      = playerConfig.lj_epsilon_max;
+      lj_epsilon_min      = playerConfig.lj_epsilon_min;
+
+      elements            = modelConfig.elements;
+      atoms_properties    = modelConfig.atoms;
+      mol_number          = modelConfig.mol_number;
+      temperature_control = modelConfig.temperature_control;
+      temperature         = modelConfig.temperature;
+      coulomb_forces      = modelConfig.coulomb_forces;
+      width               = modelConfig.width;
+      height              = modelConfig.height;
+    }
 
     // ------------------------------------------------------------
     //
@@ -87,12 +105,13 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
           height: height
         });
 
-
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
       } else if (mol_number) {
-        model.createNewAtoms(mol_number);
-        model.relax();
+        model.createNewAtoms({
+          num: mol_number,
+          relax: true
+        });
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
@@ -118,7 +137,9 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       molecule_container = layout.moleculeContainer(molecule_view_id,
         {
           xmax:                 width,
-          ymax:                 height
+          ymax:                 height,
+          get_nodes:            function() { return model.get_nodes(); },
+          get_num_atoms:        function() { return model.get_num_atoms(); }
         }
       );
 
@@ -156,12 +177,10 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       //
       // ------------------------------------------------------------
 
-      viewLists = {
-        moleculeContainers:      [molecule_container],
-        thermometers:            [therm]
-      };
+      layout.addView('moleculeContainers', molecule_container);
+      layout.addView('thermometers', therm);
 
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
 
     }
 
@@ -208,7 +227,6 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     //
 
     function setupModel() {
-      atoms = model.get_atoms();
       nodes = model.get_nodes();
 
       model.resetTime();
@@ -225,7 +243,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     // ------------------------------------------------------------
 
     function onresize() {
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
       therm.resize();
       updateTherm();
     }
@@ -235,61 +253,41 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
 
     // ------------------------------------------------------------
     //
-    // Handle keyboard shortcuts for model operation
-    //
-    // ------------------------------------------------------------
-
-    function handleKeyboardForModel(evt) {
-      evt = (evt) ? evt : ((window.event) ? event : null);
-      if (evt) {
-        switch (evt.keyCode) {
-          case 32:                // spacebar
-            if (model.is_stopped()) {
-              molecule_container.playback_component.action('play');
-            } else {
-              molecule_container.playback_component.action('stop');
-            }
-            evt.preventDefault();
-          break;
-          case 13:                // return
-            molecule_container.playback_component.action('play');
-            evt.preventDefault();
-          break;
-          case 37:                // left-arrow
-            if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
-            }
-            modelStepBack();
-            evt.preventDefault();
-          break;
-          case 39:                // right-arrow
-            if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
-            }
-            modelStepForward();
-            evt.preventDefault();
-          break;
-        }
-      }
-    }
-
-    document.onkeydown = handleKeyboardForModel;
-
-    // ------------------------------------------------------------
-    //
     // Reset the model after everything else ...
     //
     // ------------------------------------------------------------
 
-    try {
+    function finishSetup(firstTime) {
+      initializeLocalVariables();
       createModel();
       setupModel();
-      setupViews();
-    } catch(e) {
-      alert(e);
-      throw new Error(e);
+      if (firstTime) {
+        setupViews();
+      } else {
+        updateLayout();
+      }
     }
 
+    if (typeof DEVELOPMENT === 'undefined') {
+      try {
+        finishSetup(true);
+      } catch(e) {
+        alert(e);
+        throw new Error(e);
+      }
+    } else {
+      finishSetup(true);
+    }
+
+    function updateLayout() {
+      layout.setupScreen(true);
+    }
+
+    function reload(newModelConfig, newPlayerConfig) {
+       modelConfig = newModelConfig;
+       playerConfig = newPlayerConfig;
+       finishSetup(false);
+    }
 
     // epsilon_slider = new SliderComponent('#attraction_slider',
     //   function (v) {
@@ -312,6 +310,8 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     if (autostart) {
       modelGo();
     }
+    controller.updateLayout = updateLayout;
+    controller.reload = reload;
   }
   controller();
   return controller;
@@ -326,13 +326,14 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
   SliderComponent
   layout
 
+  $
+  alert
+
   model: true
   model_player: true
-  atoms: true
-  nodes: true
 */
 /*jslint onevar: true*/
-controllers.compareModelsController = function(molecule_view_id, appletContainerID, modelConfig, playerConfig) {
+controllers.compareModelsController = function(molecule_view_id, appletContainerID, modelSelectID, modelConfig, playerConfig) {
 
   var layoutStyle         = playerConfig.layoutStyle,
       autostart           = playerConfig.autostart,
@@ -349,19 +350,20 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       width               = modelConfig.width,
       height              = modelConfig.height,
 
+      nodes,
+
       molecule_container,
       modelListener,
       step_counter,
       therm,
       epsilon_slider,
-      viewLists,
+      jsonFullPath, cmlFullPath,
       appletString,
       appletContainer,
       appletOptions = {},
       applet, cmlPath,
       start, stop, reset,
-      modelSelect,
-      opts, optsLoaded = $.Deferred();
+      modelSelect, pathList, hash;
 
   function controller() {
 
@@ -398,8 +400,10 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
       } else if (mol_number) {
-        model.createNewAtoms(mol_number);
-        model.relax();
+        model.createNewAtoms({
+          num: mol_number,
+          relax: true
+        });
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
@@ -431,7 +435,9 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
           xunits:               true,
           yunits:               true,
           xmax:                 width,
-          ymax:                 height
+          ymax:                 height,
+          get_nodes:            function() { return model.get_nodes(); },
+          get_num_atoms:        function() { return model.get_num_atoms(); }
         }
       );
 
@@ -444,10 +450,10 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       //
       // ------------------------------------------------------------
 
-      cmlPath = extractCmlPath(document.location.hash);
+      cmlPath = currentCMLPath();
       if (cmlPath) {
         appletOptions = {
-          params: [["script", "page:0:import " + cmlPath]]
+          params: [["script", "page:0:import " + "/imports/legacy-mw-content/" + cmlPath]]
         };
       } else {
         appletOptions = {};
@@ -460,12 +466,10 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       //
       // ------------------------------------------------------------
 
-      viewLists = {
-        moleculeContainers:      [molecule_container],
-        appletContainers:        [appletContainer]
-      };
+      layout.addView('moleculeContainers', molecule_container);
+      layout.addView('appletContainers', appletContainer);
 
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
 
     }
 
@@ -508,7 +512,6 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     // ------------------------------------------------------------
 
     function setupModel() {
-      atoms = model.get_atoms();
       nodes = model.get_nodes();
 
       model.resetTime();
@@ -520,31 +523,77 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
 
     // ------------------------------------------------------------
     //
-    //   Java MW Applet Setup
+    //   Model List Setup
     //
     // ------------------------------------------------------------
 
-    function extractCmlPath(jsonPath) {
-      var regex = /#*(.*?)(\$.*|\.json$)/,
-          str;
-      str = regex.exec(jsonPath)[1];
-      if (str) {
-        return str.replace("/converted", "") + ".cml";
+    function currentJsonPath() {
+      hash = document.location.hash;
+      if (hash.length > 0) {
+        return hash.substr(1, hash.length);
       } else {
         return false;
       }
     }
 
-    function extractModelselectValue(jsonPath) {
-      var regex = /#*\/imports\/legacy-mw-content\/converted\/(.*?)\.json$/,
-          str;
-      str = regex.exec(jsonPath)[1];
-      if (str) {
-        return str;
+    function currentCMLPath() {
+      var path = currentJsonPath();
+      if (path) {
+        return pathList[path.replace("/imports/legacy-mw-content/", "")].cmlPath;
       } else {
         return false;
       }
     }
+
+    modelSelect = document.getElementById(modelSelectID);
+
+    function updateModelSelect() {
+      var path = currentJsonPath();
+      if (path) {
+        modelSelect.value = path.replace("/imports/legacy-mw-content/", "");
+      } else {
+        modelSelect.value = "two-atoms-two-elements/two-atoms-two-elements$0.json";
+      }
+    }
+
+    function createPathList() {
+      var i, j, item, sectionList, sectionPath;
+      pathList = {};
+      for(i = 0; i < modelList.length; i++) {
+        sectionList = modelList[i];
+        sectionPath = sectionList.section;
+        for(j = 0; j < sectionList.content.length; j++) {
+          item = sectionList.content[j];
+          pathList[item.json] = {
+            "name": item.name,
+            "jsonPath": item.json,
+            "cmlPath":  item.cml
+          };
+        }
+      }
+    }
+
+    function processModelList() {
+      createPathList();
+      d3.select(modelSelect).selectAll("optgroup")
+          .data(modelList)
+        .enter().append("optgroup")
+          .attr("label", function(d) { return d.section; })
+          .selectAll("option")
+              .data(function(d) { return d.content; })
+            .enter().append("option")
+              .text(function(d) { return d.name; })
+              .attr("value", function(d) { return d.json; })
+              .attr("data-cml-path", function(d) { return d.cml; });
+      updateModelSelect();
+    }
+
+
+    // ------------------------------------------------------------
+    //
+    //   Java MW Applet Setup
+    //
+    // ------------------------------------------------------------
 
     function runMWScript(script) {
       return appletContainer.applet.runMwScript(script);
@@ -568,33 +617,25 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       modelReset();
     };
 
-    modelSelect = document.getElementById("model-select");
-
     function modelSelectHandler() {
-      var jsonPath = "/imports/legacy-mw-content/converted/" + modelSelect.value + ".json",
-          cmlPath = extractCmlPath(jsonPath);
-      document.location.hash = "#" + jsonPath;
-      appletOptions.params = [["script", "page:0:import " + cmlPath]];
-      $.get(jsonPath).done(function(results) {
-        opts = results;
-        optsLoaded.resolve();
-      }).fail(function() {
-        $('#flash').html('<p class="error-message">Could not load config ' + document.location.hash + '</p>');
-        optsLoaded.resolve();
-      });
-    }
+      var selection = $(modelSelect).find("option:selected"),
+          initialPath = "/imports/legacy-mw-content/",
+          jsonPath = selection.attr("value");
 
-    $.when(optsLoaded).done(function(results) {
-      $.extend(modelConfig, opts);
-      modelReset();
-      // appletContainer = layout.appletContainer(appletContainerID, appletOptions);
-    });
+      jsonFullPath = initialPath + jsonPath;
+      document.location.hash = "#" + jsonFullPath;
+    }
 
     modelSelect.onchange = modelSelectHandler;
 
     function setupMWApplet() {
-      modelSelect.value = extractModelselectValue(document.location.hash);
-      runMWScript("page:0:set %frank false");
+      if (currentCMLPath()) {
+        appletOptions = { params: [["script", "page:0:import " + currentCMLPath()]] };
+        appletContainer = layout.appletContainer(appletContainerID, appletOptions);
+        runMWScript("page:0:set frank false");
+        layout.setView('appletContainers', [appletContainer]);
+        layout.setupScreen();
+      }
     }
 
     // ------------------------------------------------------------
@@ -604,7 +645,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     // ------------------------------------------------------------
 
     function onresize() {
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
     }
 
     document.onwebkitfullscreenchange = onresize;
@@ -612,117 +653,30 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
 
     // ------------------------------------------------------------
     //
-    // Handle keyboard shortcuts for model operation
-    //
-    // ------------------------------------------------------------
-
-    function handleKeyboardForModel(evt) {
-      evt = (evt) ? evt : ((window.event) ? event : null);
-      if (evt) {
-        switch (evt.keyCode) {
-          case 32:                // spacebar
-            if (model.is_stopped()) {
-              molecule_container.playback_component.action('play');
-            } else {
-              molecule_container.playback_component.action('stop');
-            }
-            evt.preventDefault();
-          break;
-          case 13:                // return
-            molecule_container.playback_component.action('play');
-            evt.preventDefault();
-          break;
-          case 37:                // left-arrow
-            if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
-            }
-            modelStepBack();
-            evt.preventDefault();
-          break;
-          case 39:                // right-arrow
-            if (!model.is_stopped()) {
-              molecule_container.playback_component.action('stop');
-            }
-            modelStepForward();
-            evt.preventDefault();
-          break;
-        }
-      }
-    }
-
-    document.onkeydown = handleKeyboardForModel;
-
-    // ------------------------------------------------------------
-    //
     // Reset the model after everything else ...
     //
     // ------------------------------------------------------------
 
-    try {
+    function finishSetup() {
+      processModelList();
       createModel();
       setupModel();
       setupViews();
-      setupMWApplet();
-    } catch(e) {
-      alert(e);
-      throw new Error(e);
+      updateModelSelect();
     }
 
-    // ------------------------------------------------------------
-    // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
-    // ------------------------------------------------------------
-    // 
-    // therm = new Thermometer('#thermometer', model.temperature(), 200, 4000);
-    // 
-    // function updateTherm(){
-    //   therm.add_value(model.get("temperature"));
-    // }
-    // 
-    // model.addPropertiesListener(["temperature"], updateTherm);
-    // updateTherm();
-
-    // epsilon_slider = new SliderComponent('#attraction_slider',
-    //   function (v) {
-    //     model.set({epsilon: v} );
-    //   }, lj_epsilon_max, lj_epsilon_min, epsilon);
-
-    // function updateEpsilon(){
-    //   epsilon_slider.set_scaled_value(model.get("epsilon"));
-    // }
-
-    // model.addPropertiesListener(["epsilon"], updateEpsilon);
-    // updateEpsilon();
-
-    // ------------------------------------------------------------
-    // Setup heat and cool buttons
-    // ------------------------------------------------------------
-
-    // layout.heatCoolButtons("#heat_button", "#cool_button", 0, 3800, model, function (t) { therm.add_value(t); });
-
-    // ------------------------------------------------------------
-    // Add listener for coulomb_forces checkbox
-    // ------------------------------------------------------------
-
-    // $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-
-    // function updateCoulombCheckbox() {
-    //   $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-    //   molecule_container.setup_particles();
-    // }
-    // 
-    // model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
-    // updateCoulombCheckbox();
-
-    // ------------------------------------------------------------
-    //
-    // Start if autostart is true
-    //
-    // ------------------------------------------------------------
-
-    // if (autostart) {
-    //   modelGo();
-    // }
+    if (typeof DEVELOPMENT === 'undefined') {
+      try {
+        finishSetup()
+      } catch(e) {
+        alert(e);
+        throw new Error(e);
+      }
+    } else {
+      finishSetup()
+    }
   }
+
   controller();
   return controller;
 };
@@ -738,8 +692,6 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
 
   model: true
   model_player: true
-  atoms: true
-  nodes: true
 */
 /*jslint onevar: true*/
 controllers.complexModelController =
@@ -760,6 +712,7 @@ controllers.complexModelController =
 
       elements            = modelConfig.elements,
       atoms_properties    = modelConfig.atoms,
+      radialBonds         = modelConfig.radialBonds,
       mol_number          = modelConfig.mol_number,
       temperature         = modelConfig.temperature,
       temperature_control = modelConfig.temperature_control,
@@ -772,7 +725,7 @@ controllers.complexModelController =
       step_counter,
       ljCalculator,
       kechart, energyGraph, energyGraph_options,
-      te_data,
+      energy_data,
       model_controls,
       model_controls_inputs,
       select_molecule_number,
@@ -780,11 +733,10 @@ controllers.complexModelController =
       mol_number_to_speed_yaxis_map,
       potentialChart,
       speedDistributionChart,
-      viewLists,
       select_molecule_number,
       radio_randomize_pos_vel,
 
-      currentTick = 0;
+      nodes;
 
   function controller() {
 
@@ -806,26 +758,30 @@ controllers.complexModelController =
       moleculeContainer.update_molecule_positions();
 
       if (model.isNewStep()) {
-        currentTick++;
-        te_data.push(te);
-        if (model.is_stopped()) {
-          energyGraph.add_point(te);
-        } else {
-          energyGraph.add_canvas_point(te);
-        }
+        energy_data[0].push(ke);
+        energy_data[1].push(pe);
+        energy_data[2].push(te);
+        energyGraph.add_points([ke, pe, te]);
       } else {
-        energyGraph.update();
-      }
-      if (step_counter > 0.95 * energyGraph.xmax && energyGraph.xmax < maximum_model_steps) {
-        energyGraph.change_xaxis(energyGraph.xmax * 2);
+        energyGraph.update(model.stepCounter());
       }
       if (step_counter >= maximum_model_steps) { modelStop(); }
       layout.displayStats();
       if (layout.datatable_visible) { layout.render_datatable(); }
     }
 
-    function resetTEData() {
-      te_data = [model.ke() + model.pe()];
+    function resetEnergyData(index) {
+      var modelsteps = model.stepCounter();
+      if (index) {
+        for (i = 0, len = energy_data.length; i < len; i++) {
+          energy_data[i].length = modelsteps
+        }
+      } else {
+        ke = model.ke();
+        pe = model.pe();
+        te = ke + pe;
+        energy_data = [[ke], [pe], [te]];
+      }
     }
 
     // ------------------------------------------------------------
@@ -848,9 +804,12 @@ controllers.complexModelController =
 
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
+        model.createRadialBonds(radialBonds);
       } else if (mol_number) {
-        model.createNewAtoms(mol_number);
-        model.relax();
+        model.createNewAtoms({
+          num: mol_number,
+          relax: true
+        });
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
@@ -887,7 +846,9 @@ controllers.complexModelController =
           xmin:                 0,
           xmax:                 width,
           ymin:                 0,
-          ymax:                 height
+          ymax:                 height,
+          get_nodes:            function() { return model.get_nodes(); },
+          get_num_atoms:        function() { return model.get_num_atoms(); }
         }
       );
 
@@ -901,41 +862,47 @@ controllers.complexModelController =
 
       // FIXME this graph has "magic" knowledge of the sampling period used by the modeler
 
-      resetTEData();
+      resetEnergyData();
 
       energyGraph = grapher.realTimeGraph(energy_graph_view_id, {
-        title:     "Total Energy of the System",
+        title:     "Energy of the System (KE:red, PE:green, TE:blue)",
         xlabel:    "Model Time (ps)",
         xmin:      0,
-        xmax:     2500,
+        xmax:     100,
         sample:    0.25,
         ylabel:    null,
-        ymin:      0.0,
-        ymax:      200,
-        dataset:   te_data
+        ymin:      -5.0,
+        ymax:      5.0,
+        dataset:   energy_data
       });
 
-      energyGraph.new_data(te_data);
+      energyGraph.new_data(energy_data);
 
       model.on('play', function() {
-        if (energyGraph.number_of_points() && currentTick < energyGraph.number_of_points()) {
-          if (currentTick === 0) {
-            resetTEData();
-          } else {
-            te_data.length = currentTick;
-          }
-          energyGraph.new_data(te_data);
+        var i, len;
+
+        if (energyGraph.number_of_points() && model.stepCounter() < energyGraph.number_of_points()) {
+          resetEnergyData(model.stepCounter());
+          energyGraph.new_data(energy_data);
         }
         energyGraph.show_canvas();
       });
 
       model.on('stop', function() {
-        energyGraph.hide_canvas();
       });
 
+      // Right now this action is acting as an indication of model reset ...
+      // This should be refactoring to distinguish the difference between reset
+      // and seek to location in model history.
       model.on('seek', function() {
-        resetTEData();
-        energyGraph.new_data(te_data);
+        modelsteps = model.stepCounter();
+        if (modelsteps > 0) {
+          resetEnergyData(modelsteps);
+          energyGraph.new_data(energy_data);
+        } else {
+          resetEnergyData();
+          energyGraph.new_data(energy_data);
+        }
       });
 
       // ------------------------------------------------------------
@@ -998,12 +965,10 @@ controllers.complexModelController =
       //
       // ------------------------------------------------------------
 
-      viewLists = {
-        moleculeContainers:      [moleculeContainer],
-        potentialCharts:         [potentialChart],
-        speedDistributionCharts: [speedDistributionChart],
-        energyCharts:            [energyGraph]
-      };
+      layout.addView('moleculeContainers', moleculeContainer);
+      layout.addView('potentialCharts', potentialChart);
+      layout.addView('speedDistributionCharts', speedDistributionChart);
+      layout.addView('energyCharts', energyGraph);
 
       // ------------------------------------------------------------
       //
@@ -1031,10 +996,6 @@ controllers.complexModelController =
       function selectMoleculeNumberChange() {
         mol_number = +select_molecule_number.value;
         modelReset();
-        if (checkbox_thermalize.checked) {
-          model.relax();
-          moleculeContainer.update_molecule_positions();
-        }
         radio_randomize_pos_vel.checked = false
         updateMolNumberViewDependencies();
       }
@@ -1082,17 +1043,16 @@ controllers.complexModelController =
     // ------------------------------------------------------------
 
     function setupModel() {
-      atoms = model.get_atoms();
       nodes = model.get_nodes();
 
       model.resetTime();
-      resetTEData();
+      resetEnergyData();
 
-      moleculeContainer.updateMoleculeRadius();
       moleculeContainer.setup_particles();
-      layout.setupScreen(viewLists);
+      moleculeContainer.updateMoleculeRadius();
+      layout.setupScreen();
       step_counter = model.stepCounter();
-      select_molecule_number.value = atoms.length;
+      select_molecule_number.value = model.get_num_atoms();
 
       modelStop();
       model.on("tick", modelListener);
@@ -1107,9 +1067,8 @@ controllers.complexModelController =
 
     function modelStop() {
       model.stop();
-      energyGraph.hide_canvas();
+      // energyGraph.hide_canvas();
       moleculeContainer.playback_component.action('stop');
-      // energyGraph.new_data(te_data);
       if (model_controls) {
         model_controls_inputs[0].checked = true;
       }
@@ -1119,7 +1078,7 @@ controllers.complexModelController =
       model.stop();
       if (model.stepCounter() < maximum_model_steps) {
         model.stepForward();
-        energyGraph.hide_canvas();
+        // energyGraph.hide_canvas();
         if (model_controls) {
           model_controls_inputs[0].checked = true;
         }
@@ -1147,14 +1106,14 @@ controllers.complexModelController =
 
     function modelStepBack() {
       modelStop();
-      currentTick = model.stepBack();
-      energyGraph.showMarker(currentTick);
+      model.stepBack();
+      energyGraph.showMarker(model.stepCounter());
     }
 
     function modelStepForward() {
       if (model.stepCounter() < maximum_model_steps) {
-        currentTick = model.stepForward();
-        energyGraph.showMarker(currentTick);
+        model.stepForward();
+        // energyGraph.showMarker(model.stepCounter());
       } else {
         if (model_controls) {
           model_controls_inputs[0].checked = true;
@@ -1163,9 +1122,11 @@ controllers.complexModelController =
     }
 
     function modelReset() {
+      var dontRelaxRandom = !checkbox_thermalize.checked;
       mol_number = +select_molecule_number.value;
-      model.createNewAtoms(mol_number);
+      model.createNewAtoms(mol_number, dontRelaxRandom);
       setupModel();
+      moleculeContainer.update_molecule_positions();
       step_counter = model.stepCounter();
       layout.displayStats();
       if (layout.datatable_visible) {
@@ -1173,9 +1134,8 @@ controllers.complexModelController =
       } else {
         layout.hide_datatable();
       }
-      resetTEData();
-      energyGraph.new_data(te_data);
-      energyGraph.hide_canvas();
+      resetEnergyData();
+      energyGraph.new_data(energy_data);
       if (model_controls) {
         model_controls_inputs[0].checked = true;
       }
@@ -1188,7 +1148,7 @@ controllers.complexModelController =
     // ------------------------------------------------------------
 
     function onresize() {
-      layout.setupScreen(viewLists);
+      layout.setupScreen();
     }
 
     document.onwebkitfullscreenchange = onresize;
@@ -1196,59 +1156,25 @@ controllers.complexModelController =
 
     // ------------------------------------------------------------
     //
-    // Handle keyboard shortcuts for model operation
-    //
-    // ------------------------------------------------------------
-
-    function handleKeyboardForModel(evt) {
-      evt = (evt) ? evt : ((window.event) ? event : null);
-      if (evt) {
-        switch (evt.keyCode) {
-          case 32:                // spacebar
-            if (model.is_stopped()) {
-              moleculeContainer.playback_component.action('play');
-            } else {
-              moleculeContainer.playback_component.action('stop');
-            }
-            evt.preventDefault();
-          break;
-          case 13:                // return
-            moleculeContainer.playback_component.action('play');
-            evt.preventDefault();
-          break;
-          case 37:                // left-arrow
-            if (!model.is_stopped()) {
-              moleculeContainer.playback_component.action('stop');
-            }
-            modelStepBack();
-            evt.preventDefault();
-          break;
-          case 39:                // right-arrow
-            if (!model.is_stopped()) {
-              moleculeContainer.playback_component.action('stop');
-            }
-            modelStepForward();
-            evt.preventDefault();
-          break;
-        }
-      }
-    }
-
-    document.onkeydown = handleKeyboardForModel;
-
-    // ------------------------------------------------------------
-    //
     // Reset the model after everything else ...
     //
     // ------------------------------------------------------------
 
-    try {
+    function finishSetup() {
       createModel();
       setupViews();
       setupModel();
-    } catch(e) {
-      alert(e);
-      throw new Error(e);
+    }
+
+    if (typeof DEVELOPMENT === 'undefined') {
+      try {
+        finishSetup()
+      } catch(e) {
+        alert(e);
+        throw new Error(e);
+      }
+    } else {
+      finishSetup()
     }
 
     // ------------------------------------------------------------
@@ -1265,11 +1191,392 @@ controllers.complexModelController =
     controller.modelGo = modelGo;
     controller.modelStop = modelStop;
     controller.modelReset = modelReset;
-    controller.resetTEData = resetTEData;
+    controller.resetEnergyData = resetEnergyData;
     controller.energyGraph = energyGraph;
     controller.moleculeContainer = moleculeContainer;
   }
 
   controller();
   return controller;
-};})();
+};/*globals controllers model layout Thermometer $ */
+
+/*jslint onevar: true*/
+controllers.interactivesController = function(interactive, interactive_view_id) {
+
+  var controller = {},
+      modelController,
+      $interactiveContainer,
+      propertiesListeners = [],
+      actionQueue = [];
+
+  function loadModel(modelUrl) {
+    var playerConfig = {    // to be removed
+        layoutStyle        : 'interactive',
+        maximum_model_steps: Infinity
+      };
+    $.get(modelUrl).done(function(modelConfig) {
+      if (modelController) {
+        modelController.reload(modelConfig, playerConfig);
+      } else {
+        modelController = controllers.modelController('#molecule-container', modelConfig, playerConfig);
+        modelLoaded();
+      }
+    });
+  }
+
+  function createComponent(component) {
+    switch (component.type) {
+      case "button":
+        return createButton(component);
+      case "thermometer":
+        return createThermometer(component);
+    }
+  }
+
+  function createButton(component) {
+    var $button, scriptStr, script;
+
+    $button = $("<button>").attr('id', component.id).html(component.text);
+
+    if (typeof component.action === "string") {
+      scriptStr = component.action;
+    } else {
+      scriptStr = component.action.join('\n');
+    }
+    eval("script = function() {"+scriptStr+"}");
+    $button.click(script);
+
+    return $button;
+  }
+
+  function createThermometer(component) {
+    var $therm = $('<div>').attr('id', component.id),
+        thermometer = new Thermometer($therm, 0, component.min, component.max),
+        $wrapper = $('<div>').css("padding-bottom", "4em")
+          .append($therm)
+          .append($('<div>').text("Thermometer"));
+
+    function updateTherm() {
+      thermometer.add_value(model.get("temperature"));
+    }
+
+    queuePropertiesListener(["temperature"], updateTherm);
+    queueActionOnModelLoad(function() {
+      thermometer.resize();
+      updateTherm();
+    });
+
+    layout.addView('thermometers', thermometer);
+    return $wrapper;
+  }
+
+  function queuePropertiesListener(properties, func) {
+    if (typeof model !== "undefined") {
+      model.addPropertiesListener(properties, func);
+    } else {
+      propertiesListeners.push([properties, func]);
+    }
+  }
+
+  function queueActionOnModelLoad(action) {
+    if (typeof model !== "undefined") {
+      action();
+    } else {
+      actionQueue.push(action);
+    }
+  }
+
+  function modelLoaded() {
+    var listener,
+        action;
+
+    while (propertiesListeners.length > 0) {
+      listener = propertiesListeners.pop();
+      model.addPropertiesListener(listener[0], listener[1]);
+    }
+    while (actionQueue.length > 0) {
+      action = actionQueue.pop()();
+    }
+  }
+
+  function loadInteractive(newInteractive, interactive_view_id) {
+    var componentJsons,
+        components = {},
+        component,
+        divArray,
+        div,
+        componentId,
+        $top, $right,
+        i, ii;
+
+    interactive = newInteractive;
+    $interactiveContainer = $(interactive_view_id);
+    if ($interactiveContainer.children().length === 0) {
+      $top = $('<div class="top" id="top"/>');
+      $top.append('<div id="molecule-container"/>');
+      $right = $('<div id="right"/>');
+      $top.append($right);
+      $interactiveContainer.append($top);
+      $interactiveContainer.append('<div class="bottom" id="bottom"/>');
+    } else {
+      $('#bottom').html('');
+      $('#right').html('');
+      $interactiveContainer.append('<div id="bottom"/>');
+    }
+
+    if (interactive.model) {
+      loadModel(interactive.model);
+    }
+
+    componentJsons = interactive.components;
+
+    for (i = 0, ii=componentJsons.length; i<ii; i++) {
+      component = createComponent(componentJsons[i]);
+      components[componentJsons[i].id] = component;
+    }
+
+
+    // look at each div defined in layout, and add any components in that
+    // array to that div. Then rm the component from components so we can
+    // add the remainder to #bottom at the end
+    if (interactive.layout) {
+      for (div in interactive.layout) {
+        if (interactive.layout.hasOwnProperty(div)) {
+          divArray = interactive.layout[div];
+          for (i = 0, ii = divArray.length; i<ii; i++) {
+            componentId = divArray[i];
+            if (components[componentId]) {
+              $('#'+div).append(components[componentId]);
+              delete components[componentId];
+            }
+          }
+        }
+      }
+    }
+
+    // add the remaining components to #bottom
+    for (componentId in components) {
+      if (components.hasOwnProperty(componentId)) {
+        $('#bottom').append(components[componentId]);
+      }
+    }
+
+
+  }
+
+  function updateLayout() {
+    layout.setupScreen(true);
+  }
+
+  // run this when controller is created
+  loadInteractive(interactive, interactive_view_id);
+
+  // make these private variables and functions available
+  controller.loadInteractive = loadInteractive;
+  controller.updateLayout = updateLayout;
+
+  return controller;
+};
+/*globals
+
+  controllers
+
+  modeler
+  ModelPlayer
+  Thermometer
+  SliderComponent
+  layout
+  $
+  alert
+  model: true
+  model_player: true
+*/
+/*jslint onevar: true*/
+controllers.modelController = function(molecule_view_id, modelConfig, playerConfig) {
+  var controller          = {},
+
+      layoutStyle         = playerConfig.layoutStyle,
+      autostart           = playerConfig.autostart,
+      maximum_model_steps = playerConfig.maximum_model_steps,
+
+      elements            = modelConfig.elements,
+      atoms_properties    = modelConfig.atoms,
+      mol_number          = modelConfig.mol_number,
+      temperature_control = modelConfig.temperature_control,
+      temperature         = modelConfig.temperature,
+      coulomb_forces      = modelConfig.coulomb_forces,
+      width               = modelConfig.width,
+      height              = modelConfig.height,
+
+      nodes,
+
+      molecule_container,
+      step_counter,
+      therm,
+      epsilon_slider;
+
+    // ------------------------------------------------------------
+    //
+    // Main callback from model process
+    //
+    // Pass this function to be called by the model on every model step
+    //
+    // ------------------------------------------------------------
+
+    function model_listener(e) {
+      molecule_container.update_molecule_positions();
+      if (step_counter >= model.stepCounter()) { modelStop(); }
+    }
+
+
+    // ------------------------------------------------------------
+    //
+    // Create model and pass in properties
+    //
+    // ------------------------------------------------------------
+
+    function createModel() {
+      model = modeler.model({
+          elements: elements,
+          model_listener: model_listener,
+          temperature: temperature,
+          lennard_jones_forces: true,
+          coulomb_forces: coulomb_forces,
+          temperature_control: temperature_control,
+          width: width,
+          height: height
+        });
+
+
+      if (atoms_properties) {
+        model.createNewAtoms(atoms_properties);
+      } else if (mol_number) {
+        model.createNewAtoms(mol_number);
+        model.relax();
+      } else {
+        throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
+      }
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Create Model Player
+    //
+    // ------------------------------------------------------------
+
+    function setupModelPlayer() {
+
+      // ------------------------------------------------------------
+      //
+      // Create player and container view for model
+      //
+      // ------------------------------------------------------------
+
+      layout.selection = layoutStyle;
+
+      model_player = new ModelPlayer(model, autostart);
+      molecule_container = layout.moleculeContainer(molecule_view_id,
+        {
+          xmax:                 width,
+          ymax:                 height,
+          get_nodes:            function() { return model.get_nodes(); },
+          get_num_atoms:        function() { return model.get_num_atoms(); }
+        }
+      );
+
+      molecule_container.updateMoleculeRadius();
+      molecule_container.setup_particles();
+
+      layout.addView('moleculeContainers', molecule_container);
+
+      // FIXME: should not be here
+      layout.setupScreen();
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Model Controller
+    //
+    // ------------------------------------------------------------
+    function modelStop() {
+      model.stop();
+    }
+
+    function modelGo() {
+      model.on("tick", model_listener);
+      if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
+        model.resume();
+      }
+    }
+
+    function modelStepBack() {
+      modelStop();
+      model.stepBack();
+    }
+
+    function modelStepForward() {
+      if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
+        model.stepForward();
+      }
+    }
+
+    // ------------------------------------------------------------
+    //
+    //   Molecular Model Setup
+    //
+
+    function setupModel() {
+      nodes = model.get_nodes();
+
+      model.resetTime();
+
+      modelStop();
+      model.on("tick", model_listener);
+      step_counter = model.stepCounter();
+    }
+
+    function finishSetup(firstTime) {
+      createModel();
+      setupModel();
+      if (firstTime) {
+        setupModelPlayer();
+      } else {
+        layout.setupScreen(true);
+      }
+    }
+
+    function reload(newModelConfig, newPlayerConfig) {
+       modelConfig = newModelConfig;
+       playerConfig = newPlayerConfig;
+       finishSetup(false);
+    }
+
+    if (typeof DEVELOPMENT === 'undefined') {
+      try {
+        finishSetup(true);
+      } catch(e) {
+        alert(e);
+        throw new Error(e);
+      }
+    } else {
+      finishSetup(true);
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Start if autostart is true
+    //
+    // ------------------------------------------------------------
+
+    if (autostart) {
+      modelGo();
+    }
+
+    controller.reload = reload;
+
+    return controller;
+};
+
+
+
+})();

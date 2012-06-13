@@ -62,5 +62,19 @@
       1
     ]
   },
+  "radialBonds": {
+    "atom1Index": [
+      0
+    ],
+    "atom2Index": [
+      1
+    ],
+    "bondLength": [
+      0.1680000066757202
+    ],
+    "bondStrength": [
+      2000
+    ]
+  },
   "temperature": 4500
 }

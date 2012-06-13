@@ -1358,7 +1358,7 @@
       this.min = min;
       this.max = max;
       this.resize = __bind(this.resize, this);
-      this.dom_element = $(this.dom_id);
+      this.dom_element = typeof this.dom_id === "string" ? $(this.dom_id) : this.dom_id;
       this.dom_element.addClass('thermometer');
       this.samples = [];
       this.samples.push(initial_value);

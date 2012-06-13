@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>How Electrons Move: How an Electron Moves in an Electric Field</page_title>
+<referenced_files>level1.mml, level2.mml</referenced_files>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+ 
+ 
+                         
+Set charge amount of charged particles:          
+               
+</text>
+<section start="0" end="98">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>110.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    In the game below the goal is to hit the target located opposite a 
+    electron gun. The electron gun will fire an electron. The electron must 
+    not hit any walls or obstacles during your attempt. You may direct the 
+    electron along a path of your choosing by placing stationary positive and 
+    negative charges at various locations. You should try to hit the target 
+    using the fewest charges possible. To remove a charged particle, click on 
+    it with the mouse and hit the DELETE key on your keyboard.
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page4$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="31">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="5" end="6">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Fire an electron</title>
+<tooltip>Shot an electron from the cannon</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>select element 1;
+remove;
+add atom 1 (%rectangle[0].x+%rectangle[0].width, %height/2);
+select element 1;
+set vx %electron_speed;
+set vy 0;
+set element[1].sigma 1;
+traj on;
+charge -1;
+select element none;
+run;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="6" end="7">
+</content>
+
+<content start="7" end="8">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Slow motion</title>
+<tooltip>Select the slow motion</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>set timestep 0.1;</script>
+<script2>set timestep 1;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="8" end="15">
+</content>
+
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>moveDOWN.png</imagefile>
+<imagefiledeselected>moveUP.png</imagefiledeselected>
+<tooltip>Select the moving mode</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action SELE_ID;
+set %buttonSelected %move;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>addPosDOWN.png</imagefile>
+<imagefiledeselected>addPosUP.png</imagefiledeselected>
+<tooltip>Select the mode of adding a positive charge</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action ADDC_ID;
+set %buttonSelected %addPos;
+beginmouse:pressed;
+	set %selAtom whichParticle(%mouse_x/10,%mouse_y/10);
+	if (%selAtom == 0);
+		select atom none;
+	endif;
+endmouse:pressed;
+
+beginmouse:released;
+	set %lastAtom %number_of_atoms-1;
+	set atom[%lastAtom].movable off;
+	if (%buttonSelected == %addPos);
+		set atom[%lastAtom].charge %posCharge;
+		select atom none;
+	endif;
+	if (%buttonSelected == %addNeg);
+		set atom[%lastAtom].charge %negCharge;
+		select atom none;
+	endif;
+	paint;
+endmouse:released;
+stop;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="17" end="18">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>addNegDOWN.png</imagefile>
+<imagefiledeselected>addNegUP.png</imagefiledeselected>
+<tooltip>Select the mode of adding a negative charge</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1241192770195</groupid>
+<script>set action ADDC_ID;
+set %buttonSelected %addNeg;
+beginmouse:pressed;
+	set %selAtom whichParticle(%mouse_x/10,%mouse_y/10);
+	if (%selAtom == 0);
+		select atom none;
+	endif;
+endmouse:pressed;
+
+beginmouse:released;
+	set %lastAtom %number_of_atoms-1;
+	set atom[%lastAtom].movable off;
+	if (%buttonSelected == %addPos);
+		set atom[%lastAtom].charge %posCharge;
+		select atom none;
+	endif;
+	if (%buttonSelected == %addNeg);
+		set atom[%lastAtom].charge %negCharge;
+		select atom none;
+	endif;
+	paint;
+endmouse:released;
+stop;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="18" end="20">
+</content>
+
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset the model to the original state</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop;
+select atom all;
+remove;
+</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="21" end="29">
+</content>
+
+<content start="29" end="30">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Hint</title>
+<opaque>false</opaque>
+<hint_text>&lt;html&gt;&lt;div style=&quot;width:400&quot;&gt;&lt;font face=&quot;verdana&quot; size=&quot;4&quot;&gt;If you miss the target don&apos;t reset and start over. Simply click and drag your charges to move them small amounts until you can get the electron to hit the target. You can also use the arrow keys to move the charges by very small increments.&lt;/font&gt;&lt;/div&gt;&lt;/html&gt;</hint_text>
+<action>Hint</action></component></content>
+
+<content start="30" end="31">
+</content>
+
+</paragraph>
+<paragraph start="31" end="81">
+<Alignment>1</Alignment>
+<content start="31" end="70">
+<bold>true</bold></content>
+
+<content start="70" end="71">
+</content>
+
+<content start="71" end="72">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>1.0</value>
+<minimum>0.5</minimum>
+<maximum>5.0</maximum>
+<nstep>18</nstep>
+<tooltip>Set charge amount of charged particles</tooltip>
+<width>200</width>
+<height>60</height>
+<opaque>false</opaque>
+<disabled_at_run>true</disabled_at_run>
+<tick>true</tick>
+<labeltable>{value=&quot;5.0&quot;, label=&quot;+/-5&quot;}{value=&quot;1.0&quot;, label=&quot;+/-1&quot;}{value=&quot;3.0&quot;, label=&quot;+/-3&quot;}</labeltable>
+<script>set %posCharge %val;
+set %negCharge %val*-1;
+set %i 0;
+if (%number_of_particles != 0);
+	while (%i &lt; %number_of_particles);
+		if (%atom[%i].charge &gt; 0);
+			set atom[%i].charge %posCharge;
+		else;
+			set atom[%i].charge %negCharge;
+		endif;
+		%i++;
+	endwhile;
+endif;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="72" end="79">
+</content>
+
+<content start="79" end="80">
+<component><class>org.concord.modeler.PageCheckBox</class>
+<title>Show electric field</title>
+<tooltip>Show electric field</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>show efield 16;</script>
+<script2>show efield 1000;</script2>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="80" end="81">
+</content>
+
+</paragraph>
+<paragraph start="81" end="97">
+<SpaceBelow>20.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="81" end="82">
+</content>
+
+<content start="82" end="83">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Play level 1   </title>
+<tooltip>Set play level to 1</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1251480197217</groupid>
+<script>load level1.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="83" end="84">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Play level 2</title>
+<tooltip>Set play level to 2</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1251480197217</groupid>
+<script>load level2.mml;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="84" end="95">
+</content>
+
+<content start="95" end="96">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot of your winning game</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="96" end="97">
+</content>
+
+</paragraph>
+<paragraph start="97" end="98">
+<SpaceBelow>20.0</SpaceBelow>
+<Alignment>1</Alignment>
+</paragraph>
+</section>
+</document>

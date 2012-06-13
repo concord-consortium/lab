@@ -453,7 +453,7 @@ arrays.copy = function(source, dest) {
   var len = source.length,
       i = -1;
   while(++i < len) { dest[i] = source[i]; }
-  dest.length = len;
+  if (arrays.constructor_function(dest) === Array) dest.length = len;
   return dest;
 };
 
@@ -769,6 +769,14 @@ exports.unit = unit = {
     type: types.FORCE
   },
 
+  EV_PER_NM: {
+    name: "electron volts per nanometer",
+    value: 1 * KILOGRAMS_PER_DALTON * METERS_PER_NANOMETER * METERS_PER_NANOMETER *
+           (1/SECONDS_PER_FEMTOSECOND) * (1/SECONDS_PER_FEMTOSECOND) *
+           (1/JOULES_PER_EV),
+    type: types.FORCE
+  },
+
   MW_VELOCITY_UNIT: {
     name: "MW velocity units (nm / fs)",
     value: 1,
@@ -830,6 +838,9 @@ exports.convert = convert = function(val, fromTo) {
 require.define("/math/index.js", function (require, module, exports, __dirname, __filename) {
 exports.normal              = require('./distributions').normal;
 exports.getWindowedAverager = require('./utils').getWindowedAverager;
+exports.minimize            = require('./minimizer').minimize;
+
+if (window) window.minimize = exports.minimize;
 
 });
 
@@ -907,11 +918,114 @@ exports.getWindowedAverager = function(windowSize) {
 
 });
 
+require.define("/math/minimizer.js", function (require, module, exports, __dirname, __filename) {
+/*jshint eqnull:true */
+/**
+  Simple, good-enough minimization via gradient descent.
+*/
+exports.minimize = function(f, x0, opts) {
+  opts = opts || {};
+
+  if (opts.precision == null) opts.precision = 0.01;
+
+  var // stop when the absolute difference between successive values of f is this much or less
+      precision = opts.precision,
+
+      // array of [min, max] boundaries for each component of x
+      bounds    = opts.bounds,
+
+      // maximum number of iterations
+      maxiter   = opts.maxiter   || 1000,
+
+      // optionally, stop when f is less than or equal to this value
+      stopval   = opts.stopval   || -Infinity,
+
+      // maximum distance to move x between steps
+      maxstep   = opts.maxstep   || 0.01,
+
+      // multiplied by the gradient
+      eps       = opts.eps       || 0.01,
+      dim       = x0.length,
+      x,
+      res,
+      f_cur,
+      f_prev,
+      grad,
+      maxstepsq,
+      gradnormsq,
+      iter,
+      i,
+      a;
+
+  maxstepsq = maxstep*maxstep;
+
+  // copy x0 into x (which we will mutate)
+  x = [];
+  for (i = 0; i < dim; i++) {
+    x[i] = x0[i];
+  }
+
+  // evaluate f and get the gradient
+  res = f.apply(null, x);
+  f_cur = res[0];
+  grad = res[1];
+
+  iter = 0;
+  do {
+    if (f_cur <= stopval) {
+      break;
+    }
+
+    if (iter > maxiter) {
+      console.log("maxiter reached");
+      // don't throw on error, but return some diagnostic information
+      return { error: "maxiter reached", f: f_cur, iter: maxiter, x: x };
+    }
+
+    // Limit gradient descent step size to maxstep
+    gradnormsq = 0;
+    for (i = 0; i < dim; i++) {
+      gradnormsq += grad[i]*grad[i];
+    }
+    if (eps*eps*gradnormsq > maxstepsq) {
+      a = Math.sqrt(maxstepsq / gradnormsq) / eps;
+      for (i = 0; i < dim; i++) {
+        grad[i] = a * grad[i];
+      }
+    }
+
+    // Take a step in the direction opposite the gradient
+    for (i = 0; i < dim; i++) {
+      x[i] -= eps * grad[i];
+
+      // check bounds
+      if (bounds && x[i] < bounds[i][0]) {
+        x[i] = bounds[i][0];
+      }
+      if (bounds && x[i] > bounds[i][1]) {
+        x[i] = bounds[i][1];
+      }
+    }
+
+    f_prev = f_cur;
+
+    res = f.apply(null, x);
+    f_cur = res[0];
+    grad = res[1];
+
+    iter++;
+  } while ( Math.abs(f_cur-f_prev) > precision );
+
+  return [f_cur, x];
+};
+
+});
+
 require.define("/potentials/index.js", function (require, module, exports, __dirname, __filename) {
 var potentials = exports.potentials = {};
 
 exports.coulomb = require('./coulomb');
-exports.makeLennardJonesCalculator = require('./lennard-jones').makeLennardJonesCalculator;
+exports.lennardJones = require('./lennard-jones');
 
 });
 
@@ -991,6 +1105,36 @@ var constants = require('../constants'),
     MW_FORCE_UNITS_PER_NEWTON = constants.ratio( unit.MW_FORCE_UNIT, { per: unit.NEWTON });
 
 /**
+  Helper function that returns the correct pairwise epsilon value to be used
+  when elements each have epsilon values epsilon1, epsilon2
+*/
+exports.pairwiseEpsilon = function(epsilon1, epsilon2) {
+  return 0.5 * (epsilon1 + epsilon2);
+},
+
+/**
+  Helper function that returns the correct pairwise sigma value to be used
+  when elements each have sigma values sigma1, sigma2
+*/
+exports.pairwiseSigma = function(sigma1, sigma2) {
+  return Math.sqrt(sigma1 * sigma2);
+},
+
+/**
+  Helper function that returns the correct rmin value for a given sigma
+*/
+exports.rmin = function(sigma) {
+  return Math.pow(2, 1/6) * sigma;
+};
+
+/**
+  Helper function that returns the correct atomic radius for a given sigma
+*/
+exports.radius = function(sigma) {
+  return 0.5 * exports.rmin(sigma);
+}
+
+/**
   Returns a new object with methods for calculating the force and potential for a Lennard-Jones
   potential with particular values of its parameters epsilon and sigma. These can be adjusted.
 
@@ -1001,86 +1145,34 @@ var constants = require('../constants'),
   This function also accepts a callback function which will be called with a hash representing
   the new coefficients, whenever the LJ coefficients are changed for the returned calculator.
 */
-exports.makeLennardJonesCalculator = function(elements, cb) {
-  /*
-     all of these pairwise variables are symmetrical matrices reprsenting the
-     parameters between each pair of elements. Thus pairwiseEpsilons[0][0] is the
-     epsilon component of the LJ force between two atoms of element 0, while
-     pairwiseEpsilons[0][1] and pairwiseEpsilons[1][0] both represent the epsilon
-     component between elements 0 and 1
-  */
-  var pairwiseEpsilons          = [],    // parameter; depth of the potential well, in eV
-      pairwiseSigmas            = [],    // parameter: characteristic distance from particle, in nm
-      pairwiseRmins             = [],    // distance from particle at which the potential is at its minimum
-      pairwiseAlphaPotentials   = [],    // precalculated; units are eV * nm^12
-      pairwiseBetaPotentials    = [],    // precalculated; units are eV * nm^6
-      pairwiseAlphaForces       = [],    // units are "MW Force Units" * nm^13
-      pairwiseBetaForces        = [],    // units are "MW Force Units" * nm^7
-      pairwiseCutoffDistanceSq  = [],
+exports.newLJCalculator = function(params, cb) {
 
-      /*
-        Precalculates all of the paramters between every pair of elements.
-        @param elements: Elements of the form
-          [ [mass_0, epsilon_0, sigma_0], [mass_1, epsilon_1, sigma_1], ...]
+  var epsilon,          // parameter; depth of the potential well, in eV
+      sigma,            // parameter: characteristic distance from particle, in nm
 
-        If we pass in
-          [ [30, 1, 1], [30, 2, 2] ]
+      rmin,             // distance from particle at which the potential is at its minimum
+      alpha_Potential,  // precalculated; units are eV * nm^12
+      beta_Potential,   // precalculated; units are eV * nm^6
+      alpha_Force,      // units are "MW Force Units" * nm^13
+      beta_Force,       // units are "MW Force Units" * nm^7
 
-        We will set
+      setCoefficients = function(e, s) {
+        // Input units:
+        //  epsilon: eV
+        //  sigma:   nm
 
-        pairwiseEpsilons = [[ 1 , 1.5],
-                            [1.5,  2 ]]
+        epsilon = e;
+        sigma   = s;
+        rmin    = exports.rmin(sigma);
 
-        pairwiseSigmas   = [[ 1   , 1.414],
-                            [1.414,  2   ]]
+        if (epsilon != null && sigma != null) {
+          alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
+          beta_Potential  = 4 * epsilon * Math.pow(sigma, 6);
 
-        rmin             = [[1.122, 1.587],
-                            [1.587, 2.245]]
-
-        alpha_Potential  = [[ 4   , 384  ],
-                            [384  , 32768]]
-
-        ...etc.
-      */
-      // FIXME: validate
-      setElements = function(elements) {
-        var i, ii, j, jj, epsilon, sigma, rmin, alpha_Potential, beta_Potential, alpha_Force, beta_Force, cutoffDistance;
-        for (i=0, ii=elements.length; i<ii; i++) {
-          pairwiseEpsilons[i]           = [];
-          pairwiseSigmas[i]             = [];
-          pairwiseRmins[i]              = [];
-          pairwiseAlphaPotentials[i]    = [];
-          pairwiseBetaPotentials[i]     = [];
-          pairwiseAlphaForces[i]        = [];
-          pairwiseBetaForces[i]         = [];
-          pairwiseCutoffDistanceSq[i]   = [];
-
-          for (j=0; j<i+1; j++) {
-            epsilon = (elements[i][1] + elements[j][1]) / 2;
-            sigma   = Math.sqrt(elements[i][2] * elements[j][2]);
-
-            rmin    =  Math.pow(2, 1/6) * sigma;
-            cutoffDistance = rmin * 5;
-
-            if (epsilon != null && sigma != null) {
-              alpha_Potential = 4 * epsilon * Math.pow(sigma, 12);
-              beta_Potential  = 4 * epsilon * Math.pow(sigma, 6);
-
-              // (1 J * nm^12) = (1 N * m * nm^12)
-              // (1 N * m * nm^12) * (b nm / m) * (c MWUnits / N) = (abc MWUnits nm^13)
-              alpha_Force = 12 * constants.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
-              beta_Force =  6 * constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
-            }
-
-            pairwiseEpsilons[i][j]          = pairwiseEpsilons[j][i]    = epsilon;
-            pairwiseSigmas[i][j]            = pairwiseSigmas[j][i]      = sigma;
-            pairwiseRmins[i][j]             = pairwiseRmins[j][i]       = rmin;
-            pairwiseAlphaPotentials[i][j]   = pairwiseAlphaPotentials[j][i]   = alpha_Potential;
-            pairwiseBetaPotentials[i][j]    = pairwiseBetaPotentials[j][i]    = beta_Potential;
-            pairwiseAlphaForces[i][j]       = pairwiseAlphaForces[j][i] = alpha_Force;
-            pairwiseBetaForces[i][j]        = pairwiseBetaForces[j][i]  = beta_Force;
-            pairwiseCutoffDistanceSq[i][j]  = pairwiseCutoffDistanceSq[j][i] = (cutoffDistance * cutoffDistance)
-          }
+          // (1 J * nm^12) = (1 N * m * nm^12)
+          // (1 N * m * nm^12) * (b nm / m) * (c MWUnits / N) = (abc MWUnits nm^13)
+          alpha_Force = 12 * constants.convert(alpha_Potential, { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
+          beta_Force =  6 * constants.convert(beta_Potential,  { from: unit.EV, to: unit.JOULE }) * NANOMETERS_PER_METER * MW_FORCE_UNITS_PER_NEWTON;
         }
 
         if (typeof cb === 'function') cb(getCoefficients(), this);
@@ -1088,10 +1180,9 @@ exports.makeLennardJonesCalculator = function(elements, cb) {
 
       getCoefficients = function() {
         return {
-          epsilon: pairwiseEpsilons,
-          sigma  : pairwiseSigmas,
-          rmin   : pairwiseRmins,
-          cutoffDistanceSq : pairwiseCutoffDistanceSq
+          epsilon: epsilon,
+          sigma  : sigma,
+          rmin   : rmin
         };
       },
 
@@ -1112,15 +1203,25 @@ exports.makeLennardJonesCalculator = function(elements, cb) {
 
       // At creation time, there must be a valid epsilon and sigma ... we're not gonna check during
       // inner-loop force calculations!
-      // validateEpsilon(params.epsilon);
-      // validateSigma(params.sigma);
+      validateEpsilon(params.epsilon);
+      validateSigma(params.sigma);
 
       // Initialize coefficients to passed-in values
-      setElements(elements);
+      setCoefficients(params.epsilon, params.sigma);
 
   return calculator = {
 
     coefficients: getCoefficients,
+
+    setEpsilon: function(e) {
+      validateEpsilon(e);
+      setCoefficients(e, sigma);
+    },
+
+    setSigma: function(s) {
+      validateSigma(s);
+      setCoefficients(epsilon, s);
+    },
 
     /**
       Input units: r_sq: nm^2
@@ -1128,38 +1229,38 @@ exports.makeLennardJonesCalculator = function(elements, cb) {
 
       minimum is at r=rmin, V(rmin) = 0
     */
-    potentialFromSquaredDistance: function(r_sq, el0, el1) {
-       return pairwiseAlphaPotentials[el0][el1]*Math.pow(r_sq, -6) - pairwiseBetaPotentials[el0][el1]*Math.pow(r_sq, -3);
+    potentialFromSquaredDistance: function(r_sq) {
+       return alpha_Potential*Math.pow(r_sq, -6) - beta_Potential*Math.pow(r_sq, -3);
     },
 
     /**
       Input units: r: nm
       Output units: eV
     */
-    potential: function(r, el0, el1) {
-      return calculator.potentialFromSquaredDistance(r*r, el0, el1);
+    potential: function(r) {
+      return calculator.potentialFromSquaredDistance(r*r);
     },
 
     /**
       Input units: r_sq: nm^2
       Output units: MW Force Units / nm (= Dalton / fs^2)
     */
-    forceOverDistanceFromSquaredDistance: function(r_sq, el0, el1) {
+    forceOverDistanceFromSquaredDistance: function(r_sq) {
       // optimizing divisions actually does appear to be *slightly* faster
       var r_minus2nd  = 1 / r_sq,
           r_minus6th  = r_minus2nd * r_minus2nd * r_minus2nd,
           r_minus8th  = r_minus6th * r_minus2nd,
           r_minus14th = r_minus8th * r_minus6th;
 
-      return pairwiseAlphaForces[el0][el1]*r_minus14th - pairwiseBetaForces[el0][el1]*r_minus8th;
+      return alpha_Force*r_minus14th - beta_Force*r_minus8th;
     },
 
     /**
       Input units: r: nm
       Output units: MW Force Units (= Dalton * nm / fs^2)
     */
-    force: function(r, el0, el1) {
-      return r * calculator.forceOverDistanceFromSquaredDistance(r*r, el0, el1);
+    force: function(r) {
+      return r * calculator.forceOverDistanceFromSquaredDistance(r*r);
     }
   };
 };
@@ -1177,7 +1278,7 @@ var arrays       = require('./arrays/arrays').arrays,
     unit         = constants.unit,
     math         = require('./math'),
     coulomb      = require('./potentials').coulomb,
-    makeLennardJonesCalculator = require('./potentials').makeLennardJonesCalculator,
+    lennardJones = require('./potentials').lennardJones,
 
     // TODO: Actually check for Safari. Typed arrays are faster almost everywhere
     // ... except Safari.
@@ -1208,7 +1309,9 @@ var arrays       = require('./arrays/arrays').arrays,
 
     BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
-    NODE_PROPERTIES_COUNT, INDICES, SAVEABLE_INDICES,
+    INDICES,
+    ELEMENT_INDICES,
+    SAVEABLE_INDICES,
 
     cross = function(a0, a1, b0, b1) {
       return a0*b1 - a1*b0;
@@ -1217,8 +1320,6 @@ var arrays       = require('./arrays/arrays').arrays,
     sumSquare = function(a,b) {
       return a*a + b*b;
     },
-
-    emptyFunction = function() {},
 
     /**
       Convert total kinetic energy in the container of N atoms to a temperature in Kelvin.
@@ -1277,6 +1378,13 @@ var arrays       = require('./arrays/arrays').arrays,
       return copy;
     };
 
+exports.ELEMENT_INDICES = ELEMENT_INDICES = {
+  MASS: 0,
+  EPSILON: 1,
+  SIGMA: 2,
+  RADIUS: 3
+},
+
 exports.INDICES = INDICES = {
   RADIUS :  0,
   PX     :  1,
@@ -1293,8 +1401,6 @@ exports.INDICES = INDICES = {
 };
 
 exports.SAVEABLE_INDICES = SAVEABLE_INDICES = ["X", "Y","VX","VY", "CHARGE", "ELEMENT"];
-
-exports.NODE_PROPERTIES_COUNT = NODE_PROPERTIES_COUNT = 12;
 
 exports.makeModel = function() {
 
@@ -1354,11 +1460,24 @@ exports.makeModel = function() {
       // element definition: [ MASS_IN_DALTONS, EPSILON, SIGMA ]
       elements,
 
-      // Individual property arrays for the particles. Each is a length-N array.
+      // Individual property arrays for the atoms, indexed by atom number
       radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element,
 
-      // An array of length NODE_PROPERTIES_COUNT which containes the above length-N arrays.
-      nodes,
+      // An array of length max(INDICES)+1 which contains the above property arrays
+      atoms,
+
+      // Individual property arrays for the "radial" bonds, indexed by bond number
+      radialBondAtom1Index,
+      radialBondAtom2Index,
+      radialBondLength,
+      radialBondStrength,
+
+      // An array of length 4 which contains the above 4 property arrays.
+      // Left undefined if no radial bonds are defined.
+      radialBonds,
+
+      // Number of actual radial bonds (may be smaller than the length of the property arrays)
+      N_radialBonds = 0,
 
       // The location of the center of mass, in nanometers.
       x_CM, y_CM,
@@ -1385,29 +1504,92 @@ exports.makeModel = function() {
       // Object containing observations of the sytem (temperature, etc)
       outputState = window.state = {},
 
-      // Paired square of cutoff distance; this is a convenience for updatePairwiseAccelerations
+      // The following are the pairwise values for elements i and j, indexed
+      // like [i][j]
+      epsilon = [],
+      sigma = [],
+
+      // cutoff for force calculations, as a factor of sigma
+      cutoff = 5.0,
       cutoffDistance_LJ_sq = [],
 
-      // Callback that recalculates cutoffDistance_LJ when the Lennard-Jones sigma parameter changes.
-      ljCoefficientsChanged = function(coefficients) {
-        cutoffDistance_LJ_sq = coefficients.cutoffDistanceSq;
-        if (radius && element) {
-          setRadii();
+      // Each object at ljCalculator[i,j] can calculate the magnitude of the Lennard-Jones force and
+      // potential between elements i and j
+      ljCalculator = [],
+
+      // Callback that recalculates element radii  and cutoffDistance_LJ_sq when the Lennard-Jones
+      // sigma parameter changes.
+      ljCoefficientsChanged = function(el1, el2, coefficients) {
+        cutoffDistance_LJ_sq[el1][el2] =
+          cutoffDistance_LJ_sq[el2][el1] =
+          cutoff * cutoff * coefficients.sigma * coefficients.sigma;
+
+        if (el1 === el2) updateElementRadius(el1, coefficients);
+      },
+
+      // Update radius of element # 'el'. Also, if 'element' and 'radius' arrays are defined, update
+      // all atom's radii to match the new radii of their corresponding elements.
+      updateElementRadius = function(el, coefficients) {
+        elements[el][ELEMENT_INDICES.RADIUS] = lennardJones.radius( coefficients.sigma );
+
+        if (!radius || !element) return;
+        for (var i = 0, len = radius.length; i < len; i++) {
+          radius[i] = elements[element[i]][ELEMENT_INDICES.RADIUS];
         }
       },
 
-      setRadii = function() {
-        var sigmas = lennardJones.coefficients().sigma,
-            i,
-            len;
+      // Make the 'atoms' array bigger
+      extendAtomsArray = function(num) {
+        var savedArrays = [],
+            savedTotalMass,
+            i;
 
-        for (i = 0, len = radius.length; i < len; i++) {
-          radius[i] = 0.5 * sigmas[element[i]][element[i]];
+        for (i = 0; i < atoms.length; i++) {
+          savedArrays[i] = atoms[i];
         }
+
+        savedTotalMass = totalMass;
+        atomsHaveBeenCreated = false;
+        model.createAtoms({ num: num });
+
+        for (i = 0; i < atoms.length; i++) {
+          arrays.copy(savedArrays[i], atoms[i]);
+        }
+
+        // restore N and totalMass
+        N = savedArrays[0].length;        // atoms[0].length is now > N!
+        totalMass = savedTotalMass;
       },
 
-      // An object that calculates the magnitude of the Lennard-Jones force or potential at a given distance.
-      lennardJones,
+      createRadialBondsArray = function(num) {
+      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
+
+        radialBonds = [];
+
+        radialBonds[0] = radialBondAtom1Index = arrays.create(num, 0, uint16);
+        radialBonds[1] = radialBondAtom2Index = arrays.create(num, 0, uint16);
+        radialBonds[2] = radialBondLength     = arrays.create(num, 0, float32);
+        radialBonds[3] = radialBondStrength   = arrays.create(num, 0, float32);
+      },
+
+
+      // Make the 'radialBonds' array bigger. FIXME: needs to be factored
+      // into a common pattern with 'extendAtomsArray'
+      extendRadialBondsArray = function(num) {
+        var savedArrays = [],
+            i;
+
+        for (i = 0; i < radialBonds.length; i++) {
+          savedArrays[i] = radialBonds[i];
+        }
+
+        createRadialBondsArray(num);
+
+        for (i = 0; i < radialBonds.length; i++) {
+          arrays.copy(savedArrays[i], radialBonds[i]);
+        }
+      },
 
       // Function that accepts a value T and returns an average of the last n values of T (for some n).
       T_windowed,
@@ -1451,15 +1633,17 @@ exports.makeModel = function() {
         vx[i] += vx_t;
         vy[i] += vy_t;
 
-        // add momenta
-        px[i] += elements[element[i]][0]*vx_t;
-        py[i] += elements[element[i]][0]*vy_t;
+        px[i] = vx[i]*elements[element[i]][0];
+        py[i] = vy[i]*elements[element[i]][0];
       },
 
       // Adds effect of angular velocity omega, relative to (x_CM, y_CM), to the velocity vector of particle i
       addAngularVelocity = function(i, omega) {
         vx[i] -= omega * (y[i] - y_CM);
         vy[i] += omega * (x[i] - x_CM);
+
+        px[i] = vx[i]*elements[element[i]][0];
+        py[i] = vy[i]*elements[element[i]][0];
       },
 
       // Subtracts the center-of-mass linear velocity and the system angular velocity from the velocity vectors
@@ -1543,18 +1727,22 @@ exports.makeModel = function() {
         if (x[i] < leftwall) {
           x[i]  = leftwall + (leftwall - x[i]);
           vx[i] *= -1;
+          px[i] *= -1;
         } else if (x[i] > rightwall) {
           x[i]  = rightwall - (x[i] - rightwall);
           vx[i] *= -1;
+          px[i] *= -1;
         }
 
         // Bounce off horizontal walls
         if (y[i] < bottomwall) {
           y[i]  = bottomwall + (bottomwall - y[i]);
           vy[i] *= -1;
+          py[i] *= -1;
         } else if (y[i] > topwall) {
           y[i]  = topwall - (y[i] - topwall);
           vy[i] *= -1;
+          py[i] *= -1;
         }
       },
 
@@ -1572,7 +1760,7 @@ exports.makeModel = function() {
       // where j < i. Note a(t, i) and a(t, j) (accelerations from the previous time step) should be cleared from arrays
       // ax and ay before calling this function.
       updatePairwiseAccelerations = function(i) {
-        var j, dx, dy, r_sq, f_over_r, f_over_r_dx, f_over_r_dy,
+        var j, dx, dy, r_sq, f_over_r, fx, fy,
             el_i = element[i],
             el_j,
             mass_inv = 1/elements[el_i][0], mass_j_inv, q_i = charge[i];
@@ -1589,7 +1777,7 @@ exports.makeModel = function() {
           f_over_r = 0;
 
           if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el_i][el_j]) {
-            f_over_r += lennardJones.forceOverDistanceFromSquaredDistance(r_sq, el_i, el_j);
+            f_over_r += ljCalculator[el_i][el_j].forceOverDistanceFromSquaredDistance(r_sq);
           }
 
           if (useCoulombInteraction) {
@@ -1597,13 +1785,64 @@ exports.makeModel = function() {
           }
 
           if (f_over_r) {
-            f_over_r_dx = f_over_r * dx;
-            f_over_r_dy = f_over_r * dy;
-            ax[i] += f_over_r_dx * mass_inv;
-            ay[i] += f_over_r_dy * mass_inv;
-            ax[j] -= f_over_r_dx * mass_j_inv;
-            ay[j] -= f_over_r_dy * mass_j_inv;
+            fx = f_over_r * dx;
+            fy = f_over_r * dy;
+            ax[i] += fx * mass_inv;
+            ay[i] += fy * mass_inv;
+            ax[j] -= fx * mass_j_inv;
+            ay[j] -= fy * mass_j_inv;
           }
+        }
+      },
+
+      updateBondAccelerations = function() {
+        // fast path if no radial bonds have been defined
+        if (N_radialBonds < 1) return;
+
+        var i,
+            len,
+            i1,
+            i2,
+            dx,
+            dy,
+            r_sq,
+            r,
+            k,
+            r0,
+            f_over_r,
+            fx,
+            fy,
+            mass1_inv,
+            mass2_inv;
+
+        for (i = 0, len = radialBonds[0].length; i < len; i++) {
+          i1 = radialBondAtom1Index[i];
+          i2 = radialBondAtom2Index[i];
+
+          mass1_inv = 1/elements[element[i1]][0];
+          mass2_inv = 1/elements[element[i2]][0];
+
+          dx = x[i2] - x[i1];
+          dy = y[i2] - y[i1];
+          r_sq = dx*dx + dy*dy;
+          r = Math.sqrt(r_sq);
+
+          // eV/nm^2
+          k = radialBondStrength[i];
+
+          // nm
+          r0 = radialBondLength[i];
+
+          // "natural" Next Gen MW force units / nm
+          f_over_r = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+
+          fx = f_over_r * dx;
+          fy = f_over_r * dy;
+
+          ax[i1] += fx * mass1_inv;
+          ay[i1] += fy * mass1_inv;
+          ax[i2] -= fx * mass2_inv;
+          ay[i2] -= fy * mass2_inv;
         }
       },
 
@@ -1670,29 +1909,8 @@ exports.makeModel = function() {
       return [size[0], size[1]];
     },
 
-    // setLJEpsilon: function(e) {
-    //   lennardJones.setEpsilon(e);
-    // },
-
-    // getLJEpsilon: function() {
-    //   return lennardJones.coefficients().epsilon;
-    // },
-
-    // setLJSigma: function(s) {
-    //   var i;
-
-    //   lennardJones.setSigma(s);
-    //   for (i = 0; i < N; i++) {
-    //     radius[i] = s/2;
-    //   }
-    // },
-
-    // getLJSigma: function() {
-    //   return lennardJones.coefficients().sigma;
-    // },
-
     getLJCalculator: function() {
-      return lennardJones;
+      return ljCalculator;
     },
 
     /*
@@ -1703,26 +1921,58 @@ exports.makeModel = function() {
       ]
     */
     setElements: function(elems) {
+      var i, j, epsilon_i, epsilon_j, sigma_i, sigma_j;
+
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: setElements cannot be called after atoms have been created");
       }
       elements = elems;
-      lennardJones = window.lennardJones = makeLennardJonesCalculator(elements, ljCoefficientsChanged);
+
+      for (i = 0; i < elements.length; i++) {
+        epsilon[i] = [];
+        sigma[i] = [];
+        ljCalculator[i] = [];
+        cutoffDistance_LJ_sq[i] = [];
+      }
+
+      for (i = 0; i < elements.length; i++) {
+        epsilon_i = elements[i][ELEMENT_INDICES.EPSILON];
+        sigma_i   = elements[i][ELEMENT_INDICES.SIGMA];
+
+        // the radius is derived from sigma
+        elements[i][ELEMENT_INDICES.RADIUS] = lennardJones.radius(sigma_i);
+
+        for (j = i; j < elements.length; j++) {
+          epsilon_j = elements[j][ELEMENT_INDICES.EPSILON];
+          sigma_j   = elements[j][ELEMENT_INDICES.SIGMA];
+
+          epsilon[i][j] = epsilon[j][i] = lennardJones.pairwiseEpsilon(epsilon_i, epsilon_j);
+          sigma[i][j]   = sigma[j][i]   = lennardJones.pairwiseSigma(sigma_i, sigma_j);
+
+          // bind i and j to the callback made below
+          (function(i, j) {
+            ljCalculator[i][j] = ljCalculator[j][i] = lennardJones.newLJCalculator({
+              epsilon: epsilon[i][j],
+              sigma:   sigma[i][j]
+            }, function(coefficients) {
+              ljCoefficientsChanged(i, j, coefficients);
+            });
+          }(i,j));
+        }
+      }
     },
 
-    // allocates 'nodes' array of arrays, sets number of atoms.
-    // Must either pass in a hash that includes X and Y locations of the atoms,
-    // or a single number to represent the number of atoms.
-    // Note: even if X and Y are passed in, atoms won't be placed until
-    // initializeAtomsFromProperties() is called.
-    // options:
-    //     X: the X locations of the atoms to create
-    //     Y: the Y locations of the atoms to create
-    //   num: the number of atoms to create
+    /**
+      Allocates 'atoms' array of arrays, sets number of atoms.
+
+      options:
+        num: the number of atoms to create
+    */
     createAtoms: function(options) {
       var arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
           uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
-          i;
+          numIndices,
+          num;
 
       if (atomsHaveBeenCreated) {
         throw new Error("md2d: createAtoms was called even though the particles have already been created for this model instance.");
@@ -1734,44 +1984,108 @@ exports.makeModel = function() {
         throw new Error("md2d: createAtoms was called without options specifying the atoms to create.");
       }
 
-      N = (options.X && options.Y) ? options.X.length : options.num;
+      num = options.num;
 
-      if (typeof N === 'undefined') {
-        throw new Error("md2d: createAtoms was called without the required 'N' option specifying the number of atoms to create.");
+      if (typeof num === 'undefined') {
+        throw new Error("md2d: createAtoms was called without the required 'num' option specifying the number of atoms to create.");
       }
-      if (N !== Math.floor(N)) {
-        throw new Error("md2d: createAtoms was passed a non-integral 'N' option.");
+      if (num !== Math.floor(num)) {
+        throw new Error("md2d: createAtoms was passed a non-integral 'num' option.");
       }
-      if (N < N_MIN) {
-        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + N + " which is less than the minimum allowable value: N_MIN = " + N_MIN + ".");
+      if (num < N_MIN) {
+        throw new Error("md2d: create Atoms was passed an 'num' option equal to: " + num + " which is less than the minimum allowable value: N_MIN = " + N_MIN + ".");
       }
-      if (N > N_MAX) {
-        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + N + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
+      if (num > N_MAX) {
+        throw new Error("md2d: create Atoms was passed an 'N' option equal to: " + num + " which is greater than the minimum allowable value: N_MAX = " + N_MAX + ".");
       }
 
-      nodes  = model.nodes   = arrays.create(NODE_PROPERTIES_COUNT, null, 'regular');
+      numIndices = (function() {
+        var n = 0, index;
+        for (index in INDICES) {
+          if (INDICES.hasOwnProperty(index)) n++;
+        }
+        return n;
+      }());
 
-      radius = model.radius = nodes[INDICES.RADIUS] = arrays.create(N, 0, arrayType);
-      px     = model.px     = nodes[INDICES.PX]     = arrays.create(N, 0, arrayType);
-      py     = model.py     = nodes[INDICES.PY]     = arrays.create(N, 0, arrayType);
-      x      = model.x      = nodes[INDICES.X]      = arrays.create(N, 0, arrayType);
-      y      = model.y      = nodes[INDICES.Y]      = arrays.create(N, 0, arrayType);
-      vx     = model.vx     = nodes[INDICES.VX]     = arrays.create(N, 0, arrayType);
-      vy     = model.vy     = nodes[INDICES.VY]     = arrays.create(N, 0, arrayType);
-      speed  = model.speed  = nodes[INDICES.SPEED]  = arrays.create(N, 0, arrayType);
-      ax     = model.ax     = nodes[INDICES.AX]     = arrays.create(N, 0, arrayType);
-      ay     = model.ay     = nodes[INDICES.AY]     = arrays.create(N, 0, arrayType);
-      charge = model.charge = nodes[INDICES.CHARGE] = arrays.create(N, 0, arrayType);
+      atoms  = model.atoms  = arrays.create(numIndices, null, 'regular');
+
+      radius = model.radius = atoms[INDICES.RADIUS] = arrays.create(num, 0, arrayType);
+      px     = model.px     = atoms[INDICES.PX]     = arrays.create(num, 0, arrayType);
+      py     = model.py     = atoms[INDICES.PY]     = arrays.create(num, 0, arrayType);
+      x      = model.x      = atoms[INDICES.X]      = arrays.create(num, 0, arrayType);
+      y      = model.y      = atoms[INDICES.Y]      = arrays.create(num, 0, arrayType);
+      vx     = model.vx     = atoms[INDICES.VX]     = arrays.create(num, 0, arrayType);
+      vy     = model.vy     = atoms[INDICES.VY]     = arrays.create(num, 0, arrayType);
+      speed  = model.speed  = atoms[INDICES.SPEED]  = arrays.create(num, 0, arrayType);
+      ax     = model.ax     = atoms[INDICES.AX]     = arrays.create(num, 0, arrayType);
+      ay     = model.ay     = atoms[INDICES.AY]     = arrays.create(num, 0, arrayType);
+      charge = model.charge = atoms[INDICES.CHARGE] = arrays.create(num, 0, arrayType);
 
       // NOTE, this is a Uint8Array for now, but this may not be the best pattern in the future
       // because Uint8Arrays length cannot be changed. Right now we never add or remove atoms
       // from the model without re-creating the atom arrays, but that might change in the future.
-      element = model.element = nodes[INDICES.ELEMENT] = arrays.create(N, 0, uint8ArrayType);
+      element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8ArrayType);
+
+      N = 0;
+      totalMass = 0;
+    },
+
+    /**
+      The canonical method for adding an atom to the collections of atoms.
+
+      If there isn't enough room in the 'atoms' array, it (somewhat inefficiently)
+      extends the length of the typed arrays by one to contain one more atom with listed properties.
+    */
+    addAtom: function(atom_element, atom_x, atom_y, atom_vx, atom_vy, atom_charge) {
+      var el, mass;
+
+      if (N+1 > atoms[0].length) {
+        extendAtomsArray(N+1);
+      }
+
+      el = elements[atom_element];
+      mass = el[ELEMENT_INDICES.MASS];
+
+      element[N] = atom_element;
+      radius[N]  = elements[atom_element][ELEMENT_INDICES.RADIUS];
+      x[N]       = atom_x;
+      y[N]       = atom_y;
+      vx[N]      = atom_vx;
+      vy[N]      = atom_vy;
+      px[N]      = atom_vx * mass;
+      py[N]      = atom_vy * mass;
+      ax[N]      = 0;
+      ay[N]      = 0;
+      speed[N]   = Math.sqrt(atom_vx*atom_vx + atom_vy*atom_vy);
+      charge[N]  = atom_charge;
+
+      totalMass += mass;
+      N++;
+    },
+
+    /**
+      The canonical method for adding a radial bond to the collection of radial bonds.
+
+      If there isn't enough room in the 'radialBonds' array, it (somewhat inefficiently)
+      extends the length of the typed arrays by one to contain one more atom with listed properties.
+    */
+    addRadialBond: function(atomIndex1, atomIndex2, bondLength, bondStrength) {
+
+      if (N_radialBonds+1 > radialBondAtom1Index.length) {
+        extendRadialBondsArray(N+1);
+      }
+
+      radialBondAtom1Index[N_radialBonds] = atomIndex1;
+      radialBondAtom2Index[N_radialBonds] = atomIndex2;
+      radialBondLength[N_radialBonds]     = bondLength;
+      radialBondStrength[N_radialBonds]   = bondStrength;
+
+      N_radialBonds++;
     },
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
-      var cumulativeTotalMass = 0,
+      var x, y, vx, vy, charge, element,
           i, ii;
 
       if (!(props.X && props.Y)) {
@@ -1783,31 +2097,16 @@ exports.makeModel = function() {
         throw new Error("md2d: For now, velocities must be set when locations are set.");
       }
 
-      for (i=0, ii=N; i<ii; i++){
-        x[i] = props.X[i];
-        y[i] = props.Y[i];
-        vx[i] = props.VX[i];
-        vy[i] = props.VY[i];
-        speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
-      }
+      for (i=0, ii=props.X.length; i<ii; i++){
+        element = props.ELEMENT ? props.ELEMENT[i] : 0;
+        x = props.X[i];
+        y = props.Y[i];
+        vx = props.VX[i];
+        vy = props.VY[i];
+        charge = props.CHARGE ? props.CHARGE[i] : 0;
 
-      if (props.CHARGE) {
-        for (i=0, ii=N; i<ii; i++){
-          charge[i] = props.CHARGE[i];
-        }
+        model.addAtom(element, x, y, vx, vy, charge);
       }
-
-      if (props.ELEMENT) {
-        for (i=0, ii=N; i<ii; i++){
-          element[i] = props.ELEMENT[i];
-          cumulativeTotalMass += elements[element[i]][0];
-        }
-      } else {
-        cumulativeTotalMass = N * elements[0][0];
-      }
-      totalMass = model.totalMass = cumulativeTotalMass;
-
-      setRadii();
 
       // Publish the current state
       T = computeTemperature();
@@ -1816,13 +2115,18 @@ exports.makeModel = function() {
 
     initializeAtomsRandomly: function(options) {
 
-      var temperature = options.temperature || 100,  // if not requested, just need any number
-          nrows = Math.floor(Math.sqrt(N)),
-          ncols = Math.ceil(N/nrows),
+      var // if a temperature is not explicitly requested, we just need any nonzero number
+          temperature = options.temperature || 100,
+
+          // fill up the entire 'atoms' array if not otherwise requested
+          num         = options.num         || atoms[0].length,
+
+          nrows = Math.floor(Math.sqrt(num)),
+          ncols = Math.ceil(num/nrows),
 
           i, r, c, rowSpacing, colSpacing,
           vMagnitude, vDirection,
-          coefficients = lennardJones.coefficients();
+          x, y, vx, vy, charge, element;
 
       validateTemperature(temperature);
 
@@ -1833,32 +2137,23 @@ exports.makeModel = function() {
       // configuration. But it works OK for now.
       i = -1;
 
-      totalMass = 0;
       for (r = 1; r <= nrows; r++) {
         for (c = 1; c <= ncols; c++) {
           i++;
-          if (i === N) break;
+          if (i === num) break;
 
-          x[i] = c*colSpacing;
-          y[i] = r*rowSpacing;
-
+          element    = Math.floor(Math.random() * elements.length);     // random element
           vMagnitude = math.normal(1, 1/4);
           vDirection = 2 * Math.random() * Math.PI;
-          vx[i] = vMagnitude * Math.cos(vDirection);
-          px[i] = elements[element[i]][0] * vx[i];
-          vy[i] = vMagnitude * Math.sin(vDirection);
-          py[i] = elements[element[i]][0] * vy[i];
 
-          ax[i] = 0;
-          ay[i] = 0;
+          x = c*colSpacing;
+          y = r*rowSpacing;
+          vx = vMagnitude * Math.cos(vDirection);
+          vy = vMagnitude * Math.sin(vDirection);
 
-          speed[i]  = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
-          charge[i] = 2*(i%2)-1;      // alternate negative and positive charges
+          charge = 2*(i%2)-1;      // alternate negative and positive charges
 
-          element[i] = Math.floor(Math.random() * elements.length);     // random element
-          radius[i] = coefficients.rmin[element[i]][element[i]] / 2;
-
-          model.totalMass = totalMass += elements[element[i]][0];
+          model.addAtom(element, x, y, vx, vy, charge);
         }
       }
 
@@ -1879,8 +2174,27 @@ exports.makeModel = function() {
       model.computeOutputState();
     },
 
+    initializeRadialBonds: function(props) {
+      var num = props.atom1Index.length,
+          i;
+
+      createRadialBondsArray(props.atom1Index.length);
+
+      for (i = 0; i < num; i++) {
+        model.addRadialBond(
+          props.atom1Index[i],
+          props.atom2Index[i],
+          props.bondLength[i],
+          props.bondStrength[i]
+        );
+      }
+    },
 
     relaxToTemperature: function(T) {
+
+      // FIXME this method needs to be modified. It should rescale velocities only periodically
+      // and stop when the temperature approaches a steady state between rescalings.
+
       if (T != null) T_target = T;
 
       validateTemperature(T_target);
@@ -1891,8 +2205,9 @@ exports.makeModel = function() {
       }
     },
 
-
     integrate: function(duration, opt_dt) {
+
+      var radius;
 
       if (!atomsHaveBeenCreated) {
         throw new Error("md2d: integrate called before atoms created.");
@@ -1903,10 +2218,13 @@ exports.makeModel = function() {
       dt = opt_dt || 1;
       dt_sq = dt*dt;                      // time step, squared
 
-      leftwall   = radius[0];
-      bottomwall = radius[0];
-      rightwall  = size[0] - radius[0];
-      topwall    = size[1] - radius[0];
+      // FIXME we still need to make bounceOffWalls respect each atom's actual radius, rather than
+      // assuming just one radius as below
+      radius = elements[element[0]][ELEMENT_INDICES.RADIUS];
+      leftwall   = radius;
+      bottomwall = radius;
+      rightwall  = size[0] - radius;
+      topwall    = size[1] - radius;
 
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
@@ -1932,6 +2250,9 @@ exports.makeModel = function() {
           updatePairwiseAccelerations(i);
         }
 
+        // Accumulate accelerations from bonded interactions into a(t+dt)
+        updateBondAccelerations();
+
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
           halfUpdateVelocity(i);
@@ -1946,10 +2267,22 @@ exports.makeModel = function() {
       model.computeOutputState();
     },
 
+    getTotalMass: function() {
+      return totalMass;
+    },
+
+    getRadiusOfElement: function(el) {
+      return elements[el][ELEMENT_INDICES.RADIUS];
+    },
+
     computeOutputState: function() {
       var i, j,
+          i1, i2,
           dx, dy,
           r_sq,
+          k,
+          dr,
+          lj,
           KEinMWUnits,       // total kinetic energy, in MW units
           PE;                // potential energy, in eV
 
@@ -1960,6 +2293,8 @@ exports.makeModel = function() {
 
       for (i = 0; i < N; i++) {
         KEinMWUnits += 0.5 * elements[element[i]][0] * (vx[i] * vx[i] + vy[i] * vy[i]);
+
+        // pairwise interactions
         for (j = i+1; j < N; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -1968,12 +2303,31 @@ exports.makeModel = function() {
 
           // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
           if (useLennardJonesInteraction ) {
-            PE += -lennardJones.potentialFromSquaredDistance(r_sq, element[i], element[j]);
+            lj = ljCalculator[element[i]][element[j]];
+            PE += -lj.potentialFromSquaredDistance(r_sq, element[i], element[j]);
           }
           if (useCoulombInteraction) {
             PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
         }
+      }
+
+      // radial bonds
+      for (i = 0; i < N_radialBonds; i++) {
+        i1 = radialBondAtom1Index[i];
+        i2 = radialBondAtom2Index[i];
+
+        dx = x[i2] - x[i1];
+        dy = y[i2] - y[i1];
+        r_sq = dx*dx + dy*dy;
+
+        // eV/nm^2
+        k = radialBondStrength[i];
+
+        // nm
+        dr = Math.sqrt(r_sq) - radialBondLength[i];
+
+        PE = 0.5*k*dr*dr;
       }
 
       // State to be read by the rest of the system:
@@ -1988,6 +2342,118 @@ exports.makeModel = function() {
       outputState.omega_CM = omega_CM;
     },
 
+    /**
+      Given a test element and charge, returns a function that returns for a location (x, y) in nm:
+       * the potential energy, in eV, of an atom of that element and charge at location (x, y)
+       * optionally, if calculateGradient is true, the gradient of the potential as an
+         array [gradX, gradY]. (units: eV/nm)
+    */
+    newPotentialCalculator: function(testElement, testCharge, calculateGradient) {
+
+      return function(testX, testY) {
+        var PE = 0,
+            fx = 0,
+            fy = 0,
+            gradX,
+            gradY,
+            ljTest = ljCalculator[testElement],
+            i,
+            dx,
+            dy,
+            r_sq,
+            r,
+            f_over_r,
+            lj;
+
+        for (i = 0; i < N; i++) {
+          dx = testX - x[i];
+          dy = testY - y[i];
+          r_sq = dx*dx + dy*dy;
+          f_over_r = 0;
+
+          if (useLennardJonesInteraction) {
+            lj = ljTest[element[i]];
+            PE += -lj.potentialFromSquaredDistance(r_sq, testElement, element[i]);
+            if (calculateGradient) {
+              f_over_r += lj.forceOverDistanceFromSquaredDistance(r_sq);
+            }
+          }
+
+          if (useCoulombInteraction && testCharge) {
+            r = Math.sqrt(r_sq);
+            PE += -coulomb.potential(r, testCharge, charge[i]);
+            if (calculateGradient) {
+              f_over_r += coulomb.forceOverDistanceFromSquaredDistance(r_sq, testCharge, charge[i]);
+            }
+          }
+
+          if (f_over_r) {
+            fx += f_over_r * dx;
+            fy += f_over_r * dy;
+          }
+        }
+
+        if (calculateGradient) {
+          gradX = constants.convert(fx, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
+          gradY = constants.convert(fy, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
+          return [PE, [gradX, gradY]];
+        }
+
+        return PE;
+      };
+    },
+
+    /**
+      Starting at (x,y), try to find a position which minimizes the potential energy change caused
+      by adding at atom of element el.
+    */
+    findMinimumPELocation: function(el, x, y, charge) {
+      var pot    = model.newPotentialCalculator(el, charge, true),
+          radius = elements[el][ELEMENT_INDICES.RADIUS],
+
+          res =  math.minimize(pot, [x, y], {
+            bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ]
+          });
+
+      if (res.error) return false;
+      return res[1];
+    },
+
+    /**
+      Starting at (x,y), try to find a position which minimizes the square of the potential energy
+      change caused by adding at atom of element el, i.e., find a "farthest from everything"
+      position.
+    */
+    findMinimumPESquaredLocation: function(el, x, y, charge) {
+      var pot = model.newPotentialCalculator(el, charge, true),
+
+          // squared potential energy, with gradient
+          potsq = function(x,y) {
+            var res, f, grad;
+
+            res = pot(x,y);
+            f = res[0];
+            grad = res[1];
+
+            // chain rule
+            grad[0] *= (2*f);
+            grad[1] *= (2*f);
+
+            return [f*f, grad];
+          },
+
+          radius = elements[el][ELEMENT_INDICES.RADIUS],
+
+          res = math.minimize(potsq, [x, y], {
+            bounds: [ [radius, size[0]-radius], [radius, size[1]-radius] ],
+            stopval: 1e-4,
+            precision: 1e-6
+          });
+
+      if (res.error) return false;
+      return res[1];
+    },
+
     serialize: function() {
       var serializedData = {},
           prop,
@@ -1995,7 +2461,7 @@ exports.makeModel = function() {
           i, ii;
       for (i=0, ii=SAVEABLE_INDICES.length; i<ii; i++) {
         prop = SAVEABLE_INDICES[i];
-        array = nodes[INDICES[prop]];
+        array = atoms[INDICES[prop]];
         serializedData[prop] = array.slice ? array.slice() : copyTypedArray(array);
       }
       return serializedData;
@@ -2019,7 +2485,6 @@ modeler.VERSION = '0.2.0';
 modeler.model = function(initialProperties) {
   var model = {},
       elements = initialProperties.elements || [{id: 0, mass: 39.95, epsilon: -0.1, sigma: 0.34}],
-      atoms = [],
       dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack", "seek"),
       temperature_control,
       lennard_jones_forces, coulomb_forces,
@@ -2028,7 +2493,6 @@ modeler.model = function(initialProperties) {
       tick_history_list_index = 0,
       tick_counter = 0,
       new_step = false,
-      epsilon, sigma,
       pressure, pressures = [0],
       sample_time, sample_times = [],
 
@@ -2047,18 +2511,8 @@ modeler.model = function(initialProperties) {
       modelOutputState,
       model_listener,
 
-      //
-      // Individual property arrays for the nodes
-      //
-      radius, px, py, x, y, vx, vy, speed, ax, ay, mass, charge,
-
       width = initialProperties.width,
       height = initialProperties.height,
-
-      //
-      // Number of individual properties for a node
-      //
-      node_properties_length = 12,
 
       //
       // A two dimensional array consisting of arrays of node property values
@@ -2153,46 +2607,13 @@ modeler.model = function(initialProperties) {
   }
 
   function average_speed() {
-    var i, s = 0, n = nodes[0].length;
-    i = -1; while (++i < n) { s += speed[i]; }
+    var i, s = 0, n = model.get_num_atoms();
+    i = -1; while (++i < n) { s += coreModel.speed[i]; }
     return s/n;
   }
 
-  function tick_history_list_is_empty() {
-    return tick_history_list_index === 0;
-  }
-
-  function tick_history_list_push() {
-    var i,
-        newnodes = [],
-        n = node_properties_length;
-
-    i = -1; while (++i < n) {
-      newnodes[i] = arrays.clone(nodes[i]);
-    }
-    tick_history_list.length = tick_history_list_index;
-    tick_history_list_index++;
-    tick_counter++;
-    new_step = true;
-    tick_history_list.push({
-      nodes:   newnodes,
-      pressure: modelOutputState.pressure,
-      pe:       modelOutputState.PE,
-      ke:       modelOutputState.KE,
-      time:     modelOutputState.time
-    });
-    if (tick_history_list_index > 1000) {
-      tick_history_list.splice(0,1);
-      tick_history_list_index = 1000;
-    }
-  }
-
-  function tick() {
+  function tick(elapsedTime, dontDispatchTickEvent) {
     var t;
-
-    if (tick_history_list_is_empty()) {
-      tick_history_list_push();
-    }
 
     coreModel.integrate();
 
@@ -2216,17 +2637,45 @@ modeler.model = function(initialProperties) {
       } else {
         sample_time = t;
       }
-      dispatch.tick({type: "tick"});
-    } else {
-      if (model_listener) { model_listener(); }
     }
+
+    if (!dontDispatchTickEvent) dispatch.tick();
     return stopped;
+  }
+
+  function tick_history_list_is_empty() {
+    return tick_history_list_index === 0;
+  }
+
+  function tick_history_list_push() {
+    var i,
+        newnodes = [],
+        n = nodes.length;
+
+    i = -1; while (++i < n) {
+      newnodes[i] = arrays.clone(nodes[i]);
+    }
+    tick_history_list.length = tick_history_list_index;
+    tick_history_list_index++;
+    tick_counter++;
+    new_step = true;
+    tick_history_list.push({
+      nodes:   newnodes,
+      pressure: modelOutputState.pressure,
+      pe:       modelOutputState.PE,
+      ke:       modelOutputState.KE,
+      time:     modelOutputState.time
+    });
+    if (tick_history_list_index > 1000) {
+      tick_history_list.splice(0,1);
+      tick_history_list_index = 1000;
+    }
   }
 
   function reset_tick_history_list() {
     tick_history_list = [];
     tick_history_list_index = 0;
-    tick_counter = -1;
+    tick_counter = 0;
   }
 
   function tick_history_list_reset_to_ptr() {
@@ -2234,7 +2683,7 @@ modeler.model = function(initialProperties) {
   }
 
   function tick_history_list_extract(index) {
-    var i, n=node_properties_length;
+    var i, n=nodes.length;
     if (index < 0) {
       throw new Error("modeler: request for tick_history_list[" + index + "]");
     }
@@ -2251,16 +2700,6 @@ modeler.model = function(initialProperties) {
 
   function container_pressure() {
     return pressures.reduce(function(j,k) { return j+k; })/pressures.length;
-  }
-
-  function speed_history(speeds) {
-    if (arguments.length) {
-      speed_history.push(speeds);
-      // limit the pressures array to the most recent 16 entries
-      speed_history.splice(0, speed_history.length - 100);
-    } else {
-      return speed_history.reduce(function(j,k) { return j+k; })/pressures.length;
-    }
   }
 
   function average_rate() {
@@ -2291,80 +2730,13 @@ modeler.model = function(initialProperties) {
     notifyListenersOfEvents(propsChanged);
   }
 
-  // Creates a new md2d coreModel
-  // @config: either the number of atoms (for a random setup) or
-  //          a hash specifying the x,y,vx,vy properties of the atoms
-  function createNewCoreModel(config) {
-    var T, elemsArray, element, i, ii;
+  function readModelState() {
+    coreModel.computeOutputState();
 
-    // get a fresh model
-    coreModel = md2d.makeModel();
-    coreModel.setSize([width,height]);
-
-    if (elements) {
-      // convert from easily-readble json format to simplified array format
-      elemsArray = [];
-      for (i=0, ii=elements.length; i<ii; i++){
-        element = elements[i];
-        elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
-      }
-      coreModel.setElements(elemsArray);
-    }
-
-    if (typeof config === "number") {
-      coreModel.createAtoms({
-        num: config
-      });
-    } else {
-      coreModel.createAtoms(config);
-    }
-
-    nodes    = coreModel.nodes;
-    radius   = coreModel.radius;
-    px       = coreModel.px;
-    py       = coreModel.py;
-    x        = coreModel.x;
-    y        = coreModel.y;
-    vx       = coreModel.vx;
-    vy       = coreModel.vy;
-    speed    = coreModel.speed;
-    ax       = coreModel.ax;
-    ay       = coreModel.ay;
-    mass     = coreModel.mass;
-    charge   = coreModel.charge;
-
-    modelOutputState = coreModel.outputState;
-
-    // The d3 molecule viewer requires this length to be set correctly:
-    atoms.length = nodes[0].length;
-
-    // Initialize properties
-    // lennard_jones_forces = properties.lennard_jones_forces;
-    // coulomb_forces       = properties.coulomb_forces;
-    temperature_control  = properties.temperature_control;
-    temperature          = properties.temperature;
-
-    reset_tick_history_list();
-    new_step = true;
-
-    coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
-    coreModel.useCoulombInteraction(properties.coulomb_forces);
-    coreModel.useThermostat(properties.temperature_control);
-
-    T = temperature;
-    coreModel.setTargetTemperature(T);
-
-    // coreModel.setLJEpsilon(properties.epsilon);
-    // coreModel.setLJSigma(properties.sigma);
-
-    if (config.X && config.Y) {
-      coreModel.initializeAtomsFromProperties(config);
-    } else {
-      coreModel.initializeAtomsRandomly({
-        temperature: T
-      });
-    }
-    return coreModel;
+    pressure = modelOutputState.pressure;
+    pe       = modelOutputState.PE;
+    ke       = modelOutputState.KE;
+    time     = modelOutputState.time;
   }
 
   // ------------------------------
@@ -2420,15 +2792,6 @@ modeler.model = function(initialProperties) {
       position
   */
   model.steps = function() {
-
-    // If no ticks have run, tick_history_list will be uninitialized.
-    if (tick_history_list_is_empty()) {
-      return 0;
-    }
-
-    // The first tick will push 2 states to the tick_history_list: the initialized state ("step 0")
-    // and the post-tick model state ("step 1")
-    // Subsequent ticks will push 1 state per tick. So subtract 1 from the length to get the step #.
     return tick_history_list.length - 1;
   };
 
@@ -2445,6 +2808,7 @@ modeler.model = function(initialProperties) {
     tick_history_list_extract(tick_history_list_index);
     dispatch.seek();
     notifyListenersOfEvents("seek");
+    if (model_listener) { model_listener(); }
     return tick_counter;
   };
 
@@ -2481,6 +2845,81 @@ modeler.model = function(initialProperties) {
     return tick_counter;
   };
 
+  /**
+    Creates a new md2d model with a new set of atoms and leaves it in 'coreModel'
+
+    @config: either the number of atoms (for a random setup) or
+             a hash specifying the x,y,vx,vy properties of the atoms
+    When random setup is used, the option 'relax' determines whether the model is requested to
+    relax to a steady-state temperature (and in effect gets thermalized). If false, the atoms are
+    left in whatever grid the coreModel's initialization leaves them in.
+  */
+  model.createNewAtoms = function(config) {
+    var elemsArray, element, i, ii, num;
+
+    if (typeof config === 'number') {
+      num = config;
+    } else if (config.num != null) {
+      num = config.num;
+    } else if (config.X) {
+      num = config.X.length;
+    }
+
+    // convert from easily-readble json format to simplified array format
+    elemsArray = [];
+    for (i=0, ii=elements.length; i<ii; i++){
+      element = elements[i];
+      elemsArray[element.id] = [element.mass, element.epsilon, element.sigma];
+    }
+
+    // get a fresh model
+    coreModel = md2d.makeModel();
+    coreModel.setSize([width,height]);
+    coreModel.setElements(elemsArray);
+    coreModel.createAtoms({
+      num: num
+    });
+
+    nodes = coreModel.atoms;
+    modelOutputState = coreModel.outputState;
+
+    // Initialize properties
+    temperature_control = properties.temperature_control;
+    temperature         = properties.temperature;
+
+    coreModel.useLennardJonesInteraction(properties.lennard_jones_forces);
+    coreModel.useCoulombInteraction(properties.coulomb_forces);
+    coreModel.useThermostat(temperature_control);
+
+    coreModel.setTargetTemperature(temperature);
+
+    if (config.X && config.Y) {
+      coreModel.initializeAtomsFromProperties(config);
+    } else {
+      coreModel.initializeAtomsRandomly({
+        temperature: temperature
+      });
+      if (config.relax) coreModel.relaxToTemperature();
+    }
+
+    readModelState();
+
+    // tick history stuff
+    reset_tick_history_list();
+    tick_history_list_push();
+    tick_counter = 0;
+    new_step = true;
+
+    // return model, for chaining (if used)
+    return model;
+  };
+
+  model.createRadialBonds = function(radialBonds) {
+    coreModel.initializeRadialBonds(radialBonds);
+    readModelState();
+    return model;
+  };
+
   // The next four functions assume we're are doing this for
   // all the atoms will need to be changed when different atoms
   // can have different LJ sigma values
@@ -2513,6 +2952,13 @@ modeler.model = function(initialProperties) {
     return coreModel.getLJCalculator();
   };
 
+  model.getPotentialFunction = function(element, charge, calculateGradient) {
+    if (charge == null) charge = 0;
+    calculateGradient = !!calculateGradient;
+
+    return coreModel.newPotentialCalculator(element, charge, calculateGradient);
+  },
+
   model.resetTime = function() {
     coreModel.setTime(0);
   };
@@ -2521,14 +2967,83 @@ modeler.model = function(initialProperties) {
     return modelOutputState ? modelOutputState.time : undefined;
   };
 
-  model.set_radius = function(r) {
-    // var i, n = nodes[0].length;
-    // i = -1; while(++i < n) { radius[i] = r; }
+  model.getTotalMass = function() {
+    return coreModel.getTotalMass();
   };
+
+  /**
+    Attempts to add an 0-velocity atom to a random location. Returns false if after 10 tries it
+    can't find a location. (Intended to be exposed as a script API method.)
+
+    Optionally allows specifying the element (default is to randomly select from all elements) and
+    charge (default is neutral).
+  */
+  model.addRandomAtom = function(el, charge) {
+    if (el == null) el = Math.floor( Math.random() * elements.length );
+    if (charge == null) charge = 0;
+
+    var size   = model.size(),
+        radius = coreModel.getRadiusOfElement(el),
+        x,
+        y,
+        loc,
+        numTries = 0,
+        // try at most ten times.
+        maxTries = 10;
+
+    do {
+      x = Math.random() * size[0] - 2*radius;
+      y = Math.random() * size[1] - 2*radius;
+
+      // findMinimimuPELocation will return false if minimization doesn't converge, in which case
+      // try again from a different x, y
+      loc = coreModel.findMinimumPELocation(el, x, y, 0, 0, charge);
+      if (loc && model.addAtom(el, loc[0], loc[1], 0, 0, charge)) return true;
+    } while (++numTries < maxTries);
+
+    return false;
+  },
+
+  /**
+    Adds a new atom with element 'el', charge 'charge', and velocity '[vx, vy]' to the model
+    at position [x, y]. (Intended to be exposed as a script API method.)
+
+    Adjusts (x,y) if needed so that the whole atom is within the walls of the container.
+
+    Returns false and does not add the atom if the potential energy change of adding an *uncharged*
+    atom of the specified element to the specified location would be positive (i.e, if the atom
+    intrudes into the repulsive region of another atom.)
+
+    Otherwise, returns true.
+  */
+  model.addAtom = function(el, x, y, vx, vy, charge) {
+    var size      = model.size(),
+        radius    = coreModel.getRadiusOfElement(el);
+
+    // As a convenience to script authors, bump the atom within bounds
+    if (x < radius) x = radius;
+    if (x > size[0]-radius) x = size[0]-radius;
+    if (y < radius) y = radius;
+    if (y > size[1]-radius) y = size[1]-radius;
+
+    // check the potential energy change caused by adding an *uncharged* atom at (x,y)
+    if (model.getPotentialFunction(el, 0, false)(x, y) <= 0) {
+      coreModel.addAtom(el, x, y, vx, vy, charge);
+
+      // reassign nodes to possibly-reallocated atoms array
+      nodes = coreModel.atoms;
+      coreModel.computeOutputState();
+      if (model_listener) model_listener();
+
+      return true;
+    }
+    // return false on failure
+    return false;
+  },
 
   // return a copy of the array of speeds
   model.get_speed = function() {
-    return arrays.copy(speed, []);
+    return arrays.copy(coreModel.speed, []);
   };
 
   model.get_rate = function() {
@@ -2553,8 +3068,8 @@ modeler.model = function(initialProperties) {
     return nodes;
   };
 
-  model.get_atoms = function() {
-    return atoms;
+  model.get_num_atoms = function() {
+    return nodes[0].length;
   };
 
   model.on = function(type, listener) {
@@ -2563,15 +3078,18 @@ modeler.model = function(initialProperties) {
   };
 
   model.tickInPlace = function() {
-    dispatch.tick({type: "tick"});
+    dispatch.tick();
     return model;
   };
 
-  model.tick = function(num) {
-    if (!arguments.length) { num = 1; }
-    var i = -1;
+  model.tick = function(num, opts) {
+    if (!arguments.length) num = 1;
+
+    var dontDispatchTickEvent = opts && opts.dontDispatchTickEvent || false,
+        i = -1;
+
     while(++i < num) {
-      tick();
+      tick(null, dontDispatchTickEvent);
     }
     return model;
   };
@@ -2604,7 +3122,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.ave_ke = function() {
-    return modelOutputState? modelOutputState.KE / nodes[0].length : undefined;
+    return modelOutputState? modelOutputState.KE / model.get_num_atoms() : undefined;
   };
 
   model.pe = function() {
@@ -2612,7 +3130,7 @@ modeler.model = function(initialProperties) {
   };
 
   model.ave_pe = function() {
-    return modelOutputState? modelOutputState.PE / nodes[0].length : undefined;
+    return modelOutputState? modelOutputState.PE / model.get_num_atoms() : undefined;
   };
 
   model.speed = function() {
@@ -2633,13 +3151,6 @@ modeler.model = function(initialProperties) {
     if (!arguments.length) return coreModel.getSize();
     coreModel.setSize(x);
     return model;
-  };
-
-  // Creates a new md2d coreModel
-  // @config: either the number of atoms (for a random setup) or
-  //          a hash specifying the x,y,vx,vy properties of the atoms
-  model.createNewAtoms = function(config) {
-    return createNewCoreModel(config);
   };
 
   model.set = function(hash) {

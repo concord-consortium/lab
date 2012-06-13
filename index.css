@@ -829,6 +829,21 @@ ul {
     margin: 0.3em 0.2em 0.3em 0.2em;
     padding: 0em 0em 0em 0em; }
 
+#content {
+  width: 100%; }
+
+.column1 {
+  width: 45%;
+  max-width: 80em;
+  vertical-align: top;
+  display: inline-block; }
+
+.column2 {
+  width: 45%;
+  max-width: 80em;
+  vertical-align: top;
+  display: inline-block; }
+
 .item-list {
   padding: 1em; }
   .item-list ul {

@@ -53,6 +53,37 @@ and <a href="http://www.opensource.org/licenses/BSD-3-Clause">The BSD 3-Clause L
 <a href="http://www.opensource.org/licenses/BSD-3-Clause">The BSD 3-Clause License</a>, and
 <a href="http://www.opensource.org/licenses/GPL-2.0">GPL v2.0</a>.</li>
   <li><a href="http://www.google.com/webfonts/specimen/Open+Sans">OpenSans Font</a>: <a href="http://www.opensource.org/licenses/Apache-2.0">Apache 2.0</a></li>
+  <li>
+    <p><a href="https://github.com/marijnh/CodeMirror2">Codemirror2</a>: <a href="http://www.opensource.org/licenses/MIT">MIT</a>
+Codemirror2 includes a number of modules from third parties. All of the modules are licensed under either the MIT or BSD
+license except for the following which are excluded during the Make process where resources from <code>src/vendor/</code> are
+generated and copied to <code>server/public/vendor/</code>.</p>
+
+    <p><strong>Licensing of Excluded Modules</strong></p>
+
+    <ol>
+      <li>src/vendor/codemirror2/mode/go/index.html: no license …</li>
+      <li>src/vendor/codemirror2/mode/rst/index.html: …??</li>
+      <li>src/vendor/codemirror2/mode/verilog//index.html: GPL</li>
+    </ol>
+
+    <p><strong>Licensing of included Modules</strong></p>
+
+    <ol>
+      <li>src/vendor/codemirror2/mode/coffeescript/LICENSE</li>
+      <li>src/vendor/codemirror2/mode/pascal/LICENSE: MIT</li>
+      <li>src/vendor/codemirror2/mode/perl/LICENSE: MIT</li>
+      <li>src/vendor/codemirror2/mode/python/LICENSE: MIT</li>
+      <li>src/vendor/codemirror2/mode/r/LICENSE: BSD</li>
+      <li>src/vendor/codemirror2/mode/ruby/LICENSE: BSD</li>
+      <li>src/vendor/codemirror2/mode/rpm/spec/index.html: same as codemirror2</li>
+      <li>src/vendor/codemirror2/mode/xquery/LICENSE: MIT</li>
+      <li>src/vendor/codemirror2/mode/xquery/index.html: MIT</li>
+      <li>src/vendor/codemirror2/mode/xquery/xquery.js: MIT</li>
+      <li>src/vendor/codemirror2/theme/xq-dark.css: MIT</li>
+      <li>src/vendor/codemirror2/lib/util/foldcode.js: MIT</li>
+    </ol>
+  </li>
 </ol>
 
 <p>The files in the <code>src/imports/</code> directory which are copied to the <code>imports/</code> directory
@@ -61,37 +92,61 @@ under various open source licenses. These resources represent some of the author
 work on the Java versions of Molecular Workbench and Energy2D and are distributed here to aid in the
 conversion of these resources to HTML5 for the Lab project.</p>
 
-<p>The files in the <code>src/jnlp/</code> directory are copied to the <code>jnlp/</code> directory when a distribution is created.
-Most of these files are also Copyright 2012 (c) by the Concord Consortium and distributed
+<p>Java files in <code>src/jnlp</code></p>
+
+<p>The files in the <code>src/jnlp</code> directory are compiled Java Jar archives and are copied to <code>server/public/jnlp/</code>
+when a runnable distribution is created during the build process.</p>
+
+<p>The only files in this directory are the native Java JNI libraries for accessin g the Vernier GoIO probeware.</p>
+
+<p>These files consist of code developed at Concord Consortium and licensed under the Lab license and the
+<a href="http://www.vernier.com/downloads/software-development-kits/go-sdk/">Vernier GoIO SDK</a> distributed by
+Vernier as Public Domain software (<a href="https://github.com/concord-consortium/goio_sdk">git mirror</a>).</p>
+
+<p>Java files in the <code>java</code> directory.</p>
+
+<p>Some of these files are also Copyright 2012 (c) by the Concord Consortium and distributed
 under various open source licenses. These resources represent our earlier work to support the Java versions
 of our computational simulations and probeware.</p>
 
-<p>Here is a list of files in the <code>src/jnlp/</code> directory, their authorship and licenses:</p>
+<p>Some of the files are from third parties.</p>
+
+<p>Here is a list of files in the <code>java</code> directory, their authorship and licenses:</p>
 
 <ol>
   <li>
-    <p>JDom (external), an XML processing library: <code>src/jnlp/jdom/jdom/jdom.jar</code>. JDom has an <a href="http://www.jdom.org/docs/faq.html#a0030">Apache-like license
+    <p>JDom (external), an XML processing library: <code>java/jdom/jdom-1.0.jar</code>. JDom has an <a href="http://www.jdom.org/docs/faq.html#a0030">Apache-like license
 with the attribution clause removed</a></p>
   </li>
   <li>
-    <p>JUG: Java UUID generator (external): <code>src/jnlp/jug/jug/jug.jar</code>. <a href="http://jug.safehaus.org/Download">JUG</a>
+    <p>JUG: Java UUID generator (external): <code>java/jug/jug-1.1.2.jar</code>. <a href="http://jug.safehaus.org/Download">JUG</a>
 v2 of JUG is available under: LGPL 2.1 and ASL 2.0, we are using v1.1.2 which is only under the LGPL 2.1</p>
   </li>
   <li>
-    <p>The Java Molecular Workbench files in this directory: <code>src/jnlp/org/concord/modeler/</code> (CC and external). The Java version
+    <p>The Java Molecular Workbench files in this directory: <code>java/mw</code>` (CC and external). The Java version
 of Molecular Workbench is distributed under the GNU General Public License. The Molecular Workbench
 jar also includes code from the external GPL-licensed JMol project.
 <a href="http://svn.concord.org/svn/projects/trunk/common/java/simulations/mw/">Java Molecular Workbench source code</a></p>
   </li>
   <li>
+    <p>The NetLogo jar file in this directory: <code>java/nlogo</code> is distributed under the
+<a href="http://ccl.northwestern.edu/netlogo/docs/copyright.html">GPL license</a> and created by:</p>
+
+    <p>Wilensky, U. (1999). NetLogo. http://ccl.northwestern.edu/netlogo/.
+Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.</p>
+
+    <p>And distributed here <a href="https://github.com/NetLogo/NetLogo">github.com/NetLogo/NetLogo</a></p>
+  </li>
+  <li>
     <p>The rest of the files in the <code>src/jnlp/org/concord/</code> directory were created by Concord Consortium and are all
-distributed under the LGPL license.</p>
+distributed under the Lab licenses.</p>
   </li>
 </ol>
 
-<p>If you have downloaded the source code repository for the Lab project the files mentioned so far are all present
-in the repository and during the build process are copied to the distribution directory which is located
-here in the source code repository: <code>server/public/</code>.</p>
+<p>If you have downloaded the source code repository for the Lab project only the files in the <code>src/jnlp</code> directory
+are present in the repository.</p>
+
+<p>The initiation of a separate build task is required to integrate the rest of the Java resources.</p>
 
 <p>All other files distributed in the complete source code repository other than the ones specifically mentioned above
 are distributed under the Concord Consortium Lab project software license.</p>
