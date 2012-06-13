@@ -22,3 +22,6 @@
 [submodule "src/vendor/codemirror2"]
 	path = src/vendor/codemirror2
 	url = git://github.com/marijnh/CodeMirror2.git
+[submodule "config/littlechef"]
+	path = config/littlechef
+	url = git://github.com/concord-consortium/littlechef-servers.git

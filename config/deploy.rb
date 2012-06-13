@@ -1,6 +1,7 @@
 require "bundler/capistrano"
+require "./script/setup"
 
-set :stages, %w(lab-dev lab2-dev)
+set :stages, CONFIG[:deploy][:targets].collect { |target| target[:name] }
 set :default_stage, "lab-dev"
 require 'capistrano/ext/multistage'
 

@@ -1,7 +1,24 @@
-# password and alias for your Java siging certificate.
 ---
-:password: abc123
-:alias: lab-sample-keystore
-:keystore_path: config/lab-sample-keystore.jks
-:host: lab2.dev.concord.org
-:username: deploy
+# password and alias for Java siging certificate.
+:java:
+  :password: abc123
+  :alias: lab-sample-keystore
+  :keystore_path: config/lab-sample-keystore.jks
+# deploy configuration for working with Amazon Web Services
+:deploy:
+  :targets:
+  - :name: lab-dev
+    :url: lab.dev.concord.org
+    :branch: master
+  - :name: lab2-dev
+    :url: lab2.dev.concord.org
+    :branch: master
+  - :name: lab3-dev
+    :url: lab3.dev.concord.org
+    :branch: master
+  :group_name: lab.dev
+  :zone_domain: concord.org.
+  :zone_records_name: dev.concord.org
+  :pem:
+    :name: lab-dev
+    :path: ~/.ec2
