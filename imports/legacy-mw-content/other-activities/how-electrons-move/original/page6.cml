@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>How Electrons Move: Magnetic Fields</page_title>
+<referenced_files>launchMagField.html, magField.swf</referenced_files>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+ 
+ 
+
+ 
+
+ 
+ 
+  
+    
+
+ 
+
+</text>
+<section start="0" end="26">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    &lt;strong&gt;&lt;font color=&quot;white&quot; size=&quot;5&quot;&gt;How Electrons Move: &lt;/font&gt;&lt;/strong&gt;&lt;font color=&quot;white&quot; size=&quot;5&quot;&gt;Magnetic 
+    Fields&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-c588a1</bgcolor></icon></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;topNavBarLeftMargin.jpg&quot; height=&quot;26&quot; width=&quot;14&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img src=&quot;prev.jpg&quot; height=&quot;26&quot; width=&quot;60&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img src=&quot;next.jpg&quot; height=&quot;26&quot; width=&quot;59&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img src=&quot;page.jpg&quot; height=&quot;26&quot; width=&quot;54&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img src=&quot;index.jpg&quot; height=&quot;26&quot; width=&quot;46&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img src=&quot;page1.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img src=&quot;page2.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img src=&quot;page3.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img src=&quot;page4.jpg&quot; height=&quot;26&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img src=&quot;page5.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img src=&quot;page6Selected.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img src=&quot;page7.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img src=&quot;page8.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;img src=&quot;topNavBarRightMargin.jpg&quot; height=&quot;26&quot; width=&quot;7&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>85</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot; marginheight=&quot;5&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;58&quot; width=&quot;98&quot; src=&quot;mainIdea.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          What is a magnetic field?
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="11">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>280.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style1 { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px }
+      --&gt;
+    &lt;/style&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table width=&quot;100%&quot; border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;div style=&quot;margin-right: 10&quot;&gt;
+            &lt;p class=&quot;style1&quot;&gt;
+              A magnetic field is caused by either an electric current or a 
+              magnetic material.&lt;br&gt;&lt;br&gt;The Earth&apos;s core contains liquid iron 
+              which flows due to the Earth&apos;s rotation and heat convection 
+              below the mantle. Some of the iron is in an ionic state so that 
+              electric currents are generated within it. This is what gives 
+              the Earth its magnetic field and why we can use a compass to 
+              orient ourselves relative to this field.&lt;br&gt;&lt;br&gt;Permanent 
+              magnets are made from materials like solid iron, nickel, cobalt, 
+              and alloys of those metals. In these materials atoms have 
+              unpaired electrons that, on average, have their spins aligned in 
+              a particular direction, causing a North and South magnetic pole 
+              to form within the substance.
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;261&quot; width=&quot;260&quot; src=&quot;earth.png&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="13">
+<SpaceBelow>4.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot; face=&quot;verdana&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;23&quot; width=&quot;33&quot; src=&quot;bullet.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;font color=&quot;#5c7b67&quot; size=&quot;5&quot;&gt;&lt;b&gt;Exploring a magnetic field&lt;/b&gt;&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="16">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>456.0</width>
+<height>270.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p style=&quot;margin-top: 0&quot; align=&quot;center&quot;&gt;
+      &lt;font&gt;&lt;a href=&quot;launchMagField.html&quot;&gt;&lt;img src=&quot;activateFlash.png&quot; width=&quot;452&quot; height=&quot;264&quot; border=&quot;2&quot;&gt;
+&lt;/a&gt;&lt;/font&gt;    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>294.0</width>
+<height>270.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    &lt;div style=&quot;margin-left: 10; margin-top: 0&quot;&gt;
+      Magnetic fields can also be represented by a set of arrows in which 
+      color represents field strength and direction indicates the orientation 
+      of a magnet placed in that field.
+
+      &lt;p&gt;
+        &lt;strong&gt;Instructions:&lt;/strong&gt;
+      &lt;/p&gt;
+      &lt;ol&gt;
+        &lt;li&gt;
+          Activate the model to the left.
+        &lt;/li&gt;
+        &lt;li&gt;
+          Click on the &amp;quot;Trace Magnet Orientation&amp;quot; button.
+        &lt;/li&gt;
+        &lt;li&gt;
+          Drag the top magnet anywhere within the box.
+        &lt;/li&gt;
+      &lt;/ol&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="15" end="16">
+</content>
+
+</paragraph>
+<paragraph start="16" end="21">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>371</width>
+<height>250</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Arial&quot; bgcolor=&quot;rgb(230, 230, 230)&quot; marginwidth=&quot;5&quot; marginheight=&quot;5&quot;&gt;
+    &lt;strong&gt;The picture to the right was formed by placing a bar magnet under 
+    a piece of paper and then sprinkling iron filings on top. Describe the 
+    relationship between the pattern formed and the magnetic field created by 
+    the magnet.&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="17" end="19">
+</content>
+
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>371.0</width>
+<height>250.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;4&quot; marginheight=&quot;4&quot;&gt;
+    &lt;center&gt;
+      &lt;img src=&quot;ironFilings.gif&quot;&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+<border>Line</border>
+</component></content>
+
+<content start="20" end="21">
+</content>
+
+</paragraph>
+<paragraph start="21" end="22">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="21" end="22">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="22" end="24">
+<Alignment>1</Alignment>
+<content start="22" end="23">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;topNavBarLeftMargin.jpg&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; id=&quot;Table_01&quot; width=&quot;100%&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img src=&quot;topNavBarLeftMargin.jpg&quot; height=&quot;26&quot; width=&quot;14&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img src=&quot;prev.jpg&quot; height=&quot;26&quot; width=&quot;60&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img src=&quot;next.jpg&quot; height=&quot;26&quot; width=&quot;59&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img src=&quot;page.jpg&quot; height=&quot;26&quot; width=&quot;54&quot;&gt;
+          &lt;font&gt;&lt;a href=&quot;index.cml&quot;&gt;&lt;img src=&quot;index.jpg&quot; height=&quot;26&quot; width=&quot;46&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img src=&quot;page1.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;img src=&quot;page2.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;img src=&quot;page3.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;img src=&quot;page4.jpg&quot; height=&quot;26&quot; width=&quot;29&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;img src=&quot;page5.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;img src=&quot;page6Selected.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img src=&quot;page7.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img src=&quot;page8.jpg&quot; height=&quot;26&quot; width=&quot;28&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;font&gt;&lt;img src=&quot;topNavBarRightMargin.jpg&quot; height=&quot;26&quot; width=&quot;7&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<content start="24" end="25">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="25" end="26">
+</paragraph>
+</section>
+</document>
