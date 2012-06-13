@@ -527,7 +527,7 @@ exports.makeModel = function() {
 
       updateBondAccelerations = function() {
         // fast path if no radial bonds have been defined
-        if (!radialBonds || radialBonds[0].length === 0) return;
+        if (N_radialBonds < 1) return;
 
         var i,
             len,
@@ -563,7 +563,7 @@ exports.makeModel = function() {
           // nm
           r0 = radialBondLength[i];
 
-          // "natural" Next Gen force units / nm
+          // "natural" Next Gen MW force units / nm
           f_over_r = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
 
           fx = f_over_r * dx;
@@ -1007,8 +1007,11 @@ exports.makeModel = function() {
 
     computeOutputState: function() {
       var i, j,
+          i1, i2,
           dx, dy,
           r_sq,
+          k,
+          dr,
           lj,
           KEinMWUnits,       // total kinetic energy, in MW units
           PE;                // potential energy, in eV
@@ -1020,6 +1023,8 @@ exports.makeModel = function() {
 
       for (i = 0; i < N; i++) {
         KEinMWUnits += 0.5 * elements[element[i]][0] * (vx[i] * vx[i] + vy[i] * vy[i]);
+
+        // pairwise interactions
         for (j = i+1; j < N; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -1035,6 +1040,24 @@ exports.makeModel = function() {
             PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
         }
+      }
+
+      // radial bonds
+      for (i = 0; i < N_radialBonds; i++) {
+        i1 = radialBondAtom1Index[i];
+        i2 = radialBondAtom2Index[i];
+
+        dx = x[i2] - x[i1];
+        dy = y[i2] - y[i1];
+        r_sq = dx*dx + dy*dy;
+
+        // eV/nm^2
+        k = radialBondStrength[i];
+
+        // nm
+        dr = Math.sqrt(r_sq) - radialBondLength[i];
+
+        PE = 0.5*k*dr*dr;
       }
 
       // State to be read by the rest of the system:
