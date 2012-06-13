@@ -1,0 +1,174 @@
+<html>
+  <head>
+    <style type="text/css">
+      <!--
+        .style7 { font-weight: bold; font-size: 10px; font-family: Georgia, Times New Roman, Times, serif }
+        .style6 { font-weight: bold; font-size: 12px; font-family: Georgia, Times New Roman, Times, serif }
+        .style5 { font-size: 12px; font-family: Times New Roman, Times, serif }
+        .style4 { font-weight: bold; font-size: 12px; font-family: Times New Roman, Times, serif }
+        .style2 { font-family: Times New Roman, Times, serif }
+        .style1 { font-weight: bold; font-family: Times New Roman, Times, serif }
+      -->
+    </style>
+    
+  </head>
+  <body face="verdana">
+    <div style="margin-right: 10">
+      <p style="margin-top: 0; margin-bottom: 10">
+        Using the controls below and the magnetic field intensity slider, 
+        explore how magnetic fields affect the movement of charged particles.
+      </p>
+      <table border="0" cellspacing="0" width="100%" cellpadding="0">
+        <tr>
+          <td colspan="2" class="style7">
+            Add negative particle with:
+          </td>
+          <td colspan="2" class="style7">
+            Add positive particle with:
+          </td>
+        </tr>
+        <tr>
+          <td align="right">
+            <input type="radio" value="radio" script="
+	          	script:mw:1:
+                stop;
+                select atom all;
+				remove;
+				add atom 1 (%width/2, %height/2);
+				select element 1;
+				set vx 0;
+				set vy 0;
+				traj on;
+				charge -1;
+				show charge off;
+				select element none;" name="RadioGroup1" id="RadioGroup1_0">
+            
+          </td>
+          <td>
+            <p style="margin-bottom: 8" class="style5">
+              no initial velocity
+            </p>
+          </td>
+          <td align="right">
+            <input type="radio" value="radio" script="
+	          	script:mw:1:
+                stop;
+                select atom all;
+				remove;
+				add atom 1 (%width/2, %height/2);
+				select element 1;
+				set vx 0;
+				set vy 0;
+				traj on;
+				charge 1;
+				show charge off;
+				select element none;" name="RadioGroup1" id="RadioGroup1_3">
+            
+          </td>
+          <td>
+            <p style="margin-bottom: 8" class="style5">
+              no initial velocity
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td align="right">
+            <input type="radio" value="radio" script="
+	          	script:mw:1:
+                stop;
+                select atom all;
+				remove;
+				add atom 1 (%width/2, %height/2);
+				select element 1;
+				set vx 1500;
+				set vy 0;
+				traj on;
+				charge -1;
+				show charge off;
+				select element none;
+                run;" name="RadioGroup1" id="RadioGroup1_1">
+            
+          </td>
+          <td>
+            <p style="margin-bottom: 8" class="style5">
+              initial velocity &rarr;
+            </p>
+          </td>
+          <td align="right">
+            <input type="radio" value="radio" script="
+	          	script:mw:1:
+                stop;
+                select atom all;
+				remove;
+				add atom 1 (%width/2, %height/2);
+				select element 1;
+				set vx 1500;
+				set vy 0;
+				traj on;
+				charge 1;
+				show charge off;
+				select element none;
+                run;" name="RadioGroup1" id="RadioGroup1_4">
+            
+          </td>
+          <td>
+            <p style="margin-bottom: 8" class="style5">
+              initial velocity &rarr;
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td align="right">
+            <input type="radio" value="radio" script="
+	          	script:mw:1:
+                stop;
+                select atom all;
+				remove;
+				add atom 1 (%width/2, %height/2);
+				select element 1;
+				set vx -1500;
+				set vy 0;
+				traj on;
+				charge -1;
+				show charge off;
+				select element none;
+                run;" name="RadioGroup1" id="RadioGroup1_2">
+            
+          </td>
+          <td>
+            <p style="margin-bottom: 8" class="style5">
+              initial velocity &larr;
+            </p>
+          </td>
+          <td align="right">
+            <input type="radio" value="radio" script="
+	          	script:mw:1:
+                stop;
+                select atom all;
+				remove;
+				add atom 1 (%width/2, %height/2);
+				select element 1;
+				set vx -1500;
+				set vy 0;
+				traj on;
+				charge 1;
+				show charge off;
+				select element none;
+                run;" name="RadioGroup1" id="RadioGroup1_5">
+            
+          </td>
+          <td>
+            <p style="margin-bottom: 8" class="style5">
+              initial velocity &larr;
+            </p>
+          </td>
+        </tr>
+      </table>
+      <div align="center">
+        <input type="submit" name="button2" id="button2" value="take a snapshot" script="script:mw:1:snapshot nodescription">
+        <br>
+        <input type="submit" value="clear model" selfscript="load uniformFieldControls.html" script="script:mw:1:reset" name="button" id="button">
+      </div>
+    </div>
+  </body>
+</html>

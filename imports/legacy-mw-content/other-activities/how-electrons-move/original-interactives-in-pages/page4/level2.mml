@@ -1,0 +1,1050 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_20" class="java.beans.XMLDecoder"> 
+ <object id="Element0" class="org.concord.mw2d.models.Element"> 
+  <void property="mass"> 
+   <double>0.16666666666666666</double> 
+  </void> 
+  <void property="sigma"> 
+   <double>20.0</double> 
+  </void> 
+ </object> 
+ <object id="Element1" class="org.concord.mw2d.models.Element"> 
+  <void property="ID"> 
+   <int>1</int> 
+  </void> 
+  <void property="mass"> 
+   <double>0.3333333333333333</double> 
+  </void> 
+  <void property="sigma"> 
+   <double>10.0</double> 
+  </void> 
+ </object> 
+ <object id="Element2" class="org.concord.mw2d.models.Element"> 
+  <void property="ID"> 
+   <int>2</int> 
+  </void> 
+  <void property="mass"> 
+   <double>0.5</double> 
+  </void> 
+  <void property="sigma"> 
+   <double>30.0</double> 
+  </void> 
+ </object> 
+ <object id="Element3" class="org.concord.mw2d.models.Element"> 
+  <void property="ID"> 
+   <int>3</int> 
+  </void> 
+  <void property="mass"> 
+   <double>0.6666666666666666</double> 
+  </void> 
+  <void property="sigma"> 
+   <double>28.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Affinity"> 
+  <void property="epsilon"> 
+   <void method="put"> 
+    <object id="Pair0" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element2"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair1" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element1"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair2" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair3" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element2"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair4" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element2"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair5" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element3"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair6" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element0"/> 
+     </void> 
+     <void property="element2"> 
+      <object id="Element4" class="org.concord.mw2d.models.Element"> 
+       <void property="ID"> 
+        <int>4</int> 
+       </void> 
+       <void property="mass"> 
+        <double>5.0</double> 
+       </void> 
+      </object> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair7" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element1"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element4"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair8" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element2"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element4"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+   <void method="put"> 
+    <object id="Pair9" class="org.concord.mw2d.models.Pair"> 
+     <void property="element1"> 
+      <object idref="Element3"/> 
+     </void> 
+     <void property="element2"> 
+      <object idref="Element4"/> 
+     </void> 
+    </object> 
+    <double>0.1</double> 
+   </void> 
+  </void> 
+  <void property="lbMixing"> 
+   <void method="put"> 
+    <object idref="Pair0"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair1"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair2"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair4"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair5"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair6"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair7"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair8"/> 
+    <boolean>true</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair9"/> 
+    <boolean>true</boolean> 
+   </void> 
+  </void> 
+  <void property="repulsive"> 
+   <void method="put"> 
+    <object idref="Pair0"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair1"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair2"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair4"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair5"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair6"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair7"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair8"/> 
+    <boolean>false</boolean> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair9"/> 
+    <boolean>false</boolean> 
+   </void> 
+  </void> 
+  <void property="sigma"> 
+   <void method="put"> 
+    <object idref="Pair0"/> 
+    <double>24.24871130596428</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair1"/> 
+    <double>9.899494936611665</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair2"/> 
+    <double>19.79898987322333</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair3"/> 
+    <double>12.12435565298214</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair4"/> 
+    <double>17.146428199482248</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair5"/> 
+    <double>14.0</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair6"/> 
+    <double>9.16515138991168</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair7"/> 
+    <double>12.96148139681572</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair8"/> 
+    <double>15.874507866387544</double> 
+   </void> 
+   <void method="put"> 
+    <object idref="Pair9"/> 
+    <double>18.33030277982336</double> 
+   </void> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.AtomicModel$State"> 
+  <void property="boundary"> 
+   <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
+    <void property="height"> 
+     <double>400.0</double> 
+    </void> 
+    <void property="viewSize"> 
+     <object class="java.awt.Dimension"> 
+      <int>750</int> 
+      <int>400</int> 
+     </object> 
+    </void> 
+    <void property="width"> 
+     <double>750.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="lightSource"> 
+   <object class="org.concord.mw2d.models.LightSource"/> 
+  </void> 
+  <void property="obstacles"> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
+     <void property="draggable"> 
+      <boolean>false</boolean> 
+     </void> 
+     <void property="elasticity"> 
+      <float>0.0</float> 
+     </void> 
+     <void property="fillMode"> 
+      <object id="FillMode$PatternFill0" class="org.concord.modeler.draw.FillMode$PatternFill"> 
+       <void property="background"> 
+        <int>-65536</int> 
+       </void> 
+       <void property="cellHeight"> 
+        <int>10</int> 
+       </void> 
+       <void property="cellWidth"> 
+        <int>10</int> 
+       </void> 
+       <void property="foreground"> 
+        <int>-1</int> 
+       </void> 
+       <void property="style"> 
+        <byte>12</byte> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="height"> 
+      <double>180.0</double> 
+     </void> 
+     <void property="permeability"> 
+      <void index="0"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="1"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="2"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="3"> 
+       <boolean>true</boolean> 
+      </void> 
+     </void> 
+     <void property="width"> 
+      <double>20.0</double> 
+     </void> 
+     <void property="x"> 
+      <double>730.0</double> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
+     <void property="draggable"> 
+      <boolean>false</boolean> 
+     </void> 
+     <void property="elasticity"> 
+      <float>0.0</float> 
+     </void> 
+     <void property="fillMode"> 
+      <object id="FillMode$PatternFill1" class="org.concord.modeler.draw.FillMode$PatternFill"> 
+       <void property="background"> 
+        <int>-65536</int> 
+       </void> 
+       <void property="cellHeight"> 
+        <int>10</int> 
+       </void> 
+       <void property="cellWidth"> 
+        <int>10</int> 
+       </void> 
+       <void property="foreground"> 
+        <int>-1</int> 
+       </void> 
+       <void property="style"> 
+        <byte>12</byte> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="height"> 
+      <double>20.0</double> 
+     </void> 
+     <void property="permeability"> 
+      <void index="0"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="1"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="2"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="3"> 
+       <boolean>true</boolean> 
+      </void> 
+     </void> 
+     <void property="width"> 
+      <double>710.0</double> 
+     </void> 
+     <void property="x"> 
+      <double>20.0</double> 
+     </void> 
+     <void property="y"> 
+      <double>380.0</double> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
+     <void property="draggable"> 
+      <boolean>false</boolean> 
+     </void> 
+     <void property="elasticity"> 
+      <float>0.0</float> 
+     </void> 
+     <void property="fillMode"> 
+      <object idref="FillMode$PatternFill0"/> 
+     </void> 
+     <void property="height"> 
+      <double>180.0</double> 
+     </void> 
+     <void property="permeability"> 
+      <void index="0"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="1"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="2"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="3"> 
+       <boolean>true</boolean> 
+      </void> 
+     </void> 
+     <void property="width"> 
+      <double>20.0</double> 
+     </void> 
+     <void property="x"> 
+      <double>730.0</double> 
+     </void> 
+     <void property="y"> 
+      <double>220.0</double> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
+     <void property="draggable"> 
+      <boolean>false</boolean> 
+     </void> 
+     <void property="elasticity"> 
+      <float>0.0</float> 
+     </void> 
+     <void property="fillMode"> 
+      <object idref="FillMode$PatternFill1"/> 
+     </void> 
+     <void property="height"> 
+      <double>20.0</double> 
+     </void> 
+     <void property="permeability"> 
+      <void index="0"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="1"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="2"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="3"> 
+       <boolean>true</boolean> 
+      </void> 
+     </void> 
+     <void property="width"> 
+      <double>710.0</double> 
+     </void> 
+     <void property="x"> 
+      <double>20.0</double> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
+     <void property="draggable"> 
+      <boolean>false</boolean> 
+     </void> 
+     <void property="fillMode"> 
+      <object id="FillMode$PatternFill2" class="org.concord.modeler.draw.FillMode$PatternFill"> 
+       <void property="background"> 
+        <int>-65536</int> 
+       </void> 
+       <void property="cellHeight"> 
+        <int>10</int> 
+       </void> 
+       <void property="cellWidth"> 
+        <int>10</int> 
+       </void> 
+       <void property="foreground"> 
+        <int>-1</int> 
+       </void> 
+       <void property="style"> 
+        <byte>12</byte> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="height"> 
+      <double>107.0</double> 
+     </void> 
+     <void property="permeability"> 
+      <void index="0"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="1"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="2"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="3"> 
+       <boolean>true</boolean> 
+      </void> 
+     </void> 
+     <void property="width"> 
+      <double>21.0</double> 
+     </void> 
+     <void property="x"> 
+      <double>319.0</double> 
+     </void> 
+     <void property="y"> 
+      <double>263.0</double> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
+     <void property="draggable"> 
+      <boolean>false</boolean> 
+     </void> 
+     <void property="elasticity"> 
+      <float>0.0</float> 
+     </void> 
+     <void property="fillMode"> 
+      <object idref="FillMode$PatternFill2"/> 
+     </void> 
+     <void property="height"> 
+      <double>106.0</double> 
+     </void> 
+     <void property="permeability"> 
+      <void index="0"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="1"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="2"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="3"> 
+       <boolean>true</boolean> 
+      </void> 
+     </void> 
+     <void property="width"> 
+      <double>21.0</double> 
+     </void> 
+     <void property="x"> 
+      <double>317.0</double> 
+     </void> 
+     <void property="y"> 
+      <double>24.0</double> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
+     <void property="draggable"> 
+      <boolean>false</boolean> 
+     </void> 
+     <void property="fillMode"> 
+      <object idref="FillMode$PatternFill2"/> 
+     </void> 
+     <void property="height"> 
+      <double>400.0</double> 
+     </void> 
+     <void property="permeability"> 
+      <void index="0"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="1"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="2"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="3"> 
+       <boolean>true</boolean> 
+      </void> 
+     </void> 
+     <void property="width"> 
+      <double>20.0</double> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
+     <void property="draggable"> 
+      <boolean>false</boolean> 
+     </void> 
+     <void property="fillMode"> 
+      <object idref="FillMode$PatternFill2"/> 
+     </void> 
+     <void property="height"> 
+      <double>87.0</double> 
+     </void> 
+     <void property="permeability"> 
+      <void index="0"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="1"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="2"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="3"> 
+       <boolean>true</boolean> 
+      </void> 
+     </void> 
+     <void property="width"> 
+      <double>21.0</double> 
+     </void> 
+     <void property="x"> 
+      <double>164.0</double> 
+     </void> 
+     <void property="y"> 
+      <double>153.0</double> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
+     <void property="draggable"> 
+      <boolean>false</boolean> 
+     </void> 
+     <void property="fillMode"> 
+      <object idref="FillMode$PatternFill2"/> 
+     </void> 
+     <void property="height"> 
+      <double>211.0</double> 
+     </void> 
+     <void property="permeability"> 
+      <void index="0"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="1"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="2"> 
+       <boolean>true</boolean> 
+      </void> 
+      <void index="3"> 
+       <boolean>true</boolean> 
+      </void> 
+     </void> 
+     <void property="width"> 
+      <double>21.0</double> 
+     </void> 
+     <void property="x"> 
+      <double>478.0</double> 
+     </void> 
+     <void property="y"> 
+      <double>93.0</double> 
+     </void> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="properties"> 
+   <void method="put"> 
+    <string>filename</string> 
+    <string>level2.mml</string> 
+   </void> 
+   <void method="put"> 
+    <string>date</string> 
+    <object class="java.util.Date"> 
+     <long>1286498498186</long> 
+    </object> 
+   </void> 
+   <void method="put"> 
+    <string>url</string> 
+    <string>C:\home\mw\public\part1\emove\level2.mml</string> 
+   </void> 
+   <void method="put"> 
+    <string>size</string> 
+    <long>27552</long> 
+   </void> 
+   <void method="put"> 
+    <string>codebase</string> 
+    <string>C:\home\mw\public\part1\emove</string> 
+   </void> 
+  </void> 
+  <void property="quantumRule"> 
+   <object class="org.concord.mw2d.models.QuantumRule"/> 
+  </void> 
+  <void property="script"> 
+   <string>define %d 0.5;
+define %electron_speed 2500;</string> 
+  </void> 
+  <void property="tasks"> 
+   <void method="add"> 
+    <object class="org.concord.mw2d.models.TaskAttributes"> 
+     <void property="description"> 
+      <string></string> 
+     </void> 
+     <void property="interval"> 
+      <int>30</int> 
+     </void> 
+     <void property="name"> 
+      <string>Collision</string> 
+     </void> 
+     <void property="priority"> 
+      <int>1</int> 
+     </void> 
+     <void property="script"> 
+      <string>set %flag count(-1, %rectangle[2].x,  %rectangle[2].y,  %rectangle[2].width,  %rectangle[2].height);
+if (%flag &gt; 0);
+	stop immediately;
+	message youWin.html;
+else;
+	set %i 0;
+	while(%i &lt; %number_of_obstacles);
+		set %flag count(1, %obstacle[%i].x-%d, %obstacle[%i].y-%d, %obstacle[%i].width + 2*%d, %obstacle[%i].height + 2*%d);
+print %i  %flag;
+		if(%flag &gt; 0);
+			stop;
+			message collision.html;
+			select element 1;
+			remove;
+			set %flag 0;
+		endif;
+		%i++;
+	endwhile;
+endif;</string> 
+     </void> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="timeStep"> 
+   <double>1.0</double> 
+  </void> 
+  <void property="universe"> 
+   <object class="org.concord.mw2d.models.Universe"/> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.AtomisticView$State"> 
+  <void property="EFShadingMode"> 
+   <byte>1</byte> 
+  </void> 
+  <void property="background"> 
+   <object id="Color0" class="java.awt.Color"> 
+    <int>0</int> 
+    <int>0</int> 
+    <int>0</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
+  <void property="chargeShading"> 
+   <boolean>true</boolean> 
+  </void> 
+  <void property="colorCode"> 
+   <string>None</string> 
+  </void> 
+  <void property="elementColors"> 
+   <void index="0"> 
+    <int>-16776961</int> 
+   </void> 
+  </void> 
+  <void property="accelerationFlavor"> 
+   <void id="Color1" property="color"/> 
+  </void> 
+  <void property="ellipses"> 
+   <array class="org.concord.mw2d.models.EllipseComponent$Delegate" length="2"> 
+    <void index="0"> 
+     <object class="org.concord.mw2d.models.EllipseComponent$Delegate"> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
+      <void property="fillMode"> 
+       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object class="java.awt.Color"> 
+          <int>255</int> 
+          <int>255</int> 
+          <int>255</int> 
+          <int>255</int> 
+         </object> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="height"> 
+       <float>40.0</float> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>3</byte> 
+      </void> 
+      <void property="lineColor"> 
+       <object idref="Color1"/> 
+      </void> 
+      <void property="lineWeight"> 
+       <int>6</int> 
+      </void> 
+      <void property="width"> 
+       <float>40.0</float> 
+      </void> 
+      <void property="x"> 
+       <double>709.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>180.0</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="1"> 
+     <object class="org.concord.mw2d.models.EllipseComponent$Delegate"> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
+      <void property="fillMode"> 
+       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object class="java.awt.Color"> 
+          <int>255</int> 
+          <int>0</int> 
+          <int>0</int> 
+          <int>255</int> 
+         </object> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="height"> 
+       <float>16.0</float> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>4</byte> 
+      </void> 
+      <void property="width"> 
+       <float>16.0</float> 
+      </void> 
+      <void property="x"> 
+       <double>721.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>193.0</double> 
+      </void> 
+     </object> 
+    </void> 
+   </array> 
+  </void> 
+  <void property="fillMode"> 
+   <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+    <void property="color"> 
+     <object idref="Color0"/> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="forceFlavor"> 
+   <void property="color"> 
+    <object class="java.awt.Color"> 
+     <int>255</int> 
+     <int>0</int> 
+     <int>255</int> 
+     <int>255</int> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="momentumFlavor"> 
+   <void property="color"> 
+    <object class="java.awt.Color"> 
+     <int>0</int> 
+     <int>0</int> 
+     <int>255</int> 
+     <int>255</int> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="rectangles"> 
+   <array class="org.concord.mw2d.models.RectangleComponent$Delegate" length="3"> 
+    <void index="0"> 
+     <object class="org.concord.mw2d.models.RectangleComponent$Delegate"> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
+      <void property="fillMode"> 
+       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object id="Color2" class="java.awt.Color"> 
+          <int>0</int> 
+          <int>128</int> 
+          <int>0</int> 
+          <int>255</int> 
+         </object> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="height"> 
+       <float>11.0</float> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="width"> 
+       <float>22.0</float> 
+      </void> 
+      <void property="x"> 
+       <double>40.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>194.5</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="1"> 
+     <object class="org.concord.mw2d.models.RectangleComponent$Delegate"> 
+      <void property="arcHeight"> 
+       <float>18.0</float> 
+      </void> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
+      <void property="fillMode"> 
+       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+        <void property="color"> 
+         <object idref="Color2"/> 
+        </void> 
+       </object> 
+      </void> 
+      <void property="height"> 
+       <float>33.0</float> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>1</byte> 
+      </void> 
+      <void property="width"> 
+       <float>18.0</float> 
+      </void> 
+      <void property="x"> 
+       <double>22.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>183.5</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void index="2"> 
+     <object class="org.concord.mw2d.models.RectangleComponent$Delegate"> 
+      <void property="draggable"> 
+       <boolean>false</boolean> 
+      </void> 
+      <void property="height"> 
+       <float>36.0</float> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>2</byte> 
+      </void> 
+      <void property="visible"> 
+       <boolean>false</boolean> 
+      </void> 
+      <void property="width"> 
+       <float>13.0</float> 
+      </void> 
+      <void property="x"> 
+       <double>734.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>183.0</double> 
+      </void> 
+     </object> 
+    </void> 
+   </array> 
+  </void> 
+  <void property="showClock"> 
+   <boolean>false</boolean> 
+  </void> 
+  <void property="textBoxes"> 
+   <array class="org.concord.mw2d.models.TextBoxComponent$Delegate" length="1"> 
+    <void index="0"> 
+     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
+      <void property="attachmentPosition"> 
+       <byte>11</byte> 
+      </void> 
+      <void property="font"> 
+       <object class="java.awt.Font"> 
+        <string>Arial Bold</string> 
+        <int>1</int> 
+        <int>16</int> 
+       </object> 
+      </void> 
+      <void property="foregroundColor"> 
+       <object class="java.awt.Color"> 
+        <int>255</int> 
+        <int>255</int> 
+        <int>255</int> 
+        <int>255</int> 
+       </object> 
+      </void> 
+      <void property="layer"> 
+       <int>1</int> 
+      </void> 
+      <void property="layerPosition"> 
+       <byte>5</byte> 
+      </void> 
+      <void property="text"> 
+       <string>Electron
+Gun</string> 
+      </void> 
+      <void property="x"> 
+       <double>33.0</double> 
+      </void> 
+      <void property="y"> 
+       <double>123.0</double> 
+      </void> 
+     </object> 
+    </void> 
+   </array> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.MolecularModel$State"/> 
+</java> 
