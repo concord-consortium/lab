@@ -699,8 +699,8 @@ exports.makeModel = function() {
         num: the number of atoms to create
     */
     createAtoms: function(options) {
-      var arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
+      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint8 = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
           numIndices,
           num;
 
@@ -739,22 +739,18 @@ exports.makeModel = function() {
 
       atoms  = model.atoms  = arrays.create(numIndices, null, 'regular');
 
-      radius = model.radius = atoms[INDICES.RADIUS] = arrays.create(num, 0, arrayType);
-      px     = model.px     = atoms[INDICES.PX]     = arrays.create(num, 0, arrayType);
-      py     = model.py     = atoms[INDICES.PY]     = arrays.create(num, 0, arrayType);
-      x      = model.x      = atoms[INDICES.X]      = arrays.create(num, 0, arrayType);
-      y      = model.y      = atoms[INDICES.Y]      = arrays.create(num, 0, arrayType);
-      vx     = model.vx     = atoms[INDICES.VX]     = arrays.create(num, 0, arrayType);
-      vy     = model.vy     = atoms[INDICES.VY]     = arrays.create(num, 0, arrayType);
-      speed  = model.speed  = atoms[INDICES.SPEED]  = arrays.create(num, 0, arrayType);
-      ax     = model.ax     = atoms[INDICES.AX]     = arrays.create(num, 0, arrayType);
-      ay     = model.ay     = atoms[INDICES.AY]     = arrays.create(num, 0, arrayType);
-      charge = model.charge = atoms[INDICES.CHARGE] = arrays.create(num, 0, arrayType);
-
-      // NOTE, this is a Uint8Array for now, but this may not be the best pattern in the future
-      // because Uint8Arrays length cannot be changed. Right now we never add or remove atoms
-      // from the model without re-creating the atom arrays, but that might change in the future.
-      element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8ArrayType);
+      radius  = model.radius  = atoms[INDICES.RADIUS]  = arrays.create(num, 0, float32);
+      px      = model.px      = atoms[INDICES.PX]      = arrays.create(num, 0, float32);
+      py      = model.py      = atoms[INDICES.PY]      = arrays.create(num, 0, float32);
+      x       = model.x       = atoms[INDICES.X]       = arrays.create(num, 0, float32);
+      y       = model.y       = atoms[INDICES.Y]       = arrays.create(num, 0, float32);
+      vx      = model.vx      = atoms[INDICES.VX]      = arrays.create(num, 0, float32);
+      vy      = model.vy      = atoms[INDICES.VY]      = arrays.create(num, 0, float32);
+      speed   = model.speed   = atoms[INDICES.SPEED]   = arrays.create(num, 0, float32);
+      ax      = model.ax      = atoms[INDICES.AX]      = arrays.create(num, 0, float32);
+      ay      = model.ay      = atoms[INDICES.AY]      = arrays.create(num, 0, float32);
+      charge  = model.charge  = atoms[INDICES.CHARGE]  = arrays.create(num, 0, float32);
+      element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8);
 
       N = 0;
       totalMass = 0;
