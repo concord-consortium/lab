@@ -2,6 +2,7 @@ require 'fog'
 require 'json'
 require 'socket'
 require 'resolv'
+require 'fileutils'
 
 class AwsLabServer
 
@@ -218,10 +219,11 @@ Host #{@name}
       "run_list"     => [ "role[lab-server]" ]
     }
     @json_node = JSON.pretty_generate(@node)
-    # write this to the nodes/ directory in the littlechef-server repository
     node_name = "#{@name}.json"
-    puts "*** updating littlechef node: #{node_name}" if @options[:verbose]
-    File.open(File.join(@options[:littlechef_path], 'nodes', node_name), 'w') { |f| f.write @json_node }
+    node_path = File.join(@options[:littlechef_path], 'nodes', node_name)
+    FileUtils.mkdir_p(File.dirname(node_path))
+    puts "*** updating littlechef node: #{node_path}" if @options[:verbose]
+    File.open(node_path, 'w') { |f| f.write @json_node }
   end
 
   def setup_capistrano_deploy_scripts
@@ -236,6 +238,7 @@ Host #{@name}
     target = find_target(@name)
     deploy_script_name = "#{target[:name]}.rb"
     deploy_script_path = File.join(CONFIG_PATH, 'deploy', deploy_script_name)
+    FileUtils.mkdir_p(File.dirname(deploy_script_path))
     puts "*** updating capistrano deploy script: #{deploy_script_path}" if @options[:verbose]
     deploy_script_content = <<-HEREDOC
 server "#{@name}", :app, :primary => true
