@@ -122,7 +122,7 @@ controllers.complexModelController =
 
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
-        model.createRadialBonds(radialBonds);
+        if (radialBonds) model.createRadialBonds(radialBonds);
       } else if (mol_number) {
         model.createNewAtoms({
           num: mol_number,
