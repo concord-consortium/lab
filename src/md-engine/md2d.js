@@ -1,4 +1,4 @@
-/*globals Float32Array window:true */
+ /*globals Float32Array window:true */
 /*jslint eqnull: true, boss: true */
 
 if (typeof window === 'undefined') window = {};
@@ -533,6 +533,8 @@ exports.makeModel = function() {
             len,
             i1,
             i2,
+            el1,
+            el2,
             dx,
             dy,
             r_sq,
@@ -548,9 +550,11 @@ exports.makeModel = function() {
         for (i = 0, len = radialBonds[0].length; i < len; i++) {
           i1 = radialBondAtom1Index[i];
           i2 = radialBondAtom2Index[i];
+          el1 = element[i1];
+          el2 = element[i2];
 
-          mass1_inv = 1/elements[element[i1]][0];
-          mass2_inv = 1/elements[element[i2]][0];
+          mass1_inv = 1/elements[el1][0];
+          mass2_inv = 1/elements[el2][0];
 
           dx = x[i2] - x[i1];
           dy = y[i2] - y[i1];
@@ -565,6 +569,17 @@ exports.makeModel = function() {
 
           // "natural" Next Gen MW force units / nm
           f_over_r = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+
+          // Subtract out the Lennard-Jones force between bonded pairs.
+          //
+          // (optimization assumption: the penalty for calculating the force twice for bonded pairs
+          // will be much less than the overhead and possible loop deoptimization incurred by
+          // checking against a list of bonded pairs each time through
+          // updatePairwiseAccelerations()'s inner loop.)
+
+          if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el1][el2]) {
+            f_over_r -= ljCalculator[el1][el2].forceOverDistanceFromSquaredDistance(r_sq);
+          }
 
           fx = f_over_r * dx;
           fy = f_over_r * dy;
@@ -1004,11 +1019,11 @@ exports.makeModel = function() {
     computeOutputState: function() {
       var i, j,
           i1, i2,
+          el1, el2,
           dx, dy,
           r_sq,
           k,
           dr,
-          lj,
           KEinMWUnits,       // total kinetic energy, in MW units
           PE;                // potential energy, in eV
 
@@ -1028,9 +1043,8 @@ exports.makeModel = function() {
           r_sq = dx*dx + dy*dy;
 
           // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
-          if (useLennardJonesInteraction ) {
-            lj = ljCalculator[element[i]][element[j]];
-            PE += -lj.potentialFromSquaredDistance(r_sq, element[i], element[j]);
+          if (useLennardJonesInteraction) {
+            PE += -ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
           }
           if (useCoulombInteraction) {
             PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
@@ -1042,6 +1056,8 @@ exports.makeModel = function() {
       for (i = 0; i < N_radialBonds; i++) {
         i1 = radialBondAtom1Index[i];
         i2 = radialBondAtom2Index[i];
+        el1 = element[i1];
+        el2 = element[i2];
 
         dx = x[i2] - x[i1];
         dy = y[i2] - y[i1];
@@ -1054,6 +1070,11 @@ exports.makeModel = function() {
         dr = Math.sqrt(r_sq) - radialBondLength[i];
 
         PE += 0.5*k*dr*dr;
+
+        // Remove the Lennard Jones potential for the bonded pair
+        if (useLennardJonesInteraction) {
+          PE += ljCalculator[el1][el2].potentialFromSquaredDistance(r_sq);
+        }
       }
 
       // State to be read by the rest of the system:
