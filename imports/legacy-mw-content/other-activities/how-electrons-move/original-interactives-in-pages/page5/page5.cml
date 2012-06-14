@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>How Electrons Move: Designing an Electric Field</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+        
+          </text>
+<section start="0" end="21">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="10">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>370.0</width>
+<height>330.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    &lt;p style=&quot;margin-top: 0&quot;&gt;
+      Your challenge is to design an electric field in which an electron will 
+      move in an approximately straight line rather than a curved path, no 
+      matter where you place the electron in the container.
+    &lt;/p&gt;
+    &lt;p&gt;
+      You can place as many positive and negative charges as you like, but can 
+      only place one electron using the &lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;addElectronUP.png&quot;&gt; 
+      button. Test your field by dropping an electron into the model to see if 
+      it moves in an approximately straight line. After you have succeeded, 
+      take a snapshot of your field.
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;b&gt;&lt;font size=&quot;3&quot;&gt;Note: To see how an electron moves again, press &lt;img height=&quot;16&quot; src=&quot;addElectronUP.png&quot; width=&quot;16&quot;&gt; 
+      and click inside the window to add a new electron again. Press the 
+      &amp;quot;Clear&amp;quot; button only when you want to redesign the field.&lt;/font&gt;&lt;/b&gt;&lt;font size=&quot;3&quot;&gt; 
+      &lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;b&gt;&lt;input type=&quot;submit&quot; name=&quot;button1&quot; alt=&quot;Hint 1&quot; script=&quot;script:page:0:message &lt;t&gt;&lt;font face=verdana&gt;You will need an array of positive charges and another array of negative charges&lt;br&gt;on each side of the container to complete this task.&lt;/font&gt;&lt;/t&gt;;&quot; uid=&quot;hint1&quot; value=&quot;Hint #1&quot;&gt;
+      &lt;input type=&quot;submit&quot; name=&quot;button2&quot; alt=&quot;Hint 2&quot; script=&quot;script:page:0:message &lt;t&gt;&lt;font face=verdana&gt;Try to create a field so that much of the middle of the container has field vectors&lt;br&gt;all pointing in the same direction.&lt;/font&gt;&lt;/t&gt;;&quot; uid=&quot;hint2&quot; value=&quot;Hint #2&quot;&gt;
+&lt;/b&gt;    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2" end="8">
+</content>
+
+<content start="8" end="9">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page5$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar></component></content>
+
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="21">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>400.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<imagefile>moveDOWN.png</imagefile>
+<imagefiledeselected>moveUP.png</imagefiledeselected>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1246251307593</groupid>
+<script>stop;
+set action SELE_ID;
+set %buttonSelected %move;</script>
+</component></content>
+
+<content start="12" end="13">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>addPosDOWN.png</imagefile>
+<imagefiledeselected>addPosUP.png</imagefiledeselected>
+<tooltip>Select the mode of adding a positive charge</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1246251307593</groupid>
+<script>stop;
+set action ADDA_ID;
+set %buttonSelected %addPos;
+</script>
+<action>Execute MW script</action></component></content>
+
+<content start="13" end="14">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>addNegDOWN.png</imagefile>
+<imagefiledeselected>addNegUP.png</imagefiledeselected>
+<tooltip>Select the mode of adding a negative charge</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1246251307593</groupid>
+<script>stop;
+set action ADDC_ID;
+set %buttonSelected %addNeg;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>addElectronDOWN.png</imagefile>
+<imagefiledeselected>addElectronUP.png</imagefiledeselected>
+<tooltip>Select the mode of adding an electron</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1246251307593</groupid>
+<script>stop;
+set action ADDD_ID;
+set %buttonSelected %addElectron;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="15" end="16">
+</content>
+
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Clear</title>
+<tooltip>clear the entire drawing</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop;
+beginexternal; @page:0:selectcomponent 3; endexternal;
+set action SELE_ID;
+set %buttonSelected %move;
+select atom all;
+remove;</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="17" end="19">
+</content>
+
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Take a snapshot</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Take a snapshot</action>
+</component></content>
+
+</paragraph>
+</section>
+</document>

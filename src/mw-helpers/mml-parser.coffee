@@ -1,4 +1,6 @@
-cheerio = require('cheerio');
+cheerio   = require 'cheerio'
+constants = require '../md-engine/constants'
+unit      = constants.unit
 
 # window.MWHelpers = {};
 
@@ -163,14 +165,26 @@ parseMML = (mmlString) ->
     radialBondNodes = $mml('.org-concord-mw2d-models-RadialBond-Delegate')
     for node in radialBondNodes
       $node = getNode cheerio node
-      radialBonds.push
-        # It appears from an inspection of MW's AtomicModel.encode(java.beans.XMLEncoder out) method
-        # that atoms are written to the MML. Atom IDs are apparently red herrings.
-        # file in ascending order, so atom1 and atom2 are indices into the atoms array.
-        atom1Index: parseInt($node.find('[property=atom1]').text(), 10) || 0
-        atom2Index: parseInt($node.find('[property=atom2]').text(), 10) || 0
-        bondLength:   parseFloat $node.find('[property=bondLength]').text()
-        bondStrength: parseFloat $node.find('[property=bondStrength]').text()
+
+      # It appears from an inspection of MW's AtomicModel.encode(java.beans.XMLEncoder out) method
+      # that atoms are written to the MML file in ascending order. Therefore 'atom1 = 1' means
+      # the second atom in the order atoms are found in the file. The atom[1|2] property is NOT
+      # written to the file at all if it has the default value 0.
+
+      atom1Index   = parseInt($node.find('[property=atom1]').text(), 10) || 0
+      atom2Index   = parseInt($node.find('[property=atom2]').text(), 10) || 0
+      bondLength   = parseFloat $node.find('[property=bondLength]').text()
+      bondStrength = parseFloat $node.find('[property=bondStrength]').text()
+
+      # convert from MML units to Lab units.
+
+      # MML reports bondStrength in units of eV per 0.01 nm. Convert to eV/nm
+      bondStrength *= 1e4
+
+      # MML reports bondLength in units of 0.01 nm. Convert to nm.
+      bondLength *= 0.01
+
+      radialBonds.push { atom1Index, atom2Index, bondLength, bondStrength }
 
     ###
       heatBath settings

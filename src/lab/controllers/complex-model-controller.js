@@ -30,6 +30,7 @@ controllers.complexModelController =
 
       elements            = modelConfig.elements,
       atoms_properties    = modelConfig.atoms,
+      radialBonds         = modelConfig.radialBonds,
       mol_number          = modelConfig.mol_number,
       temperature         = modelConfig.temperature,
       temperature_control = modelConfig.temperature_control,
@@ -121,6 +122,7 @@ controllers.complexModelController =
 
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
+        if (radialBonds) model.createRadialBonds(radialBonds);
       } else if (mol_number) {
         model.createNewAtoms({
           num: mol_number,

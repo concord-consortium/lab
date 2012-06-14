@@ -1,4 +1,4 @@
-/*globals Float32Array window:true */
+ /*globals Float32Array window:true */
 /*jslint eqnull: true, boss: true */
 
 if (typeof window === 'undefined') window = {};
@@ -196,6 +196,19 @@ exports.makeModel = function() {
       // An array of length max(INDICES)+1 which contains the above property arrays
       atoms,
 
+      // Individual property arrays for the "radial" bonds, indexed by bond number
+      radialBondAtom1Index,
+      radialBondAtom2Index,
+      radialBondLength,
+      radialBondStrength,
+
+      // An array of length 4 which contains the above 4 property arrays.
+      // Left undefined if no radial bonds are defined.
+      radialBonds,
+
+      // Number of actual radial bonds (may be smaller than the length of the property arrays)
+      N_radialBonds = 0,
+
       // The location of the center of mass, in nanometers.
       x_CM, y_CM,
 
@@ -276,6 +289,36 @@ exports.makeModel = function() {
         // restore N and totalMass
         N = savedArrays[0].length;        // atoms[0].length is now > N!
         totalMass = savedTotalMass;
+      },
+
+      createRadialBondsArray = function(num) {
+      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint16  = (hasTypedArrays && notSafari) ? 'Uint16Array' : 'regular';
+
+        radialBonds = [];
+
+        radialBonds[0] = radialBondAtom1Index = arrays.create(num, 0, uint16);
+        radialBonds[1] = radialBondAtom2Index = arrays.create(num, 0, uint16);
+        radialBonds[2] = radialBondLength     = arrays.create(num, 0, float32);
+        radialBonds[3] = radialBondStrength   = arrays.create(num, 0, float32);
+      },
+
+
+      // Make the 'radialBonds' array bigger. FIXME: needs to be factored
+      // into a common pattern with 'extendAtomsArray'
+      extendRadialBondsArray = function(num) {
+        var savedArrays = [],
+            i;
+
+        for (i = 0; i < radialBonds.length; i++) {
+          savedArrays[i] = radialBonds[i];
+        }
+
+        createRadialBondsArray(num);
+
+        for (i = 0; i < radialBonds.length; i++) {
+          arrays.copy(savedArrays[i], radialBonds[i]);
+        }
       },
 
       // Function that accepts a value T and returns an average of the last n values of T (for some n).
@@ -482,6 +525,72 @@ exports.makeModel = function() {
         }
       },
 
+      updateBondAccelerations = function() {
+        // fast path if no radial bonds have been defined
+        if (N_radialBonds < 1) return;
+
+        var i,
+            len,
+            i1,
+            i2,
+            el1,
+            el2,
+            dx,
+            dy,
+            r_sq,
+            r,
+            k,
+            r0,
+            f_over_r,
+            fx,
+            fy,
+            mass1_inv,
+            mass2_inv;
+
+        for (i = 0, len = radialBonds[0].length; i < len; i++) {
+          i1 = radialBondAtom1Index[i];
+          i2 = radialBondAtom2Index[i];
+          el1 = element[i1];
+          el2 = element[i2];
+
+          mass1_inv = 1/elements[el1][0];
+          mass2_inv = 1/elements[el2][0];
+
+          dx = x[i2] - x[i1];
+          dy = y[i2] - y[i1];
+          r_sq = dx*dx + dy*dy;
+          r = Math.sqrt(r_sq);
+
+          // eV/nm^2
+          k = radialBondStrength[i];
+
+          // nm
+          r0 = radialBondLength[i];
+
+          // "natural" Next Gen MW force units / nm
+          f_over_r = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+
+          // Subtract out the Lennard-Jones force between bonded pairs.
+          //
+          // (optimization assumption: the penalty for calculating the force twice for bonded pairs
+          // will be much less than the overhead and possible loop deoptimization incurred by
+          // checking against a list of bonded pairs each time through
+          // updatePairwiseAccelerations()'s inner loop.)
+
+          if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el1][el2]) {
+            f_over_r -= ljCalculator[el1][el2].forceOverDistanceFromSquaredDistance(r_sq);
+          }
+
+          fx = f_over_r * dx;
+          fy = f_over_r * dy;
+
+          ax[i1] += fx * mass1_inv;
+          ay[i1] += fy * mass1_inv;
+          ax[i2] -= fx * mass2_inv;
+          ay[i2] -= fy * mass2_inv;
+        }
+      },
+
       adjustTemperature = function(target, forceAdjustment) {
         var rescalingFactor,
             i;
@@ -605,8 +714,8 @@ exports.makeModel = function() {
         num: the number of atoms to create
     */
     createAtoms: function(options) {
-      var arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
+      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint8 = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
           numIndices,
           num;
 
@@ -645,22 +754,18 @@ exports.makeModel = function() {
 
       atoms  = model.atoms  = arrays.create(numIndices, null, 'regular');
 
-      radius = model.radius = atoms[INDICES.RADIUS] = arrays.create(num, 0, arrayType);
-      px     = model.px     = atoms[INDICES.PX]     = arrays.create(num, 0, arrayType);
-      py     = model.py     = atoms[INDICES.PY]     = arrays.create(num, 0, arrayType);
-      x      = model.x      = atoms[INDICES.X]      = arrays.create(num, 0, arrayType);
-      y      = model.y      = atoms[INDICES.Y]      = arrays.create(num, 0, arrayType);
-      vx     = model.vx     = atoms[INDICES.VX]     = arrays.create(num, 0, arrayType);
-      vy     = model.vy     = atoms[INDICES.VY]     = arrays.create(num, 0, arrayType);
-      speed  = model.speed  = atoms[INDICES.SPEED]  = arrays.create(num, 0, arrayType);
-      ax     = model.ax     = atoms[INDICES.AX]     = arrays.create(num, 0, arrayType);
-      ay     = model.ay     = atoms[INDICES.AY]     = arrays.create(num, 0, arrayType);
-      charge = model.charge = atoms[INDICES.CHARGE] = arrays.create(num, 0, arrayType);
-
-      // NOTE, this is a Uint8Array for now, but this may not be the best pattern in the future
-      // because Uint8Arrays length cannot be changed. Right now we never add or remove atoms
-      // from the model without re-creating the atom arrays, but that might change in the future.
-      element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8ArrayType);
+      radius  = model.radius  = atoms[INDICES.RADIUS]  = arrays.create(num, 0, float32);
+      px      = model.px      = atoms[INDICES.PX]      = arrays.create(num, 0, float32);
+      py      = model.py      = atoms[INDICES.PY]      = arrays.create(num, 0, float32);
+      x       = model.x       = atoms[INDICES.X]       = arrays.create(num, 0, float32);
+      y       = model.y       = atoms[INDICES.Y]       = arrays.create(num, 0, float32);
+      vx      = model.vx      = atoms[INDICES.VX]      = arrays.create(num, 0, float32);
+      vy      = model.vy      = atoms[INDICES.VY]      = arrays.create(num, 0, float32);
+      speed   = model.speed   = atoms[INDICES.SPEED]   = arrays.create(num, 0, float32);
+      ax      = model.ax      = atoms[INDICES.AX]      = arrays.create(num, 0, float32);
+      ay      = model.ay      = atoms[INDICES.AY]      = arrays.create(num, 0, float32);
+      charge  = model.charge  = atoms[INDICES.CHARGE]  = arrays.create(num, 0, float32);
+      element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8);
 
       N = 0;
       totalMass = 0;
@@ -697,6 +802,26 @@ exports.makeModel = function() {
 
       totalMass += mass;
       N++;
+    },
+
+    /**
+      The canonical method for adding a radial bond to the collection of radial bonds.
+
+      If there isn't enough room in the 'radialBonds' array, it (somewhat inefficiently)
+      extends the length of the typed arrays by one to contain one more atom with listed properties.
+    */
+    addRadialBond: function(atomIndex1, atomIndex2, bondLength, bondStrength) {
+
+      if (N_radialBonds+1 > radialBondAtom1Index.length) {
+        extendRadialBondsArray(N+1);
+      }
+
+      radialBondAtom1Index[N_radialBonds] = atomIndex1;
+      radialBondAtom2Index[N_radialBonds] = atomIndex2;
+      radialBondLength[N_radialBonds]     = bondLength;
+      radialBondStrength[N_radialBonds]   = bondStrength;
+
+      N_radialBonds++;
     },
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
@@ -790,6 +915,22 @@ exports.makeModel = function() {
       model.computeOutputState();
     },
 
+    initializeRadialBonds: function(props) {
+      var num = props.atom1Index.length,
+          i;
+
+      createRadialBondsArray(props.atom1Index.length);
+
+      for (i = 0; i < num; i++) {
+        model.addRadialBond(
+          props.atom1Index[i],
+          props.atom2Index[i],
+          props.bondLength[i],
+          props.bondStrength[i]
+        );
+      }
+    },
+
     relaxToTemperature: function(T) {
 
       // FIXME this method needs to be modified. It should rescale velocities only periodically
@@ -850,6 +991,9 @@ exports.makeModel = function() {
           updatePairwiseAccelerations(i);
         }
 
+        // Accumulate accelerations from bonded interactions into a(t+dt)
+        updateBondAccelerations();
+
         for (i = 0; i < N; i++) {
           // Second half of update of v(t+dt, i) using first half of update and a(t+dt, i)
           halfUpdateVelocity(i);
@@ -874,9 +1018,12 @@ exports.makeModel = function() {
 
     computeOutputState: function() {
       var i, j,
+          i1, i2,
+          el1, el2,
           dx, dy,
           r_sq,
-          lj,
+          k,
+          dr,
           KEinMWUnits,       // total kinetic energy, in MW units
           PE;                // potential energy, in eV
 
@@ -887,6 +1034,8 @@ exports.makeModel = function() {
 
       for (i = 0; i < N; i++) {
         KEinMWUnits += 0.5 * elements[element[i]][0] * (vx[i] * vx[i] + vy[i] * vy[i]);
+
+        // pairwise interactions
         for (j = i+1; j < N; j++) {
           dx = x[j] - x[i];
           dy = y[j] - y[i];
@@ -894,13 +1043,37 @@ exports.makeModel = function() {
           r_sq = dx*dx + dy*dy;
 
           // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
-          if (useLennardJonesInteraction ) {
-            lj = ljCalculator[element[i]][element[j]];
-            PE += -lj.potentialFromSquaredDistance(r_sq, element[i], element[j]);
+          if (useLennardJonesInteraction) {
+            PE += -ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
           }
           if (useCoulombInteraction) {
             PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
           }
+        }
+      }
+
+      // radial bonds
+      for (i = 0; i < N_radialBonds; i++) {
+        i1 = radialBondAtom1Index[i];
+        i2 = radialBondAtom2Index[i];
+        el1 = element[i1];
+        el2 = element[i2];
+
+        dx = x[i2] - x[i1];
+        dy = y[i2] - y[i1];
+        r_sq = dx*dx + dy*dy;
+
+        // eV/nm^2
+        k = radialBondStrength[i];
+
+        // nm
+        dr = Math.sqrt(r_sq) - radialBondLength[i];
+
+        PE += 0.5*k*dr*dr;
+
+        // Remove the Lennard Jones potential for the bonded pair
+        if (useLennardJonesInteraction) {
+          PE += ljCalculator[el1][el2].potentialFromSquaredDistance(r_sq);
         }
       }
 
