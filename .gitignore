@@ -11,6 +11,7 @@ npm-debug.log
 /server/public
 /config/config.yml
 /java
-/lab.md-analysis
-/lab.performance
+/lab.*
+**/couchdb.stderr
+**/couchdb.stdout
 /config/deploy
