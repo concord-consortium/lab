@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>How Electrons Move: Electric Forces</page_title>
+<referenced_files>hiddenParticle.html, help.html</referenced_files>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+  
+   
+
+
+
+
+
+
+   
+           </text>
+<section start="0" end="30">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="4">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>400.0</width>
+<height>200.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    &lt;b&gt;Experiment&lt;/b&gt;: There are a couple of charged particles to the right. 
+    Drag them around to see how the electric force between them changes (watch 
+    the arrows).
+
+    &lt;p&gt;
+      Then use the following sliders to adjust the charges on the particles to 
+      explore the relationship between the electric force and the charges.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2" end="3">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page2$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border><recorderless>true</recorderless>
+</component></content>
+
+<content start="3" end="4">
+</content>
+
+</paragraph>
+<paragraph start="4" end="8">
+<Alignment>1</Alignment>
+<content start="4" end="5">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>350.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="5" end="6">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>1.0</value>
+<minimum>-2.0</minimum>
+<maximum>2.0</maximum>
+<nstep>20</nstep>
+<title>Charge on the green particle</title>
+<tooltip>Charge on the green particle</tooltip>
+<width>200</width>
+<height>60</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;2.0&quot;, label=&quot;2&quot;}{value=&quot;-1.0&quot;, label=&quot;-1&quot;}{value=&quot;1.0&quot;, label=&quot;1&quot;}{value=&quot;-2.0&quot;, label=&quot;-2&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>set atom[1].charge %val;
+paint;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="6" end="7">
+<component><class>org.concord.modeler.PageSlider</class>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<value>-1.0</value>
+<minimum>-2.0</minimum>
+<maximum>2.0</maximum>
+<nstep>20</nstep>
+<title>Charge on the gray particle</title>
+<tooltip>Charge on the gray particle</tooltip>
+<width>200</width>
+<height>60</height>
+<opaque>false</opaque>
+<tick>true</tick>
+<labeltable>{value=&quot;2.0&quot;, label=&quot;2&quot;}{value=&quot;-1.0&quot;, label=&quot;-1&quot;}{value=&quot;1.0&quot;, label=&quot;1&quot;}{value=&quot;-2.0&quot;, label=&quot;-2&quot;}{value=&quot;0.0&quot;, label=&quot;0&quot;}</labeltable>
+<script>set atom[0].charge %val;
+paint;</script>
+<change>Execute MW script</change>
+</component></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+</content>
+
+</paragraph>
+<paragraph start="9" end="10">
+<Alignment>1</Alignment>
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="11">
+<Alignment>1</Alignment>
+<content start="10" end="11">
+</content>
+
+</paragraph>
+<paragraph start="11" end="12">
+<Alignment>1</Alignment>
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="13">
+<Alignment>1</Alignment>
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<Alignment>1</Alignment>
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="18">
+<Alignment>1</Alignment>
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>300.0</width>
+<height>260.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+      &lt;!--
+        .style3 { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px }
+        .style1 { font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px }
+      --&gt;
+    &lt;/style&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot;&gt;
+    There is a hidden charged particle somewhere in the window to the right. 
+    To find it try adding one or more charged particles and/or dragging them 
+    around. Move the mouse over the buttons below the window to see 
+    instructions about them.
+
+    &lt;p&gt;
+      If you are unsure what to do, try the hint button below.
+    &lt;/p&gt;
+    &lt;p align=&quot;center&quot;&gt;
+      &lt;input type=&quot;submit&quot; name=&quot;Submit2&quot; script=&quot;script:mw:1:message hiddenParticle.html;&quot; value=&quot;Hint&quot;&gt;
+      &lt;br&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="15" end="16">
+</content>
+
+<content start="16" end="17">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page2$1.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+</component></content>
+
+<content start="17" end="18">
+</content>
+
+</paragraph>
+<paragraph start="18" end="30">
+<SpaceBelow>20.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="18" end="19">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>350.0</width>
+<height>40.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>moveDOWN.png</imagefile>
+<imagefiledeselected>moveUP.png</imagefiledeselected>
+<tooltip>Click to set the moving mode</tooltip>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<groupid>1241192770195</groupid>
+<script>set action SELE_ID;
+set %buttonSelected %move;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>addPosDOWN.png</imagefile>
+<imagefiledeselected>addPosUP.png</imagefiledeselected>
+<tooltip>Click to select the mode for adding a positive charge</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<groupid>1241192770195</groupid>
+<script>set action ADDA_ID;
+set %buttonSelected %addPos;
+</script>
+<action>Execute MW script</action></component></content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title></title>
+<imagefile>addNegDOWN.png</imagefile>
+<imagefiledeselected>addNegUP.png</imagefiledeselected>
+<tooltip>Click to select the mode for adding a negative charge</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<groupid>1241192770195</groupid>
+<script>set action ADDC_ID;
+set %buttonSelected %addNeg;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="22" end="25">
+</content>
+
+<content start="25" end="26">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Snapshot</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<action>Take a snapshot</action>
+</component></content>
+
+<content start="26" end="27">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Clear</title>
+<tooltip>Clear the entire drawing</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>1</model>
+<script>select atom not 0
+remove;
+select none;
+</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="27" end="28">
+</content>
+
+<content start="28" end="29">
+<component><class>org.concord.modeler.ActivityButton</class>
+<title>Help</title>
+<tooltip>Help on how to use these tools.</tooltip>
+<opaque>false</opaque>
+<script>script:page:0:message help.html;</script>
+<action>Script</action></component></content>
+
+</paragraph>
+</section>
+</document>

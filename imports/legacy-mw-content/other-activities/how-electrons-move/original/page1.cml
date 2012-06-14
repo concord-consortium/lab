@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>How Electrons Move: The Discovery of the Electron</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+ 
+ 
+
+ 
+ 
+ 
+ 
+         
+
+ 
+ 
+
+
+</text>
+<section start="0" end="32">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>30</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>5</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    &lt;strong&gt;&lt;font color=&quot;white&quot; size=&quot;5&quot;&gt;How Electrons Move:&lt;/font&gt;&lt;/strong&gt;&lt;font color=&quot;white&quot; size=&quot;5&quot;&gt; 
+    The Discovery of the Electron&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-c588a1</bgcolor></icon></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; id=&quot;Table_01&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;60&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;59&quot; height=&quot;26&quot; src=&quot;next.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;46&quot; height=&quot;26&quot; src=&quot;index.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page1Selected.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;29&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+</paragraph>
+<paragraph start="5" end="6">
+<Alignment>1</Alignment>
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="8">
+<SpaceBelow>20.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="6" end="7">
+<icon><class>org.concord.modeler.text.LineIcon</class><width>750.0</width><height>80</height><arcwidth>10</arcwidth><archeight>10</archeight><cornerarc>15</cornerarc><title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;Verdana&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;55&quot; width=&quot;95&quot; src=&quot;mainIdea.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          Experiments by the British physicist J. J. Thomson in 1897 led to 
+          the discovery of a fundamental building block of matter&amp;#8212;the electron.
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title><bgcolor>-231326</bgcolor></icon></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="10">
+<Alignment>1</Alignment>
+<content start="8" end="9">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body background=&quot;subHeadingBackground.png&quot; face=&quot;verdana&quot;&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;23&quot; width=&quot;33&quot; src=&quot;bullet.png&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;b&gt;&lt;font color=&quot;#5c7b67&quot; size=&quot;5&quot;&gt;The cathode ray tube&lt;/font&gt;&lt;/b&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="9" end="10">
+</content>
+
+</paragraph>
+<paragraph start="10" end="12">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="10" end="11">
+<component><class>org.concord.modeler.PageTextBox</class>
+<uid>introbox</uid>
+<width>750.0</width>
+<height>370.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    The electron was first discovered by J. J. Thomson in 1897 in cathode ray 
+    tubes (CRTs). Until that time, scientists thought atoms were indivisible. 
+    Thomson&apos;s discovery disproved that.&lt;br&gt;&lt;br&gt;Before Thomson, scientists 
+    already knew that a cathode (a negative electrode) could emit rays of 
+    mysterious particles. But no one knew exactly what they were. Thomson 
+    successfully bent the rays in an evacuated CRT using an electric field and 
+    found that they carried negative charges. Later, he determined the 
+    mass/charge ratio of the particles by bending the rays with magnetic 
+    fields. He found that the mass/charge ratio was far smaller than that of a 
+    hydrogen ion. He then boldly concluded that they must be subatomic 
+    particles, which we now know as electrons.&lt;br&gt;&lt;br&gt;
+
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr valign=&quot;top&quot;&gt;
+        &lt;td&gt;
+          The above story tells that it was the movement of electrons in 
+          electromagnetic fields that left the traces and led scientists to 
+          discover them. That discovery had fundamentally changed the world. 
+          The CRTs used by Thompson in his experiments became the foundation 
+          of what made the first TV possible. Not long ago, nearly every 
+          desktop computer had a monitor made of a CRT.
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;img height=&quot;139&quot; width=&quot;180&quot; src=&quot;oldTV.gif&quot;&gt;
+          
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+    Below is a simulation of a CRT using an electric field to bend an electron 
+    beam.
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="11" end="12">
+</content>
+
+</paragraph>
+<paragraph start="12" end="14">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="12" end="13">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page1$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><border>none</border></component></content>
+
+<content start="13" end="14">
+</content>
+
+</paragraph>
+<paragraph start="14" end="24">
+<Alignment>1</Alignment>
+<content start="14" end="15">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Run</title>
+<tooltip>Run</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<disabled_at_run>true</disabled_at_run>
+<script>run</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="15" end="16">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop</title>
+<tooltip>Stop</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>stop</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="16" end="17">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset</title>
+<tooltip>Reset</tooltip>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<script>reset</script>
+<action>Execute MW script</action>
+</component></content>
+
+<content start="17" end="19">
+</content>
+
+<content start="19" end="20">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>130.0</width>
+<height>20.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    &lt;font size=&quot;3&quot;&gt;Deflecting voltage: &lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="20" end="21">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Low</title>
+<tooltip>Low voltage</tooltip>
+<disabled_at_run>true</disabled_at_run>
+<selected>true</selected>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1285861591592</groupid>
+<script>set rectangle[3].efield .01;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="21" end="22">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>Medium</title>
+<tooltip>Medium voltage</tooltip>
+<disabled_at_run>true</disabled_at_run>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1285861591592</groupid>
+<script>set rectangle[3].efield 0.025;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="22" end="23">
+<component><class>org.concord.modeler.PageRadioButton</class>
+<title>High</title>
+<tooltip>High voltage</tooltip>
+<disabled_at_run>true</disabled_at_run>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<groupid>1285861591592</groupid>
+<script>set rectangle[3].efield 0.05;</script>
+<action>Execute MW script</action></component></content>
+
+<content start="23" end="24">
+</content>
+
+</paragraph>
+<paragraph start="24" end="25">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="24" end="25">
+</content>
+
+</paragraph>
+<paragraph start="25" end="27">
+<SpaceBelow>8.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="25" end="26">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>100.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body face=&quot;verdana&quot;&gt;
+    As you can see from the above simulation, the flight course of an electron 
+    can be controlled in a CRT by adjusting the voltage between the deflecting 
+    plates. This mechanism is used in ocilloscope CRTs. In larger CRTs for TV 
+    and computer monitors, a magnetic field is commonly used to deflect 
+    electron beams. In the following pages, you will learn the basic concepts 
+    that make these devices work.
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="26" end="27">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="27" end="29">
+<Alignment>1</Alignment>
+<content start="27" end="28">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>26.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;0&quot; background=&quot;topNavBarLeftMargin.jpg&quot; marginheight=&quot;0&quot;&gt;
+    &lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot; width=&quot;100%&quot; id=&quot;Table_01&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;img width=&quot;14&quot; height=&quot;26&quot; src=&quot;topNavBarLeftMargin.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;60&quot; height=&quot;26&quot; src=&quot;prev.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;59&quot; height=&quot;26&quot; src=&quot;next.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;
+        &lt;/td&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;img width=&quot;54&quot; height=&quot;26&quot; src=&quot;page.jpg&quot;&gt;
+          &lt;a href=&quot;index.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;46&quot; height=&quot;26&quot; src=&quot;index.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page1.cml&quot;&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page1Selected.jpg&quot;&gt;
+          &lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;page2.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page2.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page3.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page3.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page4.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;29&quot; height=&quot;26&quot; src=&quot;page4.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page5.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page5.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;a href=&quot;page6.cml&quot;&gt;&lt;font&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page6.jpg&quot;&gt;
+          &lt;/font&gt;&lt;/a&gt;&lt;font&gt;&lt;a href=&quot;page7.cml&quot;&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page7.jpg&quot;&gt;
+          &lt;/a&gt;&lt;a href=&quot;page8.cml&quot;&gt;&lt;img border=&quot;0&quot; width=&quot;28&quot; height=&quot;26&quot; src=&quot;page8.jpg&quot;&gt;
+          &lt;/a&gt;&lt;img width=&quot;7&quot; height=&quot;26&quot; src=&quot;topNavBarRightMargin.jpg&quot;&gt;
+&lt;/font&gt;        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="28" end="29">
+<size>8</size></content>
+
+</paragraph>
+<paragraph start="29" end="30">
+<Alignment>1</Alignment>
+<content start="29" end="30">
+</content>
+
+</paragraph>
+<paragraph start="30" end="31">
+<content start="30" end="31">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="31" end="32">
+</paragraph>
+</section>
+</document>

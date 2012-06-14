@@ -258,6 +258,15 @@ modeler.model = function(initialProperties) {
     notifyListenersOfEvents(propsChanged);
   }
 
+  function readModelState() {
+    coreModel.computeOutputState();
+
+    pressure = modelOutputState.pressure;
+    pe       = modelOutputState.PE;
+    ke       = modelOutputState.KE;
+    time     = modelOutputState.time;
+  }
+
   // ------------------------------
   // finish setting up the model
   // ------------------------------
@@ -421,12 +430,7 @@ modeler.model = function(initialProperties) {
       if (config.relax) coreModel.relaxToTemperature();
     }
 
-    coreModel.computeOutputState();
-
-    pressure = modelOutputState.pressure;
-    pe       = modelOutputState.PE;
-    ke       = modelOutputState.KE;
-    time     = modelOutputState.time;
+    readModelState();
 
     // tick history stuff
     reset_tick_history_list();
@@ -435,6 +439,12 @@ modeler.model = function(initialProperties) {
     new_step = true;
 
     // return model, for chaining (if used)
+    return model;
+  };
+
+  model.createRadialBonds = function(radialBonds) {
+    coreModel.initializeRadialBonds(radialBonds);
+    readModelState();
     return model;
   };
 
@@ -505,7 +515,6 @@ modeler.model = function(initialProperties) {
         x,
         y,
         loc,
-        added = false,
         numTries = 0,
         // try at most ten times.
         maxTries = 10;
