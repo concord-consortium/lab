@@ -1053,7 +1053,7 @@ exports.makeModel = function() {
         // nm
         dr = Math.sqrt(r_sq) - radialBondLength[i];
 
-        PE = 0.5*k*dr*dr;
+        PE += 0.5*k*dr*dr;
       }
 
       // State to be read by the rest of the system:
