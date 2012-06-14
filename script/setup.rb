@@ -19,5 +19,3 @@ rescue Errno::ENOENT
   HEREDOC
   raise msg
 end
-
-require File.join(CONFIG_PATH, 'java-projects.rb')
