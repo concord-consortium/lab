@@ -7,12 +7,14 @@ MARKDOWN_COMPILER = bin/kramdown
 JS_TESTER   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
-MD_ENGINE_JS_FILES := $(shell find src/md-engine -name '*.js' -print)
 BROWSERIFY = ./node_modules/.bin/browserify
 BATCH_CONVERT_MML_FILES = ./node-bin/mw-batch-converter
 BATCH_POST_PROCESS_MML_CONVERSION = ruby src/mw-helpers/post-batch-processor.rb
 
+MD_ENGINE_JS_FILES := $(shell find src/lab/models/md2d -name '*.js' -print)
+
 # targets
+
 HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/server\/public\/\1/' )
 vpath %.haml src
 
@@ -306,12 +308,12 @@ server/public/lab/lab.grapher.js: \
 
 server/public/lab/lab.md2d.js: \
 	$(MD_ENGINE_JS_FILES)
-	$(BROWSERIFY) src/md-engine/md2d.js -o server/public/lab/lab.md2d.js
+	$(BROWSERIFY) src/lab/models/md2d/engine/md2d.js -o server/public/lab/lab.md2d.js
 
 server/public/lab/lab.molecules.js: \
 	src/lab/start.js \
 	server/public/lab/lab.md2d.js \
-	src/lab/molecules/modeler.js \
+	src/lab/models/md2d/modeler.js \
 	src/lab/end.js
 
 server/public/lab/lab.benchmark.js: \
@@ -432,6 +434,9 @@ server/public/%.js: %.coffee Makefile
 
 m:
 	@echo $(MARKDOWN_EXAMPLE_FILES)
+
+md2d:
+	@echo $(MD_ENGINE_JS_FILES)
 
 server/public/%.html: %.md Makefile
 	@rm -f $@

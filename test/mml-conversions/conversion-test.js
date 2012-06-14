@@ -4,7 +4,7 @@ var mmlParser = require('../../src/mw-helpers/mml-parser'),
     vows = require("vows"),
     assert = require("assert"),
 
-    suite = vows.describe('md-engine/constants');
+    suite = vows.describe('mw-helpers/mml-parser');
 
 suite.addBatch({
   "MML to JSON Conversion": {

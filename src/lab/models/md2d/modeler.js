@@ -4,7 +4,7 @@
 // modeler.js
 //
 
-var md2d = require('./md2d'),
+var md2d = require('/md2d'),
     coreModel;
 
 modeler = {};
