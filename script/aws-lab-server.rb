@@ -2,7 +2,6 @@ require 'fog'
 require 'json'
 require 'socket'
 require 'resolv'
-require 'fileutils'
 
 class AwsLabServer
 
@@ -33,7 +32,26 @@ class AwsLabServer
     @pem = @options[:pem][:name]
     @pem_path = File.join(@options[:pem][:path], @pem + '.pem')
     @options[:server].merge!(:key_name =>  @pem)
-    @compute = ::Fog::Compute.new({ :provider => 'AWS'})
+    begin
+      @compute = ::Fog::Compute.new({ :provider => 'AWS'})
+    rescue ArgumentError => e
+      if e.message[/aws_access_key_id/]
+        msg = <<-HEREDOC
+
+*** #{e.message}
+*** Create the file ~/.fog with your Amazon Web Services API Access Keys
+
+file: ~/.fog
+:default:
+  :aws_access_key_id: YOUR_AWS_ACCESS_KEY
+  :aws_secret_access_key: YOUR_AWS_SECRET_ACCESS_KEY
+
+        HEREDOC
+        raise msg
+      else
+        raise
+      end
+    end
     @dns = ::Fog::DNS.new({ :provider => 'AWS' })
     @zone = dns.zones.find { |z| z.domain == ZONE_DOMAIN }
   end
@@ -43,7 +61,7 @@ class AwsLabServer
     @lab_servers.sort! { |a,b| a.state <=> b.state }
     @records = @zone.records.all(:name => ZONE_RECORDS_NAME)
     puts
-    puts sprintf(SERVER_FORMAT_STR, "target", "external-dns", "state", "ipaddress", "ec2-id", "ec2-dns")
+    puts sprintf(SERVER_FORMAT_STR, "target", "hostname", "state", "ipaddress", "ec2-id", "ec2-dns")
     puts "-" * 150
     result = @lab_servers.collect { |ls|
       dnsrecord = @records.find { |r| r.value[0] == ls.public_ip_address }
@@ -219,11 +237,10 @@ Host #{@name}
       "run_list"     => [ "role[lab-server]" ]
     }
     @json_node = JSON.pretty_generate(@node)
+    # write this to the nodes/ directory in the littlechef-server repository
     node_name = "#{@name}.json"
-    node_path = File.join(@options[:littlechef_path], 'nodes', node_name)
-    FileUtils.mkdir_p(File.dirname(node_path))
-    puts "*** updating littlechef node: #{node_path}" if @options[:verbose]
-    File.open(node_path, 'w') { |f| f.write @json_node }
+    puts "*** updating littlechef node: #{node_name}" if @options[:verbose]
+    File.open(File.join(@options[:littlechef_path], 'nodes', node_name), 'w') { |f| f.write @json_node }
   end
 
   def setup_capistrano_deploy_scripts
@@ -238,7 +255,6 @@ Host #{@name}
     target = find_target(@name)
     deploy_script_name = "#{target[:name]}.rb"
     deploy_script_path = File.join(CONFIG_PATH, 'deploy', deploy_script_name)
-    FileUtils.mkdir_p(File.dirname(deploy_script_path))
     puts "*** updating capistrano deploy script: #{deploy_script_path}" if @options[:verbose]
     deploy_script_content = <<-HEREDOC
 server "#{@name}", :app, :primary => true
