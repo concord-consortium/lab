@@ -1,6 +1,6 @@
 /** Provides a few simple helper functions for converting related unit types.
 
-    This sub-module doesn't do unit conversion between compound unit types (e.g., knowing that kg*m/s^2 = J)
+    This sub-module doesn't do unit conversion between compound unit types (e.g., knowing that kg*m/s^2 = N)
     only simple scaling between units measuring the same type of quantity.
 */
 
