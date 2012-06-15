@@ -19,10 +19,11 @@ end
 
 require './src/sass/bourbon/lib/bourbon.rb'
 
-guard 'sass',         :input => 'src/examples', :output => 'server/public/examples', :all_on_start => false
-guard 'sass',         :input => 'src/doc',      :output => 'server/public/doc',      :all_on_start => false
+guard 'sass', :input => 'src/examples', :output => 'server/public/examples', :all_on_start => false, :load_paths => ['src']
+guard 'sass', :input => 'src/doc',      :output => 'server/public/doc',      :all_on_start => false, :load_paths => ['src']
 
 guard 'coffeescript', :input => 'src/examples', :output => 'server/public/examples', :all_on_start => false
+guard 'coffeescript', :input => 'src/doc',      :output => 'server/public/doc', :all_on_start => false
 
 guard 'haml',         :input => 'src', :output => 'server/public', :all_on_start => false do
   watch %r{^src.+(\.html\.haml)}
