@@ -7,12 +7,12 @@ MARKDOWN_COMPILER = bin/kramdown
 JS_TESTER   = ./node_modules/vows/bin/vows --no-color
 EXAMPLES_LAB_DIR = ./examples/lab
 SASS_COMPILER = bin/sass -I src -r ./src/sass/bourbon/lib/bourbon.rb
-ENERGY2D_ENGINE_JS_FILES := $(shell find src/lab/models/energy2d/engine -name '*.js' -print)
 BROWSERIFY = ./node_modules/.bin/browserify
 BATCH_CONVERT_MML_FILES = ./node-bin/mw-batch-converter
 BATCH_POST_PROCESS_MML_CONVERSION = ruby src/mw-helpers/post-batch-processor.rb
 
 MD_ENGINE_JS_FILES := $(shell find src/lab/models/md2d -name '*.js' -print)
+ENERGY2D_ENGINE_JS_FILES := $(shell find src/lab/models/energy2d/engine -name '*.js' -print)
 
 # targets
 
@@ -328,6 +328,9 @@ server/public/lab/lab.energy2d.js: \
 	src/lab/energy2d-module.js \
 	server/public/lab/lab.models.energy2d.engine.js \
 	src/lab/models/energy2d/modeler.js \
+	src/lab/views/energy2d/utils-color.js \
+	src/lab/views/energy2d/heatmap.js \
+	src/lab/views/energy2d/vectormap.js \
 	src/lab/views/energy2d/views.js \
 	src/lab/controllers/energy2d/controllers.js \
 	src/lab/end.js

@@ -27,6 +27,9 @@ var
   NY = 100,
   ARRAY_SIZE = NX * NY;
 
+// Core Energy2D model.
+// 
+// It creates and manages all the data and parameters used for calculations.
 exports.makeCoreModel = function (model_options) {
   'use strict';
   var

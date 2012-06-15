@@ -12,9 +12,10 @@ var coremodel = require('./core-model.js');
 // define namespace
 energy2d.namespace('energy2d.modeler');
 
-energy2d.modeler.makeModeler = function (options, array_type) {
+energy2d.modeler.makeModeler = function (options) {
   'use strict';
-  var core_model = coremodel.makeCoreModel(options, array_type);
+  var core_model = coremodel.makeCoreModel(options);
+
   return {
     nextStep: function () {
       core_model.nextStep();
