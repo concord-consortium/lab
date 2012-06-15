@@ -357,6 +357,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     } else {
       finishSetup()
     }
+    controller.runMWScript = runMWScript;
   }
 
   controller();
