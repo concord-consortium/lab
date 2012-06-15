@@ -30,11 +30,13 @@ var controller;
       windowLoaded = $.Deferred(),
 
       hash, modelUrl, fragment,
+      initialHash = "#" + "/imports/legacy-mw-content/converted/potential-tests/two-atoms-two-elements/two-atoms-two-elements$0.json",
+      changedModelSelection = false,
       opts,
       timer;
 
   if (document.location.hash === "") {
-    document.location.hash = "#" + "/imports/legacy-mw-content/converted/potential-tests/two-atoms-two-elements/two-atoms-two-elements$0.json";
+    document.location.hash = initialHash;
   }
   if (hash = document.location.hash) {
     hash = hash.substr(1, hash.length);
@@ -112,7 +114,11 @@ var controller;
 
   $(window).bind('hashchange', function() {
     if (document.location.hash !== hash) {
-      location.reload();
+      if (changedModelSelection) {
+        location.reload();
+      } else {
+        changedModelSelection = true;
+      }
     }
   });
 
