@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<state>
+<model>
+<model_width>1.0</model_width>
+<model_height>1.0</model_height>
+<timestep>0.01</timestep>
+<measurement_interval>100</measurement_interval>
+<viewupdate_interval>10</viewupdate_interval>
+<sun_angle>1.5707964</sun_angle>
+<solar_power_density>2000.0</solar_power_density>
+<solar_ray_count>24</solar_ray_count>
+<solar_ray_speed>0.1</solar_ray_speed>
+<photon_emission_interval>20</photon_emission_interval>
+<convective>false</convective>
+<background_conductivity>1.0E-9</background_conductivity>
+<background_specific_heat>1.0</background_specific_heat>
+<thermal_buoyancy>2.5E-4</thermal_buoyancy>
+<buoyancy_approximation>1</buoyancy_approximation>
+<boundary>
+<flux_at_border upper="0.0" lower="0.0" left="0.0" right="0.0"/>
+</boundary>
+<structure>
+<part><rectangle x="0.19999999" y="0.3" width="0.3" height="0.4"/><thermal_conductivity>1.0</thermal_conductivity>
+<specific_heat>1000.0</specific_heat>
+<density>1.204</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>40.0</temperature>
+<constant_temperature>false</constant_temperature>
+<filled>false</filled>
+<label>%specific_heat</label>
+</part>
+<part><rectangle x="0.49999997" y="0.3" width="0.3" height="0.4"/><thermal_conductivity>1.0</thermal_conductivity>
+<specific_heat>500.0</specific_heat>
+<density>1.204</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>10.0</temperature>
+<constant_temperature>false</constant_temperature>
+<filled>false</filled>
+<label>%specific_heat</label>
+</part>
+</structure>
+</model>
+<sensor>
+<thermometer label="T1" x="0.35" y="0.42000002"/>
+<thermometer label="T2" x="0.65" y="0.42000002"/>
+</sensor>
+<view>
+<grid>true</grid>
+<grid_size>10</grid_size>
+<rainbow>true</rainbow>
+<rainbow_x>0.083333336</rainbow_x><rainbow_y>0.033333335</rainbow_y><rainbow_w>0.8333333</rainbow_w><rainbow_h>0.033333335</rainbow_h><minimum_temperature>0.0</minimum_temperature>
+<maximum_temperature>60.0</maximum_temperature>
+</view>
+</state>
