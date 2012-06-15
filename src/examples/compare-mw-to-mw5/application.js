@@ -6,6 +6,8 @@
 //
 // ------------------------------------------------------------
 
+var controller;
+
 (function() {
 
   var modelConfig = {
@@ -28,7 +30,6 @@
       windowLoaded = $.Deferred(),
 
       hash, modelUrl, fragment,
-      controller,
       opts,
       timer;
 
