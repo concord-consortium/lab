@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<state>
+<model>
+<timestep>0.5</timestep>
+<measurement_interval>50</measurement_interval>
+<viewupdate_interval>10</viewupdate_interval>
+<sun_angle>1.5707964</sun_angle>
+<solar_power_density>2000.0</solar_power_density>
+<solar_ray_count>24</solar_ray_count>
+<solar_ray_speed>0.1</solar_ray_speed>
+<photon_emission_interval>20</photon_emission_interval>
+<z_heat_diffusivity>0.0</z_heat_diffusivity><background_conductivity>0.1</background_conductivity>
+<background_viscosity>1.0E-4</background_viscosity>
+<thermal_buoyancy>0.0</thermal_buoyancy>
+<buoyancy_approximation>1</buoyancy_approximation>
+<boundary>
+<flux_at_border upper="0.0" lower="0.0" left="0.0" right="-2.0"/>
+</boundary>
+<structure>
+<part><rectangle x="0.0" y="0.0" width="0.2" height="5.0"/><thermal_conductivity>0.08</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>0.0</temperature>
+<constant_temperature>false</constant_temperature>
+<wind_speed>0.025</wind_speed>
+<label>Fan</label>
+<draggable>false</draggable>
+</part>
+<part><rectangle x="0.0" y="5.0" width="0.2" height="5.0"/><thermal_conductivity>0.08</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>0.0</temperature>
+<constant_temperature>false</constant_temperature>
+<wind_speed>0.025</wind_speed>
+<label>Fan</label>
+<draggable>false</draggable>
+</part>
+<part><rectangle x="0.1999999" y="4.9" width="9.6" height="0.2"/><thermal_conductivity>0.0</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>0.0</temperature>
+<constant_temperature>false</constant_temperature>
+<draggable>false</draggable>
+</part>
+<part><ellipse x="1.2999999523162842" y="7.5" a="0.5" b="0.5"/><thermal_conductivity>10.0</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>30.0</temperature>
+<constant_temperature>true</constant_temperature>
+<filled>false</filled>
+</part>
+<part><ellipse x="1.2999999523162842" y="2.5" a="1.0" b="1.0"/><thermal_conductivity>10.0</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>30.0</temperature>
+<constant_temperature>true</constant_temperature>
+<filled>false</filled>
+</part>
+</structure>
+</model>
+<sensor>
+</sensor>
+<view>
+<grid_size>10</grid_size>
+<color_palette_type>1</color_palette_type>
+<color_palette_x>0.0</color_palette_x><color_palette_y>0.0</color_palette_y><color_palette_w>0.0</color_palette_w><color_palette_h>0.0</color_palette_h><minimum_temperature>0.0</minimum_temperature>
+<maximum_temperature>40.0</maximum_temperature>
+<velocity>true</velocity>
+<text string="Vortex street forming" name="Arial" size="14" style="0" color="ffffff" x="1.0" y="9.0"/>
+<text string="Vortex street not forming" name="Arial" size="14" style="0" color="ffffff" x="1.0" y="1.0"/>
+</view>
+</state>
