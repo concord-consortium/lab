@@ -18,7 +18,7 @@ var
       }
     }
     return c;
-};
+  };
 
 exports.Part = function (options) {
   'use strict';
