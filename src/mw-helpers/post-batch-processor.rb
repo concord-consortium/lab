@@ -79,6 +79,7 @@ Dir.chdir(path) do
     model_list.push(process_section(dir, "original-interactives-in-pages/"))
   end
   model_list.push(process_section("potential-tests"))
+  model_list.push(process_section("validation"))
   model_list.push(process_tutorial_dir("tutorial"))
   dirs = Dir["tutorial/**"]
   dirs.each do |dir|
