@@ -54,6 +54,7 @@ namespace :deploy do
 
   desc "update public/jnlp dir on server"
   task :update_jnlps do
+    update
     run "cd /var/www/app; make clean-jnlp"
     run "cd /var/www/app; make server/public/jnlp"
     run "cd /var/www/app; script/build-and-deploy-jars.rb"
