@@ -11,7 +11,7 @@ energy2d.namespace('energy2d.controllers');
 //
 // Call this constructor function with interactive definition and the ID of the DOM container for an application.
 // This HTML element is used as a default container for all interactive components that don't define their own containers.
-energy2d.controllers.makeInteractiveController = function (interactive, interactive_container_id) {
+energy2d.controllers.makeInteractiveController = function (interactive, interactive_container_id, description_container_id) {
   'use strict';
   var
     // Dependencies:
@@ -74,8 +74,6 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         return createEnergy2DScene(component_def);
       case 'energy2d-simulation-player':
         return createSimulationPlayer(component_def);
-      case 'energy2d-description':
-        return createSimulationDescription(component_def)
       default:
         throw new Error('Interactive controller: unknow type of component.');
       }
@@ -95,9 +93,10 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
   // Public API
   //
   controller = {
-    loadInteractive: function (interactive, interactive_container_id) {
+    loadInteractive: function (interactive, interactive_container_id, description_container_id) {
       var
         components = interactive.components || [],
+        description = interactive.description || {},
         layout = interactive.layout || {},
         component, component_layout, $html_element,
         i, len;
@@ -121,6 +120,11 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         } else {
           $html_element.appendTo(interactive_container_id);
         }
+      }
+      if (description) {
+        component = createSimulationDescription(description);
+        $html_element = component.getHTMLElement();
+        $html_element.appendTo(description_container_id);
       }
 
       // Finally, load scene model.
@@ -180,7 +184,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
   };
 
   // One-off initialization.
-  controller.loadInteractive(interactive, interactive_container_id);
+  controller.loadInteractive(interactive, interactive_container_id, description_container_id);
 
   return controller;
 };

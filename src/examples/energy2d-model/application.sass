@@ -1,14 +1,27 @@
+$directory: "../.."
+
+@import 'sass/bourbon/bourbon'
+
 #content
   margin-left: 2em
 
 .top
+  @include box
   margin-top: 0.5em
 
 .component_group
   display: block
 
+#interactive-description
+  display: inline-box
+  @include box-flex(1)
+  position: relative
+  margin: 0.5em 1.0em
+  width: 25em
+
 #interactive-container
-  display: inline-block
+  @include box
+  @include box-orient(vertical)
   position: relative
 
 .energy2d-scene-view
@@ -16,17 +29,27 @@
   position: relative
 
 .energy2d-simulation-player
+  width: auto
 
 .energy2d-description
   margin: 0em 2em
-  display: inline-block
+  display: inline
   position: relative
   vertical-align: top
-  width: 30%
 
 .energy2d-description-title
+  font-size: 130%
+  font-weight: bold
+  margin: 0.7em 0em 0.7em 0em
+
+.energy2d-description-tagline
   font-size: 120%
   margin: 0.5em 0em 0.5em 0em
 
 .energy2d-description-content
-  margin-bottom: 0.5em
+  margin: 0.5em 0em 1.0em 0em
+
+.energy2d-description-footnote
+  font-size: 90%
+  font-style: italic
+  margin: 1.0em 0em 1.0em 0em
