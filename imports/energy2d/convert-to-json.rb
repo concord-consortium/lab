@@ -4,6 +4,7 @@ HERE = File.expand_path('..', __FILE__)
 $: << File.expand_path('../../..', __FILE__);
 
 require 'rubygems'
+require 'fileutils'
 require 'json'                       # http://flori.github.com/json/doc/index.html
 require 'active_support/core_ext'    # http://guides.rubyonrails.org/active_support_core_extensions.html
 require 'nokogiri'
@@ -14,9 +15,10 @@ e2d_models_path =         File.join(HERE, "models-xml")
 
 original_content_path =   File.join(HERE, "content")
 
-interactives_dir =        "interactives"
+interactives_dir =        "interactives/imports"
 interactives_path =       File.join(PROJECT_ROOT, "src/examples/energy2d-model", interactives_dir)
 interactives_index_path = File.join(PROJECT_ROOT, "src/examples/energy2d-model/interactives-index.js")
+FileUtils.mkdir_p interactives_path
 
 models_dir =              "models-json"
 models_path =             File.join(HERE, models_dir)

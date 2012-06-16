@@ -1,334 +1,334 @@
 var interactivesIndex = {
   "benard_cell": {
     "name": "Benard Cell",
-    "path": "interactives/benard-cell.json"
+    "path": "interactives/imports/benard-cell.json"
   },
   "compare_capacity": {
     "name": "Compare Capacity",
-    "path": "interactives/compare-capacity.json"
+    "path": "interactives/imports/compare-capacity.json"
   },
   "compare_conductivity": {
     "name": "Compare Conductivity",
-    "path": "interactives/compare-conductivity.json"
+    "path": "interactives/imports/compare-conductivity.json"
   },
   "compare_convection_conduction": {
     "name": "Compare Convection Conduction*",
-    "path": "interactives/compare-convection-conduction.json"
+    "path": "interactives/imports/compare-convection-conduction.json"
   },
   "conduction1": {
     "name": "Conduction1",
-    "path": "interactives/conduction1.json"
+    "path": "interactives/imports/conduction1.json"
   },
   "conduction2": {
     "name": "Conduction2",
-    "path": "interactives/conduction2.json"
+    "path": "interactives/imports/conduction2.json"
   },
   "conduction3": {
     "name": "Conduction3",
-    "path": "interactives/conduction3.json"
+    "path": "interactives/imports/conduction3.json"
   },
   "conduction4": {
     "name": "Conduction4",
-    "path": "interactives/conduction4.json"
+    "path": "interactives/imports/conduction4.json"
   },
   "conduction5": {
     "name": "Conduction5",
-    "path": "interactives/conduction5.json"
+    "path": "interactives/imports/conduction5.json"
   },
   "conduction_plate": {
     "name": "Conduction Plate*",
-    "path": "interactives/conduction_plate.json"
+    "path": "interactives/imports/conduction_plate.json"
   },
   "constant_power_sources": {
     "name": "Constant Power Sources",
-    "path": "interactives/constant-power-sources.json"
+    "path": "interactives/imports/constant-power-sources.json"
   },
   "constant_temperature_sources": {
     "name": "Constant Temperature Sources",
-    "path": "interactives/constant-temperature-sources.json"
+    "path": "interactives/imports/constant-temperature-sources.json"
   },
   "convection_exploration": {
     "name": "Convection Exploration",
-    "path": "interactives/convection-exploration.json"
+    "path": "interactives/imports/convection-exploration.json"
   },
   "different_conductivity": {
     "name": "Different Conductivity*",
-    "path": "interactives/different-conductivity.json"
+    "path": "interactives/imports/different-conductivity.json"
   },
   "different_density1": {
     "name": "Different Density1*",
-    "path": "interactives/different-density1.json"
+    "path": "interactives/imports/different-density1.json"
   },
   "different_density2": {
     "name": "Different Density2*",
-    "path": "interactives/different-density2.json"
+    "path": "interactives/imports/different-density2.json"
   },
   "different_specific_heat1": {
     "name": "Different Specific Heat1*",
-    "path": "interactives/different-specific-heat1.json"
+    "path": "interactives/imports/different-specific-heat1.json"
   },
   "different_specific_heat2": {
     "name": "Different Specific Heat2*",
-    "path": "interactives/different-specific-heat2.json"
+    "path": "interactives/imports/different-specific-heat2.json"
   },
   "dirichlet": {
     "name": "Dirichlet",
-    "path": "interactives/dirichlet.json"
+    "path": "interactives/imports/dirichlet.json"
   },
   "double_cavities": {
     "name": "Double Cavities",
-    "path": "interactives/double-cavities.json"
+    "path": "interactives/imports/double-cavities.json"
   },
   "eee_conduction1": {
     "name": "Eee Conduction1*",
-    "path": "interactives/eee-conduction1.json"
+    "path": "interactives/imports/eee-conduction1.json"
   },
   "energy_audit": {
     "name": "Energy Audit",
-    "path": "interactives/energy-audit.json"
+    "path": "interactives/imports/energy-audit.json"
   },
   "fixed_flux_boundary": {
     "name": "Fixed Flux Boundary*",
-    "path": "interactives/fixed-flux-boundary.json"
+    "path": "interactives/imports/fixed-flux-boundary.json"
   },
   "fixed_temperature_boundary": {
     "name": "Fixed Temperature Boundary",
-    "path": "interactives/fixed-temperature-boundary.json"
+    "path": "interactives/imports/fixed-temperature-boundary.json"
   },
   "forced_convection": {
     "name": "Forced Convection*",
-    "path": "interactives/forced-convection.json"
+    "path": "interactives/imports/forced-convection.json"
   },
   "forced_convection1": {
     "name": "Forced Convection1",
-    "path": "interactives/forced-convection1.json"
+    "path": "interactives/imports/forced-convection1.json"
   },
   "forced_convection2": {
     "name": "Forced Convection2",
-    "path": "interactives/forced-convection2.json"
+    "path": "interactives/imports/forced-convection2.json"
   },
   "forced_convection3": {
     "name": "Forced Convection3",
-    "path": "interactives/forced-convection3.json"
+    "path": "interactives/imports/forced-convection3.json"
   },
   "forced_convection4": {
     "name": "Forced Convection4",
-    "path": "interactives/forced-convection4.json"
+    "path": "interactives/imports/forced-convection4.json"
   },
   "gable_solar": {
     "name": "Gable Solar*",
-    "path": "interactives/gable-solar.json"
+    "path": "interactives/imports/gable-solar.json"
   },
   "heat_concentration": {
     "name": "Heat Concentration",
-    "path": "interactives/heat-concentration.json"
+    "path": "interactives/imports/heat-concentration.json"
   },
   "heat_storage": {
     "name": "Heat Storage",
-    "path": "interactives/heat-storage.json"
+    "path": "interactives/imports/heat-storage.json"
   },
   "heatshield": {
     "name": "Heatshield",
-    "path": "interactives/heatshield.json"
+    "path": "interactives/imports/heatshield.json"
   },
   "hot_plate_in_air": {
     "name": "Hot Plate In Air",
-    "path": "interactives/hot-plate-in-air.json"
+    "path": "interactives/imports/hot-plate-in-air.json"
   },
   "hot_water_cup_conductivity": {
     "name": "Hot Water Cup Conductivity",
-    "path": "interactives/hot-water-cup-conductivity.json"
+    "path": "interactives/imports/hot-water-cup-conductivity.json"
   },
   "hot_water_cup_open_vs_closed_10m": {
     "name": "Hot Water Cup Open Vs Closed 10m*",
-    "path": "interactives/hot-water-cup-open-vs-closed-10m.json"
+    "path": "interactives/imports/hot-water-cup-open-vs-closed-10m.json"
   },
   "hot_water_cup_open_vs_closed": {
     "name": "Hot Water Cup Open Vs Closed",
-    "path": "interactives/hot-water-cup-open-vs-closed.json"
+    "path": "interactives/imports/hot-water-cup-open-vs-closed.json"
   },
   "hot_water_cup_thickness": {
     "name": "Hot Water Cup Thickness",
-    "path": "interactives/hot-water-cup-thickness.json"
+    "path": "interactives/imports/hot-water-cup-thickness.json"
   },
   "house_ceiling": {
     "name": "House Ceiling",
-    "path": "interactives/house-ceiling.json"
+    "path": "interactives/imports/house-ceiling.json"
   },
   "ht1": {
     "name": "Ht1",
-    "path": "interactives/ht1.json"
+    "path": "interactives/imports/ht1.json"
   },
   "identical_heat_capacity": {
     "name": "Identical Heat Capacity*",
-    "path": "interactives/identical-heat-capacity.json"
+    "path": "interactives/imports/identical-heat-capacity.json"
   },
   "infiltration": {
     "name": "Infiltration",
-    "path": "interactives/infiltration.json"
+    "path": "interactives/imports/infiltration.json"
   },
   "insulation_effect": {
     "name": "Insulation Effect",
-    "path": "interactives/insulation-effect.json"
+    "path": "interactives/imports/insulation-effect.json"
   },
   "internal_heater": {
     "name": "Internal Heater*",
-    "path": "interactives/internal-heater.json"
+    "path": "interactives/imports/internal-heater.json"
   },
   "intro1": {
     "name": "Intro1",
-    "path": "interactives/intro1.json"
+    "path": "interactives/imports/intro1.json"
   },
   "laminar_turbulent": {
     "name": "Laminar Turbulent*",
-    "path": "interactives/laminar-turbulent.json"
+    "path": "interactives/imports/laminar-turbulent.json"
   },
   "lid_driven_cavity": {
     "name": "Lid Driven Cavity",
-    "path": "interactives/lid-driven-cavity.json"
+    "path": "interactives/imports/lid-driven-cavity.json"
   },
   "natural_convection_temperature": {
     "name": "Natural Convection Temperature*",
-    "path": "interactives/natural-convection-temperature.json"
+    "path": "interactives/imports/natural-convection-temperature.json"
   },
   "natural_convection": {
     "name": "Natural Convection*",
-    "path": "interactives/natural-convection.json"
+    "path": "interactives/imports/natural-convection.json"
   },
   "natural_convection1": {
     "name": "Natural Convection1",
-    "path": "interactives/natural-convection1.json"
+    "path": "interactives/imports/natural-convection1.json"
   },
   "natural_convection2": {
     "name": "Natural Convection2",
-    "path": "interactives/natural-convection2.json"
+    "path": "interactives/imports/natural-convection2.json"
   },
   "neumann": {
     "name": "Neumann",
-    "path": "interactives/neumann.json"
+    "path": "interactives/imports/neumann.json"
   },
   "parallel_circuit_analogy": {
     "name": "Parallel Circuit Analogy*",
-    "path": "interactives/parallel-circuit-analogy.json"
+    "path": "interactives/imports/parallel-circuit-analogy.json"
   },
   "parallel_conductors": {
     "name": "Parallel Conductors",
-    "path": "interactives/parallel-conductors.json"
+    "path": "interactives/imports/parallel-conductors.json"
   },
   "plume": {
     "name": "Plume*",
-    "path": "interactives/plume.json"
+    "path": "interactives/imports/plume.json"
   },
   "power_energy": {
     "name": "Power Energy",
-    "path": "interactives/power-energy.json"
+    "path": "interactives/imports/power-energy.json"
   },
   "prandtl": {
     "name": "Prandtl",
-    "path": "interactives/prandtl.json"
+    "path": "interactives/imports/prandtl.json"
   },
   "projection_effect": {
     "name": "Projection Effect",
-    "path": "interactives/projection-effect.json"
+    "path": "interactives/imports/projection-effect.json"
   },
   "projection": {
     "name": "Projection*",
-    "path": "interactives/projection.json"
+    "path": "interactives/imports/projection.json"
   },
   "radiation": {
     "name": "Radiation",
-    "path": "interactives/radiation.json"
+    "path": "interactives/imports/radiation.json"
   },
   "ray_optics": {
     "name": "Ray Optics*",
-    "path": "interactives/ray-optics.json"
+    "path": "interactives/imports/ray-optics.json"
   },
   "ray_tracing": {
     "name": "Ray Tracing",
-    "path": "interactives/ray-tracing.json"
+    "path": "interactives/imports/ray-tracing.json"
   },
   "regulation": {
     "name": "Regulation",
-    "path": "interactives/regulation.json"
+    "path": "interactives/imports/regulation.json"
   },
   "reynolds": {
     "name": "Reynolds",
-    "path": "interactives/reynolds.json"
+    "path": "interactives/imports/reynolds.json"
   },
   "series_circuit_analogy": {
     "name": "Series Circuit Analogy*",
-    "path": "interactives/series-circuit-analogy.json"
+    "path": "interactives/imports/series-circuit-analogy.json"
   },
   "series_conductors": {
     "name": "Series Conductors",
-    "path": "interactives/series-conductors.json"
+    "path": "interactives/imports/series-conductors.json"
   },
   "skillion_solar": {
     "name": "Skillion Solar*",
-    "path": "interactives/skillion-solar.json"
+    "path": "interactives/imports/skillion-solar.json"
   },
   "skylight": {
     "name": "Skylight",
-    "path": "interactives/skylight.json"
+    "path": "interactives/imports/skylight.json"
   },
   "smoke_in_wind": {
     "name": "Smoke In Wind*",
-    "path": "interactives/smoke-in-wind.json"
+    "path": "interactives/imports/smoke-in-wind.json"
   },
   "solar_heating_convection": {
     "name": "Solar Heating Convection",
-    "path": "interactives/solar-heating-convection.json"
+    "path": "interactives/imports/solar-heating-convection.json"
   },
   "solar_heating_gable_roof": {
     "name": "Solar Heating Gable Roof*",
-    "path": "interactives/solar-heating-gable-roof.json"
+    "path": "interactives/imports/solar-heating-gable-roof.json"
   },
   "solar_heating_skillion_roof": {
     "name": "Solar Heating Skillion Roof*",
-    "path": "interactives/solar-heating-skillion-roof.json"
+    "path": "interactives/imports/solar-heating-skillion-roof.json"
   },
   "solar_heating_two_story": {
     "name": "Solar Heating Two Story*",
-    "path": "interactives/solar-heating-two-story.json"
+    "path": "interactives/imports/solar-heating-two-story.json"
   },
   "solar_radiation": {
     "name": "Solar Radiation",
-    "path": "interactives/solar-radiation.json"
+    "path": "interactives/imports/solar-radiation.json"
   },
   "streamlines": {
     "name": "Streamlines",
-    "path": "interactives/streamlines.json"
+    "path": "interactives/imports/streamlines.json"
   },
   "temperature_radiation": {
     "name": "Temperature Radiation*",
-    "path": "interactives/temperature-radiation.json"
+    "path": "interactives/imports/temperature-radiation.json"
   },
   "thermos": {
     "name": "Thermos",
-    "path": "interactives/thermos.json"
+    "path": "interactives/imports/thermos.json"
   },
   "two_blocks": {
     "name": "Two Blocks",
-    "path": "interactives/two-blocks.json"
+    "path": "interactives/imports/two-blocks.json"
   },
   "vertical_temperature_gradient_in_house": {
     "name": "Vertical Temperature Gradient In House",
-    "path": "interactives/vertical-temperature-gradient-in-house.json"
+    "path": "interactives/imports/vertical-temperature-gradient-in-house.json"
   },
   "viscosity_turbulence": {
     "name": "Viscosity Turbulence",
-    "path": "interactives/viscosity-turbulence.json"
+    "path": "interactives/imports/viscosity-turbulence.json"
   },
   "vortex_street_viscosity": {
     "name": "Vortex Street Viscosity",
-    "path": "interactives/vortex-street-viscosity.json"
+    "path": "interactives/imports/vortex-street-viscosity.json"
   },
   "vortex_street": {
     "name": "Vortex Street",
-    "path": "interactives/vortex-street.json"
+    "path": "interactives/imports/vortex-street.json"
   },
   "wind_effect": {
     "name": "Wind Effect*",
-    "path": "interactives/wind-effect.json"
+    "path": "interactives/imports/wind-effect.json"
   }
 };
