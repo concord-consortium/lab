@@ -21,6 +21,7 @@
     };
 
   hash = document.location.hash || DEFAULT_INTERACTIVE_HASH;
+  document.location.hash = hash;
   interactive_url = hash.substr(1, hash.length);
 
   $.get(interactive_url).done(function (results) {
