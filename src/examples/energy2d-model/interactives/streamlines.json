@@ -1,0 +1,33 @@
+{
+  "model": "/imports/energy2d/models-json/streamlines.json",
+  "components": [
+    {
+      "type": "energy2d-description",
+      "id": "energy2d-description-id",
+      "title": "Streamlines",
+      "content": ""
+    },
+    {
+      "type": "energy2d-scene-view",
+      "id": "energy2d-scene-id"
+    },
+    {
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
+    }
+  ],
+  "layout": {
+    "energy2d-scene-id": {
+      "css": {
+        "width": "600px",
+        "height": "600px"
+      }
+    },
+    "energy2d-player-id": {
+      "class": "component_group",
+      "css": {
+        "margin-left": "46%"
+      }
+    }
+  }
+}
