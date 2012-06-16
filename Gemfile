@@ -11,7 +11,7 @@ gem "haml",               "~> 3.1.6"
 gem "sass",               "~> 3.1.18"
 gem 'bourbon',            "~> 2.1.0"
 
-gem 'rb-fsevent',         "~> 0.9.1", :require => false if RUBY_PLATFORM =~ /darwin/i
+# gem 'rb-fsevent',         "~> 0.9.1", :require => false if RUBY_PLATFORM =~ /darwin/i
 gem "guard",              "~> 1.1"
 gem "guard-haml",         "~> 0.3"
 gem "guard-sass",         "~> 0.6"
