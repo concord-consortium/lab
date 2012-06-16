@@ -1,0 +1,163 @@
+﻿<?php
+
+// check for form submission, get form values if they exist, note any errors
+$errors = array();
+$form_values = $_POST;
+foreach ($form_values as $key => $value) {
+	$$key = $value;
+	if ($value == '') {
+		$errors[] = "Please provide your $key before submitting the form.";
+	}
+}
+
+// if form submitted and no errors, send email and thank user, else output contact form w/ or w/o errors
+if ($submit === 'Submit' && $errors[0] == '') {
+	$email_headers = "From: $name <$email>\n\n";
+$email_message = <<<HTML
+Name: $name
+
+Email: $email
+
+Message:
+
+$message
+HTML;
+
+mail('qxie@concord.org', 'Energy2D', $email_message, $email_headers);
+
+$content = <<<HTML
+<p>Thank you. Your message has been received and we will respond as soon as we can.</p>
+HTML;
+} else {
+$content = <<<HTML
+<p>Use this form to send us your questions and comments. All fields are required.</p>
+HTML;
+
+if (!($errors[0] == '')) {
+	$content .= "<p style=\"color: #c00;\">You did not complete the form.</p>\n<ul>";
+	foreach ($errors as $error) {
+		$content .= "<li style=\"color: #c00;\">$error</li>";
+	}
+	$content .= "</ul>\n";
+}
+
+$content .= <<<HTML
+<form method="post" action="contact.html" onsubmit="return checkForm(this)">
+<dl>
+<dt>Your Name</dt>
+<dd><input name="name" id="name" value="$name" /></dd>
+<dt>Your Email</dt>
+<dd><input name="email" id="email" value="$email" /></dd>
+<dt>Your Message</dt>
+<dd><textarea rows="15" cols="50" name="message" id="message">$message</textarea></dd>
+</dl>
+<input type="submit" name="submit" id="submit" value="Submit" class="button" />
+</form>
+HTML;
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Contact Us - Energy2D</title>
+<link href="_assets/css/product-page.css" rel="stylesheet" type="text/css" media="screen,projection" />
+<link href="../_assets/css/ir.css" rel="stylesheet" type="text/css" media="screen,projection" />
+<style type="text/css">
+dt { font-weight: bold; }
+dd { margin-bottom: 1em; }
+</style>
+<!-- fonts from Typekit -->
+<script type="text/javascript" src="http://use.typekit.com/hdw8ayt.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+<script type="text/javascript">
+function checkForm(the_form) {
+	// check form values, stop submission if anything's missing
+	if (the_form.name.value == '') {
+		alert('Please enter your name before submitting the form.');
+		the_form.name.focus();
+		return false;
+	}
+	if (the_form.email.value == '') {
+		alert('Please enter your email address before submitting the form.');
+		the_form.email.focus();
+		return false;
+	}
+	if (the_form.message.value == '') {
+		alert('Please enter your message before submitting the form.');
+		the_form.message.focus();
+		return false;
+	}
+	return true;
+}
+</script>
+<script type="text/javascript" src="http://use.typekit.com/hdw8ayt.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+<div id="wrapper">
+  <div id="header">
+  	<ul>
+      <li><a href="index.html" title="Energy2D Home">Home</a></li>
+      <li><a href="download.html" title="Download Energy2D">Download</a></li>
+      <li><a href="models.html" title="A Colleciton of Energy2D Simulations">Models</a></li>
+      <li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+      <li><a href="about.html" title="About Energy2D">About</a></li>
+      <li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
+      <li><a id="current" href="contact.html" title="Contact us">Contact</a></li>
+      <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
+    </ul>
+    <a id="cc-link" href="http://www.concord.org/" title="The Concord Consortium Web Site">The Concord Consortium</a>
+    <h1>Energy2D</h1>
+    <p id="tagline">Interactive Heat Transfer Simulations for Everyone</p>
+  </div>
+  <div id="main">
+    <div id="content">
+			<h1>Contact Us</h1>
+			<?php echo $content; ?>
+		</div>
+    <div id="sidebar">
+      <div id="download">
+        <h2>Free Download</h2>
+        <ul>
+        <li><a href="energy2d.jnlp" onclick="_gaq.push(['_trackEvent', 'Software', 'Download', 'energy2d.jnlp']);" title="Energy2D Java Webstart for Windows and Linux">Java Webstart for Windows &amp; Linux</a></li>
+        <li><a href="energy2d-mac.jnlp" onclick="_gaq.push(['_trackEvent', 'Software', 'Download', 'energy2d-mac.jnlp']);" title="Energy2D Java Webstart for Mac OS X">Java Webstart for Mac OS X</a></li>
+        <li><a href="energy2d.jar" onclick="_gaq.push(['_trackEvent', 'Software', 'Download', 'energy2d.jar']);" title="Energy2D Java Executable for All Operating Systems">Java Executable for all OS</a></li>
+        </ul>
+      </div><!-- end #download -->
+    </div>
+      <br />
+
+    </div>
+	<!-- end #sidebar -->
+    <br style="clear: both;" />
+  </div>
+</div>
+<div id="bubble">
+  <div id="bubble-inside">
+    <ul class="tk-museo">
+	<li><a href="index.html" title="Energy2D Home">Home</a></li>
+	<li><a href="download.html" title="Download Energy2D">Download</a></li>
+	<li><a href="models.html">Models</a></li>
+	<li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+	<li><a href="about.html" title="About Energy2D">About</a></li>
+	<li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
+      <li><a href="contact.html" title="Contact us">Contact</a></li>
+    <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
+    </ul>
+    <p class="tk-museo">&copy; Copyright 2010-2012 <a href="http://www.concord.org/" title="The Concord Consortium Website">The Concord Consortium</a>.</p>
+  </div>
+</div>
+<div id="footer">
+  <div id="footer-inside">
+    <p id="nsf">This website is made possible by a grant (#0918449) from the National Science Foundation.
+	Any opinions, findings, and conclusions or recommendations expressed in the materials associated with this program are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.</p>
+  </div>
+</div>
+<!-- end #footer -->
+<a id="home-link" href="/" title="Energy. Engineering. Education.">Return to<br />
+<strong>ENERGY</strong><br />
+<span>.concord.org</span></a>
+</body>
+</html>

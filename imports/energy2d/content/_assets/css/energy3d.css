@@ -1,0 +1,77 @@
+body {
+	background: #fffae6 url(../img/css/energy3d-body-bg.gif) repeat-x;
+	}
+body.home { background: #fffae6 url(../img/css/energy3d-body-home-bg.gif) repeat-x; }
+#banner {
+	background: #e16a3e;
+	clear: both;
+	color: #fff;
+	height: 300px;
+	margin-top: 125px;
+	padding: 0;
+	position: relative;
+	-mozilla-border-radius: 13px;
+	-webkit-border-radius: 13px;
+	border-radius: 13px;
+	}
+	#download {
+		background: #e16a3e;
+		}
+		#download a { font-size: 1.3em; font-weight: bold; padding-left: 35px; }
+		#download h2 span { font-size: .8em; font-weight: normal; }
+#screenshots {
+	padding: 0;
+	width: 640px;
+	}
+#screenshots div {
+	height: 300px;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 640px;
+	border-top-right-radius: 13px;
+	border-bottom-right-radius: 13px;
+	}
+#screenshots img { right: 0; top: 0; }
+#content, #sidebar { margin-top: -20px; }
+
+/* slideshow styles */
+.slideshow {
+	background: #fee9aa;
+	padding: 10px 20px 20px;
+	position: relative;
+	text-align: center;
+	width: 580px;
+	/* CSS3 */
+	-moz-border-radius: 13px;
+	-webkit-border-radius: 13px;
+	border-radius: 13px;
+	}
+	.slideshow h3 { text-align: left; }
+	.slideshow img {
+		display: block;
+		clear: both;
+		margin: 0 auto;
+		}
+	.jshowoff-slidelinks {
+		position: absolute;
+		right: 20px;
+		top: 10px;
+		}
+.jshowoff-slidelinks a {
+	background: #f4b626;
+	color: #fff;
+	display: block !important;
+	float: left;
+	font-size: 12px;
+	height: 18px;
+	padding: 2px 1px;
+	margin: 1px;
+	text-align: center;
+	text-decoration: none;
+	width: 18px;
+	}
+.jshowoff-slidelinks a.jshowoff-active {
+	background: #fff;
+	color: #333;
+	}

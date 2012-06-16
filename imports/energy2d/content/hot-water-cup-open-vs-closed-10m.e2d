@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<state>
+<model>
+<timestep>0.5</timestep>
+<measurement_interval>100</measurement_interval>
+<viewupdate_interval>10</viewupdate_interval>
+<sun_angle>1.5707964</sun_angle>
+<solar_power_density>2000.0</solar_power_density>
+<solar_ray_count>24</solar_ray_count>
+<solar_ray_speed>0.1</solar_ray_speed>
+<photon_emission_interval>20</photon_emission_interval>
+<z_heat_diffusivity>0.0</z_heat_diffusivity><background_conductivity>0.1</background_conductivity>
+<background_density>1.0</background_density>
+<background_viscosity>0.0010</background_viscosity>
+<thermal_buoyancy>5.0E-4</thermal_buoyancy>
+<buoyancy_approximation>1</buoyancy_approximation>
+<boundary>
+<flux_at_border upper="0.0" lower="0.0" left="0.0" right="0.0"/>
+</boundary>
+<structure>
+<part><rectangle x="0.0" y="6.0" width="5.5" height="1.0"/><thermal_conductivity>0.1</thermal_conductivity>
+<specific_heat>1000.0</specific_heat>
+<density>2.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>0.0</temperature>
+<constant_temperature>false</constant_temperature>
+<filled>false</filled>
+</part>
+<part><rectangle x="0.0" y="8.0" width="4.5" height="2.0"/><thermal_conductivity>10.0</thermal_conductivity>
+<specific_heat>1000.0</specific_heat>
+<density>10.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>50.0</temperature>
+<constant_temperature>false</constant_temperature>
+<filled>false</filled>
+</part>
+<part><rectangle x="5.5" y="8.0" width="4.5" height="2.0"/><thermal_conductivity>10.0</thermal_conductivity>
+<specific_heat>1000.0</specific_heat>
+<density>10.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>50.0</temperature>
+<constant_temperature>false</constant_temperature>
+<filled>false</filled>
+</part>
+<part><rectangle x="4.5" y="7.0" width="1.0" height="3.0"/><thermal_conductivity>1.0E-9</thermal_conductivity>
+<specific_heat>1000.0</specific_heat>
+<density>1.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>0.0</temperature>
+<constant_temperature>false</constant_temperature>
+</part>
+</structure>
+</model>
+<sensor>
+<thermometer stencil="9" x="2.0" y="6.2"/>
+<thermometer stencil="9" x="8.0" y="6.2833333"/>
+<thermometer x="8.0" y="9.0"/>
+<thermometer x="2.0" y="9.0"/>
+</sensor>
+<view>
+<grid>true</grid>
+<grid_size>10</grid_size>
+<color_palette>true</color_palette>
+<color_palette_type>1</color_palette_type>
+<color_palette_x>0.0</color_palette_x><color_palette_y>0.0</color_palette_y><color_palette_w>0.0</color_palette_w><color_palette_h>0.0</color_palette_h><minimum_temperature>0.0</minimum_temperature>
+<maximum_temperature>75.0</maximum_temperature>
+<graph_xlabel>Time</graph_xlabel></view>
+</state>
