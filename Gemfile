@@ -5,6 +5,8 @@ gem "thor",               "~> 0.15.2"
 gem "fog",                "~> 1.3.1"
 gem "librarian",          "~> 0.0.23"
 
+gem 'rails',              "~> 3.2.3"
+
 gem "haml",               "~> 3.1.6"
 gem "sass",               "~> 3.1.18"
 gem 'bourbon',            "~> 2.1.0"
