@@ -13,7 +13,7 @@
   "description": {
     "title": "Boundary Conditions",
     "tagline": "Defining the Interaction Between the Simulation Box and the Environment",
-    "content": "\nThe following simulates a box with a constant-temperature heater at the center. Use the first drop-down menu to select the available boundary\nconditions and run the simulation to examine their effects. You may drag the heater and the thermometers around.\n",
+    "content": "The following simulates a box with a constant-temperature heater at the center. Use the first drop-down menu to select the available boundary\nconditions and run the simulation to examine their effects. You may drag the heater and the thermometers around.",
     "footnote": ""
   },
   "layout": {

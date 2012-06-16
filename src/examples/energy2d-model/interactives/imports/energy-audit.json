@@ -13,7 +13,7 @@
   "description": {
     "title": "Energy Audit",
     "tagline": "Where does the House Lose Heat?",
-    "content": "Pretend that you were an energy audit whose job is to inspect the energy efficiency of someone's house. You are\ngiven two temperature data loggers (sensors that record temperature data over time). Your task is to identify where\nthe following model house loses most heat and recommend countermeasures. \n\n",
+    "content": "Pretend that you were an energy audit whose job is to inspect the energy efficiency of someone's house. You are\ngiven two temperature data loggers (sensors that record temperature data over time). Your task is to identify where\nthe following model house loses most heat and recommend countermeasures.",
     "footnote": ""
   },
   "layout": {

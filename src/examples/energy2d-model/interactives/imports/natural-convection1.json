@@ -13,7 +13,7 @@
   "description": {
     "title": "Convection",
     "tagline": "Hotter Surface Convects More Heat",
-    "content": "Newton's Law of Cooling suggests that the hotter an object is, the more thermal energy it loses through convection.\nThe following model demonstrates this. Notice the linear dependence of transferred heat on the temperature of the heater:\nIf the temperature is twice as high, the convected heat will be approximately twice as much.\n\n",
+    "content": "Newton's Law of Cooling suggests that the hotter an object is, the more thermal energy it loses through convection.\nThe following model demonstrates this. Notice the linear dependence of transferred heat on the temperature of the heater:\nIf the temperature is twice as high, the convected heat will be approximately twice as much.",
     "footnote": ""
   },
   "layout": {
