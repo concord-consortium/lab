@@ -15,13 +15,14 @@ energy2d.namespace('energy2d.views');
 // - PartsView
 //
 // getHTMLElement() method returns JQuery object with DIV that contains these views.
-// Constructor sets only necessary style options.  
-// If you want to resize Energy2D scene view use CSS rule for wrapping DIV. 
+// Constructor sets only necessary style options.
+// If you want to resize Energy2D scene view use CSS rule for wrapping DIV.
 // Do not resize manually internal views (heatmap, velocity or parts)!
 energy2d.views.makeEnergy2DScene = function (html_id) {
   'use strict';
   var
     DEFAULT_ID = 'energy2d-scene-view',
+    DEFAULT_CLASS = 'energy2d-scene-view',
 
     heatmap_view,
     velocity_view,
@@ -31,12 +32,13 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
 
     layers_count = 0,
 
-    // 
+    //
     // Private methods.
     //
     initHTMLelement = function () {
       $scene_view_div = $('<div />');
       $scene_view_div.attr('id', html_id || DEFAULT_ID);
+      $scene_view_div.addClass(DEFAULT_CLASS);
 
       $scene_view_div.css('position', 'relative');
 
@@ -97,12 +99,13 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
 // getHTMLElement() returns jQuery object with canvas used for rendering.
 // Before use, this view should be bound with the parts array using bindPartsArray(parts).
 // To render parts use renderParts() method.
-// Set size of the parts view using CSS rules. The view fits canvas dimensions to the real 
+// Set size of the parts view using CSS rules. The view fits canvas dimensions to the real
 // size of the HTML element to avoid low quality scaling.
 energy2d.views.makePartsView = function (html_id) {
   'use strict';
   var
     DEFAULT_ID = 'energy2d-parts-view',
+    DEFAULT_CLASS = 'energy2d-parts-view',
 
     $parts_canvas,
     canvas_ctx,
@@ -117,12 +120,13 @@ energy2d.views.makePartsView = function (html_id) {
 
     textures = [],
 
-    // 
+    //
     // Private methods.
     //
     initHTMLelement = function () {
       $parts_canvas = $('<canvas />');
       $parts_canvas.attr('id', html_id || DEFAULT_ID);
+      $parts_canvas.addClass(DEFAULT_CLASS);
 
       canvas_ctx = $parts_canvas[0].getContext('2d');
       canvas_ctx.strokeStyle = "black";
@@ -182,7 +186,7 @@ energy2d.views.makePartsView = function (html_id) {
 
     drawRectangle = function (rectangle) {
       var
-        px = rectangle.x * scale_x - 1,        // "- 1 / + 2" too keep positions 
+        px = rectangle.x * scale_x - 1,        // "- 1 / + 2" too keep positions
         py = rectangle.y * scale_y - 1,        // consistent with Energy2d
         pw = rectangle.width * scale_x + 2,
         ph = rectangle.height * scale_y + 2,
@@ -219,8 +223,8 @@ energy2d.views.makePartsView = function (html_id) {
         verts, i, len;
 
       if (part.rectangle) {
-        label_x = part.rectangle.x + 0.5 * part.rectangle.w;
-        label_y = part.rectangle.y + 0.5 * part.rectangle.h;
+        label_x = part.rectangle.x + 0.5 * part.rectangle.width;
+        label_y = part.rectangle.y + 0.5 * part.rectangle.height;
       } else if (part.ellipse) {
         label_x = part.ellipse.x;
         label_y = part.ellipse.y;
@@ -393,16 +397,17 @@ energy2d.views.makePartsView = function (html_id) {
 // getHTMLElement() method returns JQuery object with DIV that contains all buttons.
 // If you want to style its components:
 // Default div id = "energy2d-simulation-player",
-// Buttons ids: "sim-play", "sim-step", "sim-stop", "sim-reset". 
+// Buttons ids: "sim-play", "sim-step", "sim-stop", "sim-reset".
 energy2d.views.makeSimulationPlayerView = function (html_id) {
   'use strict';
   var
     DEFAULT_ID = 'energy2d-simulation-player',
+    DEFAULT_CLASS = 'energy2d-simulation-player',
 
     simulation_controller,
     $player_div,
 
-    // 
+    //
     // Private methods.
     //
     initHTMLelement = function () {
@@ -410,6 +415,7 @@ energy2d.views.makeSimulationPlayerView = function (html_id) {
 
       $player_div = $('<div />');
       $player_div.attr('id', html_id || DEFAULT_ID);
+      $player_div.addClass(DEFAULT_CLASS);
       // Stop button.
       $button = $('<button type="button" id="sim-stop">Stop</button>');
       $button.click(function () {
@@ -453,4 +459,57 @@ energy2d.views.makeSimulationPlayerView = function (html_id) {
   initHTMLelement();
 
   return simulation_player;
+};
+
+// Description.
+//
+// getHTMLElement() method returns JQuery object with DIV that contains description.
+// If you want to style its components:
+// Default div id = "energy2d-description",
+// Title class: "energy2d-description-title", Content class: "energy2d-description-content".
+energy2d.views.makeSimulationDescription = function (description) {
+  'use strict';
+  var
+    DEFAULT_ID = 'energy2d-description',
+    DEFAULT_CLASS = 'energy2d-description',
+
+    simulation_controller,
+    $description_div,
+
+    //
+    // Private methods.
+    //
+    initHTMLelement = function () {
+      var $title, $content;
+
+      $description_div = $('<div />');
+      $description_div.attr('id', description.id || DEFAULT_ID);
+      $description_div.addClass(description.class || DEFAULT_CLASS);
+      // title
+      $title = $('<div>' + description.title + '</div>');
+      $title.attr('class', DEFAULT_ID + '-title');
+      $description_div.append($title);
+      // content
+      $content = $('<div>' + description.content + '</div>');
+      $content.attr('class', DEFAULT_ID + '-content');
+      $description_div.append($content);
+    },
+
+    //
+    // Public API.
+    //
+    simulation_description = {
+      bindSimulationController: function (controller) {
+        simulation_controller = controller;
+      },
+
+      getHTMLElement: function () {
+        return $description_div;
+      }
+    };
+
+  // One-off initialization.
+  initHTMLelement();
+
+  return simulation_description;
 };
