@@ -2,20 +2,20 @@
   "model": "/imports/energy2d/models-json/forced-convection1.json",
   "components": [
     {
-      "type": "energy2d-description",
-      "id": "energy2d-description-id",
-      "title": "Forced, Convection1",
-      "content": ""
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
     },
     {
       "type": "energy2d-scene-view",
       "id": "energy2d-scene-id"
-    },
-    {
-      "type": "energy2d-simulation-player",
-      "id": "energy2d-player-id"
     }
   ],
+  "description": {
+    "title": "Convection",
+    "tagline": "Forced Convection: Fluid Motion Driven by External Sources",
+    "content": "The following model shows how forced convection depends on the wind speed and the temperature of the heat/cool source\n(how the wind blows away heat of your food or defrost the side windows of your car).\n",
+    "footnote": ""
+  },
   "layout": {
     "energy2d-scene-id": {
       "css": {
@@ -26,7 +26,8 @@
     "energy2d-player-id": {
       "class": "component_group",
       "css": {
-        "margin-left": "46%"
+        "text-align": "center",
+        "margin": "0.2em"
       }
     }
   }

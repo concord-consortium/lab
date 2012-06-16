@@ -2,20 +2,20 @@
   "model": "/imports/energy2d/models-json/prandtl.json",
   "components": [
     {
-      "type": "energy2d-description",
-      "id": "energy2d-description-id",
-      "title": "Prandtl",
-      "content": ""
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
     },
     {
       "type": "energy2d-scene-view",
       "id": "energy2d-scene-id"
-    },
-    {
-      "type": "energy2d-simulation-player",
-      "id": "energy2d-player-id"
     }
   ],
+  "description": {
+    "title": "The Prandtl Number",
+    "tagline": "Conductive vs. Convective Heat Transfer",
+    "content": "Both conduction and convection happen in fluids. As heat transfer through both processes reduces \nthe temperature difference, they can be considered as competing against each other in transferring heat.\nThere are many different types of fluids, such as air, water, oil, or mercury.\nThe rates of conduction and convection may be different in different fluids. \nSometimes, conduction dominates. Other times, convection dominates. The Prandtl number is a parameter\nthat can be used to roughly determine which process will \"win\":\n\nPr=ν/αwhere ν is the kinematic viscosity and α is the thermal diffusivity.\n\nThe following simulation shows how fluids with different Prandtl numbers transfer heat.\n",
+    "footnote": ""
+  },
   "layout": {
     "energy2d-scene-id": {
       "css": {
@@ -26,7 +26,8 @@
     "energy2d-player-id": {
       "class": "component_group",
       "css": {
-        "margin-left": "46%"
+        "text-align": "center",
+        "margin": "0.2em"
       }
     }
   }
