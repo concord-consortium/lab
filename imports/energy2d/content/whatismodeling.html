@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>What is Modeling?</title>
+<link href="_assets/css/product-page.css" rel="stylesheet" type="text/css" media="screen,projection" />
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="http://use.typekit.com/hdw8ayt.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+<script type="text/javascript" src="library.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="wrapper">
+  <div id="header">
+  	<ul>
+      <li><a href="index.html" title="Energy2D Home">Home</a></li>
+      <li><a href="download.html" title="Download Energy2D">Download</a></li>
+      <li><a href="models.html" title="A Colleciton of Energy2D Simulations">Models</a></li>
+      <li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+      <li><a href="about.html" title="About Energy2D">About</a></li>
+      <li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
+      <li><a href="contact.html" title="Contact us">Contact</a></li>
+      <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
+    </ul>
+    <a id="cc-link" href="http://www.concord.org/" title="The Concord Consortium Web Site">The Concord Consortium</a>
+    <h1>What is Modeling?</h1>
+    <p id="tagline">Simulating Natural Phenomena with Computers</p>
+  </div>
+  <div id="main">
+    <div id="content">
+
+<div class="entry">
+<p>Most phenomena involved in physical systems are governed by well-defined scientific laws.
+These laws correlate different properties and provide insights to the states of a system and 
+processes it undergoes. Mathematical models can therefore be derived based 
+on the laws, allowing scientists and engineers to explain what has happened and 
+predict what will happen.</p>
+
+<p>If a mathematical model is too complicated to be solved, a computer will be needed. 
+Thus, we have a <strong>computational model</strong> that approximates the solution using some
+algorithms. Computational models are now increasingly important parts of 
+computer-aided design (CAD) packages, which are in the tool box of almost every engineer 
+whose job involves research and development (R&amp;D). Computational models are often called
+<strong>simulations</strong>. So we will use the two terms interchangably.
+</p>
+
+<p>Today's students need to have a fundamental understanding of what computational models
+are and how they can be used to accelerate R&amp;D processes.</p>
+</div>
+
+
+<h2>A Modeling Example</h2>
+<div class="entry">
+
+<p>The following is a simple model of solar heating of a house. Use the controls to play with it and explore how such a model contributes to 
+developing an understanding of the physical variables and processes involved in designing solar houses.
+<div class="simulation">
+<table width="100%">
+<tr valign="top">
+<td colspan="2">
+
+<center>
+<form autocomplete="off">
+Sunlight: 
+<input type="radio" name="applet1_group_sun" value="Morning" onclick="runScript('applet1', 'set sunny true; set sun_angle 150')"/>Morning
+<input type="radio" name="applet1_group_sun" value="Noon" onclick="runScript('applet1', 'set sunny true; set sun_angle 90')" checked/>Noon
+<input type="radio" name="applet1_group_sun" value="Afternoon" onclick="runScript('applet1', 'set sunny true; set sun_angle 30')"/>Afternoon
+<input type="radio" name="applet1_group_sun" value="Night" onclick="runScript('applet1', 'set sunny false')"/>Night
+</form>
+<br>
+</center>
+
+</td>
+</tr>
+
+<tr>
+<td valign="top" >
+<form autocomplete="off">
+<input type="radio" name="applet1_group0" value="Select" onclick="runScript('applet1', 'set action selection')" checked/> Select<br />
+<input type="radio" name="applet1_group0" value="Rectangle" onclick="runScript('applet1', 'set action rectangle')"/> Rectangle<br />
+<input type="radio" name="applet1_group0" value="Ellipse" onclick="runScript('applet1', 'set action ellipse')"/> Ellipse<br />
+<input type="radio" name="applet1_group0" value="Polygon" onclick="runScript('applet1', 'set action polygon')"/> Polygon<br />
+<input type="radio" name="applet1_group0" value="Thermometer" onclick="runScript('applet1', 'set action thermometer')"/>Thermometer
+<br><br>
+<p>
+<input type="button" value="Reload page" onClick="window.location.reload()"> 
+<br><br>
+<strong>Reload the entire page to reset the model and the buttons.</strong></p>
+</td>
+
+<td width="400">
+<applet id="applet1" archive="energy2d.jar" code="org.concord.energy2d.system.System2D" width="400" height="400">
+<param name="script" value="load intro1.e2d;"/> 
+</applet>
+
+<br><br>
+<center>
+<form autocomplete="off">
+<input type="button" value="Run" onclick="run('applet1')">
+<input type="button" value="Stop" onclick="stop('applet1')">
+<input type="button" value="Reset" onclick="jsReset('applet1')">
+Coloring:
+<select onChange="runScript('applet1', 'set color_palette_type '+this.options[this.selectedIndex].value)">
+  <option value="RAINBOW">Rainbow</option>
+  <option value="IRON">Iron</option>
+  <option value="GRAY">Gray</option>
+</select>
+<br><br>
+<table bgcolor="#eeeeee" border="1" width="96%">
+<tr>
+<td>
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set isotherm true;') : runScript('applet1', 'set isotherm false;');"/>Isotherm lines
+</td>
+<td>
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set heat_flux_line true;') : runScript('applet1', 'set heat_flux_line false;');"/>Heat flux lines
+</td>
+</tr>
+<tr>
+<td>
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set heat_flux_arrow true;') : runScript('applet1', 'set heat_flux_arrow false;');"/>Heat flux arrows
+</td>
+<td>
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set graph true;') : runScript('applet1', 'set graph false;');"/>Graph
+</td>
+</tr>
+<tr>
+<td>
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set grid true;') : runScript('applet1', 'set grid false;');" checked/>Grid
+</td>
+<td>
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set ruler true;') : runScript('applet1', 'set ruler false;');" checked/>Ruler
+</td>
+</tr>
+<tr>
+<td>
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set color_palette true;') : runScript('applet1', 'set color_palette false;');"/>Color palette
+</td>
+<td>
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set seethrough true;') : runScript('applet1', 'set seethrough false;');"/>See-through
+</tr>
+</table>
+</form>
+<br>
+<p align=center><a href="intro1.e2d">Right-click to download this model</a></p>
+</center>
+
+</td>
+</tr>
+</table>
+</div>
+<br style="clear: both;" />
+</div>
+    </div>
+    <div id="sidebar">
+      <div id="nav">
+        <h2>Introduction</a></h2>
+          	<ul>
+		<li class="active">What's Modeling?</li>
+		<li><a href="whymodeling.html">Why Modeling?</a></li>
+		</ul>
+	<p><a href="index.html">Return to Energy2D Home</a>
+      </div>
+      <iframe src="applet-instructions.html" width="100%" height="500" frameborder="0">
+		<a href="applet-instructions.html">Hmm, you are using a very old browser. Click here to go directly to included content.</a>
+		</iframe>
+    </div>
+    <br style="clear: both;" />
+  </div>
+</div>
+<div id="bubble">
+  <div id="bubble-inside">
+    <ul class="tk-museo">
+	<li><a href="index.html" title="Energy2D Home">Home</a></li>
+	<li><a href="download.html" title="Download Energy2D">Download</a></li>
+	<li><a href="models.html">Models</a></li>
+	<li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+	<li><a href="about.html" title="About Energy2D">About</a></li>
+	<li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
+      <li><a href="contact.html" title="Contact us">Contact</a></li>
+    <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
+    </ul>
+    <p class="tk-museo">&copy; Copyright 2010-2012 <a href="http://www.concord.org/" title="The Concord Consortium Website">The Concord Consortium</a>.</p>
+  </div>
+</div>
+<div id="footer">
+  <div id="footer-inside">
+    <p id="nsf">The development of this program is funded by the National Science Foundation under grants #1124281 and #0918449. Any opinions, findings, and conclusions or recommendations expressed in the materials associated with this program are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.</p>
+  </div>
+</div>
+<!-- end #footer -->
+</body>
+</html>

@@ -1,0 +1,32 @@
+#header ul#nav {
+	bottom: -1px;
+	}
+#header ul#nav li {
+	width: 100px;
+	}
+
+body.home #content {
+	height: 600px;
+	padding-top: 290px;
+	position: relative;
+	}
+
+#banner {
+	left: 30px;
+	position: absolute;
+	top: 10px;
+	width: 904px;
+	}
+	#featured {
+		width: 550px;
+		}
+
+.gallery .thumb {
+	margin: 0 15px 15px 0;
+	}
+	
+#content ul.activities li {
+	clear: both;
+	height: 103px;
+	margin: 0;
+	}

@@ -1,0 +1,96 @@
+body {
+	background: #fffae6 url(../img/css/ir-body-bg.gif) repeat-x;
+	}
+#header { height: 190px; }
+#header h1 {
+	font-size: 3em;
+	margin-top: .7em;
+	}
+	#header p {
+		margin-top: .3em;
+		}
+#jce {
+	color: #186569;
+	font-size: 1.2em;
+	font-style: italic;
+	margin: -40px 0 12px;
+	text-align: right;
+	}
+.video {
+	clear: both;
+	height: auto;
+	margin-bottom: 20px;
+	min-height: 250px;
+	}
+	.video h3 {
+		background: #3a878b url(../img/css/bullet.gif) no-repeat 0 -1px;
+		color: #fff;
+		font-size: 1.1em;
+		margin-bottom: 10px;
+		padding: 10px 10px 10px 25px;
+		}
+	.video iframe { float: left; }
+	.video img {
+		float: left;
+		margin-right: 15px;
+		}
+	.video p {
+		 float: left;
+		 margin: 0;
+		 padding-right: 15px;
+		 width: 189px;
+		}
+#videos h2 { float: left; margin: 3px 0 0 0; width: 140px; }
+.page-navigation { float: right; }
+.page-navigation, .alt-page-navigation{
+	padding-bottom: 10px;
+	}
+.page-navigation a, .alt-page-navigation a{
+	background: #eb8723;
+	color: #fff;
+	float: left;
+	font-size: 12px;
+	padding: 3px 0;
+	margin: 2px;
+	text-decoration: none;
+	}
+.page-navigation a.active-page{
+	background: #fff !important;
+	color: #333 !important;
+	}
+#content #videos .page-navigation a.page-link {
+	padding-left: 9px !important;
+	padding-right: 9px !important;
+	}
+#content #videos .page-navigation a.first-link {
+	background: #eb8723 url(../img/paging/2-left.gif) center center no-repeat !important;
+	text-indent: -999em !important;
+	}
+#content #videos .page-navigation a.previous-link {
+	background: #eb8723 url(../img/paging/1-left.gif) center center no-repeat !important;
+	text-indent: -999em;
+	}
+#content #videos .page-navigation a.next-link {
+	background: #eb8723 url(../img/paging/1-right.gif) center center no-repeat !important;
+	text-indent: -999em;
+	}
+#content #videos .page-navigation a.last-link {
+	background: #eb8723 url(../img/paging/2-right.gif) center center no-repeat !important;
+	text-indent: -999em;
+	}
+#content #videos .page-navigation a.first-link-disabled {
+	background: #b7b7b7 url(../img/paging/2-left-grey.gif) center center no-repeat !important;
+	text-indent: -999em !important;
+	}
+#content #videos .page-navigation a.previous-link-disabled {
+	background: #b7b7b7 url(../img/paging/1-left-grey.gif) center center no-repeat !important;
+	text-indent: -999em;
+	}
+#content #videos .page-navigation a.next-link-disabled {
+	background: #b7b7b7 url(../img/paging/1-right-grey.gif) center center no-repeat !important;
+	text-indent: -999em;
+	}
+#content #videos .page-navigation a.last-link-disabled {
+	background: #b7b7b7 url(../img/paging/2-right-grey.gif) center center no-repeat !important;
+	text-indent: -999em;
+	}

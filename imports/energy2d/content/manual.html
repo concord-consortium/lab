@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Energy2D Manual</title>
+<link href="_assets/css/product-page.css" rel="stylesheet" type="text/css" media="screen,projection" />
+<script type="text/javascript" src="http://use.typekit.com/hdw8ayt.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+<style type="text/css">
+    a#no_underline_link {
+        text-decoration: none;
+    }
+</style>
+<link type="text/css" href="../_assets/css/ui-lightness/jquery-ui-1.8.13.custom.css" rel="stylesheet" />	
+<script type="text/javascript" src="../_assets/js/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="../_assets/js/jquery-ui-1.8.13.custom.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+
+		// Accordion
+		$("#accordion").accordion({ header: "h3" });
+	
+		// Tabs
+		$('#tabs').tabs();
+	
+
+		// Dialog			
+		$('#dialog').dialog({
+			autoOpen: false,
+			width: 600,
+			buttons: {
+				"Ok": function() { 
+					$(this).dialog("close"); 
+				}, 
+				"Cancel": function() { 
+					$(this).dialog("close"); 
+				} 
+			}
+		});
+				
+		// Dialog Link
+		$('#dialog_link').click(function(){
+			$('#dialog').dialog('open');
+			return false;
+		});
+
+		// Datepicker
+		$('#datepicker').datepicker({
+			inline: true
+		});
+				
+		// Slider
+		$('#slider').slider({
+			range: true,
+			values: [17, 67]
+		});
+				
+		// Progressbar
+		$("#progressbar").progressbar({
+			value: 20 
+		});
+				
+		//hover states on the static widgets
+		$('#dialog_link, ul#icons li').hover(
+			function() { $(this).addClass('ui-state-hover'); }, 
+			function() { $(this).removeClass('ui-state-hover'); }
+		);
+				
+	});
+</script>
+</head>
+<body>
+<div id="wrapper">
+  <div id="header">
+  	<ul>
+      <li><a href="index.html" title="Energy2D Home">Home</a></li>
+      <li><a href="download.html" title="Download Energy2D">Download</a></li>
+      <li><a href="models.html" title="A Colleciton of Energy2D Simulations">Models</a></li>
+      <li><a id="current" href="manual.html" title="Energy2D Manual">Manual</a></li>
+      <li><a href="about.html" title="About Energy2D">About</a></li>
+      <li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
+      <li><a href="contact.html" title="Contact us">Contact</a></li>
+      <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
+    </ul>
+    <a id="cc-link" href="http://www.concord.org/" title="The Concord Consortium Web Site">The Concord Consortium</a>
+    <h1>Energy2D</h1>
+    <p>Interactive Heat Transfer Simulations for Everyone</p>
+</div>
+  <div id="main">
+    <div id="content" style="width: 100%;">
+
+	<h1>User Manual</h1>
+		<p class="subhead">How to use Energy2D</p>
+
+<div id="tabs">
+
+	<ul>
+	  <li><a href="#tabs-1">Overview</a></li>
+	  <li><a href="#tabs-2">Model</a></li>
+	  <li><a href="#tabs-3">View</a></li>
+	  <li><a href="#tabs-4">Control</a></li>
+	  <li><a href="#tabs-5">Script</a></li>
+	</ul>
+
+
+<!-- Overview -->
+
+	
+
+	<div id="tabs-1">
+	<table width="90%">
+	<tr>
+	<td>
+	<p><strong>Energy2D is:</strong></p>
+	<ul>
+	<li>a two-dimensional interactive computational fluid dynamics (CFD) and heat transfer simulation program;	</li>
+	<li>an inquiry tool students can use to investigate heat flow and energy usage in structures;	</li>
+	<li>both a Java application that can be downloaded to run offline and a Java applet that runs directly withina browser;	</li>
+	<li>free and open-source.	</li>
+	</ul>
+	</td>
+	</tr>
+	</table>
+	</div>
+
+
+
+
+
+<!-- Model -->
+
+	<div id="tabs-2">
+	<img src="e2d_screenshot1.png" />
+	</div>
+
+
+
+
+
+
+
+<!-- View -->
+
+	<!-- UI and Javascript controls -->
+
+
+	<div id="tabs-4">
+
+	<p>Javascript controls
+
+
+
+	</p>
+	</div>
+
+
+
+
+
+
+<!-- Energy2D scripts -->
+
+
+	<div id="tabs-5">
+
+	<p><strong>Energy2D scripts:</strong></p>
+
+	<ul>
+
+
+	<li>View options
+
+	  <ul>
+
+	  <li><code>set clock true/false</code>: Show or hide the digital clock	  </li>
+	  <li><code>set graph true/false</code>: Show or hide the graph	  </li>
+	  <li><code>set grid true/false</code>: Show or hide the grid lines	  </li>
+	  <li><code>set heat_flux_arrow true/false</code>: Show or hide the heat flux arrows	  </li>
+	  <li><code>set heat_flux_line true/false</code>: Show or hide the heat flux lines	  </li>
+	  <li><code>set isotherm true/false</code>: Show or hide the isotherm lines	  </li>
+	  <li><code>set rainbow true/false</code>: Show or hide the rainbow	  </li>
+	  <li><code>set ruler true/false</code>: Show or hide the rulers	  </li>
+	  <li><code>set seethrough true/false</code>: Set coloring through the parts	  </li>
+	  <li><code>set streamline true/false</code>: Show or hide the streamlines	  </li>
+	  <li><code>set velocity true/false</code>: Show or hide the velocity vectors
+	  </li>
+	  </ul>
+
+
+	</li>
+	</ul>
+
+
+	</div>
+
+
+
+</div>
+
+
+
+
+</div>
+
+    <br style="clear: both;" />
+  </div>
+</div>
+<div id="bubble">
+  <div id="bubble-inside">
+    <ul class="tk-museo">
+	<li><a href="index.html" title="Energy2D Home">Home</a></li>
+	<li><a href="download.html" title="Download Energy2D">Download</a></li>
+	<li><a href="models.html">Models</a></li>
+	<li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+	<li><a href="about.html" title="About Energy2D">About</a></li>
+	<li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
+      <li><a href="contact.html" title="Contact us">Contact</a></li>
+    <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
+    </ul>
+    <p class="tk-museo">&copy; Copyright 2010-2012 <a href="http://www.concord.org/" title="The Concord Consortium Website">The Concord Consortium</a>.</p>
+  </div>
+</div>
+<div id="footer">
+  <div id="footer-inside">
+    <p id="nsf">The development of this program is funded by the National Science Foundation under grants #1124281 and #0918449. 
+Any opinions, findings, and conclusions or recommendations expressed in the materials associated with this program are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.</p>
+  </div>
+</div>
+<!-- end #footer -->
+<a id="home-link" href="/" title="Energy. Engineering. Education.">Return to<br />
+<strong>ENERGY</strong><br />
+<span>.concord.org</span></a>
+</body>
+</html>

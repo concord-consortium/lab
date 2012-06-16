@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>About Energy2D - 2D Computational Fluid Dynamics &amp; Heat Transfer Simulation</title>
+<link href="_assets/css/product-page.css" rel="stylesheet" type="text/css" media="screen,projection" />
+<script type="text/javascript" src="http://use.typekit.com/hdw8ayt.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+<div id="wrapper">
+  <div id="header">
+  	<ul>
+      <li><a href="index.html" title="Energy2D Home">Home</a></li>
+      <li><a href="download.html" title="Download Energy2D">Download</a></li>
+      <li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+      <li><a href="about.html" title="About Energy2D">About</a></li>
+      <li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
+      <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
+    </ul>
+    <a id="cc-link" href="http://www.concord.org/" title="The Concord Consortium Web Site">The Concord Consortium</a>
+    <h1>Energy2D</h1>
+    <p id="tagline">Interactive fluid dynamics and heat tranfer simulations for everyone</p>
+  </div>
+  <div id="main">
+    <div id="content">
+    <h1>Thermal Storage Simulations</h1>
+		<p class="subhead">Storing thermal energy for controlling temperature</p>
+	<h2>Learning goal</h2>
+	<div class="entry">
+	<p>How is thermal energy stored and released in various materials?
+	</div>
+
+	<h2>Student activities</h2>
+	<div class="entry">
+
+
+<table cellspacing=10 width="100%">
+<tr valign=top>
+<td><h4>1. Comparing the heating and cooling rates of materials with different thermal masses</h4>
+<font size=2>
+<p>In the following model, two balls of the same size but of different thermal masses are put in
+different compartments separate by a thermal insulator in the middle. The balls are heated up by
+shining a light onto them. The light incidents from the upright position and 
+gives an equal amount of energy to the balls.
+
+<p>Start the simulation and wait until the two thermometers read the same temperature. Then turn off the light. 
+Click "On" for graph to see the changes of temperature readings from the thermometers.
+
+<p><strong>Important Note:</strong> Light radiation from the hot plate is represented by a limited number of rays,
+each of which travels at a much slower speed than the speed of light. This is a computational
+approximation that does not reflect the nature of light energy.
+
+</font>
+</td>
+</tr>
+
+<tr>
+<td>
+<center>
+<form>
+<input type="button" value="Light on" onclick="runScript('thermal_storage_applet1', 'set sunny true')"/>
+<input type="button" value="Light off" onclick="runScript('thermal_storage_applet1', 'set sunny false')"/>
+</form>
+<applet id="thermal_storage_applet1" archive="energy2d.jar" 
+code="org.concord.energy2d.system.System2D" width="400" height="400">
+<param 
+  name="script" 
+  value="set convective false;
+set rainbow true;
+set sunny true;
+set ray_speed 0.0002;
+set ray_count 49;
+set emission_interval 1;
+set solar_power 1000000;
+set timestep 500;
+set background_conductivity 1;
+part ellipse(2.5, 5, 4, 4);
+set part[0].conductivity 10;
+set part[0].density 1000;
+part ellipse(7.5, 5, 4, 4);
+set part[1].conductivity 10;
+set part[1].density 10;
+part rectangle(4.8, 10, 0.4, 10);
+set part[2].conductivity 0.0000000001; 
+add text (40, 320) Large thermal mass;
+add text (240, 320) Small thermal mass;
+thermometer(2.5, 5);
+thermometer(7.5, 5);
+set outline true;
+boundary temperature(0, 0, 0, 0);"/> 
+</applet>
+<br>
+<form>
+<input type="button" value="Run" onclick="run('thermal_storage_applet1')">
+<input type="button" value="Stop" onclick="stop('thermal_storage_applet1')">
+<input type="button" value="Reset" onclick="jsReset('thermal_storage_applet1')">
+Graph: 
+<input type="button" value="on" onclick="runScript('thermal_storage_applet1', 'set graph true')"/>
+<input type="button" value="off" onclick="runScript('thermal_storage_applet1', 'set graph false')"/>
+</form>
+</center>
+
+<p><h5>Questions:</h5>
+
+<ol>
+
+<li>While the simulation is running, turn on the temperature graph. 
+Turn the light on and off several times. You should observe a graph like the one below:
+<p align=center><img src="thermal_storage_result1.png">
+<p>What is the significance of this graph?
+</li>
+
+<li>If you were to choose from the above two materials to build a wall of a house, 
+which one would you use?
+
+</ol>
+
+</td>
+</tr>
+
+</table>
+<br style="clear: both;" />
+</div>
+    </div>
+    <div id="sidebar">
+      <div id="nav">
+        <h2>Simulations</a></h2>
+          	<ul>
+			 <li><a href="intromodeling.html" title="Introduction to Modeling">Introduction to Modeling</a></li>
+			 <li><a href="ht.html" title="Energy2D Heat and Temperature Simulation">Heat and Temperature</a></li>
+			 <li><a href="conduction.html" title="Energy2D Conduction Simulations">Conduction</a></li>
+			 <li><a href="convection.html" title="Energy2D Convection Simulations">Convection</a></li>
+			 <li><a href="radiation.html" title="Energy2D Radiation Simulation">Radiation</a></li>
+			</ul>
+          <h2>Advanced Topics</h2>
+          	<ul>
+			 <li><a href="prandtl.html" title="The Prandtl Number">Prandtl Number</a></li>
+			 <li><a href="reynolds.html" title="The Reynolds Number">Reynolds Number</a></li>
+			 <li><a href="lid-driven-cavity.html" title="Lid-Driven Cavity Flow">Lid-Driven Cavity</a></li>
+			</ul>
+          <h2>Computational Engine</a></h2>
+          	<ul>
+			 <li><a href="../heat_solver.pdf" title="Solving the Hear Equation">The Heat Equation</a></li>
+			 <li><a href="../fluid_solver.pdf" title="Solving the Fluid Equations">The Navier-Stokes Equation</a></li>
+			</ul>
+      </div>
+      <iframe src="applet-instructions.html" width="100%" height="500" frameborder="0">
+<a href="applet-instructions.html">Hmm, you are using a very old browser. Click here to go directly to included content.</a>
+</iframe>
+    </div>
+    <br style="clear: both;" />
+  </div>
+</div>
+<div id="bubble">
+  <div id="bubble-inside">
+    <ul class="tk-museo">
+	<li><a href="index.html" title="Energy2D Home">Home</a></li>
+	<li><a href="manual.html" title="Download Energy2D">Download</a></li>
+	<li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+	<li><a href="about.html" title="About Energy2D">About</a></li>
+	<li><a href="testimonial.html" title="Testimonials for Energy2D">Testimonials</a></li>
+    <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
+    </ul>
+    <p class="tk-museo">&copy; Copyright 2009-2012 <a href="http://www.concord.org/" title="The Concord Consortium Website">The Concord Consortium</a>.</p>
+  </div>
+</div>
+<div id="footer">
+  <div id="footer-inside">
+    <p id="nsf">The development of this program is funded by the National Science Foundation under grant #0918449. Any opinions, findings, and conclusions or recommendations expressed in the materials associated with this program are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.</p>
+  </div>
+</div>
+<!-- end #footer -->
+<a id="home-link" href="/" title="Energy. Engineering. Education.">Return to<br />
+<strong>ENERGY</strong><br />
+<span>.concord.org</span></a>
+</body>
+</html>

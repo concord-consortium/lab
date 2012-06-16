@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Lid-Driven Cavity</title>
+<link href="_assets/css/product-page.css" rel="stylesheet" type="text/css" media="screen,projection" />
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="http://use.typekit.com/hdw8ayt.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+<script type="text/javascript" src="library.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="wrapper">
+  <div id="header">
+  	<ul>
+      <li><a href="index.html" title="Energy2D Home">Home</a></li>
+      <li><a href="download.html" title="Download Energy2D">Download</a></li>
+      <li><a href="models.html" title="A Colleciton of Energy2D Simulations">Models</a></li>
+      <li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+      <li><a href="about.html" title="About Energy2D">About</a></li>
+      <li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
+      <li><a href="contact.html" title="Contact us">Contact</a></li>
+      <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
+    </ul>
+    <a id="cc-link" href="http://www.concord.org/" title="The Concord Consortium Web Site">The Concord Consortium</a>
+    <h1>Lid-Driven Cavity</h1>
+    <p id="tagline">Benchmark of Computational Fluid Dynamics</p>
+  </div>
+  <div id="main">
+    <div id="content">
+ 	<div class="entry">
+
+
+<p>The lid-driven cavity flow involves a fluid in a square box driven by constant "blow" near the lid. 
+Depending on the physical conditions, a stable eddy can form within the box (as shown by the streamlines).
+You may notice that when a stable eddy occupies the entire box, its center is actually cooler than the edge, 
+indicating the faster heat transfer rate through forced convection than through conduction.
+The lid-driven cavity problem is one of the most important benchmarks for computational fluid dynamics.
+<div class="simulation">
+<center>
+<applet id="applet1" archive="energy2d.jar" code="org.concord.energy2d.system.System2D" width="500" height="500">
+<param name="script" value="load lid-driven-cavity.e2d;"/>
+</applet>
+<br>
+<form autocomplete="off">
+<input type="button" value="Run" onclick="run('applet1')">
+<input type="button" value="Stop" onclick="stop('applet1')">
+<input type="button" value="Reset" onclick="jsReset('applet1')">
+<input type="button" value="Reload" onClick="window.location.reload()">
+Coloring:
+<select onChange="runScript('applet1', 'set color_palette_type '+this.options[this.selectedIndex].value)">
+  <option value="RAINBOW">Rainbow</option>
+  <option value="IRON">Iron</option>
+  <option value="GRAY">Gray</option>
+</select>
+<br>
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set grid true;') : runScript('applet1', 'set grid false;');"/>Grid
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set velocity true;') : runScript('applet1', 'set velocity false;');"/>Velocity vectors
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set isotherm true;') : runScript('applet1', 'set isotherm false;');"/>Isotherm
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set heat_flux_line true;') : runScript('applet1', 'set heat_flux_line false;');"/>Heat flux
+<input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set streamline true;') : runScript('applet1', 'set streamline false;');"/>Streamlines
+<br>
+Choose a thermal conductivity (W/(m*&deg;C)):<br>
+<input type="radio" name="applet1-group1" onclick="runScript('applet1', 'set background_conductivity 100;')"/>100
+<input type="radio" name="applet1-group1" onclick="runScript('applet1', 'set background_conductivity 10;')"/>10
+<input type="radio" name="applet1-group1" onclick="runScript('applet1', 'set background_conductivity 1;')" checked/>1
+<input type="radio" name="applet1-group1" onclick="runScript('applet1', 'set background_conductivity 0.2;')"/>0.2
+<input type="radio" name="applet1-group1" onclick="runScript('applet1', 'set background_conductivity 0.1;')"/>0.1
+<br>
+Choose a kinematic viscosity (m<sup>2</sup>/s):<br>
+<input type="radio" name="applet1-group2" onclick="runScript('applet1', 'set background_viscosity 0.00001;')"/>0.00001
+<input type="radio" name="applet1-group2" onclick="runScript('applet1', 'set background_viscosity 0.0001;')" checked/>0.0001
+<input type="radio" name="applet1-group2" onclick="runScript('applet1', 'set background_viscosity 0.001;')"/>0.001
+<input type="radio" name="applet1-group2" onclick="runScript('applet1', 'set background_viscosity 0.01;')"/>0.01
+</form>
+<br>
+<p align=center><a href="lid-driven-cavity.e2d">Right-click to download this model</a></p>
+</center>
+</div>
+<br style="clear: both;" />
+</div>
+    </div>
+    <div id="sidebar">
+      <div id="nav">
+	<h2>Fluid Dynamics</h2>
+          	<ul>
+		<li><a href="prandtl.html" title="The Prandtl Number">Prandtl Number</a></li>
+		<li><a href="reynolds.html" title="The Reynolds Number">Reynolds Number</a></li>
+		<li><a href="bernard-cells.html">B&eacute;nard Cells</a></li>
+		<li class="active">Lid-Driven Cavity</li>
+		</ul>
+      </div>
+      <iframe src="applet-instructions.html" width="100%" height="500" frameborder="0">
+<a href="applet-instructions.html">Hmm, you are using a very old browser. Click here to go directly to included content.</a>
+</iframe>
+    </div>
+    <br style="clear: both;" />
+  </div>
+</div>
+<div id="bubble">
+  <div id="bubble-inside">
+    <ul class="tk-museo">
+	<li><a href="index.html" title="Energy2D Home">Home</a></li>
+	<li><a href="download.html" title="Download Energy2D">Download</a></li>
+	<li><a href="models.html">Models</a></li>
+	<li><a href="manual.html" title="Energy2D Manual">Manual</a></li>
+	<li><a href="about.html" title="About Energy2D">About</a></li>
+	<li><a href="testimonials.html" title="Testimonials for Energy2D">Testimonials</a></li>
+      <li><a href="contact.html" title="Contact us">Contact</a></li>
+    <li><a href="http://molecularworkbench.blogspot.com/" title="The Advanced Educational Modeling Laboratory">Blog</a></li>
+    </ul>
+    <p class="tk-museo">&copy; Copyright 2010-2012 <a href="http://www.concord.org/" title="The Concord Consortium Website">The Concord Consortium</a>.</p>
+  </div>
+</div>
+<div id="footer">
+  <div id="footer-inside">
+    <p id="nsf">The development of this program is funded by the National Science Foundation under grants #1124281 and #0918449. Any opinions, findings, and conclusions or recommendations expressed in the materials associated with this program are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.</p>
+  </div>
+</div>
+<!-- end #footer -->
+</body>
+</html>
