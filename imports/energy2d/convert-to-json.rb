@@ -56,7 +56,8 @@ class E2dPage
     @title = @doc.css('a[id="cc-link"] + h1').text
     @tagline = @doc.css('p[id="tagline"]').text
     @content = @doc.css('div[id="content"] p').text
-    @content.gsub!("Right-click to download this model", "")
+    @content.gsub!(/(Right-click to download this model|Download this model)/, "")
+    @content.strip!
   end
 end
 
