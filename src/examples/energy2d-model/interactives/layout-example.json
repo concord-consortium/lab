@@ -1,0 +1,65 @@
+{
+  "model": "/imports/energy2d/models-json/compare-convection-conduction.json",
+  "components": [
+    {
+      "type": "energy2d-description",
+      "id": "energy2d-description-id",
+      "title": "Comparing Convective and Conductive Heat Transfer",
+      "content": "This model shows the difference between convection and conduction. The model has a heater at the bottom that warms up a chamber of air and a solid of equal size."
+    },
+    {
+      "type": "energy2d-scene-view",
+      "id": "energy2d-scene-id"
+    },
+    {
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
+    }
+  ],
+  "components": [
+    {
+      "type": "div",
+      "id": "energy2d-interactive",
+      "content": [
+        {
+          "type": "div",
+          "id": "energy2d-left",
+          "css": {
+            "width": "30%"
+          },
+          "content": [
+            {
+              "type": "component",
+              "id": "energy2d-description"
+            }
+          ]
+        },
+        {
+          "type": "div",
+          "id": "energy2d-left",
+          "css": {
+            "width": "30%"
+          },
+          "content": [
+            {
+              "type": "component",
+              "id": "energy2d-scene-id",
+              "css": {
+                "width": "600px",
+                "height": "600px"
+              }
+            },
+            {
+              "type": "component",
+              "id": "energy2d-player-id",
+              "css": {
+                "width": "600px",
+                "height": "600px"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
