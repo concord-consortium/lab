@@ -2,20 +2,20 @@
   "model": "/imports/energy2d/models-json/solar-radiation.json",
   "components": [
     {
-      "type": "energy2d-description",
-      "id": "energy2d-description-id",
-      "title": "Solar, Radiation",
-      "content": ""
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
     },
     {
       "type": "energy2d-scene-view",
       "id": "energy2d-scene-id"
-    },
-    {
-      "type": "energy2d-simulation-player",
-      "id": "energy2d-player-id"
     }
   ],
+  "description": {
+    "title": "Solar Radiation",
+    "tagline": "Heat from the Sun",
+    "content": "Note: Convection is not considered in the above model.\n\n\n",
+    "footnote": ""
+  },
   "layout": {
     "energy2d-scene-id": {
       "css": {
@@ -26,7 +26,8 @@
     "energy2d-player-id": {
       "class": "component_group",
       "css": {
-        "margin-left": "46%"
+        "text-align": "center",
+        "margin": "0.2em"
       }
     }
   }

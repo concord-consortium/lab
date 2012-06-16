@@ -2,20 +2,20 @@
   "model": "/imports/energy2d/models-json/forced-convection4.json",
   "components": [
     {
-      "type": "energy2d-description",
-      "id": "energy2d-description-id",
-      "title": "Forced, Convection4",
-      "content": ""
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
     },
     {
       "type": "energy2d-scene-view",
       "id": "energy2d-scene-id"
-    },
-    {
-      "type": "energy2d-simulation-player",
-      "id": "energy2d-player-id"
     }
   ],
+  "description": {
+    "title": "Four Fans",
+    "tagline": "When Four Fans Blow...",
+    "content": "",
+    "footnote": ""
+  },
   "layout": {
     "energy2d-scene-id": {
       "css": {
@@ -26,7 +26,8 @@
     "energy2d-player-id": {
       "class": "component_group",
       "css": {
-        "margin-left": "46%"
+        "text-align": "center",
+        "margin": "0.2em"
       }
     }
   }

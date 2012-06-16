@@ -2,20 +2,20 @@
   "model": "/imports/energy2d/models-json/neumann.json",
   "components": [
     {
-      "type": "energy2d-description",
-      "id": "energy2d-description-id",
-      "title": "Neumann",
-      "content": ""
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
     },
     {
       "type": "energy2d-scene-view",
       "id": "energy2d-scene-id"
-    },
-    {
-      "type": "energy2d-simulation-player",
-      "id": "energy2d-player-id"
     }
   ],
+  "description": {
+    "title": "Neumann Boundary Condition",
+    "tagline": "Defining the Gradients on the Boundary of the Problem Domain",
+    "content": "\nThe Neumann boundary condition is the second type of boundary condition that defines the gradients on the border of the problem\ndomain (the gradient at a spot along the border describes how much the value across the boundary changes). \nIn the following simulation, you can set heat fluxes through different borders and see how this boundary condition will\naffect the temperature distribution inside the box. \n",
+    "footnote": ""
+  },
   "layout": {
     "energy2d-scene-id": {
       "css": {
@@ -26,7 +26,8 @@
     "energy2d-player-id": {
       "class": "component_group",
       "css": {
-        "margin-left": "46%"
+        "text-align": "center",
+        "margin": "0.2em"
       }
     }
   }

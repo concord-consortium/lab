@@ -2,20 +2,20 @@
   "model": "/imports/energy2d/models-json/vertical-temperature-gradient-in-house.json",
   "components": [
     {
-      "type": "energy2d-description",
-      "id": "energy2d-description-id",
-      "title": "Vertical, Temperature, Gradient, In, House",
-      "content": ""
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
     },
     {
       "type": "energy2d-scene-view",
       "id": "energy2d-scene-id"
-    },
-    {
-      "type": "energy2d-simulation-player",
-      "id": "energy2d-player-id"
     }
   ],
+  "description": {
+    "title": "The Effect of Convection",
+    "tagline": "Discover a Vertical Temperature Gradient in a House",
+    "content": "This simulation shows there exists a vertical temperature gradient in a house caused by natural thermal\nconvection.\n\n",
+    "footnote": ""
+  },
   "layout": {
     "energy2d-scene-id": {
       "css": {
@@ -26,7 +26,8 @@
     "energy2d-player-id": {
       "class": "component_group",
       "css": {
-        "margin-left": "46%"
+        "text-align": "center",
+        "margin": "0.2em"
       }
     }
   }

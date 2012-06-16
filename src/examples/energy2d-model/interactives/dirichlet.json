@@ -2,20 +2,20 @@
   "model": "/imports/energy2d/models-json/dirichlet.json",
   "components": [
     {
-      "type": "energy2d-description",
-      "id": "energy2d-description-id",
-      "title": "Dirichlet",
-      "content": ""
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
     },
     {
       "type": "energy2d-scene-view",
       "id": "energy2d-scene-id"
-    },
-    {
-      "type": "energy2d-simulation-player",
-      "id": "energy2d-player-id"
     }
   ],
+  "description": {
+    "title": "Dirichlet Boundary Condition",
+    "tagline": "Defining the Values on the Boundary of the Problem Domain",
+    "content": "\nThe Dirichlet boundary condition is the first type of boundary condition that defines the values on the border of the problem\ndomain. In the following simulation, you can set temperatures of different borders and see how this boundary condition will\naffect the temperature distribution inside the box. \n",
+    "footnote": ""
+  },
   "layout": {
     "energy2d-scene-id": {
       "css": {
@@ -26,7 +26,8 @@
     "energy2d-player-id": {
       "class": "component_group",
       "css": {
-        "margin-left": "46%"
+        "text-align": "center",
+        "margin": "0.2em"
       }
     }
   }
