@@ -9,8 +9,7 @@
 (function () {
   'use strict';
   var
-    DEFAULT_INTERACTIVE = "compare_convection_conduction",
-    DEFAULT_INTERACTIVE_HASH = "#interactives/simple-example.json",
+    DEFAULT_INTERACTIVE = "benard_cell",
     window_loaded = $.Deferred(),
     options_loaded = $.Deferred(),
     hash,
