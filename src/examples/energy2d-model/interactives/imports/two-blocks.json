@@ -13,7 +13,7 @@
   "description": {
     "title": "Two Blocks",
     "tagline": "What Really Makes the Sense of Warmth or Coldness?",
-    "content": "The amount of heat transferred from an object to your hand or vice versa determines what you really feel when you touch it.\nThe model uses two contacting objects at different temperatures to simulate the heat transfer of touch. \nThe amount of heat transferred between them depends on a number of factors that you will explore with this simulation.\n",
+    "content": "The amount of heat transferred from an object to your hand or vice versa determines what you really feel when you touch it.\nThe model uses two contacting objects at different temperatures to simulate the heat transfer of touch. \nThe amount of heat transferred between them depends on a number of factors that you will explore with this simulation.",
     "footnote": ""
   },
   "layout": {

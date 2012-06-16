@@ -13,7 +13,7 @@
   "description": {
     "title": "Lid-Driven Cavity",
     "tagline": "Benchmark of Computational Fluid Dynamics",
-    "content": "The lid-driven cavity flow involves a fluid in a square box driven by constant \"blow\" near the lid. \nDepending on the physical conditions, a stable eddy can form within the box (as shown by the streamlines).\nYou may notice that when a stable eddy occupies the entire box, its center is actually cooler than the edge, \nindicating the faster heat transfer rate through forced convection than through conduction.\nThe lid-driven cavity problem is one of the most important benchmarks for computational fluid dynamics.\n",
+    "content": "The lid-driven cavity flow involves a fluid in a square box driven by constant \"blow\" near the lid. \nDepending on the physical conditions, a stable eddy can form within the box (as shown by the streamlines).\nYou may notice that when a stable eddy occupies the entire box, its center is actually cooler than the edge, \nindicating the faster heat transfer rate through forced convection than through conduction.\nThe lid-driven cavity problem is one of the most important benchmarks for computational fluid dynamics.",
     "footnote": ""
   },
   "layout": {

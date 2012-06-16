@@ -13,7 +13,7 @@
   "description": {
     "title": "Energy Loss from Hot Water",
     "tagline": "An Open Cup vs. a Closed Cup",
-    "content": "This model simulates the heat losses from two cups of hot water, one being covered the other closed. \nOnly a part of the cups is modeled. Convection in water is not considered.\n\n",
+    "content": "This model simulates the heat losses from two cups of hot water, one being covered the other closed. \nOnly a part of the cups is modeled. Convection in water is not considered.",
     "footnote": ""
   },
   "layout": {

@@ -13,7 +13,7 @@
   "description": {
     "title": "Neumann Boundary Condition",
     "tagline": "Defining the Gradients on the Boundary of the Problem Domain",
-    "content": "\nThe Neumann boundary condition is the second type of boundary condition that defines the gradients on the border of the problem\ndomain (the gradient at a spot along the border describes how much the value across the boundary changes). \nIn the following simulation, you can set heat fluxes through different borders and see how this boundary condition will\naffect the temperature distribution inside the box. \n",
+    "content": "The Neumann boundary condition is the second type of boundary condition that defines the gradients on the border of the problem\ndomain (the gradient at a spot along the border describes how much the value across the boundary changes). \nIn the following simulation, you can set heat fluxes through different borders and see how this boundary condition will\naffect the temperature distribution inside the box.",
     "footnote": ""
   },
   "layout": {

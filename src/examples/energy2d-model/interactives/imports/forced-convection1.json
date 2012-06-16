@@ -13,7 +13,7 @@
   "description": {
     "title": "Convection",
     "tagline": "Forced Convection: Fluid Motion Driven by External Sources",
-    "content": "The following model shows how forced convection depends on the wind speed and the temperature of the heat/cool source\n(how the wind blows away heat of your food or defrost the side windows of your car).\n",
+    "content": "The following model shows how forced convection depends on the wind speed and the temperature of the heat/cool source\n(how the wind blows away heat of your food or defrost the side windows of your car).",
     "footnote": ""
   },
   "layout": {
