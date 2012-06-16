@@ -30,6 +30,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     velocity_view,
     parts_view,
     simulation_player_view,
+    simulation_description_view,
 
     // Parameters:
     last_options,
@@ -56,6 +57,14 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       return simulation_player_view;
     },
 
+    createSimulationDescription = function (component_def) {
+      simulation_description_view = views_ns.makeSimulationDescription(component_def);
+      // Bind itself (public API).
+      simulation_description_view.bindSimulationController(controller);
+
+      return simulation_description_view;
+    },
+
     createComponent = function (component_def) {
       if (!component_def.type) {
         throw new Error('Interactive controller: missing component "type" property.');
@@ -65,6 +74,8 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         return createEnergy2DScene(component_def);
       case 'energy2d-simulation-player':
         return createSimulationPlayer(component_def);
+      case 'energy2d-description':
+        return createSimulationDescription(component_def)
       default:
         throw new Error('Interactive controller: unknow type of component.');
       }
@@ -80,7 +91,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       velocity_view.renderVectormap();
     };
 
-  // 
+  //
   // Public API
   //
   controller = {
@@ -100,6 +111,9 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         component_layout = layout[components[i].id] || {};
         if (component_layout.css) {
           $html_element.css(component_layout.css);
+        }
+        if (component_layout.class) {
+          $html_element.addClass(component_layout.class);
         }
         // Append.
         if (component_layout.container) {
