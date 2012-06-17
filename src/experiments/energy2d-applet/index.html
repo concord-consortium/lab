@@ -15,23 +15,24 @@
   </head>
   <body>
     <h1>Energy2D Applet</h1>
-    <p>
-      <input type="button" value="Run" onclick="run('applet1')" />
-      <input type="button" value="Stop" onclick="stop('applet1')" />
-      <input type="button" value="Reset" onclick="jsReset('applet1')" />
-      <input type="button" value="Reload" onClick="window.location.reload()">
-      <select onchange="runScript('applet1', 'set color_palette_type '+this.options[this.selectedIndex].value)">
-        <option value="RAINBOW">Rainbow</option>
-        <option value="IRON">Iron</option>
-        <option value="GRAY">Gray</option>
-      </select>
-      <br>
-      <input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set grid true;') : runScript('applet1', 'set grid false;');"/>Grid
-      <input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set velocity true;') : runScript('applet1', 'set velocity false;');"/>Velocity vectors
-      <input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set isotherm true;') : runScript('applet1', 'set isotherm false;');" checked/>Isotherm
-      <input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set heat_flux_line true;') : runScript('applet1', 'set heat_flux_line false;');" checked/>Heat flux
-      <input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set streamline true;') : runScript('applet1', 'set streamline false;');"/>Streamlines
-    </p>
+    <ul class="hlist component_group">
+      <li><button onclick="run('applet1')">Run</button></li>
+      <li><button onclick="stop('applet1')"/>Stop</button></li>
+      <li><button onclick="jsReset('applet1')"/>Reset</button></li>
+      <li><button onClick="window.location.reload()">Reload</button></li>
+      <li><select onchange="runScript('applet1', 'set color_palette_type '+this.options[this.selectedIndex].value)">
+          <option value="RAINBOW">Rainbow</option>
+          <option value="IRON">Iron</option>
+          <option value="GRAY">Gray</option>
+        </select></li>
+    </ul>
+    <ul class="hlist component_group">
+      <li><input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set grid true;') : runScript('applet1', 'set grid false;');"/> Grid</li>
+      <li><input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set velocity true;') : runScript('applet1', 'set velocity false;');"/> Velocity vectors</li>
+      <li><input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set isotherm true;') : runScript('applet1', 'set isotherm false;');" checked/> Isotherm</li>
+      <li><input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set heat_flux_line true;') : runScript('applet1', 'set heat_flux_line false;');" checked/> Heat flux</li>
+      <li><input type="checkbox" value="On" onclick="$(this).is(':checked')? runScript('applet1', 'set streamline true;') : runScript('applet1', 'set streamline false;');"/> Streamlines</li>
+    </ul>
     <div id="vis">
       <div id="applet-container" style="float:left; margin:10px; padding:10px;border:1px solid green; background-color:#DDD ;"></div>
     </div>
