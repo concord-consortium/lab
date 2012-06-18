@@ -39,6 +39,7 @@ var ROOT = "/examples",
     interactiveUrl = hash.substr(1, hash.length);
     selectInteractive.value = interactiveUrl;
     $.get(interactiveUrl).done(function(results) {
+      if (typeof results === "string") { results = JSON.parse(results); }
       interactive = results;
       interactiveTextArea.textContent = JSON.stringify(interactive, null, indent);
       editor = CodeMirror.fromTextArea(interactiveTextArea, {

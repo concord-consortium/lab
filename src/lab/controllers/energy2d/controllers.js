@@ -142,6 +142,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     loadSceneModelFromURL: function (options_url) {
       $.get(actualRootPath(options_url))
         .success(function (data) {
+          if (typeof data === "string") { data = JSON.parse(data); }
           controller.loadSceneModel(data);
         })
         .error(function (jqXHR, textStatus, errorThrown) {
