@@ -6,12 +6,13 @@
 //
 // ------------------------------------------------------------
 
+ROOT = "/examples",
+ROOT_REGEX = new RegExp(ROOT + "/.*$"),
+ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, ''),
+
 (function () {
   'use strict';
   var
-    ROOT = "/examples",
-    ROOT_REGEX = new RegExp(ROOT + "/.*$"),
-    ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, ''),
     DEFAULT_INTERACTIVE = "benard_cell",
     window_loaded = $.Deferred(),
     options_loaded = $.Deferred(),
