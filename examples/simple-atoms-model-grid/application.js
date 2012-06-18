@@ -69,6 +69,7 @@ var ROOT = "/examples",
   if (hash = document.location.hash) {
     hash = hash.substr(1, hash.length);
     $.get('/model-config/' + hash).done(function(results) {
+      if (typeof results === "string") { results = JSON.parse(results); }
       opts = results;
       optsLoaded.resolve();
     }).fail(function() {

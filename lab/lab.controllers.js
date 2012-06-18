@@ -1224,6 +1224,7 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
         maximum_model_steps: Infinity
       };
     $.get(actualRootPath(modelUrl)).done(function(modelConfig) {
+      if (typeof modelConfig === "string") { modelConfig = JSON.parse(modelConfig); }
       if (modelController) {
         modelController.reload(modelConfig, playerConfig);
       } else {

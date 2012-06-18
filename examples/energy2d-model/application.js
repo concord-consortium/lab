@@ -39,6 +39,7 @@ var ROOT = "/examples",
   select.find("option[data-path='" + interactive_url + "']").attr('selected', true);
 
   $.get(interactive_url).done(function (results) {
+    if (typeof results === "string") { results = JSON.parse(results); }
     interactive_options = results;
     options_loaded.resolve();
   });
