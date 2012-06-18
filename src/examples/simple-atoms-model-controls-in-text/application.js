@@ -42,6 +42,7 @@ var ROOT = "/examples",
     hash = hash.substr(1, hash.length);
     modelUrl = ~hash.indexOf(".json") ? hash : '/md2d_models/' + hash;
     $.get(modelUrl).done(function(results) {
+      if (typeof results === "string") { results = JSON.parse(results); }
       opts = results;
       optsLoaded.resolve();
     }).fail(function() {
