@@ -1,10 +1,11 @@
-/*globals $ modeler:true, require, d3, arrays, benchmark, molecule_container */
+/*globals $ modeler:true, require, d3, benchmark, molecule_container */
 /*jslint onevar: true devel:true eqnull: true */
 
 // modeler.js
 //
 
 var md2d = require('/md2d'),
+    arrays = require('/arrays/arrays').arrays,
     coreModel;
 
 modeler = {};
