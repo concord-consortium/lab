@@ -40,6 +40,14 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     //
     // Private methods
     //
+    actualRootPath = function(url) {
+      if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
+        return url;
+      } else {
+        return ACTUAL_ROOT + url;
+      }
+    },
+
     createEnergy2DScene = function (component_def) {
       energy2d_scene = views_ns.makeEnergy2DScene(component_def.id);
       heatmap_view = energy2d_scene.getHeatmapView();
@@ -132,7 +140,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     },
 
     loadSceneModelFromURL: function (options_url) {
-      $.get(options_url)
+      $.get(actualRootPath(options_url))
         .success(function (data) {
           controller.loadSceneModel(data);
         })
