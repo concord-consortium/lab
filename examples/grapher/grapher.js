@@ -1,4 +1,8 @@
 
+var ROOT = "/examples",
+    ROOT_REGEX = new RegExp(ROOT + "/.*$"),
+    ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
+
 graph = grapher.graph('#chart');
 
 stopStreaming = false;

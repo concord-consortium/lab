@@ -1210,12 +1210,20 @@ controllers.interactivesController = function(interactive, interactive_view_id) 
       propertiesListeners = [],
       actionQueue = [];
 
+  function actualRootPath(url) {
+    if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
+      return url;
+    } else {
+      return ACTUAL_ROOT + url;
+    }
+  }
+
   function loadModel(modelUrl) {
     var playerConfig = {    // to be removed
         layoutStyle        : 'interactive',
         maximum_model_steps: Infinity
       };
-    $.get(modelUrl).done(function(modelConfig) {
+    $.get(actualRootPath(modelUrl)).done(function(modelConfig) {
       if (modelController) {
         modelController.reload(modelConfig, playerConfig);
       } else {
