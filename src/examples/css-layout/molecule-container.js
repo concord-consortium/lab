@@ -4,7 +4,7 @@
 //
 // ------------------------------------------------------------
 
-layout.moleculeContainer = function(e, options) {
+Lab.moleculeContainer = function(e, options) {
   var elem = d3.select(e),
       node = elem.node(),
       cx = elem.property("clientWidth"),
@@ -51,7 +51,9 @@ layout.moleculeContainer = function(e, options) {
         xmax:                 10,
         ymin:                 0,
         ymax:                 10
-      };
+      },
+
+      screen_factor = 1;
 
   if (options) {
     for(var p in default_options) {
@@ -88,12 +90,12 @@ layout.moleculeContainer = function(e, options) {
       cx = cy * aspectRatio;
     }
     node.style.width = cx +"px";
-    scale_factor = layout.screen_factor;
+    scale_factor = screen_factor;
     padding = {
-       "top":    options.title  ? 40 * layout.screen_factor : 20,
+       "top":    options.title  ? 40 * screen_factor : 20,
        "right":                   25,
        "bottom": 10,
-       "left":   options.ylabel ? 60  * layout.screen_factor : 25
+       "left":   options.ylabel ? 60  * screen_factor : 25
     };
 
     if (options.xlabel || options.model_time_label) {
