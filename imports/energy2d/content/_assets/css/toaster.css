@@ -1,0 +1,74 @@
+div.ui-toaster-area-br {
+    bottom: 5px;
+    position: fixed;
+    right: 12px;
+    width: 350px;
+    }
+div.ui-toaster-area-bl {
+    bottom: 0;
+    left: 5px;
+    position: fixed;
+    width: 350px;
+    }
+div.ui-toaster-area-tr {
+    overflow: hidden;
+    position: fixed;
+    right: 5px;
+    top: 0;
+    width: 350px;
+    }
+div.ui-toaster-area-tl {
+    left: 5px;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 350px;
+    }
+div.ui-toaster-area-br div.ui-toaster,
+div.ui-toaster-area-bl div.ui-toaster,
+div.ui-toaster-area-tr div.ui-toaster,
+div.ui-toaster-area-tl div.ui-toaster {
+    background: #fff;
+    border: solid 1px #555;
+    display: none;
+    font: 1em Verdana, Geneva, Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 20px;
+    width: 90%;
+    }
+div.ui-toaster-area-br div.ui-toaster h4.ui-toaster-title,
+div.ui-toaster-area-bl div.ui-toaster h4.ui-toaster-title,
+div.ui-toaster-area-tr div.ui-toaster h4.ui-toaster-title,
+div.ui-toaster-area-tl div.ui-toaster h4.ui-toaster-title {
+    background: #8cbbb8;
+    color: #fff;
+    display: block;
+    font: bold 1.6em Georgia, Times, sans-serif;
+    height: 33px;
+    margin: -20px -20px 10px;
+    padding: 8px 0 0 10px;
+    }
+div.ui-toaster-area-br div.ui-toaster p.ui-toaster-content,
+div.ui-toaster-area-bl div.ui-toaster p.ui-toaster-content,
+div.ui-toaster-area-tr div.ui-toaster p.ui-toaster-content,
+div.ui-toaster-area-tl div.ui-toaster p.ui-toaster-content {
+    color: #333;
+    display: block;
+    font-size: small;
+    margin: 0;
+    padding: 0;
+    }
+div.ui-toaster-area-br div.ui-toaster span.ui-toaster-close,
+div.ui-toaster-area-bl div.ui-toaster span.ui-toaster-close,
+div.ui-toaster-area-tr div.ui-toaster span.ui-toaster-close,
+div.ui-toaster-area-tl div.ui-toaster span.ui-toaster-close {
+    cursor: pointer;
+    float: right;
+    font: 10px Arial, Helveitca, sans-serif;
+    padding: 7px 15px 10px;
+    text-align: right;
+    }
+div.ui-toaster-area-br div.ui-toaster img {
+    display: block;
+    margin: 10px auto;
+    }

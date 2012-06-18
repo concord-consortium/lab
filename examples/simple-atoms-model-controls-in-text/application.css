@@ -1,2 +1,5 @@
 .top {
   height: 90%; }
+
+#description-right {
+  max-width: 40%; }

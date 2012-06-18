@@ -675,6 +675,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     } else {
       finishSetup()
     }
+    controller.runMWScript = runMWScript;
   }
 
   controller();
@@ -804,7 +805,7 @@ controllers.complexModelController =
 
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
-        model.createRadialBonds(radialBonds);
+        if (radialBonds) model.createRadialBonds(radialBonds);
       } else if (mol_number) {
         model.createNewAtoms({
           num: mol_number,

@@ -657,7 +657,7 @@ for (constantName in constants) {
 require.define("/constants/units.js", function (require, module, exports, __dirname, __filename) {
 /** Provides a few simple helper functions for converting related unit types.
 
-    This sub-module doesn't do unit conversion between compound unit types (e.g., knowing that kg*m/s^2 = J)
+    This sub-module doesn't do unit conversion between compound unit types (e.g., knowing that kg*m/s^2 = N)
     only simple scaling between units measuring the same type of quantity.
 */
 
@@ -1268,7 +1268,7 @@ exports.newLJCalculator = function(params, cb) {
 });
 
 require.define("/md2d.js", function (require, module, exports, __dirname, __filename) {
-    /*globals Float32Array window:true */
+     /*globals Float32Array window:true */
 /*jslint eqnull: true, boss: true */
 
 if (typeof window === 'undefined') window = {};
@@ -1803,6 +1803,8 @@ exports.makeModel = function() {
             len,
             i1,
             i2,
+            el1,
+            el2,
             dx,
             dy,
             r_sq,
@@ -1818,9 +1820,11 @@ exports.makeModel = function() {
         for (i = 0, len = radialBonds[0].length; i < len; i++) {
           i1 = radialBondAtom1Index[i];
           i2 = radialBondAtom2Index[i];
+          el1 = element[i1];
+          el2 = element[i2];
 
-          mass1_inv = 1/elements[element[i1]][0];
-          mass2_inv = 1/elements[element[i2]][0];
+          mass1_inv = 1/elements[el1][0];
+          mass2_inv = 1/elements[el2][0];
 
           dx = x[i2] - x[i1];
           dy = y[i2] - y[i1];
@@ -1835,6 +1839,17 @@ exports.makeModel = function() {
 
           // "natural" Next Gen MW force units / nm
           f_over_r = constants.convert(k*(r-r0), { from: unit.EV_PER_NM, to: unit.MW_FORCE_UNIT }) / r;
+
+          // Subtract out the Lennard-Jones force between bonded pairs.
+          //
+          // (optimization assumption: the penalty for calculating the force twice for bonded pairs
+          // will be much less than the overhead and possible loop deoptimization incurred by
+          // checking against a list of bonded pairs each time through
+          // updatePairwiseAccelerations()'s inner loop.)
+
+          if (useLennardJonesInteraction && r_sq < cutoffDistance_LJ_sq[el1][el2]) {
+            f_over_r -= ljCalculator[el1][el2].forceOverDistanceFromSquaredDistance(r_sq);
+          }
 
           fx = f_over_r * dx;
           fy = f_over_r * dy;
@@ -1969,8 +1984,8 @@ exports.makeModel = function() {
         num: the number of atoms to create
     */
     createAtoms: function(options) {
-      var arrayType = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
-          uint8ArrayType = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
+      var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular',
+          uint8 = (hasTypedArrays && notSafari) ? 'Uint8Array' : 'regular',
           numIndices,
           num;
 
@@ -2009,22 +2024,18 @@ exports.makeModel = function() {
 
       atoms  = model.atoms  = arrays.create(numIndices, null, 'regular');
 
-      radius = model.radius = atoms[INDICES.RADIUS] = arrays.create(num, 0, arrayType);
-      px     = model.px     = atoms[INDICES.PX]     = arrays.create(num, 0, arrayType);
-      py     = model.py     = atoms[INDICES.PY]     = arrays.create(num, 0, arrayType);
-      x      = model.x      = atoms[INDICES.X]      = arrays.create(num, 0, arrayType);
-      y      = model.y      = atoms[INDICES.Y]      = arrays.create(num, 0, arrayType);
-      vx     = model.vx     = atoms[INDICES.VX]     = arrays.create(num, 0, arrayType);
-      vy     = model.vy     = atoms[INDICES.VY]     = arrays.create(num, 0, arrayType);
-      speed  = model.speed  = atoms[INDICES.SPEED]  = arrays.create(num, 0, arrayType);
-      ax     = model.ax     = atoms[INDICES.AX]     = arrays.create(num, 0, arrayType);
-      ay     = model.ay     = atoms[INDICES.AY]     = arrays.create(num, 0, arrayType);
-      charge = model.charge = atoms[INDICES.CHARGE] = arrays.create(num, 0, arrayType);
-
-      // NOTE, this is a Uint8Array for now, but this may not be the best pattern in the future
-      // because Uint8Arrays length cannot be changed. Right now we never add or remove atoms
-      // from the model without re-creating the atom arrays, but that might change in the future.
-      element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8ArrayType);
+      radius  = model.radius  = atoms[INDICES.RADIUS]  = arrays.create(num, 0, float32);
+      px      = model.px      = atoms[INDICES.PX]      = arrays.create(num, 0, float32);
+      py      = model.py      = atoms[INDICES.PY]      = arrays.create(num, 0, float32);
+      x       = model.x       = atoms[INDICES.X]       = arrays.create(num, 0, float32);
+      y       = model.y       = atoms[INDICES.Y]       = arrays.create(num, 0, float32);
+      vx      = model.vx      = atoms[INDICES.VX]      = arrays.create(num, 0, float32);
+      vy      = model.vy      = atoms[INDICES.VY]      = arrays.create(num, 0, float32);
+      speed   = model.speed   = atoms[INDICES.SPEED]   = arrays.create(num, 0, float32);
+      ax      = model.ax      = atoms[INDICES.AX]      = arrays.create(num, 0, float32);
+      ay      = model.ay      = atoms[INDICES.AY]      = arrays.create(num, 0, float32);
+      charge  = model.charge  = atoms[INDICES.CHARGE]  = arrays.create(num, 0, float32);
+      element = model.element = atoms[INDICES.ELEMENT] = arrays.create(num, 0, uint8);
 
       N = 0;
       totalMass = 0;
@@ -2278,11 +2289,11 @@ exports.makeModel = function() {
     computeOutputState: function() {
       var i, j,
           i1, i2,
+          el1, el2,
           dx, dy,
           r_sq,
           k,
           dr,
-          lj,
           KEinMWUnits,       // total kinetic energy, in MW units
           PE;                // potential energy, in eV
 
@@ -2302,9 +2313,8 @@ exports.makeModel = function() {
           r_sq = dx*dx + dy*dy;
 
           // report total potentials as POSITIVE, i.e., - the value returned by potential calculators
-          if (useLennardJonesInteraction ) {
-            lj = ljCalculator[element[i]][element[j]];
-            PE += -lj.potentialFromSquaredDistance(r_sq, element[i], element[j]);
+          if (useLennardJonesInteraction) {
+            PE += -ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
           }
           if (useCoulombInteraction) {
             PE += -coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j]);
@@ -2316,6 +2326,8 @@ exports.makeModel = function() {
       for (i = 0; i < N_radialBonds; i++) {
         i1 = radialBondAtom1Index[i];
         i2 = radialBondAtom2Index[i];
+        el1 = element[i1];
+        el2 = element[i2];
 
         dx = x[i2] - x[i1];
         dy = y[i2] - y[i1];
@@ -2327,7 +2339,12 @@ exports.makeModel = function() {
         // nm
         dr = Math.sqrt(r_sq) - radialBondLength[i];
 
-        PE = 0.5*k*dr*dr;
+        PE += 0.5*k*dr*dr;
+
+        // Remove the Lennard Jones potential for the bonded pair
+        if (useLennardJonesInteraction) {
+          PE += ljCalculator[el1][el2].potentialFromSquaredDistance(r_sq);
+        }
       }
 
       // State to be read by the rest of the system:
@@ -2476,7 +2493,7 @@ require("/md2d.js");
 // modeler.js
 //
 
-var md2d = require('./md2d'),
+var md2d = require('/md2d'),
     coreModel;
 
 modeler = {};

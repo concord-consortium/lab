@@ -1,0 +1,34 @@
+{
+  "model": "/imports/energy2d/models-json/conduction3.json",
+  "components": [
+    {
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
+    },
+    {
+      "type": "energy2d-scene-view",
+      "id": "energy2d-scene-id"
+    }
+  ],
+  "description": {
+    "title": "Conduction",
+    "tagline": "How does Temperature Difference Affect Conduction Rate?",
+    "content": "If the fire under a frying pan is more intense, will your hand feel hotter?The following model compares heat conduction through two identical test pieces but the temperature differences across \nthem are different.",
+    "footnote": ""
+  },
+  "layout": {
+    "energy2d-scene-id": {
+      "css": {
+        "width": "600px",
+        "height": "600px"
+      }
+    },
+    "energy2d-player-id": {
+      "class": "component_group",
+      "css": {
+        "text-align": "center",
+        "margin": "0.2em"
+      }
+    }
+  }
+}

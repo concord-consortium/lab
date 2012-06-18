@@ -9,13 +9,6 @@ h1 { font-size: 1.2em;
   font-weight: bold; }
 hr { margin: 2em 0em; }
 p { max-width: 600px; }
-#appletwrapper { border: 1px solid white;
-  padding: 10px;
-  width: 600px;
-  height: 490px;
-  background-color: white; }
-applet { padding: 0px;
-  background-color: white; }
 table { border: 1px solid gray;
   border-spacing: 0px;
   border-collapse: collapse;
@@ -67,6 +60,36 @@ pre { font-size: 0.8em;
   margin-top: 20px;
   width: 580px;
   height: 465px; }
+
+applet {
+  margin: 1em 0em 0em 0em;
+  padding: 0px;
+  background-color: white; }
+
+#appletwrapper {
+  background-color: #f9eec1;
+  width: 580px;
+  height: 485px;
+  border: solid 1px #f4b626;
+  margin: 0.5em 0.5em 0.5em 1em;
+  padding: 1em 2.5em 1.5em 1em;
+  position: relative;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px; }
+
+#chart {
+  background-color: #f9eec1;
+  width: 580px;
+  height: 515px;
+  border: solid 1px #f4b626;
+  margin: 0.5em 0em 0em 1em;
+  padding: 0;
+  position: relative;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px; }
+
 circle, .line {
   fill: none;
   stroke: steelblue;

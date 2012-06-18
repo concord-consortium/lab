@@ -1,0 +1,34 @@
+{
+  "model": "/imports/energy2d/models-json/power-energy.json",
+  "components": [
+    {
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
+    },
+    {
+      "type": "energy2d-scene-view",
+      "id": "energy2d-scene-id"
+    }
+  ],
+  "description": {
+    "title": "Power and Energy",
+    "tagline": "A More Powerful Heater Warms up a Room More Quickly",
+    "content": "Energy (Q) and power (P) are related by Q = Pt.\nThis means the longer (t) you turn on a heater, the more heat (Q) it will produce. \nAnd the higher the power (P) is, the more heat (Q) it will produce.\n\nTwo identical, closed boxes each have a round heater at the center, with the power output as labeled.\nInstructions: 1) Run the model and turn the graph on to monitor the temperatures; \n2) Use the buttons at the upper-right corner of the graph window to rescale the curves if necessary;\n3) Calculate the ratio of the temperatures measured by the two thermometers in the two boxes \nand compare it with the ratio of the heating powers.",
+    "footnote": ""
+  },
+  "layout": {
+    "energy2d-scene-id": {
+      "css": {
+        "width": "600px",
+        "height": "600px"
+      }
+    },
+    "energy2d-player-id": {
+      "class": "component_group",
+      "css": {
+        "text-align": "center",
+        "margin": "0.2em"
+      }
+    }
+  }
+}

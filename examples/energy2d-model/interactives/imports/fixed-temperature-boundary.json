@@ -1,0 +1,34 @@
+{
+  "model": "/imports/energy2d/models-json/fixed-temperature-boundary.json",
+  "components": [
+    {
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
+    },
+    {
+      "type": "energy2d-scene-view",
+      "id": "energy2d-scene-id"
+    }
+  ],
+  "description": {
+    "title": "Boundary Conditions",
+    "tagline": "Defining the Interaction Between the Simulation Box and the Environment",
+    "content": "The following simulates a box with a constant-temperature heater at the center. Use the first drop-down menu to select the available boundary\nconditions and run the simulation to examine their effects. You may drag the heater and the thermometers around.",
+    "footnote": ""
+  },
+  "layout": {
+    "energy2d-scene-id": {
+      "css": {
+        "width": "600px",
+        "height": "600px"
+      }
+    },
+    "energy2d-player-id": {
+      "class": "component_group",
+      "css": {
+        "text-align": "center",
+        "margin": "0.2em"
+      }
+    }
+  }
+}

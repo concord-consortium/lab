@@ -774,6 +774,81 @@ modelList = [
     ]
   },
   {
+    "section": "validation",
+    "content": [
+      {
+        "name": "epsilon-1",
+        "path": "validation/",
+        "cml": "validation/epsilon/model1.cml",
+        "mml": "validation/epsilon/model1$0.mml",
+        "json": "converted/validation/epsilon/model1$0.json"
+      },
+      {
+        "name": "epsilon-2",
+        "path": "validation/",
+        "cml": "validation/epsilon/model1.cml",
+        "mml": "validation/epsilon/model10$0.mml",
+        "json": "converted/validation/epsilon/model10$0.json"
+      },
+      {
+        "name": "epsilon-3",
+        "path": "validation/",
+        "cml": "validation/epsilon/model1.cml",
+        "mml": "validation/epsilon/model2$0.mml",
+        "json": "converted/validation/epsilon/model2$0.json"
+      },
+      {
+        "name": "epsilon-4",
+        "path": "validation/",
+        "cml": "validation/epsilon/model1.cml",
+        "mml": "validation/epsilon/model3$0.mml",
+        "json": "converted/validation/epsilon/model3$0.json"
+      },
+      {
+        "name": "epsilon-5",
+        "path": "validation/",
+        "cml": "validation/epsilon/model1.cml",
+        "mml": "validation/epsilon/model4$0.mml",
+        "json": "converted/validation/epsilon/model4$0.json"
+      },
+      {
+        "name": "epsilon-6",
+        "path": "validation/",
+        "cml": "validation/epsilon/model1.cml",
+        "mml": "validation/epsilon/model5$0.mml",
+        "json": "converted/validation/epsilon/model5$0.json"
+      },
+      {
+        "name": "epsilon-7",
+        "path": "validation/",
+        "cml": "validation/epsilon/model1.cml",
+        "mml": "validation/epsilon/model6$0.mml",
+        "json": "converted/validation/epsilon/model6$0.json"
+      },
+      {
+        "name": "epsilon-8",
+        "path": "validation/",
+        "cml": "validation/epsilon/model1.cml",
+        "mml": "validation/epsilon/model7$0.mml",
+        "json": "converted/validation/epsilon/model7$0.json"
+      },
+      {
+        "name": "epsilon-9",
+        "path": "validation/",
+        "cml": "validation/epsilon/model1.cml",
+        "mml": "validation/epsilon/model8$0.mml",
+        "json": "converted/validation/epsilon/model8$0.json"
+      },
+      {
+        "name": "epsilon-10",
+        "path": "validation/",
+        "cml": "validation/epsilon/model1.cml",
+        "mml": "validation/epsilon/model9$0.mml",
+        "json": "converted/validation/epsilon/model9$0.json"
+      }
+    ]
+  },
+  {
     "section": "tutorial",
     "content": [
       {

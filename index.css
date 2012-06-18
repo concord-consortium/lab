@@ -2,19 +2,19 @@
   font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
-  src: url("../vendor/fonts/open-sans/OpenSans-Regular.ttf") format("truetype"), url("vendor/fonts/open-sans/OpenSans-Regular.ttf") format("truetype"); }
+  src: url("/vendor/fonts/open-sans/OpenSans-Regular.ttf") format("truetype"); }
 
 @font-face {
   font-family: "Open Sans";
   font-style: normal;
   font-weight: bold;
-  src: url("../vendor/fonts/open-sans/OpenSans-Bold.ttf") format("truetype"), url("vendor/fonts/open-sans/OpenSans-Bold.ttf") format("truetype"); }
+  src: url("/vendor/fonts/open-sans/OpenSans-Bold.ttf") format("truetype"); }
 
 @font-face {
   font-family: "Open Sans";
   font-style: italic;
   font-weight: normal;
-  src: url("../vendor/fonts/open-sans/OpenSans-Italic.ttf") format("truetype"), url("vendor/fonts/open-sans/OpenSans-Italic.ttf") format("truetype"); }
+  src: url("/vendor/fonts/open-sans/OpenSans-Italic.ttf") format("truetype"); }
 
 html {
   margin: 0em;
@@ -28,7 +28,7 @@ body {
   margin: 0em;
   padding: 0em;
   background-color: white;
-  background: url(../../resources/aspect-ratio-1x1.png) no-repeat -9999px -9999px;
+  background: url("/resources/aspect-ratio-1x1.png") no-repeat -9999px -9999px;
   color: #3f3f3f; }
 
 h1 {
@@ -58,29 +58,20 @@ h3 {
   padding-bottom: 0.1em;
   border: 2px solid #f4b626;
   position: relative;
+  -moz-border-radius-topleft: 1em;
   -webkit-border-top-left-radius: 1em;
   -moz-border-top-left-radius: 1em;
-  -moz-border-radius-topleft: 1em;
-  -ms-border-top-left-radius: 1em;
-  -o-border-top-left-radius: 1em;
   border-top-left-radius: 1em;
+  -moz-border-radius-topright: 1em;
   -webkit-border-top-right-radius: 1em;
   -moz-border-top-right-radius: 1em;
-  -moz-border-radius-topright: 1em;
-  -ms-border-top-right-radius: 1em;
-  -o-border-top-right-radius: 1em;
   border-top-right-radius: 1em;
+  -moz-border-radius-bottomleft: 0.2em;
   -webkit-border-bottom-left-radius: 0.2em;
   -moz-border-bottom-left-radius: 0.2em;
-  -moz-border-radius-bottomleft: 0.2em;
-  -ms-border-bottom-left-radius: 0.2em;
-  -o-border-bottom-left-radius: 0.2em;
   border-bottom-left-radius: 0.2em;
   -webkit-border-bottom-right-radius: 0.2em;
   -moz-border-bottom-right-radius: 0.2em;
-  -moz-border-radius-bottomright: 0.2em;
-  -ms-border-bottom-right-radius: 0.2em;
-  -o-border-bottom-right-radius: 0.2em;
   border-bottom-right-radius: 0.2em; }
   .thermometer div {
     display: block;
@@ -93,17 +84,13 @@ h3 {
     margin-left: auto;
     margin-right: auto;
     background: #e16a3e;
+    -moz-border-radius-topleft: 0.5em;
     -webkit-border-top-left-radius: 0.5em;
     -moz-border-top-left-radius: 0.5em;
-    -moz-border-radius-topleft: 0.5em;
-    -ms-border-top-left-radius: 0.5em;
-    -o-border-top-left-radius: 0.5em;
     border-top-left-radius: 0.5em;
+    -moz-border-radius-topright: 0.5em;
     -webkit-border-top-right-radius: 0.5em;
     -moz-border-top-right-radius: 0.5em;
-    -moz-border-radius-topright: 0.5em;
-    -ms-border-top-right-radius: 0.5em;
-    -o-border-top-right-radius: 0.5em;
     border-top-right-radius: 0.5em; }
 
 .therm_text {
@@ -368,55 +355,37 @@ h3 {
 
 .component_group button.left_edge {
   border-right-width: 0;
+  -moz-border-radius-topleft: 3px;
   -webkit-border-top-left-radius: 3px;
   -moz-border-top-left-radius: 3px;
-  -moz-border-radius-topleft: 3px;
-  -ms-border-top-left-radius: 3px;
-  -o-border-top-left-radius: 3px;
   border-top-left-radius: 3px;
+  -moz-border-radius-topright: 0;
   -webkit-border-top-right-radius: 0;
   -moz-border-top-right-radius: 0;
-  -moz-border-radius-topright: 0;
-  -ms-border-top-right-radius: 0;
-  -o-border-top-right-radius: 0;
   border-top-right-radius: 0;
   -webkit-border-bottom-right-radius: 0;
   -moz-border-bottom-right-radius: 0;
-  -moz-border-radius-bottomright: 0;
-  -ms-border-bottom-right-radius: 0;
-  -o-border-bottom-right-radius: 0;
   border-bottom-right-radius: 0;
+  -moz-border-radius-bottomleft: 3px;
   -webkit-border-bottom-left-radius: 3px;
   -moz-border-bottom-left-radius: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  -ms-border-bottom-left-radius: 3px;
-  -o-border-bottom-left-radius: 3px;
   border-bottom-left-radius: 3px; }
 
 .component_group button.right_edge {
+  -moz-border-radius-topleft: 0;
   -webkit-border-top-left-radius: 0;
   -moz-border-top-left-radius: 0;
-  -moz-border-radius-topleft: 0;
-  -ms-border-top-left-radius: 0;
-  -o-border-top-left-radius: 0;
   border-top-left-radius: 0;
+  -moz-border-radius-topright: 3px;
   -webkit-border-top-right-radius: 3px;
   -moz-border-top-right-radius: 3px;
-  -moz-border-radius-topright: 3px;
-  -ms-border-top-right-radius: 3px;
-  -o-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
   -webkit-border-bottom-right-radius: 3px;
   -moz-border-bottom-right-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  -ms-border-bottom-right-radius: 3px;
-  -o-border-bottom-right-radius: 3px;
   border-bottom-right-radius: 3px;
+  -moz-border-radius-bottomleft: 0;
   -webkit-border-bottom-left-radius: 0;
   -moz-border-bottom-left-radius: 0;
-  -moz-border-radius-bottomleft: 0;
-  -ms-border-bottom-left-radius: 0;
-  -o-border-bottom-left-radius: 0;
   border-bottom-left-radius: 0; }
 
 .component_group button#cool_button, .component_group button#heat_button {
@@ -513,8 +482,6 @@ h3 {
   background: #f9eec1;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
-  -ms-border-radius: 0.5em;
-  -o-border-radius: 0.5em;
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
@@ -538,8 +505,6 @@ applet {
   background: #f9eec1;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
-  -ms-border-radius: 0.5em;
-  -o-border-radius: 0.5em;
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
@@ -613,8 +578,6 @@ div.tooltip {
   background: #f9eec1;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
-  -ms-border-radius: 0.5em;
-  -o-border-radius: 0.5em;
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
@@ -639,8 +602,6 @@ div.tooltip {
   background: #f9eec1;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
-  -ms-border-radius: 0.5em;
-  -o-border-radius: 0.5em;
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
@@ -656,8 +617,6 @@ div.tooltip {
   background: #f9eec1;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
-  -ms-border-radius: 0.5em;
-  -o-border-radius: 0.5em;
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
@@ -671,8 +630,6 @@ div.tooltip {
   padding: 0.3em 0.6em !important;
   -webkit-border-radius: 0.5em;
   -moz-border-radius: 0.5em;
-  -ms-border-radius: 0.5em;
-  -o-border-radius: 0.5em;
   border-radius: 0.5em;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
@@ -813,6 +770,10 @@ div.tooltip {
     position: relative;
     right: auto;
     top: auto; } }
+#under-header-links {
+  margin: 0.5em 1em 0.5em 1em;
+  font-size: 95%; }
+
 a {
   color: #3a878b; }
   a:hover {
@@ -845,7 +806,7 @@ ul {
   display: inline-block; }
 
 .item-list {
-  padding: 1em; }
+  padding: 1em 1em 0em 1em; }
   .item-list ul {
     list-style-type: none;
     margin: 0.5em 0em 0.5em 0em;

@@ -1,0 +1,34 @@
+{
+  "model": "/imports/energy2d/models-json/different-conductivity.json",
+  "components": [
+    {
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
+    },
+    {
+      "type": "energy2d-scene-view",
+      "id": "energy2d-scene-id"
+    }
+  ],
+  "description": {
+    "title": "Different Conductivity*",
+    "tagline": "",
+    "content": "",
+    "footnote": "* no further description available"
+  },
+  "layout": {
+    "energy2d-scene-id": {
+      "css": {
+        "width": "600px",
+        "height": "600px"
+      }
+    },
+    "energy2d-player-id": {
+      "class": "component_group",
+      "css": {
+        "text-align": "center",
+        "margin": "0.2em"
+      }
+    }
+  }
+}

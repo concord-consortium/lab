@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>Energy2D V0.3</title>
+    <script type="text/javascript" src="library.js"></script>
+  </head>
+  <body>
+    <p><font color="red">If nothing shows up below, try the following: <ol><li>Download <a href="http://energy.concord.org/energy2d/energy2d.jar">energy2d.jar</a> and <a href="http://energy.concord.org/energy2d/library.js">library.js</a> to where this HTML file is located; <li>Make sure C:\Users\qxie\Desktop\web\energy\energy2d\prandtl.e2d is copied or moved to where this HTML file is located; <li><b>Restart the browser</b> and reload this page.</ol><p>This line of message should be removed if the applet works.</font></p>
+    <center>
+      <applet id="applet1" code="org.concord.energy2d.system.System2D" archive="energy2d.jar" width="500" height="500">
+        <param name="script" value="load prandtl.e2d"/>
+      </applet>
+      <br>
+      <form autocomplete="off">
+      <input type="button" value="Run" onclick="run('applet1')">
+      <input type="button" value="Stop" onclick="stop('applet1')">
+      <input type="button" value="Reset" onclick="jsReset('applet1')">
+      <input type="button" value="Reload" onclick="jsReload('applet1')">
+      </form>
+      <br><br>
+      <p><b>System requirements:</b> You must have Java Version 5 or higher. <a href="http://java.com">Download Java now</a>.
+    </center>
+  </body>
+</html>

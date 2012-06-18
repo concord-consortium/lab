@@ -1,0 +1,34 @@
+{
+  "model": "/imports/energy2d/models-json/radiation.json",
+  "components": [
+    {
+      "type": "energy2d-simulation-player",
+      "id": "energy2d-player-id"
+    },
+    {
+      "type": "energy2d-scene-view",
+      "id": "energy2d-scene-id"
+    }
+  ],
+  "description": {
+    "title": "Radiation",
+    "tagline": "",
+    "content": "The total energy radiated by an object per unit time is proportional to the fourth power of \nits absolute temperature T (in Kelvin):\nP=εσAT4where A is the surface area of the object, σ is the Stefan-Boltzmann constant, and ε is the\nemissivity of the object's material. This is known as the Stefan-Boltzmann Law.\n\nThe emissivities of materials vary. If the object is a perfect black body, ε=1.\nMetals tend to have a very low emissivity. Water and paper, on the other hand, have high emissivity (0.95).\nThe following model shows the temperature dependence of the radiation power.\nImportant Note: Light radiation from the hot plate is represented by a limited number of rays,\neach of which travels at a much slower speed than the speed of light. This is a computational\napproximation that does not reflect the nature of light energy.",
+    "footnote": ""
+  },
+  "layout": {
+    "energy2d-scene-id": {
+      "css": {
+        "width": "600px",
+        "height": "600px"
+      }
+    },
+    "energy2d-player-id": {
+      "class": "component_group",
+      "css": {
+        "text-align": "center",
+        "margin": "0.2em"
+      }
+    }
+  }
+}
