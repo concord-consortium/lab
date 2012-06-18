@@ -29,11 +29,45 @@
   <footer>
   </footer>
 
+  <script type="text/javascript">
+    (function () {
+      var globals = {},
+          prop;
+
+      for (prop in window) {
+        if (window.hasOwnProperty(prop)) {
+          globals[prop] = true;
+        }
+      }
+
+      window.initialGlobals = globals;
+    }());
+  </script>
+
   <script src="../../vendor/jquery/jquery.min.js"></script>
   <script src="../../vendor/d3/d3.v2.js"></script>
   <script src="../../lab/lab.molecules.js"></script>
 
   <script src="application.js"></script>
+
+  <script type="text/javascript">
+    (function () {
+      var globals = {},
+      prop;
+
+      console.log("globals: ");
+
+      for (prop in window) {
+        if ( window.hasOwnProperty(prop) &&
+             !window.initialGlobals.hasOwnProperty(prop) &&
+            prop !== 'initialGlobals' ) {
+
+          console.log(prop);
+        }
+      }
+    }());
+  </script>
+
 
 </body>
 </html>
