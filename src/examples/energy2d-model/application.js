@@ -6,9 +6,9 @@
 //
 // ------------------------------------------------------------
 
-ROOT = "/examples",
-ROOT_REGEX = new RegExp(ROOT + "/.*$"),
-ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, ''),
+var ROOT = "/examples",
+    ROOT_REGEX = new RegExp(ROOT + "/.*$"),
+    ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
 
 (function () {
   'use strict';

@@ -34,10 +34,18 @@
       opts,
       timer;
 
+  function actualRootPath(url) {
+    if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
+      return url;
+    } else {
+      return ACTUAL_ROOT + url;
+    }
+  }
+
   if (hash = document.location.hash) {
     hash = hash.substr(1, hash.length);
     modelUrl = ~hash.indexOf(".json") ? hash : '/md2d_models/' + hash;
-    $.get(modelUrl).done(function(results) {
+    $.get(actualRootPath(modelUrl)).done(function(results) {
       opts = results;
       optsLoaded.resolve();
     }).fail(function() {
