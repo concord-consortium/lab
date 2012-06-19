@@ -2,8 +2,16 @@
   Implementation of "Complex Atoms Model" with layout & model initialization redone from scratch as
   much as possible.
 */
+
+#width-container {
+  display: inline-block;
+  width: 100%;
+  min-width: 512px;
+  max-width: 960px;
+}
+
 #aspect-container {
-  position: absolute;
+  position: relative;
 
   /* a trick that sets this div's height to 100% of its width, by making use of the fact that
      padding is represented in units of the parent element's width */
@@ -11,8 +19,9 @@
   padding-bottom: 50%;
   height: 0;
 
-  max-width: 960px;
-  min-width: 512px;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 #molecule-container {
@@ -21,9 +30,4 @@
   right: 0;
   left: 0;
   bottom: 0;
-}
-
-#molecule-container svg {
-  position: absolute;
-  background: yellow;
 }
