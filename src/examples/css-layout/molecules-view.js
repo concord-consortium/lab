@@ -34,9 +34,6 @@ Lab.moleculesView = function(e, model, options) {
       nodes,
       get_nodes,
       default_options = {
-        title:                false,
-        xlabel:               false,
-        ylabel:               false,
         playback_controller:  false,
         play_only_controller: true,
         model_time_label:     false,
@@ -85,13 +82,13 @@ Lab.moleculesView = function(e, model, options) {
     cy = cx / aspectRatio;
 
     padding = {
-       "top":    options.title  ? 40 : 20,
-       "right":                   25,
-       "bottom": 10,
-       "left":   options.ylabel ? 60 : 25
+      top:    20,
+      right:  25,
+      bottom: 10,
+      left:   25
     };
 
-    if (options.xlabel || options.model_time_label) {
+    if (options.model_time_label) {
       padding.bottom += 35;
     }
 
@@ -212,37 +209,6 @@ Lab.moleculesView = function(e, model, options) {
         .attr("height", size.height)
         .style("fill", "#EEEEEE");
 
-      // add Chart Title
-      if (options.title) {
-        vis.append("text")
-            .attr("class", "title")
-            .text(options.title)
-            .attr("x", size.width/2)
-            .attr("dy","-1em")
-            .style("text-anchor","middle");
-      }
-
-      // Add the x-axis label
-      if (options.xlabel) {
-        vis.append("text")
-            .attr("class", "xlabel")
-            .text(options.xlabel)
-            .attr("x", size.width/2)
-            .attr("y", size.height)
-            .attr("dy","2.4em")
-            .style("text-anchor","middle");
-      }
-
-      // add y-axis label
-      if (options.ylabel) {
-        vis.append("g")
-            .append("text")
-                .attr("class", "ylabel")
-                .text(options.ylabel)
-                .style("text-anchor","middle")
-                .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
-      }
-
       // add model time display
       if (options.model_time_label) {
         time_label = vis.append("text")
@@ -296,23 +262,6 @@ Lab.moleculesView = function(e, model, options) {
         .attr("width", size.width)
         .attr("height", size.height)
         .attr("viewBox", "0 0 "+size.width+" "+size.height);
-
-      if (options.title) {
-        vis.select("text.title")
-            .attr("x", size.width/2)
-            .attr("dy","-1em");
-      }
-
-      if (options.xlabel) {
-        vis.select("text.xlabel")
-            .attr("x", size.width/2)
-            .attr("y", size.height);
-      }
-
-      if (options.ylabel) {
-        vis.select("text.ylabel")
-            .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
-      }
 
       if (options.model_time_label) {
         time_label.text(modelTimeLabel())
