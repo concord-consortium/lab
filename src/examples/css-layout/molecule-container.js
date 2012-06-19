@@ -80,16 +80,26 @@ Lab.moleculeContainer = function(e, options) {
 
   function scale(w, h) {
     var modelSize = model.size(),
-        aspectRatio = modelSize[0] / modelSize[1];
-    if (!arguments.length) {
-      cy = elem.property("clientHeight");
-      cx = cy * aspectRatio;
+        aspectRatio = modelSize[0] / modelSize[1],
+        $elem = $(elem.node());
+
+    // If a width is passed in, set the element width in the DOM. Otherwise, use the element width.
+    if (w == null) {
+      w = $elem.width();
     } else {
-      cy = h;
-      node.style.height = cy +"px";
-      cx = cy * aspectRatio;
+      $elem.width(w);
     }
-    node.style.width = cx +"px";
+
+    // Use the height if supplied, or else infer it from the aspect ratio. Either way, set the
+    // element height in the DOM.
+    if (h == null) {
+      h = w / aspectRatio;
+    }
+    $elem.height(h);
+
+    cx = w;
+    cy = h;
+
     scale_factor = screen_factor;
     padding = {
        "top":    options.title  ? 40 * screen_factor : 20,
