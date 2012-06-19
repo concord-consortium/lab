@@ -7,7 +7,7 @@
 
 body {
   margin: 0;
-  min-width: 480px;
+  min-width: 30em;
 }
 
 #main {
@@ -20,20 +20,23 @@ body {
 }
 
 /* media queries */
-@media screen and (min-width: 820px) {
+@media screen and (min-width: 50em) {
   #molecules {
     float: right;
-    width: 57%;
+    width: 58%;
+    padding: 0 1%;
   }
 
   #description {
     float: left;
     width: 38%;
+    padding: 0 1%;
   }
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 80em) {
   #main {
-    width: 1216px;
+    /* 80em * 95% */
+    width: 76em;
   }
 }
