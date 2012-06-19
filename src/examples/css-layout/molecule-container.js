@@ -78,25 +78,13 @@ Lab.moleculeContainer = function(e, model, options) {
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
-  function scale(w, h) {
-    console.log("scale(", w, ", ", h, ")");
+  function scale() {
     var modelSize = model.size(),
-        aspectRatio = modelSize[0] / modelSize[1],
-        $elem = $(elem.node());
+        aspectRatio = modelSize[0] / modelSize[1];
 
-    // If a width is passed in, set the element width in the DOM. Otherwise, use the element width.
-    if (w == null) {
-      w = $elem.width();
-    }
-
-    // Use the height if supplied, or else infer it from the aspect ratio. Either way, set the
-    // element height in the DOM.
-    if (h == null) {
-      h = w / aspectRatio;
-    }
-
-    cx = w;
-    cy = h;
+    // always scale to 500px, let viewBox handle the rest
+    cx = 500;
+    cy = cx / aspectRatio;
 
     scale_factor = screen_factor;
     padding = {
@@ -206,7 +194,7 @@ Lab.moleculeContainer = function(e, model, options) {
     if (vis === undefined) {
       vis1 = d3.select(node).append("svg")
         .attr('viewBox', '0 0 ' + cx + ' ' + cy)
-        .attr('preserveAspectRatio', 'xMinYMin slice');
+        .attr('preserveAspectRatio', 'xMinYMin meet');
 
       vis = vis1.append("g")
           .attr("transform", "translate(" + padding.left + "," + padding.top + ")");

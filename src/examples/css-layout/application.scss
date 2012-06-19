@@ -2,12 +2,28 @@
   Implementation of "Complex Atoms Model" with layout & model initialization redone from scratch as
   much as possible.
 */
+#aspect-container {
+  position: absolute;
+
+  /* a trick that sets this div's height to 100% of its width, by making use of the fact that
+     padding is represented in units of the parent element's width */
+  padding-top: 50%;
+  padding-bottom: 50%;
+  height: 0;
+
+  max-width: 960px;
+  min-width: 512px;
+}
 
 #molecule-container {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  left: 10px;
-  bottom: 10px;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+#molecule-container svg {
+  position: absolute;
   background: yellow;
 }
