@@ -202,12 +202,6 @@ Lab.moleculeContainer = function(e, model, options) {
   }
 
   function container() {
-    // if (node.clientWidth && node.clientHeight) {
-    //   cx = node.clientWidth;
-    //   cy = node.clientHeight;
-    //   size.width  = cx - padding.left - padding.right;
-    //   size.height = cy - padding.top  - padding.bottom;
-    // }
     scale();
     if (vis === undefined) {
       vis1 = d3.select(node).append("svg")
