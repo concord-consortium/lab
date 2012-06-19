@@ -22,12 +22,12 @@
   /* A trick that sets this div's height to 100% of its width, by making use of the fact that
      padding is represented in units of this element's width.
 
-     The values below represent a default 1:1 aspect ratio. TODO: The padding values can be
-     overridden by the moleculesView for models with different aspect ratios (after padding is
-     taken into account)
+     The value below represents a 1:1 aspect ratio and is here only for illustrative purposes.
+     In practice, the molecule view sets an inline style on the div.molecules-view-aspect-container
+     to make the child div.molecules-view-svg-container's aspect ratio to match the actual aspect
+     ratio of the model, with padding taken into account.
   */
-  padding-top: 50%;
-  padding-bottom: 50%;
+  padding-top: 100%;
   height: 0;
 
   top: 0;
