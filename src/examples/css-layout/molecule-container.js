@@ -2,13 +2,13 @@
 /*jshint eqnull: true*/
 // ------------------------------------------------------------
 //
-//   Molecule Container
+//   Molecules View
 //
 // ------------------------------------------------------------
 
-Lab.moleculeContainer = function(e, model, options) {
-  var elem = d3.select(e),
-      node = elem.node(),
+Lab.moleculesView = function(e, model, options) {
+  var elem,
+      node,
       cx,
       cy,
       width, height,
@@ -190,7 +190,17 @@ Lab.moleculeContainer = function(e, model, options) {
   }
 
   function container() {
+
+    if (!node) {
+      elem = d3.select(e)
+        .append('div').attr('class', 'molecules-view-aspect-container')
+        .append('div').attr('class', 'molecules-view-svg-container');
+
+      node = elem.node();
+    }
+
     scale();
+
     if (vis === undefined) {
       vis1 = d3.select(node).append("svg")
         .attr('viewBox', '0 0 ' + cx + ' ' + cy)
@@ -670,7 +680,7 @@ Lab.moleculeContainer = function(e, model, options) {
   };
 
 
- if (node) { container(); }
+ if (e) { container(); }
 
   return container;
 };

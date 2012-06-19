@@ -41,8 +41,8 @@ Lab.model = model
 
 $(document).ready ->
 
-  container = Lab.moleculeContainer '#molecule-container', model,
-    title:                "Molecules"
+  container = Lab.moleculesView '#molecules', model,
+    title:                "Some Molecules"
     xlabel:               "X position (nm)"
     ylabel:               "Y position (nm)"
     playback_controller:  false
