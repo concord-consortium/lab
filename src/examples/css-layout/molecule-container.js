@@ -4,7 +4,7 @@
 //
 // ------------------------------------------------------------
 
-Lab.moleculeContainer = function(e, options) {
+Lab.moleculeContainer = function(e, model, options) {
   var elem = d3.select(e),
       node = elem.node(),
       cx = elem.property("clientWidth"),
