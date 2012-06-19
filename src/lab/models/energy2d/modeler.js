@@ -26,6 +26,9 @@ energy2d.modeler.makeModeler = function (options) {
     getHeight: function () {
       return core_model.getModelOptions().model_height;
     },
+    getTime: function () {
+      return core_model.getModelOptions().timestep * core_model.getIndexOfStep();
+    },
     getIndexOfStep: core_model.getIndexOfStep,
     getGridWidth: core_model.getGridWidth,
     getGridHeight: core_model.getGridHeight,

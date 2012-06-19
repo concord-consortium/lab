@@ -27,6 +27,7 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
     heatmap_view,
     velocity_view,
     parts_view,
+    time_view,
 
     $scene_view_div,
 
@@ -45,22 +46,39 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
       $scene_view_div.append(heatmap_view.getHTMLElement());
       $scene_view_div.append(velocity_view.getHTMLElement());
       $scene_view_div.append(parts_view.getHTMLElement());
+      $scene_view_div.append(time_view.getHTMLElement());
     },
 
     setAsNextLayer = function (view) {
-      var layer = view.getHTMLElement();
+      var $layer = view.getHTMLElement();
 
-      layer.css('width', '100%');
-      layer.css('height', '100%');
-      layer.css('position', 'absolute');
-      layer.css('left', '0');
-      layer.css('top', '0');
-      layer.css('z-index', layers_count);
+      $layer.css('width', '100%');
+      $layer.css('height', '100%');
+      $layer.css('position', 'absolute');
+      $layer.css('left', '0');
+      $layer.css('top', '0');
+      $layer.css('z-index', layers_count);
+      layers_count += 1;
+    },
+
+    setAsTimeLayer = function (view) {
+      var $layer = view.getHTMLElement();
+
+      // Style time view to make it visible and sharp 
+      // as it is displayed on the heatmap (often dark blue color).
+      $layer.css('color', 'white');
+      $layer.css('font-weight', 'bold');
+      // Keep constant width of time display to avoid
+      // oscillation of its position.
+      $layer.css('font-family', 'Monospace');
+      $layer.css('position', 'absolute');
+      $layer.css('right', '0');
+      $layer.css('top', '0');
+      $layer.css('z-index', layers_count);
       layers_count += 1;
     },
 
     energy2d_scene_view = {
-
       getHeatmapView: function () {
         return heatmap_view;
       },
@@ -71,6 +89,10 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
 
       getPartsView: function () {
         return parts_view;
+      },
+
+      getTimeView: function () {
+        return time_view;
       },
 
       getHTMLElement: function () {
@@ -86,6 +108,9 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
 
   parts_view = energy2d.views.makePartsView();
   setAsNextLayer(parts_view);
+
+  time_view = energy2d.views.makeTimeView();
+  setAsTimeLayer(time_view);
 
   // Append all views to the scene view DIV.
   initHTMLelement();
@@ -459,5 +484,64 @@ energy2d.views.makeSimulationPlayerView = function (html_id) {
   initHTMLelement();
 
   return simulation_player;
+};
+
+// Simulation time.
+//
+// getHTMLElement() method returns JQuery object with DIV that contains time.
+// If you want to style its components:
+// Default div id = "energy2d-time"
+energy2d.views.makeTimeView = function (html_id) {
+  'use strict';
+  var
+    DEFAULT_ID = 'energy2d-time',
+    DEFAULT_CLASS = 'energy2d-time',
+
+    $time_div,
+
+    //
+    // Private methods.
+    //
+    initHTMLelement = function () {
+      $time_div = $('<div />');
+      $time_div.attr('id', html_id || DEFAULT_ID);
+      $time_div.addClass(DEFAULT_CLASS);
+      $time_div.html('0:00:00:00');
+    },
+
+    pad = function (num, size) {
+      var s = num.toString();
+      while (s.length < size) {
+        s = "0" + s;
+      }
+      return s;
+    },
+
+    //
+    // Public API.
+    //
+    simulation_time = {
+      renderTime: function (time) {
+        var seconds, minutes, hours, days;
+        time = Math.floor(time);
+        seconds = time % 60;
+        time = Math.floor(time / 60);
+        minutes = time % 60;
+        time = Math.floor(time / 60);
+        hours = time % 24;
+        time = Math.floor(time / 24);
+        days = time;
+        $time_div.html(days + ':' + pad(hours, 2) + ':' + pad(minutes, 2)  + ':' + pad(seconds, 2));
+      },
+
+      getHTMLElement: function () {
+        return $time_div;
+      }
+    };
+
+  // One-off initialization.
+  initHTMLelement();
+
+  return simulation_time;
 };
 
