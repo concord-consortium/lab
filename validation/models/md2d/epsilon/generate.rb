@@ -1,11 +1,13 @@
-require 'fileutils'
-# http://www.ruby-doc.org/stdlib-1.9.3/libdoc/matrix/rdoc/index.html
-require 'matrix'
-#
-require 'mustache'
+require 'fileutils'     # http://www.ruby-doc.org/stdlib-1.9.3/libdoc/fileutils/rdoc/index.html
+require 'matrix'        # http://www.ruby-doc.org/stdlib-1.9.3/libdoc/matrix/rdoc/index.html
+require 'mustache'      # https://github.com/defunkt/mustache
 
-PROJECT_ROOT = File.expand_path('../../../../..',  __FILE__) if !defined? PROJECT_ROOT
-THIS_DIR = File.expand_path(File.dirname( __FILE__))
+THIS_DIR = File.expand_path('..', __FILE__)
+PROJECT_ROOT = File.expand_path('../../../..',  THIS_DIR) if !defined? PROJECT_ROOT
+
+CLASSIC_PATH = File.join(THIS_DIR, "classic")
+NEXTGEN_PATH = File.join(THIS_DIR, "nextgen")
+INDEX_PATH = File.join(THIS_DIR, "index.txt")
 
 # some conversion constants for later
 JOULES_PER_EV = 1.6021770000000003e-19
@@ -129,32 +131,32 @@ class Mml < Mustache
 end
 
 def generate_mw_files(num, epsilon, x, y, vx, vy)
-  File.open("classic2/model#{num}.cml", 'w') { |f| f.write Cml.new(num).render }
+  File.open(File.join(CLASSIC_PATH, "model#{num}.cml"), 'w') { |f| f.write Cml.new(num).render }
   atoms = [x, y, vx, vy].transpose.collect { |a|
     { "rx" => 100*a[0], "ry" => 100*a[1], "vx" => 100*a[2], "vy" => 100*a[3] }
   }
-  File.open("classic2/model#{num}$0.mml", 'w') do |f|
+  File.open(File.join(CLASSIC_PATH, "model#{num}$0.mml"), 'w') do |f|
     f.write Mml.new(atoms.length, epsilon, 100*SIGMA, MASS/120, WIDTH*100, HEIGHT*100, atoms).render
   end
 end
 
 def convert_mml_file(num)
   converter =  "coffee " + File.join(PROJECT_ROOT, "node-bin/convert-mml.coffee")
-  input_mml_file = File.join(THIS_DIR, "classic2/model#{num}$0.mml")
-  output_json_file = File.join(THIS_DIR, "nextgen2/model#{num}.json")
-  input_index_file = File.join(THIS_DIR, "index2.txt")
+  input_mml_file = File.join(CLASSIC_PATH, "model#{num}$0.mml")
+  output_json_file = File.join(NEXTGEN_PATH, "model#{num}.json")
+  input_index_file = INDEX_PATH
   cmd = "#{converter} '#{input_mml_file}' #{output_json_file} #{input_index_file}"
-  puts "\ncommand: #{cmd}"
+  puts "\ncommand:\n#{cmd}"
   system(cmd)
 end
 
 def generate_md2d_data_file(num)
   generator =  "coffee " + File.join(PROJECT_ROOT, "node-bin/get-md2d-data.coffee")
-  input_json_file = File.join(THIS_DIR, "nextgen2/model#{num}.json")
-  output_txt_file = File.join(THIS_DIR, "nextgen2/model#{num}.data.txt")
-  input_index_file = File.join(THIS_DIR, "index2.txt")
+  input_json_file = File.join(NEXTGEN_PATH, "model#{num}.json")
+  output_txt_file = File.join(NEXTGEN_PATH, "model#{num}.data.txt")
+  input_index_file = INDEX_PATH
   cmd = "#{generator} '#{input_json_file}' #{output_txt_file} #{input_index_file}"
-  puts "\ncommand: #{cmd}"
+  puts "\ncommand:\n#{cmd}"
   system(cmd)
 end
 
@@ -165,12 +167,15 @@ def linspace(start, stop, number)
   results
 end
 
-FileUtils.mkdir_p 'classic2'
-FileUtils.mkdir_p 'nextgen2'
+FileUtils.mkdir_p CLASSIC_PATH
+FileUtils.mkdir_p NEXTGEN_PATH
+
+# erase any files in the nextgen path
+FileUtils.rm_r Dir.glob(NEXTGEN_PATH + '/*')
 
 INDEX_FORMAT_STR = "%d\t%.3f\t%.3f\t%.3f\t%.3f\n"
 
-File.open(File.join(THIS_DIR, "index2.txt"), "w") do |index_file|
+File.open(INDEX_PATH, "w") do |index_file|
   index_file.write(sprintf("%s\t%s\t%s\t%s\t%s\n", 'model', 'epsilon', 'initial PE', 'initial KE', 'approx. final KE'))
   model_num = 1
   ['solid', 'gas'].each do |state|
