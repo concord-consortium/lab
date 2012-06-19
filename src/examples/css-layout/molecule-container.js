@@ -1,3 +1,5 @@
+/*globals $ d3 Lab */
+/*jshint eqnull: true*/
 // ------------------------------------------------------------
 //
 //   Molecule Container
@@ -23,14 +25,10 @@ Lab.moleculeContainer = function(e, model, options) {
       time_prefix = "time: ",
       time_suffix = " (ps)",
       gradient_container,
-      red_gradient,
-      blue_gradient,
-      green_gradient,
       element_gradient_array,
       atom_tooltip_on,
       offset_left, offset_top,
-      particle, label, labelEnter, tail,
-      molRadius,
+      particle, label, labelEnter,
       molecule_div, molecule_div_pre,
       atoms,
       get_num_atoms,
@@ -53,7 +51,8 @@ Lab.moleculeContainer = function(e, model, options) {
         ymax:                 10
       },
 
-      screen_factor = 1;
+      screen_factor = 1,
+      model_player;
 
   if (options) {
     for(var p in default_options) {
@@ -71,6 +70,9 @@ Lab.moleculeContainer = function(e, model, options) {
 
   get_num_atoms = options.get_num_atoms;
   (atoms=[]).length = get_num_atoms();
+
+  // An object that controls this model
+  model_player = options.model_player;
 
   scale(cx, cy);
 
@@ -128,7 +130,7 @@ Lab.moleculeContainer = function(e, model, options) {
     offset_top = node.offsetTop + padding.top;
     if (options.playback_controller) {
       pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
-    };
+    }
     if (options.play_only_controller) {
       pc_xpos = padding.left + (size.width - (140 * scale_factor))/2;
     }
@@ -143,7 +145,7 @@ Lab.moleculeContainer = function(e, model, options) {
 
     // drag x-axis logic
     downscalex = x.copy();
-    downx = Math.NaN;
+    downx = NaN;
 
     // y-scale (inverted domain)
     y = d3.scale.linear()
@@ -154,7 +156,7 @@ Lab.moleculeContainer = function(e, model, options) {
 
     // drag x-axis logic
     downscaley = y.copy();
-    downy = Math.NaN;
+    downy = NaN;
     dragged = null;
     return [cx, cy];
   }
@@ -267,10 +269,10 @@ Lab.moleculeContainer = function(e, model, options) {
             .style("text-anchor","start");
       }
       if (options.playback_controller) {
-        playback_component = new PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
+        playback_component = new Lab.PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
       if (options.play_only_controller) {
-        playback_component = new PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
+        playback_component = new Lab.PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
       }
 
       molecule_div = d3.select("#viz").append("div")
@@ -448,7 +450,7 @@ Lab.moleculeContainer = function(e, model, options) {
     }
 
     function create_radial_gradient(id, lightColor, medColor, darkColor, gradient_container) {
-      gradient = gradient_container.append("defs")
+      var gradient = gradient_container.append("defs")
           .append("radialGradient")
           .attr("id", id)
           .attr("cx", "50%")
@@ -479,6 +481,8 @@ Lab.moleculeContainer = function(e, model, options) {
       Call this wherever a d3 selection is being used to add circles for atoms
     */
     function circlesEnter(particle) {
+      var element, grad;
+
       particle.enter().append("circle")
           .attr("r",  function(d, i) { return x(get_radius(i)); })
           .attr("cx", function(d, i) { return x(get_x(i)); })
@@ -504,10 +508,6 @@ Lab.moleculeContainer = function(e, model, options) {
 
       get_num_atoms = options.get_num_atoms;
       (atoms=[]).length = get_num_atoms();
-
-      if (typeof atoms == "undefined" || !atoms){
-        return;
-      }
 
       var ljf = model.getLJCalculator()[0][0].coefficients();
       // // molRadius = ljf.rmin * 0.5;
@@ -561,12 +561,6 @@ Lab.moleculeContainer = function(e, model, options) {
       node.focus();
     }
 
-    function molecule_mouseover(d) {
-      // molecule_div.transition()
-      //       .duration(250)
-      //       .style("opacity", 1);
-    }
-
     function molecule_mousedown(d, i) {
       node.focus();
       if (atom_tooltip_on) {
@@ -600,9 +594,6 @@ Lab.moleculeContainer = function(e, model, options) {
           "ax:    " + d3.format("+6.3e")(get_ax(i))    + "\n" +
           "ay:    " + d3.format("+6.3e")(get_ay(i))    + "\n"
         );
-    }
-
-    function molecule_mousemove(d) {
     }
 
     function molecule_mouseout() {
