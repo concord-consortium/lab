@@ -42,15 +42,10 @@ Lab.model = model
 $(document).ready ->
 
   container = Lab.moleculesView '#molecules', model,
-    playback_controller:  false
-    play_only_controller: false
-    model_time_label:     true
-    grid_lines:           true
-    xunits:               true
-    yunits:               true
-    atom_mubers:          false
-    get_nodes:            -> model.get_nodes()
-    get_num_atoms:        -> model.get_num_atoms()
+    model_time_label: true
+    grid_lines: true
+    xunits: true
+    yunits: true
 
   container.setup_particles()
   model.setModelListener -> container.update_molecule_positions()
