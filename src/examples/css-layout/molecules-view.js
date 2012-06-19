@@ -89,6 +89,8 @@ Lab.moleculesView = function(e, model, options) {
 
     if (options.model_time_label) {
       padding.bottom += 35;
+    } else if (options.xunits) {
+      padding.bottom += 12;
     }
 
     if (options.playback_controller || options.play_only_controller) {
