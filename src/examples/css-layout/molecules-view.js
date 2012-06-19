@@ -626,8 +626,14 @@ Lab.moleculesView = function(e, model, options) {
     container.setup_particles();
   };
 
-
-  if (e) container();
+  if (e) {
+    container();
+    container.setup_particles();
+    model.setModelListener(function () {
+      container.update_molecule_positions();
+    });
+  }
 
   return container;
 };
+

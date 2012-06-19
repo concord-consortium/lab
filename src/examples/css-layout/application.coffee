@@ -47,8 +47,5 @@ $(document).ready ->
     xunits: true
     yunits: true
 
-  container.setup_particles()
-  model.setModelListener -> container.update_molecule_positions()
-
   # start ticks
   model.resume()
