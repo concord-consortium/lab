@@ -14,14 +14,14 @@ exports.DEFAULT_VALUES = {
   "model": {
     "model_width": 10,
     "model_height": 10,
-    "timestep": 0.1,
+    "timestep": 1,
     "convective": true,
 
-    "background_conductivity": 10 * constants.AIR_THERMAL_CONDUCTIVITY,
+    "background_temperature": 0,
+    "background_conductivity": constants.AIR_THERMAL_CONDUCTIVITY,
     "background_specific_heat": constants.AIR_SPECIFIC_HEAT,
     "background_density": constants.AIR_DENSITY,
-    "background_temperature": 0,
-    "background_viscosity": 10 * constants.AIR_VISCOSITY,
+    "background_viscosity": constants.AIR_VISCOSITY,
 
     "thermal_buoyancy": 0.00025,
     "buoyancy_approximation": 1,
@@ -35,15 +35,15 @@ exports.DEFAULT_VALUES = {
       }
     },
 
-    "measurement_interval": 100,        // unnecessary
-    "viewupdate_interval": 20,          // unnecessary
+    "measurement_interval": 500,        // unnecessary
+    "viewupdate_interval": 100,         // unnecessary
     "stoptime": undefined,              // unnecessary
     "sunny": true,                      // unnecessary (ray solver not implemented)
     "sun_angle": 1.5707964,             // unnecessary (ray solver not implemented)
-    "solar_power_density": 20000,       // unnecessary (ray solver not implemented)
+    "solar_power_density": 2000,        // unnecessary (ray solver not implemented)
     "solar_ray_count": 24,              // unnecessary (ray solver not implemented)
-    "solar_ray_speed": 0.001,           // unnecessary (ray solver not implemented)
-    "photon_emission_interval": 5,      // unnecessary (ray solver not implemented)
+    "solar_ray_speed": 0.1,             // unnecessary (ray solver not implemented)
+    "photon_emission_interval": 20,     // unnecessary (ray solver not implemented)
 
     "structure": undefined
     // Structure can be undefined.
