@@ -41,7 +41,7 @@ Lab.model = model
 
 $(document).ready ->
 
-  container = Lab.moleculesView '#molecules', model,
+  Lab.moleculesView '#molecules', model,
     model_time_label: true
     grid_lines: true
     xunits: true
