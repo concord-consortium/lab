@@ -18,7 +18,7 @@ mitigateGlobals = ({namespace}) ->
 
 # these are in nm
 width = 10
-height = 10
+height = 5
 
 numAtoms = 100
 
