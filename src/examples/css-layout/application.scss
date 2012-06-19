@@ -42,3 +42,39 @@
   left: 0;
   bottom: 0;
 }
+
+
+/*
+
+  Removed from moleculeView for now:
+      // add Chart Title
+      if (options.title) {
+        vis.append("text")
+            .attr("class", "title")
+            .text(options.title)
+            .attr("x", size.width/2)
+            .attr("dy","-1em")
+            .style("text-anchor","middle");
+      }
+
+      // Add the x-axis label
+      if (options.xlabel) {
+        vis.append("text")
+            .attr("class", "xlabel")
+            .text(options.xlabel)
+            .attr("x", size.width/2)
+            .attr("y", size.height)
+            .attr("dy","2.4em")
+            .style("text-anchor","middle");
+      }
+
+      // add y-axis label
+      if (options.ylabel) {
+        vis.append("g")
+            .append("text")
+                .attr("class", "ylabel")
+                .text(options.ylabel)
+                .style("text-anchor","middle")
+                .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+      }
+*/
