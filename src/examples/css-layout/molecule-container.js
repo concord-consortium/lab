@@ -9,8 +9,8 @@
 Lab.moleculeContainer = function(e, model, options) {
   var elem = d3.select(e),
       node = elem.node(),
-      cx = elem.property("clientWidth"),
-      cy = elem.property("clientHeight"),
+      cx,
+      cy,
       width, height,
       scale_factor,
       vis1, vis, plot,
@@ -74,13 +74,12 @@ Lab.moleculeContainer = function(e, model, options) {
   // An object that controls this model
   model_player = options.model_player;
 
-  scale(cx, cy);
-
   tx = function(d, i) { return "translate(" + x(d) + ",0)"; };
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
 
   function scale(w, h) {
+    console.log("scale(", w, ", ", h, ")");
     var modelSize = model.size(),
         aspectRatio = modelSize[0] / modelSize[1],
         $elem = $(elem.node());
@@ -88,8 +87,6 @@ Lab.moleculeContainer = function(e, model, options) {
     // If a width is passed in, set the element width in the DOM. Otherwise, use the element width.
     if (w == null) {
       w = $elem.width();
-    } else {
-      $elem.width(w);
     }
 
     // Use the height if supplied, or else infer it from the aspect ratio. Either way, set the
@@ -97,7 +94,6 @@ Lab.moleculeContainer = function(e, model, options) {
     if (h == null) {
       h = w / aspectRatio;
     }
-    $elem.height(h);
 
     cx = w;
     cy = h;
