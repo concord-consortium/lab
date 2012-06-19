@@ -1,3 +1,5 @@
+@import url('molecules-view.css');
+
 /*
   Implementation of "Complex Atoms Model" with layout & model initialization redone from scratch as
   much as possible.
@@ -9,72 +11,3 @@
   max-width: 960px;
   background: yellow;
 }
-
-/* Styles used by internally by the molecule view to make it behave basically like an img tag */
-.molecules-view {
-  display: inline-block;
-  vertical-align: top;
-}
-
-.molecules-view-aspect-container {
-  position: relative;
-
-  /* A trick that sets this div's height to 100% of its width, by making use of the fact that
-     padding is represented in units of this element's width.
-
-     The value below represents a 1:1 aspect ratio and is here only for illustrative purposes.
-     In practice, the molecule view sets an inline style on the div.molecules-view-aspect-container
-     to make the child div.molecules-view-svg-container's aspect ratio to match the actual aspect
-     ratio of the model, with padding taken into account.
-  */
-  padding-top: 100%;
-  height: 0;
-
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
-.molecules-view-svg-container {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-}
-
-
-/*
-
-  Removed from moleculeView for now:
-      // add Chart Title
-      if (options.title) {
-        vis.append("text")
-            .attr("class", "title")
-            .text(options.title)
-            .attr("x", size.width/2)
-            .attr("dy","-1em")
-            .style("text-anchor","middle");
-      }
-
-      // Add the x-axis label
-      if (options.xlabel) {
-        vis.append("text")
-            .attr("class", "xlabel")
-            .text(options.xlabel)
-            .attr("x", size.width/2)
-            .attr("y", size.height)
-            .attr("dy","2.4em")
-            .style("text-anchor","middle");
-      }
-
-      // add y-axis label
-      if (options.ylabel) {
-        vis.append("g")
-            .append("text")
-                .attr("class", "ylabel")
-                .text(options.ylabel)
-                .style("text-anchor","middle")
-                .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
-      }
-*/
