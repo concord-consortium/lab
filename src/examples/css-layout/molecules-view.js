@@ -29,12 +29,10 @@ Lab.moleculesView = function(e, model, options) {
       particle, label, labelEnter,
       molecule_div, molecule_div_pre,
       atoms,
-      get_num_atoms,
       nodes,
-      get_nodes,
       default_options = {
         playback_controller:  false,
-        play_only_controller: true,
+        play_only_controller: false,
         model_time_label:     false,
         grid_lines:           false,
         xunits:               false,
@@ -59,11 +57,10 @@ Lab.moleculesView = function(e, model, options) {
   }
 
   // The get_nodes option allows us to update 'nodes' array every model tick.
-  get_nodes = options.get_nodes;
-  nodes = get_nodes();
+  nodes = model.get_nodes();
 
-  get_num_atoms = options.get_num_atoms;
-  (atoms=[]).length = get_num_atoms();
+  // a 'fake' array for d3 methods to iterate over
+  (atoms=[]).length = model.get_num_atoms();
 
   // An object that controls this model
   model_player = options.model_player;
@@ -444,11 +441,8 @@ Lab.moleculesView = function(e, model, options) {
 
     function setup_particles() {
       // The get_nodes option allows us to update 'nodes' array every model tick.
-      get_nodes = options.get_nodes;
-      nodes = get_nodes();
-
-      get_num_atoms = options.get_num_atoms;
-      (atoms=[]).length = get_num_atoms();
+      nodes = model.get_nodes();
+      (atoms=[]).length = model.get_num_atoms();
 
       var ljf = model.getLJCalculator()[0][0].coefficients();
       // // molRadius = ljf.rmin * 0.5;
@@ -545,8 +539,8 @@ Lab.moleculesView = function(e, model, options) {
 
     function update_molecule_positions() {
 
-      (atoms = []).length = get_num_atoms();
-      nodes = get_nodes();
+      nodes = model.get_nodes();
+      (atoms = []).length = model.get_num_atoms();
 
       // update model time display
       if (options.model_time_label) {
@@ -633,7 +627,7 @@ Lab.moleculesView = function(e, model, options) {
   };
 
 
- if (e) { container(); }
+  if (e) container();
 
   return container;
 };
