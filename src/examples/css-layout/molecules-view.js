@@ -12,7 +12,6 @@ Lab.moleculesView = function(e, model, options) {
       cx,
       cy,
       width, height,
-      scale_factor,
       vis1, vis, plot,
       playback_component, time_label,
       padding, size,
@@ -51,7 +50,6 @@ Lab.moleculesView = function(e, model, options) {
         ymax:                 10
       },
 
-      screen_factor = 1,
       model_player;
 
   if (options) {
@@ -86,20 +84,19 @@ Lab.moleculesView = function(e, model, options) {
     cx = 500;
     cy = cx / aspectRatio;
 
-    scale_factor = screen_factor;
     padding = {
-       "top":    options.title  ? 40 * screen_factor : 20,
+       "top":    options.title  ? 40 : 20,
        "right":                   25,
        "bottom": 10,
-       "left":   options.ylabel ? 60  * screen_factor : 25
+       "left":   options.ylabel ? 60 : 25
     };
 
     if (options.xlabel || options.model_time_label) {
-      padding.bottom += (35  * scale_factor);
+      padding.bottom += 35;
     }
 
     if (options.playback_controller || options.play_only_controller) {
-      padding.bottom += (40  * scale_factor);
+      padding.bottom += 40;
     }
 
     height = cy - padding.top  - padding.bottom;
@@ -113,12 +110,12 @@ Lab.moleculesView = function(e, model, options) {
     offset_left = node.offsetLeft + padding.left;
     offset_top = node.offsetTop + padding.top;
     if (options.playback_controller) {
-      pc_xpos = padding.left + (size.width - (230 * scale_factor))/2;
+      pc_xpos = padding.left + (size.width - 230)/2;
     }
     if (options.play_only_controller) {
-      pc_xpos = padding.left + (size.width - (140 * scale_factor))/2;
+      pc_xpos = padding.left + (size.width - 140)/2;
     }
-    pc_ypos = cy - 42 * scale_factor;
+    pc_ypos = cy - 42;
     mw = size.width;
     mh = size.height;
 
@@ -257,10 +254,10 @@ Lab.moleculesView = function(e, model, options) {
             .style("text-anchor","start");
       }
       if (options.playback_controller) {
-        playback_component = new Lab.PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
+        playback_component = new Lab.PlaybackComponentSVG(vis1, model_player, pc_xpos, pc_ypos, 1);
       }
       if (options.play_only_controller) {
-        playback_component = new Lab.PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, scale_factor);
+        playback_component = new Lab.PlayOnlyComponentSVG(vis1, model_player, pc_xpos, pc_ypos, 1);
       }
 
       molecule_div = d3.select("#viz").append("div")
@@ -339,7 +336,7 @@ Lab.moleculesView = function(e, model, options) {
       }
 
       if (options.playback_controller || options.play_only_controller) {
-        playback_component.position(pc_xpos, pc_ypos, scale_factor);
+        playback_component.position(pc_xpos, pc_ypos, 1);
       }
       redraw();
 
