@@ -5,6 +5,26 @@ fs         = require 'fs'
 
 totalTime = 41000  #
 
+format = (n, width) ->
+  str = "" + n
+  i = str.length
+
+  while i < width
+    str += "0"
+    i++
+  str.slice 0, width
+
+decimal_format = (num, digits) ->
+  s = "" + num
+  parts = s.split(".")
+  digits = 8  if digits is "undefined"
+  parts.push "0"  if parts.length is 1
+  if digits is 0
+    parts[0]
+  else
+    parts[1] = "." + format(+parts[1], digits)
+    parts[0] + parts[1]
+
 runModel = (inFileName, outFileName, modifyModel) ->
   hash  = JSON.parse fs.readFileSync(inFileName).toString()
   model = md2dLoader.fromHash hash
@@ -13,11 +33,11 @@ runModel = (inFileName, outFileName, modifyModel) ->
   state = model.outputState
   model.setTime 0
 
-  console.log "\n\ninfile: #{inFileName}\noutfile: #{outFile }\n\ntime\tKE\tTE"
+  console.log "\ninfile: #{inFileName}\noutfile: #{outFile }\n\ntime\tKE\tTE"
 
   out = fs.openSync outFileName, 'w'
   while (state.time <= totalTime)
-    str = "#{state.time}\t#{state.KE}\t#{state.KE + state.PE}"
+    str = "#{state.time}\t#{decimal_format(state.KE, 4)}\t#{decimal_format(state.KE + state.PE, 4)}"
     fs.writeSync out, str+"\n"
     console.log str
     model.integrate()
