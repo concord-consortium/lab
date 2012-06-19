@@ -5,9 +5,10 @@ require 'mustache'      # https://github.com/defunkt/mustache
 THIS_DIR = File.expand_path('..', __FILE__)
 PROJECT_ROOT = File.expand_path('../../../..',  THIS_DIR) if !defined? PROJECT_ROOT
 
-CLASSIC_PATH = File.join(THIS_DIR, "classic")
-NEXTGEN_PATH = File.join(THIS_DIR, "nextgen")
-INDEX_PATH = File.join(THIS_DIR, "index.txt")
+DATA_PATH = File.join(THIS_DIR, "data")
+CLASSIC_PATH = File.join(DATA_PATH, "classic")
+NEXTGEN_PATH = File.join(DATA_PATH, "nextgen")
+INDEX_PATH = File.join(DATA_PATH, "index.txt")
 
 # some conversion constants for later
 JOULES_PER_EV = 1.6021770000000003e-19
