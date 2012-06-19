@@ -42,9 +42,9 @@ Lab.moleculesView = function(e, model, options) {
         yunits:               false,
         atom_mubers:          false,
         xmin:                 0,
-        xmax:                 10,
+        xmax:                 model.size()[0],
         ymin:                 0,
-        ymax:                 10
+        ymax:                 model.size()[1]
       },
 
       model_player;
