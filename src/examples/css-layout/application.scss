@@ -5,9 +5,17 @@
   much as possible.
 */
 
+body {
+  margin: 0;
+}
+
+#main {
+  width: 90%;
+  margin: 0 auto;
+  min-width: 640px;
+  max-width: 1280px;
+}
+
 #molecules {
-  width: 60%;
-  min-width: 512px;
-  max-width: 960px;
-  background: yellow;
+  width: 100%;
 }
