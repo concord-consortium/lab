@@ -735,6 +735,15 @@ modeler.model = function(initialProperties) {
     return properties[property];
   };
 
+  /**
+    Set the 'model_listener' function, which is called on tick events.
+  */
+  model.setModelListener = function(listener) {
+    model_listener = listener;
+    model.on('tick', model_listener);
+    return model;
+  };
+
   // Add a listener that will be notified any time any of the properties
   // in the passed-in array of properties is changed.
   // This is a simple way for views to update themselves in response to
