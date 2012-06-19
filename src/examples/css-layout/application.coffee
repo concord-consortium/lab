@@ -49,10 +49,6 @@ $(document).ready ->
     xunits:               true
     yunits:               true
     atom_mubers:          false
-    xmin:                 0
-    xmax:                 model.size[0]
-    ymin:                 0
-    ymax:                 model.size[1]
     get_nodes:            -> model.get_nodes()
     get_num_atoms:        -> model.get_num_atoms()
 
