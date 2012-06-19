@@ -7,15 +7,33 @@
 
 body {
   margin: 0;
+  min-width: 480px;
 }
 
 #main {
-  width: 90%;
+  width: 95%;
   margin: 0 auto;
-  min-width: 640px;
-  max-width: 1280px;
 }
 
 #molecules {
   width: 100%;
+}
+
+/* media queries */
+@media screen and (min-width: 820px) {
+  #molecules {
+    float: right;
+    width: 57%;
+  }
+
+  #description {
+    float: left;
+    width: 38%;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  #main {
+    width: 1216px;
+  }
 }
