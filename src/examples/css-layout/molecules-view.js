@@ -11,7 +11,6 @@ Lab.moleculesView = function(e, model, options) {
       node,
       cx,
       cy,
-      width, height,
       vis1, vis, plot,
       playback_component, time_label,
       padding, size,
@@ -75,11 +74,11 @@ Lab.moleculesView = function(e, model, options) {
 
   function scale() {
     var modelSize = model.size(),
-        aspectRatio = modelSize[0] / modelSize[1];
+        modelAspectRatio =  modelSize[0] / modelSize[1],
+        modelPixelWidth,
+        modelPixelHeight;
 
-    // always scale to 500px, let viewBox handle the rest
-    cx = 500;
-    cy = cx / aspectRatio;
+    // calculate padding for items inside the svg element
 
     padding = {
       top:    20,
@@ -96,12 +95,15 @@ Lab.moleculesView = function(e, model, options) {
       padding.bottom += 40;
     }
 
-    height = cy - padding.top  - padding.bottom;
-    width  = cx - padding.left  - padding.right;
+    // always scale to 500px width and let viewBox handle the rest
+    cx = 500;
+    modelPixelWidth = cx - padding.left - padding.right;
+    modelPixelHeight = modelPixelWidth / modelAspectRatio;
+    cy = padding.top + padding.bottom + modelPixelHeight;
 
     size = {
-      "width":  width,
-      "height": height
+      width:  modelPixelWidth,
+      height: modelPixelHeight
     };
 
     offset_left = node.offsetLeft + padding.left;
@@ -196,6 +198,9 @@ Lab.moleculesView = function(e, model, options) {
     scale();
 
     if (vis === undefined) {
+      d3.select(e + ' .molecules-view-aspect-container')
+        .attr('style', 'padding-top: ' + Math.round(cy/cx * 100) + '%');
+
       vis1 = d3.select(node).append("svg")
         .attr('viewBox', '0 0 ' + cx + ' ' + cy)
         .attr('preserveAspectRatio', 'xMinYMin meet');
