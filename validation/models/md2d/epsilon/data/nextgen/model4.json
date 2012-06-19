@@ -9,7 +9,7 @@
       "id": 0,
       "mass": 39.95,
       "sigma": 0.07,
-      "epsilon": -0.01
+      "epsilon": -0.07750000000000001
     },
     {
       "id": 1,
@@ -638,5 +638,5 @@
       0
     ]
   },
-  "_id": "/Users/stephen/dev/javascript/d3/lab/validation/models/md2d/epsilon/index.txt"
+  "_id": "/Users/stephen/dev/javascript/d3/lab/validation/models/md2d/epsilon/data/index.txt"
 }
