@@ -205,8 +205,8 @@ Lab.moleculeContainer = function(e, model, options) {
     scale();
     if (vis === undefined) {
       vis1 = d3.select(node).append("svg")
-        .attr("width", cx)
-        .attr("height", cy);
+        .attr('viewBox', '0 0 ' + cx + ' ' + cy)
+        .attr('preserveAspectRatio', 'xMinYMin slice');
 
       vis = vis1.append("g")
           .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
