@@ -20,7 +20,7 @@
 .molecules-view .positioning-container {
   /* Make room for labels and titles */
   margin-top:    2.5em;
-  margin-left:   1.5em;
+  margin-left:   2.5em;
   margin-bottom: 2em;
 }
 
@@ -38,16 +38,8 @@
   display: inline-block;
   position: absolute;
   top: 50%;
-
-  /* (Almost) truly center wrt the molecule view before translating.
-     NOTE: An em unit here in the margin declartion means something different than the
-     em unit used in the font-size declaration (specifically, an em is defined relative to OUR font size.
-     In the font-size declaration itself, it's defined relative to our PARENT's font size.)
-  */
-  margin-top: -0.5em;
-
   @include transform(rotate(-90deg) translateX(-50%));
-  @include transform-origin(center left);
+  @include transform-origin(top left);
 }
 
 .molecules-view .x.label, .molecules-view .title {
