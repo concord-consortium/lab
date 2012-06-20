@@ -1,4 +1,5 @@
 @import url('molecules-view.css');
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
 
 /*
   Implementation of "Complex Atoms Model" with layout & model initialization redone from scratch as
@@ -18,6 +19,23 @@ body {
 
 #molecules {
   width: 100%;
+  margin-top: 0.5em;
+
+  .label {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.2em;
+  }
+
+  .title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2em;
+  }
+
+  .positioning-container {
+    margin-top: 2.5em;
+    margin-bottom: 2em;
+    margin-left: 2.2em;
+  }
 }
 
 /* Chrome zoom levels are:
@@ -33,6 +51,21 @@ body {
     float: right;
     width: 58%;
     padding: 0 1%;
+
+    .label {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1.1em;
+    }
+
+    .title {
+      font-size: 1.8em;
+    }
+
+    .positioning-container {
+      margin-top: 2.3em;
+      margin-bottom: 1.8em;
+      margin-left: 2em;
+    }
   }
 
   #description {
@@ -51,6 +84,20 @@ body {
 
   #molecules {
     width: 63%;
+
+    .label {
+      font-size: 1.3em;
+    }
+
+    .title {
+      font-size: 2.2em;
+    }
+
+    .positioning-container {
+      margin-top: 2.5em;
+      margin-bottom: 2.2em;
+      margin-left: 2.5em;
+    }
   }
 
   #description {
@@ -67,6 +114,20 @@ body {
 
   #molecules {
     width: 68%;
+
+    .label {
+      font-size: 1.5em;
+    }
+
+    .title {
+      font-size: 2.5em;
+    }
+
+    .positioning-container {
+      margin-top: 3em;
+      margin-bottom: 2.5em;
+      margin-left: 3em;
+    }
   }
 
   #description {
