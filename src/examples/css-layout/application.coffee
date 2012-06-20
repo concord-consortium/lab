@@ -42,7 +42,6 @@ Lab.model = model
 $(document).ready ->
 
   Lab.moleculesView '#molecules', model,
-    model_time_label: true
     grid_lines: true
     xunits: true
     yunits: true

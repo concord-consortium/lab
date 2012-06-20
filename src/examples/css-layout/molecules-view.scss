@@ -1,9 +1,72 @@
-/* Styles used internally by the molecules view to make it behave like an img tag */
+@import "sass/bourbon/bourbon";
+
+/***
+  Default positioning and size styles that applications might wish to customize in order to make
+  the molecule view behave well with their stylesheet.
+***/
+
+/* X and Y labels */
+.molecules-view .label {
+  font-size: 1.8em;
+}
+
+/* Title */
+.molecules-view .title {
+  font-size: 2.5em;
+}
+
+/* Margins and positioning of graphics container. (Don't apply margin styles to the inner containers
+   of the positioning container, as that would disrupt aspect ratio handling.) */
+.molecules-view .positioning-container {
+  /* Make room for labels and titles */
+  margin-top:    2.5em;
+  margin-left:   1.5em;
+  margin-bottom: 2em;
+}
+
+
+/***
+  Styles used internally by the molecules view to make it behave like an img tag.
+***/
 .molecules-view {
+  position: relative;
   display: inline-block;
   vertical-align: top;
 }
 
+.molecules-view .y.label {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+
+  /* (Almost) truly center wrt the molecule view before translating.
+     NOTE: An em unit here in the margin declartion means something different than the
+     em unit used in the font-size declaration (specifically, an em is defined relative to OUR font size.
+     In the font-size declaration itself, it's defined relative to our PARENT's font size.)
+  */
+  margin-top: -0.5em;
+
+  @include transform(rotate(-90deg) translateX(-50%));
+  @include transform-origin(center left);
+}
+
+.molecules-view .x.label, .molecules-view .title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.molecules-view .title{
+  top: 0;
+}
+
+.molecules-view .x.label {
+  bottom: 0;
+}
+
+/* Inner container whose height scales linearly with its layout width.
+   Must have 0 margin in order to scale correctly, so apply margins, positioning to its parent. */
 .molecules-view-aspect-container {
   position: relative;
 
@@ -15,6 +78,7 @@
      to make the child div.molecules-view-svg-container's aspect ratio to match the actual aspect
      ratio of the model, with padding taken into account.
   */
+  margin: 0;
   padding-top: 100%;
   height: 0;
 
@@ -23,6 +87,8 @@
   right: 0;
 }
 
+/* Inner container for the svg element, which expands to fill its parent's (scaled) padding.
+   Applying these styles directly to the svg element does not have the intended effect. */
 .molecules-view-svg-container {
   position: absolute;
   top: 0;
@@ -30,39 +96,3 @@
   left: 0;
   bottom: 0;
 }
-
-
-/*
-
-  Removed from moleculeView for now:
-      // add Chart Title
-      if (options.title) {
-        vis.append("text")
-            .attr("class", "title")
-            .text(options.title)
-            .attr("x", size.width/2)
-            .attr("dy","-1em")
-            .style("text-anchor","middle");
-      }
-
-      // Add the x-axis label
-      if (options.xlabel) {
-        vis.append("text")
-            .attr("class", "xlabel")
-            .text(options.xlabel)
-            .attr("x", size.width/2)
-            .attr("y", size.height)
-            .attr("dy","2.4em")
-            .style("text-anchor","middle");
-      }
-
-      // add y-axis label
-      if (options.ylabel) {
-        vis.append("g")
-            .append("text")
-                .attr("class", "ylabel")
-                .text(options.ylabel)
-                .style("text-anchor","middle")
-                .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
-      }
-*/

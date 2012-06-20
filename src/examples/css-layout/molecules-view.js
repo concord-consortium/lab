@@ -78,20 +78,26 @@ Lab.moleculesView = function(e, model, options) {
     // calculate padding for items inside the svg element
 
     padding = {
-      top:    20,
+      top:    0,
       right:  25,
-      bottom: 10,
-      left:   25
+      bottom: 0,
+      left:   0
     };
 
     if (options.model_time_label) {
       padding.bottom += 35;
     } else if (options.xunits) {
-      padding.bottom += 12;
+      padding.bottom += 16;
     }
 
+    // TODO: ?
     if (options.playback_controller || options.play_only_controller) {
       padding.bottom += 40;
+    }
+
+    if (options.yunits) {
+      padding.top += 8;
+      padding.left += 25;
     }
 
     // always scale to 500px width and let viewBox handle the rest
@@ -188,6 +194,7 @@ Lab.moleculesView = function(e, model, options) {
 
     if (!node) {
       elem = d3.select(e)
+        .append('div').attr('class', 'positioning-container')
         .append('div').attr('class', 'molecules-view-aspect-container')
         .append('div').attr('class', 'molecules-view-svg-container');
 
