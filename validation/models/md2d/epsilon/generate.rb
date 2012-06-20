@@ -142,7 +142,7 @@ def generate_mw_files(num, epsilon, x, y, vx, vy)
 end
 
 def convert_mml_file(num)
-  converter =  "coffee " + File.join(PROJECT_ROOT, "node-bin/convert-mml.coffee")
+  converter =  File.join(PROJECT_ROOT, "node_modules/.bin/coffee") + ' ' + File.join(PROJECT_ROOT, "node-bin/convert-mml.coffee")
   input_mml_file = File.join(CLASSIC_PATH, "model#{num}$0.mml")
   output_json_file = File.join(NEXTGEN_PATH, "model#{num}.json")
   cmd = "#{converter} '#{input_mml_file}' #{output_json_file}"
@@ -151,7 +151,7 @@ def convert_mml_file(num)
 end
 
 def generate_md2d_data_file(num)
-  generator =  "coffee " + File.join(PROJECT_ROOT, "node-bin/get-md2d-data.coffee")
+  generator =  File.join(PROJECT_ROOT, "node_modules/.bin/coffee") + ' ' +  File.join(PROJECT_ROOT, "node-bin/get-md2d-data.coffee")
   input_json_file = File.join(NEXTGEN_PATH, "model#{num}.json")
   output_txt_file = File.join(NEXTGEN_PATH, "model#{num}.data.txt")
   cmd = "#{generator} '#{input_json_file}' #{output_txt_file}"
