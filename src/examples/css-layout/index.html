@@ -12,7 +12,7 @@
 
   <link href="application.css" rel="stylesheet" type="text/css" />
 
-  <!-- begin zoom bug workaround
+  <!-- begin Chrome zoom bug workaround
 
     Force browser to reparse styles and media queries on all window resize events, including page
     zoom. Works around Chromium bug in which media queries are not re-evaluated on page zoom.
@@ -21,10 +21,10 @@
   <style id="dummyStyle"></style>
   <script type="text/javascript">
     window.onresize = function() {
-      document.getElementById('dummyStyle').textContent = '.dummySelector {}';
+      document.getElementById('dummyStyle').textContent = 'dummySelector {}';
     };
   </script>
-  <!-- end zoom bug workaround -->
+  <!-- end Chrome zoom bug workaround -->
 
   <script src="../../vendor/modernizr/modernizr.js"></script>
   <script type="text/javascript">
