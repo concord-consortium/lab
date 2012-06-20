@@ -40,29 +40,36 @@
   <div id="main" role="main">
 
     <div id="molecules" class="molecules-view">
-      <div class="title">Some Atoms, Really</div>
+      <div class="title">Responsive Atoms</div>
       <div class="x label">x position (nm)</div>
       <div class="y label">y position (nm)</div>
     </div>
 
     <div id="description">
       <p>What you see here is a work-in-progress version of a new &ldquo;molecules view&rdquo; for
-         the Lab project. The nice feature of this view is that it behaves almost exactly like an
-         HTML <code>&lt;img&gt;</code> element and doesn't &ldquo;pollute&rdquo; the CSS stylesheet
-         of the document that contains it (in particular, it doesn't modify the em size, and
-         therefore the text rendering, of its containing document.)
+         the Lab project. The nice feature of this view is that, for the web designer, it behaves
+         almost exactly like a familar HTML <code>&lt;img&gt;</code> element with a few extra
+         properties that can be customized using pure CSS. For developers, this means that page
+         layout concerns can be handled the same way for molecule views as it is for other elements
+         of an activity or interactive.
 
-      <p>What that means for developers and users of the Lab project is that they can adjust the
-         size and behavior using the same CSS (or Javascript) techniques that you would use for
-         any other elements on a page. In particular, it will be possible to apply standard
+      <p>In particular, it will be possible to apply standard
          <a href="http://css-tricks.com/css-media-queries/">responsive design</a> techniques to Lab
          pages without having to make special exceptions for molecule views. This will greatly
-         help traditional web designers work effectively with the project.
+         help traditional web designers work effectively with the project. For example, the axis
+         labels and title of the graph on this page were customized for legibility and
+         attractiveness at different window sizes using standard CSS techniques, and would be
+         further tweakable by a web designer. Developers can therefore concern themselves with
+         semantics and leave layout details to designers (or leave layout details for the times when
+          they put on their &ldquo;designer&rdquo; cap.)
 
-      <p>This particular molecules view scales smoothly with the width of the page. <em>However,
-         that behavior is determined entirely by the CSS applied to it.</em> You could have a fixed
-         width, with the height being determined by the model contents. On the other hand, if you wanted to make sure the molecule view always fit in the page <em>height</em>, you could
-         leave the width unspecified and use a height media query, or a one-line jQuery
+      <p>In this example, CSS media queries are used to adjust the width of the molecules view when
+         the window width changes, with the browser automatically maintaining the height of the view
+         to maintain the aspect ratio that was determined when the model initially loaded.
+         (This is analagous to the way images are handled in HTML.)
+
+      <p>If you wanted to make sure the molecule view always fit in the page <em>height</em>, you
+         could leave the width unspecified and use a height media query, or a one-line jQuery
          window-resize handler, to set the height of the DOM element containing the molecule
          view&mdash;no special communication with or knowledge of the Lab molecules view is
          required.
