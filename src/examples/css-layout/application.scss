@@ -11,7 +11,8 @@ body {
 }
 
 #main {
-  width: 95%;
+  /* 30em * 95% */
+  width: 28.5em;
   margin: 0 auto;
 }
 
@@ -19,9 +20,14 @@ body {
   width: 100%;
 }
 
-/* media queries */
-@media screen and (min-width: 50em),
-       screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+/* Chrome zoom levels are:
+   50%, 67%, 75%, 90%, 100%, 110%, 125%, 175%, 200%, 250%, 300%, 400%, 500% */
+
+@media screen and (min-width: 48em) {
+  #main {
+    /* 48em * 95% */
+    width: 45.6em;
+  }
 
   #molecules {
     float: right;
@@ -36,9 +42,34 @@ body {
   }
 }
 
+
+@media screen and (min-width: 64em) {
+  #main {
+    /* 64em * 95% */
+    width: 60.8em;
+  }
+
+  #molecules {
+    width: 63%;
+  }
+
+  #description {
+    width: 33%;
+  }
+}
+
+
 @media screen and (min-width: 80em) {
   #main {
     /* 80em * 95% */
     width: 76em;
+  }
+
+  #molecules {
+    width: 68%;
+  }
+
+  #description {
+    width: 28%;
   }
 }
