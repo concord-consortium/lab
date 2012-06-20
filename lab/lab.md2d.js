@@ -831,8 +831,6 @@ exports.normal              = require('./distributions').normal;
 exports.getWindowedAverager = require('./utils').getWindowedAverager;
 exports.minimize            = require('./minimizer').minimize;
 
-if (window) window.minimize = exports.minimize;
-
 });
 
 require.define("/math/distributions.js", function (require, module, exports, __dirname, __filename) {

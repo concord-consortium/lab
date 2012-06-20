@@ -840,8 +840,6 @@ exports.normal              = require('./distributions').normal;
 exports.getWindowedAverager = require('./utils').getWindowedAverager;
 exports.minimize            = require('./minimizer').minimize;
 
-if (window) window.minimize = exports.minimize;
-
 });
 
 require.define("/math/distributions.js", function (require, module, exports, __dirname, __filename) {
@@ -2487,13 +2485,14 @@ exports.makeModel = function() {
 };
 });
 require("/md2d.js");
-/*globals $ modeler:true, require, d3, arrays, benchmark, molecule_container */
+/*globals $ modeler:true, require, d3, benchmark, molecule_container */
 /*jslint onevar: true devel:true eqnull: true */
 
 // modeler.js
 //
 
 var md2d = require('/md2d'),
+    arrays = require('/arrays/arrays').arrays,
     coreModel;
 
 modeler = {};
@@ -3176,6 +3175,15 @@ modeler.model = function(initialProperties) {
 
   model.get = function(property) {
     return properties[property];
+  };
+
+  /**
+    Set the 'model_listener' function, which is called on tick events.
+  */
+  model.setModelListener = function(listener) {
+    model_listener = listener;
+    model.on('tick', model_listener);
+    return model;
   };
 
   // Add a listener that will be notified any time any of the properties
