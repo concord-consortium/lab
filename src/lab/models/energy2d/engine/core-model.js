@@ -91,6 +91,8 @@ exports.makeCoreModel = function (model_options) {
     density = arrays.create(ARRAY_SIZE, opt.background_density, array_type),
     // - fluid cell array
     fluidity = arrays.create(ARRAY_SIZE, true, array_type),
+    // - photons array
+    photons = [],
 
     // Generate parts array.
     parts = (function () {
@@ -216,6 +218,9 @@ exports.makeCoreModel = function (model_options) {
       },
       getFluidityArray: function () {
         return fluidity;
+      },
+      getPhotonsArray: function () {
+        return photons;
       },
       getPartsArray: function () {
         return parts;
