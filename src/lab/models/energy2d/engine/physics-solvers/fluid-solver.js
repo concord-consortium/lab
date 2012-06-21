@@ -1,7 +1,7 @@
 /*jslint indent: 2 */
 // JSLint report: OK
 //
-// lab/models/energy2d/engines/fluid-solver.js
+// lab/models/energy2d/engine/physics-solvers/fluid-solver.js
 //
 var
   arrays = require('../arrays/arrays.js').arrays,
