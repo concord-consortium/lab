@@ -25,3 +25,6 @@
 [submodule "config/littlechef"]
 	path = config/littlechef
 	url = git://github.com/concord-consortium/littlechef-servers.git
+[submodule "src/vendor/dsp.js"]
+	path = src/vendor/dsp.js
+	url = git://github.com/concord-consortium/dsp.js.git

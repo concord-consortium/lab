@@ -34,7 +34,8 @@ Here is a list of projects and resources included in the in the `src/vendor/` di
     [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause), and
     [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
 9.  [OpenSans Font](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
-10. [Codemirror2](https://github.com/marijnh/CodeMirror2): [MIT](http://www.opensource.org/licenses/MIT)
+10. [dsp.js](https://github.com/corbanbrook/dsp.js): [MIT](http://www.opensource.org/licenses/MIT)
+11. [Codemirror2](https://github.com/marijnh/CodeMirror2): [MIT](http://www.opensource.org/licenses/MIT)
     Codemirror2 includes a number of modules from third parties. All of the modules are licensed under either the MIT or BSD
     license except for the following which are excluded during the Make process where resources from `src/vendor/` are
     generated and copied to `server/public/vendor/`.
