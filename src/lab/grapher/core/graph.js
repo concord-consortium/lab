@@ -14,6 +14,7 @@ grapher.graph = function(elem, options, message) {
       notification,
       padding, size,
       xScale, yScale, xValue, yValue, line,
+      stroke, tx, ty, fx, fy,
       circleCursorStyle,
       displayProperties,
       emsize, strokeWidth,
@@ -27,19 +28,22 @@ grapher.graph = function(elem, options, message) {
         medium: 960,
         large: 1920
       },
-      downx = Math.NaN,
-      downy = Math.NaN,
-      dragged = null,
-      selected = null,
+      downx, downy, dragged, selected,
       titles = [],
       default_options = {
+        "title":          "Graph",
+        "xlabel":         "X Axis",
+        "ylabel":         "Y Axis",
+        "xscale":         "linear",
+        "yscale":         "linear",
+        "xTicCount":       10,
+        "yTicCount":        8,
+        "xscaleExponent": 0.5,
+        "yscaleExponent": 0.5,
         "xmax":            60,
         "xmin":             0,
         "ymax":            40,
         "ymin":             0, 
-        "title":          "Simple Graph1",
-        "xlabel":         "X Axis",
-        "ylabel":         "Y Axis",
         "circleRadius":    10.0,
         "strokeWidth":      2.0,
         "dataChange":      true,
@@ -162,7 +166,7 @@ grapher.graph = function(elem, options, message) {
        "top":    options.title  ? 30 : 20,
        "right":                   30,
        "bottom": options.xlabel ? 60 : 10,
-       "left":   options.ylabel ? 70 : 45
+       "left":   options.ylabel ? 80 : 45
       };
       break;
 
@@ -171,7 +175,7 @@ grapher.graph = function(elem, options, message) {
        "top":    options.title  ? 40 : 20,
        "right":                   30,
        "bottom": options.xlabel ? 60 : 10,
-       "left":   options.ylabel ? 70 : 45
+       "left":   options.ylabel ? 80 : 45
       };
       break;
     }
@@ -197,17 +201,45 @@ grapher.graph = function(elem, options, message) {
     xValue = function(d) { return d[0]; };
     yValue = function(d) { return d[1]; };
 
-    xScale = d3.scale.linear()
+    xScale = d3.scale[options.xscale]()
       .domain([options.xmin, options.xmax])
       .range([0, size.width]);
 
-    yScale = d3.scale.linear()
-      .domain([options.ymax, options.ymin]).nice()
-      .range([0, size.height]).nice();
+    if (options.xscale == "pow") {
+      xScale.exponent(options.xscaleExponent)
+    }
+
+    yScale = d3.scale[options.yscale]()
+      .domain([options.ymin, options.ymax]).nice()
+      .range([size.height, 0]).nice();
+
+    if (options.yscale == "pow") {
+      yScale.exponent(options.yscaleExponent)
+    }
+
+    tx = function(d) {
+      return "translate(" + xScale(d) + ",0)";
+    };
+
+    ty = function(d) {
+      return "translate(0," + yScale(d) + ")";
+    };
+
+    stroke = function(d) {
+      return d ? "#ccc" : "#666";
+    };
+
+    fx = xScale.tickFormat(options.xTicCount);
+    fy = yScale.tickFormat(options.yTicCount);
 
     line = d3.svg.line()
         .x(function(d, i) { return xScale(points[i][0]); })
         .y(function(d, i) { return yScale(points[i][1]); });
+
+    // drag axis logic
+    downx = Math.NaN;
+    downy = Math.NaN;
+    dragged = selected = null;
   }
 
   function graph(selection) {
@@ -292,7 +324,7 @@ grapher.graph = function(elem, options, message) {
               .style("font-size", sizeType.value/2.6 * 100 + "%")
               .text(options.ylabel)
               .style("text-anchor","middle")
-              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
         }
 
         d3.select(node)
@@ -422,25 +454,11 @@ grapher.graph = function(elem, options, message) {
     }
 
     function redraw() {
-      var tx = function(d) {
-        return "translate(" + xScale(d) + ",0)";
-      },
-      ty = function(d) {
-        return "translate(0," + yScale(d) + ")";
-      },
-      stroke = function(d) {
-        return d ? "#ccc" : "#666";
-      },
-
-      fx = xScale.tickFormat(d3.format(".3r")),
-      fy = xScale.tickFormat(d3.format(".3r"));
 
       // Regenerate x-ticks…
       var gx = vis.selectAll("g.x")
-          .data(xScale.ticks(10), String)
+          .data(xScale.ticks(options.xTicCount), String)
           .attr("transform", tx);
-
-      gx.select("text").text(fx);
 
       var gxe = gx.enter().insert("g", "a")
           .attr("class", "x")
@@ -470,11 +488,8 @@ grapher.graph = function(elem, options, message) {
 
       // Regenerate y-ticks…
       var gy = vis.selectAll("g.y")
-          .data(yScale.ticks(10), String)
+          .data(yScale.ticks(options.yTicCount), String)
           .attr("transform", ty);
-
-      gy.select("text")
-          .text(fy);
 
       var gye = gy.enter().insert("g", "a")
           .attr("class", "y")
@@ -666,12 +681,12 @@ grapher.graph = function(elem, options, message) {
     }
   }
 
-  // The x-accessor for the path generator; xScale âˆ˜ xValue.
+  // The x-accessor for the path generator
   function X(d) {
     return xScale(d[0]);
   }
 
-  // The x-accessor for the path generator; yScale âˆ˜ yValue.
+  // The y-accessor for the path generator
   function Y(d) {
     return yScale(d[1]);
   }
