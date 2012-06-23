@@ -3,10 +3,15 @@
 // lab/models/energy2d/engine/photon.js
 //
 
+var
+  hypot     = require('./utils/math.js').hypot,
+  Line      = require('./utils/shape.js').Line,
+  Rectangle = require('./utils/shape.js').Rectangle;
+
 // 
 // Photon class.
 //
-exports.Photon = function (x, y, energy, c, angle) {
+var Photon = exports.Photon = function (x, y, energy, c, angle) {
   'use strict';
   this.x = x;
   this.y = y;
@@ -19,13 +24,109 @@ exports.Photon = function (x, y, energy, c, angle) {
   }
 };
 
-exports.Photon.prototype.isContained = function (xmin, xmax, ymin, ymax) {
+Photon.prototype.isContained = function (xmin, xmax, ymin, ymax) {
   'use strict';
   return this.x >= xmin && this.x <= xmax && this.y >= ymin && this.y <= ymax;
 };
 
-exports.Photon.prototype.move = function (dt) {
+Photon.prototype.move = function (dt) {
   'use strict';
   this.x += this.vx * dt;
   this.y += this.vy * dt;
+};
+
+Photon.prototype.reflectFromLine = function (line, time_step) {
+  'use strict';
+  var
+    x1 = this.x,
+    y1 = this.y,
+    x2 = this.x - this.vx * time_step,
+    y2 = this.y - this.vy * time_step,
+    photon_line = new Line(x1, y1, x2, y2),
+    vx = this.vx,
+    vy = this.vy,
+    r12, sin, cos, u, w;
+
+  if (photon_line.intersectsLine(line)) {
+    x1 = line.x1;
+    y1 = line.y1;
+    x2 = line.x2;
+    y2 = line.y2;
+    r12 = 1.0 / hypot(x1 - x2, y1 - y2);
+    sin = (y2 - y1) * r12;
+    cos = (x2 - x1) * r12;
+    // Velocity component parallel to the line.
+    u = vx * cos + vy * sin;
+    // Velocity component perpendicular to the line.
+    w = vy * cos - vx * sin;
+    // Update velocities.
+    this.vx = u * cos + w * sin;
+    this.vy = u * sin - w * cos;
+    return true;
+  }
+  return false;
+};
+
+Photon.prototype.reflectFromRectangle = function (rectangle, time_step) {
+  'use strict';
+  var
+    x0 = rectangle.x,
+    y0 = rectangle.y,
+    x1 = rectangle.x + rectangle.width,
+    y1 = rectangle.y + rectangle.height,
+    dx, dy;
+
+  if (rectangle.contains(this.x, this.y)) {
+    dx = this.vx * time_step;
+    if (this.x - dx < x0) {
+      this.vx = -Math.abs(this.vx);
+    } else if (this.x - dx > x1) {
+      this.vx = Math.abs(this.vx);
+    }
+    dy = this.vy * time_step;
+    if (this.y - dy < y0) {
+      this.vy = -Math.abs(this.vy);
+    } else if (this.y - dy > y1) {
+      this.vy = Math.abs(this.vy);
+    }
+    return true;
+  }
+  return false;
+};
+
+Photon.prototype.reflectFromPolygon = function (polygon, time_step) {
+  'use strict';
+  var
+    line = new Line(), // no params, as this object will be reused many times
+    i, n = polygon.count;
+
+  for (i = 0; i < n - 1; i += 1) {
+    line.x1 = polygon.x_coords[i];
+    line.y1 = polygon.y_coords[i];
+    line.x2 = polygon.x_coords[i + 1];
+    line.y2 = polygon.y_coords[i + 1];
+    if (this.reflectFromLine(line, time_step)) {
+      return true;
+    }
+  }
+  line.x1 = polygon.x_coords[n - 1];
+  line.y1 = polygon.y_coords[n - 1];
+  line.x2 = polygon.x_coords[0];
+  line.y2 = polygon.y_coords[0];
+  return this.reflectFromLine(line, time_step);
+};
+
+Photon.prototype.reflect = function (shape, time_step) {
+  'use strict';
+  // Line?
+  if (shape instanceof Line) {
+    return this.reflectFromLine(shape, time_step);
+  }
+  // Rectangle? Rectangle can by polygonized, but for performance reasons
+  // use separate method.
+  if (shape instanceof Rectangle) {
+    return this.reflectFromRectangle(shape, time_step);
+  }
+  // Other shapes (ellipses, rings) - try to polygonize.
+  return this.reflectFromPolygon(shape.polygonize(), time_step);
 };
