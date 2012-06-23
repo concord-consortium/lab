@@ -83,6 +83,43 @@ function selectDataHandler() {
     });
     break;
 
+    case "world-population":
+    d3.json("data/world-population.json", function(data) {
+      var worldPopulation = data.worldPopulation.data;
+      graph.reset({
+        title:  "World Population, Historical and Projected: 10,000 BCE to 2050",
+        xlabel: "Year",
+        ylabel: "Population (Millions)",
+        xmax:   2500,
+        xmin:   -10000,
+        ymax:   20000,
+        ymin:   0,
+        circleRadius: false,
+        dataChange: false,
+        points: worldPopulation
+      });
+    });
+    break;
+
+    case "world-population-semi-log":
+    d3.json("data/world-population.json", function(data) {
+      var worldPopulation = data.worldPopulation.data;
+      graph.reset({
+        title:  "World Population, Historical and Projected: 10,000 BCE to 2050 (semi-log)",
+        xlabel: "Year",
+        ylabel: "Population (Millions)",
+        xmax:   2500,
+        xmin:   -10000,
+        ymax:   20000,
+        ymin:   0.1,
+        yscale: "log",
+        circleRadius: false,
+        dataChange: false,
+        points: worldPopulation
+      });
+    });
+    break;
+
     case "md2d-center-of-mass":
     d3.text("data/cm-random-walk.csv", "text/csv", function(text) {
       var data = d3.csv.parseRows(text);
