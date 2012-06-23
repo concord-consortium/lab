@@ -202,8 +202,15 @@ server/public/vendor: \
 	server/public/vendor/mathjax \
 	server/public/vendor/fonts \
 	server/public/vendor/codemirror2 \
+	server/public/vendor/dsp.js \
   server/public/favicon
 
+server/public/vendor/dsp.js:
+	mkdir -p server/public/vendor/dsp.js
+	cp src/vendor/dsp.js/dsp.js server/public/vendor/dsp.js
+	cp src/vendor/dsp.js/LICENSE server/public/vendor/dsp.js/LICENSE
+	cp src/vendor/dsp.js/README server/public/vendor/dsp.js/README
+	
 server/public/vendor/d3:
 	mkdir -p server/public/vendor/d3
 	cp src/vendor/d3/d3*.js server/public/vendor/d3
