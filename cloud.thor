@@ -8,6 +8,20 @@ class Cloud < Thor
     aws.list
   end
 
+  desc "list_targets", "list existing deploy targets"
+  def list_targets
+    targets = CONFIG[:deploy][:targets]
+    format_string = "  %-24s%-30s%-30s"
+    puts
+    puts "  Deploy Targets"
+    puts sprintf(format_string, *targets[0].keys)
+    puts "-" * 90
+    targets.each do |target|
+      puts sprintf(format_string, *target.values)
+    end
+    puts
+  end
+
   desc "setup", "setup capistrano deploy tasks and littlechef nodes using targets in config/config.yml"
   def setup
     aws = AwsLabServer.new
