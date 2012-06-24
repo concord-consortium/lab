@@ -37,7 +37,6 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 
 ## Examples
 
-The links below will work if you are viewing
 ### Molecular Modeling Examples:
 
 - [Simple Atoms Model](examples/simple-atoms-model/simple-atoms-model.html)
@@ -96,12 +95,21 @@ and the specific Ruby Gems needed for building Lab and running the Lab server.
 
 1. [Install RVM](https://rvm.io/rvm/install/)
 
-After installation you should see:
+After installation you should see something like the following:
 
     $  ruby -v
     ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-darwin10.8.0]
 
-Once you have a working version of Ruby 1.9.3 install the RubyGem [bundler](http://gembundler.com/).
+Once you have a working version of Ruby 1.9.3 check to see if the RubyGem [bundler](http://gembundler.com/)
+is already installed:
+
+    $ gem list bundler
+
+    *** LOCAL GEMS ***
+
+    bundler (1.1.3)
+
+If Bundler is not installed install it now:
 
     $ gem install bundler
     Fetching: bundler-1.1.3.gem (100%)
@@ -124,7 +132,7 @@ Currently development is being done with these versions of node and npm:
     v0.6.18
 
     $ npm -v
-    1.1.9
+    1.1.21
 
 #### CouchDB
 
@@ -173,24 +181,24 @@ will be installed in the RVM gemset named `ruby-1.9.3-p194@lab`.
 
 When `make everything` is run on a freshly cloned repository it performs the following tasks:
 
-1. Install the runtime dependencies as git submodules into the `vendor/` directory:
+1.  Install the runtime dependencies as git submodules into the `vendor/` directory:
 
         git submodule update --init --recursive
 
-2. Install the development dependencies that use [nodejs](http://nodejs.org/) and
-   are managed by [npm](http://npmjs.org/):
+2.  Install the development dependencies that use [nodejs](http://nodejs.org/) and
+    are managed by [npm](http://npmjs.org/):
 
         npm install
 
-   You can see the list of dependencies to be installed in the file `package.json`. In addition
-   `vendor/d3` and `vendor/science.js` are manually installed into `node_modules/`.
+    You can see the list of dependencies to be installed in the file `package.json`. In addition
+    `vendor/d3` and `vendor/science.js` are manually installed into `node_modules/`.
 
-3. Install the additional RubyGems used for development: haml, sass, guard ...
+3.  Install the additional RubyGems used for development: haml, sass, guard ...
 
         bundle install --binstubs
 
-   This creates the `bin/` directory and populates it with command-line executables for running
-   the specific versions of the RubyGems installed for development.
+    This creates the `bin/` directory and populates it with command-line executables for running
+    the specific versions of the RubyGems installed for development.
 
 4.  Generates the `server/public` directory:
 
@@ -200,8 +208,8 @@ You should now be able to open the file: `server/public/index.html` in a browser
 
 #### Automatic build processing using Guard
 
-Start watching the `src/` and `test/` directories and when files are changed automatically
-generate the JavaScript Lab modules, the examples, and run the tests.
+Start watching the `src/` and `test/` directories with [Guard](#guard) and when files are
+changed automatically generate the JavaScript Lab modules, the examples, and run the tests.
 
     bin/guard
 
@@ -1286,7 +1294,7 @@ The resulting directory on the server will look something like this:
 
 ### Managing AWS servers with thor tasks
 
-There are a set of `thor` tasks for managing, creating, and re-creating AWS servers for Lab:
+There are a set of [thor](#thor) tasks for managing, creating, and re-creating AWS servers for Lab:
 
     $ thor -T
     cloud
@@ -1395,9 +1403,16 @@ bandpass, notch), FFT and DFT transforms, Delays, Reverb.
 
 [modernizr](https://github.com/Modernizr/Modernizr): detect HTML5 and CSS3 features in browsers.
 
+Lab Example: [`index.html.haml`](https://github.com/concord-consortium/lab/blob/master/src/index.html.haml#L12)
+uses Modernizer to check if the browser implents SVG and re-direct the user to an upgrade
+page if the feature is not presnet.
+
 #### MathJax
 
-[MathJax](http://mathjax.com/): display engine for mathematics that works in all modern browsers.
+[MathJax](http://mathjax.com/) is a display engine for mathematics that works in all modern browsers.
+
+Lab Example: [`lennard-jones-potential.html.haml`](https://github.com/concord-consortium/lab/blob/master/src/doc/models/md2d/lennard-jones-potential/lennard-jones-potential.html.haml#L23-30)
+uses MathJax to display LaTeX formatted math equations.
 
 #### OpenSans Font
 
@@ -1420,7 +1435,9 @@ bandpass, notch), FFT and DFT transforms, Delays, Reverb.
 
 #### npm
 
-- [npm](http://npmjs.org/)
+[npm](http://npmjs.org/), the Node Package Manager isnow bundled with Node and is
+used to specify and manage external node pacage dependencies for a project.
+
 - [repo](https://github.com/isaacs/npm)
 - [faq](http://npmjs.org/doc/faq.html)
 - [google group](https://groups.google.com/group/npm-)
@@ -1433,33 +1450,69 @@ More about using npm for development:
 - [Managing module dependencies](http://howtonode.org/managing-module-dependencies)
 - [What do people do for versioning node modules within git?](https://groups.google.com/group/nodejs/browse_thread/thread/9aa563f1fe3b3ff5)
 
-**[CoffeeScript](http://coffeescript.org/)**
+Lab Example: [`package.json`](https://github.com/concord-consortium/lab/blob/master/package.json) is
+to specify node pakage dependencies for the Lab project.
 
-- [repo](https://github.com/rstacruz/js2coffee)
-- [issues](https://github.com/jashkenas/coffee-script/issues)
+#### CoffeeScript
 
-**[js2cofee](http://js2coffee.org/)**
+[CoffeeScript](http://coffeescript.org/) is a language the compiles to JavaScript. Many programmers
+find it more expressive and productive. [js2cofee](http://js2coffee.org/) can be used to convert
+JavaScript to CoffeeScript.
 
 - [repo](https://github.com/jashkenas/coffee-script)
-- [issues](https://github.com/rstacruz/js2coffee/issues)
+- [issues](https://github.com/jashkenas/coffee-script/issues)
 
+Lab Examples:
+
+1.  [`get-md2d-data.coffee`](https://github.com/concord-consortium/lab/blob/master/node-bin/get-md2d-data.coffee)
+    is a coffeescript program used to run the MD2D engine from the command line and generate data used
+    for physics validation tests.
+2.  [`playback_svg.coffee`](src/lab/components/playback_svg.coffee) is a coffeescript program used to create
+    the SVG-based Playback control widget
 ### RubyGems
+
+#### Bundler
+
+[Bundler](http://gembundler.com/) is a Ruby Gem used to express and manage Ruby Gem dependencies.
+
+- [rationale](http://gembundler.com/rationale.html)
+- [documentation: Gemfile](http://gembundler.com/man/gemfile.5.html)
+- [documentation: CLI](http://gembundler.com/man/bundle.1.html)
+
+Lab Example: The Ruby Gems needed to build the Lab repository are all specified in this Bundler
+[`Gemfile`](https://github.com/concord-consortium/lab/blob/master/Gemfile).
 
 #### Haml
 
-- [Haml](http://haml-lang.com/)
+[Haml](http://haml-lang.com/) is a Ruby Gem that processes HTML expressed in HAML markup into HTML.
+
 - [documentation](http://haml-lang.com/docs.html)
 - [reference](http://haml-lang.com/docs/yardoc/file.HAML_REFERENCE.html)
 
+Lab Example: [`index.html.haml`](https://github.com/concord-consortium/lab/blob/master/src/index.html.haml)
+is used to generate the main [`index.html`](https://github.com/concord-consortium/lab/blob/gh-pages/index.html) page.
+
 #### Sass
 
-- [Sass](http://sass-lang.com/)
+[Sass](http://sass-lang.com/) is a Ruby Gem that provides many powerful extensions to CSS3 and works
+by processing files in either [SASS-indented-syntax](http://sass-lang.com/docs/yardoc/file.INDENTED_SYNTAX.html)
+or SCSS format (a su[erset of standard CSS3) and generating CSS stylesheets.
+
 - [documentation](http://sass-lang.com/docs.html)
 - [reference](http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html)
 
+Lab Examples:
+
+1.  [`index.sass`](https://github.com/concord-consortium/lab/blob/master/src/index.sass)
+    is used to generate: [`index.css`](https://github.com/concord-consortium/lab/blob/gh-pages/index.css)
+2.  [`readme.scss`](https://github.com/concord-consortium/lab/blob/master/src/readme.scss)
+    is used to generate: [`readme.css`](https://github.com/concord-consortium/lab/blob/gh-pages/readme.css)
+
 #### Guard
 
-- [guard](https://github.com/guard/guard)
+[Guard](https://github.com/guard/guard) is a Ruby Gem that can efficiently watch for changes on the file system and
+automatically start the build process when needed.
+
 - [guard-shell](https://github.com/hawx/guard-shell)
 - [guard-haml](https://github.com/manufaktor/guard-haml)
 - [guard-sass](https://github.com/hawx/guard-sass)
@@ -1467,20 +1520,31 @@ More about using npm for development:
 - [guard-markdown](https://github.com/darwalenator/guard-markdown)
 - [guard-livereload](https://github.com/guard/guard-livereload)
 
+Lab Example: Starting Guard with `bin/guard` loads and runs the configuration in this [`Guardfile`](https://github.com/concord-consortium/lab/blob/master/Guardfile).
+
 #### Thor
 
 [thor](https://github.com/wycats/thor) is a Ruby Gem for building self-documenting command line utilities.
 
-The Lab scripts for creating and managing cloud servers are organized using thor.
-
 - [documentation](https://github.com/wycats/thor/wiki)
+
+Lab Example: [`cloud.thor`](https://github.com/concord-consortium/lab/blob/master/cloud.thor) are the
+command-line interface scripts for providing access to the library for creating and managing cloud servers.
 
 ### Additional Testing Dependencies
 
 #### Vows
 
-- [Vows](http://vowsjs.org)
+[Vows](http://vowsjs.org) is an asynchronous behaviour driven testing framework for Node.
+
 - [repo](https://github.com/cloudhead/vows)
+
+Lab Examples:
+
+1.  [`axis-test.js`](https://github.com/concord-consortium/lab/blob/master/test/lab/grapher/core/axis-test.js)
+    is used to test the drag UI logic for interactively re-scaling Graph axes.
+2.  [`arrays-test.js`](https://github.com/concord-consortium/lab/blob/master/test/lab/arrays/arrays-test.js)
+    is used to test the utility class for working with regular or Typed Arrays.
 
 #### jsdom
 
