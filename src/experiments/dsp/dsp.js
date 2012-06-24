@@ -131,7 +131,7 @@ graphOptions = {
     xlabel: "Frequency",
     ylabel: "Amplitude",
     yscale: "pow",
-    yscale_exponent: 0.3,
+    yscaleExponent: 0.3,
     xmax:   1024,
     xmin:   0,
     ymax:   2,
