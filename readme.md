@@ -282,13 +282,14 @@ copying `config/config.sample.yml` and editing appropriately.
 
     cp config/config.sample.yml config/config.yml
 
-The `config.yml` yaml file looks like this:
+The `:java:` section of the `config.yml` yaml file looks like this:
 
-    # password and alias for your Java siging certificate.
     ---
-    :password: abc123
-    :alias: lab-sample-keystore
-    :keystore_path: config/lab-sample-keystore.jks
+    # password and alias for Java siging certificate.
+    :java:
+      :password: abc123
+      :alias: lab-sample-keystore
+      :keystore_path: config/lab-sample-keystore.jks
 
 If you have a keystore already accessible via an alias replace `lab-sample-keystore` with
 the alias for your existing keystore. If your keystore is stored in your home directory in the
