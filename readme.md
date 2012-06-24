@@ -1,14 +1,24 @@
-# [Lab](https://github.com/concord-consortium/lab)
+# [Lab](http://lab.dev.concord.org/)
 
 HTML5-based open source scientific models, visualizations, graphing, and probeware from the
 [Concord Consortium](http://www.concord.org).
+
+- development site: [lab.dev.concord.org](http://lab.dev.concord.org/)
+- readme on the development site: [lab.dev.concord.org/readme.html](http://lab.dev.concord.org/readme.html)
+- source code: [github.com/concord-consortium/lab](https://github.com/concord-consortium/lab)
+
+_Note: many of the links in this readme only work properly when this document is served
+from a web-server and do not resolve properly when viewing this content on the github page
+for the repository: [github.com/concord-consortium/lab](https://github.com/concord-consortium/lab).
+A live version of the readme is available here:
+[lab.dev.concord.org/readme.html](http://lab.dev.concord.org/readme.html)._
 
 **Table of Contents**
 
 * toc
 {:toc}
 
-## License
+## Licensing
 
 Lab is Copyright 2012 (c) by the Concord Consortium and is distributed under
 any of the following licenses:
@@ -17,7 +27,7 @@ any of the following licenses:
 - [MIT](http://www.opensource.org/licenses/MIT), or
 - [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0).
 
-The complete text of all three licenses can be read [here](license.html).
+The complete licensing details can be read [here](license.html).
 
 If you have have received a **distribution archive** of the
 [Concord Consortium Lab project](https://github.com/concord-consortium/lab)
@@ -25,96 +35,50 @@ our copyright applies to all resources **except** the files in the
 `vendor/` directory. The files in the `vendor/` directory are from
 third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 
+## Examples
+
+The links below will work if you are viewing
+### Molecular Modeling Examples:
+
+- [Simple Atoms Model](examples/simple-atoms-model/simple-atoms-model.html)
+- [More Complex Atoms Model](examples/complex-atoms-model/complex-atoms-model.html)
+- [Authorable Atoms Model](examples/interactives/interactives.html)
+
+### Energy2D Examples:
+
+- [Energy2D Models](examples/energy2d-model/energy2d-model.html)
+
+### Graphing examples:
+
+- [Graphing Samples](examples/grapher/grapher.html)
+- [Digital Signal Processing Samples](experiments/dsp/dsp.html)
+
+### Probeware Examples
+
+- [Vernier GoIO Sensor Grapher](experiments/goio-sensor-grapher/index.html) _(only works on web-server)_
+
 ## Distribution of Project and Examples
 
-Zip archives of the generated example distribution are available from the
-[gh-pages branch](https://github.com/concord-consortium/lab/tree/gh-pages) on
-the github repository for the Lab project.
+Compressed archives of the generated Lab distribution are available for download:
 
-- [tar.gz archive of Lab distribution](https://github.com/concord-consortium/lab/tarball/gh-pages) _(9.5MB)_
-- [zip archive of Lab distribution](https://github.com/concord-consortium/lab/zipball/gh-pages) _(20MB)_
+- [Lab distribution (tar.gz archive)](https://github.com/concord-consortium/lab/tarball/gh-pages) _(32MB)_
+- [Lab distribution (zip archive)](https://github.com/concord-consortium/lab/zipball/gh-pages) _(42MB)_
 
 Download and expand one of these archives to create a folder named `concord-consortium-lab-xxxxxxx`.
 The seven characters at the end of the archive filename are the first seven characters of the git
-commit SHA. Open the file index.html in this folder in your browser to get a working
-offline version of this project.
+commit SHA.
 
-**NOTE:** the downloaded distribution of examples does *not* work properly
+Open the file index.html in this folder in your browser to get an offline version of the Lab
+project.
+
+Features that require integration of the back-end web application such as saving changes
+in models and interactives and use of Java applets do not work directly from a downloaded distribution.
+
+**NOTE:** the downloaded distribution of examples may *not* work properly
 in Chrome due to a long-standing bug in Chrome:
 [Issue 49001: Regression: cssRules null when stylesheets loaded from local disk](http://code.google.com/p/chromium/issues/detail?id=49001).
 The problem only occurs when loading the web pages directly from your filesystem. If instead you
 use a local web server on your computer to serve the downloaded distribution Chrome works properly.
-
-### Distributing the built repository via the gh-pages branch
-
-The [gh-pages branch of the repository](https://github.com/concord-consortium/lab/tree/gh-pages) is
-used to store the static pages and client-side code built by the Makefile. The contents of the
-gh-pages branch are automatically shown at our
-[Github Page URL](http://concord-consortium.github.com/lab/) when you push to the gh-pages branch;
-the gh-pages branch is used to deploy to our EC2 instance.
-
-If you maintain a fork of this project, you get a Github Page for free, and Github the instructions below apply to you as well! (However, you will have to set up your own EC2 server
-or equivalent.)
-
-#### Making the distribution folder track the gh-pages branch
-
-If you haven't done this yet, make the `server/public` folder track the contents of the gh-pages branch.
-
-    # make sure to stop Guard first!
-
-    # server/public/ needs to be empty for git clone to be happy:
-    rm -rf server/public
-
-    # substitute the URL for whatever fork of the Lab repository you have write access to:
-    git clone git@github.com:concord-consortium/lab.git -b gh-pages server/public
-
-Note that `make clean` now empties the `server/public` folder in-place, leaving however the Git directory
-`server/public/.git` intact.
-
-#### Pushing changes to gh-pages branch
-
-First, make sure your `server/public` folder tracks the gh-pages branch, as per the above.
-
-Then run the following shell command in the `script/` folder:
-
-    script/gh-pages
-
-This script will first make sure there is nothing that isn't committed. If
-there are unstaged or staged and uncommitted files the `gh-pages` script will halt.
-
-Test and commit (or save the changes to a topic branch) and if your testing show
-the bugs are fixed or the new features or examples are stable then push
-these changes to the master branch and try running the `gh-pages` script again:
-
-    git push origin master
-    script/gh-pages
-
-#### Pushing the gh-pages branch to a remote server
-
-If you have ssh access to lab.dev.concord.org, deploying the changed client code is simple:
-
-    ssh deploy@lab.dev.concord.org "cd /var/www/public; git pull"
-
-
-## Molecular Modeling Examples:
-
-- [Simple Atoms Model](http://lab.dev.concord.org/examples/simple-atoms-model/simple-atoms-model.html)
-- [More Complex Atoms Model](http://lab.dev.concord.org/examples/complex-atoms-model/complex-atoms-model.html)
-
-## Graphing examples:
-
-- [Earth's Surface Temperature: years 500-2009](http://lab.dev.concord.org/examples/surface-temperature/surface-temperature.html)
-- [Question about seasonal temperatures and geography](http://lab.dev.concord.org/examples/seasons/canberra-question.html)
-- [Lennard-Jones-Potential](http://lab.dev.concord.org/examples/lennard-jones-potential/lennard-jones-potential.html)
-
-## TODO
-
-- The tests need to be expanded a great deal.
-- Probeware needs to be added.
-- Molecular model in progress.
-- Include JQuery UI as a git submodule. (note: its a bit complicated,
-  because we do a custom build of JQuery UI with only a few components,
-  and only one simpletheme)
 
 ## Setup Development
 
@@ -232,16 +196,18 @@ When `make everything` is run on a freshly cloned repository it performs the fol
 
 5.  Generates the Java resources in the `server/public/jnlp` directory:
 
-You should now be able to open the file: `dist/index.html` in a browser and run some of the examples.
+You should now be able to open the file: `server/public/index.html` in a browser and run some of the examples.
+
+#### Automatic build processing using Guard
 
 Start watching the `src/` and `test/` directories and when files are changed automatically
 generate the JavaScript Lab modules, the examples, and run the tests.
 
     bin/guard
 
-Now any change you make in `src/examples/` will generate the corresponding content in `dist/examples/`.
+Now any change you make in `src/examples/` will generate the corresponding content in `server/public/examples/`.
 In addition changes in `src/lab/` generate the associated Lab modules in `lab/` and copy these modules
-to `dist/lab/`. In addition any change in either the `src/lab/` or `test/`directories will run the
+to `server/public/lab/`. In addition any change in either the `src/lab/` or `test/`directories will run the
 tests and display the results in the console window where `bin/guard`
 is running.
 
@@ -274,7 +240,7 @@ You can now open your local Lab application at this url:
 
     http://localhost:3000/
 
-You can use a pre-configured route to open the local CouchDb admin wbe interface:
+You can use a pre-configured route to open the local CouchDb admin web interface:
 
     http://localhost:3000/_utils
 
@@ -477,183 +443,7 @@ Restart the server and the request should now suceed:
     Content-Length: 34632
     content-encoding: pack200-gzip
     
-### Deploying to a remote server
-
-There are a number of Capistrano tasks for setting up and deploying to remote servers.
-
-Use a `<deploy-target>` to refer to the server:
-
-* **lab-dev** [lab.dev.concord.org](http://lab.dev.concord.org).
-* **lab2-dev** [lab2.dev.concord.org](http://lab2.dev.concord.org).
-
-The capistrano commands take the form:
-
-    cap <deploy-target> task
-
-The basic command to update a server:
-
-    can <deploy-taget> deploy:update
-
-Here are the list of deploy commands:
-
-    $ cap -T deploy:
-    cap deploy:clean_and_update # clean and update server
-    cap deploy:setup            # setup server
-    cap deploy:update           # update server
-    cap deploy:update_jnlps     # update server jnlps
-
-When you have made changes in the repository like adding or updating a git submodule in
-`src/vendor` then you will need to run `cap deploy:clean_and_update`.
-
-##### Updating the Java jar resources on a remote rerver
-
-The Java resources require much less frequent updates since the main body of work
-is occuriring in the HTML5 development.
-
-    $ cap <deploy-target> deploy:update_jnlps
-
-Erases the `server/public/jnlp/` directory on the remote server and
-re-generates and deploy the packed signed jars from source or from downloads:
-
-The resulting directory on the server will look something like this:
-
-    $ tree /var/www/app/server/public/jnlp/
-    server/public/jnlp/
-    ├── jdom
-    │   └── jdom
-    │       ├── jdom__V1.0.jar
-    │       └── jdom__V1.0.jar.pack.gz
-    ├── jug
-    │   └── jug
-    │       ├── jug__V1.1.2.jar
-    │       └── jug__V1.1.2.jar.pack.gz
-    └── org
-        └── concord
-            ├── data
-            │   ├── data__V0.2.0-20120531.005123-1.jar
-            │   └── data__V0.2.0-20120531.005123-1.jar.pack.gz
-            ├── energy2d
-            │   ├── energy2d__V0.1.0-20120531.005123-1.jar
-            │   └── energy2d__V0.1.0-20120531.005123-1.jar.pack.gz
-            ├── framework
-            │   ├── framework__V0.1.0-20120531.005123-1.jar
-            │   └── framework__V0.1.0-20120531.005123-1.jar.pack.gz
-            ├── frameworkview
-            │   ├── frameworkview__V0.1.0-20120531.005123-1.jar
-            │   └── frameworkview__V0.1.0-20120531.005123-1.jar.pack.gz
-            ├── modeler
-            │   ├── mw__V2.1.0-20120531.005123-1.jar
-            │   └── mw__V2.1.0-20120531.005123-1.jar.pack.gz
-            ├── otrunk
-            │   ├── otrunk__V0.3.0-20120531.005123-1.jar
-            │   └── otrunk__V0.3.0-20120531.005123-1.jar.pack.gz
-            ├── sensor
-            │   ├── sensor-applets
-            │   │   ├── sensor-applets__V0.1.0-20120531.005123-1.jar
-            │   │   └── sensor-applets__V0.1.0-20120531.005123-1.jar.pack.gz
-            │   ├── sensor__V0.2.0-20120531.005123-1.jar
-            │   ├── sensor__V0.2.0-20120531.005123-1.jar.pack.gz
-            │   └── vernier
-            │       └── vernier-goio
-            │           ├── vernier-goio-macosx-i386-nar__V1.5.0-20101012.203834-2.jar
-            │           ├── vernier-goio-macosx-ppc-nar__V1.5.0-20101012.203834-2.jar
-            │           ├── vernier-goio-macosx-x86_64-nar__V1.5.0-20101012.203835-2.jar
-            │           └── vernier-goio-win32-nar__V1.4.0.jar
-            └── sensor-native
-                ├── sensor-native__V0.1.0-20120531.005123-1.jar
-                └── sensor-native__V0.1.0-20120531.005123-1.jar.pack.gz
-
-#### Creating and deploying to a new server
-
-There is more work to do to generalize these deployment systems to work with multiple servers.
-
-Create a new Amazon EC2 instance as described in the readme in the **ruby-lab-server** branch in
-Concord Consortium's [littlechef-servers](https://github.com/concord-consortium/littlechef-servers)
-repository. Make sure the security group you choose has port 80 open.
-
-Modify the value of the `:host` key in the configuration file `config/config.yml` to reference
-the domain name of the new server.
-
-    $ cap <deploy-target> deploy:setup
-
-Will do an initial deploy and build of all the project resources to the server.
-
-### Serving the Lab server locally with Apache and Passenger
-
-#### Mac OS X
-
-[Phusion Passenger](http://www.modrails.com/documentation.html) is an Apache module that enables
-running Ruby and Rack applications.
-
-See: [Installing Passenger](http://www.modrails.com/install.html)
-
-Now create a localhost and local Apache vhost for Lab:
-
-file: `/etc/hosts`
-
-    127.0.0.1       lab.local
-
-file: `/etc/apache2/extra/httpd-vhosts.conf`
-
-    <VirtualHost lab.local:80>
-       ServerName lab
-       DocumentRoot /path/to/lab-repo/server/public
-       <Directory /path/to/lab-repo/server/public >
-         Options +Indexes +FollowSymLinks -MultiViews +Includes
-         AllowOverride All
-         Order allow,deny
-         Allow from all
-         DirectoryIndex index.html
-      </Directory>
-    </VirtualHost>
-
-Test the syntax after making Apache configuration changes:
-
-    $ apachectl configtest
-    Syntax OK
-
-Restart Apache when the configuration syntax is OK :
-
-    $ sudo apachectl restart
-
-Now open: [http://lab.local/](http://lab.local/)
-
-Or go directly to your local instance of [Simple Molecules](http://lab.local/examples/simplemolecules/simplemolecules.html).
-
-Try making a change and clicking **Save** and then reloding the new page.
-
-If there are errors try looking at the Apache log:
-
-    tail -n 200 -f /var/log/apache2/error_log
-
-If you see errors like this:
-
-    No such file or directory – git ls-files
-
-This (or a variation) will probably fix the problem:
-
-    sudo ln -nfs /usr/local/bin/git /usr/bin/git
-
-See: [Phusion Passenger – fixing 'No such file or directory – git ls-files'](http://ficial.wordpress.com/2011/07/13/phusion-passenger-fixing-no-such-file-or-directory-git-ls-files/)
-
-Whenever guard is running and you save changes to any files in the src/ directory the corresponding files in
-the `dist/` directory will be updated.
-
-To have the browser page for an example automatically reload when changes are made install the livereload extension into Chrome, Safari, and FireFox, open one of the example pages, turn on the livereload extension in the browser by clicking the small "LR" button on the toolbar.
-
-### Serving `dist/` using POW
-
-You can also serve the dist directory using [POW](http://pow.cx/).
-
-1. install pow: `curl get.pow.cx | sh`
-2. create a lab folder in `~/.pow/`  by doing `mkdir -p ~/.pow/lab`
-3. symlink the dist folder for the Lab project `cd ~/.pow/lab; ln -s
-   <lab/dist> ./public`
-4. Thats it! your app should be available at [http://lab.dev](http://lab.dev)
-   assuming that you had already built the Lab project, and the `dist` directory
-   exists.
-
-### Contributing to Lab
+## Contributing to Lab
 
 If you think you'd like to contribute to Lab as an external developer:
 
@@ -669,8 +459,6 @@ If you think you'd like to contribute to Lab as an external developer:
 
 4. Create your changes on a topic branch. Please include tests if you can. When your commits are ready
    push your topic branch to your fork and send a pull request.
-
-
 
 ## Continuous Integration on travis-ci
 
@@ -759,98 +547,167 @@ Gem prequisites: [selenium-webdriver](http://code.google.com/p/selenium/wiki/Rub
 
 ## Repository structure
 
-### Source Code: `src/`
+### Summary of Directories in `src/`
 
-The `src/` directory includes both JavaScript source code for the Lab modules as well as the `src/examples/`
-directory containing the additional resources for generating the html, css, and image resources for
-`dist/examples/`.
+#### `src/lab`
 
-- `src/examples`
+The **`src/lab`** directory includes JavaScript source code for the Lab JavaScript modules.
+During the build process individual files are copied into modules which are placed in
+the **`server/public/lab`** directory.
 
-Files and folders in `src/examples` are either copied directly to `dist/examples` or in the case of coffeescript
-files are compiled to javascript before being copied.
+#### `src/examples/`, `src/doc/`, and `src/experiments/`
 
-The source code for the Lab modules is all contained in `src/lab/`
+The **`src/examples/`**, **`src/doc/`**, and **`src/experiments/`** directories contain additional
+resources for generating the html, css, and image resources for the matching target
+folders in **`server/public`**.
 
-The following directories contain the source code for the main Lab modules:
+**Note:** remember to make changes you want saved in the **`src/examples/`**, **`src/doc/`**,
+and **`src/experiments/`** and not in the target directories of the same names in
+**`server/public`**. Change made in **`server/public`** will be overwritten during the next
+build process.
 
-- `src/lab/arrays/`
-- `src/lab/benchmark/`
-- `src/lab/components/`
-- `src/lab/css/`
-- `src/lab/graphx/`
-- `src/lab/layout/`
-- `src/lab/molecules/`
+#### `src/vendor`
 
-In addition the following module is in process of being combined with the newer graphing code in `graphx/`.
+[Third-party JavaScript runtime dependencies](#javascript-library-runtime-dependencies)
+for Lab are located in the **`src/vendor`** directory and are installed as git submodules
+the first time `make` is run in a new checkout of the source code repository.
 
-- `src/lab/grapher/`
+Only the necessary JavaScript library files and other resources needed for runtime operation along
+with the associated README and LICENSE files are copied to **`server/public/vendor`** during
+the build process.
 
-Lastly there are the following JavaScript fragments that are used in the build process:
+All of the files copied to **`server/public/vendor`** are licensed and distributed under
+one or more of the following licenses: [Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause),
+[The BSD 3-Clause](http://www.opensource.org/licenses/BSD-3-Clause),
+[MIT](http://www.opensource.org/licenses/MIT), or
+[Apache 2.0](http://www.opensource.org/licenses/Apache-2.0).
+
+#### `src/resources`
+
+The **`src/resources`** directory contains image resources and are copied directly to
+**`server/public/resources`**.
+
+#### `src/sass`
+
+The **`src/sass`** directory contains Sass templates and the Bourbon Sass library are are used
+during the build process to generate CSS resources.
+
+#### `src/mw-helpers`
+
+The **`src/mw-helpers`** directory contains JavaScript modules only used as part of the testing and
+build process and are not copied to **`server/public/resources`**.
+
+#### `src/jnlp`
+
+The **`src/jnlp`** directory currently contains the Vernier GoIO Java sensor Jars. While these
+files are needed to use Vernier GoIO sensor in the browser normally there are no compiled
+artifacts included in either the Lab repository or referenced and used by the Lab either
+as external git submodules or as separately downloaded Java projects. The presence of these
+specific files is temporary until I can recreate or redevelop the specifc combination of Java,
+Vernier GoIO native libraries and JNI code generated by SWIG used 18 months ago to create
+these resources at Concord Consortium.
+
+### Lab Modules: `src/lab`
+
+The source code for the Lab modules is all contained in **`src/lab`**
+
+- `src/lab/models`
+- `src/lab/views`
+- `src/lab/controllers`
+- `src/lab/grapher`
+- `src/lab/arrays`
+- `src/lab/benchmark`
+- `src/lab/components`
+- `src/lab/layout`
+
+These JavaScript fragments are used in the build process:
 
 - `src/lab/start.js`
 - `src/lab/lab-module.js`
 - `src/lab/end.js`
 
-There are Sass mixins from the Bourbon Ruby Gem and custom ones for the Lab project in the following directories:
+The **`energy2d-module.js`** represents a new way of creating modules used by the Energy2D model engine.
 
-- `src/sass/bourbon/`
-- `src/sass/lab/`
+- `src/lab/energy2d-module.js`
 
-Images used in the Lab project are saved here:
+### Lab Modeling Engines: `src/lab/models`
 
-- `src/resources/`
+#### 2D Molecular Dynamics: `md2d`
 
-Small examples used to test libraries or demostrate bugs are located here:
+The source code of the core molecular dynamics engine is currently located in the `src/md-engine`
+directory, which is organized as a set of related Node modules. The entry point for external
+applications is the file `src/md-engine/md2d.js`.
 
-- `src/tests/`
+A build step uses the [`node-browserify`](https://github.com/substack/node-browserify) Node module
+to convert this entry point and all its dependencies into a single JavaScript file located at `md-
+engine/md2d.js`. Another build step automatically appends this browser-compatible version to the
+beginning of the `lab.molecules.js` file.
 
-After running `bundle install --binstubs` the `bin/` directory will be created.
+This means that the global function `require()` is defined at the beginnig of `lab.molecules.js`,
+and can be used by any code that runs after that point to obtain the modeler defined in `md2d.js`
+and its dependencies. The argument to `require()` should be written as if one were using Node with a
+current working directory of `src/md-engine`, e.g., in a web application that includes
+`lab.molecules.js`, write `var md2d = require('./md2d');` to get a reference to the modeler.
 
-**Note:** remember to make changes you want saved in the `src/examples/` directory **not** in the
-`dist/examples/` directory.
+In addition, Node-based executables can be written and placed in `src/md-engine` or a subdirectory.
+These are expected to be useful for verifying and tuning the model by running the model headless and
+saving summary results into a file for offline analysis; see, e.g., [https://github.com/rklancer
+/script-md](https://github.com/rklancer/script-md).
+
+Hashbang scripts for starting these executables (i.e., files which start with the line
+`#!/usr/bin/env node` and which have the execute bit set) should be placed in the directory `node-
+bin`, and should execute by `require()`ing the appropriate module and calling its entry point
+method. Lab's `package.json` file specifies `node-bin/` as the location of the executable scripts
+which `npm` should make available whenever Lab is imported into another project as a Node module.
+(For developer convenience, `bin/` is being reserved for Ruby executables made available via
+Bundler.)
+
+#### 2D Thermal Energy: `energy2d`
+
+### Lab Views: `src/lab/views`
+
+### Lab Controllers: `src/lab/controllers`
 
 ### Adding new source files or modules
 
 If you add a new JavaScript file to an existing Lab module also add it to the associated section of the `MakeFile`.
 
-For example if you created a pie chart grapher and intended it to be part of `lab.layout.js` save the JavaScript
-source file here:
+For example if you created a pie chart grapher and intended it to be part of the mdoule
+`lab.grapher.js` you might add the file here:
 
-    src/lab/layout/pie-chart.js
+    src/lab/grapher/core/pie-chart.js
 
-Add the path to `pie-chart.js` to the `lab/lab.layout.js` target section of the MakeFile:
+Then add that path to the `server/public/lab/lab.grapher.js` target section of the MakeFile:
 
-    lab/lab.layout.js: \
-    	src/lab/start.js \
-    	src/lab/layout/layout.js \
-    	src/lab/layout/molecule-container.js \
-    	src/lab/layout/potential-chart.js \
-    	src/lab/layout/speed-distribution-histogram.js \
-    	src/lab/layout/benchmarks.js \
-    	src/lab/layout/datatable.js \
-    	src/lab/layout/temperature-control.js \
-    	src/lab/layout/force-interaction-controls.js \
-    	src/lab/layout/display-stats.js \
-    	src/lab/layout/fullscreen.js \
-    	src/lab/end.js
+    server/public/lab/lab.grapher.js: \
+      src/lab/start.js \
+      src/lab/grapher/core/core.js \
+      src/lab/grapher/core/data.js \
+      src/lab/grapher/core/axis.js \
+      src/lab/grapher/core/indexed-data.js \
+      src/lab/grapher/core/graph.js \
+      src/lab/grapher/core/pie-chart.js \
+      src/lab/grapher/core/real-time-graph.js \
+      src/lab/grapher/core/colors.js \
+      src/lab/grapher/core/register-keyboard-handler.js \
+      src/lab/end.js
 
 Similarly if you add a new module to Lab you will need to create a new target to represent the module
-using a similar form to the `lab/lab.layout.js` target as well as adding the target to the `LAB_JS_FILES`
-make variable containing the list of Lab JavaScript files to be generated:
+using a similar form to the `server/public/lab/lab.grapher.js` target as well as adding the target
+module to the `LAB_JS_FILES` make variable containing the list of all Lab JavaScript modules to
+be generated:
 
     LAB_JS_FILES = \
-    	lab/lab.grapher.js \
-    	lab/lab.graphx.js \
-    	lab/lab.benchmark.js \
-    	lab/lab.layout.js \
-    	lab/lab.arrays.js \
-    	lab/lab.molecules.js \
-    	lab/lab.js
-
-If you are just modifying an existing example or adding a new one just create or edit the files in
-the `src/examples` directory and run `make` or `bin/guard` to generate the associated resources
-in the `dist/examples/` directory.
+      server/public/lab/lab.grapher.js \
+      server/public/lab/lab.benchmark.js \
+      server/public/lab/lab.layout.js \
+      server/public/lab/lab.views.js \
+      server/public/lab/lab.arrays.js \
+      server/public/lab/lab.molecules.js \
+      server/public/lab/lab.energy2d.js \
+      server/public/lab/lab.components.js \
+      server/public/lab/lab.controllers.js \
+      server/public/lab/lab.js
 
 The html file are generated from [Haml](http://haml-lang.com/) markup. Add the suffix `.html.haml`
 to these files.
@@ -858,7 +715,32 @@ to these files.
 The css stylesheets are generated from [Sass](http://sass-lang.com/) markup. Add the suffix `.sass` to these
 files. The stylesheets may also be written using the newer `*.scss` variant of Sass.
 
-### Testing: `test/`
+
+
+### Generated Examples: `server/public/examples/`
+
+The `server/public/examples/` directory is automatically generated running `make` and is not part of the repository.
+
+When `bin/guard` is running any changes to files in the `src/examples/` directory cause automatic rebuilding
+of the associated files in the `server/public/examples/` directory.
+
+### HTML and CSS Generation
+
+[Haml](http://haml-lang.com/) is used to generate most of the HTML in the `server/public/` directory.
+
+[kramdown](http://kramdown.rubyforge.org/) is used to generate `readme.html` in `server/public/` from Mardown markup.
+
+[Sass](http://sass-lang.com/) is used to generate the CSS assets. The Sass markup may be in the form of
+`*.sass` or `*.scss` files
+
+The [Bourbon](http://thoughtbot.com/bourbon/) library of Sass mixins is included.
+
+- [Bourbon documentation](http://thoughtbot.com/bourbon/)
+- [ASCIIcast 330: Better SASS With Bourbon](http://asciicasts.com/episodes/330-better-sass-with-bourbon)
+- [Introducing Bourbon Sass Mixins](http://robots.thoughtbot.com/post/7846399901/introducing-bourbon-sass-mixins)
+
+
+## Testing: `test/`
 
 Lab's JavaScript tests use [Vows](http://vowsjs.org), an asynchronous behavior driven framework based
 on [Node.js](http://nodejs.org/). In addition Lab uses [jsdom](https://github.com/tmpvar/jsdom), a
@@ -1081,90 +963,6 @@ Enter **ctrl-D** to exit the debugger.
 [node-inspector](https://github.com/dannycoates/node-inspector)
 [npm package for node-inspector](http://search.npmjs.org/#/node-inspector)
 
-### Generated Lab Modules: `lab/`
-
-The `lab/` directory contains the Lab modules generated from JavaScript source code in the `src/lab/`
-directory. The `lab/` directory is not checked into the repository
-
-Here are the standard Lab modules:
-
-- `lab.arrays.js`
-- `lab.benchmark.js`
-- `lab.grapher.js`
-- `lab.graphx.js`
-- `lab.layout.js`
-- `lab.molecules.js`
-
-And one additional file which combines them all:
-
-- `lab.js`
-
-Minimized versions of these files are also generated.
-
-When working on the source code please keep commits of the generated JavaScript files in the `lab/` directory
-separate from other commits to make it easier to see and understand the narrative of source code changes.
-
-### Molecular dynamics Node module: `src/md-engine`
-
-The source code of the core molecular dynamics engine is currently located in the `src/md-engine`
-directory, which is organized as a set of related Node modules. The entry point for external
-applications is the file `src/md-engine/md2d.js`.
-
-A build step uses the [`node-browserify`](https://github.com/substack/node-browserify) Node module
-to convert this entry point and all its dependencies into a single JavaScript file located at `md-
-engine/md2d.js`. Another build step automatically appends this browser-compatible version to the
-beginning of the `lab.molecules.js` file.
-
-This means that the global function `require()` is defined at the beginnig of `lab.molecules.js`,
-and can be used by any code that runs after that point to obtain the modeler defined in `md2d.js`
-and its dependencies. The argument to `require()` should be written as if one were using Node with a
-current working directory of `src/md-engine`, e.g., in a web application that includes
-`lab.molecules.js`, write `var md2d = require('./md2d');` to get a reference to the modeler.
-
-In addition, Node-based executables can be written and placed in `src/md-engine` or a subdirectory.
-These are expected to be useful for verifying and tuning the model by running the model headless and
-saving summary results into a file for offline analysis; see, e.g., [https://github.com/rklancer
-/script-md](https://github.com/rklancer/script-md).
-
-Hashbang scripts for starting these executables (i.e., files which start with the line
-`#!/usr/bin/env node` and which have the execute bit set) should be placed in the directory `node-
-bin`, and should execute by `require()`ing the appropriate module and calling its entry point
-method. Lab's `package.json` file specifies `node-bin/` as the location of the executable scripts
-which `npm` should make available whenever Lab is imported into another project as a Node module.
-(For developer convenience, `bin/` is being reserved for Ruby executables made available via
-Bundler.)
-
-### Generated Examples: `dist/examples/`
-
-The `dist/examples/` directory is automatically generated running `make` and is not part of the repository.
-
-When `bin/guard` is running any changes to files in the `src/examples/` directory cause automatic rebuilding
-of the associated files in the `dist/examples/` directory.
-
-### External JavaScript Frameworks: `vendor/`
-
-External JavaScript runtime dependencies for running Lab are located in the vendor/ directory and are
-installed as git submodules the first time `make` is run in a new checkout of the source code repository.
-
-The javascript frameworks along with their licensing and readme files are copied into the `dist/vendor/`
-directory when either `make` or `bin/guard` are run.
-
-- `vendor/d3/`
-- `vendor/hijs/`
-- `vendor/modernizr/`
-- `vendor/science.js/`
-- `vendor/sizzle/`
-- `vendor/jquery/`
-- `vendor/jquery-ui/`
-- `vendor/mathjax/`
-
-[d3.js](http://mbostock.github.com/d3/), [hijs](https://github.com/cloudhead/hijs), and
-[science.js](https://github.com/jasondavies/science.js) are all distributed under a BSD license;
-[sizzle](https://github.com/jquery/sizzle) and [modernizr](https://github.com/Modernizr/Modernizr)
-are distributed under both BSD and MIT licenses; [jQuery](http://jquery.com/) is licensed under
-the MIT license; [jQuery-UI](jQuery-UI) is distributed under both the MIT license and GPL licenses;
-[MathJax](http://www.mathjax.org/) is distributed under the Apache 2.0 license.
-
 ## Physical constants and units
 
 The core of the molecular dynamics engine performs computations using dimensioned quantities; we do
@@ -1249,39 +1047,271 @@ the mnemonic `as` form of `ratio`:
 
 `constants.ratio(constants.unit.DALTON, { as: constants.unit.KILOGRAM })` (== 1.66054e-27)
 
+## Deployment
 
-## HTML and CSS
+### Deploying static content to a Github gh-pages branch
 
-[Haml](http://haml-lang.com/) is used to generate most of the HTML in the `dist/` directory.
+Github's [github:pages](http://pages.github.com/) feature supports sharing any content in
+a `gh-pages` repository branch as static web content.
 
-[kramdown](http://kramdown.rubyforge.org/) is used to generate `readme.html` in `dist/` from Mardown markup.
+The [gh-pages branch of the Lab repository](https://github.com/concord-consortium/lab/tree/gh-pages)
+is used to store the static pages and client-side code built by the Makefile at the directory `server/public`.
 
-[Sass](http://sass-lang.com/) is used to generate the CSS assets. The Sass markup may be in the form of
-`*.sass` or `*.scss` files
+  [concord-consortium.github.com/lab](http://concord-consortium.github.com/lab/)
 
-The [Bourbon](http://thoughtbot.com/bourbon/) library of Sass mixins is included.
+In addition the content of the `gh-pages` branch is used to create the
+[downloadable archive distributions of Lab](#distribution-of-project-and-examples)
 
-- [Bourbon documentation](http://thoughtbot.com/bourbon/)
-- [ASCIIcast 330: Better SASS With Bourbon](http://asciicasts.com/episodes/330-better-sass-with-bourbon)
-- [Introducing Bourbon Sass Mixins](http://robots.thoughtbot.com/post/7846399901/introducing-bourbon-sass-mixins)
+The contents of the
+gh-pages branch are automatically made available in a standard web-page form (as opposed to the standard Github
+page for showing a repository) at this url:
 
-## Updating an external server with the contents of `dist/`
+  [concord-consortium.github.com/lab](http://concord-consortium.github.com/lab/)
 
-*Note:* This is only used for deploys to [http://lab.dev.concord.org/](http://lab.dev.concord.org/)!
-For deploys to Github Pages, or to EC2, see the discussion at the top of the document about the
-gh-pages branch.
+   when you push to the gh-pages branch.
 
-Currently [http://lab.dev.concord.org/](http://lab.dev.concord.org/) is updated by using rsynch to copy
-the content of the `dist/` directory to the server.
+If you maintain a fork of this project on Github, you get a Github Page for free, and the
+instructions below apply to you as well!
 
-Modify the example script below with your username, server host, and path to the directory apache is serving:
+#### Making the `server/public/` folder track the gh-pages branch
 
-file: `bin/update.sh`
+If you haven't done this yet, make the `server/public` folder track the contents of the gh-pages branch.
 
-    #!/bin/sh
-    rsync -rvz --delete --quiet --perms --chmod=ug=rwX,o=rX dist/ username@server:/path/to/dist
+**If you have a `Guard` process running make sure and stop it before continuing!**
 
-Running `bin/update.sh` will now copy and update the directory at [http://lab.dev.concord.org/](http://lab.dev.concord.org/)
+    # server/public/ needs to be empty for git clone to be happy:
+    rm -rf server/public
+
+    # substitute the URL for whatever fork of the Lab repository you have write access to:
+    git clone git@github.com:concord-consortium/lab.git -b gh-pages server/public
+
+Note that `make clean` now empties the `server/public` folder in-place, leaving the Git
+`server/public/.git` and `server/public/jnlp` directories intact.
+
+#### Pushing changes to gh-pages branch
+
+First, make sure your `server/public` folder tracks the gh-pages branch, as per the above.
+
+Then run the following shell command in the `script/` folder:
+
+    script/gh-pages
+
+This script will first make sure there is nothing that isn't committed. If
+there are unstaged or staged and uncommitted files the `gh-pages` script will halt.
+
+Test and commit (or save the changes to a topic branch) and if your testing show
+the bugs are fixed or the new features or examples are stable then push
+these changes to the master branch and try running the `gh-pages` script again:
+
+    git push origin master
+    script/gh-pages
+
+### Deploying to a remote server
+
+The Lab project has a suite of scripts for creating and deploying to EC2 servers running
+on Amazon Web services (AWS).
+
+The scripts for creating, stopping and re-creating a server require an AWS account. These scrpts use
+the Ruby proge
+
+The Capistrano scripts for updating a deployment to an existing server only require that you have a copy of
+the pem file associated
+
+To deploy to AWS you will need an AWS account and the ability to create and modify EC2 instances.
+
+If you are create a new server from scratch you will also need access to the AWS DNS service Route53.
+
+**Note: currently there are a few steps/resources that only work properly if you have a concord.org
+AWS account.**
+
+#### AWS Setup/Prerequisites
+
+1.  AWS account. For deployment to the lab servers managed by CC you will need an AWS
+    account managed by concord.org.
+2.  Copy your AWS Access Key ID and AWS Secret Access Key to the following yaml configuration
+    file `.fog` in your home directory:
+
+        :default:
+          :aws_access_key_id: YOUR_AWS_ACCESS_KEY_ID
+          :aws_secret_access_key: YOUR_AWS_SECRET_ACCESS_KEY
+
+3.  Place a copy of a the appropriate AWS PEM file on your local files system. For deployment
+    to the lab servers managed by CC use the `lab-dev` pem.
+4.  Create or identify an appropriate AWS security group. For deployment to the lab servers managed
+    by CC the `lab.dev` security group is used.
+5.  Edit the `:deploy` section of `config/config.yml` using values in `config/config_sample.yml`
+    as a guide.
+    
+    Here's an example from the `:deploy` section of a working `config.yml`:
+
+        :deploy:
+          :targets:
+          - :name: lab-dev
+            :url: lab.dev.concord.org
+            :branch: master
+          :group_name: lab.dev
+          :zone_domain: concord.org.
+          :zone_records_name: dev.concord.org
+          :pem:
+            :name: lab-dev
+            :path: ~/.ec2
+
+    There is one deploy target named `lab-dev` associated with a server running at `lab.dev.concord.org`.
+    Deployments to `lab-dev` use the master branch of the repository. The `lab.dev` security group is
+    used when new servers are created or existing sever are re-created.
+    
+    When a whole new server is created the DNS entry is created in the `concord.org.` zone domain and
+    when searching for an existing DNS entry for a `deploy-target` the zone record name `dev.concord.org`
+    is used.
+    
+    Besides the AWS Access Key ID and AWS Secret Access Key security credentials copyied locally to
+    to the file `~/.fog` the `lab-dev.pem` file saved in the directory: `~/.ec2` is also used when
+    communicating with AWS.
+6.  List the deploy targets described in `config/config.yml` with the task: `thor cloud:list_targets`
+    to confirm the configuration is valid:
+
+        $ thor cloud:list_targets
+
+          Deploy Targets
+          name                    url                           branch
+        ------------------------------------------------------------------------------------------
+          lab-dev                 lab.dev.concord.org           master
+
+7.  Generate specific Capistrano deploy tasks and littlechef nodes using `deploy-targets`
+    specified in `config/config.yml`. Run this `thor` task whenever you change the `:deploy`
+    section in `config/config.yml` to generate the Ruby Capastrano configuration files in
+    `config/deployment/<deploy-target>.rb` and the littlechef JSON configurations in
+    `config/littlechef/nodes/<deploy-target>.json`
+
+        $ thor cloud:setup
+
+8.  List the running AWS server instances to confirm that your local AWS security credentials
+    are setup correctly:
+
+        $ thor cloud:list
+
+          target              hostname                      state         ipaddress           ec2-id          ec2-dns
+        ------------------------------------------------------------------------------------------------------------------------------------------------------
+          lab-dev             lab.dev.concord.org.          running       107.22.184.173      i-f844ec81      ec2-107-22-184-173.compute-1.amazonaws.com
+
+### Using Capstrano to deploy new code to an existing server
+
+After testing, committing, and pushing code to a public repository use the Capistrano
+tasks to update a remote server.
+
+The capistrano commands take the form:
+
+    cap <deploy-target> task
+
+The basic command to update a server:
+
+    can <deploy-taget> deploy:update
+
+Here are the list of current Capistrano deploy commands:
+
+    $ cap -T deploy:
+    cap deploy:clean_and_update # clean and update server
+    cap deploy:setup            # setup server
+    cap deploy:update           # update server
+    cap deploy:update_jnlps     # update public/jnlp dir on server
+
+Update the `lab.dev.concord.org` server with the latest code committed on the master branch on
+[concord-consortium/lab](https://github.com/concord-consortium/lab}):
+
+    cap lab-dev deploy:update
+
+When you have made changes in the repository like adding or updating a git submodule in
+`src/vendor` then you will need instead run the `deploy:clean_and_update` task:
+
+    cap lab-dev deploy:clean_and_update
+
+### Updating the Java jar resources on a remote rerver
+
+The Java resources require much less frequent updates since the main body of work
+for Lab is occuriring in the HTML5 development.
+
+The capistrano task: `deploy:update_jnlps` erases the `server/public/jnlp/`
+directory on the remote server and re-generates and deploy the packed signed
+jars from source or from downloads:
+
+    $ cap <deploy-target> deploy:update_jnlps
+
+The resulting directory on the server will look something like this:
+
+    $ tree /var/www/app/server/public/jnlp/
+    server/public/jnlp/
+    ├── jdom
+    │   └── jdom
+    │       ├── jdom__V1.0.jar
+    │       └── jdom__V1.0.jar.pack.gz
+    ├── jug
+    │   └── jug
+    │       ├── jug__V1.1.2.jar
+    │       └── jug__V1.1.2.jar.pack.gz
+    └── org
+        └── concord
+            ├── data
+            │   ├── data__V0.2.0-20120531.005123-1.jar
+            │   └── data__V0.2.0-20120531.005123-1.jar.pack.gz
+            ├── energy2d
+            │   ├── energy2d__V0.1.0-20120531.005123-1.jar
+            │   └── energy2d__V0.1.0-20120531.005123-1.jar.pack.gz
+            ├── framework
+            │   ├── framework__V0.1.0-20120531.005123-1.jar
+            │   └── framework__V0.1.0-20120531.005123-1.jar.pack.gz
+            ├── frameworkview
+            │   ├── frameworkview__V0.1.0-20120531.005123-1.jar
+            │   └── frameworkview__V0.1.0-20120531.005123-1.jar.pack.gz
+            ├── modeler
+            │   ├── mw__V2.1.0-20120531.005123-1.jar
+            │   └── mw__V2.1.0-20120531.005123-1.jar.pack.gz
+            ├── otrunk
+            │   ├── otrunk__V0.3.0-20120531.005123-1.jar
+            │   └── otrunk__V0.3.0-20120531.005123-1.jar.pack.gz
+            ├── sensor
+            │   ├── sensor-applets
+            │   │   ├── sensor-applets__V0.1.0-20120531.005123-1.jar
+            │   │   └── sensor-applets__V0.1.0-20120531.005123-1.jar.pack.gz
+            │   ├── sensor__V0.2.0-20120531.005123-1.jar
+            │   ├── sensor__V0.2.0-20120531.005123-1.jar.pack.gz
+            │   └── vernier
+            │       └── vernier-goio
+            │           ├── vernier-goio-macosx-i386-nar__V1.5.0-20101012.203834-2.jar
+            │           ├── vernier-goio-macosx-ppc-nar__V1.5.0-20101012.203834-2.jar
+            │           ├── vernier-goio-macosx-x86_64-nar__V1.5.0-20101012.203835-2.jar
+            │           └── vernier-goio-win32-nar__V1.4.0.jar
+            └── sensor-native
+                ├── sensor-native__V0.1.0-20120531.005123-1.jar
+                └── sensor-native__V0.1.0-20120531.005123-1.jar.pack.gz
+
+### Managing AWS servers with thor tasks
+
+There are a set of `thor` tasks for managing, creating, and re-creating AWS servers for Lab:
+
+    $ thor -T
+    cloud
+    -----
+    thor cloud:create (hostname)    # create a new server instance using this hostname
+    thor cloud:delete (hostname)    # delete an existing server instance running at this hostname
+    thor cloud:list                 # list existing servers
+    thor cloud:list_targets         # list existing deploy targets
+    thor cloud:recreate (hostname)  # recreate a new server instance for this hostname by destroying and rebuilding an existing server
+    thor cloud:setup                # setup capistrano deploy tasks and littlechef nodes using targets in config/config.yml
+    thor cloud:start (ec2_id)       # start a stopped existing server instance at this hostname
+    thor cloud:stop (hostname)      # stop a running existing server instance at this hostname
+
+There is more work to do to generalize these deployment systems to work with multiple servers.
+
+Create a new Amazon EC2 instance as described in the readme in the **ruby-lab-server** branch in
+Concord Consortium's [littlechef-servers](https://github.com/concord-consortium/littlechef-servers)
+repository. Make sure the security group you choose has port 80 open.
+
+Modify the value of the `:host` key in the configuration file `config/config.yml` to reference
+the domain name of the new server.
+
+    $ cap <deploy-target> deploy:setup
+
+Will do an initial deploy and build of all the project resources to the server.
 
 ## References
 
@@ -1317,11 +1347,12 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 - [Understanding molecular simulation: from algorithms to applications](http://books.google.com/books?id=XmyO2oRUg0cC&pg=PA41&lpg=PA41&dq=Reduced+Units+Lennard-Jones&source=bl&ots=Zx0F10o1yR&sig=2UJ4C-W8LuASjrvkoTxPA63XBos&hl=en&sa=X&ei=R0AWT7fmNOn10gHKx4jxAg&ved=0CGIQ6AEwBw#v=onepage&q=Reduced%20Units%20Lennard-Jones&f=false)
 - [Molecular Dynamics Simulation: Nneoma Ogbonna](http://users.aims.ac.za/~nneoma/theses/NneomaAimsEssay.pdf)
 
-### Runtime Dependencies
+### JavaScript Library Runtime Dependencies
 
 #### D3
 
-- [D3](http://mbostock.github.com/d3/)
+[D3](http://mbostock.github.com/d3/): manipulating and visualizing documents based on data.
+
 - [repo](https://github.com/mbostock/d3)
 - [documentation](http://mbostock.github.com/d3/api/)
 - [issues](https://github.com/mbostock/d3/issues)
@@ -1329,25 +1360,48 @@ Running `bin/update.sh` will now copy and update the directory at [http://lab.de
 - [API reference](https://github.com/mbostock/d3/wiki/API-Reference)
   - [Arrays](https://github.com/mbostock/d3/wiki/Arrays)
 
-#### science.js
-
-- [science.js](https://github.com/jasondavies/science.js)
-
-#### Modernizr
-
-- [modernizr](https://github.com/Modernizr/Modernizr)
-
 #### JQuery
 
-- [JQuery](http://jquery.com/)
+[JQuery](http://jquery.com/): simplifies HTML document traversing, event handling, animating,
+and Ajax interactions.
 
 #### JQuery-UI
 
-- [JQuery-UI](http://jqueryui.com/)
+[JQuery-UI](http://jqueryui.com/): abstractions for low-level interaction and
+animation, advanced effects and high-level, themeable widgets, built on top of the jQuery
+
+#### Sizzle
+
+[sizzle](http://sizzlejs.com/): CSS selector engine designed to be easily dropped in to a
+host library.
+
+#### Codemirror
+
+[Codemirror2](https://github.com/marijnh/CodeMirror2): in-browser code editor.
+
+#### science.js
+
+[science.js](https://github.com/jasondavies/science.js): scientific and statistical
+computing methods.
+
+#### dsp.js
+
+[dsp.js](https://github.com/corbanbrook/dsp.js): digital signal processing methods
+including functions for signal analysis and generation, Oscillators(sine, saw, square, triangle),
+Window functions (Hann, Hamming, etc), Envelopes(ADSR), IIR Filters(lowpass, highpass,
+bandpass, notch), FFT and DFT transforms, Delays, Reverb.
+
+#### Modernizr
+
+[modernizr](https://github.com/Modernizr/Modernizr): detect HTML5 and CSS3 features in browsers.
 
 #### MathJax
 
-- [MathJax](http://mathjax.com/)
+[MathJax](http://mathjax.com/): display engine for mathematics that works in all modern browsers.
+
+#### OpenSans Font
+
+[OpenSans Font](http://www.google.com/webfonts/specimen/Open+Sans): used for most text display
 
 ### Development Dependencies
 
@@ -1412,6 +1466,14 @@ More about using npm for development:
 - [guard-coffeescript](https://github.com/guard/guard-coffeescript)
 - [guard-markdown](https://github.com/darwalenator/guard-markdown)
 - [guard-livereload](https://github.com/guard/guard-livereload)
+
+#### Thor
+
+[thor](https://github.com/wycats/thor) is a Ruby Gem for building self-documenting command line utilities.
+
+The Lab scripts for creating and managing cloud servers are organized using thor.
+
+- [documentation](https://github.com/wycats/thor/wiki)
 
 ### Additional Testing Dependencies
 

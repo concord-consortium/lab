@@ -27,7 +27,7 @@ h1 {
   font-size: 1.5em;
   border-top: 3px solid #aaaaaa;
   padding-top: 0.5em;
-  margin-top: 1.5em;
+  margin: 1.5em 0em 0.6em 0em;
   &:first-child {
     margin-top: 0;
     padding-top: 0.25em;
@@ -39,7 +39,7 @@ h2 {
   font-weight: bold;
   font-size: 1.3em;
   border-top: 6px double #d0d0d0;
-  margin-top: 1.5em;
+  margin: 1.5em 0em 0.6em 0em;
   padding-top: 1.0em;
   &:first-child {
     margin-top: 0;
@@ -50,9 +50,23 @@ h3 {
   font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
   font-weight: normal;
   font-size: 1.165em;
-  margin-top: 1.4em;
-  padding-top: 0.9em;
+  margin: 1.4em 1.0em 0.6em 0em;
+  padding-top: 0.8em;
   border-top: 2px solid #e0e0e0; }
+
+h4 {
+  font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
+  font-weight: normal;
+  font-size: 1.125em;
+  margin: 0.6em 2.0em 0.6em 0em;
+  padding-top: 0.4em; }
+
+h5 {
+  font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
+  font-weight: normal;
+  font-size: 1.15em;
+  margin: 0.6em 2.0em 0.6em 0em;
+  padding-top: 0.2em; }
 
 a {
   text-decoration: none; }
