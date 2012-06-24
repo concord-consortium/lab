@@ -83,6 +83,7 @@ grapher.graph = function(elem, options, message) {
       notification,
       padding, size,
       xScale, yScale, xValue, yValue, line,
+      stroke, tx, ty, fx, fy,
       circleCursorStyle,
       displayProperties,
       emsize, strokeWidth,
@@ -96,19 +97,22 @@ grapher.graph = function(elem, options, message) {
         medium: 960,
         large: 1920
       },
-      downx = Math.NaN,
-      downy = Math.NaN,
-      dragged = null,
-      selected = null,
+      downx, downy, dragged, selected,
       titles = [],
       default_options = {
+        "title":          "Graph",
+        "xlabel":         "X Axis",
+        "ylabel":         "Y Axis",
+        "xscale":         "linear",
+        "yscale":         "linear",
+        "xTicCount":       10,
+        "yTicCount":        8,
+        "xscaleExponent": 0.5,
+        "yscaleExponent": 0.5,
         "xmax":            60,
         "xmin":             0,
         "ymax":            40,
         "ymin":             0, 
-        "title":          "Simple Graph1",
-        "xlabel":         "X Axis",
-        "ylabel":         "Y Axis",
         "circleRadius":    10.0,
         "strokeWidth":      2.0,
         "dataChange":      true,
@@ -231,7 +235,7 @@ grapher.graph = function(elem, options, message) {
        "top":    options.title  ? 30 : 20,
        "right":                   30,
        "bottom": options.xlabel ? 60 : 10,
-       "left":   options.ylabel ? 70 : 45
+       "left":   options.ylabel ? 80 : 45
       };
       break;
 
@@ -240,7 +244,7 @@ grapher.graph = function(elem, options, message) {
        "top":    options.title  ? 40 : 20,
        "right":                   30,
        "bottom": options.xlabel ? 60 : 10,
-       "left":   options.ylabel ? 70 : 45
+       "left":   options.ylabel ? 80 : 45
       };
       break;
     }
@@ -266,17 +270,45 @@ grapher.graph = function(elem, options, message) {
     xValue = function(d) { return d[0]; };
     yValue = function(d) { return d[1]; };
 
-    xScale = d3.scale.linear()
+    xScale = d3.scale[options.xscale]()
       .domain([options.xmin, options.xmax])
       .range([0, size.width]);
 
-    yScale = d3.scale.linear()
-      .domain([options.ymax, options.ymin]).nice()
-      .range([0, size.height]).nice();
+    if (options.xscale == "pow") {
+      xScale.exponent(options.xscaleExponent)
+    }
+
+    yScale = d3.scale[options.yscale]()
+      .domain([options.ymin, options.ymax]).nice()
+      .range([size.height, 0]).nice();
+
+    if (options.yscale == "pow") {
+      yScale.exponent(options.yscaleExponent)
+    }
+
+    tx = function(d) {
+      return "translate(" + xScale(d) + ",0)";
+    };
+
+    ty = function(d) {
+      return "translate(0," + yScale(d) + ")";
+    };
+
+    stroke = function(d) {
+      return d ? "#ccc" : "#666";
+    };
+
+    fx = xScale.tickFormat(options.xTicCount);
+    fy = yScale.tickFormat(options.yTicCount);
 
     line = d3.svg.line()
         .x(function(d, i) { return xScale(points[i][0]); })
         .y(function(d, i) { return yScale(points[i][1]); });
+
+    // drag axis logic
+    downx = Math.NaN;
+    downy = Math.NaN;
+    dragged = selected = null;
   }
 
   function graph(selection) {
@@ -361,7 +393,7 @@ grapher.graph = function(elem, options, message) {
               .style("font-size", sizeType.value/2.6 * 100 + "%")
               .text(options.ylabel)
               .style("text-anchor","middle")
-              .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+              .attr("transform","translate(" + -50 + " " + size.height/2+") rotate(-90)");
         }
 
         d3.select(node)
@@ -491,25 +523,11 @@ grapher.graph = function(elem, options, message) {
     }
 
     function redraw() {
-      var tx = function(d) {
-        return "translate(" + xScale(d) + ",0)";
-      },
-      ty = function(d) {
-        return "translate(0," + yScale(d) + ")";
-      },
-      stroke = function(d) {
-        return d ? "#ccc" : "#666";
-      },
-
-      fx = xScale.tickFormat(d3.format(".3r")),
-      fy = xScale.tickFormat(d3.format(".3r"));
 
       // Regenerate x-ticks…
       var gx = vis.selectAll("g.x")
-          .data(xScale.ticks(10), String)
+          .data(xScale.ticks(options.xTicCount), String)
           .attr("transform", tx);
-
-      gx.select("text").text(fx);
 
       var gxe = gx.enter().insert("g", "a")
           .attr("class", "x")
@@ -539,11 +557,8 @@ grapher.graph = function(elem, options, message) {
 
       // Regenerate y-ticks…
       var gy = vis.selectAll("g.y")
-          .data(yScale.ticks(10), String)
+          .data(yScale.ticks(options.yTicCount), String)
           .attr("transform", ty);
-
-      gy.select("text")
-          .text(fy);
 
       var gye = gy.enter().insert("g", "a")
           .attr("class", "y")
@@ -735,12 +750,12 @@ grapher.graph = function(elem, options, message) {
     }
   }
 
-  // The x-accessor for the path generator; xScale âˆ˜ xValue.
+  // The x-accessor for the path generator
   function X(d) {
     return xScale(d[0]);
   }
 
-  // The x-accessor for the path generator; yScale âˆ˜ yValue.
+  // The y-accessor for the path generator
   function Y(d) {
     return yScale(d[1]);
   }
@@ -926,28 +941,51 @@ grapher.realTimeGraph = function(e, options) {
       node = elem.node(),
       cx = elem.property("clientWidth"),
       cy = elem.property("clientHeight"),
-      padding, size,
-      mw, mh, 
+
       stroke = function(d) { return d ? "#ccc" : "#666"; },
-      xScale = d3.scale.linear(), downx,
       tx = function(d) { return "translate(" + xScale(d) + ",0)"; },
-      yScale = d3.scale.linear(), downy,
       ty = function(d) { return "translate(0," + yScale(d) + ")"; },
-      line = d3.svg.line()
-            .x(function(d, i) { return xScale(points[i].x ); })
-            .y(function(d, i) { return yScale(points[i].y); }),
-      dragged, selected,
-      emsize = layout.getDisplayProperties().emsize,
+      fx, fy,
+      svg, vis, plot, viewbox,
+      title, xlabel, ylabel, xtic, ytic,
+      notification,
+      padding, size,
+      xScale, yScale, line,
+      circleCursorStyle,
+      displayProperties,
+      emsize, strokeWidth,
+      scaleFactor,
+      sizeType = {
+        category: "medium",
+        value: 3,
+        icon: 120,
+        tiny: 240,
+        small: 480,
+        medium: 960,
+        large: 1920
+      },
+      downx = Math.NaN,
+      downy = Math.NaN,
+      dragged = null,
+      selected = null,
       titles = [],
-      line_path, line_seglist,
-      vis, plot, viewbox,
+
       points, pointArray,
       markedPoint, marker,
       sample,
+      gcanvas, gctx,
+      cplot = {},
+
       default_options = {
         title   : "graph",
         xlabel  : "x-axis",
         ylabel  : "y-axis",
+        xscale  : 'linear',
+        yscale  : 'linear',
+        xTicCount: 10,
+        yTicCount: 8,
+        xscaleExponent: 0.5,
+        yscaleExponent: 0.5,
         xmax:       10,
         xmin:       0,
         ymax:       10,
@@ -957,44 +995,200 @@ grapher.realTimeGraph = function(e, options) {
         circleRadius: false,
         dataChange: false,
         points: false,
-        sample: 1
+        sample: 1,
+        lines: true,
+        bars: false
       };
 
-  if (options) {
-    for(var p in default_options) {
-      if (options[p] === undefined) {
-        options[p] = default_options[p];
+  initialize(options);
+
+  function setupOptions(options) {
+    if (options) {
+      for(var p in default_options) {
+        if (options[p] === undefined) {
+          options[p] = default_options[p];
+        }
       }
+    } else {
+      options = default_options;
     }
-  } else {
-    options = default_options;
+    return options;
   }
 
-  // use local variable for access speed in add_point()
-  sample = options.sample;
-
-  if (options.dataChange) {
-    circleCursorStyle = "ns-resize";
-  } else {
-    circleCursorStyle = "crosshair";
-  }
-
-  options.xrange = options.xmax - options.xmin;
-  options.yrange = options.ymax - options.ymin;
-
-  scale(cx, cy);
-
-  pointArray = [];
-
-  if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
-    for (var i = 0; i < options.dataset.length; i++) {
-      pointArray.push(indexedData(options.dataset[i], 0, sample));
+  function calculateSizeType() {
+    if(cx <= sizeType.icon) {
+      sizeType.category = 'icon';
+      sizeType.value = 0;
+    } else if (cx <= sizeType.tiny) {
+      sizeType.category = 'tiny';
+      sizeType.value = 1;
+    } else if (cx <= sizeType.small) {
+      sizeType.category = 'small';
+      sizeType.value = 2;
+    } else if (cx <= sizeType.medium) {
+      sizeType.category = 'medium';
+      sizeType.value = 3;
+    } else if (cx <= sizeType.large) {
+      sizeType.category = 'large';
+      sizeType.value = 4;
+    } else {
+      sizeType.category = 'extralarge';
+      sizeType.value = 5;
     }
-    points = pointArray[0];
-  } else {
-    points = indexedData(options.dataset, 0);
-    pointArray = [points];
   }
+
+  function scale(w, h) {
+    if (!arguments.length) {
+      cx = elem.property("clientWidth");
+      cy = elem.property("clientHeight");
+    } else {
+      cx = w;
+      cy = h;
+      node.style.width =  cx +"px";
+      node.style.height = cy +"px";
+    }
+    calculateSizeType();
+    displayProperties = layout.getDisplayProperties();
+    emsize = displayProperties.emsize;
+  }
+
+  function initialize(newOptions, mesg) {
+    if (newOptions || !options) {
+      options = setupOptions(newOptions);
+    }
+
+    if (svg !== undefined) {
+      svg.remove();
+      svg = undefined;
+    }
+
+    if (mesg) {
+      message = mesg;
+    }
+
+    // use local variable for access speed in add_point()
+    sample = options.sample;
+
+    if (options.dataChange) {
+      circleCursorStyle = "ns-resize";
+    } else {
+      circleCursorStyle = "crosshair";
+    }
+
+    scale();
+
+    options.xrange = options.xmax - options.xmin;
+    options.yrange = options.ymax - options.ymin;
+
+    pointArray = [];
+
+    switch(sizeType.value) {
+      case 0:
+      padding = {
+       "top":    4,
+       "right":  4,
+       "bottom": 4,
+       "left":   4
+      };
+      break;
+
+      case 1:
+      padding = {
+       "top":    8,
+       "right":  8,
+       "bottom": 8,
+       "left":   8
+      };
+      break;
+
+      case 2:
+      padding = {
+       "top":    options.title  ? 25 : 15,
+       "right":  15,
+       "bottom": 20,
+       "left":   20
+      };
+      break;
+
+      case 3:
+      padding = {
+       "top":    options.title  ? 30 : 20,
+       "right":                   30,
+       "bottom": options.xlabel ? 60 : 10,
+       "left":   options.ylabel ? 70 : 45
+      };
+      break;
+
+      default:
+      padding = {
+       "top":    options.title  ? 40 : 20,
+       "right":                   30,
+       "bottom": options.xlabel ? 60 : 10,
+       "left":   options.ylabel ? 70 : 45
+      };
+      break;
+    }
+
+    if (Object.prototype.toString.call(options.dataset[0]) === "[object Array]") {
+      for (var i = 0; i < options.dataset.length; i++) {
+        pointArray.push(indexedData(options.dataset[i], 0, sample));
+      }
+      points = pointArray[0];
+    } else {
+      points = indexedData(options.dataset, 0);
+      pointArray = [points];
+    }
+
+    if (Object.prototype.toString.call(options.title) === "[object Array]") {
+      titles = options.title;
+    } else {
+      titles = [options.title];
+    }
+    titles.reverse();
+
+    if (sizeType.value > 2 ) {
+      padding.top += (titles.length-1) * sizeType.value/3 * sizeType.value/3 * emsize * 22;
+    } else {
+      titles = [titles[0]];
+    }
+
+    size = {
+      "width":  cx - padding.left - padding.right,
+      "height": cy - padding.top  - padding.bottom
+    };
+
+    xScale = d3.scale[options.xscale]()
+      .domain([options.xmin, options.xmax])
+      .range([0, size.width]);
+
+    if (options.xscale == "pow") {
+      xScale.exponent(options.xscaleExponent)
+    }
+
+    yScale = d3.scale[options.yscale]()
+      .domain([options.ymin, options.ymax]).nice()
+      .range([size.height, 0]).nice();
+
+    if (options.yscale == "pow") {
+      yScale.exponent(options.yscaleExponent)
+    }
+
+    // fx = d3.format(".3r");
+    // fy = d3.format(".2f");
+
+    fx = xScale.tickFormat(options.xTicCount);
+    fy = yScale.tickFormat(options.yTicCount);
+
+    line = d3.svg.line()
+          .x(function(d, i) { return xScale(points[i].x ); })
+          .y(function(d, i) { return yScale(points[i].y); });
+
+    // drag axis logic
+    downx = Math.NaN;
+    downy = Math.NaN;
+    dragged = null;
+  }
+
 
   function indexedData(dataset, initial_index, sample) {
     var i = 0,
@@ -1016,63 +1210,17 @@ grapher.realTimeGraph = function(e, options) {
     }
   }
 
-  function scale(w, h) {
-    cx = w;
-    cy = h;
-    node.style.width = cx +"px";
-    node.style.height = cy +"px";
-
-    padding = {
-     "top":    options.title  ? 40 : 20,
-     "right":                   30,
-     "bottom": options.xlabel ? 60 : 10,
-     "left":   options.ylabel ? 70 : 45
-    };
-
-    emsize = layout.getDisplayProperties().emsize;
-
-    if(Object.prototype.toString.call(options.title) === "[object Array]") {
-      titles = options.title;
-    } else {
-      titles = [options.title];
-    }
-
-    padding.top += (titles.length-1) * emsize * 20;
-
-    width =  cx - padding.left - padding.right;
-    height = cy - padding.top  - padding.bottom;
-
-    size = {
-      "width":  width,
-      "height": height
-    };
-
-    mw = size.width;
-    mh = size.height;
-
-    // x-scale
-    xScale.domain([options.xmin, options.xmax]).range([0, size.width]);
-
-    // y-scale (inverted domain)
-    yScale.domain([options.ymin, options.ymax]).nice().range([size.height, 0]).nice();
-
-    // drag x-axis logic
-    downx = Math.NaN;
-
-    // drag y-axis logic
-    downy = Math.NaN;
-
-    dragged = null;
-  }
-
   function graph() {
-    scale(cx, cy);
-    if (vis === undefined) {
-      vis = d3.select(node).append("svg")
-        .attr("width", cx)
-        .attr("height", cy)
-        .append("g")
-          .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+    scale();
+
+    if (svg === undefined) {
+
+      svg = elem.append("svg")
+          .attr("width",  cx)
+          .attr("height", cy);
+
+      vis = svg.append("g")
+            .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
       plot = vis.append("rect")
         .attr("class", "plot")
@@ -1102,20 +1250,23 @@ grapher.realTimeGraph = function(e, options) {
           .attr("d", []);
 
       // add Chart Title
-      if (options.title) {
+      if (options.title && sizeType.value > 1) {
         title = vis.selectAll("text")
           .data(titles, function(d) { return d; });
         title.enter().append("text")
             .attr("class", "title")
+            .style("font-size", sizeType.value/2.4 * 100 + "%")
             .text(function(d) { return d; })
             .attr("x", size.width/2)
-            .attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; })
+            .attr("dy", function(d, i) { return -0.5 + -1 * sizeType.value/2.8 * i * emsize + "em"; })
             .style("text-anchor","middle");
       }
 
       // Add the x-axis label
-      if (options.xlabel) {
-        vis.append("text")
+     if (options.xlabel && sizeType.value > 2) {
+        xlabel = vis.append("text")
+            .attr("class", "axis")
+            .style("font-size", sizeType.value/2.6 * 100 + "%")
             .attr("class", "xlabel")
             .text(options.xlabel)
             .attr("x", size.width/2)
@@ -1125,13 +1276,14 @@ grapher.realTimeGraph = function(e, options) {
       }
 
       // add y-axis label
-      if (options.ylabel) {
-        vis.append("g")
-            .append("text")
-                .attr("class", "ylabel")
-                .text( options.ylabel)
-                .style("text-anchor","middle")
-                .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
+      if (options.ylabel && sizeType.value > 2) {
+        ylabel = vis.append("g").append("text")
+            .attr("class", "axis")
+            .style("font-size", sizeType.value/2.6 * 100 + "%")
+            .attr("class", "ylabel")
+            .text( options.ylabel)
+            .style("text-anchor","middle")
+            .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
       }
 
       d3.select(node)
@@ -1140,43 +1292,42 @@ grapher.realTimeGraph = function(e, options) {
           .on("mouseup.drag",   mouseup)
           .on("touchend.drag",  mouseup);
 
-      // variables for speeding up dynamic plotting
-      // line_path = vis.select("path")[0][0];
-      // line_seglist = line_path.pathSegList;
       initialize_canvas();
+      show_canvas();
 
     } else {
 
-      d3.select(node).select("svg")
-          .attr("width", cx)
-          .attr("height", cy);
+      vis
+        .attr("width",  cx)
+        .attr("height", cy);
 
-      vis.select("rect.plot")
+      plot
         .attr("width", size.width)
         .attr("height", size.height)
         .style("fill", "#EEEEEE");
 
-      vis.select("svg.viewbox")
-        .attr("top", 0)
-        .attr("left", 0)
-        .attr("width", size.width)
-        .attr("height", size.height)
-        .attr("viewBox", "0 0 "+size.width+" "+size.height);
+      viewbox
+          .attr("top", 0)
+          .attr("left", 0)
+          .attr("width", size.width)
+          .attr("height", size.height)
+          .attr("viewBox", "0 0 "+size.width+" "+size.height);
 
-      if (options.title) {
-        vis.select("text.title")
-            .attr("x", size.width/2)
-            .attr("dy","-1em");
+      if (options.title && sizeType.value > 1) {
+          title.each(function(d, i) {
+            d3.select(this).attr("x", size.width/2);
+            d3.select(this).attr("dy", function(d, i) { return 1.4 * i - titles.length + "em"; });
+          });
       }
 
-      if (options.xlabel) {
-        vis.select("text.xlabel")
+      if (options.xlabel && sizeType.value > 1) {
+        xlabel
             .attr("x", size.width/2)
             .attr("y", size.height);
       }
 
-      if (options.ylabel) {
-        vis.select("text.ylabel")
+      if (options.ylabel && sizeType.value > 1) {
+        ylabel
             .attr("transform","translate(" + -40 + " " + size.height/2+") rotate(-90)");
       }
 
@@ -1195,16 +1346,11 @@ grapher.realTimeGraph = function(e, options) {
     // ------------------------------------------------------------
 
     function redraw() {
-      var fx = xScale.tickFormat(10),
-          fy = yScale.tickFormat(8);
 
       // Regenerate x-ticks
       var gx = vis.selectAll("g.x")
-          .data(xScale.ticks(8), String)
+          .data(xScale.ticks(options.xTicCount), String)
           .attr("transform", tx);
-
-      gx.select("text")
-          .text(fx);
 
       var gxe = gx.enter().insert("g", "a")
           .attr("class", "x")
@@ -1215,26 +1361,27 @@ grapher.realTimeGraph = function(e, options) {
           .attr("y1", 0)
           .attr("y2", size.height);
 
-      gxe.append("text")
-          .attr("y", size.height)
-          .attr("dy", "1em")
-          .attr("text-anchor", "middle")
-          .style("cursor", "ew-resize")
-          .text(fx)
-          .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-          .on("mousedown.drag",  xaxis_drag)
-          .on("touchstart.drag", xaxis_drag);
+      if (sizeType.value > 1) {
+        gxe.append("text")
+            .attr("class", "axis")
+            .style("font-size", sizeType.value/2.7 * 100 + "%")
+            .attr("y", size.height)
+            .attr("dy", "1em")
+            .attr("text-anchor", "middle")
+            .style("cursor", "ew-resize")
+            .text(fx)
+            .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+            .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+            .on("mousedown.drag",  xaxis_drag)
+            .on("touchstart.drag", xaxis_drag);
+      }
 
       gx.exit().remove();
 
       // Regenerate y-ticks
       var gy = vis.selectAll("g.y")
-          .data(yScale.ticks(10), String)
+          .data(yScale.ticks(options.yTicCount), String)
           .attr("transform", ty);
-
-      gy.select("text")
-          .text(fy);
 
       var gye = gy.enter().insert("g", "a")
           .attr("class", "y")
@@ -1246,16 +1393,20 @@ grapher.realTimeGraph = function(e, options) {
           .attr("x1", 0)
           .attr("x2", size.width);
 
-      gye.append("text")
-          .attr("x", -3)
-          .attr("dy", ".35em")
-          .attr("text-anchor", "end")
-          .style("cursor", "ns-resize")
-          .text(fy)
-          .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
-          .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
-          .on("mousedown.drag",  yaxis_drag)
-          .on("touchstart.drag", yaxis_drag);
+      if (sizeType.value > 1) {
+        gye.append("text")
+            .attr("class", "axis")
+            .style("font-size", sizeType.value/2.7 * 100 + "%")
+            .attr("x", -3)
+            .attr("dy", ".35em")
+            .attr("text-anchor", "end")
+            .style("cursor", "ns-resize")
+            .text(fy)
+            .on("mouseover", function(d) { d3.select(this).style("font-weight", "bold");})
+            .on("mouseout",  function(d) { d3.select(this).style("font-weight", "normal");})
+            .on("mousedown.drag",  yaxis_drag)
+            .on("touchstart.drag", yaxis_drag);
+      }
 
       gy.exit().remove();
       plot.call(d3.behavior.zoom().x(xScale).y(yScale).on("zoom", redraw));
@@ -1269,10 +1420,6 @@ grapher.realTimeGraph = function(e, options) {
     // ------------------------------------------------------------
 
     function update(currentSample) {
-      var i;
-
-      var gplot = node.children[0].getElementsByTagName("rect")[0];
-
       update_canvas(currentSample);
 
       if (graph.selectable_points) {
@@ -1442,12 +1589,12 @@ grapher.realTimeGraph = function(e, options) {
     function add_canvas_points(pnts) {
       for (var i = 0; i < pointArray.length; i++) {
         points = pointArray[i];
-        setPointStrokeColor(i);
+        setStrokeColor(i);
         add_canvas_point(pnts[i]);
       }
     }
 
-    function setPointStrokeColor(i, afterSamplePoint) {
+    function setStrokeColor(i, afterSamplePoint) {
       var opacity = afterSamplePoint ? 0.4 : 1.0;
       switch(i) {
         case 0:
@@ -1458,6 +1605,21 @@ grapher.realTimeGraph = function(e, options) {
           break;
         case 2:
           gctx.strokeStyle = "rgba(44,0,160," + opacity + ")";
+          break;
+      }
+    }
+
+    function setFillColor(i, afterSamplePoint) {
+      var opacity = afterSamplePoint ? 0.4 : 1.0;
+      switch(i) {
+        case 0:
+          gctx.fillStyle = "rgba(160,00,0," + opacity + ")";
+          break;
+        case 1:
+          gctx.fillStyle = "rgba(44,160,0," + opacity + ")";
+          break;
+        case 2:
+          gctx.fillStyle = "rgba(44,0,160," + opacity + ")";
           break;
       }
     }
@@ -1478,21 +1640,21 @@ grapher.realTimeGraph = function(e, options) {
     }
 
     function change_xaxis(xmax) {
-      x = d3.scale.linear()
+      x = d3.scale[options.xscale]()
           .domain([0, xmax])
-          .range([0, mw]);
+          .range([0, size.width]);
       graph.xmax = xmax;
-      x_tics_scale = d3.scale.linear()
+      x_tics_scale = d3.scale[options.xscale]()
           .domain([graph.xmin*graph.sample, graph.xmax*graph.sample])
-          .range([0, mw]);
+          .range([0, size.width]);
       update();
       redraw();
     }
 
     function change_yaxis(ymax) {
-      y = d3.scale.linear()
+      y = d3.scale[options.yscale]()
           .domain([ymax, 0])
-          .range([0, mh]);
+          .range([0, size.height]);
       graph.ymax = ymax;
       update();
       redraw();
@@ -1517,7 +1679,12 @@ grapher.realTimeGraph = function(e, options) {
 
     // update real-time canvas line graph
     function update_canvas(currentSample) {
-      var i, index, pc, py, samplePoint, pointStop;
+      var i, index, py, samplePoint, pointStop,
+          yOrigin = yScale(0.00001),
+          lines = options.lines,
+          bars = options.bars,
+          twopi = 2 * Math.PI;
+
       if (typeof currentSample === 'undefined') {
         samplePoint = pointArray[0].length;
       } else {
@@ -1526,40 +1693,117 @@ grapher.realTimeGraph = function(e, options) {
       if (points.length === 0) { return; }
       clear_canvas();
       gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-      for (i = 0; i < pointArray.length; i++) {
-        points = pointArray[i];
-        px = xScale.call(self, 0, 0);
-        py = yScale.call(self, points[0].y, 0);
-        index = 0;
-        lengthX = 0;
-        setPointStrokeColor(i);
-        gctx.beginPath();
-        gctx.moveTo(px, py);
-        pointStop = samplePoint - 1;
-        for (index=0; index < pointStop; index++) {
-          lengthX += sample;
-          px = xScale.call(self, lengthX, lengthX);
-          py = yScale.call(self, points[index].y, lengthX);
-          gctx.lineTo(px, py);
-        }
-        gctx.stroke();
-        pointStop = points.length-1;
-        if (index < pointStop) {
-          setPointStrokeColor(i, true);
-          for (;index < pointStop; index++) {
+      if (lines) {
+        for (i = 0; i < pointArray.length; i++) {
+          points = pointArray[i];
+          px = xScale(0);
+          py = yScale(points[0].y);
+          index = 0;
+          lengthX = 0;
+          setStrokeColor(i);
+          gctx.beginPath();
+          gctx.moveTo(px, py);
+          pointStop = samplePoint - 1;
+          for (index=1; index < pointStop; index++) {
             lengthX += sample;
-            px = xScale.call(self, lengthX, lengthX);
-            py = yScale.call(self, points[index].y, lengthX);
+            px = xScale(lengthX);
+            py = yScale(points[index].y);
             gctx.lineTo(px, py);
           }
           gctx.stroke();
+          pointStop = points.length-1;
+          if (index < pointStop) {
+            setStrokeColor(i, true);
+            for (;index < pointStop; index++) {
+              lengthX += sample;
+              px = xScale(lengthX);
+              py = yScale(points[index].y);
+              gctx.lineTo(px, py);
+            }
+            gctx.stroke();
+          }
+        }
+      } else if (bars) {
+        for (i = 0; i < pointArray.length; i++) {
+          points = pointArray[i];
+          lengthX = 0;
+          setStrokeColor(i);
+          pointStop = samplePoint - 1;
+          for (index=0; index < pointStop; index++) {
+            px = xScale(lengthX);
+            py = yScale(points[index].y);
+            if (py === 0) {
+              continue;
+            }
+            gctx.beginPath();
+            gctx.moveTo(px, yOrigin);
+            gctx.lineTo(px, py);
+            gctx.stroke();
+            lengthX += sample;
+          }
+          pointStop = points.length-1;
+          if (index < pointStop) {
+            setStrokeColor(i, true);
+            for (;index < pointStop; index++) {
+              px = xScale(lengthX);
+              py = yScale(points[index].y);
+              gctx.beginPath();
+              gctx.moveTo(px, yOrigin);
+              gctx.lineTo(px, py);
+              gctx.stroke();
+              lengthX += sample;
+            }
+          }
+        }
+      } else {
+        for (i = 0; i < pointArray.length; i++) {
+          points = pointArray[i];
+          lengthX = 0;
+          setFillColor(i);
+          setStrokeColor(i, true);
+          pointStop = samplePoint - 1;
+          for (index=0; index < pointStop; index++) {
+            px = xScale(lengthX);
+            py = yScale(points[index].y);
+
+            // gctx.beginPath();
+            // gctx.moveTo(px, py);
+            // gctx.lineTo(px, py);
+            // gctx.stroke();
+
+            gctx.arc(px, py, 1, 0, twopi, false);
+            gctx.fill();
+
+            lengthX += sample;
+          }
+          pointStop = points.length-1;
+          if (index < pointStop) {
+            setFillColor(i, true);
+            setStrokeColor(i, true);
+            for (;index < pointStop; index++) {
+              px = xScale(lengthX);
+              py = yScale(points[index].y);
+
+              // gctx.beginPath();
+              // gctx.moveTo(px, py);
+              // gctx.lineTo(px, py);
+              // gctx.stroke();
+
+              gctx.arc(px, py, 1, 0, twopi, false);
+              gctx.fill();
+
+              lengthX += sample;
+            }
+          }
         }
       }
     }
 
     function initialize_canvas() {
-      gcanvas = document.createElement('canvas');
-      node.appendChild(gcanvas);
+      if (!gcanvas) {
+        gcanvas = gcanvas || document.createElement('canvas');
+        node.appendChild(gcanvas);
+      }
       gcanvas.style.zIndex = -100;
       setupCanvasProperties(gcanvas);
     }
@@ -1570,8 +1814,7 @@ grapher.realTimeGraph = function(e, options) {
     }
 
     function setupCanvasProperties(canvas) {
-      var cplot = {};
-      cplot.rect = node.children[0].getElementsByTagName("rect")[0];
+      cplot.rect = plot.node();
       cplot.width = cplot.rect.width['baseVal'].value;
       cplot.height = cplot.rect.height['baseVal'].value;
       cplot.left = cplot.rect.getCTM().e;
@@ -1602,6 +1845,7 @@ grapher.realTimeGraph = function(e, options) {
     graph.scale = scale;
     graph.update = update;
     graph.redraw = redraw;
+    graph.initialize = initialize;
 
     graph.number_of_points = number_of_points;
     graph.new_data = new_data;
@@ -1619,11 +1863,6 @@ grapher.realTimeGraph = function(e, options) {
     graph.change_xaxis = change_xaxis;
     graph.change_yaxis = change_yaxis;
   }
-
-  graph.resize = function(width, height) {
-    graph.scale(width, height);
-    graph();
-  };
 
   graph.add_data = function(newdata) {
     if (!arguments.length) return points;
@@ -1655,8 +1894,24 @@ grapher.realTimeGraph = function(e, options) {
     return graph;
   };
 
+  graph.reset = function(options, message) {
+    if (arguments.length) {
+      graph.initialize(options, message);
+    } else {
+      graph.initialize();
+    }
+    graph();
+    return graph;
+  };
 
- if (node) { graph(); }
+  graph.resize = function(w, h) {
+    graph.scale(w, h);
+    graph.initialize();
+    graph();
+    return graph;
+  };
+
+  if (node) { graph(); }
 
   return graph;
 };
@@ -2118,7 +2373,7 @@ arrays.create = function(size, fill, array_type) {
 };
 
 arrays.constructor_function = function(source) {
-  if (source.buffer && source.buffer.__proto__.constructor) {
+  if (source.buffer && source.buffer.__proto__ && source.buffer.__proto__.constructor) {
     return source.__proto__.constructor;
   }
   if (source.constructor === Array) {
@@ -2525,6 +2780,8 @@ require.define("/math/index.js", function (require, module, exports, __dirname, 
 exports.normal              = require('./distributions').normal;
 exports.getWindowedAverager = require('./utils').getWindowedAverager;
 exports.minimize            = require('./minimizer').minimize;
+
+if (window) window.minimize = exports.minimize;
 
 });
 
@@ -4171,14 +4428,13 @@ exports.makeModel = function() {
 };
 });
 require("/md2d.js");
-/*globals $ modeler:true, require, d3, benchmark, molecule_container */
+/*globals $ modeler:true, require, d3, arrays, benchmark, molecule_container */
 /*jslint onevar: true devel:true eqnull: true */
 
 // modeler.js
 //
 
 var md2d = require('/md2d'),
-    arrays = require('/arrays/arrays').arrays,
     coreModel;
 
 modeler = {};
@@ -4863,15 +5119,6 @@ modeler.model = function(initialProperties) {
     return properties[property];
   };
 
-  /**
-    Set the 'model_listener' function, which is called on tick events.
-  */
-  model.setModelListener = function(listener) {
-    model_listener = listener;
-    model.on('tick', model_listener);
-    return model;
-  };
-
   // Add a listener that will be notified any time any of the properties
   // in the passed-in array of properties is changed.
   // This is a simple way for views to update themselves in response to
@@ -5368,7 +5615,7 @@ arrays.create = function(size, fill, array_type) {
 };
 
 arrays.constructor_function = function(source) {
-  if (source.buffer && source.buffer.__proto__.constructor) {
+  if (source.buffer && source.buffer.__proto__ && source.buffer.__proto__.constructor) {
     return source.__proto__.constructor;
   }
   if (source.constructor === Array) {
@@ -6387,14 +6634,14 @@ exports.DEFAULT_VALUES = {
   "model": {
     "model_width": 10,
     "model_height": 10,
-    "timestep": 0.1,
+    "timestep": 1,
     "convective": true,
 
-    "background_conductivity": 10 * constants.AIR_THERMAL_CONDUCTIVITY,
+    "background_temperature": 0,
+    "background_conductivity": constants.AIR_THERMAL_CONDUCTIVITY,
     "background_specific_heat": constants.AIR_SPECIFIC_HEAT,
     "background_density": constants.AIR_DENSITY,
-    "background_temperature": 0,
-    "background_viscosity": 10 * constants.AIR_VISCOSITY,
+    "background_viscosity": constants.AIR_VISCOSITY,
 
     "thermal_buoyancy": 0.00025,
     "buoyancy_approximation": 1,
@@ -6408,15 +6655,15 @@ exports.DEFAULT_VALUES = {
       }
     },
 
-    "measurement_interval": 100,        // unnecessary
-    "viewupdate_interval": 20,          // unnecessary
+    "measurement_interval": 500,        // unnecessary
+    "viewupdate_interval": 100,         // unnecessary
     "stoptime": undefined,              // unnecessary
     "sunny": true,                      // unnecessary (ray solver not implemented)
     "sun_angle": 1.5707964,             // unnecessary (ray solver not implemented)
-    "solar_power_density": 20000,       // unnecessary (ray solver not implemented)
+    "solar_power_density": 2000,        // unnecessary (ray solver not implemented)
     "solar_ray_count": 24,              // unnecessary (ray solver not implemented)
-    "solar_ray_speed": 0.001,           // unnecessary (ray solver not implemented)
-    "photon_emission_interval": 5,      // unnecessary (ray solver not implemented)
+    "solar_ray_speed": 0.1,             // unnecessary (ray solver not implemented)
+    "photon_emission_interval": 20,     // unnecessary (ray solver not implemented)
 
     "structure": undefined
     // Structure can be undefined.
@@ -6811,6 +7058,9 @@ energy2d.modeler.makeModeler = function (options) {
     },
     getHeight: function () {
       return core_model.getModelOptions().model_height;
+    },
+    getTime: function () {
+      return core_model.getModelOptions().timestep * core_model.getIndexOfStep();
     },
     getIndexOfStep: core_model.getIndexOfStep,
     getGridWidth: core_model.getGridWidth,
@@ -7312,6 +7562,7 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
     heatmap_view,
     velocity_view,
     parts_view,
+    time_view,
 
     $scene_view_div,
 
@@ -7330,22 +7581,39 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
       $scene_view_div.append(heatmap_view.getHTMLElement());
       $scene_view_div.append(velocity_view.getHTMLElement());
       $scene_view_div.append(parts_view.getHTMLElement());
+      $scene_view_div.append(time_view.getHTMLElement());
     },
 
     setAsNextLayer = function (view) {
-      var layer = view.getHTMLElement();
+      var $layer = view.getHTMLElement();
 
-      layer.css('width', '100%');
-      layer.css('height', '100%');
-      layer.css('position', 'absolute');
-      layer.css('left', '0');
-      layer.css('top', '0');
-      layer.css('z-index', layers_count);
+      $layer.css('width', '100%');
+      $layer.css('height', '100%');
+      $layer.css('position', 'absolute');
+      $layer.css('left', '0');
+      $layer.css('top', '0');
+      $layer.css('z-index', layers_count);
+      layers_count += 1;
+    },
+
+    setAsTimeLayer = function (view) {
+      var $layer = view.getHTMLElement();
+
+      // Style time view to make it visible and sharp 
+      // as it is displayed on the heatmap (often dark blue color).
+      $layer.css('color', 'white');
+      $layer.css('font-weight', 'bold');
+      // Keep constant width of time display to avoid
+      // oscillation of its position.
+      $layer.css('font-family', 'Monospace');
+      $layer.css('position', 'absolute');
+      $layer.css('right', '0');
+      $layer.css('top', '0');
+      $layer.css('z-index', layers_count);
       layers_count += 1;
     },
 
     energy2d_scene_view = {
-
       getHeatmapView: function () {
         return heatmap_view;
       },
@@ -7356,6 +7624,10 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
 
       getPartsView: function () {
         return parts_view;
+      },
+
+      getTimeView: function () {
+        return time_view;
       },
 
       getHTMLElement: function () {
@@ -7371,6 +7643,9 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
 
   parts_view = energy2d.views.makePartsView();
   setAsNextLayer(parts_view);
+
+  time_view = energy2d.views.makeTimeView();
+  setAsTimeLayer(time_view);
 
   // Append all views to the scene view DIV.
   initHTMLelement();
@@ -7746,6 +8021,65 @@ energy2d.views.makeSimulationPlayerView = function (html_id) {
   return simulation_player;
 };
 
+// Simulation time.
+//
+// getHTMLElement() method returns JQuery object with DIV that contains time.
+// If you want to style its components:
+// Default div id = "energy2d-time"
+energy2d.views.makeTimeView = function (html_id) {
+  'use strict';
+  var
+    DEFAULT_ID = 'energy2d-time',
+    DEFAULT_CLASS = 'energy2d-time',
+
+    $time_div,
+
+    //
+    // Private methods.
+    //
+    initHTMLelement = function () {
+      $time_div = $('<div />');
+      $time_div.attr('id', html_id || DEFAULT_ID);
+      $time_div.addClass(DEFAULT_CLASS);
+      $time_div.html('0:00:00:00');
+    },
+
+    pad = function (num, size) {
+      var s = num.toString();
+      while (s.length < size) {
+        s = "0" + s;
+      }
+      return s;
+    },
+
+    //
+    // Public API.
+    //
+    simulation_time = {
+      renderTime: function (time) {
+        var seconds, minutes, hours, days;
+        time = Math.floor(time);
+        seconds = time % 60;
+        time = Math.floor(time / 60);
+        minutes = time % 60;
+        time = Math.floor(time / 60);
+        hours = time % 24;
+        time = Math.floor(time / 24);
+        days = time;
+        $time_div.html(days + ':' + pad(hours, 2) + ':' + pad(minutes, 2)  + ':' + pad(seconds, 2));
+      },
+
+      getHTMLElement: function () {
+        return $time_div;
+      }
+    };
+
+  // One-off initialization.
+  initHTMLelement();
+
+  return simulation_time;
+};
+
 /*globals energy2d, $ */
 /*jslint indent: 2 */
 //
@@ -7777,6 +8111,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     heatmap_view,
     velocity_view,
     parts_view,
+    time_view,
     simulation_player_view,
     simulation_description_view,
 
@@ -7801,6 +8136,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       heatmap_view = energy2d_scene.getHeatmapView();
       velocity_view = energy2d_scene.getVelocityView();
       parts_view = energy2d_scene.getPartsView();
+      time_view = energy2d_scene.getTimeView();
 
       return energy2d_scene;
     },
@@ -7843,6 +8179,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       }
       heatmap_view.renderHeatmap();
       velocity_view.renderVectormap();
+      time_view.renderTime(modeler.getTime());
     };
 
   //
@@ -8286,7 +8623,7 @@ function run(benchmarks_table, benchmarks_to_run) {
   }
 
   arrays.constructor_function = function(source) {
-    if (source.buffer && source.buffer.__proto__.constructor) {
+    if (source.buffer && source.buffer.__proto__ && source.buffer.__proto__.constructor) {
       return source.__proto__.constructor
     }
     if (source.constructor === Array) {
@@ -13348,8 +13685,8 @@ controllers.complexModelController =
         xlabel:    "Model Time (ps)",
         xmin:      0,
         xmax:     100,
-        sample:    0.25,
-        ylabel:    null,
+        sample:    0.1,
+        ylabel:    "eV",
         ymin:      -5.0,
         ymax:      5.0,
         dataset:   energy_data

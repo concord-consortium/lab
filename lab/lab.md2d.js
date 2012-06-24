@@ -423,7 +423,7 @@ arrays.create = function(size, fill, array_type) {
 };
 
 arrays.constructor_function = function(source) {
-  if (source.buffer && source.buffer.__proto__.constructor) {
+  if (source.buffer && source.buffer.__proto__ && source.buffer.__proto__.constructor) {
     return source.__proto__.constructor;
   }
   if (source.constructor === Array) {
@@ -830,6 +830,8 @@ require.define("/math/index.js", function (require, module, exports, __dirname, 
 exports.normal              = require('./distributions').normal;
 exports.getWindowedAverager = require('./utils').getWindowedAverager;
 exports.minimize            = require('./minimizer').minimize;
+
+if (window) window.minimize = exports.minimize;
 
 });
 

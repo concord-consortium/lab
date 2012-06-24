@@ -870,8 +870,8 @@ controllers.complexModelController =
         xlabel:    "Model Time (ps)",
         xmin:      0,
         xmax:     100,
-        sample:    0.25,
-        ylabel:    null,
+        sample:    0.1,
+        ylabel:    "eV",
         ymin:      -5.0,
         ymax:      5.0,
         dataset:   energy_data

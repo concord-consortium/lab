@@ -462,7 +462,7 @@ arrays.create = function(size, fill, array_type) {
 };
 
 arrays.constructor_function = function(source) {
-  if (source.buffer && source.buffer.__proto__.constructor) {
+  if (source.buffer && source.buffer.__proto__ && source.buffer.__proto__.constructor) {
     return source.__proto__.constructor;
   }
   if (source.constructor === Array) {
@@ -1481,14 +1481,14 @@ exports.DEFAULT_VALUES = {
   "model": {
     "model_width": 10,
     "model_height": 10,
-    "timestep": 0.1,
+    "timestep": 1,
     "convective": true,
 
-    "background_conductivity": 10 * constants.AIR_THERMAL_CONDUCTIVITY,
+    "background_temperature": 0,
+    "background_conductivity": constants.AIR_THERMAL_CONDUCTIVITY,
     "background_specific_heat": constants.AIR_SPECIFIC_HEAT,
     "background_density": constants.AIR_DENSITY,
-    "background_temperature": 0,
-    "background_viscosity": 10 * constants.AIR_VISCOSITY,
+    "background_viscosity": constants.AIR_VISCOSITY,
 
     "thermal_buoyancy": 0.00025,
     "buoyancy_approximation": 1,
@@ -1502,15 +1502,15 @@ exports.DEFAULT_VALUES = {
       }
     },
 
-    "measurement_interval": 100,        // unnecessary
-    "viewupdate_interval": 20,          // unnecessary
+    "measurement_interval": 500,        // unnecessary
+    "viewupdate_interval": 100,         // unnecessary
     "stoptime": undefined,              // unnecessary
     "sunny": true,                      // unnecessary (ray solver not implemented)
     "sun_angle": 1.5707964,             // unnecessary (ray solver not implemented)
-    "solar_power_density": 20000,       // unnecessary (ray solver not implemented)
+    "solar_power_density": 2000,        // unnecessary (ray solver not implemented)
     "solar_ray_count": 24,              // unnecessary (ray solver not implemented)
-    "solar_ray_speed": 0.001,           // unnecessary (ray solver not implemented)
-    "photon_emission_interval": 5,      // unnecessary (ray solver not implemented)
+    "solar_ray_speed": 0.1,             // unnecessary (ray solver not implemented)
+    "photon_emission_interval": 20,     // unnecessary (ray solver not implemented)
 
     "structure": undefined
     // Structure can be undefined.
@@ -1905,6 +1905,9 @@ energy2d.modeler.makeModeler = function (options) {
     },
     getHeight: function () {
       return core_model.getModelOptions().model_height;
+    },
+    getTime: function () {
+      return core_model.getModelOptions().timestep * core_model.getIndexOfStep();
     },
     getIndexOfStep: core_model.getIndexOfStep,
     getGridWidth: core_model.getGridWidth,
@@ -2406,6 +2409,7 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
     heatmap_view,
     velocity_view,
     parts_view,
+    time_view,
 
     $scene_view_div,
 
@@ -2424,22 +2428,39 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
       $scene_view_div.append(heatmap_view.getHTMLElement());
       $scene_view_div.append(velocity_view.getHTMLElement());
       $scene_view_div.append(parts_view.getHTMLElement());
+      $scene_view_div.append(time_view.getHTMLElement());
     },
 
     setAsNextLayer = function (view) {
-      var layer = view.getHTMLElement();
+      var $layer = view.getHTMLElement();
 
-      layer.css('width', '100%');
-      layer.css('height', '100%');
-      layer.css('position', 'absolute');
-      layer.css('left', '0');
-      layer.css('top', '0');
-      layer.css('z-index', layers_count);
+      $layer.css('width', '100%');
+      $layer.css('height', '100%');
+      $layer.css('position', 'absolute');
+      $layer.css('left', '0');
+      $layer.css('top', '0');
+      $layer.css('z-index', layers_count);
+      layers_count += 1;
+    },
+
+    setAsTimeLayer = function (view) {
+      var $layer = view.getHTMLElement();
+
+      // Style time view to make it visible and sharp 
+      // as it is displayed on the heatmap (often dark blue color).
+      $layer.css('color', 'white');
+      $layer.css('font-weight', 'bold');
+      // Keep constant width of time display to avoid
+      // oscillation of its position.
+      $layer.css('font-family', 'Monospace');
+      $layer.css('position', 'absolute');
+      $layer.css('right', '0');
+      $layer.css('top', '0');
+      $layer.css('z-index', layers_count);
       layers_count += 1;
     },
 
     energy2d_scene_view = {
-
       getHeatmapView: function () {
         return heatmap_view;
       },
@@ -2450,6 +2471,10 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
 
       getPartsView: function () {
         return parts_view;
+      },
+
+      getTimeView: function () {
+        return time_view;
       },
 
       getHTMLElement: function () {
@@ -2465,6 +2490,9 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
 
   parts_view = energy2d.views.makePartsView();
   setAsNextLayer(parts_view);
+
+  time_view = energy2d.views.makeTimeView();
+  setAsTimeLayer(time_view);
 
   // Append all views to the scene view DIV.
   initHTMLelement();
@@ -2840,6 +2868,65 @@ energy2d.views.makeSimulationPlayerView = function (html_id) {
   return simulation_player;
 };
 
+// Simulation time.
+//
+// getHTMLElement() method returns JQuery object with DIV that contains time.
+// If you want to style its components:
+// Default div id = "energy2d-time"
+energy2d.views.makeTimeView = function (html_id) {
+  'use strict';
+  var
+    DEFAULT_ID = 'energy2d-time',
+    DEFAULT_CLASS = 'energy2d-time',
+
+    $time_div,
+
+    //
+    // Private methods.
+    //
+    initHTMLelement = function () {
+      $time_div = $('<div />');
+      $time_div.attr('id', html_id || DEFAULT_ID);
+      $time_div.addClass(DEFAULT_CLASS);
+      $time_div.html('0:00:00:00');
+    },
+
+    pad = function (num, size) {
+      var s = num.toString();
+      while (s.length < size) {
+        s = "0" + s;
+      }
+      return s;
+    },
+
+    //
+    // Public API.
+    //
+    simulation_time = {
+      renderTime: function (time) {
+        var seconds, minutes, hours, days;
+        time = Math.floor(time);
+        seconds = time % 60;
+        time = Math.floor(time / 60);
+        minutes = time % 60;
+        time = Math.floor(time / 60);
+        hours = time % 24;
+        time = Math.floor(time / 24);
+        days = time;
+        $time_div.html(days + ':' + pad(hours, 2) + ':' + pad(minutes, 2)  + ':' + pad(seconds, 2));
+      },
+
+      getHTMLElement: function () {
+        return $time_div;
+      }
+    };
+
+  // One-off initialization.
+  initHTMLelement();
+
+  return simulation_time;
+};
+
 /*globals energy2d, $ */
 /*jslint indent: 2 */
 //
@@ -2871,6 +2958,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     heatmap_view,
     velocity_view,
     parts_view,
+    time_view,
     simulation_player_view,
     simulation_description_view,
 
@@ -2895,6 +2983,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       heatmap_view = energy2d_scene.getHeatmapView();
       velocity_view = energy2d_scene.getVelocityView();
       parts_view = energy2d_scene.getPartsView();
+      time_view = energy2d_scene.getTimeView();
 
       return energy2d_scene;
     },
@@ -2937,6 +3026,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       }
       heatmap_view.renderHeatmap();
       velocity_view.renderVectormap();
+      time_view.renderTime(modeler.getTime());
     };
 
   //

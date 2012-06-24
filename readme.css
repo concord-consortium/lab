@@ -26,7 +26,7 @@ h1 {
   font-size: 1.5em;
   border-top: 3px solid #aaaaaa;
   padding-top: 0.5em;
-  margin-top: 1.5em; }
+  margin: 1.5em 0em 0.6em 0em; }
   h1:first-child {
     margin-top: 0;
     padding-top: 0.25em;
@@ -38,7 +38,7 @@ h2 {
   font-weight: bold;
   font-size: 1.3em;
   border-top: 6px double #d0d0d0;
-  margin-top: 1.5em;
+  margin: 1.5em 0em 0.6em 0em;
   padding-top: 1.0em; }
   h2:first-child {
     margin-top: 0;
@@ -49,9 +49,23 @@ h3 {
   font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
   font-weight: normal;
   font-size: 1.165em;
-  margin-top: 1.4em;
-  padding-top: 0.9em;
+  margin: 1.4em 1.0em 0.6em 0em;
+  padding-top: 0.8em;
   border-top: 2px solid #e0e0e0; }
+
+h4 {
+  font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
+  font-weight: normal;
+  font-size: 1.125em;
+  margin: 0.6em 2.0em 0.6em 0em;
+  padding-top: 0.4em; }
+
+h5 {
+  font-family: museo-sans, "Open Sans", georgia, times, "times new roman", serif;
+  font-weight: normal;
+  font-size: 1.15em;
+  margin: 0.6em 2.0em 0.6em 0em;
+  padding-top: 0.2em; }
 
 a {
   text-decoration: none; }
@@ -76,13 +90,20 @@ blockquote {
   padding-left: 0.6em;
   color: #555555; }
 
+dl {
+  width: 100%;
+  margin: 1em; }
+
 dt {
-  font-weight: bold;
-  margin-left: 1em; }
+  float: left;
+  margin-left: 1%;
+  width: 27%; }
 
 dd {
-  margin-left: 2em;
-  margin-bottom: 1em; }
+  float: left;
+  margin-bottom: 0.6em;
+  margin-left: 0;
+  width: 72%; }
 
 table {
   margin: 1em 0; }
@@ -124,6 +145,9 @@ code {
     color: darkred; }
   code .comment {
     color: grey; }
+
+a code {
+  color: darkblue; }
 
 pre.console {
   margin: 1em 0;

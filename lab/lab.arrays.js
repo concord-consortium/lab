@@ -81,7 +81,7 @@
   }
 
   arrays.constructor_function = function(source) {
-    if (source.buffer && source.buffer.__proto__.constructor) {
+    if (source.buffer && source.buffer.__proto__ && source.buffer.__proto__.constructor) {
       return source.__proto__.constructor
     }
     if (source.constructor === Array) {
