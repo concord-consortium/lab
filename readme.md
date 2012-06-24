@@ -1450,8 +1450,8 @@ More about using npm for development:
 - [Managing module dependencies](http://howtonode.org/managing-module-dependencies)
 - [What do people do for versioning node modules within git?](https://groups.google.com/group/nodejs/browse_thread/thread/9aa563f1fe3b3ff5)
 
-Lab Example: [`package.json`](https://github.com/concord-consortium/lab/blob/master/package.json) is
-to specify node pakage dependencies for the Lab project.
+Lab Example: [`package.json`](https://github.com/concord-consortium/lab/blob/master/package.json)
+specifies node pakage dependencies for the Lab project.
 
 #### CoffeeScript
 
@@ -1469,6 +1469,7 @@ Lab Examples:
     for physics validation tests.
 2.  [`playback_svg.coffee`](src/lab/components/playback_svg.coffee) is a coffeescript program used to create
     the SVG-based Playback control widget
+
 ### RubyGems
 
 #### Bundler
@@ -1479,8 +1480,8 @@ Lab Examples:
 - [documentation: Gemfile](http://gembundler.com/man/gemfile.5.html)
 - [documentation: CLI](http://gembundler.com/man/bundle.1.html)
 
-Lab Example: The Ruby Gems needed to build the Lab repository are all specified in this Bundler
-[`Gemfile`](https://github.com/concord-consortium/lab/blob/master/Gemfile).
+Lab Example: [`Gemfile`](https://github.com/concord-consortium/lab/blob/master/Gemfile)
+is used to specify all the Ruby Gem dependencies to build and test the Lab project.
 
 #### Haml
 
@@ -1529,7 +1530,19 @@ Lab Example: Starting Guard with `bin/guard` loads and runs the configuration in
 - [documentation](https://github.com/wycats/thor/wiki)
 
 Lab Example: [`cloud.thor`](https://github.com/concord-consortium/lab/blob/master/cloud.thor) are the
-command-line interface scripts for providing access to the library for creating and managing cloud servers.
+Ruby command-line interface scripts for providing access to the
+[`AwsLabServer`](https://github.com/concord-consortium/lab/blob/master/script/aws-lab-server.rb)
+library for creating and managing AWS cloud servers.
+
+#### Fog
+
+[fog](http://fog.io/) is a Ruby Gem for working with many different cloud service providers.
+
+- [documentation](http://fog.io/)
+- [repo](https://github.com/fog/fog)
+
+Lab Example: [`AwsLabServer`](https://github.com/concord-consortium/lab/blob/master/script/aws-lab-server.rb)
+is a library built on top of fog for creating and managing Lab server instances on AWS.
 
 ### Additional Testing Dependencies
 
