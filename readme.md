@@ -3,14 +3,19 @@
 HTML5-based open source scientific models, visualizations, graphing, and probeware from the
 [Concord Consortium](http://www.concord.org).
 
-- development site: [lab.dev.concord.org](http://lab.dev.concord.org/)
-- readme on the development site: [lab.dev.concord.org/readme.html](http://lab.dev.concord.org/readme.html)
-- source code: [github.com/concord-consortium/lab](https://github.com/concord-consortium/lab)
+Development site:
+  : **[lab.dev.concord.org](http://lab.dev.concord.org/)**
+
+Readme on the development site:
+  : **[lab.dev.concord.org/readme.html](http://lab.dev.concord.org/readme.html)**
+
+Source code repository:
+  : **[github.com/concord-consortium/lab](https://github.com/concord-consortium/lab)**
 
 _Note: many of the links in this readme only work properly when this document is served
-from a web-server and do not resolve properly when viewing this content on the github page
-for the repository: [github.com/concord-consortium/lab](https://github.com/concord-consortium/lab).
-A live version of the readme is available here:
+from a web-server and do not resolve properly at
+[github.com/concord-consortium/lab](https://github.com/concord-consortium/lab).
+A live version of the readme is always available here:
 [lab.dev.concord.org/readme.html](http://lab.dev.concord.org/readme.html)._
 
 **Table of Contents**
@@ -1468,8 +1473,8 @@ Lab Examples:
 1.  [`get-md2d-data.coffee`](https://github.com/concord-consortium/lab/blob/master/node-bin/get-md2d-data.coffee)
     is a coffeescript program used to run the MD2D engine from the command line and generate data used
     for physics validation tests.
-2.  [`playback_svg.coffee`](src/lab/components/playback_svg.coffee) is a coffeescript program used to create
-    the SVG-based Playback control widget
+2.  [`PlaybackComponentSVG`](src/lab/components/playback_svg.coffee) is an object written in coffeescript
+    that creates and manages the SVG-based Playback control widget for the Molecule Container.
 
 ### RubyGems
 
@@ -1522,7 +1527,7 @@ automatically start the build process when needed.
 - [guard-markdown](https://github.com/darwalenator/guard-markdown)
 - [guard-livereload](https://github.com/guard/guard-livereload)
 
-Lab Example: Starting Guard with `bin/guard` loads and runs the configuration in this [`Guardfile`](https://github.com/concord-consortium/lab/blob/master/Guardfile).
+Lab Example: Starting Guard with `bin/guard` loads and runs the configuration in [`Guardfile`](https://github.com/concord-consortium/lab/blob/master/Guardfile).
 
 #### Thor
 
