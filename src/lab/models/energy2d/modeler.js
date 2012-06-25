@@ -35,6 +35,7 @@ energy2d.modeler.makeModeler = function (options) {
     getTemperatureArray: core_model.getTemperatureArray,
     getUVelocityArray: core_model.getUVelocityArray,
     getVVelocityArray: core_model.getVVelocityArray,
+    getPhotonsArray: core_model.getPhotonsArray,
     getPartsArray: core_model.getPartsArray
   };
 };

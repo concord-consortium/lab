@@ -4,25 +4,30 @@
 // lab/models/energy2d/engines/this.js
 //
 
-// Based on: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-// It is optional to repeat the first vertex at the end of list of polygon vertices.
 var
   default_config = require('./default-config.js'),
+  constants      = require('./constants.js'),
+  Photon         = require('./photon.js').Photon,
+  hypot          = require('./utils/math.js').hypot,
+  shape_utils    = require('./utils/shape.js'),
+  Line           = require('./utils/shape.js').Line,
+  Polygon        = require('./utils/shape.js').Polygon,
+  Rectangle      = require('./utils/shape.js').Rectangle,
+  Ellipse        = require('./utils/shape.js').Ellipse,
+  Ring           = require('./utils/shape.js').Ring,
 
-  pointInsidePolygon = function (nvert, vertx, verty, testx, testy) {
-    'use strict';
-    var c = 0, i, j;
-    for (i = 0, j = nvert - 1; i < nvert; j = i += 1) {
-      if (((verty[i] > testy) !== (verty[j] > testy)) && (testx < (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i])) {
-        c = !c;
-      }
-    }
-    return c;
-  };
+  // Part's constants.
+  RADIATOR_SPACING = 0.5,
+  MINIMUM_RADIATING_TEMPERATUE = 20,
+  UNIT_SURFACE_AREA = 100,
+  SIN30 = Math.sin(Math.PI / 6),
+  COS30 = Math.cos(Math.PI / 6),
+  SIN60 = Math.sin(Math.PI / 3),
+  COS60 = Math.cos(Math.PI / 3);
 
-exports.Part = function (options) {
+var Part = exports.Part = function (options) {
   'use strict';
-  var count, i;
+  var count, i, s;
 
   options = default_config.fillWithDefaultValues(options, default_config.DEFAULT_VALUES.part);
 
@@ -30,26 +35,32 @@ exports.Part = function (options) {
 
   // Check shape
   if (options.rectangle) {
-    this.rectangle = options.rectangle;
+    s = this.rectangle = options.rectangle;
+    this.shape = new Rectangle(s.x, s.y, s.width, s.height);
   } else if (options.ellipse) {
-    this.ellipse = options.ellipse;
+    s = this.ellipse = options.ellipse;
+    this.shape = new Ellipse(s.x, s.y, s.a, s.b);
   } else if (options.ring) {
-    this.ring = options.ring;
+    s = this.ring = options.ring;
+    this.shape = new Ring(s.x, s.y, s.inner, s.outer);
   } else if (options.polygon) {
     this.polygon = options.polygon;
+    if (typeof (this.polygon.vertices) === "string") {
+      count = this.polygon.count;
+      this.polygon.vertices = this.polygon.vertices.split(', ');
+      this.polygon.x_coords = [];
+      this.polygon.y_coords = [];
+      if (count * 2 !== this.polygon.vertices.length) {
+        throw new Error("Part: polygon contains different vertices count than declared in the count parameter.");
+      }
+      for (i = 0; i < count; i += 1) {
+        this.polygon.x_coords[i] = this.polygon.vertices[2 * i]     = Number(this.polygon.vertices[2 * i]);
+        this.polygon.y_coords[i] = this.polygon.vertices[2 * i + 1] = Number(this.polygon.vertices[2 * i + 1]);
+      }
+      this.shape = new Polygon(count, this.polygon.x_coords, this.polygon.y_coords);
+    }
   } else {
     throw new Error("Part: shape not defined.");
-  }
-
-  if (this.polygon && typeof (this.polygon.vertices) === "string") {
-    count = this.polygon.count;
-    this.polygon.vertices = this.polygon.vertices.split(', ');
-    if (count * 2 !== this.polygon.vertices.length) {
-      throw new Error("Part: polygon contains different vertices count than declared in the count parameter.");
-    }
-    for (i = 0; i < count * 2; i += 1) {
-      this.polygon.vertices[i] = Number(this.polygon.vertices[i]);
-    }
   }
 
   // source properties
@@ -62,6 +73,12 @@ exports.Part = function (options) {
   this.wind_speed = options.wind_speed;
   this.wind_angle = options.wind_angle;
 
+  // optics properties
+  this.transmission = options.transmission;
+  this.reflection = options.reflection;
+  this.absorption = options.absorption;
+  this.emissivity = options.emissivity;
+
   // visual properties
   this.visible = options.visible;
   this.filled = options.filled;
@@ -70,7 +87,7 @@ exports.Part = function (options) {
   this.label = options.label;
 };
 
-exports.Part.prototype.getLabel = function () {
+Part.prototype.getLabel = function () {
   'use strict';
   var label = this.label, s;
 
@@ -114,7 +131,8 @@ exports.Part.prototype.getLabel = function () {
 //   ny - grid rows count
 //   lx - grid width
 //   ly - grid height
-exports.Part.prototype.getGridCells = function (nx, ny, lx, ly) {
+// TODO: refactor it, probably using contains method.
+Part.prototype.getGridCells = function (nx, ny, lx, ly) {
   'use strict';
   var
     nx1 = nx - 1,
@@ -243,7 +261,7 @@ exports.Part.prototype.getGridCells = function (nx, ny, lx, ly) {
       idx = 0;
       for (i = i0; i <= i_max; i += 1) {
         for (j = j0; j <= j_max; j += 1) {
-          if (pointInsidePolygon(count, x_coords, y_coords, i, j)) {
+          if (shape_utils.pointInsidePolygon(count, x_coords, y_coords, i, j)) {
             indices[idx += 1] = i * ny + j;
           }
         }
@@ -264,4 +282,123 @@ exports.Part.prototype.getGridCells = function (nx, ny, lx, ly) {
     return polygonIndices(this.polygon);
   }
   throw new Error("Part: unknown shape.");
+};
+
+// Tests if the specified coordinates are inside the boundary of the Part.
+Part.prototype.contains = function (x, y) {
+  'use strict';
+  return this.shape.contains(x, y);
+};
+
+// Test whether part reflects given Photon p.
+Part.prototype.reflect = function (p, time_step) {
+  'use strict';
+  return p.reflect(this.shape, time_step);
+};
+
+// Test whether part absorbs given Photon p.
+Part.prototype.absorb = function (p) {
+  'use strict';
+  return this.shape.contains(p.x, p.y);
+};
+
+Part.prototype.getIrradiance = function (temperature) {
+  'use strict';
+  var t2;
+  if (this.emissivity === 0) {
+    return 0;
+  }
+  t2 = 273 + temperature;
+  t2 *= t2;
+  return this.emissivity * constants.STEFAN_CONSTANT * UNIT_SURFACE_AREA * t2 * t2;
+};
+
+Part.prototype.radiate = function (model) {
+  'use strict';
+  var
+    // The shape is polygonized and radiateFromLine() is called for each line.
+    poly = this.shape.polygonize(),
+    line = new Line(),
+    i, len;
+  // Must follow the clockwise direction in setting lines.
+  for (i = 0, len = poly.count - 1; i < len; i += 1) {
+    line.x1 = poly.x_coords[i];
+    line.y1 = poly.y_coords[i];
+    line.x2 = poly.x_coords[i + 1];
+    line.y2 = poly.y_coords[i + 1];
+    this.radiateFromLine(model, line);
+  }
+  line.x1 = poly.x_coords[poly.count - 1];
+  line.y1 = poly.y_coords[poly.count - 1];
+  line.x2 = poly.x_coords[0];
+  line.y2 = poly.y_coords[0];
+  this.radiateFromLine(model, line);
+};
+
+Part.prototype.radiateFromLine = function (model, line) {
+  'use strict';
+  var options, length, cos, sin, n, x, y, p, d, vx, vy, vxi, vyi, nray, ir,
+    i, k;
+
+  if (this.emissivity === 0) {
+    return;
+  }
+
+  options = model.getModelOptions();
+  length = hypot(line.x1 - line.x2, line.y1 - line.y2);
+  cos = (line.x2 - line.x1) / length;
+  sin = (line.y2 - line.y1) / length;
+  n = Math.max(1, Math.round(length / RADIATOR_SPACING));
+  vx = options.solar_ray_speed * sin;
+  vy = -options.solar_ray_speed * cos;
+  if (n === 1) {
+    d = 0.5 * length;
+    x = line.x1 + d * cos;
+    y = line.y1 + d * sin;
+    d = model.getAverageTemperatureAt(x, y);
+    if (d > MINIMUM_RADIATING_TEMPERATUE) {
+      d = model.getTemperatureAt(x, y);
+      p = new Photon(x, y, this.getIrradiance(d), options.solar_ray_speed);
+      p.vx = vx;
+      p.vy = vy;
+      model.addPhoton(p);
+      if (!this.constant_temperature) {
+        model.setTemperatureAt(x, y, d - p.energy / this.specific_heat);
+      }
+    }
+  } else {
+    vxi = new Array(4);
+    vyi = new Array(4);
+    vxi[0] = vx * COS30 - vy * SIN30;
+    vyi[0] = vx * SIN30 + vy * COS30;
+    vxi[1] = vy * SIN30 + vx * COS30;
+    vyi[1] = vy * COS30 - vx * SIN30;
+    vxi[2] = vx * COS60 - vy * SIN60;
+    vyi[2] = vx * SIN60 + vy * COS60;
+    vxi[3] = vy * SIN60 + vx * COS60;
+    vyi[3] = vy * COS60 - vx * SIN60;
+    nray = 1 + vxi.length;
+    for (i = 0; i < n; i += 1) {
+      d = (i + 0.5) * RADIATOR_SPACING;
+      x = line.x1 + d * cos;
+      y = line.y1 + d * sin;
+      d = model.getAverageTemperatureAt(x, y);
+      ir = this.getIrradiance(d) / nray;
+      if (d > MINIMUM_RADIATING_TEMPERATUE) {
+        p = new Photon(x, y, ir, options.solar_ray_speed);
+        p.vx = vx;
+        p.vy = vy;
+        model.addPhoton(p);
+        for (k = 0; k < nray - 1; k += 1) {
+          p = new Photon(x, y, ir, options.solar_ray_speed);
+          p.vx = vxi[k];
+          p.vy = vyi[k];
+          model.addPhoton(p);
+        }
+        if (!this.constant_temperature) {
+          model.changeAverageTemperatureAt(x, y, -ir * nray / this.specific_heat);
+        }
+      }
+    }
+  }
 };

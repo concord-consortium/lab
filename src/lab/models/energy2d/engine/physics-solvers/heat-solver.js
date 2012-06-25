@@ -2,7 +2,7 @@
 // JSLint report: OK
 // TODO: fix loops (nx vs ny)
 //
-// lab/models/energy2d/engines/heat-solver.js
+// lab/models/energy2d/engine/physics-solvers/heat-solver.js
 //
 
 var
