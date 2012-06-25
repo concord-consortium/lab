@@ -1,6 +1,10 @@
-md2d = require('../../src/lab/models/md2d/engine/md2d'),
+path       = require('path');
 
-// Adapted from modeler.js in lab project. Refactoring opportunity!
+md2d_engine = path.normalize(path.dirname(require.main.filename) + "/../src/lab/models/md2d/engine");
+
+md2d = require(md2d_engine + '/md2d');
+
+// Adapted from modeler.js in src/lab/models/md2d ... refactoring opportunity!
 createNewCoreModel = function(width, height, elements, config) {
   var coreModel, elemsArray, element, i, ii;
 
