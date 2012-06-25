@@ -98,9 +98,9 @@ Photon.prototype.reflectFromPolygon = function (polygon, time_step) {
   'use strict';
   var
     line = new Line(), // no params, as this object will be reused many times
-    i, n = polygon.count;
+    i, len;
 
-  for (i = 0; i < n - 1; i += 1) {
+  for (i = 0, len = polygon.count - 1; i < len; i += 1) {
     line.x1 = polygon.x_coords[i];
     line.y1 = polygon.y_coords[i];
     line.x2 = polygon.x_coords[i + 1];
@@ -109,8 +109,8 @@ Photon.prototype.reflectFromPolygon = function (polygon, time_step) {
       return true;
     }
   }
-  line.x1 = polygon.x_coords[n - 1];
-  line.y1 = polygon.y_coords[n - 1];
+  line.x1 = polygon.x_coords[polygon.count - 1];
+  line.y1 = polygon.y_coords[polygon.count - 1];
   line.x2 = polygon.x_coords[0];
   line.y2 = polygon.y_coords[0];
   return this.reflectFromLine(line, time_step);

@@ -48,11 +48,6 @@ suite.addBatch({
       var
         dt = 1,
         rectangle = new Rectangle(1, 1, 2, 2);
-      //corner
-      p.x = 2; p.y = 2; p.vx = 1.5; p.vy = 1.5;
-      assert.isTrue(p.reflect(rectangle, dt));
-      assert.equal(p.vx, -1.5);
-      assert.equal(p.vy, -1.5);
       // top
       p.x = 2; p.y = 2.9; p.vx = 0.2; p.vy = -0.2;
       assert.isTrue(p.reflect(rectangle, dt));
@@ -73,6 +68,11 @@ suite.addBatch({
       assert.isTrue(p.reflect(rectangle, dt));
       assert.equal(p.vx, -0.2);
       assert.equal(p.vy, 0.2);
+      //corner
+      p.x = 2; p.y = 2; p.vx = 1.5; p.vy = 1.5;
+      assert.isTrue(p.reflect(rectangle, dt));
+      assert.equal(p.vx, -1.5);
+      assert.equal(p.vy, -1.5);
       // far away
       p.x = 10; p.y = 10; p.vx = 0.2; p.vy = 0.2;
       assert.isFalse(p.reflect(rectangle, dt));
