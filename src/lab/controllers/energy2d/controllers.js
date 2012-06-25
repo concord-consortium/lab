@@ -29,6 +29,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     heatmap_view,
     velocity_view,
     parts_view,
+    photons_view,
     time_view,
     simulation_player_view,
     simulation_description_view,
@@ -54,6 +55,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       heatmap_view = energy2d_scene.getHeatmapView();
       velocity_view = energy2d_scene.getVelocityView();
       parts_view = energy2d_scene.getPartsView();
+      photons_view = energy2d_scene.getPhotonsView();
       time_view = energy2d_scene.getTimeView();
 
       return energy2d_scene;
@@ -97,6 +99,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       }
       heatmap_view.renderHeatmap();
       velocity_view.renderVectormap();
+      photons_view.renderPhotons();
       time_view.renderTime(modeler.getTime());
     };
 
@@ -163,6 +166,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       heatmap_view.bindHeatmap(modeler.getTemperatureArray(), grid_x, grid_y);
       velocity_view.bindVectormap(modeler.getUVelocityArray(), modeler.getVVelocityArray(), grid_x, grid_y, 4);
       parts_view.bindPartsArray(modeler.getPartsArray(), modeler.getWidth(), modeler.getHeight());
+      photons_view.bindPhotonsArray(modeler.getPhotonsArray(), modeler.getWidth(), modeler.getHeight());
 
       heatmap_view.renderHeatmap();
       parts_view.renderParts();
