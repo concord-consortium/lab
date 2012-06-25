@@ -1,7 +1,11 @@
 #!/usr/bin/env coffee
 
-md2dLoader = require './lib/md2d-loader'
 fs         = require 'fs'
+path       = require 'path'
+
+mw_helpers = path.normalize(path.dirname(require.main.filename) + "/../src/mw-helpers")
+
+md2dLoader = require mw_helpers  + '/md2d-loader'
 
 totalTime = 41000  #
 
