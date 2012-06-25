@@ -42,17 +42,17 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 
 ## Examples
 
-### Molecular Modeling Examples:
+### Molecular Modeling Examples
 
 - [Simple Atoms Model](examples/simple-atoms-model/simple-atoms-model.html)
 - [More Complex Atoms Model](examples/complex-atoms-model/complex-atoms-model.html)
 - [Authorable Atoms Model](examples/interactives/interactives.html)
 
-### Energy2D Examples:
+### Energy2D Examples
 
 - [Energy2D Models](examples/energy2d-model/energy2d-model.html)
 
-### Graphing examples:
+### Graphing examples
 
 - [Graphing Samples](examples/grapher/grapher.html)
 - [Digital Signal Processing Samples](experiments/dsp/dsp.html)
