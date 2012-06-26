@@ -8,8 +8,6 @@ notifications:
   email:
     recipients:
       - stephen.bannasch@gmail.com
-      - sfentress@concord.org
-      - rpk@pobox.com
       - janikpiotrek@gmail.com
 language: node_js
 node_js:
