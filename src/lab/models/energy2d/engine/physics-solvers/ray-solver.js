@@ -42,7 +42,7 @@ exports.makeRaySolver = function (model) {
     //
     // Private methods
     //
-    
+
     // TODO: implement something efficient. Linked list?
     cleanupPhotonsArray = function () {
       var i = 0;
@@ -159,19 +159,15 @@ exports.makeRaySolver = function (model) {
 
         for (j = 0, parts_len = parts.length; j < parts_len; j += 1) {
           part = parts[j];
-          if (Math.abs(part.reflection - 1) < 0.001) {
-            if (part.reflect(photon, timestep)) {
-              break;
-            }
-          } else if (Math.abs(part.absorption - 1) < 0.001) {
-            if (part.absorb(photon)) {
-              x = Math.max(Math.min(Math.round(photon.x * idx), nx1), 0);
-              y = Math.max(Math.min(Math.round(photon.y * idy), ny1), 0);
-              q[x * ny + y] = photon.energy * factor;
-              // Remove photon.
-              photons[i] = undefined;
-              break;
-            }
+          if (part.reflect(photon, timestep)) {
+            break;
+          } else if (part.absorb(photon)) {
+            x = Math.max(Math.min(Math.round(photon.x * idx), nx1), 0);
+            y = Math.max(Math.min(Math.round(photon.y * idy), ny1), 0);
+            q[x * ny + y] = photon.energy * factor;
+            // Remove photon.
+            photons[i] = undefined;
+            break;
           }
         }
       }
