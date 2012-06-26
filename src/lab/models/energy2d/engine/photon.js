@@ -76,9 +76,6 @@ Photon.prototype.reflectFromRectangle = function (rectangle, time_step) {
     y1 = rectangle.y + rectangle.height,
     dx, dy;
 
-  if (!rectangle.contains(this.x, this.y)) {
-    return false;
-  }
   dx = this.vx * time_step;
   if (this.x - dx < x0) {
     this.vx = -Math.abs(this.vx);
@@ -91,7 +88,6 @@ Photon.prototype.reflectFromRectangle = function (rectangle, time_step) {
   } else if (this.y - dy > y1) {
     this.vy = Math.abs(this.vy);
   }
-  return true;
 };
 
 Photon.prototype.reflectFromPolygon = function (polygon, time_step) {
@@ -100,33 +96,35 @@ Photon.prototype.reflectFromPolygon = function (polygon, time_step) {
     line = new Line(), // no params, as this object will be reused many times
     i, len;
 
-  if (!polygon.contains(this.x, this.y)) {
-    return false;
-  }
   for (i = 0, len = polygon.count - 1; i < len; i += 1) {
     line.x1 = polygon.x_coords[i];
     line.y1 = polygon.y_coords[i];
     line.x2 = polygon.x_coords[i + 1];
     line.y2 = polygon.y_coords[i + 1];
     if (this.reflectFromLine(line, time_step)) {
-      return true;
+      return;
     }
   }
   line.x1 = polygon.x_coords[polygon.count - 1];
   line.y1 = polygon.y_coords[polygon.count - 1];
   line.x2 = polygon.x_coords[0];
   line.y2 = polygon.y_coords[0];
-  return this.reflectFromLine(line, time_step);
+  this.reflectFromLine(line, time_step);
 };
 
 Photon.prototype.reflect = function (shape, time_step) {
   'use strict';
+  // Check if part contains a photon BEFORE possible polygonization.
+  if (!shape.contains(this.x, this.y)) {
+    return false;
+  }
   // Rectangle also can be polygonized, but for performance reasons
   // use separate method.
   if (shape instanceof Rectangle) {
-    return this.reflectFromRectangle(shape, time_step);
+    this.reflectFromRectangle(shape, time_step);
   }
   // Other shapes (ellipses, rings, polygons) - polygonize() first
   // (polygonize() for polygon returns itself).
-  return this.reflectFromPolygon(shape.polygonize(), time_step);
+  this.reflectFromPolygon(shape.polygonize(), time_step);
+  return true;
 };
