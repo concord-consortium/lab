@@ -436,6 +436,7 @@ energy2d.views.makePhotonsView = function (html_id) {
 
     setCanvasStyle = function () {
       canvas_ctx.strokeStyle = "rgba(255,255,255,128)";
+      canvas_ctx.lineWidth = 0.5;
     },
 
     //
@@ -492,7 +493,7 @@ energy2d.views.makePhotonsView = function (html_id) {
         scale_y = canvas_height / scene_height;
         $photons_canvas.attr('width', canvas_width);
         $photons_canvas.attr('height', canvas_height);
-        
+
         setCanvasStyle();
       }
     };
