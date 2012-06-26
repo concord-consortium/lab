@@ -76,22 +76,22 @@ Photon.prototype.reflectFromRectangle = function (rectangle, time_step) {
     y1 = rectangle.y + rectangle.height,
     dx, dy;
 
-  if (rectangle.contains(this.x, this.y)) {
-    dx = this.vx * time_step;
-    if (this.x - dx < x0) {
-      this.vx = -Math.abs(this.vx);
-    } else if (this.x - dx > x1) {
-      this.vx = Math.abs(this.vx);
-    }
-    dy = this.vy * time_step;
-    if (this.y - dy < y0) {
-      this.vy = -Math.abs(this.vy);
-    } else if (this.y - dy > y1) {
-      this.vy = Math.abs(this.vy);
-    }
-    return true;
+  if (!rectangle.contains(this.x, this.y)) {
+    return false;
   }
-  return false;
+  dx = this.vx * time_step;
+  if (this.x - dx < x0) {
+    this.vx = -Math.abs(this.vx);
+  } else if (this.x - dx > x1) {
+    this.vx = Math.abs(this.vx);
+  }
+  dy = this.vy * time_step;
+  if (this.y - dy < y0) {
+    this.vy = -Math.abs(this.vy);
+  } else if (this.y - dy > y1) {
+    this.vy = Math.abs(this.vy);
+  }
+  return true;
 };
 
 Photon.prototype.reflectFromPolygon = function (polygon, time_step) {
@@ -100,6 +100,9 @@ Photon.prototype.reflectFromPolygon = function (polygon, time_step) {
     line = new Line(), // no params, as this object will be reused many times
     i, len;
 
+  if (!polygon.contains(this.x, this.y)) {
+    return false;
+  }
   for (i = 0, len = polygon.count - 1; i < len; i += 1) {
     line.x1 = polygon.x_coords[i];
     line.y1 = polygon.y_coords[i];
@@ -118,15 +121,12 @@ Photon.prototype.reflectFromPolygon = function (polygon, time_step) {
 
 Photon.prototype.reflect = function (shape, time_step) {
   'use strict';
-  // Line?
-  if (shape instanceof Line) {
-    return this.reflectFromLine(shape, time_step);
-  }
-  // Rectangle? Rectangle can by polygonized, but for performance reasons
+  // Rectangle also can be polygonized, but for performance reasons
   // use separate method.
   if (shape instanceof Rectangle) {
     return this.reflectFromRectangle(shape, time_step);
   }
-  // Other shapes (ellipses, rings) - try to polygonize.
+  // Other shapes (ellipses, rings, polygons) - polygonize() first
+  // (polygonize() for polygon returns itself).
   return this.reflectFromPolygon(shape.polygonize(), time_step);
 };

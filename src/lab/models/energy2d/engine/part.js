@@ -293,13 +293,23 @@ Part.prototype.contains = function (x, y) {
 // Test whether part reflects given Photon p.
 Part.prototype.reflect = function (p, time_step) {
   'use strict';
-  return p.reflect(this.shape, time_step);
+  // Try to reflect when part's reflection equals ~1.
+  if (Math.abs(this.reflection - 1) < 0.001) {
+    return p.reflect(this.shape, time_step);
+  }
+  // Other case.
+  return false;
 };
 
 // Test whether part absorbs given Photon p.
 Part.prototype.absorb = function (p) {
   'use strict';
-  return this.shape.contains(p.x, p.y);
+  // Absorb when absorption equals ~1 and photon is inside part's shape.
+  if (Math.abs(this.absorption - 1) < 0.001) {
+    return this.shape.contains(p.x, p.y);
+  }
+  // Other case.
+  return false;
 };
 
 Part.prototype.getIrradiance = function (temperature) {
@@ -313,6 +323,7 @@ Part.prototype.getIrradiance = function (temperature) {
   return this.emissivity * constants.STEFAN_CONSTANT * UNIT_SURFACE_AREA * t2 * t2;
 };
 
+// Emit photons if part meets radiation conditions.
 Part.prototype.radiate = function (model) {
   'use strict';
   var
@@ -320,6 +331,10 @@ Part.prototype.radiate = function (model) {
     poly = this.shape.polygonize(),
     line = new Line(),
     i, len;
+
+  if (this.emissivity === 0) {
+    return;
+  }
   // Must follow the clockwise direction in setting lines.
   for (i = 0, len = poly.count - 1; i < len; i += 1) {
     line.x1 = poly.x_coords[i];
@@ -335,6 +350,7 @@ Part.prototype.radiate = function (model) {
   this.radiateFromLine(model, line);
 };
 
+// Helper function for radiate() method.
 Part.prototype.radiateFromLine = function (model, line) {
   'use strict';
   var options, length, cos, sin, n, x, y, p, d, vx, vy, vxi, vyi, nray, ir,
@@ -343,7 +359,6 @@ Part.prototype.radiateFromLine = function (model, line) {
   if (this.emissivity === 0) {
     return;
   }
-
   options = model.getModelOptions();
   length = hypot(line.x1 - line.x2, line.y1 - line.y2);
   cos = (line.x2 - line.x1) / length;
