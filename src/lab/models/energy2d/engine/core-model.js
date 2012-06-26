@@ -192,6 +192,7 @@ exports.makeCoreModel = function (model_options) {
         if (opt.sunny) {
           if (indexOfStep % opt.photon_emission_interval === 0) {
             refreshPowerArray();
+            ray_solver.sunShine();
             ray_solver.radiate();
           }
           ray_solver.solve();
