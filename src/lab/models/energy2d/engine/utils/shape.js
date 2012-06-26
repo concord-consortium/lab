@@ -136,6 +136,23 @@ Rectangle.prototype.contains = function (x, y) {
          y >= this.y && y <= this.y + this.height;
 };
 
+// Helper function, used by Ellipse and Ring.
+var polygonizeEllipse = function (x, y, ra, rb, segments) {
+  'use strict';
+  var
+    vx = new Array(segments),
+    vy = new Array(segments),
+    delta = 2 * Math.PI / segments,
+    theta, i;
+
+  for (i = 0; i < segments; i += 1) {
+    theta = delta * i;
+    vx[i] = x + ra * Math.cos(theta);
+    vy[i] = y + rb * Math.sin(theta);
+  }
+  return new Polygon(segments, vx, vy);
+};
+
 //
 // Ellipse.
 // x, y - center
@@ -157,22 +174,8 @@ Ellipse.prototype.POLYGON_SEGMENTS = 50;
 
 Ellipse.prototype.polygonize = function () {
   'use strict';
-  var x, y, ra, rb, vx, vy, line, delta, theta, i, len;
-
   if (!this.polygon_cache) {
-    x = this.x;
-    y = this.y;
-    ra = this.a * 0.5;
-    rb = this.b * 0.5;
-    vx = new Array(this.POLYGON_SEGMENTS);
-    vy = new Array(this.POLYGON_SEGMENTS);
-    delta = 2 * Math.PI / this.POLYGON_SEGMENTS;
-    for (i = 0, len = this.POLYGON_SEGMENTS; i < len; i += 1) {
-      theta = delta * i;
-      vx[i] = x + ra * Math.cos(theta);
-      vy[i] = y + rb * Math.sin(theta);
-    }
-    this.polygon_cache = new Polygon(this.POLYGON_SEGMENTS, vx, vy);
+    this.polygon_cache = polygonizeEllipse(this.x, this.y, this.a * 0.5, this.b * 0.5, this.POLYGON_SEGMENTS);
   }
   return this.polygon_cache;
 };
@@ -210,23 +213,21 @@ Ring.prototype.POLYGON_SEGMENTS = 50;
 // Returns OUTER circle polygonization.
 Ring.prototype.polygonize = function () {
   'use strict';
-  var x, y, r, vx, vy, line, delta, theta, i, len;
-
   if (!this.polygon_cache) {
-    x = this.x;
-    y = this.y;
-    r = this.outer * 0.5;
-    vx = new Array(this.POLYGON_SEGMENTS);
-    vy = new Array(this.POLYGON_SEGMENTS);
-    delta = 2 * Math.PI / this.POLYGON_SEGMENTS;
-    for (i = 0, len = this.POLYGON_SEGMENTS; i < len; i += 1) {
-      theta = delta * i;
-      vx[i] = x + r * Math.cos(theta);
-      vy[i] = y + r * Math.sin(theta);
-    }
-    this.polygon_cache = new Polygon(this.POLYGON_SEGMENTS, vx, vy);
+    this.polygon_cache = polygonizeEllipse(this.x, this.y, this.outer * 0.5, this.outer * 0.5, this.POLYGON_SEGMENTS);
   }
   return this.polygon_cache;
+};
+
+// Returns INNER circle polygonization.
+Ring.prototype.polygonizeInner = function () {
+  'use strict';
+  var x, y, r, vx, vy, line, delta, theta, i, len;
+
+  if (!this.polygon_cache_inner) {
+    this.polygon_cache_inner = polygonizeEllipse(this.x, this.y, this.inner * 0.5, this.inner * 0.5, this.POLYGON_SEGMENTS);
+  }
+  return this.polygon_cache_inner;
 };
 
 Ring.prototype.contains = function (x, y) {
