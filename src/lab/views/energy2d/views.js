@@ -199,28 +199,6 @@ energy2d.views.makePartsView = function (html_id) {
       textures.push($texture_canvas[0]);
     },
 
-    drawEllipse = function (ellipse) {
-      var
-        px = ellipse.x * scale_x,
-        py = ellipse.y * scale_y,
-        pa = ellipse.a * scale_x * 0.5,
-        pb = ellipse.b * scale_y * 0.5,
-        x_pos, y_pos, t;
-
-      canvas_ctx.beginPath();
-      for (t = 0; t < 2 * Math.PI; t += 0.1) {
-        x_pos = px + (pa * Math.cos(t));
-        y_pos = py + (pb * Math.sin(t));
-
-        if (t === 0) {
-          canvas_ctx.moveTo(x_pos, y_pos);
-        } else {
-          canvas_ctx.lineTo(x_pos, y_pos);
-        }
-      }
-      canvas_ctx.closePath();
-    },
-
     drawRectangle = function (rectangle) {
       var
         px = rectangle.x * scale_x - 1,        // "- 1 / + 2" too keep positions
@@ -241,15 +219,16 @@ energy2d.views.makePartsView = function (html_id) {
 
     drawPolygon = function (polygon) {
       var
-        verts = polygon.vertices,
+        x_coords = polygon.x_coords,
+        y_coords = polygon.y_coords,
         label_x = 0,
         label_y = 0,
         i, len;
 
       canvas_ctx.beginPath();
-      canvas_ctx.moveTo(verts[0] * scale_x, verts[1] * scale_y);
+      canvas_ctx.moveTo(x_coords[0] * scale_x, y_coords[0] * scale_y);
       for (i = 1, len = polygon.count; i < len; i += 1) {
-        canvas_ctx.lineTo(verts[i * 2] * scale_x, verts[i * 2 + 1] * scale_y);
+        canvas_ctx.lineTo(x_coords[i] * scale_x, y_coords[i] * scale_y);
       }
       canvas_ctx.closePath();
     },
@@ -342,20 +321,16 @@ energy2d.views.makePartsView = function (html_id) {
             continue;
           }
           // Step 1. Draw path on the canvas.
+          drawPolygon(part.shape.polygonize());
           if (part.rectangle) {
-            drawRectangle(part.rectangle);
-          } else if (part.polygon) {
-            drawPolygon(part.polygon);
-          } else if (part.ellipse) {
-            drawEllipse(part.ellipse);
-          } else if (part.ring) {
-            // Draw a circle, its interior will be deleted later.
-            drawEllipse({
-              x: part.ring.x,
-              y: part.ring.y,
-              a: part.ring.outer,
-              b: part.ring.outer
-            });
+            // Special case for rectangle to draw in the same manner
+            // as original Energy2D.
+            drawRectangle(part.shape);
+          } else {
+            // Polygonize ellipses, rings and... polygons
+            // (which returns itself when polygonize() is called).
+            // Polygonize for rings returns OUTER circle.
+            drawPolygon(part.shape.polygonize());
           }
           // Step 2. Fill.
           if (part.filled) {
@@ -372,12 +347,7 @@ energy2d.views.makePartsView = function (html_id) {
 
           // Step 4. Special case for rings, remove inner circle.
           if (part.ring) {
-            drawEllipse({
-              x: part.ring.x,
-              y: part.ring.y,
-              a: part.ring.inner,
-              b: part.ring.inner
-            });
+            drawPolygon(part.shape.polygonizeInner());
             last_composite_op = canvas_ctx.globalCompositeOperation;
             canvas_ctx.globalCompositeOperation = 'destination-out';
             canvas_ctx.fill();
