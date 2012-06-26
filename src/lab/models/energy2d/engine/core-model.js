@@ -73,6 +73,10 @@ exports.makeCoreModel = function (model_options) {
     fluidSolver,
     ray_solver,
 
+    // Optimization flags.
+    radiative,
+    has_part_power,
+
     //
     // Simulation arrays:
     //
@@ -169,12 +173,14 @@ exports.makeCoreModel = function (model_options) {
         for (j = 0; j < ny; j += 1) {
           y = j * delta_y;
           q[iny + j] = 0;
-          for (k = 0, len = parts.length; k < len; k += 1) {
-            part = parts[k];
-            if (part.power !== 0 && part.shape.contains(x, y)) {
-              // No overlap of parts will be allowed.
-              q[iny + j] = part.getPower();
-              break;
+          if (has_part_power) {
+            for (k = 0, len = parts.length; k < len; k += 1) {
+              part = parts[k];
+              if (part.power !== 0 && part.shape.contains(x, y)) {
+                // No overlap of parts will be allowed.
+                q[iny + j] = part.getPower();
+                break;
+              }
             }
           }
         }
@@ -189,10 +195,12 @@ exports.makeCoreModel = function (model_options) {
       // Performs next step of a simulation.
       // !!!
       nextStep: function () {
-        if (opt.sunny) {
+        if (radiative) {
           if (indexOfStep % opt.photon_emission_interval === 0) {
             refreshPowerArray();
-            ray_solver.sunShine();
+            if (opt.sunny) {
+              ray_solver.sunShine();
+            }
             ray_solver.radiate();
           }
           ray_solver.solve();
@@ -363,6 +371,30 @@ exports.makeCoreModel = function (model_options) {
   heatSolver = heatsolver.makeHeatSolver(core_model);
   fluidSolver = fluidsolver.makeFluidSolver(core_model);
   ray_solver = raysolver.makeRaySolver(core_model);
+
+  // Setup optimization flags.
+  radiative = (function () {
+    var i, len;
+    if (opt.sunny) {
+      return true;
+    }
+    for (i = 0, len = parts.length; i < len; i += 1) {
+      if (parts[i].emissivity > 0) {
+        return true;
+      }
+    }
+    return false;
+  }());
+
+  has_part_power = (function () {
+    var i, len;
+    for (i = 0, len = parts.length; i < len; i += 1) {
+      if (parts[i].power > 0) {
+        return true;
+      }
+    }
+    return false;
+  }());
 
   setupMaterialProperties();
 

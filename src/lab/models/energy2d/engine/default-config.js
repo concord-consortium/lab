@@ -38,12 +38,12 @@ exports.DEFAULT_VALUES = {
     "measurement_interval": 500,        // unnecessary
     "viewupdate_interval": 100,         // unnecessary
     "stoptime": undefined,              // unnecessary
-    "sunny": true,                      // unnecessary (ray solver not implemented)
-    "sun_angle": 1.5707964,             // unnecessary (ray solver not implemented)
-    "solar_power_density": 2000,        // unnecessary (ray solver not implemented)
-    "solar_ray_count": 24,              // unnecessary (ray solver not implemented)
-    "solar_ray_speed": 0.1,             // unnecessary (ray solver not implemented)
-    "photon_emission_interval": 20,     // unnecessary (ray solver not implemented)
+    "sunny": false,
+    "sun_angle": 1.5707964,
+    "solar_power_density": 2000,
+    "solar_ray_count": 24,
+    "solar_ray_speed": 0.1,
+    "photon_emission_interval": 20,
 
     "structure": undefined
     // Structure can be undefined.
@@ -65,10 +65,10 @@ exports.DEFAULT_VALUES = {
     "thermal_conductivity": 1,
     "specific_heat": 1300,
     "density": 25,
-    "transmission": 0,  // unnecessary, optical properties (not implemented)    
-    "reflection": 0,    // unnecessary, optical properties (not implemented)
-    "absorption": 1,    // unnecessary, optical properties (not implemented)
-    "emissivity": 0,    // unnecessary, optical properties (not implemented)
+    "transmission": 0,
+    "reflection": 0,
+    "absorption": 1,
+    "emissivity": 0,
     "temperature": 0,
     "constant_temperature": false,
     "power": 0,
