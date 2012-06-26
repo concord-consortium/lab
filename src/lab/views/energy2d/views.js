@@ -275,7 +275,7 @@ energy2d.views.makePartsView = function (html_id) {
         if (typeof part.color === 'string') {
           color = part.color;
         } else {
-          color = part.color.toString(16);
+          color = part.color.toString();
           while (color.length < 6) {
             color = '0' + color;
           }
