@@ -24,23 +24,23 @@ suite.addBatch({
         line = new Line(1, 1, 10, 1);
       // top
       p.x = 5; p.y = 0.9; p.vx = 0.2; p.vy = -0.2;
-      assert.isTrue(p.reflect(line, dt));
+      assert.isTrue(p.reflectFromLine(line, dt));
       assert.equal(p.vx, 0.2);
       assert.equal(p.vy, 0.2);
       // bottom
       p.x = 2; p.y = 1.1; p.vx = 0.2; p.vy = 0.2;
-      assert.isTrue(p.reflect(line, dt));
+      assert.isTrue(p.reflectFromLine(line, dt));
       assert.equal(p.vx, 0.2);
       assert.equal(p.vy, -0.2);
       // another line
       line = new Line(1, 1, 10, 10);
       p.x = 5.1; p.y = 5; p.vx = 0.2; p.vy = 0.0;
-      assert.isTrue(p.reflect(line, dt));
+      assert.isTrue(p.reflectFromLine(line, dt));
       assert.inDelta(p.vx, 0.0, err_delta);
       assert.inDelta(p.vy, 0.2, err_delta);
       // far away
       p.x = 50; p.y = 25; p.vx = 0.2; p.vy = 0.2;
-      assert.isFalse(p.reflect(line, dt));
+      assert.isFalse(p.reflectFromLine(line, dt));
       assert.equal(p.vx, 0.2);
       assert.equal(p.vy, 0.2);
     },

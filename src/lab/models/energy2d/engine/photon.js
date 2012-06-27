@@ -118,13 +118,15 @@ Photon.prototype.reflect = function (shape, time_step) {
   if (!shape.contains(this.x, this.y)) {
     return false;
   }
-  // Rectangle also can be polygonized, but for performance reasons
-  // use separate method.
+
   if (shape instanceof Rectangle) {
+    // Rectangle also can be polygonized, but for performance reasons
+    // use separate method.
     this.reflectFromRectangle(shape, time_step);
+  } else {
+    // Other shapes (ellipses, rings, polygons) - polygonize() first
+    // (polygonize() for polygon returns itself).
+    this.reflectFromPolygon(shape.polygonize(), time_step);
   }
-  // Other shapes (ellipses, rings, polygons) - polygonize() first
-  // (polygonize() for polygon returns itself).
-  this.reflectFromPolygon(shape.polygonize(), time_step);
   return true;
 };
