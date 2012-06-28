@@ -103,7 +103,7 @@ jars.each do |jar_path|
     unless @nosign
       puts "\nsigning:\n  #{path}/#{name}"
       if CONFIG[:java][:keystore_path]
-        cmd("jarsigner -storepass #{CONFIG[:password]} -keystore #{File.join(PROJECT_ROOT, CONFIG[:java][:keystore_path])}  #{name} #{CONFIG[:alias]}")
+        cmd("jarsigner -storepass #{CONFIG[:password]} -keystore #{File.join(PROJECT_ROOT, CONFIG[:java][:keystore_path])}  #{name} #{CONFIG[:java][:alias]}")
       else
         cmd("jarsigner -storepass #{CONFIG[:password]} #{name} #{CONFIG[:alias]}")
       end
