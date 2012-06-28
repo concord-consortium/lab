@@ -11,9 +11,9 @@ notifications:
       - sfentress@concord.org
       - rpk@pobox.com
       - janikpiotrek@gmail.com
-language: node_js
-node_js:
-  - 0.6
+language: ruby
+rvm:
+  - 1.9.3
 before_script:
   - bundle install --binstubs
   - make clean; make
