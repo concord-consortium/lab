@@ -18,6 +18,8 @@ JAR_MANIFEST_PATH        = File.join(CONFIG_PATH, 'manifest-jar')
 SIGNED_JAR_MANIFEST_PATH = File.join(CONFIG_PATH, 'manifest-signed-jar')
 JAR_SERVICES_DIR         = File.join(CONFIG_PATH, 'services')
 
+CONFIG_JAVA = CONFIG_JAVA
+
 def cmd(command)
   if @cmd_logging
     cmd_log = command.gsub(/-storepass\s+\S+/, '-storepass ******')
@@ -28,10 +30,10 @@ end
 
 keystore = ""
 
-if CONFIG[:java][:keystore_path]
-  keystore = `keytool -list -v -keystore #{File.join(PROJECT_ROOT, CONFIG[:java][:keystore_path])} -storepass #{CONFIG[:java][:password]}`
+if CONFIG_JAVA[:keystore_path]
+  keystore = `keytool -list -v -keystore #{File.join(PROJECT_ROOT, CONFIG_JAVA[:keystore_path])} -storepass #{CONFIG_JAVA[:password]}`
 else
-  keystore = `keytool -list -v -storepass #{CONFIG[:java][:password]}`
+  keystore = `keytool -list -v -storepass #{CONFIG_JAVA[:password]}`
 end
 keystore_expires = keystore[/until:\s(.*)/, 1]
 
@@ -47,7 +49,7 @@ else
 
     Java Code Siging Certificate Keystore:
 
-      Alias:   #{CONFIG[:java][:alias]}
+      Alias:   #{CONFIG_JAVA[:alias]}
       Expires: #{keystore_expires}
   HEREDOC
 end
@@ -102,10 +104,10 @@ jars.each do |jar_path|
     cmd("pack200 --repack --segment-limit=-1 #{name}")
     unless @nosign
       puts "\nsigning:\n  #{path}/#{name}"
-      if CONFIG[:java][:keystore_path]
-        cmd("jarsigner -storepass #{CONFIG[:password]} -keystore #{File.join(PROJECT_ROOT, CONFIG[:java][:keystore_path])}  #{name} #{CONFIG[:java][:alias]}")
+      if CONFIG_JAVA[:keystore_path]
+        cmd("jarsigner -storepass #{CONFIG_JAVA[:password]} -keystore #{File.join(PROJECT_ROOT, CONFIG_JAVA[:keystore_path])}  #{name} #{CONFIG_JAVA[:alias]}")
       else
-        cmd("jarsigner -storepass #{CONFIG[:password]} #{name} #{CONFIG[:alias]}")
+        cmd("jarsigner -storepass #{CONFIG_JAVA[:password]} #{name} #{CONFIG_JAVA[:alias]}")
       end
       puts "\nverifying:\n  #{path}/#{name}\n"
       cmd("jarsigner -verify #{name}")
