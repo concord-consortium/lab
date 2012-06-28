@@ -18,7 +18,7 @@ JAR_MANIFEST_PATH        = File.join(CONFIG_PATH, 'manifest-jar')
 SIGNED_JAR_MANIFEST_PATH = File.join(CONFIG_PATH, 'manifest-signed-jar')
 JAR_SERVICES_DIR         = File.join(CONFIG_PATH, 'services')
 
-CONFIG_JAVA = CONFIG_JAVA
+CONFIG_JAVA = CONFIG[:java]
 
 def cmd(command)
   if @cmd_logging
