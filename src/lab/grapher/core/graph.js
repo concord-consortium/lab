@@ -384,6 +384,7 @@ grapher.graph = function(elem, options, message) {
 
     function notify(mesg) {
       // add Chart Notification
+      message = mesg;
       if (mesg) {
         notification.text(mesg);
       } else {
