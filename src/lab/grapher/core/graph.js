@@ -802,7 +802,7 @@ grapher.graph = function(elem, options, message) {
     var domain = xScale.domain(),
         xextent = domain[1] - domain[0],
         shift = xextent * 0.8;
-    points = _;
+    options.points = points = _;
     if (points.length > domain[1]) {
       domain[0] += shift;
       domain[1] += shift;
