@@ -28,3 +28,6 @@
 [submodule "src/vendor/dsp.js"]
 	path = src/vendor/dsp.js
 	url = git://github.com/concord-consortium/dsp.js.git
+[submodule "src/vendor/d3-plugins"]
+	path = src/vendor/d3-plugins
+	url = git://github.com/d3/d3-plugins.git

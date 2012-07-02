@@ -21,21 +21,22 @@ are in the specific folders included in the `src/vendor/` directory.
 Here is a list of projects and resources included in the in the `src/vendor/` directory and licenses:
 
 1.  [D3](http://d3js.org/): [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-2.  [hijs](https://github.com/cloudhead/hijs): [MIT](http://www.opensource.org/licenses/MIT) 
-3.  [jQuery](https://github.com/jquery/jquery): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+2.  [D3-plugins](https://github.com/d3/d3-plugins): [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
+3.  [hijs](https://github.com/cloudhead/hijs): [MIT](http://www.opensource.org/licenses/MIT) 
+4.  [jQuery](https://github.com/jquery/jquery): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
-4.  [jQuery-UI](https://github.com/jquery/jquery-ui): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+5.  [jQuery-UI](https://github.com/jquery/jquery-ui): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
-5.  [MathJax](https://github.com/mathjax/MathJax): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
-6.  [Modernizr](https://github.com/Modernizr/Modernizr): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+6.  [MathJax](https://github.com/mathjax/MathJax): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
+7.  [Modernizr](https://github.com/Modernizr/Modernizr): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-7.  [science.js](https://github.com/jasondavies/science.js): [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-8.  [sizzle](): triple-licensed under the [MIT](http://www.opensource.org/licenses/MIT),
+8.  [science.js](https://github.com/jasondavies/science.js): [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
+9.  [sizzle](): triple-licensed under the [MIT](http://www.opensource.org/licenses/MIT),
     [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause), and
     [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
-9.  [OpenSans Font](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
-10. [dsp.js](https://github.com/corbanbrook/dsp.js): [MIT](http://www.opensource.org/licenses/MIT)
-11. [Codemirror2](https://github.com/marijnh/CodeMirror2): [MIT](http://www.opensource.org/licenses/MIT)
+10.  [OpenSans Font](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
+11. [dsp.js](https://github.com/corbanbrook/dsp.js): [MIT](http://www.opensource.org/licenses/MIT)
+12. [Codemirror2](https://github.com/marijnh/CodeMirror2): [MIT](http://www.opensource.org/licenses/MIT)
     Codemirror2 includes a number of modules from third parties. All of the modules are licensed under either the MIT or BSD
     license except for the following which are excluded during the Make process where resources from `src/vendor/` are
     generated and copied to `server/public/vendor/`.

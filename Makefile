@@ -193,6 +193,7 @@ server/public/resources:
 
 server/public/vendor: \
 	server/public/vendor/d3 \
+	server/public/vendor/d3-plugins \
 	server/public/vendor/jquery \
 	server/public/vendor/jquery-ui \
 	server/public/vendor/science.js \
@@ -216,6 +217,13 @@ server/public/vendor/d3:
 	cp src/vendor/d3/d3*.js server/public/vendor/d3
 	cp src/vendor/d3/LICENSE server/public/vendor/d3/LICENSE
 	cp src/vendor/d3/README.md server/public/vendor/d3/README.md
+
+server/public/vendor/d3-plugins:
+	mkdir -p server/public/vendor/d3-plugins/cie
+	cp src/vendor/d3-plugins/LICENSE server/public/vendor/d3-plugins/LICENSE
+	cp src/vendor/d3-plugins/README.md server/public/vendor/d3-plugins/README.md
+	cp src/vendor/d3-plugins/cie/*.js server/public/vendor/d3-plugins/cie
+	cp src/vendor/d3-plugins/cie/README.md server/public/vendor/d3-plugins/cie/README.md
 
 server/public/vendor/jquery: src/vendor/jquery/jquery.min.js
 	mkdir -p server/public/vendor/jquery
