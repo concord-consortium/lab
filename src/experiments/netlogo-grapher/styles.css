@@ -9,6 +9,52 @@ h1 { font-size: 1.2em;
   font-weight: bold; }
 hr { margin: 2em 0em; }
 p { max-width: 600px; }
+
+.top {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  -webkit-box-orient: inline-axis;
+  -moz-box-orient: inline-axis;
+  box-orient: inline-axis;
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  box-pack: start;
+  -webkit-box-align: stretch;
+  -moz-box-align: stretch;
+  box-align: stretch;
+  margin-top: 0.5em; }
+
+.component_group {
+  display: block; }
+
+#appletwrapper {
+  display: inline-box;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  position: relative;
+  margin: 0.5em 1em;
+  width: 25em; }
+
+#graph-list {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  -webkit-box-orient: inline-axis;
+  -moz-box-orient: inline-axis;
+  box-orient: inline-axis;
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  box-pack: start;
+  -webkit-box-align: stretch;
+  -moz-box-align: stretch;
+  box-align: stretch;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  box-orient: vertical;
+  position: relative; }
+
 table { border: 1px solid gray;
   border-spacing: 0px;
   border-collapse: collapse;
@@ -78,7 +124,7 @@ applet {
   -webkit-border-radius: 5px;
   border-radius: 5px; }
 
-#chart {
+.chart {
   background-color: #f9eec1;
   width: 580px;
   height: 515px;
