@@ -11,6 +11,7 @@ grapher.graph = function(elem, options, message) {
 
   var svg, vis, plot, viewbox,
       title, xlabel, ylabel, xtic, ytic,
+      points,
       notification,
       padding, size,
       xScale, yScale, xValue, yValue, line,
@@ -652,6 +653,7 @@ grapher.graph = function(elem, options, message) {
     graph.redraw = redraw;
     graph.update = update;
     graph.notify = notify;
+    graph.points = points;
     graph.initialize = initialize;
     graph.updateXScale = updateXScale;
     graph.updateYScale = updateYScale;
