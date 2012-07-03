@@ -32,7 +32,7 @@
       <div id='description-right'>
       	<h2>Initial test. </h2>
       	<p>Write data to the texture, read it using FLOAT to RGBA shader, compare result with the initial data.</p>
-	      <p>error: <span id="init-error"></span> %</p>
+	      <p>average difference between CPU and GPU value: <span id="init-error"></span> %</p>
 	      <p>reading a floating point texture: <span id="init-read-time"> </span> ms</p>
 	
       	<h2>Continuous test. </h2>
@@ -45,7 +45,8 @@
 	      <li>reading a floating point texture: <span id="read-time"> </span> ms</li>
 	    </ul>
 	     
-	    <p>Each 10 steps, CPU and GPU data is being compared. Error: <span id="error"></span> %</p>
+	    <p>Each 10 steps, CPU and GPU data is being compared.</p>
+	    <p>Average difference between CPU and GPU value: <span id="error"></span> %</p>
 	    
 	    <h2>Parameters</h2>
 	    <ul>
