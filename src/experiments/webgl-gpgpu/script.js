@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     TEX_WIDTH = 128,
     TEX_HEIGHT = 128,
-    RANGE = 10e16,
+    RANGE = 1000,
 
     plane,
     textureA,
@@ -55,7 +55,7 @@ $(document).ready(function () {
         varying vec2 coord;\
         void main() {\
           vec4 data = texture2D(texture, coord);\
-          /* calculate average neighbor height */\
+          /* calculate average neighbor value */\
           vec2 dx = vec2(delta.x, 0.0);\
           vec2 dy = vec2(0.0, delta.y);\
           float average = (\
@@ -135,10 +135,10 @@ $(document).ready(function () {
       // Plane from -1 do 1 (x and y) with texture coordinates.
       plane = GL.Mesh.plane({ coords: true });
       // Two textures used for simple simulation. They have only one component (type: 32-bit float).
-      textureA = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.FLOAT, format: gl.LUMINANCE });
-      textureB = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.FLOAT, format: gl.LUMINANCE });
+      textureA = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.FLOAT, format: gl.LUMINANCE, filter: gl.NEAREST });
+      textureB = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.FLOAT, format: gl.LUMINANCE, filter: gl.NEAREST });
       // Texture used for reading data from GPU.
-      outputTexture = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.UNSIGNED_BYTE, format: gl.RGBA });
+      outputTexture = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.NEAREST });
       outputStorage = new Uint8Array(TEX_WIDTH * TEX_HEIGHT * 4);
 
       // !!! Workaround for the bug: http://code.google.com/p/chromium/issues/detail?id=125481 !!!
@@ -224,9 +224,9 @@ $(document).ready(function () {
     compareGPUAndCPUResults = function () {
       var error = 0.0, i, len;
       for (i = 0, len = TEX_WIDTH * TEX_HEIGHT; i < len; i += 1) {
-        error += Math.abs(data[i] - outputConverted[i]) / len;
+        error += Math.abs((data[i] - outputConverted[i]) / data[i]) * 100; // %
       }
-      return error / RANGE;
+      return error / len;
     },
 
     getTime = function () {
@@ -258,7 +258,7 @@ $(document).ready(function () {
 
     onDrawCallback = function () {
       var time;
-
+      
       step += 1;
       $('#step').text(step);
       time = getTime();
@@ -268,8 +268,7 @@ $(document).ready(function () {
       simulationStepCPU();
       cpuTime += getTime() - time;
       time = getTime();
-      //simulationStepGPU();
-      writeTexture(textureA, data);
+      simulationStepGPU();
       gpuTime += getTime() - time;
       time = getTime();
       readTexture(textureA);
