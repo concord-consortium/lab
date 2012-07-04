@@ -25,7 +25,7 @@ $(document).ready(function () {
     cpuTime,
     gpuTime,
     readTime,
-    statsInterval = 10,
+    statsInterval = 5,
 
     renderShader = new GL.Shader('\
       varying vec2 coord;\
@@ -247,36 +247,39 @@ $(document).ready(function () {
 
     updateStats = function () {
       $('#error').text(compareGPUAndCPUResults());
-      $('#render-time').text((renderTime / statsInterval).toFixed(1));
-      $('#cpu-time').text((cpuTime / statsInterval).toFixed(1));
-      $('#gpu-time').text((gpuTime / statsInterval).toFixed(1));
-      $('#read-time').text((readTime / statsInterval).toFixed(1));
-
-      renderTime = 0;
-      cpuTime = 0;
-      gpuTime = 0;
-      readTime = 0;
+      $('#render-time').text((renderTime).toFixed(1));
+      $('#cpu-time').text((cpuTime).toFixed(1));
+      $('#gpu-time').text((gpuTime).toFixed(1));
+      $('#read-time').text((readTime).toFixed(1));
     },
 
     onDrawCallback = function () {
-      var time;
+      var time, diff;
       
-      step += 1;
       $('#step').text(step);
+      
+      // Measure time in the first (=== 0) step differently.
       time = getTime();
       render();
-      renderTime += getTime() - time;
+      diff = getTime() - time;
+      renderTime = step ? renderTime * 0.95 + diff * 0.05 : diff;
       time = getTime();
       simulationStepCPU();
-      cpuTime += getTime() - time;
+      diff = getTime() - time;
+      cpuTime = step ? cpuTime * 0.95 + diff * 0.05 : diff;
       time = getTime();
       simulationStepGPU();
-      gpuTime += getTime() - time;
+      diff = getTime() - time;
+      gpuTime = step ? gpuTime * 0.95 + diff * 0.05 : diff;
       time = getTime();
       readTexture(textureA);
-      readTime += getTime() - time;
+      diff = getTime() - time;
+      readTime = step ? readTime * 0.95 + diff * 0.05 : diff;
+      
       if (step % statsInterval === 0) 
         updateStats();
+
+      step += 1;
     };
 
   $('#grid-res').change(function () {
