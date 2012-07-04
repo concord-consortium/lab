@@ -4,7 +4,7 @@ Piotr Janik
 
 $(document).ready(function () {
   var
-    gl = GL.create(),
+    gl = GL.create({ alpha: true }),
 
     TEX_WIDTH = 128,
     TEX_HEIGHT = 128,
