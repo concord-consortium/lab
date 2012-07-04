@@ -1,3 +1,4 @@
+/*jshint multistr: true */
 /* Author: 
 Piotr Janik
 */
@@ -180,7 +181,7 @@ $(document).ready(function () {
       textureA.bind(0);
       renderShader.uniforms({
         texture: 0,
-        range: RANGE,
+        range: RANGE
       }).draw(plane);
       textureA.unbind(0);
     },
