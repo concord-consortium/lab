@@ -30,35 +30,44 @@
 	  </div>
       
       <div id='description-right'>
-      	<h2>Initial test. </h2>
-      	<p>Write data to the texture, read it using FLOAT to RGBA shader, compare result with the initial data.</p>
-	      <p>average difference between CPU and GPU value: <span id="init-error"></span> %</p>
-	      <p>reading a floating point texture: <span id="init-read-time"> </span> ms</p>
+      	<h2>Initial test - writing and reading of random data. </h2>
+        <p>Its purpose is to check if simple transfer of random data to the GPU memory and reading it back to the main memory introduce some numeric errors.
+      	   These errors can occur, as WebGL does not provide any convenient function for reading floating point textures. <i>readPixels</i> function is limited to the RGBA format and the UNSIGNED_BYTE type (see: <a href="http://www.khronos.org/registry/webgl/specs/latest/#5.14.12">WebGL specification</a>).
+           A workaround for this problem is to create a special GLSL shader which packs each Float value into four Unsigned Byte components (RGBA). 
+           The biggest drawback of this solution is a performance overhead and possible numeric errors. If you are interested how it works, look at the <i>encodeShader</i>
+           in the <a href="script.js"><i>script.js</i></a>.<p>
+           <p>This test consists of writing random data to the texture, conversion from Float to Unsigned Byte, reading of data using <i>readPixels</i> and a final comparison of received values with the initial data.</p>
+        <p>Results:</p>
+        <ul>
+	      <li>average difference between CPU and GPU value after conversion and transfer: <span id="init-error"></span> %</li>
+	      <li>reading a floating point texture time: <span id="init-read-time"> </span> ms</li>
+        </ul>
 	
-      	<h2>Continuous test. </h2>
-	    <p>step: <span id="step"></span> </p>
-	    <p>One step consists of:</p>
-	    <ul>
-	      <li>rendering of the data: <span id="render-time"> </span> ms</li>
-	      <li>CPU calculations: <span id="cpu-time"> </span> ms</li>
-	      <li>GPU calculations: <span id="gpu-time"> </span> ms</li>
-	      <li>reading a floating point texture: <span id="read-time"> </span> ms</li>
-	    </ul>
-	     
-	    <p>Each 10 steps, CPU and GPU data is being compared.</p>
-	    <p>Average difference between CPU and GPU value: <span id="error"></span> %</p>
-	    
-	    <h2>Parameters</h2>
-	    <ul>
-	    <li>Grid resolution:
-	    <select id="grid-res">
-	    	<option value="128">128x128</option>
-	    	<option value="256" selected="selected">256x256</option>
-	    	<option value="512">512x512</option>
-	    	<option value="1024">1024x1024</option>
-	    </select>
-	    </li>
-	    </ul>
+      	<h2>Continuous test - simple simulation.</h2>
+        <p>This test is mainly focused on the measurement of different operations which are connected with GPGPU calculations.</p>
+  	    <p>One step consists of:</p>
+  	    <ul>
+  	      <li>rendering of the data: <span id="render-time"> </span> ms</li>
+  	      <li>simple CPU calculations: <span id="cpu-time"> </span> ms</li>
+  	      <li>simple GPU calculations: <span id="gpu-time"> </span> ms</li>
+  	      <li>reading a floating point texture: <span id="read-time"> </span> ms</li>
+  	    </ul>
+        <p>Step: <span id="step"></span> </p>
+  	     
+  	    <p>Each 10 steps, CPU and GPU data is being compared.</p>
+  	    <p>Average difference between CPU and GPU value: <span id="error"></span> %</p>
+  	    
+  	    <h2>Parameters</h2>
+  	    <ul>
+  	    <li>Grid resolution:
+  	    <select id="grid-res">
+  	    	<option value="128">128x128</option>
+  	    	<option value="256" selected="selected">256x256</option>
+  	    	<option value="512">512x512</option>
+  	    	<option value="1024">1024x1024</option>
+  	    </select>
+  	    </li>
+  	    </ul>
       </div>
     </div>
     <script src='script.js' type='text/javascript'></script>
