@@ -4,7 +4,7 @@ Piotr Janik
 
 $(document).ready(function () {
   var
-    gl = GL.create(),
+    gl = GL.create({ alpha: true }),
 
     TEX_WIDTH = 128,
     TEX_HEIGHT = 128,
@@ -25,7 +25,6 @@ $(document).ready(function () {
     cpuTime,
     gpuTime,
     readTime,
-
     statsInterval = 10,
 
     renderShader = new GL.Shader('\
@@ -39,7 +38,7 @@ $(document).ready(function () {
         uniform float range;\
         varying vec2 coord;\
         void main() {\
-          gl_FragColor = vec4(texture2D(texture, coord).r / range, 0.2, 1.0 - texture2D(texture, coord).r / range, 1.0);\
+          gl_FragColor = vec4(texture2D(texture, coord).r / range, 0.0, 1.0 - texture2D(texture, coord).r / range, 1.0);\
         }\
       '),
 
@@ -64,8 +63,8 @@ $(document).ready(function () {
             texture2D(texture, coord + dx).r +\
             texture2D(texture, coord + dy).r\
           ) * 0.25;\
-          float r = data.r + (average - data.r) * 0.5;\
-          gl_FragColor = vec4(r);\
+          data += (average - data.r) * 0.5;\
+          gl_FragColor = data;\
         }\
       '),
 
@@ -120,11 +119,10 @@ $(document).ready(function () {
       '),
 
     init = function () {
-      var i, j, idx;
-
+      var dataGPU, i, len;
       // Init WebGL context.
       if (!gl.getExtension('OES_texture_float')) {
-        throw new Error('This demo requires the OES_texture_float extension');
+        throw new Error('This sddemo requires the OES_texture_float extension');
       }
 
       gl.canvas.width = 512;
@@ -134,9 +132,11 @@ $(document).ready(function () {
 
       // Plane from -1 do 1 (x and y) with texture coordinates.
       plane = GL.Mesh.plane({ coords: true });
-      // Two textures used for simple simulation. They have only one component (type: 32-bit float).
-      textureA = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.FLOAT, format: gl.LUMINANCE, filter: gl.NEAREST });
-      textureB = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.FLOAT, format: gl.LUMINANCE, filter: gl.NEAREST });
+      // Two textures used for simple simulation. 
+      // Do not use only single component textures (ALPHA/LUMINANCE), as they cause problems on some GPUs 
+      // (when used as render targets).
+      textureA = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.FLOAT, format: gl.RGBA, filter: gl.NEAREST });
+      textureB = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.FLOAT, format: gl.RGBA, filter: gl.NEAREST });
       // Texture used for reading data from GPU.
       outputTexture = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.NEAREST });
       outputStorage = new Uint8Array(TEX_WIDTH * TEX_HEIGHT * 4);
@@ -148,16 +148,18 @@ $(document).ready(function () {
 
       // Init data. Draw simple rectangle in the center.
       data = new Float32Array(TEX_WIDTH * TEX_HEIGHT);
-      for (i = 0; i < TEX_HEIGHT; i += 1) {
-        for (j = 0; j < TEX_WIDTH; j += 1) {
-          idx = i * TEX_WIDTH + j;
-          data[idx] = Math.random() * RANGE;
-        }
+      dataGPU = new Float32Array(TEX_WIDTH * TEX_HEIGHT * 4);
+      for (i = 0, len = TEX_WIDTH * TEX_HEIGHT; i < len; i += 1) {
+        data[i] = Math.random() * RANGE;
+        dataGPU[4 * i] = data[i];
+        dataGPU[4 * i + 1] = 0;
+        dataGPU[4 * i + 2] = 0;
+        dataGPU[4 * i + 3] = 0;
       }
       // No need to initialize temp data now.
       dataTmp = new Float32Array(TEX_WIDTH * TEX_HEIGHT);
 
-      writeTexture(textureA, data);
+      writeTexture(textureA, dataGPU);
       
       // Stats.
       step = 0;
