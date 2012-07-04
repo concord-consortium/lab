@@ -25,7 +25,6 @@ $(document).ready(function () {
     cpuTime,
     gpuTime,
     readTime,
-
     statsInterval = 10,
 
     renderShader = new GL.Shader('\
@@ -39,7 +38,7 @@ $(document).ready(function () {
         uniform float range;\
         varying vec2 coord;\
         void main() {\
-          gl_FragColor = vec4(texture2D(texture, coord).a / range, 0.0, 1.0 - texture2D(texture, coord).a / range, 1.0);\
+          gl_FragColor = vec4(texture2D(texture, coord).r / range, 0.0, 1.0 - texture2D(texture, coord).r / range, 1.0);\
         }\
       '),
 
@@ -59,12 +58,12 @@ $(document).ready(function () {
           vec2 dx = vec2(delta.x, 0.0);\
           vec2 dy = vec2(0.0, delta.y);\
           float average = (\
-            texture2D(texture, coord - dx).a +\
-            texture2D(texture, coord - dy).a +\
-            texture2D(texture, coord + dx).a +\
-            texture2D(texture, coord + dy).a\
+            texture2D(texture, coord - dx).r +\
+            texture2D(texture, coord - dy).r +\
+            texture2D(texture, coord + dx).r +\
+            texture2D(texture, coord + dy).r\
           ) * 0.25;\
-          data += (average - data.a) * 0.5;\
+          data += (average - data.r) * 0.5;\
           gl_FragColor = data;\
         }\
       '),
@@ -115,11 +114,12 @@ $(document).ready(function () {
         }\
         void main() {\
           vec4 data = texture2D(texture, coord);\
-          gl_FragColor = encode_float(data.a);\
+          gl_FragColor = encode_float(data.r);\
         }\
       '),
 
     init = function () {
+      var dataGPU, i, len;
       // Init WebGL context.
       if (!gl.getExtension('OES_texture_float')) {
         throw new Error('This sddemo requires the OES_texture_float extension');
@@ -132,9 +132,11 @@ $(document).ready(function () {
 
       // Plane from -1 do 1 (x and y) with texture coordinates.
       plane = GL.Mesh.plane({ coords: true });
-      // Two textures used for simple simulation. They have only one component (type: 32-bit float).
-      textureA = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.FLOAT, format: gl.ALPHA, filter: gl.NEAREST });
-      textureB = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.FLOAT, format: gl.ALPHA, filter: gl.NEAREST });
+      // Two textures used for simple simulation. 
+      // Do not use only single component textures (ALPHA/LUMINANCE), as they cause problems on some GPUs 
+      // (when used as render targets).
+      textureA = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.FLOAT, format: gl.RGBA, filter: gl.NEAREST });
+      textureB = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.FLOAT, format: gl.RGBA, filter: gl.NEAREST });
       // Texture used for reading data from GPU.
       outputTexture = new GL.Texture(TEX_WIDTH, TEX_HEIGHT, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.NEAREST });
       outputStorage = new Uint8Array(TEX_WIDTH * TEX_HEIGHT * 4);
@@ -146,13 +148,18 @@ $(document).ready(function () {
 
       // Init data. Draw simple rectangle in the center.
       data = new Float32Array(TEX_WIDTH * TEX_HEIGHT);
-      for (var i = 0, len = TEX_WIDTH * TEX_HEIGHT; i < len; i += 1) {
+      dataGPU = new Float32Array(TEX_WIDTH * TEX_HEIGHT * 4);
+      for (i = 0, len = TEX_WIDTH * TEX_HEIGHT; i < len; i += 1) {
         data[i] = Math.random() * RANGE;
+        dataGPU[4 * i] = data[i];
+        dataGPU[4 * i + 1] = 0;
+        dataGPU[4 * i + 2] = 0;
+        dataGPU[4 * i + 3] = 0;
       }
       // No need to initialize temp data now.
       dataTmp = new Float32Array(TEX_WIDTH * TEX_HEIGHT);
 
-      writeTexture(textureA, data);
+      writeTexture(textureA, dataGPU);
       
       // Stats.
       step = 0;
