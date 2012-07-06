@@ -327,6 +327,21 @@ The self-signed `lab-sample-keystore,jks` keystore was generated with the Java k
 
 ##### Building the Java Resources
 
+**Note:** Currently in order to compile OTrunk you need to include the Concord nexus Maven mirror in `~/.m2/settings.xml`.
+
+A minimal working `~/.m2/settings.xml` will look like this:
+    
+    <?xml version="1.0"?>
+    <settings>
+      <mirrors>
+        <mirror>
+          <id>nexus</id>
+          <mirrorOf>*</mirrorOf>
+          <url>http://source.concord.org/nexus/content/groups/public</url>
+        </mirror>
+      </mirrors>
+    </settings>
+    
 Run `make jnlp-all` to erase, build, package, sign and deploy all the Java resurces.
 
 The first time this task is run it:
@@ -351,23 +366,12 @@ compilation details are all contained in this Ruby file:
 
 #### Java build/deploy integration
 
-There is a configuration file expressed in Ruby code here
+There is a configuration file expressed in Ruby code here which defines build specifications
+for each Java project:
 [`config/java-projects.rb`](https://github.com/concord-consortium/lab/blob/master/config/java-projects.rb)
-for all the Java projects that will be checked-out, built, packed, signed if neede, and deployed.
 
-In this configuration file build specifications are created for each Java project. The build specification
-for the otrunk Jar looks like this:
-
-    'otrunk' => { :repository => 'git://github.com/concord-consortium/otrunk.git',
-                  :branch => 'trunk',
-                  :path => 'org/concord/otrunk',
-                  :build_type => :maven,
-                  :build => MAVEN_STD_CLEAN_BUILD,
-                  :has_applet_class => true,
-                  :sign => true },
-
-The `trunk` branch of the otrunk repo will be checked out into `./java/otrunk` and will be built using Maven.
-Because the otrunk jar is used with the sensor-applet code (which uses a native library) it must also be signed.
+The specification indicates whether the Java Jar resource will be directly downloaded or whether the
+source code will be checked-out and compiled to create the Jar.
 
 ##### Java Projects Build Strategies
 
@@ -376,22 +380,49 @@ Five different kinds of build strategies are available. Each strategy includes
 additional build information in the `:build` option.
 
 1. `:maven`
+
+    Concord's OTrunk framework uses the `:maven` build strategy:
+
+        'otrunk' => { :repository => 'git://github.com/concord-consortium/otrunk.git',
+                      :branch => 'trunk',
+                      :path => 'org/concord/otrunk',
+                      :build_type => :maven,
+                      :build => MAVEN_STD_CLEAN_BUILD,
+                      :has_applet_class => true,
+                      :sign => true },
+
+    The `trunk` branch of the otrunk repo will be checked out into `./java/otrunk` and be built using Maven.
+    Because the otrunk jar is used with the sensor-applet code (which uses a native library) it must also be signed.
+    
 2. `:ant`
 3. `:custom`
+
+    For Energy2D a `:custom` build strategy is used and the command line invocation necessary is in the
+    `MANUAL_JAR_BUILD` constant.
+
+        'energy2d' => { :repository => 'git://github.com/concord-consortium/energy2d.git',
+                        :branch => 'trunk',
+                        :path => 'org/concord/energy2d',
+                        :build_type => :custom,
+                        :version => '0.1.0',
+                        :build => MANUAL_JAR_BUILD,
+                        :has_applet_class => true,
+                        :sign => false }
+
+    In this case `MANUAL_JAR_BUILD` has been defined as:
+
+        MANUAL_JAR_BUILD = "rm -rf bin; mkdir bin; find src -name *.java | xargs javac -target 5 -sourcepath src -d bin"
+        
 4. `:copy_jars`
 5. `:download`
 
-For Energy2D a `:custom` build strategy is used and the command line invocation necessary is in the
-`MANUAL_JAR_BUILD` constant.
+    JDom uses the `:download` build strategy:
 
-    'energy2d' => { :repository => 'git://github.com/concord-consortium/energy2d.git',
-                    :branch => 'trunk',
-                    :path => 'org/concord/energy2d',
-                    :build_type => :custom,
-                    :version => '0.1.0',
-                    :build => MANUAL_JAR_BUILD,
-                    :has_applet_class => true,
-                    :sign => false },
+    'jdom'           => { :build_type => :download,
+                          :url => 'http://repo1.maven.org/maven2/jdom/jdom/1.0/jdom-1.0.jar',
+                          :path => 'jdom/jdom',
+                          :version => '1.0',
+                          :sign => true }
 
 The script that runs the checkout-build-pack-sign-deploy can either operate on ALL projects specified or on a smaller number.
 
@@ -401,7 +432,8 @@ Optionally you can specify one or more projects to operate on. This builds just 
 
     script/build-and-deploy-jars.rb sensor sensor-applets
 
-The deployed resources have a timestamp in the deployed artifact so unless you specifically request an earlier version you will always get the latest deployed version.
+The Jar resources deployed to the `server/public/jnlp` directory include a timestamp in the deployed artifact so unless you specifically
+request an earlier version you will always get the latest version deployed.
 
 ##### JnlpApp Rack Application Service
 
