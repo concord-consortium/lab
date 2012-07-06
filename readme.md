@@ -345,49 +345,53 @@ the command again with the `--maven-update` argument:
 
     script/build-and-deploy-jars.rb --maven-update
 
-Details about each project, where the repository is located, what branch is compiled, what specific
-compilation details are all contained in `config/java-projects.rb/`.
+Details about each Java project, where the repository is located, what branch is compiled, the specific
+compilation details are all contained in this Ruby file:
+[`config/java-projects.rb`](https://github.com/concord-consortium/lab/blob/master/config/java-projects.rb)
 
 #### Java build/deploy integration
 
-There is a configuration file expressed in Ruby code here `config/java-projects.rb` for all the
-Java projects that will be checked-out, built, packed, signed if neede, and deployed.
+There is a configuration file expressed in Ruby code here
+[`config/java-projects.rb`](https://github.com/concord-consortium/lab/blob/master/config/java-projects.rb)
+for all the Java projects that will be checked-out, built, packed, signed if neede, and deployed.
 
-In this configuration file projects are specified like this:
+In this configuration file build specifications are created for each Java project. The build specification
+for the otrunk Jar looks like this:
 
-    'otrunk'         => { :repository => 'git://github.com/concord-consortium/otrunk.git',
-                          :branch => 'trunk',
-                          :path => 'org/concord/otrunk',
-                          :build_type => :maven,
-                          :build => MAVEN_STD_CLEAN_BUILD,
-                          :has_applet_class => true,
-                          :sign => true },
+    'otrunk' => { :repository => 'git://github.com/concord-consortium/otrunk.git',
+                  :branch => 'trunk',
+                  :path => 'org/concord/otrunk',
+                  :build_type => :maven,
+                  :build => MAVEN_STD_CLEAN_BUILD,
+                  :has_applet_class => true,
+                  :sign => true },
 
-The 'trunk' branch of this repo will be checked out into ./java/otrunk and will be built using Maven.
-Becuase the otrunk jar is used with the sensor-applet code it must be signed.
+The `trunk` branch of the otrunk repo will be checked out into `./java/otrunk` and will be built using Maven.
+Because the otrunk jar is used with the sensor-applet code (which uses a native library) it must also be signed.
 
 ##### Java Projects Build Strategies
 
-The `:build_type` option is used to specify the  Java Projects Build Strategy
-Four different kinds of build strategies can be used. Each strategy includes
+The `:build_type` option is used to specify the Java Projects Build Strategy.
+Five different kinds of build strategies are available. Each strategy includes
 additional build information in the `:build` option.
 
 1. `:maven`
 2. `:ant`
 3. `:custom`
 4. `:copy_jars`
+5. `:download`
 
 For Energy2D a `:custom` build strategy is used and the command line invocation necessary is in the
 `MANUAL_JAR_BUILD` constant.
 
-  'energy2d'       => { :repository => 'git://github.com/concord-consortium/energy2d.git',
-                        :branch => 'trunk',
-                        :path => 'org/concord/energy2d',
-                        :build_type => :custom,
-                        :version => '0.1.0',
-                        :build => MANUAL_JAR_BUILD,
-                        :has_applet_class => true,
-                        :sign => false },
+    'energy2d' => { :repository => 'git://github.com/concord-consortium/energy2d.git',
+                    :branch => 'trunk',
+                    :path => 'org/concord/energy2d',
+                    :build_type => :custom,
+                    :version => '0.1.0',
+                    :build => MANUAL_JAR_BUILD,
+                    :has_applet_class => true,
+                    :sign => false },
 
 The script that runs the checkout-build-pack-sign-deploy can either operate on ALL projects specified or on a smaller number.
 
