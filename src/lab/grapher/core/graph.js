@@ -256,7 +256,11 @@ grapher.graph = function(elem, options, message) {
         size.height = cy - padding.top  - padding.bottom;
       }
 
-      points = options.points || fakeDataPoints();
+      points = options.points
+      if (points === "fake") {
+        points = fakeDataPoints();
+      }
+
       updateXScale();
       updateYScale();
 
