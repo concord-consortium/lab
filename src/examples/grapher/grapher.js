@@ -1,13 +1,26 @@
+/*globals document interactivesIndex window location $ */
+/*jslint indent: 2 */
+// ------------------------------------------------------------
+//
+// Graphing Demo
+//
+// ------------------------------------------------------------
 
 var ROOT = "/examples",
     ROOT_REGEX = new RegExp(ROOT + "/.*$"),
     ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
 
-graph = grapher.graph('#chart');
+var graph,
+    stopStreaming = false,
+    selectSize = document.getElementById('select-size'),
+    selectData = document.getElementById('select-data'),
+    DEFAULT_GRAPH = "earth-surface-temperature",
+    hash = document.location.hash || "#" + DEFAULT_GRAPH,
+    interactive_url = hash.substr(1, hash.length);
 
-stopStreaming = false;
+document.location.hash = hash;
+selectData.value = interactive_url;
 
-selectSize = document.getElementById('select-size');
 function selectSizeHandler() {
   switch(selectSize.value) {
     case "large":
@@ -33,9 +46,14 @@ function selectSizeHandler() {
 }
 selectSize.onchange = selectSizeHandler;
 
-selectData = document.getElementById('select-data');
 function selectDataHandler() {
   stopStreaming = true;
+  interactive_url = selectData.value;
+  hash = "#" + interactive_url;
+  document.location.hash = hash;
+  if (!graph) {
+    graph = grapher.graph('#chart')
+  }
   switch(selectData.value) {
     case "fake":
     graph.reset({ points: "fake" });
@@ -184,4 +202,12 @@ function selectDataHandler() {
     break;
   }
 }
+
 selectData.onchange = selectDataHandler;
+selectDataHandler();
+
+$(window).bind('hashchange', function () {
+  if (document.location.hash !== hash) {
+    selectDataHandler();
+  }
+});
