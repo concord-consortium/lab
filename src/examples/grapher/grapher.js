@@ -38,7 +38,7 @@ function selectDataHandler() {
   stopStreaming = true;
   switch(selectData.value) {
     case "fake":
-    graph.reset({ points: false });
+    graph.reset({ points: "fake" });
     break;
 
     case "stair-steps":
