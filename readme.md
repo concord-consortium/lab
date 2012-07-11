@@ -179,7 +179,84 @@ Most of the developers on Lab use [Homebrew](http://mxcl.github.com/homebrew/) a
         brew update     # if you haven't run it in the last 24 hours
         brew install couchdb
 
-**Linux**
+###Linux
+Before any of this make sure that "run command as login shell" is checked. if it isn't go to edit-profile preferences-Title and Command, and check Run command as a login shell.
+
+to [Install RVM](https://rvm.io/rvm/install/) you need to have curl:
+<pre><code> $  sudo apt-get install curl </code></pre>
+
+then install RVM using curl with:
+<pre><code> $ curl -L https://get.rvm.io | bash -s stable --ruby </code></pre>
+
+After RVM has finnished installing it will ask you to run a command similar to 
+<pre><code>$ source /home/user_name/.rvm/scripts/rvm</code></pre>    
+
+After installation you should see something like the following:
+
+    $  ruby -v
+    ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-linux]
+
+RVM has some additional dependancies, to view these type:
+<pre><code>$ rvm requirements</code></pre>
+
+under additional dependancies and ruby, copy the list of dependancies and paste them in to your terminal emediatly preceading sudo, it should look something like this:
+
+<pre><code>sudo /usr/bin/apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion</code></pre>
+
+Becouse of some unknown bugs RVM doesn't recognise readline without being explictly pointed to it, to do this you have to reinstall ruby 1.9.3-p194.
+<pre><code>$ rvm reinstall 1.9.3-p194 --with-zlib1g-dev</code></pre>
+
+[ruby gem bundler](http://gembundler.com/) should be installed, to check if it has been try:
+
+    $ gem list bundler
+
+    *** LOCAL GEMS ***
+
+    bundler (1.1.4)
+if it doesn't return anything you can try:
+
+ <pre><code>$  gem install bundler</code></pre>
+
+
+#### nodejs and npm and couchdb
+
+[nodejs](http://nodejs.org/) and [npm](http://npmjs.org/), the Node Package Manager are additional
+development dependencies.
+
+[npm](http://npmjs.org/), the Node Package Manager has been included as part of [nodejs](http://nodejs.org/)
+since version 0.6.3.
+
+The nosql document-oriented [CouchDB](http://couchdb.apache.org/) database server is installed to support persistence for the Lab server.
+
+To install the latest stable versions of node and couchdb you first need to add repositories ([node repo](https://launchpad.net/~chris-lea/+archive/node.js/)  and [couchdb repo](https://launchpad.net/~longsleep/+archive/couchdb) ) with the most recent versions. for these to work as intended python software properties must also be installed.
+
+<pre><code>$ sudo apt-get install python-software-properties
+$ sudo apt-add-repository ppa:chris-lea/node.js 
+$ sudo apt-add-repository ppa:longsleep/couchdb
+$ sudo apt-get update
+</code></pre>
+
+then you can simply install using apt-get
+
+<pre><code>$ sudo apt-get install couchdb nodejs npm</code></pre>
+
+Currently development is being done with these versions of node and npm:
+
+    $ node -v
+    v0.6.18
+
+    $ npm -v
+    1.1.21
+
+neither the java run time environment nor the java development kit are installed by default, both of which are used for the java proects.
+<pre><code>sudo apt-get install  default-jre openjdk-6-jdk </code></pre>
+
+
+nokogiri requires libxslt and libxml2, install them with:
+<pre><code>sudo apt-get install libxslt-dev libxml2-dev</code></pre>
+
+after cloning in to the lab repo but before you make everthing make sure to run:
+<pre><code>cp config/config_sample.yml config/config.yml</code></pre>
 
 
 ### Use git to create a local clone of the Lab repository.
