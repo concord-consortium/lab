@@ -1,5 +1,5 @@
-/*globals Float64Array */
-/*jslint indent: 2 */
+/*globals Float32Array: false, energy2d: false */
+/*jslint indent: 2, node: true, browser: true */
 // JSLint report: OK (complains about 'new' for side effect and Array(size) constructor)
 //
 // lab/models/energy2d/engines/core-model.js
@@ -8,30 +8,28 @@
 var
   arrays         = require('./arrays/arrays.js').arrays,
   heatsolver     = require('./physics-solvers/heat-solver.js'),
+  heatsolver_GPU = require('./physics-solvers-gpu/heat-solver-gpu.js'),
   fluidsolver    = require('./physics-solvers/fluid-solver.js'),
   raysolver      = require('./physics-solvers/ray-solver.js'),
   part           = require('./part.js'),
   default_config = require('./default-config.js'),
+  gpgpu,      // = energy2d.utils.gpu.gpgpu - assing it only when WebGL requested (initGPGPU), 
+              //   as it is unavailable in the node.js environment.
 
   array_type = (function () {
     'use strict';
     try {
-      new Float64Array();
+      new Float32Array();
     } catch (e) {
       return 'regular';
     }
-    return 'Float64Array';
-  }()),
-
-  // Local constants.
-  NX = 100,
-  NY = 100,
-  ARRAY_SIZE = NX * NY;
+    return 'Float32Array';
+  }());
 
 // Core Energy2D model.
 // 
 // It creates and manages all the data and parameters used for calculations.
-exports.makeCoreModel = function (model_options) {
+exports.makeCoreModel = function (model_options, force_WebGL) {
   'use strict';
   var
     // Validate provided options.
@@ -56,9 +54,13 @@ exports.makeCoreModel = function (model_options) {
       return model_options;
     }()),
 
+    // WebGL GPGPU optimization.
+    use_WebGL = opt.use_WebGL || force_WebGL,
+
     // Simulation grid dimensions.
-    nx = NX,
-    ny = NY,
+    nx = opt.grid_width,
+    ny = opt.grid_height,
+    array_size = nx * ny,
 
     // Spacing.
     delta_x = opt.model_width / nx,
@@ -67,11 +69,15 @@ exports.makeCoreModel = function (model_options) {
     // Simulation steps counter.
     indexOfStep = 0,
 
-    // Physics solvers 
+    // Physics solvers
     // (initialized later, when core model object is built).
     heatSolver,
     fluidSolver,
     ray_solver,
+
+    // GPU versions of solvers.
+    heat_solver_gpu,
+    fluid_solver_gpu,
 
     // Optimization flags.
     radiative,
@@ -81,28 +87,53 @@ exports.makeCoreModel = function (model_options) {
     // Simulation arrays:
     //
     // - temperature array
-    t = arrays.create(ARRAY_SIZE, opt.background_temperature, array_type),
+    t = arrays.create(array_size, opt.background_temperature, array_type),
     // - internal temperature boundary array
-    tb = arrays.create(ARRAY_SIZE, NaN, array_type),
+    tb = arrays.create(array_size, NaN, array_type),
     // - velocity x-component array (m/s)
-    u = arrays.create(ARRAY_SIZE, 0, array_type),
+    u = arrays.create(array_size, 0, array_type),
     // - velocity y-component array (m/s)
-    v = arrays.create(ARRAY_SIZE, 0, array_type),
+    v = arrays.create(array_size, 0, array_type),
     // - internal heat generation array
-    q = arrays.create(ARRAY_SIZE, 0, array_type),
+    q = arrays.create(array_size, 0, array_type),
     // - wind speed
-    uWind = arrays.create(ARRAY_SIZE, 0, array_type),
-    vWind = arrays.create(ARRAY_SIZE, 0, array_type),
+    uWind = arrays.create(array_size, 0, array_type),
+    vWind = arrays.create(array_size, 0, array_type),
     // - conductivity array
-    conductivity = arrays.create(ARRAY_SIZE, opt.background_conductivity, array_type),
+    conductivity = arrays.create(array_size, opt.background_conductivity, array_type),
     // - specific heat capacity array
-    capacity = arrays.create(ARRAY_SIZE, opt.background_specific_heat, array_type),
+    capacity = arrays.create(array_size, opt.background_specific_heat, array_type),
     // - density array
-    density = arrays.create(ARRAY_SIZE, opt.background_density, array_type),
+    density = arrays.create(array_size, opt.background_density, array_type),
     // - fluid cell array
-    fluidity = arrays.create(ARRAY_SIZE, true, array_type),
+    fluidity = arrays.create(array_size, true, array_type),
     // - photons array
     photons = [],
+
+    //
+    // [GPGPU] Simulation textures:
+    //
+    // - temperature array
+    t_tex,
+    // - internal temperature boundary array
+    tb_tex,
+    // - velocity x-component array (m/s)
+    u_tex,
+    // - velocity y-component array (m/s)
+    v_tex,
+    // - internal heat generation array
+    q_tex,
+    // - wind speed
+    uWind_tex,
+    vWind_tex,
+    // - conductivity array
+    conductivity_tex,
+    // - specific heat capacity array
+    capacity_tex,
+    // - density array
+    density_tex,
+    // - fluid cell array
+    fluidity_tex,
 
     // Generate parts array.
     parts = (function () {
@@ -128,6 +159,44 @@ exports.makeCoreModel = function (model_options) {
     //  
     // Private methods  
     //      
+    initGPGPU = function () {
+      // Make sure that environment is a browser.
+      if (typeof window === 'undefined') {
+        throw new Error("Core model: WebGL GPGPU unavailable in the node.js environment.");
+      }
+      // Request GPGPU utilities.
+      gpgpu = energy2d.utils.gpu.gpgpu;
+      // Init module.
+      // Width is ny, height is nx (due to data organization).
+      gpgpu.init(ny, nx);
+      // Create simulation textures.
+      t_tex = gpgpu.createTexture();
+      tb_tex = gpgpu.createTexture();
+      u_tex = gpgpu.createTexture();
+      v_tex = gpgpu.createTexture();
+      q_tex = gpgpu.createTexture();
+      uWind_tex = gpgpu.createTexture();
+      vWind_tex = gpgpu.createTexture();
+      conductivity_tex = gpgpu.createTexture();
+      capacity_tex = gpgpu.createTexture();
+      density_tex = gpgpu.createTexture();
+      fluidity_tex = gpgpu.createTexture();
+    },
+
+    updateAllTextures = function () {
+      gpgpu.writeTexture(t_tex, t);
+      gpgpu.writeTexture(tb_tex, tb);
+      gpgpu.writeTexture(u_tex, u);
+      gpgpu.writeTexture(v_tex, v);
+      gpgpu.writeTexture(q_tex, q);
+      gpgpu.writeTexture(uWind_tex, uWind);
+      gpgpu.writeTexture(vWind_tex, vWind);
+      gpgpu.writeTexture(conductivity_tex, conductivity);
+      gpgpu.writeTexture(capacity_tex, capacity);
+      gpgpu.writeTexture(density_tex, density);
+      gpgpu.writeTexture(fluidity_tex, fluidity);
+    },
+
     setupMaterialProperties = function () {
       var
         lx = opt.model_width,
@@ -195,21 +264,34 @@ exports.makeCoreModel = function (model_options) {
       // Performs next step of a simulation.
       // !!!
       nextStep: function () {
-        if (radiative) {
-          if (indexOfStep % opt.photon_emission_interval === 0) {
-            refreshPowerArray();
-            if (opt.sunny) {
-              ray_solver.sunShine();
+        if (use_WebGL) {
+          // GPU solvers.
+          heat_solver_gpu.solve(opt.convective, t_tex, q_tex);
+          // Only heat solver is implemented at the moment.
+        } else {
+          // CPU solvers.
+          if (radiative) {
+            if (indexOfStep % opt.photon_emission_interval === 0) {
+              refreshPowerArray();
+              if (opt.sunny) {
+                ray_solver.sunShine();
+              }
+              ray_solver.radiate();
             }
-            ray_solver.radiate();
+            ray_solver.solve();
           }
-          ray_solver.solve();
+          if (opt.convective) {
+            fluidSolver.solve(u, v);
+          }
+          heatSolver.solve(opt.convective, t, q);
         }
-        if (opt.convective) {
-          fluidSolver.solve(u, v);
-        }
-        heatSolver.solve(opt.convective, t, q);
         indexOfStep += 1;
+      },
+
+      updateTemperatureArray: function () {
+        if (use_WebGL) {
+          gpgpu.readTexture(t_tex, t);
+        }
       },
 
       getIndexOfStep: function () {
@@ -312,6 +394,14 @@ exports.makeCoreModel = function (model_options) {
         }
       },
 
+      copyTextureToArray: function (tex, array) {
+        gpgpu.readTexture(tex, array);
+      },
+
+      copyArrayToTexture: function (array, tex) {
+        gpgpu.writeTexture(tex, array);
+      },
+
       // Simple getters.
       getArrayType: function () {
         // return module variable
@@ -362,15 +452,46 @@ exports.makeCoreModel = function (model_options) {
       },
       getPartsArray: function () {
         return parts;
+      },
+       // Textures.
+      getTemperatureTexture: function () {
+        return t_tex;
+      },
+      getUVelocityTexture: function () {
+        return u_tex;
+      },
+      getVVelocityTexture: function () {
+        return v_tex;
+      },
+      getUWindTexture: function () {
+        return uWind_tex;
+      },
+      getVWindTexture: function () {
+        return vWind_tex;
+      },
+      getBoundaryTemperatureTexture: function () {
+        return tb_tex;
+      },
+      getPowerTexture: function () {
+        return q_tex;
+      },
+      getConductivityTexture: function () {
+        return conductivity_tex;
+      },
+      getCapacityTexture: function () {
+        return capacity_tex;
+      },
+      getDensityTexture: function () {
+        return density_tex;
+      },
+      getFluidityTexture: function () {
+        return fluidity_tex;
       }
     };
 
   // 
   // One-off initialization.
   //
-  heatSolver = heatsolver.makeHeatSolver(core_model);
-  fluidSolver = fluidsolver.makeFluidSolver(core_model);
-  ray_solver = raysolver.makeRaySolver(core_model);
 
   // Setup optimization flags.
   radiative = (function () {
@@ -397,6 +518,20 @@ exports.makeCoreModel = function (model_options) {
   }());
 
   setupMaterialProperties();
+
+  // CPU version of solvers.
+  heatSolver = heatsolver.makeHeatSolver(core_model);
+  fluidSolver = fluidsolver.makeFluidSolver(core_model);
+  ray_solver = raysolver.makeRaySolver(core_model);
+
+  if (use_WebGL) {
+    initGPGPU();
+
+    // GPU version of heat solver.
+    heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
+    // Update textures as material properties are set.
+    updateAllTextures();
+  }
 
   // Finally, return public API object.
   return core_model;

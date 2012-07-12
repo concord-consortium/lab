@@ -12,6 +12,10 @@ var constants = require('./constants.js');
 exports.DEFAULT_VALUES = {
   // Default model properties.
   "model": {
+    "use_WebGL": false,
+    "grid_width": 100,
+    "grid_height": 100,
+
     "model_width": 10,
     "model_height": 10,
     "timestep": 1,

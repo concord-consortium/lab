@@ -1,5 +1,5 @@
 /*globals energy2d */
-/*jslint indent: 2 */
+/*jslint indent: 2, node: true */
 // JSLint report: OK
 //
 // lab/models/energy2d/modeler.js
@@ -29,6 +29,7 @@ energy2d.modeler.makeModeler = function (options) {
     getTime: function () {
       return core_model.getModelOptions().timestep * core_model.getIndexOfStep();
     },
+    updateTemperatureArray: core_model.updateTemperatureArray,
     getIndexOfStep: core_model.getIndexOfStep,
     getGridWidth: core_model.getGridWidth,
     getGridHeight: core_model.getGridHeight,

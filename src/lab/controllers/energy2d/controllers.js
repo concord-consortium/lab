@@ -1,5 +1,5 @@
-/*globals energy2d, $ */
-/*jslint indent: 2 */
+/*globals energy2d, $, ACTUAL_ROOT */
+/*jslint indent: 2, browser: true */
 //
 // lab/controllers/energy2d/controllers.js
 //
@@ -42,12 +42,11 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     //
     // Private methods
     //
-    actualRootPath = function(url) {
+    actualRootPath = function (url) {
       if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
         return url;
-      } else {
-        return ACTUAL_ROOT + url;
       }
+      return ACTUAL_ROOT + url;
     },
 
     createEnergy2DScene = function (component_def) {
@@ -97,6 +96,10 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         i -= 1;
         modeler.nextStep();
       }
+
+      // Copies values from texture to array.
+      modeler.updateTemperatureArray();
+
       heatmap_view.renderHeatmap();
       velocity_view.renderVectormap();
       photons_view.renderPhotons();
