@@ -479,6 +479,42 @@ exports.makeModel = function() {
         }
       },
 
+      bounceOffObstacles = function(i, x_prev, y_prev) {
+        var r  = radius[i],
+            xi = x[i],
+            yi = y[i],
+
+            x_left   = 8 - r,
+            x_right  = 9 + r,
+            y_top    = 9 + r,
+            y_bottom = 8 - r;
+
+
+        // FIXME this won't work quite right if the radius is changed between timesteps
+        if (xi > x_left && xi < x_right && yi > y_bottom && yi < y_top) {
+
+          if (x_prev <= x_left) {
+            x[i] = x_left - (xi - x_left);
+            vx[i] *= -1;
+            px[i] *= -1;
+          } else if (x_prev >= x_right) {
+            x[i] = x_right + (x_right - xi);
+            vx[i] *= -1;
+            px[i] *= -1;
+          } else if (y_prev <= y_bottom) {
+            y[i] = y_bottom - (yi - y_bottom);
+            vy[i] *= -1;
+            py[i] *= -1;
+          } else /* y_prev >= y_top */ {
+            y[i] = y_top  + (y_top - yi);
+            vy[i] *= -1;
+            py[i] *= -1;
+          }
+
+        }
+      },
+
+
       // Half of the update of v(t+dt, i) and p(t+dt, i) using a; during a single integration loop,
       // call once when a = a(t) and once when a = a(t+dt)
       halfUpdateVelocity = function(i) {
@@ -969,15 +1005,22 @@ exports.makeModel = function() {
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
           iloop,
-          i;
+          i,
+          x_prev,
+          y_prev;
 
       for (iloop = 1; iloop <= n_steps; iloop++) {
         time = t_start + iloop*dt;
 
         for (i = 0; i < N; i++) {
+          x_prev = x[i];
+          y_prev = y[i];
+
           // Update r(t+dt) using v(t) and a(t)
           updatePosition(i);
           bounceOffWalls(i);
+          bounceOffObstacles(i, x_prev, y_prev);
+
 
           // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
           halfUpdateVelocity(i);
