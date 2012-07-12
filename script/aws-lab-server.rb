@@ -240,7 +240,9 @@ Host #{@name}
     # write this to the nodes/ directory in the littlechef-server repository
     node_name = "#{@name}.json"
     puts "*** updating littlechef node: #{node_name}" if @options[:verbose]
-    File.open(File.join(@options[:littlechef_path], 'nodes', node_name), 'w') { |f| f.write @json_node }
+    littlechef_nodes_path = File.join(@options[:littlechef_path], 'nodes')
+    FileUtils.mkdir_p littlechef_nodes_path
+    File.open(File.join(littlechef_nodes_path, node_name), 'w') { |f| f.write @json_node }
   end
 
   def setup_capistrano_deploy_scripts
@@ -254,7 +256,9 @@ Host #{@name}
   def write_capistrano_deploy_script
     target = find_target(@name)
     deploy_script_name = "#{target[:name]}.rb"
-    deploy_script_path = File.join(CONFIG_PATH, 'deploy', deploy_script_name)
+    deploy_scripts_path = File.join(CONFIG_PATH, 'deploy')
+    FileUtils.mkdir_p deploy_scripts_path
+    deploy_script_path = File.join(deploy_scripts_path, deploy_script_name)
     puts "*** updating capistrano deploy script: #{deploy_script_path}" if @options[:verbose]
     deploy_script_content = <<-HEREDOC
 server "#{@name}", :app, :primary => true
