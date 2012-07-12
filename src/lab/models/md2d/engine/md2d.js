@@ -164,9 +164,6 @@ exports.makeModel = function() {
       // System dimensions as [x, y] in nanometers. Default value can be changed until particles are created.
       size = [10, 10],
 
-      // Wall locations in nm
-      topwall, rightwall, bottomwall, leftwall,
-
       // The current model time, in femtoseconds.
       time = 0,
 
@@ -453,6 +450,12 @@ exports.makeModel = function() {
       // Constrain particle i to the area between the walls by simulating perfectly elastic collisions with the walls.
       // Note this may change the linear and angular momentum.
       bounceOffWalls = function(i) {
+        var r = radius[i],
+            leftwall = r,
+            bottomwall = r,
+            rightwall = size[0] - r,
+            topwall = size[1] - r;
+
         // Bounce off vertical walls.
         if (x[i] < leftwall) {
           x[i]  = leftwall + (leftwall - x[i]);
@@ -962,10 +965,6 @@ exports.makeModel = function() {
       // FIXME we still need to make bounceOffWalls respect each atom's actual radius, rather than
       // assuming just one radius as below
       radius = elements[element[0]][ELEMENT_INDICES.RADIUS];
-      leftwall   = radius;
-      bottomwall = radius;
-      rightwall  = size[0] - radius;
-      topwall    = size[1] - radius;
 
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
