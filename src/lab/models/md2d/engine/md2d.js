@@ -1,5 +1,5 @@
- /*globals Float32Array window:true */
-/*jslint eqnull: true, boss: true */
+/*globals Float32Array window:true */
+/*jslint eqnull: true, boss: true, loopfunc: true*/
 
 if (typeof window === 'undefined') window = {};
 
