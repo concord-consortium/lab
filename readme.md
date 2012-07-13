@@ -156,7 +156,42 @@ Most of the developers on Lab use [Homebrew](http://mxcl.github.com/homebrew/) a
         brew update     # if you haven't run it in the last 24 hours
         brew install couchdb
 
+#### Java
+
+Java is needed for compiling the invisible sensor applet as qell as the legacy Java applications we are porting to HTML5.
+
+Test to see if Java is installed and available:
+
+    $ java -version
+	java version "1.6.0_33"
+	Java(TM) SE Runtime Environment (build 1.6.0_33-b03-424-11M3720)
+	Java HotSpot(TM) 64-Bit Server VM (build 20.8-b03-424, mixed mode)
+
+On Mac OS X 10.7 and later Java is not automatically installed. However running the command
+`java -version` when Java is not installed will bring up an operating system dialog enabling
+Java to be installed.
+
+##### Customize Maven mirror
+
+**Note:** Currently in order to compile OTrunk v0.4 of the maven jarjar plugin is needed.
+Only newer versions of the jarjar plugin are available in the public Maven artifact repositories.
+To compile OTrunk you will need to include the Concord nexus Maven mirror in `~/.m2/settings.xml`.
+
+A minimal working `~/.m2/settings.xml` will look like this:
+    
+    <?xml version="1.0"?>
+    <settings>
+      <mirrors>
+        <mirror>
+          <id>nexus</id>
+          <mirrorOf>*</mirrorOf>
+          <url>http://source.concord.org/nexus/content/groups/public</url>
+        </mirror>
+      </mirrors>
+    </settings>
+ 
 ###Linux
+
 Before any of this make sure that "run command as login shell" is checked. if it isn't go to edit-profile preferences-Title and Command, and check Run command as a login shell.
 
 to [Install RVM](https://rvm.io/rvm/install/) you need to have curl:
@@ -404,20 +439,7 @@ The self-signed `lab-sample-keystore,jks` keystore was generated with the Java k
 
 ##### Building the Java Resources
 
-**Note:** Currently in order to compile OTrunk you need to include the Concord nexus Maven mirror in `~/.m2/settings.xml`.
-
-A minimal working `~/.m2/settings.xml` will look like this:
-    
-    <?xml version="1.0"?>
-    <settings>
-      <mirrors>
-        <mirror>
-          <id>nexus</id>
-          <mirrorOf>*</mirrorOf>
-          <url>http://source.concord.org/nexus/content/groups/public</url>
-        </mirror>
-      </mirrors>
-    </settings>
+**Note:** Currently in order to compile OTrunk you need to include the Concord nexus Maven mirror in `~/.m2/settings.xml`. See [Customize Maven mirror](#customize_aven_mirror)
     
 Run `make jnlp-all` to erase, build, package, sign and deploy all the Java resurces.
 
