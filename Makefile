@@ -153,14 +153,14 @@ bin:
 	bundle install --binstubs
 
 server/public: \
-  server/public/lab \
+	server/public/lab \
 	server/public/vendor \
 	server/public/resources \
 	server/public/examples \
 	server/public/doc \
 	server/public/experiments \
-  server/public/imports \
-  server/public/jnlp
+	server/public/imports \
+	server/public/jnlp
 
 server/public/examples:
 	mkdir -p server/public/examples
