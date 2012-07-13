@@ -6,6 +6,7 @@ Piotr Janik
 $(document).ready(function () {
   var
     gl = GL.create({ alpha: true }),
+    gpgpu = energy2d.utils.gpu.gpgpu,
 
     TEX_WIDTH = 128,
     TEX_HEIGHT = 128,
@@ -27,6 +28,7 @@ $(document).ready(function () {
     gpuTime,
     readTime1,
     readTime2,
+    readTime3,
     statsInterval = 5,
 
     renderShader = new GL.Shader('\
@@ -276,6 +278,10 @@ $(document).ready(function () {
     },
 
     // ========================================================================
+
+    readTextureMethod3 = function (tex) {
+      gpgpu.readTexture(tex, outputConverted);
+    }
     // ========================================================================
 
     init = function () {
@@ -329,6 +335,8 @@ $(document).ready(function () {
       gpuTime = 0;
       readTime1 = 0;
       readTime2 = 0;
+
+      gpgpu.init(TEX_WIDTH, TEX_HEIGHT, gl);
     },
 
     writeTexture = function (tex, input) {
@@ -407,6 +415,13 @@ $(document).ready(function () {
       error = compareGPUAndCPUResults();
       $('#init-error-m2').text(error);
       $('#init-read-time-m2').text(time);
+      // Method 3.
+      time = getTime();
+      readTextureMethod3(textureA);
+      time = getTime() - time;
+      error = compareGPUAndCPUResults();
+      $('#init-error-m3').text(error);
+      $('#init-read-time-m3').text(time);
     },
 
     updateStats = function () {
@@ -417,6 +432,7 @@ $(document).ready(function () {
       $('#gpu-time').text((gpuTime).toFixed(1));
       $('#read-time-m1').text((readTime1).toFixed(1));
       $('#read-time-m2').text((readTime2).toFixed(1));
+      $('#read-time-m3').text((readTime3).toFixed(1));
     },
 
     onDrawCallback = function () {
@@ -453,6 +469,11 @@ $(document).ready(function () {
       readTextureMethod2(textureA);
       diff = getTime() - time;
       readTime2 = step ? readTime2 * 0.95 + diff * 0.05 : diff;
+
+      time = getTime();
+      readTextureMethod3(textureA);
+      diff = getTime() - time;
+      readTime3 = step ? readTime3 * 0.95 + diff * 0.05 : diff;
       
       if (step % statsInterval === 0) 
         updateStats();
