@@ -24,7 +24,8 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     // Energy2D model.
     modeler,
 
-    // Views:
+    // TODO: refactor views support, probably using events and more general approach.
+    // Required views.
     energy2d_scene,
     heatmap_view,
     velocity_view,
@@ -33,6 +34,9 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     time_view,
     simulation_player_view,
     simulation_description_view,
+
+    // Optional views.
+    performance_view,
 
     // Parameters:
     last_options,
@@ -68,6 +72,12 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       return simulation_player_view;
     },
 
+    createPerformanceView = function (component_def) {
+      performance_view = views_ns.makePerformanceView(component_def.id);
+
+      return performance_view;
+    },
+
     createSimulationDescription = function (component_def) {
       simulation_description_view = views_ns.makeSimulationDescription(component_def);
       // Bind itself (public API).
@@ -85,25 +95,31 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         return createEnergy2DScene(component_def);
       case 'energy2d-simulation-player':
         return createSimulationPlayer(component_def);
+      case 'energy2d-performance-view':
+        return createPerformanceView(component_def);
       default:
         throw new Error('Interactive controller: unknow type of component.');
       }
     },
 
     nextStep = function () {
-      var i = steps_per_frame;
-      while (i > 0) {
-        i -= 1;
+      var i, len;
+
+      for (i = 0, len = steps_per_frame; i < len; i += 1) {
         modeler.nextStep();
       }
 
-      // Copies values from texture to array.
+      // Copies values from texture to array if GPU is used.
       modeler.updateTemperatureArray();
 
       heatmap_view.renderHeatmap();
       velocity_view.renderVectormap();
       photons_view.renderPhotons();
       time_view.renderTime(modeler.getTime());
+
+      if (performance_view) {
+        performance_view.update();
+      }
     };
 
   //
@@ -118,6 +134,10 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         component, component_layout, $html_element,
         i, len;
 
+      // Load scene model.
+      controller.loadSceneModelFromURL(interactive.model);
+
+      // Load components.
       for (i = 0, len = components.length; i < len; i += 1) {
         component = createComponent(components[i]);
 
@@ -143,9 +163,6 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         $html_element = component.getHTMLElement();
         $html_element.appendTo(description_container_id);
       }
-
-      // Finally, load scene model.
-      controller.loadSceneModelFromURL(interactive.model);
     },
 
     loadSceneModelFromURL: function (options_url) {
@@ -171,8 +188,20 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       parts_view.bindPartsArray(modeler.getPartsArray(), modeler.getWidth(), modeler.getHeight());
       photons_view.bindPhotonsArray(modeler.getPhotonsArray(), modeler.getWidth(), modeler.getHeight());
 
+      // Bind performance tools model.
+      if (performance_view) {
+        performance_view.bindModel(modeler.getPerformanceModel());
+      }
+
       heatmap_view.renderHeatmap();
       parts_view.renderParts();
+    },
+
+    // Overwrite WebGL optimization option.
+    setWebGLEnabled: function (b) {
+      controller.simulationStop();
+      last_options.model.use_WebGL = b;
+      controller.loadSceneModel(last_options);
     },
 
     //

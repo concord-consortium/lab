@@ -13,6 +13,7 @@ var
   raysolver      = require('./physics-solvers/ray-solver.js'),
   part           = require('./part.js'),
   default_config = require('./default-config.js'),
+  performance    = require('./utils/performance.js'),
   gpgpu,      // = energy2d.utils.gpu.gpgpu - assing it only when WebGL requested (initGPGPU), 
               //   as it is unavailable in the node.js environment.
 
@@ -29,7 +30,7 @@ var
 // Core Energy2D model.
 // 
 // It creates and manages all the data and parameters used for calculations.
-exports.makeCoreModel = function (model_options, force_WebGL) {
+exports.makeCoreModel = function (model_options) {
   'use strict';
   var
     // Validate provided options.
@@ -55,7 +56,7 @@ exports.makeCoreModel = function (model_options, force_WebGL) {
     }()),
 
     // WebGL GPGPU optimization.
-    use_WebGL = opt.use_WebGL || force_WebGL,
+    use_WebGL = opt.use_WebGL,
 
     // Simulation grid dimensions.
     nx = opt.grid_width,
@@ -82,6 +83,9 @@ exports.makeCoreModel = function (model_options, force_WebGL) {
     // Optimization flags.
     radiative,
     has_part_power,
+
+    // Performance model.
+    perf = performance.makePerformanceModel(),
 
     //
     // Simulation arrays:
@@ -168,7 +172,15 @@ exports.makeCoreModel = function (model_options, force_WebGL) {
       gpgpu = energy2d.utils.gpu.gpgpu;
       // Init module.
       // Width is ny, height is nx (due to data organization).
-      gpgpu.init(ny, nx);
+      try {
+        gpgpu.init(ny, nx);
+      } catch (e) {
+        // If WebGL initialization fails, just use CPU.
+        use_WebGL = false;
+        // TODO: inform better.
+        console.warn("WebGL initialization failed. Energy2D will use CPU solvers.");
+        return;
+      }
       // Create simulation textures.
       t_tex = gpgpu.createTexture();
       tb_tex = gpgpu.createTexture();
@@ -181,6 +193,11 @@ exports.makeCoreModel = function (model_options, force_WebGL) {
       capacity_tex = gpgpu.createTexture();
       density_tex = gpgpu.createTexture();
       fluidity_tex = gpgpu.createTexture();
+
+      // GPU version of heat solver.
+      heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
+      // Update textures as material properties are set.
+      updateAllTextures();
     },
 
     updateAllTextures = function () {
@@ -264,13 +281,17 @@ exports.makeCoreModel = function (model_options, force_WebGL) {
       // Performs next step of a simulation.
       // !!!
       nextStep: function () {
+        perf.start('Core model step');
         if (use_WebGL) {
           // GPU solvers.
+          perf.start('Heat solver GPU');
           heat_solver_gpu.solve(opt.convective, t_tex, q_tex);
+          perf.stop('Heat solver GPU');
           // Only heat solver is implemented at the moment.
         } else {
           // CPU solvers.
           if (radiative) {
+            perf.start('Ray solver CPU');
             if (indexOfStep % opt.photon_emission_interval === 0) {
               refreshPowerArray();
               if (opt.sunny) {
@@ -279,18 +300,26 @@ exports.makeCoreModel = function (model_options, force_WebGL) {
               ray_solver.radiate();
             }
             ray_solver.solve();
+            perf.stop('Ray solver CPU');
           }
           if (opt.convective) {
+            perf.start('Fluid solver CPU');
             fluidSolver.solve(u, v);
+            perf.stop('Fluid solver CPU');
           }
+          perf.start('Heat solver CPU');
           heatSolver.solve(opt.convective, t, q);
+          perf.stop('Heat solver CPU');
         }
         indexOfStep += 1;
+        perf.stop('Core model step');
       },
 
       updateTemperatureArray: function () {
         if (use_WebGL) {
+          perf.start('Read temperature texture');
           gpgpu.readTexture(t_tex, t);
+          perf.stop('Read temperature texture');
         }
       },
 
@@ -413,6 +442,9 @@ exports.makeCoreModel = function (model_options, force_WebGL) {
       getGridHeight: function () {
         return ny;
       },
+      getPerformanceModel: function () {
+        return perf;
+      },
       // Arrays.
       getTemperatureArray: function () {
         return t;
@@ -526,11 +558,6 @@ exports.makeCoreModel = function (model_options, force_WebGL) {
 
   if (use_WebGL) {
     initGPGPU();
-
-    // GPU version of heat solver.
-    heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
-    // Update textures as material properties are set.
-    updateAllTextures();
   }
 
   // Finally, return public API object.

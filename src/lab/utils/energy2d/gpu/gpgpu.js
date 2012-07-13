@@ -104,13 +104,18 @@ energy2d.utils.gpu.gpgpu = (function () {
   //
   return {
     // Setups rendering context (only during first call) and necessary storage (texture, array).
-    init: function (width, height) {
+    init: function (width, height, gl_ctx) {
       if (gl === undefined) {
         if (typeof GL === 'undefined') {
           throw new Error("GPGPU: lightgl.js library missing.");
         }
-        // Setup WebGL context.
-        gl = GL.create({ alpha: true });
+        if (gl_ctx) {
+          // Use provided context.
+          gl = ready_gl_ctx;
+        } else {
+          // Setup WebGL context.
+          gl = GL.create({ alpha: true });
+        }
         if (!gl.getExtension('OES_texture_float')) {
           throw new Error("GPGPU: OES_texture_float is not supported!");
         }

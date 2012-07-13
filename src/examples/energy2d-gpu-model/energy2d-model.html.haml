@@ -1,0 +1,38 @@
+!!! 5
+%html
+  %head
+    %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
+    %title Energy2D Model
+    %script{:src => "../../vendor/modernizr/modernizr.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
+    %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "application.css", :rel => "stylesheet", :type => "text/css"}/
+    %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}
+    %script{:src => "../../vendor/lightgl.js/lightgl.js", :type => "text/javascript"}
+    %script{:src => "http://use.typekit.com/hdw8ayt.js", :type => "text/javascript"}
+    %script{:type => "text/javascript"}
+      try{Typekit.load();}catch(e){}
+    %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&subset=latin,greek,latin-ext", :rel => "stylesheet", :type => "text/css"}/
+  %body
+    #header
+      %a#logo(href="http://www.concord.org/")
+        %img(src="../../resources/layout/cc-logo.png")
+      %h1
+        %a(href="http://lab.dev.concord.org/examples/energy2d-model/energy2d-model.html") Energy2D Model
+      Select Interactive:
+      %select#select-interactive
+      %img#fullscreen(class="size-full wp-image-1880" src="../../resources/layout/fullscreen.gif")
+    #content
+
+      #viz
+        .top
+          #interactive-description            
+          #interactive-container  
+          #performance
+            %h2
+              %input{:id => "enable-WebGL", :type => "checkbox"} Force WebGL
+
+    %script{:src => "../../lab/lab.energy2d.js", :type => "text/javascript"}
+    %script{:src => "interactives-index.js", :type => "text/javascript"}
+    %script{:src => "application.js", :type => "text/javascript"}
