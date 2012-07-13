@@ -172,7 +172,15 @@ exports.makeCoreModel = function (model_options) {
       gpgpu = energy2d.utils.gpu.gpgpu;
       // Init module.
       // Width is ny, height is nx (due to data organization).
-      gpgpu.init(ny, nx);
+      try {
+        gpgpu.init(ny, nx);
+      } catch (e) {
+        // If WebGL initialization fails, just use CPU.
+        use_WebGL = false;
+        // TODO: inform better.
+        console.warn("WebGL initialization failed. Energy2D will use CPU solvers.");
+        return;
+      }
       // Create simulation textures.
       t_tex = gpgpu.createTexture();
       tb_tex = gpgpu.createTexture();
@@ -185,6 +193,11 @@ exports.makeCoreModel = function (model_options) {
       capacity_tex = gpgpu.createTexture();
       density_tex = gpgpu.createTexture();
       fluidity_tex = gpgpu.createTexture();
+
+      // GPU version of heat solver.
+      heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
+      // Update textures as material properties are set.
+      updateAllTextures();
     },
 
     updateAllTextures = function () {
@@ -545,11 +558,6 @@ exports.makeCoreModel = function (model_options) {
 
   if (use_WebGL) {
     initGPGPU();
-
-    // GPU version of heat solver.
-    heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
-    // Update textures as material properties are set.
-    updateAllTextures();
   }
 
   // Finally, return public API object.
