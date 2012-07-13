@@ -173,9 +173,10 @@ Java to be installed.
 
 ##### Customize Maven mirror
 
-**Note:** Currently in order to compile OTrunk v0.4 of the maven jarjar plugin is needed.
-Only newer versions of the jarjar plugin are available in the public Maven artifact repositories.
-To compile OTrunk you will need to include the Concord nexus Maven mirror in `~/.m2/settings.xml`.
+**Note:** Currently in order to compile OTrunk a very old version of the maven jarjar plugin is
+needed (v0.4). Only newer versions of the jarjar plugin are available in the public Maven artifact 
+repositories. Until OTrunk is updated you will need to include the Concord nexus Maven mirror
+(which has v0.4 of the maven jarjar plugin) in `~/.m2/settings.xml`.
 
 A minimal working `~/.m2/settings.xml` will look like this:
     
