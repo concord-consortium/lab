@@ -101,7 +101,7 @@ jars.each do |jar_path|
     #      http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=5078608
     #
     puts "\nrepacking:\n  #{path}/#{name}"
-    cmd("pack200 --repack --segment-limit=-1 #{name}")
+    cmd("pack200 --repack --segment-limit=-1 ./#{name}")
     unless @nosign
       puts "\nsigning:\n  #{path}/#{name}"
       if CONFIG_JAVA[:keystore_path]
