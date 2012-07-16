@@ -347,6 +347,8 @@ $(document).ready(function () {
 
     render = function () {
       gl.clear(gl.COLOR_BUFFER_BIT);
+      // Set viewport as GPGPU operations can modify it.
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
       textureA.bind(0);
       renderShader.uniforms({
         texture: 0,

@@ -252,6 +252,6 @@ exports.makeHeatSolverGPU = function (model) {
 
         applyBoundary(t_tex);
       }
-    },
+    }
   };
 };

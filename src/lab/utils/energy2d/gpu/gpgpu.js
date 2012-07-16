@@ -21,6 +21,8 @@ energy2d.utils.gpu.gpgpu = (function () {
     grid_width,
     grid_height,
 
+    // Framebuffer object.
+    framebuffer,
     // Texture used as a temporary storage (Float, RGBA).
     temp_texture,
     // Texture used for Float to RGBA conversion (Unsigned Byte, RGBA).
@@ -97,7 +99,24 @@ energy2d.utils.gpu.gpgpu = (function () {
     }',
 
     // Common error messages.
-    INIT_ERR = 'GPGPU: call init(grid_width, grid_height) with proper dimensions first!';
+    INIT_ERR = 'GPGPU: call init(grid_width, grid_height) with proper dimensions first!',
+
+    //
+    // Private methods.
+    //
+    setTextureAsRenderTarget = function (tex) {
+      // TODO: move bindFramebuffer and viewport to another function
+      //       and call it only once per GPGPU calculations. (?)
+      //       Test it when all solvers are ready. Now (only heat solver 
+      //       on the GPU) performance gain is not worth such modifications.
+      gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+      gl.viewport(0, 0, grid_width, grid_height);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex.id, 0);
+    },
+
+    setDefaultRenderTarget = function () {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    };
 
   //
   // Public API.
@@ -111,7 +130,7 @@ energy2d.utils.gpu.gpgpu = (function () {
         }
         if (gl_ctx) {
           // Use provided context.
-          gl = ready_gl_ctx;
+          gl = gl_ctx;
         } else {
           // Setup WebGL context.
           gl = GL.create({ alpha: true });
@@ -120,6 +139,7 @@ energy2d.utils.gpu.gpgpu = (function () {
           throw new Error("GPGPU: OES_texture_float is not supported!");
         }
         gl.disable(gl.DEPTH_TEST);
+        framebuffer = gl.createFramebuffer();
         plane = GL.Mesh.plane({ coords: true });
         encode_program = new GL.Shader(basic_vertex_shader, encode_fragment_shader);
         copy_program = new GL.Shader(basic_vertex_shader, copy_fragment_shader);
@@ -204,24 +224,23 @@ energy2d.utils.gpu.gpgpu = (function () {
       if (!gl || tex.width !== grid_width || tex.height !== grid_height) {
         return new Error(INIT_ERR);
       }
-
       // Use buffer of provided ouput array. So, when result is written there,
       // output is automaticaly updated in a right way.
       output_storage = new Uint8Array(output.buffer);
 
-      output_texture.drawTo(function () {
-        tex.bind();
-        encode_program.draw(plane);
-        // format: gl.RGBA, type: gl.UNSIGNED_BYTE - only this set is accepted by WebGL readPixels.
-        gl.readPixels(0, 0, output_texture.width, output_texture.height, output_texture.format, output_texture.type, output_storage);
-      });
+      setTextureAsRenderTarget(output_texture);
+      tex.bind();
+      encode_program.draw(plane);
+      // format: gl.RGBA, type: gl.UNSIGNED_BYTE - only this set is accepted by WebGL readPixels.
+      gl.readPixels(0, 0, output_texture.width, output_texture.height, output_texture.format, output_texture.type, output_storage);
+      setDefaultRenderTarget();
     },
 
     copyTexture: function (src_tex, dst_tex) {
-      dst_tex.drawTo(function () {
-        src_tex.bind();
-        copy_program.draw(plane);
-      });
+      setTextureAsRenderTarget(dst_tex);
+      src_tex.bind();
+      copy_program.draw(plane);
+      setDefaultRenderTarget();
     },
 
     // Execute a GLSL program.
@@ -233,19 +252,19 @@ energy2d.utils.gpu.gpgpu = (function () {
     executeProgram: function (program, textures, uniforms, output) {
       var i, len;
       // Use temp texture as writing and reading from the same texture is impossible.
-      temp_texture.drawTo(function () {
-        // Bind textures for reading.
-        for (i = 0, len = textures.length; i < len; i += 1) {
-          textures[i].bind(i);
-        }
-        // Draw simple plane (coordinates x/y from -1 to 1 to cover whole viewport).
-        program.uniforms(uniforms).draw(plane);
-        // Unbind textures.
-        for (i = 0, len = textures.length; i < len; i += 1) {
-          textures[i].unbind(i);
-        }
-      });
+      setTextureAsRenderTarget(temp_texture);
+      // Bind textures for reading.
+      for (i = 0, len = textures.length; i < len; i += 1) {
+        textures[i].bind(i);
+      }
+      // Draw simple plane (coordinates x/y from -1 to 1 to cover whole viewport).
+      program.uniforms(uniforms).draw(plane);
+      // Unbind textures.
+      for (i = 0, len = textures.length; i < len; i += 1) {
+        textures[i].unbind(i);
+      }
       output.swapWith(temp_texture);
+      setDefaultRenderTarget();
     }
   };
 
