@@ -1,6 +1,7 @@
-/*jslint indent: 2, node: true */
+/*globals energy2d: false*/
+/*jslint indent: 2 */
 //
-// lab/models/energy2d/engine/utils/performance.js
+// lab/utils/energy2d/performance/performance.js
 //
 
 // Simple tools for measurement of performance.
@@ -26,7 +27,10 @@
 //  |.. connection 
 //  |.. parsing
 
-var PerformanceTools = exports.makePerformanceModel = function () {
+// define namespace
+energy2d.namespace('energy2d.utils.performance');
+
+energy2d.utils.performance.makePerformanceTools = function () {
   'use strict';
   var
     // Holds data.

@@ -29,8 +29,6 @@ energy2d.modeler.makeModeler = function (options) {
     getTime: function () {
       return core_model.getModelOptions().timestep * core_model.getIndexOfStep();
     },
-    updateTemperatureArray: core_model.updateTemperatureArray,
-    getPerformanceModel: core_model.getPerformanceModel,
     getIndexOfStep: core_model.getIndexOfStep,
     getGridWidth: core_model.getGridWidth,
     getGridHeight: core_model.getGridHeight,
@@ -38,6 +36,8 @@ energy2d.modeler.makeModeler = function (options) {
     getUVelocityArray: core_model.getUVelocityArray,
     getVVelocityArray: core_model.getVVelocityArray,
     getPhotonsArray: core_model.getPhotonsArray,
-    getPartsArray: core_model.getPartsArray
+    getPartsArray: core_model.getPartsArray,
+    updateTemperatureArray: core_model.updateTemperatureArray,
+    setPerformanceTools: core_model.setPerformanceTools
   };
 };

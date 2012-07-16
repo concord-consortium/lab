@@ -17,6 +17,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     // Dependencies:
     modeler_ns = energy2d.modeler,
     views_ns = energy2d.views,
+    performance_ns = energy2d.utils.performance,
     // end.
 
     // Object with public API.
@@ -35,7 +36,12 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     simulation_player_view,
     simulation_description_view,
 
-    // Optional views.
+    // Performance tools and view.
+    // By default mock tools.
+    performance_tools = {
+      start: function () {},
+      stop: function () {}
+    },
     performance_view,
 
     // Parameters:
@@ -104,7 +110,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
 
     nextStep = function () {
       var i, len;
-
+      performance_tools.start('Frame (inc. ' + steps_per_frame + ' model steps)');
       for (i = 0, len = steps_per_frame; i < len; i += 1) {
         modeler.nextStep();
       }
@@ -120,6 +126,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       if (performance_view) {
         performance_view.update();
       }
+      performance_tools.stop('Frame (inc. ' + steps_per_frame + ' model steps)');
     };
 
   //
@@ -190,7 +197,9 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
 
       // Bind performance tools model.
       if (performance_view) {
-        performance_view.bindModel(modeler.getPerformanceModel());
+        performance_tools = performance_ns.makePerformanceTools();
+        performance_view.bindModel(performance_tools);
+        modeler.setPerformanceTools(performance_tools);
       }
 
       heatmap_view.renderHeatmap();

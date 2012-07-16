@@ -355,6 +355,7 @@ server/public/lab/lab.energy2d.js: \
 	server/public/lab/lab.models.energy2d.engine.js \
 	src/lab/models/energy2d/modeler.js \
 	src/lab/utils/energy2d/gpu/gpgpu.js \
+	src/lab/utils/energy2d/performance/performance-tools.js \
 	src/lab/views/energy2d/utils-color.js \
 	src/lab/views/energy2d/heatmap.js \
 	src/lab/views/energy2d/vectormap.js \

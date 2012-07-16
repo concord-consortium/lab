@@ -13,7 +13,6 @@ var
   raysolver      = require('./physics-solvers/ray-solver.js'),
   part           = require('./part.js'),
   default_config = require('./default-config.js'),
-  performance    = require('./utils/performance.js'),
   gpgpu,      // = energy2d.utils.gpu.gpgpu - assing it only when WebGL requested (initGPGPU), 
               //   as it is unavailable in the node.js environment.
 
@@ -85,7 +84,13 @@ exports.makeCoreModel = function (model_options) {
     has_part_power,
 
     // Performance model.
-    perf = performance.makePerformanceModel(),
+    // By default, mock this object.
+    // To measure performance, set valid object
+    // using core_model.setPerformanceTools(tools);
+    perf = {
+      start: function () {},
+      stop: function () {}
+    },
 
     //
     // Simulation arrays:
@@ -313,6 +318,13 @@ exports.makeCoreModel = function (model_options) {
         }
         indexOfStep += 1;
         perf.stop('Core model step');
+      },
+
+      // Sets performance tools.
+      // It's expected to be an object created by
+      // energy2d.utils.performance.makePerformanceTools
+      setPerformanceTools: function (perf_tools) {
+        perf = perf_tools;
       },
 
       updateTemperatureArray: function () {
