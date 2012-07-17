@@ -17,7 +17,7 @@ energy2d.namespace('energy2d.views');
 // size of the HTML element to avoid low quality CSS scaling *ONLY* when HQ rendering is enabled.
 // Otherwise, the canvas has the same dimensions as heatmap grid and fast CSS scaling is used.
 energy2d.views.makeHeatmapView = function (html_id) {
-  'use strict';
+  // 'use strict';
   var
     // Dependencies:
     view_utils = energy2d.views.utils,
@@ -26,8 +26,7 @@ energy2d.views.makeHeatmapView = function (html_id) {
 
     $heatmap_canvas,
     canvas_ctx,
-    backing_scale_width,
-    backing_scale_height,
+    backing_scale,
     canvas_width,
     canvas_height,
     hq_rendering,
@@ -56,11 +55,9 @@ energy2d.views.makeHeatmapView = function (html_id) {
       // See: https://www.khronos.org/webgl/public-mailing-list/archives/1206/msg00193.html
       if (window.devicePixelRatio > 1 && 
           (canvas_ctx.webkitBackingStorePixelRatio > 1 || (typeof canvas_ctx.webkitBackingStorePixelRatio === "undefined"))) {
-        backing_scale_width = window.devicePixelRatio;
-        backing_scale_height = backing_scale_width * 2
+        backing_scale = window.devicePixelRatio;
       } else {
-        backing_scale_width = 1;
-        backing_scale_height = 1;
+        backing_scale = 1;
       }
     },
 
@@ -84,7 +81,7 @@ energy2d.views.makeHeatmapView = function (html_id) {
         canvas_ctx.fillStyle = "rgb(0,0,0)";
 
         scale = max_hue / (max_temp - min_temp);
-        image_data = canvas_ctx.getImageData(0, 0, grid_width, grid_height);
+        image_data = canvas_ctx.getImageData(0, 0, grid_width/backing_scale, grid_height/backing_scale);
         data = image_data.data;
 
         pix_index = 0;
@@ -136,8 +133,8 @@ energy2d.views.makeHeatmapView = function (html_id) {
       },
 
       setCanvasSize: function (w, h) {
-        $heatmap_canvas.attr('width',  w / backing_scale_width);
-        $heatmap_canvas.attr('height', h / (backing_scale_height));
+        $heatmap_canvas.attr('width',  w / backing_scale);
+        $heatmap_canvas.attr('height', h / backing_scale);
       },
 
       setHQRenderingEnabled: function (v) {
