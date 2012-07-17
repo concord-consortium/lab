@@ -26,7 +26,8 @@ energy2d.views.makeHeatmapView = function (html_id) {
 
     $heatmap_canvas,
     canvas_ctx,
-    backing_scale,
+    backing_scale_width,
+    backing_scale_height,
     canvas_width,
     canvas_height,
     hq_rendering,
@@ -55,9 +56,11 @@ energy2d.views.makeHeatmapView = function (html_id) {
       // See: https://www.khronos.org/webgl/public-mailing-list/archives/1206/msg00193.html
       if (window.devicePixelRatio > 1 && 
           (canvas_ctx.webkitBackingStorePixelRatio > 1 || (typeof canvas_ctx.webkitBackingStorePixelRatio === "undefined"))) {
-        backing_scale = window.devicePixelRatio;
+        backing_scale_width = window.devicePixelRatio;
+        backing_scale_height = backing_scale_width * 2
       } else {
-        backing_scale = 1;
+        backing_scale_width = 1;
+        backing_scale_height = 1;
       }
     },
 
@@ -133,10 +136,10 @@ energy2d.views.makeHeatmapView = function (html_id) {
       },
 
       setCanvasSize: function (w, h) {
-        $heatmap_canvas.attr('width',  w / backing_scale);
-        $heatmap_canvas.attr('height', h / (backing_scale*2));
+        $heatmap_canvas.attr('width',  w / backing_scale_width);
+        $heatmap_canvas.attr('height', h / (backing_scale_height));
       },
-      
+
       setHQRenderingEnabled: function (v) {
         hq_rendering = v;
         this.updateCanvasSize();
