@@ -53,28 +53,34 @@ layout.moleculeContainer = function(e, options) {
         ymax:                 10
       };
 
-  if (options) {
-    for(var p in default_options) {
-      if (options[p] === undefined) {
-        options[p] = default_options[p];
-      }
-    }
-  } else {
-    options = default_options;
-  }
-
-  // The get_nodes option allows us to update 'nodes' array every model tick.
-  get_nodes = options.get_nodes;
-  nodes = get_nodes();
-
-  get_num_atoms = options.get_num_atoms;
-  (atoms=[]).length = get_num_atoms();
-
+  processOptions();
   scale(cx, cy);
 
   tx = function(d, i) { return "translate(" + x(d) + ",0)"; };
   ty = function(d, i) { return "translate(0," + y(d) + ")"; };
   stroke = function(d, i) { return d ? "#ccc" : "#666"; };
+
+  function processOptions(newOptions) {
+    if (newOptions) {
+      options = newOptions;
+    }
+    if (options) {
+      for(var p in default_options) {
+        if (options[p] === undefined) {
+          options[p] = default_options[p];
+        }
+      }
+    } else {
+      options = default_options;
+    }
+
+    // The get_nodes option allows us to update 'nodes' array every model tick.
+    get_nodes = options.get_nodes;
+    nodes = get_nodes();
+
+    get_num_atoms = options.get_num_atoms;
+    (atoms=[]).length = get_num_atoms();
+  };
 
   function scale(w, h) {
     var modelSize = model.size(),
@@ -680,6 +686,8 @@ layout.moleculeContainer = function(e, options) {
     container.update_molecule_positions = update_molecule_positions;
     container.scale = scale;
     container.playback_component = playback_component;
+    container.options = options;
+    container.processOptions = processOptions;
   }
 
   container.resize = function(w, h) {
@@ -688,6 +696,12 @@ layout.moleculeContainer = function(e, options) {
     container.setup_particles();
   };
 
+  container.reset = function(newOptions) {
+    container.processOptions(newOptions);
+    container();
+    container.setup_particles();
+    container.updateMoleculeRadius();
+  };
 
  if (node) { container(); }
 

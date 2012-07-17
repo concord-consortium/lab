@@ -485,7 +485,7 @@ modeler.model = function(initialProperties) {
     calculateGradient = !!calculateGradient;
 
     return coreModel.newPotentialCalculator(element, charge, calculateGradient);
-  },
+  };
 
   model.resetTime = function() {
     coreModel.setTime(0);

@@ -16,18 +16,18 @@
 controllers.modelController = function(molecule_view_id, modelConfig, playerConfig) {
   var controller          = {},
 
-      layoutStyle         = playerConfig.layoutStyle,
-      autostart           = playerConfig.autostart,
-      maximum_model_steps = playerConfig.maximum_model_steps,
+      layoutStyle,
+      autostart,
+      maximum_model_steps,
 
-      elements            = modelConfig.elements,
-      atoms_properties    = modelConfig.atoms,
-      mol_number          = modelConfig.mol_number,
-      temperature_control = modelConfig.temperature_control,
-      temperature         = modelConfig.temperature,
-      coulomb_forces      = modelConfig.coulomb_forces,
-      width               = modelConfig.width,
-      height              = modelConfig.height,
+      elements,
+      atoms_properties,
+      mol_number,
+      temperature_control,
+      temperature,
+      coulomb_forces,
+      width,
+      height,
 
       nodes,
 
@@ -52,11 +52,33 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
 
     // ------------------------------------------------------------
     //
+    // Initialize (or update) local variables based on playerConfig and modelConfig objects
+    //
+    // ------------------------------------------------------------
+
+    function initializeLocalVariables() {
+      layoutStyle         = playerConfig.layoutStyle;
+      autostart           = playerConfig.autostart;
+      maximum_model_steps = playerConfig.maximum_model_steps;
+
+      elements            = modelConfig.elements;
+      atoms_properties    = modelConfig.atoms;
+      mol_number          = modelConfig.mol_number;
+      temperature_control = modelConfig.temperature_control;
+      temperature         = modelConfig.temperature;
+      coulomb_forces      = modelConfig.coulomb_forces;
+      width               = modelConfig.width;
+      height              = modelConfig.height;
+    }
+
+    // ------------------------------------------------------------
+    //
     // Create model and pass in properties
     //
     // ------------------------------------------------------------
 
     function createModel() {
+      initializeLocalVariables();
       model = modeler.model({
           elements: elements,
           model_listener: model_listener,
@@ -114,6 +136,27 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
       layout.setupScreen();
     }
 
+    function resetModelPlayer() {
+
+      // ------------------------------------------------------------
+      //
+      // reset player and container view for model
+      //
+      // ------------------------------------------------------------
+
+      molecule_container.reset({
+          xmax:                 width,
+          ymax:                 height,
+          get_nodes:            function() { return model.get_nodes(); },
+          get_num_atoms:        function() { return model.get_num_atoms(); }
+        }
+      )
+
+      // FIXME: should not be here
+      layout.setupScreen(true);
+    }
+
+
     // ------------------------------------------------------------
     //
     // Model Controller
@@ -162,11 +205,12 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
       if (firstTime) {
         setupModelPlayer();
       } else {
-        layout.setupScreen(true);
+        resetModelPlayer()
       }
     }
 
     function reload(newModelConfig, newPlayerConfig) {
+      // ****
        modelConfig = newModelConfig;
        playerConfig = newPlayerConfig;
        finishSetup(false);
