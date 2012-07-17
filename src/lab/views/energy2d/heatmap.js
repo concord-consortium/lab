@@ -26,6 +26,7 @@ energy2d.views.makeHeatmapView = function (html_id) {
 
     $heatmap_canvas,
     canvas_ctx,
+    backing_scale,
     canvas_width,
     canvas_height,
     hq_rendering,
@@ -48,6 +49,16 @@ energy2d.views.makeHeatmapView = function (html_id) {
       $heatmap_canvas = $('<canvas />');
       $heatmap_canvas.attr('id', html_id || DEFAULT_ID);
       canvas_ctx = $heatmap_canvas[0].getContext('2d');
+      // If we are being rendered on a retina display with doubled pixels
+      // we need to make the actual canvas half the requested size;
+      // Google: window.devicePixelRatio webkitBackingStorePixelRatio
+      // See: https://www.khronos.org/webgl/public-mailing-list/archives/1206/msg00193.html
+      if (window.devicePixelRatio > 1 && 
+          (canvas_ctx.webkitBackingStorePixelRatio > 1 || (typeof canvas_ctx.webkitBackingStorePixelRatio === "undefined"))) {
+        backing_scale = window.devicePixelRatio;
+      } else {
+        backing_scale = 1;
+      }
     },
 
     //
@@ -103,8 +114,7 @@ energy2d.views.makeHeatmapView = function (html_id) {
         heatmap = new_heatmap;
         grid_width = new_grid_width;
         grid_height = new_grid_height;
-        $heatmap_canvas.attr('width', grid_width);
-        $heatmap_canvas.attr('height', grid_height);
+        this.setCanvasSize(grid_width, grid_height);
       },
 
       getHTMLElement: function () {
@@ -118,11 +128,15 @@ energy2d.views.makeHeatmapView = function (html_id) {
           $heatmap_canvas.attr('width', canvas_width);
           $heatmap_canvas.attr('height', canvas_height);
         } else {
-          $heatmap_canvas.attr('width', grid_width);
-          $heatmap_canvas.attr('height', grid_height);
+          this.setCanvasSize(grid_width, grid_height);
         }
       },
 
+      setCanvasSize: function (w, h) {
+        $heatmap_canvas.attr('width',  w / backing_scale);
+        $heatmap_canvas.attr('height', h / backing_scale);
+      },
+      
       setHQRenderingEnabled: function (v) {
         hq_rendering = v;
         this.updateCanvasSize();
