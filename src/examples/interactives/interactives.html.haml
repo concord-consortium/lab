@@ -9,7 +9,7 @@
     %link{:href => "../examples.css", :rel => "stylesheet", :type => "text/css"}/
     %script{:src => "../../vendor/d3/d3.v2.js", :type => "text/javascript"}
     %script{:src => "../../vendor/jquery/jquery.min.js", :type => "text/javascript"}
-    %script{:src => "../../vendor/science.js/science.v1.js", :type => "text/javascript"}
+    // %script{:src => "../../vendor/science.js/science.v1.js", :type => "text/javascript"}
     %script{:src => "../../vendor/codemirror2/lib/codemirror.js", :type => "text/javascript"}
     %link{:href => "../../vendor/codemirror2/lib/codemirror.css", :rel => "stylesheet", :type => "text/css"}/
     %script{:src => "../../vendor/codemirror2/mode/javascript/javascript.js", :type => "text/javascript"}
@@ -25,7 +25,7 @@
       %a#logo{:href => "http://www.concord.org/"}
         %img{:src => "../../resources/layout/cc-logo.png"}/
       %h1
-        %a{:href => "http://lab.dev.concord.org/examples/simple-atoms-model/simple-atoms-model.html"} Simple Atoms Model
+        Next Generation MW Interactives Demo
       Select Interactive:
       %select#select-interactive
         %option{:value => "interactives/heat-and-cool-example.json", :selected => true} heat and cool
@@ -33,6 +33,7 @@
         %option{:value => "interactives/add-random-atoms.json"} add random atoms
         %option{:value => "interactives/layout-example.json"} layout example
         %option{:value => "interactives/gas-laws-page2.json"} Gas Laws Page 2 example
+        %option{:value => "interactives/gas-laws-page-4.json"} Gas Laws Page 4 example
 
       %img#fullscreen.size-full.wp-image-1880{:src => "../../resources/layout/fullscreen.gif"}/
     #content
@@ -42,7 +43,7 @@
       #editor-right
         %button#update-interactive-button
           Update Interactive
-        %button#autoFormatInteractiveButton
+        %button#autoformat-selection-button
           AutoFormat Selection
         %textarea#interactive-text-area
 

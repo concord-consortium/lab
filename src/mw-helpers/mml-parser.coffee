@@ -30,6 +30,43 @@ parseMML = (mmlString) ->
         return $mml("##{$entity.attr("idref")}")
       $entity
 
+    getProperty = ($node, propertyName) ->
+      $node.find("[property=#{propertyName}]").text()
+
+    ### Scale MML length units to nextgen length units ###
+    toNextgenLengths = (ls...) -> l/100 for l in ls
+
+    ### Transform an (x,y) coordinate pair from MML frame to nextgen frame ###
+    toNextgenCoordinates = (x, y) ->
+      # MW 0,0 is top left, NGMW 0,0 is bottom left
+      y = viewPortHeight - y
+
+      # if there is a view-port, x and y are actually in view-port coords... map to model coords
+      x = x - viewPortX
+      y = y - viewPortY
+
+      toNextgenLengths x, y
+
+    ### Find and parse mml nodes representing obstacles ###
+    parseObstacles = ->
+      obstacles = []
+      obstacleNodes = $mml "[property=obstacles] .org-concord-mw2d-models-RectangularObstacle-Delegate"
+      for node in obstacleNodes
+        $node = getNode cheerio node
+
+        height = parseFloat getProperty $node, 'height'
+        width  = parseFloat getProperty $node, 'width'
+        x      = parseFloat getProperty $node, 'x'
+        y      = parseFloat getProperty $node, 'y'
+
+        [x, y]          = toNextgenCoordinates x, y
+        [height, width] = toNextgenLengths height, width
+
+        obstacles.push { x, y, height, width }
+
+      obstacles
+
+
     ###
       Find the container size
     ###
@@ -52,8 +89,12 @@ parseMML = (mmlString) ->
       viewPortX = viewPortY = 0
 
     # scale from MML units to Lab's units
-    width  = width / 100      # 100 pixels per nm
-    height = height / 100
+    [height, width] = toNextgenLengths height, width
+
+    ###
+      Find obstacles
+    ###
+    obstacles = parseObstacles()
 
     ###
       Find all elements. Results in:
@@ -81,7 +122,7 @@ parseMML = (mmlString) ->
       epsilon = parseFloat $type.find("[property=epsilon] double").text() || 0.1
 
       # scale sigma to nm
-      sigma = sigma/100
+      [sigma] = toNextgenLengths sigma
       # epsilon's sign appears to be flipped between MW and Lab
       epsilon = -epsilon
 
@@ -142,19 +183,10 @@ parseMML = (mmlString) ->
       vx = parseFloat $node.find("[property=vx]").text() || 0
       vy = parseFloat $node.find("[property=vy]").text() || 0
 
-      # MW 0,0 is top left, NGMW 0,0 is bottom left
-      y = viewPortHeight - y
-      vy = -vy
+      [x, y] = toNextgenCoordinates x, y
 
-      # if there is a view-port, x and y are actually in view-port coords... map to model coords
-      x = x - viewPortX
-      y = y - viewPortY
-
-      # scale from MML units to Lab's units
-      x  = x / 100      # 100 pixels per nm
-      y  = y / 100
       vx = vx / 100     # 100 m/s is 0.01 in MML and should be 0.0001 nm/fs
-      vy = vy / 100
+      vy = -vy / 100
 
       atoms.push elemId: elemId, x: x, y: y, vx: vx, vy: vy, charge: 0
 
@@ -207,6 +239,13 @@ parseMML = (mmlString) ->
     # for now use first atom's element sigma
     sigma   = elemTypes[id].sigma
 
+    ### Convert array of hashes to a hash of arrays, for use by MD2D ###
+    unroll = (array, props...) ->
+      unrolled = {}
+      for prop in props
+        unrolled[prop] = (item[prop] for item in array)
+      unrolled
+
     json =
       temperature_control : !!temperature
       lennard_jones_forces: true
@@ -223,11 +262,10 @@ parseMML = (mmlString) ->
         ELEMENT: element
 
     if radialBonds.length > 0
-      json.radialBonds =
-        atom1Index: (bond.atom1Index for bond in radialBonds)
-        atom2Index: (bond.atom2Index for bond in radialBonds)
-        bondLength: (bond.bondLength for bond in radialBonds)
-        bondStrength: (bond.bondStrength for bond in radialBonds)
+      json.radialBonds = unroll radialBonds, 'atom1Index', 'atom2Index', 'bondLength', 'bondStrength'
+
+    if obstacles.length > 0
+      json.obstacles = unroll obstacles, 'x', 'y', 'height', 'width'
 
     json.temperature = temperature if temperature
 

@@ -7,6 +7,7 @@
   Thermometer
   SliderComponent
   layout
+  DEVELOPMENT
   $
   alert
   model: true
@@ -28,13 +29,13 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
       coulomb_forces,
       width,
       height,
+      radialBonds,
+      obstacles,
 
       nodes,
 
       molecule_container,
-      step_counter,
-      therm,
-      epsilon_slider;
+      step_counter;
 
     // ------------------------------------------------------------
     //
@@ -69,6 +70,8 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
       coulomb_forces      = modelConfig.coulomb_forces;
       width               = modelConfig.width;
       height              = modelConfig.height;
+      radialBonds         = modelConfig.radialBonds;
+      obstacles           = modelConfig.obstacles;
     }
 
     // ------------------------------------------------------------
@@ -90,7 +93,6 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
           height: height
         });
 
-
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
       } else if (mol_number) {
@@ -99,6 +101,9 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
+
+      if (radialBonds) model.createRadialBonds(radialBonds);
+      if (obstacles) model.createObstacles(obstacles);
     }
 
     // ------------------------------------------------------------
@@ -170,17 +175,6 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
       model.on("tick", model_listener);
       if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
         model.resume();
-      }
-    }
-
-    function modelStepBack() {
-      modelStop();
-      model.stepBack();
-    }
-
-    function modelStepForward() {
-      if (!Number(maximum_model_steps) || (model.stepCounter() < maximum_model_steps)) {
-        model.stepForward();
       }
     }
 

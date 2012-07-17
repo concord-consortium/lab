@@ -1,55 +1,56 @@
-/*globals $ controllers model alert */
+/*globals $ CodeMirror controllers model alert DEVELOPMENT: true */
 /*jshint boss:true */
-// ------------------------------------------------------------
-//
-// General Parameters for the Molecular Simulation
-//
-// ------------------------------------------------------------
 
 DEVELOPMENT = true;
 
-var ROOT = "/examples",
-    ROOT_REGEX = new RegExp(ROOT + "/.*$"),
+var ROOT = '/examples',
+    ROOT_REGEX = new RegExp(ROOT + '/.*$'),
     ACTUAL_ROOT = document.location.pathname.replace(ROOT_REGEX, '');
 
 (function() {
 
-  var optsLoaded = $.Deferred(),
+  var interactiveDefinitionLoaded = $.Deferred(),
       windowLoaded = $.Deferred(),
+
       selectInteractive = document.getElementById('select-interactive'),
       interactiveTextArea = document.getElementById('interactive-text-area'),
       updateInteractiveButton = document.getElementById('update-interactive-button'),
-      autoFormatSelectionButton = document.getElementById('auto-format-selection-button'),
-      editor, controller, 
+      autoFormatSelectionButton = document.getElementById('autoformat-selection-button'),
+
+      editor,
+      controller,
       indent = 2,
       foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder),
-
-      interactiveUrl, interactive;
+      interactiveUrl,
+      interactive,
+      hash;
 
   function selectInteractiveHandler() {
-    document.location.hash = "#" + selectInteractive.value;
+    document.location.hash = '#' + selectInteractive.value;
   }
   selectInteractive.onchange = selectInteractiveHandler;
 
   if (!document.location.hash) {
-     document.location.hash = "#interactives/heat-and-cool-example.json";
+     document.location.hash = '#interactives/heat-and-cool-example.json';
   }
 
   if (hash = document.location.hash) {
     interactiveUrl = hash.substr(1, hash.length);
     selectInteractive.value = interactiveUrl;
+
     $.get(interactiveUrl).done(function(results) {
-      if (typeof results === "string") { results = JSON.parse(results); }
+      if (typeof results === 'string') results = JSON.parse(results);
       interactive = results;
+
       interactiveTextArea.textContent = JSON.stringify(interactive, null, indent);
       editor = CodeMirror.fromTextArea(interactiveTextArea, {
-        mode: "javascript",
+        mode: 'javascript',
         indentUnit: indent,
         lineNumbers: true,
         lineWrapping: false,
         onGutterClick: foldFunc
       });
-      optsLoaded.resolve();
+      interactiveDefinitionLoaded.resolve();
     });
   }
 
@@ -61,12 +62,11 @@ var ROOT = "/examples",
     var range = getSelectedRange();
     editor.autoFormatRange(range.from, range.to);
   }
-  autoFormatSelectionButton = autoFormatSelection;
+  autoFormatSelectionButton.onclick = autoFormatSelection;
 
   function updateInteractiveHandler() {
     interactive = JSON.parse(editor.getValue());
     controller.loadInteractive(interactive, '#interactive-container');
-    controller.updateLayout();
   }
   updateInteractiveButton.onclick = updateInteractiveHandler;
 
@@ -74,7 +74,7 @@ var ROOT = "/examples",
     windowLoaded.resolve();
   });
 
-  $.when(optsLoaded, windowLoaded).done(function(results) {
+  $.when(interactiveDefinitionLoaded, windowLoaded).done(function(results) {
     controller = controllers.interactivesController(interactive, '#interactive-container');
   });
 

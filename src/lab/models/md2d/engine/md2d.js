@@ -206,6 +206,18 @@ exports.makeModel = function() {
       // Number of actual radial bonds (may be smaller than the length of the property arrays)
       N_radialBonds = 0,
 
+      // Individual properties for the obstacles
+      obstacleX,
+      obstacleY,
+      obstacleWidth,
+      obstacleHeight,
+
+      // An array of length 4 which contains obstacles information
+      obstacles,
+
+      // Number of actual obstacles
+      N_obstacles = 0,
+
       // The location of the center of mass, in nanometers.
       x_CM, y_CM,
 
@@ -300,7 +312,6 @@ exports.makeModel = function() {
         radialBonds[3] = radialBondStrength   = arrays.create(num, 0, float32);
       },
 
-
       // Make the 'radialBonds' array bigger. FIXME: needs to be factored
       // into a common pattern with 'extendAtomsArray'
       extendRadialBondsArray = function(num) {
@@ -317,6 +328,35 @@ exports.makeModel = function() {
           arrays.copy(savedArrays[i], radialBonds[i]);
         }
       },
+
+      createObstaclesArray = function(num) {
+        var float32 = (hasTypedArrays && notSafari) ? 'Float32Array' : 'regular';
+
+          obstacles = [];
+
+          obstacles[0] = obstacleX      = arrays.create(num, 0, float32);
+          obstacles[1] = obstacleY      = arrays.create(num, 0, float32);
+          obstacles[2] = obstacleWidth  = arrays.create(num, 0, float32);
+          obstacles[3] = obstacleHeight = arrays.create(num, 0, float32);
+      },
+
+
+      extendObstaclesArray = function(num) {
+        var savedArrays = [],
+            i;
+
+        for (i = 0; i < obstacles.length; i++) {
+          savedArrays[i] = obstacles[i];
+        }
+
+        createObstaclesArray(num);
+
+        for (i = 0; i < obstacles.length; i++) {
+          arrays.copy(savedArrays[i], obstacles[i]);
+        }
+      },
+
+
 
       // Function that accepts a value T and returns an average of the last n values of T (for some n).
       T_windowed,
@@ -478,6 +518,55 @@ exports.makeModel = function() {
           py[i] *= -1;
         }
       },
+
+      bounceOffObstacles = function(i, x_prev, y_prev) {
+        // fast path if no obstacles
+        if (N_obstacles < 1) return;
+
+        var r,
+            xi,
+            yi,
+
+            j,
+
+            x_left,
+            x_right,
+            y_top,
+            y_bottom;
+
+        r = radius[i];
+        xi = x[i];
+        yi = y[i];
+
+        for (j = 0; j < N_obstacles; j++) {
+
+          x_left = obstacleX[j] - r;
+          x_right = obstacleX[j] + obstacleWidth[j] + r;
+          y_top = obstacleY[j] + r;
+          y_bottom = obstacleY[j] - obstacleHeight[j] - r;
+
+          if (xi > x_left && xi < x_right && yi > y_bottom && yi < y_top) {
+            if (x_prev <= x_left) {
+              x[i] = x_left - (xi - x_left);
+              vx[i] *= -1;
+              px[i] *= -1;
+            } else if (x_prev >= x_right) {
+              x[i] = x_right + (x_right - xi);
+              vx[i] *= -1;
+              px[i] *= -1;
+            } else if (y_prev <= y_bottom) {
+              y[i] = y_bottom - (yi - y_bottom);
+              vy[i] *= -1;
+              py[i] *= -1;
+            } else /* y_prev >= y_top */ {
+              y[i] = y_top  + (y_top - yi);
+              vy[i] *= -1;
+              py[i] *= -1;
+            }
+          }
+        }
+      },
+
 
       // Half of the update of v(t+dt, i) and p(t+dt, i) using a; during a single integration loop,
       // call once when a = a(t) and once when a = a(t+dt)
@@ -816,7 +905,7 @@ exports.makeModel = function() {
     addRadialBond: function(atomIndex1, atomIndex2, bondLength, bondStrength) {
 
       if (N_radialBonds+1 > radialBondAtom1Index.length) {
-        extendRadialBondsArray(N+1);
+        extendRadialBondsArray(N_radialBonds+1);
       }
 
       radialBondAtom1Index[N_radialBonds] = atomIndex1;
@@ -826,6 +915,21 @@ exports.makeModel = function() {
 
       N_radialBonds++;
     },
+
+
+    addObstacle: function(x, y, width, height) {
+      if (N_obstacles+1 > obstacleX.length) {
+        extendObstaclesArray(N_obstacles+1);
+      }
+
+      obstacleX[N_obstacles] = x;
+      obstacleY[N_obstacles] = y;
+      obstacleWidth[N_obstacles]  = width;
+      obstacleHeight[N_obstacles] = height;
+
+      N_obstacles++;
+    },
+
 
     // Sets the X, Y, VX, VY and ELEMENT properties of the atoms
     initializeAtomsFromProperties: function(props) {
@@ -918,11 +1022,21 @@ exports.makeModel = function() {
       model.computeOutputState();
     },
 
+    initializeObstacles: function (props) {
+      var num = props.x.length,
+          i;
+
+      createObstaclesArray(num);
+      for (i = 0; i < num; i++) {
+        model.addObstacle(props.x[i], props.y[i], props.width[i], props.height[i]);
+      }
+    },
+
     initializeRadialBonds: function(props) {
       var num = props.atom1Index.length,
           i;
 
-      createRadialBondsArray(props.atom1Index.length);
+      createRadialBondsArray(num);
 
       for (i = 0; i < num; i++) {
         model.addRadialBond(
@@ -969,15 +1083,21 @@ exports.makeModel = function() {
       var t_start = time,
           n_steps = Math.floor(duration/dt),  // number of steps
           iloop,
-          i;
+          i,
+          x_prev,
+          y_prev;
 
       for (iloop = 1; iloop <= n_steps; iloop++) {
         time = t_start + iloop*dt;
 
         for (i = 0; i < N; i++) {
+          x_prev = x[i];
+          y_prev = y[i];
+
           // Update r(t+dt) using v(t) and a(t)
           updatePosition(i);
           bounceOffWalls(i);
+          bounceOffObstacles(i, x_prev, y_prev);
 
           // First half of update of v(t+dt, i), using v(t, i) and a(t, i)
           halfUpdateVelocity(i);

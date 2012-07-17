@@ -448,6 +448,11 @@ modeler.model = function(initialProperties) {
     return model;
   };
 
+  model.createObstacles = function(obstacles) {
+    coreModel.initializeObstacles(obstacles);
+    return model;
+  };
+
   // The next four functions assume we're are doing this for
   // all the atoms will need to be changed when different atoms
   // can have different LJ sigma values
