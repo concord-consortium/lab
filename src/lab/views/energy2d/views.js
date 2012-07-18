@@ -18,7 +18,7 @@ energy2d.namespace('energy2d.views');
 // Constructor sets only necessary style options.
 // If you want to resize Energy2D scene view use CSS rule for wrapping DIV.
 // Do not resize manually internal views (heatmap, velocity or parts)!
-energy2d.views.makeEnergy2DScene = function (html_id) {
+energy2d.views.makeEnergy2DScene = function (html_id, use_WebGL) {
   'use strict';
   var
     DEFAULT_ID = 'energy2d-scene-view',
@@ -106,7 +106,11 @@ energy2d.views.makeEnergy2DScene = function (html_id) {
       }
     };
 
-  heatmap_view = energy2d.views.makeHeatmapView();
+  if (use_WebGL) {
+    heatmap_view = energy2d.views.makeHeatmapWebGLView();
+  } else {
+    heatmap_view = energy2d.views.makeHeatmapView();
+  }
   setAsNextLayer(heatmap_view);
 
   velocity_view = energy2d.views.makeVectormapView();
