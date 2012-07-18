@@ -1,5 +1,5 @@
 /*globals energy2d, $ */
-/*jslint indent: 2 */
+/*jslint indent: 2, browser: true */
 //
 // lab/views/energy2d/heatmap.js
 //
@@ -17,7 +17,7 @@ energy2d.namespace('energy2d.views');
 // size of the HTML element to avoid low quality CSS scaling *ONLY* when HQ rendering is enabled.
 // Otherwise, the canvas has the same dimensions as heatmap grid and fast CSS scaling is used.
 energy2d.views.makeHeatmapView = function (html_id) {
-  // 'use strict';
+  'use strict';
   var
     // Dependencies:
     view_utils = energy2d.views.utils,
@@ -53,7 +53,7 @@ energy2d.views.makeHeatmapView = function (html_id) {
       // we need to make the actual canvas half the requested size;
       // Google: window.devicePixelRatio webkitBackingStorePixelRatio
       // See: https://www.khronos.org/webgl/public-mailing-list/archives/1206/msg00193.html
-      if (window.devicePixelRatio > 1 && 
+      if (window.devicePixelRatio > 1 &&
           (canvas_ctx.webkitBackingStorePixelRatio > 1 || (typeof canvas_ctx.webkitBackingStorePixelRatio === "undefined"))) {
         backing_scale = window.devicePixelRatio;
       } else {
@@ -81,7 +81,7 @@ energy2d.views.makeHeatmapView = function (html_id) {
         canvas_ctx.fillStyle = "rgb(0,0,0)";
 
         scale = max_hue / (max_temp - min_temp);
-        image_data = canvas_ctx.getImageData(0, 0, grid_width/backing_scale, grid_height/backing_scale);
+        image_data = canvas_ctx.getImageData(0, 0, grid_width / backing_scale, grid_height / backing_scale);
         data = image_data.data;
 
         pix_index = 0;
