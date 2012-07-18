@@ -104,6 +104,29 @@ energy2d.utils.gpu.gpgpu = (function () {
     //
     // Private methods.
     //
+    initWebGL = function (gl_ctx) {
+      if (typeof GL === 'undefined') {
+        throw new Error("GPGPU: lightgl.js library missing.");
+      }
+      if (gl_ctx) {
+        // Use provided context.
+        gl = gl_ctx;
+      } else {
+        // Setup WebGL context.
+        gl = GL.create({ alpha: true });
+      }
+      // Check if OES_texture_float is available.
+      if (!gl.getExtension('OES_texture_float')) {
+        throw new Error("GPGPU: OES_texture_float is not supported!");
+      }
+      // Configure WebGL context and create necessary objects and structures.
+      gl.disable(gl.DEPTH_TEST);
+      framebuffer = gl.createFramebuffer();
+      plane = GL.Mesh.plane({ coords: true });
+      encode_program = new GL.Shader(basic_vertex_shader, encode_fragment_shader);
+      copy_program = new GL.Shader(basic_vertex_shader, copy_fragment_shader);
+    },
+
     setTextureAsRenderTarget = function (tex) {
       // TODO: move bindFramebuffer and viewport to another function
       //       and call it only once per GPGPU calculations. (?)
@@ -125,36 +148,26 @@ energy2d.utils.gpu.gpgpu = (function () {
     // Setups rendering context (only during first call) and necessary storage (texture, array).
     init: function (width, height, gl_ctx) {
       if (gl === undefined) {
-        if (typeof GL === 'undefined') {
-          throw new Error("GPGPU: lightgl.js library missing.");
-        }
-        if (gl_ctx) {
-          // Use provided context.
-          gl = gl_ctx;
-        } else {
-          // Setup WebGL context.
-          gl = GL.create({ alpha: true });
-        }
-        if (!gl.getExtension('OES_texture_float')) {
-          throw new Error("GPGPU: OES_texture_float is not supported!");
-        }
-        gl.disable(gl.DEPTH_TEST);
-        framebuffer = gl.createFramebuffer();
-        plane = GL.Mesh.plane({ coords: true });
-        encode_program = new GL.Shader(basic_vertex_shader, encode_fragment_shader);
-        copy_program = new GL.Shader(basic_vertex_shader, copy_fragment_shader);
+        initWebGL(gl_ctx);
       }
       // Set dimensions.
       grid_width = width;
       grid_height = height;
 
       // Setup storage for given dimensions.
-      temp_texture   = new GL.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.NEAREST });
-      output_texture = new GL.Texture(grid_width, grid_height, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.NEAREST });
+      temp_texture   = new GL.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
+      output_texture = new GL.Texture(grid_width, grid_height, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.LINEAR });
       temp_storage   = new Float32Array(grid_width * grid_height * 4);
 
       // lightgl.js sets this parameter to 1 during each GL.Texture call, so overwrite it.
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
+    },
+
+    getWebGLContext: function () {
+      if (gl === undefined) {
+        initWebGL();
+      }
+      return gl;
     },
 
     // Creates a floating point texture with proper parameters.
@@ -165,7 +178,7 @@ energy2d.utils.gpu.gpgpu = (function () {
       }
       // Use RGBA format as this is the safest option. Single channel textures aren't well supported
       // as render targets attached to FBO.
-      tex = new GL.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.NEAREST });
+      tex = new GL.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
       // lightgl.js sets this parameter to 1 during each GL.Texture call, so overwrite it.
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
 
@@ -265,6 +278,11 @@ energy2d.utils.gpu.gpgpu = (function () {
       }
       output.swapWith(temp_texture);
       setDefaultRenderTarget();
+    },
+
+    // Block until all GL execution is complete.
+    finish: function () {
+      gl.finish();
     }
   };
 
