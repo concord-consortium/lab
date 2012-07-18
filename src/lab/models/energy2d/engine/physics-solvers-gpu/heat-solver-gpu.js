@@ -252,6 +252,9 @@ exports.makeHeatSolverGPU = function (model) {
 
         applyBoundary(t_tex);
       }
+      // Synchronize. It's not required but it 
+      // allows to measure time (for optimization).
+      gpgpu.finish();
     }
   };
 };
