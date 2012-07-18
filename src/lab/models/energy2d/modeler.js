@@ -29,10 +29,12 @@ energy2d.modeler.makeModeler = function (options) {
     getTime: function () {
       return core_model.getModelOptions().timestep * core_model.getIndexOfStep();
     },
+    isWebGLActive: core_model.isWebGLActive,
     getIndexOfStep: core_model.getIndexOfStep,
     getGridWidth: core_model.getGridWidth,
     getGridHeight: core_model.getGridHeight,
     getTemperatureArray: core_model.getTemperatureArray,
+    getTemperatureTexture: core_model.getTemperatureTexture,
     getUVelocityArray: core_model.getUVelocityArray,
     getVVelocityArray: core_model.getVVelocityArray,
     getPhotonsArray: core_model.getPhotonsArray,

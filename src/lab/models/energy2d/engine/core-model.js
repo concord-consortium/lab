@@ -327,6 +327,10 @@ exports.makeCoreModel = function (model_options) {
         perf = perf_tools;
       },
 
+      isWebGLActive: function () {
+        return use_WebGL;
+      },
+
       updateTemperatureArray: function () {
         if (use_WebGL) {
           perf.start('Read temperature texture');

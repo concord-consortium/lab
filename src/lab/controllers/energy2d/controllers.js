@@ -24,6 +24,10 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     controller,
     // Energy2D model.
     modeler,
+    model_options,
+    // Parameters.
+    use_WebGL,
+    steps_per_frame = 4,
 
     // TODO: refactor views support, probably using events and more general approach.
     // Required views.
@@ -44,13 +48,13 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     },
     performance_view,
 
-    // Parameters:
-    last_options,
+    // All attached HTML elements.
+    $html_elements,
+
     interval_id,
-    steps_per_frame = 4,
 
     //
-    // Private methods
+    // Private methods.
     //
     actualRootPath = function (url) {
       if (typeof ACTUAL_ROOT === "undefined" || url.charAt(0) !== "/") {
@@ -60,7 +64,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     },
 
     createEnergy2DScene = function (component_def) {
-      energy2d_scene = views_ns.makeEnergy2DScene(component_def.id);
+      energy2d_scene = views_ns.makeEnergy2DScene(component_def.id, use_WebGL);
       heatmap_view = energy2d_scene.getHeatmapView();
       velocity_view = energy2d_scene.getVelocityView();
       parts_view = energy2d_scene.getPartsView();
@@ -108,16 +112,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       }
     },
 
-    nextStep = function () {
-      var i, len;
-      performance_tools.start('Frame (inc. ' + steps_per_frame + ' model steps)');
-      for (i = 0, len = steps_per_frame; i < len; i += 1) {
-        modeler.nextStep();
-      }
-
-      // Copies values from texture to array if GPU is used.
-      modeler.updateTemperatureArray();
-
+    updateDynamicViews = function () {
       heatmap_view.renderHeatmap();
       velocity_view.renderVectormap();
       photons_view.renderPhotons();
@@ -126,14 +121,30 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       if (performance_view) {
         performance_view.update();
       }
-      performance_tools.stop('Frame (inc. ' + steps_per_frame + ' model steps)');
-    };
+    },
 
-  //
-  // Public API
-  //
-  controller = {
-    loadInteractive: function (interactive, interactive_container_id, description_container_id) {
+    nextStep = function () {
+      var i, len;
+      performance_tools.stop('Gap between frames');
+      performance_tools.start('Frame (inc. ' + steps_per_frame + ' model steps)');
+      for (i = 0, len = steps_per_frame; i < len; i += 1) {
+        modeler.nextStep();
+      }
+      performance_tools.start('Views update');
+      // Update views (only part view is not updated, as it's static).
+      updateDynamicViews();
+      performance_tools.stop('Views update');
+
+      performance_tools.stop('Frame (inc. ' + steps_per_frame + ' model steps)');
+      performance_tools.start('Gap between frames');
+    },
+
+    createModeler = function () {
+      modeler = modeler_ns.makeModeler(model_options.model);
+      use_WebGL = modeler.isWebGLActive();
+    },
+
+    createViewComponents = function () {
       var
         components = interactive.components || [],
         description = interactive.description || {},
@@ -141,10 +152,8 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         component, component_layout, $html_element,
         i, len;
 
-      // Load scene model.
-      controller.loadSceneModelFromURL(interactive.model);
-
-      // Load components.
+      $html_elements = [];
+      // Load standard view components.
       for (i = 0, len = components.length; i < len; i += 1) {
         component = createComponent(components[i]);
 
@@ -158,42 +167,49 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         if (component_layout.class) {
           $html_element.addClass(component_layout.class);
         }
-        // Append.
+        // Append to container (interactive container is a default choice).
         if (component_layout.container) {
           $html_element.appendTo(component_layout.container);
         } else {
           $html_element.appendTo(interactive_container_id);
         }
+        // Add HTML element to the list.
+        $html_elements.push($html_element);
       }
+      // Add description.
       if (description) {
         component = createSimulationDescription(description);
         $html_element = component.getHTMLElement();
         $html_element.appendTo(description_container_id);
+        // Add HTML element to the list.
+        $html_elements.push($html_element);
       }
     },
 
-    loadSceneModelFromURL: function (options_url) {
-      $.get(actualRootPath(options_url))
-        .success(function (data) {
-          if (typeof data === "string") { data = JSON.parse(data); }
-          controller.loadSceneModel(data);
-        })
-        .error(function (jqXHR, textStatus, errorThrown) {
-          throw new Error("Interactive controller: loading scene options failed - " + textStatus);
-        });
+    removeViewComponents = function () {
+      var i, len;
+      // Remove components.
+      for (i = 0, len = $html_elements.length; i < len; i += 1) {
+        $html_elements[i].remove();
+      }
+      // Reset list.
+      $html_elements = [];
     },
 
-    loadSceneModel: function (options) {
+    setupViewComponents = function () {
       var grid_x, grid_y;
-      modeler = modeler_ns.makeModeler(options.model);
-      last_options = options;
 
       grid_x = modeler.getGridWidth();
       grid_y = modeler.getGridHeight();
-      heatmap_view.bindHeatmap(modeler.getTemperatureArray(), grid_x, grid_y);
       velocity_view.bindVectormap(modeler.getUVelocityArray(), modeler.getVVelocityArray(), grid_x, grid_y, 4);
       parts_view.bindPartsArray(modeler.getPartsArray(), modeler.getWidth(), modeler.getHeight());
       photons_view.bindPhotonsArray(modeler.getPhotonsArray(), modeler.getWidth(), modeler.getHeight());
+
+      if (use_WebGL) {
+        heatmap_view.bindHeatmapTexture(modeler.getTemperatureTexture());
+      } else {
+        heatmap_view.bindHeatmap(modeler.getTemperatureArray(), grid_x, grid_y);
+      }
 
       // Bind performance tools model.
       if (performance_view) {
@@ -202,15 +218,41 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
         modeler.setPerformanceTools(performance_tools);
       }
 
-      heatmap_view.renderHeatmap();
+      updateDynamicViews();
       parts_view.renderParts();
     },
 
+    loadInteractive = function () {
+      // Download model options (located at interactive.model attribute).
+      $.get(actualRootPath(interactive.model))
+        .success(function (data) {
+          // When they are ready, save them, create modeler, load components and setup them.
+          if (typeof data === "string") {
+            data = JSON.parse(data);
+          }
+          model_options = data;
+
+          createModeler();
+          createViewComponents();
+          setupViewComponents();
+        })
+        .error(function (jqXHR, textStatus, errorThrown) {
+          throw new Error("Interactive controller: loading scene options failed - " + textStatus);
+        });
+    };
+
+  //
+  // Public API
+  //
+  controller = {
     // Overwrite WebGL optimization option.
     setWebGLEnabled: function (b) {
       controller.simulationStop();
-      last_options.model.use_WebGL = b;
-      controller.loadSceneModel(last_options);
+      model_options.model.use_WebGL = b;
+      createModeler();
+      removeViewComponents();
+      createViewComponents();
+      setupViewComponents();
     },
 
     //
@@ -219,15 +261,21 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     simulationPlay: function () {
       if (!interval_id) {
         interval_id = setInterval(nextStep, 0);
+        performance_tools.start('Gap between frames');
       }
     },
 
     simulationStep: function () {
-      nextStep();
+      if (!interval_id) {
+        performance_tools.start('Gap between frames');
+        nextStep();
+        performance_tools.stop('Gap between frames');
+      }
     },
 
     simulationStop: function () {
       if (interval_id !== undefined) {
+        performance_tools.stop('Gap between frames');
         clearInterval(interval_id);
         interval_id = undefined;
       }
@@ -236,12 +284,13 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     simulationReset: function () {
       controller.simulationStop();
       // TODO: use modeler.reset()
-      controller.loadSceneModel(last_options);
+      createModeler();
+      setupViewComponents();
     }
   };
 
   // One-off initialization.
-  controller.loadInteractive(interactive, interactive_container_id, description_container_id);
+  loadInteractive();
 
   return controller;
 };
