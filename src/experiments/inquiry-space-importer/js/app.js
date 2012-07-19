@@ -1,7 +1,11 @@
-/*globals $ _mixin: true _extends: true ISImporter: true */
+/*globals $ console document _mixin: true _extends: true ISImporter: true */
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 
+/**
+  Helpers for defining classical-OO style inheritance.
+  Adapted from CoffeeScript implementation.
+*/
 _mixin = function(dest, src) {
   var hasProp = {}.hasOwnProperty,
       key;
@@ -12,69 +16,67 @@ _mixin = function(dest, src) {
 };
 
 _extends = function(child, parent) {
-  var hasProp = {}.hasOwnProperty,
-      key;
-
-  for (key in parent) {
-    if (hasProp.call(parent, key)) child[key] = parent[key];
-  }
+  _mixin(child, parent);
 
   function ctor() {
     this.constructor = child;
   }
-  ctor.prototype = parent.prototype;
+  ctor.prototype  = parent.prototype;
   child.prototype = new ctor();
   child.__super__ = parent.prototype;
-  return child;
 };
 
 
-ISImporter.SensorApplet = (function() {
-  function SensorApplet() {}
+defineClass = function(classProperties) {
+  var ctor = function(instanceProperties) {
+     _mixin(this, instanceProperties);
+  };
+  _mixin(ctor.prototype, classProperties);
+  return ctor;
+};
 
-  _mixin(SensorApplet.prototype, {
-    doStuff1: function() {
-      console.log("doing stuff 1 as SensorApplet");
-    },
-    doStuff2: function() {
-      console.log("doing stuff 2 as SensorApplet");
-    }
-  });
+extendClass = function(baseClass, classProperties) {
+  var ctor = function(instanceProperties) {
+        _mixin(this, instanceProperties);
+      };
+  _extends(ctor, baseClass);
+  _mixin(ctor.prototype, classProperties);
+  return ctor;
+};
 
-  return SensorApplet;
-}());
+/**
+  Base SensorApplet class appends the appropriate HTML to the DOM.
+*/
+ISImporter.SensorApplet = defineClass({
+  doStuff1: function() {
+    console.log("doing stuff 1 as SensorApplet");
+  },
+  doStuff2: function() {
+    console.log("doing stuff 2 as SensorApplet");
+  }
+});
 
-
-ISImporter.GoIOApplet = (function() {
-  function GoIOApplet() {}
-  _extends(GoIOApplet, ISImporter.SensorApplet);
-  _mixin(GoIOApplet.prototype, {
-    doStuff1: function() {
-      console.log("doing stuff 1 as GoIOApplet");
-      this.constructor.__super__.doStuff1.apply(this, arguments);
-    }
-  });
-  return GoIOApplet;
-}());
-
+ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
+  doStuff1: function() {
+    console.log("doing stuff 1 as GoIOApplet");
+    this.constructor.__super__.doStuff1.apply(this, arguments);
+  }
+});
 
 
 ISImporter.main = function() {
-  // var distanceSensor = new ISImporter.GoIOApplet({
-  //   otmlString: 'distance'
-  // }),
 
-  // temperatureSensor = new ISImporter.GoIOApplet({
-  //   otmlString: 'temperature'
-  // }),
+  distanceSensor = new ISImporter.GoIOApplet({
+    otmlString: 'distance'
+  }),
 
-  // lightSensor = new ISImporter.GoIOApplet({
-  //   otmlString: 'light'
-  // });
+  temperatureSensor = new ISImporter.GoIOApplet({
+    otmlString: 'temperature'
+  }),
 
-
-  window.base = new ISImporter.SensorApplet(),
-  window.derived = new ISImporter.GoIOApplet();
+  lightSensor = new ISImporter.GoIOApplet({
+    otmlString: 'light'
+  });
 
 };
 
