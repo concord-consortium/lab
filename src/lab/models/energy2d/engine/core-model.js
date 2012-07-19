@@ -89,7 +89,10 @@ exports.makeCoreModel = function (model_options) {
     // using core_model.setPerformanceTools(tools);
     perf = {
       start: function () {},
-      stop: function () {}
+      stop: function () {},
+      startFPS: function () {},
+      updateFPS: function () {},
+      stopFPS: function () {}
     },
 
     //

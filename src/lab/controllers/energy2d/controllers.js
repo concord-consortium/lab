@@ -44,7 +44,10 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     // By default mock tools.
     performance_tools = {
       start: function () {},
-      stop: function () {}
+      stop: function () {},
+      startFPS: function () {},
+      updateFPS: function () {},
+      stopFPS: function () {}
     },
     performance_view,
 
