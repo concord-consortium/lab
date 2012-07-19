@@ -148,7 +148,7 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
         }).draw(plane);
         heatmap_tex.unbind(0);
 
-        gpgpu.finish();
+        gpgpu.tryFinish();
       },
 
       updateCanvasSize: function () {
