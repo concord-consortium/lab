@@ -32,6 +32,9 @@ energy2d.utils.gpu.gpgpu = (function () {
     // Mesh used for rendering.
     plane,
 
+    // Flag which determines if synchronization is allowed or not.
+    sync_allowed = false,
+
     // Special shader for encoding floats based on: 
     // https://github.com/cscheid/facet/blob/master/src/shade/bits/encode_float.js
     encode_program,
@@ -280,9 +283,16 @@ energy2d.utils.gpu.gpgpu = (function () {
       setDefaultRenderTarget();
     },
 
-    // Block until all GL execution is complete.
-    finish: function () {
-      gl.finish();
+    // Synchronization can be useful for debugging.
+    setSynchronizationAllowed: function (b) {
+      sync_allowed = b;
+    },
+
+    // Block until all GL execution is complete if synchronization is allowed.
+    tryFinish: function () {
+      if (sync_allowed) {
+        gl.finish();
+      }
     }
   };
 

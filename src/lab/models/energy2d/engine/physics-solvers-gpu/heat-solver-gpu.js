@@ -254,7 +254,7 @@ exports.makeHeatSolverGPU = function (model) {
       }
       // Synchronize. It's not required but it 
       // allows to measure time (for optimization).
-      gpgpu.finish();
+      gpgpu.tryFinish();
     }
   };
 };
