@@ -102,6 +102,7 @@ PROJECT_LIST = {
                         :repository => 'git://github.com/concord-consortium/energy2d.git',
                         :branch => 'trunk',
                         :path => 'org/concord/energy2d',
+                        :main_class => "org.concord.energy2d.system.System2D",
                         :has_applet_class => true,
                         :sign => false },
 
@@ -110,6 +111,7 @@ PROJECT_LIST = {
                         :repository => 'git://github.com/concord-consortium/mw.git',
                         :branch => 'master',
                         :path => 'org/concord/modeler',
+                        :main_class => "org.concord.modeler.ModelerLauncher",
                         :has_applet_class => true,
                         :sign => false },
 
