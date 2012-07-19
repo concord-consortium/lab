@@ -6,7 +6,7 @@
 
 // Simple tools for measurement of performance.
 // Automatically detects nested calls of start()
-// and creates appropriate tree.
+// and creates appropriate tree_root.
 // E.g.:
 // var perf = makePerformanceTools();
 // ...
@@ -22,7 +22,7 @@
 // ...
 // perf.stop('database read')
 // 
-// wiil create a tree:
+// wiil create a tree_root:
 // database read
 //  |.. connection 
 //  |.. parsing
@@ -33,14 +33,17 @@ energy2d.namespace('energy2d.utils.performance');
 energy2d.utils.performance.makePerformanceTools = function () {
   'use strict';
   var
-    // Holds data.
-    tree = {
+    // Holds avg time data.
+    tree_root = {
       id: undefined,
       data: undefined,
       parent: undefined,
       children: {}
     },
-    act_node = tree,
+    act_node = tree_root,
+
+    // Holds FPS counters.
+    fps_data = {},
 
     goToNode = function (id_string) {
       if (!act_node.children[id_string]) {
@@ -77,9 +80,37 @@ energy2d.utils.performance.makePerformanceTools = function () {
       // Move one level up.
       act_node = act_node.parent;
     },
+    // FPS counter start
+    startFPS: function (id_string) {
+      fps_data[id_string] = {
+        start_time: new Date().getTime(),
+        count: 0,
+        fps: 0
+      };
+    },
+    // FPS update.
+    updateFPS: function (id_string) {
+      var
+        data = fps_data[id_string],
+        time = new Date().getTime();
+
+      if (!data) {
+        return;
+      }
+      data.count += 1;
+      data.fps = data.count / ((time - data.start_time) / 1000);
+    },
+    // FPS counter start
+    stopFPS: function (id_string) {
+      delete fps_data[id_string];
+    },
     // Get tree with stats.
     getTree: function () {
-      return tree;
+      return tree_root;
+    },
+    // Get FPS data.
+    getFPSData: function () {
+      return fps_data;
     }
   };
 };

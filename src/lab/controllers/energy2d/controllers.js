@@ -137,6 +137,8 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
 
       performance_tools.stop('Frame (inc. ' + steps_per_frame + ' model steps)');
       performance_tools.start('Gap between frames');
+
+      performance_tools.updateFPS('Model update and rendering');
     },
 
     createModeler = function () {
@@ -262,6 +264,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
       if (!interval_id) {
         interval_id = setInterval(nextStep, 0);
         performance_tools.start('Gap between frames');
+        performance_tools.startFPS('Model update and rendering');
       }
     },
 
@@ -276,6 +279,7 @@ energy2d.controllers.makeInteractiveController = function (interactive, interact
     simulationStop: function () {
       if (interval_id !== undefined) {
         performance_tools.stop('Gap between frames');
+        performance_tools.stopFPS('Model update and rendering');
         clearInterval(interval_id);
         interval_id = undefined;
       }
