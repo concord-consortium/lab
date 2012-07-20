@@ -218,6 +218,11 @@ layout.moleculeContainer = function(e, options) {
     return obstacles.height[i];
   }
 
+  function get_obstacle_color(i) {
+    var rgb = obstacles.color[i];
+    return "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
+  }
+
   function container() {
     // if (node.clientWidth && node.clientHeight) {
     //   cx = node.clientWidth;
@@ -525,7 +530,7 @@ layout.moleculeContainer = function(e, options) {
           .attr("y", function(d, i) {return y(get_obstacle_y(i)); })
           .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
           .attr("height", function(d, i) {return x(get_obstacle_height(i)); })
-          .style("fill", "#a0d3d1")
+          .style("fill", function(d, i) {return get_obstacle_color(i); })
           .style("stroke-width", 0.2)
           .style("stroke", "black");
     }
