@@ -84,8 +84,14 @@ exports.makeHeatSolverGPU = function (model) {
           vec2 dx = vec2(grid.x, 0.0);\
           vec2 dy = vec2(0.0, grid.y);\
           float tb_val = texture2D(tb, coord).r;\
-          /* val != val means that val is NaN */\
-          if (tb_val != tb_val) {\
+          /*\
+           * Check if tb_val is NaN. isnan() function is not available\
+           * in OpenGL ES GLSL, so use some tricks. IEEE 754 spec defines\
+           * that NaN != NaN, however this seems to not work on Windows.\
+           * So, also check if the value is outside [-3.4e38, 3.4e38] (3.4e38\
+           * is close to 32Float max value), as such values are not expected.\
+           */\
+          if (tb_val != tb_val || tb_val < -3.4e38 || tb_val > 3.4e38) {\
             float sij = texture2D(capacity, coord).r * texture2D(density, coord).r * inv_timestep;\
             float rij = texture2D(conductivity, coord).r;\
             float axij = hx * (rij + texture2D(conductivity, coord - dy).r);\
