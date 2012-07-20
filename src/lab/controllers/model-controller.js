@@ -133,7 +133,7 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
       );
 
       molecule_container.updateMoleculeRadius();
-      molecule_container.setup_particles();
+      molecule_container.setup_drawables();
 
       layout.addView('moleculeContainers', molecule_container);
 

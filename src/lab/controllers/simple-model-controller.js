@@ -128,7 +128,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
       );
 
       molecule_container.updateMoleculeRadius();
-      molecule_container.setup_particles();
+      molecule_container.setup_drawables();
 
       // ------------------------------------------------------------
       // Setup therm, epsilon_slider & sigma_slider components ... after fluid layout
@@ -176,7 +176,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
 
     function updateCoulombCheckbox() {
       $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-      molecule_container.setup_particles();
+      molecule_container.setup_drawables();
     }
 
     function updateTherm(){

@@ -491,6 +491,10 @@ layout.moleculeContainer = function(e, options) {
           .on("mouseout", molecule_mouseout);
     }
 
+    function setup_drawables() {
+      setup_particles();
+    }
+
     function setup_particles() {
       // The get_nodes option allows us to update 'nodes' array every model tick.
       get_nodes = options.get_nodes;
@@ -678,7 +682,7 @@ layout.moleculeContainer = function(e, options) {
     // make these private variables and functions available
     container.node = node;
     container.updateMoleculeRadius = updateMoleculeRadius;
-    container.setup_particles = setup_particles;
+    container.setup_drawables = setup_drawables;
     container.update_molecule_positions = update_molecule_positions;
     container.scale = scale;
     container.playback_component = playback_component;
@@ -689,13 +693,13 @@ layout.moleculeContainer = function(e, options) {
   container.resize = function(w, h) {
     container.scale(w, h);
     container();
-    container.setup_particles();
+    container.setup_drawables();
   };
 
   container.reset = function(newOptions) {
     container.processOptions(newOptions);
     container();
-    container.setup_particles();
+    container.setup_drawables();
     container.updateMoleculeRadius();
   };
 

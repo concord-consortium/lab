@@ -271,7 +271,7 @@ controllers.complexModelController =
 
       function updateCoulombCheckbox() {
         $(layout.coulomb_forces_checkbox).attr('checked', model.get("coulomb_forces"));
-        moleculeContainer.setup_particles();
+        moleculeContainer.setup_drawables();
       }
 
       model.addPropertiesListener(["coulomb_forces"], updateCoulombCheckbox);
@@ -366,7 +366,7 @@ controllers.complexModelController =
       model.resetTime();
       resetEnergyData();
 
-      moleculeContainer.setup_particles();
+      moleculeContainer.setup_drawables();
       moleculeContainer.updateMoleculeRadius();
       layout.setupScreen();
       step_counter = model.stepCounter();

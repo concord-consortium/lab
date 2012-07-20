@@ -124,7 +124,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       );
 
       molecule_container.updateMoleculeRadius();
-      molecule_container.setup_particles();
+      molecule_container.setup_drawables();
 
       // ------------------------------------------------------------
       //
