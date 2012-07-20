@@ -142,6 +142,22 @@ energy2d.utils.gpu.gpgpu = (function () {
 
     setDefaultRenderTarget = function () {
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    },
+
+    packRGBAData = function (R, G, B, A, storage) {
+      var res, i, i4, len;
+
+      if (R.length !== G.length || R.length !== B.length || R.length !== A.length ||
+          storage.length !== R.length * 4) {
+        throw new Error("GPGPU: Invalid input data length.");
+      }
+      for (i = 0, len = R.length; i < len; i += 1) {
+        i4 = i * 4;
+        storage[i4]     = R[i];
+        storage[i4 + 1] = G[i];
+        storage[i4 + 2] = B[i];
+        storage[i4 + 3] = A[i];
+      }
     };
 
   //
@@ -220,17 +236,17 @@ energy2d.utils.gpu.gpgpu = (function () {
 
     // Write a texture.
     writeTexture: function (tex, input) {
-      var rgba;
-      if (input.length === tex.width * tex.height) {
-        rgba = this.convertToRGBA(input, 0, temp_storage);
-      } else if (input.length === 4 * tex.width * tex.height) {
-        rgba = input;
-      } else {
-        throw new Error("GPGPU: Invalid dimensions of input array.");
-      }
+      var rgba = this.convertToRGBA(input, 0, temp_storage);
       // Make sure that texture is bound.
       gl.bindTexture(gl.TEXTURE_2D, tex.id);
       gl.texImage2D(gl.TEXTURE_2D, 0, tex.format, tex.width, tex.height, 0, tex.format, tex.type, rgba);
+    },
+
+    writeRGBATexture: function (tex, R, G, B, A) {
+      packRGBAData(R, G, B, A, temp_storage);
+      // Make sure that texture is bound.
+      gl.bindTexture(gl.TEXTURE_2D, tex.id);
+      gl.texImage2D(gl.TEXTURE_2D, 0, tex.format, tex.width, tex.height, 0, tex.format, tex.type, temp_storage);
     },
 
     // Read a floating point texture.
