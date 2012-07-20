@@ -59,10 +59,20 @@ parseMML = (mmlString) ->
         x      = parseFloat getProperty $node, 'x'
         y      = parseFloat getProperty $node, 'y'
 
+        color  = null
+        colorDef  = $node.find ".java-awt-Color>int"
+        if colorDef and colorDef.length > 0
+          color    = []
+          color[0] = parseInt cheerio(colorDef[0]).text()
+          color[1] = parseInt cheerio(colorDef[1]).text()
+          color[2] = parseInt cheerio(colorDef[2]).text()
+        else
+          color    = [160, 211, 209]
+
         [x, y]          = toNextgenCoordinates x, y
         [height, width] = toNextgenLengths height, width
 
-        obstacles.push { x, y, height, width }
+        obstacles.push { x, y, height, width, color }
 
       obstacles
 
@@ -265,7 +275,7 @@ parseMML = (mmlString) ->
       json.radialBonds = unroll radialBonds, 'atom1Index', 'atom2Index', 'bondLength', 'bondStrength'
 
     if obstacles.length > 0
-      json.obstacles = unroll obstacles, 'x', 'y', 'height', 'width'
+      json.obstacles = unroll obstacles, 'x', 'y', 'height', 'width', 'color'
 
     json.temperature = temperature if temperature
 
