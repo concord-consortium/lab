@@ -7,10 +7,9 @@
   Thermometer
   SliderComponent
   layout
-
+  DEVELOPMENT
   $
   alert
-
   model: true
   model_player: true
 */
@@ -31,6 +30,8 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       coulomb_forces      = modelConfig.coulomb_forces,
       width               = modelConfig.width,
       height              = modelConfig.height,
+      radialBonds         = modelConfig.radialBonds,
+      obstacles           = modelConfig.obstacles,
 
       nodes,
 
@@ -89,6 +90,8 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
       } else {
         throw new Error("simpleModelController: tried to create a model without atoms or mol_number.");
       }
+      if (radialBonds) model.createRadialBonds(radialBonds);
+      if (obstacles) model.createObstacles(obstacles);
     }
 
     // ------------------------------------------------------------
@@ -119,7 +122,8 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
           xmax:                 width,
           ymax:                 height,
           get_nodes:            function() { return model.get_nodes(); },
-          get_num_atoms:        function() { return model.get_num_atoms(); }
+          get_num_atoms:        function() { return model.get_num_atoms(); },
+          get_obstacles:        function() { return model.get_obstacles(); }
         }
       );
 

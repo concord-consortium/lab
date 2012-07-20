@@ -7,7 +7,9 @@
   Thermometer
   SliderComponent
   layout
-
+  DEVELOPMENT
+  $
+  alert
   model: true
   model_player: true
 */
@@ -37,6 +39,8 @@ controllers.complexModelController =
       coulomb_forces      = modelConfig.coulomb_forces,
       width               = modelConfig.width,
       height              = modelConfig.height,
+      radialBonds         = modelConfig.radialBonds,
+      obstacles           = modelConfig.obstacles,
 
       moleculeContainer,
       model_listener,
@@ -123,6 +127,7 @@ controllers.complexModelController =
       if (atoms_properties) {
         model.createNewAtoms(atoms_properties);
         if (radialBonds) model.createRadialBonds(radialBonds);
+        if (obstacles) model.createObstacles(obstacles);
       } else if (mol_number) {
         model.createNewAtoms({
           num: mol_number,
@@ -166,7 +171,8 @@ controllers.complexModelController =
           ymin:                 0,
           ymax:                 height,
           get_nodes:            function() { return model.get_nodes(); },
-          get_num_atoms:        function() { return model.get_num_atoms(); }
+          get_num_atoms:        function() { return model.get_num_atoms(); },
+          get_obstacles:        function() { return model.get_obstacles(); }
         }
       );
 
