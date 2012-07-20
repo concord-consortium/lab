@@ -32,7 +32,7 @@ layout.moleculeContainer = function(e, options) {
       particle, label, labelEnter, tail,
       molRadius,
       molecule_div, molecule_div_pre,
-      atoms,
+      mock_atoms_array = [],
       get_num_atoms,
       nodes,
       get_nodes,
@@ -79,7 +79,7 @@ layout.moleculeContainer = function(e, options) {
     nodes = get_nodes();
 
     get_num_atoms = options.get_num_atoms;
-    (atoms=[]).length = get_num_atoms();
+    mock_atoms_array.length = get_num_atoms();
   };
 
   function scale(w, h) {
@@ -465,7 +465,7 @@ layout.moleculeContainer = function(e, options) {
     }
 
     function updateMoleculeRadius() {
-      vis.selectAll("circle").data(atoms).attr("r",  function(d, i) { return x(get_radius(i)); });
+      vis.selectAll("circle").data(mock_atoms_array).attr("r",  function(d, i) { return x(get_radius(i)); });
       // vis.selectAll("text").attr("font-size", x(molRadius * 1.3) );
     }
 
@@ -497,11 +497,7 @@ layout.moleculeContainer = function(e, options) {
       nodes = get_nodes();
 
       get_num_atoms = options.get_num_atoms;
-      (atoms=[]).length = get_num_atoms();
-
-      if (typeof atoms == "undefined" || !atoms){
-        return;
-      }
+      mock_atoms_array.length = get_num_atoms();
 
       var ljf = model.getLJCalculator()[0][0].coefficients();
       // // molRadius = ljf.rmin * 0.5;
@@ -510,7 +506,7 @@ layout.moleculeContainer = function(e, options) {
       gradient_container.selectAll("circle").remove();
       gradient_container.selectAll("g").remove();
 
-      particle = gradient_container.selectAll("circle").data(atoms);
+      particle = gradient_container.selectAll("circle").data(mock_atoms_array);
 
       circlesEnter(particle);
 
@@ -518,7 +514,7 @@ layout.moleculeContainer = function(e, options) {
       if (model.get('mol_number') > 100) { font_size *= 0.9; }
 
       label = gradient_container.selectAll("g.label")
-          .data(atoms);
+          .data(mock_atoms_array);
 
       labelEnter = label.enter().append("g")
           .attr("class", "label")
@@ -607,7 +603,7 @@ layout.moleculeContainer = function(e, options) {
 
     function update_molecule_positions() {
 
-      (atoms = []).length = get_num_atoms();
+      mock_atoms_array.length = get_num_atoms();
       nodes = get_nodes();
 
       // update model time display
@@ -615,13 +611,13 @@ layout.moleculeContainer = function(e, options) {
         time_label.text(modelTimeLabel());
       }
 
-      label = elem.selectAll("g.label").data(atoms);
+      label = elem.selectAll("g.label").data(mock_atoms_array);
 
       label.attr("transform", function(d, i) {
           return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
         });
 
-      particle = gradient_container.selectAll("circle").data(atoms);
+      particle = gradient_container.selectAll("circle").data(mock_atoms_array);
       circlesEnter(particle);
 
       particle.attr("cx", function(d, i) {
