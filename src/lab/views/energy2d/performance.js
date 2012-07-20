@@ -21,6 +21,7 @@ energy2d.views.makePerformanceView = function (html_id) {
 
     $performance_div,
     $stats,
+    $fps,
 
     performance_model,
 
@@ -29,8 +30,11 @@ energy2d.views.makePerformanceView = function (html_id) {
     //
     initHTMLelement = function () {
       $performance_div = $('<div />');
+      $fps = $('<pre />');
       $stats = $('<pre />');
 
+      $performance_div.append('<h2>FPS Counters:</h2>');
+      $performance_div.append($fps);
       $performance_div.append('<h2>Stats (average time):</h2>');
       $performance_div.append($stats);
     },
@@ -50,10 +54,20 @@ energy2d.views.makePerformanceView = function (html_id) {
       }
     },
 
-    render = function (tree) {
+    renderTime = function (tree) {
       // Reset view.
       $stats.html('');
       addChildren(tree.children, 0);
+    },
+
+    renderFPS = function (fps_data) {
+      var name;
+      $fps.html('');
+      for (name in fps_data) {
+        if (fps_data.hasOwnProperty(name)) {
+          $fps.append(name + ': ' + fps_data[name].fps.toFixed(2) + ' fps');
+        }
+      }
     },
 
     //
@@ -66,7 +80,8 @@ energy2d.views.makePerformanceView = function (html_id) {
 
       update: function () {
         // Update stats.
-        render(performance_model.getTree());
+        renderFPS(performance_model.getFPSData())
+        renderTime(performance_model.getTree());
       },
 
       getHTMLElement: function () {

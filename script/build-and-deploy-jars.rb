@@ -4,6 +4,7 @@ require_relative 'setup.rb'
 require File.join(CONFIG_PATH, 'java-projects.rb')
 
 require 'optparse'
+require 'tempfile'
 
 puts <<HEREDOC
 
@@ -92,6 +93,13 @@ def checkout_project(project_path, project, options)
   end
 end
 
+def main_class(klass)
+  manifest = Tempfile.new("manifest-main-class")
+  manifest.puts "Main-Class: " + klass
+  manifest.close
+  manifest.path
+end
+
 def prep_project(project, options, project_path)
   version_template = source = ''
   Dir.chdir(project_path) do
@@ -130,6 +138,10 @@ def prep_project(project, options, project_path)
       start = Time.now
       jar_name = "#{project}-#{version_template}.jar"
       `jar cf #{project}-#{version_template}.jar -C bin .`
+      if options[:main_class]
+        manifest_path = main_class(options[:main_class])
+        `jar umf #{manifest_path} #{project}-#{version_template}.jar`
+      end
       puts sprintf("%d.1s", Time.now-start)
       source = "#{project_path}/#{jar_name}"
       return [ { :source => source, :version_template => version_template } ]
@@ -182,6 +194,24 @@ Location: #{destination}
         else
           system(pack_and_sign_cmd + ' --nosign')
         end
+      end
+      if options[:main_class]
+        jar_name = "#{project}.jar"
+        jar_destination = File.join(BIN_PATH, jar_name)
+        FileUtils.cp(source, jar_destination)
+        start_command = <<-HEREDOC
+#!/bin/sh
+(cd #{BIN_PATH} && java -jar #{jar_name} $1)
+        HEREDOC
+        start_path = File.join(BIN_PATH, project)
+        File.open(start_path, 'w') { |f| f.write start_command }
+        File.chmod(0755, start_path)
+        puts <<-HEREDOC
+Also deploying executable jar:
+  Location: #{jar_destination}
+  Executable: bin/#{project}
+
+        HEREDOC
       end
     end
   else

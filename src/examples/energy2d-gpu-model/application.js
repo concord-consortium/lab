@@ -21,7 +21,8 @@ var ROOT = "/examples",
     interactive_options,
     controller,
     select = $("#select-interactive"),
-    force_WebGL_checkbox = $('#enable-WebGL'),
+    enable_WebGL_checkbox = $('#enable-WebGL'),
+    force_WebGL_sync_checkbox = $('#force-WebGL-sync'),
 
     loadInteractive = function () {
 
@@ -62,8 +63,13 @@ var ROOT = "/examples",
     document.location.hash = "#" + $(select.find("option:selected")[0]).data('path');
   });
 
-  force_WebGL_checkbox.change(function(){
+  enable_WebGL_checkbox.change(function(){
     controller.setWebGLEnabled($(this).attr("checked"));
+  });
+
+  force_WebGL_sync_checkbox.change(function(){
+    energy2d.utils.gpu.gpgpu.setSynchronizationAllowed($(this).attr("checked"));
+    controller.simulationReset();
   });
 
   $(window).bind('hashchange', function () {
