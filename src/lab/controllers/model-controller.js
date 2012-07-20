@@ -128,7 +128,8 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
           xmax:                 width,
           ymax:                 height,
           get_nodes:            function() { return model.get_nodes(); },
-          get_num_atoms:        function() { return model.get_num_atoms(); }
+          get_num_atoms:        function() { return model.get_num_atoms(); },
+          get_obstacles:        function() { return model.get_obstacles(); }
         }
       );
 
@@ -153,7 +154,8 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
           xmax:                 width,
           ymax:                 height,
           get_nodes:            function() { return model.get_nodes(); },
-          get_num_atoms:        function() { return model.get_num_atoms(); }
+          get_num_atoms:        function() { return model.get_num_atoms(); },
+          get_obstacles:        function() { return model.get_obstacles(); }
         }
       )
 

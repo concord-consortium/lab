@@ -36,6 +36,9 @@ layout.moleculeContainer = function(e, options) {
       get_num_atoms,
       nodes,
       get_nodes,
+      obstacle,
+      get_obstacles,
+      mock_obstacles_array = [],
       default_options = {
         title:                false,
         xlabel:               false,
@@ -80,6 +83,8 @@ layout.moleculeContainer = function(e, options) {
 
     get_num_atoms = options.get_num_atoms;
     mock_atoms_array.length = get_num_atoms();
+
+    get_obstacles = options.get_obstacles;
   };
 
   function scale(w, h) {
@@ -195,6 +200,22 @@ layout.moleculeContainer = function(e, options) {
 
   function get_charge(i) {
     return nodes[model.INDICES.CHARGE][i];
+  }
+
+  function get_obstacle_x(i) {
+    return obstacles.x[i];
+  }
+
+  function get_obstacle_y(i) {
+    return obstacles.y[i];
+  }
+
+  function get_obstacle_width(i) {
+    return obstacles.width[i];
+  }
+
+  function get_obstacle_height(i) {
+    return obstacles.height[i];
   }
 
   function container() {
@@ -340,6 +361,13 @@ layout.moleculeContainer = function(e, options) {
         label.attr("transform", function(d, i) {
           return "translate(" + x(get_x(i)) + "," + y(get_y(i)) + ")";
         });
+      }
+
+      if (obstacle) {
+        obstacle.attr("x", function(d, i) {return x(get_obstacle_x(i)); })
+                .attr("y", function(d, i) {return y(get_obstacle_y(i)); })
+                .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
+                .attr("height", function(d, i) {return x(get_obstacle_height(i)); });
       }
 
       if (options.playback_controller || options.play_only_controller) {
@@ -491,8 +519,20 @@ layout.moleculeContainer = function(e, options) {
           .on("mouseout", molecule_mouseout);
     }
 
+    function rectEnter(obstacle) {
+      obstacle.enter().append("rect")
+          .attr("x", function(d, i) {return x(get_obstacle_x(i)); })
+          .attr("y", function(d, i) {return y(get_obstacle_y(i)); })
+          .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
+          .attr("height", function(d, i) {return x(get_obstacle_height(i)); })
+          .style("fill", "#a0d3d1")
+          .style("stroke-width", 0.2)
+          .style("stroke", "black");
+    }
+
     function setup_drawables() {
       setup_particles();
+      setup_obstacles();
     }
 
     function setup_particles() {
@@ -549,6 +589,19 @@ layout.moleculeContainer = function(e, options) {
               }
             });
       }
+    }
+
+    function setup_obstacles() {
+      obstacles = get_obstacles();
+      if (!obstacles) return;
+
+      mock_obstacles_array.length = obstacles.x.length;
+
+      gradient_container.selectAll("rect").remove();
+
+      obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
+
+      rectEnter(obstacle);
     }
 
     function mousedown() {

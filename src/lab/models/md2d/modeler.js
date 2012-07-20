@@ -47,6 +47,9 @@ modeler.model = function(initialProperties) {
       //
       nodes,
 
+      // list of obstacles
+      obstacles,
+
       listeners = {},
 
       properties = {
@@ -448,7 +451,8 @@ modeler.model = function(initialProperties) {
     return model;
   };
 
-  model.createObstacles = function(obstacles) {
+  model.createObstacles = function(_obstacles) {
+    obstacles = _obstacles;
     coreModel.initializeObstacles(obstacles);
     return model;
   };
@@ -603,6 +607,10 @@ modeler.model = function(initialProperties) {
 
   model.get_num_atoms = function() {
     return nodes[0].length;
+  };
+
+  model.get_obstacles = function() {
+    return obstacles;
   };
 
   model.on = function(type, listener) {
