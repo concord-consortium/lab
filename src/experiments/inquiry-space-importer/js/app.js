@@ -1,4 +1,4 @@
-/*globals $ console document _mixin: true _extends: true ISImporter: true */
+/*globals defineClass extendClass */
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 
@@ -6,43 +6,52 @@ if (typeof ISImporter === 'undefined') ISImporter = {};
   Helpers for defining classical-OO style inheritance.
   Adapted from CoffeeScript implementation.
 */
-_mixin = function(dest, src) {
-  var hasProp = {}.hasOwnProperty,
-      key;
+(function() {
 
-  for (key in src) {
-    if (hasProp.call(src, key)) dest[key] = src[key];
+  function mixin(dest, src) {
+    var hasProp = {}.hasOwnProperty,
+        key;
+
+    for (key in src) {
+      if (hasProp.call(src, key)) dest[key] = src[key];
+    }
   }
-};
 
-_extends = function(child, parent) {
-  _mixin(child, parent);
 
-  function ctor() {
-    this.constructor = child;
+  function extend(child, parent) {
+    mixin(child, parent);
+
+    function Ctor() {
+      this.constructor = child;
+    }
+    Ctor.prototype  = parent.prototype;
+    child.prototype = new Ctor();
+    child.__super__ = parent.prototype;
   }
-  ctor.prototype  = parent.prototype;
-  child.prototype = new ctor();
-  child.__super__ = parent.prototype;
-};
 
 
-defineClass = function(classProperties) {
-  var ctor = function(instanceProperties) {
-     _mixin(this, instanceProperties);
-  };
-  _mixin(ctor.prototype, classProperties);
-  return ctor;
-};
+  function defineClass(classProperties) {
+    var ctor = function(instanceProperties) {
+       mixin(this, instanceProperties);
+    };
+    mixin(ctor.prototype, classProperties);
+    return ctor;
+  }
 
-extendClass = function(baseClass, classProperties) {
-  var ctor = function(instanceProperties) {
-        _mixin(this, instanceProperties);
-      };
-  _extends(ctor, baseClass);
-  _mixin(ctor.prototype, classProperties);
-  return ctor;
-};
+
+  function extendClass(baseClass, classProperties) {
+    var ctor = function(instanceProperties) {
+          mixin(this, instanceProperties);
+        };
+    extend(ctor, baseClass);
+    mixin(ctor.prototype, classProperties);
+    return ctor;
+  }
+
+  // publish defineClass, extendClass globally:
+  window.defineClass = defineClass;
+  window.extendClass = extendClass;
+}());
 
 /**
   Base SensorApplet class appends the appropriate HTML to the DOM.
