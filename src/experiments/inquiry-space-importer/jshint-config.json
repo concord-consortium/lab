@@ -1,0 +1,30 @@
+{
+  "predef": ["$", "jQuery", "ISImporter"],
+
+  "es5" : false,
+  "browser" : true,
+
+  "boss" : false,
+  "curly": false,
+  "debug": false,
+  "devel": false,
+  "eqeqeq": true,
+  "evil": true,
+  "forin": true,
+  "immed": true,
+  "indent": 2,
+  "laxbreak": false,
+  "newcap": true,
+  "noarg": true,
+  "node": true,
+  "noempty": true,
+  "nonew": false,
+  "nomen": false,
+  "onevar": false,
+  "plusplus": false,
+  "regexp": false,
+  "undef": true,
+  "sub": true,
+  "strict": false,
+  "white": false
+}
