@@ -158,7 +158,7 @@ Most of the developers on Lab use [Homebrew](http://mxcl.github.com/homebrew/) a
 
 #### Java
 
-Java is needed for compiling the invisible sensor applet as qell as the legacy Java applications we are porting to HTML5.
+Java is needed for compiling the invisible sensor applet as well as the legacy Java applications we are porting to HTML5.
 
 Test to see if Java is installed and available:
 
@@ -190,7 +190,7 @@ A minimal working `~/.m2/settings.xml` will look like this:
         </mirror>
       </mirrors>
     </settings>
- 
+
 ###Linux
 
 Before any of this make sure that "run command as login shell" is checked. if it isn't go to edit-profile preferences-Title and Command, and check Run command as a login shell.
@@ -201,8 +201,8 @@ to [Install RVM](https://rvm.io/rvm/install/) you need to have curl:
 then install RVM using curl with:
 <pre><code> $ curl -L https://get.rvm.io | bash -s stable --ruby </code></pre>
 
-After RVM has finnished installing it will ask you to run a command similar to 
-<pre><code>$ source /home/user_name/.rvm/scripts/rvm</code></pre>    
+After RVM has finnished installing it will ask you to run a command similar to
+<pre><code>$ source /home/user_name/.rvm/scripts/rvm</code></pre>
 
 After installation you should see something like the following:
 
@@ -244,7 +244,7 @@ The nosql document-oriented [CouchDB](http://couchdb.apache.org/) database serve
 To install the latest stable versions of node and couchdb you first need to add repositories ([node repo](https://launchpad.net/~chris-lea/+archive/node.js/)  and [couchdb repo](https://launchpad.net/~longsleep/+archive/couchdb) ) with the most recent versions. for these to work as intended python software properties must also be installed.
 
 <pre><code>$ sudo apt-get install python-software-properties
-$ sudo apt-add-repository ppa:chris-lea/node.js 
+$ sudo apt-add-repository ppa:chris-lea/node.js
 $ sudo apt-add-repository ppa:longsleep/couchdb
 $ sudo apt-get update
 </code></pre>
@@ -268,7 +268,7 @@ neither the java run time environment nor the java development kit are installed
 nokogiri requires libxslt and libxml2, install them with:
 <pre><code>sudo apt-get install libxslt-dev libxml2-dev</code></pre>
 
-final note, before you "make everything" after cloning the git repo run 
+final note, before you "make everything" after cloning the git repo run
 <pre><code>cp config/config_sample.yml config/config.yml</code></pre>
 
 
@@ -375,7 +375,7 @@ You can use a pre-configured route to open the local CouchDb admin web interface
     cd lab/server
     rails console
 
-#### Building the Legacy Java applications and the Sensor Java Applet
+#### Building the Classic Java applications and the Sensor Java Applet
 
 The Lab repository can build the legacy Java applications Molecular Workbench and Energy2D we
 are converting to HTML5.
@@ -386,6 +386,19 @@ of the HTML5 versions of these applications to the Java versions running in he b
 In addition we can create the Java resources to run the invisible Java applet needed for communicating
 with Vernier GoIO probware in the browser however the Java resources for communicating with the
 Vernier GoIO Probeware need to be digitally signed.
+
+##### Running the Classic Java Molecular Workbench and Energy2D as Applications
+
+After building the Java resources the Java applications Molecular Workbench and Energy2D can be
+run as applications from the command line:
+
+1. Molecular Workbench
+
+        bin/mw
+
+2. Energy2D
+
+        bin/energy2d
 
 ##### Java Code-Signing Certificate and Keystore
 
