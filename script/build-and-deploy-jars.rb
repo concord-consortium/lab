@@ -201,7 +201,7 @@ Location: #{destination}
         FileUtils.cp(source, jar_destination)
         start_command = <<-HEREDOC
 #!/bin/sh
-(cd #{BIN_PATH} && java -jar #{jar_name} $1)
+(cd #{BIN_PATH} && java -jar #{jar_name} $1&)
         HEREDOC
         start_path = File.join(BIN_PATH, project)
         File.open(start_path, 'w') { |f| f.write start_command }
