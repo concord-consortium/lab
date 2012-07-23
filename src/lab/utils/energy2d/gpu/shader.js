@@ -1,5 +1,5 @@
 /*globals energy2d: false, gl: false */
-/*jslint indent: 2, browser: true */
+/*jslint indent: 2, browser: true, es5: true */
 //
 // lab/utils/energy2d/gpu/shader.js
 //
@@ -7,62 +7,65 @@
 // define namespace
 energy2d.namespace('energy2d.utils.gpu');
 
+//
+// Local, private functions.
+//
+function regexMap(regex, text, callback) {
+  'use strict';
+  var result;
+  while ((result = regex.exec(text)) !== null) {
+    callback(result);
+  }
+}
+
+function isArray(obj) {
+  'use strict';
+  var str = Object.prototype.toString.call(obj);
+  return str === '[object Array]' || str === '[object Float32Array]';
+}
+
+function isNumber(obj) {
+  'use strict';
+  var str = Object.prototype.toString.call(obj);
+  return str === '[object Number]' || str === '[object Boolean]';
+}
+
 // Compiles a shader program using the provided vertex and fragment shaders.
 energy2d.utils.gpu.Shader = function (vertexSource, fragmentSource) {
   'use strict';
-  // Headers are prepended to the sources to provide some automatic functionality.
-  var header = '\
-    uniform mat3 gl_NormalMatrix;\
-    uniform mat4 gl_ModelViewMatrix;\
-    uniform mat4 gl_ProjectionMatrix;\
-    uniform mat4 gl_ModelViewProjectionMatrix;\
-    uniform mat4 gl_ModelViewMatrixInverse;\
-    uniform mat4 gl_ProjectionMatrixInverse;\
-    uniform mat4 gl_ModelViewProjectionMatrixInverse;\
-  ';
-  var vertexHeader = header + '\
+  var
+    // Headers are prepended to the sources to provide some automatic functionality.
+    vertexHeader =
+    '\
     attribute vec4 gl_Vertex;\
     attribute vec4 gl_TexCoord;\
     attribute vec3 gl_Normal;\
     attribute vec4 gl_Color;\
-    vec4 ftransform() {\
-      return gl_ModelViewProjectionMatrix * gl_Vertex;\
-    }\
-  ';
-  var fragmentHeader = '\
+    ',
+    fragmentHeader =
+    '\
     precision highp float;\
-  ' + header;
+    ',
 
-  // Check for the use of built-in matrices that require expensive matrix
-  // multiplications to compute, and record these in `usedMatrices`.
-  var source = vertexSource + fragmentSource;
-  var usedMatrices = {};
-  regexMap(/\b(gl_[^;]*)\b;/g, header, function(groups) {
-    var name = groups[1];
-    if (source.indexOf(name) != -1) {
-      var capitalLetters = name.replace(/[a-z_]/g, '');
-      usedMatrices[capitalLetters] = '_' + name;
-    }
-  });
-  if (source.indexOf('ftransform') != -1) usedMatrices.MVPM = '_gl_ModelViewProjectionMatrix';
-  this.usedMatrices = usedMatrices;
+    // The `gl_` prefix must be substituted for something else to avoid compile
+    // errors, since it's a reserved prefix. This prefixes all reserved names with
+    // `_`. The header is inserted after any extensions, since those must come
+    // first.
+    fix = function (header, source) {
+      var replaced = {}, match;
+      match = /^((\s*\/\/.*\n|\s*#extension.*\n)+)[^]*$/.exec(source);
+      source = match ? match[1] + header + source.substr(match[1].length) : header + source;
+      regexMap(/\bgl_\w+\b/g, header, function (result) {
+        if (replaced[result] === undefined) {
+          source = source.replace(new RegExp('\\b' + result + '\\b', 'g'), '_' + result);
+          replaced[result] = true;
+        }
+      });
+      return source;
+    },
 
-  // The `gl_` prefix must be substituted for something else to avoid compile
-  // errors, since it's a reserved prefix. This prefixes all reserved names with
-  // `_`. The header is inserted after any extensions, since those must come
-  // first.
-  function fix(header, source) {
-    var replaced = {};
-    var match = /^((\s*\/\/.*\n|\s*#extension.*\n)+)[^]*$/.exec(source);
-    source = match ? match[1] + header + source.substr(match[1].length) : header + source;
-    regexMap(/\bgl_\w+\b/g, header, function (result) {
-      if (!(result in replaced)) {
-        source = source.replace(new RegExp('\\b' + result + '\\b', 'g'), '_' + result);
-        replaced[result] = true;
-      }
-    });
-    return source;
-  }
+    isSampler = {};
+
   vertexSource = fix(vertexHeader, vertexSource);
   fragmentSource = fix(fragmentHeader, fragmentSource);
 
@@ -88,62 +91,48 @@ energy2d.utils.gpu.Shader = function (vertexSource, fragmentSource) {
 
   // Sampler uniforms need to be uploaded using `gl.uniform1i()` instead of `gl.uniform1f()`.
   // To do this automatically, we detect and remember all uniform samplers in the source code.
-  var isSampler = {};
-  regexMap(/uniform\s+sampler(1D|2D|3D|Cube)\s+(\w+)\s*;/g, vertexSource + fragmentSource, function(groups) {
+  regexMap(/uniform\s+sampler(1D|2D|3D|Cube)\s+(\w+)\s*;/g, vertexSource + fragmentSource, function (groups) {
     isSampler[groups[2]] = 1;
   });
   this.isSampler = isSampler;
 };
 
-function regexMap(regex, text, callback) {
-  while ((result = regex.exec(text)) != null) {
-    callback(result);
-  }
-}
+// Set a uniform for each property of `uniforms`. The correct `gl.uniform*()` method is
+// inferred from the value types and from the stored uniform sampler flags.
+energy2d.utils.gpu.Shader.prototype.uniforms = function (uniforms) {
+  'use strict';
+  var name, location, value;
 
-function isArray(obj) {
-  var str = Object.prototype.toString.call(obj);
-  return str == '[object Array]' || str == '[object Float32Array]';
-}
+  gl.useProgram(this.program);
 
-function isNumber(obj) {
-  var str = Object.prototype.toString.call(obj);
-  return str == '[object Number]' || str == '[object Boolean]';
-}
-
-energy2d.utils.gpu.Shader.prototype = {
-  // ### .uniforms(uniforms)
-  // 
-  // Set a uniform for each property of `uniforms`. The correct `gl.uniform*()` method is
-  // inferred from the value types and from the stored uniform sampler flags.
-  uniforms: function(uniforms) {
-    gl.useProgram(this.program);
-
-    for (var name in uniforms) {
-      var location = this.uniformLocations[name] || gl.getUniformLocation(this.program, name);
-      if (!location) continue;
+  for (name in uniforms) {
+    if (uniforms.hasOwnProperty(name)) {
+      location = this.uniformLocations[name] || gl.getUniformLocation(this.program, name);
+      if (!location) {
+        continue;
+      }
       this.uniformLocations[name] = location;
-      var value = uniforms[name];
+      value = uniforms[name];
       if (isArray(value)) {
         switch (value.length) {
-          case 1: gl.uniform1fv(location, new Float32Array(value)); break;
-          case 2: gl.uniform2fv(location, new Float32Array(value)); break;
-          case 3: gl.uniform3fv(location, new Float32Array(value)); break;
-          case 4: gl.uniform4fv(location, new Float32Array(value)); break;
-          // Matrices are automatically transposed, since WebGL uses column-major
-          // indices instead of row-major indices.
-          case 9: gl.uniformMatrix3fv(location, false, new Float32Array([
-            value[0], value[3], value[6],
-            value[1], value[4], value[7],
-            value[2], value[5], value[8]
-          ])); break;
-          case 16: gl.uniformMatrix4fv(location, false, new Float32Array([
-            value[0], value[4], value[8], value[12],
-            value[1], value[5], value[9], value[13],
-            value[2], value[6], value[10], value[14],
-            value[3], value[7], value[11], value[15]
-          ])); break;
-          default: throw 'don\'t know how to load uniform "' + name + '" of length ' + value.length;
+        case 1: gl.uniform1fv(location, new Float32Array(value)); break;
+        case 2: gl.uniform2fv(location, new Float32Array(value)); break;
+        case 3: gl.uniform3fv(location, new Float32Array(value)); break;
+        case 4: gl.uniform4fv(location, new Float32Array(value)); break;
+        // Matrices are automatically transposed, since WebGL uses column-major
+        // indices instead of row-major indices.
+        case 9: gl.uniformMatrix3fv(location, false, new Float32Array([
+          value[0], value[3], value[6],
+          value[1], value[4], value[7],
+          value[2], value[5], value[8]
+        ])); break;
+        case 16: gl.uniformMatrix4fv(location, false, new Float32Array([
+          value[0], value[4], value[8], value[12],
+          value[1], value[5], value[9], value[13],
+          value[2], value[6], value[10], value[14],
+          value[3], value[7], value[11], value[15]
+        ])); break;
+        default: throw 'don\'t know how to load uniform "' + name + '" of length ' + value.length;
         }
       } else if (isNumber(value)) {
         (this.isSampler[name] ? gl.uniform1i : gl.uniform1f).call(gl, location, value);
@@ -151,62 +140,68 @@ energy2d.utils.gpu.Shader.prototype = {
         throw 'attempted to set uniform "' + name + '" to invalid value ' + value;
       }
     }
+  }
 
-    return this;
-  },
+  return this;
+};
 
-  // ### .draw(mesh[, mode])
-  // 
-  // Sets all uniform matrix attributes, binds all relevant buffers, and draws the
-  // mesh geometry as indexed triangles or indexed lines. Set `mode` to `gl.LINES`
-  // (and either add indices to `lines` or call `computeWireframe()`) to draw the
-  // mesh in wireframe.
-  draw: function(mesh, mode) {
-    this.drawBuffers(mesh.vertexBuffers,
-      mesh.indexBuffers[mode == gl.LINES ? 'lines' : 'triangles'],
-      arguments.length < 2 ? gl.TRIANGLES : mode);
-  },
+// Sets all uniform matrix attributes, binds all relevant buffers, and draws the
+// mesh geometry as indexed triangles or indexed lines. Set `mode` to `gl.LINES`
+// (and either add indices to `lines` or call `computeWireframe()`) to draw the
+// mesh in wireframe.
+energy2d.utils.gpu.Shader.prototype.draw = function (mesh, mode) {
+  'use strict';
+  gl.useProgram(this.program);
 
-  // ### .drawBuffers(vertexBuffers, indexBuffer, mode)
-  // 
-  // Sets all uniform matrix attributes, binds all relevant buffers, and draws the
-  // indexed mesh geometry. The `vertexBuffers` argument is a map from attribute
-  // names to `Buffer` objects of type `gl.ARRAY_BUFFER`, `indexBuffer` is a `Buffer`
-  // object of type `gl.ELEMENT_ARRAY_BUFFER`, and `mode` is a WebGL primitive mode
-  // like `gl.TRIANGLES` or `gl.LINES`. This method automatically creates and caches
-  // vertex attribute pointers for attributes as needed.
-  drawBuffers: function(vertexBuffers, indexBuffer, mode) {
-    // Create and enable attribute pointers as necessary.
-    var length = 0;
-    for (var attribute in vertexBuffers) {
-      var buffer = vertexBuffers[attribute];
-      var location = this.attributes[attribute] ||
-        gl.getAttribLocation(this.program, attribute.replace(/^gl_/, '_gl_'));
-      if (location == -1 || !buffer.buffer) continue;
-      this.attributes[attribute] = location;
+  this.drawBuffers(mesh.vertexBuffers,
+    mesh.indexBuffers[mode === gl.LINES ? 'lines' : 'triangles'],
+    arguments.length < 2 ? gl.TRIANGLES : mode);
+};
+
+// Sets all uniform matrix attributes, binds all relevant buffers, and draws the
+// indexed mesh geometry. The `vertexBuffers` argument is a map from attribute
+// names to `Buffer` objects of type `gl.ARRAY_BUFFER`, `indexBuffer` is a `Buffer`
+// object of type `gl.ELEMENT_ARRAY_BUFFER`, and `mode` is a WebGL primitive mode
+// like `gl.TRIANGLES` or `gl.LINES`. This method automatically creates and caches
+// vertex attribute pointers for attributes as needed.
+energy2d.utils.gpu.Shader.prototype.drawBuffers = function (vertexBuffers, indexBuffer, mode) {
+  'use strict';
+  // Create and enable attribute pointers as necessary.
+  var length = 0, attribute, buffer, location;
+
+  for (attribute in vertexBuffers) {
+    if (vertexBuffers.hasOwnProperty(attribute)) {
+      buffer = vertexBuffers[attribute];
+      if (this.attributes[attribute] === undefined) {
+        this.attributes[attribute] = gl.getAttribLocation(this.program, attribute.replace(/^gl_/, '_gl_'));
+      }
+      location = this.attributes[attribute];
+      if (location === -1 || !buffer.buffer) {
+        continue;
+      }
       gl.bindBuffer(gl.ARRAY_BUFFER, buffer.buffer);
       gl.enableVertexAttribArray(location);
       gl.vertexAttribPointer(location, buffer.buffer.spacing, gl.FLOAT, false, 0, 0);
       length = buffer.buffer.length / buffer.buffer.spacing;
     }
+  }
 
-    // Disable unused attribute pointers.
-    for (var attribute in this.attributes) {
-      if (!(attribute in vertexBuffers)) {
+  // Disable unused attribute pointers.
+  for (attribute in this.attributes) {
+    if (this.attributes.hasOwnProperty(attribute)) {
+      if (vertexBuffers[attribute] === undefined) {
         gl.disableVertexAttribArray(this.attributes[attribute]);
       }
     }
+  }
 
-    // Draw the geometry.
-    if (length && (!indexBuffer || indexBuffer.buffer)) {
-      if (indexBuffer) {
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.buffer);
-        gl.drawElements(mode, indexBuffer.buffer.length, gl.UNSIGNED_SHORT, 0);
-      } else {
-        gl.drawArrays(mode, 0, length);
-      }
+  // Draw the geometry.
+  if (length && (!indexBuffer || indexBuffer.buffer)) {
+    if (indexBuffer) {
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer.buffer);
+      gl.drawElements(mode, indexBuffer.buffer.length, gl.UNSIGNED_SHORT, 0);
+    } else {
+      gl.drawArrays(mode, 0, length);
     }
-
-    return this;
   }
 };
