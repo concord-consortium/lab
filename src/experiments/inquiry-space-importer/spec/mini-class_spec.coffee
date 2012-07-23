@@ -72,7 +72,7 @@ describe "mini-class.js", ->
       it "should have a copy of the 'class properties' defined on the parent constructor function", ->
         expect( ClassB.classProperty ).toEqual "classProperty defined directly on classA"
 
-    describe "an child class instance created by calling new", ->
+    describe "a child class instance created by calling new", ->
       objB = null
 
       beforeEach ->

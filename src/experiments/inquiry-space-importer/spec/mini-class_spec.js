@@ -84,7 +84,7 @@
           return expect(ClassB.classProperty).toEqual("classProperty defined directly on classA");
         });
       });
-      return describe("an child class instance created by calling new", function() {
+      return describe("a child class instance created by calling new", function() {
         var objB;
         objB = null;
         beforeEach(function() {
