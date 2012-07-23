@@ -152,6 +152,13 @@ layout.moleculeContainer = function(e, options) {
         .range([0, mh])
         .nice();
 
+    // y-scale for defining heights without inverting the domain
+    y_flip = d3.scale.linear()
+        .domain([options.ymin, options.ymax])
+        .nice()
+        .range([0, mh])
+        .nice();
+
     // drag x-axis logic
     downscaley = y.copy();
     downy = Math.NaN;
@@ -373,7 +380,7 @@ layout.moleculeContainer = function(e, options) {
         obstacle.attr("x", function(d, i) {return x(get_obstacle_x(i)); })
                 .attr("y", function(d, i) {return y(get_obstacle_y(i)); })
                 .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
-                .attr("height", function(d, i) {return x(get_obstacle_height(i)); });
+                .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); });
       }
 
       if (options.playback_controller || options.play_only_controller) {
@@ -530,7 +537,7 @@ layout.moleculeContainer = function(e, options) {
           .attr("x", function(d, i) {return x(get_obstacle_x(i)); })
           .attr("y", function(d, i) {return y(get_obstacle_y(i)); })
           .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
-          .attr("height", function(d, i) {return x(get_obstacle_height(i)); })
+          .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); })
           .style("fill", function(d, i) {return get_obstacle_color(i); })
           .style("stroke-width", 0.2)
           .style("stroke", "black");
