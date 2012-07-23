@@ -18,7 +18,7 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
   'use strict';
   var
     // Dependencies:
-    gpgpu = energy2d.utils.gpu.gpgpu,
+    gpu = energy2d.utils.gpu,
     // end.
     DEFAULT_ID = 'energy2d-heatmap-webgl-view',
 
@@ -30,7 +30,7 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
     min_temp = 0,
     max_temp = 50,
 
-    // WebGL context provided by the gpgpu module.
+    // WebGL context provided by the gpu module.
     gl,
     // Plane used for rendering.
     plane,
@@ -140,15 +140,8 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
 
         gl.clear(gl.COLOR_BUFFER_BIT);
         heatmap_tex.bind(0);
-        render_program.uniforms({
-          texture: 0,
-          max_hue: 255,
-          min_temp: min_temp,
-          max_temp: max_temp
-        }).draw(plane);
+        render_program.draw(plane);
         heatmap_tex.unbind(0);
-
-        gpgpu.tryFinish();
       },
 
       updateCanvasSize: function () {
@@ -169,19 +162,31 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
 
       setMinTemperature: function (v) {
         min_temp = v;
+        render_program.uniforms({
+          min_temp: min_temp
+        });
       },
       setMaxTemperature: function (v) {
         max_temp = v;
+        render_program.uniforms({
+          max_temp: max_temp
+        });
       }
     };
 
   // One-off initialization.
   // Get WebGL context.
-  gl = gpgpu.getWebGLContext();
+  gl = gpu.gl;
   // Create GLSL program for rendering.
-  render_program = new GL.Shader(vertex_shader, fragment_shader);
+  render_program = new gpu.Shader(vertex_shader, fragment_shader);
+  render_program.uniforms({
+    texture: 0,
+    max_hue: 255,
+    min_temp: min_temp,
+    max_temp: max_temp
+  });
   // Create and setup plane.
-  plane = GL.Mesh.plane({ coords: true });
+  plane = gpu.Mesh.plane({ coords: true });
   // Setup texture coordinates.
   plane.coords = [[1, 0], [1, 1], [0, 0], [0, 1]];
   plane.compile();

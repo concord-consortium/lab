@@ -1,16 +1,17 @@
-/*globals energy2d: false, GL: false, Uint8Array: false, Float32Array: false */
+/*globals energy2d: false, Uint8Array: false, Float32Array: false */
 /*jslint indent: 2, node: true, es5: true */
 //
-// lab/energy2d-utils/gpgpu.js
+// lab/utils/energy2d/gpu/gpgpu.js
 //
 
 // define namespace
-energy2d.namespace('energy2d.utils.gpu.gpgpu');
+energy2d.namespace('energy2d.utils.gpu');
 
 // GPGPU Utils (singleton, one instance in the environment).
 energy2d.utils.gpu.gpgpu = (function () {
   'use strict';
   var
+    gpu = energy2d.utils.gpu,
     // Enhanced WebGL context (enhanced by lightgl).
     gl,
 
@@ -108,15 +109,12 @@ energy2d.utils.gpu.gpgpu = (function () {
     // Private methods.
     //
     initWebGL = function (gl_ctx) {
-      if (typeof GL === 'undefined') {
-        throw new Error("GPGPU: lightgl.js library missing.");
-      }
       if (gl_ctx) {
         // Use provided context.
         gl = gl_ctx;
       } else {
         // Setup WebGL context.
-        gl = GL.create({ alpha: true });
+        gl = gpu.init();
       }
       // Check if OES_texture_float is available.
       if (!gl.getExtension('OES_texture_float')) {
@@ -124,24 +122,25 @@ energy2d.utils.gpu.gpgpu = (function () {
       }
       // Configure WebGL context and create necessary objects and structures.
       gl.disable(gl.DEPTH_TEST);
-      framebuffer = gl.createFramebuffer();
-      plane = GL.Mesh.plane({ coords: true });
-      encode_program = new GL.Shader(basic_vertex_shader, encode_fragment_shader);
-      copy_program = new GL.Shader(basic_vertex_shader, copy_fragment_shader);
+      plane = gpu.Mesh.plane();
+      encode_program = new gpu.Shader(basic_vertex_shader, encode_fragment_shader);
+      copy_program = new gpu.Shader(basic_vertex_shader, copy_fragment_shader);
     },
 
-    setTextureAsRenderTarget = function (tex) {
-      // TODO: move bindFramebuffer and viewport to another function
-      //       and call it only once per GPGPU calculations. (?)
-      //       Test it when all solvers are ready. Now (only heat solver 
-      //       on the GPU) performance gain is not worth such modifications.
-      gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-      gl.viewport(0, 0, grid_width, grid_height);
-      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex.id, 0);
-    },
+    packRGBAData = function (R, G, B, A, storage) {
+      var res, i, i4, len;
 
-    setDefaultRenderTarget = function () {
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      if (R.length !== G.length || R.length !== B.length || R.length !== A.length ||
+          storage.length !== R.length * 4) {
+        throw new Error("GPGPU: Invalid input data length.");
+      }
+      for (i = 0, len = R.length; i < len; i += 1) {
+        i4 = i * 4;
+        storage[i4]     = R[i];
+        storage[i4 + 1] = G[i];
+        storage[i4 + 2] = B[i];
+        storage[i4 + 3] = A[i];
+      }
     };
 
   //
@@ -158,12 +157,9 @@ energy2d.utils.gpu.gpgpu = (function () {
       grid_height = height;
 
       // Setup storage for given dimensions.
-      temp_texture   = new GL.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
-      output_texture = new GL.Texture(grid_width, grid_height, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.LINEAR });
+      temp_texture   = new gpu.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
+      output_texture = new gpu.Texture(grid_width, grid_height, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.LINEAR });
       temp_storage   = new Float32Array(grid_width * grid_height * 4);
-
-      // lightgl.js sets this parameter to 1 during each GL.Texture call, so overwrite it.
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
     },
 
     getWebGLContext: function () {
@@ -181,9 +177,7 @@ energy2d.utils.gpu.gpgpu = (function () {
       }
       // Use RGBA format as this is the safest option. Single channel textures aren't well supported
       // as render targets attached to FBO.
-      tex = new GL.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
-      // lightgl.js sets this parameter to 1 during each GL.Texture call, so overwrite it.
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
+      tex = new gpu.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
 
       return tex;
     },
@@ -220,17 +214,17 @@ energy2d.utils.gpu.gpgpu = (function () {
 
     // Write a texture.
     writeTexture: function (tex, input) {
-      var rgba;
-      if (input.length === tex.width * tex.height) {
-        rgba = this.convertToRGBA(input, 0, temp_storage);
-      } else if (input.length === 4 * tex.width * tex.height) {
-        rgba = input;
-      } else {
-        throw new Error("GPGPU: Invalid dimensions of input array.");
-      }
+      var rgba = this.convertToRGBA(input, 0, temp_storage);
       // Make sure that texture is bound.
       gl.bindTexture(gl.TEXTURE_2D, tex.id);
       gl.texImage2D(gl.TEXTURE_2D, 0, tex.format, tex.width, tex.height, 0, tex.format, tex.type, rgba);
+    },
+
+    writeRGBATexture: function (tex, R, G, B, A) {
+      packRGBAData(R, G, B, A, temp_storage);
+      // Make sure that texture is bound.
+      gl.bindTexture(gl.TEXTURE_2D, tex.id);
+      gl.texImage2D(gl.TEXTURE_2D, 0, tex.format, tex.width, tex.height, 0, tex.format, tex.type, temp_storage);
     },
 
     // Read a floating point texture.
@@ -244,43 +238,39 @@ energy2d.utils.gpu.gpgpu = (function () {
       // output is automaticaly updated in a right way.
       output_storage = new Uint8Array(output.buffer);
 
-      setTextureAsRenderTarget(output_texture);
       tex.bind();
+      output_texture.setAsRenderTarget();
       encode_program.draw(plane);
       // format: gl.RGBA, type: gl.UNSIGNED_BYTE - only this set is accepted by WebGL readPixels.
       gl.readPixels(0, 0, output_texture.width, output_texture.height, output_texture.format, output_texture.type, output_storage);
-      setDefaultRenderTarget();
     },
 
     copyTexture: function (src_tex, dst_tex) {
-      setTextureAsRenderTarget(dst_tex);
       src_tex.bind();
+      dst_tex.setAsRenderTarget();
       copy_program.draw(plane);
-      setDefaultRenderTarget();
     },
 
     // Execute a GLSL program.
     // Arguments:
     // - program - GL.Shader
     // - textures - array of GL.Texture
-    // - uniforms - object with uniforms (e.g. { float_uniform: 0.125, val: 5.0 })
     // - output - output texture
-    executeProgram: function (program, textures, uniforms, output) {
+    executeProgram: function (program, textures, output) {
       var i, len;
-      // Use temp texture as writing and reading from the same texture is impossible.
-      setTextureAsRenderTarget(temp_texture);
       // Bind textures for reading.
       for (i = 0, len = textures.length; i < len; i += 1) {
         textures[i].bind(i);
       }
+      // Use temp texture as writing and reading from the same texture is impossible.
+      temp_texture.setAsRenderTarget();
       // Draw simple plane (coordinates x/y from -1 to 1 to cover whole viewport).
-      program.uniforms(uniforms).draw(plane);
+      program.draw(plane);
       // Unbind textures.
       for (i = 0, len = textures.length; i < len; i += 1) {
         textures[i].unbind(i);
       }
       output.swapWith(temp_texture);
-      setDefaultRenderTarget();
     },
 
     // Synchronization can be useful for debugging.

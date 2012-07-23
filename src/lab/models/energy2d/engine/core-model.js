@@ -125,27 +125,12 @@ exports.makeCoreModel = function (model_options) {
     //
     // [GPGPU] Simulation textures:
     //
-    // - temperature array
-    t_tex,
-    // - internal temperature boundary array
-    tb_tex,
-    // - velocity x-component array (m/s)
-    u_tex,
-    // - velocity y-component array (m/s)
-    v_tex,
-    // - internal heat generation array
-    q_tex,
-    // - wind speed
-    uWind_tex,
-    vWind_tex,
-    // - conductivity array
-    conductivity_tex,
-    // - specific heat capacity array
-    capacity_tex,
-    // - density array
-    density_tex,
-    // - fluid cell array
-    fluidity_tex,
+    texture = [],
+    // texture[0] contains: t, t0, tb, conductivity.
+    // texture[1] contains: q, capacity, density, fluidity.
+    // texture[2] contains: u, v, u0, v0.
+    // texture[3] contains: uWind, vWind, ?, ?
+
 
     // Generate parts array.
     parts = (function () {
@@ -190,17 +175,10 @@ exports.makeCoreModel = function (model_options) {
         return;
       }
       // Create simulation textures.
-      t_tex = gpgpu.createTexture();
-      tb_tex = gpgpu.createTexture();
-      u_tex = gpgpu.createTexture();
-      v_tex = gpgpu.createTexture();
-      q_tex = gpgpu.createTexture();
-      uWind_tex = gpgpu.createTexture();
-      vWind_tex = gpgpu.createTexture();
-      conductivity_tex = gpgpu.createTexture();
-      capacity_tex = gpgpu.createTexture();
-      density_tex = gpgpu.createTexture();
-      fluidity_tex = gpgpu.createTexture();
+      texture[0] = gpgpu.createTexture();
+      texture[1] = gpgpu.createTexture();
+      texture[2] = gpgpu.createTexture();
+      texture[3] = gpgpu.createTexture();
 
       // GPU version of heat solver.
       heat_solver_gpu = heatsolver_GPU.makeHeatSolverGPU(core_model);
@@ -209,17 +187,11 @@ exports.makeCoreModel = function (model_options) {
     },
 
     updateAllTextures = function () {
-      gpgpu.writeTexture(t_tex, t);
-      gpgpu.writeTexture(tb_tex, tb);
-      gpgpu.writeTexture(u_tex, u);
-      gpgpu.writeTexture(v_tex, v);
-      gpgpu.writeTexture(q_tex, q);
-      gpgpu.writeTexture(uWind_tex, uWind);
-      gpgpu.writeTexture(vWind_tex, vWind);
-      gpgpu.writeTexture(conductivity_tex, conductivity);
-      gpgpu.writeTexture(capacity_tex, capacity);
-      gpgpu.writeTexture(density_tex, density);
-      gpgpu.writeTexture(fluidity_tex, fluidity);
+      gpgpu.writeRGBATexture(texture[0], t, t, tb, conductivity);
+      gpgpu.writeRGBATexture(texture[1], q, capacity, density, fluidity);
+      gpgpu.writeRGBATexture(texture[2], u, v, u, v);
+      // TODO: Send there some useful data. 
+      gpgpu.writeRGBATexture(texture[3], uWind, vWind, uWind, vWind);
     },
 
     setupMaterialProperties = function () {
@@ -293,7 +265,7 @@ exports.makeCoreModel = function (model_options) {
         if (use_WebGL) {
           // GPU solvers.
           perf.start('Heat solver GPU');
-          heat_solver_gpu.solve(opt.convective, t_tex, q_tex);
+          heat_solver_gpu.solve(opt.convective);
           perf.stop('Heat solver GPU');
           // Only heat solver is implemented at the moment.
         } else {
@@ -337,7 +309,7 @@ exports.makeCoreModel = function (model_options) {
       updateTemperatureArray: function () {
         if (use_WebGL) {
           perf.start('Read temperature texture');
-          gpgpu.readTexture(t_tex, t);
+          gpgpu.readTexture(data_1_tex, t);
           perf.stop('Read temperature texture');
         }
       },
@@ -506,37 +478,10 @@ exports.makeCoreModel = function (model_options) {
       },
        // Textures.
       getTemperatureTexture: function () {
-        return t_tex;
+        return texture[0];
       },
-      getUVelocityTexture: function () {
-        return u_tex;
-      },
-      getVVelocityTexture: function () {
-        return v_tex;
-      },
-      getUWindTexture: function () {
-        return uWind_tex;
-      },
-      getVWindTexture: function () {
-        return vWind_tex;
-      },
-      getBoundaryTemperatureTexture: function () {
-        return tb_tex;
-      },
-      getPowerTexture: function () {
-        return q_tex;
-      },
-      getConductivityTexture: function () {
-        return conductivity_tex;
-      },
-      getCapacityTexture: function () {
-        return capacity_tex;
-      },
-      getDensityTexture: function () {
-        return density_tex;
-      },
-      getFluidityTexture: function () {
-        return fluidity_tex;
+      getSimulationTexture: function (id) {
+        return texture[id];
       }
     };
 
