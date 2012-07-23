@@ -354,6 +354,10 @@ server/public/lab/lab.energy2d.js: \
 	src/lab/energy2d-module.js \
 	server/public/lab/lab.models.energy2d.engine.js \
 	src/lab/models/energy2d/modeler.js \
+	src/lab/utils/energy2d/gpu/init.js \
+	src/lab/utils/energy2d/gpu/mesh.js \
+	src/lab/utils/energy2d/gpu/shader.js \
+	src/lab/utils/energy2d/gpu/texture.js \
 	src/lab/utils/energy2d/gpu/gpgpu.js \
 	src/lab/utils/energy2d/performance/performance-tools.js \
 	src/lab/views/energy2d/utils-color.js \

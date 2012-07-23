@@ -1,16 +1,17 @@
-/*globals energy2d: false, GL: false, Uint8Array: false, Float32Array: false */
+/*globals energy2d: false, Uint8Array: false, Float32Array: false */
 /*jslint indent: 2, node: true, es5: true */
 //
-// lab/energy2d-utils/gpgpu.js
+// lab/utils/energy2d/gpu/gpgpu.js
 //
 
 // define namespace
-energy2d.namespace('energy2d.utils.gpu.gpgpu');
+energy2d.namespace('energy2d.utils.gpu');
 
 // GPGPU Utils (singleton, one instance in the environment).
 energy2d.utils.gpu.gpgpu = (function () {
   'use strict';
   var
+    gpu = energy2d.utils.gpu,
     // Enhanced WebGL context (enhanced by lightgl).
     gl,
 
@@ -108,15 +109,12 @@ energy2d.utils.gpu.gpgpu = (function () {
     // Private methods.
     //
     initWebGL = function (gl_ctx) {
-      if (typeof GL === 'undefined') {
-        throw new Error("GPGPU: lightgl.js library missing.");
-      }
       if (gl_ctx) {
         // Use provided context.
         gl = gl_ctx;
       } else {
         // Setup WebGL context.
-        gl = GL.create({ alpha: true });
+        gl = gpu.init();
       }
       // Check if OES_texture_float is available.
       if (!gl.getExtension('OES_texture_float')) {
@@ -125,9 +123,9 @@ energy2d.utils.gpu.gpgpu = (function () {
       // Configure WebGL context and create necessary objects and structures.
       gl.disable(gl.DEPTH_TEST);
       framebuffer = gl.createFramebuffer();
-      plane = GL.Mesh.plane({ coords: true });
-      encode_program = new GL.Shader(basic_vertex_shader, encode_fragment_shader);
-      copy_program = new GL.Shader(basic_vertex_shader, copy_fragment_shader);
+      plane = gpu.Mesh.plane({ coords: true });
+      encode_program = new gpu.Shader(basic_vertex_shader, encode_fragment_shader);
+      copy_program = new gpu.Shader(basic_vertex_shader, copy_fragment_shader);
     },
 
     setTextureAsRenderTarget = function (tex) {
@@ -174,12 +172,9 @@ energy2d.utils.gpu.gpgpu = (function () {
       grid_height = height;
 
       // Setup storage for given dimensions.
-      temp_texture   = new GL.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
-      output_texture = new GL.Texture(grid_width, grid_height, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.LINEAR });
+      temp_texture   = new gpu.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
+      output_texture = new gpu.Texture(grid_width, grid_height, { type: gl.UNSIGNED_BYTE, format: gl.RGBA, filter: gl.LINEAR });
       temp_storage   = new Float32Array(grid_width * grid_height * 4);
-
-      // lightgl.js sets this parameter to 1 during each GL.Texture call, so overwrite it.
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
     },
 
     getWebGLContext: function () {
@@ -197,9 +192,7 @@ energy2d.utils.gpu.gpgpu = (function () {
       }
       // Use RGBA format as this is the safest option. Single channel textures aren't well supported
       // as render targets attached to FBO.
-      tex = new GL.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
-      // lightgl.js sets this parameter to 1 during each GL.Texture call, so overwrite it.
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 0);
+      tex = new gpu.Texture(grid_width, grid_height, { type: gl.FLOAT, format: gl.RGBA, filter: gl.LINEAR });
 
       return tex;
     },

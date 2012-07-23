@@ -1,4 +1,4 @@
-/*globals energy2d: false, GL: false */
+/*globals energy2d: false */
 /*jslint indent: 2, node: true, browser: true, es5: true */
 //
 // lab/models/energy2d/engine/physics-solvers-gpu/heat-solver-gpu.js
@@ -11,6 +11,8 @@ var
 exports.makeHeatSolverGPU = function (model) {
   'use strict';
   var
+    // Energy2D GPU utilities.
+    gpu = energy2d.utils.gpu,
     // Request GPGPU utilities. It's a singleton instance.
     // Should be previously initialized by core model.
     gpgpu = energy2d.utils.gpu.gpgpu,
@@ -56,7 +58,7 @@ exports.makeHeatSolverGPU = function (model) {
       gl_Position = vec4(gl_Vertex.xy, 0.0, 1.0);\
     }',
     // Main solver.
-    solve_program = new GL.Shader(basic_vertex,
+    solve_program = new gpu.Shader(basic_vertex,
       '\
       uniform sampler2D data1;\
       uniform sampler2D data2;\
@@ -107,7 +109,7 @@ exports.makeHeatSolverGPU = function (model) {
         }\
       }'),
     // Apply boundary.
-    apply_boundary_program = new GL.Shader(basic_vertex,
+    apply_boundary_program = new gpu.Shader(basic_vertex,
       '\
       uniform sampler2D data1;\
       \
@@ -166,7 +168,7 @@ exports.makeHeatSolverGPU = function (model) {
         }\
       }'),
       // Copy single channel of texture.
-    copy_t_t0_program = new GL.Shader(basic_vertex,
+    copy_t_t0_program = new gpu.Shader(basic_vertex,
       '\
       uniform sampler2D data1;\
       varying vec2 coord;\
