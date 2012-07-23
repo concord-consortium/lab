@@ -94,8 +94,8 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
       if (i == 4)\
         return vec3(t, p, v);\
       \
-      if (i == 5)\
-        return vec3(v, p, q);\
+      /* i == 5 */\
+      return vec3(v, p, q);\
     }\
     void main() {\
       float temp = texture2D(texture, coord).r;\
