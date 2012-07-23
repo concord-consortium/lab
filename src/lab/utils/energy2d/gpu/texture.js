@@ -54,13 +54,20 @@ energy2d.utils.gpu.Texture = function (width, height, options) {
   gl.texImage2D(gl.TEXTURE_2D, 0, this.format, width, height, 0, this.format, this.type, null);
 };
 
-// Setup texture as a possible render target (attach it to framebuffer object).
-energy2d.utils.gpu.Texture.prototype.setupAsRenderTarget = function () {
+// Set texture as render target.
+// After this call user can render to texture.
+energy2d.utils.gpu.Texture.prototype.setAsRenderTarget = function () {
   'use strict';
-  this.fbo = gl.createFramebuffer();
-  gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
-  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.id, 0);
-  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  if (this.fbo === null) {
+    // FBO initialization during first call.
+    this.fbo = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.id, 0);
+    gl.viewport(0, 0, this.width, this.height);
+  } else {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+    gl.viewport(0, 0, this.width, this.height);
+  }
 };
 
 // Bind this texture to the given texture unit (0-7, defaults to 0).

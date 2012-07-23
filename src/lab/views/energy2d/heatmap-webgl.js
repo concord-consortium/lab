@@ -140,12 +140,7 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
 
         gl.clear(gl.COLOR_BUFFER_BIT);
         heatmap_tex.bind(0);
-        render_program.uniforms({
-          texture: 0,
-          max_hue: 255,
-          min_temp: min_temp,
-          max_temp: max_temp
-        }).draw(plane);
+        render_program.draw(plane);
         heatmap_tex.unbind(0);
       },
 
@@ -167,9 +162,15 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
 
       setMinTemperature: function (v) {
         min_temp = v;
+        render_program.uniforms({
+          min_temp: min_temp
+        });
       },
       setMaxTemperature: function (v) {
         max_temp = v;
+        render_program.uniforms({
+          max_temp: max_temp
+        });
       }
     };
 
@@ -178,6 +179,12 @@ energy2d.views.makeHeatmapWebGLView = function (html_id) {
   gl = gpu.gl;
   // Create GLSL program for rendering.
   render_program = new gpu.Shader(vertex_shader, fragment_shader);
+  render_program.uniforms({
+    texture: 0,
+    max_hue: 255,
+    min_temp: min_temp,
+    max_temp: max_temp
+  });
   // Create and setup plane.
   plane = gpu.Mesh.plane({ coords: true });
   // Setup texture coordinates.

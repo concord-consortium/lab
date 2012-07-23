@@ -122,24 +122,9 @@ energy2d.utils.gpu.gpgpu = (function () {
       }
       // Configure WebGL context and create necessary objects and structures.
       gl.disable(gl.DEPTH_TEST);
-      framebuffer = gl.createFramebuffer();
-      plane = gpu.Mesh.plane({ coords: true });
+      plane = gpu.Mesh.plane();
       encode_program = new gpu.Shader(basic_vertex_shader, encode_fragment_shader);
       copy_program = new gpu.Shader(basic_vertex_shader, copy_fragment_shader);
-    },
-
-    setTextureAsRenderTarget = function (tex) {
-      // TODO: move bindFramebuffer and viewport to another function
-      //       and call it only once per GPGPU calculations. (?)
-      //       Test it when all solvers are ready. Now (only heat solver 
-      //       on the GPU) performance gain is not worth such modifications.
-      gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-      gl.viewport(0, 0, grid_width, grid_height);
-      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex.id, 0);
-    },
-
-    setDefaultRenderTarget = function () {
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     },
 
     packRGBAData = function (R, G, B, A, storage) {
@@ -253,43 +238,39 @@ energy2d.utils.gpu.gpgpu = (function () {
       // output is automaticaly updated in a right way.
       output_storage = new Uint8Array(output.buffer);
 
-      setTextureAsRenderTarget(output_texture);
       tex.bind();
+      output_texture.setAsRenderTarget();
       encode_program.draw(plane);
       // format: gl.RGBA, type: gl.UNSIGNED_BYTE - only this set is accepted by WebGL readPixels.
       gl.readPixels(0, 0, output_texture.width, output_texture.height, output_texture.format, output_texture.type, output_storage);
-      setDefaultRenderTarget();
     },
 
     copyTexture: function (src_tex, dst_tex) {
-      setTextureAsRenderTarget(dst_tex);
       src_tex.bind();
+      dst_tex.setAsRenderTarget();
       copy_program.draw(plane);
-      setDefaultRenderTarget();
     },
 
     // Execute a GLSL program.
     // Arguments:
     // - program - GL.Shader
     // - textures - array of GL.Texture
-    // - uniforms - object with uniforms (e.g. { float_uniform: 0.125, val: 5.0 })
     // - output - output texture
-    executeProgram: function (program, textures, uniforms, output) {
+    executeProgram: function (program, textures, output) {
       var i, len;
-      // Use temp texture as writing and reading from the same texture is impossible.
-      setTextureAsRenderTarget(temp_texture);
       // Bind textures for reading.
       for (i = 0, len = textures.length; i < len; i += 1) {
         textures[i].bind(i);
       }
+      // Use temp texture as writing and reading from the same texture is impossible.
+      temp_texture.setAsRenderTarget();
       // Draw simple plane (coordinates x/y from -1 to 1 to cover whole viewport).
-      program.uniforms(uniforms).draw(plane);
+      program.draw(plane);
       // Unbind textures.
       for (i = 0, len = textures.length; i < len; i += 1) {
         textures[i].unbind(i);
       }
       output.swapWith(temp_texture);
-      setDefaultRenderTarget();
     },
 
     // Synchronization can be useful for debugging.

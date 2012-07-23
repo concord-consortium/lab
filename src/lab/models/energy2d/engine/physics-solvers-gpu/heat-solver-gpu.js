@@ -37,12 +37,7 @@ exports.makeHeatSolverGPU = function (model) {
     data2_tex = model.getSimulationTexture(1),
 
     // Convenience variables.  
-    nx1 = nx - 1,
-    ny1 = ny - 1,
-    nx2 = nx - 2,
-    ny2 = ny - 2,
-
-    // GPGPU helpers.
+    textures = [data1_tex, data2_tex],
     grid_vec = [1 / ny, 1 / nx],
 
     //
@@ -177,85 +172,79 @@ exports.makeHeatSolverGPU = function (model) {
         gl_FragColor = vec4(data.r, data.r, data.b, data.a);\
       }'),
 
-    applyBoundary = function (t_tex) {
-      var uniforms = {
-        grid: grid_vec
-      };
+
+    init = function () {
+      var uniforms;
 
       if (boundary.temperature_at_border) {
-        // Use float instead of bools due to Chrome bug.
-        uniforms.flux = 0.0;
-        uniforms.vN = boundary.temperature_at_border.upper;
-        uniforms.vS = boundary.temperature_at_border.lower;
-        uniforms.vW = boundary.temperature_at_border.left;
-        uniforms.vE = boundary.temperature_at_border.right;
-
-        gpgpu.executeProgram(
-          apply_boundary_program,
-          [data1_tex],
-          uniforms,
-          data1_tex
-        );
+        uniforms = {
+          grid: grid_vec,
+          flux: 0.0,
+          vN: boundary.temperature_at_border.upper,
+          vS:  boundary.temperature_at_border.lower,
+          vW:  boundary.temperature_at_border.left,
+          vE:  boundary.temperature_at_border.right
+        };
       } else if (boundary.flux_at_border) {
-        // Use float instead of bools due to Chrome bug.
-        uniforms.flux = 1.0;
-        uniforms.vN = boundary.flux_at_border.upper;
-        uniforms.vS = boundary.flux_at_border.lower;
-        uniforms.vW = boundary.flux_at_border.left;
-        uniforms.vE = boundary.flux_at_border.right;
-        uniforms.delta_x = delta_x;
-        uniforms.delta_y = delta_y;
+        uniforms = {
+          grid: grid_vec,
+          flux: 1.0,
+          vN: boundary.flux_at_border.upper,
+          vS: boundary.flux_at_border.lower,
+          vW: boundary.flux_at_border.left,
+          vE: boundary.flux_at_border.right,
+          delta_x: delta_x,
+          delta_y: delta_y
+        };
+      }
+      apply_boundary_program.uniforms(uniforms);
 
+      // Solve program uniforms.
+      uniforms = {
+        grid: grid_vec,
+        hx: 0.5 / (delta_x * delta_x),
+        hy: 0.5 / (delta_y * delta_y),
+        inv_timestep: 1.0 / timestep,
+        // Texture units.
+        data1: 0,
+        data2: 1
+      };
+
+      solve_program.uniforms(uniforms);
+    },
+
+    heat_solver_gpu = {
+      solve: function (convective) {
+        var k;
+
+        // Store previous values.
         gpgpu.executeProgram(
-          apply_boundary_program,
+          copy_t_t0_program,
           [data1_tex],
-          uniforms,
           data1_tex
         );
+
+        for (k = 0; k < relaxation_steps; k += 1) {
+          gpgpu.executeProgram(
+            solve_program,
+            textures,
+            data1_tex
+          );
+
+          gpgpu.executeProgram(
+            apply_boundary_program,
+            [data1_tex],
+            data1_tex
+          );
+        }
+        // Synchronize. It's not required but it 
+        // allows to measure time (for optimization).
+        gpgpu.tryFinish();
       }
     };
 
-  return {
-    solve: function (convective) {
-      var
-        uniforms = {
-          grid: grid_vec,
-          hx: 0.5 / (delta_x * delta_x),
-          hy: 0.5 / (delta_y * delta_y),
-          inv_timestep: 1.0 / timestep,
-          // Texture units.
-          data1: 0,
-          data2: 1
-        },
-        // Textures. 
-        // Their order have to match texture units declaration above!
-        textures = [
-          data1_tex,
-          data2_tex
-        ],
-        k;
+  // One-off initialization.
+  init();
 
-      // Store previous values.
-      gpgpu.executeProgram(
-        copy_t_t0_program,
-        [data1_tex],
-        {},
-        data1_tex
-      );
-
-      for (k = 0; k < relaxation_steps; k += 1) {
-        gpgpu.executeProgram(
-          solve_program,
-          textures,
-          uniforms,
-          data1_tex
-        );
-
-        applyBoundary(data1_tex);
-      }
-      // Synchronize. It's not required but it 
-      // allows to measure time (for optimization).
-      gpgpu.tryFinish();
-    }
-  };
+  return heat_solver_gpu;
 };
