@@ -71,6 +71,7 @@ parseMML = (mmlString) ->
 
         [x, y]          = toNextgenCoordinates x, y
         [height, width] = toNextgenLengths height, width
+        y               = y - height     # flip to lower-left coordinate system
 
         obstacles.push { x, y, height, width, color }
 

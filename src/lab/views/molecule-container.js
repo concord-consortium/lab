@@ -378,7 +378,7 @@ layout.moleculeContainer = function(e, options) {
 
       if (obstacle) {
         obstacle.attr("x", function(d, i) {return x(get_obstacle_x(i)); })
-                .attr("y", function(d, i) {return y(get_obstacle_y(i)); })
+                .attr("y", function(d, i) {return y(get_obstacle_y(i) + get_obstacle_height(i)); })
                 .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
                 .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); });
       }
@@ -535,7 +535,7 @@ layout.moleculeContainer = function(e, options) {
     function rectEnter(obstacle) {
       obstacle.enter().append("rect")
           .attr("x", function(d, i) {return x(get_obstacle_x(i)); })
-          .attr("y", function(d, i) {return y(get_obstacle_y(i)); })
+          .attr("y", function(d, i) {return y(get_obstacle_y(i) + get_obstacle_height(i)); })
           .attr("width", function(d, i) {return x(get_obstacle_width(i)); })
           .attr("height", function(d, i) {return y_flip(get_obstacle_height(i)); })
           .style("fill", function(d, i) {return get_obstacle_color(i); })

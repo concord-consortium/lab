@@ -542,8 +542,8 @@ exports.makeModel = function() {
 
           x_left = obstacleX[j] - r;
           x_right = obstacleX[j] + obstacleWidth[j] + r;
-          y_top = obstacleY[j] + r;
-          y_bottom = obstacleY[j] - obstacleHeight[j] - r;
+          y_top = obstacleY[j] + obstacleHeight[j] + r;
+          y_bottom = obstacleY[j] - r;
 
           if (xi > x_left && xi < x_right && yi > y_bottom && yi < y_top) {
             if (x_prev <= x_left) {
