@@ -65,6 +65,7 @@
           className: "ClassA",
           extraProperty: "ClassA definition of 'extraProperty'"
         });
+        ClassA.classProperty = "classProperty defined directly on classA";
         return ClassB = extendClass(ClassA, {
           getClassName: function() {
             return this.className + " which extends " + this.constructor.__super__.className;
@@ -76,8 +77,11 @@
         return expect(typeof ClassB).toBe('function');
       });
       describe("the constructor function", function() {
-        return it("should be annotated with a reference to the superclass implementation", function() {
+        it("should be annotated with a reference to the superclass implementation", function() {
           return expect(ClassB.__super__).toEqual(ClassA.prototype);
+        });
+        return it("should have a copy of the 'class properties' defined on the parent constructor function", function() {
+          return expect(ClassB.classProperty).toEqual("classProperty defined directly on classA");
         });
       });
       return describe("an child class instance created by calling new", function() {

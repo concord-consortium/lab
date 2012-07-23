@@ -55,6 +55,8 @@ describe "mini-class.js", ->
         className: "ClassA"
         extraProperty: "ClassA definition of 'extraProperty'"
 
+      ClassA.classProperty = "classProperty defined directly on classA"
+
       ClassB = extendClass ClassA,
         getClassName: ->
           this.className + " which extends " + this.constructor.__super__.className
@@ -66,6 +68,9 @@ describe "mini-class.js", ->
     describe "the constructor function", ->
       it "should be annotated with a reference to the superclass implementation", ->
         expect( ClassB.__super__ ).toEqual ClassA.prototype
+
+      it "should have a copy of the 'class properties' defined on the parent constructor function", ->
+        expect( ClassB.classProperty ).toEqual "classProperty defined directly on classA"
 
     describe "an child class instance created by calling new", ->
       objB = null
