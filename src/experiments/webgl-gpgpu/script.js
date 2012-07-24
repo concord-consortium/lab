@@ -6,7 +6,6 @@ Piotr Janik
 $(document).ready(function () {
   var
     gl = GL.create({ alpha: true }),
-    gpgpu = energy2d.utils.gpu.gpgpu,
 
     TEX_WIDTH = 128,
     TEX_HEIGHT = 128,
@@ -28,7 +27,6 @@ $(document).ready(function () {
     gpuTime,
     readTime1,
     readTime2,
-    readTime3,
     statsInterval = 5,
 
     renderShader = new GL.Shader('\
@@ -144,6 +142,7 @@ $(document).ready(function () {
         gl.readPixels(0, 0, outputTexture.width, outputTexture.height, outputTexture.format, outputTexture.type, outputStorage);
         outputConverted = new Float32Array(outputStorage.buffer);
       });
+      gl.finish();
     },
 
     // ========================================================================
@@ -275,14 +274,8 @@ $(document).ready(function () {
         gl.readPixels(0, 0, outputTexture.width, outputTexture.height, outputTexture.format, outputTexture.type, outputStorage);
         decodeFloatArray(outputStorage, outputConverted);
       });
+      gl.finish();
     },
-
-    // ========================================================================
-
-    readTextureMethod3 = function (tex) {
-      gpgpu.readTexture(tex, outputConverted);
-    }
-    // ========================================================================
 
     init = function () {
       var dataGPU, i, len;
@@ -335,14 +328,13 @@ $(document).ready(function () {
       gpuTime = 0;
       readTime1 = 0;
       readTime2 = 0;
-
-      gpgpu.init(TEX_WIDTH, TEX_HEIGHT, gl);
     },
 
     writeTexture = function (tex, input) {
       // Make sure that texture is bound.
       gl.bindTexture(gl.TEXTURE_2D, tex.id);
       gl.texImage2D(gl.TEXTURE_2D, 0, tex.format, tex.width, tex.height, 0, tex.format, tex.type, input);
+      gl.finish();
     },
 
     render = function () {
@@ -355,6 +347,7 @@ $(document).ready(function () {
         range: RANGE
       }).draw(plane);
       textureA.unbind(0);
+      gl.finish();
     },
 
     simulationStepCPU = function () {
@@ -383,6 +376,7 @@ $(document).ready(function () {
         }).draw(plane);
       });
       textureB.swapWith(textureA);
+      gl.finish();
     },
 
     compareGPUAndCPUResults = function () {
@@ -399,10 +393,6 @@ $(document).ready(function () {
 
     initialTest = function () {
       var error, time;
-      // Call a few times reading, as first call 
-      // tends to be slower than following.
-      readTextureMethod1(textureA);
-      readTextureMethod2(textureA);
       // Method 1.
       time = getTime();
       readTextureMethod1(textureA);
@@ -417,13 +407,6 @@ $(document).ready(function () {
       error = compareGPUAndCPUResults();
       $('#init-error-m2').text(error);
       $('#init-read-time-m2').text(time);
-      // Method 3.
-      time = getTime();
-      readTextureMethod3(textureA);
-      time = getTime() - time;
-      error = compareGPUAndCPUResults();
-      $('#init-error-m3').text(error);
-      $('#init-read-time-m3').text(time);
     },
 
     updateStats = function () {
@@ -434,7 +417,6 @@ $(document).ready(function () {
       $('#gpu-time').text((gpuTime).toFixed(1));
       $('#read-time-m1').text((readTime1).toFixed(1));
       $('#read-time-m2').text((readTime2).toFixed(1));
-      $('#read-time-m3').text((readTime3).toFixed(1));
     },
 
     onDrawCallback = function () {
@@ -444,24 +426,15 @@ $(document).ready(function () {
       
       // Measure time in the first (=== 0) step differently.
       time = getTime();
-      render();
+      simulationStepGPU();
       diff = getTime() - time;
-      renderTime = step ? renderTime * 0.95 + diff * 0.05 : diff;
+      gpuTime = step ? gpuTime * 0.95 + diff * 0.05 : diff;
+
       time = getTime();
       simulationStepCPU();
       diff = getTime() - time;
       cpuTime = step ? cpuTime * 0.95 + diff * 0.05 : diff;
-      time = getTime();
-      simulationStepGPU();
-      diff = getTime() - time;
-      gpuTime = step ? gpuTime * 0.95 + diff * 0.05 : diff;
-      
-      // Call a few times reading, as first call after other 
-      // operations tends to be slower than others.
-      readTextureMethod1(textureA);
-      readTextureMethod2(textureA);
 
-      // Now measure times.
       time = getTime();
       readTextureMethod1(textureA);
       diff = getTime() - time;
@@ -473,9 +446,9 @@ $(document).ready(function () {
       readTime2 = step ? readTime2 * 0.95 + diff * 0.05 : diff;
 
       time = getTime();
-      readTextureMethod3(textureA);
+      render();
       diff = getTime() - time;
-      readTime3 = step ? readTime3 * 0.95 + diff * 0.05 : diff;
+      renderTime = step ? renderTime * 0.95 + diff * 0.05 : diff;
       
       if (step % statsInterval === 0) 
         updateStats();

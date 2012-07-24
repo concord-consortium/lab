@@ -55,13 +55,19 @@ exports.makeHeatSolverGPU = function (model) {
     // Main solver.
     solve_program = new gpu.Shader(basic_vertex,
       '\
+      varying vec2 coord;\
+      uniform vec2 grid;\
       uniform sampler2D data1;\
       uniform sampler2D data2;\
-      uniform vec2 grid;\
       uniform float hx;\
       uniform float hy;\
       uniform float inv_timestep;\
-      varying vec2 coord;\
+      /* Boundary conditions uniforms */\
+      uniform float enforce_temp;\
+      uniform float vN;\
+      uniform float vS;\
+      uniform float vW;\
+      uniform float vE;\
       void main() {\
         vec4 t_data = texture2D(data1, coord);\
         if (coord.x > grid.x && coord.x < 1.0 - grid.x &&\
@@ -95,22 +101,29 @@ exports.makeHeatSolverGPU = function (model) {
                            + ayij * data_m_dx.r\
                            + byij * data_p_dx.r)\
                           / (sij + axij + bxij + ayij + byij);\
-            gl_FragColor = vec4(new_val, t_data.gba);\
+            t_data.r = new_val;\
           } else {\
-            gl_FragColor = vec4(tb_val, t_data.gba);\
+            t_data.r = tb_val;\
           }\
-        } else {\
-          gl_FragColor = t_data;\
+        } else if (enforce_temp == 1.0) {\
+          /* Temperature at border boundary conditions */\
+          if (coord.x < grid.x) {\
+            t_data.r = vN;\
+          } else if (coord.x > 1.0 - grid.x) {\
+            t_data.r = vS;\
+          } else if (coord.y < grid.y) {\
+            t_data.r = vW;\
+          } else if (coord.y > 1.0 - grid.y) {\
+            t_data.r = vE;\
+          }\
         }\
+        gl_FragColor = t_data;\
       }'),
     // Apply boundary.
     apply_boundary_program = new gpu.Shader(basic_vertex,
       '\
       uniform sampler2D data1;\
-      \
       uniform vec2 grid;\
-      \
-      uniform float flux;\
       uniform float vN;\
       uniform float vS;\
       uniform float vW;\
@@ -122,45 +135,23 @@ exports.makeHeatSolverGPU = function (model) {
       void main() {\
         vec4 data = texture2D(data1, coord);\
         \
-        if (flux == 0.0) {\
-          /* Temperature at border */\
-          if (coord.x < grid.x) {\
-            gl_FragColor = vec4(vN, data.gba);\
-          } else if (coord.x > 1.0 - grid.x) {\
-            gl_FragColor = vec4(vS, data.gba);\
-          } else if (coord.y < grid.y) {\
-            gl_FragColor = vec4(vW, data.gba);\
-          } else if (coord.y > 1.0 - grid.y) {\
-            gl_FragColor = vec4(vE, data.gba);\
-          } else {\
-            gl_FragColor = data;\
-          }\
-        } else {\
-          /* Flux at border */\
-          float new_temp;\
-          vec2 dx = vec2(grid.x, 0.0);\
-          vec2 dy = vec2(0.0, grid.y);\
-          if (coord.x < grid.x) {\
-            new_temp = texture2D(data1, coord + dx).r;\
-              + vN * delta_y / data.a;\
-            gl_FragColor = vec4(new_temp, data.gba);\
-          } else if (coord.x > 1.0 - grid.x) {\
-            new_temp = texture2D(data1, coord - dx).r;\
-              - vS * delta_y / data.a;\
-            gl_FragColor = vec4(new_temp, data.gba);\
-          } else if (coord.y < grid.y) {\
-            new_temp = texture2D(data1, coord + dy).r;\
-              - vW * delta_x / data.a;\
-            gl_FragColor = vec4(new_temp, data.gba);\
-          } else if (coord.y > 1.0 - grid.y) {\
-            new_temp = texture2D(data1, coord - dy).r;\
-              + vE * delta_x / data.a;\
-            gl_FragColor = vec4(new_temp, data.gba);\
-          } else {\
-            gl_FragColor = data;\
-          }\
-        \
+        /* Flux at border */\
+        vec2 dx = vec2(grid.x, 0.0);\
+        vec2 dy = vec2(0.0, grid.y);\
+        if (coord.x < grid.x) {\
+          data.r = texture2D(data1, coord + dx).r;\
+            + vN * delta_y / data.a;\
+        } else if (coord.x > 1.0 - grid.x) {\
+          data.r = texture2D(data1, coord - dx).r;\
+            - vS * delta_y / data.a;\
+        } else if (coord.y < grid.y) {\
+          data.r = texture2D(data1, coord + dy).r;\
+            - vW * delta_x / data.a;\
+        } else if (coord.y > 1.0 - grid.y) {\
+          data.r = texture2D(data1, coord - dy).r;\
+            + vE * delta_x / data.a;\
         }\
+        gl_FragColor = data;\
       }'),
       // Copy single channel of texture.
     copy_t_t0_program = new gpu.Shader(basic_vertex,
@@ -169,39 +160,18 @@ exports.makeHeatSolverGPU = function (model) {
       varying vec2 coord;\
       void main() {\
         vec4 data = texture2D(data1, coord);\
-        gl_FragColor = vec4(data.r, data.r, data.b, data.a);\
+        data.g = data.r;\
+        gl_FragColor = data;\
       }'),
 
 
     init = function () {
       var uniforms;
 
-      if (boundary.temperature_at_border) {
-        uniforms = {
-          grid: grid_vec,
-          flux: 0.0,
-          vN: boundary.temperature_at_border.upper,
-          vS:  boundary.temperature_at_border.lower,
-          vW:  boundary.temperature_at_border.left,
-          vE:  boundary.temperature_at_border.right
-        };
-      } else if (boundary.flux_at_border) {
-        uniforms = {
-          grid: grid_vec,
-          flux: 1.0,
-          vN: boundary.flux_at_border.upper,
-          vS: boundary.flux_at_border.lower,
-          vW: boundary.flux_at_border.left,
-          vE: boundary.flux_at_border.right,
-          delta_x: delta_x,
-          delta_y: delta_y
-        };
-      }
-      apply_boundary_program.uniforms(uniforms);
-
-      // Solve program uniforms.
+      // Solver program uniforms.
       uniforms = {
         grid: grid_vec,
+        enforce_temp: 0.0,
         hx: 0.5 / (delta_x * delta_x),
         hy: 0.5 / (delta_y * delta_y),
         inv_timestep: 1.0 / timestep,
@@ -209,8 +179,33 @@ exports.makeHeatSolverGPU = function (model) {
         data1: 0,
         data2: 1
       };
-
       solve_program.uniforms(uniforms);
+
+      if (boundary.temperature_at_border) {
+        uniforms = {
+          grid: grid_vec,
+          enforce_temp: 1.0,
+          vN:  boundary.temperature_at_border.upper,
+          vS:  boundary.temperature_at_border.lower,
+          vW:  boundary.temperature_at_border.left,
+          vE:  boundary.temperature_at_border.right
+        };
+        // Integrate boundary conditions with solver program.
+        // This is optimization that allows to limit render-to-texture calls.
+        solve_program.uniforms(uniforms);
+      } else if (boundary.flux_at_border) {
+        uniforms = {
+          grid: grid_vec,
+          vN: boundary.flux_at_border.upper,
+          vS: boundary.flux_at_border.lower,
+          vW: boundary.flux_at_border.left,
+          vE: boundary.flux_at_border.right,
+          delta_x: delta_x,
+          delta_y: delta_y
+        };
+        // Flux boundary conditions can't be integrated into solver program.
+        apply_boundary_program.uniforms(uniforms);
+      }
     },
 
     heat_solver_gpu = {
@@ -231,11 +226,15 @@ exports.makeHeatSolverGPU = function (model) {
             data1_tex
           );
 
-          gpgpu.executeProgram(
-            apply_boundary_program,
-            [data1_tex],
-            data1_tex
-          );
+          if (boundary.flux_at_border) {
+            // Additional program for boundary conditions
+            // is required only for flux at border.
+            gpgpu.executeProgram(
+              apply_boundary_program,
+              [data1_tex],
+              data1_tex
+            );
+          }
         }
         // Synchronize. It's not required but it 
         // allows to measure time (for optimization).
