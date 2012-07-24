@@ -95,7 +95,7 @@
           return expect(applet.testAppletReady).toHaveBeenCalled();
         });
       });
-      describe("when testAppletReady returns false", function() {
+      return describe("when testAppletReady returns false", function() {
         beforeEach(function() {
           return spyOn(applet, 'testAppletReady').andReturn(false);
         });
@@ -129,50 +129,101 @@
               return expect(applet.testAppletReady).not.toHaveBeenCalled();
             });
           });
-          return it("should transition to the 'applet ready' state", function() {
+          return it("should transition to the 'applet ready' state and fire the 'appletReady' event", function() {
+            var appletReady;
+            appletReady = jasmine.createSpy('appletReady');
+            applet.on('appletReady', appletReady);
             runs(function() {
               return applet.append();
             });
             waits(100);
             runs(function() {
               expect(applet.getState()).toBe('appended');
+              expect(appletReady).not.toHaveBeenCalled();
               return applet.testAppletReady.andReturn(true);
             });
             waits(100);
             return runs(function() {
-              return expect(applet.getState()).toBe('applet ready');
+              expect(applet.getState()).toBe('applet ready');
+              return expect(appletReady).toHaveBeenCalled();
             });
-          });
-        });
-      });
-      return describe("in the 'applet ready' state", function() {
-        beforeEach(function() {
-          return spyOn(applet, 'testAppletReady').andReturn(true);
-        });
-        return it("should call the appletReady callback", function() {
-          var appletReady;
-          appletReady = jasmine.createSpy('appletReady');
-          applet.on('appletReady', appletReady);
-          runs(function() {
-            applet.append();
-            return expect(appletReady).not.toHaveBeenCalled();
-          });
-          waits(100);
-          return runs(function() {
-            return expect(appletReady).toHaveBeenCalled();
           });
         });
       });
     });
     describe("the sensorIsReady method", function() {
-      it("should go to the 'stopped' state");
-      describe("the start method", function() {
-        it("should call the _startSensor method");
-        return it("should call go to the 'start' state");
+      beforeEach(function() {
+        return applet._state = 'applet ready';
       });
-      return describe("the stop method", function() {
-        it("should call the _stopSensor method");
-        return it("should go the the 'stopped' state");
+      it("should go to the 'stopped' state", function() {
+        expect(applet.getState()).toBe('applet ready');
+        applet.sensorIsReady();
+        return expect(applet.getState()).toBe('stopped');
+      });
+      it("should fire the 'sensorReady' event", function() {
+        var sensorReady;
+        sensorReady = jasmine.createSpy('sensorReady');
+        applet.on('sensorReady', sensorReady);
+        applet.sensorIsReady();
+        return expect(sensorReady).toHaveBeenCalled();
+      });
+      describe("the 'start' method", function() {
+        beforeEach(function() {
+          return spyOn(applet, '_startSensor');
+        });
+        describe("in the 'stopped' state", function() {
+          beforeEach(function() {
+            applet._state = 'stopped';
+            return applet.start();
+          });
+          it("should call the _startSensor method", function() {
+            return expect(applet._startSensor).toHaveBeenCalled();
+          });
+          return it("should call go to the 'started' state", function() {
+            return expect(applet.getState()).toBe('started');
+          });
+        });
+        return describe("not in the 'stopped' state", function() {
+          beforeEach(function() {
+            applet._state = 'not stopped';
+            return applet.start();
+          });
+          it("should not call the _startSensor method", function() {
+            return expect(applet._startSensor).not.toHaveBeenCalled();
+          });
+          return it("should not change state", function() {
+            return expect(applet.getState()).toBe('not stopped');
+          });
+        });
+      });
+      return describe("the 'stop' method", function() {
+        beforeEach(function() {
+          return spyOn(applet, '_stopSensor');
+        });
+        describe("in the 'started' state", function() {
+          beforeEach(function() {
+            applet._state = 'started';
+            return applet.stop();
+          });
+          it("should call the _stopSensor method", function() {
+            return expect(applet._stopSensor).toHaveBeenCalled();
+          });
+          return it("should go the the 'stopped' state", function() {
+            return expect(applet.getState()).toBe('stopped');
+          });
+        });
+        return describe("not in the 'started' state", function() {
+          beforeEach(function() {
+            applet._state = 'not started';
+            return applet.stop();
+          });
+          it("should not call the _stopSensor method", function() {
+            return expect(applet._stopSensor).not.toHaveBeenCalled();
+          });
+          return it("should not change state", function() {
+            return expect(applet.getState()).toBe('not started');
+          });
+        });
       });
     });
     return describe("initially", function() {

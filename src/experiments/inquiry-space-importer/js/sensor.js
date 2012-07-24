@@ -6,6 +6,8 @@ ISImporter.SensorApplet = defineClass({
 
   _state: 'not appended',
 
+  testAppletReadyInterval: 100,
+
   getState: function() {
     return this._state;
   },
@@ -17,7 +19,7 @@ ISImporter.SensorApplet = defineClass({
     this._callbacks[evt].push(cb);
   },
 
-  fireEvent: function(evt) {
+  fire: function(evt) {
     if (this._callbacks && this._callbacks[evt]) {
       for (var i = 0, len = this._callbacks[evt].length; i < len; i++) {
         this._callbacks[evt][i]();
@@ -42,9 +44,28 @@ ISImporter.SensorApplet = defineClass({
       if (self.testAppletReady()) {
         window.clearInterval( timer );
         self._state = 'applet ready';
-        self.fireEvent('appletReady');
+        self.fire('appletReady');
       }
     }, this.testAppletReadyInterval);
+  },
+
+  sensorIsReady: function() {
+    this._state = 'stopped';
+    this.fire('sensorReady');
+  },
+
+  start: function() {
+    if (this.getState() === 'stopped') {
+      this._state = 'started';
+      this._startSensor();
+    }
+  },
+
+  stop: function() {
+    if (this.getState() === 'started') {
+      this._state = 'stopped';
+      this._stopSensor();
+    }
   },
 
   _appendHTML: function(html) {
@@ -57,6 +78,10 @@ ISImporter.SensorApplet = defineClass({
 
   testAppletReady: function() {
     throw new Error("Override this method!");
-  }
+  },
+
+  _startSensor: function() {},
+
+  _stopSensor: function () {}
 
 });

@@ -114,7 +114,11 @@ describe "SensorApplet class", ->
           runs ->
             expect( applet.testAppletReady ).not.toHaveBeenCalled()
 
-        it "should transition to the 'applet ready' state", ->
+        it "should transition to the 'applet ready' state and fire the 'appletReady' event", ->
+
+          appletReady = jasmine.createSpy 'appletReady'
+          applet.on 'appletReady', appletReady
+
           runs ->
             applet.append()
 
@@ -122,40 +126,89 @@ describe "SensorApplet class", ->
 
           runs ->
             expect( applet.getState() ).toBe 'appended'
+            expect( appletReady ).not.toHaveBeenCalled()
             applet.testAppletReady.andReturn true
 
           waits 100
 
           runs ->
             expect( applet.getState() ).toBe 'applet ready'
-
-    describe "in the 'applet ready' state", ->
-
-      beforeEach ->
-        spyOn( applet, 'testAppletReady' ).andReturn true
-
-      it "should call the appletReady callback", ->
-        appletReady = jasmine.createSpy 'appletReady'
-        applet.on 'appletReady', appletReady
-        runs ->
-          applet.append()
-          expect(appletReady).not.toHaveBeenCalled()
-
-        waits 100
-        runs ->
-          expect(appletReady).toHaveBeenCalled()
+            expect( appletReady ).toHaveBeenCalled()
 
   describe "the sensorIsReady method", ->
 
-    it "should go to the 'stopped' state"
+    beforeEach ->
+      applet._state = 'applet ready'
 
-    describe "the start method", ->
-      it "should call the _startSensor method"
-      it "should call go to the 'start' state"
+    it "should go to the 'stopped' state", ->
+      expect( applet.getState() ).toBe 'applet ready'
+      applet.sensorIsReady()
+      expect( applet.getState() ).toBe 'stopped'
 
-    describe "the stop method", ->
-      it "should call the _stopSensor method"
-      it "should go the the 'stopped' state"
+    it "should fire the 'sensorReady' event", ->
+      sensorReady = jasmine.createSpy 'sensorReady'
+      applet.on 'sensorReady', sensorReady
+      applet.sensorIsReady()
+      expect( sensorReady ).toHaveBeenCalled()
+
+    describe "the 'start' method", ->
+
+      beforeEach ->
+        spyOn applet, '_startSensor'
+
+      describe "in the 'stopped' state", ->
+
+        beforeEach ->
+          applet._state = 'stopped'
+          applet.start()
+
+        it "should call the _startSensor method", ->
+          expect( applet._startSensor ).toHaveBeenCalled()
+
+        it "should call go to the 'started' state", ->
+          expect( applet.getState() ).toBe 'started'
+
+      describe "not in the 'stopped' state", ->
+
+        beforeEach ->
+          applet._state = 'not stopped'
+          applet.start()
+
+        it "should not call the _startSensor method", ->
+          expect( applet._startSensor ).not.toHaveBeenCalled()
+
+        it "should not change state", ->
+          expect( applet.getState() ).toBe 'not stopped'
+
+    describe "the 'stop' method", ->
+
+      beforeEach ->
+        spyOn applet, '_stopSensor'
+
+      describe "in the 'started' state", ->
+
+        beforeEach ->
+          applet._state = 'started'
+          applet.stop()
+
+        it "should call the _stopSensor method", ->
+          expect( applet._stopSensor ).toHaveBeenCalled()
+
+        it "should go the the 'stopped' state", ->
+          expect( applet.getState() ).toBe 'stopped'
+
+      describe "not in the 'started' state", ->
+
+        beforeEach ->
+          applet._state = 'not started'
+          applet.stop()
+
+        it "should not call the _stopSensor method", ->
+          expect( applet._stopSensor ).not.toHaveBeenCalled()
+
+        it "should not change state", ->
+          expect( applet.getState() ).toBe 'not started'
+
 
   describe "initially", ->
 
