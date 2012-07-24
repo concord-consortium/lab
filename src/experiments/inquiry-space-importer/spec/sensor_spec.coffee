@@ -1,11 +1,60 @@
 describe "SensorApplet class", ->
 
-  it "should exist"
+  applet = null
+
+  beforeEach ->
+    applet = new ISImporter.SensorApplet()
+
+  it "should exist", ->
+    expect( applet ).toBeDefined()
+
+  describe "_appendHTML method", ->
+    it "should exist and be callable", ->
+      expect( typeof applet._appendHTML ).toBe 'function'
+
+  describe "getHTML method", ->
+    it "should defer to child class implementation", ->
+      expect( applet.getHTML ).toThrow()
+
+  describe "getState method", ->
+    describe "initially", ->
+      it "should return 'not appended'", ->
+        expect( applet.getState() ).toBe 'not appended'
 
   describe "append method", ->
-    it "should request the applet HTML"
-    it "should append the applet HTML to the DOM"
-    it "should go into 'appended' state"
+
+    beforeEach ->
+      spyOn( applet, 'getHTML' ).andReturn '<applet> tag from getHTML method'
+      spyOn( applet, '_appendHTML' )
+
+    it "should call the getHTML method to request the applet HTML", ->
+      applet.append()
+      expect( applet.getHTML ).toHaveBeenCalled()
+
+    it "should append the applet HTML to the DOM", ->
+      applet.append()
+      expect( applet._appendHTML ).toHaveBeenCalledWith '<applet> tag from getHTML method'
+
+    it "should go into 'appended' state", ->
+      applet.append()
+      expect( applet.getState() ).toBe 'appended'
+
+    describe "when the applet is in the 'not appended' state", ->
+
+      beforeEach ->
+        applet.getState = -> 'not appended'
+
+      it "should not throw an error", ->
+        expect( -> applet.append() ).not.toThrow()
+
+    describe "when the applet is not in the 'not appended' state", ->
+
+      beforeEach ->
+        applet.getState = -> 'appended'
+
+      it "should throw an error", ->
+        expect( -> applet.append() ).toThrow()
+
 
   describe "after appending", ->
     it "should call the testAppletReady method in a timeout"

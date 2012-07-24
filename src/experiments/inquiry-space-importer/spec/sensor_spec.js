@@ -2,11 +2,72 @@
 (function() {
 
   describe("SensorApplet class", function() {
-    it("should exist");
+    var applet;
+    applet = null;
+    beforeEach(function() {
+      return applet = new ISImporter.SensorApplet();
+    });
+    it("should exist", function() {
+      return expect(applet).toBeDefined();
+    });
+    describe("_appendHTML method", function() {
+      return it("should exist and be callable", function() {
+        return expect(typeof applet._appendHTML).toBe('function');
+      });
+    });
+    describe("getHTML method", function() {
+      return it("should defer to child class implementation", function() {
+        return expect(applet.getHTML).toThrow();
+      });
+    });
+    describe("getState method", function() {
+      return describe("initially", function() {
+        return it("should return 'not appended'", function() {
+          return expect(applet.getState()).toBe('not appended');
+        });
+      });
+    });
     describe("append method", function() {
-      it("should request the applet HTML");
-      it("should append the applet HTML to the DOM");
-      return it("should go into 'appended' state");
+      beforeEach(function() {
+        spyOn(applet, 'getHTML').andReturn('<applet> tag from getHTML method');
+        return spyOn(applet, '_appendHTML');
+      });
+      it("should call the getHTML method to request the applet HTML", function() {
+        applet.append();
+        return expect(applet.getHTML).toHaveBeenCalled();
+      });
+      it("should append the applet HTML to the DOM", function() {
+        applet.append();
+        return expect(applet._appendHTML).toHaveBeenCalledWith('<applet> tag from getHTML method');
+      });
+      it("should go into 'appended' state", function() {
+        applet.append();
+        return expect(applet.getState()).toBe('appended');
+      });
+      describe("when the applet is in the 'not appended' state", function() {
+        beforeEach(function() {
+          return applet.getState = function() {
+            return 'not appended';
+          };
+        });
+        return it("should not throw an error", function() {
+          return expect(function() {
+            return applet.append();
+          }).not.toThrow();
+        });
+      });
+      return describe("when the applet is not in the 'not appended' state", function() {
+        beforeEach(function() {
+          return applet.getState = function() {
+            return 'appended';
+          };
+        });
+        return it("should throw an error", function() {
+          return expect(function() {
+            return applet.append();
+          }).toThrow();
+        });
+      });
     });
     describe("after appending", function() {
       it("should call the testAppletReady method in a timeout");
