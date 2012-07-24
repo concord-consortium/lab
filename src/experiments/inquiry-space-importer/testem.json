@@ -1,4 +1,4 @@
 {
   "framework": "jasmine",
-  "src_files": ["js/mini-class.js", "spec/**/*.js"]
+  "src_files": ["js/mini-class.js", "js/sensor.js", "spec/**/*.js"]
 }
