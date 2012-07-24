@@ -10,6 +10,11 @@
     it("should exist", function() {
       return expect(applet).toBeDefined();
     });
+    describe("testAppletReady method", function() {
+      return it("should defer to child class implementation", function() {
+        return expect(applet.testAppletReady).toThrow();
+      });
+    });
     describe("_appendHTML method", function() {
       return it("should exist and be callable", function() {
         return expect(typeof applet._appendHTML).toBe('function');
@@ -30,7 +35,8 @@
     describe("append method", function() {
       beforeEach(function() {
         spyOn(applet, 'getHTML').andReturn('<applet> tag from getHTML method');
-        return spyOn(applet, '_appendHTML');
+        spyOn(applet, '_appendHTML');
+        return applet.testAppletReady = function() {};
       });
       it("should call the getHTML method to request the applet HTML", function() {
         applet.append();
@@ -70,18 +76,92 @@
       });
     });
     describe("after appending", function() {
-      it("should call the testAppletReady method in a timeout");
+      beforeEach(function() {
+        applet.getHTML = function() {
+          return 'dummy <applet>';
+        };
+        applet._appendHTML = function() {};
+        applet.testAppletReady = function() {};
+        return applet.testAppletReadyInterval = 50;
+      });
+      it("should call the testAppletReady method in a timeout", function() {
+        spyOn(applet, 'testAppletReady');
+        runs(function() {
+          applet.append();
+          return expect(applet.testAppletReady).not.toHaveBeenCalled();
+        });
+        waits(100);
+        return runs(function() {
+          return expect(applet.testAppletReady).toHaveBeenCalled();
+        });
+      });
       describe("when testAppletReady returns false", function() {
-        return it("should call the testAppletReady method again in a timeout", function() {});
+        beforeEach(function() {
+          return spyOn(applet, 'testAppletReady').andReturn(false);
+        });
+        it("should continue calling testAppletReady", function() {
+          runs(function() {
+            return applet.append();
+          });
+          waits(200);
+          return runs(function() {
+            return expect(applet.testAppletReady.callCount).toBeGreaterThan(1);
+          });
+        });
+        return describe("when testAppletReady subsequently returns true", function() {
+          it("should stop calling testAppletReady", function() {
+            runs(function() {
+              return applet.append();
+            });
+            waits(100);
+            runs(function() {
+              expect(applet.testAppletReady).toHaveBeenCalled();
+              applet.testAppletReady.reset();
+              return applet.testAppletReady.andReturn(true);
+            });
+            waits(100);
+            runs(function() {
+              expect(applet.testAppletReady).toHaveBeenCalled();
+              return applet.testAppletReady.reset();
+            });
+            waits(100);
+            return runs(function() {
+              return expect(applet.testAppletReady).not.toHaveBeenCalled();
+            });
+          });
+          return it("should transition to the 'applet ready' state", function() {
+            runs(function() {
+              return applet.append();
+            });
+            waits(100);
+            runs(function() {
+              expect(applet.getState()).toBe('appended');
+              return applet.testAppletReady.andReturn(true);
+            });
+            waits(100);
+            return runs(function() {
+              return expect(applet.getState()).toBe('applet ready');
+            });
+          });
+        });
       });
-      return describe("when testAppletReady returns true", function() {
-        return it("should go to the 'applet ready' state");
-      });
-    });
-    describe("in the 'applet ready' state", function() {
-      it("should call the appletReady callback");
-      return describe("if sensorsReadyWhenAppletReady is true", function() {
-        return it("should call the sensorsReady method");
+      return describe("in the 'applet ready' state", function() {
+        beforeEach(function() {
+          return spyOn(applet, 'testAppletReady').andReturn(true);
+        });
+        return it("should call the appletReady callback", function() {
+          var appletReady;
+          appletReady = jasmine.createSpy('appletReady');
+          applet.on('appletReady', appletReady);
+          runs(function() {
+            applet.append();
+            return expect(appletReady).not.toHaveBeenCalled();
+          });
+          waits(100);
+          return runs(function() {
+            return expect(appletReady).toHaveBeenCalled();
+          });
+        });
       });
     });
     describe("the sensorIsReady method", function() {

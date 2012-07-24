@@ -8,6 +8,10 @@ describe "SensorApplet class", ->
   it "should exist", ->
     expect( applet ).toBeDefined()
 
+  describe "testAppletReady method", ->
+    it "should defer to child class implementation", ->
+      expect( applet.testAppletReady ).toThrow()
+
   describe "_appendHTML method", ->
     it "should exist and be callable", ->
       expect( typeof applet._appendHTML ).toBe 'function'
@@ -26,6 +30,7 @@ describe "SensorApplet class", ->
     beforeEach ->
       spyOn( applet, 'getHTML' ).andReturn '<applet> tag from getHTML method'
       spyOn( applet, '_appendHTML' )
+      applet.testAppletReady = ->
 
     it "should call the getHTML method to request the applet HTML", ->
       applet.append()
@@ -55,21 +60,90 @@ describe "SensorApplet class", ->
       it "should throw an error", ->
         expect( -> applet.append() ).toThrow()
 
-
   describe "after appending", ->
-    it "should call the testAppletReady method in a timeout"
+
+    beforeEach ->
+      applet.getHTML = -> 'dummy <applet>'
+      applet._appendHTML = ->
+      applet.testAppletReady = ->
+      applet.testAppletReadyInterval = 50
+
+    it "should call the testAppletReady method in a timeout", ->
+      spyOn applet, 'testAppletReady'
+
+      runs ->
+        applet.append()
+        expect( applet.testAppletReady ).not.toHaveBeenCalled()
+
+      waits 100
+
+      runs ->
+        expect( applet.testAppletReady ).toHaveBeenCalled()
 
     describe "when testAppletReady returns false", ->
-      it "should call the testAppletReady method again in a timeout", ->
 
-    describe "when testAppletReady returns true", ->
-      it "should go to the 'applet ready' state"
+      beforeEach ->
+        spyOn( applet, 'testAppletReady' ).andReturn false
 
-  describe "in the 'applet ready' state", ->
-    it "should call the appletReady callback"
+      it "should continue calling testAppletReady", ->
+        runs -> applet.append()
+        waits 200
+        runs -> expect( applet.testAppletReady.callCount ).toBeGreaterThan 1
 
-    describe "if sensorsReadyWhenAppletReady is true", ->
-      it "should call the sensorsReady method"
+      describe "when testAppletReady subsequently returns true", ->
+
+        it "should stop calling testAppletReady", ->
+          runs ->
+            applet.append()
+
+          waits 100
+
+          runs ->
+            expect( applet.testAppletReady ).toHaveBeenCalled()
+            applet.testAppletReady.reset()
+            applet.testAppletReady.andReturn true
+
+          waits 100
+
+          runs ->
+            expect( applet.testAppletReady ).toHaveBeenCalled()
+            applet.testAppletReady.reset()
+
+          waits 100
+
+          runs ->
+            expect( applet.testAppletReady ).not.toHaveBeenCalled()
+
+        it "should transition to the 'applet ready' state", ->
+          runs ->
+            applet.append()
+
+          waits 100
+
+          runs ->
+            expect( applet.getState() ).toBe 'appended'
+            applet.testAppletReady.andReturn true
+
+          waits 100
+
+          runs ->
+            expect( applet.getState() ).toBe 'applet ready'
+
+    describe "in the 'applet ready' state", ->
+
+      beforeEach ->
+        spyOn( applet, 'testAppletReady' ).andReturn true
+
+      it "should call the appletReady callback", ->
+        appletReady = jasmine.createSpy 'appletReady'
+        applet.on 'appletReady', appletReady
+        runs ->
+          applet.append()
+          expect(appletReady).not.toHaveBeenCalled()
+
+        waits 100
+        runs ->
+          expect(appletReady).toHaveBeenCalled()
 
   describe "the sensorIsReady method", ->
 
