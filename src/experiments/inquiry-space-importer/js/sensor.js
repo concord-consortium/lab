@@ -38,7 +38,7 @@ ISImporter.SensorApplet = defineClass({
     this._callbacks[evt].push(cb);
   },
 
-  fire: function(evt) {
+  emit: function(evt) {
     if (this._callbacks && this._callbacks[evt]) {
       for (var i = 0, len = this._callbacks[evt].length; i < len; i++) {
         this._callbacks[evt][i]();
@@ -63,14 +63,14 @@ ISImporter.SensorApplet = defineClass({
       if (self.testAppletReady()) {
         window.clearInterval( timer );
         self._state = 'applet ready';
-        self.fire('appletReady');
+        self.emit('appletReady');
       }
     }, this.testAppletReadyInterval);
   },
 
   sensorIsReady: function() {
     this._state = 'stopped';
-    this.fire('sensorReady');
+    this.emit('sensorReady');
   },
 
   start: function() {
