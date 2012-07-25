@@ -226,6 +226,7 @@ describe "SensorApplet class", ->
   describe "remove method", ->
 
     beforeEach ->
+      applet._removeApplet = ->
       spyOn applet, '_removeApplet'
 
     describe "when not in an applet callback", ->

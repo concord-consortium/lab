@@ -275,6 +275,7 @@
     });
     describe("remove method", function() {
       beforeEach(function() {
+        applet._removeApplet = function() {};
         return spyOn(applet, '_removeApplet');
       });
       describe("when not in an applet callback", function() {
