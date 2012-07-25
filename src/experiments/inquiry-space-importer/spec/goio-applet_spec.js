@@ -71,17 +71,49 @@
           });
         });
       });
-      return describe("after sensorIsReady returns", function() {
+      return describe("after sensorsReady returns", function() {
         return it("should be false", function() {
           goio.sensorsReady();
           return expect(goio.getIsInAppletCallback()).toBe(false);
         });
       });
     });
-    describe("The dataReceived method", function() {
-      it("should call startAppletCallback");
-      it("should call newData callback while inAppletCallback is true");
-      return it("should call endAppletCallback");
+    describe("The dataReceived applet callback", function() {
+      var dataCb;
+      dataCb = null;
+      beforeEach(function() {
+        dataCb = jasmine.createSpy('dataCb');
+        return goio.on('data', dataCb);
+      });
+      it("should emit the 'data' event", function() {
+        goio.dataReceived();
+        return expect(dataCb).toHaveBeenCalled();
+      });
+      describe("the data callback", function() {
+        it("should be called with the data received from the applet callback", function() {
+          goio.dataReceived(null, 2, [1.0, 2.0]);
+          return expect(dataCb).toHaveBeenCalledWith([1.0, 2.0]);
+        });
+        return it("should be called while getIsInAppletCallback() returns true", function() {
+          var wasIn;
+          wasIn = null;
+          dataCb.andCallFake(function() {
+            return wasIn = goio.getIsInAppletCallback();
+          });
+          goio.dataReceived();
+          return expect(wasIn).toBe(true);
+        });
+      });
+      return describe("after dataReceived returns", function() {
+        beforeEach(function() {
+          return goio.dataReceived();
+        });
+        return describe("getIsInAppletCallback method", function() {
+          return it("should return false", function() {
+            return expect(goio.getIsInAppletCallback()).toBe(false);
+          });
+        });
+      });
     });
     describe("_stopSensor method", function() {
       describe("if inAppletCallback is true", function() {

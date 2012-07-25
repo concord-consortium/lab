@@ -86,20 +86,46 @@ describe "GoIOApplet class", ->
           goio.sensorsReady()
           expect( returnValueDuring ).toBe true
 
-    describe "after sensorIsReady returns", ->
+    describe "after sensorsReady returns", ->
 
       it "should be false", ->
         goio.sensorsReady()
         expect( goio.getIsInAppletCallback() ).toBe false
 
+  describe "The dataReceived applet callback", ->
 
-  describe "The dataReceived method", ->
+    dataCb = null
 
-    it "should call startAppletCallback"
+    beforeEach ->
+      dataCb = jasmine.createSpy 'dataCb'
+      goio.on 'data', dataCb
 
-    it "should call newData callback while inAppletCallback is true"
+    it "should emit the 'data' event", ->
+      goio.dataReceived()
+      expect( dataCb ).toHaveBeenCalled()
 
-    it "should call endAppletCallback"
+    describe "the data callback", ->
+
+      it "should be called with the data received from the applet callback", ->
+        goio.dataReceived null, 2, [1.0, 2.0]
+        expect( dataCb ).toHaveBeenCalledWith [1.0, 2.0]
+
+      it "should be called while getIsInAppletCallback() returns true", ->
+          wasIn = null
+          dataCb.andCallFake -> wasIn = goio.getIsInAppletCallback()
+
+          goio.dataReceived()
+          expect( wasIn ).toBe true
+
+    describe "after dataReceived returns", ->
+
+      beforeEach ->
+        goio.dataReceived()
+
+      describe "getIsInAppletCallback method", ->
+        it "should return false", ->
+          expect( goio.getIsInAppletCallback() ).toBe false
+
 
   describe "_stopSensor method", ->
     describe "if inAppletCallback is true", ->

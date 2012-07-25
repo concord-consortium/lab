@@ -170,6 +170,12 @@ ISImporter.GoIOApplet = extendClass(ISImporter.SensorApplet, {
     this.startAppletCallback();
     this.sensorIsReady();
     this.endAppletCallback();
+  },
+
+  dataReceived: function(type, count, data) {
+    this.startAppletCallback();
+    this.emit('data', data);
+    this.endAppletCallback();
   }
 
 });
