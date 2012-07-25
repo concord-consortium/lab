@@ -50,6 +50,13 @@ modeler.model = function(initialProperties) {
       // list of obstacles
       obstacles,
 
+      default_obstacle_properties = {
+        vx: 0,
+        vy: 0,
+        density: Infinity,
+        color: [128, 128, 128]
+      },
+
       listeners = {},
 
       properties = {
@@ -462,6 +469,21 @@ modeler.model = function(initialProperties) {
   };
 
   model.createObstacles = function(_obstacles) {
+    var numObstacles = _obstacles.x.length;
+
+    // ensure that every property either has a value or the default value
+    for (var i = 0; i < numObstacles; i++) {
+      for (prop in default_obstacle_properties) {
+        if (!default_obstacle_properties.hasOwnProperty(prop)) continue;
+        if (!_obstacles[prop]) {
+          _obstacles[prop] = [];
+        }
+        if (typeof _obstacles[prop][i] === "undefined") {
+          _obstacles[prop][i] = default_obstacle_properties[prop];
+        }
+      }
+    }
+
     coreModel.initializeObstacles(_obstacles);
     obstacles = coreModel.obstacles;
     return model;

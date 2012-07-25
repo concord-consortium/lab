@@ -152,10 +152,6 @@ exports.makeModel = function() {
   var // the object to be returned
       model,
 
-      defaultProperties = {
-        obstacleColor:  [128, 128, 128]
-      },
-
       // Whether system dimensions have been set. This is only allowed to happen once.
       sizeHasBeenInitialized = false,
 
@@ -1014,20 +1010,15 @@ exports.makeModel = function() {
       obstacleVX[N_obstacles] = 0;
       obstacleVY[N_obstacles] = 0;
 
-      if (color) {
-        obstacleColorR[N_obstacles] = color[0];
-        obstacleColorG[N_obstacles] = color[1];
-        obstacleColorB[N_obstacles] = color[2];
-      } else {
-        obstacleColorR[N_obstacles] = defaultProperties.obstacleColor[0];
-        obstacleColorG[N_obstacles] = defaultProperties.obstacleColor[1];
-        obstacleColorB[N_obstacles] = defaultProperties.obstacleColor[2];
-      }
-
       density = parseFloat(density);      // may be string "Infinity"
       mass = density * width * height;
 
       obstacleMass[N_obstacles] = mass;
+
+      obstacleColorR[N_obstacles] = color[0];
+      obstacleColorG[N_obstacles] = color[1];
+      obstacleColorB[N_obstacles] = color[2];
+
 
       N_obstacles++;
     },
