@@ -273,6 +273,90 @@
         });
       });
     });
+    describe("remove method", function() {
+      beforeEach(function() {
+        return spyOn(applet, '_removeApplet');
+      });
+      describe("when not in an applet callback", function() {
+        describe("and the applet is in the 'not appended' state", function() {
+          beforeEach(function() {
+            expect(applet.getState()).toBe('not appended');
+            return applet.remove();
+          });
+          return it("should not call the _removeApplet method", function() {
+            return expect(applet._removeApplet).not.toHaveBeenCalled();
+          });
+        });
+        return describe("and the applet is not in the 'not appended' state", function() {
+          beforeEach(function() {
+            applet._state = 'appended';
+            expect(applet.getState()).toBe('appended');
+            return applet.remove();
+          });
+          it("should call the _removeApplet method", function() {
+            return expect(applet._removeApplet).toHaveBeenCalled();
+          });
+          return it("should transition to the 'not appended' state", function() {
+            return expect(applet.getState()).toBe('not appended');
+          });
+        });
+      });
+      return describe("when in an applet callback", function() {
+        beforeEach(function() {
+          return applet.startAppletCallback();
+        });
+        describe("and the applet is in the 'not appended' state", function() {
+          beforeEach(function() {
+            return runs(function() {
+              expect(applet.getState()).toBe('not appended');
+              return applet.remove();
+            });
+          });
+          return describe("after waiting", function() {
+            beforeEach(function() {
+              return waits(100);
+            });
+            return it("should not have called the _removeApplet method", function() {
+              return runs(function() {
+                return expect(applet._removeApplet).not.toHaveBeenCalled();
+              });
+            });
+          });
+        });
+        return describe("and the applet is NOT in the 'not appended' state", function() {
+          beforeEach(function() {
+            return runs(function() {
+              applet._state = 'stopped';
+              expect(applet.getState()).toBe('stopped');
+              return applet.remove();
+            });
+          });
+          describe("immediately", function() {
+            it("should not change state", function() {
+              return runs(function() {
+                return expect(applet.getState()).toBe('stopped');
+              });
+            });
+            return it("should not call the _removeApplet method", function() {
+              return runs(function() {
+                return expect(applet._removeApplet).not.toHaveBeenCalled();
+              });
+            });
+          });
+          return describe("after waiting", function() {
+            beforeEach(function() {
+              return waits(100);
+            });
+            it("should have called the _removeApplet method", function() {
+              return expect(applet._removeApplet).toHaveBeenCalled();
+            });
+            return it("should transition to the 'not appended' state", function() {
+              return expect(applet.getState()).toBe('not appended');
+            });
+          });
+        });
+      });
+    });
     return describe("initially", function() {
       describe("getIsInAppletCallback method", function() {
         return it("should return false", function() {

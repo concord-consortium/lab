@@ -89,9 +89,31 @@ ISImporter.SensorApplet = defineClass({
     }
   },
 
+  remove: function() {
+    var self = this;
+
+    function remove() {
+      if (self.getState() !== 'not appended') {
+        self._removeApplet();
+        self._state = 'not appended';
+      }
+    }
+
+    if (this.getIsInAppletCallback()) {
+      window.setTimeout(function() { remove(); }, 10);
+    }
+    else {
+      remove();
+    }
+  },
+
   _appendHTML: function(html) {
     $('body').append(html);
     this.appletInstance = $('#'+this.appletId)[0];
+  },
+
+  _removeApplet: function() {
+    $('#'+this.appletId).remove();
   },
 
   getHTML: function() {
