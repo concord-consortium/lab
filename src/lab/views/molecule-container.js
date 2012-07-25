@@ -673,6 +673,11 @@ layout.moleculeContainer = function(e, options) {
       }
     }
 
+    function update_drawable_positions() {
+      update_molecule_positions();
+      updateObstaclePositions();
+    }
+
     function update_molecule_positions() {
 
       mock_atoms_array.length = get_num_atoms();
@@ -701,6 +706,19 @@ layout.moleculeContainer = function(e, options) {
       if ((typeof(atom_tooltip_on) === "number")) {
         render_atom_tooltip(atom_tooltip_on);
       }
+    }
+
+    function updateObstaclePositions() {
+      obstacles = get_obstacles();
+      if (!obstacles) return;
+
+      mock_obstacles_array.length = obstacles[0].length;
+
+      gradient_container.selectAll("rect").remove();
+
+      obstacle = gradient_container.selectAll("rect").data(mock_obstacles_array);
+
+      rectEnter(obstacle);
     }
 
     // ------------------------------------------------------------
@@ -751,7 +769,7 @@ layout.moleculeContainer = function(e, options) {
     container.node = node;
     container.updateMoleculeRadius = updateMoleculeRadius;
     container.setup_drawables = setup_drawables;
-    container.update_molecule_positions = update_molecule_positions;
+    container.update_drawable_positions = update_drawable_positions;
     container.scale = scale;
     container.playback_component = playback_component;
     container.options = options;

@@ -59,7 +59,7 @@ controllers.compareModelsController = function(molecule_view_id, appletContainer
     // ------------------------------------------------------------
 
     function modelListener(e) {
-      molecule_container.update_molecule_positions();
+      molecule_container.update_drawable_positions();
     }
 
     // ------------------------------------------------------------

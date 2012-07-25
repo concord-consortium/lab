@@ -46,7 +46,7 @@ controllers.modelController = function(molecule_view_id, modelConfig, playerConf
     // ------------------------------------------------------------
 
     function model_listener(e) {
-      molecule_container.update_molecule_positions();
+      molecule_container.update_drawable_positions();
       if (step_counter >= model.stepCounter()) { modelStop(); }
     }
 

@@ -77,7 +77,7 @@ controllers.complexModelController =
 
       speedDistributionChart.update();
 
-      moleculeContainer.update_molecule_positions();
+      moleculeContainer.update_drawable_positions();
 
       if (model.isNewStep()) {
         energy_data[0].push(ke);
@@ -450,7 +450,7 @@ controllers.complexModelController =
       mol_number = +select_molecule_number.value;
       model.createNewAtoms(mol_number, dontRelaxRandom);
       setupModel();
-      moleculeContainer.update_molecule_positions();
+      moleculeContainer.update_drawable_positions();
       step_counter = model.stepCounter();
       layout.displayStats();
       if (layout.datatable_visible) {

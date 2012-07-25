@@ -72,7 +72,7 @@ controllers.simpleModelController = function(molecule_view_id, modelConfig, play
     // ------------------------------------------------------------
 
     model_listener = function(e) {
-      molecule_container.update_molecule_positions();
+      molecule_container.update_drawable_positions();
       if (step_counter >= model.stepCounter()) { modelStop(); }
     };
 
