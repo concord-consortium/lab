@@ -2,21 +2,118 @@
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 
+ISImporter.sensors = {
+
+  distance: new ISImporter.GoIOApplet({
+    otmlPath: '/distance.otml',
+    listenerPath: 'ISImporter.sensors.distance'
+  }),
+
+  temperature: new ISImporter.GoIOApplet({
+    otmlPath: '/temperature.otml',
+    listenerPath: 'ISImporter.sensors.temperature'
+  }),
+
+  light: new ISImporter.GoIOApplet({
+    otmlPath: '/light.otml',
+    listenerPath: 'ISImporter.sensors.light'
+  })
+};
+
 ISImporter.main = function() {
 
-  distanceSensor = new ISImporter.GoIOApplet({
-    otmlPath: '/distance.otml',
-    listenerPath: 'distanceSensor'
-  }),
+  var $sel = $('#sensor-selector'),
+      $data = $('#data'),
+      key,
+      applet;
 
-  temperatureSensor = new ISImporter.GoIOApplet({
-    otmlPath: '/temperature.otml',
-    listenerPath: 'temperatureSensor'
-  }),
+  function disableButtons() {
+    $('button').attr('disabled', true);
+  }
 
-  lightSensor = new ISImporter.GoIOApplet({
-    otmlPath: '/light.otml',
-    listenerPath: 'lightSensor'
+  function enableStartButton() {
+    $('#start').attr('disabled', false);
+  }
+
+  function disableStartButton() {
+    $('#start').attr('disabled', true);
+  }
+
+  function enableStopButton() {
+    $('#stop').attr('disabled', false);
+  }
+
+  function disableStopButton() {
+    $('#stop').attr('disabled', true);
+  }
+
+  function enableResetButtons() {
+    $('#reset').attr('disabled', false);
+    $('#export').attr('disabled', false);
+  }
+
+  function disableResetButtons() {
+    $('#reset').attr('disabled', true);
+    $('#export').attr('disabled', true);
+  }
+
+  function start() {
+    disableStartButton();
+    enableStopButton();
+    enableResetButtons();
+    applet.start();
+  }
+
+  function stop() {
+    enableStartButton();
+    disableStopButton();
+    enableResetButtons();
+    applet.stop();
+  }
+
+  disableButtons();
+
+  for (key in ISImporter.sensors) {
+    if (ISImporter.sensors.hasOwnProperty(key)) {
+      $sel.append('<option value="' + key + '">' + key + '</option>');
+    }
+  }
+
+  $sel.change(function() {
+    var choice = $(this).val();
+    if (ISImporter.sensors[choice] && ISImporter.sensors[choice] !== applet) {
+      disableButtons();
+
+      applet = ISImporter.sensors[choice];
+      applet.append();
+
+      applet.on('sensorReady', function() {
+        console.log('sensor ready');
+        enableStartButton();
+      });
+
+      applet.on('data', function(d) {
+        $data.text(Math.round(d*10)/10);
+      });
+
+    }
+  });
+
+  $('#start').click(function() {
+    start();
+  });
+
+  $('#stop').click(function() {
+    stop();
+  });
+
+  $('#reset').click(function() {
+    stop();
+    $data.text('');
+  });
+
+  $('#export').click(function() {
+    stop();
   });
 
 };
