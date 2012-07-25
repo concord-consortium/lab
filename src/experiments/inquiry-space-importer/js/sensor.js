@@ -64,7 +64,7 @@ ISImporter.SensorApplet = defineClass({
     timer = window.setInterval(function() {
       if (self.testAppletReady()) {
         window.clearInterval( timer );
-        self._state = 'applet ready';
+        if (self.getState() === 'appended') self._state = 'applet ready';
         self.emit('appletReady');
       }
     }, this.testAppletReadyInterval);

@@ -146,27 +146,51 @@
                 });
               });
             });
-            return describe("after waiting", function() {
+            describe("and the sensorIsReady method is not called", function() {
+              return describe("after waiting", function() {
+                beforeEach(function() {
+                  return waits(100);
+                });
+                it("should have stopped calling testAppletReady", function() {
+                  runs(function() {
+                    return applet.testAppletReady.reset();
+                  });
+                  waits(100);
+                  return runs(function() {
+                    return expect(applet.testAppletReady).not.toHaveBeenCalled();
+                  });
+                });
+                it("should be in the 'applet ready' state", function() {
+                  return runs(function() {
+                    return expect(applet.getState()).toBe('applet ready');
+                  });
+                });
+                return it("should have fired the appletReady event", function() {
+                  return runs(function() {
+                    return expect(appletReadyCallback).toHaveBeenCalled();
+                  });
+                });
+              });
+            });
+            return describe("and the sensorIsReady method is called", function() {
               beforeEach(function() {
-                return waits(100);
-              });
-              it("should have stopped calling testAppletReady", function() {
-                runs(function() {
-                  return applet.testAppletReady.reset();
-                });
-                waits(100);
                 return runs(function() {
-                  return expect(applet.testAppletReady).not.toHaveBeenCalled();
+                  return applet.sensorIsReady();
                 });
               });
-              it("should be in the 'applet ready' state", function() {
-                return runs(function() {
-                  return expect(applet.getState()).toBe('applet ready');
+              return describe("after waiting", function() {
+                beforeEach(function() {
+                  return waits(100);
                 });
-              });
-              return it("should have fired the appletReady event", function() {
-                return runs(function() {
-                  return expect(appletReadyCallback).toHaveBeenCalled();
+                it("should be in the 'stopped' state", function() {
+                  return runs(function() {
+                    return expect(applet.getState()).toBe('stopped');
+                  });
+                });
+                return it("should still have fired the appletReady event", function() {
+                  return runs(function() {
+                    return expect(appletReadyCallback).toHaveBeenCalled();
+                  });
                 });
               });
             });

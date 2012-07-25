@@ -114,21 +114,39 @@ describe "SensorApplet class", ->
             it "should not have fired the appletReady event", ->
               runs -> expect( appletReadyCallback ).not.toHaveBeenCalled()
 
-          describe "after waiting", ->
+          describe "and the sensorIsReady method is not called", ->
+
+            describe "after waiting", ->
+
+              beforeEach ->
+                waits 100
+
+              it "should have stopped calling testAppletReady", ->
+                runs -> applet.testAppletReady.reset()
+                waits 100
+                runs -> expect( applet.testAppletReady ).not.toHaveBeenCalled()
+
+              it "should be in the 'applet ready' state", ->
+                runs -> expect( applet.getState() ).toBe 'applet ready'
+
+              it "should have fired the appletReady event", ->
+                runs -> expect( appletReadyCallback ).toHaveBeenCalled()
+
+          describe "and the sensorIsReady method is called", ->
 
             beforeEach ->
-              waits 100
+              runs -> applet.sensorIsReady()
 
-            it "should have stopped calling testAppletReady", ->
-              runs -> applet.testAppletReady.reset()
-              waits 100
-              runs -> expect( applet.testAppletReady ).not.toHaveBeenCalled()
+            describe "after waiting", ->
 
-            it "should be in the 'applet ready' state", ->
-              runs -> expect( applet.getState() ).toBe 'applet ready'
+              beforeEach ->
+                waits 100
 
-            it "should have fired the appletReady event", ->
-              runs -> expect( appletReadyCallback ).toHaveBeenCalled()
+              it "should be in the 'stopped' state", ->
+                runs -> expect( applet.getState() ).toBe 'stopped'
+
+              it "should still have fired the appletReady event", ->
+                runs -> expect( appletReadyCallback ).toHaveBeenCalled()
 
 
   describe "the sensorIsReady method", ->
